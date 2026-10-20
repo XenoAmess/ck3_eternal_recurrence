@@ -1,0 +1,48 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:46:30.023976+00:00",
+  "phase": "standalone-build-and-SYSTEM",
+  "pid": 31284,
+  "process_create_time_100ns": 134369739420541007,
+  "started_at_utc": "2026-10-20T12:45:42.050956+00:00",
+  "returncode": 0,
+  "original_Popen_wait": true,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--jobs",
+    "2"
+  ],
+  "local_guard_RED": null,
+  "peak_observed_native_root_bytes": 8733864,
+  "meter_observation_count": 47,
+  "stdout": {
+    "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\stdout.log",
+    "bytes": 8362,
+    "sha256": "28c1b87b96d388112f8059320421e5e8c36d30dcc19835db1b0224fd351d0b97"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "final_footprint": {
+    "observed_at_utc": "2026-10-20T12:46:30.056716+00:00",
+    "native_root_bytes": 2539034,
+    "native_files": 56,
+    "source_root_bytes": 41656,
+    "source_files": 6,
+    "fixed_protocol_conservative_bytes": 33554432,
+    "aggregate_charged_bytes": 36135122,
+    "status": "GREEN",
+    "C_free_bytes": 78913658880,
+    "D_free_bytes": 21664063488
+  }
+}

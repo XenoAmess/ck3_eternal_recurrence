@@ -1,0 +1,10 @@
+test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations (__main__.PublicHook.test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations) ... ok
+test_no_grant_times_out_without_observer_and_close_is_instance_local (__main__.PublicHook.test_no_grant_times_out_without_observer_and_close_is_instance_local) ... ok
+test_prepare_failure_and_unknown_start_preserve_terminal_without_false_cleanup (__main__.PublicHook.test_prepare_failure_and_unknown_start_preserve_terminal_without_false_cleanup) ... ok
+test_root_grant_rejects_foreign_identity_capacity_and_typed_null (__main__.PublicHook.test_root_grant_rejects_foreign_identity_capacity_and_typed_null) ... ok
+test_unknown_day_is_never_replayed_and_original_error_and_after_are_preserved (__main__.PublicHook.test_unknown_day_is_never_replayed_and_original_error_and_after_are_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.902s
+
+OK

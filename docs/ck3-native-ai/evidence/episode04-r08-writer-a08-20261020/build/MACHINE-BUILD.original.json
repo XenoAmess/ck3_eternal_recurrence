@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_utc": "2026-10-20T12:46:29.992363+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "2",
+    "--defender-external-candidate",
+    "e04-maintenance-writer-cold-12004",
+    "--configure",
+    "--build",
+    "--target",
+    "maintenance_writer_cold_target",
+    "maintenance_writer_cold_observer"
+  ],
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\CMakeLists.txt",
+      "bytes": 566,
+      "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_observer.cpp",
+      "bytes": 29565,
+      "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+    }
+  ],
+  "returncode": 0,
+  "project_EXE_executed": false
+}

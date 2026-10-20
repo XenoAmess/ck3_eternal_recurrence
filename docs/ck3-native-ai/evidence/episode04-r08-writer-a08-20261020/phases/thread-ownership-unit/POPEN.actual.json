@@ -1,0 +1,11 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:44.282840+00:00",
+  "pid": 768,
+  "process_create_time_100ns": 134369740642785531,
+  "argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+    "--qualify-cold-thread-ownership"
+  ],
+  "original_process_handle_retained": true
+}

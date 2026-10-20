@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:32.499022+00:00",
+  "phase": "focused-four-cold",
+  "pid": 8124,
+  "process_create_time_100ns": 134369740495422552,
+  "started_at_utc": "2026-10-20T12:47:29.539933+00:00",
+  "returncode": 0,
+  "original_Popen_wait": true,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\run_cold_fixture.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--machine-build-record",
+    "C:\\w\\e04r08a08\\build-a01\\MACHINE-BUILD.actual.json",
+    "--output-root",
+    "C:\\w\\e04r08a08\\cold-focused-a01",
+    "--case",
+    "four-writes",
+    "--case",
+    "timeout",
+    "--case",
+    "default-off",
+    "--case",
+    "ordinary-ownership-rejection"
+  ],
+  "local_guard_RED": null,
+  "peak_observed_native_root_bytes": 2562418,
+  "meter_observation_count": 3,
+  "stdout": {
+    "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\stdout.log",
+    "bytes": 289,
+    "sha256": "6990c7be28faedc7b939038876cbdf088ad83d57f0917af222e2177c32489e4a"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "final_footprint": {
+    "observed_at_utc": "2026-10-20T12:47:32.521365+00:00",
+    "native_root_bytes": 2582153,
+    "native_files": 110,
+    "source_root_bytes": 41656,
+    "source_files": 6,
+    "fixed_protocol_conservative_bytes": 33554432,
+    "aggregate_charged_bytes": 36178241,
+    "status": "GREEN",
+    "C_free_bytes": 78912671744,
+    "D_free_bytes": 21664059392
+  }
+}

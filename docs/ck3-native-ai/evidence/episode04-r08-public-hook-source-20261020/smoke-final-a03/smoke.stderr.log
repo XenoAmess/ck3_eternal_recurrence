@@ -1,0 +1,7 @@
+test_r04_r06_are_mutually_exclusive_before_either_route (test_r06_refill_one_day.R06BoundaryTests.test_r04_r06_are_mutually_exclusive_before_either_route) ... ok
+test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations (test_r08_writer_one_day.PublicHook.test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.054s
+
+OK

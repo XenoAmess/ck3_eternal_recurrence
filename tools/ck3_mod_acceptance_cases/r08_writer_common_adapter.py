@@ -146,8 +146,12 @@ def bind_legacy_driver(legacy, context, client, *, machine, root_window_guard=No
     def config(value):
         cfg = read_pin(value, 65536)
         need(cfg.get("schema") == "xar.e04.common-cd-writer-driver-input.v1", "Common writer input required")
-        need(re.fullmatch(r"r207-[a-z0-9-]{1,55}", cfg.get("request_prefix", "")) is not None,
-             "Use a new R207 request prefix")
+        prefix = cfg.get("request_prefix", "")
+        legacy_prefix = re.fullmatch(r"r207-[a-z0-9-]{1,55}", prefix) is not None
+        public_prefix = (re.fullmatch(r"r08-[a-z0-9-]{1,55}", prefix) is not None
+                         and cfg.get("run_id") == context.get("run_id")
+                         and bool(context.get("run_id")))
+        need(legacy_prefix or public_prefix, "Use a fresh run-bound R08 or legacy R207 request prefix")
         need(Path(cfg["control_root"]).resolve().is_relative_to(Path(context["output"]).resolve()),
              "Writer control belongs to this common case")
         return cfg

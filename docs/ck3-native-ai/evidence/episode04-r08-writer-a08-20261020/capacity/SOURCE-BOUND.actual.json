@@ -1,0 +1,246 @@
+{
+  "schema": "xar.e04.r08-a08-standalone-source-bound.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:43:41.602732+00:00",
+  "task_id": "e04-capacity-r08-a08-build-20261020-a01",
+  "parent_shared_task_id": "e04-capacity-r06-1315-20261020-a01",
+  "owner": "/root/native_prepare",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "build_execution_admitted": true,
+  "heavy_write_execution_admitted": true,
+  "source_freeze_execution_admitted": true,
+  "focused_cold_execution_admitted": true,
+  "SYSTEM_exact_project_EXE_registration_admitted": true,
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\R08-A08-NATIVE-EXECUTION.prepared-a01.json",
+    "bytes": 8343,
+    "sha256": "b641185f380e8b41ad9716c9180d76f27f9605febd97e49a314915ada2895f3e"
+  },
+  "build_root": "C:\\w\\e04r08a08",
+  "source_root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+  "aggregate_ceiling_bytes": 67108864,
+  "new_native_build_ceiling_bytes": 67108864,
+  "new_native_root_ceiling_bytes": 33488896,
+  "source_root_ceiling_bytes": 65536,
+  "fixed_protocol_growth_ceiling_bytes": 33554432,
+  "fixed_protocol_roots": [
+    "C:/Program Files/XAR CK3 Project EXE Broker/inbox",
+    "C:/Program Files/XAR CK3 Project EXE Broker/private-frozen",
+    "C:/Program Files/XAR CK3 Project EXE Broker/receipts"
+  ],
+  "fixed_protocol_charge": "Full32MiB conservative increment held; private/protected unenumerable is not treated as zero; local proofs count in Cw root.",
+  "source_inputs": [
+    {
+      "relative_path": "CMakeLists.txt",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\CMakeLists.txt",
+        "bytes": 566,
+        "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\CMakeLists.txt"
+    },
+    {
+      "relative_path": "cold_observer.cpp",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_observer.cpp",
+        "bytes": 29565,
+        "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_observer.cpp"
+    },
+    {
+      "relative_path": "cold_target.cpp",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_target.cpp"
+    },
+    {
+      "relative_path": "synthetic_write.asm",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\synthetic_write.asm"
+    },
+    {
+      "relative_path": "build_fixture.py",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\build_fixture.py",
+        "bytes": 1710,
+        "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py"
+    }
+  ],
+  "expected_EXEs": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe"
+  ],
+  "declared_targets": [
+    "maintenance_writer_cold_target",
+    "maintenance_writer_cold_observer"
+  ],
+  "selected_cold_cases": [
+    "four-writes",
+    "timeout",
+    "default-off",
+    "ordinary-ownership-rejection"
+  ],
+  "thread_ownership_unit_after_cold_exact_gate_only": true,
+  "phases": [
+    "source-freeze",
+    "standalone-build-and-SYSTEM",
+    "focused-four-cold",
+    "thread-ownership-unit",
+    "metadata-qualification-and-close"
+  ],
+  "source_and_build_initial_absence": {
+    "build": {
+      "root": "C:\\w\\e04r08a08",
+      "exists": false,
+      "logical_bytes": 0,
+      "files": 0,
+      "complete": true,
+      "absence_observed": true
+    },
+    "source": {
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+      "exists": false,
+      "logical_bytes": 0,
+      "files": 0,
+      "complete": true,
+      "absence_observed": true
+    }
+  },
+  "fresh_phase_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\fresh_r08_a08_phase_a01.py",
+    "bytes": 5222,
+    "sha256": "b4012a42b342f978f7863ff74c23470e67a9165701ccd4e8f3c46d4a61283f07"
+  },
+  "fresh_phase_validity_seconds": 30,
+  "hard_deadline_utc": "2026-10-20T13:10:00Z",
+  "run_hard_deadline_utc": "2026-10-20T13:10:00Z",
+  "quota_review_at_utc": "2026-10-20T13:10:00Z",
+  "fresh_ledger_before_registration": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 307532,
+    "sha256": "50ed537b7bc620be2ba8a5d6c8966699b2247531abcc8ad4f952eb204d5cf831"
+  },
+  "active_balances_before": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-1315-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "collective_shared": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T12:43:09.597617+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 122458141,
+    "files": 3529,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T12:43:09.597652+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78921154560,
+      "available_to_caller_bytes": 78921154560,
+      "total_free_bytes": 78921154560,
+      "entire_volume_used_allocation_upper_bound_bytes": 432212791296,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T12:43:09.597652+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21664063488,
+      "available_to_caller_bytes": 21664063488,
+      "total_free_bytes": 21664063488,
+      "entire_volume_used_allocation_upper_bound_bytes": 478425944064,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget_including_new64MiB": {
+    "C_known_future_bytes": 201326592,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26013263046,
+    "C_floor_margin_bytes": 52907891514,
+    "C_projected_whole_volume_upper_bound_bytes": 436751217862,
+    "C_quota_margin_bytes": 1335446330,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 55009280
+  },
+  "fresh_volumes_required": [
+    {
+      "volume": "C:/",
+      "required_free_bytes": 26013263046
+    },
+    {
+      "volume": "D:/",
+      "required_free_bytes": 21609054208
+    }
+  ],
+  "shared_pool_additional_future_bytes": 0,
+  "independent_native_future_bytes": 67108864,
+  "game_Steam_SDK_main_DLL_new_day_or_live_admitted": false,
+  "installed_code_policy_task_ACL_change_or_UAC_retry_admitted": false,
+  "automatic_renewal": false,
+  "physical_or_unused_credit_bytes": 0,
+  "Root_authority": "Root exact conditional64MiB standalone two-target writer/synthetic cold, no feeDLL/live/Steam; deadline13:10Z; source5smallpins and two exactEXEs; existing permanent exactprojectEXE user authorization only.",
+  "unknown_or_gap_stops_new_stage": true,
+  "original_Popen_waits_required": true,
+  "no_automatic_retry_after_failed_stage": true,
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "supersedes_unreleased_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R08-A08-STANDALONE-64M-SOURCE-BOUND.actual-a01.json",
+    "bytes": 8815,
+    "sha256": "f007d19e018aba8a8a36429d17ddc911b8badf26f1fa20a59faf90b6e3e83ed1"
+  },
+  "pre_execution_correction": "a01 was not released to executor; incorrect ProgramData protocol root spelling replaced by actual installed policy Program Files roots; full32MiB budget unchanged. No source freeze/build/SYSTEM/project EXE was started."
+}

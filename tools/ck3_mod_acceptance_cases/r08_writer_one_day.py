@@ -1,0 +1,274 @@
+"""One declared natural writer opportunity on the existing public CaseClient.
+
+The existing prepare/observer/consumer controller owns the four-slot watch.
+The shared entry owns normal closure; this actor withholds it until restore and
+payment OFF/clear are independently proved. No load, host or SDK is constructed.
+"""
+from datetime import datetime, timezone
+from pathlib import Path
+from types import SimpleNamespace
+import importlib.util
+import json
+import re
+import subprocess
+import sys
+import time
+
+from .r10_prepare_adapter import need, pin, small_json
+from . import r04_county_entry as common
+from . import r08_writer_common_adapter as bridge
+
+MODE = 'native_campaign_owned_no_load_v2'
+RESEARCH = Path('ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004')
+AUTH_SCHEMA = 'xar.e04.r206-cd-writer-explicit-root-admission.v1'
+AUTH_STATUS = 'ROOT_ADOPTED_R206_INDEPENDENT_CD_WRITER_WINDOW'
+
+
+def settings(value):
+    required = {'scene_root', 'source_head', 'native_build_source_head', 'build_dir',
+                'machine_execution_gate', 'actor_id', 'expected_start_date_raw',
+                'expected_source_save_sha256', 'profile_limit_bytes', 'driver_limit_bytes',
+                'deadline_utc', 'prefix', 'payment_enable_once_authorized'}
+    defaults = dict(admission_timeout_seconds=600, normal_close_reserve=900,
+                    cleanup_save_reserve=120, poll_seconds=.25)
+    need(type(value) is dict and required <= set(value) and set(value) <= required | set(defaults),
+         'Explicit complete R08 one-opportunity settings required')
+    a = SimpleNamespace(**{**defaults, **value})
+    for name in ('actor_id', 'expected_start_date_raw', 'profile_limit_bytes', 'driver_limit_bytes'):
+        need(type(getattr(a, name)) is int and getattr(a, name) > 0, 'Positive R08 ' + name + ' required')
+    for name, size in (('source_head', 40), ('native_build_source_head', 40), ('expected_source_save_sha256', 64)):
+        need(re.fullmatch('[0-9a-f]{'+str(size)+'}', getattr(a, name) or '') is not None,
+             'Exact R08 source identity required: ' + name)
+    need(re.fullmatch('r08-[a-z0-9-]{1,55}', a.prefix or '') is not None, 'Unique bounded R08 prefix required')
+    need(type(a.payment_enable_once_authorized) is bool, 'Explicit payment enable decision required')
+    need(type(a.admission_timeout_seconds) in (int, float) and 0 < a.admission_timeout_seconds <= 900
+         and type(a.poll_seconds) in (int, float) and .05 <= a.poll_seconds <= 1,
+         'Finite R08 admission wait required')
+    need(a.normal_close_reserve >= 900 and a.cleanup_save_reserve >= 120, 'Original normal-close/cleanup reserves required')
+    need(datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')).tzinfo is not None,
+         'Timezone-aware R08 deadline required')
+    need(type(a.machine_execution_gate) is dict, 'Exact qualified machine gate pin required')
+    return a
+
+
+def validate_contract(context):
+    a = settings(context['case_inputs']['r08_writer_one_day'])
+    seed = context.get('saved_campaign') or {}
+    if seed:
+        need(seed.get('sha256') == a.expected_source_save_sha256 and seed.get('player_id') == a.actor_id
+             and seed.get('date_raw') == a.expected_start_date_raw, 'R08 normal source/date/actor differs')
+    return a
+
+
+class CloseGate:
+    """Guard only this instance's original shared close; retain errors as errors."""
+    def __init__(self, client):
+        self.restored = True
+        self.off_clear = False
+        original = client.normal_close
+        def guarded(disposition):
+            need(self.restored and self.off_clear, 'R08 restore/OFF-clear unproved; normal Quit withheld')
+            return original(disposition)
+        client.normal_close = guarded
+
+
+def load_controller():
+    # A fresh module keeps its Popen sessions local to this one public run.
+    path = Path(__file__).with_name('r08_writer_controller.py')
+    name = '_r08_public_writer_controller_' + str(time.monotonic_ns())
+    spec = importlib.util.spec_from_file_location(name, path)
+    value = importlib.util.module_from_spec(spec)
+    sys.modules[name] = value
+    spec.loader.exec_module(value)
+    return value
+
+
+def root_window_guard(context, client, cfg, a, identity):
+    """Consume the existing explicit Root DR grant against fresh public facts."""
+    client.guard()
+    auth = small_json(cfg['observer_admission'])
+    small_json(a.machine_execution_gate)
+    cap = small_json(cfg['scene_capacity'])
+    common.capacity_binding(cap, selection=client.selection, scene=a.scene_root,
+        machine_id=cfg['watch']['expected']['machine'], source_head=a.source_head, a=a)
+    need(auth.get('schema') == AUTH_SCHEMA and auth.get('status') == AUTH_STATUS
+         and auth.get('admitted') is True and auth.get('external_debugger_allowed') is True
+         and auth.get('scope') == 'independent-unfilmed-cd-writer-window'
+         and auth.get('r06_probe_concurrent') is False, 'Independent finite Root DR grant required')
+    for key, expected in (('scene_capacity', cfg['scene_capacity']), ('runtime_identity', identity),
+        ('machine_id', cfg['watch']['expected']['machine']), ('source_head', a.source_head),
+        ('runtime_source_head', a.source_head), ('native_build_source_head', a.native_build_source_head),
+        ('run_id', context['run_id']), ('expected_root_identity', cfg['root_identity']),
+        ('overrides_observer_policy_of_sha256', cfg['scene_capacity']['sha256'])):
+        need(auth.get(key) == expected, 'Root writer grant differs: ' + key)
+    need(all(type(auth['expected_root_identity'][k]) is type(v) for k,v in cfg['root_identity'].items()),
+         'Typed Root writer identity differs')
+    need(Path(auth['scene_root']).resolve() == Path(a.scene_root).resolve()
+         and Path(auth['watch_output_root']).resolve() == Path(cfg['watch']['watch_output_root']).resolve(),
+         'Root writer grant crossed actual roots')
+    end = datetime.fromisoformat(auth['quota_review_at_utc'].replace('Z', '+00:00')).timestamp()
+    need(time.time() < end <= min(datetime.fromisoformat(cap['quota_review_at_utc'].replace('Z','+00:00')).timestamp(),
+         datetime.fromisoformat(a.deadline_utc.replace('Z','+00:00')).timestamp()), 'Root writer grant expired/exceeds scope')
+    need(auth.get('maximum_watch_ms') == cfg['watch']['timeout_ms'] == 30000
+         and auth.get('maximum_aggregate_slot_hits') == cfg['watch']['max_slot_hits'] == 128
+         and auth.get('payment_window_policy') == 'preserve_existing_owned_window_no_enable_clear',
+         'Only existing four-slot 30s/128 preserved-window contract admitted')
+    need(min(client.remaining(), end-time.time()) >= a.normal_close_reserve+a.cleanup_save_reserve+70,
+         'R08 original deadline lacks finite watch and close reserves')
+    return auth
+
+
+def wait_admission(context, client, a, collected, identity, *, clock=time.monotonic, sleep=time.sleep):
+    signal = Path(client.output)/'r08-root-observer-admission.json'
+    need(not signal.exists(), 'R08 Root grant predates fresh awaiting; never reuse')
+    client.checkpoint('r08-before-observer-awaiting', dict(machine_id=collected['expected']['machine'],
+        run_id=context['run_id'], actual_inputs=collected['receipt'], runtime_identity=identity,
+        expected_root_identity={k:collected['expected'][v] for k,v in (
+            ('pid','pid'),('process_create_time_100ns','created'),('connection_generation','generation'),
+            ('episode_run_id','episode'),('player_character_full_id','character_id'),
+            ('controlled_window_id','window'),('payment_epoch','epoch'),('date_raw','date'))},
+        signal_path=str(signal), start_date_raw=a.expected_start_date_raw,
+        target_date_raw=a.expected_start_date_raw+24, maximum_observer_launches=1,
+        maximum_actual_days=1, observer_started=False, watch_ms=30000, aggregate_slot_hits=128))
+    end = clock()+a.admission_timeout_seconds
+    while clock() < end:
+        client.guard()
+        need(client.remaining() > a.normal_close_reserve+a.cleanup_save_reserve+70,
+             'R08 admission wait exhausted original close reserves')
+        if signal.exists():
+            ref=pin(signal)
+            return ref, small_json(ref)
+        sleep(a.poll_seconds)
+    raise TimeoutError('R08 Root admission absent; no observer/day submitted')
+
+
+def run_case(context, client):
+    from ck3_live_run_id import current_machine_id
+    from xar_autoplayer.bridge.war_payment_observations_v1 import normalize_payment_extras, JOURNAL_KEY
+    from xar_autoplayer.bridge.native_driver import _normalize_tactical_daily_sentinel_status
+    a = validate_contract(context)
+    repo=Path(context['repo_root']).resolve(); output=Path(client.output)
+    machine=current_machine_id()
+    head=subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip()
+    need(head==a.source_head,'R08 frozen source differs')
+    bridge.write_new(output/'r08-one-opportunity.once.json', dict(machine_id=machine,run_id=context['run_id'],
+        source_head=head,start_date_raw=a.expected_start_date_raw,target_date_raw=a.expected_start_date_raw+24,
+        unknown_action_never_replayed=True))
+    gate=CloseGate(client); legacy=load_controller(); cfg=None; session=None
+    packets=bridge.CommonPackets(context,client,output/'r08-common-packets',machine=machine)
+    serial=0
+    result=dict(machine_id=machine,run_id=context['run_id'],status='ENTERED',actual_days=0,
+        exact_day_verified=False,full_R08_qualified=False,business_pass=False,errors=[])
+    def call(label,tool,args):
+        nonlocal serial
+        serial+=1
+        return packets.request(a.prefix+'-'+str(serial)+'-'+label,tool,args)[0]
+    def snapshot(label):
+        frame=call(label,'ck3_take_snapshot',{'include_native_command_history':False})
+        need(frame.get('episode_run_id') is None and frame.get('episode_projection')=='native_campaign'
+             and frame.get('paused') is True and frame.get('map_ready') is True
+             and frame['played_character']['character_id']==a.actor_id, 'R08 fresh ordinary paused owner differs')
+        return frame
+    def payment(label,mode):
+        frame=snapshot(label+'-frame')
+        args=dict(expected_revision=frame['revision'],payment_sampling=mode)
+        if mode=='enable':args['payment_window_contract']='same_owned_process_no_load_v1'
+        body=call(label,bridge.CASH_TOOL,args)
+        normalized=normalize_payment_extras(body,snapshot=frame,payment_sampling=mode)
+        if mode!='query':need(normalized['war_payment_control_v1']['accepted'] is True,'R08 payment control not accepted')
+        return normalized[JOURNAL_KEY]
+    try:
+        initial=payment('initial-payment','query')
+        if initial['sampling']['capture_enabled'] is not True:
+            need(a.payment_enable_once_authorized,'Payment OFF: no explicit once-enable authorization')
+            payment('payment-enable-once','enable')
+        need(payment('payment-independent-on','query')['sampling']['capture_enabled'] is True,
+             'Independent payment ON unavailable')
+        collected=bridge.collect_current_context(context,client,machine=machine,prefix=a.prefix+'-initial',
+            packet_root=output/'r08-initial-inputs',owner_binding_mode=MODE)
+        x=collected['expected']
+        need(x['date']==a.expected_start_date_raw and x['character_id']==a.actor_id,'R08 predeclared date/actor differs')
+        identity=bridge.write_new(output/'R08-COMMON-IDENTITY.actual.json',dict(machine_id=machine,
+            run_id=context['run_id'],source_head=head,retained=collected['common_retained_process'],expected=x))
+        admission_ref, auth=wait_admission(context,client,a,collected,identity)
+        root=output/'r08-writer-control'; watch=root/'watch'
+        watch_cfg=dict(repo=str(repo),python=str(client.selection.locations['python']),source_head=head,
+            build_dir=a.build_dir,machine_execution_gate=a.machine_execution_gate['path'],
+            before_response=collected['before_response']['path'],cash_response=collected['cash_response']['path'],
+            owner_binding_mode=MODE,watch_output_root=str(watch),expected=x,timeout_ms=30000,max_slot_hits=128)
+        # Gate bytes are checked before the canonical prepare adapter consumes it.
+        small_json(a.machine_execution_gate)
+        cfg=dict(schema='xar.e04.common-cd-writer-driver-input.v1',run_id=context['run_id'],
+            request_prefix=a.prefix,control_root=str(root),common_packet_root=str(output/'r08-observer-packets'),
+            watch=watch_cfg,build_card=pin(repo/RESEARCH/'build_card.py'),observer_admission=admission_ref,
+            scene_capacity=auth['scene_capacity'])
+        cfg['root_identity']=legacy.expected_binding(watch_cfg)
+        cap=small_json(cfg['scene_capacity'])
+        bound_args=SimpleNamespace(**{**vars(a),'capacity_admission':cfg['scene_capacity']})
+        binding=common.actual_binding(client.selection,Path(a.scene_root),client._process,client.read_report(),cap,
+            machine_id=machine,source_head=head,a=bound_args)
+        binding['saved_campaign_source']=common.bound_saved_campaign_source(client.read_report(),client.frozen,
+            client.selection.prepared,binding,sha=a.expected_source_save_sha256,date_raw=a.expected_start_date_raw,
+            actor=a.actor_id,state_dir=client.selection.state_dir)
+        result['actual_binding']=binding
+        guard=lambda c,owner,value:root_window_guard(c,owner,value,a,identity)
+        bridge.bind_legacy_driver(legacy,context,client,machine=machine,root_window_guard=guard)
+        legacy.SELECTOR=pin(repo/RESEARCH/'select_cd_writers.py')
+        cfg_pin=bridge.write_new(output/'R08-DRIVER-INPUT.actual.json',cfg)
+        result['driver_input']=cfg_pin
+        legacy.prepare(cfg_pin)
+        gate.restored=False
+        try:
+            session,window=legacy.observe_prepared(cfg_pin)
+            result['window']=window
+        finally:
+            # A failed pre-launch guard is safe; an unknown Popen remains unsafe.
+            claimed=(root/'observer-start.once.json').exists()
+            gate.restored=not claimed or result.get('window',{}).get('safe_to_begin_normal_close') is True
+        result['exact_day_verified']=(window.get('day') or {}).get('exact_day_qualified') is True
+        result['status']=('NATURAL_OPPORTUNITY_CONSUMED' if not window.get('primary_error')
+            and window.get('safe_to_begin_normal_close') is True else 'STOPPED_ERROR_PRESERVED_NO_REPLAY')
+    except BaseException as error:
+        result.update(status='STOPPED_ERROR_PRESERVED_NO_REPLAY',error=type(error).__name__+': '+str(error))
+    finally:
+        cleanup=dict(OFFclear=False,Save=False,native_restore_verified=gate.restored)
+        try:
+            need(gate.restored,'Observer restore/detach unproved; OFF/Save/Quit withheld; retain original controller session')
+            call('cleanup-pause','ck3_execute_step',dict(step='pause-map',expected_revision=None))
+            status=_normalize_tactical_daily_sentinel_status(call('cleanup-clock','ck3_execute_step',
+                dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'])
+            if status['state']=='armed':
+                call('cleanup-cancel-clock','ck3_execute_step',dict(step='research-cancel-tactical-daily-sentinel-v1-generation-'+str(status['generation']),expected_revision=None))
+                stopped=_normalize_tactical_daily_sentinel_status(call('cleanup-clock-independent','ck3_execute_step',
+                    dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'])
+                need(stopped['state']!='armed','Original clock still armed; Save withheld')
+            payment('payment-disable-once','disable')
+            off=payment('payment-independent-off','query')['sampling']
+            gate.off_clear=off['capture_enabled'] is False and off['busy'] is False and off['clear_completed'] is True and off['active_captures']==0 and off['retained_records']==0
+            need(gate.off_clear,'Independent payment OFF/clear unavailable')
+            cleanup['OFFclear']=True
+            before=snapshot('Save-before')
+            saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
+            after=snapshot('Save-independent-after')
+            ck=saved.get('checkpoint') or {}
+            cleanup.update(Save_result=saved,independent_after=after,
+                Save=ck.get('status')=='saved' and ck.get('date_raw')==before['date_raw']==after['date_raw'])
+            delta=after['date_raw']-a.expected_start_date_raw
+            if delta in (0,24):result['actual_days']=delta//24
+        except BaseException as error:
+            result['errors'].append('cleanup: '+type(error).__name__+': '+str(error))
+        result.update(cleanup=cleanup,native_restore_verified=gate.restored,normal_close_owned_by_shared_entry=True)
+        client.checkpoint('R08-WRITER-RESULT',result)
+        client.checkpoint('R08-WRITER-TERMINAL',dict(machine_id=machine,run_id=context['run_id'],
+            status=result['status'],actual_days=result['actual_days'],exact_day_verified=result['exact_day_verified'],
+            OFFclear=cleanup['OFFclear'],Save=cleanup['Save'],native_restore_verified=gate.restored,
+            full_R08_qualified=False,business_pass=False,errors=result['errors']))
+    return result
+
+
+def verify_case(context):
+    path=Path(context['output'])/'R08-WRITER-TERMINAL.json'
+    value=small_json(pin(path)) if path.is_file() else {}
+    return dict(actual_days=value.get('actual_days',0),exact_day_verified=value.get('exact_day_verified') is True,
+        native_restore_verified=value.get('native_restore_verified') is True,
+        full_R08_qualified=False,business_pass=False,normal_close_owned_by_shared_entry=True)

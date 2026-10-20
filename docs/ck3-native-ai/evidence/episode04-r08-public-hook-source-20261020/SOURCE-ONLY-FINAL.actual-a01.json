@@ -1,0 +1,140 @@
+{
+  "schema": "xar.e04.r08-public-hook-source-only.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:35.162748+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine",
+  "source_worktree": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "source_head": "280688a42ad2a9d4d88d3ff9f634a489db03dfd0",
+  "frozen_D_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "frozen_D_status": "",
+  "files": [
+    {
+      "relative_path": ".github/workflows/static-ci.yml",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\.github\\workflows\\static-ci.yml",
+        "bytes": 67077,
+        "sha256": "ab6372d69c2561e7af15f28b3f46c0801a9b20161f1d6c4a4fcb07be043af35b"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\.github\\workflows\\static-ci.yml",
+        "bytes": 67077,
+        "sha256": "ab6372d69c2561e7af15f28b3f46c0801a9b20161f1d6c4a4fcb07be043af35b"
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/r08-writer-common-public-entry.md",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\docs\\ck3-native-ai\\r08-writer-common-public-entry.md",
+        "bytes": 4770,
+        "sha256": "fdaf67b5a071aa0a01ca94362b1d93842175646fb17bf27d97abf09bc638a6d3"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\docs\\ck3-native-ai\\r08-writer-common-public-entry.md",
+        "bytes": 4770,
+        "sha256": "fdaf67b5a071aa0a01ca94362b1d93842175646fb17bf27d97abf09bc638a6d3"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+        "bytes": 10850,
+        "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+        "bytes": 10850,
+        "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_controller.py",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_controller.py",
+        "bytes": 22070,
+        "sha256": "b4b3778cf780251ad7d965524191c15cb071cb402f5b9585a7ed3c0558bfafb9"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_controller.py",
+        "bytes": 22070,
+        "sha256": "b4b3778cf780251ad7d965524191c15cb071cb402f5b9585a7ed3c0558bfafb9"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+        "bytes": 17902,
+        "sha256": "1861a9345cc03f6379e37b2f80c2ba99fe9c33ea29243b0a755445d924507491"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+        "bytes": 17902,
+        "sha256": "1861a9345cc03f6379e37b2f80c2ba99fe9c33ea29243b0a755445d924507491"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+        "bytes": 2124,
+        "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+        "bytes": 2124,
+        "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+        "bytes": 15813,
+        "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+        "bytes": 15813,
+        "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+      }
+    },
+    {
+      "relative_path": "tools/test_r08_writer_one_day.py",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\candidate\\tools\\test_r08_writer_one_day.py",
+        "bytes": 16157,
+        "sha256": "1cf742ba0bb64d6b83acdad89c9db6703ae81733b267a4ef098244cf0eb625e6"
+      },
+      "worktree": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_writer_one_day.py",
+        "bytes": 16157,
+        "sha256": "1cf742ba0bb64d6b83acdad89c9db6703ae81733b267a4ef098244cf0eb625e6"
+      }
+    }
+  ],
+  "diff": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\R08-PUBLIC-HOOK.actual.diff",
+    "bytes": 68280,
+    "sha256": "ff495c71549777e9c3b2f13185a4ebcf83e4bc29feaea45d80bb1d4221388e71"
+  },
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a05\\FOCUSED-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1070,
+    "sha256": "a4070dbbf09c581a1538b8253153e7c6bc8b804e681238e9319ae41cce286425"
+  },
+  "focused_result": "5 deterministic tests PASS; original retained Popen.wait=0; no SDK/native/game qualification",
+  "earlier_failed_fixture_attempts_preserved": true,
+  "tracked_diff_check_exit_code": 0,
+  "sdk_actions": 0,
+  "game_launches": 0,
+  "native_observer_launches": 0,
+  "screen_actions": 0,
+  "staged": false,
+  "committed": false,
+  "native_memory_path_qualified": false,
+  "full_R08_qualified": false,
+  "remaining": "Actual compatible standalone producer gate, fresh finite scene and explicit Root launch/admission required",
+  "external_bytes_before_receipt": 251166,
+  "hard_limit_bytes": 1048576
+}

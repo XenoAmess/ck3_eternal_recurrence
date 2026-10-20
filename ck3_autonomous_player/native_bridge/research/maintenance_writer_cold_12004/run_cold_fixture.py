@@ -1,17 +1,66 @@
 """Controlled sibling process only. Gate both project EXEs before first execution."""
 from pathlib import Path
 import argparse, ctypes, datetime as dt, hashlib, json, subprocess, sys, time
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--repo', type=Path, required=True)
-parser.add_argument('--build-dir', type=Path, required=True)
-parser.add_argument('--machine-build-record',type=Path,required=True)
-parser.add_argument('--output-root', type=Path, required=True)
-args = parser.parse_args()
-REPO = args.repo.resolve()
-BUILD = args.build_dir.resolve()
-OUT = args.output_root.resolve()
-PYTHON = REPO / 'tools/.venv/Scripts/python.exe'
-MACHINE = subprocess.check_output([str(PYTHON), '-B', str(REPO / 'tools/ck3_live_run_id.py'), 'machine'], text=True).strip()
+DEFAULT_CASES = ('four-writes', 'same-value', 'new-worker', 'timeout',
+                 'changed-context', 'default-off', 'unaligned', 'wrong-fullid')
+ORDINARY_REJECTION = 'ordinary-ownership-rejection'
+CASE_CHOICES = DEFAULT_CASES + (ORDINARY_REJECTION,)
+
+def make_parser():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--repo', type=Path, required=True)
+    parser.add_argument('--build-dir', type=Path, required=True)
+    parser.add_argument('--machine-build-record', type=Path, required=True)
+    parser.add_argument('--output-root', type=Path, required=True)
+    parser.add_argument('--case', action='append', choices=CASE_CHOICES,
+                        help='Run only this case; repeat to select an ordered finite subset. Default: original eight cases.')
+    return parser
+
+def select_cases(requested):
+    if requested is None:
+        return DEFAULT_CASES
+    if not requested or any(case not in CASE_CHOICES for case in requested):
+        raise ValueError('Select at least one known cold case')
+    if len(set(requested)) != len(requested):
+        raise ValueError('A cold case cannot be selected twice')
+    return tuple(requested)
+
+def target_mode(mode):
+    # Exercise the native rejection with an existing zero-write owned target.
+    return 'default-off' if mode == ORDINARY_REJECTION else mode
+
+def make_observer_argv(mode, selected, raw, ready):
+    argv = [str(BUILD / 'maintenance_writer_cold_observer.exe')]
+    if mode != 'default-off':
+        argv += ['--enable-cold-fixture', '--fixture-meta', str(selected),
+                 '--timeout-ms', '1000' if mode == 'timeout' else '5000',
+                 '--raw', str(raw), '--ready', str(ready),
+                 '--expected-hits', '4', '--machine-id', MACHINE]
+    if mode == ORDINARY_REJECTION:
+        argv.append('--ordinary-null-owner-binding')
+    return argv
+
+def initialize(options):
+    global args, REPO, BUILD, OUT, PYTHON, MACHINE, kernel
+    args = options
+    REPO = args.repo.resolve()
+    BUILD = args.build_dir.resolve()
+    OUT = args.output_root.resolve()
+    PYTHON = REPO / 'tools/.venv/Scripts/python.exe'
+    MACHINE = subprocess.check_output([str(PYTHON), '-B', str(REPO / 'tools/ck3_live_run_id.py'), 'machine'], text=True).strip()
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.OpenEventW.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_wchar_p]
+    kernel.OpenEventW.restype = ctypes.c_void_p
+    kernel.SetEvent.argtypes = [ctypes.c_void_p]
+    kernel.SetEvent.restype = ctypes.c_int
+    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+    kernel.CloseHandle.restype = ctypes.c_int
+    kernel.OpenProcess.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_uint32]
+    kernel.OpenProcess.restype = ctypes.c_void_p
+    kernel.ReadProcessMemory.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
+    kernel.ReadProcessMemory.restype = ctypes.c_int
+    kernel.CheckRemoteDebuggerPresent.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_int)]
+    kernel.CheckRemoteDebuggerPresent.restype = ctypes.c_int
 
 def sha(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -19,7 +68,14 @@ def sha(p):
 def write(p, v):
     Path(p).write_text(json.dumps(v, indent=2) + '\n', encoding='utf-8')
 
-def gate():
+def require_current_ordinary_source(receipt):
+    maintained = REPO / 'ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/cold_observer.cpp'
+    expected = sha(maintained)
+    if not any(Path(row['path']).name == 'cold_observer.cpp' and row['sha256'] == expected
+               for row in receipt.get('input_pins', [])):
+        raise RuntimeError('Ordinary ownership rejection needs the current maintained observer SYSTEM source pin; a07 is incompatible')
+
+def gate(require_ordinary_source=False):
     current_machine = subprocess.check_output([str(PYTHON), '-B', str(REPO / 'tools/ck3_live_run_id.py'), 'machine'], text=True).strip()
     if not current_machine == MACHINE:
         raise RuntimeError('Exact SYSTEM/build gate rejected')
@@ -39,6 +95,8 @@ def gate():
     exclusion = result['defender_exclusions']
     receipt_path = Path(exclusion['receipt'])
     receipt = json.loads(receipt_path.read_text())
+    if require_ordinary_source:
+        require_current_ordinary_source(receipt)
     manifest_path = Path(exclusion['manifest'])
     manifest = json.loads(manifest_path.read_text())
     if not (result['built'] and exclusion['status'] == 'verified'):
@@ -71,20 +129,6 @@ def gate():
         if not sha(pin['path']) == pin['sha256']:
             raise RuntimeError('Exact SYSTEM/build gate rejected')
     return {'machine_id': MACHINE, 'observed_at_utc': dt.datetime.now(dt.timezone.utc).isoformat(), 'status': 'verified-before-first-project-EXE-execution', 'receipt': str(receipt_path), 'receipt_sha256': sha(receipt_path), 'manifest_file_sha256': sha(manifest_path), 'manifest_canonical_sha256': receipt['manifest_sha256'], 'system_token_sid': receipt['system_token_sid'], 'admin_token': True, 'files': files, 'game_contacted': False}
-kernel = ctypes.WinDLL('kernel32', use_last_error=True)
-kernel.OpenEventW.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_wchar_p]
-kernel.OpenEventW.restype = ctypes.c_void_p
-kernel.SetEvent.argtypes = [ctypes.c_void_p]
-kernel.SetEvent.restype = ctypes.c_int
-kernel.CloseHandle.argtypes = [ctypes.c_void_p]
-kernel.CloseHandle.restype = ctypes.c_int
-kernel.OpenProcess.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_uint32]
-kernel.OpenProcess.restype = ctypes.c_void_p
-kernel.ReadProcessMemory.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
-kernel.ReadProcessMemory.restype = ctypes.c_int
-kernel.CheckRemoteDebuggerPresent.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_int)]
-kernel.CheckRemoteDebuggerPresent.restype = ctypes.c_int
-
 def presence_query(meta):
     checks = []
     for label, rights in [('prior_limited_query', 4114), ('fixed_query_information', 5138)]:
@@ -170,7 +214,7 @@ def source_bytes(meta):
     finally:kernel.CloseHandle(h)
 def run_case(mode):
     case=OUT/mode;case.mkdir(exist_ok=False);prefix=case/'target'
-    target_argv=[str(BUILD/'maintenance_writer_cold_target.exe'),'--mode',mode,'--prefix',str(prefix)]
+    target_argv=[str(BUILD/'maintenance_writer_cold_target.exe'),'--mode',target_mode(mode),'--prefix',str(prefix)]
     with (case/'target.stdout').open('xb') as tso,(case/'target.stderr').open('xb') as tse:
         target=subprocess.Popen(target_argv,stdout=tso,stderr=tse,creationflags=0x08000000)
         observer=None;meta={}
@@ -183,9 +227,8 @@ def run_case(mode):
                 meta=dict(meta);key='context' if mode=='unaligned' else 'full_id';meta[key]=str(int(meta[key])+1)
                 selected=case/'invalid.meta.txt';selected.write_text(''.join(k+'='+v+'\n' for k,v in meta.items()),encoding='utf-8')
             raw=case/'observer.raw.ndjson';ready=case/'observer.ready.json'
-            observer_argv=[str(BUILD/'maintenance_writer_cold_observer.exe')]
-            if mode!='default-off':observer_argv+=['--enable-cold-fixture','--fixture-meta',str(selected),'--timeout-ms','1000' if mode=='timeout' else '5000','--raw',str(raw),'--ready',str(ready),'--expected-hits','4','--machine-id',MACHINE]
-            negative=mode in ('default-off','unaligned','wrong-fullid')
+            observer_argv=make_observer_argv(mode,selected,raw,ready)
+            negative=mode in ('default-off','unaligned','wrong-fullid',ORDINARY_REJECTION)
             with (case/'observer.stdout').open('xb') as oso,(case/'observer.stderr').open('xb') as ose:
                 observer=subprocess.Popen(observer_argv,stdout=oso,stderr=ose,creationflags=0x08000000)
                 ready_json=None
@@ -233,10 +276,13 @@ def run_case(mode):
                 if mode=='new-worker':
                     tid=target_result['worker_tid'];require(tid!=int(original_meta['tid']) and tid in arms and all(x['thread_id']==tid for x in hits),'Actual new worker coverage absent')
                     require(len(after)==2,'New worker must remain alive for independent post-DR audit')
-            expected_store_count=0 if mode in ('timeout','default-off') else 4
+            expected_store_count=0 if target_mode(mode) in ('timeout','default-off') else 4
             require(target_result['actual_store_count']==expected_store_count,'Target did not execute exact intended native store count')
             signal(original_meta['finish_event']);target_code=target.wait(timeout=5);require(target_code==0,'Target exit not clean')
             result=dict(schema='xar.maintenance.writer_pc.cold.case.v1',machine_id=MACHINE,actual_utc=dt.datetime.now(dt.timezone.utc).isoformat(),mode=mode,status='PASS',synthetic=True,CK3_observed=False,maintenance_attribution='unclosed',target_argv=target_argv,observer_argv=observer_argv,target_exit_code=target_code,observer_exit_code=observer_code,actual_target_result=target_result,actual_raw_slot_hits=len(hits),native_terminal=terminal,ready=ready_json,independent_DR_before=before,independent_DR_after=after,exact_main_DR_equal=True,raw_sha256=sha(raw) if raw.exists() else None,raw_bytes=raw.stat().st_size if raw.exists() else 0)
+            if mode == ORDINARY_REJECTION:
+                result['qualification_scope'] = 'ordinary-null option with cold-fixture must reject; not ordinary native memory acceptance'
+                result['ordinary_native_owner_accepted'] = False
             write(case/'RESULT.actual.json',result)
             print(json.dumps(dict(mode=mode,status='PASS',hits=len(hits),observer=observer_code)),flush=True)
             return result
@@ -252,8 +298,19 @@ def run_case(mode):
             try:target.wait(timeout=35)
             except subprocess.TimeoutExpired:pass
             raise
-OUT.mkdir(exist_ok=False)
-write(OUT/'EXECUTION-GATE.actual.json',gate())
-cases=[]
-for mode in ['four-writes','same-value','new-worker','timeout','changed-context','default-off','unaligned','wrong-fullid']:cases.append(run_case(mode))
-write(OUT/'COLD-SUITE.actual.json',dict(schema='xar.maintenance.writer_pc.cold.suite.v1',machine_id=MACHINE,actual_utc=dt.datetime.now(dt.timezone.utc).isoformat(),status='PASS',cases=cases,case_count=len(cases),CK3_observed=False,known_producer=False,military_attribution='unclosed'))
+def main(argv=None):
+    parser = make_parser()
+    options = parser.parse_args(argv)
+    try:
+        selected = select_cases(options.case)
+    except ValueError as error:
+        parser.error(str(error))
+    initialize(options)
+    OUT.mkdir(exist_ok=False)
+    write(OUT/'EXECUTION-GATE.actual.json',gate(require_ordinary_source=ORDINARY_REJECTION in selected))
+    cases = [run_case(mode) for mode in selected]
+    write(OUT/'COLD-SUITE.actual.json',dict(schema='xar.maintenance.writer_pc.cold.suite.v1',machine_id=MACHINE,actual_utc=dt.datetime.now(dt.timezone.utc).isoformat(),status='PASS',cases=cases,case_count=len(cases),selected_cases=list(selected),default_eight_cases=options.case is None,ordinary_native_owner_accepted=False,CK3_observed=False,known_producer=False,military_attribution='unclosed'))
+    return 0
+
+if __name__ == '__main__':
+    raise SystemExit(main())

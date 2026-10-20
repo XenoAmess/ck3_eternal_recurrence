@@ -1,0 +1,144 @@
+{
+  "schema": "xar.e04.r08-a08-owned-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:52:25.648269+00:00",
+  "owned_processes": [
+    {
+      "role": "standalone-build-and-SYSTEM",
+      "pid": 31284,
+      "created": 134369739420541007,
+      "original_wait": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1560,
+        "sha256": "9e8e65f1796c24fb8e0f7718d28047d44af680530d060b15167d385915c6c987"
+      },
+      "actual_readback": {
+        "pid": 31284,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    },
+    {
+      "role": "focused-four-cold",
+      "pid": 8124,
+      "created": 134369740495422552,
+      "original_wait": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1822,
+        "sha256": "ad608764c5eb551a28f81f5d9cc8a995263025824b656f0f1b2101e905106127"
+      },
+      "actual_readback": {
+        "pid": 8124,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    },
+    {
+      "role": "thread-ownership-unit",
+      "pid": 768,
+      "created": 134369740642785531,
+      "original_wait": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1307,
+        "sha256": "fba25cdf535fde5d2582ff982dd1c69604c3a9333e5db911aa1b2820127e63c6"
+      },
+      "actual_readback": {
+        "pid": 768,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    },
+    {
+      "role": "four-writes-owned-target",
+      "pid": 8616,
+      "created": 134369740506776853,
+      "meta": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.meta.txt",
+        "bytes": 391,
+        "sha256": "b2e86e4765861dbf484dfc84aa654b9bc373292569a4ca242345a041808736b5"
+      },
+      "actual_readback": {
+        "pid": 8616,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    },
+    {
+      "role": "timeout-owned-target",
+      "pid": 32360,
+      "created": 134369740509885505,
+      "meta": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.meta.txt",
+        "bytes": 395,
+        "sha256": "63ca29d57fef32389f62928f039014fffa0445a9c016732610a7507aa83d5c0b"
+      },
+      "actual_readback": {
+        "pid": 32360,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    },
+    {
+      "role": "default-off-owned-target",
+      "pid": 27404,
+      "created": 134369740521980038,
+      "meta": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.meta.txt",
+        "bytes": 395,
+        "sha256": "58df27e3a52c1eba1ab5e63990a3082fd672350a6c463fb691d5effad61dabf9"
+      },
+      "actual_readback": {
+        "pid": 27404,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    },
+    {
+      "role": "ordinary-ownership-rejection-owned-target",
+      "pid": 19356,
+      "created": 134369740523251414,
+      "meta": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.meta.txt",
+        "bytes": 395,
+        "sha256": "f6a8fcd3fb3e8b10b454420900384ea2f89c8d2846736dc104ebafe6bae9f66d"
+      },
+      "actual_readback": {
+        "pid": 19356,
+        "absent": true
+      },
+      "owned_creation_closed": true
+    }
+  ],
+  "exact_project_EXE_paths_active": [],
+  "read_errors": [],
+  "fixed_SYSTEM_task": {
+    "task_contract": {
+      "folder": "\\XAR CK3 Project EXE Broker",
+      "name": "RegisterDeclaredProjectExecutables",
+      "action": {
+        "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe",
+        "arguments": "-I -S -B \"C:\\Program Files\\XAR CK3 Project EXE Broker\\broker_bootstrap.py\" --config \"C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json\"",
+        "working_directory": "C:\\Program Files\\XAR CK3 Project EXE Broker"
+      },
+      "principal": {
+        "user_id": "S-1-5-18",
+        "logon_type": 5,
+        "run_level": 1
+      },
+      "actions_count": 1,
+      "action_type": 0,
+      "triggers_count": 0,
+      "allow_demand_start": true,
+      "task_acl_protected": true,
+      "folder_acl_protected": true
+    },
+    "state": 3,
+    "running_instances": 0,
+    "last_task_result": 0,
+    "read_only": true,
+    "Task_Run_called": false
+  },
+  "owned_writers_remaining": 0,
+  "remaining_heavy_write_bytes": 0,
+  "scope": "Observed original producer/cold/unit PIDs and four owned target creations; current exact two project EXE paths and fixed broker task. No global process absence claim."
+}

@@ -1,0 +1,66 @@
+[1/5] Building ASM_MASM object CMakeFiles\maintenance_writer_cold_target.dir\synthetic_write.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-writer-source-a08\synthetic_write.asm
+[2/5] Building CXX object CMakeFiles\maintenance_writer_cold_target.dir\cold_target.cpp.obj
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): note: 模板实例化上下文(最早的实例化上下文)为
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-writer-source-a08\cold_target.cpp(41): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)”的引用
+        with
+        [
+            _Elem=wchar_t,
+            _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+            _Alloc=std::allocator<char>
+        ]
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-writer-source-a08\cold_target.cpp(41): note: 请参阅 "wmain" 中对 "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string" 的第一个引用
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(862): note: 查看对正在编译的函数 模板 实例化“void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<wchar_t*,wchar_t*,_Size_type>(_Iter,const _Sent,_Size)”的引用
+        with
+        [
+            _Size_type=unsigned __int64,
+            _Iter=wchar_t *,
+            _Sent=wchar_t *,
+            _Size=unsigned __int64
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1018): note: 查看对正在编译的函数 模板 实例化“_OutIt *std::_Copy_n_unchecked4<wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)”的引用
+        with
+        [
+            _OutIt=char *,
+            _Size=unsigned __int64,
+            _InIt=wchar_t *,
+            _SizeTy=unsigned __int64
+        ]
+[3/5] Linking CXX executable maintenance_writer_cold_target.exe
+[4/5] Building CXX object CMakeFiles\maintenance_writer_cold_observer.dir\cold_observer.cpp.obj
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): warning C4244: “=”: 从“const wchar_t”转换到“char”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): note: 模板实例化上下文(最早的实例化上下文)为
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-writer-source-a08\cold_observer.cpp(292): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(const _Iter,const _Iter)”的引用
+        with
+        [
+            _Elem=wchar_t,
+            _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
+        ]
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-writer-source-a08\cold_observer.cpp(292): note: 请参阅 "wmain" 中对 "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign" 的第一个引用
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1686): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<const wchar_t*,0>(_Iter,_Iter,const _Alloc &)”的引用
+        with
+        [
+            _Iter=const wchar_t *,
+            _Alloc=std::allocator<char>
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(862): note: 查看对正在编译的函数 模板 实例化“void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<const wchar_t*,const wchar_t*,_Size_type>(_Iter,const _Sent,_Size)”的引用
+        with
+        [
+            _Size_type=unsigned __int64,
+            _Iter=const wchar_t *,
+            _Sent=const wchar_t *,
+            _Size=unsigned __int64
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1018): note: 查看对正在编译的函数 模板 实例化“_OutIt *std::_Copy_n_unchecked4<const wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)”的引用
+        with
+        [
+            _OutIt=char *,
+            _Size=unsigned __int64,
+            _InIt=const wchar_t *,
+            _SizeTy=unsigned __int64
+        ]
+[5/5] Linking CXX executable maintenance_writer_cold_observer.exe

@@ -1,0 +1,52 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+  "build_dir": "C:\\w\\e04r08a08\\build-a01",
+  "configuration": "Release",
+  "requested_targets": [
+    "maintenance_writer_cold_target",
+    "maintenance_writer_cold_observer"
+  ],
+  "external_candidate": "e04-maintenance-writer-cold-12004",
+  "cmake_index": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\.cmake\\api\\v1\\reply\\index-2026-10-20T12-45-49-0775.json",
+    "sha256": "4f8bd5cdee6546f435a5a046fb88d07031e0eafc8297a25d51f66c5f2ed433f9"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-f717fd59c3eea4944ade.json",
+    "sha256": "c0980ee12b0f7525d2de7aa7749acba2dfebd5796fb2e26162b033671fd10d70"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\w\\e04r08a08\\build-a01\\.cmake\\api\\v1\\reply\\target-maintenance_writer_cold_observer-Release-0fdd7df78b217550566f.json",
+      "sha256": "f71a3a710e6d8d141e40238b01615a2d92b6a117d958576f9a4a07cef2032cb6",
+      "target": "maintenance_writer_cold_observer",
+      "target_id": "maintenance_writer_cold_observer::@6890427a1f51a3e7e1df",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08"
+    },
+    {
+      "path": "C:\\w\\e04r08a08\\build-a01\\.cmake\\api\\v1\\reply\\target-maintenance_writer_cold_target-Release-24990cae26a2f86b853d.json",
+      "sha256": "ef2fb0b445c4eaa2eff856d438a419e56ee8050ac87807ace88e33a3f788b250",
+      "target": "maintenance_writer_cold_target",
+      "target_id": "maintenance_writer_cold_target::@6890427a1f51a3e7e1df",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+      "size": 120832,
+      "sha256": "68acf0eafb38ed671d4d1fd253c551b2d63ae3e85422d389876ba9825fef42f4",
+      "target": "maintenance_writer_cold_observer",
+      "target_id": "maintenance_writer_cold_observer::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+      "size": 53248,
+      "sha256": "11d024ccee7f8acfd5d68aa7467f586d8f69e4000dc54714975f196d46f931be",
+      "target": "maintenance_writer_cold_target",
+      "target_id": "maintenance_writer_cold_target::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

@@ -1,0 +1,791 @@
+{
+  "schema": "xar.e04.r08-a08-small-evidence-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:56:53.567889+00:00",
+  "status": "ACTUAL_BYTE_EXACT_SMALL_ARCHIVE_PREPARED_NOT_COMMITTED",
+  "destination_repo_root": "docs/ck3-native-ai/evidence/episode04-r08-writer-a08-20261020",
+  "copy": [
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\R08-A08-STANDALONE-QUALIFICATION.actual-a01.json",
+        "bytes": 8913,
+        "sha256": "6e956a2b2d70f4c18e69426b76753e59cc5e14c4440e68a56e29875c53bd3f5c"
+      },
+      "relative_destination": "R08-A08-STANDALONE-QUALIFICATION.actual-a01.json",
+      "role": "actual qualification/closure/current-machine identity"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\R08-A08-OWNED-CLOSURE.actual-a01.json",
+        "bytes": 4611,
+        "sha256": "062b67d1450be0e642ccc77f7be890d9e1e333aaffdd975e533f1deb3ca9b9d5"
+      },
+      "relative_destination": "R08-A08-OWNED-CLOSURE.actual-a01.json",
+      "role": "actual qualification/closure/current-machine identity"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\R08-A08-SELECTED-SCOPE-CLOSED.actual-a01.json",
+        "bytes": 1467,
+        "sha256": "e65072cce95a74cc539c0ccb274cd015402b7e6ca978c8a5fc269aa6def04de3"
+      },
+      "relative_destination": "R08-A08-SELECTED-SCOPE-CLOSED.actual-a01.json",
+      "role": "actual qualification/closure/current-machine identity"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\SYSTEM-RECEIPT-MACHINE-IDENTITY.actual-a01.json",
+        "bytes": 1218,
+        "sha256": "430206aefd815e620d42ee00da1481f6c44c562619fe5e2e608a191c8921bfec"
+      },
+      "relative_destination": "SYSTEM-RECEIPT-MACHINE-IDENTITY.actual-a01.json",
+      "role": "actual qualification/closure/current-machine identity"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\FRESH-metadata-qualification-and-close.actual-a01.json",
+        "bytes": 4300,
+        "sha256": "9ea133a131fc8d7c86e0462d7e5dd6a4cb6d264d965781327eb90e033a194ed3"
+      },
+      "relative_destination": "FRESH-metadata-qualification-and-close.actual-a01.json",
+      "role": "actual qualification/closure/current-machine identity"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R08-A08-STANDALONE-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 6725,
+        "sha256": "839e282f5e67c211fd856cefc8fc424a23741aaeee5a7ea313b3c1f1132a61e6"
+      },
+      "relative_destination": "capacity/INDEPENDENT-CLOSED-SETTLEMENT.actual.json",
+      "role": "independent capacity/root/PID/task readback and future64 settlement"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\build-a01\\native-msvc-result.json",
+        "bytes": 1584,
+        "sha256": "f5fbc23b298a16ca96f49de20a556e00a23349d95d8b6fc803e63355d1a93060"
+      },
+      "relative_destination": "build/native-msvc-result.original.json",
+      "role": "actual public producer report"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\build-a01\\MACHINE-BUILD.actual.json",
+        "bytes": 1739,
+        "sha256": "5c36ce105b664ee6e918471e34e496473c68a7ff63a344ccd0e3f068ac29452b"
+      },
+      "relative_destination": "build/MACHINE-BUILD.original.json",
+      "role": "actual machine-labelled successful source build"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\build-a01\\msvc-configure.log",
+        "bytes": 745,
+        "sha256": "9a9aade569c0c32f2eb1fd2442c08456c6c82686636bb9516e64af0bf826ad70"
+      },
+      "relative_destination": "build/msvc-configure.log",
+      "role": "small actual compile/configure log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\build-a01\\msvc-build.log",
+        "bytes": 4892,
+        "sha256": "3d546898ca70e9ebd91e35373bf28c147648e1a6a9cf086345c0a143ea2c8c39"
+      },
+      "relative_destination": "build/msvc-build.log",
+      "role": "small actual compile/configure log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\receipt.json",
+        "bytes": 327007,
+        "sha256": "d3751c69f0f998c7dbe912080c0a8789dff38099b99b0edbf94a31623662f5ff"
+      },
+      "relative_destination": "SYSTEM/receipt.original.json",
+      "role": "full exact SYSTEM actual setting receipt; original bytes unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\manifest.json",
+        "bytes": 2525,
+        "sha256": "cbf5dffe3394438fb249923959bd19ba910f7d33c28d08060884db516809f429"
+      },
+      "relative_destination": "SYSTEM/manifest.original.json",
+      "role": "exact two declared executable targets and source provenance"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\EXECUTION-GATE.actual.json",
+        "bytes": 1340,
+        "sha256": "3b001849798b11f91cddae590dd96c17df2efad85edecc9a8802133cebf3bee5"
+      },
+      "relative_destination": "cold/EXECUTION-GATE.actual.json",
+      "role": "same-machine exact SYSTEM gate before native EXEs"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\COLD-SUITE.actual.json",
+        "bytes": 10441,
+        "sha256": "e62400169336d91aed19c7570e91597020b142aadece1fc6362554efbb034617"
+      },
+      "relative_destination": "cold/COLD-SUITE.actual.json",
+      "role": "exact selected four actual case results"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\RESULT.actual.json",
+        "bytes": 2494,
+        "sha256": "a0c6fd4db4125519477f3027661736c91e619e96ef8bbd38eb5f0aef5deedf4b"
+      },
+      "relative_destination": "cold/four-writes/RESULT.actual.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.meta.txt",
+        "bytes": 391,
+        "sha256": "b2e86e4765861dbf484dfc84aa654b9bc373292569a4ca242345a041808736b5"
+      },
+      "relative_destination": "cold/four-writes/target.meta.txt",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.writes.json",
+        "bytes": 106,
+        "sha256": "2388092e3dca4329eb6a9fe2a9e38c5a5c3173bcd6de4bbf52807b68a02d56e9"
+      },
+      "relative_destination": "cold/four-writes/target.writes.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.initial-debug.json",
+        "bytes": 55,
+        "sha256": "f1ce5fa3187a07c0e4a3593ec493f1f4d04c9a3bf9ba21416557fa87585cdd66"
+      },
+      "relative_destination": "cold/four-writes/target.initial-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.after-debug.json",
+        "bytes": 55,
+        "sha256": "f1ce5fa3187a07c0e4a3593ec493f1f4d04c9a3bf9ba21416557fa87585cdd66"
+      },
+      "relative_destination": "cold/four-writes/target.after-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\observer.raw.ndjson",
+        "bytes": 5957,
+        "sha256": "4c13e575e16b5d1e49df172778826db39233580b575c84ca2b7667dfeb169dda"
+      },
+      "relative_destination": "cold/four-writes/observer.raw.ndjson",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\observer.ready.json",
+        "bytes": 39,
+        "sha256": "b3c7c4e542014359ecc69a4c070db057bd69d6b2be8497cb74eeb5526bba7ace"
+      },
+      "relative_destination": "cold/four-writes/observer.ready.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\observer.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/four-writes/observer.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\observer.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/four-writes/observer.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/four-writes/target.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/four-writes/target.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\RESULT.actual.json",
+        "bytes": 2467,
+        "sha256": "3186cb4ebfb900b22d330e187d77a4c8dd5dfba2241789ebcce78312215d5d2d"
+      },
+      "relative_destination": "cold/timeout/RESULT.actual.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.meta.txt",
+        "bytes": 395,
+        "sha256": "63ca29d57fef32389f62928f039014fffa0445a9c016732610a7507aa83d5c0b"
+      },
+      "relative_destination": "cold/timeout/target.meta.txt",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.writes.json",
+        "bytes": 104,
+        "sha256": "f3a8a1cc8aa481f650e69d4f413b15e44d760c7a20c63b9bdd26dc3a841a2246"
+      },
+      "relative_destination": "cold/timeout/target.writes.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.initial-debug.json",
+        "bytes": 55,
+        "sha256": "ac3843c78b348bee0ea01090530aa94f825acfac884e1773dafdda10042ae044"
+      },
+      "relative_destination": "cold/timeout/target.initial-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.after-debug.json",
+        "bytes": 55,
+        "sha256": "ac3843c78b348bee0ea01090530aa94f825acfac884e1773dafdda10042ae044"
+      },
+      "relative_destination": "cold/timeout/target.after-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\observer.raw.ndjson",
+        "bytes": 2883,
+        "sha256": "23b657d8b9b48109fb2090ac17d5c67409632d5cab209a071c066c9efa199e23"
+      },
+      "relative_destination": "cold/timeout/observer.raw.ndjson",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\observer.ready.json",
+        "bytes": 39,
+        "sha256": "b3c7c4e542014359ecc69a4c070db057bd69d6b2be8497cb74eeb5526bba7ace"
+      },
+      "relative_destination": "cold/timeout/observer.ready.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\observer.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/timeout/observer.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\observer.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/timeout/observer.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/timeout/target.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\target.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/timeout/target.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\RESULT.actual.json",
+        "bytes": 1410,
+        "sha256": "ea82f18db1b74c677d811e3a3934c5a5d8d803a52d8dde6b0d434550fdbe1272"
+      },
+      "relative_destination": "cold/default-off/RESULT.actual.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.meta.txt",
+        "bytes": 395,
+        "sha256": "58df27e3a52c1eba1ab5e63990a3082fd672350a6c463fb691d5effad61dabf9"
+      },
+      "relative_destination": "cold/default-off/target.meta.txt",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.writes.json",
+        "bytes": 104,
+        "sha256": "b09003edd0adefbbd6f087e20cb30a969d78f0abc4de0e9a9dc0208dc86f1f29"
+      },
+      "relative_destination": "cold/default-off/target.writes.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.initial-debug.json",
+        "bytes": 55,
+        "sha256": "053f84188fa43219dc2f176588bc904e6fe98fb3ac0ddf6c3451c5a25d4411b9"
+      },
+      "relative_destination": "cold/default-off/target.initial-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.after-debug.json",
+        "bytes": 55,
+        "sha256": "053f84188fa43219dc2f176588bc904e6fe98fb3ac0ddf6c3451c5a25d4411b9"
+      },
+      "relative_destination": "cold/default-off/target.after-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\observer.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/default-off/observer.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\observer.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/default-off/observer.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/default-off/target.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/default-off/target.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\RESULT.actual.json",
+        "bytes": 2130,
+        "sha256": "92e2fc56073d1e4cff52c9b192c19bcbbbf58d3a950700e80a62a29a726e004e"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/RESULT.actual.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.meta.txt",
+        "bytes": 395,
+        "sha256": "f6a8fcd3fb3e8b10b454420900384ea2f89c8d2846736dc104ebafe6bae9f66d"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/target.meta.txt",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.writes.json",
+        "bytes": 104,
+        "sha256": "7cf787d2dabe88c10d88194a60a70a09a58a30efde9631461595227777bda0a2"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/target.writes.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.initial-debug.json",
+        "bytes": 55,
+        "sha256": "c62e1c90e3a85942f5ab89aa191bd9505be9dc6aa12a8b419d5d99c4fffad91f"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/target.initial-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.after-debug.json",
+        "bytes": 55,
+        "sha256": "c62e1c90e3a85942f5ab89aa191bd9505be9dc6aa12a8b419d5d99c4fffad91f"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/target.after-debug.json",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\observer.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/observer.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\observer.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/observer.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/target.stdout",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\target.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "cold/ordinary-ownership-rejection/target.stderr",
+      "role": "actual finite synthetic original; missing negative raw/ready not synthesized"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-source-freeze\\INTENT.actual.json",
+        "bytes": 1809,
+        "sha256": "c787af95bcc25f96833957dad360c8b435a0bdbc6acf2d6070db4c86f329d8e6"
+      },
+      "relative_destination": "phases/source-freeze/INTENT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-source-freeze\\RESULT.actual.json",
+        "bytes": 789,
+        "sha256": "5dbc1cb8bdf4d6144c30a58cfb4676ce4e8feb1dd2328df63a163ba7b604e324"
+      },
+      "relative_destination": "phases/source-freeze/RESULT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\EXEC-ARGV.actual.json",
+        "bytes": 466,
+        "sha256": "94e962dac0b43b50265e42bfc9f9b22bca24b60d49b15fae9e88f0caca6010ae"
+      },
+      "relative_destination": "phases/standalone-build-and-SYSTEM/EXEC-ARGV.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\INTENT.actual.json",
+        "bytes": 1729,
+        "sha256": "0969232bebafb8e20b09a9fe3537fc999e675d0d4c8c2f506a212ae06bffc84a"
+      },
+      "relative_destination": "phases/standalone-build-and-SYSTEM/INTENT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1560,
+        "sha256": "9e8e65f1796c24fb8e0f7718d28047d44af680530d060b15167d385915c6c987"
+      },
+      "relative_destination": "phases/standalone-build-and-SYSTEM/ORIGINAL-WAIT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\POPEN.actual.json",
+        "bytes": 577,
+        "sha256": "23ae2e8fdea9741748f45f1462ed7e9ba3f97d8c62dfd5888a98fafa5bd5d396"
+      },
+      "relative_destination": "phases/standalone-build-and-SYSTEM/POPEN.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "phases/standalone-build-and-SYSTEM/stderr.log",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\stdout.log",
+        "bytes": 8362,
+        "sha256": "28c1b87b96d388112f8059320421e5e8c36d30dcc19835db1b0224fd351d0b97"
+      },
+      "relative_destination": "phases/standalone-build-and-SYSTEM/stdout.log",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\EXEC-ARGV.actual.json",
+        "bytes": 760,
+        "sha256": "a39308c858b257ef918213b8a720d2b0c9403ff88df5c4ce2bad6f4df072c7df"
+      },
+      "relative_destination": "phases/focused-four-cold/EXEC-ARGV.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\INTENT.actual.json",
+        "bytes": 1689,
+        "sha256": "28379901a59a7457c03546ea50f2d60293d1081e8205d979116c7208e844060c"
+      },
+      "relative_destination": "phases/focused-four-cold/INTENT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1822,
+        "sha256": "ad608764c5eb551a28f81f5d9cc8a995263025824b656f0f1b2101e905106127"
+      },
+      "relative_destination": "phases/focused-four-cold/ORIGINAL-WAIT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\POPEN.actual.json",
+        "bytes": 870,
+        "sha256": "4e8f6d484546bb2d648629f2c948d65f4f6eec38e55dc1207f832abfda7929a4"
+      },
+      "relative_destination": "phases/focused-four-cold/POPEN.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "phases/focused-four-cold/stderr.log",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\stdout.log",
+        "bytes": 289,
+        "sha256": "6990c7be28faedc7b939038876cbdf088ad83d57f0917af222e2177c32489e4a"
+      },
+      "relative_destination": "phases/focused-four-cold/stdout.log",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\EXEC-ARGV.actual.json",
+        "bytes": 234,
+        "sha256": "726a6e52ffc87ba37731c1b154c93737ccd0d46504e9cd5953b5e6da7832ff4c"
+      },
+      "relative_destination": "phases/thread-ownership-unit/EXEC-ARGV.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\INTENT.actual.json",
+        "bytes": 1705,
+        "sha256": "8a25ef08842dcd7c0b15bdae15d21fa4289a37b6a35507f4ea36070e287e88f0"
+      },
+      "relative_destination": "phases/thread-ownership-unit/INTENT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1307,
+        "sha256": "fba25cdf535fde5d2582ff982dd1c69604c3a9333e5db911aa1b2820127e63c6"
+      },
+      "relative_destination": "phases/thread-ownership-unit/ORIGINAL-WAIT.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\POPEN.actual.json",
+        "bytes": 343,
+        "sha256": "98ff349ce588c72e76a9d33612fc8461d5bcd769e2a1eec88daf5cf5ef25694f"
+      },
+      "relative_destination": "phases/thread-ownership-unit/POPEN.actual.json",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "relative_destination": "phases/thread-ownership-unit/stderr.log",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\stdout.log",
+        "bytes": 129,
+        "sha256": "856876a72c0630105e404ab3141483f7d848da4fe82e31947bbd68c1f0018129"
+      },
+      "relative_destination": "phases/thread-ownership-unit/stdout.log",
+      "role": "actual phase intent/Popen/original wait/small logs/local meter"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py",
+        "bytes": 1710,
+        "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+      },
+      "relative_destination": "frozen-source/build_fixture.py",
+      "role": "actual compiler source snapshot and original manifest"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\CMakeLists.txt",
+        "bytes": 566,
+        "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+      },
+      "relative_destination": "frozen-source/CMakeLists.txt",
+      "role": "actual compiler source snapshot and original manifest"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_observer.cpp",
+        "bytes": 29565,
+        "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+      },
+      "relative_destination": "frozen-source/cold_observer.cpp",
+      "role": "actual compiler source snapshot and original manifest"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      },
+      "relative_destination": "frozen-source/cold_target.cpp",
+      "role": "actual compiler source snapshot and original manifest"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\SOURCE-MANIFEST.actual.json",
+        "bytes": 3299,
+        "sha256": "e93ebf0fdcff3497aad2543fe7172faeac23dc4278457466d11e164e1b978a3a"
+      },
+      "relative_destination": "frozen-source/SOURCE-MANIFEST.actual.json",
+      "role": "actual compiler source snapshot and original manifest"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      },
+      "relative_destination": "frozen-source/synthetic_write.asm",
+      "role": "actual compiler source snapshot and original manifest"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\R08-A08-NATIVE-EXECUTION.prepared-a01.json",
+        "bytes": 8343,
+        "sha256": "b641185f380e8b41ad9716c9180d76f27f9605febd97e49a314915ada2895f3e"
+      },
+      "relative_destination": "source-preparation/R08-A08-NATIVE-EXECUTION.prepared-a01.json",
+      "role": "prepared recipe/source code or actual Python-only check/prewrite failure; not native business evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\FINAL-CODE-READBACK.actual-a01.json",
+        "bytes": 2002,
+        "sha256": "6d3c430280e945ac39b044fba4cecf7a97134a0ea137fad1bb4e4c95254c6eb3"
+      },
+      "relative_destination": "source-preparation/FINAL-CODE-READBACK.actual-a01.json",
+      "role": "prepared recipe/source code or actual Python-only check/prewrite failure; not native business evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\PYTHON-ROUTING-CHECK.actual-a03.json",
+        "bytes": 830,
+        "sha256": "a762ce0e279850f313b26963ea0e9e778d7e3e660d5d87a0050d6a3f750bee64"
+      },
+      "relative_destination": "source-preparation/PYTHON-ROUTING-CHECK.actual-a03.json",
+      "role": "prepared recipe/source code or actual Python-only check/prewrite failure; not native business evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\FIRST-FRESH-OUTPUT-FAILURE.actual-a01.json",
+        "bytes": 1057,
+        "sha256": "3e83bfcfb4e43c9487c866bc8f62faad498493a422159cb25f456750d7f97055"
+      },
+      "relative_destination": "source-preparation/FIRST-FRESH-OUTPUT-FAILURE.actual-a01.json",
+      "role": "prepared recipe/source code or actual Python-only check/prewrite failure; not native business evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R08-A08-STANDALONE-64M-SOURCE-BOUND.actual-a02.json",
+        "bytes": 9559,
+        "sha256": "10e23c0a7243129ce4cd7d5f293d4de903d28d8308c4872a919884bb1cc9259d"
+      },
+      "relative_destination": "capacity/SOURCE-BOUND.actual.json",
+      "role": "actual 64MiB admission, exact split and deadline"
+    }
+  ],
+  "original_payload_bytes": 485247,
+  "generated_archive_notes": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\evidence-pack-a01\\README.md",
+      "bytes": 3321,
+      "sha256": "fb139797c54c1dbdd4781ffca387ed3ca8605e78ed1e203e1c82ef07f6582324"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\evidence-pack-a01\\.gitattributes",
+      "bytes": 58,
+      "sha256": "19b66d1232a11a061e1b2e07c747ad0e20af7ae6d3edba696717aeb99595e9bd"
+    }
+  ],
+  "binary_payloads_copied": false,
+  "retained_original_paths_unchanged": true,
+  "source_frozen": true,
+  "live_admission": false
+}

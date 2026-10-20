@@ -1,0 +1,35 @@
+test_r06_refill_one_day (unittest.loader._FailedTest.test_r06_refill_one_day) ... ERROR
+test_r08_writer_one_day (unittest.loader._FailedTest.test_r08_writer_one_day) ... ERROR
+
+======================================================================
+ERROR: test_r06_refill_one_day (unittest.loader._FailedTest.test_r06_refill_one_day)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_r06_refill_one_day
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\integration-worktree\tools\test_r06_refill_one_day.py", line 18, in <module>
+    from ck3_mod_acceptance_cases import r06_refill_one_day as r06
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\integration-worktree\tools\ck3_mod_acceptance_cases\r06_refill_one_day.py", line 23, in <module>
+    from . import r04_county_entry as common
+ImportError: cannot import name 'r04_county_entry' from 'ck3_mod_acceptance_cases' (unknown location)
+
+
+======================================================================
+ERROR: test_r08_writer_one_day (unittest.loader._FailedTest.test_r08_writer_one_day)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_r08_writer_one_day
+Traceback (most recent call last):
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\integration-worktree\tools\test_r08_writer_one_day.py", line 14, in <module>
+    from ck3_mod_acceptance_cases import r08_writer_one_day as actor
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\integration-worktree\tools\ck3_mod_acceptance_cases\r08_writer_one_day.py", line 18, in <module>
+    from . import r04_county_entry as common
+ImportError: cannot import name 'r04_county_entry' from 'ck3_mod_acceptance_cases' (unknown location)
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (errors=2)

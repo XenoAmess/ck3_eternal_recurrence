@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:46:03.279929+00:00",
+  "source": "original retained subprocess.Popen.wait",
+  "pid": 22388,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused_run.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 3.413790464401245,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a05\\focused.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a05\\focused.stderr.log",
+    "bytes": 993,
+    "sha256": "5c633030305268bb1fbfa46cb0eecbb2cd254309ee8102aa5ff8858660cefb55"
+  },
+  "qualification": "deterministic synthetic faults only; no SDK/native/game qualification"
+}

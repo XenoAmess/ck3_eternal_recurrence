@@ -1,0 +1,8 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:44.275597+00:00",
+  "argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+    "--qualify-cold-thread-ownership"
+  ]
+}

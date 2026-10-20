@@ -1,0 +1,102 @@
+{
+  "schema": "xar.maintenance.writer_pc.cold.case.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_utc": "2026-10-20T12:47:30.985252+00:00",
+  "mode": "four-writes",
+  "status": "PASS",
+  "synthetic": true,
+  "CK3_observed": false,
+  "maintenance_attribution": "unclosed",
+  "target_argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+    "--mode",
+    "four-writes",
+    "--prefix",
+    "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target"
+  ],
+  "observer_argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+    "--enable-cold-fixture",
+    "--fixture-meta",
+    "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\target.meta.txt",
+    "--timeout-ms",
+    "5000",
+    "--raw",
+    "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\observer.raw.ndjson",
+    "--ready",
+    "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\observer.ready.json",
+    "--expected-hits",
+    "4",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080"
+  ],
+  "target_exit_code": 0,
+  "observer_exit_code": 0,
+  "actual_target_result": {
+    "synthetic": true,
+    "actual_store_count": 4,
+    "main_tid": 14120,
+    "worker_tid": 0,
+    "values": [
+      500984,
+      11,
+      218622,
+      13
+    ]
+  },
+  "actual_raw_slot_hits": 4,
+  "native_terminal": {
+    "kind": "terminal",
+    "reason": "complete",
+    "restored": true,
+    "detached": true,
+    "pending_event": false,
+    "cleanup_complete": true,
+    "hit_count": 4,
+    "data_event_count": 4,
+    "writer_thread_count": 1,
+    "created_thread_events": 5,
+    "restore_readback_rows": 5,
+    "process_exited": false,
+    "observation_thread_admission_complete": true,
+    "full_window_all_writes_covered": false,
+    "CK3_observed": false,
+    "known_producer": false,
+    "military_attribution": "unclosed"
+  },
+  "ready": {
+    "ready": true,
+    "armed_thread_count": 6
+  },
+  "independent_DR_before": [
+    {
+      "thread_id": 14120,
+      "ok": true,
+      "debug": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "independent_DR_after": [
+    {
+      "thread_id": 14120,
+      "ok": true,
+      "debug": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "exact_main_DR_equal": true,
+  "raw_sha256": "4c13e575e16b5d1e49df172778826db39233580b575c84ca2b7667dfeb169dda",
+  "raw_bytes": 5957
+}

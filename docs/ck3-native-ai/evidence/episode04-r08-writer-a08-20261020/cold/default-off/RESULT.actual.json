@@ -1,0 +1,68 @@
+{
+  "schema": "xar.maintenance.writer_pc.cold.case.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_utc": "2026-10-20T12:47:32.319476+00:00",
+  "mode": "default-off",
+  "status": "PASS",
+  "synthetic": true,
+  "CK3_observed": false,
+  "maintenance_attribution": "unclosed",
+  "target_argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+    "--mode",
+    "default-off",
+    "--prefix",
+    "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\target"
+  ],
+  "observer_argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe"
+  ],
+  "target_exit_code": 0,
+  "observer_exit_code": 2,
+  "actual_target_result": {
+    "synthetic": true,
+    "actual_store_count": 0,
+    "main_tid": 35512,
+    "worker_tid": 0,
+    "values": [
+      500974,
+      0,
+      218610,
+      0
+    ]
+  },
+  "actual_raw_slot_hits": 0,
+  "native_terminal": null,
+  "ready": null,
+  "independent_DR_before": [
+    {
+      "thread_id": 35512,
+      "ok": true,
+      "debug": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "independent_DR_after": [
+    {
+      "thread_id": 35512,
+      "ok": true,
+      "debug": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "exact_main_DR_equal": true,
+  "raw_sha256": null,
+  "raw_bytes": 0
+}

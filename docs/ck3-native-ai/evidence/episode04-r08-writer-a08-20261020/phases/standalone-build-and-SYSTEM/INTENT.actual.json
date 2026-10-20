@@ -1,0 +1,40 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:45:42.042809+00:00",
+  "phase": "standalone-build-and-SYSTEM",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R08-A08-STANDALONE-64M-SOURCE-BOUND.actual-a02.json",
+    "bytes": 9559,
+    "sha256": "10e23c0a7243129ce4cd7d5f293d4de903d28d8308c4872a919884bb1cc9259d"
+  },
+  "fresh": {
+    "path": "C:\\w\\e04r08a08\\FRESH-standalone-build-and-SYSTEM.actual-a01.json",
+    "bytes": 4290,
+    "sha256": "27ecf652b7bdd1cb56c6cbf2e9f4b15f87264f3f6186041f9529f904a41ec2da"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\R08-A08-NATIVE-EXECUTION.prepared-a01.json",
+    "bytes": 8343,
+    "sha256": "b641185f380e8b41ad9716c9180d76f27f9605febd97e49a314915ada2895f3e"
+  },
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\execute_a08_a02.py",
+    "bytes": 8999,
+    "sha256": "63b7e6c3e4bc6d30f0c452a3bbacd336f3e136bcef120e85241e194868de05dc"
+  },
+  "fresh_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\fresh_r08_a08_phase_a01.py",
+    "--cap",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R08-A08-STANDALONE-64M-SOURCE-BOUND.actual-a02.json",
+    "--cap-sha256",
+    "10e23c0a7243129ce4cd7d5f293d4de903d28d8308c4872a919884bb1cc9259d",
+    "--phase",
+    "standalone-build-and-SYSTEM",
+    "--output",
+    "C:\\w\\e04r08a08\\FRESH-standalone-build-and-SYSTEM.actual-a01.json"
+  ]
+}

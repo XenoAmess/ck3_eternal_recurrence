@@ -1,0 +1,40 @@
+{
+  "schema": "xar.e04.r08-a08-selected-scope-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:52:25.677071+00:00",
+  "qualification": {
+    "path": "C:\\w\\e04r08a08\\R08-A08-STANDALONE-QUALIFICATION.actual-a01.json",
+    "bytes": 8913,
+    "sha256": "6e956a2b2d70f4c18e69426b76753e59cc5e14c4440e68a56e29875c53bd3f5c"
+  },
+  "closure": {
+    "path": "C:\\w\\e04r08a08\\R08-A08-OWNED-CLOSURE.actual-a01.json",
+    "bytes": 4611,
+    "sha256": "062b67d1450be0e642ccc77f7be890d9e1e333aaffdd975e533f1deb3ca9b9d5"
+  },
+  "remaining_heavy_write_bytes": 0,
+  "selected_scope": {
+    "source_freeze": "BYTE_EXACT",
+    "production_two_targets": "ACTUAL_COMPILED_PASS",
+    "SYSTEM_exact_two_paths": "ACTUAL_VERIFIED",
+    "focused_four_cases": "ACTUAL_PASS",
+    "thread_ownership_unit": "ACTUAL_FOUR_CHECKS_PASS"
+  },
+  "build_root_measurement": {
+    "root": "C:\\w\\e04r08a08",
+    "logical_bytes": 2611340,
+    "files": 123,
+    "payload_body_reads_for_measurement": 0
+  },
+  "source_root_measurement": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+    "logical_bytes": 41656,
+    "files": 6,
+    "payload_body_reads_for_measurement": 0
+  },
+  "fixed_protocol_conservative_charge_bytes": 33554432,
+  "root_and_source_write_stages_complete": true,
+  "independent_capacity_readback_pending": true,
+  "live_or_scene_admission": false,
+  "retention_review_utc": "2026-10-22T12:00:00Z"
+}

@@ -1,0 +1,205 @@
+{
+  "schema": "xar.e04.r08-a08-standalone-native-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:36:31.740915+00:00",
+  "status": "AWAIT_FRESH_SOURCE_BOUND_CAPACITY_BEFORE_COPY_BUILD_OR_EXE",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "tracked_dirty": false,
+  "source_inputs": [
+    {
+      "relative_path": "CMakeLists.txt",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\CMakeLists.txt",
+        "bytes": 566,
+        "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\CMakeLists.txt"
+    },
+    {
+      "relative_path": "cold_observer.cpp",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_observer.cpp",
+        "bytes": 29565,
+        "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_observer.cpp"
+    },
+    {
+      "relative_path": "cold_target.cpp",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_target.cpp"
+    },
+    {
+      "relative_path": "synthetic_write.asm",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\synthetic_write.asm"
+    },
+    {
+      "relative_path": "build_fixture.py",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\build_fixture.py",
+        "bytes": 1710,
+        "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+      },
+      "destination": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py"
+    }
+  ],
+  "source_input_bytes": 38357,
+  "build_root": "C:\\w\\e04r08a08",
+  "source_root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+  "build_root_absent": true,
+  "source_root_absent": true,
+  "source_manifest_path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\SOURCE-MANIFEST.actual.json",
+  "budget": {
+    "aggregate_ceiling_bytes": 67108864,
+    "new_native_root_ceiling_bytes": 33488896,
+    "source_root_ceiling_bytes": 65536,
+    "fixed_protocol_growth_ceiling_bytes": 33554432,
+    "no_shared_EXE_or_obj_spill": true,
+    "deadline_utc": "2026-10-20T13:10:00Z"
+  },
+  "expected_output": {
+    "targets": [
+      "maintenance_writer_cold_target",
+      "maintenance_writer_cold_observer"
+    ],
+    "EXEs": [
+      "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+      "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe"
+    ],
+    "observer_estimate_bytes": 160000,
+    "target_estimate_bytes": 80000,
+    "estimate_not_actual": true,
+    "no_DLL_rebuild": true,
+    "source_build_manifest": "MACHINE-BUILD.actual.json",
+    "producer_report": "native-msvc-result.json"
+  },
+  "flags": {
+    "configuration": "Release",
+    "jobs": 2,
+    "CXX_standard": 20,
+    "compiler": [
+      "/EHsc",
+      "/W4"
+    ],
+    "linker": [
+      "/INCREMENTAL:NO"
+    ]
+  },
+  "build_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--jobs",
+    "2"
+  ],
+  "cold_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\run_cold_fixture.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--machine-build-record",
+    "C:\\w\\e04r08a08\\build-a01\\MACHINE-BUILD.actual.json",
+    "--output-root",
+    "C:\\w\\e04r08a08\\cold-focused-a01",
+    "--case",
+    "four-writes",
+    "--case",
+    "timeout",
+    "--case",
+    "default-off",
+    "--case",
+    "ordinary-ownership-rejection"
+  ],
+  "ownership_unit_argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+    "--qualify-cold-thread-ownership"
+  ],
+  "ownership_unit_after_cold_exact_gate_only": true,
+  "entry_dependencies": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\run_cold_fixture.py",
+      "bytes": 21033,
+      "sha256": "40ce68187f30774364756478cf9c425b9c36e1fe7356158327bb776a751dc316"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "bytes": 13321,
+      "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+      "bytes": 26973,
+      "sha256": "67c6021fcd5af209f409957fe045cfbc890da4eda72baf9a5bdf5b0c58d4701b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+    }
+  ],
+  "final_code": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\FINAL-CODE-READBACK.actual-a01.json",
+    "bytes": 2002,
+    "sha256": "6d3c430280e945ac39b044fba4cecf7a97134a0ea137fad1bb4e4c95254c6eb3"
+  },
+  "ordinary_CPP_sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c",
+  "installed_policy": {
+    "pin": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+      "bytes": 1088,
+      "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+    },
+    "allowed_build_roots": [
+      "C:\\ck3-war-episode04-research-20261004-a01",
+      "D:/workspace/ck3_eternal_recurrence",
+      "C:/w"
+    ],
+    "allowed_external_source_roots": [
+      "C:\\ck3-war-episode04-research-20261004-a01"
+    ],
+    "policy_changed": false,
+    "producer": "Existing build_fixture -> public run_native_msvc -> CMake FileAPI external candidate e04-maintenance-writer-cold-12004 -> ordinary protected SYSTEM broker",
+    "note": "Current exact allowed roots checked. Real runtime/task/producer/SYSTEM setting acceptance remains actual producer result, not this path-only observation."
+  },
+  "phases": [
+    "source-freeze",
+    "standalone-build-and-SYSTEM",
+    "focused-four-cold",
+    "thread-ownership-unit",
+    "metadata-qualification-and-close"
+  ],
+  "execution_contract": {
+    "original_Popen_wait": true,
+    "each_phase_fresh_active_ledger_and_volumes": true,
+    "capacity_meter_interval_seconds": 1,
+    "root_or_source_budget_RED": "Stop new launches, preserve failed attempt; do not auto-rebuild/retry or expand capacity.",
+    "fixed_protocol_conservative_full_charge": true,
+    "protected_unknown_not_zero": true,
+    "no_UAC_or_installed_policy_change": true,
+    "no_auto_retry_on_build_SYSTEM_or_cold_failure": true,
+    "live_or_Steam_actions": false
+  },
+  "qualification_boundary": "Selected standalone compiled bytes/SYSTEM/limited synthetic cold only; ordinary fixture combination is rejection, not ordinary native-memory-path acceptance; no c/d live/paid/payer/cadence/R08 business credit.",
+  "actual_heavy_actions": 0
+}

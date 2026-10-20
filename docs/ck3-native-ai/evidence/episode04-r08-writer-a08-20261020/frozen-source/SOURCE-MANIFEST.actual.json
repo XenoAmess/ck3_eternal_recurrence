@@ -1,0 +1,76 @@
+{
+  "schema": "xar.e04.r08-a08-byte-exact-source-snapshot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:45:20.484944+00:00",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "files": [
+    {
+      "relative_path": "CMakeLists.txt",
+      "original": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\CMakeLists.txt",
+        "bytes": 566,
+        "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\CMakeLists.txt",
+        "bytes": 566,
+        "sha256": "99d95a82b021beb522b1b5862471719a1024cd8a857335d5d54d9f8cd83e6ed9"
+      }
+    },
+    {
+      "relative_path": "cold_observer.cpp",
+      "original": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_observer.cpp",
+        "bytes": 29565,
+        "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_observer.cpp",
+        "bytes": 29565,
+        "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+      }
+    },
+    {
+      "relative_path": "cold_target.cpp",
+      "original": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      }
+    },
+    {
+      "relative_path": "synthetic_write.asm",
+      "original": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      }
+    },
+    {
+      "relative_path": "build_fixture.py",
+      "original": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\build_fixture.py",
+        "bytes": 1710,
+        "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py",
+        "bytes": 1710,
+        "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+      }
+    }
+  ],
+  "source_forked": false,
+  "compiled": false
+}

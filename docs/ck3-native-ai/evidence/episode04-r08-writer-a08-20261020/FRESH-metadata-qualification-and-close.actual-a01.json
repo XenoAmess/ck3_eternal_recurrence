@@ -1,0 +1,137 @@
+{
+  "schema": "xar.e04.r08-a08-standalone-fresh-phase.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:52:24.466545+00:00",
+  "phase": "metadata-qualification-and-close",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R08-A08-STANDALONE-64M-SOURCE-BOUND.actual-a02.json",
+    "bytes": 9559,
+    "sha256": "10e23c0a7243129ce4cd7d5f293d4de903d28d8308c4872a919884bb1cc9259d"
+  },
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\R08-A08-NATIVE-EXECUTION.prepared-a01.json",
+    "bytes": 8343,
+    "sha256": "b641185f380e8b41ad9716c9180d76f27f9605febd97e49a314915ada2895f3e"
+  },
+  "ledger": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 310766,
+    "sha256": "deceb1687aded2e5dcc4d9c054380e1c543f72662c5c6aefe10a96752181c679"
+  },
+  "active_balances": {
+    "known_future": {
+      "C:/": 201326592,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-1315-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-r08-a08-build-20261020-a01",
+        "known_future": {
+          "C:/": 67108864,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T12:52:24.466330+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78915559424,
+      "available_to_caller_bytes": 78915559424,
+      "total_free_bytes": 78915559424,
+      "entire_volume_used_allocation_upper_bound_bytes": 432218386432,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T12:52:24.466330+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21664055296,
+      "available_to_caller_bytes": 21664055296,
+      "total_free_bytes": 21664055296,
+      "entire_volume_used_allocation_upper_bound_bytes": 478425952256,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget": {
+    "C_known_future_bytes": 201326592,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26013263046,
+    "C_floor_margin_bytes": 52902296378,
+    "C_projected_whole_volume_upper_bound_bytes": 436756812998,
+    "C_quota_margin_bytes": 1329851194,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 55001088
+  },
+  "build_root_measurement": {
+    "root": "C:\\w\\e04r08a08",
+    "exists": true,
+    "logical_bytes": 2592298,
+    "files": 119,
+    "complete": true,
+    "payload_body_bytes_read": 0
+  },
+  "source_root_measurement": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08",
+    "exists": true,
+    "logical_bytes": 41656,
+    "files": 6,
+    "complete": true,
+    "payload_body_bytes_read": 0
+  },
+  "collective_shared": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T12:52:24.466302+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 122827873,
+    "files": 3579,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "fixed_protocol_full_reserved_bytes": 33554432,
+  "protected_private_direct_measurement": "not asserted; full32MiB conservative contract charge retained, inaccessible is not zero",
+  "source_inputs_and_entry_dependencies_exact": true,
+  "no_installed_setting_or_policy_mutation": true,
+  "hard_deadline_utc": "2026-10-20T13:10:00Z",
+  "fresh_receipt_validity_seconds": 30,
+  "physical_or_unused_credit_bytes": 0
+}

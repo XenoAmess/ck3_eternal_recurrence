@@ -1,0 +1,28 @@
+{
+  "schema": "xar.project-exe-system-machine-identity-supplement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:52:25.636383+00:00",
+  "original_receipt": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\receipt.json",
+    "bytes": 327007,
+    "sha256": "d3751c69f0f998c7dbe912080c0a8789dff38099b99b0edbf94a31623662f5ff"
+  },
+  "original_receipt_machine_id": "unknown",
+  "source_gate": {
+    "path": "C:\\w\\e04r08a08\\cold-focused-a01\\EXECUTION-GATE.actual.json",
+    "bytes": 1340,
+    "sha256": "3b001849798b11f91cddae590dd96c17df2efad85edecc9a8802133cebf3bee5"
+  },
+  "source_machine_build": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\MACHINE-BUILD.actual.json",
+    "bytes": 1739,
+    "sha256": "5c36ce105b664ee6e918471e34e496473c68a7ff63a344ccd0e3f068ac29452b"
+  },
+  "source_original_producer_wait": {
+    "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1560,
+    "sha256": "9e8e65f1796c24fb8e0f7718d28047d44af680530d060b15167d385915c6c987"
+  },
+  "original_protected_receipt_bytes_unchanged": true,
+  "actual_current_execution_bound_by_gate_and_held_wait": true
+}

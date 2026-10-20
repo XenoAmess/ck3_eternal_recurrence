@@ -1,6 +1,6 @@
 {
   "schema": "xar.e04.r10-common-preparation.v1",
-  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county or R06 refill observation through the same common CaseClient",
+  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county, R06 refill or R08 natural writer opportunity through the same common CaseClient",
   "formal_ABC_executor_implemented": false,
   "formal_ABC_arm": false,
   "normal_Save_performed_by_case": false,
@@ -25,6 +25,18 @@
     "coordination": "r06-before-observer-{awaiting,started}.json",
     "normal_close_owner": "shared entry/CaseClient",
     "full_R06_qualified": false
+  },
+  "optional_r08_writer_one_day": {
+    "settings": "case_inputs.r08_writer_one_day",
+    "maximum_actual_days": 1,
+    "maximum_observer_launches": 1,
+    "native_window_ms": 30000,
+    "aggregate_slot_hits": 128,
+    "watch_offsets": [704, 712, 40, 48],
+    "owner_binding_mode": "native_campaign_owned_no_load_v2",
+    "coordination": "r08-before-observer-awaiting.json -> r08-root-observer-admission.json",
+    "normal_close_owner": "shared entry/CaseClient, after verified restore and payment OFF/clear",
+    "full_R08_qualified": false
   },
   "pending": [
     "Root common S0 selection and normal Save after actual route/site pilot",

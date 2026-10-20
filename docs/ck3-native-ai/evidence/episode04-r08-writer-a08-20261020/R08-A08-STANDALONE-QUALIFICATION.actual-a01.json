@@ -1,0 +1,242 @@
+{
+  "schema": "xar.e04.r08-a08-standalone-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:52:25.658272+00:00",
+  "status": "SELECTED_STANDALONE_SCOPE_PASS",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "native_build_source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "source_snapshot": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\SOURCE-MANIFEST.actual.json",
+    "bytes": 3299,
+    "sha256": "e93ebf0fdcff3497aad2543fe7172faeac23dc4278457466d11e164e1b978a3a"
+  },
+  "source_cpp": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\cold_observer.cpp",
+    "bytes": 29565,
+    "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+  },
+  "producer": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\native-msvc-result.json",
+    "bytes": 1584,
+    "sha256": "f5fbc23b298a16ca96f49de20a556e00a23349d95d8b6fc803e63355d1a93060"
+  },
+  "machine_build": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\MACHINE-BUILD.actual.json",
+    "bytes": 1739,
+    "sha256": "5c36ce105b664ee6e918471e34e496473c68a7ff63a344ccd0e3f068ac29452b"
+  },
+  "original_child_waits": [
+    {
+      "path": "C:\\w\\e04r08a08\\phase-standalone-build-and-SYSTEM\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1560,
+      "sha256": "9e8e65f1796c24fb8e0f7718d28047d44af680530d060b15167d385915c6c987"
+    },
+    {
+      "path": "C:\\w\\e04r08a08\\phase-focused-four-cold\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1822,
+      "sha256": "ad608764c5eb551a28f81f5d9cc8a995263025824b656f0f1b2101e905106127"
+    },
+    {
+      "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1307,
+      "sha256": "fba25cdf535fde5d2582ff982dd1c69604c3a9333e5db911aa1b2820127e63c6"
+    }
+  ],
+  "outputs": [
+    {
+      "target": "maintenance_writer_cold_observer",
+      "path": "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+      "bytes": 120832,
+      "sha256": "68acf0eafb38ed671d4d1fd253c551b2d63ae3e85422d389876ba9825fef42f4"
+    },
+    {
+      "target": "maintenance_writer_cold_target",
+      "path": "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+      "bytes": 53248,
+      "sha256": "11d024ccee7f8acfd5d68aa7467f586d8f69e4000dc54714975f196d46f931be"
+    }
+  ],
+  "SYSTEM_receipt": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\receipt.json",
+    "bytes": 327007,
+    "sha256": "d3751c69f0f998c7dbe912080c0a8789dff38099b99b0edbf94a31623662f5ff"
+  },
+  "SYSTEM_manifest": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\manifest.json",
+    "bytes": 2525,
+    "sha256": "cbf5dffe3394438fb249923959bd19ba910f7d33c28d08060884db516809f429"
+  },
+  "machine_execution_gate": {
+    "path": "C:\\w\\e04r08a08\\cold-focused-a01\\EXECUTION-GATE.actual.json",
+    "bytes": 1340,
+    "sha256": "3b001849798b11f91cddae590dd96c17df2efad85edecc9a8802133cebf3bee5"
+  },
+  "SYSTEM_machine_identity_supplement": {
+    "path": "C:\\w\\e04r08a08\\SYSTEM-RECEIPT-MACHINE-IDENTITY.actual-a01.json",
+    "bytes": 1218,
+    "sha256": "430206aefd815e620d42ee00da1481f6c44c562619fe5e2e608a191c8921bfec"
+  },
+  "SYSTEM_exact_project_EXE_count": 2,
+  "SYSTEM_sid": "S-1-5-18",
+  "SYSTEM_admin_token": true,
+  "compiled_bytes_qualified": true,
+  "focused_cold_qualified": true,
+  "focused_suite": {
+    "path": "C:\\w\\e04r08a08\\cold-focused-a01\\COLD-SUITE.actual.json",
+    "bytes": 10441,
+    "sha256": "e62400169336d91aed19c7570e91597020b142aadece1fc6362554efbb034617"
+  },
+  "focused_cases": [
+    {
+      "mode": "four-writes",
+      "result": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\four-writes\\RESULT.actual.json",
+        "bytes": 2494,
+        "sha256": "a0c6fd4db4125519477f3027661736c91e619e96ef8bbd38eb5f0aef5deedf4b"
+      },
+      "observer_exit_code": 0,
+      "target_exit_code": 0,
+      "actual_slot_hits": 4,
+      "exact_main_DR_equal": true,
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "complete",
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "hit_count": 4,
+        "data_event_count": 4,
+        "writer_thread_count": 1,
+        "created_thread_events": 5,
+        "restore_readback_rows": 5,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "full_window_all_writes_covered": false,
+        "CK3_observed": false,
+        "known_producer": false,
+        "military_attribution": "unclosed"
+      },
+      "ready": {
+        "ready": true,
+        "armed_thread_count": 6
+      },
+      "synthetic": true
+    },
+    {
+      "mode": "timeout",
+      "result": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\timeout\\RESULT.actual.json",
+        "bytes": 2467,
+        "sha256": "3186cb4ebfb900b22d330e187d77a4c8dd5dfba2241789ebcce78312215d5d2d"
+      },
+      "observer_exit_code": 1,
+      "target_exit_code": 0,
+      "actual_slot_hits": 0,
+      "exact_main_DR_equal": true,
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "timeout",
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "hit_count": 0,
+        "data_event_count": 0,
+        "writer_thread_count": 0,
+        "created_thread_events": 5,
+        "restore_readback_rows": 5,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "full_window_all_writes_covered": false,
+        "CK3_observed": false,
+        "known_producer": false,
+        "military_attribution": "unclosed"
+      },
+      "ready": {
+        "ready": true,
+        "armed_thread_count": 6
+      },
+      "synthetic": true
+    },
+    {
+      "mode": "default-off",
+      "result": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\default-off\\RESULT.actual.json",
+        "bytes": 1410,
+        "sha256": "ea82f18db1b74c677d811e3a3934c5a5d8d803a52d8dde6b0d434550fdbe1272"
+      },
+      "observer_exit_code": 2,
+      "target_exit_code": 0,
+      "actual_slot_hits": 0,
+      "exact_main_DR_equal": true,
+      "native_terminal": null,
+      "ready": null,
+      "synthetic": true
+    },
+    {
+      "mode": "ordinary-ownership-rejection",
+      "result": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\ordinary-ownership-rejection\\RESULT.actual.json",
+        "bytes": 2130,
+        "sha256": "92e2fc56073d1e4cff52c9b192c19bcbbbf58d3a950700e80a62a29a726e004e"
+      },
+      "observer_exit_code": 2,
+      "target_exit_code": 0,
+      "actual_slot_hits": 0,
+      "exact_main_DR_equal": true,
+      "native_terminal": null,
+      "ready": null,
+      "synthetic": true
+    }
+  ],
+  "thread_ownership_unit": {
+    "result": {
+      "kind": "cold_thread_ownership_unit",
+      "passed_checks": 4,
+      "actual_OS_TID_reuse": false,
+      "debug_attach": false,
+      "known_producer": false
+    },
+    "stdout": {
+      "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\stdout.log",
+      "bytes": 129,
+      "sha256": "856876a72c0630105e404ab3141483f7d848da4fe82e31947bbd68c1f0018129"
+    },
+    "actual_OS_TID_reuse": false
+  },
+  "ordinary_null_current_source_compiled": true,
+  "old_a07_reused": false,
+  "ordinary_native_memory_path_qualified": false,
+  "c_d_live_writers_observed": false,
+  "military_attribution": "unclosed",
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08_business_qualified": false,
+  "DLL_rebuilt": false,
+  "game_SDK_Steam_access": false,
+  "code_runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\run_cold_fixture.py",
+    "bytes": 21033,
+    "sha256": "40ce68187f30774364756478cf9c425b9c36e1fe7356158327bb776a751dc316"
+  },
+  "source_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\R08-A08-NATIVE-EXECUTION.prepared-a01.json",
+    "bytes": 8343,
+    "sha256": "b641185f380e8b41ad9716c9180d76f27f9605febd97e49a314915ada2895f3e"
+  },
+  "fresh_capacity": {
+    "path": "C:\\w\\e04r08a08\\FRESH-metadata-qualification-and-close.actual-a01.json",
+    "bytes": 4300,
+    "sha256": "9ea133a131fc8d7c86e0462d7e5dd6a4cb6d264d965781327eb90e033a194ed3"
+  },
+  "owned_closure": {
+    "path": "C:\\w\\e04r08a08\\R08-A08-OWNED-CLOSURE.actual-a01.json",
+    "bytes": 4611,
+    "sha256": "062b67d1450be0e642ccc77f7be890d9e1e333aaffdd975e533f1deb3ca9b9d5"
+  },
+  "retention_review_utc": "2026-10-22T12:00:00Z",
+  "retained_reason": "Current ordinary-null compatible standalone observer input and exact SYSTEM/focused cold baseline for future separately admitted R08 pilot. No indefinite retention."
+}

@@ -1,8 +1,8 @@
 """Normal R10 preparation through the original public CaseClient.
 
 The default case collects readiness and policy inputs. Explicit
-case_inputs.r04_county_entry continues on this same client into a bounded
-county observation with one Move and at most seven exact days. Derived
+optional R04, R06 or R08 inputs continue on this same client into their bounded
+county, refill or single natural writer opportunity. Derived
 full-wire views retain their original public control rows. The shared entry
 owns the host, SDK session and normal game closure.
 """
@@ -86,14 +86,17 @@ def validate_contract(context):
     need(context['case_contract'].get('schema') == 'xar.e04.r10-common-preparation.v1',
          'R10 common preparation contract differs')
     value = context.get('case_inputs', {})
-    need(not (value.get('r04_county_entry') is not None and value.get('r06_refill_one_day') is not None),
-         'R04 and R06 are mutually exclusive')
+    need(sum(value.get(k) is not None for k in ('r04_county_entry','r06_refill_one_day','r08_writer_one_day')) <= 1,
+         'R04, R06 and R08 are mutually exclusive')
     if value.get('r04_county_entry') is not None:
         from . import r04_county_entry
         r04_county_entry.validate_contract(context)
     if value.get('r06_refill_one_day') is not None:
         from . import r06_refill_one_day
         r06_refill_one_day.validate_contract(context)
+    if value.get('r08_writer_one_day') is not None:
+        from . import r08_writer_one_day
+        r08_writer_one_day.validate_contract(context)
     if not value:
         return
     for key in ('army_id', 'war_id', 'goal_province_id', 'staging_province_id'):
@@ -247,6 +250,9 @@ def run_case(context, client):
     if values.get('r06_refill_one_day') is not None:
         from . import r06_refill_one_day
         result['r06_refill_one_day'] = r06_refill_one_day.run_case(context, client)
+    if values.get('r08_writer_one_day') is not None:
+        from . import r08_writer_one_day
+        result['r08_writer_one_day'] = r08_writer_one_day.run_case(context, client)
     return result
 
 
@@ -266,4 +272,7 @@ def verify_case(context):
     if context.get('case_inputs', {}).get('r06_refill_one_day') is not None:
         from . import r06_refill_one_day
         verified['r06_refill_one_day'] = r06_refill_one_day.verify_case(context)
+    if context.get('case_inputs', {}).get('r08_writer_one_day') is not None:
+        from . import r08_writer_one_day
+        verified['r08_writer_one_day'] = r08_writer_one_day.verify_case(context)
     return verified

@@ -1,0 +1,352 @@
+{
+  "schema": "xar.e04.r08-public-hook-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:54:49.509630+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine actual stdout desktop-3fevhd2-1c74096080 at2026-10-20T12:50Z",
+  "status": "PASS_NO_BLOCKING_SOURCE_FINDINGS",
+  "reviewer": "/root/media_chapter",
+  "scope": "Eight candidate public R08 hook paths only; source publication review, no native/platform/live qualification",
+  "reviewed_author_final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\SOURCE-ONLY-FINAL.actual-a01.json",
+    "bytes": 6985,
+    "sha256": "02cef33f9778ec685ac5899b791cb0d8acb61f53036fd66ac94e618a81e35ce7"
+  },
+  "worktree_head": "280688a42ad2a9d4d88d3ff9f634a489db03dfd0",
+  "frozen_D_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "D_status_porcelain": "",
+  "verified_eight_files": [
+    {
+      "relative_path": ".github/workflows/static-ci.yml",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\.github\\workflows\\static-ci.yml",
+        "bytes": 67077,
+        "sha256": "ab6372d69c2561e7af15f28b3f46c0801a9b20161f1d6c4a4fcb07be043af35b"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/r08-writer-common-public-entry.md",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\docs\\ck3-native-ai\\r08-writer-common-public-entry.md",
+        "bytes": 4770,
+        "sha256": "fdaf67b5a071aa0a01ca94362b1d93842175646fb17bf27d97abf09bc638a6d3"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+        "bytes": 10850,
+        "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_controller.py",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_controller.py",
+        "bytes": 22070,
+        "sha256": "b4b3778cf780251ad7d965524191c15cb071cb402f5b9585a7ed3c0558bfafb9"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+        "bytes": 17902,
+        "sha256": "1861a9345cc03f6379e37b2f80c2ba99fe9c33ea29243b0a755445d924507491"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+        "bytes": 2124,
+        "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+        "bytes": 15813,
+        "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+      },
+      "matches_author_final": true
+    },
+    {
+      "relative_path": "tools/test_r08_writer_one_day.py",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_writer_one_day.py",
+        "bytes": 16157,
+        "sha256": "1cf742ba0bb64d6b83acdad89c9db6703ae81733b267a4ef098244cf0eb625e6"
+      },
+      "matches_author_final": true
+    }
+  ],
+  "source_function_line_index": {
+    "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py": {
+      "need": 16,
+      "read_pin": 21,
+      "write_new": 29,
+      "retained_creation_filetime": 37,
+      "collect_current_context": 90,
+      "bind_legacy_driver": 139,
+      "__init__": 160,
+      "request": 183,
+      "config": 146,
+      "guard": 179
+    },
+    "tools/ck3_mod_acceptance_cases/r08_writer_controller.py": {
+      "load_config": 23,
+      "need": 30,
+      "stamp": 35,
+      "instant": 39,
+      "pin": 45,
+      "same_pin": 53,
+      "read_pin": 58,
+      "load_module": 65,
+      "write": 74,
+      "log_pin": 82,
+      "expected_binding": 89,
+      "prepare": 97,
+      "check_frame": 125,
+      "check_clock": 138,
+      "check_cash": 156,
+      "await_ready": 201,
+      "finalize": 224,
+      "native_argv_matches": 259,
+      "observe_prepared": 278,
+      "__init__": 27
+    },
+    "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py": {
+      "settings": 27,
+      "validate_contract": 54,
+      "load_controller": 75,
+      "root_window_guard": 86,
+      "wait_admission": 121,
+      "run_case": 145,
+      "verify_case": 269,
+      "__init__": 65,
+      "call": 162,
+      "snapshot": 166,
+      "payment": 172,
+      "guarded": 69
+    },
+    "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py": {
+      "need": 19,
+      "pin": 24,
+      "small_json": 30,
+      "module": 38,
+      "evaluate_policy_records": 51,
+      "validate_contract": 85,
+      "prepare_case": 116,
+      "collect_ready_t0": 196,
+      "run_case": 216,
+      "verify_case": 259,
+      "__init__": 154,
+      "request": 164
+    },
+    "tools/test_r08_writer_one_day.py": {
+      "inputs": 35,
+      "__init__": 172,
+      "normal_close": 26,
+      "guard": 27,
+      "retain_process": 28,
+      "remaining": 29,
+      "read_report": 30,
+      "checkpoint": 31,
+      "test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations": 45,
+      "test_no_grant_times_out_without_observer_and_close_is_instance_local": 68,
+      "test_root_grant_rejects_foreign_identity_capacity_and_typed_null": 83,
+      "test_unknown_day_is_never_replayed_and_original_error_and_after_are_preserved": 109,
+      "test_prepare_failure_and_unknown_start_preserve_terminal_without_false_cleanup": 163,
+      "request": 173,
+      "observe": 180,
+      "normalize": 187
+    }
+  },
+  "checks": [
+    {
+      "name": "Actual public dispatch uses original CaseClient",
+      "result": "PASS",
+      "evidence": "r10_prepare_adapter.run_case forwards its same context/client into r08_writer_one_day.run_case; shared entry constructs one CaseClient. Mutually exclusive R04/R06/R08 validation and verify routing are present."
+    },
+    {
+      "name": "Current ordinary nullable identity compatibility",
+      "result": "PASS",
+      "evidence": "collect_current_context preserves episode None, demands native_campaign, reads current local_player_id/GameState and retained exact FILETIME. Binder checks same retained PID/creation/native binding. Existing build_card passes explicit ordinary owner args to the v2 prepare/consumer; check_frame accepts the same None, not a fabricated episode."
+    },
+    {
+      "name": "Exactly one predeclared natural day",
+      "result": "PASS",
+      "evidence": "Create-only opportunity, fresh prefix/run/date/actor and start+24 bind the route. Controller has one Popen site, one day.once and one life-advance-one-day request. Exact-day qualification uses original composite clock plus independent after frame. Unknown response retains actual endpoint/error and does not retry."
+    },
+    {
+      "name": "Actual READY and original Popen lifecycle",
+      "result": "PASS",
+      "evidence": "Observer start claim precedes Popen; exceptions retain UNKNOWN and forbid retry. Actual armed_thread_count>0 READY and living original process are checked before day, with finite watch headroom. SESSIONS keeps the original returned process. Natural wait/consumer must prove restore; no kill/restart route added."
+    },
+    {
+      "name": "Restore precedes OFF/Save/shared normal Quit",
+      "result": "PASS",
+      "evidence": "Instance-local CloseGate withholds normal_close until restore and independent OFF/idle/clear/zero-record proof. Cleanup refuses OFF/Save on unproved restoration, pauses/cancels an armed original clock, disables once, independently checks OFF, then ordinary Save and same-date readback. Shared original close remains owner; errors stay in terminal."
+    },
+    {
+      "name": "Existing Root actual grant and finite source/capacity binding",
+      "result": "PASS",
+      "evidence": "root_window_guard reads exact pin-bound grant, machine gate and capacity; binds same machine/run/runtime identity/source/native compile source/roots/typed expected owner, cap SHA and finite quota. Existing canonical prepare separately validates qualified exact producer machine gate and compatible ordinary compiled source. Neither scene budget alone nor a historical gate admits observation."
+    },
+    {
+      "name": "Focused deterministic evidence and retained failures",
+      "result": "PASS",
+      "evidence": "Reused original retained Popen22388 wait0 and a05 five test log. Tests cover routing, grant absence/foreign identity, instance-local close, unknown day preservation and failed prepare/unknown observer start. Earlier missing-fixture-field failures and original logs remain; final fixtures now contain those actual contract fields."
+    },
+    {
+      "name": "No research/native/game credit from source publication",
+      "result": "PASS",
+      "evidence": "Result, terminal and verify retain full_R08_qualified=false/business_pass=false; source-only docs distinguish ordinary Save from one-life qualification. Actual compatible standalone producer gate and future Root launch remain separate original prerequisites."
+    }
+  ],
+  "findings": [],
+  "must_fix_before_source_publication": [],
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a05\\FOCUSED-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1070,
+    "sha256": "a4070dbbf09c581a1538b8253153e7c6bc8b804e681238e9319ae41cce286425"
+  },
+  "actual_test_log": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a05\\focused.stderr.log",
+    "bytes": 993,
+    "sha256": "5c633030305268bb1fbfa46cb0eecbb2cd254309ee8102aa5ff8858660cefb55"
+  },
+  "test_names": [
+    "test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations",
+    "test_no_grant_times_out_without_observer_and_close_is_instance_local",
+    "test_prepare_failure_and_unknown_start_preserve_terminal_without_false_cleanup",
+    "test_root_grant_rejects_foreign_identity_capacity_and_typed_null",
+    "test_unknown_day_is_never_replayed_and_original_error_and_after_are_preserved"
+  ],
+  "focused_tests_reused_not_rerun": true,
+  "focused_tests_are_deterministic_synthetic_faults_not_native": true,
+  "earlier_attempts": [
+    {
+      "log": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused.stderr.log",
+        "bytes": 4739,
+        "sha256": "70d38581889abd08751be00fe6e7a9cf36b02e8a05cf1a1ac5044e5911c27396"
+      },
+      "reviewed_result": "Incomplete test fixtures: missing normal-source sha256, collected pid, and temporary consumer source file."
+    },
+    {
+      "log": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a02\\focused.stderr.log",
+        "bytes": 1759,
+        "sha256": "34b7d09910517847f957e1ca24cd3392436b4158b453f948360611aec202b7fd"
+      },
+      "reviewed_result": "Unknown-day test did not reach intended branch; expected one execute_step but observed zero."
+    },
+    {
+      "log": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a03\\focused.stderr.log",
+        "bytes": 2339,
+        "sha256": "6241e5918ceda0fcd38f3b9e906072792cef72e3d15ec4415f8abeee6f991649"
+      },
+      "reviewed_result": "Diagnostic result explicitly showed missing snapshot revision in synthetic fixture, not an actual runtime failure."
+    },
+    {
+      "log": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused-a04\\focused.stderr.log",
+        "bytes": 993,
+        "sha256": "1e9bf20f74eb2c0fa9106c1544c608002f817e0674228a36d26a5c9847e365ee"
+      },
+      "reviewed_result": "Five tests passed before final a05 re-freeze."
+    }
+  ],
+  "unchanged_dependency_interface_crosscheck": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_card.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\build_card.py",
+        "bytes": 6422,
+        "sha256": "ac80fb438b049b1929d039e86a904bbcfcb260b949eb8fc976c4c65c6eee4371"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/owner_binding.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\owner_binding.py",
+        "bytes": 6251,
+        "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/prepare_writer_admission.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\prepare_writer_admission.py",
+        "bytes": 15350,
+        "sha256": "079c08341b637e86b2f7bfbcd536186f9c318edf1cdb18a7b29cd53c9621a36c"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_actual.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\consume_writer_actual.py",
+        "bytes": 24580,
+        "sha256": "bbb1e688991732ccf0f676e3ab44648a82909240332fdff65a132fe422d4df9d"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/select_cd_writers.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\select_cd_writers.py",
+        "bytes": 6328,
+        "sha256": "5e6f7440ef1c5589f9659ace7c6e9e7521059241e2c21ba4328f9080a93842b1"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 64343,
+        "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "D_readonly": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "bytes": 61674,
+        "sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c"
+      },
+      "matches_W_HEAD_Git_object": true,
+      "scope": "Existing interface dependency, not a new platform audit or native qualification"
+    }
+  ],
+  "additional_execution": "Read-only Git source identity/object comparison and static AST/text checks only; no candidate runtime import, test rerun, subprocess producer or SDK execution",
+  "actual_SDK_native_game_screen_calls": 0,
+  "native_builds": 0,
+  "W_or_D_source_changes": 0,
+  "full_R08_qualification_added": false,
+  "business_qualification_added": false,
+  "formal_theme_credit_added": 0,
+  "capacity_scope": "N shared128 current finite1315 pool, review output <=128KiB; no new pool/heavy reservation",
+  "publication_recommendation": "May stage and publish exactly the eight matching source paths. Actual native qualification and Root live admission remain separate; do not label source PASS as a native or business PASS.",
+  "remaining_heavy": 0
+}

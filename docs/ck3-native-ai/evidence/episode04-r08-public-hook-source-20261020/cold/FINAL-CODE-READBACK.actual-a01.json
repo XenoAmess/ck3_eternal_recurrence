@@ -1,0 +1,37 @@
+{
+  "schema": "xar.maintenance.writer_pc.focused-selector-final-code.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:36:31.646068+00:00",
+  "status": "W_APPLIED_UNSTAGED_EIGHT_PYTHON_CHECKS_PASS_NATIVE_NOT_RUN",
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\cold-selector-and-tests.candidate-a04.patch",
+    "bytes": 22411,
+    "sha256": "1921998eb5b85b8a3b2f9bb2bd7baeb3592946bf223731a83298dd53a6b14958"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\run_cold_fixture.py",
+    "bytes": 21033,
+    "sha256": "40ce68187f30774364756478cf9c425b9c36e1fe7356158327bb776a751dc316"
+  },
+  "test": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_run_cold_fixture_selection.py",
+    "bytes": 9780,
+    "sha256": "7b9a2cc7e4fb0fc777b39163f1039506e01aed05a42948a4f948d9f00a3b5371"
+  },
+  "actual_python_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\PYTHON-ROUTING-CHECK.actual-a03.json",
+    "bytes": 830,
+    "sha256": "a762ce0e279850f313b26963ea0e9e778d7e3e660d5d87a0050d6a3f750bee64"
+  },
+  "actual_tool_wait_exit_code": 0,
+  "source_pin_counterexample": "Old a07 also exits2 for unsupported argv; selected ordinary rejection therefore requires the same current observer SYSTEM input SHA contract as ordinary prepare. Default eight unchanged.",
+  "selected_guard_required_only_for_ordinary_cell": true,
+  "reverse_check_exit": 0,
+  "diff_check_exit": 0,
+  "native_CPP_changes": 0,
+  "EXEs_executed": 0,
+  "SDK_game_screen_calls": 0,
+  "staged_or_committed": false,
+  "W_head": "280688a42ad2a9d4d88d3ff9f634a489db03dfd0",
+  "D_clean_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c"
+}

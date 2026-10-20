@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:30.672369+00:00",
+  "status": "verified-before-first-project-EXE-execution",
+  "receipt": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\receipt.json",
+  "receipt_sha256": "d3751c69f0f998c7dbe912080c0a8789dff38099b99b0edbf94a31623662f5ff",
+  "manifest_file_sha256": "cbf5dffe3394438fb249923959bd19ba910f7d33c28d08060884db516809f429",
+  "manifest_canonical_sha256": "9bed34a57f333b6d320801810107ee8198e5ac1abb8b561a58bd0527e743cafc",
+  "system_token_sid": "S-1-5-18",
+  "admin_token": true,
+  "files": [
+    {
+      "path": "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+      "size": 120832,
+      "sha256": "68acf0eafb38ed671d4d1fd253c551b2d63ae3e85422d389876ba9825fef42f4",
+      "target": "maintenance_writer_cold_observer",
+      "target_id": "maintenance_writer_cold_observer::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_target.exe",
+      "size": 53248,
+      "sha256": "11d024ccee7f8acfd5d68aa7467f586d8f69e4000dc54714975f196d46f931be",
+      "target": "maintenance_writer_cold_target",
+      "target_id": "maintenance_writer_cold_target::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "game_contacted": false
+}

@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:45:42.065756+00:00",
+  "pid": 31284,
+  "process_create_time_100ns": 134369739420541007,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\build_fixture.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--jobs",
+    "2"
+  ],
+  "original_process_handle_retained": true
+}

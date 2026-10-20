@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:29.539204+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-focused-cold-implementation-a01\\run_cold_fixture.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04r08a08\\build-a01",
+    "--machine-build-record",
+    "C:\\w\\e04r08a08\\build-a01\\MACHINE-BUILD.actual.json",
+    "--output-root",
+    "C:\\w\\e04r08a08\\cold-focused-a01",
+    "--case",
+    "four-writes",
+    "--case",
+    "timeout",
+    "--case",
+    "default-off",
+    "--case",
+    "ordinary-ownership-rejection"
+  ]
+}

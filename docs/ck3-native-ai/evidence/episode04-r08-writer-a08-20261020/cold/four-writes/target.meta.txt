@@ -1,0 +1,14 @@
+pid=8616
+tid=14120
+created=134369740506776853
+full_id=31254
+character=140699844400016
+context=140699844400784
+cold_stale_tid_guard=0
+module_base=140699844345856
+module_size=69632
+writer_start=140699844368208
+writer_after=140699844368211
+go_event=Local\XarMaintenanceWriter8616Go
+audit_event=Local\XarMaintenanceWriter8616Audit
+finish_event=Local\XarMaintenanceWriter8616Finish

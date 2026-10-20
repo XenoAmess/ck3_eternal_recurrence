@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:45:20.487868+00:00",
+  "status": "SOURCE_FROZEN_BYTE_EXACT",
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-writer-source-a08\\SOURCE-MANIFEST.actual.json",
+    "bytes": 3299,
+    "sha256": "e93ebf0fdcff3497aad2543fe7172faeac23dc4278457466d11e164e1b978a3a"
+  },
+  "footprint": {
+    "observed_at_utc": "2026-10-20T12:45:20.487645+00:00",
+    "native_root_bytes": 1809,
+    "native_files": 1,
+    "source_root_bytes": 41656,
+    "source_files": 6,
+    "fixed_protocol_conservative_bytes": 33554432,
+    "aggregate_charged_bytes": 33597897,
+    "status": "GREEN",
+    "C_free_bytes": 78916419584,
+    "D_free_bytes": 21664063488
+  },
+  "project_EXEs_executed": 0
+}

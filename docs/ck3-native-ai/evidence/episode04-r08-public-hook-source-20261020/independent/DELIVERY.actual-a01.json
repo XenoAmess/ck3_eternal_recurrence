@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.r08-public-hook-independent-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:54:49.534149+00:00",
+  "status": "PASS_NO_BLOCKING_SOURCE_FINDINGS",
+  "review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-independent-review-a01\\INDEPENDENT-REVIEW.actual-a01.json",
+    "bytes": 17709,
+    "sha256": "8894fcf316fbf7638b55354692b90d158ef0e72b8768a774c5764af1fad0b101"
+  },
+  "reproduction_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-independent-review-a01\\freeze_independent_review.py",
+    "bytes": 9853,
+    "sha256": "18fb17c6bc7f4387eb1922863f2763123524897e781c91d42bbffb6777ec250b"
+  },
+  "source_files_changed_by_reviewer": 0,
+  "native_or_game_run_authorized_by_this_review": false,
+  "remaining_heavy": 0
+}

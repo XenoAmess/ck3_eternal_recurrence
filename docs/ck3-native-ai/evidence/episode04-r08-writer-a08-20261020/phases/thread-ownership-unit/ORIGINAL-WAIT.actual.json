@@ -1,0 +1,39 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:44.311137+00:00",
+  "phase": "thread-ownership-unit",
+  "pid": 768,
+  "process_create_time_100ns": 134369740642785531,
+  "started_at_utc": "2026-10-20T12:47:44.276182+00:00",
+  "returncode": 0,
+  "original_Popen_wait": true,
+  "argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+    "--qualify-cold-thread-ownership"
+  ],
+  "local_guard_RED": null,
+  "peak_observed_native_root_bytes": 2590546,
+  "meter_observation_count": 1,
+  "stdout": {
+    "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\stdout.log",
+    "bytes": 129,
+    "sha256": "856876a72c0630105e404ab3141483f7d848da4fe82e31947bbd68c1f0018129"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04r08a08\\phase-thread-ownership-unit\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "final_footprint": {
+    "observed_at_utc": "2026-10-20T12:47:44.337786+00:00",
+    "native_root_bytes": 2590991,
+    "native_files": 118,
+    "source_root_bytes": 41656,
+    "source_files": 6,
+    "fixed_protocol_conservative_bytes": 33554432,
+    "aggregate_charged_bytes": 36187079,
+    "status": "GREEN",
+    "C_free_bytes": 78915493888,
+    "D_free_bytes": 21664059392
+  }
+}

@@ -1,0 +1,14 @@
+{"kind":"start","schema":"xar.maintenance.writer_pc.cold.v1","synthetic":true,"CK3_observed":false,"maintenance_attribution":"unclosed","machine_id":"desktop-3fevhd2-1c74096080","pid":32360,"created":134369740509885505,"full_id":31254,"character":140699844400016,"context":140699844400784,"admission_window_id":0,"admission_payment_epoch":0,"admission_generation":0,"admission_native_revision":0,"admission_date_raw":0,"actual_writer_game_date":null,"admission_episode":"","admission_cash_packet_sha256":"","module_base":140699844345856,"module_size":69632,"DR7_write_len8_mask":2576941141,"field_offsets":[704,712,40,48],"initial_values":[500974,0,218610,0]}
+{"kind":"arm","thread_id":34696,"success":true,"cold_stale_map_seeded":false,"prior_saved_entry_erased":false,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140699844401488,140699844401496,140699844400824,140699844400832,0,2576941141]}
+{"kind":"arm","thread_id":19624,"success":true,"cold_stale_map_seeded":false,"prior_saved_entry_erased":false,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140699844401488,140699844401496,140699844400824,140699844400832,0,2576941141]}
+{"kind":"arm","thread_id":16028,"success":true,"cold_stale_map_seeded":false,"prior_saved_entry_erased":false,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140699844401488,140699844401496,140699844400824,140699844400832,0,2576941141]}
+{"kind":"arm","thread_id":28628,"success":true,"cold_stale_map_seeded":false,"prior_saved_entry_erased":false,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140699844401488,140699844401496,140699844400824,140699844400832,0,2576941141]}
+{"kind":"arm","thread_id":24480,"success":true,"cold_stale_map_seeded":false,"prior_saved_entry_erased":false,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140699844401488,140699844401496,140699844400824,140699844400832,0,2576941141]}
+{"kind":"arm","thread_id":26528,"success":true,"cold_stale_map_seeded":false,"prior_saved_entry_erased":false,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140699844401488,140699844401496,140699844400824,140699844400832,0,2576941141]}
+{"kind":"thread_exited","thread_id":26528}
+{"kind":"restore","thread_id":16028,"readback":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":19624,"readback":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":24480,"readback":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":28628,"readback":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":34696,"readback":true,"debug":[0,0,0,0,0,0]}
+{"kind":"terminal","reason":"timeout","restored":true,"detached":true,"pending_event":false,"cleanup_complete":true,"hit_count":0,"data_event_count":0,"writer_thread_count":0,"created_thread_events":5,"restore_readback_rows":5,"process_exited":false,"observation_thread_admission_complete":true,"full_window_all_writes_covered":false,"CK3_observed":false,"known_producer":false,"military_attribution":"unclosed"}

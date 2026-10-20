@@ -1,0 +1,35 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T12:57:03.529552+00:00",
+  "observed_at_utc": "2026-10-20T12:57:04.059187+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "test_r06_refill_one_day.R06BoundaryTests.test_r04_r06_are_mutually_exclusive_before_either_route",
+    "test_r08_writer_one_day.PublicHook.test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations",
+    "-v"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools",
+  "pid": 31640,
+  "actual_original_Popen_wait": true,
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-integration-smoke-a03\\smoke.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-integration-smoke-a03\\smoke.stderr.log",
+    "bytes": 469,
+    "sha256": "db18c7b02fead020fa88dcc17eca3cda51173e424893b9c08c5001e6e6fe28c3"
+  },
+  "test_count": 2,
+  "role": "one integrated existing public dispatch/mutual exclusion smoke; original5public+8selector focused results reused",
+  "SDK_native_EXE_game_screen_calls": 0,
+  "temporary_files_remaining": [],
+  "native_memory_or_R08_business_qualification_granted": false
+}

@@ -1,0 +1,4 @@
+{"mode": "four-writes", "status": "PASS", "hits": 4, "observer": 0}
+{"mode": "timeout", "status": "PASS", "hits": 0, "observer": 1}
+{"mode": "default-off", "status": "PASS", "hits": 0, "observer": 2}
+{"mode": "ordinary-ownership-rejection", "status": "PASS", "hits": 0, "observer": 2}

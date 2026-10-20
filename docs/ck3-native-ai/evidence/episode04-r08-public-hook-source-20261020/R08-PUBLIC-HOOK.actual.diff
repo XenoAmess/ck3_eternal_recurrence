@@ -1,0 +1,1067 @@
+--- a/.github/workflows/static-ci.yml
++++ b/.github/workflows/static-ci.yml
+@@ -99,6 +99,8 @@
+         run: python -B -X utf8 tools/test_r06_refill_one_day.py
+       - name: Test public post-allocation refill capacity scope
+         run: python -B -X utf8 tools/test_ck3_mod_acceptance_r06_scope.py
++      - name: Test public R08 single writer opportunity refusals
++        run: python -B -X utf8 tools/test_r08_writer_one_day.py
+       - name: Test lossless bounded target-proof CLI serialization
+         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py TargetProofCliSerialization
+       - name: Test supervisor admission refusal predecessor closure
+--- a/docs/ck3-native-ai/r08-writer-common-public-entry.md
++++ b/docs/ck3-native-ai/r08-writer-common-public-entry.md
+@@ -0,0 +1,73 @@
++# R08 public one-opportunity entry
++
++`r10_prepare` accepts an optional `case_inputs.r08_writer_one_day`, mutually
++exclusive with R04/R06. The public prepare, allocate, preflight, run and verify
++commands stay unchanged. Readiness and R08 use the same original `CaseClient`;
++ordinary native `episode_run_id: null` remains null. This is one predeclared
++natural opportunity, not a full R08 application, payment or cadence result.
++
++The settings are `scene_root`, `source_head`, `native_build_source_head`,
++`build_dir`, exact `{path,bytes,sha256}` `machine_execution_gate`, `actor_id`,
++`expected_start_date_raw`, `expected_source_save_sha256`, `profile_limit_bytes`,
++`driver_limit_bytes`, `deadline_utc`, a fresh lowercase `r08-...` `prefix`, and
++explicit boolean `payment_enable_once_authorized`. Optional defaults are
++`admission_timeout_seconds:600` (maximum900), `normal_close_reserve:900`,
++`cleanup_save_reserve:120`, `poll_seconds:0.25`. Source/date/actor must match the
++selected normal saved campaign. No run ID, PID or capacity is guessed at prepare.
++`native_build_source_head` is the carrier's original native compile identity in
++the existing Root-admission field; the standalone observer's separate build and
++SYSTEM qualification belong to its exact machine execution gate. These origins
++may differ. A pending or historical ordinary-incompatible gate grants no launch.
++
++The actor first claims one opportunity, queries payment sampling, and only enables
++it once if explicitly authorized and needed. It independently reads ON, collects
++fresh ordinary snapshot/cash plus retained-handle FILETIME, and publishes:
++
++- `R08-COMMON-IDENTITY.actual.json`: actual current identity, not an admission.
++- `r08-before-observer-awaiting.json`: actual input pins, expected Root identity,
++  current start and target start+24, and the create-only signal path.
++- `r08-root-observer-admission.json`: Root supplies this after reviewing those
++  actual facts. It is the existing
++  `xar.e04.r206-cd-writer-explicit-root-admission.v1`, status
++  `ROOT_ADOPTED_R206_INDEPENDENT_CD_WRITER_WINDOW`.
++
++The Root grant must bind the actual scene capacity and identity pins, machine,
++run, source, roots, original carrier compile head, typed expected identity with
++null episode, future quota within the scene deadline, explicit no concurrent R06,
++and `overrides_observer_policy_of_sha256` equal to that capacity SHA. Existing
++scope is `independent-unfilmed-cd-writer-window`, `maximum_watch_ms:30000`,
++`maximum_aggregate_slot_hits:128`, and payment policy
++`preserve_existing_owned_window_no_enable_clear`. This actor's new control/watch
++roots are inside the current case output. A scene budget alone permits no DR
++observer. The selected profile, actual control/retained identity and original
++normal-save provenance are checked before canonical prepare.
++
++Only then does the existing controller prepare admission, start one observer,
++require actual positive armed READY and a living original Popen, independently
++re-read the same owner/window/cash, and submit one native composite exact day.
++The fixed slots remain 0x2c0/0x2c8/0x28/0x30 with an aggregate128 bound and30s
++watch. Unknown start or action is never replayed. After an unknown day, an
++independent endpoint is retained without granting exact-day qualification.
++Natural observer wait is bounded by the original45s controller deadline; no kill
++or restart is added. Its current canonical consumer and C/D selector retain the
++complete original raw evidence. No C/D hit means input not obtained.
++
++The controller lifecycle is extracted from the actual ordinary-v2 source
++`writer_root_driver_owner_v2.py`, SHA256
++`ef27ce235ae7158ccc1dc3fae2a84110761903bfcf7bbfaafd8e2df84a1f6746`.
++Historical host construction, machine paths and CLI were removed; the existing
++public binder supplies the current owner and Root guard. Exact-day validation
++uses the repository's existing `exact_one_day_postcondition`.
++
++Cleanup keeps errors and original rows. With proven restore/detach, it pauses,
++queries/cancels an armed original clock, disables payment sampling once, checks
++independent OFF/idle/clear/zero records, then performs one ordinary Save and
++independent same-date readback. This case instance wraps the original shared
++normal-close method: unproved restore or OFF/clear refuses Quit and records a
++normal-close error. Other case instances are unchanged. A normal stock Save
++receipt is never promoted to one-life or full R08 qualification.
++
++`R08-WRITER-RESULT.json` and `R08-WRITER-TERMINAL.json` preserve actual days,
++exact-day, restoration, OFF/clear and Save separately; `full_R08_qualified` and
++`business_pass` remain false. Deterministic tests exercise routing and refusal
++behavior; they do not qualify native code, a machine gate or a live opportunity.
+--- a/tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py
++++ b/tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py
+@@ -146,8 +146,12 @@
+     def config(value):
+         cfg = read_pin(value, 65536)
+         need(cfg.get("schema") == "xar.e04.common-cd-writer-driver-input.v1", "Common writer input required")
+-        need(re.fullmatch(r"r207-[a-z0-9-]{1,55}", cfg.get("request_prefix", "")) is not None,
+-             "Use a new R207 request prefix")
++        prefix = cfg.get("request_prefix", "")
++        legacy_prefix = re.fullmatch(r"r207-[a-z0-9-]{1,55}", prefix) is not None
++        public_prefix = (re.fullmatch(r"r08-[a-z0-9-]{1,55}", prefix) is not None
++                         and cfg.get("run_id") == context.get("run_id")
++                         and bool(context.get("run_id")))
++        need(legacy_prefix or public_prefix, "Use a fresh run-bound R08 or legacy R207 request prefix")
+         need(Path(cfg["control_root"]).resolve().is_relative_to(Path(context["output"]).resolve()),
+              "Writer control belongs to this common case")
+         return cfg
+--- a/tools/ck3_mod_acceptance_cases/r08_writer_controller.py
++++ b/tools/ck3_mod_acceptance_cases/r08_writer_controller.py
+@@ -0,0 +1,391 @@
++"""Existing finite writer controller, bound to the public CaseClient by its caller.
++
++Extracted lifecycle from writer_root_driver_owner_v2.py SHA256 ef27ce235ae7158ccc1dc3fae2a84110761903bfcf7bbfaafd8e2df84a1f6746.
++Historical host construction, CLI and machine paths are deliberately absent.
++No import starts a process. The binder supplies load_config and RootRuntime.
++"""
++from __future__ import annotations
++import datetime as dt
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import subprocess
++import sys
++import time
++from dataclasses import dataclass
++
++RESEARCH = 'ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004'
++SESSIONS = {}
++SELECTOR = None
++CARD = None
++
++def load_config(value):
++    raise ValueError('Original common CaseClient binder required')
++
++class RootRuntime:
++    def __init__(self, cfg):
++        raise ValueError('Original common CaseClient binder required')
++
++def need(ok, why):
++    if not ok:
++        raise ValueError(why)
++
++
++def stamp():
++    return dt.datetime.now(dt.timezone.utc).isoformat()
++
++
++def instant(value):
++    parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
++    need(parsed.tzinfo is not None, "UTC-aware deadline required")
++    return parsed
++
++
++def pin(path, limit=8 * 1024 * 1024):
++    path = Path(path).resolve(strict=True)
++    need(path.is_file() and not path.is_symlink() and 0 < path.stat().st_size <= limit,
++         "Bounded regular file required: " + str(path))
++    data = path.read_bytes()
++    return {"path": str(path), "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
++
++
++def same_pin(a, b):
++    return (type(a) is dict and type(b) is dict and Path(a["path"]).resolve() == Path(b["path"]).resolve()
++            and type(a["bytes"]) is int and a["bytes"] == b["bytes"] and a["sha256"] == b["sha256"])
++
++
++def read_pin(value, limit=1024 * 1024):
++    actual = pin(value["path"], limit)
++    need(same_pin(actual, value), "Exact file pin differs: " + str(value["path"]))
++    # Small controls only. Large raw is read once by the existing actual consumer.
++    return json.loads(Path(actual["path"]).read_text(encoding="utf-8-sig"))
++
++
++def load_module(value, name):
++    need(same_pin(pin(value["path"], 256 * 1024), value), "Pinned source differs")
++    spec = importlib.util.spec_from_file_location(name, value["path"])
++    module = importlib.util.module_from_spec(spec)
++    sys.modules[name] = module
++    spec.loader.exec_module(module)
++    return module
++
++
++def write(path, value):
++    data = (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
++    need(len(data) <= 8 * 1024 * 1024, "Bounded output exceeded")
++    with Path(path).open("xb") as stream:
++        stream.write(data)
++    return pin(path)
++
++
++def log_pin(path):
++    path = Path(path).resolve(strict=True)
++    need(path.is_file() and path.stat().st_size <= 8 * 1024 * 1024, "Bounded log required")
++    data = path.read_bytes()
++    return {"path": str(path), "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
++
++
++def expected_binding(watch):
++    x = watch["expected"]
++    return {"pid": x["pid"], "process_create_time_100ns": x["created"],
++            "connection_generation": x["generation"], "episode_run_id": x["episode"],
++            "player_character_full_id": x["character_id"], "controlled_window_id": x["window"],
++            "payment_epoch": x["epoch"], "date_raw": x["date"]}
++
++
++def prepare(config_pin):
++    """Root executes while paused; no observer executable is launched here."""
++    cfg = load_config(config_pin)
++    rt = RootRuntime(cfg)
++    rt.guard()
++    control = Path(cfg["control_root"]).resolve()
++    need(not control.exists(), "Fresh prepare attempt required; never overwrite/retry an unknown one")
++    ordinary=cfg["watch"].get("owner_binding_mode")=="native_campaign_owned_no_load_v2"
++    card_pin=cfg.get("build_card") if ordinary else CARD
++    need(type(card_pin) is dict,"Ordinary owner requires Root's exact new canonical build-card pin")
++    card = load_module(card_pin, "xar_r206_writer_argv_card").make_card(cfg["watch"])
++    control.mkdir()
++    write(control / "ROOT-ARGV.actual.json", card)
++    claim = write(control / "prepare.once.json", {"at_utc": stamp(), "config": config_pin,
++                                                 "argv": card["prepare_argv"], "prepare_only": True})
++    with (control / "prepare.stdout").open("xb") as out, (control / "prepare.stderr").open("xb") as err:
++        result = subprocess.run(card["prepare_argv"], stdout=out, stderr=err, timeout=45, check=False,
++                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
++    receipt = {"at_utc": stamp(), "config": config_pin, "claim": claim, "returncode": result.returncode,
++               "stdout": log_pin(control / "prepare.stdout"), "stderr": log_pin(control / "prepare.stderr"),
++               "observer_started": False}
++    if result.returncode == 0:
++        receipt["admission"] = pin(Path(cfg["watch"]["watch_output_root"]) / "ADMISSION.actual.json")
++    write(control / "PREPARE-RESULT.actual.json", receipt)
++    need(result.returncode == 0, "Actual prepare-only adapter rejected admission; never retry this directory")
++    return receipt
++
++
++def check_frame(snapshot, expected, *, after=False):
++    d, actor = snapshot.get("diagnostics") or {}, snapshot.get("played_character") or {}
++    need(snapshot.get("map_ready") is True and snapshot.get("paused") is True
++         and actor.get("alive") is True and actor.get("character_id") == expected["character_id"]
++         and snapshot.get("episode_run_id") == expected["episode"]
++         and d.get("bridge_pid") == expected["pid"]
++         and d.get("connection_generation") == expected["generation"], "Fresh owned paused map differs")
++    need(type(snapshot.get("date_raw")) is int
++         and snapshot["date_raw"] == expected["date"] + (24 if after else 0), "Exact native date differs")
++    need(not snapshot.get("active_event") and not snapshot.get("pending_character_interaction"),
++         "Native modal present; Root policy handoff, no day retry")
++
++
++def check_clock(step, before, after):
++    from xar_autoplayer.bridge.exact_one_day_postcondition import exact_day_postcondition
++    contract = exact_day_postcondition(step, before, after)
++    armed, stopped = step["exact_day_native_clock"]["armed"], step["exact_day_native_clock"]["stopped"]
++    need(armed.get("state") == "armed" and type(armed.get("generation")) is int
++         and armed["generation"] > 0 and type(stopped.get("generation")) is int
++         and stopped.get("generation") == armed["generation"]
++         and armed.get("starting_date_raw") == before["date_raw"]
++         and armed.get("target_date_raw") == after["date_raw"]
++         and type(armed.get("completed_daily_ticks")) is int and armed["completed_daily_ticks"] == 0
++         and armed.get("abnormal") is False
++         and type(armed.get("intermediate_pause_count")) is int
++         and type(stopped.get("intermediate_pause_count")) is int
++         and armed["intermediate_pause_count"] == stopped["intermediate_pause_count"] == 0,
++         "Original native Arm/Stop generation or intermediate pause differs")
++    return contract
++
++
++def check_cash(body, snapshot, admission, repo):
++    sys.path[:0] = [str(repo), str(repo / "ck3_autonomous_player/src")]
++    from xar_autoplayer.bridge.war_cash_current_raw_context_v1 import validate_current_raw_context_v1
++    from xar_autoplayer.bridge import war_payment_observations_v1 as payment
++    validate_current_raw_context_v1(body, snapshot=snapshot)
++    journal = payment.normalize_journal(body[payment.JOURNAL_KEY], snapshot=snapshot,
++                                        machine_id=admission["machine_id"])
++    for key, value in admission["expected_root_identity"].items():
++        need(type(journal["current_session"][key]) is type(value)
++             and journal["current_session"][key] == value, "Original owner/window changed: " + key)
++    for key, value in admission["_driver_entry_session"].items():
++        need(type(journal["current_session"].get(key)) is type(value)
++             and journal["current_session"][key] == value, "Original witness/no-load session changed: " + key)
++    sampling = journal["sampling"]
++    need(journal["installed"] is True and journal["install_failure_flags"] == 0
++         and journal["controlled_window_admitted"] is True and journal["read_complete"] is True
++         and sampling["capture_enabled"] is True and sampling["busy"] is False
++         and sampling["active_captures"] == 0 and sampling["epoch"] == admission["expected_payment_epoch"],
++         "Original payment window/epoch no longer ON and idle")
++    leaf, original = body["current_raw_context_v1"], admission["raw_leaf"]
++    need(leaf["admission_ready"] is True and leaf["actor_identity_stable"] is True
++         and leaf["character"] == original["character"]
++         and leaf["values"]["context_identity_before"] == original["values"]["context_identity_before"],
++         "Original Character/context identity changed")
++    return {"window_id": journal["current_session"]["controlled_window_id"],
++            "epoch": sampling["epoch"], "retained_records": sampling.get("retained_records"),
++            "latest_sequence": journal["latest_sequence"], "oldest_sequence": journal["oldest_sequence"],
++            "overwritten": journal["overwritten"], "publication_failures": journal["publication_failures"]}
++
++
++@dataclass
++class Session:
++    cfg: dict
++    config_pin: dict
++    runtime: object
++    card: dict
++    admission: dict
++    control: Path
++    process: object
++    stdout: object
++    stderr: object
++    started_ns: int
++    ready: dict | None = None
++
++
++def await_ready(process, ready_path, *, timeout=15, sleep=time.sleep, monotonic=time.monotonic):
++    end = monotonic() + timeout
++    while monotonic() < end:
++        need(process.poll() is None, "Observer exited before a usable ready; no day submitted")
++        if Path(ready_path).exists():
++            need(Path(ready_path).stat().st_size <= 65536, "Bounded ready required")
++            try:
++                raw = Path(ready_path).read_bytes()
++                value = json.loads(raw.decode("utf-8-sig"))
++            except json.JSONDecodeError:
++                # File is created and flushed by the actual observer; partial write is not ready.
++                sleep(0.025)
++                continue
++            need(value.get("ready") is True and type(value.get("armed_thread_count")) is int
++                 and value["armed_thread_count"] > 0, "Actual armed readiness absent")
++            need(process.poll() is None, "Observer exited while ready was read")
++            return {"value": value,
++                    "pin": {"path": str(Path(ready_path).resolve()), "bytes": len(raw),
++                            "sha256": hashlib.sha256(raw).hexdigest()}, "ready_at_utc": stamp()}
++        sleep(0.025)
++    raise TimeoutError("Finite ready wait expired; no day submitted, do not restart")
++
++
++def finalize(session):
++    """No kill/terminate/detach commands; only wait for native natural cleanup then consume."""
++    deadline_ns = session.started_ns + 45_000_000_000
++    remaining = max(0.001, (deadline_ns - time.monotonic_ns()) / 1e9)
++    try:
++        code = session.process.wait(timeout=remaining)
++    except subprocess.TimeoutExpired:
++        return {"status": "OBSERVER_STILL_LIVE_DO_NOT_CLOSE_GAME", "cleanup_proved": False,
++                "process_id": session.process.pid, "handle_retained_in_module": True,
++                "no_force_kill": True}
++    session.stdout.close()
++    session.stderr.close()
++    consumer_out = session.control / "consume.stdout"
++    consumer_err = session.control / "consume.stderr"
++    write(session.control / "consume.once.json", {"at_utc": stamp(), "argv": session.card["consume_argv"],
++                                                "observer_returncode": code})
++    with consumer_out.open("xb") as out, consumer_err.open("xb") as err:
++        consumed = subprocess.run(session.card["consume_argv"], stdout=out, stderr=err,
++                                  timeout=20, check=False,
++                                  creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
++    need(consumed.returncode == 0, "Actual consumer rejected input; preserve original stdout/stderr")
++    result_path = Path(session.cfg["watch"]["watch_output_root"]) / "ACTUAL-WRITERS.json"
++    result_pin = pin(result_path)
++    actual = read_pin(result_pin, 8 * 1024 * 1024)
++    selected = load_module(SELECTOR, "xar_r206_writer_cd_selection").select(actual)
++    selected["actual_consumer_result"] = result_pin
++    selection_pin = write(session.control / "C-D-WRITERS.actual.json", selected)
++    final = {"status": selected["status"], "observer_returncode": code,
++             "actual_consumer_result": result_pin, "c_d_selection": selection_pin,
++             "cleanup_proved": actual["cleanup_proved"], "terminal": actual["terminal"],
++             "military_attribution": "unclosed", "paid_maintenance_raw": None}
++    write(session.control / "OBSERVER-FINAL.actual.json", final)
++    return final
++
++
++def native_argv_matches(cfg,watch,admission):
++    ordinary=cfg["watch"].get("owner_binding_mode")=="native_campaign_owned_no_load_v2"
++    tail=["--ordinary-null-owner-binding"] if ordinary else []
++    if ordinary:
++        need(admission.get("schema")=="xar.maintenance.writer_pc.future-admission.v2"
++             and cfg["watch"]["expected"]["episode"] is None
++             and admission.get("expected_episode") is None
++             and admission.get("owner_binding",{}).get("mode")=="native_campaign_owned_no_load_v2",
++             "Explicit v2 ordinary admission required")
++    else:
++        need(admission.get("schema")=="xar.maintenance.writer_pc.future-admission.v1",
++             "Legacy Root driver requires v1 admission")
++    return admission["argv"]==[str(Path(cfg["watch"]["build_dir"]) / "maintenance_writer_cold_observer.exe"),
++        "--enable-ck3-12004-data-watch","--fixture-meta",str(watch / "CURRENT-RAW-ADMISSION.meta.txt"),
++        "--timeout-ms","30000","--raw",str(watch / "writer.raw.ndjson"),
++        "--ready",str(watch / "writer.ready.json"),"--expected-hits","128",
++        "--machine-id",cfg["watch"]["expected"]["machine"]]+tail
++
++
++def observe_prepared(config_pin):
++    """Root same-process entry. Return (session, result); retain module if cleanup pending."""
++    cfg = load_config(config_pin)
++    rt = RootRuntime(cfg)
++    control = Path(cfg["control_root"]).resolve()
++    need(control.is_dir() and str(control) not in SESSIONS, "Prepared new control attempt required")
++    card = read_pin(pin(control / "ROOT-ARGV.actual.json"))
++    prepared = read_pin(pin(control / "PREPARE-RESULT.actual.json"))
++    need(prepared.get("returncode") == 0 and prepared.get("observer_started") is False
++         and same_pin(prepared.get("config"), config_pin), "Exact successful prepare-only result required")
++    watch = Path(cfg["watch"]["watch_output_root"]).resolve()
++    admission = read_pin(pin(watch / "ADMISSION.actual.json"))
++    need(same_pin(prepared.get("admission"), pin(watch / "ADMISSION.actual.json")),
++         "Prepared admission bytes changed")
++    need(admission.get("prepare_only") is True, "Actual prepare-only admission required")
++    # Reuse existing strict original-cash/snapshot binding before starting the watcher.
++    consumer_path = rt.repo / RESEARCH / "consume_writer_actual.py"
++    consumer = load_module(pin(consumer_path), "xar_r206_writer_actual_consumer")
++    consumer.configure(rt.repo)
++    cash_bytes = Path(cfg["watch"]["cash_response"]).read_bytes()
++    before_bytes = Path(cfg["watch"]["before_response"]).read_bytes()
++    consumer.bind_inputs(admission, cash_bytes, before_bytes)
++    original_cash = json.loads(cash_bytes.decode("utf-8-sig"))["body"]
++    original_session = original_cash["war_payment_observations_v1"]["current_session"]
++    admission["_driver_entry_session"] = {key: original_session[key] for key in (
++        "pid", "process_create_time_100ns", "connection_generation", "loaded_game_epoch",
++        "controlled_window_id", "same_owned_process_no_load_window", "game_state_identity_witness",
++        "player_character_full_id")}
++    need(admission["expected_root_identity"] == {
++        "pid": cfg["watch"]["expected"]["pid"],
++        "process_create_time_100ns": cfg["watch"]["expected"]["created"],
++        "connection_generation": cfg["watch"]["expected"]["generation"],
++        "controlled_window_id": cfg["watch"]["expected"]["window"],
++        "player_character_full_id": cfg["watch"]["expected"]["character_id"]},
++        "Prepared independent Root identity differs")
++    need(admission["expected_payment_epoch"] == cfg["watch"]["expected"]["epoch"]
++         and admission["expected_episode"] == cfg["watch"]["expected"]["episode"], "Prepared epoch/episode differs")
++    argv = admission["argv"]
++    need(native_argv_matches(cfg,watch,admission),"Exact versioned observer argv differs")
++    rt.guard()
++    write(control / "observer-start.once.json", {"at_utc": stamp(), "config": config_pin,
++                                              "argv": argv, "unknown_start_never_replayed": True})
++    out, err = (control / "observer.stdout").open("xb"), (control / "observer.stderr").open("xb")
++    # A Popen exception leaves the claim intact. It is never silently retried.
++    started_ns = time.monotonic_ns()
++    try:
++        proc = subprocess.Popen(argv, stdout=out, stderr=err,
++                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
++    except BaseException as exc:
++        out.close()
++        err.close()
++        write(control / "OBSERVER-START-UNKNOWN.actual.json", {"at_utc": stamp(),
++            "error": type(exc).__name__ + ": " + str(exc), "do_not_relaunch": True})
++        raise
++    session = Session(cfg, config_pin, rt, card, admission, control, proc, out, err, started_ns)
++    SESSIONS[str(control)] = session
++    primary, day = None, None
++    prefix = cfg["request_prefix"]
++    try:
++        session.ready = await_ready(proc, watch / "writer.ready.json")
++        write(control / "READY-OBSERVED.actual.json", session.ready)
++        before, before_pin = rt.request(prefix + "-before", "ck3_take_snapshot", {"include_native_command_history": False})
++        check_frame(before, cfg["watch"]["expected"])
++        cash, cash_pin = rt.request(prefix + "-cash-before", "ck3_query_war_cash_current_resources_private_v1",
++                                    {"expected_revision": before["revision"], "payment_sampling": "query"})
++        before_window = check_cash(cash, before, admission, rt.repo)
++        need(proc.poll() is None and time.monotonic_ns() - started_ns < 18_000_000_000,
++             "Insufficient live finite watch headroom; no day submitted")
++        need(before["date_raw"] + 24 <= rt.c["expected_start_date_raw"] + rt.c["maximum_days"] * 24,
++             "The one day exceeds actual scene day admission")
++        args = {"step": "life-advance-one-day", "expected_revision": None}
++        write(control / "day.once.json", {"at_utc": stamp(), "request_id": prefix + "-day-once",
++                                        "tool": "ck3_execute_step", "arguments": args,
++                                        "before": before_pin, "cash_before": cash_pin,
++                                        "unknown_result_never_replayed": True})
++        step, step_pin, step_error = None, None, None
++        try:
++            step, step_pin = rt.request(prefix + "-day-once", "ck3_execute_step", args)
++        except BaseException as exc:
++            step_error = type(exc).__name__ + ": " + str(exc)
++        # This independent read happens even after an unknown original day result.
++        after, after_pin = rt.request(prefix + "-independent-after", "ck3_take_snapshot",
++                                      {"include_native_command_history": False})
++        check_frame(after, cfg["watch"]["expected"], after=True)
++        contract = check_clock(step, before, after) if step is not None else None
++        after_cash, after_cash_pin = rt.request(prefix + "-cash-after", "ck3_query_war_cash_current_resources_private_v1",
++                                                {"expected_revision": after["revision"], "payment_sampling": "query"})
++        after_window = check_cash(after_cash, after, admission, rt.repo)
++        day = {"before": before_pin, "cash_before": cash_pin, "step": step_pin,
++               "after": after_pin, "cash_after": after_cash_pin,
++               "before_window": before_window, "after_window": after_window,
++               "original_step_error": step_error, "composite_and_independent_contract": contract,
++               "exact_day_qualified": contract is not None and step_error is None,
++               "no_enable_clear_or_additional_Arm_Resume": True}
++        write(control / "DAY-RESULT.actual.json", day)
++        if step_error:
++            raise RuntimeError("Original day remains unknown; no replay: " + step_error)
++    except BaseException as exc:
++        primary = type(exc).__name__ + ": " + str(exc)
++        write(control / "PRIMARY-ERROR.actual.json", {"at_utc": stamp(), "error": primary,
++                                                   "no_action_or_observer_retry": True})
++    try:
++        observer = finalize(session)
++    except BaseException as exc:
++        observer = {"status": "FINALIZATION_OR_CONSUMER_UNQUALIFIED", "cleanup_proved": False,
++                    "error": type(exc).__name__ + ": " + str(exc),
++                    "process_id": proc.pid, "process_exitcode": proc.poll(), "no_force_kill": True}
++    result = {"at_utc": stamp(), "config": config_pin, "primary_error": primary,
++              "day": day, "observer": observer, "single_process_handle_retained": True,
++              "safe_to_begin_normal_close": observer.get("cleanup_proved") is True,
++              "sampling_state": "preserved_unmodified_Root_collect_and_OFF_before_game_exit",
++              "known_producer": False, "maintenance_attribution": "unclosed", "paid_maintenance_raw": None}
++    write(control / "ROOT-WINDOW-RESULT.actual.json", result)
++    return session, result
+--- a/tools/ck3_mod_acceptance_cases/r08_writer_one_day.py
++++ b/tools/ck3_mod_acceptance_cases/r08_writer_one_day.py
+@@ -0,0 +1,274 @@
++"""One declared natural writer opportunity on the existing public CaseClient.
++
++The existing prepare/observer/consumer controller owns the four-slot watch.
++The shared entry owns normal closure; this actor withholds it until restore and
++payment OFF/clear are independently proved. No load, host or SDK is constructed.
++"""
++from datetime import datetime, timezone
++from pathlib import Path
++from types import SimpleNamespace
++import importlib.util
++import json
++import re
++import subprocess
++import sys
++import time
++
++from .r10_prepare_adapter import need, pin, small_json
++from . import r04_county_entry as common
++from . import r08_writer_common_adapter as bridge
++
++MODE = 'native_campaign_owned_no_load_v2'
++RESEARCH = Path('ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004')
++AUTH_SCHEMA = 'xar.e04.r206-cd-writer-explicit-root-admission.v1'
++AUTH_STATUS = 'ROOT_ADOPTED_R206_INDEPENDENT_CD_WRITER_WINDOW'
++
++
++def settings(value):
++    required = {'scene_root', 'source_head', 'native_build_source_head', 'build_dir',
++                'machine_execution_gate', 'actor_id', 'expected_start_date_raw',
++                'expected_source_save_sha256', 'profile_limit_bytes', 'driver_limit_bytes',
++                'deadline_utc', 'prefix', 'payment_enable_once_authorized'}
++    defaults = dict(admission_timeout_seconds=600, normal_close_reserve=900,
++                    cleanup_save_reserve=120, poll_seconds=.25)
++    need(type(value) is dict and required <= set(value) and set(value) <= required | set(defaults),
++         'Explicit complete R08 one-opportunity settings required')
++    a = SimpleNamespace(**{**defaults, **value})
++    for name in ('actor_id', 'expected_start_date_raw', 'profile_limit_bytes', 'driver_limit_bytes'):
++        need(type(getattr(a, name)) is int and getattr(a, name) > 0, 'Positive R08 ' + name + ' required')
++    for name, size in (('source_head', 40), ('native_build_source_head', 40), ('expected_source_save_sha256', 64)):
++        need(re.fullmatch('[0-9a-f]{'+str(size)+'}', getattr(a, name) or '') is not None,
++             'Exact R08 source identity required: ' + name)
++    need(re.fullmatch('r08-[a-z0-9-]{1,55}', a.prefix or '') is not None, 'Unique bounded R08 prefix required')
++    need(type(a.payment_enable_once_authorized) is bool, 'Explicit payment enable decision required')
++    need(type(a.admission_timeout_seconds) in (int, float) and 0 < a.admission_timeout_seconds <= 900
++         and type(a.poll_seconds) in (int, float) and .05 <= a.poll_seconds <= 1,
++         'Finite R08 admission wait required')
++    need(a.normal_close_reserve >= 900 and a.cleanup_save_reserve >= 120, 'Original normal-close/cleanup reserves required')
++    need(datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')).tzinfo is not None,
++         'Timezone-aware R08 deadline required')
++    need(type(a.machine_execution_gate) is dict, 'Exact qualified machine gate pin required')
++    return a
++
++
++def validate_contract(context):
++    a = settings(context['case_inputs']['r08_writer_one_day'])
++    seed = context.get('saved_campaign') or {}
++    if seed:
++        need(seed.get('sha256') == a.expected_source_save_sha256 and seed.get('player_id') == a.actor_id
++             and seed.get('date_raw') == a.expected_start_date_raw, 'R08 normal source/date/actor differs')
++    return a
++
++
++class CloseGate:
++    """Guard only this instance's original shared close; retain errors as errors."""
++    def __init__(self, client):
++        self.restored = True
++        self.off_clear = False
++        original = client.normal_close
++        def guarded(disposition):
++            need(self.restored and self.off_clear, 'R08 restore/OFF-clear unproved; normal Quit withheld')
++            return original(disposition)
++        client.normal_close = guarded
++
++
++def load_controller():
++    # A fresh module keeps its Popen sessions local to this one public run.
++    path = Path(__file__).with_name('r08_writer_controller.py')
++    name = '_r08_public_writer_controller_' + str(time.monotonic_ns())
++    spec = importlib.util.spec_from_file_location(name, path)
++    value = importlib.util.module_from_spec(spec)
++    sys.modules[name] = value
++    spec.loader.exec_module(value)
++    return value
++
++
++def root_window_guard(context, client, cfg, a, identity):
++    """Consume the existing explicit Root DR grant against fresh public facts."""
++    client.guard()
++    auth = small_json(cfg['observer_admission'])
++    small_json(a.machine_execution_gate)
++    cap = small_json(cfg['scene_capacity'])
++    common.capacity_binding(cap, selection=client.selection, scene=a.scene_root,
++        machine_id=cfg['watch']['expected']['machine'], source_head=a.source_head, a=a)
++    need(auth.get('schema') == AUTH_SCHEMA and auth.get('status') == AUTH_STATUS
++         and auth.get('admitted') is True and auth.get('external_debugger_allowed') is True
++         and auth.get('scope') == 'independent-unfilmed-cd-writer-window'
++         and auth.get('r06_probe_concurrent') is False, 'Independent finite Root DR grant required')
++    for key, expected in (('scene_capacity', cfg['scene_capacity']), ('runtime_identity', identity),
++        ('machine_id', cfg['watch']['expected']['machine']), ('source_head', a.source_head),
++        ('runtime_source_head', a.source_head), ('native_build_source_head', a.native_build_source_head),
++        ('run_id', context['run_id']), ('expected_root_identity', cfg['root_identity']),
++        ('overrides_observer_policy_of_sha256', cfg['scene_capacity']['sha256'])):
++        need(auth.get(key) == expected, 'Root writer grant differs: ' + key)
++    need(all(type(auth['expected_root_identity'][k]) is type(v) for k,v in cfg['root_identity'].items()),
++         'Typed Root writer identity differs')
++    need(Path(auth['scene_root']).resolve() == Path(a.scene_root).resolve()
++         and Path(auth['watch_output_root']).resolve() == Path(cfg['watch']['watch_output_root']).resolve(),
++         'Root writer grant crossed actual roots')
++    end = datetime.fromisoformat(auth['quota_review_at_utc'].replace('Z', '+00:00')).timestamp()
++    need(time.time() < end <= min(datetime.fromisoformat(cap['quota_review_at_utc'].replace('Z','+00:00')).timestamp(),
++         datetime.fromisoformat(a.deadline_utc.replace('Z','+00:00')).timestamp()), 'Root writer grant expired/exceeds scope')
++    need(auth.get('maximum_watch_ms') == cfg['watch']['timeout_ms'] == 30000
++         and auth.get('maximum_aggregate_slot_hits') == cfg['watch']['max_slot_hits'] == 128
++         and auth.get('payment_window_policy') == 'preserve_existing_owned_window_no_enable_clear',
++         'Only existing four-slot 30s/128 preserved-window contract admitted')
++    need(min(client.remaining(), end-time.time()) >= a.normal_close_reserve+a.cleanup_save_reserve+70,
++         'R08 original deadline lacks finite watch and close reserves')
++    return auth
++
++
++def wait_admission(context, client, a, collected, identity, *, clock=time.monotonic, sleep=time.sleep):
++    signal = Path(client.output)/'r08-root-observer-admission.json'
++    need(not signal.exists(), 'R08 Root grant predates fresh awaiting; never reuse')
++    client.checkpoint('r08-before-observer-awaiting', dict(machine_id=collected['expected']['machine'],
++        run_id=context['run_id'], actual_inputs=collected['receipt'], runtime_identity=identity,
++        expected_root_identity={k:collected['expected'][v] for k,v in (
++            ('pid','pid'),('process_create_time_100ns','created'),('connection_generation','generation'),
++            ('episode_run_id','episode'),('player_character_full_id','character_id'),
++            ('controlled_window_id','window'),('payment_epoch','epoch'),('date_raw','date'))},
++        signal_path=str(signal), start_date_raw=a.expected_start_date_raw,
++        target_date_raw=a.expected_start_date_raw+24, maximum_observer_launches=1,
++        maximum_actual_days=1, observer_started=False, watch_ms=30000, aggregate_slot_hits=128))
++    end = clock()+a.admission_timeout_seconds
++    while clock() < end:
++        client.guard()
++        need(client.remaining() > a.normal_close_reserve+a.cleanup_save_reserve+70,
++             'R08 admission wait exhausted original close reserves')
++        if signal.exists():
++            ref=pin(signal)
++            return ref, small_json(ref)
++        sleep(a.poll_seconds)
++    raise TimeoutError('R08 Root admission absent; no observer/day submitted')
++
++
++def run_case(context, client):
++    from ck3_live_run_id import current_machine_id
++    from xar_autoplayer.bridge.war_payment_observations_v1 import normalize_payment_extras, JOURNAL_KEY
++    from xar_autoplayer.bridge.native_driver import _normalize_tactical_daily_sentinel_status
++    a = validate_contract(context)
++    repo=Path(context['repo_root']).resolve(); output=Path(client.output)
++    machine=current_machine_id()
++    head=subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip()
++    need(head==a.source_head,'R08 frozen source differs')
++    bridge.write_new(output/'r08-one-opportunity.once.json', dict(machine_id=machine,run_id=context['run_id'],
++        source_head=head,start_date_raw=a.expected_start_date_raw,target_date_raw=a.expected_start_date_raw+24,
++        unknown_action_never_replayed=True))
++    gate=CloseGate(client); legacy=load_controller(); cfg=None; session=None
++    packets=bridge.CommonPackets(context,client,output/'r08-common-packets',machine=machine)
++    serial=0
++    result=dict(machine_id=machine,run_id=context['run_id'],status='ENTERED',actual_days=0,
++        exact_day_verified=False,full_R08_qualified=False,business_pass=False,errors=[])
++    def call(label,tool,args):
++        nonlocal serial
++        serial+=1
++        return packets.request(a.prefix+'-'+str(serial)+'-'+label,tool,args)[0]
++    def snapshot(label):
++        frame=call(label,'ck3_take_snapshot',{'include_native_command_history':False})
++        need(frame.get('episode_run_id') is None and frame.get('episode_projection')=='native_campaign'
++             and frame.get('paused') is True and frame.get('map_ready') is True
++             and frame['played_character']['character_id']==a.actor_id, 'R08 fresh ordinary paused owner differs')
++        return frame
++    def payment(label,mode):
++        frame=snapshot(label+'-frame')
++        args=dict(expected_revision=frame['revision'],payment_sampling=mode)
++        if mode=='enable':args['payment_window_contract']='same_owned_process_no_load_v1'
++        body=call(label,bridge.CASH_TOOL,args)
++        normalized=normalize_payment_extras(body,snapshot=frame,payment_sampling=mode)
++        if mode!='query':need(normalized['war_payment_control_v1']['accepted'] is True,'R08 payment control not accepted')
++        return normalized[JOURNAL_KEY]
++    try:
++        initial=payment('initial-payment','query')
++        if initial['sampling']['capture_enabled'] is not True:
++            need(a.payment_enable_once_authorized,'Payment OFF: no explicit once-enable authorization')
++            payment('payment-enable-once','enable')
++        need(payment('payment-independent-on','query')['sampling']['capture_enabled'] is True,
++             'Independent payment ON unavailable')
++        collected=bridge.collect_current_context(context,client,machine=machine,prefix=a.prefix+'-initial',
++            packet_root=output/'r08-initial-inputs',owner_binding_mode=MODE)
++        x=collected['expected']
++        need(x['date']==a.expected_start_date_raw and x['character_id']==a.actor_id,'R08 predeclared date/actor differs')
++        identity=bridge.write_new(output/'R08-COMMON-IDENTITY.actual.json',dict(machine_id=machine,
++            run_id=context['run_id'],source_head=head,retained=collected['common_retained_process'],expected=x))
++        admission_ref, auth=wait_admission(context,client,a,collected,identity)
++        root=output/'r08-writer-control'; watch=root/'watch'
++        watch_cfg=dict(repo=str(repo),python=str(client.selection.locations['python']),source_head=head,
++            build_dir=a.build_dir,machine_execution_gate=a.machine_execution_gate['path'],
++            before_response=collected['before_response']['path'],cash_response=collected['cash_response']['path'],
++            owner_binding_mode=MODE,watch_output_root=str(watch),expected=x,timeout_ms=30000,max_slot_hits=128)
++        # Gate bytes are checked before the canonical prepare adapter consumes it.
++        small_json(a.machine_execution_gate)
++        cfg=dict(schema='xar.e04.common-cd-writer-driver-input.v1',run_id=context['run_id'],
++            request_prefix=a.prefix,control_root=str(root),common_packet_root=str(output/'r08-observer-packets'),
++            watch=watch_cfg,build_card=pin(repo/RESEARCH/'build_card.py'),observer_admission=admission_ref,
++            scene_capacity=auth['scene_capacity'])
++        cfg['root_identity']=legacy.expected_binding(watch_cfg)
++        cap=small_json(cfg['scene_capacity'])
++        bound_args=SimpleNamespace(**{**vars(a),'capacity_admission':cfg['scene_capacity']})
++        binding=common.actual_binding(client.selection,Path(a.scene_root),client._process,client.read_report(),cap,
++            machine_id=machine,source_head=head,a=bound_args)
++        binding['saved_campaign_source']=common.bound_saved_campaign_source(client.read_report(),client.frozen,
++            client.selection.prepared,binding,sha=a.expected_source_save_sha256,date_raw=a.expected_start_date_raw,
++            actor=a.actor_id,state_dir=client.selection.state_dir)
++        result['actual_binding']=binding
++        guard=lambda c,owner,value:root_window_guard(c,owner,value,a,identity)
++        bridge.bind_legacy_driver(legacy,context,client,machine=machine,root_window_guard=guard)
++        legacy.SELECTOR=pin(repo/RESEARCH/'select_cd_writers.py')
++        cfg_pin=bridge.write_new(output/'R08-DRIVER-INPUT.actual.json',cfg)
++        result['driver_input']=cfg_pin
++        legacy.prepare(cfg_pin)
++        gate.restored=False
++        try:
++            session,window=legacy.observe_prepared(cfg_pin)
++            result['window']=window
++        finally:
++            # A failed pre-launch guard is safe; an unknown Popen remains unsafe.
++            claimed=(root/'observer-start.once.json').exists()
++            gate.restored=not claimed or result.get('window',{}).get('safe_to_begin_normal_close') is True
++        result['exact_day_verified']=(window.get('day') or {}).get('exact_day_qualified') is True
++        result['status']=('NATURAL_OPPORTUNITY_CONSUMED' if not window.get('primary_error')
++            and window.get('safe_to_begin_normal_close') is True else 'STOPPED_ERROR_PRESERVED_NO_REPLAY')
++    except BaseException as error:
++        result.update(status='STOPPED_ERROR_PRESERVED_NO_REPLAY',error=type(error).__name__+': '+str(error))
++    finally:
++        cleanup=dict(OFFclear=False,Save=False,native_restore_verified=gate.restored)
++        try:
++            need(gate.restored,'Observer restore/detach unproved; OFF/Save/Quit withheld; retain original controller session')
++            call('cleanup-pause','ck3_execute_step',dict(step='pause-map',expected_revision=None))
++            status=_normalize_tactical_daily_sentinel_status(call('cleanup-clock','ck3_execute_step',
++                dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'])
++            if status['state']=='armed':
++                call('cleanup-cancel-clock','ck3_execute_step',dict(step='research-cancel-tactical-daily-sentinel-v1-generation-'+str(status['generation']),expected_revision=None))
++                stopped=_normalize_tactical_daily_sentinel_status(call('cleanup-clock-independent','ck3_execute_step',
++                    dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'])
++                need(stopped['state']!='armed','Original clock still armed; Save withheld')
++            payment('payment-disable-once','disable')
++            off=payment('payment-independent-off','query')['sampling']
++            gate.off_clear=off['capture_enabled'] is False and off['busy'] is False and off['clear_completed'] is True and off['active_captures']==0 and off['retained_records']==0
++            need(gate.off_clear,'Independent payment OFF/clear unavailable')
++            cleanup['OFFclear']=True
++            before=snapshot('Save-before')
++            saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
++            after=snapshot('Save-independent-after')
++            ck=saved.get('checkpoint') or {}
++            cleanup.update(Save_result=saved,independent_after=after,
++                Save=ck.get('status')=='saved' and ck.get('date_raw')==before['date_raw']==after['date_raw'])
++            delta=after['date_raw']-a.expected_start_date_raw
++            if delta in (0,24):result['actual_days']=delta//24
++        except BaseException as error:
++            result['errors'].append('cleanup: '+type(error).__name__+': '+str(error))
++        result.update(cleanup=cleanup,native_restore_verified=gate.restored,normal_close_owned_by_shared_entry=True)
++        client.checkpoint('R08-WRITER-RESULT',result)
++        client.checkpoint('R08-WRITER-TERMINAL',dict(machine_id=machine,run_id=context['run_id'],
++            status=result['status'],actual_days=result['actual_days'],exact_day_verified=result['exact_day_verified'],
++            OFFclear=cleanup['OFFclear'],Save=cleanup['Save'],native_restore_verified=gate.restored,
++            full_R08_qualified=False,business_pass=False,errors=result['errors']))
++    return result
++
++
++def verify_case(context):
++    path=Path(context['output'])/'R08-WRITER-TERMINAL.json'
++    value=small_json(pin(path)) if path.is_file() else {}
++    return dict(actual_days=value.get('actual_days',0),exact_day_verified=value.get('exact_day_verified') is True,
++        native_restore_verified=value.get('native_restore_verified') is True,
++        full_R08_qualified=False,business_pass=False,normal_close_owned_by_shared_entry=True)
+--- a/tools/ck3_mod_acceptance_cases/r10_prepare.json
++++ b/tools/ck3_mod_acceptance_cases/r10_prepare.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "xar.e04.r10-common-preparation.v1",
+-  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county or R06 refill observation through the same common CaseClient",
++  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county, R06 refill or R08 natural writer opportunity through the same common CaseClient",
+   "formal_ABC_executor_implemented": false,
+   "formal_ABC_arm": false,
+   "normal_Save_performed_by_case": false,
+@@ -26,6 +26,18 @@
+     "normal_close_owner": "shared entry/CaseClient",
+     "full_R06_qualified": false
+   },
++  "optional_r08_writer_one_day": {
++    "settings": "case_inputs.r08_writer_one_day",
++    "maximum_actual_days": 1,
++    "maximum_observer_launches": 1,
++    "native_window_ms": 30000,
++    "aggregate_slot_hits": 128,
++    "watch_offsets": [704, 712, 40, 48],
++    "owner_binding_mode": "native_campaign_owned_no_load_v2",
++    "coordination": "r08-before-observer-awaiting.json -> r08-root-observer-admission.json",
++    "normal_close_owner": "shared entry/CaseClient, after verified restore and payment OFF/clear",
++    "full_R08_qualified": false
++  },
+   "pending": [
+     "Root common S0 selection and normal Save after actual route/site pilot",
+     "two distinct sites with actual positive same-province stock deltas and qualified callback chain",
+--- a/tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py
++++ b/tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py
+@@ -1,8 +1,8 @@
+ """Normal R10 preparation through the original public CaseClient.
+ 
+ The default case collects readiness and policy inputs. Explicit
+-case_inputs.r04_county_entry continues on this same client into a bounded
+-county observation with one Move and at most seven exact days. Derived
++optional R04, R06 or R08 inputs continue on this same client into their bounded
++county, refill or single natural writer opportunity. Derived
+ full-wire views retain their original public control rows. The shared entry
+ owns the host, SDK session and normal game closure.
+ """
+@@ -86,14 +86,17 @@
+     need(context['case_contract'].get('schema') == 'xar.e04.r10-common-preparation.v1',
+          'R10 common preparation contract differs')
+     value = context.get('case_inputs', {})
+-    need(not (value.get('r04_county_entry') is not None and value.get('r06_refill_one_day') is not None),
+-         'R04 and R06 are mutually exclusive')
++    need(sum(value.get(k) is not None for k in ('r04_county_entry','r06_refill_one_day','r08_writer_one_day')) <= 1,
++         'R04, R06 and R08 are mutually exclusive')
+     if value.get('r04_county_entry') is not None:
+         from . import r04_county_entry
+         r04_county_entry.validate_contract(context)
+     if value.get('r06_refill_one_day') is not None:
+         from . import r06_refill_one_day
+         r06_refill_one_day.validate_contract(context)
++    if value.get('r08_writer_one_day') is not None:
++        from . import r08_writer_one_day
++        r08_writer_one_day.validate_contract(context)
+     if not value:
+         return
+     for key in ('army_id', 'war_id', 'goal_province_id', 'staging_province_id'):
+@@ -247,6 +250,9 @@
+     if values.get('r06_refill_one_day') is not None:
+         from . import r06_refill_one_day
+         result['r06_refill_one_day'] = r06_refill_one_day.run_case(context, client)
++    if values.get('r08_writer_one_day') is not None:
++        from . import r08_writer_one_day
++        result['r08_writer_one_day'] = r08_writer_one_day.run_case(context, client)
+     return result
+ 
+ 
+@@ -266,4 +272,7 @@
+     if context.get('case_inputs', {}).get('r06_refill_one_day') is not None:
+         from . import r06_refill_one_day
+         verified['r06_refill_one_day'] = r06_refill_one_day.verify_case(context)
++    if context.get('case_inputs', {}).get('r08_writer_one_day') is not None:
++        from . import r08_writer_one_day
++        verified['r08_writer_one_day'] = r08_writer_one_day.verify_case(context)
+     return verified
+--- a/tools/test_r08_writer_one_day.py
++++ b/tools/test_r08_writer_one_day.py
+@@ -0,0 +1,209 @@
++"""Deterministic public routing and refusal tests, not native qualification."""
++from datetime import datetime, timedelta, timezone
++from pathlib import Path
++from types import SimpleNamespace
++from unittest.mock import patch
++import copy
++import json
++import sys
++import tempfile
++import unittest
++
++sys.path[:0] = [str(Path(__file__).resolve().parent),
++               str(Path(__file__).resolve().parents[1]/'ck3_autonomous_player/src')]
++from ck3_mod_acceptance_cases import r08_writer_one_day as actor
++from ck3_mod_acceptance_cases import r10_prepare_adapter as r10
++from ck3_mod_acceptance_cases import r08_writer_controller as controller
++from ck3_mod_acceptance_cases import r08_writer_common_adapter as bridge
++
++
++class Client:
++    def __init__(self, root):
++        self.output=Path(root); self._process={'pid':41}; self._handle=1
++        self.selection=SimpleNamespace(locations={'python':sys.executable},
++            state_dir=self.output/'profile',run_dir=self.output/'RUN')
++        self._binding=(41,2,3); self.frozen={};self.closed=[];self.selection.prepared={}
++    def normal_close(self, disposition): self.closed.append(disposition);return {'called':True}
++    def guard(self): pass
++    def retain_process(self): return self._process
++    def remaining(self): return 5000
++    def read_report(self):return {}
++    def checkpoint(self, name, value):
++        path=self.output/(name+'.json');bridge.write_new(path,value);return path
++
++
++def inputs(root):
++    return dict(scene_root=str(root),source_head='1'*40,native_build_source_head='2'*40,
++        build_dir=str(Path(root)/'build'),machine_execution_gate={'path':str(Path(root)/'gate.json'),'bytes':3,'sha256':'0'*64},
++        actor_id=3,expected_start_date_raw=100,expected_source_save_sha256='3'*64,
++        profile_limit_bytes=1000,driver_limit_bytes=2000,
++        deadline_utc=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat(),prefix='r08-test',
++        payment_enable_once_authorized=False,admission_timeout_seconds=1)
++
++
++class PublicHook(unittest.TestCase):
++    def test_actual_r10_dispatch_uses_original_client_and_excludes_other_continuations(self):
++        with tempfile.TemporaryDirectory() as root:
++            c=Client(root); frame={'diagnostics':{'bridge_pid':41,'connection_generation':2},
++                'played_character':{'character_id':3},'episode_run_id':None}
++            context=dict(output=root,case_inputs={'r08_writer_one_day':inputs(root),
++                'normal_checkpoint_receipt':{'sha256':'0'*64},'director_scope_revision':'reviewed'},
++                shared_game={'version':'1.20.0.4','exe_sha256':'0'*64})
++            relay=SimpleNamespace(client=SimpleNamespace(snapshot=lambda:frame))
++            with patch.object(r10,'validate_contract'),patch.object(r10,'CommonRequestRelay',return_value=relay), \
++                 patch.object(r10,'small_json'),patch.object(r10,'collect_ready_t0',return_value={}), \
++                 patch.object(bridge,'retained_creation_filetime',return_value=99), \
++                 patch('ck3_live_run_id.current_machine_id',return_value='machine-test'), \
++                 patch.object(actor,'run_case',return_value={'full_R08_qualified':False}) as run:
++                result=r10.run_case(context,c)
++            run.assert_called_once_with(context,c)
++            self.assertFalse(result['research_card_closed'])
++            self.assertFalse(result['r08_writer_one_day']['full_R08_qualified'])
++            context['case_contract']={'schema':'xar.e04.r10-common-preparation.v1'}
++            for other in ('r04_county_entry','r06_refill_one_day'):
++                context['case_inputs'][other]={}
++                with self.assertRaisesRegex(ValueError,'mutually exclusive'):r10.validate_contract(context)
++                del context['case_inputs'][other]
++
++    def test_no_grant_times_out_without_observer_and_close_is_instance_local(self):
++        with tempfile.TemporaryDirectory() as root:
++            c=Client(root); other=Client(root); gate=actor.CloseGate(c)
++            a=actor.settings(inputs(root)); ticks=iter([0,0,2])
++            with self.assertRaises(TimeoutError):
++                actor.wait_admission({'run_id':'RUN'},c,a,{'expected':dict(machine='machine-test',pid=41,created=99,
++                    generation=2,episode=None,character_id=3,window=4,epoch=5,date=100),'receipt':{}},{},
++                    clock=lambda:next(ticks),sleep=lambda _:None)
++            self.assertFalse((Path(root)/'r08-writer-control').exists())
++            with self.assertRaisesRegex(ValueError,'OFF-clear'):c.normal_close('pending')
++            other.normal_close('other-case');self.assertEqual(other.closed,['other-case'])
++            gate.off_clear=True;c.normal_close('restored');self.assertEqual(c.closed,['restored'])
++            gate.restored=False
++            with self.assertRaises(ValueError):c.normal_close('attached')
++
++    def test_root_grant_rejects_foreign_identity_capacity_and_typed_null(self):
++        with tempfile.TemporaryDirectory() as root:
++            c=Client(root); a=actor.settings(inputs(root));x=dict(machine='machine-test')
++            a.machine_execution_gate=bridge.write_new(Path(root)/'gate.json',{})
++            cap=dict(machine_id='machine-test',admitted=True,budget_status='GREEN',run_id='RUN',
++                source_head=a.source_head,scene_root=root,component_roots={'profile':str(c.selection.state_dir),'driver':str(c.selection.run_dir)},
++                component_ceiling_bytes={'profile':1000,'driver':2000},quota_review_at_utc=a.deadline_utc,run_hard_deadline_utc=a.deadline_utc)
++            capref=bridge.write_new(Path(root)/'cap.json',cap)
++            identity={'path':'actual-identity','bytes':1,'sha256':'a'*64}
++            binding={'pid':41,'episode_run_id':None}
++            cfg=dict(scene_capacity=capref,watch={'expected':x,'watch_output_root':str(Path(root)/'watch'),
++                'timeout_ms':30000,'max_slot_hits':128},root_identity=binding)
++            auth=dict(schema=actor.AUTH_SCHEMA,status=actor.AUTH_STATUS,admitted=True,external_debugger_allowed=True,
++                scope='independent-unfilmed-cd-writer-window',r06_probe_concurrent=False,scene_capacity=capref,
++                runtime_identity=identity,machine_id='machine-test',source_head=a.source_head,runtime_source_head=a.source_head,
++                native_build_source_head=a.native_build_source_head,run_id='RUN',expected_root_identity=binding,
++                overrides_observer_policy_of_sha256=capref['sha256'],scene_root=root,watch_output_root=cfg['watch']['watch_output_root'],
++                quota_review_at_utc=a.deadline_utc,maximum_watch_ms=30000,maximum_aggregate_slot_hits=128,
++                payment_window_policy='preserve_existing_owned_window_no_enable_clear')
++            cfg['observer_admission']=bridge.write_new(Path(root)/'grant-good.json',auth)
++            actor.root_window_guard({'run_id':'RUN'},c,cfg,a,identity)
++            for index, changed in enumerate((dict(machine_id='foreign'),dict(runtime_identity={}),
++                dict(expected_root_identity={'pid':41,'episode_run_id':'RUN'}),dict(maximum_watch_ms=30001))):
++                wrong={**auth,**changed};cfg['observer_admission']=bridge.write_new(Path(root)/('bad-'+str(index)+'.json'),wrong)
++                with self.assertRaises(ValueError):actor.root_window_guard({'run_id':'RUN'},c,cfg,a,identity)
++
++    def test_unknown_day_is_never_replayed_and_original_error_and_after_are_preserved(self):
++        with tempfile.TemporaryDirectory() as root:
++            m=actor.load_controller();control=Path(root)/'control';control.mkdir();watch=control/'watch';watch.mkdir()
++            expected=dict(pid=41,created=99,generation=2,window=4,epoch=5,character_id=3,date=100,episode=None,machine='machine-test')
++            cashpath=Path(root)/'cash.json'
++            bridge.write_new(cashpath,{'body':{'war_payment_observations_v1':{'current_session':{
++                'pid':41,'process_create_time_100ns':99,'connection_generation':2,'loaded_game_epoch':8,
++                'controlled_window_id':4,'same_owned_process_no_load_window':True,
++                'game_state_identity_witness':7,'player_character_full_id':3}}}})
++            beforepath=Path(root)/'before.json';bridge.write_new(beforepath,{})
++            cfg={'request_prefix':'r08-test','control_root':str(control),'watch':{'expected':expected,'build_dir':root,
++                'owner_binding_mode':actor.MODE,'watch_output_root':str(watch),'cash_response':str(cashpath),'before_response':str(beforepath)}}
++            cfgpin=bridge.write_new(Path(root)/'cfg.json',cfg)
++            bridge.write_new(control/'ROOT-ARGV.actual.json',{})
++            admission={'prepare_only':True,'schema':'xar.maintenance.writer_pc.future-admission.v2','expected_episode':None,
++                'owner_binding':{'mode':actor.MODE},'expected_root_identity':{k:expected[v] for k,v in (
++                    ('pid','pid'),('process_create_time_100ns','created'),('connection_generation','generation'),
++                    ('controlled_window_id','window'),('player_character_full_id','character_id'))},'expected_payment_epoch':5}
++            admission['argv']=[str(Path(root)/'maintenance_writer_cold_observer.exe'),'--enable-ck3-12004-data-watch',
++                '--fixture-meta',str(watch/'CURRENT-RAW-ADMISSION.meta.txt'),'--timeout-ms','30000','--raw',str(watch/'writer.raw.ndjson'),
++                '--ready',str(watch/'writer.ready.json'),'--expected-hits','128','--machine-id','machine-test','--ordinary-null-owner-binding']
++            admref=bridge.write_new(watch/'ADMISSION.actual.json',admission)
++            bridge.write_new(control/'PREPARE-RESULT.actual.json',{'returncode':0,'observer_started':False,'config':cfgpin,'admission':admref})
++            calls=[]
++            def request(name,tool,args):
++                calls.append((name,tool,args))
++                if tool=='ck3_execute_step':raise TimeoutError('synthetic unknown original response')
++                if tool=='ck3_take_snapshot':
++                    frame={'map_ready':True,'paused':True,'played_character':{'alive':True,'character_id':3},
++                        'episode_run_id':None,'revision':1,'diagnostics':{'bridge_pid':41,'connection_generation':2},
++                        'date_raw':124 if name.endswith('independent-after') else 100}
++                    return frame,{'path':'test-original-'+name}
++                return {},{'path':'test-original-'+name}
++            consumer=Path(root)/m.RESEARCH/'consume_writer_actual.py';consumer.parent.mkdir(parents=True)
++            consumer.write_text('# synthetic unexecuted consumer pin\n',encoding='utf8')
++            rt=SimpleNamespace(repo=Path(root),c={'expected_start_date_raw':100,'maximum_days':1},guard=lambda:None,request=request)
++            process=SimpleNamespace(pid=42,poll=lambda:None)
++            with patch.object(m,'load_config',return_value=cfg),patch.object(m,'RootRuntime',return_value=rt), \
++                 patch.object(m,'load_module',return_value=SimpleNamespace(configure=lambda _:None,bind_inputs=lambda *args:None)), \
++                 patch.object(m.subprocess,'Popen',return_value=process) as popen,patch.object(m,'await_ready',return_value={'ready':True}), \
++                 patch.object(m,'check_cash',return_value={}),patch.object(m,'finalize',side_effect=ValueError('synthetic consumer rejected original raw')):
++                session,result=m.observe_prepared(cfgpin)
++                with self.assertRaisesRegex(ValueError,'Prepared new control'):m.observe_prepared(cfgpin)
++            session.stdout.close();session.stderr.close()
++            self.assertEqual(popen.call_count,1)
++            self.assertEqual(sum(tool=='ck3_execute_step' for _,tool,_ in calls),1,result)
++            self.assertFalse(result['day']['exact_day_qualified'])
++            self.assertIn('never', (control/'day.once.json').read_text(encoding='utf8'))
++            preserved=json.loads((control/'ROOT-WINDOW-RESULT.actual.json').read_bytes())
++            self.assertIn('unknown',preserved['primary_error'])
++            self.assertTrue(preserved['day']['after']['path'].endswith('independent-after'))
++            self.assertFalse(preserved['safe_to_begin_normal_close'])
++            self.assertIn('consumer rejected',preserved['observer']['error'])
++
++    def test_prepare_failure_and_unknown_start_preserve_terminal_without_false_cleanup(self):
++        for unknown_start in (False,True):
++            with self.subTest(unknown_start=unknown_start),tempfile.TemporaryDirectory() as root:
++                c=Client(root);settings=inputs(root);context=dict(repo_root=root,run_id='RUN',output=root,
++                    case_inputs={'r08_writer_one_day':settings})
++                frame=dict(episode_run_id=None,episode_projection='native_campaign',paused=True,map_ready=True,
++                    played_character={'character_id':3},date_raw=100,revision=1)
++                requests=[]
++                class Packets:
++                    def __init__(self,*args,**kwargs):pass
++                    def request(self,name,tool,args):
++                        requests.append((name,tool,args))
++                        if tool=='ck3_take_snapshot':return frame,{}
++                        if tool=='ck3_execute_step':return {'tactical_daily_sentinel':{}},{}
++                        return {},{}
++                legacy=SimpleNamespace(SELECTOR=None,expected_binding=lambda _:{},
++                    prepare=lambda _:None if unknown_start else (_ for _ in ()).throw(ValueError('synthetic prepare refused')))
++                def observe(_):
++                    path=Path(root)/'r08-writer-control';path.mkdir()
++                    bridge.write_new(path/'observer-start.once.json',{'unknown':True})
++                    raise OSError('synthetic Popen unknown')
++                legacy.observe_prepared=observe
++                actual={'expected':dict(date=100,character_id=3,machine='machine-test'),
++                    'common_retained_process':{'pid':41},'receipt':{},'before_response':{'path':'before'},'cash_response':{'path':'cash'}}
++                def normalize(body,*,snapshot,payment_sampling):
++                    if payment_sampling=='disable':raise ValueError('synthetic disable failed with original row retained')
++                    return {'war_payment_observations_v1':{'sampling':{'capture_enabled':True}}}
++                with patch.object(actor.subprocess,'check_output',return_value='1'*40), \
++                     patch('ck3_live_run_id.current_machine_id',return_value='machine-test'), \
++                     patch.object(actor,'load_controller',return_value=legacy),patch.object(bridge,'CommonPackets',Packets), \
++                     patch.object(bridge,'collect_current_context',return_value=actual),patch.object(bridge,'bind_legacy_driver'), \
++                     patch.object(actor,'wait_admission',return_value=({}, {'scene_capacity':{}})), \
++                     patch.object(actor,'small_json',return_value={}),patch.object(actor,'pin',return_value={}), \
++                     patch.object(actor.common,'actual_binding',return_value={}),patch.object(actor.common,'bound_saved_campaign_source',return_value={}), \
++                     patch('xar_autoplayer.bridge.war_payment_observations_v1.normalize_payment_extras',side_effect=normalize), \
++                     patch('xar_autoplayer.bridge.native_driver._normalize_tactical_daily_sentinel_status',return_value={'state':'idle'}):
++                    result=actor.run_case(context,c)
++                terminal=json.loads((Path(root)/'R08-WRITER-TERMINAL.json').read_bytes())
++                self.assertFalse(terminal['full_R08_qualified']);self.assertFalse(terminal['Save']);self.assertFalse(terminal['OFFclear'])
++                self.assertEqual(terminal['native_restore_verified'],not unknown_start)
++                self.assertTrue(result['errors'])
++                self.assertFalse(any(tool=='ck3_save_checkpoint' for _,tool,_ in requests))
++                self.assertEqual(sum(args.get('payment_sampling')=='disable' for _,_,args in requests),0 if unknown_start else 1)
++                with self.assertRaises(ValueError):c.normal_close('not-authorized')
++
++
++if __name__=='__main__':unittest.main()
