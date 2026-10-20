@@ -1,3 +1,6 @@
+﻿#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1) || defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) || defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
+#include "current_player_observers12004.hpp"
+#endif
 #include <chrono>
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/first_heir_pre_read_diagnostic_v1.hpp"
@@ -157,6 +160,12 @@
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+#include "xar_bridge/player_inventory_window12004_transport.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
+#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
+#endif
 #include "xar_bridge/frontend_bookmark_model_result_v1.hpp"
 #include "xar_bridge/frontend_gui_result_v1.hpp"
 #include "xar_bridge/ingame_ui_mailbox_v1.hpp"
@@ -15730,6 +15739,41 @@ void RunConnectedSession(
           trace_command_entry("early_dispatch_returned");
         }
         if (!early_step_dispatched) {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1) || defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) || defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
+        if (xar::ck3_12004::current_player_observers::IsCurrentPlayerObserverStep12004(step)) {
+          std::string response,failure;
+          xar::ck3_12004::current_player_observers::HandleCurrentPlayerObserver12004(
+              game,g_main_thread_query_mailbox_v1,previous_snapshot?&*previous_snapshot:nullptr,
+              state_revision,connection_generation,step,incoming.payload,request_id,response,failure);
+          if(response.empty())response=CommandResultFrame(request_id,step,false,
+              failure.empty()?"current_player_observer_unavailable_no_retry":failure);
+          connected=write_frame(pipe,response);
+        } else
+#endif
+#if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
+        if (step == xar::ck3_12004::character_skill_effects::kStep) {
+          std::string response, failure;
+          xar::ck3_12004::character_skill_effects::Handle(
+              game, g_main_thread_query_mailbox_v1,
+              previous_snapshot ? &*previous_snapshot : nullptr,
+              state_revision, connection_generation, incoming.payload,
+              request_id, response, failure);
+          if (response.empty()) response = CommandResultFrame(request_id, step,
+              false, failure.empty() ? "character_skill_effects_unavailable_no_retry" : failure);
+          connected = write_frame(pipe, response);
+        } else
+#endif
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+        if (xar::ck3_12004::player_inventory_window::IsStep(step)) {
+          std::string response, failure;
+          xar::ck3_12004::player_inventory_window::Handle(
+              game,g_main_thread_query_mailbox_v1,previous_snapshot?&*previous_snapshot:nullptr,
+              state_revision,connection_generation,step,incoming.payload,request_id,response,failure);
+          if(response.empty())response=CommandResultFrame(request_id,step,false,
+              failure.empty()?"inventory_window_unavailable_no_replay":failure);
+          connected=write_frame(pipe,response);
+        } else
+#endif
         if (xar::game::IsReviewedCrozierAdapter(game) &&
             step == "fixture-run-inbox-v1") {
           std::uint64_t expected_revision = 0;

@@ -1,5 +1,13 @@
 # 第二期执行进度
 
+## 10月20日08:15：B10已确认类型并选入目的地，完整报价仍缺
+
+`machine_id: 4-8e1c2f1861`，截至`2026-10-20T00:15:35Z`。R0005已原生独立确认selected_pious=true，经Root当次原图审阅，一次类型Confirm进入stage2；Rome2577可选、实际选择并独立读回stage5。quote0011与后继refresh都保持`typed_full10_quote_unavailable`，Start意图和调用false，钱包243金币未变、无journey；GUI70不能当全程费用。本场114.800秒原片含三段规划候选，类型确认后的画面须标“尚未出发”，不能沿用B8“尚未确认”，马切拉塔tooltip不是罗马拒绝。详见[B10原场、媒体限制与B11计划](filming-b10-and-b11-plan-20261020.md)。
+
+typed Quit独立OS0／cleanup、原host／公共run／成功allocate-a02与keeper实际wait0，fresh Steam离线和1024×768恢复完成，screen CASdone12500；首allocate-a01退出2保留。observer68与其后Actor17、serde13断言＋2 body语义、parser15及实际body→SDK2／6组合分列通过，尚无真实工厂／TLS／loaded／游戏资格。B11将组合observer／actor／inventory和报价附加守卫窄修，当前只记录源码和有限资格，未写新构建或实机通过。
+
+并发继续覆盖源码/消费者验证、素材及前四章同源组合case；现场串行。65固定声音23:32.267、9:25.888样片、51/65视觉及14实拍位／24项正式结果缺口保持，完整首版仍以约27–30分钟为目标，未完成。
+
 ## 10月20日07:43：B9构建与接口资格完成，后继实拍待准入
 
 `machine_id: 4-8e1c2f1861`。截至`2026-10-19T23:41:02Z`，B9以`88bdeaa`为原编译输入完成847步冷构建，原wait0；新DLL15,235,584 B，8个相关原生夹具实际wait0。Defender为管理员／WMI实际verified，不宣称SYSTEM。旧allocator／adapter66项回归按原件复用，当前SDK消费新serializer包38项PASS、0skip，三类资格分别记录，未启动CK3或取得完整朝圣结果。

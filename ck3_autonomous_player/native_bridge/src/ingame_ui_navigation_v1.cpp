@@ -1,3 +1,7 @@
+﻿#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+#include "xar_bridge/player_inventory_window_native12004.hpp"
+#include <utility>
+#endif
 #include "xar_bridge/religion_ui12004_navigation.hpp"
 #include "xar_bridge/holy_site_creation12004_navigation.hpp"
 #ifndef XAR_ENABLE_HOLY_SITE_CREATION_UI12004
@@ -703,6 +707,9 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
 #include "faith_power_presentation_request12004.inc"
 #include "faith_power_presentation_opening_pins12004.inc"
 #include "faith_power_presentation_opening12004.inc"
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+#include "player_inventory_open12004.inc"
+#endif
 #include "faith_power_tooltip_position_relay12004.inc"
 #include "faith_power_presentation_tooltip12004.inc"
 #include "faith_power_presentation_detail_pins12004.inc"
@@ -886,6 +893,84 @@ bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiReques
       (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::select_army ||
        r.operation==IngameUiOperationV1::hover_army_tooltip || r.operation==IngameUiOperationV1::leave_army_tooltip);
 }
+bool ReadIngameUiModalActionAdmissionV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &env,
+    const IngameUiGuiOwnerBindingV1 &expected,IngameUiModalAdmissionV1 &out) noexcept {
+  out={};IngameUiGuiOwnerBindingV1 before{},after{};
+  if(!env.exact_build_admitted||env.offline_fixture_function_overrides||
+      env.gui_abi_revision!=GuiAbiRevisionV1::crozier12004||!expected.context||!expected.owner||
+      !ReadIngameUiGuiOwnerBindingV1(env,before)||before!=expected) {
+    out.unavailable_reason="modal_current_gui_binding_unavailable";return false;
+  }
+  if(!ReadModalNavigationAdmission(expected.context,out))return false;
+  if(!ReadIngameUiGuiOwnerBindingV1(env,after)||after!=expected) {
+    out.receivers_verified=false;out.unavailable_reason="modal_current_gui_binding_changed";return false;
+  }
+  return out.receivers_verified&&out.effective_visible_count==0;
+}
+
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+namespace {
+struct InventoryWindowCallbackAdapter12004 {
+  const PlayerInventoryWindowNativeInputs12004* inputs=nullptr;
+};
+bool ReadInventoryWindowAdmission12004(void* opaque,inventory_open12004::Admission& out) noexcept {
+  out={};const auto* a=static_cast<InventoryWindowCallbackAdapter12004*>(opaque);
+  if(!a||!a->inputs||!a->inputs->read_admission)return false;
+  return a->inputs->read_admission(a->inputs->context,out.frame,out.active_event,out.pending_interaction)&&
+      (out.published_snapshot_current=true);
+}
+bool ClaimInventoryWindowIntent12004(void* opaque,std::uint64_t sequence,
+                                    const inventory_open12004::State& actual_before) noexcept {
+  const auto* a=static_cast<InventoryWindowCallbackAdapter12004*>(opaque);
+  return a&&a->inputs&&a->inputs->claim_once&&
+      a->inputs->claim_once(a->inputs->context,sequence,inventory_open12004::Project(actual_before));
+}
+inventory_open12004::Inputs InventoryWindowInputs12004(
+    InventoryWindowCallbackAdapter12004& adapter,const PlayerInventoryWindowNativeInputs12004& in) {
+  adapter.inputs=&in;inventory_open12004::Inputs out{};
+  out.context=&adapter;out.read_admission=&ReadInventoryWindowAdmission12004;
+  out.claim_once=&ClaimInventoryWindowIntent12004;out.owner_mailbox_sequence=in.owner_mailbox_sequence;
+  out.enabled=in.open_enabled;out.loaded_gui_sources_bound=in.loaded_gui_sources_verified;
+  // These canonical hashes are supplied only after the worker's real fixed
+  // managed-profile verifier plus the extra actual stock inventory file check.
+  if(in.loaded_gui_sources_verified) {
+    out.hud_sha256="77d0beedefe23eee22b24c1c0b160ae5ee8ec938868d3f4b7ae76296347a6ac6";
+    out.buttons_sha256="f5d8e398a396b75f588a3abd9cb07b51639d7201c71fe7a68ec869b40ce215e6";
+    out.inventory_sha256="475e3a692e4594e170c42d661247db29b1d4adbf62dedf9a3fc8f3463573cc6a";
+  }
+  return out;
+}
+}
+bool ReadPlayerInventoryWindowNative12004(const ZhongguoScoreboardNativeEnvironmentV1& env,
+    const PlayerInventoryWindowNativeInputs12004& in,ck3_12004::PlayerInventoryOpenPost12004& out,
+    bool& code_pins,std::string& reason) noexcept {
+  out={};code_pins=false;
+  try {
+    InventoryWindowCallbackAdapter12004 adapter{};const auto inputs=InventoryWindowInputs12004(adapter,in);
+    inventory_open12004::Admission admission{};inventory_open12004::State state{};
+    if(!ReadInventoryWindowAdmission12004(&adapter,admission)){reason="inventory_owner_admission_unavailable";return false;}
+    code_pins=inventory_open12004::Source(env);
+    const bool ok=inventory_open12004::Read(env,inputs,admission,state,reason);
+    out=inventory_open12004::Project(state);return ok;
+  }catch(...){reason="inventory_native_read_exception";return false;}
+}
+PlayerInventoryWindowNativeResult12004 OpenPlayerInventoryWindowNative12004(
+    const ZhongguoScoreboardNativeEnvironmentV1& env,const PlayerInventoryWindowNativeInputs12004& in) noexcept {
+  PlayerInventoryWindowNativeResult12004 out{};
+  try {
+    InventoryWindowCallbackAdapter12004 adapter{};const auto inputs=InventoryWindowInputs12004(adapter,in);
+    inventory_open12004::Admission admission{};
+    if(!ReadInventoryWindowAdmission12004(&adapter,admission)){out.status="inventory_owner_admission_unavailable";return out;}
+    out.code_pins_verified=inventory_open12004::Source(env);
+    const auto result=inventory_open12004::Open(env,inputs,admission);
+    out.before=inventory_open12004::Project(result.before);out.once_consumed=result.once_consumed;
+    out.invoked=result.invoked;out.call_returned=result.call_returned;out.needs_recovery=result.needs_recovery;out.status=result.status;
+    return out;
+  }catch(...){out.status="inventory_native_open_adapter_exception";return out;}
+}
+#endif
+
 bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &r) noexcept {
   r={};std::string kind,operation;std::uint64_t id=0;
   if(!bridge::JsonStringField(json,"window_kind",kind,24))return false;

@@ -1084,9 +1084,14 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
     driver.allow_private_player_rite_creation_actions = args.private_player_rite_creation_actions
     bind_player_pilgrimage_execution_permission(driver, getattr(args, "allow_private_player_pilgrimage_execution", False))
+    bind_player_artifact_personal_use_action_permission(driver, getattr(args, "allow_private_player_artifact_personal_use_actions", False))
+    bind_player_inventory_window_open_permission(driver, getattr(args, "allow_private_player_inventory_window_open", False))
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_creation_context_query = "ck3_query_player_holy_site_creation_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_action_context_query = "ck3_query_player_holy_site_relic_action_context_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_artifact_personal_use_query = "ck3_query_player_artifact_personal_use_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_ghw_permissions_query = "ck3_query_player_ghw_permissions_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_character_skill_effects_query = "ck3_query_character_skill_effects_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_permissions_query = "ck3_query_player_holy_site_relic_permissions_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_context_query = "ck3_query_player_holy_site_relic_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_query = "ck3_query_player_holy_site_v1" in driver.case_declared_read_only_mcp_tools
@@ -4189,6 +4194,10 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                        "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
     if getattr(args, "allow_private_player_pilgrimage_execution", False) is True:
         child_args.append("--allow-private-player-pilgrimage-execution")
+    if getattr(args, "allow_private_player_artifact_personal_use_actions", False) is True:
+        child_args.append("--allow-private-player-artifact-personal-use-actions")
+    if getattr(args, "allow_private_player_inventory_window_open", False) is True:
+        child_args.append("--allow-private-player-inventory-window-open")
     if getattr(args, "private_player_rite_creation_actions", False):
         child_args.append("--private-player-rite-creation-actions")
     if getattr(args, "private_holy_site_relic_actions", False):
@@ -4493,6 +4502,20 @@ def bind_player_pilgrimage_execution_permission(driver, enabled: bool) -> None:
     driver.allow_private_player_pilgrimage_execution = enabled
 
 
+def bind_player_artifact_personal_use_action_permission(driver, enabled: bool) -> None:
+    """Only an explicit shared-host action opt-in enables submit and original-intent post."""
+    if type(enabled) is not bool:
+        raise ValueError("personal-item action admission requires explicit bool")
+    driver.allow_private_player_artifact_personal_use_actions = enabled
+
+
+def bind_player_inventory_window_open_permission(driver, enabled: bool) -> None:
+    """A separate exact public opt-in enables only inventory query/open/original-intent post."""
+    if type(enabled) is not bool:
+        raise ValueError("inventory opening admission requires explicit bool")
+    driver.allow_private_player_inventory_window_open = enabled
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--agent-source-root", type=Path, help="clean worktree root or package src directory")
@@ -4516,6 +4539,10 @@ def parser() -> argparse.ArgumentParser:
         help="explicit once-only creation callback; requires independent creation UI opt-in")
     result.add_argument("--private-player-holy-site-creation-ui", action="store_true",
         help="enable four exact4 creation UI selectors, independently of read-only tools")
+    result.add_argument("--allow-private-player-inventory-window-open", action="store_true",
+        help="explicit source-bound normal HUD inventory open and original intent post, default off")
+    result.add_argument("--allow-private-player-artifact-personal-use-actions", action="store_true",
+        help="explicit native-once personal-item mutation and exact original post, independently default off")
     result.add_argument("--allow-private-player-pilgrimage-execution", action="store_true",
         help="explicit opt-in for ordinary private pilgrimage planner query and submit tools; default off")
     result.add_argument("--private-player-rite-creation-actions", action="store_true",
@@ -4527,6 +4554,9 @@ def parser() -> argparse.ArgumentParser:
         "ck3_query_faith_power_ui_v1", "ck3_query_faith_power_tooltip_v1",
         "ck3_query_player_holy_site_creation_context_v1",
         "ck3_query_player_holy_site_relic_action_context_v1",
+        "ck3_query_player_artifact_personal_use_v1",
+        "ck3_query_player_ghw_permissions_v1",
+        "ck3_query_character_skill_effects_v1",
         "ck3_query_player_holy_site_relic_permissions_v1",
         "ck3_query_player_holy_site_relic_context_v1",
         "ck3_query_player_holy_site_v1",

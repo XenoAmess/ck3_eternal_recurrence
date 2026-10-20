@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+﻿cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
@@ -10087,3 +10087,14 @@ include(cmake/native_layout_report_v1.cmake)
 
 # Independent, default-OFF ordinary pilgrimage execution.
 include(cmake/pilgrimage_execution_private_v1.cmake)
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/current_player_observers_12004.cmake")
+
+# Independent exact4 character skill effect READ observer, default OFF.
+include(cmake/character_skill_effect12004.cmake)
+
+# Independent default-OFF personal inventory window provider.
+include(cmake/player_inventory_window12004.cmake)
+
+# Finite B11 composition consumers; no production behavior change.
+include(cmake/b11_minimal_consumers.cmake)

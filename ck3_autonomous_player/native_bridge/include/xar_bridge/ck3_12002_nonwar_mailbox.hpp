@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 
@@ -31,6 +31,12 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 feast_start = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 pilgrimage_identities = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 pilgrimage_execution = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 character_skill_effects = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 inventory_window_read = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 inventory_window_open = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 artifact_personal_read = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 artifact_personal_action = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 ghw_permissions_read = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_guest = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_guest_rules = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_guest_opinion = nullptr;

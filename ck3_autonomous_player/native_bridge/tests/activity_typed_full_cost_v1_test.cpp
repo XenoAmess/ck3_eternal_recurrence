@@ -1,4 +1,4 @@
-#include "xar_bridge/activity_typed_full_cost_v1.hpp"
+﻿#include "xar_bridge/activity_typed_full_cost_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 
 #include <windows.h>
@@ -27,6 +27,7 @@ struct Fixture {
   bool final_allowed=true,final_failed=false,named_mismatch=false;
   bool named_unknown=false,named_duplicate=false,mutate_configuration=false;
   bool mutate_selection=false,mutate_total=false,mutate_revision=false;
+  bool wrong_selection=false;
   std::uintptr_t unreadable=0;
   template<class V> void Put(std::uintptr_t at,const V &value) {
     const auto *bytes=reinterpret_cast<const unsigned char *>(&value);
@@ -92,7 +93,7 @@ bool Selection(void *opaque,const ActivityPlannerDiagFrameV1 &expected,
   out={};out.observed=true;out.kind=kOrdinaryPilgrimagePiousContractV1.kind;
   out.frame=f.frame;out.planner=P;out.activity_type=T;out.planning_stage=stage;
   out.native_selected_option=R+0xC000;out.native_option_id=17;
-  const std::string_view key=f.mutate_selection && f.selection_calls>1?
+  const std::string_view key=f.wrong_selection || (f.mutate_selection && f.selection_calls>1)?
       "pilgrimage_type_worldly":"pilgrimage_type_pious";
   std::memcpy(out.option_key.data(),key.data(),key.size());
   out.option_key_size=static_cast<std::uint16_t>(key.size());return true;
@@ -185,8 +186,33 @@ int main() {
   { Fixture f;auto e=f.Environment();e.enabled=false;
     Need(ReadActivityTypedPlannerFullCostV1(e,f.frame,kOrdinaryPilgrimagePiousContractV1).status==
       ActivityTypedFullCostStatusV1::disabled_or_exact_build_rejected);Need(f.named_calls==0); }
-  { Fixture f;f.Put(H+0x3D8,std::uintptr_t{0});
-    Need(f.Read().status==ActivityTypedFullCostStatusV1::planner_or_type_mismatch);Need(f.named_calls==0); }
+  // The same source can qualify the frozen baseline and this candidate.
+  // Baseline rejects these legal unbound HostView states before named/CanStart;
+  // candidate must still consume the full real reader and all cost guards.
+  for (int host_case=0;host_case<3;++host_case) {
+    Fixture f;
+    if(host_case==0) f.Put(H+0x3D8,std::uintptr_t{0});
+    if(host_case==1) f.Put(HOST+0x238,std::uintptr_t{0});
+    if(host_case==2) f.Put(HOST+0xD0,std::int32_t{0});
+    const auto r=f.Read();
+#if defined(XAR_B10_EXPECT_BASELINE_HOST_GATE)
+    Need(r.status==ActivityTypedFullCostStatusV1::planner_or_type_mismatch);
+    Need(f.named_calls==0 && f.canstart_calls==0);
+#else
+    Need(r.status==ActivityTypedFullCostStatusV1::observed && r.quote.observed);
+    Need(r.quote.configured_cost_raw==f.totals && r.quote.final_can_start_observed);
+    Need(f.named_calls==4 && f.canstart_calls==1 && f.selection_calls==2);
+#endif
+  }
+  { Fixture f;f.Type("activity_feast");
+    Need(f.Read().status==ActivityTypedFullCostStatusV1::planner_or_type_mismatch);
+    Need(f.named_calls==0 && f.canstart_calls==0); }
+  { Fixture f;f.Put(P+0x1AE8,std::int32_t{4});
+    Need(f.Read().status==ActivityTypedFullCostStatusV1::planner_or_type_mismatch);
+    Need(f.named_calls==0 && f.canstart_calls==0); }
+  { Fixture f;f.wrong_selection=true;
+    Need(f.Read().status==ActivityTypedFullCostStatusV1::selection_unavailable);
+    Need(f.named_calls==0 && f.canstart_calls==0); }
   { Fixture f;f.observer.environment.typed_contract=nullptr;
     Need(f.Read().status==ActivityTypedFullCostStatusV1::passive_observer_contract_mismatch); }
   { Fixture f;f.observer.latest.sequence=0;

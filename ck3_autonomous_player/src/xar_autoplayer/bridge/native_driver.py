@@ -1919,6 +1919,11 @@ class NativeHeadlessGameplayDriver:
         allow_private_actor_cached_succession_queries: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
         allow_private_player_pilgrimage_execution: bool = False,
+        allow_private_player_artifact_personal_use_query: bool = False,
+        allow_private_player_ghw_permissions_query: bool = False,
+        allow_private_character_skill_effects_query: bool = False,
+        allow_private_player_inventory_window_open: bool = False,
+        allow_private_player_artifact_personal_use_actions: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
         allow_private_player_child_marriage_subject_query: bool = False,
@@ -2057,6 +2062,14 @@ class NativeHeadlessGameplayDriver:
         if type(allow_private_player_pilgrimage_execution) is not bool:
             raise ValueError("pilgrimage execution permission must be an explicit boolean")
         self.allow_private_player_pilgrimage_execution = allow_private_player_pilgrimage_execution
+        for permission, value in (("allow_private_player_artifact_personal_use_query", allow_private_player_artifact_personal_use_query),
+                                  ("allow_private_player_ghw_permissions_query", allow_private_player_ghw_permissions_query),
+                                  ("allow_private_player_artifact_personal_use_actions", allow_private_player_artifact_personal_use_actions),
+                                  ("allow_private_character_skill_effects_query", allow_private_character_skill_effects_query),
+                                  ("allow_private_player_inventory_window_open", allow_private_player_inventory_window_open)):
+            if type(value) is not bool:
+                raise ValueError("native observer permission must be an explicit bool: " + permission)
+            setattr(self, permission, value)
         self.allow_private_prisoner_ransom_action = (
             allow_private_prisoner_ransom_action is True
         )
@@ -3644,6 +3657,38 @@ class NativeHeadlessGameplayDriver:
         from .relic_action_private_transport import execute_relic_action_private_v1
         return execute_relic_action_private_v1(self, expected_revision=expected_revision,
             holy_site_id=holy_site_id, operation="remove_relic", fields={"relic_artifact_id": artifact_id, "relic_expected_replacing_empty": expected_replacing_empty, "relic_expected_preview_sha256": expected_preview_sha256})
+
+    def query_player_artifact_personal_use_private_v1(self, *, expected_revision: int, artifact_id: int) -> dict[str, object]:
+        from .faith_observers_private_transport_v1 import query_player_artifact_personal_use_private_v1
+        return query_player_artifact_personal_use_private_v1(self, expected_revision=expected_revision, artifact_id=artifact_id)
+
+    def query_player_inventory_window_private_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .player_inventory_window_private_transport_v1 import query_player_inventory_window_private_v1
+        return query_player_inventory_window_private_v1(self, expected_revision=expected_revision)
+
+    def open_player_inventory_window_private_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .player_inventory_window_private_transport_v1 import open_player_inventory_window_private_v1
+        return open_player_inventory_window_private_v1(self, expected_revision=expected_revision)
+
+    def query_player_inventory_window_open_post_private_v1(self, *, expected_revision: int, expected_intent_sequence: int) -> dict[str, object]:
+        from .player_inventory_window_private_transport_v1 import query_player_inventory_window_open_post_private_v1
+        return query_player_inventory_window_open_post_private_v1(self, expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
+
+    def query_character_skill_effects_private_v1(self, *, expected_revision: int, character_id: int, skill: str = "diplomacy") -> dict[str, object]:
+        from .character_skill_effects_private_transport_v1 import query_character_skill_effects_private_v1
+        return query_character_skill_effects_private_v1(self, expected_revision=expected_revision, character_id=character_id, skill=skill)
+
+    def query_player_ghw_permissions_private_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .faith_observers_private_transport_v1 import query_player_ghw_permissions_private_v1
+        return query_player_ghw_permissions_private_v1(self, expected_revision=expected_revision)
+
+    def submit_player_artifact_personal_use_private_v1(self, *, expected_revision: int, artifact_id: int, desired_equipped: bool, expected_slot_index: int, expected_replacing_artifact_id: int | None = None, policy_positive: bool = False) -> dict[str, object]:
+        from .artifact_personal_use_action_private_transport_v1 import submit_player_artifact_personal_use_private_v1
+        return submit_player_artifact_personal_use_private_v1(self, expected_revision=expected_revision, artifact_id=artifact_id, desired_equipped=desired_equipped, expected_slot_index=expected_slot_index, expected_replacing_artifact_id=expected_replacing_artifact_id, policy_positive=policy_positive)
+
+    def query_player_artifact_personal_use_action_post_private_v1(self, *, expected_revision: int, artifact_id: int, expected_intent_sequence: int) -> dict[str, object]:
+        from .artifact_personal_use_action_private_transport_v1 import query_player_artifact_personal_use_action_post_private_v1
+        return query_player_artifact_personal_use_action_post_private_v1(self, expected_revision=expected_revision, artifact_id=artifact_id, expected_intent_sequence=expected_intent_sequence)
 
     def query_player_holy_site_relic_permissions_private_v1(
         self, *, expected_revision: int, holy_site_id: int,
@@ -6689,6 +6734,8 @@ class NativeHeadlessGameplayDriver:
         return self._ingame_ui_v1("open_knights", "knights", 0, expected_revision=expected_revision)
 
     def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
+        if window_kind == "inventory":
+            return self.query_player_inventory_window_private_v1(expected_revision=expected_revision)
         return self._ingame_ui_v1("query", window_kind, 0, expected_revision=expected_revision)
 
     def query_current_title_appointment_v1(self, *, expected_revision: int,

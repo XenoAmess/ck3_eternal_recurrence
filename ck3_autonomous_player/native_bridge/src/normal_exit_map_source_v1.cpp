@@ -1,4 +1,4 @@
-#include "xar_bridge/normal_exit_map_source_v1.hpp"
+﻿#include "xar_bridge/normal_exit_map_source_v1.hpp"
 #include "xar_bridge/normal_exit_map_inventory_context_v1.hpp"
 #include "xar_bridge/normal_exit_gui_source_contract_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
@@ -546,4 +546,51 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,
         fs::path(image.data()),stock_verified,reason);
   } catch(...) { try { reason="source_inventory_validation_exception"; } catch(...) {} return false; }
 }
+// Uses the original actual-process source verifier. No request accepts a path,
+// launch profile, native function or a caller-provided verified boolean.
+bool VerifyPlayerInventoryWindowSources12004(std::string_view expected_sha,
+    const game::AdapterDescriptor& descriptor,bool& verified,std::string& reason) noexcept {
+  verified=false;
+  try {
+    if(descriptor.adapter_id!=ck3_12004::kAdapterId||descriptor.game_version!=ck3_12004::kGameVersion||
+        descriptor.executable_sha256!=ck3_12004::kExecutableSha256){reason="inventory_exact4_source_descriptor_unavailable";return false;}
+    bool stock=false;
+    if(!VerifyNormalExitMapSourcesV1(expected_sha,descriptor,stock,reason)||!stock)return false;
+    int argc=0;auto** argv=CommandLineToArgvW(GetCommandLineW(),&argc);
+    if(!argv){reason="inventory_actual_launch_arguments_unreadable";return false;}
+    NormalExitMapLaunchArgumentsV1 launch{};bool okay=false;
+    if(argc>=2&&argc<=5){std::array<std::wstring_view,5> args{};
+      for(int n=0;n<argc;++n)args[static_cast<std::size_t>(n)]=argv[n];
+      okay=ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view>(args.data(),static_cast<std::size_t>(argc)),launch);}
+    LocalFree(argv);
+    if(!okay){reason="inventory_actual_userdir_unsupported";return false;}
+    std::array<wchar_t,32768> image{};
+    const auto count=GetModuleFileNameW(nullptr,image.data(),static_cast<DWORD>(image.size()));
+    if(!count||count>=image.size()){reason="inventory_actual_executable_path_unreadable";return false;}
+    const auto gui=fs::path(image.data()).parent_path().parent_path()/L"game"/L"gui";
+    std::string manifest,actual;
+    const auto fixed=launch.userdir/L"normal-exit-source-inventory-v1.json";
+    if(!ReadFile(fixed,manifest,16U*1024U*1024U)||!NormalExitMapSha256V1(manifest,actual)||actual!=expected_sha){
+      reason="inventory_fixed_source_manifest_changed";return false;}
+    Node node;if(!InventoryParser(manifest).Parse(node)){reason="inventory_source_manifest_invalid";return false;}
+    const auto* mods=Field(node,"enabled_mods",Node::array);
+    if(!mods||!mods->items.empty()){reason="inventory_open_requires_managed_vanilla_profile";return false;}
+    // hud/buttons are already verified by the original fixed source inventory;
+    // repeat them with inventory here to make the three-file leaf contract exact.
+    struct GuiPin {const wchar_t* path;const char* sha;};
+    static constexpr std::array<GuiPin,3> pins{{
+      {L"hud.gui","77d0beedefe23eee22b24c1c0b160ae5ee8ec938868d3f4b7ae76296347a6ac6"},
+      {L"shared/buttons_icons.gui","f5d8e398a396b75f588a3abd9cb07b51639d7201c71fe7a68ec869b40ce215e6"},
+      {L"window_inventory.gui","475e3a692e4594e170c42d661247db29b1d4adbf62dedf9a3fc8f3463573cc6a"},
+    }};
+    for(const auto& pin:pins){std::string bytes;
+      if(!ReadFile(gui/pin.path,bytes,4U*1024U*1024U)||!NormalExitMapSha256V1(bytes,actual)||actual!=pin.sha){
+        reason="inventory_stock_gui_actual_bytes_changed";return false;}}
+    // Existing verifier rechecks fixed manifest/settings/dlc and actual mapping.
+    // Both runs must bind the very same immutable source-inventory digest.
+    if(!VerifyNormalExitMapSourcesV1(expected_sha,descriptor,stock,reason)||!stock)return false;
+    verified=true;reason.clear();return true;
+  }catch(...){reason="inventory_source_validation_exception";return false;}
+}
+
 } // namespace xar::ck3_12003

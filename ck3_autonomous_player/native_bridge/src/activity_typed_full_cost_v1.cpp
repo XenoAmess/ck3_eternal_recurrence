@@ -1,4 +1,4 @@
-#include "xar_bridge/activity_typed_full_cost_v1.hpp"
+﻿#include "xar_bridge/activity_typed_full_cost_v1.hpp"
 #include "xar_bridge/ck3_12002_activity_feast_costs.hpp"
 #include "xar_bridge/ck3_12002_activity_feast_start.hpp"
 #include "xar_bridge/ck3_12002_feast_planner.hpp"
@@ -136,7 +136,9 @@ bool ReadIdentity(const ActivityPlannerDiagEnvironmentV1 &d,
          diagnostic.frame == expected && diagnostic.value.planner_present &&
          diagnostic.value.widget_attached && diagnostic.value.widget_visible &&
          diagnostic.value.stage == 5 &&
-         MatchesActivityTypedPlannerHostKeyV1(diagnostic.value, contract) &&
+         // HostView may still describe an empty/previous hosted activity.
+         // Bind this quote to the actual planner type and selected option,
+         // independently checked before and after the full cost read.
          ResolveActivityPlannerIdentityV1(d, expected, identity) &&
          identity.stage == 5 &&
          MatchesActivityTypedPlannerTypeV1(d, identity.activity_type,

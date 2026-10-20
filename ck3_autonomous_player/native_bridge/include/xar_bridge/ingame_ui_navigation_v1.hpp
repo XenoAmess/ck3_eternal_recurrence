@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/appointment_window_snapshot_v1.hpp"
@@ -210,6 +210,13 @@ bool ExecuteIngameUiNavigationV1(
 bool ReadIngameUiGuiOwnerBindingV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     IngameUiGuiOwnerBindingV1 &output) noexcept;
+// Existing modal admission and original singleton identity, fresh before/after.
+// Internal semantic action providers only; no caller pointer or new game RVA.
+bool ReadIngameUiModalActionAdmissionV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const IngameUiGuiOwnerBindingV1 &expected,
+    IngameUiModalAdmissionV1 &output) noexcept;
+
 
 bool ParseIngameUiRequestV1(std::string_view json, bool query,
                           IngameUiRequestV1 &output) noexcept;

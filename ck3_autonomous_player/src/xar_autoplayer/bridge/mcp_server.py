@@ -2120,6 +2120,81 @@ def create_server(
             return service.remove_holy_site_relic_v1(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id, expected_replacing_empty=expected_replacing_empty, expected_preview_sha256=expected_preview_sha256)
         _forbid_unknown_tool_arguments_v1(server, "ck3_remove_holy_site_relic_v1")
 
+    if getattr(driver, "allow_private_player_artifact_personal_use_actions", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_submit_player_artifact_personal_use_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+            desired_equipped: Annotated[bool, Field(strict=True)],
+            expected_slot_index: Annotated[int, Field(strict=True, ge=0, lt=64)],
+            expected_replacing_artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)] | None = None,
+            policy_positive: Annotated[bool, Field(strict=True)] = False,
+        ) -> dict[str, object]:
+            """Submit one frozen owned-item equip/unequip intent; never retry an unknown result or infer success from ACK."""
+            return service.submit_player_artifact_personal_use_v1(expected_revision=expected_revision, artifact_id=artifact_id,
+                desired_equipped=desired_equipped, expected_slot_index=expected_slot_index,
+                expected_replacing_artifact_id=expected_replacing_artifact_id, policy_positive=policy_positive)
+        _forbid_unknown_tool_arguments_v1(server,"ck3_submit_player_artifact_personal_use_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_artifact_personal_use_action_post_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+            expected_intent_sequence: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Read the exact original native intent and independent later inventory; no action and no guessed resolution."""
+            return service.query_player_artifact_personal_use_action_post_v1(expected_revision=expected_revision,
+                artifact_id=artifact_id, expected_intent_sequence=expected_intent_sequence)
+        _forbid_unknown_tool_arguments_v1(server,"ck3_query_player_artifact_personal_use_action_post_v1")
+
+    if getattr(driver, "allow_private_player_artifact_personal_use_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_artifact_personal_use_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+        ) -> dict[str, object]:
+            """Read one current player's owned full-ID item, equipment and own definitions; no net actor benefit or equip action."""
+            return service.query_player_artifact_personal_use_v1(expected_revision=expected_revision, artifact_id=artifact_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_artifact_personal_use_v1")
+
+    if getattr(driver, "allow_private_player_inventory_window_open", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_open_player_inventory_window_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Open through the actual normal HUD inventory entry once; unknown outcomes require exact independent native post, never retry."""
+            return service.open_player_inventory_window_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_open_player_inventory_window_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_inventory_window_open_post_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            expected_intent_sequence: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Independently read the original native inventory-open intent and current actual window; ACK is not proof."""
+            return service.query_player_inventory_window_open_post_v1(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_inventory_window_open_post_v1")
+
+    if getattr(driver, "allow_private_character_skill_effects_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_character_skill_effects_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            character_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+            skill: Literal["diplomacy", "martial", "stewardship", "intrigue", "learning", "prowess"] = "diplomacy",
+        ) -> dict[str, object]:
+            """Read six cached skills, own devotion and original native text for one full-ID actor; no refresh or site attribution."""
+            return service.query_character_skill_effects_v1(expected_revision=expected_revision, character_id=character_id, skill=skill)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_character_skill_effects_v1")
+
+    if getattr(driver, "allow_private_player_ghw_permissions_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_ghw_permissions_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Read four fixed native variables and this Faith's GHW/war links; no launch permission inference or action."""
+            return service.query_player_ghw_permissions_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_ghw_permissions_v1")
+
     if getattr(driver, "allow_private_player_holy_site_relic_permissions_query", False) is True:
         @server.tool(annotations=ToolAnnotations(
             readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
@@ -3982,7 +4057,7 @@ def create_server(
         _forbid_unknown_tool_arguments_v1(server, "ck3_set_holy_site_creation_artifact_selection_v1")
 
     @server.tool()
-    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "inventory"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Fresh owner-thread full-ID window readback plus bounded target subtree."""
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 
@@ -5411,6 +5486,14 @@ def parser() -> argparse.ArgumentParser:
     )
     result.add_argument("--private-holy-site-relic-actions", action="store_true",
         help="enable four finite relic UI action tools; callbacks remain subject to native source/frame/preview gates")
+    result.add_argument("--private-player-artifact-personal-use-actions", action="store_true",
+                        help="enable one native-ledger personal-item mutation and exact intent post; independently default off")
+    result.add_argument("--private-player-artifact-personal-use-query", action="store_true",
+                        help="enable exact4 owned personal-item read only; no equip action")
+    result.add_argument("--private-character-skill-effects-query", action="store_true", help="enable finite exact4 native actor skills read only; no site attribution")
+    result.add_argument("--private-player-inventory-window-open", action="store_true", help="enable source-bound normal HUD inventory open and exact independent post, default off")
+    result.add_argument("--private-player-ghw-permissions-query", action="store_true",
+                        help="enable exact4 fixed GHW variables/object links read only; no launch action")
     result.add_argument(
         "--private-player-holy-site-relic-permissions-query", action="store_true",
         help="enable independent exact4 relic candidates and current-window permissions reads only",
@@ -5784,6 +5867,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_player_holy_site_relic_action_context_query:
         driver.allow_private_player_holy_site_relic_action_context_query = True
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
+    driver.allow_private_player_artifact_personal_use_query = args.private_player_artifact_personal_use_query
+    driver.allow_private_player_ghw_permissions_query = args.private_player_ghw_permissions_query
+    driver.allow_private_character_skill_effects_query = args.private_character_skill_effects_query
+    driver.allow_private_player_inventory_window_open = args.private_player_inventory_window_open
+    driver.allow_private_player_artifact_personal_use_actions = args.private_player_artifact_personal_use_actions
     if args.private_player_holy_site_relic_permissions_query:
         driver.allow_private_player_holy_site_relic_permissions_query = True
     if args.private_player_holy_site_relic_context_query:

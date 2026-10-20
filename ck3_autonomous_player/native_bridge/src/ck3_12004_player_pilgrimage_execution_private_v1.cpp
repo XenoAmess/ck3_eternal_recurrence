@@ -1,4 +1,4 @@
-#include "ck3_12004_player_pilgrimage_execution_private_v1.hpp"
+﻿#include "ck3_12004_player_pilgrimage_execution_private_v1.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/activity_typed_cost_serializer_v1.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
@@ -290,7 +290,15 @@ bool ExecutePlayerPilgrimageExecutionPrivate12004V1(
               context.sources.cost, frame, bridge::kOrdinaryPilgrimagePiousContractV1);
           if (q->cost.status != bridge::ActivityTypedFullCostStatusV1::observed ||
               bridge::SerializeActivityTypedPlannerFullCostV1(q->cost).empty()) {
-            q->operation_status = "unavailable"; q->failure = "typed_full10_quote_unavailable";
+            q->operation_status = "unavailable";
+            q->failure = "typed_full10_quote_unavailable;cost_status=";
+            q->failure += bridge::ActivityTypedFullCostStatusKeyV1(q->cost.status);
+            if (q->cost.status == bridge::ActivityTypedFullCostStatusV1::observed)
+              q->failure += ";serializer_rejected=true";
+            q->failure += ";diag=";
+            q->failure += bridge::ActivityPlannerDiagStatusKeyV1(q->planner.diagnostic.status);
+            q->failure += q->planner.diagnostic.value.host_view_activity_key_known
+                ? ";host_key_known=true" : ";host_key_known=false";
           } else if (q->operation == Op::quote) q->operation_status = "observed";
           else {
             context.reserve_mapping = q->cost.quote.known_name_resource_indices;

@@ -1,10 +1,17 @@
-#include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+﻿#include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 
 namespace xar::ck3_12002 {
 
 void RegisterNonwarMailboxExecutorsV1(
     ck3_11906::MainThreadQueryInstallEnvironmentV1 &environment,
     const NonwarMailboxExecutorsV1 &executors) noexcept {
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+  environment.permitted_executor_player_inventory_window_read12004 = executors.inventory_window_read;
+  environment.permitted_executor_player_inventory_window_open12004 = executors.inventory_window_open;
+#endif
+#if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
+  environment.permitted_executor_character_skill_effect12004 = executors.character_skill_effects;
+#endif
   if (executors.steward_develop_county != nullptr) {
     environment.permitted_executor_quattuordenary =
         executors.steward_develop_county;
@@ -71,6 +78,19 @@ void RegisterNonwarMailboxExecutorsV1(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
   environment.permitted_executor_player_pilgrimage_execution12004 = executors.pilgrimage_execution;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1)
+  environment.permitted_executor_artifact_personal_read12004 = executors.artifact_personal_read;
+#endif
+#if defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1)
+  environment.permitted_executor_artifact_personal_action12004 = executors.artifact_personal_action;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
+  environment.permitted_executor_ghw_permissions_read12004 = executors.ghw_permissions_read;
+#endif
+#if defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) && !defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1)
+  environment.permitted_executor_artifact_personal_read12004 = executors.artifact_personal_read;
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   environment.permitted_executor_quattuorsexagintary = executors.feast_start;
 #endif

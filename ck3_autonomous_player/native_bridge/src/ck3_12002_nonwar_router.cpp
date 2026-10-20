@@ -1,5 +1,14 @@
+﻿#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1) || defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) || defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
+#include "current_player_observers12004.hpp"
+#endif
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+#include "xar_bridge/player_inventory_window12004_transport.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
+#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
+#endif
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -259,6 +268,26 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 }
 
 void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)
+  out.inventory_window_read = &ck3_12004::player_inventory_window::ExecuteRead;
+  out.inventory_window_open = &ck3_12004::player_inventory_window::ExecuteOpen;
+#endif
+#if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
+  out.character_skill_effects = &ck3_12004::character_skill_effects::Execute;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1)
+  out.artifact_personal_read = &ck3_12004::current_player_observers::ExecuteArtifactPersonalRead12004;
+#endif
+#if defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1)
+  out.artifact_personal_action = &ck3_12004::current_player_observers::ExecuteArtifactPersonalAction12004;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
+  out.ghw_permissions_read = &ck3_12004::current_player_observers::ExecuteGhwPermissionsRead12004;
+#endif
+#if defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) && !defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1)
+  out.artifact_personal_read = &ck3_12004::current_player_observers::ExecuteArtifactPersonalRead12004;
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
   out.law_action = &ck3_12004::ExecuteRealmLawPrivateAction12004;
 #endif

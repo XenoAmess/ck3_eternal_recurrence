@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <windows.h>
 
@@ -422,6 +422,12 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_player_pilgrimage_identities12004 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_player_pilgrimage_execution12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_character_skill_effect12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_player_inventory_window_read12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_player_inventory_window_open12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_artifact_personal_read12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_artifact_personal_action12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_ghw_permissions_read12004 = nullptr;
   // Optional read-only observer runs on every valid TLS main-thread pump,
   // including unpaused pumps. Context remains alive until uninstall succeeds.
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
@@ -670,6 +676,12 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_feast_stage2_confirm12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_player_pilgrimage_identities12004 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_player_pilgrimage_execution12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_character_skill_effect12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_player_inventory_window_read12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_player_inventory_window_open12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_artifact_personal_read12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_artifact_personal_action12004 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_ghw_permissions_read12004 = nullptr;
   MainThreadQueryExecutorV1 snapshot_observer_callback = nullptr;
   void *snapshot_observer_context = nullptr;
 

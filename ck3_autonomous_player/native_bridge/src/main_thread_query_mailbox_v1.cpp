@@ -1,4 +1,4 @@
-#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+﻿#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
@@ -653,7 +653,13 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_epidemic_recovery12002 == nullptr &&
        environment.permitted_executor_feast_stage2_confirm12002 == nullptr &&
        environment.permitted_executor_player_pilgrimage_identities12004 == nullptr &&
-       environment.permitted_executor_player_pilgrimage_execution12004 == nullptr
+       environment.permitted_executor_player_pilgrimage_execution12004 == nullptr &&
+       environment.permitted_executor_character_skill_effect12004 == nullptr &&
+       environment.permitted_executor_player_inventory_window_open12004 == nullptr &&
+       environment.permitted_executor_player_inventory_window_read12004 == nullptr
+       && environment.permitted_executor_artifact_personal_read12004 == nullptr
+       && environment.permitted_executor_artifact_personal_action12004 == nullptr
+       && environment.permitted_executor_ghw_permissions_read12004 == nullptr
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
        && environment.permitted_executor_mandatory_choice12004 == nullptr
 #endif
@@ -1082,6 +1088,12 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_player_pilgrimage_identities12004;
   mailbox.permitted_executor_player_pilgrimage_execution12004 =
       environment.permitted_executor_player_pilgrimage_execution12004;
+  mailbox.permitted_executor_character_skill_effect12004 = environment.permitted_executor_character_skill_effect12004;
+  mailbox.permitted_executor_player_inventory_window_open12004 = environment.permitted_executor_player_inventory_window_open12004;
+  mailbox.permitted_executor_player_inventory_window_read12004 = environment.permitted_executor_player_inventory_window_read12004;
+  mailbox.permitted_executor_artifact_personal_read12004 = environment.permitted_executor_artifact_personal_read12004;
+  mailbox.permitted_executor_artifact_personal_action12004 = environment.permitted_executor_artifact_personal_action12004;
+  mailbox.permitted_executor_ghw_permissions_read12004 = environment.permitted_executor_ghw_permissions_read12004;
   mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
   mailbox.snapshot_observer_context = environment.snapshot_observer_context;
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
@@ -1297,6 +1309,12 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   mailbox.permitted_executor_child_education_focus12004 = nullptr;
   mailbox.permitted_executor_player_pilgrimage_identities12004 = nullptr;
   mailbox.permitted_executor_player_pilgrimage_execution12004 = nullptr;
+  mailbox.permitted_executor_character_skill_effect12004 = nullptr;
+  mailbox.permitted_executor_player_inventory_window_open12004 = nullptr;
+  mailbox.permitted_executor_player_inventory_window_read12004 = nullptr;
+  mailbox.permitted_executor_artifact_personal_read12004 = nullptr;
+  mailbox.permitted_executor_artifact_personal_action12004 = nullptr;
+  mailbox.permitted_executor_ghw_permissions_read12004 = nullptr;
   mailbox.state.store(MainThreadQueryMailboxStateV1::detached,
                       std::memory_order_release);
   return MainThreadQueryUninstallResultV1::uninstalled;
@@ -1442,7 +1460,13 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_epidemic_recovery12002 != nullptr ||
         mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr ||
          mailbox.permitted_executor_player_pilgrimage_identities12004 != nullptr ||
-         mailbox.permitted_executor_player_pilgrimage_execution12004 != nullptr
+         mailbox.permitted_executor_player_pilgrimage_execution12004 != nullptr ||
+         mailbox.permitted_executor_character_skill_effect12004 != nullptr ||
+         mailbox.permitted_executor_player_inventory_window_open12004 != nullptr ||
+         mailbox.permitted_executor_player_inventory_window_read12004 != nullptr
+         || mailbox.permitted_executor_artifact_personal_read12004 != nullptr
+         || mailbox.permitted_executor_artifact_personal_action12004 != nullptr
+         || mailbox.permitted_executor_ghw_permissions_read12004 != nullptr
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
         || mailbox.permitted_executor_mandatory_choice12004 != nullptr
 #endif
@@ -1593,7 +1617,13 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_epidemic_recovery12002 &&
        executor != mailbox.permitted_executor_feast_stage2_confirm12002 &&
        executor != mailbox.permitted_executor_player_pilgrimage_identities12004 &&
-       executor != mailbox.permitted_executor_player_pilgrimage_execution12004) {
+       executor != mailbox.permitted_executor_player_pilgrimage_execution12004 &&
+       executor != mailbox.permitted_executor_character_skill_effect12004 &&
+       executor != mailbox.permitted_executor_player_inventory_window_open12004 &&
+       executor != mailbox.permitted_executor_player_inventory_window_read12004
+       && executor != mailbox.permitted_executor_artifact_personal_read12004
+       && executor != mailbox.permitted_executor_artifact_personal_action12004
+       && executor != mailbox.permitted_executor_ghw_permissions_read12004) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

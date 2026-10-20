@@ -1230,6 +1230,48 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend cannot execute this finite relic UI action")
         return action(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id, expected_replacing_empty=expected_replacing_empty, expected_preview_sha256=expected_preview_sha256)
 
+    def query_player_artifact_personal_use_v1(self, *, expected_revision: int, artifact_id: int) -> dict[str, object]:
+        query = getattr(self.driver, "query_player_artifact_personal_use_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read personal artifact inventory/definitions")
+        return query(expected_revision=expected_revision, artifact_id=artifact_id)
+
+    def open_player_inventory_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        action = getattr(self.driver, "open_player_inventory_window_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot safely open the current player inventory")
+        return action(expected_revision=expected_revision)
+
+    def query_player_inventory_window_open_post_v1(self, *, expected_revision: int, expected_intent_sequence: int) -> dict[str, object]:
+        query = getattr(self.driver, "query_player_inventory_window_open_post_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot independently observe this original inventory-open intent")
+        return query(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
+
+    def query_character_skill_effects_v1(self, *, expected_revision: int, character_id: int, skill: str = "diplomacy") -> dict[str, object]:
+        query = getattr(self.driver, "query_character_skill_effects_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read original actor skill effects")
+        return query(expected_revision=expected_revision, character_id=character_id, skill=skill)
+
+    def query_player_ghw_permissions_v1(self, *, expected_revision: int) -> dict[str, object]:
+        query = getattr(self.driver, "query_player_ghw_permissions_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read current Faith GHW observations")
+        return query(expected_revision=expected_revision)
+
+    def submit_player_artifact_personal_use_v1(self, *, expected_revision: int, artifact_id: int, desired_equipped: bool, expected_slot_index: int, expected_replacing_artifact_id: int | None = None, policy_positive: bool = False) -> dict[str, object]:
+        action = getattr(self.driver, "submit_player_artifact_personal_use_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot submit this finite personal-item action")
+        return action(expected_revision=expected_revision, artifact_id=artifact_id, desired_equipped=desired_equipped, expected_slot_index=expected_slot_index, expected_replacing_artifact_id=expected_replacing_artifact_id, policy_positive=policy_positive)
+
+    def query_player_artifact_personal_use_action_post_v1(self, *, expected_revision: int, artifact_id: int, expected_intent_sequence: int) -> dict[str, object]:
+        query = getattr(self.driver, "query_player_artifact_personal_use_action_post_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot observe the original personal-item intent")
+        return query(expected_revision=expected_revision, artifact_id=artifact_id, expected_intent_sequence=expected_intent_sequence)
+
     def query_player_holy_site_relic_permissions_v1(
         self, *, expected_revision: int, holy_site_id: int,
         artifact_id: int | None = None,
@@ -13701,6 +13743,11 @@ class GameplayBridgeService:
         return self._typed_ingame_ui_v1("open_knights", "knights", 0, expected_revision)
 
     def query_ingame_ui_window_v1(self, window_kind: str, *, expected_revision: int) -> dict[str, object]:
+        if window_kind == "inventory":
+            query = getattr(self.driver, "query_player_inventory_window_private_v1", None)
+            if not callable(query):
+                raise UnsupportedStepError("selected backend cannot read the actual current inventory window")
+            return query(expected_revision=expected_revision)
         return self._typed_ingame_ui_v1("query", window_kind, 0, expected_revision)
 
     def query_current_title_appointment_v1(self, *, expected_revision: int,

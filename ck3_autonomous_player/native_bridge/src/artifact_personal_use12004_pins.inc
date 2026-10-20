@@ -1,0 +1,33 @@
+﻿// Disk exact .4 code bytes. No absolute relocated vtable words.
+constexpr Pin pins[]{
+  {0xB0A3E0,"48895c2410574883ec20488bf9488b5940b9d8020000e8999771034889442430"}, // inventory_factory
+  {0xB0A411,"488b8f7803000048898778030000"}, // factory_view_slot
+  {0x16247C0,"48895c241848894c240855565741544155415641574883ec500f29742440498b"}, // inventory_ctor
+  {0x1624837,"4c8d6e1048899e980000004889bea00000000f57c033c00f1186a80000004889"}, // inventory_owner_backlinks
+  {0x27804D,"4c8d05bce03a0133d2488d4defe8e1f3"}, // click_registrar
+  {0x162617C,"e89fe2ffff"}, // click_adapter_call
+  {0x276164,"4c8d05c5f53a0133d2488d4defe8ca12"}, // unequip_registrar
+  {0x162579C,"e8aff8ffff"}, // unequip_adapter_call
+  {0x1624420,"48895c2408488974241848897c24205541564157488bec4883ec50488bf24c8b"}, // on_click_artifact
+  {0x16244C1,"e85affcb00"}, // click_membership_call
+  {0x1624503,"e8a8d13bff"}, // click_queue_equipped
+  {0x162456B,"e840d13bff"}, // click_queue_selected
+  {0x16245FD,"e8aed03bff"}, // click_queue_default
+  {0x1625050,"4883ec588b4210c64424280033d2488954242c89542434488d1512bc14034889"}, // unequip
+  {0x1625097,"e814c63bff"}, // unequip_queue
+  {0x22E47D0,"48895c2408488974241048897c24184c8974242055488dac24b0fdffff4881ec"}, // concrete_slot_can_equip
+  {0x22E4420,"48895c24084c8b41404863414c488d0c404d8d1cc84d3bc374558b5a104c8b0d"}, // native_equipped
+  {0x1623E70,"48895c24084889742410574883ec204c8b15e2366404498bd9498bf88bf24d85"}, // default_view_slot
+  {0x2BAFC70,"48895c240848896c2410488974241848897c24204154415641574883ec204d8b"}, // default_inventory_slot
+  {0x2160380,"48895c2408574883ec20488b59604885db7470ba01000000488bcbe840639701"}, // view_visible
+  {0x2536801,"488b81b8000000488d542440498bc8837844000f94442440"}, // artifact_is_inventory
+  {0x4FA9CC,"4c8d054dc10302488d542420e853c003"}, // modifier_registrar
+  {0x2536B36,"e8c554ffff"}, // modifier_adapter_call
+  {0x252C000,"48894c2408534883ec30488bd933c0894424204881c2d8000000488901488941"}, // modifier_getter
+  {0x252C013,"4881c2d8000000"}, // modifier_pc_key_address
+  {0x252C033,"4c8d42684c8d0de2ecf001e8ed94ddff"}, // modifier_pc_value_address
+  {0x23056B9,"488b06420fb70c6066413bca7509488d"}, // modifier_key_rows
+  {0x856050,"40534883ec20488b5118488bd94883fa"}, // destroy_native_string
+  {0x29AA7F0,"4889742410574883ec304c8b0567cd2b03488bf2488bf94d85c074298b51208b"}, // equip_command_can_execute
+  {0x29A9EA0,"4883ec28488b15bdd62b034c8bc94885d2742a448b4120418bc025ffffff003b"}, // unequip_command_can_execute
+};
