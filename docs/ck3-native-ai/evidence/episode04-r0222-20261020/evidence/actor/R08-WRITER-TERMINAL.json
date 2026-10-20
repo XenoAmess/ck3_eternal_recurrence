@@ -1,0 +1,15 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+  "actual_days": 0,
+  "exact_day_verified": false,
+  "OFFclear": false,
+  "Save": false,
+  "native_restore_verified": true,
+  "full_R08_qualified": false,
+  "business_pass": false,
+  "errors": [
+    "cleanup: ValueError: tactical daily sentinel speed is malformed"
+  ]
+}

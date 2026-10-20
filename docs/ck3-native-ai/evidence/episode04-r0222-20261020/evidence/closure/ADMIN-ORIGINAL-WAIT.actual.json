@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "machine_identity_source": "Root verified current machine; explicit CLI binding",
+  "observed_at_utc": "2026-10-20T14:01:16.010516+00:00",
+  "started_at_utc": "2026-10-20T13:57:08.640484+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/r08-live-plan-a01/root_r0222_administrative_normal_close.py",
+    "--cleanup-root",
+    "C:/ck3-e04-resume-20261020-a01/r08-scene-a01/root-admin-cleanup-a01"
+  ],
+  "source": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\root-admin-cleanup-a01\\NORMAL-CLOSE-ARGV.actual-a01.json",
+  "key": "normal_close",
+  "pid": 31288,
+  "actual_original_popen_wait": true,
+  "returncode": 0
+}

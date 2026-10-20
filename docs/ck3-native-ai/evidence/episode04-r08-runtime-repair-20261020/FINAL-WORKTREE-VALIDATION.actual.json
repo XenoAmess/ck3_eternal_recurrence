@@ -1,0 +1,63 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:28:19.613835+00:00",
+  "source_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+      "bytes": 25750,
+      "sha256": "b4a49efbb6e409001050aaf9ff8208bc73e9c0608f7161f2840fdf70c786c11b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_writer_one_day.py",
+      "bytes": 16181,
+      "sha256": "d89acc3ebfc78960b46a49c232328958fc8d66bc9946e79c2d4eb13b4cc30643"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_writer_cleanup_integration.py",
+      "bytes": 5719,
+      "sha256": "4d15209054fdb73e4e101a556372c42c7e878461fbcd193563ad055bd7fc280e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_writer_save_gate.py",
+      "bytes": 3448,
+      "sha256": "4d766f76e72348ed95db6b67d09c1b78f3c7ff13d8e0b1b453a97637088e8156"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_runtime_entry_smoke.py",
+      "bytes": 14778,
+      "sha256": "4d801cb1dd19570e2fb7e78ec2b3af785a41f9b5104aee561966a967c5fce668"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_cleanup_and_sampling.py",
+      "bytes": 8190,
+      "sha256": "4457c5a60c3ac2f3f6018e88dfe64814eebdaa98b2d399c2e970bf3d0ae23b69"
+    }
+  ],
+  "existing_fixture": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\tests\\unit\\fixtures\\war_payment_compiled_12004_a06.json",
+    "bytes": 99336,
+    "sha256": "af7a7d9d90072a457d2ffe180b9f3eb0e96fe5c5ecd46176c268bbde871f5c7d"
+  },
+  "unique_test_methods_passed": 17,
+  "first_batch_all_pass": false,
+  "first_batch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\docs\\ck3-native-ai\\evidence\\episode04-r08-runtime-repair-20261020\\final-worktree-tests\\SUMMARY.actual.json",
+    "bytes": 4789,
+    "sha256": "6b7e78d83cfe56154aab300db4384406ee1237b3da9d3b1aac50c7e4c5336a1d"
+  },
+  "first_failure": "Sparse W omitted pre-existing 99336B fixture, parent subprocess FileNotFound before actor. Materialized exact tracked fixture; production/test source unchanged.",
+  "targeted_retry": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\docs\\ck3-native-ai\\evidence\\episode04-r08-runtime-repair-20261020\\final-worktree-tests\\parent-after-fixture-materialization\\ORIGINAL-WAIT.actual.json",
+    "bytes": 809,
+    "sha256": "4a03dff443632ec46d6541e13d3dfac19280fc4ae241cd8acc8c943a32e3c029"
+  },
+  "all_unique_methods_now_passed": true,
+  "repeat_of_other_passed_tests": false,
+  "full_R08_qualified": false,
+  "business_pass": false
+}

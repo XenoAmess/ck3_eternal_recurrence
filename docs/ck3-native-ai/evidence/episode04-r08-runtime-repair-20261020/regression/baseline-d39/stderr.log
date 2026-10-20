@@ -1,0 +1,18 @@
+test_complete_environment_positive_control_reaches_native_boundary (__main__.RuntimeEntrySmoke.test_complete_environment_positive_control_reaches_native_boundary) ... ok
+test_full_declared_environment_reaches_registered_tool_native_boundary (__main__.RuntimeEntrySmoke.test_full_declared_environment_reaches_registered_tool_native_boundary) ... FAIL
+test_published_r0222_missing_repository_root_is_detected_before_native_send (__main__.RuntimeEntrySmoke.test_published_r0222_missing_repository_root_is_detected_before_native_send) ... ok
+
+======================================================================
+FAIL: test_full_declared_environment_reaches_registered_tool_native_boundary (__main__.RuntimeEntrySmoke.test_full_declared_environment_reaches_registered_tool_native_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\r08-runtime-regression-a01\test_r08_runtime_entry_smoke.py", line 118, in test_full_declared_environment_reaches_registered_tool_native_boundary
+    self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : {"error": "ToolError: Error executing tool ck3_query_war_cash_current_resources_private_v1: No module named 'tools'", "native_send_count": 0}
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 19.194s
+
+FAILED (failures=1)

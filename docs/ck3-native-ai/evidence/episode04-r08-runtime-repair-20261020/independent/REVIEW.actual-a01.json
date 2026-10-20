@@ -1,0 +1,47 @@
+{
+  "schema": "xar.e04.r08-failure-fix-independent-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:06:56.077879+00:00",
+  "source_head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate\\R08-FAILURE-FIX.candidate.patch",
+    "bytes": 12957,
+    "sha256": "6cc7834f967fe7eeb011bb5e55e5082cb4e19d41d0efa6dbf072d98ecdf36de6"
+  },
+  "status": "TWO_MINIMAL_CORRECTIONS_REQUESTED",
+  "findings": [
+    {
+      "id": "IMPORT_EXACT_LAYOUT",
+      "patch_lines": [
+        194,
+        196
+      ],
+      "evidence": "clean_imports also accepts a bare src containing xar_autoplayer. parent.parent alone may select an unrelated ancestor tree with tools/ck3_live_run_id.py.",
+      "minimum_fix": "Require (repository/ck3_autonomous_player/src).resolve()==source before inserting repository; do not modify another tree."
+    },
+    {
+      "id": "OBSERVABLE_INDEPENDENT_OFF",
+      "patch_lines": [
+        101,
+        113
+      ],
+      "evidence": "army_observer_research_sampling_control.normalize_result explicitly accepts query rows that are unavailable (source line83); false/clear/count0 alone do not reject such rows.",
+      "minimum_fix": "Require installed and available True for each of the nine independent query rows, and sampling.available True for payment independent OFF. Do not retry an unknown disable."
+    }
+  ],
+  "reviewed_safe_boundaries": [
+    "Literal idle0 accepted only with observer_claimed is False, exact key/value/type equality; otherwise existing strict normalizer remains.",
+    "Original observer-start.once claim is written before Popen, and an unknown Popen leaves claim intact. gate.restored False short-circuits all OFF/Save/Quit.",
+    "Natural-phase installed/available/idle ON is checked before new payment enable; optional natural enable requires explicit once authorization.",
+    "After restore, a clock failure is retained in errors while payment disable+independent query and all-nine disable+independent query are attempted.",
+    "gate.off_clear additionally requires pause and clock success. Clock unknown prevents Save/Quit even when the two OFF groups succeed.",
+    "Save failure remains a recorded failure. Existing CloseGate guards restored/OFF/clock, not Save success; no new overall cleanup/business PASS is asserted."
+  ],
+  "SDK_or_native_requests_performed": 0,
+  "smoke_tests_performed": 0,
+  "tests_owner": "research_next; not duplicated",
+  "source_files_modified": 0,
+  "original_failed_terminal_modified": false,
+  "remaining_heavy_write_bytes": 0,
+  "retention_review_utc": "2026-10-20T14:15:00Z"
+}

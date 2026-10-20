@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:09:01.711795+00:00",
+  "started_at_utc": "2026-10-20T14:08:59.059655+00:00",
+  "pid": 19540,
+  "original_popen_wait_returncode": 1,
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_runtime_entry_smoke.py",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence",
+    "--scratch-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01",
+    "-v",
+    "ActorParentRuntimeSmoke"
+  ],
+  "elapsed_seconds": 2.6521377998869866,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-parent-d39\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-parent-d39\\stderr.log",
+    "bytes": 1327,
+    "sha256": "9a72908b9042edeaef6f79166189fdd6739ae7edce609b38c4b190a960d2e7a4"
+  },
+  "test_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_runtime_entry_smoke.py",
+    "bytes": 14778,
+    "sha256": "4d801cb1dd19570e2fb7e78ec2b3af785a41f9b5104aee561966a967c5fce668"
+  },
+  "actual_sdk_game_ui_native_exe_calls": 0,
+  "interpretation": "Offline substituted endpoint only. Old-source failure is preserved; no live credit."
+}

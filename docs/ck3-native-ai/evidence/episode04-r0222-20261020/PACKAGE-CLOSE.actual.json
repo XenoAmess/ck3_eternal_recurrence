@@ -1,0 +1,398 @@
+{
+  "schema": "xar.e04.r0222-evidence-candidate-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:13:49.318021+00:00",
+  "component_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\index.json",
+    "bytes": 10947,
+    "sha256": "aa701a1599f992afc0904e03324bfd32dbc399ead92d1e10989177980de7e23a"
+  },
+  "supplement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\SUPPLEMENT.actual.json",
+    "bytes": 2012,
+    "sha256": "97f2cd0b131a03923fdbfbda63f70e28687169b0cb04532b0be84eed9a64f172"
+  },
+  "documents": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\PROPOSED-DOC.md",
+      "bytes": 3812,
+      "sha256": "0893985c4a5cd3c5fd62a6bf574c89db04e2f190d012d6cd54592221aac1b6e8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\HANDOVER-APPEND.md",
+      "bytes": 1599,
+      "sha256": "16d4c0aa0e82538ca4657f767fe3eeed566bf7652a472b9f614b385a53f21217"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\SHARED-KNOWLEDGE-APPEND.md",
+      "bytes": 1941,
+      "sha256": "b2fba6b7501b55aa162df651fb0d0d3b1957bfea6316ca9d75a39f5665127e6d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\INTAKE.md",
+      "bytes": 946,
+      "sha256": "2eba0b74cf08692bfe4ed85c60bad0a4a0e35191efb80b65041b97d55084c8e4"
+    }
+  ],
+  "derived": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\projections\\ADMIN-SIX-ROWS.derived.json",
+      "bytes": 55420,
+      "sha256": "ed721fa45b1910c06fc5e19e9f07f6fd83513b35408466fdcc2d76bd63bb85ed"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\projections\\NATIVE-TERMINAL.derived.json",
+      "bytes": 8888,
+      "sha256": "a51f06bed81809153b42ded0784dbc25ec1a9262613ec44cd5125604694acf8b"
+    }
+  ],
+  "file_manifest": [
+    {
+      "path": "build_package.py",
+      "bytes": 8872,
+      "sha256": "0d827087b84c4f9a9411709fab2aaaea4ab6b989b66dea9090d9ebafde59f769"
+    },
+    {
+      "path": "evidence/actor/entry-run-result.json",
+      "bytes": 14408,
+      "sha256": "6b47584ab9abad73390239d4a43f426711770e27ee1aed67617dec8f09cc6a30"
+    },
+    {
+      "path": "evidence/actor/INITIAL-PAYMENT.actual-results.json",
+      "bytes": 756,
+      "sha256": "e0c33fdbf3e481b379f25f0a786cd3e9fdfdd6f1ad79037c1e3ebc149d0b4677"
+    },
+    {
+      "path": "evidence/actor/normal-close-error-preserved.json",
+      "bytes": 108,
+      "sha256": "4bff93f78d8e9ce0a363e709cbda6f95285f5643dd7c147c5b74b0b2f18ee9e2"
+    },
+    {
+      "path": "evidence/actor/R08-WRITER-RESULT.json",
+      "bytes": 797,
+      "sha256": "09ceb73193114ae805de28eaf17165dcd5a4f54091612fc6dd8cd6dd34eaef2d"
+    },
+    {
+      "path": "evidence/actor/R08-WRITER-TERMINAL.json",
+      "bytes": 426,
+      "sha256": "1e3d04429f8f5b21f99027a379bdeb652323f3499c1550206a735057ed1d4d2f"
+    },
+    {
+      "path": "evidence/capacity/R0222-ACTUAL-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+      "bytes": 3357,
+      "sha256": "b91f7572762160864b933c9c1d2d33b2fd1d8d8f1b50f09829dc43a3e0a26adc"
+    },
+    {
+      "path": "evidence/capacity/R0222-ADMIN-NORMAL-CLOSED-DAY0-FAILED-SETTLEMENT.actual-a01.json",
+      "bytes": 8209,
+      "sha256": "e21c70ace5b345dea8ad311f77d1761f4822d4cee68564e617a64549bce006ff"
+    },
+    {
+      "path": "evidence/capacity/R0222-COMBINED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1038,
+      "sha256": "58db8a1f3725c3bd73e50c8e23dbe379fe5c23a471b6c3813c32de2aeeef0b2b"
+    },
+    {
+      "path": "evidence/closure/actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "1d7c619957251590622f8124ab008902417730c34bfd233b20cb8fece1c27dbc"
+    },
+    {
+      "path": "evidence/closure/ADMIN-ORIGINAL-WAIT.actual.json",
+      "bytes": 815,
+      "sha256": "aafe9327ac2c7d7b6907e03b16670ac9dde47c5fd853b36c727a561829e6b841"
+    },
+    {
+      "path": "evidence/closure/ALLOCATE-ORIGINAL-WAIT.actual.json",
+      "bytes": 1540,
+      "sha256": "93de27be940ffeade176b07faf5867a460bd859eba7ab03e9c69ed359b0c25d5"
+    },
+    {
+      "path": "evidence/closure/host-original-process-exit.json",
+      "bytes": 243,
+      "sha256": "e8061e7cf440a968a86ca408e86293c8d3217a214fc998e9eec70a88d9feef08"
+    },
+    {
+      "path": "evidence/closure/keeper-actual-parent-exit.json",
+      "bytes": 598,
+      "sha256": "58ef05267463a08bf34a6c86a43413a90f6524098b8bdbb6274652b0d7bcc1d9"
+    },
+    {
+      "path": "evidence/closure/normal-close-result.json",
+      "bytes": 9651,
+      "sha256": "95e603ff029375b17a969e356fdac31574ebc873371368531074ffe7799d387c"
+    },
+    {
+      "path": "evidence/closure/PUBLIC-ORIGINAL-WAIT.actual.json",
+      "bytes": 1190,
+      "sha256": "f1035e8978a4a773187936885d6ebd3c633848336f025a18a343224cad32db9a"
+    },
+    {
+      "path": "evidence/closure/SCREEN-RELEASE.actual-a01.json",
+      "bytes": 1233,
+      "sha256": "f2f77f1321df2797d58721217d6fdc7ae0a40c4062f85f87f3152163c71d0ad8"
+    },
+    {
+      "path": "evidence/support/ADMIN-QUIT-HELPER-ADAPTATION.actual.json",
+      "bytes": 1151,
+      "sha256": "3a9758d4219279c2d2712c66352db99678710df4e722d8a99505463acf9c0e8c"
+    },
+    {
+      "path": "evidence/support/ESC-ORIGINAL-WAIT.actual.json",
+      "bytes": 2585,
+      "sha256": "1fb485cdc780c332f20b915fd417458551afe0659ec11e72b944a7156330a914"
+    },
+    {
+      "path": "evidence/support/MANUAL-REVIEW-PATH-ADAPTATION.actual.json",
+      "bytes": 886,
+      "sha256": "4863924458b949435308c42d2fb31d1a879fc55b0b19dfea88c397806d547ed0"
+    },
+    {
+      "path": "evidence/support/menu-scancode-admin.png.json",
+      "bytes": 621,
+      "sha256": "db0e61384dbad24f0d63bae1e6de2d07e7a51343675dc460c8128d2df964c3dd"
+    },
+    {
+      "path": "evidence/support/normal-quit-root-result.json",
+      "bytes": 2312,
+      "sha256": "5622440198994f6455edff781b13bdae31ca885fb664782fe8c94d552223fdc9"
+    },
+    {
+      "path": "evidence/support/PAYMENT-DEFAULT-AND-WIRE.actual-a02.json",
+      "bytes": 4182,
+      "sha256": "a34e72877367462784557327d9ace271c63fe4b24fb614f3ed384b670a96f830"
+    },
+    {
+      "path": "finish_package.py",
+      "bytes": 4781,
+      "sha256": "55a6c75e9564a21347d65c94bad7aedaf1f568d87a23c787afd98ad54baccad8"
+    },
+    {
+      "path": "HANDOVER-APPEND.md",
+      "bytes": 1599,
+      "sha256": "16d4c0aa0e82538ca4657f767fe3eeed566bf7652a472b9f614b385a53f21217"
+    },
+    {
+      "path": "index.json",
+      "bytes": 10947,
+      "sha256": "aa701a1599f992afc0904e03324bfd32dbc399ead92d1e10989177980de7e23a"
+    },
+    {
+      "path": "inspect_inputs.py",
+      "bytes": 2622,
+      "sha256": "c49c27314beddf968e780c8b4048febfc13cb092dcf04cd66b6027e1391746a6"
+    },
+    {
+      "path": "INTAKE.md",
+      "bytes": 946,
+      "sha256": "2eba0b74cf08692bfe4ed85c60bad0a4a0e35191efb80b65041b97d55084c8e4"
+    },
+    {
+      "path": "projections/ADMIN-SIX-ROWS.derived.json",
+      "bytes": 55420,
+      "sha256": "ed721fa45b1910c06fc5e19e9f07f6fd83513b35408466fdcc2d76bd63bb85ed"
+    },
+    {
+      "path": "projections/NATIVE-TERMINAL.derived.json",
+      "bytes": 8888,
+      "sha256": "a51f06bed81809153b42ded0784dbc25ec1a9262613ec44cd5125604694acf8b"
+    },
+    {
+      "path": "PROPOSED-DOC.md",
+      "bytes": 3812,
+      "sha256": "0893985c4a5cd3c5fd62a6bf574c89db04e2f190d012d6cd54592221aac1b6e8"
+    },
+    {
+      "path": "SHARED-KNOWLEDGE-APPEND.md",
+      "bytes": 1941,
+      "sha256": "b2fba6b7501b55aa162df651fb0d0d3b1957bfea6316ca9d75a39f5665127e6d"
+    },
+    {
+      "path": "SOURCE-PINS.partial.actual.json",
+      "bytes": 6601,
+      "sha256": "2f0e601c9811d8118c59bb30425f754a11b419d3dc8314234cc8a46bfd464bb0"
+    },
+    {
+      "path": "SUPPLEMENT.actual.json",
+      "bytes": 2012,
+      "sha256": "97f2cd0b131a03923fdbfbda63f70e28687169b0cb04532b0be84eed9a64f172"
+    }
+  ],
+  "taskbus_status": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "schema": "codex.task_bus.v1",
+      "task_id": "e04-r0222-evidence-20261020-a01",
+      "state": "done",
+      "summary": "R0222_day0_failure_and_separate_administrative_normalclose_small_candidate_ready_host1_public2_preserved_no_SDK_UI_build_source_edits",
+      "next_step": "",
+      "resources": [],
+      "updated_at_utc": "2026-10-20T14:13:48.345842+00:00",
+      "pid": 12704,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+        "branch": null,
+        "dirty_entries": 0
+      },
+      "last_sequence": 7559
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 7559,
+      "event_id": "2f08902086464ef3881d5543f25dd405",
+      "timestamp_utc": "2026-10-20T14:13:48.347440+00:00",
+      "kind": "completed",
+      "task_id": "e04-r0222-evidence-20261020-a01",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R0222_day0_failure_and_separate_administrative_normalclose_small_candidate_ready_host1_public2_preserved_no_SDK_UI_build_source_edits",
+      "next_step": "",
+      "resources": [],
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+        "branch": null,
+        "dirty_entries": 0
+      }
+    }
+  },
+  "taskbus_fresh_poll": {
+    "response_bytes": 3677,
+    "sha256": "9af6d8c361f1a21d500fc9dfc4f809558f5b6d079837f660f510e28eb37fe76e",
+    "acknowledged_cursor": 7559,
+    "remaining": 0,
+    "current_events": [
+      {
+        "event_id": "4be305ad05ff4237bbcd798e9279a8eb",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "completed",
+        "next_step": "Root_review_actual_subprocess_smoke_and_publish_separately",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7555,
+        "state": "done",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080_final_a02_b49fc_readonly_code_review_no_blocker_smoke_owned_research_next_noSDK_noDedit",
+        "task_id": "e04-r08-failure-fix-independent-review-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:08:55.349054+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "7a43b348b4724f9aae78dacebbffc250",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "heartbeat",
+        "next_step": "Fresh complete capacity tail and immediateRED alerts; Root sole game owner; settle only after typed normalclose and original monitorwait",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "e04-capacity-reservations"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7556,
+        "state": "running",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080 actualR0222_singlecombined78180_1GiBhardcaps_dynamicunspent_RootRUNsubmitted132916_1330stage_1415hard_nofilm",
+        "task_id": "e04-capacity-r08-1415-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:09:39.601438+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "89ef58dba8f34361b3569f63d050c8b1",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "registered",
+        "next_step": "Hold_until_source_bound_GREEN_and_Root_execution_within_original1415",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "media-recipe:N/r09-source-visual5-a01"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7557,
+        "state": "running",
+        "summary": "Exact5MiB_recipe_only_no_FFmpeg_wait_actual_cap_and_Root_once_grant",
+        "task_id": "e04-r09-visual5-prepared-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:12:06.443071+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "47360d084dc640f08a81e2ed6b931de8",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "heartbeat",
+        "next_step": "Fresh complete capacity tail and immediateRED alerts; Root sole game owner; settle only after typed normalclose and original monitorwait",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "e04-capacity-reservations"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7558,
+        "state": "running",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080 actualR0222_singlecombined78180_1GiBhardcaps_dynamicunspent_RootRUNsubmitted132916_1330stage_1415hard_nofilm",
+        "task_id": "e04-capacity-r08-1415-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:12:32.086713+00:00",
+        "to": [
+          "*"
+        ]
+      }
+    ]
+  },
+  "own_registry": [
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+      },
+      "last_sequence": 7559,
+      "next_step": "",
+      "pid": 12704,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0222_day0_failure_and_separate_administrative_normalclose_small_candidate_ready_host1_public2_preserved_no_SDK_UI_build_source_edits",
+      "task_id": "e04-r0222-evidence-20261020-a01",
+      "updated_at_utc": "2026-10-20T14:13:48.345842+00:00",
+      "age_seconds": 0,
+      "stale": false
+    }
+  ],
+  "formal_dynamic": "3/11",
+  "research": "10/14",
+  "business": "7/11",
+  "B": "0/2",
+  "ABC": "0/3",
+  "R08_business_pass": false,
+  "film_complete": false,
+  "source_or_worktree_modified": false,
+  "SDK_UI_or_build_requests": 0,
+  "remaining_heavy_bytes": 0,
+  "more_writes_planned": false,
+  "total_bytes_including_this_receipt": 179223,
+  "ceiling_bytes": 196608,
+  "hard_deadline_utc": "2026-10-20T14:15:00Z"
+}

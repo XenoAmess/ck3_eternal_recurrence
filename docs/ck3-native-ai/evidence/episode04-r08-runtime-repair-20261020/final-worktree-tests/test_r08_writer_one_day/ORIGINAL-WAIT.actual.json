@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:24:55.641937+00:00",
+  "started_at_utc": "2026-10-20T14:24:49.494534+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_r08_writer_one_day.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "PYTHONPATH": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\src;C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools",
+  "pid": 22840,
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "native_transport": "test boundary only; no game/SDK/native host"
+}

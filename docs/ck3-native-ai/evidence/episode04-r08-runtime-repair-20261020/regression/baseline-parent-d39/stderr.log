@@ -1,0 +1,16 @@
+test_actual_script_parent_environment_reaches_after_payment_normalization (__main__.ActorParentRuntimeSmoke.test_actual_script_parent_environment_reaches_after_payment_normalization) ... FAIL
+
+======================================================================
+FAIL: test_actual_script_parent_environment_reaches_after_payment_normalization (__main__.ActorParentRuntimeSmoke.test_actual_script_parent_environment_reaches_after_payment_normalization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\r08-runtime-regression-a01\test_r08_runtime_entry_smoke.py", line 254, in test_actual_script_parent_environment_reaches_after_payment_normalization
+    self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : {"actual_actor_payment_normalization_reached_next_boundary": false, "result_error": "ModuleNotFoundError: No module named 'tools'", "full_R08_qualified": false, "queue_tools": ["ck3_take_snapshot", "ck3_query_war_cash_current_resources_private_v1", "ck3_execute_step"]}
+
+
+----------------------------------------------------------------------
+Ran 1 test in 2.377s
+
+FAILED (failures=1)

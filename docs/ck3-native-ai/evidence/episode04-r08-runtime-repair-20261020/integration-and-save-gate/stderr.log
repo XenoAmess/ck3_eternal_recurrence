@@ -1,0 +1,7 @@
+test_real_actor_primary_payment_error_still_runs_independent_off_without_false_save_or_replay (candidate_test.CleanupIntegration.test_real_actor_primary_payment_error_still_runs_independent_off_without_false_save_or_replay) ... ok
+test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit (save_gate_test.SaveGate.test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.045s
+
+OK

@@ -1,0 +1,11 @@
+test_actual_idle0_only_before_observer_claim_and_typed_mutations_refuse (__main__.CleanupAndSampling.test_actual_idle0_only_before_observer_claim_and_typed_mutations_refuse) ... ok
+test_bad_clock_still_attempts_both_off_paths_but_never_save_or_close (__main__.CleanupAndSampling.test_bad_clock_still_attempts_both_off_paths_but_never_save_or_close) ... ok
+test_natural_phase_enable_once_and_independent_read_before_payment_prerequisite (__main__.CleanupAndSampling.test_natural_phase_enable_once_and_independent_read_before_payment_prerequisite) ... ok
+test_natural_phase_missing_authority_unknown_enable_or_busy_never_fakes_ready (__main__.CleanupAndSampling.test_natural_phase_missing_authority_unknown_enable_or_busy_never_fakes_ready) ... ok
+test_real_cleanup_idle0_proceeds_to_independent_offs_then_one_save (__main__.CleanupAndSampling.test_real_cleanup_idle0_proceeds_to_independent_offs_then_one_save) ... ok
+test_unavailable_empty_payment_is_not_qualified_offclear (__main__.CleanupAndSampling.test_unavailable_empty_payment_is_not_qualified_offclear) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+OK

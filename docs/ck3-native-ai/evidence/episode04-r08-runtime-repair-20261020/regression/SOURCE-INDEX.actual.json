@@ -1,0 +1,170 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:12:22.172899+00:00",
+  "read_only_source_head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+  "D_tracked_status": "",
+  "role": "Offline audit, source-only proposed tests, no D/W edit or live credit",
+  "exact_sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 67077,
+      "sha256": "ab6372d69c2561e7af15f28b3f46c0801a9b20161f1d6c4a4fcb07be043af35b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_r08_writer_one_day.py",
+      "bytes": 16157,
+      "sha256": "1cf742ba0bb64d6b83acdad89c9db6703ae81733b267a4ef098244cf0eb625e6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 17902,
+      "sha256": "1861a9345cc03f6379e37b2f80c2ba99fe9c33ea29243b0a755445d924507491"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 319238,
+      "sha256": "05ecc000814b8fac9d8281dfa91fdda51ce0578ba4b9f7578549517861655c17"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+      "bytes": 25762,
+      "sha256": "115eb258e2e4ab958743e065a0c0b6da70adaddab307d8ae1bc0677d75a88f88"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\g2_private_query_transport.py",
+      "bytes": 4533,
+      "sha256": "02db15ca2b070f814df06cad10da2bb9b4c8e2e1aec621f9228a5ab12f971315"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 280396,
+      "sha256": "8d197c312691f5320f8a99b1f28231fb838e420aa5a7ace24c73faffdb7ef1d7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1652126,
+      "sha256": "df9e04917befccd508a593fb70f4a8845a27d9be3b6d644983d3a3da8d425c3a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\war_payment_window_12004.cpp",
+      "bytes": 10357,
+      "sha256": "66d311b72913e55eb37c0b6d76a8b04515001a6d273f372d79a296ed19e9a639"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_war_payment_observations_connected.py",
+      "bytes": 11772,
+      "sha256": "41af5e186a86ac52913e8d5cda94a495664f85fdd792816025ea43530eeb258d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-public-hook-implementation-a01\\focused_run.py",
+      "bytes": 540,
+      "sha256": "2a0fb2da98032131de1f1b53695f5b1e2625001e449b60df748fecf75a4f7a27"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\R0222-PRE-ADMISSION-FAILURE.actual-a01.json",
+      "bytes": 5554,
+      "sha256": "cd98e21f0e072925aeee66261786a2c70fe9fabd44653dbfc07e04ce4cd7d6e9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\runtime.local.json",
+      "bytes": 2625,
+      "sha256": "363352e68a27c2e27ae3b655b71664ac3901aa85222228356a8191d88c44dea8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\war_payment_observations_v1.py",
+      "bytes": 25750,
+      "sha256": "b4a49efbb6e409001050aaf9ff8208bc73e9c0608f7161f2840fdf70c786c11b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\test_r08_writer_cleanup_integration.py",
+      "bytes": 5719,
+      "sha256": "4d15209054fdb73e4e101a556372c42c7e878461fbcd193563ad055bd7fc280e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\test_r08_writer_save_gate.py",
+      "bytes": 3448,
+      "sha256": "4d766f76e72348ed95db6b67d09c1b78f3c7ff13d8e0b1b453a97637088e8156"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\integration-test-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1723,
+      "sha256": "5d1cfb776a38cde1f90776558a7b60694f8fea518a08bf6093ab7c4e2908682d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\integration-test-a01\\stderr.log",
+      "bytes": 521,
+      "sha256": "4ee06022dc8a339817dd6af8d1b676b84f07a99e25d4097676293618dff69519"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\run_integration_candidate_test.py",
+      "bytes": 2478,
+      "sha256": "3608624dda8f347b5e9ae39b94b81a30ddab8c1dc160ce747f8727bc4806d582"
+    }
+  ],
+  "final_test_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_runtime_entry_smoke.py",
+      "bytes": 14778,
+      "sha256": "4d801cb1dd19570e2fb7e78ec2b3af785a41f9b5104aee561966a967c5fce668"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_cleanup_and_sampling.py",
+      "bytes": 8190,
+      "sha256": "4457c5a60c3ac2f3f6018e88dfe64814eebdaa98b2d399c2e970bf3d0ae23b69"
+    }
+  ],
+  "proposed_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-RUNTIME-REGRESSION.candidate.patch",
+    "bytes": 23869,
+    "sha256": "54d531f6f119be4abeebfbe238e0306d22f703d156279338c6c3f112298cc28b"
+  },
+  "actual_original_waits": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-d39\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1694,
+      "sha256": "652a1239f38fb8a07a0e583165c152079bfd59b14b12d9684f561bf790947054"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\candidate-host-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1843,
+      "sha256": "94e96bf2fddf67b96d52ca68a1ea83b95f0eb8ea7f12c2af9c7550816a5e4994"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\candidate-payment-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1990,
+      "sha256": "d1c5b80d6d4359b9ee404eb596e5d6b38993f2140ad82e3db2902b41c799fb5f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\candidate-payment-a03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1989,
+      "sha256": "6aa25b3ca471b587cec26c16dea795d49b9cce7396c5d68b253ab29ad1421e8c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\helper-candidate-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1617,
+      "sha256": "36f2ae52771a4ef895335d03c629e5f2e3f33b85f3625aba18c3b33fef0f24a9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-parent-d39\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1620,
+      "sha256": "78e0490b66e37014c9d5f567239cd315ae6dc526f13308f75b959c4e204c96e7"
+    }
+  ],
+  "conclusions": {
+    "workflow_steps_not_R08_tests": 147,
+    "original_R08_deterministic_tests": 5,
+    "a02_real_subprocess_tests_passed": 4,
+    "a02_real_helper_tests_passed": 6,
+    "a03_author_original_wait_read": 0,
+    "a03_author_two_tests_including_Save_unknown_subcases": true,
+    "a02_results_not_full_a03_retest": true,
+    "R0222_original_preserved": true,
+    "SDK_game_UI_native_EXE_requests": 0,
+    "full_R08_qualified": false
+  }
+}

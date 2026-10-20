@@ -1,0 +1,351 @@
+{
+  "schema": "ck3-mod-acceptance-plan-v1",
+  "product": "war-episode04-r10",
+  "case": "r10-common-preparation",
+  "case_status": "ready",
+  "shared_manifest": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\manifest.json",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "host_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "--agent-source-root",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--game-dir",
+    "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "--bridge-dll",
+    "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "--bridge-injector",
+    "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+    "--bridge-pipe",
+    "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0222",
+    "--output",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\native-report.json",
+    "--state-dir",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01",
+    "--plan",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\prepared-a01\\initial-plan.json",
+    "--control-plan-dir",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\controls",
+    "--private-war-cash-queries",
+    "--command-timeout",
+    "120",
+    "--readiness-timeout",
+    "1800",
+    "--timeout",
+    "5400",
+    "--poll-interval",
+    "0.25",
+    "--hold-seconds",
+    "3600",
+    "--fixture-profile",
+    "--saved-campaign-save",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+    "--saved-campaign-save-bytes",
+    "74273410",
+    "--saved-campaign-save-sha256",
+    "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+    "--saved-campaign-player-id",
+    "33388",
+    "--saved-campaign-date-raw",
+    "53149056",
+    "--saved-campaign-product-inventory",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\prepared-a01\\saved-product-inventory.json"
+  ],
+  "required_mcp_tools": [
+    "ck3_take_snapshot",
+    "ck3_query_army_strengths",
+    "ck3_query_army_commander_candidates_v1",
+    "ck3_query_war_cash_current_resources_private_v1",
+    "ck3_execute_step"
+  ],
+  "opt_in_read_only_mcp_tools": [],
+  "opt_in_holy_site_relic_actions": false,
+  "opt_in_player_rite_creation_actions": false,
+  "opt_in_player_inventory_window_open": false,
+  "opt_in_player_inventory_window_close": false,
+  "opt_in_player_artifact_personal_use_actions": false,
+  "opt_in_player_pilgrimage_execution": false,
+  "rite_confirmation_expected_state_writes": [],
+  "opt_in_holy_site_creation_ui": false,
+  "opt_in_holy_site_creation_create_once": false,
+  "creation_create_once_expected_state_writes": [],
+  "runtime_environment": {
+    "PYTHONUTF8": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src;D:\\workspace\\ck3_eternal_recurrence\\tools"
+  },
+  "phases": [],
+  "budgets": {
+    "command_timeout": 120,
+    "readiness_timeout": 1800,
+    "timeout": 5400,
+    "hold_seconds": 3600,
+    "poll_interval": 0.25
+  },
+  "effective_budgets": {
+    "command_timeout": 120,
+    "readiness_timeout": 1800,
+    "timeout": 5400,
+    "hold_seconds": 3600,
+    "poll_interval": 0.25
+  },
+  "readiness_policy": {
+    "schema": "ck3-mod-acceptance-readiness-policy-v1",
+    "policy_id": "future-readiness-minimum-2026-10-15",
+    "source": "explicit-user-instruction-2026-10-15",
+    "minimum_seconds": 1800,
+    "requested_seconds": 1800,
+    "effective_seconds": 1800,
+    "floor_applied": false,
+    "historical_receipts_reclassified": false
+  },
+  "fixture_prepare": null,
+  "adapter": {
+    "module": "tools.ck3_mod_acceptance_cases.r10_prepare_adapter",
+    "config": "tools/ck3_mod_acceptance_cases/r10_prepare.json"
+  },
+  "normal_close": {
+    "owner": "shared entry/CaseClient",
+    "reserve_seconds": 90,
+    "actual_retained_OS0_and_original_native0_required": true
+  },
+  "gui_contract": null,
+  "outputs": null,
+  "blockers": [],
+  "runtime_status": "LAUNCH_REQUESTED",
+  "business_acceptance": "ACTUAL_EVIDENCE_REQUIRES_VERIFICATION",
+  "status": "REVIEWED_LAUNCHER_RETURNED",
+  "checked_inputs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\manifest.json",
+      "bytes": 3168,
+      "sha256": "0e5dbd2508526e0f81359d206fdcbe5cfb37e73ca55a927c4424c3d5cb514f8e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\prepared-a01\\prepared-case.json",
+      "bytes": 9908,
+      "sha256": "3d962a2b224165dc13f6b2b3a2df60d485164a993de6607e08c8741c40b7e498"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 319238,
+      "sha256": "05ecc000814b8fac9d8281dfa91fdda51ce0578ba4b9f7578549517861655c17"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\source-index.json",
+      "bytes": 21558,
+      "sha256": "36048529533dd28e3aeb305f492c8afe34896f817719017ac055ef544af24a19"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\native-source-index.json",
+      "bytes": 39587,
+      "sha256": "3d40009248ef51cb6696e34fe359058c99f9bad21ab86b49ecd281ee47eedfc1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+    },
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\prepared-a01\\initial-plan.json",
+      "bytes": 18,
+      "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 15813,
+      "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2124,
+      "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\frozen-argv.json",
+      "bytes": 34710,
+      "sha256": "b3eed3beaa402d32350219215dbcf7d60ecba1ceea9d275623e55612f1a7be05"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+      "bytes": 74273410,
+      "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc"
+    }
+  ],
+  "tool_status": {
+    "ck3_take_snapshot": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_strengths": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_commander_candidates_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_war_cash_current_resources_private_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_execute_step": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    }
+  },
+  "capability_limit": "Source/build evidence only; actual live tool and product gates remain mandatory",
+  "launcher_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+    "--run-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222",
+    "--keeper-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\keeper-a01",
+    "--proof",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\steam-review-a01\\STEAM-OFFLINE-DIRECT-REVIEW.actual.json",
+    "--challenge",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\steam-challenge-a01\\challenge.json",
+    "--observed-nonce",
+    "24c3b150ed56e59595b8982b583fd7b8",
+    "--reviewer",
+    "/root"
+  ],
+  "launcher_exit_code": 0,
+  "case_result": {
+    "readiness": {
+      "military_t0_frame_ready": false,
+      "normal_t0_saved": false,
+      "r01_research_core_closed": false,
+      "loss_sampling_ready": false,
+      "missing_inputs": [
+        "agreed_commander_id must be an observed full ID"
+      ],
+      "loss_sampling_missing_inputs": [],
+      "remaining_policy_inputs": [
+        "freeze agreed goal and surrounding land/sea/rest locations with actual native previews",
+        "bind this F and the normal save as the chosen R01 T0"
+      ],
+      "new_live_credit": false,
+      "actual_loss_observed": false,
+      "actual_ADD_observed": false
+    },
+    "sources": {
+      "r10-ready-before": {
+        "status": "received",
+        "envelope": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r10-ready-before-r10-common-envelope.json",
+          "bytes": 46412,
+          "sha256": "0016eb7691aff6ac90844c82e8c63bbc511bf7ee6697c6d0de048588c1e45231"
+        }
+      },
+      "r10-ready-strengths": {
+        "status": "received",
+        "envelope": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r10-ready-strengths-r10-common-envelope.json",
+          "bytes": 19813913,
+          "sha256": "541a39d3c9d7b1bd7e648d2c46995ce6688f99813f6a32a6d9092e6db4f428cb"
+        }
+      },
+      "r10-ready-commander": {
+        "status": "received",
+        "envelope": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r10-ready-commander-r10-common-envelope.json",
+          "bytes": 40167,
+          "sha256": "58cc33636c07d605fe6da75f92ef4713682d30fc2ab092a2df314487ae21cd1b"
+        }
+      },
+      "r10-ready-cash": {
+        "status": "received",
+        "envelope": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r10-ready-cash-r10-common-envelope.json",
+          "bytes": 9958,
+          "sha256": "426865eefa11d1e25558d1a00c29743f8f400e2f1aabe90f5ec8a674ade5cae9"
+        }
+      },
+      "r10-ready-occupation": {
+        "status": "received",
+        "envelope": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r10-ready-occupation-r10-common-envelope.json",
+          "bytes": 102402,
+          "sha256": "ca21072121507791d784b2cc81aeb5c3088aef3c8f9460f23506fd657b4ecfa6"
+        }
+      },
+      "r10-ready-after": {
+        "status": "received",
+        "envelope": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r10-ready-after-r10-common-envelope.json",
+          "bytes": 46559,
+          "sha256": "d462629f5e80a138b4b2b86f4618a27e07e2558b202121b88721bc000ccb0018"
+        }
+      }
+    },
+    "queries_submitted": 6,
+    "natural_days_advanced": 0,
+    "Move_split_merge_Save_submitted": false,
+    "common_T0_frozen": false,
+    "formal_ABC_arm": false,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T13:36:13.761612+00:00",
+    "source_binding": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "pid": 16468,
+      "process_creation_filetime_100ns": 134369765829693142,
+      "connection_generation": 1,
+      "actor_id": 33388,
+      "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "normal_source_receipt_sha256": "5890702bcafc5f3c21418c59797ba4bca7a01bedd339d304b10dfd37941d5337",
+      "director_scope_revision": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+    },
+    "status": "READINESS_PILOT_ONLY",
+    "remaining": [
+      "Root chooses and normally saves common S0 after actual route/site pilot",
+      "two distinct stationary sites with qualified actual positive stock growth",
+      "frozen PLAN then three independent normal cold loads",
+      "formal common A/B/C stage executor connection and actual 90-day horizon",
+      "R08 qualified applied maintenance/payer/cadence before compare_fees=true"
+    ],
+    "research_card_closed": false,
+    "business_pass": false,
+    "formal_ABC_completed": 0,
+    "r08_writer_one_day": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+      "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+      "actual_days": 0,
+      "exact_day_verified": false,
+      "full_R08_qualified": false,
+      "business_pass": false,
+      "errors": [
+        "cleanup: ValueError: tactical daily sentinel speed is malformed"
+      ],
+      "error": "ValueError: Common control failed; preserved view C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\r08-common-packets\\r08-pilot-a01-2-initial-payment.common-view.json; never replay",
+      "cleanup": {
+        "OFFclear": false,
+        "Save": false,
+        "native_restore_verified": true
+      },
+      "native_restore_verified": true,
+      "normal_close_owned_by_shared_entry": true
+    }
+  },
+  "normal_close_error": "ValueError: R08 restore/OFF-clear unproved; normal Quit withheld"
+}

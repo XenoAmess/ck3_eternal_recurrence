@@ -1,0 +1,229 @@
+{
+  "schema": "xar.e04.r0222-derived-native-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:10:56.720332+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\native-report.json",
+    "bytes": 14833097,
+    "sha256": "c01a7b246b60df276d7f0adb464dd8c81188a42b389c588d4b5b4f10856725be",
+    "mtime_ns": 1792504875686845200,
+    "st_ino": 1407374885462760,
+    "st_dev": 13886423844274364792
+  },
+  "derivation": "Fields projected from retained closed native report; no original report copied and no new native request.",
+  "status": "RED",
+  "managed_session_done": true,
+  "managed_session_thread_finished": true,
+  "cleanup_ok": true,
+  "identity": {
+    "game_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "game_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "dll": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "dll_sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0",
+    "injector": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+    "injector_sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+  },
+  "saved_campaign_input": {
+    "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+    "bytes": 74273410,
+    "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+    "actor_character_id": 33388,
+    "date_raw": 53149056,
+    "profile_path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\profile",
+    "copied_save_path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\profile\\save games\\restored_campaign.ck3",
+    "load_save_name": "restored_campaign",
+    "product_inventory_path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\prepared-a01\\saved-product-inventory.json",
+    "product_inventory_sha256": "95ed220c2d51a7869b47e5e03360f595febfb8ba4aab894043ef8a12f86996c7",
+    "profile_inventory_schema": "ck3-saved-campaign-vanilla-profile-v1",
+    "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_VANILLA_PROFILE",
+    "source_game_state_claimed": false,
+    "product_acceptance_proven": false
+  },
+  "saved_campaign_launch": {
+    "status": "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED",
+    "argv_admitted": true,
+    "command": [
+      "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "-gdpr-compliant",
+      "-userdir=C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\profile",
+      "-loadsave=restored_campaign"
+    ],
+    "ck3_pid": 16468,
+    "continue_last_save": false,
+    "load_save_name": "restored_campaign",
+    "debug_mode": false,
+    "captured_at": "2026-10-20T13:29:44.500392+00:00"
+  },
+  "session_report_projection": {
+    "pid": 16468,
+    "started_at": "2026-10-20T13:29:40.088553+00:00",
+    "finished_at": "2026-10-20T13:59:48.682271+00:00",
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "ok": true,
+    "error": null
+  },
+  "shutdown": {
+    "nonce": "5aa391742ee64b3e9ffed57d74424ea4",
+    "ck3_pid": 16468,
+    "ck3_creation_date": "20261020132942.969314+000",
+    "ck3_exit_code": 0,
+    "job_active_processes_before_termination": 0,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 20060,
+    "watchdog_creation_date": "20261020132940.903839+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\control\\ck3.json": true,
+      "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\control\\watchdog-5aa391742ee64b3e9ffed57d74424ea4.ready.json": true,
+      "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\control\\ck3.watchdog_error": true,
+      "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "step_summaries": [
+    {
+      "id": "snapshot-0001",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:35:34.467047+00:00",
+      "finished_at": "2026-10-20T13:35:34.703308+00:00"
+    },
+    {
+      "id": "r10-ready-before",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:35:43.842952+00:00",
+      "finished_at": "2026-10-20T13:35:44.064904+00:00"
+    },
+    {
+      "id": "r10-ready-strengths",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:35:47.108032+00:00",
+      "finished_at": "2026-10-20T13:35:52.682563+00:00"
+    },
+    {
+      "id": "r10-ready-commander",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:00.248618+00:00",
+      "finished_at": "2026-10-20T13:36:00.518776+00:00"
+    },
+    {
+      "id": "r10-ready-cash",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:03.848512+00:00",
+      "finished_at": "2026-10-20T13:36:04.219453+00:00"
+    },
+    {
+      "id": "r10-ready-occupation",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:09.425835+00:00",
+      "finished_at": "2026-10-20T13:36:09.754605+00:00"
+    },
+    {
+      "id": "r10-ready-after",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:13.064629+00:00",
+      "finished_at": "2026-10-20T13:36:13.280416+00:00"
+    },
+    {
+      "id": "r08-pilot-a01-1-initial-payment-frame",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:16.619316+00:00",
+      "finished_at": "2026-10-20T13:36:16.816869+00:00"
+    },
+    {
+      "id": "r08-pilot-a01-2-initial-payment",
+      "ok": false,
+      "error": "RuntimeError: MCP tool ck3_query_war_cash_current_resources_private_v1 returned an error: Error executing tool ck3_query_war_cash_current_resources_private_v1: No module named 'tools'",
+      "started_at": "2026-10-20T13:36:19.889499+00:00",
+      "finished_at": "2026-10-20T13:36:20.104638+00:00"
+    },
+    {
+      "id": "r08-pilot-a01-3-cleanup-pause",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:23.223459+00:00",
+      "finished_at": "2026-10-20T13:36:23.463637+00:00"
+    },
+    {
+      "id": "r08-pilot-a01-4-cleanup-clock",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:36:26.542920+00:00",
+      "finished_at": "2026-10-20T13:36:26.772805+00:00"
+    },
+    {
+      "id": "r0222-root-admin-off-a01-pause",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:53:18.246561+00:00",
+      "finished_at": "2026-10-20T13:53:18.516975+00:00"
+    },
+    {
+      "id": "r0222-root-admin-off-a01-control",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:53:18.700349+00:00",
+      "finished_at": "2026-10-20T13:53:18.942478+00:00"
+    },
+    {
+      "id": "r0222-root-admin-off-a01-query",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:53:19.102205+00:00",
+      "finished_at": "2026-10-20T13:53:19.325574+00:00"
+    },
+    {
+      "id": "r0222-root-admin-off-a01-paused",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:53:19.519222+00:00",
+      "finished_at": "2026-10-20T13:53:19.732538+00:00"
+    },
+    {
+      "id": "r0222-root-admin-save-a01-once",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:53:57.633727+00:00",
+      "finished_at": "2026-10-20T13:53:58.856310+00:00"
+    },
+    {
+      "id": "r0222-root-admin-save-a01-independent-after",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T13:53:59.053511+00:00",
+      "finished_at": "2026-10-20T13:53:59.267080+00:00"
+    },
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "ok": true,
+      "error": null,
+      "started_at": "2026-10-20T14:01:14.266786+00:00",
+      "finished_at": "2026-10-20T14:01:14.462534+00:00"
+    }
+  ],
+  "top_level_error": null,
+  "final_observation_error": "RuntimeError: MCP tool ck3_take_snapshot returned an error: Error executing tool ck3_take_snapshot: native DLL is not connected to \\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "business_pass": false,
+  "full_R08_qualified": false
+}

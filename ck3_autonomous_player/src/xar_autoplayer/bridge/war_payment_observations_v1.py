@@ -366,7 +366,7 @@ def payment_request_fields(payment_sampling, payment_window_contract):
     need(type(payment_sampling) is str and payment_sampling in MODES,'sampling mode must be enable, disable or query')
     need(payment_window_contract == (WINDOW_CONTRACT if payment_sampling=='enable' else None),
          'enable alone requires the exact no-load window contract')
-    from tools.ck3_live_run_id import current_machine_id
+    from ck3_live_run_id import current_machine_id
     result={'war_payment_sampling':payment_sampling,'war_payment_machine_id':current_machine_id()}
     if payment_sampling=='enable':result['war_payment_window_contract']=WINDOW_CONTRACT
     return result
@@ -376,7 +376,7 @@ def normalize_payment_extras(result, *, snapshot, payment_sampling):
     if JOURNAL_KEY not in result and CONTROL_KEY not in result:
         need(payment_sampling is None,'explicit observer control returned no evidence')
         return {}
-    from tools.ck3_live_run_id import current_machine_id
+    from ck3_live_run_id import current_machine_id
     need(JOURNAL_KEY in result,'observer control returned no raw journal')
     output={JOURNAL_KEY:normalize_journal(result[JOURNAL_KEY],snapshot=snapshot,machine_id=current_machine_id())}
     if payment_sampling is None:

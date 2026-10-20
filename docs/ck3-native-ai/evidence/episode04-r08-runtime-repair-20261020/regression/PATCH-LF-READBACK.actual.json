@@ -1,0 +1,46 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:14:29.005341+00:00",
+  "role": "append-only LF patch normalization; tested source and old patch bytes unchanged",
+  "rows": [
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-RUNTIME-REGRESSION.candidate.patch",
+        "bytes": 23869,
+        "sha256": "54d531f6f119be4abeebfbe238e0306d22f703d156279338c6c3f112298cc28b"
+      },
+      "LF_derived_patch": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-RUNTIME-REGRESSION.candidate-a02.patch",
+        "bytes": 23492,
+        "sha256": "9eb1cf08a0183951ea0f4e34082dc5ed7a9d9935791ce14513c4c4ef13da0752"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-CI-DOC-GLUE.candidate.patch",
+        "bytes": 2710,
+        "sha256": "efcba8bc57f9cf10cf8d51d9c75ed179518664ad81f38a8a94022d44de314d54"
+      },
+      "LF_derived_patch": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-CI-DOC-GLUE.candidate-a02.patch",
+        "bytes": 2667,
+        "sha256": "e60af0a7fb4c6fa2ab0a5f74846bf498fb85ddcf0e48e2125bdba67178a232ce"
+      }
+    }
+  ],
+  "original_process_returncode": 0,
+  "argv": [
+    "git",
+    "-C",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+    "apply",
+    "--check",
+    "--whitespace=error",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-RUNTIME-REGRESSION.candidate-a02.patch",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-CI-DOC-GLUE.candidate-a02.patch"
+  ],
+  "stdout": "",
+  "stderr": "",
+  "tracked_source_writes": false,
+  "tests_repeated": false
+}

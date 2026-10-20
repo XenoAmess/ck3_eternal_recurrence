@@ -1,0 +1,106 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:06:32.294627+00:00",
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 328360,
+    "sha256": "1564c10d29265a6cecfb5d0f23090f7d5fdb8800bc56a7851d47031ce5cd64df"
+  },
+  "settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R0222-ADMIN-NORMAL-CLOSED-DAY0-FAILED-SETTLEMENT.actual-a01.json",
+    "bytes": 8209,
+    "sha256": "e21c70ace5b345dea8ad311f77d1761f4822d4cee68564e617a64549bce006ff"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 361,
+    "lock_hold_seconds": 0.0007108000572770834,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 329523,
+      "sha256": "f3d33eb7a7d4bf7a5e36a995931a2d28420af0d737b1e6d12539f896b78ed0ea"
+    }
+  },
+  "active_balances": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r08-1415-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T14:06:31.772109+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78146236416,
+      "available_to_caller_bytes": 78146236416,
+      "total_free_bytes": 78146236416,
+      "entire_volume_used_allocation_upper_bound_bytes": 432987709440,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T14:06:31.772109+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21649346560,
+      "available_to_caller_bytes": 21649346560,
+      "total_free_bytes": 21649346560,
+      "entire_volume_used_allocation_upper_bound_bytes": 478440660992,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget": {
+    "C_known_future_bytes": 134217728,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25946154182,
+    "C_floor_margin_bytes": 52200082234,
+    "C_projected_whole_volume_upper_bound_bytes": 437459027142,
+    "C_quota_margin_bytes": 627637050,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 40292352
+  },
+  "shared": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T14:06:32.241301+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 127095447,
+    "files": 4148,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "successor_live_scope_not_reserved": true
+}
