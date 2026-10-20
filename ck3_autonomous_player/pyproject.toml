@@ -43,6 +43,23 @@ xar-throughput-report = "xar_autoplayer.throughput_report:main"
 
 [project.optional-dependencies]
 mcp = ["mcp==2.0.0"]
+typecheck = ["mypy==1.15.0"]
+
+# Initial strict boundary lane. Broaden only when each added module is checked.
+[tool.mypy]
+python_version = "3.11"
+strict = true
+show_error_codes = true
+follow_imports = "skip"
+mypy_path = ["$MYPY_CONFIG_FILE_DIR/src", "$MYPY_CONFIG_FILE_DIR/../tools/g2_saved_campaign"]
+files = [
+  "$MYPY_CONFIG_FILE_DIR/src/xar_autoplayer/cold_checkpoint_validator.py",
+  "$MYPY_CONFIG_FILE_DIR/../tools/g2_saved_campaign/owner_prepare_contract_v1.py",
+]
+
+[[tool.mypy.overrides]]
+module = ["xar_autoplayer.cold_checkpoint_validator", "owner_prepare_contract_v1"]
+follow_imports = "normal"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

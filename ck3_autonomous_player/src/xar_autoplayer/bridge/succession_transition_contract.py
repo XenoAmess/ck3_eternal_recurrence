@@ -94,7 +94,7 @@ def normalize_succession_lifecycle_binding_v1(
     if value.get("schema") != SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA:
         raise ValueError("succession lifecycle binding schema is malformed")
     lifecycle = value.get("lifecycle")
-    if lifecycle not in _SUCCESSION_LIFECYCLES:
+    if not isinstance(lifecycle, str) or lifecycle not in _SUCCESSION_LIFECYCLES:
         raise ValueError("succession lifecycle is malformed")
     xar_enabled = value.get("xar_enabled")
     pact_contract = value.get("pact_contract")

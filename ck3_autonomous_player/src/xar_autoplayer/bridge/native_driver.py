@@ -1700,7 +1700,7 @@ def load_native_driver_state_for_resume_payload(
     if not isinstance(payload, dict):
         raise ValueError("driver state must be a JSON object")
     format_version = payload.get("format_version")
-    if format_version not in (1, _NATIVE_DRIVER_STATE_VERSION):
+    if type(format_version) is not int or format_version not in (1, _NATIVE_DRIVER_STATE_VERSION):
         return None
     if payload.get("pipe_name") != pipe_name:
         return None
@@ -1729,6 +1729,7 @@ def load_native_driver_state_for_resume_payload(
     for index, row in enumerate(history, start=1):
         if (
             not isinstance(row, dict)
+            or type(row.get("index")) is not int
             or row.get("index") != index
             or not isinstance(row.get("command"), str)
             or not row.get("command")

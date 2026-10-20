@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from unittest.mock import patch
 
+import pytest
+
 from xar_autoplayer import strategy
 from xar_autoplayer.bridge.war_contract import QUERY_ARMY_STRENGTHS_STEP
 from test_gameplay_bridge import _army, _native_war_plan
@@ -10,7 +12,7 @@ from test_gameplay_bridge import _army, _native_war_plan
 ARMY, ENEMY, ORIGIN, TARGET, DATE = 318767248, 218103869, 2634, 2638, 53328720
 
 
-def _moving_plan(contact_free: bool | None):
+def _moving_plan(contact_free: bool | None, *, extra_steps=(), allow_advance=True):
     player = _army(ARMY, soldiers=427, province_id=ORIGIN, controllable=True,
                    move_target_province_id=TARGET, army_state="moving",
                    route_province_ids=[2635, TARGET])
@@ -36,7 +38,8 @@ def _moving_plan(contact_free: bool | None):
     plan = _native_war_plan(
         player=player, enemies=[enemy], score=0, date_raw=DATE,
         objective=TARGET, history=history,
-        steps=(QUERY_ARMY_STRENGTHS_STEP, query, advance),
+        steps=(QUERY_ARMY_STRENGTHS_STEP, query,
+               *((advance,) if allow_advance else ()), *extra_steps),
         route_contact_horizon_supported=True,
     )
     return plan, query, advance
@@ -52,6 +55,52 @@ def test_contact_free_exact_proof_selects_bound_advance():
     plan, _, advance = _moving_plan(True)
     assert plan["phase"] == "native_war_moving_contact_before_strength_progress"
     assert plan["selected_step"] == advance
+    assert plan["route_contact_window_days"] == 1
+
+
+@pytest.mark.parametrize("windows, expected_days", [((3,), 3), ((2,), 2), ((2, 3), 3)])
+def test_sole_moving_prefers_longest_exact_admitted_window(windows, expected_days):
+    steps = tuple(strategy.advance_route_contact_window_step(
+        ARMY, TARGET, (ENEMY,), horizon_days=days) for days in windows)
+    plan, _, _ = _moving_plan(True, extra_steps=steps)
+    assert plan["phase"] == "native_war_moving_contact_before_strength_progress"
+    assert plan["selected_step"] == strategy.advance_route_contact_window_step(
+        ARMY, TARGET, (ENEMY,), horizon_days=expected_days)
+    assert plan["route_contact_window_days"] == expected_days
+
+
+@pytest.mark.parametrize("army, target, hostiles", [
+    (ARMY + 1, TARGET, (ENEMY,)),
+    (ARMY, TARGET + 1, (ENEMY,)),
+    (ARMY, TARGET, (ENEMY + 1,)),
+    (ARMY, TARGET, (ENEMY, ENEMY + 1)),
+])
+def test_other_binding_window_cannot_authorize_longer_advance(army, target, hostiles):
+    foreign = strategy.advance_route_contact_window_step(
+        army, target, hostiles, horizon_days=3)
+    plan, _, advance = _moving_plan(True, extra_steps=(foreign,))
+    assert plan["selected_step"] == advance
+    assert plan["route_contact_window_days"] == 1
+
+
+@pytest.mark.parametrize("contact_free, phase", [
+    (None, "native_war_moving_contact_before_strength_query"),
+    (False, "native_war_army_strength_query"),
+])
+def test_window_advertisement_keeps_contact_proof_guards(contact_free, phase):
+    window = strategy.advance_route_contact_window_step(
+        ARMY, TARGET, (ENEMY,), horizon_days=3)
+    plan, query, _ = _moving_plan(contact_free, extra_steps=(window,))
+    assert plan["phase"] == phase
+    assert plan["selected_step"] == (query if contact_free is None else QUERY_ARMY_STRENGTHS_STEP)
+
+
+def test_window_keeps_original_one_day_availability_guard():
+    window = strategy.advance_route_contact_window_step(
+        ARMY, TARGET, (ENEMY,), horizon_days=3)
+    plan, _, _ = _moving_plan(True, extra_steps=(window,), allow_advance=False)
+    assert plan["phase"] == "native_war_army_strength_query"
+    assert plan["selected_step"] == QUERY_ARMY_STRENGTHS_STEP
 
 
 def test_predicted_contact_returns_to_full_strength_scope():
