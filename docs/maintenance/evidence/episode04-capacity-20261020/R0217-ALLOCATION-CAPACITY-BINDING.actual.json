@@ -1,0 +1,40 @@
+{
+  "schema": "xar.e04.r0217-allocation-capacity-binding-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:34:54.683525+00:00",
+  "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "actual_allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\allocated-context.json",
+    "bytes": 3757,
+    "sha256": "aa0e4cadb371183b05cd166bdf92297027ce15d5e75569bbfd75abcb3247b3da"
+  },
+  "actual_counter": {
+    "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+    "bytes": 282,
+    "sha256": "b366b69f4101fb130b4be5187de606d88415725a5806e6c2dd4c21a9d5fb52ed"
+  },
+  "counter_allocated_at_utc": "2026-10-20T03:34:35.324541+00:00",
+  "counter_sequence": 217,
+  "current_scene_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 13706,
+    "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+  },
+  "actual_prepared_case": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\prepared-a01\\prepared-case.json",
+    "bytes": 9794,
+    "sha256": "c97f5d2f63233c94dc39719c0787f8b5238aa515f8f1bfa94bcf44ea2a8362d2"
+  },
+  "actual_runtime_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\common-runtime-a39-a03\\manifest.json",
+    "bytes": 4325,
+    "sha256": "29c188c4648205be6d79cb1d4b486135cd223ca6033112a72ad965e2b097dd0e"
+  },
+  "actual_state_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\state-a01",
+  "actual_driver_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "exact_run_state_driver_manifest_and_capacity_binding_verified": true,
+  "keeper_root_declared_in_context": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\keeper-a01",
+  "keeper_live_OS_state_not_evaluated_by_this_readback": true,
+  "no_game_Move_READY_or_business_result_claim": true,
+  "budget_delta_bytes": 0
+}

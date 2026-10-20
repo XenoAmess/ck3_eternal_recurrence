@@ -1,0 +1,90 @@
+{
+  "schema": "ck3-mod-acceptance-run-context-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "run_dir": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\keeper-a01",
+  "prepared_case": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\prepared-a01\\prepared-case.json",
+    "bytes": 9794,
+    "sha256": "c97f5d2f63233c94dc39719c0787f8b5238aa515f8f1bfa94bcf44ea2a8362d2"
+  },
+  "case_inputs": {
+    "normal_checkpoint_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-02-save-once.json",
+      "bytes": 20858,
+      "sha256": "ab71834e88d71f3b4d059bc71a745d8ddb5b82377d835d955e11925c41d5926f"
+    },
+    "normal_checkpoint_build_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\prepared-a01\\prepared.json",
+      "bytes": 13512,
+      "sha256": "73a26707d71cdf34b47ad7a2aef07422a488a37128e5a1434005d69780cc9675"
+    },
+    "plain_configuration": {
+      "pdx_settings.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "tutorial.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      },
+      "presets.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      }
+    },
+    "phase": "readiness",
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "war_id": 1,
+    "goal_province_id": 1527,
+    "staging_province_id": 1506,
+    "agreed_commander_id": null,
+    "director_scope_revision": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+    "budgets": {
+      "command_timeout": 120,
+      "readiness_timeout": 1800,
+      "timeout": 7200,
+      "hold_seconds": 7200,
+      "poll_interval": 0.25
+    },
+    "r04_county_entry": {
+      "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01",
+      "capacity_admission": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 13706,
+        "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+      },
+      "expected_source_save_sha256": "aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da",
+      "expected_start_date_raw": 53147376,
+      "origin_province": 1506,
+      "target_province": 1513,
+      "actor_id": 33388,
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "capture_after_days": 6,
+      "max_days": 7,
+      "driver_limit_bytes": 1073741824,
+      "profile_limit_bytes": 805306368,
+      "deadline_utc": "2026-10-20T05:00:00Z",
+      "camera_timeout_seconds": 900,
+      "prefix": "R221CountyPublic",
+      "before_move_frame_required": true
+    }
+  },
+  "product": "war-episode04-r10",
+  "case": "r10-common-preparation",
+  "frozen_argv": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\frozen-argv.json",
+    "bytes": 37598,
+    "sha256": "862353c073d15fdc872722134932d7f2318c2649c931fffb646835452093215f"
+  }
+}

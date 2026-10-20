@@ -1,0 +1,135 @@
+{
+  "schema": "xar.e04.R0217-direct-v2-exclusion-diagnostics.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:00:33.999297+00:00",
+  "source_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-ENTRY-WINDOW-EVIDENCE.json",
+    "bytes": 97785,
+    "sha256": "53013daa4699548d2f2d1074a2afb980cd37e482b49bc656f5442d4d248299b6"
+  },
+  "excluded_count": 5,
+  "excluded_invocations": [
+    {
+      "sequence": 1207,
+      "consumer_reasons": [
+        "native_direct_owner_capture_incomplete"
+      ],
+      "native_owner": {
+        "source_complete": false,
+        "capture_failure_flags": 4096,
+        "capture_skip_reason": "physical_association_incomplete",
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "writer_full_regiment_id": 56,
+        "army_roster_occurrence": 19,
+        "army_roster_count": 27,
+        "physical_association_complete": false,
+        "physical_capture_complete": true,
+        "captured_physical_association_count": 0,
+        "physical_associations": []
+      }
+    },
+    {
+      "sequence": 1208,
+      "consumer_reasons": [
+        "native_direct_owner_capture_incomplete"
+      ],
+      "native_owner": {
+        "source_complete": false,
+        "capture_failure_flags": 4096,
+        "capture_skip_reason": "physical_association_incomplete",
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "writer_full_regiment_id": 57,
+        "army_roster_occurrence": 20,
+        "army_roster_count": 27,
+        "physical_association_complete": false,
+        "physical_capture_complete": true,
+        "captured_physical_association_count": 0,
+        "physical_associations": []
+      }
+    },
+    {
+      "sequence": 1209,
+      "consumer_reasons": [
+        "native_direct_owner_capture_incomplete"
+      ],
+      "native_owner": {
+        "source_complete": false,
+        "capture_failure_flags": 4096,
+        "capture_skip_reason": "physical_association_incomplete",
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "writer_full_regiment_id": 58,
+        "army_roster_occurrence": 21,
+        "army_roster_count": 27,
+        "physical_association_complete": false,
+        "physical_capture_complete": true,
+        "captured_physical_association_count": 0,
+        "physical_associations": []
+      }
+    },
+    {
+      "sequence": 1210,
+      "consumer_reasons": [
+        "native_direct_owner_capture_incomplete"
+      ],
+      "native_owner": {
+        "source_complete": false,
+        "capture_failure_flags": 4096,
+        "capture_skip_reason": "physical_association_incomplete",
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "writer_full_regiment_id": 59,
+        "army_roster_occurrence": 22,
+        "army_roster_count": 27,
+        "physical_association_complete": false,
+        "physical_capture_complete": true,
+        "captured_physical_association_count": 0,
+        "physical_associations": []
+      }
+    },
+    {
+      "sequence": 1211,
+      "consumer_reasons": [
+        "native_direct_owner_capture_incomplete"
+      ],
+      "native_owner": {
+        "source_complete": false,
+        "capture_failure_flags": 4096,
+        "capture_skip_reason": "physical_association_incomplete",
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "writer_full_regiment_id": 60,
+        "army_roster_occurrence": 23,
+        "army_roster_count": 27,
+        "physical_association_complete": false,
+        "physical_capture_complete": true,
+        "captured_physical_association_count": 0,
+        "physical_associations": []
+      }
+    }
+  ],
+  "other_qualified_invocations": [
+    {
+      "sequence": 1206,
+      "actual_physical_soldier_debit": 0
+    }
+  ],
+  "legacy_window_keys": [
+    "schema",
+    "proof_layer",
+    "scope",
+    "army_at_invocation_observed",
+    "county_total_debit",
+    "periodic_total_debit",
+    "complete_army_loss_history",
+    "new_live_evidence",
+    "status",
+    "reasons",
+    "events"
+  ],
+  "exclusion_preserved": true,
+  "whole_county_total_credit_granted": false,
+  "native_or_source_changes": 0
+}

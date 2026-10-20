@@ -1,0 +1,20 @@
+{
+  "schema": "xar.e04.media-closed-purpose-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-20T02:20:36.852450+00:00",
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\DELIVERY.actual.json",
+    "bytes": 6672,
+    "sha256": "bb2ec602779ff832e54a6cf033ae6e0b6bfeb6eab3bb821d361576deb5f20715"
+  },
+  "aggregate_actual_logical_bytes": 41155205,
+  "remaining_heavy_write_bytes": 0,
+  "old_media_reserved_peak_bytes": 268435456,
+  "remaining_C_reserved_future_bytes": 3623878656,
+  "retained_media_already_inside_whole_volume_used": true,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "reservation_closed_once": true,
+  "owned_media_FFmpeg": [],
+  "retention_review_at_utc": "2026-10-22T02:18:30.934353Z"
+}

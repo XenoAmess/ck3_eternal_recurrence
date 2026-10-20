@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:50:26.632967+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "reviewer": "/root",
+  "direct_images": [
+    "media/first.jpg",
+    "media/midpoint-not-event-boundary.jpg",
+    "media/tail.jpg"
+  ],
+  "scope": "AI direct sparse image review only; no full continuous or human 1x signoff",
+  "observed": "Same unoccluded CK3 map context, Jan26 then Jan27; counter6746 then6510; no hover, legacy blue panel or Quit UI in these sampled frames",
+  "formal_dynamic_credit": false,
+  "continuous_clean_approved": false,
+  "human_signoff": false
+}

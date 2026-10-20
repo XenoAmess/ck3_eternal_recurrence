@@ -1,0 +1,84 @@
+{
+  "schema": "xar.e04.shared128-postfilm-QA-closed-subscope.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:10:42.696223+00:00",
+  "scope_id": "r221-postfilm-qa-a01",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-ADMISSION.actual-a01.json",
+    "bytes": 4864,
+    "sha256": "17ba18efcb38e0219f01c75dd2da0951cabb9c32832121ed637e5752e443f795"
+  },
+  "actual_QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\QA.actual.json",
+    "bytes": 4322,
+    "sha256": "0eefc024d9f32f7640b4bb25c2de70c48d2f5deb6433dd02cc0c9596debe84d5"
+  },
+  "actual_JPEG_bytes": 311265,
+  "actual_metadata_bytes": 25619,
+  "actual_aggregate_logical_bytes": 336884,
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\first.jpg",
+      "bytes": 104628
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\INTAKE.actual.json",
+      "bytes": 3108
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\midpoint-not-event-boundary.jpg",
+      "bytes": 103542
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\QA.actual.json",
+      "bytes": 4322
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\run_qa.py",
+      "bytes": 10680
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\tail.jpg",
+      "bytes": 103095
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\commands\\frame-first.actual.json",
+      "bytes": 790
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\commands\\frame-midpoint-not-event-boundary.actual.json",
+      "bytes": 813
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\commands\\frame-tail.actual.json",
+      "bytes": 790
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\commands\\metadata.actual.json",
+      "bytes": 1462
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\commands\\packet-PTS.actual.json",
+      "bytes": 1031
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\commands\\strict-single-full-AV-decode.actual.json",
+      "bytes": 2623
+    }
+  ],
+  "remaining_heavy_write_bytes": 0,
+  "fresh_owned_media_process_census": {
+    "processes": [],
+    "access_errors": []
+  },
+  "shared128MiB_future_unchanged": 134217728,
+  "all_C_future_unchanged": 2550136832,
+  "scene_running_claim_not_closed": true,
+  "scene_or_CK3_normal_close_inferred": false,
+  "raw_or_video_copy_bytes": 0,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "technical_QA_is_not_full_continuous_or_human_signoff": true,
+  "retention_review_at_utc": "2026-10-22T04:00:00Z"
+}

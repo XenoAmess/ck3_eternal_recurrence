@@ -1280,3 +1280,8 @@ docs/ck3-native-ai/evidence/episode04-r219-abnormal-predecessor-20261020/** -tex
 # Exact E04 UI owner snapshot-intermediate evidence.
 docs/ck3-native-ai/episode04-r0216-ui-owner-heartbeat-20261020.md -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r0216-ui-owner-heartbeat-20261020.json -text whitespace=cr-at-eol
+
+# Preserve the actual R0217 closed-run, portable projection and capacity receipts.
+docs/ck3-native-ai/evidence/episode04-r0217-20261020/** -text whitespace=cr-at-eol
+docs/maintenance/evidence/episode04-capacity-20261020/** -text whitespace=cr-at-eol
+promo/ck3_faith_and_power/episode02/research/first-four-integrated-5608ccf35/** -text whitespace=cr-at-eol

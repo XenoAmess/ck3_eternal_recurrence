@@ -1,0 +1,74 @@
+{
+  "schema": "xar.e04.R0217-consumer-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:03:49.417592+00:00",
+  "source_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+  "copies": [
+    {
+      "original_path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-TERMINAL.json",
+      "portable_path": "R04-BAYEUX-TERMINAL.json",
+      "bytes": 607,
+      "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-RESULT.json",
+      "portable_path": "R04-BAYEUX-RESULT.json",
+      "bytes": 239982,
+      "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+    }
+  ],
+  "terminal_status": "ENTRY_WINDOW_ACTUAL_ARRIVAL_CONSUMED",
+  "actual_days": 7,
+  "Move_attempts": 1,
+  "R04_full_wire_proofs": 2,
+  "sampling_ON_present": true,
+  "completed_entry_window_present": true,
+  "direct_v2_consumer_invoked": true,
+  "direct_v2_consumer_matches_scene_result": true,
+  "qualified_positive_invocations": 17,
+  "qualified_zero_or_other_invocations": 1,
+  "individual_debit_sum": 236,
+  "whole_county_debit": null,
+  "county_entire_card_closed": false,
+  "qualified_dynamic_shots_added_by_this_consumer": 0,
+  "modal_collection": {
+    "collected_modals": 0,
+    "collection_directories": {
+      "unhandled-events": {
+        "directory_present": false,
+        "file_count": 0
+      },
+      "unhandled-interactions": {
+        "directory_present": false,
+        "file_count": 0
+      }
+    },
+    "new_permanent_pending_items": 0
+  },
+  "normal_close": {
+    "entry_result_present": false,
+    "normal_close_error": null,
+    "GUI_quit_qualified_by_this_consumer": false,
+    "native_session_ok_is_not_CK3_GUI_exit_qualification": true
+  },
+  "new_actions": {
+    "SDK": 0,
+    "game": 0,
+    "GUI": 0,
+    "build": 0,
+    "EXE_read": 0,
+    "source_change": 0
+  },
+  "own_root_bytes_before_receipt": 418677,
+  "shared_small_metadata_pool_ceiling_bytes": 134217728,
+  "new_independent_heavy_reservation_claimed": false,
+  "volume_free_observed_at_close": {
+    "C:/": 81788329984,
+    "D:/": 21699198976
+  },
+  "retention": {
+    "small_records_review_hours": 4320,
+    "derived_helpers_review_hours": 48,
+    "old_raw_protection_renewed": false
+  }
+}

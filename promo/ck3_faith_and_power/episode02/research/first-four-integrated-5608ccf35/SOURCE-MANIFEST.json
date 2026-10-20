@@ -1,0 +1,97 @@
+{
+  "schema": "faith-e02-first-four-unregistered-research-source-archive.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:33:13.022270+00:00",
+  "source": "Exact working-file bytes, known commit tree, source AST/paths and prior bounded references; no original missing scout recovered",
+  "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db",
+  "investigation_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "original_files": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_first_four_integrated_adapter.py",
+        "bytes": 28213,
+        "sha256": "b7a574e7aa03a20e90c1dc2f0d8ec1f63bb2b87f039ec7b835a9fffbc613a63a"
+      },
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\ci-scout-dependency\\candidate\\faith_e02_first_four_integrated_adapter.py.source",
+        "bytes": 28213,
+        "sha256": "b7a574e7aa03a20e90c1dc2f0d8ec1f63bb2b87f039ec7b835a9fffbc613a63a"
+      },
+      "destination_relative": "promo/ck3_faith_and_power/episode02/research/first-four-integrated-5608ccf35/faith_e02_first_four_integrated_adapter.py.source",
+      "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db",
+      "source_git_blob_sha256": "b7a574e7aa03a20e90c1dc2f0d8ec1f63bb2b87f039ec7b835a9fffbc613a63a",
+      "working_bytes_equal_source_git_blob": true,
+      "same_text_after_CRLF_normalization": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\faith_e02_first_four_integrated_queue.py",
+        "bytes": 7583,
+        "sha256": "fb63f734387a55c9e5708550ec51a9bef59ae611db8938db29d7d49c8d1329ff"
+      },
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\ci-scout-dependency\\candidate\\faith_e02_first_four_integrated_queue.py.source",
+        "bytes": 7583,
+        "sha256": "fb63f734387a55c9e5708550ec51a9bef59ae611db8938db29d7d49c8d1329ff"
+      },
+      "destination_relative": "promo/ck3_faith_and_power/episode02/research/first-four-integrated-5608ccf35/faith_e02_first_four_integrated_queue.py.source",
+      "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db",
+      "source_git_blob_sha256": "fb63f734387a55c9e5708550ec51a9bef59ae611db8938db29d7d49c8d1329ff",
+      "working_bytes_equal_source_git_blob": true,
+      "same_text_after_CRLF_normalization": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_faith_e02_first_four_integrated_case.py",
+        "bytes": 20147,
+        "sha256": "128da7c56ab143bae5731579c78c5e44ad2165c4f435c4dd6bec927ffe47ca7b"
+      },
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\ci-scout-dependency\\candidate\\test_faith_e02_first_four_integrated_case.py.source",
+        "bytes": 20147,
+        "sha256": "128da7c56ab143bae5731579c78c5e44ad2165c4f435c4dd6bec927ffe47ca7b"
+      },
+      "destination_relative": "promo/ck3_faith_and_power/episode02/research/first-four-integrated-5608ccf35/test_faith_e02_first_four_integrated_case.py.source",
+      "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db",
+      "source_git_blob_sha256": "128da7c56ab143bae5731579c78c5e44ad2165c4f435c4dd6bec927ffe47ca7b",
+      "working_bytes_equal_source_git_blob": true,
+      "same_text_after_CRLF_normalization": true
+    }
+  ],
+  "missing_scout": {
+    "path": "tools/ck3_mod_acceptance_cases/faith_e02_first_four_scout_adapter.py",
+    "bytes": null,
+    "sha256": null,
+    "status": "NOT_RECOVERED"
+  },
+  "external_provider_records": [
+    "faith-observers-sdk-a02/SDK-DELIVERY.actual.json",
+    "actor-skill-effects-sdk-a02/SDK-DELIVERY.actual.json",
+    "inventory-open-sdk-a01/SDK-DELIVERY.actual.json"
+  ],
+  "public_json_registrations": [],
+  "archived_unqualified_test_methods": [
+    "test_real_case_minimal_item_chain_and_two_fullid_pairs_keep_attribution_unknown",
+    "test_manual_equip_denial_never_dispatches_world_action",
+    "test_inventory_no_call_uses_fresh_visibility_without_claiming_old_sequence",
+    "test_inventory_preinvoke_rejection_never_posts_retained_sequence",
+    "test_unknown_inventory_ack_does_not_attribute_retained_query_sequence",
+    "test_unknown_equip_ack_has_no_sequence_recovery_and_is_never_replayed",
+    "test_pending_or_historical_post_cannot_authorize_unequip_or_shrine",
+    "test_wrong_post_item_identity_never_dispatches_next_world_action",
+    "test_quote_changes_after_manual_review_prevent_shrine_confirm",
+    "test_same_player_holder_deduplicates_and_does_not_fabricate_second_character",
+    "test_provider_attribution_claim_is_rejected_not_promoted_to_site_gain",
+    "test_finite_queue_rejects_forbidden_world_ops_replacement_and_nonfullrefs",
+    "test_independent_actor_pair_rejects_target_faith_change"
+  ],
+  "source_machine_id": "4-8e1c2f1861",
+  "scope_limits": [
+    "Known source commit checked; full Git history search intentionally stopped and inconclusive",
+    "No project artifact subtree or EXE scan",
+    "No repository, SDK, game, screen or sealed-helper changes",
+    "Archive candidate only, no test execution or release qualification"
+  ],
+  "retention_policy": "docs/storage-retention-policy.json 1.0.0",
+  "record_review_and_consolidate_at_utc": "2027-04-18T03:33:13.022270+00:00"
+}

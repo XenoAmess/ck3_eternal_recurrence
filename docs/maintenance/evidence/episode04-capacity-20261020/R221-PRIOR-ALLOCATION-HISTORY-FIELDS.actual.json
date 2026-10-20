@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.replacement-scene-prior-allocation-historical-fields.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:34:44.010831+00:00",
+  "prior_actual_allocation_moved_to_history": {
+    "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+    "actual_allocation_binding": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0216-ALLOCATION-CAPACITY-BINDING.actual.json",
+      "bytes": 2572,
+      "sha256": "1a4f64bcd1f935fd0e76d4a518b856204b3a553b97c66f380cdfd0a69a5d2d9c"
+    }
+  },
+  "current_R0217_registry_stage": "expected-not-allocated; actual allocator remains authoritative",
+  "reason": "Do not carry R0216 actual_run_id/binding fields as current after source-bound replacement",
+  "capacity_pin_unchanged": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 13706,
+    "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+  },
+  "budget_delta_bytes": 0,
+  "counter_or_game_or_scene_actions": 0
+}

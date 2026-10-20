@@ -1,0 +1,72 @@
+{
+  "schema": "xar.e04.R0217-consumer-file-pins.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:04:18.747582+00:00",
+  "files": [
+    {
+      "path": "DELIVERY.actual.json",
+      "bytes": 2561,
+      "sha256": "0e9deaaa7e6463e423b2085b3101e061cbe0200b39243d2a6688ffdb41e22caf"
+    },
+    {
+      "path": "DIRECT-V2-PROJECTION.actual.json",
+      "bytes": 82474,
+      "sha256": "41f2e90525c664cef89d2f279df64a8e30e26909ff703c49a395e1a18c81501c"
+    },
+    {
+      "path": "EXCLUDED-DIAGNOSTICS.actual.json",
+      "bytes": 4308,
+      "sha256": "9bb0ca4de96dc4ff98e86cf221e547f2908279312ae1f20355683da4f81a612e"
+    },
+    {
+      "path": "EXCLUDED-PHYSICAL-FACTS.actual.json",
+      "bytes": 3143,
+      "sha256": "b2cbe52a9ad31c28910bf3fe1a46d2d936dffac486ecac6d1023def466bd3b4f"
+    },
+    {
+      "path": "INDEPENDENT-CONSUMPTION.actual.json",
+      "bytes": 68199,
+      "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca"
+    },
+    {
+      "path": "PORTABLE-REPLAY.actual.json",
+      "bytes": 1065,
+      "sha256": "086a31b6e154188333cf98ce62af200f9092477dd815df6bc0ad8bf40dcb3501"
+    },
+    {
+      "path": "R04-BAYEUX-RESULT.json",
+      "bytes": 239982,
+      "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+    },
+    {
+      "path": "R04-BAYEUX-TERMINAL.json",
+      "bytes": 607,
+      "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+    },
+    {
+      "path": "RESULT.md",
+      "bytes": 2670,
+      "sha256": "85962b5916c3ee6e561a86067565366dc118e31b2522bd9e13d592d636f2febc"
+    },
+    {
+      "path": "TAIL-STATUS.actual-a01.json",
+      "bytes": 7086,
+      "sha256": "f01bc3ef14acc8576a82c76e7cb07a73265ac0a949e8a811379af4b7126f4539"
+    },
+    {
+      "path": "TAIL-STATUS.actual-a02.json",
+      "bytes": 6053,
+      "sha256": "b0c2766771c841cc28ca7dd84aa5426ff9724ada8eb5404ce14383deafabe100"
+    },
+    {
+      "path": "verify_portable.py",
+      "bytes": 3090,
+      "sha256": "61f209d5c78b58a96e90a725d71b0f8318ce9f9fd54d141daf5f372b7ca94cbd"
+    }
+  ],
+  "logical_bytes_before_manifest": 421238,
+  "all_seven_exact_days_modal_actions_zero_verified": true,
+  "real_individual_positive_count": 17,
+  "county_entire_card_closed": false,
+  "normal_game_close_not_granted_by_this_lane": true
+}

@@ -1,0 +1,149 @@
+{
+  "schema": "xar.e04.20261020-postclose-capacity-checkpoint.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:34:47.217778+00:00",
+  "source": "fresh machine CLI, current atomic ledger, exact closed-scope receipts, metadata-only shared-root stat, Windows GetDiskFreeSpaceExW",
+  "current_ledger_before_checkpoint": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 254211,
+    "sha256": "7f99e2bb5e5fd21100c3093db8d0d9ff403270fe35f324bf254ac369a8ebd2e7"
+  },
+  "all_work_packages": {
+    "native": {
+      "state": "closed-qualified-retained-no-future-write",
+      "actual_logical_bytes": 435781465,
+      "future_bytes": 0,
+      "qualification": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+        "bytes": 25484,
+        "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+      }
+    },
+    "media130s": {
+      "state": "closed-retained41MB-no-future-write",
+      "actual_logical_bytes": 41155205,
+      "future_bytes": 0,
+      "settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\MEDIA-CLOSED-SETTLEMENT.actual.json",
+        "bytes": 818,
+        "sha256": "b1df1e320fe349fedff54c796dced5d21e7bd4985139192161f1a19b1f8a0a67"
+      }
+    },
+    "full_review": {
+      "state": "closed-retained223089798-no-future-heavy-write",
+      "actual_logical_bytes": 223089798,
+      "future_bytes": 0,
+      "settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\FULL-REVIEW-CLOSED-SETTLEMENT.actual.json",
+        "bytes": 2198,
+        "sha256": "68349ec6910d7ffeefe6dd9364dbf123dd6de2a91b34ad1cdb6d33d9911e5e3e"
+      }
+    },
+    "R0216_failed_R220": {
+      "state": "closed-resources-retained-normal-false",
+      "actual_logical_bytes": 409984102,
+      "future_bytes": 0,
+      "settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a02.json",
+        "bytes": 16255,
+        "sha256": "a3fa886b2ada8d2b27ddb0866fb68c1f80eb2526d99351ea3319ae555c768db5"
+      }
+    },
+    "R0217_normal_R221": {
+      "state": "resource-closed-normal-qualified-retained-no-heavy-future",
+      "actual_logical_bytes": 861356025,
+      "future_bytes": 0,
+      "settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 21574,
+        "sha256": "bb6f4a8084d227b7e38bddfaa622276f8093161e81cdce05cf038563fe8012cf"
+      }
+    },
+    "shared_QA": {
+      "actual_logical_bytes": 336884,
+      "future_bytes": 0,
+      "settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 3292,
+        "sha256": "ccb42dbb2a7a9249bc1f1e2b12654382adca927a6aeeb6af9354a19ec84dd21a"
+      },
+      "already_in_shared_pool_actual_not_added_twice": true
+    },
+    "shared_metadata_pool": {
+      "current_measurement": {
+        "observed_at_utc": "2026-10-20T04:34:47.217746+00:00",
+        "aggregate_root": "C:\\ck3-e04-resume-20261020-a01",
+        "excludes": [
+          "C:\\ck3-e04-resume-20261020-a01\\media",
+          "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+          "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+          "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01"
+        ],
+        "logical_bytes": 50350318,
+        "files": 574,
+        "ceiling_bytes": 134217728,
+        "logical_margin_bytes": 83867410,
+        "payload_body_bytes_read": 0,
+        "metadata_scan_complete": true,
+        "full128MiB_future_hold_not_reduced": true
+      },
+      "full_future_hold_bytes": 134217728,
+      "continues_for_Root_integration": true
+    },
+    "legacy_C_balance": {
+      "future_bytes": 42132678,
+      "consumption_unknown_not_zero": "Full balance conservatively carried; no credit or renewed heavy execution grant"
+    }
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T04:34:46.548816+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81727074304,
+      "available_to_caller_bytes": 81727074304,
+      "total_free_bytes": 81727074304,
+      "entire_volume_used_allocation_upper_bound_bytes": 429406871552,
+      "source": "Windows GetDiskFreeSpaceExW",
+      "current_known_future_bytes": 134217728,
+      "legacy_unreconciled_future_bytes": 42132678,
+      "system_growth_bytes": 4294967296,
+      "safety_bytes": 21474836480,
+      "required_free_bytes": 25946154182,
+      "free_margin_bytes": 55780920122,
+      "effective_project_quota_bytes": 438086664192,
+      "projected_whole_volume_upper_bound_including_future_system_bytes": 433878189254,
+      "quota_margin_bytes": 4208474938
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T04:34:46.548816+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21697531904,
+      "available_to_caller_bytes": 21697531904,
+      "total_free_bytes": 21697531904,
+      "entire_volume_used_allocation_upper_bound_bytes": 478392475648,
+      "source": "Windows GetDiskFreeSpaceExW",
+      "known_new_future_bytes": 0,
+      "heavy_write_admitted": false,
+      "required_free_bytes": 21609054208,
+      "free_margin_bytes": 88477696
+    }
+  },
+  "finite_C_quota_bytes": 438086664192,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "new_game_or_native_or_media_scope_admitted": false,
+  "C_remaining_known_future_bytes": 134217728,
+  "other_unspent_C_bytes": 42132678,
+  "D_new_heavy_future_bytes": 0,
+  "no_automatic_quota_renewal": true,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "retained_closed_assets_already_in_volume_used_upper_bound": true,
+  "user_Workshop_zero_byte_barriers_or_DACL_backup_touched": false,
+  "own_R221_monitor_stopped": true,
+  "new_heavy_work_requires_fresh_scope_and_budget_check": true,
+  "shared_pool_not_closed_until_Root_metadata_integration_finishes": true
+}

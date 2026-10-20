@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.full-review-closed-purpose-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:53:50.601431+00:00",
+  "owner": "/root",
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\DELIVERY.actual.json",
+    "bytes": 6960,
+    "sha256": "d54151d6e50194b1e5edc133c615bfd157c66807bd430d642516bfc429851e01"
+  },
+  "aggregate_actual_logical_bytes": 223089798,
+  "remaining_heavy_write_bytes": 0,
+  "old_media_reserved_peak_bytes": 268435456,
+  "remaining_C_reserved_future_bytes": 3623878656,
+  "native_full1GiB_future_unchanged": true,
+  "owned_FFmpeg": [],
+  "retained_media_already_in_whole_volume_used": true,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "reservation_closed_once": true,
+  "asset_group": {
+    "asset_id": "e04.full-review34m36.94.a01",
+    "replica_id": "desktop-3fevhd2-1c74096080:full-review-a01",
+    "owner_task": "/root/media_chapter",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "current-resume",
+    "relative_path": "full-review-a01",
+    "category": "derived",
+    "state": "closed-pending-human-review",
+    "logical_bytes": 223089798,
+    "allocated_bytes_or_null": null,
+    "closed_at_utc_or_null": "2026-10-20T02:53:50.601431+00:00",
+    "last_used_at_utc": "2026-10-20T02:52:26.409889Z",
+    "expires_at_utc": "2026-10-22T02:52:26.409889Z",
+    "active_references": [
+      "Root actual full review of distinct corrected historical method preview followed by independent130s live chapter"
+    ],
+    "protected_until_utc_or_null": "2026-10-22T02:52:26.409889Z",
+    "protection_reason_or_null": "Concrete full-length review movie and current exact QA awaiting parent review; no final signoff/export/upload",
+    "source_pins_or_recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\DELIVERY.actual.json",
+      "bytes": 6960,
+      "sha256": "d54151d6e50194b1e5edc133c615bfd157c66807bd430d642516bfc429851e01"
+    },
+    "availability": "local-delivery-pin-verified-source-movie-hashes-from-actual-media-lane",
+    "automatic_renewal": false
+  }
+}

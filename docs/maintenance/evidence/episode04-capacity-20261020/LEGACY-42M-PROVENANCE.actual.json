@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:23:09.699897+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r194-offline-media-a01\\LEGACY-A10-FUTURE-FROZEN.actual.json",
+    "bytes": 2268,
+    "sha256": "b56525b371c6d5de24ed504ba61eb7a87c1820b47992117479cfc92bf7e513da"
+  },
+  "historical_components_bytes": {
+    "same_active_children": 33554432,
+    "same_receipts": 8388608,
+    "old_shared_metadata": 124102,
+    "pending_CLOSED_text": 65536
+  },
+  "historical_reserved_sum_bytes": 42132678,
+  "current_consumption_or_future_need_not_reconciled": true,
+  "current_action": "carry_full42132678_conservatively_unchanged",
+  "released_new_credit_bytes": 0,
+  "prior_native_helper_cancelled1828718803_not_repeated": true
+}

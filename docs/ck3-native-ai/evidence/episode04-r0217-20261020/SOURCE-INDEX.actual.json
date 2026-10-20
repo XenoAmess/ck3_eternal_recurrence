@@ -1,0 +1,421 @@
+{
+  "schema": "xar.e04.r0217-small-archive.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:50:26.632967+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "source_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+  "exact_copies": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\DELIVERY.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/DELIVERY.actual.json",
+      "bytes": 2561,
+      "sha256": "0e9deaaa7e6463e423b2085b3101e061cbe0200b39243d2a6688ffdb41e22caf"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\DIRECT-V2-PROJECTION.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/DIRECT-V2-PROJECTION.actual.json",
+      "bytes": 82474,
+      "sha256": "41f2e90525c664cef89d2f279df64a8e30e26909ff703c49a395e1a18c81501c"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\AUDIT.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/AUDIT.actual.json",
+      "bytes": 13332,
+      "sha256": "af30a6baac644b187e4c22b3dd6284ea3c784fb783b9ce18712239c2caf4731c"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\CONCLUSION.md",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/CONCLUSION.md",
+      "bytes": 7026,
+      "sha256": "29457237d06baa0db027fec6808635d06f908bea77a3e74e1468014ea42be6bf"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\DELIVERY.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/DELIVERY.actual.json",
+      "bytes": 1773,
+      "sha256": "00732f3947977f432aa8b752b3129add98aab4f2547aae16d47eda464db7eb51"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\source\\army_actual_loss_writer_observations_v1.hpp",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/source/army_actual_loss_writer_observations_v1.hpp",
+      "bytes": 12057,
+      "sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\source\\ck3_12004_actual_loss_writer_journal.cpp",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/source/ck3_12004_actual_loss_writer_journal.cpp",
+      "bytes": 32977,
+      "sha256": "81d1b2ecc85711a00a3e63fdcb4887666cf3a3a84ae09c3123e42ad2f7d90f61"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\source\\county_primary_direct_owner_at_writer_12004.cpp",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/source/county_primary_direct_owner_at_writer_12004.cpp",
+      "bytes": 15430,
+      "sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\empty-data-audit\\source\\county_primary_direct_owner_at_writer_v2.hpp",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/empty-data-audit/source/county_primary_direct_owner_at_writer_v2.hpp",
+      "bytes": 4231,
+      "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\EXCLUDED-DIAGNOSTICS.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/EXCLUDED-DIAGNOSTICS.actual.json",
+      "bytes": 4308,
+      "sha256": "9bb0ca4de96dc4ff98e86cf221e547f2908279312ae1f20355683da4f81a612e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\EXCLUDED-PHYSICAL-FACTS.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/EXCLUDED-PHYSICAL-FACTS.actual.json",
+      "bytes": 3143,
+      "sha256": "b2cbe52a9ad31c28910bf3fe1a46d2d936dffac486ecac6d1023def466bd3b4f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\FILE-PINS.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/FILE-PINS.actual.json",
+      "bytes": 2412,
+      "sha256": "fb9b8e5c87bf94f15d56189901d22411bf635b4a98385b426a08664547a9f321"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\INDEPENDENT-CONSUMPTION.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/INDEPENDENT-CONSUMPTION.actual.json",
+      "bytes": 68199,
+      "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\PORTABLE-REPLAY.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/PORTABLE-REPLAY.actual.json",
+      "bytes": 1065,
+      "sha256": "086a31b6e154188333cf98ce62af200f9092477dd815df6bc0ad8bf40dcb3501"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\R04-BAYEUX-RESULT.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/R04-BAYEUX-RESULT.json",
+      "bytes": 239982,
+      "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\R04-BAYEUX-TERMINAL.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/R04-BAYEUX-TERMINAL.json",
+      "bytes": 607,
+      "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\RESULT.md",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/RESULT.md",
+      "bytes": 2670,
+      "sha256": "85962b5916c3ee6e561a86067565366dc118e31b2522bd9e13d592d636f2febc"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\TAIL-STATUS.actual-a01.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/TAIL-STATUS.actual-a01.json",
+      "bytes": 7086,
+      "sha256": "f01bc3ef14acc8576a82c76e7cb07a73265ac0a949e8a811379af4b7126f4539"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\TAIL-STATUS.actual-a02.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/TAIL-STATUS.actual-a02.json",
+      "bytes": 6053,
+      "sha256": "b0c2766771c841cc28ca7dd84aa5426ff9724ada8eb5404ce14383deafabe100"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\research-next\\r0217-results\\verify_portable.py",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/verify_portable.py",
+      "bytes": 3090,
+      "sha256": "61f209d5c78b58a96e90a725d71b0f8318ce9f9fd54d141daf5f372b7ca94cbd"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-TERMINAL.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/R04-BAYEUX-TERMINAL.json",
+      "bytes": 607,
+      "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-RESULT.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/R04-BAYEUX-RESULT.json",
+      "bytes": 239982,
+      "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\normal-close-result.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/normal-close-result.json",
+      "bytes": 9475,
+      "sha256": "668a965e4fff9cde2d58b5ccb7bb05528daff0b2f41e37c70c8ca4b3efc6a824"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\actual-retained-handle-os-exit.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "c11603fcd5f64dff28a6fa8bb0b0afb8885f100f6d3ac5c0a54a8cf4564cf75a"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\entry-run-result.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/entry-run-result.json",
+      "bytes": 23849,
+      "sha256": "0f76a313eb4b24de42bcb4dd783f9a0442a04b60c2aaa945db52cfeb869852ba"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\normal-quit-root-result.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/normal-quit-root-result.json",
+      "bytes": 2220,
+      "sha256": "506a183e7a88400628e0390e504092923564e0fe29d5bdee461a737188703b73"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\normal-quit-awaiting.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/normal-quit-awaiting.json",
+      "bytes": 638,
+      "sha256": "8cd1a1d0b3c217b67dc533a303fcd7a4eb9c0fd145fdaff79c06c480c3e13c7a"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\host-original-process-exit.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/binding/host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "47ebb3e8af6a752cf5fe5f05ae13b9c3b40f4fe1ef0325a35468437b4e600396"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\keeper-actual-parent-exit.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/binding/keeper-actual-parent-exit.json",
+      "bytes": 599,
+      "sha256": "e390dbcbffb639cfaa3adb7d10e7d9fd6483f9e5c363568a9376ed43e932986b"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\ready-context.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/binding/ready-context.json",
+      "bytes": 4020,
+      "sha256": "4387a29138403b27e0e5cef956474f9b0b2b7f3b6f5ff8ce8156a56df42f30f5"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\frozen-argv.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/binding/frozen-argv.json",
+      "bytes": 37598,
+      "sha256": "862353c073d15fdc872722134932d7f2318c2649c931fffb646835452093215f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\keeper-a01\\report.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/keeper-report.json",
+      "bytes": 436,
+      "sha256": "c8a57823cf35dbc6cbf110ec3c5e97fd87e77627256e651c42776a9fa8e83b1c"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\allocate-original-a01\\ORIGINAL-WAIT.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/allocator-original-wait.json",
+      "bytes": 1611,
+      "sha256": "167404200af8c8755d0eeec664563b1a08931bfd6cc11d0c49df194b632d2215"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\PUBLIC-ORIGINAL-WAIT.actual-a01.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/public-original-wait.json",
+      "bytes": 913,
+      "sha256": "b0d8d6a784142a8f6dbb8d81dfad8cafe1a188b16c9126bdaa17a210dbfc3ba4"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\SCREEN-RELEASE.actual-a01.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/screen-release.json",
+      "bytes": 1319,
+      "sha256": "f376591fff931c2905d9f9dfb684d2c87559ae1ed22dfaf5816e7141bb35f8bb"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\SCREEN-RELEASE-ORIGINAL-WAIT.actual-a01.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/screen-release-original-wait.json",
+      "bytes": 849,
+      "sha256": "1b924e8857804660159cc633ce3518181f0e4e463a188246e175a71d3d855b75"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\E04-WINDOW-R0217-TAKE01-film-result.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/E04-WINDOW-R0217-TAKE01-film-result.actual.json",
+      "bytes": 1789,
+      "sha256": "aa2f4de7ec89a1676c3a1df16c7ed412abf94795b4e43639e53d6701955c177f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\E04-WINDOW-R0217-TAKE01-started.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/E04-WINDOW-R0217-TAKE01-started.actual.json",
+      "bytes": 1316,
+      "sha256": "5bbcd13a8a0ce07aa704edd605afc8fb1d576f5664f88bc1cf4283e55aa4e19d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\result.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/recorder-result.json",
+      "bytes": 1965,
+      "sha256": "080b734d19527e82f5974cf98422911dae1586a94f93df1463b9aa224b54e701"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\QA.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/QA.actual.json",
+      "bytes": 4322,
+      "sha256": "0eefc024d9f32f7640b4bb25c2de70c48d2f5deb6433dd02cc0c9596debe84d5"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\first.jpg",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/first.jpg",
+      "bytes": 104628,
+      "sha256": "583d6512c9cd0eda8ab08e24d082426412a0a99707152086b934943fb812b8fe"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\midpoint-not-event-boundary.jpg",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/midpoint-not-event-boundary.jpg",
+      "bytes": 103542,
+      "sha256": "a0fba1fb0bf342e9d04a763c3acd4b482124c1e811bce7aab94da2810ee27674"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\tail.jpg",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/tail.jpg",
+      "bytes": 103095,
+      "sha256": "8ce4f9a7311970e9a83f0106d4c0c1868500dd9174127c3947e1a60edddb9880"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\quit-a01\\after-final-quit.png.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/after-final-quit.png.json",
+      "bytes": 1504,
+      "sha256": "9f56495d94396a7d9ca85fa6e79ef2281e83244aff6192c96d9ebacdd4bdda1f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\quit-a01\\CLIENT-INSPECT.final-a01.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/close/CLIENT-INSPECT.final-a01.actual.json",
+      "bytes": 962,
+      "sha256": "4526dd50c0ab7253dd2af82eae75e8464d1b3cdf815f0693cf56d07aece02aa3"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\steam-review-a01\\STEAM-OFFLINE-DIRECT-REVIEW.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/binding/steam-offline-review.json",
+      "bytes": 1482,
+      "sha256": "f3433ebc959ce9b4eb5ea1c57ae7beb98b4ba4d3120b83274c99e3e8924ea703"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\window-preparation\\r0217-take01\\take01-input.actual.json",
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/take-config.json",
+      "bytes": 3313,
+      "sha256": "fd7cdffc75821596340ba732dc58d3f3053aef6ac3bda8bd95c4c5bbb4540856"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\ROOT-APPROVAL.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/ROOT-APPROVAL.actual.json",
+      "bytes": 699,
+      "sha256": "eda9f965bea6f2949da7741a5f01ece3204fdfa1171a62d453c5711fffba309e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\LEGACY-SCOPE-CLOSED.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/LEGACY-SCOPE-CLOSED.actual.json",
+      "bytes": 5564,
+      "sha256": "f911b925d28e9d72842b68967fc61b8dd7c83ea7c5642ebece74199debc63208"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\LEGACY-42M-PROVENANCE.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/LEGACY-42M-PROVENANCE.actual.json",
+      "bytes": 808,
+      "sha256": "d0c8c3006929ebf9f02c2f02f58e9c130f68571b70a3d88a9652920d725b54aa"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\D-TWO-WORK-MOVIES-RETIREMENT.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/D-TWO-WORK-MOVIES-RETIREMENT.actual.json",
+      "bytes": 3883,
+      "sha256": "1fb600fef18d3a2c3bbb9f51855ad297fdefb836a70aa45605f2e2dea7c31e2e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\MINIMUM-PROTECTIONS.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/MINIMUM-PROTECTIONS.actual.json",
+      "bytes": 33547,
+      "sha256": "c36f78df7d71cb2fcc12b22b731f59cb0a9f24a8f7599e6565d0c1a199f09df1"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\MEDIA-CLOSED-SETTLEMENT.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/MEDIA-CLOSED-SETTLEMENT.actual.json",
+      "bytes": 818,
+      "sha256": "b1df1e320fe349fedff54c796dced5d21e7bd4985139192161f1a19b1f8a0a67"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\FULL-REVIEW-CLOSED-SETTLEMENT.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/FULL-REVIEW-CLOSED-SETTLEMENT.actual.json",
+      "bytes": 2198,
+      "sha256": "68349ec6910d7ffeefe6dd9364dbf123dd6de2a91b34ad1cdb6d33d9911e5e3e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+      "bytes": 1023,
+      "sha256": "bb3c0fdfdedd28ecc6fc0b4c5f9ce7887ca1f8e26316ee44120651ce5e1e6fe3"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-ACTUAL-FOOTPRINT-AND-SHARED-EDITORIAL.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/A39-ACTUAL-FOOTPRINT-AND-SHARED-EDITORIAL.actual.json",
+      "bytes": 5382,
+      "sha256": "5611bb9bb7cf4fb32d6e8da2e7e1e0e94705d4f6c82c90140982a1dd020e6295"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 14589,
+      "sha256": "4ee84e34dbb03e460fa7ae71d689c887981bfc23f8129854166c13ea51163c41"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a02.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a02.json",
+      "bytes": 16255,
+      "sha256": "a3fa886b2ada8d2b27ddb0866fb68c1f80eb2526d99351ea3319ae555c768db5"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R221-SCENE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 13706,
+      "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SOURCE-BOUND-TRANSACTION.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R221-SOURCE-BOUND-TRANSACTION.actual-a01.json",
+      "bytes": 1004,
+      "sha256": "8bb7f7a4e230521d777d176bc3070dfae5b3d28cb66817c14030546fff44d372"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-PRIOR-ALLOCATION-HISTORY-FIELDS.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R221-PRIOR-ALLOCATION-HISTORY-FIELDS.actual.json",
+      "bytes": 1083,
+      "sha256": "ef8ac785382ce9b47094680750f4d013c7d9d3d1afefe30977806b068ba7da4d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-ALLOCATION-CAPACITY-BINDING.actual.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R0217-ALLOCATION-CAPACITY-BINDING.actual.json",
+      "bytes": 2129,
+      "sha256": "042be806a59fbf260ab02c5948ccd195be211509550aaca4d68976f0c389d128"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-ADMISSION.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R221-MEDIA-QA-SHARED-ADMISSION.actual-a01.json",
+      "bytes": 4864,
+      "sha256": "17ba18efcb38e0219f01c75dd2da0951cabb9c32832121ed637e5752e443f795"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-CLOSED-SETTLEMENT.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R221-MEDIA-QA-SHARED-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 3292,
+      "sha256": "ccb42dbb2a7a9249bc1f1e2b12654382adca927a6aeeb6af9354a19ec84dd21a"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 21574,
+      "sha256": "bb6f4a8084d227b7e38bddfaa622276f8093161e81cdce05cf038563fe8012cf"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity\\CAPACITY-CHECKPOINT.actual-a03.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/CAPACITY-CHECKPOINT.actual-a03.json",
+      "bytes": 6326,
+      "sha256": "894b96ef1c0f35db019796ac4539a8bdbc4264080a29d94add9c0119e951c205"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\capacity-archive-a01\\CURRENT-CLAIM-SNAPSHOT.actual-a01.json",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/CURRENT-CLAIM-SNAPSHOT.actual-a01.json",
+      "bytes": 12960,
+      "sha256": "45bc20880dbcf16a53c0c0398d41bdb67b088afa017053ea9881141cf0865f2e"
+    }
+  ],
+  "total_original_bytes": 1314637,
+  "original_large_evidence_copied": false,
+  "normal_close_qualified": true,
+  "R04_entire_card_closed": false,
+  "formal_dynamic_credit": false,
+  "notes": [
+    "External STOP content wrote an approximate04:27 stamp; actual file/keeper report04:31:05 is authoritative. Original preserved.",
+    "menu-after-actual-titlebar-focus.png name was premature: preceding click was rejected; actual titlebar click was titlebar-focus-after-a02.png. No click completion inferred from filename.",
+    "Original GUI screenshots remain outside Git; sparse JPEGs are video-derived and cannot replace those raw Quit screenshots."
+  ]
+}

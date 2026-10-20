@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:24:45.863939+00:00",
+  "pid": 35940,
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "run",
+    "--runtime",
+    "C:\\ck3-e04-resume-20261020-a01\\common-runtime-a39-a03\\runtime.local.json",
+    "--products",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+    "--product",
+    "war-episode04-r10",
+    "--case",
+    "r10-common-preparation",
+    "--prepared-case",
+    "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\prepared-a01\\prepared-case.json",
+    "--run-context",
+    "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\R221-REVIEWED-CONTEXT.actual-a01.json"
+  ]
+}

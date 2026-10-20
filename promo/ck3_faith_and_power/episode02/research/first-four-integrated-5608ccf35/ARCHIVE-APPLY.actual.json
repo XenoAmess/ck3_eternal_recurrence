@@ -1,0 +1,113 @@
+{
+  "schema": "faith-e02-first-four-historical-archive-application.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:43:59.872100+00:00",
+  "source": "Actual exact-byte migration receipt and one unchanged public25-test process receipt; original source commit5608 preserved; no game action",
+  "baseline_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+  "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db",
+  "official_original_failed_CI": {
+    "conclusion": "failure",
+    "databaseId": 39364914962,
+    "headSha": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+    "status": "completed",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39364914962",
+    "execution_machine_id": "unknown",
+    "observed_from_machine_id": "desktop-3fevhd2-1c74096080",
+    "log_sha256": "e479e4591c04091b19c2612dfafff280577e3c0be4d465870e674987471f7461"
+  },
+  "moves": [
+    {
+      "original_relative": "tools/ck3_mod_acceptance_cases/faith_e02_first_four_integrated_adapter.py",
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\research\\first-four-integrated-5608ccf35\\faith_e02_first_four_integrated_adapter.py.source",
+        "bytes": 28213,
+        "sha256": "b7a574e7aa03a20e90c1dc2f0d8ec1f63bb2b87f039ec7b835a9fffbc613a63a"
+      },
+      "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db"
+    },
+    {
+      "original_relative": "tools/faith_e02_first_four_integrated_queue.py",
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\research\\first-four-integrated-5608ccf35\\faith_e02_first_four_integrated_queue.py.source",
+        "bytes": 7583,
+        "sha256": "fb63f734387a55c9e5708550ec51a9bef59ae611db8938db29d7d49c8d1329ff"
+      },
+      "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db"
+    },
+    {
+      "original_relative": "tools/test_faith_e02_first_four_integrated_case.py",
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\research\\first-four-integrated-5608ccf35\\test_faith_e02_first_four_integrated_case.py.source",
+        "bytes": 20147,
+        "sha256": "128da7c56ab143bae5731579c78c5e44ad2165c4f435c4dd6bec927ffe47ca7b"
+      },
+      "source_commit": "5608ccf350110a93fe04ee8f9cfcc810c96450db"
+    }
+  ],
+  "local_affected_validation": {
+    "schema": "xar.e04.firstfour-archive-affected-adapter-tests.actual.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source": "Actual one subprocess run of unchanged affected public adapter tests after exact archival; no game/SDK/screen actions",
+    "started_at_utc": "2026-10-20T04:42:58.955246+00:00",
+    "finished_at_utc": "2026-10-20T04:43:03.616758+00:00",
+    "elapsed_seconds": 4.661,
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/test_ck3_mod_acceptance_adapters.py"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\ci-scout-dependency\\ADAPTER-AFTER-ARCHIVE.stdout.log",
+      "bytes": 764,
+      "sha256": "5e0e7adc74dc5213989269deea13c88b21f66975837c5cb9de90027f0b200546"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\ci-scout-dependency\\ADAPTER-AFTER-ARCHIVE.stderr.log",
+      "bytes": 129,
+      "sha256": "8c18dfd271e3b0097079ba2f2b7e2912b403f01f1e6507e68177a0a81fb4fa98"
+    },
+    "public_guard_before": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+      "bytes": 53287,
+      "sha256": "be4a08be920e9c6abc1dce7de5aa99834db2e6a2e5d4dc8a9b7b148b18b1deee"
+    },
+    "public_guard_after": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+      "bytes": 53287,
+      "sha256": "be4a08be920e9c6abc1dce7de5aa99834db2e6a2e5d4dc8a9b7b148b18b1deee"
+    },
+    "archived13_tests_credit": false,
+    "test_source_modified": false,
+    "commit_or_push": false,
+    "actual25_reported": true,
+    "pass": true
+  },
+  "missing_scout_status": "NOT_RECOVERED; original bytes and SHA unknown",
+  "historical_research_tests": {
+    "methods": 13,
+    "executed": false,
+    "qualification": "UNQUALIFIED; no pass or skipped-test credit"
+  },
+  "public_guard_changed": false,
+  "public_case_registered_or_replaced": false,
+  "commit_push_or_new_official_CI_pass_claimed": false,
+  "metadata_note": "README pre-application candidate bytes retained as exact prefix; appended dated actual application status. Original SOURCE-MANIFEST and all3 archived code files are byte-exact.",
+  "original_candidate_readme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\ci-scout-dependency\\candidate\\README.md",
+    "bytes": 3604,
+    "sha256": "ae9f8ae73ff86761e62e5579e6ef6c7815ce9ac24447ed789bf007f6eccc40b5"
+  },
+  "final_readme": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\research\\first-four-integrated-5608ccf35\\README.md",
+    "bytes": 4616,
+    "sha256": "90bbc13dafc64e29523f48a808f8ef353abba635b9a05be3a22c1396f3064c35"
+  },
+  "original_manifest": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\research\\first-four-integrated-5608ccf35\\SOURCE-MANIFEST.json",
+    "bytes": 5410,
+    "sha256": "a8ffc2095ebed89a34679199d4d36ad00cec61dd9a7bee9e515ed3d593b10d09"
+  }
+}

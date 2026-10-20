@@ -1,0 +1,88 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:02:27.591951+00:00",
+  "original_result_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-RESULT.json",
+    "bytes": 239982,
+    "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+  },
+  "exclusion_physical_facts": [
+    {
+      "sequence": 1207,
+      "army_regiment_id": 56,
+      "observed_date_raw": 53147544,
+      "caller_return_rva": 38675950,
+      "writer_request_source": "county_entry_primary",
+      "native_caller_kind": "other_writer_caller",
+      "residual_parent_invocation_token": null,
+      "residual_source_native_carmy_id": null,
+      "request_raw": 0,
+      "actual_physical_soldier_debit": 0,
+      "physical_evidence_qualified": true,
+      "dated_evidence_ready": true,
+      "reasons": []
+    },
+    {
+      "sequence": 1208,
+      "army_regiment_id": 57,
+      "observed_date_raw": 53147544,
+      "caller_return_rva": 38675950,
+      "writer_request_source": "county_entry_primary",
+      "native_caller_kind": "other_writer_caller",
+      "residual_parent_invocation_token": null,
+      "residual_source_native_carmy_id": null,
+      "request_raw": 0,
+      "actual_physical_soldier_debit": 0,
+      "physical_evidence_qualified": true,
+      "dated_evidence_ready": true,
+      "reasons": []
+    },
+    {
+      "sequence": 1209,
+      "army_regiment_id": 58,
+      "observed_date_raw": 53147544,
+      "caller_return_rva": 38675950,
+      "writer_request_source": "county_entry_primary",
+      "native_caller_kind": "other_writer_caller",
+      "residual_parent_invocation_token": null,
+      "residual_source_native_carmy_id": null,
+      "request_raw": 0,
+      "actual_physical_soldier_debit": 0,
+      "physical_evidence_qualified": true,
+      "dated_evidence_ready": true,
+      "reasons": []
+    },
+    {
+      "sequence": 1210,
+      "army_regiment_id": 59,
+      "observed_date_raw": 53147544,
+      "caller_return_rva": 38675950,
+      "writer_request_source": "county_entry_primary",
+      "native_caller_kind": "other_writer_caller",
+      "residual_parent_invocation_token": null,
+      "residual_source_native_carmy_id": null,
+      "request_raw": 0,
+      "actual_physical_soldier_debit": 0,
+      "physical_evidence_qualified": true,
+      "dated_evidence_ready": true,
+      "reasons": []
+    },
+    {
+      "sequence": 1211,
+      "army_regiment_id": 60,
+      "observed_date_raw": 53147544,
+      "caller_return_rva": 38675950,
+      "writer_request_source": "county_entry_primary",
+      "native_caller_kind": "other_writer_caller",
+      "residual_parent_invocation_token": null,
+      "residual_source_native_carmy_id": null,
+      "request_raw": 0,
+      "actual_physical_soldier_debit": 0,
+      "physical_evidence_qualified": true,
+      "dated_evidence_ready": true,
+      "reasons": []
+    }
+  ],
+  "direct_v2_owner_exclusion_preserved": true,
+  "whole_county_credit_granted": false
+}

@@ -1,0 +1,267 @@
+{
+  "schema": "xar.e04.capacity-current-claim-snapshot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:35:45.606767+00:00",
+  "source_ledger_pin": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 254820,
+    "sha256": "cbba49ad0a7a5393aee01d9426f8d1a29959f720794a85ca772f3421556f2646"
+  },
+  "task_id": "e04-capacity-resume-20261020-a01",
+  "current_claim": {
+    "state": "active",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "task_id": "e04-capacity-resume-20261020-a01",
+    "owner": "/root",
+    "at_utc": "2026-10-20T02:13:50.419813+00:00",
+    "review_at_utc": "2026-10-20T08:00:00Z",
+    "phase_kind": "20261020-finite-C-only-media-native-one-R04-scene",
+    "reservation_metric": "future_additional_bytes_by_volume",
+    "reserved_future_bytes_by_volume": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "component_ceiling_bytes": {
+      "media": 268435456,
+      "shared_offline": 134217728,
+      "native_build": 1073741824,
+      "profile_and_driver": 2147483648,
+      "raw": 268435456
+    },
+    "other_unspent_reservations_bytes_by_volume": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "unknown_legacy_C_reservation_status": "historical_four_components_identified_current_consumption_unreconciled_full_amount_carried",
+    "maximum_new_scene_count": 0,
+    "native_source_bound": true,
+    "scene_source_bound": false,
+    "heavy_write_execution_admitted_components": [
+      "shared_offline"
+    ],
+    "native_and_scene_heavy_execution_admitted": false,
+    "approved_output_roots": {
+      "media": "C:\\ck3-e04-resume-20261020-a01\\media",
+      "shared_offline_aggregate": "C:\\ck3-e04-resume-20261020-a01",
+      "native_build": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "scene_candidate": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01"
+    },
+    "old_retained_allocation_added_again_bytes": 0,
+    "cleanup_credit_bytes": 0,
+    "unused_credit_bytes": 0,
+    "approval": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\ROOT-APPROVAL.actual.json",
+      "bytes": 699,
+      "sha256": "eda9f965bea6f2949da7741a5f01ece3204fdfa1171a62d453c5711fffba309e"
+    },
+    "media_settlement": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\MEDIA-CLOSED-SETTLEMENT.actual.json",
+      "bytes": 818,
+      "sha256": "b1df1e320fe349fedff54c796dced5d21e7bd4985139192161f1a19b1f8a0a67"
+    },
+    "media_state": "closed-retained41MB-no-future-write",
+    "native_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+    "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+    "producer_plan": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+      "bytes": 39716,
+      "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+    },
+    "native_heavy_write_execution_admitted": false,
+    "native_source_bound_capacity_path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+    "native_source_bound_capacity_pin": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+      "bytes": 6364,
+      "sha256": "1064e34bccbb89216705f12850a21527a6c32565404fcb17ccea214309b0eaba"
+    },
+    "legacy42132678_provenance": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\LEGACY-42M-PROVENANCE.actual.json",
+      "bytes": 808,
+      "sha256": "d0c8c3006929ebf9f02c2f02f58e9c130f68571b70a3d88a9652920d725b54aa"
+    },
+    "scene_capacity_template": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.template-a01.json",
+      "bytes": 8674,
+      "sha256": "dd5c4c0ef6cf79f7c6cd7c97003adf851790862e88cf9a7f58b11f8eca2b4896"
+    },
+    "scene_component_ceiling_bytes": {
+      "profile": 805306368,
+      "driver": 1073741824,
+      "raw": 268435456,
+      "other": 268435456
+    },
+    "scene_component_roots_expected_only": {
+      "profile": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\state-a01",
+      "driver": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217",
+      "raw": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01",
+      "other": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01"
+    },
+    "scene_additional_roots": {
+      "profile": [
+        "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\userdirs"
+      ]
+    },
+    "game_execution_admitted": false,
+    "shared_offline_accounting_excludes": [
+      "C:\\ck3-e04-resume-20261020-a01\\media",
+      "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01"
+    ],
+    "scene_ready_source_candidate": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.template-a01.json",
+      "bytes": 8674,
+      "sha256": "dd5c4c0ef6cf79f7c6cd7c97003adf851790862e88cf9a7f58b11f8eca2b4896"
+    },
+    "scene_runtime_source_head_candidate": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+    "full_review_future_bytes": 0,
+    "full_review_aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+    "full_review_admission": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\FULL-REVIEW256-C-ADMISSION.actual-a01.json",
+      "bytes": 3421,
+      "sha256": "085a9402c6a1e49f6031b608e1be21e5b114b58e8ce7bd94e98a4963384f353f"
+    },
+    "native_state": "closed-qualified-retained-no-future-write",
+    "native_first_failure": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FIRST-FAILURE.actual-a01.json",
+      "bytes": 5219,
+      "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+    },
+    "native_second_failure": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-SECOND-FAILURE.actual-a02.json",
+      "bytes": 9337,
+      "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+    },
+    "full_review_state": "closed-retained223089798-no-future-heavy-write",
+    "full_review_settlement": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\FULL-REVIEW-CLOSED-SETTLEMENT.actual.json",
+      "bytes": 2198,
+      "sha256": "68349ec6910d7ffeefe6dd9364dbf123dd6de2a91b34ad1cdb6d33d9911e5e3e"
+    },
+    "native_settlement": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+      "bytes": 1023,
+      "sha256": "bb3c0fdfdedd28ecc6fc0b4c5f9ce7887ca1f8e26316ee44120651ce5e1e6fe3"
+    },
+    "scene_source_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+    "scene_source_bound_capacity_path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+    "production_qualification": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+      "bytes": 25484,
+      "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+    },
+    "public_runtime": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\common-runtime-a39-a03\\runtime.local.json",
+      "bytes": 2590,
+      "sha256": "62533b48f81280ecfb4058f70abc313b4e78c87e5da36c977f1558ab4c19f763"
+    },
+    "scene_allocation_state": "actual-R0217-resource-closed",
+    "scene_run_id_expected": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "scene_source_bound_capacity_pin": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 13706,
+      "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+    },
+    "native_actual_closed_footprint": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-ACTUAL-FOOTPRINT-AND-SHARED-EDITORIAL.actual.json",
+      "bytes": 5382,
+      "sha256": "5611bb9bb7cf4fb32d6e8da2e7e1e0e94705d4f6c82c90140982a1dd020e6295"
+    },
+    "shared_editorial_index_actual_metadata_bytes": 25146,
+    "scene_component_roots": {
+      "profile": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\state-a02",
+      "driver": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216",
+      "raw": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\raw-a01",
+      "other": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01"
+    },
+    "scene_state": "resource-closed-normal-qualified-retained-no-heavy-future",
+    "scene_remaining_future_bytes": 0,
+    "scene_heavy_write_execution_admitted": false,
+    "retained_scene_history": [
+      {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+        "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-SCENE-SOURCE-BOUND.actual-a03.json",
+          "bytes": 13688,
+          "sha256": "ec9bfcbc573ea10583d34677dae1684cecd605a48e04a06c042b57389ce12e0a"
+        },
+        "settlement": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a02.json",
+          "bytes": 16255,
+          "sha256": "a3fa886b2ada8d2b27ddb0866fb68c1f80eb2526d99351ea3319ae555c768db5"
+        },
+        "future_heavy_write_bytes": 0
+      },
+      {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+        "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01",
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+          "bytes": 13706,
+          "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+        },
+        "settlement": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+          "bytes": 21574,
+          "sha256": "bb6f4a8084d227b7e38bddfaa622276f8093161e81cdce05cf038563fe8012cf"
+        },
+        "future_heavy_write_bytes": 0
+      }
+    ],
+    "previous_scene_settlement": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a02.json",
+      "bytes": 16255,
+      "sha256": "a3fa886b2ada8d2b27ddb0866fb68c1f80eb2526d99351ea3319ae555c768db5"
+    },
+    "previous_scene_actual_allocation": {
+      "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+      "actual_allocation_binding": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0216-ALLOCATION-CAPACITY-BINDING.actual.json",
+        "bytes": 2572,
+        "sha256": "1a4f64bcd1f935fd0e76d4a518b856204b3a553b97c66f380cdfd0a69a5d2d9c"
+      }
+    },
+    "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "actual_allocation_binding": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-ALLOCATION-CAPACITY-BINDING.actual.json",
+      "bytes": 2129,
+      "sha256": "042be806a59fbf260ab02c5948ccd195be211509550aaca4d68976f0c389d128"
+    },
+    "shared_offline_subscopes": [
+      {
+        "scope_id": "r221-postfilm-qa-a01",
+        "state": "closed-retained-actual336884-no-heavy-future",
+        "root": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01",
+        "absolute_aggregate_ceiling_bytes": 2359296,
+        "admission": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-ADMISSION.actual-a01.json",
+          "bytes": 4864,
+          "sha256": "17ba18efcb38e0219f01c75dd2da0951cabb9c32832121ed637e5752e443f795"
+        },
+        "additional_future_bytes": 0,
+        "actual_logical_bytes": 336884,
+        "remaining_heavy_write_bytes": 0,
+        "settlement": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-CLOSED-SETTLEMENT.actual-a01.json",
+          "bytes": 3292,
+          "sha256": "ccb42dbb2a7a9249bc1f1e2b12654382adca927a6aeeb6af9354a19ec84dd21a"
+        }
+      }
+    ],
+    "shared_other_outputs_collective_ceiling_bytes": 131858432,
+    "scene_settlement": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 21574,
+      "sha256": "bb6f4a8084d227b7e38bddfaa622276f8093161e81cdce05cf038563fe8012cf"
+    },
+    "latest_postclose_capacity_checkpoint": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\CAPACITY-CHECKPOINT.actual-a03.json",
+      "bytes": 6326,
+      "sha256": "894b96ef1c0f35db019796ac4539a8bdbc4264080a29d94add9c0119e951c205"
+    }
+  },
+  "historical_capabilities_are_not_renewed_admission": true,
+  "finite_quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "all_game_native_media_scenes_closed_future0_shared128_remains_for_Root_metadata": true
+}

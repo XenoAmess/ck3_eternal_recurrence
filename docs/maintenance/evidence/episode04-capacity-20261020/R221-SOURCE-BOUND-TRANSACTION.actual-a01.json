@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.finite-replacement-scene-admission-transaction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:33:42.357032+00:00",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 13706,
+    "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+  },
+  "previous_scene_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-FAILED-SCENE-CLOSED-SETTLEMENT.actual-a02.json",
+    "bytes": 16255,
+    "sha256": "a3fa886b2ada8d2b27ddb0866fb68c1f80eb2526d99351ea3319ae555c768db5"
+  },
+  "ledger_after": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 246791,
+    "sha256": "37d3c823db30144c8a05e476f71d42ff2dfbba9cfd3f4c3d20fbfdd8d3e4b678"
+  },
+  "atomic_coordinator_lock_used": true,
+  "scene_or_counter_or_game_created": false,
+  "physical_credit_bytes": 0,
+  "no_native_or_media_repeat": true
+}

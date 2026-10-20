@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.owned-client-window-take-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:59:25.771934+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "state": "NORMAL_TREE_EMPTY",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 16780,
+    "owned_ck3_create_time": 1792467500.833546,
+    "hwnd": 21498352,
+    "foreground_hwnd": 21498352,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-20T03:57:59.886023+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "recorder_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\result.json",
+    "bytes": 1965,
+    "sha256": "080b734d19527e82f5974cf98422911dae1586a94f93df1463b9aa224b54e701"
+  },
+  "primary_action_error": null,
+  "recorder_finish_error": null,
+  "secondary_cleanup_error": null,
+  "finish_reason": "actual_observer_result_after_minimum_duration",
+  "elapsed_wall_seconds_at_terminal": 84.7563573,
+  "planned_recording_max_seconds": 180,
+  "hard_terminal_wall_seconds_met": true,
+  "actual_observer_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-TERMINAL.json",
+    "bytes": 607,
+    "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+  },
+  "one_actual_ffmpeg_job_no_replay": true,
+  "raw_video_human_approved": false,
+  "business_result_inferred_from_video": false
+}

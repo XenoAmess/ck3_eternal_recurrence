@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.a39-native-closed-reservation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:55:26.958916+00:00",
+  "actual_qualification": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+    "bytes": 25484,
+    "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+  },
+  "qualification_aggregate_logical_bytes_before_final_Q_receipt": 435755981,
+  "final_Q_receipt_bytes": 25484,
+  "retained_logical_bytes_inferred_after_final_receipt": 435781465,
+  "qualified_aggregate_peak_before_final_Q_receipt_bytes": 435755981,
+  "fresh_owned_native_writer_processes": [],
+  "old_native_peak_reserved_bytes": 1073741824,
+  "remaining_native_heavy_write_bytes": 0,
+  "remaining_C_future_reserved_bytes": 2550136832,
+  "retained_native_already_in_whole_volume_used": true,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "settled_once": true
+}

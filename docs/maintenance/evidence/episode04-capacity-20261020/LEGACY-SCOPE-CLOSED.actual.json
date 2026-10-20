@@ -1,0 +1,112 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-20T02:13:50.419813+00:00",
+  "owner": "/root",
+  "action": "expire_old_future_write_scope_without_cleanup_or_unused_credit",
+  "prior_claims": [
+    {
+      "state": "active",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "task_id": "e04-per-volume-upper-bound-capacity-a01",
+      "at_utc": "2026-10-19T05:51:48.730801+00:00",
+      "review_at_utc": "2026-10-19T07:00:00Z",
+      "run_id": null,
+      "scene_root": null,
+      "reserved_scene_bytes": 0,
+      "reserved_native_build_bytes": 0,
+      "reserved_media_bytes": 0,
+      "phase_kind": "finite-per-volume-existing-shared-source-pool",
+      "shared_offline_bytes": 134217728,
+      "all_agents_offline_D_future_ceiling_bytes": 67108864,
+      "old_other_unspent_carried_bytes": 42132678,
+      "same_shared_pool_no_new_pool": true,
+      "actual_receipt_path": "C:\\ck3-e04-resume-20261015-a01\\r219-capacity-prep-a01\\R219-SHARED-POOL-FRESH-REVIEW.actual-root-a01.json",
+      "scope_supplement_recovered_chapter": {
+        "output_root": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01",
+        "maximum_bytes": 67108864,
+        "other_C_purposes_collective_ceiling_bytes": 67108864,
+        "review_at_utc": "2026-10-19T07:00:00Z",
+        "additional_bytes": 0
+      }
+    },
+    {
+      "state": "active",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "task_id": "e04-per-volume-upper-bound-capacity-a01",
+      "at_utc": "2026-10-19T05:14:23.458299+00:00",
+      "review_at_utc": "2026-10-19T07:00:00Z",
+      "phase_kind": "R219-one-split-volume-scene-active-native-hold-retained",
+      "reservation_metric": "future_additional_bytes_by_volume",
+      "reserved_future_bytes_by_volume": {
+        "C:/": 2684354560,
+        "D:/": 335544320
+      },
+      "reserved_native_build_bytes": 805306368,
+      "reserved_scene_bytes": 2214592512,
+      "reserved_media_bytes": 0,
+      "native_build_volume": "C:/",
+      "new_native_build_root": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01",
+      "native_source_pending": false,
+      "heavy_write_execution_admitted": true,
+      "scene_execution_admitted": true,
+      "maximum_scene_count": 1,
+      "component_future_bytes_by_volume": {
+        "C:/": {
+          "native": 805306368,
+          "profile": 805306368,
+          "driver": 1073741824
+        },
+        "D:/": {
+          "raw": 268435456,
+          "other": 67108864
+        }
+      },
+      "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0215",
+      "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01",
+      "actual_receipt_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-per-volume-upper-bound-prep-a01\\PER-VOLUME-ALLOCATION-UPPER-BOUND.actual-root-a01.json",
+      "native_reservation_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-per-volume-upper-bound-prep-a01\\A38-C-NATIVE-SOURCE-BOUND.actual-root-a02.json",
+      "scene_reservation_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-per-volume-upper-bound-prep-a01\\ONE-SCENE-C-D-RESERVE-ONLY.actual-root-a01.json",
+      "native_build_source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+      "native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+      "native_heavy_write_execution_admitted": false,
+      "producer_plan": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\a38-exact-source-qualification-prep-a01\\A38-PLAN.actual-a01.json",
+        "bytes": 35780,
+        "sha256": "428ce50e4c9c2c835c4c763fac52f7c30c13e46e83ed5a269297fe20c69dc43c"
+      },
+      "native_source_amended_at_utc": "2026-10-19T05:24:14.010235+00:00",
+      "C_component_aggregate_root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01",
+      "additional_run_root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215",
+      "run_id_state": "expected_not_allocated",
+      "expected_public_attempt": "a220",
+      "scene_review_at_utc": "2026-10-19T07:00:00Z",
+      "native_review_at_utc": "2026-10-19T06:30:00Z",
+      "native_deadline_not_extended": true,
+      "scene_actual_receipt_path": "C:\\ck3-e04-resume-20261015-a01\\r219-capacity-prep-a01\\R219-SPLIT-VOLUME-SCENE-CAPACITY.actual-root-a01.json",
+      "component_review_at_utc": {
+        "native": "2026-10-19T06:30:00Z",
+        "profile": "2026-10-19T07:00:00Z",
+        "driver": "2026-10-19T07:00:00Z",
+        "raw": "2026-10-19T07:00:00Z",
+        "other": "2026-10-19T07:00:00Z"
+      },
+      "component_roots": {
+        "profile": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\state-a01",
+        "driver": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215",
+        "raw": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\raw-a01",
+        "other": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01"
+      },
+      "native_hold_retained_no_unused_settlement": true
+    }
+  ],
+  "basis": {
+    "closed_owner_task": "e04-per-volume-upper-bound-capacity-a01",
+    "closed_owner_sequence": 7128,
+    "fresh_prohibited_writers": []
+  },
+  "old_files_retained": true,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_refund_credit_bytes": 0,
+  "unknown_old_C_bytes_carried_once": 42132678
+}

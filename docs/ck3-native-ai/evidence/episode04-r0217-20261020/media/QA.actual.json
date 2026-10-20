@@ -1,0 +1,126 @@
+{
+  "schema": "xar.e04.r221-map-context-new-raw-technical-QA.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T04:09:22.037919+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "source_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+  "status": "TECHNICAL_QA_PASS_PENDING_ROOT_SPARSE_VISUAL_REVIEW",
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-ADMISSION.actual-a01.json",
+    "bytes": 4864,
+    "sha256": "17ba18efcb38e0219f01c75dd2da0951cabb9c32832121ed637e5752e443f795"
+  },
+  "film_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\E04-WINDOW-R0217-TAKE01-film-result.actual.json",
+    "bytes": 1789,
+    "sha256": "aa2f4de7ec89a1676c3a1df16c7ed412abf94795b4e43639e53d6701955c177f"
+  },
+  "recorder_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\result.json",
+    "bytes": 1965,
+    "sha256": "080b734d19527e82f5974cf98422911dae1586a94f93df1463b9aa224b54e701"
+  },
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "has_b_frames": 0,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/1000",
+        "start_time": "0.000000"
+      }
+    ],
+    "format": {
+      "format_name": "matroska,webm",
+      "start_time": "0.000000",
+      "duration": "83.133000",
+      "size": "57159155"
+    }
+  },
+  "PTS_summary": {
+    "packet_count": 2494,
+    "first_display_pts": 0.0,
+    "last_display_pts": 83.1,
+    "minimum_display_pts_gap": 0.032999999999994145,
+    "maximum_display_pts_gap": 0.034000000000006025,
+    "display_PTS_unique": true,
+    "DTS_strictly_increasing": true,
+    "has_b_frames": 0,
+    "Matroska_ms_quantization_expected": true,
+    "full_packet_dump_written": false
+  },
+  "strict_full_AV_decode_exit_code": 0,
+  "strict_full_AV_decode_stderr": "",
+  "full_new_file_decode_count": 1,
+  "decoded_frames": 2494,
+  "streamed_packet_count": 2494,
+  "actual_duration_seconds": 83.133,
+  "audio_tracks": 0,
+  "audio_absence_is_expected": true,
+  "sample_frames": [
+    {
+      "label": "first",
+      "requested_seconds": 0.5,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\first.jpg",
+        "bytes": 104628,
+        "sha256": "583d6512c9cd0eda8ab08e24d082426412a0a99707152086b934943fb812b8fe"
+      },
+      "Root_direct_review_pending": true
+    },
+    {
+      "label": "midpoint-not-event-boundary",
+      "requested_seconds": 41.5665,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\midpoint-not-event-boundary.jpg",
+        "bytes": 103542,
+        "sha256": "a0fba1fb0bf342e9d04a763c3acd4b482124c1e811bce7aab94da2810ee27674"
+      },
+      "Root_direct_review_pending": true
+    },
+    {
+      "label": "tail",
+      "requested_seconds": 82.633,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\tail.jpg",
+        "bytes": 103095,
+        "sha256": "8ce4f9a7311970e9a83f0106d4c0c1868500dd9174127c3947e1a60edddb9880"
+      },
+      "Root_direct_review_pending": true
+    }
+  ],
+  "boundary_anchor_available": false,
+  "midpoint_is_not_business_transition_proof": true,
+  "Root_direct_visual_review": false,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0,
+  "business_conclusion_inferred_from_video": false,
+  "CK3_GUI_normal_close_inferred_from_recorder_close": false,
+  "old_video_QA_repeated": false,
+  "new_raw_or_video_copies": 0,
+  "owned_FFmpeg_at_close": [],
+  "SDK_or_screen_calls": 0,
+  "D_heavy_writes_bytes": 0,
+  "remaining_heavy_write_bytes": 0,
+  "storage_before_QA_receipt": {
+    "JPEG_bytes": 311265,
+    "metadata_bytes": 21297,
+    "aggregate_bytes": 332562
+  },
+  "retention_review_at_utc": "2026-10-22T04:00:00Z"
+}

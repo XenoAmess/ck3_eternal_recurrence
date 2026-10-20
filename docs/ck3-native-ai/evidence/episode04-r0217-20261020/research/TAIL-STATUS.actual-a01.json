@@ -1,0 +1,212 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:40:08.323741+00:00",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\native-report.mcp-calls.jsonl",
+      "bytes": 14845997,
+      "mtime_utc": "2026-10-20T03:40:08.146191+00:00",
+      "tail_offset_bytes": 14583853,
+      "tail_read_bytes": 262144,
+      "tail_sha256": "42c5d927a011fd784c3d604407b94cd4a51a0ff8359fadec0056cf731af51f94",
+      "tail_starts_mid_line": true,
+      "complete_rows_from_tail": [
+        {
+          "at": "2026-10-20T03:40:07.317939+00:00",
+          "direction": "request",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:07.317622+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.325361+00:00",
+          "direction": "response",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:07.317622+00:00",
+            "payload": {
+              "diagnostics": {
+                "connection_generation": 1,
+                "bridge_pid": 16780
+              }
+            },
+            "is_error": false,
+            "ok": true,
+            "finished_at": "2026-10-20T03:40:07.325060+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.598494+00:00",
+          "direction": "request",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:07.598233+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.603692+00:00",
+          "direction": "response",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:07.598233+00:00",
+            "payload": {
+              "diagnostics": {
+                "connection_generation": 1,
+                "bridge_pid": 16780
+              }
+            },
+            "is_error": false,
+            "ok": true,
+            "finished_at": "2026-10-20T03:40:07.603492+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.875592+00:00",
+          "direction": "request",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:07.875209+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.881026+00:00",
+          "direction": "response",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:07.875209+00:00",
+            "payload": {
+              "diagnostics": {
+                "connection_generation": 1,
+                "bridge_pid": 16780
+              }
+            },
+            "is_error": false,
+            "ok": true,
+            "finished_at": "2026-10-20T03:40:07.880813+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:08.140634+00:00",
+          "direction": "request",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:08.140347+00:00"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:08.145778+00:00",
+          "direction": "response",
+          "message": {
+            "tool": "ck3_migration_pipe_diagnostics",
+            "started_at": "2026-10-20T03:40:08.140347+00:00",
+            "payload": {
+              "diagnostics": {
+                "connection_generation": 1,
+                "bridge_pid": 16780
+              }
+            },
+            "is_error": false,
+            "ok": true,
+            "finished_at": "2026-10-20T03:40:08.145580+00:00"
+          }
+        }
+      ],
+      "tail_last_line_complete": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\native-report.native-wire.jsonl",
+      "bytes": 2371782,
+      "mtime_utc": "2026-10-20T03:40:08.297525+00:00",
+      "tail_offset_bytes": 2109638,
+      "tail_read_bytes": 262144,
+      "tail_sha256": "f83fb5058f04bb1f5e85be23d5aca8623de3642b2e402299b492fe16206a95f9",
+      "tail_starts_mid_line": true,
+      "complete_rows_from_tail": [
+        {
+          "at": "2026-10-20T03:40:06.546872+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:06.795963+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.046303+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.290945+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.547309+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:07.795223+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:08.042630+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        },
+        {
+          "at": "2026-10-20T03:40:08.297979+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat"
+          }
+        }
+      ],
+      "tail_last_line_complete": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\native-report.session.log",
+      "bytes": 844,
+      "mtime_utc": "2026-10-20T03:38:22.179012+00:00",
+      "tail_offset_bytes": 0,
+      "tail_read_bytes": 844,
+      "tail_sha256": "12f44fa8fffc74a3cd41c12ad55585fe5a79623a66acc849dba9402b345baa29",
+      "tail_starts_mid_line": false,
+      "complete_rows_from_tail": [
+        {
+          "type": "native_session_ready"
+        }
+      ],
+      "tail_last_line_complete": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\native-report.server-stderr.log",
+      "bytes": 0,
+      "mtime_utc": "2026-10-20T03:38:11.022841+00:00",
+      "tail_offset_bytes": 0,
+      "tail_read_bytes": 0,
+      "tail_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tail_starts_mid_line": false,
+      "complete_rows_from_tail": [],
+      "tail_last_line_complete": false
+    }
+  ]
+}

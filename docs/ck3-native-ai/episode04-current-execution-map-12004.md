@@ -1,5 +1,9 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-20 04:50 UTC：R0217正常闭场与新增83秒原片
+
+`machine_id: desktop-3fevhd2-1c74096080`。[R0217最新实证](episode04-r0217-direct-debits-and-normal-close-20261020.md)：唯一Move、7个精确日并到1513，17次direct-v2正额个别调用实际扣兵小计236；5次空DATA调用仍严格排除，县总额null、R04整卡false。OFF/Save与正常GUI/retained OS0/native0/host0/public0/keeper0已证，screen CAS7254→7257资源空。新客户区原片83.133秒完整解码/PTS通过，三图AI直接看过；未授continuous-clean/人工1×，正式动态0/11。研究10/14、业务7/11、ABC0/3不变。34分37秒审阅片已生成，仍为draft；不要将下方历史状态当最新现场。源efda/native28dda/a39只绑定本场。
+
 
 ### 2026-10-19 当前实证导航（R212/R213）
 

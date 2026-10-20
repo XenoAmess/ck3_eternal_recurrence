@@ -1,0 +1,323 @@
+{
+  "schema": "xar.e04.failed-scene-resource-closed-reservation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:16:31.696215+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+  "public_attempt": "a221",
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+  "prior_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-SCENE-SOURCE-BOUND.actual-a03.json",
+    "bytes": 13688,
+    "sha256": "ec9bfcbc573ea10583d34677dae1684cecd605a48e04a06c042b57389ce12e0a"
+  },
+  "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "runtime_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\common-runtime-a39-a02\\RUNTIME-DELIVERY.actual.json",
+    "bytes": 2089,
+    "sha256": "21252d6b8786e5148ecfcbce71f465460e70bd780ce4703b42a19f6df84c3bc3"
+  },
+  "failure_kind": "native-UI-second-window-query-lost-verified-owner; host RED",
+  "failure_outcome": {
+    "business_pass": false,
+    "normal_close": false,
+    "normal_close_original_missing": true,
+    "retained_OS_original_exit_missing": true,
+    "actual_days": 0,
+    "Move_attempts": 0,
+    "recorded_takes": 0,
+    "no_successful_close_inferred_from_process_absence": true
+  },
+  "resource_close_evidence": {
+    "CAS_release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\SCREEN-RELEASE.actual-a02.json",
+      "bytes": 1293,
+      "sha256": "92a58b5d3031923d4a50de68f0c9b4a5bb9ab86a8e81328410b564779e6b0873"
+    },
+    "keeper_report": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\keeper-a01\\report.json",
+      "bytes": 436,
+      "sha256": "a804e7ac32f972499267d23cd62d9b5b55d1231f68394d568f0b08cf81174db4"
+    },
+    "keeper_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\keeper-actual-parent-exit.json",
+      "bytes": 599,
+      "sha256": "a51a6126c826a97af75a24bcb21ccb4e413d8c0df3f9e1bb58fad4c4bfb2ab59"
+    },
+    "host_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "28b48e07b2fa107e2f0ade43ff9535e2ff188eb990cc0a1cbde10335b1fcddd8"
+    },
+    "public_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\PUBLIC-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 913,
+      "sha256": "39705e21054e365b28a8f02d86c310331c9ea91c600747af5817410a2fafc4f7"
+    },
+    "terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\R04-BAYEUX-TERMINAL.json",
+      "bytes": 826,
+      "sha256": "75ce8421a45b561d8897543b2b8dce539bc4d0ff8ce3cd2297c96f28e188cc44"
+    }
+  },
+  "fresh_process_census_before": {
+    "observed_at_utc": "2026-10-20T03:16:30.840191+00:00",
+    "processes": [],
+    "access_errors": [],
+    "source": "psutil process_iter pid/name/cmdline; CK3/FFmpeg/keeper names and exact scene Python argv"
+  },
+  "fresh_process_census_after": {
+    "observed_at_utc": "2026-10-20T03:16:31.696195+00:00",
+    "processes": [],
+    "access_errors": [],
+    "source": "psutil process_iter pid/name/cmdline; CK3/FFmpeg/keeper names and exact scene Python argv"
+  },
+  "measurement": {
+    "schema": "xar.e04.r220-live-component-monitor.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "scan_started_at_utc": "2026-10-20T03:16:30.840240+00:00",
+    "observed_at_utc": "2026-10-20T03:16:31.149753+00:00",
+    "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+    "components": {
+      "profile": {
+        "logical_bytes": 231634460,
+        "files": 3916,
+        "allocated_unique_bytes_known": 0,
+        "allocated_unknown_count": 0,
+        "ceiling_bytes": 805306368,
+        "logical_margin_bytes": 573671908
+      },
+      "driver": {
+        "logical_bytes": 166163714,
+        "files": 235,
+        "allocated_unique_bytes_known": 0,
+        "allocated_unknown_count": 0,
+        "ceiling_bytes": 1073741824,
+        "logical_margin_bytes": 907578110
+      },
+      "raw": {
+        "logical_bytes": 0,
+        "files": 0,
+        "allocated_unique_bytes_known": 0,
+        "allocated_unknown_count": 0,
+        "ceiling_bytes": 268435456,
+        "logical_margin_bytes": 268435456
+      },
+      "other": {
+        "logical_bytes": 12185928,
+        "files": 139,
+        "allocated_unique_bytes_known": 913,
+        "allocated_unknown_count": 0,
+        "ceiling_bytes": 268435456,
+        "logical_margin_bytes": 256249528
+      }
+    },
+    "volumes": {
+      "C:/": {
+        "total_bytes": 511133945856,
+        "free_bytes": 82659266560,
+        "total_free_bytes": 82659266560,
+        "whole_volume_used_upper_bound_bytes": 428474679296,
+        "required_free_with_full_remaining_hold_bytes": 28362073286,
+        "free_margin_bytes": 54297193274,
+        "projected_upper_bound_with_full_remaining_hold_and_system_bytes": 435361916102,
+        "finite_quota_margin_bytes": 2724748090
+      },
+      "D:/": {
+        "total_bytes": 500090007552,
+        "free_bytes": 21702701056,
+        "total_free_bytes": 21702701056,
+        "whole_volume_used_upper_bound_bytes": 478387306496,
+        "margin_above_safety_and_system_bytes": 93646848
+      }
+    },
+    "logical_scene_total_bytes": 409984102,
+    "allocated_unique_known_total_bytes": 913,
+    "allocated_bytes_complete": true,
+    "metadata_entries": 4372,
+    "elapsed_seconds": 0.314,
+    "scan_coverage_complete": true,
+    "live_scan_is_not_an_atomic_filesystem_snapshot": true,
+    "errors": [],
+    "errors_count": 0,
+    "remaining_hard_deadline_seconds": 6208.9,
+    "remaining_C_future_full_hold_bytes_unchanged": 2550136832,
+    "does_not_reduce_spent_or_close_any_running_claim": true,
+    "SDK_desktop_or_game_actions": 0,
+    "payload_body_bytes_read": 0,
+    "alarms": []
+  },
+  "retained_actual_logical_bytes": 409984102,
+  "retained_actual_allocated_unique_bytes": 913,
+  "old_scene_future_ceiling_bytes": 2415919104,
+  "remaining_scene_heavy_write_bytes": 0,
+  "previous_all_C_future_bytes": 2550136832,
+  "remaining_all_C_future_bytes": 134217728,
+  "shared128MiB_pool_continues": true,
+  "legacy_C42132678_still_carried": true,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "deletion_performed": false,
+  "retained_actual_already_inside_whole_volume_used": true,
+  "failure_retention": {
+    "category": "runtime",
+    "closed_at_utc": "2026-10-20T03:16:31.696215+00:00",
+    "default_expiry_review_at_utc": "2026-10-22T03:16:31.696215+00:00",
+    "minimum_exact_evidence_protected_until_utc": "2026-10-22T03:16:31.696215+00:00",
+    "reason": "Active predecessor resource-only subtype fix and bounded failure review; zero business success",
+    "protected_files": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\SCREEN-RELEASE.actual-a02.json",
+        "bytes": 1293,
+        "mtime_ns": 1792466056173378600,
+        "availability": "local-readable",
+        "sha256": "92a58b5d3031923d4a50de68f0c9b4a5bb9ab86a8e81328410b564779e6b0873"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\keeper-a01\\report.json",
+        "bytes": 436,
+        "mtime_ns": 1792466019140032000,
+        "availability": "local-readable",
+        "sha256": "a804e7ac32f972499267d23cd62d9b5b55d1231f68394d568f0b08cf81174db4"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\keeper-actual-parent-exit.json",
+        "bytes": 599,
+        "mtime_ns": 1792466019179009800,
+        "availability": "local-readable",
+        "sha256": "a51a6126c826a97af75a24bcb21ccb4e413d8c0df3f9e1bb58fad4c4bfb2ab59"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-original-process-exit.json",
+        "bytes": 245,
+        "mtime_ns": 1792465884287949200,
+        "availability": "local-readable",
+        "sha256": "28b48e07b2fa107e2f0ade43ff9535e2ff188eb990cc0a1cbde10335b1fcddd8"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\PUBLIC-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 913,
+        "mtime_ns": 1792465883471945400,
+        "availability": "local-readable",
+        "sha256": "39705e21054e365b28a8f02d86c310331c9ea91c600747af5817410a2fafc4f7"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\R04-BAYEUX-TERMINAL.json",
+        "bytes": 826,
+        "mtime_ns": 1792465883378871600,
+        "availability": "local-readable",
+        "sha256": "75ce8421a45b561d8897543b2b8dce539bc4d0ff8ce3cd2297c96f28e188cc44"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\R04-BAYEUX-RESULT.json",
+        "bytes": 3507,
+        "mtime_ns": 1792465883377872700,
+        "availability": "local-readable",
+        "sha256": "882080e20e1f1b47ed9ce6e2f7c8413244005af2ec9d95010f3363185f904521"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\case-error-preserved.json",
+        "bytes": 227,
+        "mtime_ns": 1792465883379871800,
+        "availability": "local-readable",
+        "sha256": "dbc6f3978b4264281c0e8708bd559ef818ac52ac184c76a6e9540a05b93e03cb"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\normal-close-error-preserved.json",
+        "bytes": 118,
+        "mtime_ns": 1792465883389962700,
+        "availability": "local-readable",
+        "sha256": "ebb4232a95d845a41f6ab5f9fd56d11051e41e4609d841e78dc024130874203f"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.json",
+        "bytes": 15704288,
+        "mtime_ns": 1792465883941525600,
+        "availability": "local-readable",
+        "sha256": null,
+        "sha256_read_now": false,
+        "reason": "Large original retained; bounded failure review does not hash complete payload"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.session.log",
+        "bytes": 7624,
+        "mtime_ns": 1792465882967350500,
+        "availability": "local-readable",
+        "sha256": "fafc5ab30cbc8b68344e44f5ebaeecd3df6e8860b17a24bc672fbd9a9a356304"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-stdout.log",
+        "bytes": 387,
+        "mtime_ns": 1792465883971508800,
+        "availability": "local-readable",
+        "sha256": "edeea5af17365c29e7561b9771342f4994f3b03ddbf92c3f3b3b2ed8b083edfe"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-stderr.log",
+        "bytes": 0,
+        "mtime_ns": 1792465374210534100,
+        "availability": "local-readable",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\allocated-context.json",
+        "bytes": 3757,
+        "mtime_ns": 1792465158903944700,
+        "availability": "local-readable",
+        "sha256": "cff63067eaff72b64309454808ac461dc6cbb3fa6821a1c9d30d41665270586a"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\ready-context.json",
+        "bytes": 4020,
+        "mtime_ns": 1792465167153576400,
+        "availability": "local-readable",
+        "sha256": "b16636f0f6ad594de9d7dd716a464a1e0203bb6497104fe2a5ccc5909b472298"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\frozen-argv.json",
+        "bytes": 36524,
+        "mtime_ns": 1792465158924931700,
+        "availability": "local-readable",
+        "sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\prepared-a02\\prepared-case.json",
+        "bytes": 9794,
+        "mtime_ns": 1792465152882557900,
+        "availability": "local-readable",
+        "sha256": "5084e3c52845d9d6efc81f855ca7fac532cc2d2c0c4ae1eb6aa59eff45e643e7"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\R220-REVIEWED-CONTEXT.actual-a01.json",
+        "bytes": 4426,
+        "mtime_ns": 1792465328034558000,
+        "availability": "local-readable",
+        "sha256": "5dc466fc98ac52cb04660990b8081818d078e5f8bc7e6905694cd5366674a28f"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\PUBLIC-RUN.stderr-a01.log",
+        "bytes": 0,
+        "mtime_ns": 1792465366702782100,
+        "availability": "local-readable",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\controls\\e04-camera-ui-r0216-take01-independent-army-window-1.json",
+        "bytes": 265,
+        "mtime_ns": 1792465871246258200,
+        "availability": "local-readable",
+        "sha256": "ddacb23f12b77ec062631ab588e5dfa037fb64b031e7c30608156d5a960108a4"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\controls\\e04-camera-ui-r0216-take01-independent-army-window-2.json",
+        "bytes": 265,
+        "mtime_ns": 1792465878640232200,
+        "availability": "local-readable",
+        "sha256": "59b6d46aff2f906d3a9953a55f2f12c3b2ce904044c33cd87ac457e2c2d0e1be"
+      }
+    ],
+    "parent_directory_blanket_protection": false,
+    "automatic_renewal": false,
+    "remaining_profile_and_input_snapshots": "Closed replaceable runtime material; review after 48h; retained now, no deletion authorization implied"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-mod-acceptance-direct-review-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-20T03:37:36.082122+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "screen_task": "e04-common-12004-a222",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "steam_offline_confirmed": true,
+  "observed_nonce": "92cb927d5776d8f98cc5cf1b9532b63d",
+  "challenge": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\steam-challenge-a01\\challenge.json",
+    "bytes": 2289,
+    "sha256": "8f7a4b09f0cbd0f7de8071f6d326564dc236dface7ec9dc186701e150873d1de"
+  },
+  "frozen_argv": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\frozen-argv.json",
+    "bytes": 37598,
+    "sha256": "862353c073d15fdc872722134932d7f2318c2649c931fffb646835452093215f"
+  },
+  "image": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\steam-novel-displacement-a02\\canonical\\steam-moved.png",
+    "bytes": 380811,
+    "sha256": "bc43fcfba50e9490af6a6342cc8dc5723206780e984e28469523358269f5d7b7"
+  },
+  "review_image": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\steam-challenge-a01\\direct-review.png",
+    "bytes": 391417,
+    "sha256": "de2f033d5ba0610eb5bf3710e2dc11fb2cf2dca94505ce965605af0cc5f63f82"
+  },
+  "evidence_source": "Explicit Root CLI declarations after direct current original-image review",
+  "business_pass": false
+}
