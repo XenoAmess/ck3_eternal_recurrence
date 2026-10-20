@@ -7643,8 +7643,7 @@
           "target": "xar_ck3_character_knight_effectiveness12004_factory_fixture",
           "dependency_targets": [
             "xar_ck3_character_knight_effectiveness12004_factory_fixture",
-            "xar_ck3_12002_runtime",
-            "xar_bridge_protocol"
+            "xar_ck3_12002_runtime"
           ],
           "translation_units": 2,
           "required_defines": [
@@ -7681,8 +7680,7 @@
           "target": "xar_ck3_12004_knight_installed_context_source_fixture",
           "dependency_targets": [
             "xar_ck3_12004_knight_installed_context_source_fixture",
-            "xar_ck3_12002_runtime",
-            "xar_bridge_protocol"
+            "xar_ck3_12002_runtime"
           ],
           "translation_units": 1,
           "required_source_suffixes": [
