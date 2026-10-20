@@ -1,5 +1,13 @@
 # 第二期导演进度、剩余工作量与相对节点
 
+## 14:20滚动更新：24分33秒固定讲解齐全，继续补拍结果
+
+`machine_id: 4-8e1c2f1861`，观察截至`2026-10-20T06:20:00Z`。新累计配方已有70段／70段有视觉，65／65固定讲解齐全，实际总时长`24:33.600`；B15两句成本案例新增24.312秒声音／25.0667秒画面，完整音频解码及来源检查通过，尚未全片渲染或人工试听。12段新增视觉只讲有来源的规则／流程，不能替代本场结果；required仍1／24，23个实拍结果槽保持待完成。[最新唯一累计配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/fixed12-rule-visuals-a01/CONTINUE-AUTHORING.fixed65-B15.a01.recipe.json)。后续朝圣、教首与收益案例再加入约3–5分钟时，首版仍预计约27–30分钟；这不是已拍成片时长。
+
+B16的生产DLL与19个有限目标已全部实际运行通过；新增骑士原生正文的9路径、朝圣新正文的38项SDK接缝也实际通过。来源绑定先发现Root单头文件的既存CRLF与声明的LF不一致，精确恢复原Git字节后，全5470原生文件绑定通过；公共消费者随后发现E3合同仍写死Root路径，最窄修复已经用真实Q3完整消费通过，并有5项新消费者及独立审查，待随后继源码统一冻结。原Native源码`05ad9dbc68308b908e1d4109509c952a263fc596`、DLL和Q3未改，不重复冷编译。[实际原生资格](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b16-a01/qualifications/native-a01/PUBLIC-RUNTIME-QUALIFICATION.expanded.actual.json)。B14、B15各3761项缓存／重复恢复副本及本轮874项编译中间文件已逐项回收，原母档、影片、声音、原始证据与14个必要支撑对象保留；下一场仍须使用新鲜容量准入。
+
+现在并行制作明确标注缺口的静帧讲解预览、准备朝圣四个关键窗口、整理教首真实报价场次，并准备独立麦加骑士收益案例。预览不冒称正式完整版，尚未观察到的外交或骑士收益不写成结论。现场完成后分别追加实际结果、声音与字幕，再做完整画面／音频审阅。
+
 ## 13:55滚动更新：原生冷编译与M3合并并行
 
 `machine_id: 4-8e1c2f1861`，观察截至`2026-10-20T05:55:00Z`。B16以冻结的M2源码`05ad9dbc68308b908e1d4109509c952a263fc596`直接冷构建；freeze、configure-production及inspect-production实际退出0，生产838编译单元／833个独立源文件检查通过，build-production已启动，尚未取得新DLL、19目标实际运行或游戏内收益资格。来源：[本轮准入](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b16-a01/ADMISSION-EXECUTION-a01.json)与[冻结执行输入](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b16-a01/qualifications/cold-build-preparation-a01/EXECUTION-INPUTS.a03.frozen.json)。

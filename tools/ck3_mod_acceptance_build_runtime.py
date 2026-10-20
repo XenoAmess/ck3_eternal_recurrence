@@ -405,7 +405,7 @@ def select_profile_expansion_contract(registry, contract_id=None):
     return contract
 
 
-def profile_expansion_contract(value, refs, root, commit, machine, old_profile, profile):
+def profile_expansion_contract(value, refs, root, commit, machine, old_profile, profile, *, require_current_contract_pin=False):
     """A flag change needs a source-reviewed contract plus exact actual receipts."""
     if profile.get("flags") == old_profile.get("flags") and not value.get("profile_expansion"):
         return None
@@ -418,6 +418,8 @@ def profile_expansion_contract(value, refs, root, commit, machine, old_profile, 
             and actual.get("actual_live_business_qualified") is False,
             "Profile expansion must bind the actual final native compile commit and machine")
     contract_ref = actual["contract"]
+    if require_current_contract_pin:
+        checked(contract_ref)
     contract_path = (root / PROFILE_EXPANSION_RELATIVE).resolve()
     require(Path(contract_ref["path"]).resolve() == contract_path,
             "Profile expansion contract must be the common committed source contract")
@@ -633,7 +635,6 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
     old_profile = previous_profile(previous_manifest, previous_dll)
     require(profile.get("machine_id") == machine and profile.get("repository_default_flags_changed") is False,
             "Actual machine-bound profile preserving repository defaults required")
-    expansion = profile_expansion_contract(value, refs, root, commit, machine, old_profile, profile)
     require(all(profile["flags"].get(flag) == "OFF" for flag in FORBIDDEN_OLD_FLAGS),
             "Old feast Start and unqualified cost helpers must stay OFF")
     for name in ("profile", "cmake"):
@@ -656,6 +657,11 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
         machine=machine, qualified_native_ref=pin(path), qualification=value,
         snapshot_ref=refs["snapshot"], snapshot=snapshot)
     compile_native_root = source_checkout["native_source_base"]
+    compile_repo = compile_native_root.parent.parent
+    require((compile_repo / NATIVE_PREFIX).resolve() == compile_native_root,
+            "Verified Native source root has an unexpected repository structure")
+    expansion = profile_expansion_contract(value, refs, compile_repo, commit, machine, old_profile, profile,
+                                           require_current_contract_pin=source_checkout["binding_ref"] is not None)
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
     status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"], cwd=root,
                             capture_output=True, text=True, check=True).stdout

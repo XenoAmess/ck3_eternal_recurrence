@@ -45,6 +45,9 @@ def validate_contract(context):
     require(c.get("profile") == {"enabled_mods": [], "product_files": []}, "Ordinary case requires vanilla profile")
     require(c.get("machine_id") not in {None, "", "unknown"}, "Explicit executing machine required")
     policy = c.get("policy", {})
+    preferred = c.get("preferred_destination_id")
+    require(preferred is None or type(preferred) is int and 0 < preferred < 2**32-1,
+            "Optional preferred destination must be a positive full province ID")
     for key, low, high in (("reserve_gold_raw", 0, 2**63-1), ("max_journey_days", 1, 366),
                           ("max_day_requests", 1, 1024), ("max_events", 1, 256),
                           ("max_public_requests", 1, 1024),
@@ -130,7 +133,9 @@ def frame_binding(frame, context, expected_actor):
             "connection_generation": generation, "episode_run_id": frame.get("episode_run_id")}
 
 
-def choose_destination(result, actor, date_raw):
+def choose_destination(result, actor, date_raw, preferred_destination_id=None):
+    require(preferred_destination_id is None or type(preferred_destination_id) is int
+            and 0 < preferred_destination_id < 2**32-1, "Invalid preferred destination ID")
     type_terms = result.get("player_pilgrimage_activity_type_terms")
     terms = result.get("player_pilgrimage_headless_activity_terms")
     routes = result.get("player_pilgrimage_candidate_routes")
@@ -163,10 +168,21 @@ def choose_destination(result, actor, date_raw):
             continue
         choices.append((valid_routes[province]["outbound_arrival_date_raw"], cost, province, candidate))
     require(choices, "No fresh selectable affordable destination with a native valid route")
-    _, _, province, candidate = min(choices, key=lambda item: item[:3])
-    return {"province_id": province, "native_candidate": candidate, "native_local_route": valid_routes[province],
+    preferred_available = (any(item[2] == preferred_destination_id for item in choices)
+                           if preferred_destination_id is not None else None)
+    _, _, province, candidate = min(choices,
+        key=lambda item: (item[2] != preferred_destination_id, *item[:3]))
+    selected = {"province_id": province, "native_candidate": candidate, "native_local_route": valid_routes[province],
             "selection_policy": "earliest native outbound arrival, then activity-only gold, then province id",
             "journey_cost_known": False, "route_is_only_local_candidate": True, "can_start_inferred": False}
+    if preferred_destination_id is not None:
+        selected.update(preferred_destination_id=preferred_destination_id,
+            preferred_destination_available=preferred_available,
+            preferred_destination_selected=province == preferred_destination_id,
+            preferred_destination_diagnostic=("fresh_eligible_preference_selected" if preferred_available
+                else "preferred_not_in_fresh_eligible_choices_fallback_used"),
+            selection_policy="fresh eligible preference, otherwise earliest native outbound arrival, activity-only gold, province id")
+    return selected
 
 
 def journey_limits(policy):
@@ -294,7 +310,7 @@ def run_case(context, client):
         require(identities.get("activity_count") == 0 and identities.get("activities") == [],
                 "Existing hosted pilgrimage precludes a new once-only Start")
         offers = planner.call(RELIGION)
-        destination = choose_destination(offers, binding["actor_character_id"], before["date_raw"])
+        destination = choose_destination(offers, binding["actor_character_id"], before["date_raw"], c.get("preferred_destination_id"))
         province = destination["province_id"]
         client.checkpoint("ordinary-pilgrimage-destination-policy", destination)
         capture_checkpoint(context, client, "ordinary-pilgrimage-record-before-planner", {
