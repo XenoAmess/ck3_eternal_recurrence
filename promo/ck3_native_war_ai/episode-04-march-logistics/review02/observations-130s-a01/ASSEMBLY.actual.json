@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.observations-130s-assembly.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:14:52.957066+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+    "bytes": 12222689,
+    "sha256": "74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\C-MEDIA-SHARED-ADMISSION.actual.json",
+    "bytes": 3356,
+    "sha256": "a80c90350e94304384bb8764604ada427231e1ae8f9b18565ec4259d866a1540"
+  },
+  "intake": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\INTAKE.actual.json",
+    "bytes": 29414,
+    "sha256": "596f4b51a320de52596c4fe1db7e3f26a141479597c4df4f7681a2364d424cdf"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\PLAN.actual.json",
+    "bytes": 3318,
+    "sha256": "580a72f12b96318a931f0adde88c333fbe0c00880a1a7fd79b6040f689f1d11a"
+  },
+  "storyboard": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\storyboard.actual.json",
+    "bytes": 1937,
+    "sha256": "ce78b558940e99cb8ccaa4d64f8ae59046e16444129c05b80148341622b71d03"
+  },
+  "status": "STREAMCOPY_ASSEMBLED_PENDING_NEW_BYTES_QA",
+  "reencoded_video_frames": 0,
+  "new_TTS_calls": 0,
+  "old_input_bytes_changed": false,
+  "old_input_QA_repeated": false,
+  "human_1x": false,
+  "human_signoff": false,
+  "continuous_clean": false,
+  "formal_dynamic_credit_added": 0,
+  "upload_performed": false,
+  "root_bytes": 12296195
+}

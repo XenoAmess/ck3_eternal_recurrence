@@ -1,0 +1,108 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-e04-observations-130s-review-a01",
+    "title": "军队人数变化：四段独立实录审阅章"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2400
+  },
+  "chapters": [
+    {
+      "id": "r194-r196",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "分兵、合军与登船：独立回放",
+        "en": "Split, merge and embarkation: separate replays"
+      },
+      "cues": [
+        {
+          "id": "r194-r196",
+          "narration": {
+            "zh-CN": "分兵、合军与登船：独立回放"
+          },
+          "subtitles": {
+            "zh-CN": "分兵、合军与登船：独立回放",
+            "en": "Split, merge and embarkation: separate replays"
+          }
+        }
+      ]
+    },
+    {
+      "id": "r211",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "受控零库存：337与另外67分列",
+        "en": "Controlled zero stock: 337 and another 67 separated"
+      },
+      "cues": [
+        {
+          "id": "r211",
+          "narration": {
+            "zh-CN": "受控零库存：337与另外67分列"
+          },
+          "subtitles": {
+            "zh-CN": "受控零库存：337与另外67分列",
+            "en": "Controlled zero stock: 337 and another 67 separated"
+          }
+        }
+      ]
+    },
+    {
+      "id": "r215",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "月界净增10人：物理闭包未完",
+        "en": "Month boundary: net ten, physical closure incomplete"
+      },
+      "cues": [
+        {
+          "id": "r215",
+          "narration": {
+            "zh-CN": "月界净增10人：物理闭包未完"
+          },
+          "subtitles": {
+            "zh-CN": "月界净增10人：物理闭包未完",
+            "en": "Month boundary: net ten, physical closure incomplete"
+          }
+        }
+      ]
+    },
+    {
+      "id": "r217",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "县边到站与净减少：损失来源待验",
+        "en": "County arrival and net loss: attribution unresolved"
+      },
+      "cues": [
+        {
+          "id": "r217",
+          "narration": {
+            "zh-CN": "县边到站与净减少：损失来源待验"
+          },
+          "subtitles": {
+            "zh-CN": "县边到站与净减少：损失来源待验",
+            "en": "County arrival and net loss: attribution unresolved"
+          }
+        }
+      ]
+    }
+  ]
+}

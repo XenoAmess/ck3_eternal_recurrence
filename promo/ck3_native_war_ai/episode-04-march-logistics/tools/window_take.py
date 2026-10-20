@@ -138,6 +138,10 @@ class TakeSpec:
         need((self.awaiting is None) == (self.signal is None) and
              (self.awaiting is None or self.awaiting.parent == self.signal.parent == self.live / c["camera_output_name"]),
              "camera coordination paths must be paired in one public output")
+        if self.awaiting is not None:
+            from ck3_mod_acceptance_camera import validate_camera_paths
+            validate_camera_paths(self.awaiting, self.signal, live=self.live,
+                                  output_name=c["camera_output_name"])
 
     def receipt(self, kind):
         return self.scene / (self.label + "-" + kind + ".actual.json")

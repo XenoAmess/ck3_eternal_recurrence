@@ -1,8 +1,10 @@
 """Normal R10 preparation through the original public CaseClient.
 
-This is a readiness/policy-input case, not a three-arm execution engine. It
-retains the public control row and labels derived full-wire views explicitly.
-No SDK/host/session, sampling, time advance, Move, split or merge is created.
+The default case collects readiness and policy inputs. Explicit
+case_inputs.r04_county_entry continues on this same client into a bounded
+county observation with one Move and at most seven exact days. Derived
+full-wire views retain their original public control rows. The shared entry
+owns the host, SDK session and normal game closure.
 """
 from pathlib import Path
 import hashlib
@@ -84,6 +86,9 @@ def validate_contract(context):
     need(context['case_contract'].get('schema') == 'xar.e04.r10-common-preparation.v1',
          'R10 common preparation contract differs')
     value = context.get('case_inputs', {})
+    if value.get('r04_county_entry') is not None:
+        from . import r04_county_entry
+        r04_county_entry.validate_contract(context)
     if not value:
         return
     for key in ('army_id', 'war_id', 'goal_province_id', 'staging_province_id'):
@@ -231,16 +236,23 @@ def run_case(context, client):
                    'R08 qualified applied maintenance/payer/cadence before compare_fees=true'],
         research_card_closed=False, business_pass=False, formal_ABC_completed=0)
     client.checkpoint('r10-common-preparation-result', result)
+    if values.get('r04_county_entry') is not None:
+        from . import r04_county_entry
+        result['r04_county_entry'] = r04_county_entry.run_case(context, client)
     return result
 
 
 def verify_case(context):
     path = Path(context['output']) / 'r10-common-preparation-result.json'
     result = json.loads(path.read_bytes()) if path.is_file() else {}
-    return {'machine_id': result.get('machine_id', 'unknown'),
+    verified = {'machine_id': result.get('machine_id', 'unknown'),
         'readiness_inputs_collected': bool(result),
         'military_t0_frame_ready': result.get('readiness', {}).get('military_t0_frame_ready') is True,
         'case_contract_qualified': False, 'gui_contract_qualified': False,
         'business_contract_applicable': False, 'business_pass': False,
         'formal_ABC_completed': 0, 'research_card_closed': False,
         'scope': 'Common normal-source readiness pilot; no formal ABC or growth/payment qualification'}
+    if context.get('case_inputs', {}).get('r04_county_entry') is not None:
+        from . import r04_county_entry
+        verified['r04_county_entry'] = r04_county_entry.verify_case(context)
+    return verified

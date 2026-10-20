@@ -1,0 +1,89 @@
+{
+  "schema": "xar.e04.fresh-C-capacity-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:13:50.419813+00:00",
+  "task": "e04-capacity-resume-20261020-a01",
+  "policy_version": "1.0.0",
+  "owner": "/root",
+  "review_at_utc": "2026-10-20T08:00:00Z",
+  "admitted_components": [
+    "media",
+    "shared_offline"
+  ],
+  "reserve_only_components": [
+    "native_build",
+    "profile_and_driver",
+    "raw"
+  ],
+  "media_aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\media",
+  "media_aggregate_ceiling_bytes": 268435456,
+  "shared_offline_all_agents_aggregate_ceiling_bytes": 134217728,
+  "C_total_new_peak_bytes": 3892314112,
+  "C_other_unspent_legacy_bytes": 42132678,
+  "C_system_growth_reserve_bytes": 4294967296,
+  "C_safety_bytes": 21474836480,
+  "C_effective_quota_bytes": 438086664192,
+  "fresh_volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "available_bytes": 84388630528,
+      "total_free_bytes": 84388630528,
+      "used_upper_bound_bytes": 426745315328
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "available_bytes": 21556367360,
+      "total_free_bytes": 21556367360,
+      "used_upper_bound_bytes": 478533640192
+    }
+  },
+  "C_required_free_bytes": 29704250566,
+  "C_free_margin_bytes": 54684379962,
+  "C_projected_physical_upper_bound_including_system_growth_bytes": 434974729414,
+  "C_quota_margin_bytes": 3111934778,
+  "D_heavy_status": "BLOCKED",
+  "D_new_heavy_bytes": 0,
+  "D_free_margin_before_any_new_write_bytes": -52686848,
+  "metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "unknown_project_roots_not_assumed_zero": true,
+  "zero_cleanup_or_unused_credit": true,
+  "native_source_binding_required": true,
+  "scene_source_binding_required": true,
+  "game_or_screen_admission": false,
+  "approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\ROOT-APPROVAL.actual.json",
+    "bytes": 699,
+    "sha256": "eda9f965bea6f2949da7741a5f01ece3204fdfa1171a62d453c5711fffba309e"
+  },
+  "legacy_scope_closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\LEGACY-SCOPE-CLOSED.actual.json",
+    "bytes": 5564,
+    "sha256": "f911b925d28e9d72842b68967fc61b8dd7c83ea7c5642ebece74199debc63208"
+  },
+  "prior_registry": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "sha256": "994ebb9061589e92443e952af580efc29ff1abbe82f5cfb7c819fcbdba05073d",
+    "bytes": 226157
+  },
+  "prior_registry_backup": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\REGISTRY-BEFORE-RESUME.actual.json.gz",
+    "bytes": 27434,
+    "sha256": "cc70238105fccea7d6b858186d0f8c3efad1afa50e8703c7bb2d3080d9299e54"
+  },
+  "policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "resulting_registry": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 230640,
+    "sha256": "9d51cdbaecbb37cbaa96d72ae6c86df26d6b56af503ab929e7e3ef3bd218a0b2"
+  }
+}

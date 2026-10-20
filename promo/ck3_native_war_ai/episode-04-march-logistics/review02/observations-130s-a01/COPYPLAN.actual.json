@@ -1,0 +1,105 @@
+{
+  "schema": "xar.e04.observations-130s-small-portable-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:18:30.934353+00:00",
+  "suggested_repository_destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/observations-130s-a01",
+  "media_excluded": true,
+  "members": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\README.md",
+        "bytes": 2322,
+        "sha256": "f02c062f31c31408aa23986ef977783cd24cf8ab60b7a9b4ce582a649d211f5c"
+      },
+      "target_relative_path": "README.md"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\INTAKE.actual.json",
+        "bytes": 29414,
+        "sha256": "596f4b51a320de52596c4fe1db7e3f26a141479597c4df4f7681a2364d424cdf"
+      },
+      "target_relative_path": "INTAKE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\PLAN.actual.json",
+        "bytes": 3318,
+        "sha256": "580a72f12b96318a931f0adde88c333fbe0c00880a1a7fd79b6040f689f1d11a"
+      },
+      "target_relative_path": "PLAN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\ASSEMBLY.actual.json",
+        "bytes": 1542,
+        "sha256": "116da8e0db0a53513c433d4b4a77664901c021d2dc4befa42acc7174aacdd59a"
+      },
+      "target_relative_path": "ASSEMBLY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\QA.actual.json",
+        "bytes": 10145,
+        "sha256": "8954dd72ff22a8d09f963d941fd5e0a286ab48ec8c87d9fb8d7eb84656adfe73"
+      },
+      "target_relative_path": "QA.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\SPARSE-VISUAL.actual.json",
+        "bytes": 1622,
+        "sha256": "a54b5e715a237e4c009d44643e759b03262c91951168e44e8ed95f966892f7aa"
+      },
+      "target_relative_path": "SPARSE-VISUAL.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\DELIVERY.actual.json",
+        "bytes": 6672,
+        "sha256": "bb2ec602779ff832e54a6cf033ae6e0b6bfeb6eab3bb821d361576deb5f20715"
+      },
+      "target_relative_path": "DELIVERY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\storyboard.actual.json",
+        "bytes": 1937,
+        "sha256": "ce78b558940e99cb8ccaa4d64f8ae59046e16444129c05b80148341622b71d03"
+      },
+      "target_relative_path": "storyboard.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\project\\promo-project.json",
+        "bytes": 2802,
+        "sha256": "0af863325e0619f00b8558400267c4e57931fdbaa9d90d6ebb6dbe423629b7af"
+      },
+      "target_relative_path": "project/promo-project.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\assemble.py",
+        "bytes": 7883,
+        "sha256": "337762d4f1f238e3d64de3aaa917739d9dd72ff36fc1f844224dfebd1db55031"
+      },
+      "target_relative_path": "assemble.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\preflight.py",
+        "bytes": 5319,
+        "sha256": "3573638bcdf673e918a7638b8f805141d795fdb105ae7fa00c66d37aef72647d"
+      },
+      "target_relative_path": "preflight.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa.py",
+        "bytes": 5902,
+        "sha256": "6ee6560e9a52a96158da4e43a6690a9e66e9aa7d9d7f143d7369fff2b9f97f4a"
+      },
+      "target_relative_path": "qa.py"
+    }
+  ]
+}

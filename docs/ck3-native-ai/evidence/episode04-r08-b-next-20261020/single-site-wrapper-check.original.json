@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:18:02.864122+00:00",
+  "focused_new_wrapper_results": [
+    {
+      "case": "synthetic-positive",
+      "actual_exit": 0,
+      "passed": true,
+      "synthetic": true,
+      "business_sample": false
+    },
+    {
+      "case": "synthetic-missing-province",
+      "actual_exit": 1,
+      "passed": true,
+      "synthetic": true,
+      "business_sample": false
+    }
+  ],
+  "existing_test_fixture_source": {
+    "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_b_site_growth.py",
+    "bytes": 8392,
+    "sha256": "c1492744c15afd65a3311c0e057a1dc5c08ab4c7b053faad24909818eb592bbd"
+  },
+  "new_real_sites": 0,
+  "new_SDK_game_build_EXE_read": 0
+}

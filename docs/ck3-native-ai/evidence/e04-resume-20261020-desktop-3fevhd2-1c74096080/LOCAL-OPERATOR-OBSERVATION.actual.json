@@ -1,0 +1,200 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:18:05.985774+00:00",
+  "source": "fresh local stdio operator MCP calls; actual token/desktop and process gates",
+  "profile": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\operator-a02\\profile.local.json",
+    "bytes": 1648,
+    "sha256": "65b9f68a417a3a5fc405aec9961530672ecc416a869557612860bea071bc1736"
+  },
+  "server": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\operator_mcp.py",
+    "bytes": 39769,
+    "sha256": "624d17b3409fbc25f6a5c8eac55faa272244b2b7459267f8f0a0b1a65e08998e"
+  },
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "game_started": false,
+  "initialize": {
+    "meta": null,
+    "protocol_version": "2025-11-25",
+    "capabilities": {
+      "experimental": {},
+      "logging": null,
+      "prompts": {
+        "list_changed": false
+      },
+      "resources": {
+        "subscribe": false,
+        "list_changed": false
+      },
+      "tools": {
+        "list_changed": false
+      },
+      "completions": null,
+      "extensions": null,
+      "tasks": null
+    },
+    "server_info": {
+      "name": "Xar Portable Operator Handoff",
+      "title": null,
+      "version": "1.2.0",
+      "description": null,
+      "website_url": null,
+      "icons": null
+    },
+    "instructions": "Select the configured target_id, read capabilities/status, then run operator_preflight_job. Call operator_handoff_job only for a GREEN preflight. Job commands and stdin controls are target-profile data."
+  },
+  "tools": [
+    "operator_get_capabilities",
+    "operator_get_status",
+    "operator_preflight_job",
+    "operator_query_steam_workshop_status_v1",
+    "operator_handoff_job",
+    "operator_control_job"
+  ],
+  "operator_get_capabilities": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_version\": \"1.2.0\",\n  \"server_instance_id\": \"6ffc7280-c1c8-4a28-a371-67679e3d7e46\",\n  \"target_id\": \"e04-local-desktop-3fevhd2-1c74096080\",\n  \"display_name\": \"Current local E04 operator\",\n  \"profile_sha256\": \"65B9F68A417A3A5FC405AEC9961530672ECC416A869557612860BEA071BC1736\",\n  \"endpoint\": {\n    \"transport\": \"stdio\",\n    \"host\": \"127.0.0.1\",\n    \"port\": 8766\n  },\n  \"jobs\": [\n    \"identity-only\"\n  ],\n  \"job_controls\": {\n    \"identity-only\": []\n  },\n  \"tools\": [\n    \"operator_get_capabilities\",\n    \"operator_get_status\",\n    \"operator_preflight_job\",\n    \"operator_handoff_job\",\n    \"operator_control_job\",\n    \"operator_query_steam_workshop_status_v1\"\n  ],\n  \"steam_workshop_status_configured\": true,\n  \"caller_supplied_commands\": false,\n  \"operator_bootstrap_required\": true\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_version": "1.2.0",
+      "server_instance_id": "6ffc7280-c1c8-4a28-a371-67679e3d7e46",
+      "target_id": "e04-local-desktop-3fevhd2-1c74096080",
+      "display_name": "Current local E04 operator",
+      "profile_sha256": "65B9F68A417A3A5FC405AEC9961530672ECC416A869557612860BEA071BC1736",
+      "endpoint": {
+        "transport": "stdio",
+        "host": "127.0.0.1",
+        "port": 8766
+      },
+      "jobs": [
+        "identity-only"
+      ],
+      "job_controls": {
+        "identity-only": []
+      },
+      "tools": [
+        "operator_get_capabilities",
+        "operator_get_status",
+        "operator_preflight_job",
+        "operator_handoff_job",
+        "operator_control_job",
+        "operator_query_steam_workshop_status_v1"
+      ],
+      "steam_workshop_status_configured": true,
+      "caller_supplied_commands": false,
+      "operator_bootstrap_required": true
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "operator_get_status": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema_version\": 1,\n  \"server_instance_id\": \"6ffc7280-c1c8-4a28-a371-67679e3d7e46\",\n  \"target_id\": \"e04-local-desktop-3fevhd2-1c74096080\",\n  \"identity\": {\n    \"token_user\": \"1\",\n    \"desktop\": \"WinSta0\\\\Default\",\n    \"machine\": \"DESKTOP-3FEVHD2\",\n    \"process_id\": 36140\n  },\n  \"identity_matches_profile\": true,\n  \"process_gates\": {\n    \"ck3.exe\": []\n  },\n  \"process_gate_errors\": {},\n  \"jobs\": []\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema_version": 1,
+      "server_instance_id": "6ffc7280-c1c8-4a28-a371-67679e3d7e46",
+      "target_id": "e04-local-desktop-3fevhd2-1c74096080",
+      "identity": {
+        "token_user": "1",
+        "desktop": "WinSta0\\Default",
+        "machine": "DESKTOP-3FEVHD2",
+        "process_id": 36140
+      },
+      "identity_matches_profile": true,
+      "process_gates": {
+        "ck3.exe": []
+      },
+      "process_gate_errors": {},
+      "jobs": []
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "operator_query_steam_workshop_status_v1": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema\": \"xar.ck3.steam-workshop-status/v1\",\n  \"read_only\": true,\n  \"caller_supplied_app_or_item\": false,\n  \"steam\": {\n    \"root\": \"D:\\\\Program Files (x86)\\\\Steam\",\n    \"executable_exists\": true,\n    \"loginusers_exists\": true,\n    \"wants_offline_mode_values\": [\n      \"1\"\n    ],\n    \"offline_attested\": true,\n    \"processes\": {\n      \"steam.exe\": [\n        13256\n      ],\n      \"ck3.exe\": [],\n      \"dowser.exe\": []\n    }\n  },\n  \"app\": {\n    \"app_id\": \"1158310\",\n    \"manifest\": \"C:\\\\SteamLibrary\\\\steamapps\\\\appmanifest_1158310.acf\",\n    \"manifest_exists\": true,\n    \"manifest_sha256\": \"d9630cea687d0f959bde89fc4c28765cb6657f5202ac43c8737603769478f942\",\n    \"state_flags\": \"516\",\n    \"build_id\": \"25734779\",\n    \"expected_build_id\": \"25734779\",\n    \"build_matches_expected\": true,\n    \"install_directory\": \"C:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Crusader Kings III\",\n    \"executable\": \"C:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Crusader Kings III\\\\binaries\\\\ck3.exe\",\n    \"executable_exists\": true,\n    \"executable_sha256\": \"98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518\",\n    \"expected_executable_sha256\": \"98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518\",\n    \"executable_matches_expected\": true\n  },\n  \"workshop\": {\n    \"manifest\": \"C:\\\\SteamLibrary\\\\steamapps\\\\workshop\\\\appworkshop_1158310.acf\",\n    \"manifest_exists\": true,\n    \"manifest_sha256\": \"2c71bd971ad338298f9813380116eba8f9c737ef8a588eead3606fb623e7966e\",\n    \"items\": [\n      {\n        \"item_id\": \"3784706360\",\n        \"display_name\": \"Eternal Recurrence (read-only identity observation)\",\n        \"expected_manifest_id\": null,\n        \"installed_manifest_id\": \"2224390938017823710\",\n        \"latest_manifest_id\": \"2224390938017823710\",\n        \"cache\": \"C:\\\\SteamLibrary\\\\steamapps\\\\workshop\\\\content\\\\1158310\\\\3784706360\",\n        \"cache_exists\": true,\n        \"descriptor_exists\": true,\n        \"descriptor_sha256\": \"9ad35e2e3efad1cb4532179f3e394f980d08243337c52aadcacadd203804c3be\",\n        \"installed_matches_latest\": true,\n        \"installed_matches_expected\": null\n      }\n    ],\n    \"all_installed_match_latest\": true,\n    \"all_pinned_expectations_match\": true\n  }\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema": "xar.ck3.steam-workshop-status/v1",
+      "read_only": true,
+      "caller_supplied_app_or_item": false,
+      "steam": {
+        "root": "D:\\Program Files (x86)\\Steam",
+        "executable_exists": true,
+        "loginusers_exists": true,
+        "wants_offline_mode_values": [
+          "1"
+        ],
+        "offline_attested": true,
+        "processes": {
+          "steam.exe": [
+            13256
+          ],
+          "ck3.exe": [],
+          "dowser.exe": []
+        }
+      },
+      "app": {
+        "app_id": "1158310",
+        "manifest": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+        "manifest_exists": true,
+        "manifest_sha256": "d9630cea687d0f959bde89fc4c28765cb6657f5202ac43c8737603769478f942",
+        "state_flags": "516",
+        "build_id": "25734779",
+        "expected_build_id": "25734779",
+        "build_matches_expected": true,
+        "install_directory": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "executable_exists": true,
+        "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+        "expected_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+        "executable_matches_expected": true
+      },
+      "workshop": {
+        "manifest": "C:\\SteamLibrary\\steamapps\\workshop\\appworkshop_1158310.acf",
+        "manifest_exists": true,
+        "manifest_sha256": "2c71bd971ad338298f9813380116eba8f9c737ef8a588eead3606fb623e7966e",
+        "items": [
+          {
+            "item_id": "3784706360",
+            "display_name": "Eternal Recurrence (read-only identity observation)",
+            "expected_manifest_id": null,
+            "installed_manifest_id": "2224390938017823710",
+            "latest_manifest_id": "2224390938017823710",
+            "cache": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3784706360",
+            "cache_exists": true,
+            "descriptor_exists": true,
+            "descriptor_sha256": "9ad35e2e3efad1cb4532179f3e394f980d08243337c52aadcacadd203804c3be",
+            "installed_matches_latest": true,
+            "installed_matches_expected": null
+          }
+        ],
+        "all_installed_match_latest": true,
+        "all_pinned_expectations_match": true
+      }
+    },
+    "is_error": false,
+    "result_type": "complete"
+  }
+}

@@ -9,7 +9,7 @@
       "forbidden_upstream_ids": [],
       "runtime_mod_key": "vanilla",
       "external_mod": false,
-      "integration_status": "normal preparation adapter implemented; no formal ABC executor or result",
+      "integration_status": "normal readiness and optional bounded public R04 county observation implemented; no formal ABC result or new R04 live qualification",
       "cases": [{
         "id": "r10-common-preparation",
         "status": "ready",
@@ -34,7 +34,7 @@
           "actual_retained_OS0_and_original_native0_required": true},
         "business_contract_applicable": false,
         "whole_product_acceptance_credit": false,
-        "case_scope": "R10 normal shared readiness pilot only"
+        "case_scope": "R10 normal shared readiness pilot; optional explicit R04 county observation is bounded to one Move and seven exact days"
       }]
     }
   }

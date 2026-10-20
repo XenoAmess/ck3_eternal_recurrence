@@ -1,0 +1,625 @@
+{
+  "schema": "xar.e04.current-finite-minimum-protections.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:19:31.826220+00:00",
+  "owner": "/root",
+  "policy_version": "1.0.0",
+  "groups": [
+    {
+      "asset_id": "e04.current-normal-S0",
+      "replica_id": "desktop-3fevhd2-1c74096080:e04.current-normal-S0",
+      "owner_task": "/root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "root_id": "exact-file-selection",
+      "relative_path": "See exact_files; no ancestor tree is protected",
+      "category": "checkpoint",
+      "state": "finite-active-input-or-minimum-diagnostic",
+      "logical_bytes": 72572514,
+      "allocated_bytes_or_null": null,
+      "closed_at_utc_or_null": null,
+      "last_used_at_utc": "2026-10-19T05:51:48.730801+00:00",
+      "expires_at_utc": "2026-10-22T08:00:00Z",
+      "active_references": [
+        "Actual next fresh R220 R04 scene consumes verified normal William S0; R219 diagnostic save is not a substitute"
+      ],
+      "protected_until_utc_or_null": "2026-10-22T08:00:00Z",
+      "protection_reason_or_null": "Actual next fresh R220 R04 scene consumes verified normal William S0; R219 diagnostic save is not a substitute",
+      "protection_approved_by": "/root delegated capacity task and 2026-10-20 handover continuation",
+      "protection_created_at_utc": "2026-10-20T02:19:31.826220+00:00",
+      "automatic_renewal": false,
+      "next_actual_use": "Copy verified S0 into fresh source-bound R220 profile only",
+      "source_pins_or_recipe": {
+        "sha256": "aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da",
+        "source": "R219-SPLIT-VOLUME-SCENE-CAPACITY.actual-root-a01.json normal_S0_current_source",
+        "not_rehashed_now": true
+      },
+      "availability": "local_metadata_readback_large_hash_reused_from_exact_source_records",
+      "exact_files": [
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\initial-normalized-s0-a01.ck3",
+          "bytes": 72572514,
+          "mtime_ns": 1792295658136986200,
+          "st_dev": 7220568048185129294,
+          "st_ino": 281474981277544,
+          "availability": "local_stat_readable",
+          "sha256_read_now": false
+        }
+      ],
+      "protection_expiry_is_review_not_unconditional_delete": true
+    },
+    {
+      "asset_id": "e04.a38.exact-qualified-minimum",
+      "replica_id": "desktop-3fevhd2-1c74096080:e04.a38.exact-qualified-minimum",
+      "owner_task": "/root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "root_id": "exact-file-selection",
+      "relative_path": "See exact_files; no ancestor tree is protected",
+      "category": "build",
+      "state": "finite-active-input-or-minimum-diagnostic",
+      "logical_bytes": 15945634,
+      "allocated_bytes_or_null": null,
+      "closed_at_utc_or_null": "2026-10-19T05:43:42.539045+00:00",
+      "last_used_at_utc": "2026-10-19T05:43:42.561639+00:00",
+      "expires_at_utc": "2026-10-22T08:00:00Z",
+      "active_references": [
+        "Compare a39 source/runtime against actually qualified a38 production and county v2 wire; preserve exact prior baseline outputs and minimal receipts"
+      ],
+      "protected_until_utc_or_null": "2026-10-22T08:00:00Z",
+      "protection_reason_or_null": "Compare a39 source/runtime against actually qualified a38 production and county v2 wire; preserve exact prior baseline outputs and minimal receipts",
+      "protection_approved_by": "/root delegated capacity task and 2026-10-20 handover continuation",
+      "protection_created_at_utc": "2026-10-20T02:19:31.826220+00:00",
+      "automatic_renewal": false,
+      "next_actual_use": "Use exact source/native tree and selected binaries as reference; retire redundant a38 intermediate .obj/.lib separately when no longer used",
+      "source_pins_or_recipe": {
+        "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+        "native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+        "qualification": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+        "producer_plan": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\a38-exact-source-qualification-prep-a01\\A38-PLAN.actual-a01.json",
+          "bytes": 35780,
+          "sha256": "428ce50e4c9c2c835c4c763fac52f7c30c13e46e83ed5a269297fe20c69dc43c"
+        },
+        "output_pins": [
+          {
+            "target": "xar_ck3_bridge",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge.dll",
+            "bytes": 14236160,
+            "sha256": "28dda54669e4f84e6eaabbcb086471007094e7121cb45d88c0f1d88fce211356",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-e89b33ead99f540a97fe.json",
+              "bytes": 58672,
+              "sha256": "96818ea1a528227b01942783319c4e123c97ae80d98bf4f92b14e0661f561e8f"
+            }
+          },
+          {
+            "target": "xar_ck3_bridge_injector",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_injector.exe",
+            "bytes": 39936,
+            "sha256": "28510650ca6b380bee834fb0edeca73961eb2f49ca6dde7edf3deee6fc8c18f3",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-9610bbb81f5ab066d01d.json",
+              "bytes": 3209,
+              "sha256": "00c90f126c45819353a7d02a6a8634d70100fffff98172731cead66790a036d4"
+            }
+          },
+          {
+            "target": "xar_ck3_bridge_host",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_host.exe",
+            "bytes": 71680,
+            "sha256": "0517fff0ef4ef641cd4d874b4290efdee778fe967f88f36f95cecda9ba5c256e",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-ba53732fe3409b8c2be6.json",
+              "bytes": 3180,
+              "sha256": "5032e7d3eb5c8fb1aa6c823875bff676fd3dee0949ead00d676b998ac8492b20"
+            }
+          },
+          {
+            "target": "xar_test_county_primary_direct_owner_v2_12004",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_direct_owner_v2_12004.exe",
+            "bytes": 445440,
+            "sha256": "e639c34df6e79d60bbe669caf40282c6095cd1b570012d1939374c00e94529c3",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_test_county_primary_direct_owner_v2_12004-Release-2efeba53aff73803a8bb.json",
+              "bytes": 8093,
+              "sha256": "99d9c6ec040522b9baa70cee558b11b99d419e7ac491b732662ee18b2e7132f5"
+            }
+          },
+          {
+            "target": "xar_test_county_primary_owner_12004",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_owner_12004.exe",
+            "bytes": 387584,
+            "sha256": "c7677fec979b9c723709087b124ff3c8838397bd5a51597ec232af333bb13e93",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_test_county_primary_owner_12004-Release-3b523dd0e95e41671031.json",
+              "bytes": 8032,
+              "sha256": "f8d8de7de26fe9dacd7a55958229fab1e57695fba78b01eb2926e952c37ee6db"
+            }
+          },
+          {
+            "target": "xar_ck3_12002_declarations_test",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_12002_declarations_test.exe",
+            "bytes": 173568,
+            "sha256": "ed8381f1ade1a9a5068e4ee233ba432a9b5733736d428d7a10876973b1f58ae8",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_declarations_test-Release-79da098b7daf619ab75c.json",
+              "bytes": 5419,
+              "sha256": "cc1b52ac89ad0540cfc066a3fa0a9ffa0e68457313e64b4dbf457bf1746c6025"
+            }
+          }
+        ]
+      },
+      "availability": "local_metadata_readback_large_hash_reused_from_exact_source_records",
+      "exact_files": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+          "bytes": 20576,
+          "mtime_ns": 1792388622575387200,
+          "st_dev": 13886423844274364792,
+          "st_ino": 1970324837439264,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "d2cd74ebc706d78d052016a286a2908f7d41832e20fcd6c864dd3f93acebd194"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-BUILD-COMPLETION.actual.json",
+          "bytes": 3752,
+          "mtime_ns": 1792388622543406700,
+          "st_dev": 13886423844274364792,
+          "st_ino": 8725724278493782,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "4c035499f89aed2678178d2116b94e6781d825bd314c13a9fbe7ddae543fc449"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\a38-exact-source-qualification-prep-a01\\A38-PLAN.actual-a01.json",
+          "bytes": 35780,
+          "mtime_ns": 1792387300611577000,
+          "st_dev": 13886423844274364792,
+          "st_ino": 1407374883949354,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "428ce50e4c9c2c835c4c763fac52f7c30c13e46e83ed5a269297fe20c69dc43c"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\wire\\county-primary-direct-owner-v2\\NATIVE-WIRE.json",
+          "bytes": 43611,
+          "mtime_ns": 1792388611961355200,
+          "st_dev": 13886423844274364792,
+          "st_ino": 9851624185335106,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "32e26ad7245933af07e4cc2c2a8ea3e9e849f5b17570da24f5351f64f861fa5a"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\COUNTY-V2-WIRE-CONSUMED.actual.json",
+          "bytes": 2712,
+          "mtime_ns": 1792388620011695200,
+          "st_dev": 13886423844274364792,
+          "st_ino": 11258999068889678,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "06abb99e768e1d727de10bd78f61064614fdf69497eaa9c2709df3cb88b312cb"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge.dll",
+          "bytes": 14236160,
+          "mtime_ns": 1792388568849568700,
+          "st_dev": 13886423844274364792,
+          "st_ino": 2814749767568462,
+          "availability": "local_stat_readable",
+          "sha256_read_now": false
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "mtime_ns": 1792388567747666600,
+          "st_dev": 13886423844274364792,
+          "st_ino": 4222124651121741,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "28510650ca6b380bee834fb0edeca73961eb2f49ca6dde7edf3deee6fc8c18f3"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_host.exe",
+          "bytes": 71680,
+          "mtime_ns": 1792388567594038900,
+          "st_dev": 13886423844274364792,
+          "st_ino": 3940649674411071,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "0517fff0ef4ef641cd4d874b4290efdee778fe967f88f36f95cecda9ba5c256e"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_direct_owner_v2_12004.exe",
+          "bytes": 445440,
+          "mtime_ns": 1792388569024553100,
+          "st_dev": 13886423844274364792,
+          "st_ino": 5910974511385758,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "e639c34df6e79d60bbe669caf40282c6095cd1b570012d1939374c00e94529c3"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_owner_12004.exe",
+          "bytes": 387584,
+          "mtime_ns": 1792388568034508300,
+          "st_dev": 13886423844274364792,
+          "st_ino": 7318349394938959,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "c7677fec979b9c723709087b124ff3c8838397bd5a51597ec232af333bb13e93"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_12002_declarations_test.exe",
+          "bytes": 173568,
+          "mtime_ns": 1792388571675441600,
+          "st_dev": 13886423844274364792,
+          "st_ino": 3377699720989793,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "ed8381f1ade1a9a5068e4ee233ba432a9b5733736d428d7a10876973b1f58ae8"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\defender-exe-exclusions\\20261019T054251Z-f0fd4c1d\\receipt.json",
+          "bytes": 479292,
+          "mtime_ns": 1792388608278785800,
+          "st_dev": 13886423844274364792,
+          "st_ino": 23643898044157159,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "59c47e1973f9ab43a6cd567412350101d10be18e2069a62d2b46cb96ba102e19"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\defender-exe-exclusions\\20261019T054251Z-f0fd4c1d\\manifest.json",
+          "bytes": 5543,
+          "mtime_ns": 1792388572068845400,
+          "st_dev": 13886423844274364792,
+          "st_ino": 5066549581253798,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "d4ff2dd3d774cf2eab23ebd33f617da1bba34960d0355add1aed4470dae95935"
+        }
+      ],
+      "protection_expiry_is_review_not_unconditional_delete": true
+    },
+    {
+      "asset_id": "e04.r219.representative-failure-minimum",
+      "replica_id": "desktop-3fevhd2-1c74096080:e04.r219.representative-failure-minimum",
+      "owner_task": "/root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "root_id": "exact-file-selection",
+      "relative_path": "See exact_files; no ancestor tree is protected",
+      "category": "raw_evidence",
+      "state": "finite-active-input-or-minimum-diagnostic",
+      "logical_bytes": 72830415,
+      "allocated_bytes_or_null": null,
+      "closed_at_utc_or_null": "2026-10-19T08:03:37Z",
+      "last_used_at_utc": "2026-10-19T08:03:37Z",
+      "expires_at_utc": "2026-10-22T08:00:00Z",
+      "active_references": [
+        "Resolve shared public path/profile/camera wiring and actual_days=0 contradiction; one representative R219 failure selected, no blanket failed-run protection"
+      ],
+      "protected_until_utc_or_null": "2026-10-22T08:00:00Z",
+      "protection_reason_or_null": "Resolve shared public path/profile/camera wiring and actual_days=0 contradiction; one representative R219 failure selected, no blanket failed-run protection",
+      "protection_approved_by": "/root delegated capacity task and 2026-10-20 handover continuation",
+      "protection_created_at_utc": "2026-10-20T02:19:31.826220+00:00",
+      "automatic_renewal": false,
+      "next_actual_use": "Reproduce fixed adapter against selected before-action camera and 6 exact-day records; compare fresh R220 normal closure",
+      "source_pins_or_recipe": {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0215",
+        "historical_save_sha256": "89bd555fc442dab74ce980a85852fa147089b956d5b38c1a2b58a511c3597376",
+        "save_binding_verified": false,
+        "save_role": "diagnostic-recovery-candidate-only-not-normal-S0",
+        "last_actual_days": 6,
+        "summary_actual_days_bug_preserved": true
+      },
+      "availability": "local_metadata_readback_large_hash_reused_from_exact_source_records",
+      "exact_files": [
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\COUNTY-ACTOR.stderr-a01.log",
+          "bytes": 1523,
+          "mtime_ns": 1792389993495594700,
+          "st_dev": 7220568048185129294,
+          "st_ino": 281474981365130,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "dd77abb0392e7972deff1332e75505939f6f710017d2e1133ad0ad7107927ebd"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\COUNTY-ACTOR-a02.stderr-a01.log",
+          "bytes": 0,
+          "mtime_ns": 1792390298293418000,
+          "st_dev": 7220568048185129294,
+          "st_ino": 281474981365237,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\COUNTY-ACTOR-a02-ORIGINAL-WAIT.actual-a01.json",
+          "bytes": 582,
+          "mtime_ns": 1792391473418490700,
+          "st_dev": 7220568048185129294,
+          "st_ino": 7036874422420954,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "ce91c8430d98bd550f4c38049f28c1531b75d372533f1f21eaa2ebf2ef98a805"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\PUBLIC-ORIGINAL-WAIT.actual-a01.json",
+          "bytes": 820,
+          "mtime_ns": 1792397013575605300,
+          "st_dev": 7220568048185129294,
+          "st_ino": 281474981366808,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "5f16fa59d731f5475bf5d8d8e3562a5ad7325450bb4f630c16d872b6be5cd769"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\host-original-process-exit.json",
+          "bytes": 244,
+          "mtime_ns": 1792397017620434200,
+          "st_dev": 13886423844274364792,
+          "st_ino": 4503599628460229,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "9126cc481f4fc3c6e13856d190efa356e7b776909fc88eae810e69f701dfb5a0"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\before-action-camera-awaiting.json",
+          "bytes": 1280,
+          "mtime_ns": 1792390545440609800,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521405,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "c8659498b025e2c9fd2f17fbb74a53fc1b565930f4ee1365213b1b54f8ce9fd0"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-BAYEUX-TERMINAL.json",
+          "bytes": 467,
+          "mtime_ns": 1792391473081850000,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521947,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "e3f725d1d6eef4173d2b29c464fc50f0e09b1ad141cb4da4603e42052f016721"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-V2-QUALIFICATION.json",
+          "bytes": 1650,
+          "mtime_ns": 1792391473117863500,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521948,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "72205df3063366180cb632a8ebce241b35b0f06b760369a47ac3e0b15e303022"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-MOVE-POST.json",
+          "bytes": 49453,
+          "mtime_ns": 1792390346523374500,
+          "st_dev": 13886423844274364792,
+          "st_ino": 844424931231492,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "db41242f9f7856f066bbaff24089716aa2a915c1e3c32a84a9d94cee0f7649d5"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-01.json",
+          "bytes": 1760,
+          "mtime_ns": 1792390371318714300,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954520925,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "56c9a60a7aa0bdbcf6fa0382cacd36abc171e68cd005394cb809b4d89025a4fc"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-02.json",
+          "bytes": 1760,
+          "mtime_ns": 1792390389787113900,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954520990,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "99cc5a95dc299f083dee1821d39a82d5f8d7b0fb6b825cd3a5430226571eb6c8"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-03.json",
+          "bytes": 1760,
+          "mtime_ns": 1792390413782690600,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521057,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "34d5f21f7cb7fff8b1a2585915e162a5cb3e51bb7ca9d1945efd87a53a55aaa2"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-04.json",
+          "bytes": 1760,
+          "mtime_ns": 1792390442827237200,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521125,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "44beeecbb55a38425e42104fa857c21c7d71ff1c0976355ed2525bb9946a8556"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-05.json",
+          "bytes": 1760,
+          "mtime_ns": 1792390464003520300,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521197,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "2b1fbf3e57f097e15b7b7bb63227543f501c190357e37bfa92968b00b77a4579"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-06.json",
+          "bytes": 1760,
+          "mtime_ns": 1792390495406783400,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521275,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "3d5638a644ccb69695692df57c1e835ae4003ef6e19aaadf553567b5a342508f"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+          "bytes": 72763836,
+          "mtime_ns": 1792391468900837300,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521932,
+          "availability": "local_stat_readable",
+          "sha256_read_now": false
+        }
+      ],
+      "protection_expiry_is_review_not_unconditional_delete": true
+    },
+    {
+      "asset_id": "e04.chapter55.actual-and-exact-inputs",
+      "replica_id": "desktop-3fevhd2-1c74096080:e04.chapter55.actual-and-exact-inputs",
+      "owner_task": "/root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "root_id": "exact-file-selection",
+      "relative_path": "See exact_files; no ancestor tree is protected",
+      "category": "derived",
+      "state": "finite-active-input-or-minimum-diagnostic",
+      "logical_bytes": 127775899,
+      "allocated_bytes_or_null": null,
+      "closed_at_utc_or_null": "2026-10-19T06:18:46.976757+00:00",
+      "last_used_at_utc": "2026-10-19T06:18:46.976757+00:00",
+      "expires_at_utc": "2026-10-21T07:00:00Z",
+      "active_references": [
+        "Existing54.966667s review draft and immutable input windows feed current130s chapter; retain exact small recipes/QA and two raw sources"
+      ],
+      "protected_until_utc_or_null": "2026-10-21T07:00:00Z",
+      "protection_reason_or_null": "Existing54.966667s review draft and immutable input windows feed current130s chapter; retain exact small recipes/QA and two raw sources",
+      "protection_approved_by": "/root delegated capacity task and 2026-10-20 handover continuation",
+      "protection_created_at_utc": "2026-10-20T02:19:31.826220+00:00",
+      "automatic_renewal": false,
+      "next_actual_use": "Parent reviews current130s chapter; then decide which original draft/input evidence remains necessary under same expiry",
+      "source_pins_or_recipe": {
+        "input_guard": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\INPUT-GUARD.actual.json",
+        "movie_sha256": "9323a8ace8adf7ea104d5f2fa29b9908baf7bdaa536b3621097273a37714e136",
+        "source_pin_SHA_reused_not_rehashed": true
+      },
+      "availability": "local_metadata_readback_large_hash_reused_from_exact_source_records",
+      "exact_files": [
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\R194-R196-SPLIT-MERGE-BOARDING-55s-REVIEW-DRAFT-a02.mp4",
+          "bytes": 7168415,
+          "mtime_ns": 1792390602360208300,
+          "st_dev": 13886423844274364792,
+          "st_ino": 844424931232126,
+          "availability": "local_stat_readable",
+          "sha256_read_now": false
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\INPUT-GUARD.actual.json",
+          "bytes": 5564,
+          "mtime_ns": 1792390550612073900,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521412,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "f6af57c15d41eeb251866765a804bc0a3bf731f00789f5d63d578469cb3b11d5"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\CHAPTER-QA.actual.json",
+          "bytes": 3833,
+          "mtime_ns": 1792390660318368500,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521542,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "a1b7c68e4b866a854d2101a0280320c176eb9a754dfc132d636d383b52554658"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\ROOT-DELIVERY.a02.actual.json",
+          "bytes": 7450,
+          "mtime_ns": 1792390727013790200,
+          "st_dev": 13886423844274364792,
+          "st_ino": 1125899907942893,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "da01e7d0598dc203e6e8cb5ddfec1e28c24274f2bf016659991c13986176333d"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-roughcut-recovery-a01\\R194-R196-THREE-SHOT-EDL.candidate.json",
+          "bytes": 5945,
+          "mtime_ns": 1792389010025308700,
+          "st_dev": 13886423844274364792,
+          "st_ino": 1125899907931628,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "f5d7610c38eb22787433e1a7f95f5b6ec6020135713410985c03f2854ec21668"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\assemble_chapter_a02.py",
+          "bytes": 14222,
+          "mtime_ns": 1792390529139518700,
+          "st_dev": 13886423844274364792,
+          "st_ino": 562949954521366,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "ba25417bc56eb0978bafcf35428df20f394e8a3711c2ba0ea889776da0226186"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+          "bytes": 71202833,
+          "mtime_ns": 1792195497700620400,
+          "st_dev": 7220568048185129294,
+          "st_ino": 844424932777670,
+          "availability": "local_stat_readable",
+          "sha256_read_now": false
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+          "bytes": 49062501,
+          "mtime_ns": 1792204609193863600,
+          "st_dev": 7220568048185129294,
+          "st_ino": 562949956322860,
+          "availability": "local_stat_readable",
+          "sha256_read_now": false
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\93\\930FBB4DFF9B4E343F3810E13949EBE4BA0B1AA8B14AF548453633ABC27AACFE.mp3",
+          "bytes": 167904,
+          "mtime_ns": 1792308698829801100,
+          "st_dev": 7220568048185129294,
+          "st_ino": 562949958009694,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "930fbb4dff9b4e343f3810e13949ebe4ba0b1aa8b14af548453633abc27aacfe"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\B6\\B69CF506A4CF35D41A02C15D9BB65ADD6C880B3DBBDBA4CCE9A293E8691C4958.mp3",
+          "bytes": 137232,
+          "mtime_ns": 1792308694381764400,
+          "st_dev": 7220568048185129294,
+          "st_ino": 281474981299018,
+          "availability": "local_readable_small_hash_verified",
+          "sha256_read_now": true,
+          "sha256": "b69cf506a4cf35d41a02c15d9bb65add6c880b3dbbdba4cce9a293e8691c4958"
+        }
+      ],
+      "protection_expiry_is_review_not_unconditional_delete": true
+    }
+  ],
+  "all_unselected_sibling_assets_follow_policy": true,
+  "no_parent_directory_blanket_protection": true,
+  "old_profiles_shadercache_and_all_build_intermediates_not_protected_by_this_selection": true,
+  "workshop_0B_barriers_and_unique_DACL_restore_backup_untouched": true,
+  "permanent_assets_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "mtime_ns": 1792318665116792900,
+    "st_dev": 7220568048185129294,
+    "st_ino": 562949957980502,
+    "availability": "local_readable_small_hash_verified",
+    "sha256_read_now": true,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  }
+}

@@ -1269,3 +1269,8 @@ docs/ck3-native-ai/evidence/native30-attempt05-root-closed-review-2026-10-20.jso
 docs/ck3-native-ai/evidence/turn-bundle-owned-partition-v1.patch -text whitespace=-blank-at-eol
 
 tools/g2_saved_campaign/fixtures/route10416_closed_classifier_inputs_v1.json -text whitespace=cr-at-eol
+
+# Preserve the actual October 20 E04 receipts and project recipe bytes.
+docs/ck3-native-ai/evidence/e04-resume-20261020-desktop-3fevhd2-1c74096080/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r08-b-next-20261020/** -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/observations-130s-a01/** -text whitespace=cr-at-eol

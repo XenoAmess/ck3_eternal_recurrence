@@ -1,0 +1,445 @@
+{
+  "schema": "xar.e04.resume-start.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:08:10.322133+00:00",
+  "operator": "1",
+  "source": "live subprocess/psutil/shutil observations",
+  "head": "02f270d9607c3bbf1d4c6f1f9a0fbd14e77fe89d",
+  "status": "## research/e04-next-runtime-3e7d337\n",
+  "volumes": {
+    "C:/": {
+      "total": 511133945856,
+      "used": 426592247808,
+      "free": 84541698048
+    },
+    "D:/": {
+      "total": 500090007552,
+      "used": 478522101760,
+      "free": 21567905792
+    }
+  },
+  "processes": [
+    {
+      "cmdline": [
+        "D:\\Program Files (x86)\\Steam\\steam.exe",
+        "steam://open/main"
+      ],
+      "pid": 13256,
+      "exe": "D:\\Program Files (x86)\\Steam\\steam.exe",
+      "name": "steam.exe",
+      "create_time": 1792455381.181917
+    },
+    {
+      "cmdline": [
+        "",
+        "/updateInstalled",
+        "/background"
+      ],
+      "pid": 28584,
+      "exe": "C:\\Users\\1\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe",
+      "name": "OneDrive.exe",
+      "create_time": 1792196311.9245737
+    }
+  ],
+  "active_bus_tasks": [
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 18,
+        "head": "721712d4b0f4c719a9b765477177a79cf4fd9a75"
+      },
+      "last_sequence": 1626,
+      "next_step": "verify-fresh-offline-and-launch",
+      "pid": 27356,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "CombatResearch"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "prepared-day11-reinforcement-advantage-ab",
+      "task_id": "ck3-active-advantage-reinforcement-105-20260927",
+      "updated_at_utc": "2026-09-27T12:50:27.206972+00:00",
+      "age_seconds": 1948661,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 18,
+        "head": "343f79c1ba33d9dd9b6e2ef346b3e5b926a8be6d"
+      },
+      "last_sequence": 1632,
+      "next_step": "fresh-steam-offline-and-managed-launch",
+      "pid": 26820,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "CombatResearch"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "corrected-day11-join-advantage-replay",
+      "task_id": "ck3-active-advantage-reinforcement-106-20260927",
+      "updated_at_utc": "2026-09-27T13:06:33.967497+00:00",
+      "age_seconds": 1947694,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "research/casualty-terminal-static-20260927",
+        "dirty_entries": 0,
+        "head": "14b23e1e2e5e35c13e74dfc2fdc355aa5c98d730"
+      },
+      "last_sequence": 1563,
+      "next_step": "inspect-active-snapshot-and-action-selection",
+      "pid": 27572,
+      "repo": "D:\\wct",
+      "resources": [
+        "origin/master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "active-combat-provisional-forecast-strategy-integration",
+      "task_id": "ck3-active-battle-provisional-strategy-20260927",
+      "updated_at_utc": "2026-09-27T10:47:39.755122+00:00",
+      "age_seconds": 1956029,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "c761d6ca18ed43db75fd0d529f359a8c3c39988f"
+      },
+      "last_sequence": 870,
+      "next_step": "Await-user-review-then-select-next-evidence-closed-episode",
+      "pid": 12912,
+      "repo": "D:\\workspace\\ck3_native_tree_docs_audit_20260922",
+      "resources": [
+        "WarFilm"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "Film-uploaded-series-roadmap-pushed-CI-green",
+      "task_id": "ck3-war-film-research-rebuild-20260923",
+      "updated_at_utc": "2026-09-23T09:22:04.633059+00:00",
+      "age_seconds": 2306764,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d59568127d96454fcbd99088cb93dbc092e0e53b"
+      },
+      "last_sequence": 6077,
+      "next_step": "",
+      "pid": 32812,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "machine_id:desktop-3fevhd2-1c74096080_a34_native_only_D1GiB_d59568127",
+      "task_id": "e04-a34-native-capacity-a01",
+      "updated_at_utc": "2026-10-17T03:05:36.688698+00:00",
+      "age_seconds": 255752,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d59568127d96454fcbd99088cb93dbc092e0e53b"
+      },
+      "last_sequence": 6078,
+      "next_step": "",
+      "pid": 26564,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "machine_id:desktop-3fevhd2-1c74096080_a34b_native_only_D1GiB_d59568127",
+      "task_id": "e04-a34b-native-capacity-a01",
+      "updated_at_utc": "2026-10-17T03:28:15.426110+00:00",
+      "age_seconds": 254393,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "20c7319b6964c80fa419540cf4e30852feff4810"
+      },
+      "last_sequence": 5702,
+      "next_step": "R183-atomic-capacity-admission",
+      "pid": 9168,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "R183-capacity",
+      "task_id": "e04-r183-capacity-a01",
+      "updated_at_utc": "2026-10-16T06:30:09.297277+00:00",
+      "age_seconds": 329879,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe"
+      },
+      "last_sequence": 5981,
+      "next_step": "",
+      "pid": 24684,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "desktop-3fevhd2-1c74096080:R194-one-forward120s-after-actual-a32-qualified-new-fixed-review",
+      "task_id": "e04-r194-capacity-a01",
+      "updated_at_utc": "2026-10-16T23:46:07.503033+00:00",
+      "age_seconds": 267721,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "611bc985ae95f477dd7314df11f8602cd1e595f3"
+      },
+      "last_sequence": 6040,
+      "next_step": "",
+      "pid": 35248,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "desktop-3fevhd2-1c74096080_R196_R07_independent_treatment_after_R195_normal_close",
+      "task_id": "e04-r196-treatment-capacity-a01",
+      "updated_at_utc": "2026-10-17T01:48:17.939867+00:00",
+      "age_seconds": 260390,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "85eb547cca4fddaec4b8a89ec9dd203e6935299c"
+      },
+      "last_sequence": 6086,
+      "next_step": "adopt_after_actual_native_qualification",
+      "pid": 28640,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "desktop-3fevhd2-1c74096080_R197_research_capacity_owner",
+      "task_id": "e04-r197-county-refill-a01",
+      "updated_at_utc": "2026-10-17T04:42:40.675555+00:00",
+      "age_seconds": 249928,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "26449eb2676b4ccb71cb818fb0cc398b0a5fd1e6"
+      },
+      "last_sequence": 6213,
+      "next_step": "",
+      "pid": 35980,
+      "repo": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r200-movement-source-a01",
+      "resources": [
+        "e04-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "machine_id=desktop-3fevhd2-1c74096080;R201_movement3GiB_1800s_60day_upper_raw0_noobserver_until1700Z",
+      "task_id": "e04-r201-movement-capacity-a01",
+      "updated_at_utc": "2026-10-17T15:39:24.829085+00:00",
+      "age_seconds": 210524,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6e17d0d4ca39719af41f40fb619c3da92472981a"
+      },
+      "last_sequence": 5685,
+      "next_step": "Root_admit_a24_delta_build_then_one_readonly_military_tree_failure_stage_or_actualprovider_no_toggle",
+      "pid": 14812,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "research-refill-callback"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "R06_R182_a24_source_correct_nullancestor_pending_scope_and_failure_stage_diagnostic_sealed",
+      "task_id": "e04-refill-toggle-actual-next-a09",
+      "updated_at_utc": "2026-10-16T05:03:17.396133+00:00",
+      "age_seconds": 335091,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "c4992c304d196135d9590799d69ffb3c9f5510e6"
+      },
+      "last_sequence": 5585,
+      "next_step": "a09_actual_build_finish_capacity_adopt_fresh_offline_frame_R0180_county_refill_zero_live_capture",
+      "pid": 24728,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "research-e04-logistics"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "machine_desktop-3fevhd2-1c74096080_c499_96paths_pushed_core6of14_pair_interrupted_a09_build16jobs",
+      "task_id": "e04-resume-20261015-root",
+      "updated_at_utc": "2026-10-15T23:52:56.086304+00:00",
+      "age_seconds": 353712,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "research/e04-next-runtime-3e7d337",
+        "dirty_entries": 0,
+        "head": "02f270d9607c3bbf1d4c6f1f9a0fbd14e77fe89d"
+      },
+      "last_sequence": 7130,
+      "next_step": "verify-current-state-and-public-preflight",
+      "pid": 24852,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "resume-e04-vacation-handover",
+      "task_id": "e04-resume-20261020-root-a01",
+      "updated_at_utc": "2026-10-20T02:07:06.104142+00:00",
+      "age_seconds": 62,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d"
+      },
+      "last_sequence": 6484,
+      "next_step": "",
+      "pid": 36984,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-media-capacity:acquired"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "machine_id=desktop-3fevhd2-1c74096080;Root_full69_method_review_D3GiB_preserve_R207_2_5GiB_samepool_0800",
+      "task_id": "e04-review02-full69-capacity-a01",
+      "updated_at_utc": "2026-10-18T05:50:22.446862+00:00",
+      "age_seconds": 159466,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "main",
+        "dirty_entries": 10,
+        "head": "9897fc3be1bed604d0f1cdf7015bf54a07dd2100"
+      },
+      "last_sequence": 7125,
+      "next_step": "docs-original-source-official-API-then-mock-tests",
+      "pid": 35712,
+      "repo": "D:\\workspace\\xenoamess_stellaries_dev",
+      "resources": [
+        "runtime_single_homeworld-focus"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "Narrow-verified-Stellaris-titlebar-physical-focus-fallback",
+      "task_id": "stellaris-safe-titlebar-focus-recovery-20261020",
+      "updated_at_utc": "2026-10-19T17:27:23.054368+00:00",
+      "age_seconds": 31245,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "9fbeabad1c4435bf16f79b8714e5078885daf5b1"
+      },
+      "last_sequence": 4812,
+      "next_step": "Read pinned research/source docs and deliver clause-level approved facts plus pending slots to Root",
+      "pid": 20076,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "external:narration-research-episode04-a01"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "External short evidence-linked E4 narration chapters from pinned master docs only; no raw SDK UI game TTS render security or tracked writer",
+      "task_id": "war-e04-narration-research-20261005-a01",
+      "updated_at_utc": "2026-10-05T08:07:19.793196+00:00",
+      "age_seconds": 1274449,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "war/h2743-exit-decision-20260928",
+        "dirty_entries": 10249,
+        "head": "5d2070f502ebc45a47cb034fbe054dd3e402bf14"
+      },
+      "last_sequence": 1721,
+      "next_step": "核查同帧条款和风险缺口",
+      "pid": 7900,
+      "repo": "D:\\w\\h2743exit",
+      "resources": [
+        "origin/master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "H2743防守战退出决策与续战合同",
+      "task_id": "war-h2743-exit-20260928",
+      "updated_at_utc": "2026-09-28T04:29:29.221129+00:00",
+      "age_seconds": 1892319,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "war/r0271-delivery-20260928",
+        "dirty_entries": 0,
+        "head": "1895ad06e70f7ddceba33a259699c6543b14b63f"
+      },
+      "last_sequence": 1729,
+      "next_step": "exact-transfer-then-matching-live",
+      "pid": 13488,
+      "repo": "D:\\w\\r0271",
+      "resources": [
+        "origin/master"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "source-delivered-await-verified-h3388",
+      "task_id": "war-r0271-siege-partition-20260928",
+      "updated_at_utc": "2026-09-28T05:13:11.311463+00:00",
+      "age_seconds": 1889697,
+      "stale": true
+    }
+  ],
+  "new_poll_event_count": 7002,
+  "poll_remaining": 0
+}

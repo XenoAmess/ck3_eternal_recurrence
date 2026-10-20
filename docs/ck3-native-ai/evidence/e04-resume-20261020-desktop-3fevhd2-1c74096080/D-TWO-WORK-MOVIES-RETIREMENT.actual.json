@@ -1,0 +1,101 @@
+{
+  "schema": "xar.e04.two-work-movies-actual-retirement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:18:20.315883+00:00",
+  "policy_version": "1.0.0",
+  "status": "COMPLETE_EXACT_TWO_DUPLICATE_LEAVES",
+  "intent": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\D-TWO-WORK-MOVIES-INTENT.actual.json",
+    "bytes": 2992,
+    "sha256": "a22c5c5d94977201db62adc0a13e3bed4d84dad90d6adf43d99faf241664303d"
+  },
+  "RM": {
+    "register_rc": 0,
+    "getlist_rc": 0,
+    "consumer_count_needed": 0,
+    "consumer_count_returned": 0,
+    "shutdown_or_restart_called": false
+  },
+  "results": [
+    {
+      "candidate": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-method-a01\\work\\build-a02\\episode04-review02-FULL69-METHOD-PARTIAL-NO-SIGNOFF.mp4",
+      "retained_exact_keeper": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-method-a01\\runs\\review02-full69-method-a02\\artifacts\\derived\\sha256\\5C\\5CB19CC0FB504558419749EA7E2279D811391EDDA436928C1C028B4C9E37F28B.mp4",
+      "status": "deleted_exact_work_duplicate_keeper_readable_unchanged",
+      "deleted_original_availability": "deleted_unreadable",
+      "retained_CAS_availability": "local_read_handle_open_exact_hash_verified",
+      "bytes": 89445543,
+      "single_link_allocated_bytes": 89448448,
+      "sha256": "5cb19cc0fb504558419749ea7e2279d811391edda436928c1c028b4c9e37f28b",
+      "candidate_identity": {
+        "id": [
+          882653518,
+          281474981286918
+        ],
+        "b": 89445543,
+        "ft": 134367771234324924,
+        "links": 1,
+        "allocation": 89448448
+      },
+      "keeper_identity": {
+        "id": [
+          882653518,
+          281474981287771
+        ],
+        "b": 89445543,
+        "ft": 134367779326550935,
+        "links": 1,
+        "allocation": 89448448
+      }
+    },
+    {
+      "candidate": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\work\\build-a02\\episode04-review02-FULL69-METHOD-TYPOGRAPHY-PARTIAL-NO-SIGNOFF.mp4",
+      "retained_exact_keeper": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+      "status": "deleted_exact_work_duplicate_keeper_readable_unchanged",
+      "deleted_original_availability": "deleted_unreadable",
+      "retained_CAS_availability": "local_read_handle_open_exact_hash_verified",
+      "bytes": 89450267,
+      "single_link_allocated_bytes": 89452544,
+      "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b",
+      "candidate_identity": {
+        "id": [
+          882653518,
+          281474981298616
+        ],
+        "b": 89450267,
+        "ft": 134367822380084659,
+        "links": 1,
+        "allocation": 89452544
+      },
+      "keeper_identity": {
+        "id": [
+          882653518,
+          844424934720744
+        ],
+        "b": 89450267,
+        "ft": 134367824373032324,
+        "links": 1,
+        "allocation": 89452544
+      }
+    }
+  ],
+  "deleted_count": 2,
+  "deleted_logical_bytes": 178895810,
+  "deleted_single_link_allocated_bytes": 178900992,
+  "before_D_volume": {
+    "available_bytes": 21520814080,
+    "total_bytes": 500090007552,
+    "total_free_bytes": 21520814080
+  },
+  "after_D_volume": {
+    "available_bytes": 21699645440,
+    "total_bytes": 500090007552,
+    "total_free_bytes": 21699645440
+  },
+  "observed_D_free_delta_bytes": 178831360,
+  "whole_volume_free_change_exclusively_attributed_to_deletion": false,
+  "source_CAS_raw_manifest_and_distinct_movies_preserved": true,
+  "D_heavy_admission_changed": false,
+  "review_at_utc": "2027-04-18T08:00:00Z",
+  "payload_hash_bytes_read": 357791620,
+  "no_directory_or_workshop_or_backup_deletion": true
+}

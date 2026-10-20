@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.observations-130s-sparse-ai-observation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:18:30.934353+00:00",
+  "reviewer_type": "AI-agent",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+    "bytes": 12222689,
+    "sha256": "74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00"
+  },
+  "review_package": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\review-package.json",
+    "bytes": 6383,
+    "sha256": "adfb42a0dd496f3f7f17e1212e7b884cedd6ec662ec8f1988396e552e7d6faa3"
+  },
+  "reviewed_frame_ids": [
+    "frame-000001",
+    "frame-000002",
+    "frame-000003",
+    "frame-000004",
+    "frame-000005",
+    "frame-000006",
+    "frame-000007",
+    "frame-000008"
+  ],
+  "observed": [
+    "R194 opening selected army panel250 and small draft corner label",
+    "R196 end selected embarked army1162",
+    "R211 opening selected panel6746 and review insert label",
+    "R211 card keeps supply337 / siege-raid67 / net404 and controlled-zero-stock note separate",
+    "R215 opening army6679 and review insert label",
+    "R215 card states6679 to6689, supply103/300 unchanged, physical closure incomplete",
+    "R217 opening map date Jan26 army6746 and cause-unverified label",
+    "R217 final card states6746 to6510 and explicitly leaves loss attribution unverified"
+  ],
+  "entry_exit_sparse_frames_present": true,
+  "full_continuous_visual_review": false,
+  "human_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0
+}

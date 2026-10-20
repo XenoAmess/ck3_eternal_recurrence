@@ -1,0 +1,170 @@
+{
+  "schema": "xar.e04.observations-130s-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:18:30.934353+00:00",
+  "status": "NEW_REVIEW_CHAPTER_TECHNICAL_QA_PASSED_PENDING_HUMAN_1X_SIGNOFF",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+    "bytes": 12222689,
+    "sha256": "74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00"
+  },
+  "video_frames": 3899,
+  "container_seconds": 130.052083,
+  "geometry": [
+    1920,
+    1080
+  ],
+  "nominal_frame_rate": "30/1",
+  "audio": {
+    "codec": "aac",
+    "sample_rate": 48000,
+    "channels": 2
+  },
+  "source_inputs": [
+    {
+      "id": "r194-r196",
+      "file": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\R194-R196-SPLIT-MERGE-BOARDING-55s-REVIEW-DRAFT-a02.mp4",
+        "bytes": 7168415,
+        "sha256": "9323a8ace8adf7ea104d5f2fa29b9908baf7bdaa536b3621097273a37714e136"
+      },
+      "expected_frames_from_passed_QA": 1649
+    },
+    {
+      "id": "r211",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\work-build-a02\\R211-R05-ACTUAL-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+        "bytes": 1954195,
+        "sha256": "3d8da9b2e87e65101a3ecf8d44dae5ce4f1953f1d404e100b3b8ddeac7847e3a"
+      },
+      "expected_frames_from_passed_QA": 810
+    },
+    {
+      "id": "r215",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-month-refill-insert-a01\\work-build-a01\\R215-R06-MONTH-INSERT-21s-REVIEW-NO-SIGNOFF.mp4",
+        "bytes": 1404907,
+        "sha256": "fb6701ca2dd932fef9496432e441b9dbac735d287388b96992a257158a44ea9c"
+      },
+      "expected_frames_from_passed_QA": 630
+    },
+    {
+      "id": "r217",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\work-build-a01\\R217-R04-COUNTY-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+        "bytes": 1698188,
+        "sha256": "4b7f762d37c2c6e961e7284a7db26d24634dfcbe1970eb8043e2428611619e33"
+      },
+      "expected_frames_from_passed_QA": 810
+    }
+  ],
+  "source_identity_current_same_machine_verified": true,
+  "ordering_is_editorial_across_separate_runs": true,
+  "new_source_footage_seconds": 0,
+  "new_reviewable_assembly_seconds": 130.052083,
+  "toolchain": {
+    "query_argv": [
+      "gh",
+      "api",
+      "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+    ],
+    "tag": "v0.3.0",
+    "release_id": 415596198,
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+    "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+    "wheel_digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "xar_promo_version": "0.3.0",
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+        "hashes": {
+          "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+    }
+  },
+  "assembly": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\ASSEMBLY.actual.json",
+    "bytes": 1542,
+    "sha256": "116da8e0db0a53513c433d4b4a77664901c021d2dc4befa42acc7174aacdd59a"
+  },
+  "qa": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\QA.actual.json",
+    "bytes": 10145,
+    "sha256": "8954dd72ff22a8d09f963d941fd5e0a286ab48ec8c87d9fb8d7eb84656adfe73"
+  },
+  "sparse_AI_observation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\SPARSE-VISUAL.actual.json",
+    "bytes": 1622,
+    "sha256": "a54b5e715a237e4c009d44643e759b03262c91951168e44e8ed95f966892f7aa"
+  },
+  "native_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\run-a01\\run-manifest.json",
+    "bytes": 9321,
+    "sha256": "69b0a0a09714b9605c9dcf20b6ca569664fbc48c77d5e03ce2845f1d52450a93"
+  },
+  "review_package": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\review-package.json",
+    "bytes": 6383,
+    "sha256": "adfb42a0dd496f3f7f17e1212e7b884cedd6ec662ec8f1988396e552e7d6faa3"
+  },
+  "full_native_build_executed": false,
+  "CLI_external_material_preserve_executed": true,
+  "generic_toolchain_audit_executed": false,
+  "new_full_AV_decode_runs": 1,
+  "old_source_or_movie_QA_repeated": false,
+  "reencoded_video_frames": 0,
+  "new_TTS_calls": 0,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0,
+  "ABC_credit_added": 0,
+  "external_upload_performed": false,
+  "owned_FFmpeg_processes_at_close": [],
+  "D_heavy_writes_bytes": 0,
+  "screen_or_game_actions": 0,
+  "old_assets_modified_or_deleted": false,
+  "retention": {
+    "policy_version": "1.0.0",
+    "asset_id": "e04.observations.chapter.130s.a01",
+    "replica_id": "desktop-3fevhd2-1c74096080:e04-observations-130s-a01",
+    "owner_task": "e04-resume-media-20261020-a01",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "e04-resume-media-20261020-a01/media",
+    "relative_path": ".",
+    "category": "derived",
+    "state": "pending-human-review",
+    "closed_at_utc_or_null": "2026-10-20T02:18:30.934353+00:00",
+    "last_used_at_utc": "2026-10-20T02:18:30.934353+00:00",
+    "expires_at_utc": "2026-10-22T02:18:30.934353+00:00",
+    "protected_until_utc_or_null": "2026-10-22T02:18:30.934353+00:00",
+    "protection_reason_or_null": "Actual newly assembled review chapter and smallest process materials needed for parent review and integration",
+    "active_references": [
+      "Root E04 continuation review chapter"
+    ],
+    "source_pins_or_recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\PLAN.actual.json",
+      "bytes": 3318,
+      "sha256": "580a72f12b96318a931f0adde88c333fbe0c00880a1a7fd79b6040f689f1d11a"
+    },
+    "availability": "local_verified",
+    "allocated_bytes_or_null": null
+  },
+  "storage": {
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\media",
+    "aggregate_ceiling_bytes": 268435456,
+    "root_bytes_before_final_record": 41144900,
+    "C_volume": {
+      "total": 511133945856,
+      "used": 426826522624,
+      "free": 84307423232
+    },
+    "remaining_heavy_write_bytes": 0
+  }
+}

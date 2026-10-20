@@ -1,0 +1,317 @@
+{
+  "schema": "xar.e04.observations-130s-technical-qa.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:16:30.453400+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+    "bytes": 12222689,
+    "sha256": "74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00"
+  },
+  "bound_probe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\movie.bound-probe.json",
+    "bytes": 5396,
+    "sha256": "60ab9c2417bbb534ffa221136210e41352817a0271462c1c8b4d2af5046f4cb2"
+  },
+  "metadata": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "mime_codec_string": "avc1.640028",
+        "width": 1920,
+        "height": 1080,
+        "coded_width": 1920,
+        "coded_height": 1080,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 40,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "7486080/249659",
+        "time_base": "1/15360",
+        "start_pts": 328,
+        "start_time": "0.021354",
+        "duration_ts": 1997272,
+        "duration": "130.030729",
+        "bit_rate": "559430",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "3899",
+        "extradata_size": 47,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "encoder": "Lavc63.1.101 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "mime_codec_string": "mp4a.40.2",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 6242499,
+        "duration": "130.052063",
+        "bit_rate": "183648",
+        "nb_frames": "6102",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler"
+        }
+      },
+      {
+        "index": 2,
+        "codec_name": "bin_data",
+        "codec_long_name": "binary data",
+        "codec_type": "data",
+        "codec_tag_string": "text",
+        "codec_tag": "0x74786574",
+        "id": "0x3",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/384000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 49940000,
+        "duration": "130.052083",
+        "bit_rate": "13",
+        "nb_frames": "4",
+        "extradata_size": 63,
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "eng",
+          "handler_name": "SubtitleHandler"
+        }
+      }
+    ],
+    "chapters": [
+      {
+        "id": 0,
+        "time_base": "1/384000",
+        "start": 0,
+        "start_time": "0.000000",
+        "end": 21115400,
+        "end_time": "54.988021",
+        "tags": {
+          "title": "分兵、合军与登船：独立回放"
+        }
+      },
+      {
+        "id": 1,
+        "time_base": "1/384000",
+        "start": 21115400,
+        "start_time": "54.988021",
+        "end": 31491600,
+        "end_time": "82.009375",
+        "tags": {
+          "title": "受控零库存：337与另外67分列"
+        }
+      },
+      {
+        "id": 2,
+        "time_base": "1/384000",
+        "start": 31491600,
+        "start_time": "82.009375",
+        "end": 39563800,
+        "end_time": "103.030729",
+        "tags": {
+          "title": "月界净增10人：物理闭包未完"
+        }
+      },
+      {
+        "id": 3,
+        "time_base": "1/384000",
+        "start": 39563800,
+        "start_time": "103.030729",
+        "end": 49940000,
+        "end_time": "130.052083",
+        "tags": {
+          "title": "县边到站与净减少：损失来源待验"
+        }
+      }
+    ],
+    "format": {
+      "filename": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+      "nb_streams": 3,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "130.052083",
+      "size": "12222689",
+      "bit_rate": "751864",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "title": "军队人数变化：四段独立实录审阅章",
+        "encoder": "Lavf63.1.101",
+        "comment": "Review draft. Separate replays. No human signoff."
+      }
+    }
+  },
+  "video_packets": 3899,
+  "video_first_pts": 0.021354,
+  "video_last_pts": 130.01875,
+  "maximum_video_pts_gap_seconds": 0.05468799999999874,
+  "audio_packets": 6102,
+  "maximum_audio_pts_gap_seconds": 0.02133400000002439,
+  "video_and_audio_packet_dts_strictly_increasing": true,
+  "strict_full_AV_decode_exit_code": 0,
+  "strict_full_AV_decode_stderr": "",
+  "technical_status": "GREEN_AUTOMATED_PENDING_HUMAN_REVIEW",
+  "join_cadence_note": "Stream-copy keeps all input frames; AAC container tails introduce sub-frame join offsets. Nominal 30 fps, no new constant-frame-grid claim.",
+  "new_full_decode_runs": 1,
+  "old_input_decode_runs": 0,
+  "old_input_QA_repeated": false,
+  "reencoded_video_frames": 0,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0,
+  "ABC_credit_added": 0,
+  "external_upload": false,
+  "pending_review_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\review-package.json",
+      "bytes": 6383,
+      "sha256": "adfb42a0dd496f3f7f17e1212e7b884cedd6ec662ec8f1988396e552e7d6faa3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\review-template.json",
+      "bytes": 6178,
+      "sha256": "9b9494c56da6b6baf6fd6e13f2de96c62e3917be357cff22b6ca5a209291565d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000001.png",
+      "bytes": 1263971,
+      "sha256": "3865cd3717cbf23054111ad682f515bdfeefd754539cc86a4a62b057d6ab24b6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000002.png",
+      "bytes": 1396204,
+      "sha256": "c2f73ebd83e6e82aecb38653e59710efed6ed9087adb2352ee78629f5f97a13d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000003.png",
+      "bytes": 1334106,
+      "sha256": "8b3998412c5ef788eaf8c9dccf573f49770954c64fc56aaf3d925d55e15a88a9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000004.png",
+      "bytes": 348761,
+      "sha256": "1cd942e9afcd11f31d86dda73d5651e74c759cadb912f1b36df9b065eb6d2649"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000005.png",
+      "bytes": 1229253,
+      "sha256": "04d2b5551385f5e2a16b7c8db00e90f1ab56d65bcdeea90848b9aa9d20beaaa0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000006.png",
+      "bytes": 311566,
+      "sha256": "6b0be4d228cbc7912b02b02df5adbe3233a3139f5b4c0f7a53bf75b2f5135736"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000007.png",
+      "bytes": 1156930,
+      "sha256": "8a8f8225cfe70b47e338de5281706dfac504475d2530216a8697f5ba75461452"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa-a01\\pending-review\\frames\\frame-000008.png",
+      "bytes": 278827,
+      "sha256": "c0d98a98423abe8f9269daaef8c5f47bee5b349372566fb3bd0489f90733d9bc"
+    }
+  ],
+  "root_bytes_before_qa_receipt": 33660590
+}

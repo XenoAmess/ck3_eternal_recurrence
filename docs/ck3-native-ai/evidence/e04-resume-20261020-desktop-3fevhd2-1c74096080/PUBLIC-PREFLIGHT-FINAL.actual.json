@@ -1,0 +1,77 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:22:15.924845+00:00",
+  "baseline": "9870b72f80870af1e3a646d34e23e7972f327761",
+  "files": [
+    {
+      "path": "tools/ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "path": "tools/test_r04_county_entry.py",
+      "bytes": 12295,
+      "sha256": "5eb43ccb9c4de38aaae36b80f8dda1d9d83bae4a45d361cad4f34ddb926feea2"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "bytes": 44795,
+      "sha256": "44a1bcbb883028d4679e28d660b31c7c74f4bc5da90a7ba641b7ee3d1af4cd94"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "bytes": 6991,
+      "sha256": "c0f412a14c9d88496fdca0d7971d6907e2e3b3b84dbecd838f37a0211fc97529"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "bytes": 14858,
+      "sha256": "fcd435779c419aff76a837a6234a6bc83dbd3011f2ee63be26304220474f442c"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "bytes": 1065,
+      "sha256": "2f22e3bd926866bb3dbb52774ab6e4ba100d7ade22d63f03207a75de182fa928"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_r10_products.json",
+      "bytes": 2077,
+      "sha256": "bb5910bf787a950199c83b38c07055376979c95310475e63bfec262368f86b5a"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/window_take.py",
+      "bytes": 27623,
+      "sha256": "7374a5a3df787449271592913154579762fc45b9ef2ce1a3b5a66353b629965c"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r04-public-county-observation.md",
+      "bytes": 5562,
+      "sha256": "8a358052b2965473cf2bd881d9c470702166585bc18cf940276787c252b2e54e"
+    }
+  ],
+  "changes": "public R04 continuation; exact admitted roots; profile additional roots metering; camera marker namespace; retained exact-day progress",
+  "focused_tests": {
+    "command": "python -B -X utf8 tools/test_r04_county_entry.py",
+    "exit_code": 0,
+    "tests": 6,
+    "result": "PASS",
+    "stdout": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.671s\n\nOK",
+    "source": "Actual exec_command output from final checkout bytes, observed before this receipt timestamp"
+  },
+  "diff_check": {
+    "command": "git diff --check",
+    "exit_code": 0,
+    "diagnostics": "Only existing CRLF-to-LF normalization notices"
+  },
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Python metadata/path/queue scheduling; no CK3 script semantic subset"
+  },
+  "source_machine_observation": "python tools/ck3_live_run_id.py machine returned this machine ID during task",
+  "game_started": false,
+  "screen_acquired": false,
+  "recording_started": false,
+  "commit_or_push_performed": false,
+  "live_qualification": false,
+  "normal_close_qualification": false
+}

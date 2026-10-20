@@ -1,0 +1,179 @@
+{
+  "schema": "xar.e04.r08-B-offline-entry-inspection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:14:43.150527+00:00",
+  "source_head_at_end": "02f270d9607c3bbf1d4c6f1f9a0fbd14e77fe89d",
+  "portable_source_pins": [
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-task-dispatch-source-gap-12004.md",
+      "bytes": 1683,
+      "sha256": "41bc62b4c6ec8d48c7b94b8710b6883af4d926d0020b2bdf3f09f660ba7e2bf1"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-task-dispatch-source-gap-12004/SOURCE-CORRECTION.final-a03.json",
+      "bytes": 3567,
+      "sha256": "52ebd5f4dd628f6f2ee4c4b9328a120c03cc04cd0becd76361883d121ba50cec"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/upstream-job.complete.asm",
+      "bytes": 4119,
+      "sha256": "1fe3b696b32325091ab09fa309d8b992917d55f227cf5e95082427e11b1cb2ff"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/scheduler.complete.asm",
+      "bytes": 7663,
+      "sha256": "8c8ac4d221abe022eaae29d91d2d6bdbdf1e964e655059773feb29058d61af4f"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.md",
+      "bytes": 12773,
+      "sha256": "04894e7bab14be6099241e47ae4d88b2933a8e887da10914c9f0e7e12cd4ab61"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-cd-writer-next-window-12004.md",
+      "bytes": 8339,
+      "sha256": "8613d0697bb973c92fba296ac4af59ae319054642bb4fb7780e398f9d17cf4c0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_card.py",
+      "bytes": 6422,
+      "sha256": "ac80fb438b049b1929d039e86a904bbcfcb260b949eb8fc976c4c65c6eee4371"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/ROOT-CONFIG.template.json",
+      "bytes": 886,
+      "sha256": "422e3693a1a81514a226dd85d40b68b7a1acd899e48d0f8bd87ef15f7331befa"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/select_cd_writers.py",
+      "bytes": 6328,
+      "sha256": "5e6f7440ef1c5589f9659ace7c6e9e7521059241e2c21ba4328f9080a93842b1"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r10-b-site-growth-province-wire-12004.md",
+      "bytes": 4882,
+      "sha256": "f2d5f9653f86b7f903adb3e2c79fe61d262ffd6d1047c239d860b07b10688fa0"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-strategy-b-12004.md",
+      "bytes": 18760,
+      "sha256": "4c608bad7b16dc5e8974ef954b20efff7c708eb48f61ee90e768553fa2ad88b7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-B-coastal-s0-12004/decision-inputs.r0177.json",
+      "bytes": 4526,
+      "sha256": "9a37dbe335e3046c6f7e6137d00632880d7124b8b756f3945a981a0343892830"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0177-coastal-normalprep/SUMMARY.actual-a01.json",
+      "bytes": 9940,
+      "sha256": "8316d9325f662de34a11b3ff475fcc49f613386f0459bfcf5a8df525dc1cc433"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_supply_callback_journal.cpp",
+      "bytes": 19095,
+      "sha256": "2d4ab90977b6d9f920f81563ea8d082d7b53ec01757c2e0e2a18b1a3498c8093"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_supply_callback_observations_v1.hpp",
+      "bytes": 4578,
+      "sha256": "dbb5d8f7f3ec60481bf63f2f71ed1b3a1312817604505664c6ccbf1fe0a846b8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 276848,
+      "sha256": "4c6e3ff1995dfd0036fc966153818ae98107c5ca67e16637072506bba99eb2cf"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_commander_candidates.py",
+      "bytes": 16448,
+      "sha256": "583ee1a5ca3ecc67bd5d590fecd82228caa29c03e718980367fb4a4354faa575"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_commander_conditional_capacity.py",
+      "bytes": 5922,
+      "sha256": "3af57cffb8db310779563f96f8eed1ff489e6f0cfe2549beee4ee56edaca52e6"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_site_growth.py",
+      "bytes": 9484,
+      "sha256": "0db9c7e3a675c5d0e6e92824450236c904ca545eb8364b307ceb6e3b81eac71a"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_normal_stages.py",
+      "bytes": 18219,
+      "sha256": "d8c3759d180c30f350a29ac16270c8c27c617db1fa7dd26c4000aed0c6840d22"
+    }
+  ],
+  "dispatch_held_instruction_anchors_verified": [
+    "03F90A5E",
+    "03F90A6C",
+    "03F90A6F",
+    "0290DC37",
+    "0290DC80"
+  ],
+  "authoritative_task_is_cursor_not_vptr": true,
+  "B_province_wire_in_built_a38_source": {
+    "a38_source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+    "a38_qualification": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+      "bytes": 20576,
+      "sha256": "d2cd74ebc706d78d052016a286a2908f7d41832e20fcd6c864dd3f93acebd194"
+    },
+    "source_blob": "46e5bd8fd016589d1285a12ac1256e07d25985df",
+    "current_file_blob": "46e5bd8fd016589d1285a12ac1256e07d25985df",
+    "equal": true,
+    "live_Province_sample_qualified": false
+  },
+  "public_methods_present": [
+    "ck3_take_snapshot",
+    "ck3_query_army_strengths",
+    "ck3_query_army_commander_candidates_v1",
+    "ck3_assign_army_commander_v1",
+    "ck3_move_army",
+    "ck3_execute_step",
+    "ck3_query_war_cash_current_resources_private_v1"
+  ],
+  "coastal_S0_current_metadata": {
+    "historical_pin": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\state-a01\\profile\\save games\\xar_e04_r07_common_s0_20261016.ck3",
+      "bytes": 71631396,
+      "sha256": "e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67"
+    },
+    "exists": true,
+    "contents_read": false,
+    "sha256_freshly_verified": false,
+    "actual_bytes": 71631396,
+    "size_matches": true
+  },
+  "R08_build_a07_directory_exists": true,
+  "R08_executables_read_or_executed": false,
+  "storage_task_start": {
+    "policy_version": "1.0.0",
+    "volumes": {
+      "C:/": {
+        "total": 511133945856,
+        "used": 426748243968,
+        "free": 84385701888
+      },
+      "D:/": {
+        "total": 500090007552,
+        "used": 478565376000,
+        "free": 21524631552
+      }
+    },
+    "output_purpose_cap_bytes": 262144,
+    "heavy_write_admission": false,
+    "other_reservations": null,
+    "project_usage": null,
+    "quota": null,
+    "system_growth_reserve": null
+  },
+  "new_business_results": {
+    "R08_paid_maintenance_raw": null,
+    "R08_writer_post_PC": null,
+    "B_rest_sites_qualified": 0,
+    "formal_ABC_completed_arms": 0
+  },
+  "new_SDK_game_GUI_build_EXE_read_count": 0
+}

@@ -1,10 +1,19 @@
 {
   "schema": "xar.e04.r10-common-preparation.v1",
-  "scope": "normal source readiness pilot through the original common CaseClient",
+  "scope": "normal source readiness pilot with optional explicit R04 county observation through the same common CaseClient",
   "formal_ABC_executor_implemented": false,
   "formal_ABC_arm": false,
   "normal_Save_performed_by_case": false,
   "maximum_actual_days": 0,
+  "optional_r04_county_entry": {
+    "settings": "case_inputs.r04_county_entry",
+    "maximum_actual_days": 7,
+    "maximum_Move_attempts": 1,
+    "maximum_observation_days": 1,
+    "camera_marker": "before-action-camera-{awaiting,started}.json",
+    "normal_close_owner": "shared entry/CaseClient",
+    "R04_entire_card_closed": false
+  },
   "pending": [
     "Root common S0 selection and normal Save after actual route/site pilot",
     "two distinct sites with actual positive same-province stock deltas and qualified callback chain",

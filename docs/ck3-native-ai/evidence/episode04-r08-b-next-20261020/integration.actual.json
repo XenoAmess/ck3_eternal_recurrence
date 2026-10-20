@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.r08-B-next-integration.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:20:43.619633+00:00",
+  "source_head": "9870b72f80870af1e3a646d34e23e7972f327761",
+  "pins": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/qualify_one_b_site.py",
+      "bytes": 2936,
+      "sha256": "796e599909e609af4c1d7407ac03fcbb011c25b08fc685295c076c7851e9a5de"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-b-next-20261020.md",
+      "bytes": 15039,
+      "sha256": "79cfd717024fba35b4795fca9153c74b51758e0b3e7350c8f5b0a3e0368d480e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-b-next-20261020/retained-inspection.actual.json",
+      "bytes": 7129,
+      "sha256": "2ff7f870e986c8147ff8a34afd3330ee5301e123b47234c6b58c395e14ad3754"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-b-next-20261020/single-site-wrapper-check.original.json",
+      "bytes": 805,
+      "sha256": "9b7ecdd89b67affe3f08f979a4cc408bafe64065eeda3af56eb40173cb2b86a0"
+    }
+  ],
+  "historical_evidence_bytes_copied_exactly": true,
+  "original_two_focused_checks_rerun": false,
+  "relative_import_adjustment_check": {
+    "case": "one existing synthetic positive through integrated CLI from outside repository without --repo",
+    "passed": true,
+    "returncode": 0,
+    "actual_delta_raw": 100000,
+    "two_sites_qualified": false
+  },
+  "new_SDK_game_GUI_build_EXE_reads": 0,
+  "native_files_changed_by_this_lane": 0,
+  "new_real_sites": 0,
+  "new_ABC_arms": 0,
+  "git_commit_or_push": false
+}

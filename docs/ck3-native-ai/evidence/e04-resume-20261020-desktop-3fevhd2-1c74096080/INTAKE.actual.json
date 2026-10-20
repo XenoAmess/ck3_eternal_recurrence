@@ -1,0 +1,161 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:20:14.940965+00:00",
+  "copied": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\README.md",
+        "bytes": 2322,
+        "sha256": "f02c062f31c31408aa23986ef977783cd24cf8ab60b7a9b4ce582a649d211f5c"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\README.md"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\INTAKE.actual.json",
+        "bytes": 29414,
+        "sha256": "596f4b51a320de52596c4fe1db7e3f26a141479597c4df4f7681a2364d424cdf"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\INTAKE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\PLAN.actual.json",
+        "bytes": 3318,
+        "sha256": "580a72f12b96318a931f0adde88c333fbe0c00880a1a7fd79b6040f689f1d11a"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\PLAN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\ASSEMBLY.actual.json",
+        "bytes": 1542,
+        "sha256": "116da8e0db0a53513c433d4b4a77664901c021d2dc4befa42acc7174aacdd59a"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\ASSEMBLY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\QA.actual.json",
+        "bytes": 10145,
+        "sha256": "8954dd72ff22a8d09f963d941fd5e0a286ab48ec8c87d9fb8d7eb84656adfe73"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\QA.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\SPARSE-VISUAL.actual.json",
+        "bytes": 1622,
+        "sha256": "a54b5e715a237e4c009d44643e759b03262c91951168e44e8ed95f966892f7aa"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\SPARSE-VISUAL.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\DELIVERY.actual.json",
+        "bytes": 6672,
+        "sha256": "bb2ec602779ff832e54a6cf033ae6e0b6bfeb6eab3bb821d361576deb5f20715"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\DELIVERY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\storyboard.actual.json",
+        "bytes": 1937,
+        "sha256": "ce78b558940e99cb8ccaa4d64f8ae59046e16444129c05b80148341622b71d03"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\storyboard.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\project\\promo-project.json",
+        "bytes": 2802,
+        "sha256": "0af863325e0619f00b8558400267c4e57931fdbaa9d90d6ebb6dbe423629b7af"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\project\\promo-project.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\assemble.py",
+        "bytes": 7883,
+        "sha256": "337762d4f1f238e3d64de3aaa917739d9dd72ff36fc1f844224dfebd1db55031"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\assemble.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\preflight.py",
+        "bytes": 5319,
+        "sha256": "3573638bcdf673e918a7638b8f805141d795fdb105ae7fa00c66d37aef72647d"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\preflight.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\qa.py",
+        "bytes": 5902,
+        "sha256": "6ee6560e9a52a96158da4e43a6690a9e66e9aa7d9d7f143d7369fff2b9f97f4a"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\qa.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\COPYPLAN.actual.json",
+        "bytes": 3633,
+        "sha256": "19996724ffb2bf5c9c54bd01c138e3885afebedc185f8122031259437c07ea5a"
+      },
+      "destination": "promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\observations-130s-a01\\COPYPLAN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\START.actual.json",
+        "bytes": 14780,
+        "sha256": "842530cbfc3db15680af97b64f42e900ecdb33ebe8bc5582b5bb621980512804"
+      },
+      "destination": "docs\\ck3-native-ai\\evidence\\e04-resume-20261020-desktop-3fevhd2-1c74096080\\START.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\operator-a02\\LOCAL-OPERATOR-OBSERVATION.actual.json",
+        "bytes": 10413,
+        "sha256": "0982eb1dbce4d9ebb5dc33e89bfc6d1c92af560d2a692a403bce663ce4aad894"
+      },
+      "destination": "docs\\ck3-native-ai\\evidence\\e04-resume-20261020-desktop-3fevhd2-1c74096080\\LOCAL-OPERATOR-OBSERVATION.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\C-MEDIA-SHARED-ADMISSION.actual.json",
+        "bytes": 3356,
+        "sha256": "a80c90350e94304384bb8764604ada427231e1ae8f9b18565ec4259d866a1540"
+      },
+      "destination": "docs\\ck3-native-ai\\evidence\\e04-resume-20261020-desktop-3fevhd2-1c74096080\\C-MEDIA-SHARED-ADMISSION.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\D-TWO-WORK-MOVIES-RETIREMENT.actual.json",
+        "bytes": 3883,
+        "sha256": "1fb600fef18d3a2c3bbb9f51855ad297fdefb836a70aa45605f2e2dea7c31e2e"
+      },
+      "destination": "docs\\ck3-native-ai\\evidence\\e04-resume-20261020-desktop-3fevhd2-1c74096080\\D-TWO-WORK-MOVIES-RETIREMENT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\MINIMUM-PROTECTIONS.actual.json",
+        "bytes": 33547,
+        "sha256": "c36f78df7d71cb2fcc12b22b731f59cb0a9f24a8f7599e6565d0c1a199f09df1"
+      },
+      "destination": "docs\\ck3-native-ai\\evidence\\e04-resume-20261020-desktop-3fevhd2-1c74096080\\MINIMUM-PROTECTIONS.actual.json"
+    }
+  ],
+  "large_payloads_committed": false,
+  "source": "exact named small metadata; no fresh body scans",
+  "entire_episode_complete": false,
+  "formal_dynamic": {
+    "qualified": 0,
+    "total": 11
+  },
+  "ABC": {
+    "qualified": 0,
+    "total": 3
+  }
+}

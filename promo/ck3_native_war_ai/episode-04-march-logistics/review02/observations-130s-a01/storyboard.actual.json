@@ -1,0 +1,85 @@
+{
+  "start_seconds": "0.000000",
+  "end_seconds": "130.052083",
+  "duration_seconds": "130.052083",
+  "chapters": [
+    {
+      "index": 0,
+      "chapter_id": "r194-r196",
+      "start_seconds": "0.000000",
+      "end_seconds": "54.988021",
+      "duration_seconds": "54.988021",
+      "cue_ids": [
+        "r194-r196"
+      ]
+    },
+    {
+      "index": 1,
+      "chapter_id": "r211",
+      "start_seconds": "54.988021",
+      "end_seconds": "82.009375",
+      "duration_seconds": "27.021354",
+      "cue_ids": [
+        "r211"
+      ]
+    },
+    {
+      "index": 2,
+      "chapter_id": "r215",
+      "start_seconds": "82.009375",
+      "end_seconds": "103.030729",
+      "duration_seconds": "21.021354",
+      "cue_ids": [
+        "r215"
+      ]
+    },
+    {
+      "index": 3,
+      "chapter_id": "r217",
+      "start_seconds": "103.030729",
+      "end_seconds": "130.052083",
+      "duration_seconds": "27.021354",
+      "cue_ids": [
+        "r217"
+      ]
+    }
+  ],
+  "cues": [
+    {
+      "index": 0,
+      "chapter_id": "r194-r196",
+      "cue_id": "r194-r196",
+      "start_seconds": "0.000000",
+      "end_seconds": "54.988021",
+      "duration_seconds": "54.988021",
+      "duration_source": "draft-estimate"
+    },
+    {
+      "index": 1,
+      "chapter_id": "r211",
+      "cue_id": "r211",
+      "start_seconds": "54.988021",
+      "end_seconds": "82.009375",
+      "duration_seconds": "27.021354",
+      "duration_source": "draft-estimate"
+    },
+    {
+      "index": 2,
+      "chapter_id": "r215",
+      "cue_id": "r215",
+      "start_seconds": "82.009375",
+      "end_seconds": "103.030729",
+      "duration_seconds": "21.021354",
+      "duration_source": "draft-estimate"
+    },
+    {
+      "index": 3,
+      "chapter_id": "r217",
+      "cue_id": "r217",
+      "start_seconds": "103.030729",
+      "end_seconds": "130.052083",
+      "duration_seconds": "27.021354",
+      "duration_source": "draft-estimate"
+    }
+  ]
+}
