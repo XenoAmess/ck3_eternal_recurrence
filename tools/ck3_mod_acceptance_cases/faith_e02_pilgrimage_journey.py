@@ -4,8 +4,13 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import hashlib
 import importlib
+import importlib.util
 from pathlib import Path
 import sys
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_observations import JSONObject, MilestoneObservation
 
 CASE = "faith-engine-e02-d1-ordinary-pilgrimage-v1"
 IDENTITIES = "ck3_query_player_pilgrimage_activities_v1"
@@ -132,7 +137,7 @@ class _Journey:
             "activity_identity_absence_observed": False, "destination_phase_conclusion_observed": False,
             "destination_conclusion_evidence": None, "return_phase_evidence": None,
             "return_event_chain_complete": False, "coordinate_home_observed": False,
-            "return_support_reference": RETURN_SCRIPT_REFERENCE}
+            "return_support_reference": RETURN_SCRIPT_REFERENCE, "milestone_observations": []}
 
     def public_budget(self):
         used = getattr(self.client, "public_requests_used", None)
@@ -193,6 +198,23 @@ class _Journey:
         after = self.frame(row["after_snapshot"], frame, same_date=True)
         return row, after, _pin(self.client.output / (name + ".actual-results.json"))
 
+    def observe_milestone(self, label: str, *, event: object = None,
+                          identity: object = None) -> JSONObject | None:
+        path = Path(__file__).with_name("faith_e02_pilgrimage_observations.py")
+        spec = importlib.util.spec_from_file_location("_faith_e02_pilgrimage_milestone", path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Selected typed milestone helper is absent")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        # Fixed sibling loader is the legacy dynamic boundary; the helper validates
+        # JSON input before constructing its shared typed observation contract.
+        result: tuple[MilestoneObservation | None, JSONObject | None] = module.observe_milestone(self.context, self.client, self.binding,
+            self.result.setdefault("milestone_observations", []), self.prefix + label, event=event, identity=identity)
+        observation, latest = result
+        if latest is not None:
+            self.frame(latest, self.last_frame, same_date=True)
+        return latest
+
     def observe_identity(self, frame, reason="key_node"):
         row, after, ref = self.call("identity", IDENTITIES, {}, frame)
         value = row["result"]
@@ -223,10 +245,15 @@ class _Journey:
             _need(type(actual.get("native_completed")) is bool and type(actual.get("native_invalidated")) is bool,
                   "Terminal flags lack actual values")
             if actual["native_completed"] or actual["native_invalidated"]:
+                first_terminal = not self.result["terminal_observed"]
                 self.result["terminal_observed"] = True
                 self.result["completion_evidence"] = {"source": ref, "identity": actual,
                     "native_completed": actual["native_completed"], "native_invalidated": actual["native_invalidated"],
                     "reward_or_return_completion_claimed": False}
+                if first_terminal:
+                    latest = self.observe_milestone("terminal-" + str(actual["activity_id"]), identity=actual)
+                    if latest is not None:
+                        after = latest
         return after
 
     def necessary_final_identity(self):
@@ -390,6 +417,10 @@ class _Journey:
         _need(receipt["ack_accepted"], "Option ACK unavailable; no replay", "PARTIAL_EVENT_ACK_UNKNOWN")
         _need(receipt["old_instance_gone_in_independent_snapshot"], "Original event remains active; no replay", "PARTIAL_EVENT_NOT_CONSUMED")
         self.accept_source_bound_phase_event(typed, receipt, frame)
+        if typed["event_definition_key"] in {"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001"}:
+            latest = self.observe_milestone(typed["event_definition_key"] + "-" + str(instance) + "-consumed", event=typed)
+            if latest is not None:
+                after = latest
         return after
 
     def refresh_key_window(self, original, chosen, previous):
@@ -431,6 +462,7 @@ class _Journey:
         key = typed["event_definition_key"]
         if key not in {"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001"}:
             return None
+        self.observe_milestone(key + "-" + str(typed["current_event_instance_id"]) + "-window", event=typed)
         self.guard()
         reviewer = getattr(self.client, "operator_reviewer", None)
         _need(isinstance(reviewer, str) and bool(reviewer), "Root capture reviewer unavailable",

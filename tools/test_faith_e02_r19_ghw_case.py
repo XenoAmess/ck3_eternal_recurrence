@@ -7,6 +7,7 @@ import unittest
 
 import test_faith_e02_r19_hof_case as old
 from ck3_mod_acceptance_cases import faith_e02_r19_ghw_adapter as A
+from ck3_mod_acceptance_cases.faith_e02_ghw_observation_contract import ghw_scene_binding, ghw_decisions_visible
 import faith_e02_r19_ghw_queue as Q
 from ck3_mod_acceptance_client import write_once
 
@@ -23,18 +24,38 @@ def context(root, *, confirm=False):
     return c
 
 
+def decisions_tree(visible=True):
+    return {'schema': 'ck3-native-gui-window-tree-inspection-v1',
+        'read_only': True, 'window_kind': 'decisions', 'scope_root_name': 'decisions_view',
+        'root_available': True, 'truncated': False,
+        'widgets': [{'runtime_name': 'decisions_view', 'child_path': '',
+            'effective_visible': visible}]}
+
+
 class Client(old.Client):
-    def __init__(self, *args, launch_rows=0, ghw_available=True, wrong_faith=False, **kwargs):
+    def __init__(self, *args, launch_rows=0, ghw_available=True, wrong_faith=False,
+                 decisions_visible=True, census=None, open_error=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.launch_rows, self.ghw_available, self.wrong_faith = launch_rows, ghw_available, wrong_faith
         self.names, self.launch_selections = [], 0
+        self.decisions_visible, self.census, self.open_error = decisions_visible, census, open_error
 
     def execute_plan(self, steps, name, timeout=None, reserve=90):
         self.names.append(name)
         step = steps[0]
         tool, args = step['tool'], step.get('args', {})
         value = None
-        if tool == 'ck3_query_player_religion_context_v1':
+        if tool == 'ck3_inspect_gui_window_tree_v1' and args == {'window_kind': 'decisions'}:
+            value = deepcopy(self.census) if self.census is not None else decisions_tree(self.decisions_visible)
+        elif tool == 'ck3_open_ingame_decisions_v1':
+            if self.open_error:
+                self.calls.append(tool)
+                row = {'id': name, 'ok': False, 'error': self.open_error}
+                write_once(Path(self.c['output']) / (name + '.actual-results.json'), {'rows': [row]})
+                return [row]
+            self.decisions_visible = True
+            value = {'accepted': True, 'postcondition_verified': True, 'status': 'verified_visible'}
+        elif tool == 'ck3_query_player_religion_context_v1':
             value = {'available': True, 'played_character_id': 31254,
                 'faith_id': 103, 'rite_id': 150, 'faith_main_rite_id': 150, 'religion_id': 26}
         elif tool == Q.GHW_QUERY:
@@ -52,6 +73,14 @@ class Client(old.Client):
                             ('variable_ghw_unlocked', 'religion'), ('variable_first_ghw_cooldown', 'religion'),
                             ('variable_ghw_cooldown', 'faith'), ('variable_ghw_global_unlocking_cooldown', 'global'))]},
                 'object_links': {'available': False, 'ghw': 'unknown', 'war': 'unknown'}}
+        elif tool == Q.EVENT_CONTEXT:
+            value = {'accepted': True, 'current_event_window_context_ready': True,
+                'current_event_window_context': {'schema': 'current-event-window-context-v1',
+                    'status': 'available', 'current_event_instance_id': 777, 'date_raw': 53144328,
+                    'snapshot_revision': 4, 'event_definition_key': 'synthetic.1',
+                    'readiness': {'option_presentation_ready': True}, 'options': [
+                        {'rendered_index': 0, 'native_option_index': 2, 'shown': True, 'enabled': True},
+                        {'rendered_index': 1, 'native_option_index': 0, 'shown': True, 'enabled': True}]}}
         elif tool == Q.PILGRIMAGE_QUERY:
             value = {'activity_count': 0, 'absence_is_completion': False}
         elif tool in {Q.QUERY, 'ck3_select_ingame_decision_item_v1'} and args.get('decision_key') == Q.LAUNCH_DECISION:
@@ -71,6 +100,8 @@ class Client(old.Client):
             return super().execute_plan(steps, name, timeout=timeout, reserve=reserve)
         self.calls.append(tool)
         row = {'id': name, 'ok': True, 'error': None, 'result': value}
+        if tool == Q.EVENT_CONTEXT:
+            row['after_snapshot'] = self.snapshot(require_event_free=False)
         write_once(Path(self.c['output']) / (name + '.actual-results.json'), {'rows': [row]})
         return [row]
 
@@ -168,6 +199,111 @@ class CombinedEntryTests(unittest.TestCase):
             with self.subTest(tool=tool), self.assertRaises(ValueError):
                 Q.validate({'steps': [{'id': 'forbidden', 'tool': tool, 'args': args,
                     'fresh_revision': True, 'continue_on_error': True}]})
+
+
+class DecisionsReuseTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+
+    def observe(self, client):
+        reader, _ = A.shared_opening_binding(client.c)
+        return A.observe_ghw(client.c, client, reader(client.snapshot()), reader)
+
+    def test_full_combined_entry_reuses_first_h2_open(self):
+        c = context(self.root)
+        client = Client(c)
+        result = A.run_case(c, client)
+        self.assertEqual(client.calls.count('ck3_open_ingame_decisions_v1'), 1)
+        self.assertEqual(result['ghw_observation']['decisions_window_route'], 'reused_current_visible_readonly')
+        self.assertNotIn('ghw-r19-open-decisions', client.names)
+        self.assertTrue(result['ghw_observation']['current_group_qualified'])
+        self.assertEqual(client.calls.count(Q.GHW_QUERY), 2)
+
+    def test_hidden_census_uses_original_opener_once_then_independent_census(self):
+        client = Client(context(self.root), decisions_visible=False)
+        result = self.observe(client)
+        self.assertEqual(result['decisions_window_route'], 'observed_hidden_original_once_opener')
+        self.assertEqual(client.calls.count('ck3_open_ingame_decisions_v1'), 1)
+        self.assertLess(client.names.index('ghw-r19-decisions-tree'), client.names.index('ghw-r19-open-decisions'))
+        self.assertLess(client.names.index('ghw-r19-open-decisions'), client.names.index('ghw-r19-decisions-tree-after-open'))
+        self.assertTrue(result['current_group_qualified'])
+
+    def test_incomplete_or_unknown_census_never_means_hidden(self):
+        mutations = [lambda t: t.update(truncated=True), lambda t: t.update(root_available=False),
+            lambda t: t.update(window_kind='decision_detail'), lambda t: t.update(read_only=False),
+            lambda t: t['widgets'][0].update(effective_visible=None),
+            lambda t: t['widgets'][0].update(effective_visible=0),
+            lambda t: t['widgets'][0].update(effective_visible=1),
+            lambda t: t['widgets'].append(deepcopy(t['widgets'][0]))]
+        for number, mutate in enumerate(mutations):
+            with self.subTest(number=number):
+                root = self.root / str(number)
+                root.mkdir()
+                tree = decisions_tree()
+                mutate(tree)
+                client = Client(context(root), census=tree)
+                result = self.observe(client)
+                self.assertNotIn('ck3_open_ingame_decisions_v1', client.calls)
+                self.assertFalse(result['current_group_qualified'])
+                self.assertIn('ghw-r19-decisions-visibility', result['errors'])
+                self.assertEqual(client.calls.count(Q.GHW_QUERY), 2)
+
+    def test_hidden_open_unknown_is_preserved_without_retry(self):
+        message = 'BridgeUnavailableError: decision action already claimed with an unresolved result; no retry at any revision'
+        client = Client(context(self.root), decisions_visible=False, open_error=message)
+        result = self.observe(client)
+        self.assertEqual(client.calls.count('ck3_open_ingame_decisions_v1'), 1)
+        self.assertIn(message, result['errors']['ghw-r19-open-decisions'])
+        self.assertFalse(result['current_group_qualified'])
+        self.assertEqual(client.calls.count(Q.GHW_QUERY), 2)
+        self.assertFalse(result['target_legality_observed'])
+
+    def test_census_after_crosses_scene_no_open(self):
+        class CrossScene(Client):
+            drifted = False
+            def execute_plan(self, steps, name, **kwargs):
+                result = super().execute_plan(steps, name, **kwargs)
+                if name == 'ghw-r19-decisions-tree':
+                    self.drifted = True
+                return result
+            def snapshot(self, **kwargs):
+                value = super().snapshot(**kwargs)
+                if self.drifted:
+                    value['date_raw'] += 1
+                return value
+        client = CrossScene(context(self.root))
+        result = self.observe(client)
+        self.assertNotIn('ck3_open_ingame_decisions_v1', client.calls)
+        self.assertFalse(result['current_group_qualified'])
+        self.assertIn('scene changed date_raw', result['errors']['ghw-r19-decisions-tree'])
+
+    def test_scene_integer_lookalikes_reject_before_any_tool(self):
+        client = Client(context(self.root))
+        reader, _ = A.shared_opening_binding(client.c)
+        binding = reader(client.snapshot())
+        for key in ('native_revision', 'connection_generation', 'game_pid', 'played_character_id', 'date_raw'):
+            for value in (True, float(binding[key]), str(binding[key])):
+                with self.subTest(field=key, value=value), self.assertRaises(ValueError):
+                    bad = dict(binding)
+                    bad[key] = value
+                    A.observe_ghw(client.c, client, bad, reader)
+        self.assertEqual(client.calls, [])
+
+    def test_typed_scene_and_census_json_round_trip(self):
+        client = Client(context(self.root))
+        reader, _ = A.shared_opening_binding(client.c)
+        binding = ghw_scene_binding(reader(client.snapshot()))
+        self.assertEqual(ghw_scene_binding(json.loads(json.dumps(binding))), binding)
+        for visible in (True, False):
+            tree = decisions_tree(visible)
+            self.assertIs(ghw_decisions_visible(json.loads(json.dumps(tree))), visible)
+        for key in binding:
+            incomplete = dict(binding)
+            del incomplete[key]
+            with self.subTest(missing=key), self.assertRaises(ValueError):
+                ghw_scene_binding(incomplete)
 
 
 if __name__ == '__main__':

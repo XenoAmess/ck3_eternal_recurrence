@@ -5,10 +5,15 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from collections.abc import Callable, Mapping
 
 import faith_e02_r19_ghw_queue as queue
 from ck3_mod_acceptance_client import write_once
 from ck3_mod_acceptance_cases.faith_e02_d1_readonly_adapter import shared_opening_binding
+from ck3_mod_acceptance_cases.faith_e02_ghw_observation_contract import (
+    GhwSceneBinding, GhwObservationClient, GhwObservation, ghw_object,
+    ghw_scene_binding, ghw_decisions_visible,
+)
 
 CASE = "faith-engine-e02-r19-hof-ghw-combined-v1"
 PRODUCT = "faith-engine"
@@ -388,7 +393,8 @@ def _independent_h2_post(context, client, result, binding, reader):
     return after, errors
 
 
-def _ghw_current(value, religion, binding):
+def _ghw_current(value: dict[str, object] | None, religion: dict[str, object] | None,
+                 binding: GhwSceneBinding) -> bool:
     """Join only admitted source identity. Inner unknowns remain in original wire."""
     if not isinstance(value, dict) or not isinstance(religion, dict):
         return False
@@ -405,25 +411,36 @@ def _ghw_current(value, religion, binding):
         and value.get("religion_id") == religion["religion_id"])
 
 
-def observe_ghw(context, client, binding, reader):
-    output = Path(context["output"])
-    observed = {"schema": "faith-e02-R19-current-ghw-observation-v1",
-        "machine_id": context["case_contract"]["machine_id"], "run_id": context["run_id"],
+def observe_ghw(context: Mapping[str, object], client: GhwObservationClient,
+                binding: Mapping[str, object], reader: Callable[[object], Mapping[str, object]]) -> GhwObservation:
+    contract = ghw_object(context.get("case_contract"), "GHW case contract")
+    output_value, machine, run_id = context.get("output"), contract.get("machine_id"), context.get("run_id")
+    if (not isinstance(output_value, str) or not output_value or not isinstance(machine, str)
+            or not machine or machine == "unknown" or not isinstance(run_id, str) or not run_id):
+        raise ValueError("GHW current output/machine/run context is incomplete")
+    output = Path(output_value)
+    scene = ghw_scene_binding(binding)
+
+    def read_scene(frame: object) -> GhwSceneBinding:
+        return ghw_scene_binding(reader(frame))
+
+    observed: GhwObservation = {"schema": "faith-e02-R19-current-ghw-observation-v1",
+        "machine_id": machine, "run_id": run_id,
         "scope": "current player Faith GHW chain only", "receipts": {}, "errors": {},
         "launch_confirm_submissions": 0, "war_commands_submitted": 0,
         "calendar_countdown_qualified": False, "target_legality_observed": False,
         "director_slot25_complete": False, "pilgrimage_completion_inferred": False,
         "current_group_qualified": False, "automatic_retry": False}
 
-    def capture(name, tool, args=None):
+    def capture(name: str, tool: str, args: dict[str, object] | None = None) -> dict[str, object] | None:
         try:
             before = client.snapshot(require_event_free=False)
-            same_scene(before, binding, reader)
+            same_scene(before, scene, read_scene)
             row = _call(client, name, tool, args)
-            observed["receipts"][name] = queue.pin(output / (name + ".actual-results.json"))
-            value = _result(row)
+            observed["receipts"][name] = ghw_object(queue.pin(output / (name + ".actual-results.json")), "GHW receipt pin")
+            value = ghw_object(_result(row), "GHW typed result")
             after = client.snapshot(require_event_free=False)
-            same_scene(after, binding, reader)
+            same_scene(after, scene, read_scene)
             return value
         except Exception as error:
             observed["errors"][name] = type(error).__name__ + ": " + str(error)
@@ -433,8 +450,23 @@ def observe_ghw(context, client, binding, reader):
     governance_a = capture("ghw-r19-governance-a", "ck3_query_player_rite_governance_v1")
     pilgrimage = capture("ghw-r19-pilgrimage-identities", queue.PILGRIMAGE_QUERY)
     first = capture("ghw-r19-variables-and-objects-a", queue.GHW_QUERY)
-    capture("ghw-r19-open-decisions", "ck3_open_ingame_decisions_v1")
-    capture("ghw-r19-decisions-tree", "ck3_inspect_gui_window_tree_v1", {"window_kind": "decisions"})
+    # Reuse the current typed census; a verified earlier H2 open is not a
+    # new intent. This branch neither resolves nor edits any opener once claim.
+    tree = capture("ghw-r19-decisions-tree", "ck3_inspect_gui_window_tree_v1",
+        {"window_kind": "decisions"})
+    observed["decisions_window_route"] = "census_unavailable_no_open"
+    try:
+        visible = ghw_decisions_visible(tree)
+    except ValueError as error:
+        observed["errors"]["ghw-r19-decisions-visibility"] = type(error).__name__ + ": " + str(error)
+    else:
+        if visible:
+            observed["decisions_window_route"] = "reused_current_visible_readonly"
+        else:
+            observed["decisions_window_route"] = "observed_hidden_original_once_opener"
+            capture("ghw-r19-open-decisions", "ck3_open_ingame_decisions_v1")
+            capture("ghw-r19-decisions-tree-after-open", "ck3_inspect_gui_window_tree_v1",
+                {"window_kind": "decisions"})
     row = capture("ghw-r19-actual-launch-row", queue.QUERY, {"decision_key": queue.LAUNCH_DECISION})
     observed["actual_launch_row"] = row
     observed["launch_row_classification"] = "unavailable"
@@ -475,12 +507,14 @@ def observe_ghw(context, client, binding, reader):
     try:
         require_identity(religion_a or {}, governance_a or {}, no_head=False)
         require_identity(religion_b or {}, governance_b or {}, no_head=False)
-        require(_ghw_current(first, religion_a, binding)
-            and _ghw_current(second, religion_b, binding), "GHW current source/frame identity unavailable")
+        require(_ghw_current(first, religion_a, scene)
+            and _ghw_current(second, religion_b, scene), "GHW current source/frame identity unavailable")
+        if first is None or second is None:
+            raise ValueError("GHW current source/frame identity unavailable")
         require(first["faith_id"] == second["faith_id"] and first["religion_id"] == second["religion_id"],
             "GHW Faith/Religion changed between independent observations")
         final = client.snapshot(require_event_free=False)
-        same_scene(final, binding, reader)
+        same_scene(final, scene, read_scene)
         observed.update(independent_final_snapshot=final,
             current_group_qualified=not bool(observed["errors"]))
     except Exception as error:

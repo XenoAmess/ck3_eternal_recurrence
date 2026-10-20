@@ -1,5 +1,19 @@
 # 第二期执行进度
 
+## 10月20日18:20：73段已接入，研究可经既有知识MCP查询，后继实拍继续
+
+`machine_id: 4-8e1c2f1861`，观察截止`2026-10-20T10:20Z`。二期研究已经进入[共享智能体参考入口](../../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)及既有`ck3_query_holy_site_planning_knowledge_v1`七种action的返回，原5项／11次注册MCP调用和修订后1项／1次调用分别实际通过。普通auto尚不自动消费该知识，静态规则不能代替当前许可、报价或后态。
+
+- 最新[73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)和[闭场索引](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CLOSURE.actual.json)已实际接入三句B17声音，73／73视觉、65／65固定内容、44,992帧，时间轴24:59.733。required仍1／24，23pending；未重渲染、未宣称完整人工听看。先按配方执行source_projection再交原FormalInputs。可播放完整预览仍为70段24:33.600。
+- B18／R0010的[真实闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b18-a01/SCENE-CLOSURE.actual.json)保留：原型GUI显示225金币／300虔诚，但typed报价因一个未合格的原版具名参数unavailable；不是游戏拒绝或资金不足。Confirm0、HoF ledger未占用。GHW两次稳定读到四变量缺席、对象链缺席；决议33行没有目标项，不是最终发动许可拒绝。重复open在SDK once claim处被拒，未再次派发Native。
+- B18实际typed OS0／native0、tree_gone／cleanup、keeper0／allocator0、离线审图与显示恢复已证，CAS12705释放。操作者未在原deadline内提供既有canonical退出响应，因此原run2／host1、normal_close_qualified=false、failure_lifecycle_completed=false保持。后继使用B10已成功的typed证据响应口，不能补造B18旧响应或放松host失败行守卫。
+- HoF固定参数[六文件候选](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/hof-default-parameter-candidate-a01/DELIVERY.actual.json)已独立源审，新10项Python通过；30个C++场景仅有源码。B21已取得隔离768MiB冷构建准入，新DLL、有限Native、SDK实际body接缝及实机仍待完成。旧Q3和W保持；麦加及P3继续用原合格DLL。
+- GHW复用可见窗口及P3关键节点观察已进入当前源码，正按最新强类型规则收口。GHW新纯合同严格mypy和16项消费者已通过；P3增加出发前、真实5001／7000／9001窗口与消费后、首次终态的原始虔诚／奉献经验／满足度记录，不改变Start、事件策略或原预算。特质经验和到家坐标仍unknown。新远端共享Python差额实际16通过／1可选实际WAL输入缺失skip，默认路由另1通过，不冒17/no-skip或重跑旧19／38。
+- 奉献影响研究新包[piety-impact-key-binding-a02](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/research/piety-impact-key-binding-a02/DELIVERY.actual.json)定位u16`0x2C`与等级好感描述消费、复用聚合reader；字符串到loaded键、完整dispatcher ABI及实际收益仍未闭合，不能声称所有等级修正或个人信条槽都按该比例放大。
+- 九份已闭场JSONL已无损归档并逐份完整还原校验，原路径现不可读、ZIP成员可恢复；[实际回收闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/closed-journals-archive-execution-a01/STORAGE-CLOSURE.actual.json)原Popen0、9D／9absent／UNKNOWN0，净分配上界释放260,288,512B。报告、Source14 payload、原片、母档与旧结果不改。H2可重建profile的精确计划继续，不预扣未执行收益。为用户要求的并行冷构建与拍摄，按统一策略登记同机owner临时配额例外＋2GiB、截止16:00Z；每次实际重型准入仍核全部并发预留和系统／安全余量，不是永久提高配额。
+
+后继顺序为新clean来源及FULL绑定后拍麦加26，再做独立恢复的完整朝圣；Native冷构建、真实案例旁白和另外两臂供奉caller并行。不同恢复场次的钱包与旅程始终分开。完整首版仍以约27—30分钟为目标，现不能从配方时长或静态预览推算正式实拍完成比例。
+
 ## 10月20日13:40：B15降级／实扣已证，M2与M3仍为下一轮来源资格
 
 `machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T05:33:21.126604Z`。R0008原同Rite前提阻止阶段world0；同Faith不同Rite窄continuation的3项predicate通过后，只对麦地那27作一次Demote。独立post确认仅选定主要关系true→false、full10虔诚实扣1000（4250→3250），双人物自己的Rite15／16、Faith50、等级4／1、六属性及其他钱包控制稳定；外交18／13与named Medina＋4／＋1未变，cache未知，A1收益槽不闭。原片72.8秒／60,226,433 B、1438VFR、strict decode0，仅两点静帧／ROI可用，右上tooltip仍在，无连续clean。05:39:53Z追加已核游戏OS／native及原host／run／allocator／keeper0、fresh Steam离线原图、显示1024×768恢复及CAS12631释放；闭场成功不授A1收益信用。[本场及节点](director-progress-and-schedule-20261020.md)。

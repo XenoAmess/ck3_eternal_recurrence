@@ -6,6 +6,10 @@ import importlib.util
 import hashlib
 import json
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_observations import MilestoneObservation
 
 CASE = "faith-engine-e02-d1-ordinary-pilgrimage-v1"
 QUERY = "ck3_query_player_pilgrimage_planner_v1"
@@ -294,12 +298,14 @@ def run_case(context, client):
     client.checkpoint("ordinary-pilgrimage-first-native-frame", {"machine_id": c["machine_id"],
         "run_id": context["run_id"], "binding": binding, "frame": before,
         "prior_scene_date_is_expectation_only": c.get("prior_scene_date_raw")})
+    milestone_observations: list[MilestoneObservation] = []
     result = {"schema": "faith-e02-ordinary-pilgrimage-result-v1", "machine_id": c["machine_id"],
         "run_id": context["run_id"], "case": CASE, "binding": binding,
         "status": "not_started", "start_intent_written": False, "start_invoked": False,
         "hosted_identity_observed": False, "journey": None, "needs_recovery": False,
         "journey_cost_known": False, "payment_total_proven": False,
-        "absence_is_completion": False, "business_pass": False, "product_release_pass": False}
+        "absence_is_completion": False, "business_pass": False, "product_release_pass": False,
+        "milestone_observations": milestone_observations}
     planner = Planner(context, client, binding, before["date_raw"])
     try:
         before = drain_if_needed(context, client, binding, before)
@@ -371,6 +377,10 @@ def run_case(context, client):
             "reserve_gold_raw": c["policy"]["reserve_gold_raw"], "journey_cost_inclusion_proven": False,
             "next_action": "One original Start only after explicit Root review of this final native price"})
         require_root_visual_review(reviewed_quote, quoted, "start_once_authorized")
+        observations = sibling(Path(__file__).with_name("faith_e02_pilgrimage_observations.py"),
+                               "_faith_e02_pilgrimage_milestone_observations")
+        observations.observe_milestone(context, client, binding, milestone_observations,
+                                       "before-start")
         # The scene remains paused during capture coordination. Re-read the
         # actual destination and priced configuration before the one submission.
         require_planner(planner.query(), 5, province)
