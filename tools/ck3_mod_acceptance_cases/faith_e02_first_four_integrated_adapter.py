@@ -406,6 +406,65 @@ def select_chain_artifact(case,evidence):
     evidence.update(selection_complete=True,artifact_sample_complete=True)
     raise ValueError('Complete owned inventory has no observed personal legal-empty-slot and enshrinable intersection')
 
+def discover_recipient_ids(case,evidence):
+    """Read a second real holder, without changing the selected item/site."""
+    player = case.binding['played_character_id'];ids = [player];prefetched = {}
+    discovery = {'status':'SECOND_RECIPIENT_UNAVAILABLE','queries':[],
+        'selected_inventory_site_id':evidence.get('inventory_site_id'),
+        'selected_artifact_id':(evidence.get('selected_personal_observation') or {}).get('requested_artifact_id'),
+        'player_id':player,'second_recipient_id':None,'source':None,
+        'public_calls_before':case.calls,'full_chain_call_reserve':CHAIN_CALL_RESERVE}
+    rows = (evidence.get('site_query') or {}).get('current_faith_sites')
+    require(type(rows) is list and len(rows) <= 64 and all(type(row) is dict
+        and Q.ref(row.get('holy_site_id')) for row in rows),'Actual complete Faith sites required for recipient discovery')
+    sites = [row['holy_site_id'] for row in rows]
+    require(len(sites) == len(set(sites)),'Duplicate current Faith site reference')
+    discovery['current_faith_site_ids'] = sites
+    seen_sites = set();seen_actors = {player}
+    def consider(site,relic,record):
+        context = (relic or {}).get('county_context',{});target = context.get('county_holder_id')
+        if context.get('available') is not True or not Q.ref(target) or target in seen_actors:
+            record['holder_result'] = 'unavailable_or_player_or_already_read'
+            return False
+        seen_actors.add(target)
+        if case.calls+1+CHAIN_CALL_RESERVE > MAX_CALLS:
+            discovery['status'] = 'SECOND_RECIPIENT_BUDGET_RESERVED'
+            return False
+        actual = actor_read(case,[target]).get(str(target));record['actor_observation'] = actual
+        if not actual or actual.get('available') is not True:
+            record['holder_result'] = 'actual_actor_unavailable'
+            return False
+        ids.append(target);prefetched[str(target)] = actual
+        record['holder_result'] = 'independent_actor_observed'
+        discovery.update(status='TWO_ACTUAL_RECIPIENTS_OBSERVED',second_recipient_id=target,
+            source={'kind':'current_Faith_site_county_holder_plus_independent_ACTOR',
+                'holy_site_id':site,'character_full_id':target})
+        return True
+    for row in evidence.get('site_observations',[]):
+        site = row.get('site_id')
+        require(site in sites,'Recipient source is outside the current Faith site list')
+        seen_sites.add(site)
+        record = {'site_id':site,'source':'already_read_current_site','relic':row.get('relic')}
+        discovery['queries'].append(record)
+        if consider(site,row.get('relic'),record):break
+        if discovery['status'] == 'SECOND_RECIPIENT_BUDGET_RESERVED':break
+    if len(ids) == 1 and discovery['status'] != 'SECOND_RECIPIENT_BUDGET_RESERVED':
+        for site in sites:
+            if site in seen_sites:continue
+            # A possible holder requires both its site read and one real actor
+            # read. Preserve all41 chain controls even when none is found.
+            if case.calls+2+CHAIN_CALL_RESERVE > MAX_CALLS:
+                discovery['status'] = 'SECOND_RECIPIENT_BUDGET_RESERVED';break
+            relic = case.domain(Q.RELIC_CONTEXT,{'holy_site_id':site});seen_sites.add(site)
+            record = {'site_id':site,'source':'additional_readonly_current_Faith_site','relic':relic}
+            discovery['queries'].append(record)
+            if consider(site,relic,record):break
+    discovery.update(public_calls_after=case.calls,extra_public_controls=case.calls-discovery['public_calls_before'],
+        all_current_sites_examined=len(seen_sites)==len(sites),
+        continues_authorized_item_chain_when_second_unavailable=len(ids)==1,
+        site_attribution_observed=False,selected_site_contribution_raw=None)
+    return ids,prefetched,discovery
+
 def actor_read(case,ids):
     result = {}
     for target in ids:
@@ -637,9 +696,11 @@ def run_case(context,client):
         selected = select_chain_artifact(case,evidence)
         site,artifact = selected['site_id'],selected['artifact_id']
         result.update(selected_site_id=site,selected_artifact_id=artifact)
-        ids = recipient_ids(evidence,binding['played_character_id'])
-        result['actual_recipient_ids'] = ids
-        before = actor_read(case,ids);result['actors_before'] = before
+        ids,prefetched,discovery = discover_recipient_ids(case,evidence)
+        result.update(actual_recipient_ids=ids,recipient_discovery=discovery,
+            second_recipient_observed=len(ids)==2)
+        before = actor_read(case,[target for target in ids if str(target) not in prefetched])
+        before.update(prefetched);result['actors_before'] = before
         equip_unequip(case,artifact,result)
         result['inventory_close'] = ensure_inventory_hidden(case)
         enshrine(case,site,artifact,result)
