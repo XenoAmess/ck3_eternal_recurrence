@@ -1,5 +1,13 @@
 # 第二期执行进度
 
+## 10月21日：R0021主要名额上限已证，H1改为合法降级后共母档两臂
+
+`machine_id: 4-8e1c2f1861`；本条于`2026-10-20T22:02:08.332025+00:00`读取已封原件。B34/R0021共12次公共调用、升格／HOF／GHW提交0、take0；实际人物31254／Faith103／site32匹配，但本信仰已有3处主要圣地。原生最终许可和正常要求均false、bypass原值0；十资源报价0及原文“剩余2次”免费行动不解除数量上限。免费次数只按原文／截图呈现，未绑定typed数值getter。[008明细](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-promote-008.actual-results.json)、[原PNG](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/screenshots/r21-promote-blocked-a01.png)及[组合结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-h2-ghw-composite-result.json)分别保留原生、像素和PARTIAL业务边界；[21:43:56Z闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/SCENE-CLOSURE.a03.actual.json)实际正常、游戏与原host／run／allocator等待0，keeper停止、fresh Steam离线审图及1024×768恢复，CAS12952空资源，业务仍false。
+
+完整P3先按B35＋C14继续，结果须以该场原件为准。H1后继顺序改为：B35闭场 → Root合入并独立审计[共同母档修订](director-plan.md#2026-10-21拍摄修订先合法腾出名额再保存共同母档) → 新准备场先核原生最终许可／报价和原图，一次合法降级并独立核3→2、钱包与免费行动原文 → 保存前另取纳杰夫32 fresh升格detail＋独立cooldown，normalCan／nativeCan均true、bypass原值0、冷却可读且inactive；独立核actor31254／同一日期／paused=true／Faith103／Rite150及heads中HoF holder字段存在且显式null（missing不算null） → 一次原生Save且实际文件大小／SHA可读 → 从该新共同母档分别恢复普通臂与主要32升格臂、各取两次独立HOF报价 → 新主要臂内一次H2建制和两次GHW只读。以上准备、保存、两臂及H2/H3均pending；旧R0016／R0021不能拼接为新对照，外置adapter未授实机资格，冻结Root和Native不变。
+
+已装配71/88段、9/24必需槽；22句新案例声音中5句完成、17句待补，当前计数不变。新完整视频仍待实际案例、作者输入及成片生成，本机按既有机器偏好本地交付；不把这份源计划记为拍摄成功或新成片。
+
 交付方式补注（2026-10-21用户指令）：`machine_id: 4-8e1c2f1861` 的当前及后续视频按[机器交付偏好](../../../../docs/maintenance/machine-preferences/4-8e1c2f1861.video-delivery.json)本地交付，直到用户撤销或替换；最终提供选定MP4的实际本地路径。连接不可用为用户报告，本次未做联网测试；这条偏好不改变成片验收状态或素材保留期限。
 
 ## 10月21日：普通报价两次读取已证，主要臂未进入升格
@@ -178,3 +186,13 @@ B1新增当前源码的vanilla saved-case adapter和有限queue，使用C2母档
 `2026-10-19T19:03:10Z—19:04:48Z`，Root实际进程/桌面/模式/总线读回：无CK3或录制进程，桌面当前1024×768，系统列出2560×1440@60可选；尚未切换或用旧尺寸签核。当前项目CLI已通过既有install正常同步到本机总线副本，两份SHA均为`9198718f0f0931d93ed7f1557ca1cbedd1fa086a4a1cff210bca10404a305d7f`，没有屏幕租约时才执行。来源为Root实际`desktop_steam_offline_recovery.py inspect`、`pyautogui.size()`、`EnumDisplaySettings`、文件SHA与install读回。
 
 当前仍在新runtime/录制配置和公共prepare阶段，未启动二期CK3或录制，未取得新鲜Steam离线画面或二期原生资格。开拍前仍须独占现场、实际尺寸读回、离线新图直接审阅、公共preflight及当前通道验证。
+
+## 2026-10-21 R22闭场及后继准备
+
+本节更新上方历史准备状态。`machine_id: 4-8e1c2f1861`；观察时间`2026-10-20T23:25:49Z`。B35/R0022已实际完成201自然天的结论与返程事件链，204是日请求次数，不是经过天数。活动原生身份`completed=true/invalidated=false`，人物提示从阿普利亚返回阿普利亚，主体身份另有原生窗口查询；未读回省份坐标。
+
+实机与四条录制已结束。`capture-b35-p3-a01/SCENE-CLOSURE.actual.json`（4494B，SHA256 `0b886205de7b7926bfeac148f9d3966abe145ec02fd095616d24fd813e72b83c`）记录全部原进程wait0、keeper停止、Steam新图直接审阅“离线模式”、桌面恢复1024×768；`SCREEN-RELEASE.actual.json`保留实际CAS13001及空资源。`normal_close_contract_pass=true`与`native_business_pass=false`均保留，不以物理闭场代替业务通过。四片299.933秒仅完成12帧有限QA，不是全片审片。
+
+六句P3中英文字已完成来源核对并由Root批准，a04生产器正在执行实际配音；配音、六cue正式绑定尚未回执前，已选配方仍按71/88统计。起始扣款70金币与途中三笔额外支出分账；125虔诚仅归到实际跨日观测区间。当前满足35和奉献5/5可用，历史阶段满足、奉献及特质经验差未知；旧helper的可选episode字段误拒已定位，未来修复不回填历史观测。
+
+C15整合已审计的合法降级、实际Save、新母档两分支调用器与导演案（7个新增生产源、builder一行、本文与导演案两文档，共10路径）。下一拍摄顺序为B36合法降级并物化新共同母档→B37普通分支→B38主要分支及一次创建领袖、两次只读GHW查询→宝物两臂→完整剪辑。实际新母档、H1差价、H2接收者及H3权限仍未取得；不预写成功或固定价格差。

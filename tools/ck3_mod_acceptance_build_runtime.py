@@ -26,6 +26,7 @@ CRITICAL_TRANSPORTS = frozenset({
     "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py",
 })
 EXTRA_CAPABILITIES = {
+    "ck3_save_checkpoint": [],  # Existing native save primitive; no new feature flag or live credit.
     "ck3_execute_step": [],  # Existing generic SDK endpoint; Case policy still constrains actions.
     "ck3_open_character_window_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
     "ck3_open_holy_site_decision_v1": [],
