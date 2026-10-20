@@ -1,0 +1,68 @@
+{
+  "schema": "xar.recording-validator-closure-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T04:06:28.966028+00:00",
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\A05-SOURCE26-SOURCE-QUALIFICATION704KiB0630-ADMITTED01.json",
+    "bytes": 4327,
+    "sha256": "530bb027b1832a39a29de60ac534b23ad60039b3ff545ad6fb341f009d35360e"
+  },
+  "original_Task_SPEC": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display03-a04\\SPEC.json",
+    "bytes": 3875,
+    "sha256": "d904f4c7283c0f3c72a0395eb78f3f73b59e65794d80bf57757f8d9c2ac35e5c"
+  },
+  "source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_recording_validator_closure_v1.py",
+      "bytes": 7184,
+      "sha256": "0b4e8f3504807e0a7e25c1dd7907df432f60409c856796e379c849f298c5fa24"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_recording_validator_closure_v1.py",
+      "bytes": 9077,
+      "sha256": "a5eab85a29c486c83a5062bd29e0ae6a96e6bbb47e7316ea03bdacf194fc2c9e"
+    }
+  ],
+  "scope": "one local two-layer base-Python qualification; no Game/OBS/Task/desktop calls",
+  "status": "PASS",
+  "directbase_two_layers": 2,
+  "validator_mocked": false,
+  "frozen_validator_tracked_blob_exact": true,
+  "detail": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\A05-SOURCE26-QUALIFICATION0630-01\\display\\validator-closure01\\QUALIFICATION-DETAIL.json",
+    "bytes": 7336,
+    "sha256": "4432f053f7104b0fb66816aa07a46ad8443277adc6a678b6b29d2c10540ec29e"
+  },
+  "staged_projection": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\A05-SOURCE26-QUALIFICATION0630-01\\display\\validator-closure01\\projection",
+    "outputs": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\A05-SOURCE26-QUALIFICATION0630-01\\display\\validator-closure01\\projection\\hotfix_provider.py",
+        "bytes": 1365,
+        "sha256": "393705ab38a78ce917aaa33548b7fe8da0c319c7f1c7f7a6e01edb9e5a042789"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\A05-SOURCE26-QUALIFICATION0630-01\\display\\validator-closure01\\projection\\SOURCE-PINS-C23.json",
+        "bytes": 6700,
+        "sha256": "39809b7e9b4f8402fa2c1a229e960eb0161747b9c810b5fe479cdcd9bb16612a"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\A05-SOURCE26-QUALIFICATION0630-01\\display\\validator-closure01\\projection\\VALIDATOR-CLOSURE-REVIEW.json",
+        "bytes": 2366,
+        "sha256": "4221187fb8aec31aa7440811b84b8226532fa362ef2afd8bdcaad3a10ded08c3"
+      }
+    ],
+    "logical_bytes": 10431,
+    "actual_runtime_written": false
+  },
+  "media_bytes": 65780082,
+  "media_sha256_field": "6fde22f4ab4bbcf9aa33590fcd4fe134a3ee6dca45a6cf75c925ca1b07dc5b6b",
+  "video_body_bytes_read": 0,
+  "media_finalization_rehashed": false,
+  "closure_status": "CAPTURE_CLOSED_VERIFIED",
+  "original_A04_stage_exit_preserved": 1,
+  "actual_runtime_written": false,
+  "limitation": "Import/media validation closure verified; no new retained-worker/Task lifecycle claimed"
+}
