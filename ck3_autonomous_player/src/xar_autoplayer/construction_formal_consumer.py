@@ -538,7 +538,10 @@ def plan_construction_private(
         return {**planned, "plan": {**plan,
             "war_spending_priority_v1": war_priority,
             "construction_spending_deferred_v1": {
-                "reason": "protect cash for a losing own war before optional economic construction",
+                "reason": (
+                    "protect cash for a qualified nonleading defensive siege in the player's realm before optional economic construction"
+                    if war_priority.get("nonleading_realm_siege_construction_deferred_v1") is True
+                    else "protect cash for a losing own war before optional economic construction"),
                 "deferred_domain": "new_economic_construction",
                 "original_selected_step": original_step,
             }}}

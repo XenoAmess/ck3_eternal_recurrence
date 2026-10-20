@@ -4,6 +4,7 @@ Default OFF. The source remains the original controller holder, never a JSON
 qualification. Received holders keep source_verified=False. Only the existing
 loaded-provider issuer can mint its existing DTO after a live origin readback.
 """
+from __future__ import annotations
 from dataclasses import dataclass
 import secrets
 import threading
@@ -47,7 +48,7 @@ def _record_actual_child_v1(holder,io,child,process_handle,control,role):
     contract._require(actual.pid==child.pid,"actual returned child identity differs")
     io.connected(control)
     contract._require(io.api.pipe_client_pid(control)==actual.pid,"private child kernel peer differs")
-    hello=io.recv(control)
+    hello=io.recv(control,startup=True)
     contract._require(hello=={"kind":"staged","role":role,"epoch":_epoch(),
         "creator":holder._creator_source_digest_v1},"actual child bootstrap differs")
     io.send(control,{"kind":"parent_accepted","epoch":_epoch(),"creator":holder._creator_source_digest_v1})
@@ -60,7 +61,7 @@ def _pull_actual_chain_v1(edge):
     io=edge.io
     contract._require(contract._same_process(edge.process,io.facade.observe_process(edge.process_handle)),
                       "source child exited or changed before upward transfer")
-    message=io.recv(edge.control)
+    message=io.recv(edge.control,startup=True)
     expected={"owner":("Queue","MCPApp"),"Queue":("MCPApp",),"MCPApp":()}[edge.role]
     contract._require(set(message)=={"kind","exports"} and message["kind"]=="actual_child_exports"
         and type(message["exports"]) is list and len(message["exports"])==len(expected),
@@ -132,7 +133,7 @@ class _CanonicalOriginV1:
         """One private final-App connection; no public service or reconnect."""
         try:
             self.io.connected(self.server)
-            contract._require(self.ready.wait(self.io.timeout),"final App chain registration timeout")
+            contract._require(self.ready.wait(self.io.startup_timeout),"final App chain registration timeout")
             peer=self.io.api.pipe_client_pid(self.server)
             contract._require(peer==self.chain[-1][1].pid,"origin client is not actual returned final App")
             while True:
@@ -172,9 +173,10 @@ class _CanonicalOriginV1:
             if errors:raise ValueError("canonical root revocation/release unverified") from errors[0]
 
 
-def prepare_canonical_origin_v1(*,custody,enabled=False):
+def prepare_canonical_origin_v1(*, custody: contract._PreloadCustodyV1,
+                                enabled: bool = False, startup_timeout: float = 10.0) -> _CanonicalOriginV1 | None:
     if enabled is not True:return None
-    io=OriginKernelIOV1(custody.facade,enabled=True)
+    io=OriginKernelIOV1(custody.facade,enabled=True,startup_timeout=startup_timeout)
     return _CanonicalOriginV1(custody,io)
 
 
@@ -213,7 +215,8 @@ class _OriginSessionV1:
                 and self.io.api.private_parent_pid(self.handle)==self.origin.pid,"origin revoked during readback")
 
 
-def attach_received_origin_v1(result,*,origin_handle,origin_pipe,enabled=False):
+def attach_received_origin_v1(result: object, *, origin_handle: int, origin_pipe: str,
+                              enabled: bool = False, startup_timeout: float = 10.0) -> _OriginSessionV1 | None:
     """Private bootstrap only; locations never assert qualification."""
     if enabled is not True:return None
     from .native_loaded_provider_receiver_v1 import ReceiverResultV1
@@ -221,7 +224,7 @@ def attach_received_origin_v1(result,*,origin_handle,origin_pipe,enabled=False):
     holder=result.holder
     contract._require(holder.source_role=="received" and not holder.closed
         and not hasattr(holder,"_origin_session_v1"),"one received origin session required")
-    io=OriginKernelIOV1(holder.facade,enabled=True)
+    io=OriginKernelIOV1(holder.facade,enabled=True,startup_timeout=startup_timeout)
     try:
         io.adopt_inherited(origin_handle,holder=holder)
         session=_OriginSessionV1(holder,io,origin_handle,origin_pipe)

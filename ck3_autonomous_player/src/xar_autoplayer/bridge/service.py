@@ -8722,7 +8722,8 @@ class GameplayBridgeService:
         }
         if (
             not isinstance(result, dict)
-            or set(result) != required_result_keys
+            or not required_result_keys <= set(result)
+            or set(result) - required_result_keys - {"player_heir_fixed_dynasty_projection_v1"}
             or result.get("step") != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
             or result.get("accepted") is not True
             or result.get("snapshot_revision") != native_revision
@@ -8820,6 +8821,14 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(
                 "campaign-root query crossed a snapshot revision"
             )
+        if "player_heir_fixed_dynasty_projection_v1" in result:
+            from .player_heir_projection_service_contract_v1 import (
+                validate_player_heir_projection_service_v1,
+            )
+            validate_player_heir_projection_service_v1(
+                result["player_heir_fixed_dynasty_projection_v1"], root=normalized, result=result,
+            )
+
         build = {
             "version": provenance["game_version"],
             "exe_sha256": provenance["executable_sha256"],

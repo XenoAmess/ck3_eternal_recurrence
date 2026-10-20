@@ -3,6 +3,7 @@
 Messages locate resources and request observations; they are never tokens.
 No PID discovery, Game command, arbitrary handle opening or process termination.
 """
+from __future__ import annotations
 import ctypes
 from ctypes import wintypes as w
 import json
@@ -14,13 +15,17 @@ from .native_loaded_provider_windows_v1 import WindowsNativeCustodyFacadeV1
 
 
 class OriginKernelIOV1:
-    def __init__(self, facade, *, enabled=False, timeout=10.0):
+    def __init__(self, facade: WindowsNativeCustodyFacadeV1, *, enabled: bool = False,
+                 timeout: float = 10.0, startup_timeout: float = 10.0) -> None:
         if enabled is not True:
             raise NotImplementedError("canonical origin transport is default OFF")
         contract._require(type(facade) is WindowsNativeCustodyFacadeV1 and facade.enabled,
                           "actual Windows custody facade required")
         contract._require(type(timeout) in (int,float) and 0<timeout<=30,"bounded private timeout required")
+        contract._require(type(startup_timeout) in (int,float) and 0<startup_timeout<=300,
+                          "bounded private startup timeout required")
         self.facade,self.api,self.timeout=facade,facade._os(),timeout
+        self.startup_timeout=startup_timeout
         self.rx={};self._holders={}
         kernel=self.api.k
         def bind(name,args,result):
@@ -79,10 +84,10 @@ class OriginKernelIOV1:
         return self.own(self._pipe(name,3|0x80000,1|8,1,32768,32768,1000,None),
                         holder=holder,kind="origin_server"),name
 
-    def client(self,name,*,holder=None):
+    def client(self, name: str, *, holder: contract._PreloadCustodyV1 | None = None) -> int:
         contract._require(isinstance(name,str) and name.startswith(r"\\.\pipe\xar_custody_"),
                           "private canonical pipe required")
-        deadline=time.monotonic()+self.timeout
+        deadline=time.monotonic()+self.startup_timeout
         while True:
             handle=self.api.create(name,0xC0000000,0,None,3,0,None)
             if handle not in (None,0,ctypes.c_void_p(-1).value):
@@ -91,8 +96,8 @@ class OriginKernelIOV1:
             if error not in (2,231) or time.monotonic()>deadline:raise ctypes.WinError(error)
             time.sleep(.005)
 
-    def connected(self,server):
-        deadline=time.monotonic()+self.timeout
+    def connected(self, server: int) -> None:
+        deadline=time.monotonic()+self.startup_timeout
         while True:
             if self._connect(server,None):return
             error=ctypes.get_last_error()
@@ -107,8 +112,10 @@ class OriginKernelIOV1:
         self.api._ok(self._write(handle,raw,len(raw),ctypes.byref(count),None),"private custody write")
         contract._require(count.value==len(raw),"partial custody write")
 
-    def recv(self,handle):
-        deadline=time.monotonic()+self.timeout;raw=self.rx.get(handle,b"")
+    def recv(self, handle: int, *, startup: bool = False) -> dict[str, object]:
+        contract._require(type(startup) is bool,"explicit startup phase required")
+        budget=self.startup_timeout if startup else self.timeout
+        deadline=time.monotonic()+budget;raw=self.rx.get(handle,b"")
         while b"\n" not in raw:
             count=w.DWORD()
             self.api._ok(self._peek(handle,None,0,None,ctypes.byref(count),None),"private custody peek")

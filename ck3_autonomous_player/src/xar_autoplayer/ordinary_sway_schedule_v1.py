@@ -11,6 +11,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+from .reused_sway_opportunity_v1 import reused_sway_observation_gap_v1
+
 RAW_PER_DAY = 24
 MONTH_RAW = 30 * RAW_PER_DAY
 
@@ -89,7 +91,11 @@ def plan_ordinary_sway_schedule_v1(
         terminal = resolved.get("terminal_intervention")
         terminal_observed = (isinstance(terminal, Mapping)
                              and terminal.get("instance_terminal_outcome_observed") is True)
-        if not terminal_observed:
+        # Reuse records an observation gap, never an observed end. A fresh
+        # ordinary target query still owns empty-slot/legal admission.
+        reused_gap = reused_sway_observation_gap_v1(
+            resolved, actor_character_id=actor, date_raw=date)
+        if not terminal_observed and reused_gap is None:
             target = resolved.get("target_character_id")
             if not _id(target):
                 return {"job": None, "reason": "resolved_identity_unavailable", "state": current}
@@ -102,8 +108,9 @@ def plan_ordinary_sway_schedule_v1(
                 "reason": "new_identity_or_monthly_observation", "state": current,
             }
         if active_observation_only is True:
-            return {"job": None, "reason": "original_terminal_already_observed", "state": current}
-        if current.get("last_terminal_action_id") != resolved.get("action_id"):
+            return {"job": None, "reason": ("original_storage_reused_terminal_unknown"
+                    if reused_gap is not None else "original_terminal_already_observed"), "state": current}
+        if terminal_observed and current.get("last_terminal_action_id") != resolved.get("action_id"):
             # This is an existing observed terminal fact, not a new signal API.
             current.update(last_terminal_action_id=resolved.get("action_id"),
                            no_operation_count=0, next_check_date_raw=None)
