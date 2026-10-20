@@ -70,3 +70,11 @@ Defender 公共 hook 已运行，但当前普通 token 的精确 EXE 登记实�
 后续仍需由 root 在允许更换 native binary 的自然存档边界/独立场次完成 exact DLL 部署、桌面 1 全境/飞地截图和录像、war/modal/继承抢占、窗口尺寸变化，以及带/不带展示的同策略秒/游戏日对照。当前有效长局继续使用原 DLL，本子线程不为候选中断或重启它。
 
 存储采用通用策略 v1.0.0，D 卷由 root 串行准入 2 GiB 新增峰值；本包 worktree 与 focused build 当前合计约 265 MB 逻辑大小。工作树为待集成输入，构建为 build 类；交付后按 14 日期限复核，必要评审输入仅限期保护，不自动永久保留。
+
+## 2026-10-20：本轮全境来源复核
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`；身份回执 `7992e5`，源码复核截至 `2026-10-20T00:00Z`。前述未附机器身份的历史构建／部署／容量记录为 `machine_id: unknown`，不能据本段追认所属机器或当前效力。
+
+本轮Source23实际冻结的policy为quiet_days=30／refresh_days=30，按游戏日期计算；不能把另一份master策略中的秒数当作本场配置。Native30 source704的Mode1根据当前角色递归读取实际封臣各层县集并合并bounds，范围不局限于直辖县或主头衔法理范围；缺县或遍历错误拒绝整次请求，不能截断后宣称全境。Source24镜头接线将保留该策略。
+
+`coverage_verified`仍恒为false：native bucket、视口和padding的模型，加上current／target相符，只证明目标及相机读回，不能证明所有县已进入画面。下一次实际游戏需保留县ID／县数、bounds、真实客户区、zoom、current／target及原图，单独核对可见全境；不以构建验收或首图代替此项。当前仅有[Native30离线产物验收](evidence/native30-artifact11-actual-closed-2026-10-20.json)，实际Native30加载和全境画面尚未完成。

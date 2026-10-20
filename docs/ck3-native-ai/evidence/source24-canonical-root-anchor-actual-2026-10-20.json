@@ -1,0 +1,152 @@
+{
+  "schema": "xar.source24.canonical-git-anchor/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-20T00:11:49.435556+00:00",
+  "status": "CANONICAL_REF_CREATED_NOT_DEPLOYED",
+  "execution_owner": "Root",
+  "root_direct_execution_release": true,
+  "parent": "330d6e67c99eb22a60919b2bf7666c1ed0ca1b71",
+  "ref": "refs/heads/campaign/robert-v20261019-source24-camera-cold-01",
+  "source_commitment": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE24-ROOTWRITER-NEW-SOURCE32KiB-COMMITMENT01.json",
+    "bytes": 1341,
+    "sha256": "14f0d69838e6634335f9bfb980a13edb561fd0038ce0b6914038a4f096f3e96d"
+  },
+  "capacity_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE24-COMBINED21MiB-EXACT-GIT-ONLY-ADMITTED01.json",
+    "bytes": 4003,
+    "sha256": "3ba54d4f48cf0bc88705c62f5d1a7d10de4f5976de93e0b2083ac45b42ec1ec8"
+  },
+  "writer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\write_source24_canonical_ref_v1.py",
+    "bytes": 30435,
+    "sha256": "b1f644937fa38dc1eb24827df43d8ab24f8f06f47d3bb4db17c70ad0f8ba284e"
+  },
+  "composer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source24_camera_sdk_v1.py",
+    "bytes": 14942,
+    "sha256": "1afd44c58f68824ef71da63048eadca51722f2c8c3cf0f3e62710bcc93a646e2"
+  },
+  "source_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source24-camera-sdk-source-plan-2026-10-20.json",
+    "bytes": 59167,
+    "sha256": "b7bcecc26413d36a409b9970fc5d2276304d2827a1d2581015418a55d952136f"
+  },
+  "actual_Source23_anchor": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\source23-integration16\\SOURCE23-CANONICAL-ANCHOR.json",
+    "bytes": 7206,
+    "sha256": "aa5880db457ba6b892fa24c11a4afe15f5a7ee1d28cd37b1e566a4ac75b67e39"
+  },
+  "closed_Source23": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE23-CANONICAL-GIT-ROOT-ACTUAL-CLOSED01.json",
+    "bytes": 2687,
+    "sha256": "5ac111757fc7b43775de78d5a5db507fa55303272f595e96fa92b0a4f93b8ece"
+  },
+  "Source23_eighteen_exact_metadata": {
+    "bytes": 4108,
+    "sha256": "7f8a5a8b0d419e6ff61091e9d185896c449d83e4307b47b11801f3559ad960d3"
+  },
+  "metadata_only_helper": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\export_immutable_sdk_views_v1.py",
+    "bytes": 22964,
+    "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+  },
+  "Git_object_quote": {
+    "retained_upper": 2699264,
+    "largest_temporary_upper": 1646592,
+    "refs_dirs_locks_reserve": 65536,
+    "peak_upper": 4411392,
+    "hard_bytes": 7340032,
+    "compression_or_dedup_credit": 0,
+    "Source23_retained_uncompressed_upper": 2187264,
+    "Source23_known_closed_allocated_bytes": 483576,
+    "combined_no_compression_peak": 6598656,
+    "combined_old_actual_variant_peak": 4894968,
+    "all_original_Source23_full_holds_retained": true
+  },
+  "runtime_calls": 0,
+  "SDK_export_calls": 0,
+  "Native_Game_Task_calls": 0,
+  "push_calls": 0,
+  "index_or_tracked_worktree_mutations": 0,
+  "actual_H": "unknown",
+  "actual_loaded_provider": false,
+  "Native30_bound": false,
+  "commit": "6b55531b1d3a44ee73ab13ea40132556030f682e",
+  "tree": "c70e9d86666ccd9cf2d097be253adbbe8ad8eb25",
+  "six_output_pins": [
+    {
+      "relative": "xar_autoplayer/bridge/auto_camera_follow.py",
+      "bytes": 10652,
+      "sha256": "d7f7014311aa88ac0ccbdc2b745438b882af8448902d5c0d12e76f985de0775f",
+      "git_blob_sha1": "d5644f58de94d1018d2933131cfa488130053234",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/auto_camera_pre_advance_v1.py",
+      "bytes": 4070,
+      "sha256": "186f0fcbe218cfc14987bcae2a9b3bb946f9cd2abdf328da56352aa011b51ad9",
+      "git_blob_sha1": "ab58843d2ca15cb89522cb242b7dc92089115f94",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/camera_tracking_v1.py",
+      "bytes": 7621,
+      "sha256": "b202796bbeecd911ab608855dd09014ff9ecf8d551babb96f51fdd717832ef8c",
+      "git_blob_sha1": "f8e8976e9bebee18bde48d7756859f638e843d30",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1642169,
+      "sha256": "2d3fe6a71d8ee15e924446986fae4e27fe00ea59cc86baa31d1c79b11da2acc8",
+      "git_blob_sha1": "93fdb4ad49b95d7cbd1bb53dee35c66cb303e224",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 15057,
+      "sha256": "70412f3b2b74907b0a45486dde5553d873b11b82808e9ea8bab703509bf06325",
+      "git_blob_sha1": "da37a9ab8eb9e4f238f9c7c3ad4fa0fb2e5dc545",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/service.py",
+      "bytes": 879315,
+      "sha256": "aa9fdddecfb10487c30f998f0ecd6990b3b79a87e8e721e9c20a82e58c27e663",
+      "git_blob_sha1": "9f9c4d993ec7a5c98f7de51c2ea79b15065f6b18",
+      "git_mode": "100644"
+    }
+  ],
+  "charged_retained_objects_upper": 2699264,
+  "exact_object_metadata": {
+    "count": 12,
+    "canonical_rows": {
+      "bytes": 2739,
+      "sha256": "6de5bb949ca6797381f7bee1f5e6aa93e0bf40cd9ffcceb515b39b9c0509bdb3"
+    },
+    "known_loose_allocated_bytes": 536824,
+    "allocation_unknown_count": 0,
+    "no_directory_scan": true,
+    "no_dedup_credit_or_hold_refund": true
+  },
+  "end_utc": "2026-10-20T00:12:02.084309+00:00",
+  "future_writes": 0,
+  "source_file_count": 1457,
+  "source_bytes": 59209522,
+  "complete_rows_JSON": {
+    "bytes": 374409,
+    "sha256": "7828a4d94129aff19e0c830ecaf55303f2831038b9307b379ee151bc58da6b7d"
+  },
+  "all1457_Git_mode_blob_size_verified": true,
+  "six_SHA256_body_readbacks": true,
+  "all1457_SHA256_bodies_reread": false,
+  "parent1456_Git_mode_blob_size_verified": true,
+  "complete_rows_SHA256_authority": "Frozen full inventory plus Git mode/blob/size; six new body SHA256 readbacks",
+  "source_epoch_detached_model": "7616992f104d375b5758c148d95cb5e364dfabc535979fb48c7fea993d3e5461",
+  "source_epoch_actual_filesystem_authority": false,
+  "original_Native29_metadata_retained": true,
+  "Native_transition_qualification_reused": false,
+  "clock_root_cause": "UNKNOWN; diagnostic only",
+  "record_review_at_utc": "2027-04-18T00:12:02.084473+00:00"
+}

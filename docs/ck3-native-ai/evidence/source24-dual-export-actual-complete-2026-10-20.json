@@ -1,0 +1,236 @@
+{
+  "schema": "xar.ck3.immutable-sdk-view-export/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-20T00:15:22.445567+00:00",
+  "status": "SOURCE_READY_NOT_LOADED",
+  "manifests": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\immutable-source-export\\SOURCE-FREEZE.json",
+      "bytes": 1838353,
+      "sha256": "37557914816b0d1ec3e6b6fe6df7f772a95459ba3fe415d0b5171b5f8fe76a88"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\immutable-source-export\\REFERENCE-FREEZE.json",
+      "bytes": 1838366,
+      "sha256": "fa2a5ccb5ed2e5a0c38290940d1f3342a732818b44897e597188885c4f524bc2"
+    }
+  ],
+  "business_source_commit": "6b55531b1d3a44ee73ab13ea40132556030f682e",
+  "changed_relative_paths": [
+    "xar_autoplayer/bridge/auto_camera_follow.py",
+    "xar_autoplayer/bridge/auto_camera_pre_advance_v1.py",
+    "xar_autoplayer/bridge/camera_tracking_v1.py",
+    "xar_autoplayer/bridge/campaign_root_context_contract.py",
+    "xar_autoplayer/bridge/native_driver.py",
+    "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+    "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+    "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+    "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+    "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+    "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+    "xar_autoplayer/bridge/realm_overview_camera.py",
+    "xar_autoplayer/bridge/service.py",
+    "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+    "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+    "xar_autoplayer/runtime.py",
+    "xar_autoplayer/successor_ui_pending_ledger_v1.py"
+  ],
+  "logical_bytes_each": 59209522,
+  "new_unique_file_count": 34,
+  "existing_shared_unique_file_count": 1440,
+  "new_unique_file_allocation_bytes": 5898240,
+  "existing_shared_allocation_bytes_not_new_credit": 59298176,
+  "metadata_json_allocation_bytes_before_completion": 3690496,
+  "filesystem_metadata_allocation_bytes": null,
+  "metadata_budget_reserve_bytes": 4194304,
+  "filesystem_metadata_budget_reserve_bytes": 262144,
+  "forecast_new_data_allocation_bytes": 5898240,
+  "capacity": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE24-COMBINED21MiB-NATIVE30-EXACT-EXPORTER-ADMITTED01.json",
+    "bytes": 12850,
+    "sha256": "d292e9efc7c28f20190b7d3d9b74fbb330bc87f7f154b49c9756193c708cc23f"
+  },
+  "game_sdk_native_obs_calls": 0,
+  "old_content_write_operations": 0,
+  "native_transition": {
+    "schema": "xar.ck3.native29-to30-transition/v1",
+    "build_chain": "resume02_snapshot07_functional09_artifact11",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "base_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C22.json",
+      "bytes": 449181,
+      "sha256": "07fe7edd6bf76cf7a3c2c438de9d13178ced61c00f1d701b748745f4bc33e443"
+    },
+    "base_native_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-NATIVE29-NATIVE-PIN-C16.json",
+      "bytes": 4546,
+      "sha256": "8ace8deb48058b1043374ee49b4be3249359f75123cf236907e43067bbfc1e5b"
+    },
+    "base_native_build_label": "Native29 minimized camera and bounded native diagnostics",
+    "base_native_dll_sha256": "7e8534e03ec9cad039c99094aa6cb74b21cc6b8002d26d97e3a126e885a589c1",
+    "target_native_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE30-TARGET-PIN.json",
+      "bytes": 3475,
+      "sha256": "cfe8b1be0a5c3f9681880f3916f17a2404b011e249037b811a3698f3d421e75c"
+    },
+    "source_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\evidence\\source-freeze.json",
+      "bytes": 1560447,
+      "sha256": "648b3ff2e7cd01f6e8c46490dc78a457fbcf716af17dcc78a45c8c1c356ec590"
+    },
+    "native_plan": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-wholeclean-producer-plan-2026-10-19.json",
+      "bytes": 4810,
+      "sha256": "d9a44fc874bd253425626712eb17131f6986de5db17b74c5200b53cea3932bdb"
+    },
+    "native_readonly_plan": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-08B-two-stage-plan-revision3-2026-10-20.json",
+      "bytes": 12089,
+      "sha256": "6043fd5240c9adbaa90ff3c1d61dd3832550a668382d75af1bf59019a2aa150a"
+    },
+    "snapshot07_plan": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-fixture07-snapshot-plan-2026-10-20.json",
+      "bytes": 14086,
+      "sha256": "b4af9fa48d48b9c5a982b5bf392a7d6e367de1385fe425f941e389590ad7c006"
+    },
+    "compatibility": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE29-TO30-COMPATIBILITY.json",
+      "bytes": 2097,
+      "sha256": "1f42dbebe17e541aa94a57ef5ce9ebe6fcd3b51d905532cb8e4a78ef7e0002c0"
+    },
+    "base_exe_binding": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE29-BASE-EXE-BINDING.json",
+      "bytes": 1526,
+      "sha256": "75b60e8a432cc2f48ce696f25956df7485d084beff543aa2e8b134e6339257f6"
+    },
+    "target_exe_binding": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE30-TARGET-EXE-BINDING.json",
+      "bytes": 1814,
+      "sha256": "740c378aeb548104f253444ee3c5f6e7a75a6567adfa92736c10d23862ff5cc3"
+    },
+    "functional09_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt09-functional\\RESULT.json",
+      "bytes": 44290,
+      "sha256": "1459f738ea8961abc98249043c75d2c28eac51bd052d3bd94d247792c3207ab1"
+    },
+    "functional09_summary": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\FINAL-CLOSED-SUMMARY.json",
+      "bytes": 7610,
+      "sha256": "a613819afd6e632bd097e21a703ed52d4bb4c56ee29eb390fcca972904c88bc1"
+    },
+    "functional09_plan": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-functional09-plan-2026-10-20.json",
+      "bytes": 10735,
+      "sha256": "3b7a69e787f12c491dff5285d0cef1e509e1f149757b9dfe6ac832e780523aac"
+    },
+    "functional09_spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\owner-spec\\SPEC.json",
+      "bytes": 2042,
+      "sha256": "51e859df3a884904a0b0fdda66275d0065e2d07b744b6a151a725c6de673e4e4"
+    },
+    "functional09_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "73d428bd16f972b4228f6ac23709490fe34ea3ed893693b529524a1ea6774318"
+    },
+    "functional09_unregister": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\UNREGISTER.json",
+      "bytes": 980,
+      "sha256": "921fe6d69bb07ef60134388cb3ab6d8b759a2f4b8b65fe045b0b8fda05013833"
+    },
+    "artifact11_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\RESULT.json",
+      "bytes": 13662,
+      "sha256": "95c29ce88b131f2f480b4a3ac83d4ee5f76ea8975be8b5f72a07849a1a166f67"
+    },
+    "artifact11_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\production-delivery.json",
+      "bytes": 6167,
+      "sha256": "ee1d97afec5e31a8137a6728110830d1da340032272a4c283f676fd397d4abb8"
+    },
+    "artifact11_summary": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\FINAL-CLOSED-SUMMARY.json",
+      "bytes": 8828,
+      "sha256": "ed443ce2c1c7e5659be3e7fd870becc497c0c986389d25721be6f4d82a7a1905"
+    },
+    "artifact11_plan": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck11-plan-2026-10-20.json",
+      "bytes": 5504,
+      "sha256": "f778024583d94a27a3590e366219aa3f07a35ae060021af6d7ba3c68588ff338"
+    },
+    "artifact11_spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\SPEC.json",
+      "bytes": 2052,
+      "sha256": "91005c55efad447e20d0c7339700948f1ba54789ad6b6b418cf0b7e2b45a64ab"
+    },
+    "artifact11_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\CLOSED.json",
+      "bytes": 744,
+      "sha256": "2f9439efb6b510692e4562cf50111bb3b9771e6669b73b89364bd36c8f5bec2d"
+    },
+    "artifact11_unregister": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\UNREGISTER.json",
+      "bytes": 978,
+      "sha256": "03bcc51fda82875b47ef46b6c07f80f83e35f07674b0e02df6b9ac0525710a1b"
+    },
+    "exports_and_data": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\exports-and-data.json",
+      "bytes": 1783,
+      "sha256": "073073c0d63d29f90e319726b4617363f8caa400102b17f7d459f9e92a680db7"
+    },
+    "build08_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build\\RESULT.json",
+      "bytes": 68788,
+      "sha256": "847b6b54f7e544315507dd5c0aa91e0d1abf992cecadd73c1a4fe2f9c94d6c85"
+    },
+    "build08_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build\\project-exe-manifest.json",
+      "bytes": 10169,
+      "sha256": "f35cf135db1a564bcb55b3b5c932059deb4369d0e06fd4a5ff006b25d80e57a7"
+    },
+    "build08_spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec\\SPEC.json",
+      "bytes": 2059,
+      "sha256": "58a06b5408b45dc3097e5afc50c31dbc27a9613754596d59bd03d2d8cad27bd6"
+    },
+    "build08_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "b73e93e01f6d51309faee52ddee5e0b490e553b0c6e10a449f7f76c632ca9562"
+    },
+    "build08_unregister": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\UNREGISTER.json",
+      "bytes": 975,
+      "sha256": "c1d64fc3a76ac2b44cc6bb17efd2b7721b94ce9c3bd5204b029668f860f3e093"
+    },
+    "prior08_admin_launch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-admin\\LAUNCH-RESULT.json",
+      "bytes": 1817,
+      "sha256": "73cae6d2f7e52ccf2c3d0a60b8d367eac443e3b58580ad7a0f4c53ea970ce0a5"
+    },
+    "build_chain_provenance": {
+      "build_chain": "resume02_snapshot07_functional09_artifact11",
+      "functional09_status_preserved": "FAILED",
+      "functional09_parent_exit_preserved": 1,
+      "closed09_fixture_nodes": 9,
+      "closed09_layout_postcheck": true,
+      "artifact11_status": "OFFLINE_ARTIFACT_QUALIFIED_NOT_DEPLOYED",
+      "artifact11_parent_exit": 0,
+      "nine_identities_equal_original_build": true,
+      "nine_nodes_reexecuted": false,
+      "OS_qualification": "UNKNOWN",
+      "Defender_registration_pending": true,
+      "prior08_admin_future_writes_preserved": null,
+      "loaded_provider_issued": false,
+      "H": "NOTRUN"
+    },
+    "target_native_build_label": "Native30 continuous hotspot tracking and idle realm overview",
+    "qualification_kind": "artifact_plus_closed09_functional_only",
+    "defender_registration_pending": true,
+    "os_qualification": "UNKNOWN",
+    "source_fixture": false,
+    "runtime_admitted": false,
+    "actual_loaded_provider_issued": false,
+    "H": "NOTRUN"
+  }
+}

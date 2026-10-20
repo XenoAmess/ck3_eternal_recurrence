@@ -1,0 +1,167 @@
+{
+  "schema": "xar.C23-full-enabled-cold-controls-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 23:58:02 UTC",
+  "status": "SOURCE_QUALIFIED_ACTUAL_COLD_INPUTS_NOT_ADMITTED",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_full_enabled_cold_controls_v1.py",
+      "bytes": 22647,
+      "sha256": "f8ea32ba1b4527b39ff0aca8af08531ee987acb1397d2c6138eb240fa4124cd6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_full_enabled_cold_controls_v1.py",
+      "bytes": 17873,
+      "sha256": "17362bed2b35f579f5eeb87aa291c324734b1284cbca61f5eb7a7ddeb0684e5e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c23_source_abort_checkpoint_inputs_v1.py",
+      "bytes": 15280,
+      "sha256": "cdc3d000e253f22db9c70a0314dab040878e731d5abf44a751a06166bc2370c9"
+    }
+  ],
+  "source_card": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/HARNESS-C23-FULL-ENABLED-COLD-CONTROLS-SOURCE96KiB-COMMITMENT01.json",
+    "bytes": 1970,
+    "sha256": "d8a375f74ed7138b410afe361e00e6ba38e156b2fdd0e8373932db5026b21b9d"
+  },
+  "naming_correction": "Before first write storage accepted c23_source_abort_checkpoint_inputs_v1.py instead of a separate test leaf; tests live in qualifier. Five new files total.",
+  "parent_Source23_anchor": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\source23-integration16\\SOURCE23-CANONICAL-ANCHOR.json",
+    "bytes": 7206,
+    "sha256": "aa5880db457ba6b892fa24c11a4afe15f5a7ee1d28cd37b1e566a4ac75b67e39"
+  },
+  "current_business": "Actual Source24 anchor is a mandatory future public input; schemaSource24/parent330d and complete canonical rows must match runtime freeze. No Source24 anchor fabricated.",
+  "native_dependencies": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\export_native30_functional_artifact_views_v1.py",
+      "bytes": 2789,
+      "sha256": "c414dde8b9557837feaa27591fab38f2ab2a606ef8792bc21e1731955b072d99"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_functional09_artifact11_transition_v1.py",
+      "bytes": 29262,
+      "sha256": "1df6088a521f2de2f9d72d6686d161a87a28cd74a6cb35bbc59e02013e0b4442"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native29_to30_export_contract_v1.py",
+      "bytes": 17562,
+      "sha256": "d348b59cdf68a2da0928ccfc4034006c0c42618fe341ad0ca1c7dac1bbfa7554"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\export_native30_immutable_sdk_views_v1.py",
+      "bytes": 5624,
+      "sha256": "90ccd7a5c12d90101217391857d793715fdaebcb98a3e374e6a5d4b3776f9369"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_export_adapter_v1.py",
+      "bytes": 8824,
+      "sha256": "2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\export_immutable_sdk_views_v1.py",
+      "bytes": 22964,
+      "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_resume_fixture_chain_v1.py",
+      "bytes": 13571,
+      "sha256": "d9e5dc3c22f3b1fc58f1ab7b93de4f7ccb480c3ed938fdc6b2375d11a814f555"
+    }
+  ],
+  "Native09_11_source_addendum": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/g2-m7-functional09-artifact11-source-lineage-addendum-2026-10-20.json",
+    "bytes": 2855,
+    "sha256": "a4495cea9ef22de94084f0aafd2ffcbeefe166cc6121a94116e6fddc3ef0df5e"
+  },
+  "qualification_history": [
+    {
+      "command": "python -B tools/g2_saved_campaign/qualify_c23_full_enabled_cold_controls_v1.py",
+      "tests_run": 3,
+      "exit_code": 1,
+      "passed": [
+        "02_actual_WAL_Stdio_and_revoke_join",
+        "03_F99_actual_small_sources_and_saved_frontier"
+      ],
+      "error": "01 AST verifier named nonexistent class Queue; actual base is FreshQueue.",
+      "unittest_wall_seconds": 6.033
+    },
+    {
+      "command_suffix": "C23Cross.test_01_current_Source23_true_graph_and_preserved_Queue_algorithms",
+      "tests_run": 1,
+      "exit_code": 0,
+      "unittest_wall_seconds": 5.148,
+      "correction": "Only qualifier class selector Queue -> FreshQueue."
+    },
+    {
+      "command_suffix": "C23Cross.test_01_current_Source23_true_graph_and_preserved_Queue_algorithms",
+      "tests_run": 1,
+      "exit_code": 0,
+      "unittest_wall_seconds": 4.981,
+      "increment": "Root-required parameterized feeder publish -> validated receipt timing transform added; original algorithm fixture only, no cold admission."
+    },
+    {
+      "command_suffix": "C23Cross.test_04_Source24_parameter_cross_full_rows_and_runtime_guard",
+      "tests_run": 1,
+      "exit_code": 0,
+      "unittest_wall_seconds": 3.195,
+      "increment": "Root selected Source24 as actual business; one new RAM anchor/full-rows positive, wrong parent/row negative, unknown Native public refusal. Synthetic Source24 fixture is not actual Git authority."
+    }
+  ],
+  "WIP_history": [
+    "An initial RAM composition rejected parsing an indented reviewed creator hunk as a module; finite namespace inverse now handles those exact frozen fragments, whole modules compile.",
+    "A RAM composition rejected an empty-string inverse; splice position now reconstructs the exact old text. No outputs materialized."
+  ],
+  "coverage": [
+    "Actual Source23 parent and actual C22 predecessor; canonical.build_sources(enabled=True) then exact custody hunks over current controls, never timing.build_sources disabled graph.",
+    "Four enabled roles and same-holder pre_native_resume; supervisor creates owner, owner creates Queue, stock MCP App installs Service provider; false graph rejected.",
+    "Actual Queue original service call and full_loop AST equal after removing only bounded timing observations.",
+    "Actual C23 Queue WAL AST -> real MCP StdioServerParameters model -> canonical child_env explicit policy true/false; invalid policy string rejected. No harmless children repeated, no actual App/WAL writer claimed.",
+    "Actual outer revoke -> bounded join10s -> factory.close; alive join failure retains custody and prevents close.",
+    "Real small F99 index and C20 SDK0/0, C22 preflight1/1/noApp, forced old Game1, SAVE10480 and actual closed state/governance; exact saved seed unchanged, count74 and cycle4753, wrong F90/Game and duplicate count rejected.",
+    "Then-new Game/recording metadata is only a RAM fixture; missing/old identity rejected. Original live verify_segment is retained and was not executed.",
+    "Parameterized Source24 validates actual Root schema/parent plus full canonical file rows in runtime freeze; new epoch is not inferred from the Source23 model.",
+    "Source24/Native actual refs are not invented; public source builds have no runtime/adoption authority."
+  ],
+  "Native_basename_increment": {
+    "qualified_artifact": "xar_ck3_bridge.dll",
+    "old_literal": "native.dll",
+    "changed_guards": [
+      "root_native30_supervisor_c23.py",
+      "root_native_build_binding_p37c23.py"
+    ],
+    "verification": "Final RAM graph asserts one exact basename predicate in each and compiles all modules; path/SHA/size/source/delivery/five callable RVA guards retained.",
+    "binary_alias_or_copy": 0
+  },
+  "RAM_graph": {
+    "leaves": 18,
+    "logical_bytes": 514203,
+    "hard_participation_bytes": 2621440,
+    "materialized_files": 0
+  },
+  "timing": {
+    "Queue_existing_rows_enabled": true,
+    "control_probe_enabled": false,
+    "full_publish_to_receipt_active_now": false,
+    "parameterized_feeder_transform_enabled": true,
+    "requirement": "Adopt lifecycle-enabled C23 cold feeder with then-actual five refs before continuous play; no Queue sum may be called whole FULL wall.",
+    "following_or_restart_start": null
+  },
+  "fixture_boundaries": {
+    "F99_close_wrapper_and_prelaunch": "RAM-only metadata envelope, real small closed rows; synthetic history_rows5268 is a lower-bound test value, not a Driver body observation.",
+    "new_Game": "RAM-only positive identity, not actual birth issuance.",
+    "Source24": "RAM-only canonical row/anchor cross, not a Root actual commit/export.",
+    "Native": "Original M7 6/13 and provenance delta reused; not rerun. No actual transition four-ref load/export was executed by these tests."
+  },
+  "old_matrices_repeated": false,
+  "operations": {
+    "D_writes": 0,
+    "Task_Game_OBS_Native_RPC": 0,
+    "Driver_SAVE_DLL_lib_map_body_reads": 0,
+    "Git_mutations": 0,
+    "full_graph_copies": 0,
+    "scratch_bytes": 0
+  },
+  "actual_runtime_admitted": false,
+  "future_source_work_remaining": 0
+}

@@ -1,0 +1,343 @@
+{
+  "schema": "xar.C23-full-enabled-cold-controls-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 23:58:02 UTC",
+  "status": "SOURCE_READY_RUNTIME_NOT_ADMITTED",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_full_enabled_cold_controls_v1.py",
+    "bytes": 30025,
+    "sha256": "ba9b0da2decf5a341f415ecf205fad7d040c4e70ee6a8c398141b23ccfef509c"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_full_enabled_cold_controls_v1.py",
+    "bytes": 20383,
+    "sha256": "913dab6d5041f5aa7f6e5a3e953c2a8ef97f3ad07256f3a0b9728d2bd0dbfa30"
+  },
+  "finite_input_helper": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c23_source_abort_checkpoint_inputs_v1.py",
+    "bytes": 15280,
+    "sha256": "cdc3d000e253f22db9c70a0314dab040878e731d5abf44a751a06166bc2370c9"
+  },
+  "qualification": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/c23-full-enabled-cold-controls-source-qualification-2026-10-20.json",
+    "bytes": 8788,
+    "sha256": "dbeab26da7129b2fe0f4396a0e6ed6e1a828d1128fafc37aa721f728e00d5357"
+  },
+  "API": {
+    "public_source": "prepare_c23_full_enabled_cold_controls_v1.build_sources(*, native_transition_inputs, business_anchor_ref, frontier_ref, actual_cold_refs=None, full_timing=True) -> (RAM graph, report)",
+    "Native_refs": "Exactly base_freeze_ref/base_native_ref/capacity_ref/machine_id; original09+11 loader source_fixture=False, complete dependency pins and module.__file__ checked before/after.",
+    "business_anchor_ref": "Then-actual pinned Root Source24 JSON. Source23 is parent/history only; missing, Source23 schema, wrong parent or placeholder cannot authorize current startup.",
+    "frontier_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c22-source22-warm99/C22-WARM-ABORT-CLOSED99.json",
+      "bytes": 9089,
+      "sha256": "312165ea447d2b1e94be0d0b7e0b749a8892f59b1034feb93df90a880f326fce"
+    },
+    "cold_receipts": "Source bytes must exist before creating a new Game. This producer never returns startup/adoption permission. Runtime bootstrap, owner and Queue reject until then-actual new identities/receipts exist.",
+    "private_source_fixture": "_compose_source_graph(full_timing=True) builds source strings only, reports source_fixture=True, no Native qualification.",
+    "feeder_transform": "transform_cold_feeder_source(raw, *, source_ref={path,bytes,sha256}) -> transformed RAM bytes + report. Input must be independently frozen cold feeder, not an old warm admission."
+  },
+  "business": {
+    "actual_Source24_anchor_present": false,
+    "required_schema": "xar.source24.canonical-git-anchor/v1",
+    "required_parent": "330d6e67c99eb22a60919b2bf7666c1ed0ca1b71",
+    "historical_parent_anchor": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\source23-integration16\\SOURCE23-CANONICAL-ANCHOR.json",
+      "bytes": 7206,
+      "sha256": "aa5880db457ba6b892fa24c11a4afe15f5a7ee1d28cd37b1e566a4ac75b67e39"
+    },
+    "Root_record": "execution_owner Root, root_direct_execution_release true, status CANONICAL_REF_CREATED_NOT_DEPLOYED; exact commit/tree/full count/bytes/complete_rows_JSON; actual_loaded_provider false and Native30_bound false.",
+    "runtime_binding": "admission.business_anchor exact ref; validate_frozen_business verifies freeze/admission/anchor commit equality, complete count/bytes and canonical JSON full rows equality. JSON encoding ensure_ascii=False, sort_keys=True, separators comma/colon; no subset-only match.",
+    "epoch": "Source24 changes real SDK source identity. Do not reuse Source23 detached8176 as actual authority; actual immutable source epoch/loaded provider must be issued by original SDK/custody contracts."
+  },
+  "graph": {
+    "RAM_outputs": [
+      {
+        "basename": "root_p37c23_sdk_queue.py",
+        "bytes": 269127,
+        "sha256": "cc074ddc2fd723f1235994b8e5acb71ec891b8fe18a35b142342408d3b969c8d"
+      },
+      {
+        "basename": "root_p37c23_mcp_entry.py",
+        "bytes": 12896,
+        "sha256": "77d0d32618ab9c6e1c15f9edc5ee154abb2c71292a7edf5c0f9cac35fc461dd8"
+      },
+      {
+        "basename": "root_native_build_binding_p37c23.py",
+        "bytes": 4098,
+        "sha256": "bac64031e86b21c7e10beac7132a42d7a85197593e8a168d5b87b1a9a6d11b34"
+      },
+      {
+        "basename": "root_p37c23_automatic_natural_succession_handoff.py",
+        "bytes": 38747,
+        "sha256": "40e7332b58a2c10fa459ec80d088cafcfc2ce45b9815e1ab17851937b1fd1fe6"
+      },
+      {
+        "basename": "p51_resident_successor_adoption_c23.py",
+        "bytes": 24607,
+        "sha256": "f97539d99d8c6f4970fb906f0975114d795d0c86fc683356a839c3925a3395ce"
+      },
+      {
+        "basename": "launch_sdk_p37c23_owner.py",
+        "bytes": 5876,
+        "sha256": "ba841b763223f3286752196a95d564a51158e80ad6f6a3039b0246734a1a730f"
+      },
+      {
+        "basename": "root_p37c23_cold_resume.py",
+        "bytes": 20074,
+        "sha256": "3fda1769a984cb762458533d6005802662f0799100ce697171f52975a143a5d3"
+      },
+      {
+        "basename": "root_checkpoint_bootstrap_c23.py",
+        "bytes": 10596,
+        "sha256": "98f7f878ea2ee894854ff6dbdf96dcb0715b0dd3d3d1160de3da12c3946395ad"
+      },
+      {
+        "basename": "root_native30_supervisor_c23.py",
+        "bytes": 34968,
+        "sha256": "039a19f51dabc06500885c08dd6a74c1cc7a00fad68eca6d71ebee1441d119f5"
+      },
+      {
+        "basename": "root_record_shutdown_c23.py",
+        "bytes": 6913,
+        "sha256": "3c7a7134eae4ddf3676dfd09b8cab8d82c45bab8d6f2a525eb4d5620e92f60b3"
+      },
+      {
+        "basename": "root_score_month_samples_c23.py",
+        "bytes": 7991,
+        "sha256": "78f08596c26bee661cdcf487ab751019b67e7782ba7c5e0b0c7e79ba80435aa9"
+      },
+      {
+        "basename": "root_c23_control_timing_adapter.py",
+        "bytes": 15044,
+        "sha256": "a0c1d4597a81c9e16f4785c607a6f1d5dfeb891af2599b81b69103ea9b2efecf"
+      },
+      {
+        "basename": "root_c23_queue_control_timing.py",
+        "bytes": 8642,
+        "sha256": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+      },
+      {
+        "basename": "root_screen_bus_lease_c23.py",
+        "bytes": 16526,
+        "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+      },
+      {
+        "basename": "root_c23_canonical_outer.py",
+        "bytes": 16950,
+        "sha256": "eded7e07332eeb76a0dd2286be1e4eec61397a9dc6e104a52ef90ed38e8370c1"
+      },
+      {
+        "basename": "root_c23_source_abort_checkpoint_inputs.py",
+        "bytes": 15280,
+        "sha256": "cdc3d000e253f22db9c70a0314dab040878e731d5abf44a751a06166bc2370c9"
+      },
+      {
+        "basename": "full_batch_timing_v1.py",
+        "bytes": 7638,
+        "sha256": "197e4308b7d0f5a70a8c3474ec0b58581997f3e60bfc2d8414c668dae07c8e0b"
+      },
+      {
+        "basename": "full_lifecycle_timing_v1.py",
+        "bytes": 2480,
+        "sha256": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+      }
+    ],
+    "logical_bytes": 518453,
+    "materialized_files": 0,
+    "participation_cap_bytes": 2621440,
+    "main_source": "Actual C22 seven-controls predecessor plus true canonical enabled creator hunks; no disabled timing build_sources result is overlaid.",
+    "canonical_entry_pins": "Recompute all absolute T/name + final SHA after every namespace/frontier/timing edit; list all final graph modules in canonical_preload_policy.entry_source_pins.",
+    "display_dependencies": "New C23 decision_text_api/overlay_relay/compact_feed/segment verifier and then-actual publisher/recording source profile are separate M0 frozen inputs. No old C16/C22 live identity reused.",
+    "source_immutability": "Current Source22/C20/C22 files, old canonical/template/proof files and F99 originals remain unchanged.",
+    "local_import_closure": {
+      "graph_modules": 18,
+      "pinned_external_algorithms": 23,
+      "shared_T_observed": 18,
+      "new_display_algorithm_RAM_pins_from_M0": 5,
+      "legacy_missing_modules": 2,
+      "legacy_import_sites": 5,
+      "legacy_methods_rejected_in_C23_cold_only": [
+        "recovery_read",
+        "collect_original",
+        "observe_original_start"
+      ],
+      "warm_classes_outside_current_MRO": true,
+      "details": "c23-full-enabled-cold-controls-import-closure-addendum-2026-10-20.json"
+    },
+    "creator_import_order": "Canonical path: policy.tools_root first, original tools() before custody import and again after; foreign cached package/module refuses. Legacy None branch alone uses Host/tools. See c23-creator-tools-order-addendum-2026-10-20.json."
+  },
+  "topology": {
+    "Tasks": [
+      "supervisor",
+      "display/recording",
+      "cold feeder"
+    ],
+    "SDK_owner": "Supervisor canonical same-holder factory creates and retains actual SDKowner; no fourth independent owner Task.",
+    "pipeline": "supervisor prepare_factory -> original Runtime.launch(pre_native_resume=same factory) -> actual Game -> Root new pixels/create gate -> canonical owner -> Queue -> stock MCP App -> install_service.",
+    "direct_base": "Original direct base Python image/dependency pins and -B/-S/-X utf8 guards preserved. No module-factory alias, import hook or second runner.",
+    "close": "Original SDK/Queue/App stop and record paths remain; origin.revoke_before_close then bounded thread.join10s with is_alive refusal, then factory.close. No borrowed handles closed; unknown join/exit retains custody."
+  },
+  "policy": {
+    "schema": "xar.c23.canonical-preload-policy/v1",
+    "generation": "P37C23",
+    "required_fields": [
+      "sdk_source_root",
+      "creator_tools_root",
+      "dependency_root",
+      "direct_python",
+      "dependency_sources",
+      "entry_source_pins"
+    ],
+    "WAL": {
+      "enable_driver_state_wal_v1": true,
+      "default": false,
+      "type": "strict bool",
+      "scope": "Only actual SDK child environments owner -> Queue -> App. No supervisor Task-role WAL flag required or whitelist expansion.",
+      "Queue_forward": "Original313B strict None/0/1 stanza is preserved before actual StdioServerParameters(env=child_env). Missing/false policy remains opt-out, illegal policy string rejects.",
+      "actual_ON": "Not claimed by source. Actual App env1, original Driver constructor and natural WAL writer/append readbacks remain required."
+    },
+    "native_source_qualification": "09 failed whole result retains its nine closed functional subfacts; independent11 artifact only. Metadata OS UNKNOWN/Defenderpending/H NOTRUN remain; no loaded authority.",
+    "native_DLL": "Original qualified xar_ck3_bridge.dll path, no rename/alias/copy. Both launch binder and supervisor bind that exact basename while retaining original SHA/size/source/delivery/config/freeze checks. Five callable export_rvas plus separate noncallable DATA fact.",
+    "control_probe_enabled": false,
+    "full_planner": "Complete ordinary planner, war/candidates/typed budget/callback behavior unchanged.",
+    "execution_mask": "Only previously unsupported --private-active-scheme-sway-completion-execution-query remains filtered. Other private flags/order preserved.",
+    "classifier_sha256": "0bff8fae24c072d5f05285ba62c503dfed408f8095690fb8dffec16fe72ec28b"
+  },
+  "frontier": {
+    "kind": "EXACT_C22_STORAGE_SCHEMA_ABORT_SAVE10480_FOR_C23",
+    "saved_current": {
+      "cycles": 4753,
+      "day": 5429,
+      "date_raw": 53274624,
+      "history_index": 5268,
+      "checkpoint_saved_count": 74,
+      "next_sequence": 10481,
+      "SAVE_bytes": 116203629,
+      "SAVE_sha256": "f0edd690a08320c52fb61cafc21d8991aca8e7775e1f1c2692e7e09c865b0061"
+    },
+    "old_Game": {
+      "pid": 30852,
+      "creation_filetime_decimal": "134368995759027619",
+      "exit_code": 1,
+      "forced_owned_cleanup": true
+    },
+    "last_actual_SDK": {
+      "generation": "C20",
+      "queue_pid": 9808,
+      "queue_birth_decimal": "134369190683587530",
+      "App_pid": 30936,
+      "App_birth_decimal": "134369190706095204",
+      "kernel_exits": "Wait0/exit0 for both"
+    },
+    "abandoned_C22": "Task child1/bootstrap1/Job0, constructor preflight only; no App, no pair publication, no10481 request/result. Never synthesize a C22 normal0/0 closure.",
+    "old_recording": "F99 worker/stage1; exact cleanup observes OBS0/unbound, capture_closed absent. Old publisher original owner proves normal0. These facts are separate, not a fabricated normal recording completion.",
+    "Driver": "Original closed serialized input38356800/b9f271...2c29 only. Helper reads its small existing hash receipt, not Driver body; original canonical cold validator/prelaunch operator remains required.",
+    "seed": "Seed equals exact original closed state9054/c2c672..., governance511/41851...; count74/dirtyfalse/pendingnull preserved. No projection increment, no rollback tail, no10476/10481 replay.",
+    "preserved_T0": {
+      "start_date_raw": 53144328,
+      "end_date_raw": 53407128,
+      "target_days": 10950,
+      "window_and_allwall": "Original continuity window and all maintenance wall retained; source controller does not rewrite the global ledger."
+    },
+    "integer_note": "The *_decimal documentation fields are strings deliberately. Runtime JSON references use exact Python integers; no JavaScript serialization of FILETIME.",
+    "sequence10481_meaning": "Old request/response10481 absent. No replay/fabricated old result; fresh cold SEM/CAP may legitimately consume currentNEXT10481 under new actual admission. Sequence number is not globally forbidden."
+  },
+  "runtime_inputs": {
+    "bootstrap": "root_checkpoint_bootstrap_c23.prepare_prelaunch(spec, save_response, final_driver_close, pipe_name, output_path) uses original native_session validator and preserves Driver/SAVE/history; launch_prepared(...pre_native_resume=same holder) rechecks.",
+    "final_driver_close_fields": [
+      "machine_id",
+      "old_sdk_closure_kind",
+      "old_Game",
+      "source_abort_index",
+      "sdk_closed (actual C20)",
+      "old_sdk_pair (actual C20)",
+      "Game_exit (F99)",
+      "driver_state",
+      "checkpoint",
+      "sidecars",
+      "history_rows",
+      "original_command_history_preserved"
+    ],
+    "cold_admission_fields": [
+      "schema xar.c23.normal-checkpoint-cold-queue/v1",
+      "machine_id",
+      "old_sdk_closure_kind",
+      "old_Game",
+      "source_abort_index",
+      "seed",
+      "original_state",
+      "governance",
+      "save_response",
+      "saved_semantic_response",
+      "save_sequence10480",
+      "next_sequence10481",
+      "cold_prelaunch",
+      "new_Game pid/birth/date",
+      "old_sdk_closed",
+      "old_sdk_pair",
+      "recording_binding",
+      "publisher_started",
+      "mod_absence",
+      "sdk_freeze",
+      "business_anchor",
+      "business_source_commit",
+      "current_map_admission",
+      "classifier_pin",
+      "queue_source",
+      "entry_source",
+      "native_binding_source"
+    ],
+    "recording_binding": {
+      "schema": "xar.C23-actual-cold-recording-binding/v1",
+      "status": "ACTUAL_NEW_RECORDING_READY",
+      "identity": "actual new Game PID/exact integer birth, different old30852/birth; then-actual new UUID and worker",
+      "pin_fields": [
+        "request",
+        "job",
+        "started",
+        "first_frame_admission",
+        "publisher_started"
+      ],
+      "verification": "Original live verify_segment + current API/source/publisher checks remain. Old2b and failed7987 UUIDs and old C16/C22 firstgate rejected."
+    },
+    "owner_create_gate": {
+      "path": "T/ROOT-C23-SDKOWNER-CREATE-ADMITTED.json",
+      "schema": "xar.c23.sdkowner-create-admission/v1",
+      "fields": [
+        "machine_id",
+        "actual_game exactref",
+        "first_frame_admission exactref",
+        "owner_input_pins exactref"
+      ],
+      "requirement": "Same actual pre-resume factory/holder; Root GREEN new Game and actual source-bound firstgate before supervisor creates owner."
+    },
+    "keeper": "Use then-current sole screen CAS, actual clean host repo/HEAD, current ready CLI9198718F...305D7F and installed pin. No old7444 task/CAS or expired Steam image reused.",
+    "storage": "Use then-actual fully admitted canonical storage view and ACCOUNT input, same SHA in launch/keeper/profile/job. ACCOUNT61/1492 and narrow77ba are historical, not adoption authority. M0 owns canonical schema; no bypass.",
+    "first_SEM_CAP": "Actual loaded SAVE date53274624/actor40526/episode/goal/lifecycle, new Game identity/pipe/connection, cold_checkpoint restored active_resumed with no error. Only then Root new map; restore itself gives zero cycle/action credit.",
+    "external_import_source_pins": "canonical_preload_policy.external_import_source_pins is a dict keyed by each of the23 frozen module names; value exactref{path:T/module.py,bytes,sha256}. Every entry must also belong to entry_source_pins with identical absolute path/SHA. Actual file bytes and cached module origin checked before supervisor/owner/App use; missing refuses."
+  },
+  "FULL_timing": {
+    "Queue_rows_enabled": true,
+    "full_publish_to_receipt_active_now": false,
+    "algorithm_entry": "transform_cold_feeder_source",
+    "new_publish": "FullLifecycleTimingV1 before original atomic request publish",
+    "validated_end": "after original successful result_for; receipt only adds scalar fields; exceptions discard metrics and preserve original raise",
+    "follow_or_restart_origin": null,
+    "ordinary_play_requirement": "Before continuous play, sole runtime must freeze/adopt transformed C23 cold feeder with actual five data refs and let that feeder publish the first ordinary FULL itself to obtain a real origin. A pre-existing manually published first request has null origin and cannot count as publish-to-receipt validation.",
+    "accounting": "Original main/publish/once/T0/allwall preserved by exact inverse timing transform. Include AUTO/MET/SEM/SAVE rows, zero-day/error count+sum and monotonic interval union. Never attribute mixed residual entirely to Driver."
+  },
+  "camera": {
+    "actual_current_parent": "src18/Source23 Service unconditionally schedules old camera pipeline; no independent CLI flag exists.",
+    "unadopted_gap": "Old client modes0–3 and no camera_tracking module cannot issue Native30 mode4; Root independently authorized Source24 six-leaf SDK candidate, not a launchconfig-word workaround.",
+    "old_actual_policy": "realm_overview_camera.py13511/5878650d...d037 uses quiet_days30/refresh_days30 game date. Earlier harness message quiet10s came from master and was explicitly corrected.",
+    "post_adoption": "Then-actual Source24 mode/target/scale/continuous hotspots/complete idle realm require Native receipts and new frames; first screenshot never proves sustained tracking or realm coverage."
+  },
+  "permissions": {
+    "D_write_export_Task_Game_OBS_RPC": 0,
+    "Git_mutations": 0,
+    "Driver_SAVE_DLL_lib_map_body_reads": 0,
+    "scratch_bytes": 0,
+    "source_hard_bytes": 98304,
+    "future_actual_card": "Separate Root/storage admission required for source output and deployment; no permission implied by this source plan."
+  }
+}

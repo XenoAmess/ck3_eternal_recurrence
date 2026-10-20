@@ -1,0 +1,144 @@
+{
+  "schema": "xar.C23-cold-feeder-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T00:05:50.921528Z",
+  "identity_evidence": "tools/ck3_live_run_id.py machine; task read-only tool output",
+  "status": "SOURCE_ONLY_ACTUAL_COLD_FIVE_REFS_AND_ROOT_REVIEW_REQUIRED",
+  "owner": "c23_cold_feeder",
+  "storage_card": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/C23-COLD-FEEDER-NEW-SOURCE64KiB-COMMITMENT01.json",
+    "bytes": 1440,
+    "sha256": "a4d898a0fdd8b39f46bc6724cc6aefd0b93135ea1d85072dd488f8c736cbd9bc"
+  },
+  "policy": {
+    "path": "docs/storage-retention-policy.json",
+    "version": "1.0.0",
+    "source_complete_hard_bytes": 65536,
+    "scratch_hard_bytes": 0,
+    "logical_participation_hard_bytes": 2621440,
+    "actual_process_resident_peak": "NOT_MEASURED",
+    "new_D_or_runtime_writes_authorized": false
+  },
+  "source_leaves": [
+    "prepare_c23_cold_feeder_v1.py",
+    "qualify_c23_cold_feeder_v1.py",
+    "c23_cold_feeder_plan_v1.json"
+  ],
+  "API": "prepare_c23_cold_feeder_v1.build_sources() -> (three_source_bytes_graph, source_only_report); never materializes graph",
+  "qualifier_command": [
+    "py",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/g2_saved_campaign/qualify_c23_cold_feeder_v1.py"
+  ],
+  "runtime_graph_names": [
+    "root_p37c23_same_game_loop_feeder100.py",
+    "root_continuity_window_c23_100.py",
+    "launch_c23_feeder100.py"
+  ],
+  "runtime_single_materialization_hard_bytes": 98304,
+  "first_new_FULL_credit_chain": "main previous_cycles explicitly starts at already settled saved4753; original result_for must match before4753",
+  "qualification_metadata_payload": "Exact original global predecessor JSON7921B is counted explicitly in addition to source and generated raw payload; finite workspace allowance remains separate.",
+  "actual_qualification_correction": "The added wrong-credit-chain case correctly discarded timing. The qualifier initially expected a null field immediately after discard and raised KeyError; corrected to require the actual empty timing dict before testing following/null origin. No runtime action occurred.",
+  "runtime_materialization_authority": "Root/runtime only; this source package grants none",
+  "existing_timing_entry": {
+    "path": "tools/g2_saved_campaign/prepare_c23_full_enabled_cold_controls_v1.py",
+    "bytes": 29500,
+    "sha256": "423706af13d8565332b8ed6e50e5d29b107666e54aac607d2e44afba70b8e0d9",
+    "function": "transform_cold_feeder_source(raw, source_ref=exact_ref)",
+    "selection": "original pinned function AST unchanged; bounded timing dependencies selected only; no eighteen-control graph construction"
+  },
+  "algorithm_scope": "C18 ordinary main/publish/result/recovery/planner/goal preserved by exact namespace inverse plus finite admitted/attach, initial publish and once-only first-success HOLD seams; original ledger bytes retained plus one saved alignment branch",
+  "saved_frontier": {
+    "historical_predecessor": {
+      "bytes": 7921,
+      "sha256": "51ee9a97aecbc0b14560110ddbb3f3fd41fc532f9c2647493efd0e2c3d0247e8",
+      "cycles": 4734,
+      "date_raw": 53274408,
+      "status": "repair_required"
+    },
+    "saved_cycles": 4753,
+    "date_raw": 53274624,
+    "checkpoint_saved_count": 74,
+    "next_sequence_before_new_SEM_CAP": 10481,
+    "already_settled_alignment_cycles": 19,
+    "new_cycle_credit": 0,
+    "failed10476_or4754_credit": 0,
+    "replay_allowed": false,
+    "T0_raw": 53144328,
+    "target_raw": 53407128,
+    "target_days": 10950,
+    "all_wall_origin_utc": "2026-10-19T03:26:49.420926Z",
+    "origin_reset": false,
+    "immutable_predecessor_archive_required": true,
+    "large_Driver_or_SAVE_body_reads": 0
+  },
+  "actual_startup": {
+    "admission_name": "ROOT-C23-COLD-FEEDER-ADMISSION100.json",
+    "schema": "xar.C23-saved-frontier-feeder/v1",
+    "required_main_refs": [
+      "cold_admission",
+      "cold_bound",
+      "actual_Game",
+      "map_admission",
+      "old_ledger"
+    ],
+    "missing_unknown_wrong_or_old_refs": "REJECT",
+    "nested_required": "original C23 cold_inputs + Source24 complete freeze exact rows + actual new recording UUID, publisher and Root first-frame through existing production validators",
+    "old_Game": "30852 / creation_filetime 134368995759027619 remains forced exit1; no inferred normal exit",
+    "other_history": "C20 SDK0/0; C22 preflight failed with no App and zero new MCP",
+    "actual_new_Game_identity": "NOT_ISSUED",
+    "source24_canonical_identity": "Bound from actual business_anchor + runtime sdk_freeze, not the historical O23 directory name",
+    "task_spec": "Root prepares fixed actual role=feeder SPEC first, then admission binds exact SPEC path/bytes/SHA, nonce, stage SHA and first sequence arguments",
+    "task_stage_args": [
+      "--first-control-sequence",
+      "<then-actual-unused-NEXT-after-SEM-CAP>"
+    ],
+    "publication": "No manual first FULL. Timed feeder requires absent request/response then captures mono immediately before original atomic publish.",
+    "resume": "one durable Task; no new admission, Task or reconstructed monotonic origin needed after first-batch release"
+  },
+  "gate": {
+    "status": "root_review_hold",
+    "continue_marker": "runtime/ROOT-C23-FIRST-FULL-CONTINUE100.json",
+    "schema": "xar.C23-first-FULL-root-continue/v1",
+    "required_marker_keys": [
+      "schema",
+      "reviewer",
+      "reviewed_at_utc",
+      "first_batch"
+    ],
+    "reviewer": "/root",
+    "first_batch_exact_fields": [
+      "machine_id",
+      "feeder_task_nonce",
+      "feeder_task_spec",
+      "feeder_source",
+      "first_control_sequence",
+      "request",
+      "response",
+      "date_raw",
+      "completed_cycles",
+      "full_lifecycle",
+      "review_deadline_utc",
+      "hold_started_at_utc"
+    ],
+    "expected_marker_body_location": "ROOT-CONTINUOUS-FEEDER-STATUS-P37C23.json first_batch, written after original result_for success, offline batch and continuity settlement",
+    "rule": "Root actually reads first FULL lifecycle origin/mono and ledger, then create-only writes exact marker. Missing waits with zero RPC and checks original STOP/SDK closure/deadline; incorrect rejects; correct releases once and is not polled each later batch.",
+    "deadline_utc": "2026-10-20T01:48:56.993837Z",
+    "deadline_extension_allowed": false,
+    "speed_credit": "Only actual same-producer publish to validated receipt scalars; Queue local sums and following/restart origins cannot substitute"
+  },
+  "focused_checks": [
+    "Original algorithm inverse + actual in-memory publish -> original result_for validation -> mono end, following has null origin, failures discard",
+    "Five actual references required; delegated cold/Source24/new-recording validators invoked; old Game rejected",
+    "4734 -> saved4753 alignment preserves other original metadata and zero new credit; one-Task HOLD missing/wrong/correct gate"
+  ],
+  "task_close": "Report exact three source pins, source gross and logical participation quote; no Git/index/master writes or runtime H/day/cycle/performance credit.",
+  "limitations": [
+    "Source-only synthetic new identities in focused fixtures cannot qualify actual startup.",
+    "Actual Python resident/AST memory peak is not measured.",
+    "Root/runtime must separately review generated graph and actual Task SPEC before executing.",
+    "No source, admission, ACK or marker text proves live business success."
+  ]
+}

@@ -21,3 +21,11 @@
 补拍、剪辑与逐秒可见性复核见[第 1 集镜头台账](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/camera-follow-footage-ledger.md)：266.4 秒净片的 267/267 个逐秒抽样帧均有中央战斗标记。此结果只证明该样本的拍摄视角，没有替整个游玩智能体长期运行或其他分辨率签核。
 
 镜头跟随只处理“哪里是当前值得看的位置”和“画面是否朝向该处”。它不推断交战双方伤亡、事件概率、胜负或撤退，也不能把独立重放的数值轨迹拼成原始战役。战争模型和视频叙述仍依照各自的原生证据门禁。
+
+## 2026-10-20：持续跟踪必须核对实际 SDK 激活链
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`；本轮身份工具回执 `7992e5`，源码审阅截至 `2026-10-20T00:00Z`。以下是本轮冻结源码比较，不追认前述缺机器身份的历史实机记录；这些旧记录的 `machine_id: unknown`，所属机器未核实。
+
+Native30 的实际源码704与离线产物11已具备持续跟踪能力，但Source23 canonical330d仍保留旧SDK调用链。原生旧模式只进行静态取景和settle；只有新Mode4及绑定真实arm generation的tracking tail才启用持续读回。因而“新DLL已构建／加载”不能证明连续镜头已激活。后续部署必须沿实际冻结SDK检查：真实arm状态和有限军队名单→pre-resume scope→Service展示意图→客户端Mode4／tail→原生当前跟踪回执。空scope不能制造跟踪身份；已知路线的中间省份也须进入有限白名单，否则途中可能取消。
+
+Source24最小六叶接线已于2026-10-20T00:12:02Z实际形成[canonical锚](evidence/source24-canonical-root-anchor-actual-2026-10-20.json)，commit为6b55531b、父330d，donor固定18c4；保留既有WAL、M7、时钟失败诊断及30游戏日空闲策略。00:15:22Z已实际导出src19与独立reference-c23/src，每份1457叶。Native30[离线产物闭件](evidence/native30-artifact11-actual-closed-2026-10-20.json)与[实际元数据准备](evidence/native30-transition-metadata-actual-prepared-2026-10-20.json)均不能代替实际加载或镜头验收。须分别记录自然热点期间的连续位置／状态读回，以及空闲全境的县集／缩放／原图；首帧、queued ACK和单次居中不授持续跟踪通过。

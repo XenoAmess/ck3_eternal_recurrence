@@ -1,0 +1,62 @@
+{
+  "Game_Task_UAC_export_calls": 0,
+  "H": "NOTRUN",
+  "actual_runtime_loaded": false,
+  "all_inputs_verified_before_metadata_mkdir": true,
+  "artifact11_only": true,
+  "borrowed_source_freeze_not_copied": {
+    "bytes": 1560447,
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\evidence\\source-freeze.json",
+    "sha256": "648b3ff2e7cd01f6e8c46490dc78a457fbcf716af17dcc78a45c8c1c356ec590"
+  },
+  "defender_registration_pending": true,
+  "deployed": false,
+  "five_callable_code_exports": 5,
+  "functional09_overall_status_preserved": "FAILED",
+  "future_writes_after_success": 0,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "noncallable_DATA_exports": 1,
+  "observed_at_utc": "2026-10-19T23:54:13.753238+00:00",
+  "os_qualification": "UNKNOWN",
+  "output_files": [
+    {
+      "bytes": 3475,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE30-TARGET-PIN.json",
+      "sha256": "cfe8b1be0a5c3f9681880f3916f17a2404b011e249037b811a3698f3d421e75c"
+    },
+    {
+      "bytes": 1526,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE29-BASE-EXE-BINDING.json",
+      "sha256": "75b60e8a432cc2f48ce696f25956df7485d084beff543aa2e8b134e6339257f6"
+    },
+    {
+      "bytes": 1814,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE30-TARGET-EXE-BINDING.json",
+      "sha256": "740c378aeb548104f253444ee3c5f6e7a75a6567adfa92736c10d23862ff5cc3"
+    },
+    {
+      "bytes": 2097,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE29-TO30-COMPATIBILITY.json",
+      "sha256": "1f42dbebe17e541aa94a57ef5ce9ebe6fcd3b51d905532cb8e4a78ef7e0002c0"
+    },
+    {
+      "bytes": 8758,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\native30-transition-metadata\\NATIVE30-TRANSITION-REFS.json",
+      "sha256": "ca10fbe37ae9f823f2949646b686ea0e3895d644180a9195d47265089809b857"
+    }
+  ],
+  "prepare_card": {
+    "bytes": 4434,
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE23-NATIVE30-09-11-METADATA-110592B-INTERNAL-PREPARE01.json",
+    "sha256": "be7d13f746e827d17933c9554b80cfe27253d80892fb68fad346af81590de47a"
+  },
+  "prior08_admin_future_writes_preserved": null,
+  "recipe": {
+    "bytes": 12260,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\PREPARE-NATIVE30-09-11-METADATA.py",
+    "sha256": "8b3de451291cc57eab451e02266dd2c00aa60fa2d10619ef35e6e6984a607b3e"
+  },
+  "schema": "xar.Source23-native-metadata-prepared/v1",
+  "source_fixture": false,
+  "status": "PREPARED_NOT_EXPORTED"
+}
