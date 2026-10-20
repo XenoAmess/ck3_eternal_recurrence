@@ -1,0 +1,178 @@
+{
+  "schema": "xar.e04.root.target-add-and-source-shot-adjudication.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:29:04.386195+00:00",
+  "reviewer": "/root",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "decision": "ACCEPT_BOUNDED_TARGET_ADD_POSITIVE_AND_R06_SOURCE_SHOT",
+  "accepted_native_claim": {
+    "regi_full_id": 2602,
+    "physical_slot": 1,
+    "before": 68,
+    "operand": 1,
+    "after": 69,
+    "same_actual_core_invocation": true,
+    "raw_replayed_or_new_day_submitted": false,
+    "recovery": "Lossless offline consumption of unchanged original raw and exact original full-parent response range"
+  },
+  "accepted_source_span": {
+    "start_seconds": 0,
+    "end_seconds_exclusive": 33,
+    "frames_start": 0,
+    "frames_end_exclusive": 990,
+    "fps": 30,
+    "width": 1280,
+    "height": 720,
+    "continuous_clean_for_bounded_positive": true,
+    "visible_army_count_before": 6679,
+    "visible_army_count_after": 6689,
+    "visible_date_before": "1067-03-31",
+    "visible_date_after": "1067-04-01",
+    "visual_change_bracket_seconds_exclusive_inclusive": [
+      18,
+      29
+    ],
+    "native_instruction_exact_encoded_PTS": null,
+    "permitted_caption": "The panel rises by 10 in this run; one independently sampled Regi slot is proven to receive an actual +1.",
+    "counted_unit": "One accepted original-M source clip per theme R03 through R13; R06 and R12 now accepted"
+  },
+  "root_actual_visual_review": {
+    "full_resolution_files": [
+      "full-00.jpg",
+      "full-01.jpg",
+      "full-02.jpg"
+    ],
+    "contact_sheets": [
+      0,
+      1,
+      29,
+      30,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      61
+    ],
+    "root_did_not_personally_review_all_62_sheets": true,
+    "delegated_complete_prefix_review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\AI-PREFIX-REVIEW.actual.json",
+      "bytes": 16972,
+      "sha256": "c02d17c859026650c3c0f01b8bc9a205f364bcec225841f899d7c2a115cc2e3d"
+    },
+    "human_1x_or_final_human_signoff": false
+  },
+  "retained_limits": {
+    "original_live_business_terminal_unchanged": true,
+    "original_pretty_output_failure_preserved": true,
+    "full_raw_strict_decode_pass": false,
+    "partial_decode_soft_guard_failure_preserved": true,
+    "whole_core_NET_cause_proven": false,
+    "toggle_effect_proven": false,
+    "global_physical_closure_qualified": false,
+    "full_R06_qualified": false,
+    "whole_panel_plus10_fully_attributed": false,
+    "finished_film_delivered": false
+  },
+  "metric_after": {
+    "research_cards_completed": 10,
+    "research_cards_total": 14,
+    "business_items_completed": 7,
+    "business_items_total": 11,
+    "formal_dynamic_themes_completed": 2,
+    "formal_dynamic_themes_total": 11,
+    "ABC_completed": 0,
+    "ABC_total": 3,
+    "B_sites_completed": 0,
+    "B_sites_total": 2
+  },
+  "raw_video_original_recorder_pin_reused_without_new_body_hash": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\raw.mkv",
+    "bytes": 20403313,
+    "sha256": "5280a139b1f1b1fb54b432e824ab4786c030668efe71465435f7f99aeb75912e"
+  },
+  "sources": {
+    "target_instruction": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-INSTRUCTION.offline.json",
+      "bytes": 90993,
+      "sha256": "c88b81b489beef30b82391e8fbd1050f6bd10cdc19ec915f89513af5cff81bf7"
+    },
+    "target_proof": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-CORE-PROOF.offline.json",
+      "bytes": 50670,
+      "sha256": "46e70788286eff215d37d552bc166db3f2fe1663cd9004f9f57d08dcb0497c6c"
+    },
+    "offline_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 7480,
+      "sha256": "de10b75c9b2e63f42049438be5048168fed0d20decc7e287834e80972fff50d5"
+    },
+    "independent_review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-independent-review-a01\\INDEPENDENT-REVIEW.actual-a01.json",
+      "bytes": 6895,
+      "sha256": "584b56d4f95e36c9c77058c1ce8a180fd702aafee445628faa358fa4aabbcfde"
+    },
+    "final_independent_seal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-independent-review-a01\\FINAL-REVIEW-SEAL.actual-a01.json",
+      "bytes": 2910,
+      "sha256": "1025a4059f42ff16b675b8e36f88a13cc76d2a37cc8a84e027e233f6c5c7e7fa"
+    },
+    "native_raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+      "bytes": 31553,
+      "sha256": "afbae8ec5dd382626cad5a7e6aefb913a2f9c2aed82a877b2219f8d048da2eb6"
+    },
+    "full_parent_pin": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-FULL-PARENT-PROOF.json",
+      "bytes": 1749,
+      "sha256": "77b17cdada589deef5bedb04f84bf6ab433d86dca4959c23b0b164b95bf9ea6c"
+    },
+    "original_live_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-REFILL-TERMINAL.json",
+      "bytes": 381,
+      "sha256": "fe30148cdba1e12b6d1ed4394e0f0af395fcc4fbae0f415a7c41699d8284cdeb"
+    },
+    "source_admission": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\os-admission-a01\\SOURCE-ADMISSION.actual.json",
+      "bytes": 8833,
+      "sha256": "00c72df8b76d2cfa2212eab8a22e392824bb2fa25d2853b77a48178f76aa5887"
+    },
+    "recorder_result": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\result.json",
+      "bytes": 2014,
+      "sha256": "22b1246e765dea00cc2a74bd24a50ac91ad212513120f5aa9ebf7f001f599139"
+    },
+    "film_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\E04-R06-R0221-TAKE01-film-result.actual.json",
+      "bytes": 1490,
+      "sha256": "86aaebcaccad6fa33b651302f7d4ba37cd32027674b1a1a255fb7e98e69157c8"
+    },
+    "public_run_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a06\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1195,
+      "sha256": "db59c774372408eb2db8cb7cda8211512365bdea73cdead7647036f7938ea93f"
+    },
+    "allocator_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\allocate-exec-a06\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1548,
+      "sha256": "3fa5679e8aaba8a612558bbc8fefbd6291136c88a068f44cedb51d588d2cedb4"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\SCREEN-RELEASE.actual-a01.json",
+      "bytes": 1264,
+      "sha256": "e7d9e6a09b31ebf9bda8c0703fc0251842ec7367ca8ebbd19c0832435e1ae5c4"
+    },
+    "media_review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\AI-PREFIX-REVIEW.actual.json",
+      "bytes": 16972,
+      "sha256": "c02d17c859026650c3c0f01b8bc9a205f364bcec225841f899d7c2a115cc2e3d"
+    },
+    "original_metric_adjudication": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\root-adjudication-a01\\ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+      "bytes": 8538,
+      "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88"
+    }
+  }
+}

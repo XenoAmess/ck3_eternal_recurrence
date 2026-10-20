@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:13:27.948245+00:00",
+  "phase": "single_strict_decode",
+  "preserved_partial": true,
+  "reason": "contacts softguard7MiB preserves1MiB before8MiB hardcap",
+  "returncode": 1,
+  "counts": {
+    "contacts": 7425559,
+    "full_resolution": 472164,
+    "metadata": 71297,
+    "aggregate": 7969020
+  },
+  "no_retry": true,
+  "full1080_pass": false,
+  "human_signoff": false,
+  "remaining_heavy": 0
+}

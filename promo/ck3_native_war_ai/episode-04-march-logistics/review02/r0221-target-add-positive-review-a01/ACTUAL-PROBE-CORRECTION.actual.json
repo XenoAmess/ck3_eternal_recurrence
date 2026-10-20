@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.r0221-actual-probe-preflight-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:12:44.249475+00:00",
+  "source": "Actual one ffprobe metadata readback and preceding exec preflight AssertionError; Root explicit authorization and capacity plan allowance received",
+  "first_executor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\execute_visual.py",
+    "bytes": 12593,
+    "sha256": "887926733fddf3f3be0c945a242979c1ad4630abd32ce63adb1551c05aef0cec"
+  },
+  "first_probe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\RAW-METADATA.actual.json",
+    "bytes": 1989,
+    "sha256": "08e5e3c6699c3f91e17db336abde77289cb87a2f666fc70031d5b20e073a21ca"
+  },
+  "original_36_seconds_is_command_maximum": true,
+  "actual_probe_duration_seconds": "35.166000",
+  "preflight_stop": "Original provisional35.5s sample guard stopped before any FFmpeg command/process. Original script and first probe remain.",
+  "ffprobe_runs_so_far": 1,
+  "strict_decode_runs_so_far": 0,
+  "image_files_so_far": 0,
+  "fourth_sample_changed_from_frame": 1065,
+  "fourth_sample_changed_to_frame": 1054,
+  "expected_fourth_sample_seconds": 35.133,
+  "frame_and_sheet_count_not_assumed_from_duration": true,
+  "max_source_frames": 1080,
+  "max_contact_sheets": 68,
+  "expected_frame_count_only": 1055,
+  "expected_contact_count_only": 66,
+  "actual_decode_will_determine_frame_count": true,
+  "no_second_probe": true,
+  "first_and_only_strict_decode_next": true,
+  "new_executor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\execute_decode_a02.py",
+    "bytes": 12152,
+    "sha256": "28fe9ef44035b82040047e14120ac09386976aa8533235c4d966b575a13e9e81"
+  },
+  "budget_expansion": 0,
+  "formal_credit": 0,
+  "human_signoff": false
+}

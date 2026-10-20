@@ -1,5 +1,11 @@
 # R0221 选定物理 ADD 与同次 Core 关联的离线恢复（1.20.0.4）
 
+## 2026-10-20 12:29 UTC：Root签出R0221限定R06阳性源镜头，正式动态2/11
+
+`machine_id: desktop-3fevhd2-1c74096080`；依据[Root实际裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0221-target-add-positive-review-a01/ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json)（7705B，SHA `f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e`），接受同R0221原片 **[0,33)秒/990帧** 的原M单次补员阳性源镜头。[11主题账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)现为 **2/11（18.18%，R06+R12）**；旧1/11段落保留为当时快照。画面Army6679→6689的+10，与同场原生独立证明Regi2602/slot1 current68→69的+1分别表述，未归因整军+10或给出精确原生事件PTS。
+
+990帧实际PTS与已审contact cells齐；AI看62张sheets/992有效cell，Root实际看3张fullres和12张具名sheets，非人工1×。保守可读变化界限(18,29]秒、29秒后保证4秒后态，不冒称建议8–15秒。原全片35.166秒strict decoder **rc1/soft7MiB guard** 与未完整解码PASS、原live consumer失败/terminalfalse均保留；只接受限定前缀。研究10/14、业务7/11、B0/2、ABC0/3不变，wholeCore NET/toggle/global physical closure/fullR06、最终片和human signoff均未授。
+
 `machine_id: desktop-3fevhd2-1c74096080`。现场 R0221 使用 source `4fc8d0f4cae53735274475bd3e7fc3afbb958f7c`、native tree `fee86631356f556271445157523c62abfd62951e`；新 Python 修复只在隔离集成树执行。精确文件 SHA、观察时间和原件/派生角色见[归档清单](evidence/episode04-r0221-refill-recovery-20261020/MANIFEST.actual.json)。以下结论不外推其他机器、版本或新部署。
 
 ## 实际捕获和原现场失败分别保留

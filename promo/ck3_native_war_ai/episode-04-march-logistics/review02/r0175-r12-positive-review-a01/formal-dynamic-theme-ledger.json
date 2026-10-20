@@ -1,7 +1,7 @@
 {
   "schema": "xar.e04.formal_dynamic_theme_accepted_source_shots.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-20T10:45:36.094121+00:00",
+  "observed_at_utc": "2026-10-20T12:32:24.909688+00:00",
   "role": "derived tiny ledger bound to actual Root decision; no new media review",
   "unit": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
   "definition": "Each R03..R13 theme counts once after at least one accepted original-M source shot; no full-suite or finished-film equivalence",
@@ -15,9 +15,9 @@
     "bytes": 27122,
     "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
   },
-  "accepted_count": 1,
+  "accepted_count": 2,
   "total_themes": 11,
-  "percentage": 9.090909090909092,
+  "percentage": 18.181818181818183,
   "themes": [
     {
       "theme": "R03",
@@ -36,8 +36,26 @@
     },
     {
       "theme": "R06",
-      "status": "pending_accepted_original_M_source_shot",
-      "accepted_shots": []
+      "status": "accepted_original_M_positive_source_shot",
+      "accepted_shots": [
+        {
+          "run": "R0221",
+          "span_seconds_half_open": [
+            0,
+            33
+          ],
+          "span_frames_half_open": [
+            0,
+            990
+          ],
+          "source_fps": 30,
+          "Root_decision_repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0221-target-add-positive-review-a01/ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json",
+          "native_selected_target_ADD": "+1:68->69",
+          "visible_panel_delta": "+10:6679->6689",
+          "whole_panel_plus10_attributed_to_target": false,
+          "full_R06_qualified": false
+        }
+      ]
     },
     {
       "theme": "R07",
@@ -93,7 +111,9 @@
     "No single-hop refusal/equal-cutoff shot credit.",
     "No boarding-fee or supply/refill causation from this route clip.",
     "No extra-credit R13; no finished chapter, full film, human1x, signoff or OneDrive delivery.",
-    "No new raw copy/hash, packet pass, decoding, image generation or render; existing technical QA reused."
+    "No new raw copy/hash, packet pass, decoding, image generation or render; existing technical QA reused.",
+    "R0221 original strict decoder rc1/soft7MiB failure and whole35.166s non-PASS preserved; only [0,33) accepted.",
+    "Native target+1 is independently bound; visible Army+10 is not wholly attributed, no exact native encoded PTS."
   ],
   "full_R12_variant_suite_film_qualified": false,
   "human_1x": false,
@@ -107,8 +127,43 @@
   "historical_zero_records_retained": true,
   "evidence_retention": {
     "owner": "/root",
-    "purpose": "Accepted R12 source for Episode04 final edit and evidence review",
+    "purpose": "Accepted R12 and bounded R0221 R06 sources for Episode04 final edit and evidence review",
     "review_at_utc": "2026-10-21T10:00:00Z",
     "automatic_renewal": false
-  }
+  },
+  "history": [
+    {
+      "observed_at_utc": "2026-10-20T10:45:36.094121+00:00",
+      "accepted_count": 1,
+      "accepted_themes": [
+        "R12"
+      ],
+      "previous_ledger_sha256": "aca9249d5792fa3ae5a8f1050087e965f194d8714afcdd25fb8802a2e2fb992b",
+      "Root_decision": {
+        "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 8538,
+        "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88"
+      }
+    }
+  ],
+  "current_Root_decision": {
+    "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0221-target-add-positive-review-a01/ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json",
+    "bytes": 7705,
+    "sha256": "f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e"
+  },
+  "Root_decisions": [
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+      "bytes": 8538,
+      "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0221-target-add-positive-review-a01/ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json",
+      "bytes": 7705,
+      "sha256": "f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e"
+    }
+  ],
+  "full_R06_qualified": false,
+  "full_raw_R0221_strict_decode_pass": false,
+  "accepted_R0221_bounded_prefix_frames": 990
 }

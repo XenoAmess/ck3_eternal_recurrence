@@ -1,0 +1,1505 @@
+{
+  "schema": "xar.e04.r0221-partial-visual-new-bytes-manifest.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:15:44.399325+00:00",
+  "status": "PARTIAL_SOFTGUARD_STOP_NO_FULL_RAW_TECHNICAL_PASS",
+  "failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\FAILURE.actual.json",
+    "bytes": 497,
+    "sha256": "f34e314ea112f56901db7c1b69cfb1fcf744dc36054aed252800521f0f93fd9a"
+  },
+  "one_metadata_probe": true,
+  "one_failed_strict_decode_attempt": true,
+  "retry_count": 0,
+  "original_nominal_seconds": 36,
+  "actual_probe_seconds": "35.166000",
+  "provisional_expected1055_not_verified_fullcount": true,
+  "source_decoded_trace_count": 1000,
+  "materialized_complete_sheet_count": 62,
+  "materialized_frame_count": 992,
+  "materialized_last_frame_inclusive": 991,
+  "decoded_not_materialized_complete_sheet_count": 8,
+  "bad_or_partial_image_files": [],
+  "first_last_materialized_PTS_ticks": [
+    0,
+    33033
+  ],
+  "sheets": [
+    {
+      "sheet_id": 0,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-000.jpg",
+        "bytes": 118617,
+        "sha256": "3483a9964b36f8208c7ead793bd7aa7dc6117d83334e60ed82842af2062d140d"
+      },
+      "source_frames_half_open": [
+        0,
+        16
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        0,
+        500
+      ],
+      "actual_PTS_seconds_first_last": [
+        "0",
+        "0.5"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 1,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-001.jpg",
+        "bytes": 118805,
+        "sha256": "61ab16129a65fc4df13f369e7a13a70da3de5cf13049d3a01f334373141553e0"
+      },
+      "source_frames_half_open": [
+        16,
+        32
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        533,
+        1033
+      ],
+      "actual_PTS_seconds_first_last": [
+        "0.533",
+        "1.033"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 2,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-002.jpg",
+        "bytes": 118834,
+        "sha256": "6b52873c886f951eb91bd8a5588903ebe10a2fd4c889bb579ba3bf2c285edf1a"
+      },
+      "source_frames_half_open": [
+        32,
+        48
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        1067,
+        1567
+      ],
+      "actual_PTS_seconds_first_last": [
+        "1.067",
+        "1.567"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 3,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-003.jpg",
+        "bytes": 119411,
+        "sha256": "62f4b45019432b3d4551c1c04c4cdfa19fd6cdf0eef40b79125eecc2f9962059"
+      },
+      "source_frames_half_open": [
+        48,
+        64
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        1600,
+        2100
+      ],
+      "actual_PTS_seconds_first_last": [
+        "1.6",
+        "2.1"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 4,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-004.jpg",
+        "bytes": 120345,
+        "sha256": "95b27b53fb886edb034ca4679c3d7255121b05b2325b111b6f8c1dc4e2ec4310"
+      },
+      "source_frames_half_open": [
+        64,
+        80
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        2133,
+        2633
+      ],
+      "actual_PTS_seconds_first_last": [
+        "2.133",
+        "2.633"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 5,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-005.jpg",
+        "bytes": 119359,
+        "sha256": "631ab60aba8751aedfbfadd1bc328714df8bae5b6b9881ffccc7d429cc518450"
+      },
+      "source_frames_half_open": [
+        80,
+        96
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        2667,
+        3167
+      ],
+      "actual_PTS_seconds_first_last": [
+        "2.667",
+        "3.167"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 6,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-006.jpg",
+        "bytes": 119054,
+        "sha256": "d465a9996599ce25aa17977a5ecd2b5b45ea2574b3169bbcf34fc98c8739d482"
+      },
+      "source_frames_half_open": [
+        96,
+        112
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        3200,
+        3700
+      ],
+      "actual_PTS_seconds_first_last": [
+        "3.2",
+        "3.7"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 7,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-007.jpg",
+        "bytes": 119010,
+        "sha256": "555862a90dd927524ccc1cce70bc1d20b2531f6b4507e55fe8817bafa743f755"
+      },
+      "source_frames_half_open": [
+        112,
+        128
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        3733,
+        4233
+      ],
+      "actual_PTS_seconds_first_last": [
+        "3.733",
+        "4.233"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 8,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-008.jpg",
+        "bytes": 120222,
+        "sha256": "c230a9c4c9077a88124618163538ed07dc5ff6fafe5542e8248c120e9e03dc45"
+      },
+      "source_frames_half_open": [
+        128,
+        144
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        4267,
+        4767
+      ],
+      "actual_PTS_seconds_first_last": [
+        "4.267",
+        "4.767"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 9,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-009.jpg",
+        "bytes": 120619,
+        "sha256": "80d149124856cbee7cb212cac820caba6b2fdd8405889ca1480c20df75209320"
+      },
+      "source_frames_half_open": [
+        144,
+        160
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        4800,
+        5300
+      ],
+      "actual_PTS_seconds_first_last": [
+        "4.8",
+        "5.3"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 10,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-010.jpg",
+        "bytes": 119578,
+        "sha256": "e75886b93619c3c9c1cf48dd3ee5374d3cdc5041c64a6b94114f4b255c47f058"
+      },
+      "source_frames_half_open": [
+        160,
+        176
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        5333,
+        5833
+      ],
+      "actual_PTS_seconds_first_last": [
+        "5.333",
+        "5.833"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 11,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-011.jpg",
+        "bytes": 119439,
+        "sha256": "b743ac52f21f2e0f09cd5b67e529e0bc55e2d6d2d4c187a7372276a58e95b462"
+      },
+      "source_frames_half_open": [
+        176,
+        192
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        5867,
+        6367
+      ],
+      "actual_PTS_seconds_first_last": [
+        "5.867",
+        "6.367"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 12,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-012.jpg",
+        "bytes": 119788,
+        "sha256": "060f478ecc4620eaa00afabdbec98dae805d59d290965b5392b735bbb41f5d63"
+      },
+      "source_frames_half_open": [
+        192,
+        208
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        6400,
+        6900
+      ],
+      "actual_PTS_seconds_first_last": [
+        "6.4",
+        "6.9"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 13,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-013.jpg",
+        "bytes": 120917,
+        "sha256": "26558acfc3586f4c7db37062cc32780da9cd7e12a9f92670ed68411fc9198441"
+      },
+      "source_frames_half_open": [
+        208,
+        224
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        6933,
+        7433
+      ],
+      "actual_PTS_seconds_first_last": [
+        "6.933",
+        "7.433"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 14,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-014.jpg",
+        "bytes": 120626,
+        "sha256": "ab713531bb7bebf41c49fc1fc8f8a426a740d6f7f8c5b2489b4fff94adad471a"
+      },
+      "source_frames_half_open": [
+        224,
+        240
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        7467,
+        7967
+      ],
+      "actual_PTS_seconds_first_last": [
+        "7.467",
+        "7.967"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 15,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-015.jpg",
+        "bytes": 119825,
+        "sha256": "fbc67c16f937167c0b856d3e899e234c58803fb877adbd90574870eafeaf1692"
+      },
+      "source_frames_half_open": [
+        240,
+        256
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        8000,
+        8500
+      ],
+      "actual_PTS_seconds_first_last": [
+        "8",
+        "8.5"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 16,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-016.jpg",
+        "bytes": 119720,
+        "sha256": "42a34a7d0054c28cc9d45c54f53b006b33dc12d712aa62f8057e29a9a5baa485"
+      },
+      "source_frames_half_open": [
+        256,
+        272
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        8533,
+        9033
+      ],
+      "actual_PTS_seconds_first_last": [
+        "8.533",
+        "9.033"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 17,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-017.jpg",
+        "bytes": 119875,
+        "sha256": "649711fb43474a7f0c4d9aad5929628bf4cff1f0279f5165210e6a33b3ac0e60"
+      },
+      "source_frames_half_open": [
+        272,
+        288
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        9067,
+        9567
+      ],
+      "actual_PTS_seconds_first_last": [
+        "9.067",
+        "9.567"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 18,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-018.jpg",
+        "bytes": 121066,
+        "sha256": "06f7815265551b45e1b92bb763506acf86064fd95b26f2a515a2a2f8dc339960"
+      },
+      "source_frames_half_open": [
+        288,
+        304
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        9600,
+        10100
+      ],
+      "actual_PTS_seconds_first_last": [
+        "9.6",
+        "10.1"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 19,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-019.jpg",
+        "bytes": 119819,
+        "sha256": "d146ced13402bd0473c71f760c8ffa57d2c9f640d317a412abd2d2a2b7bc69bc"
+      },
+      "source_frames_half_open": [
+        304,
+        320
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        10133,
+        10633
+      ],
+      "actual_PTS_seconds_first_last": [
+        "10.133",
+        "10.633"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 20,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-020.jpg",
+        "bytes": 119253,
+        "sha256": "70d28535077907db82ef6d6f33eda47b5c5540e2793c283487947ebce2024d34"
+      },
+      "source_frames_half_open": [
+        320,
+        336
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        10667,
+        11167
+      ],
+      "actual_PTS_seconds_first_last": [
+        "10.667",
+        "11.167"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 21,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-021.jpg",
+        "bytes": 119117,
+        "sha256": "8d7515d0603f6e0c52542bac7af22f0e4a26a29d8c34fa4eb2cd00d883ae48ff"
+      },
+      "source_frames_half_open": [
+        336,
+        352
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        11200,
+        11700
+      ],
+      "actual_PTS_seconds_first_last": [
+        "11.2",
+        "11.7"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 22,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-022.jpg",
+        "bytes": 120041,
+        "sha256": "34efcb2c69a81370109bfbab4aaddb86237fd51cb7ef7ca3dfc74425b314b895"
+      },
+      "source_frames_half_open": [
+        352,
+        368
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        11733,
+        12233
+      ],
+      "actual_PTS_seconds_first_last": [
+        "11.733",
+        "12.233"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 23,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-023.jpg",
+        "bytes": 120922,
+        "sha256": "c8bf87d7e5bd134e6b6e4b5553dec56787c9164caf06c1782ad37dd5482244ec"
+      },
+      "source_frames_half_open": [
+        368,
+        384
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        12267,
+        12767
+      ],
+      "actual_PTS_seconds_first_last": [
+        "12.267",
+        "12.767"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 24,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-024.jpg",
+        "bytes": 119836,
+        "sha256": "35c72684a3fe1b29c83a767776bfcbf88d9c3b090cb6b80f41d16503a84083da"
+      },
+      "source_frames_half_open": [
+        384,
+        400
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        12800,
+        13300
+      ],
+      "actual_PTS_seconds_first_last": [
+        "12.8",
+        "13.3"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 25,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-025.jpg",
+        "bytes": 119271,
+        "sha256": "0fd4636731b93bf9c5a2640516716f8e6e10ef9971f765d1c4cdb48e57a49959"
+      },
+      "source_frames_half_open": [
+        400,
+        416
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        13333,
+        13833
+      ],
+      "actual_PTS_seconds_first_last": [
+        "13.333",
+        "13.833"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 26,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-026.jpg",
+        "bytes": 119462,
+        "sha256": "295e044b856f3b6b16d7f676b48f01685c02df3ceb4bfa185e58499f8520ad2c"
+      },
+      "source_frames_half_open": [
+        416,
+        432
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        13867,
+        14367
+      ],
+      "actual_PTS_seconds_first_last": [
+        "13.867",
+        "14.367"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 27,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-027.jpg",
+        "bytes": 120636,
+        "sha256": "1c5bf55150357686bb3b2bb0ef603cdc787a4000cf077588f2bad2dc392dd43e"
+      },
+      "source_frames_half_open": [
+        432,
+        448
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        14400,
+        14900
+      ],
+      "actual_PTS_seconds_first_last": [
+        "14.4",
+        "14.9"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 28,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-028.jpg",
+        "bytes": 120591,
+        "sha256": "2f3100eac6f709d3c95d52edb16e35d165c8c7678a456be6736a931ea76270cd"
+      },
+      "source_frames_half_open": [
+        448,
+        464
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        14933,
+        15433
+      ],
+      "actual_PTS_seconds_first_last": [
+        "14.933",
+        "15.433"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 29,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-029.jpg",
+        "bytes": 119468,
+        "sha256": "4c4bc44908578dbf0eec9c94eca400e8fe0b0c146e9bcc71fab5116900e5ce27"
+      },
+      "source_frames_half_open": [
+        464,
+        480
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        15467,
+        15967
+      ],
+      "actual_PTS_seconds_first_last": [
+        "15.467",
+        "15.967"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 30,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-030.jpg",
+        "bytes": 119190,
+        "sha256": "13b07e20be65dba61a6736f4f56e09f92089f891fb5e8e4f196a66ec14bf2522"
+      },
+      "source_frames_half_open": [
+        480,
+        496
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        16000,
+        16500
+      ],
+      "actual_PTS_seconds_first_last": [
+        "16",
+        "16.5"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 31,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-031.jpg",
+        "bytes": 119222,
+        "sha256": "4fa5f278d4c2cbdc131e2b75b9f7c6ab1813ed3184ea18772614eb81bd752b24"
+      },
+      "source_frames_half_open": [
+        496,
+        512
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        16533,
+        17033
+      ],
+      "actual_PTS_seconds_first_last": [
+        "16.533",
+        "17.033"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 32,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-032.jpg",
+        "bytes": 120133,
+        "sha256": "963d5e4717d31f981b417ba3fcd65ef6620125ca34595b9f9e398e84bfb9f36a"
+      },
+      "source_frames_half_open": [
+        512,
+        528
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        17067,
+        17567
+      ],
+      "actual_PTS_seconds_first_last": [
+        "17.067",
+        "17.567"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 33,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-033.jpg",
+        "bytes": 119551,
+        "sha256": "3a9068a99ab9036067ac08072d24e0444af65a1981a2e86510fa20bc69fb4247"
+      },
+      "source_frames_half_open": [
+        528,
+        544
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        17600,
+        18100
+      ],
+      "actual_PTS_seconds_first_last": [
+        "17.6",
+        "18.1"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 34,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-034.jpg",
+        "bytes": 119016,
+        "sha256": "8ccc991aca5d7a8de82d1ab16638abd785b70eb12288f833cd57454d3793250b"
+      },
+      "source_frames_half_open": [
+        544,
+        560
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        18133,
+        18633
+      ],
+      "actual_PTS_seconds_first_last": [
+        "18.133",
+        "18.633"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 35,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-035.jpg",
+        "bytes": 118934,
+        "sha256": "eb59e11fcd2c0d1ca1e861a256269c32c4953934aa683350ab58351efc605ba0"
+      },
+      "source_frames_half_open": [
+        560,
+        576
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        18667,
+        19167
+      ],
+      "actual_PTS_seconds_first_last": [
+        "18.667",
+        "19.167"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 36,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-036.jpg",
+        "bytes": 118974,
+        "sha256": "cccc20b510b72e86ae98cb89a7d6477674bc6fcb575875a9be172491a76ff1db"
+      },
+      "source_frames_half_open": [
+        576,
+        592
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        19200,
+        19700
+      ],
+      "actual_PTS_seconds_first_last": [
+        "19.2",
+        "19.7"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 37,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-037.jpg",
+        "bytes": 119858,
+        "sha256": "74f9a3e54adb3823f59aa9e6657f7cde877281b1a80b6272b4b4779c984c78e4"
+      },
+      "source_frames_half_open": [
+        592,
+        608
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        19733,
+        20233
+      ],
+      "actual_PTS_seconds_first_last": [
+        "19.733",
+        "20.233"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 38,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-038.jpg",
+        "bytes": 119882,
+        "sha256": "36072046074fdc6b2a7fc141ffd4e946061c417d6b4508b2707c97ba07f298d8"
+      },
+      "source_frames_half_open": [
+        608,
+        624
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        20267,
+        20767
+      ],
+      "actual_PTS_seconds_first_last": [
+        "20.267",
+        "20.767"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 39,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-039.jpg",
+        "bytes": 119014,
+        "sha256": "79e5aa8e51b487cb47def8706a5417a31fb044984d067ded68d178600da2882a"
+      },
+      "source_frames_half_open": [
+        624,
+        640
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        20800,
+        21300
+      ],
+      "actual_PTS_seconds_first_last": [
+        "20.8",
+        "21.3"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 40,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-040.jpg",
+        "bytes": 118905,
+        "sha256": "fd2a9d3376d8ae79e0a3eca4698c1afa93dc2cbbc71dc89a40774babb06ad7f4"
+      },
+      "source_frames_half_open": [
+        640,
+        656
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        21333,
+        21833
+      ],
+      "actual_PTS_seconds_first_last": [
+        "21.333",
+        "21.833"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 41,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-041.jpg",
+        "bytes": 119493,
+        "sha256": "fea8711bb128994c792cf891f4e14b8f29686dc7249e1bbb8daa84e7c022b1d1"
+      },
+      "source_frames_half_open": [
+        656,
+        672
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        21867,
+        22367
+      ],
+      "actual_PTS_seconds_first_last": [
+        "21.867",
+        "22.367"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 42,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-042.jpg",
+        "bytes": 120506,
+        "sha256": "b9201f870497e4f65c91eac402221c6f407fe3218688d629ae62d0eb589feec4"
+      },
+      "source_frames_half_open": [
+        672,
+        688
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        22400,
+        22900
+      ],
+      "actual_PTS_seconds_first_last": [
+        "22.4",
+        "22.9"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 43,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-043.jpg",
+        "bytes": 119910,
+        "sha256": "43a1be06e23ac26471a40eabc078ceef3ae0ac9c85d00118d55de00f87745040"
+      },
+      "source_frames_half_open": [
+        688,
+        704
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        22933,
+        23433
+      ],
+      "actual_PTS_seconds_first_last": [
+        "22.933",
+        "23.433"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 44,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-044.jpg",
+        "bytes": 119262,
+        "sha256": "dabe2a1bf93c8e38cc4464ec5bf3b942202c82e876df9d599a747ab3f51703ea"
+      },
+      "source_frames_half_open": [
+        704,
+        720
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        23467,
+        23967
+      ],
+      "actual_PTS_seconds_first_last": [
+        "23.467",
+        "23.967"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 45,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-045.jpg",
+        "bytes": 119413,
+        "sha256": "854202e385706e5b55defb945f6b8d00ab0ee6e5f66465d8e8d0eefc83187398"
+      },
+      "source_frames_half_open": [
+        720,
+        736
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        24000,
+        24500
+      ],
+      "actual_PTS_seconds_first_last": [
+        "24",
+        "24.5"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 46,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-046.jpg",
+        "bytes": 120126,
+        "sha256": "e9010c8d521e690231dcb5925893cc16eedbbca5862f2712dbdfc076028b36fe"
+      },
+      "source_frames_half_open": [
+        736,
+        752
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        24533,
+        25033
+      ],
+      "actual_PTS_seconds_first_last": [
+        "24.533",
+        "25.033"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 47,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-047.jpg",
+        "bytes": 120157,
+        "sha256": "30500e99e2cf24d2573386e3fe41afe80d2c1902b64dd8a8486646a22e6c03db"
+      },
+      "source_frames_half_open": [
+        752,
+        768
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        25067,
+        25567
+      ],
+      "actual_PTS_seconds_first_last": [
+        "25.067",
+        "25.567"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 48,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-048.jpg",
+        "bytes": 119556,
+        "sha256": "a3bdd6515c95ffe2ab269086f3e214085c21c49759682ee9ed707f8851551dec"
+      },
+      "source_frames_half_open": [
+        768,
+        784
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        25600,
+        26100
+      ],
+      "actual_PTS_seconds_first_last": [
+        "25.6",
+        "26.1"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 49,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-049.jpg",
+        "bytes": 119665,
+        "sha256": "78f7a7cceb46a1d192c60413848c671a708c7d0cd2624d1ccab0b1436a1a070f"
+      },
+      "source_frames_half_open": [
+        784,
+        800
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        26133,
+        26633
+      ],
+      "actual_PTS_seconds_first_last": [
+        "26.133",
+        "26.633"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 50,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-050.jpg",
+        "bytes": 120034,
+        "sha256": "982fd6e78fdeb780975e660eb81e37278a09449344a428fdb10ab006a1597d1d"
+      },
+      "source_frames_half_open": [
+        800,
+        816
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        26667,
+        27167
+      ],
+      "actual_PTS_seconds_first_last": [
+        "26.667",
+        "27.167"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 51,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-051.jpg",
+        "bytes": 121122,
+        "sha256": "700fcf38ebe4fe11452a7fbc76bac77357cec400cb618a6ed0b8aeeef0db320d"
+      },
+      "source_frames_half_open": [
+        816,
+        832
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        27200,
+        27700
+      ],
+      "actual_PTS_seconds_first_last": [
+        "27.2",
+        "27.7"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 52,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-052.jpg",
+        "bytes": 120104,
+        "sha256": "03a852b38617256948f80a54a3e4a7f8ad4cb28eee723853a5b18d3f916cbad4"
+      },
+      "source_frames_half_open": [
+        832,
+        848
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        27733,
+        28233
+      ],
+      "actual_PTS_seconds_first_last": [
+        "27.733",
+        "28.233"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 53,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-053.jpg",
+        "bytes": 119725,
+        "sha256": "b50feb8ba8bfa89590e2d371655ec066a1268581f5cf8ed85175e66bb650d1c6"
+      },
+      "source_frames_half_open": [
+        848,
+        864
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        28267,
+        28767
+      ],
+      "actual_PTS_seconds_first_last": [
+        "28.267",
+        "28.767"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 54,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-054.jpg",
+        "bytes": 119509,
+        "sha256": "68e7fbd444cf35a5f0cd8bcd32ae245494d7d2b4dd807ce5fb02b0c849d34e40"
+      },
+      "source_frames_half_open": [
+        864,
+        880
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        28800,
+        29300
+      ],
+      "actual_PTS_seconds_first_last": [
+        "28.8",
+        "29.3"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 55,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-055.jpg",
+        "bytes": 120330,
+        "sha256": "8600dd0ae196650c38159212063ce1cc7bd535fcad694c24449b11313a16498b"
+      },
+      "source_frames_half_open": [
+        880,
+        896
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        29333,
+        29833
+      ],
+      "actual_PTS_seconds_first_last": [
+        "29.333",
+        "29.833"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 56,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-056.jpg",
+        "bytes": 120813,
+        "sha256": "538cda69b506432de0312b7a5ecb2b4cc9d92e216438aa75c54a3501fe47b904"
+      },
+      "source_frames_half_open": [
+        896,
+        912
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        29867,
+        30367
+      ],
+      "actual_PTS_seconds_first_last": [
+        "29.867",
+        "30.367"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 57,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-057.jpg",
+        "bytes": 119551,
+        "sha256": "51bad18a4b1b02dd4d30e819bdd4ac615dec153f65da421d3b159d2d6c68da6b"
+      },
+      "source_frames_half_open": [
+        912,
+        928
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        30400,
+        30900
+      ],
+      "actual_PTS_seconds_first_last": [
+        "30.4",
+        "30.9"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 58,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-058.jpg",
+        "bytes": 119436,
+        "sha256": "3089c675ae158f5e19114818668fbee99de1fb4c5d9e97ca922e7237216431c1"
+      },
+      "source_frames_half_open": [
+        928,
+        944
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        30933,
+        31433
+      ],
+      "actual_PTS_seconds_first_last": [
+        "30.933",
+        "31.433"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 59,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-059.jpg",
+        "bytes": 119409,
+        "sha256": "aa4e346f66fe3033e465393fc4044b2887d644b315736a17f0fae5bfc8b60a66"
+      },
+      "source_frames_half_open": [
+        944,
+        960
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        31467,
+        31967
+      ],
+      "actual_PTS_seconds_first_last": [
+        "31.467",
+        "31.967"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 60,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-060.jpg",
+        "bytes": 120663,
+        "sha256": "a295d10687d468a09acc3d8aa213d83f81f490d8dfee91e88df09d8ff06fa632"
+      },
+      "source_frames_half_open": [
+        960,
+        976
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        32000,
+        32500
+      ],
+      "actual_PTS_seconds_first_last": [
+        "32",
+        "32.5"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    },
+    {
+      "sheet_id": 61,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\contact-061.jpg",
+        "bytes": 120570,
+        "sha256": "db00427bfeca0385bc9c34c2d666fc144f7494f066598148b0039dc2f4e4d4e0"
+      },
+      "source_frames_half_open": [
+        976,
+        992
+      ],
+      "valid_cells": 16,
+      "actual_PTS_ticks_first_last": [
+        32533,
+        33033
+      ],
+      "actual_PTS_seconds_first_last": [
+        "32.533",
+        "33.033"
+      ],
+      "row_major_cell_order": true,
+      "AI_direct_review_pending": true
+    }
+  ],
+  "full_resolution_samples": [
+    {
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\full-00.jpg",
+        "bytes": 156010,
+        "sha256": "ae1d3ea01a912ae2579a92bb820bdfac59260ad768962cb6021951da03ee8938"
+      },
+      "source_frame": 0,
+      "actual_PTS_ticks": 0,
+      "actual_PTS_seconds": "0",
+      "Root_direct_review_pending": true
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\full-01.jpg",
+        "bytes": 158375,
+        "sha256": "9744e21f7fdb733570e861f9e771f5432160c0eebbe7efdf709d4732ec2bea65"
+      },
+      "source_frame": 540,
+      "actual_PTS_ticks": 18000,
+      "actual_PTS_seconds": "18",
+      "Root_direct_review_pending": true
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\full-02.jpg",
+        "bytes": 157779,
+        "sha256": "ab7e1e8a292c2deca7cd315d7a007cf5557b3a7b97b4c9a1be20025c16bd069d"
+      },
+      "source_frame": 870,
+      "actual_PTS_ticks": 29000,
+      "actual_PTS_seconds": "29",
+      "Root_direct_review_pending": true
+    }
+  ],
+  "full_resolution_count": 3,
+  "source_frame_1054_image_missing": true,
+  "all_retained_complete_images_structurally_decoded": true,
+  "source_decoded_frame_PTS_trace": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\decoded-frame-PTS.actual.csv",
+    "bytes": 25589,
+    "sha256": "6d6ecc0eaebc61df3ff937cf5ff9d9a727c6d951c6ffb2029488317e8085955b"
+  },
+  "no_full_packet_PTS_claim": true,
+  "fresh_ffmpeg_ffprobe": [],
+  "remaining_heavy": 0,
+  "clean_review_pending": true,
+  "human1x": false,
+  "human_signoff": false,
+  "formal_credit_added": 0
+}

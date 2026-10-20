@@ -1,5 +1,11 @@
 # E04 R06 公共单日入口与 A40 未完成资格（2026-10-20）
 
+## 2026-10-20 12:29 UTC：Root签出R0221限定R06阳性源镜头，正式动态2/11
+
+`machine_id: desktop-3fevhd2-1c74096080`；依据[Root实际裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0221-target-add-positive-review-a01/ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json)（7705B，SHA `f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e`），接受同R0221原片 **[0,33)秒/990帧** 的原M单次补员阳性源镜头。[11主题账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)现为 **2/11（18.18%，R06+R12）**；旧1/11段落保留为当时快照。画面Army6679→6689的+10，与同场原生独立证明Regi2602/slot1 current68→69的+1分别表述，未归因整军+10或给出精确原生事件PTS。
+
+990帧实际PTS与已审contact cells齐；AI看62张sheets/992有效cell，Root实际看3张fullres和12张具名sheets，非人工1×。保守可读变化界限(18,29]秒、29秒后保证4秒后态，不冒称建议8–15秒。原全片35.166秒strict decoder **rc1/soft7MiB guard** 与未完整解码PASS、原live consumer失败/terminalfalse均保留；只接受限定前缀。研究10/14、业务7/11、B0/2、ABC0/3不变，wholeCore NET/toggle/global physical closure/fullR06、最终片和human signoff均未授。
+
 ## 2026-10-20 12:22 UTC：R0221选定ADD已离线恢复，完整R06仍未通过
 
 `machine_id: desktop-3fevhd2-1c74096080`；[原始失败、同次Core离线恢复与精确来源](episode04-r0221-target-add-offline-recovery-12004.md)。现场source4fc8d0f4/nativefee866、自然1日53149056→53149080实际捕获选定Regi2602/slot1 ADD +1（68→69）；原live consumer因pretty target proof超过64KiB退出2，原terminal ADDfalse/fullR06false保留。隔离树仅修无损紧凑序列化、上限仍65536字节；4项真实CLI测试原wait0、一次同immutable raw/binding/fullparent离线恢复原wait0及独审PASS，新完整proof50670字节，严格same_core_invocation_join_ready=true。全Core NET/全局物理闭包/开关效果/fullR06仍false，无新日步、SDK或native构建。

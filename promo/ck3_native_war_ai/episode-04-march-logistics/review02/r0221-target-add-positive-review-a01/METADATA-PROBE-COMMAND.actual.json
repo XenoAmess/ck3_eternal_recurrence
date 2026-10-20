@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "-v",
+    "error",
+    "-threads",
+    "1",
+    "-show_streams",
+    "-show_format",
+    "-of",
+    "json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\raw.mkv"
+  ],
+  "pid": 16292,
+  "started_at_utc": "2026-10-20T12:09:58.128112+00:00",
+  "ended_at_utc": "2026-10-20T12:09:58.906863+00:00",
+  "returncode": 0,
+  "priority": "BELOW_NORMAL",
+  "stderr": ""
+}

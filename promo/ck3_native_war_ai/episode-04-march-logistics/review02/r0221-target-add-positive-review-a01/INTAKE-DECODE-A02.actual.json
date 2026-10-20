@@ -1,0 +1,71 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:12:45.329377+00:00",
+  "cap": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-VISUAL-12M-EXACT-RECIPE-EXECUTION.actual-a02.json",
+    "bytes": 6074,
+    "sha256": "527a365f417780d502eb33b7506ccf92ad3e43dd389e649e1a446394b6896a39"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-metadata-a01\\CONDITIONAL-VISUAL-REVIEW-PLAN.prepared.json",
+    "bytes": 4380,
+    "sha256": "43df612f84d13f406ad0ca5c8a1f0b34e422220b401c46e67480d29b13233c73"
+  },
+  "source_raw_retained_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\raw.mkv",
+    "bytes": 20403313,
+    "sha256": "5280a139b1f1b1fb54b432e824ab4786c030668efe71465435f7f99aeb75912e"
+  },
+  "source_fresh_stat": {
+    "bytes": 20403313,
+    "mtime_ns": 1792497152023788900,
+    "st_dev": 13886423844274364792,
+    "st_ino": 2814749768986483
+  },
+  "raw_hash_reread": false,
+  "parent_logical_bytes_before": 107023083,
+  "toolchain": {
+    "latest_formal_release_query": {
+      "argv": [
+        "gh",
+        "api",
+        "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+      ],
+      "actually_observed_in_preceding_tool_call": true,
+      "tag_name": "v0.3.0",
+      "id": 415596198,
+      "draft": false,
+      "prerelease": false,
+      "wheel_SHA256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+    },
+    "skill": {
+      "path": "D:\\workspace\\xar_promo_toolchain\\codex-skill\\promo-video-pipeline\\SKILL.md",
+      "bytes": 3814,
+      "sha256": "94a0dbe08bef4e597a0a5253a10c1e330fadcf7786c68a897d05fb2db49bc935"
+    },
+    "scope": "Root explicitly authorizes one rawQA FFmpeg/decode and no raw copy/hash. Use existing tool/pins directly; no promo build/CAS duplicate or humanreview/signoff lifecycle is claimed.",
+    "ffmpeg_retained_executable_pin": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffmpeg_fresh_stat": {
+      "bytes": 222229504,
+      "mtime_ns": 1786511668000000000,
+      "st_dev": 13886423844274364792,
+      "st_ino": 844424931126930
+    },
+    "ffprobe_existing_path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "ffprobe_fresh_stat": {
+      "bytes": 222026240,
+      "mtime_ns": 1786511668000000000,
+      "st_dev": 13886423844274364792,
+      "st_ino": 1125899907837590
+    }
+  },
+  "executor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-media-visual-a01\\execute_decode_a02.py",
+    "bytes": 12152,
+    "sha256": "28fe9ef44035b82040047e14120ac09386976aa8533235c4d966b575a13e9e81"
+  }
+}

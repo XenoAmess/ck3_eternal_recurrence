@@ -1,0 +1,69 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:13:27.926116+00:00",
+  "returncode": 1,
+  "pid": 29472,
+  "wait_returned": true,
+  "reason": "contacts softguard7MiB preserves1MiB before8MiB hardcap",
+  "wall_seconds": 42.25924739986658,
+  "progress": {
+    "frame": "928",
+    "fps": "304.16",
+    "stream_0_0_q": "-0.0",
+    "stream_1_0_q": "10.0",
+    "stream_2_0_q": "5.0",
+    "bitrate": "N/A",
+    "total_size": "N/A",
+    "out_time_us": "30933333",
+    "out_time_ms": "30933333",
+    "out_time": "00:00:30.933333",
+    "dup_frames": "0",
+    "drop_frames": "0",
+    "speed": "10.1x",
+    "progress": "continue"
+  },
+  "traced_contacts": 1000,
+  "traced_full": 3,
+  "timebases": {
+    "contacts": {
+      "time_base": "1/1000",
+      "frame_rate": "30/1"
+    },
+    "full": {
+      "time_base": "1/1000",
+      "frame_rate": "30/1"
+    }
+  },
+  "stderr_tail": [
+    "[showinfo@contacts @ 000001d389b77e00] n: 992 pts:  33067 pts_time:33.067  duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:117DC2AD plane_checksum:[ECE3155E 5BA912AA 8A4A9AA5] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 993 pts:  33100 pts_time:33.1    duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:4FCD3927 plane_checksum:[0304775E 86AB1CF4 DE7DA4C6] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 994 pts:  33133 pts_time:33.133  duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:F5932A87 plane_checksum:[9E2B77D7 1F491399 302A9F08] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 995 pts:  33167 pts_time:33.167  duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:8B39765E plane_checksum:[9420B496 0E8E1A82 4FCBA737] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 996 pts:  33200 pts_time:33.2    duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:2650E37F plane_checksum:[8CA71948 2FF51C9D E560AD9A] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 997 pts:  33233 pts_time:33.233  duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:8F760ECA plane_checksum:[C2E74059 53671E14 AA5AB04E] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 998 pts:  33267 pts_time:33.267  duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:429DE4BC plane_checksum:[AC772DF4 2EA41045 E988A683] mean:[100 134 126] stdev:[32.6 14.7 11.5]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown",
+    "[showinfo@contacts @ 000001d389b77e00] n: 999 pts:  33300 pts_time:33.3    duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:F2DB5BE5 plane_checksum:[F51290A2 555218F9 7577B23B] mean:[100 134 126] stdev:[32.6 14.7 11.6]",
+    "[showinfo@contacts @ 000001d389b77e00] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown"
+  ],
+  "max_child_observed": {
+    "contacts": 7425559,
+    "full_resolution": 472164,
+    "metadata": 199502,
+    "aggregate": 7938850
+  },
+  "max_parent_observed_bytes": 114929660,
+  "raw_stat_after": {
+    "bytes": 20403313,
+    "mtime_ns": 1792497152023788900,
+    "st_dev": 13886423844274364792,
+    "st_ino": 2814749768986483
+  },
+  "remaining_heavy": 0
+}
