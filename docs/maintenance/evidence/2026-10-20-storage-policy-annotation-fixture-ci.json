@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "scope": "Historical annotation-adapter CI fixture only",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-20T01:40:09Z",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool 394dce",
+  "original_ci": {
+    "head": "24a6e735078a8f6b2c48ebc5e7cee03c36474bf6",
+    "run": 39352495841,
+    "job": 118399667739,
+    "step": 63,
+    "runner_machine_id": "unknown",
+    "result": "1 failed, 209 passed, 2 skipped, 189 subtests passed in 10.18s",
+    "trace": "_runtime/official-ci-24a6e735-failed-step-trace01.json",
+    "trace_bytes": 2783,
+    "trace_sha256": "51bd48b2ea0702258ebe9611e718dd9a2f6fbd5c7a457badfe786efec51ae807",
+    "original_log": "7121-byte RAM-only ZIP member; no retained original path",
+    "original_log_sha256": "5f6b5627c205b7bb822901750f1ed09687e0b42431db1de03a7fd749653d8e3f",
+    "status": "Original RED and skipped gates remain unchanged."
+  },
+  "diagnosis": "The sealed v13-to-v14 observer annotation adapter deliberately accepts only the 487-byte historical policy change. Its CLI requires explicit maintenance resumption and preserves the frozen producer/plan checks. The test read today's evolving policy instead of that historical input; rejecting today's additional text is correct. Tools-source consumers are the unit test and adapter's own dynamic inspect_policy call; no general live-policy compatibility was added.",
+  "fixture": {
+    "path": "tools/g2_saved_campaign/fixtures/storage_retention_policy_annotation_ec20e14f.md.zlib",
+    "bytes": 8052,
+    "sha256": "04b08034b4067f54cb79e666ded816328b1aab97c9151b952eeef3bd2499f475",
+    "source_commit": "6a56dd44ba966f641bd2e3662bd8dc059ea5cd44",
+    "source_path": "docs/storage-retention-policy.md",
+    "raw_bytes": 16368,
+    "raw_sha256": "ec20e14fc47b1d24c3a9aca6c635ac59ae8ecb7cf29734dfe37ac0ff58cf342a",
+    "origin": "Read-only git show of this exact immutable commit, checked before writing, zlib level 9; not derived from current MD or adapter-generated text. CI decompresses the tracked fixture and requires no Git history.",
+    "independent_preannotation_commit": "7ccc2de7d9ab5669d5df9a5cdc7bffe25d457e8c",
+    "preannotation_bytes": 15881,
+    "preannotation_sha256": "cfb21270a67f4d259149e99d809a64ee21a782742da1b3afa910a1fb4d0e3980"
+  },
+  "test": {
+    "path": "tools/g2_saved_campaign/test_storage_policy_annotation_adapter_v1.py",
+    "before_bytes": 1219,
+    "before_sha256": "2948fc6b9fa06b2846c9046afdfff331b4763f90e6600a4ed79c90f81ad3653f",
+    "after_bytes": 1509,
+    "after_sha256": "8c4acddd7be14f7411c9dd694c6f509419d614736eb78a1101572a3c7f125af5",
+    "change": "setUp loads frozen compressed bytes; logical plan path and all three original test bodies/strict negative cases remain unchanged.",
+    "verification": "Exactly test_exact_inverse, test_other_edit_rejected and test_plan_drift_rejected once: 3 passed in 0.42s; tool 7acc98; -B pytest -q -p no:cacheprovider.",
+    "full_matrix_run": false
+  },
+  "unchanged": {
+    "adapter_bytes": 4415,
+    "adapter_sha256": "2c332aad99f96c5e752fd564754b118e682cf055744a76ded0362c91491646c8",
+    "current_policy_bytes": 17121,
+    "current_policy_sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "storage": {
+    "joint_cap_bytes": 20480,
+    "card_sha256": "7fbcad1448d746da0db417392f5e5961c04c4ebf977d61603407cdc479ee2761",
+    "charged": "Whole test, fixture, this proof and unchanged 4415-byte adapter; no delta accounting.",
+    "scratch_budget_bytes": 0,
+    "new_helpers_or_scratch_roots": 0,
+    "temporary_raw_policy_written": false
+  },
+  "boundaries": "No adapter, current policy, frozen observer, Git state, live admission, game, desktop or Native action changed. Pure-byte tests grant no runtime/storage-maintenance credit."
+}

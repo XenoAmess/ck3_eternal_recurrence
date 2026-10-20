@@ -1,0 +1,118 @@
+{
+  "schema": "nonleading-player-realm-siege-priority-source.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-20T01:40:23Z",
+  "machine_source": "tools/ck3_live_run_id.py machine; actual output matches storage card",
+  "status": "future_source_qualified_not_deployed",
+  "storage": {
+    "card": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M5-NONLEADING-PLAYER-REALM-SIEGE-PRIORITY-SOURCE64KiB01.json",
+    "card_sha256": "300bbc09fae3e4bc62004d0738a92f8efa5d2ef57dc019cee575bc1b819c4e3b",
+    "complete_cap_bytes": 65536,
+    "quote_bytes": 61440,
+    "scratch_bytes": 0,
+    "future_write_bytes": 0
+  },
+  "strategy": {
+    "before": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1047320,
+      "sha256": "45c164297b90b32203e7860b4a7735cfa65c5ca1db7141e898d15395d2e47e78"
+    },
+    "candidate_ram_only": {
+      "bytes": 1048459,
+      "sha256": "aa070e8c98bebeb625c581081efaac494db18d2b860db77c27a9e1ff0a2ae40b"
+    },
+    "inverse_exact": true,
+    "canonical_written": false,
+    "full_candidate_written": false,
+    "hunks": 6
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/nonleading_player_realm_siege_v1.py",
+      "bytes": 3615,
+      "sha256": "3f5103e42c8d7d785aa7680d19be592407a55b8e3d6bb4fb55159817fbe925e6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/transform_nonleading_siege_priority_v1.py",
+      "bytes": 4194,
+      "sha256": "8d8ac3251e075f44f1d2f0fec6eea0d087b8a856af21bf6d40edf10d951702fe"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_nonleading_siege_priority_v1.py",
+      "bytes": 11914,
+      "sha256": "aee67a3b80d690fb0e80a8b875ba568b73a59eef5b6af7b738a14c478dd436d8"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/nonleading-player-realm-siege-priority-2026-10-20.patch",
+      "bytes": 3504,
+      "sha256": "6b1dc6bc20ea758dc6381535c3398a699ac98770d8c02402023b98a3c2f26b6d"
+    }
+  ],
+  "input": {
+    "fixture": {
+      "path": "ck3_autonomous_player/tests/fixtures/portable_actual_695.json.gz",
+      "bytes": 10984,
+      "sha256": "da619ee770f2a4c124e9e625a9acc6913b2af96b8b1ab2af90896a67bd5e2937"
+    },
+    "historical_machine_id": "unknown",
+    "copied": false,
+    "actual_scope": "Only unmodified portable695 DTO is actual. Nonprimary, stationary and subrealm=True variants are explicit synthetic counterfactuals modifying preexisting DTO fields. No current Native29 deployment or live outcome qualification."
+  },
+  "contract": [
+    "Only same-object current snapshot War/Army rows, complete native snapshot identity, paused live native actor/connected owner and stationary hostile siege with explicit player-subrealm True qualify. Unknown and foreign rows do not.",
+    "Preserve primary branch; permit qualified nonprimary defender relief forecast and suppress prior moving-contact shortcut. Do not infer territory from CB/target or counts.",
+    "Real ordinary planner retains higher-priority termination query and event. Exact nonprimary siege forecast can replace only the same controlled Army readonly preview or unsupported empty selection; typed Move and primary preview preserved.",
+    "No new RPC, frequency/cache changes, Move/Halt/Arm, spending or surrender permission. Existing effective strength, route/contact/v3, unknown intent and spending constraints remain. Forecast_required is not battle victory or legal Move.",
+    "Missing Native strength remains observation_unavailable. Weak forces without route/contact/v3 never Move. Troop counts are not win probability.",
+    "The preexisting subrealm field is schema evidence; no proof this runtime produces True was collected. Future adoption requires ordinary actual same-frame facts and downstream action qualification."
+  ],
+  "source_seams": {
+    "strategy_lines": [
+      10524,
+      18115,
+      18168,
+      19171,
+      19579
+    ],
+    "strength_component": "Existing _same_frame_army_strength_balance consumes current native row status; producer retains cache invalidation responsibility.",
+    "not_changed": [
+      "war_termination_query_cadence",
+      "wartime_construction_cash_v1",
+      "war_reinforcement_tradeoff_v1",
+      "current T",
+      "frozen Source24",
+      "Native/Driver/Service"
+    ]
+  },
+  "tests": {
+    "file": "ck3_autonomous_player/tests/unit/test_nonleading_siege_priority_v1.py",
+    "command": "python -B -X utf8 -c <sys.path.insert(0,'ck3_autonomous_player/src'); pytest.main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_nonleading_siege_priority_v1.py'])>",
+    "final": "19 passed in 1.61s",
+    "final_exit_code": 0,
+    "coverage": [
+      "Unmodified actual primary assessment and full planner equivalence",
+      "Qualified nonprimary forecast and ordinary readonly preview",
+      "Primary preview and typed Move not retargeted",
+      "External/unknown realm, native source, owner, identity and bool negatives",
+      "Detached historical objects",
+      "No authority; missing strength; weak army without route/contact/v3",
+      "Unknown moving intent guarded ahead of original contact query",
+      "Mandatory event and termination-read precedence"
+    ],
+    "history": [
+      "Collection failed before PYTHONPATH correction.",
+      "14 pass/3 fail: tests wrongly skipped existing termination read and assumed component enforced cache metadata; corrected to actual component/producer contracts.",
+      "16 pass/1 fail: real ordinary other-target preview exposed missing ingress consumer; sixth narrow readonly-only hunk added.",
+      "19 pass in 1.60s before additional assertions.",
+      "Incremental 1 pass/1 fail: expected moving_contact_before_strength_query but real baseline returned route_contact_horizon; corrected assertion, no production change.",
+      "Final full focused file: 19 pass in 1.61s."
+    ]
+  },
+  "limits": [
+    "Source-only future package. No actual siege protection, land retained, battle won, funds spent or runtime benefit claimed.",
+    "A synthetic absent termination-query capability variant only exercises existing ordinary fall-through; no production capability is removed.",
+    "Do not broaden to any nonleading war, external realm or unknown subrealm. No authority to settle a nonleading war.",
+    "Current large Strategy and Source24 are unchanged; Root alone may review, commit or adopt later."
+  ]
+}

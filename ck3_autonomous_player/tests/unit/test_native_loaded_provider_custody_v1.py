@@ -75,6 +75,13 @@ class Facade(custody._CustodyOSFacadeV1):
         if self.module_hook: self.module_hook()
         return ((self.module,) if self.loaded else ()) + self.extra_modules
 
+    def observe_preload_mapped_images(self, handle):
+        from pathlib import PureWindowsPath
+        from xar_autoplayer.bridge.native_preload_mapped_images_v1 import PreloadImageV1
+        rows = self.observe_modules(handle)  # Explicit synthetic stage model.
+        return tuple(PreloadImageV1(v.base, "\\Device\\fixture\\" + PureWindowsPath(v.path).name)
+                     for v in rows) or (PreloadImageV1(0x10000, r"\Device\fixture\ck3.exe"),)
+
     def transfer_readback(self, resource, transfer, owner):
         self.calls.append("actual_handle_transfer")
         if transfer is not self.transfer: raise ValueError("not the canonical transfer")

@@ -46,7 +46,7 @@ def owner_source_epoch_v1():
              "bridge/campaign_root_context_contract.py", "player_heir_fixed_dynasty_projection_v1.py",
              "bridge/native_loaded_provider_custody_v1.py", "bridge/native_loaded_provider_windows_v1.py",
              "bridge/native_loaded_provider_receiver_v1.py", "bridge/native_loaded_provider_origin_v1.py",
-             "bridge/native_loaded_provider_origin_io_v1.py")
+             "bridge/native_loaded_provider_origin_io_v1.py", "bridge/native_preload_mapped_images_v1.py")
     return digest({name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in names})
 
 

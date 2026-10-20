@@ -1,0 +1,74 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/strategy.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/strategy.py
+@@ -16,6 +16,9 @@
+ )
+ from .ordinary_war_results_window_v1 import plan_ordinary_war_results_window_v1
+ from .war_termination_query_cadence_v1 import war_termination_query_policy_defer_v1
++from .nonleading_player_realm_siege_v1 import (
++    nonleading_player_realm_siege_v1, nonleading_player_realm_siege_war_v1,
++)
+ from .defender_refuge_candidates_v1 import (
+     direct_vassal_capital_province_ids,
+     direct_vassal_refuge_lifecycle_scope,
+@@ -10523,7 +10526,8 @@
+             )
+             and not any(
+                 war.get("player_side") == "defender"
+-                and war.get("player_is_primary_war_leader") is True
++                and (war.get("player_is_primary_war_leader") is True
++                     or nonleading_player_realm_siege_war_v1(snapshot, war))
+                 and isinstance(war.get("enemy_armies"), list)
+                 and any(
+                     isinstance(enemy, dict)
+@@ -10639,7 +10643,7 @@
+                     "required_observation"
+                 ),
+                 "reason": (
+-                    "an enemy siege is visible in a primary defensive war, "
++                    "an enemy siege is visible in a qualifying defensive war, "
+                     "but the same-frame army assignment, hostile position, "
+                     "route, or strength scope is incomplete; do not consume "
+                     "another stationary hold slice"
+@@ -18172,7 +18176,22 @@
+             else None
+         )
+         if preview_target != target:
+-            return baseline
++            candidate_war = next(
++                (war for war in active_wars if isinstance(war, dict)
++                 and war.get("war_id") == war_id), None
++            )
++            if not (
++                nonleading_player_realm_siege_war_v1(snapshot, candidate_war)
++                and (
++                    (phase == "native_war_route_preview"
++                     and type(preview_target) is int and preview_target > 0
++                     and baseline.get("selected_step")
++                     == preview_move_army_step(army_id, preview_target))
++                    or (phase == "native_war_route_preview_unsupported"
++                        and baseline.get("selected_step") is None)
++                )
++            ):
++                return baseline
+     if phase in {"native_war_pursuit", "native_war_pursuit_progress"}:
+         pursuit = baseline.get("pursuit")
+         if not (
+@@ -19174,6 +19193,8 @@
+     enemy: dict[str, object],
+ ) -> bool:
+     """Require a native tie to the defended objective or player realm."""
++    if war.get("player_is_primary_war_leader") is False:
++        return nonleading_player_realm_siege_v1(snapshot, war, enemy)
+     province_id = _native_int(enemy.get("current_province_id"))
+     if province_id is None or province_id <= 0:
+         return False
+@@ -19579,7 +19600,8 @@
+         if not (
+             isinstance(war, dict)
+             and war.get("player_side") == "defender"
+-            and war.get("player_is_primary_war_leader") is True
++            and (war.get("player_is_primary_war_leader") is True
++                 or nonleading_player_realm_siege_war_v1(snapshot, war))
+             and _native_int(war.get("war_id")) is not None
+             and isinstance(war.get("player_relative_war_score"), int)
+             and not isinstance(war.get("player_relative_war_score"), bool)

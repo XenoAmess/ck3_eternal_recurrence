@@ -34,3 +34,9 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`，身份来源为本轮machine回�
 第二假设是上屏链的重复固定输入校验。同一publication在relay／provider／publisher多次读固定源码及STARTED／config，同时等待精确ACK；来源、实时PID代次、顺序和提交前上屏仍须保留。只有实际占比显著时，才研究同一次publication内复用已验不可变输入或等价唤醒，不能跳过ACK。23外置模块、cold五ref及完整源码rows核对仅启动一次，已排除为每AUTO成本；批次0.2秒等待也不冒作每AUTO延迟。
 
 首批先用`full_timing_origin=new_submission_same_producer`与`full_wall_ns`，配`full_rpc_rows_v1`的计数／错误、`interval_union_seconds`及`full_wall_minus_rpc_union_seconds`筛查，不能把嵌套RPC elapsed直接相加再相减。分母采用前后真实日期差，0日批次也保留完整wall；原03:26:49.420926Z全墙钟继续累计。剩余混合开销大也不直接归因Driver；没有现成细分字段时保持unknown，不另开游戏或加测量RPC。
+
+### 2026-10-20 休假封版：现有heartbeat诊断B
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`；来源为Source24固定输入与[候选资格](../../tools/g2_saved_campaign/candidates/exact_clock_wait_progress_20261020/QUALIFICATION.json)。原wait将remaining交public-revision等待，heartbeat只notify而不改变该revision；故30秒可能仅末尾一次candidate，累计owner+64不能证明全段服务。B仅在原Arm等待期消费已有heartbeat与candidate，保有界变化记录/观察空窗，不增RPC、轮询或Native构建，原时限/暂停清理不变。5项聚焦通过，SOURCE_READY_NOT_ADOPTED；首次子帽RED与丢失结果保在PLAN。
+
+增量目录记账仍缺完整外部变化凭据，当前不启快路。无新FULL，阶段1秒/日未达；仍保原全墙钟。下一轮先组合并验证Source25真实链及v2 DTO消费者，再测完整批次，不以源码资格授吞吐收益。恢复位置见[交接](../handover/2026-10-20-robert-v20261019-vacation-handoff.md)。

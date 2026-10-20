@@ -96,6 +96,9 @@ class _CustodyOSFacadeV1:
     def observe_modules(self, process_handle):
         raise NotImplementedError("mapped-module identity reader not connected")
 
+    def observe_preload_mapped_images(self, process_handle):
+        raise NotImplementedError("complete pre-resume image mapping reader not connected")
+
     def transfer_readback(self, resource, transfer, owner):
         raise NotImplementedError("canonical controller-to-SDK handle transfer not connected")
 
@@ -260,9 +263,12 @@ def prepare_canonical_cold_custody_v1(*, target, dll_path, expected_dll_sha256,
         dll = _dll(os_facade.observe_dll(dll_handle))
         _require(_path(dll.final_path) == path and dll.sha256 == expected_dll_sha256,
                  "pre-load DLL path/hash differs")
+        from .native_preload_mapped_images_v1 import validate_image_v1
+        images = os_facade.observe_preload_mapped_images(process_handle)
+        _require(type(images) is tuple and images, "complete nonempty pre-resume image mappings required")
         basename = PureWindowsPath(path).name.casefold()
-        _require(not any(PureWindowsPath(v.path).name.casefold() == basename
-                         for v in _modules(os_facade, process_handle)),
+        _require(not any(PureWindowsPath(validate_image_v1(v).mapped_nt_path).name.casefold() == basename
+                         for v in images),
                  "DLL was already mapped before preload custody")
         return _PreloadCustodyV1(target=target, facade=os_facade, process_handle=process_handle,
             dll_handle=dll_handle, process=process, dll=dll, machine_id=machine_id,

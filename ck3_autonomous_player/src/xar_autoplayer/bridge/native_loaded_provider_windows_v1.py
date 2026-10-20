@@ -117,6 +117,26 @@ class WindowsNativeCustodyFacadeV1(contract._CustodyOSFacadeV1):
         return contract._ProcessReadbackV1(pid, birth, _filetime_text(birth),
             _normal_dos(image), alive)
 
+    def observe_preload_mapped_images(self, process_handle):
+        from .native_preload_mapped_images_v1 import Win32PreloadMapReaderV1, stable_preload_images_v1
+        with self._lock:
+            phase = {"stage": "preload_mem_image", "status": "unavailable"}
+            self._preload_mapping_phase_v1 = phase
+            try:
+                before = contract._process(self.observe_process(process_handle))
+                phase["before"] = vars(before)
+                reader = Win32PreloadMapReaderV1(self._os(), process_handle)
+                values = stable_preload_images_v1(reader)
+                after = contract._process(self.observe_process(process_handle))
+                phase["after"] = vars(after)
+                if not contract._same_process(before, after):
+                    raise ValueError("held process changed across pre-resume mapping walks")
+                phase.update(status="observed", images=len(values), last_walk_regions=reader.last_walk_regions)
+                return values
+            except Exception as error:
+                phase["error"] = type(error).__name__ + ":" + str(error)[:240]
+                raise
+
     def observe_modules(self, process_handle):
         with self._lock:
             api = self._os()

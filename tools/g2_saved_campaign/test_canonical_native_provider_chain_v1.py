@@ -45,7 +45,8 @@ class SyntheticNativeReads:
     def modules(self,handle):
         self.module_calls+=1
         return ((0x7FF100000000,4096,self.native_dos),) if self.native_dos else ()
-    def mapped_file_name(self,handle,base):return self.native_nt
+    def mapped_file_name(self,handle,base):
+        return self.native_nt if self.native_nt else self.real.mapped_file_name(handle,base)
 
 
 def actual_shape_owner(holder,endpoint):

@@ -1,0 +1,137 @@
+--- Source24/native_driver.py
++++ candidate/native_driver.py
+@@ -2208,6 +2208,12 @@
+     def _mark_bridge_disconnected_v1(self) -> None:
+         try:
+             self.state.mark_disconnected()
++            progress = getattr(self, "_exact_clock_wait_progress_v1", None)
++            if progress is not None:
++                try:
++                    progress.boundary()
++                except Exception:
++                    pass
+         finally:
+             self._invalidate_player_heir_provider_v1("native_disconnect")
+ 
+@@ -2224,6 +2230,20 @@
+ 
+     def _ingest(self, frame: dict[str, object]) -> None:
+         frame_type = self.state.ingest(frame)
++        progress = getattr(self, "_exact_clock_wait_progress_v1", None)
++        if progress is not None and frame_type in {"heartbeat", "hello"}:
++            try:
++                # ingest() returned outside its Condition. Copy only this token;
++                # never hold the transport Condition while taking collector.lock.
++                with self.state._condition:
++                    token = (self.state._connected, self.state._connection_generation,
++                             (self.state._hello or {}).get("pid"))
++                progress.received(frame_type, frame, token)
++            except Exception:
++                try:
++                    progress.note_callback_error()
++                except Exception:
++                    pass
+         if frame_type == "hello":
+             bridge_pid = frame.get("pid")
+             if isinstance(bridge_pid, int) and not isinstance(bridge_pid, bool):
+@@ -25769,6 +25789,14 @@
+             from .clock_observation_timing_v1 import (
+                 start_clock_observation_v1, finish_clock_observation_v1,
+             )
++            wait_progress = wait_progress_summary = None
++            try:
++                from .exact_clock_wait_progress_v1 import (
++                    start_wait_progress_v1, finish_wait_progress_v1,
++                )
++                wait_progress = start_wait_progress_v1(self, current, arm_status["generation"])
++            except Exception:
++                pass
+             clock_observation = start_clock_observation_v1(self, current)
+             clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")
+             try:
+@@ -25785,6 +25813,10 @@
+                         timeout_seconds=self.life_advance_timeout_seconds,
+                     )
+             finally:
++                try:
++                    wait_progress_summary = finish_wait_progress_v1(self, wait_progress, current) if wait_progress is not None else None
++                except Exception:
++                    pass
+                 finish_clock_observation_v1(self, clock_observation, current)
+                 finish_army_timing(clock_wait_timing, step="life-advance",
+                     date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
+@@ -25918,6 +25950,7 @@
+                         starting=starting, last_frame=current, cleanup_before_frame=cleanup_frame,
+                         actions=actions, action_start=diagnostic_action_start,
+                         cleanup_start=diagnostic_cleanup_start,
++                        wait_progress=wait_progress_summary,
+                     )
+                 except Exception:
+                     raise original_error
+@@ -26289,6 +26322,15 @@
+             if self.state.snapshot_supported():
+                 self.state.wait_for_public_change(after_revision, timeout)
+             changed = self.take_internal_semantic_snapshot()
++            progress = getattr(self, "_exact_clock_wait_progress_v1", None)
++            if progress is not None:
++                try:
++                    progress.observe_candidate(changed)
++                except Exception:
++                    try:
++                        progress.note_callback_error()
++                    except Exception:
++                        pass
+             if getattr(self, "_exact_clock_observation_v1", None) is not None:
+                 from .clock_observation_timing_v1 import observe_clock_snapshot_v1
+                 observe_clock_snapshot_v1(self, changed)
+--- Source24/exact_clock_failure_diagnostic_v1.py
++++ candidate/exact_clock_failure_diagnostic_v1.py
+@@ -5,8 +5,9 @@
+ from __future__ import annotations
+ 
+ import json
++from .exact_clock_wait_progress_v1 import project_wait_progress_v1
+ 
+-SCHEMA = "xar.exact-day-clock-failure.v1"
++SCHEMA = "xar.exact-day-clock-failure.v2"
+ MESSAGE = "exact-day native clock did not stop the map"
+ MAX_BYTES = 8192
+ _FRAME = ("date_raw", "native_revision", "revision", "snapshot_id", "speed",
+@@ -22,7 +23,7 @@
+     "original_error", "starting_date_raw", "target_date_raw", "requested_speed",
+     "normal_status_query_attempted", "stop_validation_attempted", "stopped_status",
+     "stop_credit", "armed_reply", "starting_frame", "last_wait_frame",
+-    "cleanup_before_pause_frame", "before_cleanup_actions", "cleanup_actions", "truncated")
++    "cleanup_before_pause_frame", "before_cleanup_actions", "cleanup_actions", "truncated", "wait_progress")
+ 
+ 
+ def _map(value):
+@@ -76,7 +77,7 @@
+ 
+ def build_exact_clock_failure_v1(*, original_error, starting_date_raw, target_date_raw,
+         speed, arm_status, starting, last_frame, cleanup_before_frame,
+-        actions, action_start, cleanup_start):
++        actions, action_start, cleanup_start, wait_progress=None):
+     """Only called for the local pre-status-query map-not-paused error.
+ 
+     Arm fields describe the earlier Arm reply, never a later stop observation.
+@@ -95,7 +96,7 @@
+         "cleanup_before_pause_frame": _frame(cleanup_before_frame),
+         "before_cleanup_actions": _actions(actions, action_start, cleanup_start),
+         "cleanup_actions": _actions(actions, cleanup_start, len(actions)),
+-        "truncated": False,
++        "truncated": False, "wait_progress": project_wait_progress_v1(wait_progress),
+     }
+     # A fixed allowlist and small integer/string caps bound allocation. If the
+     # optional frames/actions exceed 8KiB, retain the core failure and Arm only.
+@@ -133,7 +134,9 @@
+             or value.get("original_error") != MESSAGE or str(error) != MESSAGE):
+         return None
+     try:
+-        encoded = _encode({key: value[key] for key in _DIAGNOSTIC})
++        result = {key: value[key] for key in _DIAGNOSTIC}
++        result["wait_progress"] = project_wait_progress_v1(value["wait_progress"])
++        encoded = _encode(result)
+         if len(encoded) > MAX_BYTES:
+             return None
+         return json.loads(encoded)
