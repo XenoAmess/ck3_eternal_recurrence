@@ -162,7 +162,7 @@ bool Parse(std::string_view payload,Query& q) {
       !equal("expected_date_raw",static_cast<std::uint64_t>(q.expected.date_raw))||
       !equal("expected_actor_character_id",static_cast<std::uint64_t>(q.expected.played_character_id))||
       !equal("expected_game_pid",q.pid)||!equal("expected_connection_generation",q.generation)||
-      !bridge::JsonStringField(payload,"source_inventory_sha256",q.source_inventory_sha)||q.source_inventory_sha.size()!=64)return false;
+      !bridge::JsonStringField(payload,"source_inventory_sha256",q.source_inventory_sha,64)||q.source_inventory_sha.size()!=64)return false;
   for(char c:q.source_inventory_sha)if(!((c>='0'&&c<='9')||(c>='a'&&c<='f')))return false;
   for(auto key:{"artifact_id","subject_id","request_sequence","policy_positive","desired_equipped","slot","pointer","path","rva"})if(Has(payload,key))return false;
   if(q.operation==Operation::post)return bridge::JsonUnsignedField(payload,"expected_intent_sequence",q.original_sequence)&&q.original_sequence;
