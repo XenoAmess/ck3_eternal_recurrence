@@ -1,10 +1,11 @@
-"""One held-session case client using the existing once-only control queue."""
+﻿"""One held-session case client using the existing once-only control queue."""
 from __future__ import annotations
 from datetime import datetime, timezone
 import hashlib
 import json
 import os
 from pathlib import Path
+from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day)
 import subprocess
 import time
 
@@ -475,28 +476,57 @@ class CaseClient:
                                  'args':{'include_native_command_history':False}, 'fresh_revision':True}], name)[0]
         return self.validate_frame(row['result'], allow_actor_change, require_event_free)
 
-    def advance_day(self, days=1, timeout=300, allow_event_boundary=False, allow_actor_change=False):
-        require(type(days) is int and days == 1, 'Use one original natural day per submitted step')
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False, allow_actor_change: bool = False) -> dict[str, object]:
+        need(type(days) is int and days == 1, 'Use one original natural day per submitted step')
+        need(type(timeout) in (int, float) and timeout > 0, 'Positive original day timeout required')
+        need(type(allow_event_boundary) is bool and type(allow_actor_change) is bool,
+             'Original day policy flags must be bool')
+        report = obj(self.guard(90), 'actual held report')
+        native = not allow_actor_change and native_day_advertised(report)
+        before: dict[str, object] | None = None
         self._seq += 1
         name = 'case-natural-day-' + str(self._seq).zfill(4)
-        step = {'id':name,'kind':'advance_day','days':1,'timeout':timeout}
-        if allow_event_boundary is True:
+        step: dict[str, object] = {'id': name, 'kind': 'advance_day', 'days': 1, 'timeout': timeout}
+        if native:
+            before = obj(self.validate_frame(latest_frame(report)), 'actual paused before')
+            frame_owner(before)
+            step = {'id': name, 'tool': 'ck3_execute_step', 'args': {
+                'step': NATIVE_DAY_STEP, 'expected_revision': integer(before.get('revision'), 'before revision')},
+                'fresh_revision': False}
+        elif allow_event_boundary:
             step['allow_event_boundary'] = True
-            if allow_actor_change is True:
+            if allow_actor_change:
                 step['allow_actor_change'] = True
-        row = self.execute_plan([step], name, timeout)[0]
-        value = row['result']
+        # Dispatch once. Stale/unknown/error from this point never falls back.
+        rows = self.execute_plan([step], name, timeout, reserve=90)
+        need(len(rows) == 1, 'One original actual day row required')
+        row = obj(rows[0], 'actual original day row')
+        if native:
+            need(before is not None, 'Native before frame missing')
+            if before is None:
+                raise ValueError('Native before frame missing')
+            self.validate_frame(row.get('after_snapshot'), require_event_free=not allow_event_boundary)
+            row = project_native_day(row, before, allow_event_boundary=allow_event_boundary)
+            self.checkpoint(name + '.native-day-projection', {
+                'raw_public_row_path': str(self.output / (name + '.actual-results.json')),
+                'projection_source': 'actual-life-advance-one-day', 'row': row})
+        value = obj(row.get('result'), 'actual day consumer result')
         if allow_event_boundary and value.get('event_boundary') is not None:
-            self.validate_frame(value['before'])
-            self.validate_frame(value['after'], allow_actor_change=allow_actor_change, require_event_free=False)
+            self.validate_frame(value.get('before'))
+            self.validate_frame(value.get('after'), allow_actor_change=allow_actor_change, require_event_free=False)
             return row
-        require(value.get('requested_days') == 1 and value.get('requested_interval_complete') is True and
-                value.get('event_boundary') is None, 'Original actual day interval/event boundary not proved')
-        before, after = self.validate_frame(value['before']), self.validate_frame(value['after'],allow_actor_change=allow_actor_change)
-        elapsed = value.get('elapsed_hours')
-        require(type(elapsed) is int and 24 <= elapsed < 48 and after['date_raw']-before['date_raw'] == elapsed,
-                'Original actual 24h interval is not proved')
+        need(integer(value.get('requested_days'), 'requested days') == 1 and
+             value.get('requested_interval_complete') is True and value.get('event_boundary') is None,
+             'Original actual day interval/event boundary not proved')
+        first = obj(self.validate_frame(value.get('before')), 'actual before frame')
+        after = obj(self.validate_frame(value.get('after'), allow_actor_change=allow_actor_change), 'actual after frame')
+        elapsed = integer(value.get('elapsed_hours'), 'actual elapsed hours')
+        need(24 <= elapsed < 48 and integer(after.get('date_raw'), 'after date') -
+             integer(first.get('date_raw'), 'before date') == elapsed,
+             'Original actual 24h interval is not proved')
         return row
+
 
     def log_bytes(self, name='debug.log', maximum=64*1024*1024):
         require(name in ('debug.log','error.log'), 'Only original CK3 logs are read')

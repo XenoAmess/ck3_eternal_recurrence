@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12004_knight_stat_consumption.hpp"
+#include "xar_bridge/knight_stat_context_source12004.hpp"
 #include "xar_bridge/person_installed_transfer_capture_12004.hpp"
 #include "xar_bridge/ck3_12004_person_six_stage_capture.hpp"
 #include "xar_bridge/entry_selected_receiver_stage_12004.hpp"
@@ -609,6 +610,83 @@ bool InstallKnightStatConsumption12004(KnightStatConsumptionDetourState12004 &st
     g_active_state.store(nullptr); return false;
   }
   state.installed.store(1, std::memory_order_release);
+  return true;
+}
+
+
+bool KnightStatContextSourceStillBound12004(std::uintptr_t image_base,
+    std::span<const std::uint8_t, kKnightStatContextSourceBytes12004> original,
+    const char *&failure) noexcept {
+  static_assert(kKnightStatContextSourceRva12004==kKnightStatContextGetterRva12004);
+  failure="";
+  const auto reject=[&failure](const char *reason) noexcept {failure=reason;return false;};
+  if(image_base==0||kKnightStatContextGetterRva12004>
+      (std::numeric_limits<std::uintptr_t>::max)()-image_base)
+    return reject("knight_context_source_image_unavailable");
+  const auto target=image_base+kKnightStatContextGetterRva12004;
+  if(original.size()>(std::numeric_limits<std::uintptr_t>::max)()-target)
+    return reject("knight_context_source_range_invalid");
+  std::array<std::uint8_t,kKnightStatContextSourceBytes12004> live{};
+  if(!FaultBoundary([&]() noexcept {std::memcpy(live.data(),reinterpret_cast<const void *>(target),live.size());return true;}))
+    return reject("knight_context_source_unreadable");
+  // Preserve the exact pristine-source route. No installed-state assertion can
+  // make unknown bytes count as the original complete function.
+  if(std::equal(live.begin(),live.end(),original.begin()))return true;
+  auto *const state=g_active_state.load(std::memory_order_acquire);
+  if(state==nullptr||state->installed.load(std::memory_order_acquire)!=1||
+      state->failure_flags.load(std::memory_order_acquire)!=0||
+      !g_available.load(std::memory_order_acquire)||!g_bindings.enabled||
+      g_bindings.image_base!=image_base)
+    return reject("knight_context_source_owned_install_unavailable");
+  const auto wrapper=state->wrapper_target;
+  auto *const context_trampoline=state->context_trampoline;
+  auto *const wrapper_trampoline=state->wrapper_trampoline;
+  if(kKnightStatWrapperRva12004>(std::numeric_limits<std::uintptr_t>::max)()-image_base||
+      state->context_target!=target||wrapper!=image_base+kKnightStatWrapperRva12004||
+      context_trampoline==nullptr||wrapper_trampoline==nullptr||
+      reinterpret_cast<void *>(g_context_original.load(std::memory_order_acquire))!=context_trampoline||
+      reinterpret_cast<void *>(g_wrapper_original.load(std::memory_order_acquire))!=wrapper_trampoline||
+      !std::equal(kContextAnchor.begin(),kContextAnchor.end(),original.begin()))
+    return reject("knight_context_source_owned_binding_mismatch");
+  const auto context_patch=ContextPatch();const auto wrapper_patch=WrapperPatch();
+  std::array<std::uint8_t,kKnightStatContextPatchBytes12004> actual_context_patch{};
+  std::array<std::uint8_t,kKnightStatWrapperPatchBytes12004> actual_wrapper_patch{};
+  if(!Copy(reinterpret_cast<const void *>(target),actual_context_patch.data(),actual_context_patch.size())||
+      actual_context_patch!=context_patch||
+      !Copy(reinterpret_cast<const void *>(wrapper),actual_wrapper_patch.data(),actual_wrapper_patch.size())||
+      actual_wrapper_patch!=wrapper_patch)
+    return reject("knight_context_source_owned_live_patch_mismatch");
+  std::array<std::uint8_t,kKnightStatContextPatchBytes12004+14> expected_context{},saved_context{};
+  std::copy(kContextAnchor.begin(),kContextAnchor.end(),expected_context.begin());
+  Jump(expected_context.data()+kKnightStatContextPatchBytes12004,target+kKnightStatContextPatchBytes12004);
+  std::array<std::uint8_t,kKnightStatWrapperPatchBytes12004+14> expected_wrapper{},saved_wrapper{};
+  std::copy(kWrapperAnchor.begin(),kWrapperAnchor.end(),expected_wrapper.begin());
+  Jump(expected_wrapper.data()+kKnightStatWrapperPatchBytes12004,wrapper+kKnightStatWrapperPatchBytes12004);
+  if(!Copy(context_trampoline,saved_context.data(),saved_context.size())||saved_context!=expected_context||
+      !Copy(wrapper_trampoline,saved_wrapper.data(),saved_wrapper.size())||saved_wrapper!=expected_wrapper)
+    return reject("knight_context_source_owned_saved_or_return_mismatch");
+  std::array<std::uint8_t,kKnightStatContextSourceBytes12004-kKnightStatContextPatchBytes12004> tail{};
+  if(!Copy(reinterpret_cast<const void *>(target+kKnightStatContextPatchBytes12004),tail.data(),tail.size())||
+      !std::equal(tail.begin(),tail.end(),original.begin()+kKnightStatContextPatchBytes12004))
+    return reject("knight_context_source_original_tail_mismatch");
+  // Re-read the complete live image, both live patches and both trampolines.
+  // No arbitrary JMP, stale installed flag or changed original can qualify.
+  if(!Copy(reinterpret_cast<const void *>(target),live.data(),live.size())||
+      !std::equal(context_patch.begin(),context_patch.end(),live.begin())||
+      !std::equal(live.begin()+kKnightStatContextPatchBytes12004,live.end(),original.begin()+kKnightStatContextPatchBytes12004)||
+      !Copy(reinterpret_cast<const void *>(wrapper),actual_wrapper_patch.data(),actual_wrapper_patch.size())||
+      actual_wrapper_patch!=wrapper_patch||
+      !Copy(context_trampoline,saved_context.data(),saved_context.size())||saved_context!=expected_context||
+      !Copy(wrapper_trampoline,saved_wrapper.data(),saved_wrapper.size())||saved_wrapper!=expected_wrapper)
+    return reject("knight_context_source_bookend_bytes_changed");
+  if(g_active_state.load(std::memory_order_acquire)!=state||
+      state->installed.load(std::memory_order_acquire)!=1||state->failure_flags.load(std::memory_order_acquire)!=0||
+      !g_available.load(std::memory_order_acquire)||g_bindings.image_base!=image_base||
+      state->context_target!=target||state->wrapper_target!=wrapper||
+      state->context_trampoline!=context_trampoline||state->wrapper_trampoline!=wrapper_trampoline||
+      reinterpret_cast<void *>(g_context_original.load(std::memory_order_acquire))!=context_trampoline||
+      reinterpret_cast<void *>(g_wrapper_original.load(std::memory_order_acquire))!=wrapper_trampoline)
+    return reject("knight_context_source_bookend_state_changed");
   return true;
 }
 

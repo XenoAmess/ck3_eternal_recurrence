@@ -1,0 +1,113 @@
+{
+  "schema": "faith-e02-event-batch-independent-post-append-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T13:14:40.145796+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0012",
+  "binding": {
+    "bridge_pid": 2052,
+    "connection_generation": 1,
+    "actor_character_id": 31254
+  },
+  "events": [
+    {
+      "event_definition_key": "pilgrimage.5001",
+      "event_instance_id": 3,
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "native_selection_postcondition": "event_instance_advanced",
+      "independent_old_window_gone": true,
+      "date_raw": 53145648,
+      "after_frame": {
+        "snapshot_id": "native:89",
+        "revision": 90,
+        "native_revision": 89,
+        "date_raw": 53145648,
+        "paused": true
+      },
+      "gold_before_raw": 13522395,
+      "gold_after_raw": 13522395,
+      "gold_delta_raw": 0,
+      "gold_scale": 100000,
+      "stress_before": 15,
+      "stress_after": 4,
+      "piety_after": {
+        "raw": 2017810000,
+        "scale": 100000
+      },
+      "source_pins": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\p3-recovery-output-a03\\faith-e02-journey-083-0004-event-select-once.actual-results.json",
+          "bytes": 23936,
+          "sha256": "ceddb30283f1d865deb6b51f2dad6c74ff6f9ac29374293fbdd9ad597ebdfd9d"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\p3-recovery-output-a03\\faith-e02-journey-083-event-3-selection-observed.json",
+          "bytes": 45836,
+          "sha256": "b4a12b9c8c954b5d9b748b04871d2703e2084c95d5b5ef568efad9e061e432c5"
+        }
+      ],
+      "piety_before": {
+        "raw": 2017810000,
+        "scale": 100000
+      },
+      "piety_unchanged_across_this_choice": true
+    },
+    {
+      "event_definition_key": "pilgrimage.4100",
+      "event_instance_id": 4,
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "native_selection_postcondition": "event_instance_advanced",
+      "independent_old_window_gone": true,
+      "date_raw": 53145672,
+      "after_frame": {
+        "snapshot_id": "native:94",
+        "revision": 95,
+        "native_revision": 94,
+        "date_raw": 53145672,
+        "paused": true
+      },
+      "gold_before_raw": 13522395,
+      "gold_after_raw": 10397395,
+      "gold_delta_raw": -3125000,
+      "gold_scale": 100000,
+      "stress_before": 4,
+      "stress_after": 4,
+      "piety_after": {
+        "raw": 2019310000,
+        "scale": 100000
+      },
+      "source_pins": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\p3-recovery-output-a03\\faith-e02-journey-083-0007-event-select-once.actual-results.json",
+          "bytes": 23933,
+          "sha256": "b31c1439159f1b643fb1170d65dd9d920f300e1af78e20b8bb6ab55fb7075ba5"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\p3-recovery-output-a03\\faith-e02-journey-083-event-4-selection-observed.json",
+          "bytes": 21773,
+          "sha256": "c380adb5631f99afa8e3231656458b43f8d771ca02bc964e3167f344b9b1ba49"
+        }
+      ],
+      "piety_before": {
+        "raw": 2019310000,
+        "scale": 100000
+      },
+      "piety_unchanged_across_this_choice": true
+    }
+  ],
+  "source_bound_rome_arrival_event_observed": true,
+  "full_journey_conclusion_or_return_observed": false,
+  "whole_journey_cost_known": false,
+  "pilgrim_trait_membership_or_xp_independently_read_back": false,
+  "badge_artifact_owner_id_equipment_or_stats_independently_read_back": false,
+  "interpretation": [
+    "5001 ACK plus independent oldwindow gone; actual stress15->4 and no gold change",
+    "4100 ACK plus independent oldwindow gone; actual extra31.25gold decrease; stress4->4",
+    "Activity log score50 is source metadata, not50piety or verified artifact ownership"
+  ],
+  "analyst_game_calls": 0,
+  "tests_run": 0
+}

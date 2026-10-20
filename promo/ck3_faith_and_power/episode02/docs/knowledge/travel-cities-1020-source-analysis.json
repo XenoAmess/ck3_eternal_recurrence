@@ -1,0 +1,245 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "travel_events_cities.1020",
+  "static_definition_id": "travel_events_cities.1020",
+  "live_native_definition_id": "travel_events_cities.1020",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T12:19:52.568989+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "completed_source_analysis_native_current_shown_variant",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_events_cities.txt",
+      "relative_path": "events/travel_events/travel_events_cities.txt",
+      "bytes": 83546,
+      "sha256": "e8090780726e31671cf28605341b0ca5e515dfcc66d994f18ee66be5070c94d5",
+      "relevant_lines": [
+        1136,
+        2321
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_events_cities_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/event_localization/travel_events/travel_events_cities_l_simp_chinese.yml",
+      "bytes": 11198,
+      "sha256": "b653990f01e6fc3eca6104179e65e6f34a69ad9b1b6b9646f6f3090f9ae78d15",
+      "relevant_lines": [
+        1,
+        63
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "relative_path": "common/on_action/travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+      "relevant_lines": [
+        2111,
+        2119
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "relative_path": "common/script_values/01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "relevant_lines": [
+        93,
+        111
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "relevant_lines": [
+        1225,
+        1239
+      ]
+    }
+  ],
+  "event_definition_lines": [
+    1136,
+    2321
+  ],
+  "caller": "on_visited_grand_city events list; delay days1; event location province2575 and city_event_check=yes",
+  "caller_lines": [
+    2111,
+    2119
+  ],
+  "occurrence_guaranteed": false,
+  "scope_coverage": "Current Christian pilgrims-and-shrines shown set; other hidden city variants not exhaustively analyzed",
+  "actual_batch_binding": {
+    "run_id": "4-8e1c2f1861--faith-engine--R0012",
+    "bridge_pid": 2052,
+    "connection_generation": 1,
+    "actor_character_id": 31254,
+    "event_instance_id": 2,
+    "date_raw": 53145456,
+    "snapshot_revision": 62,
+    "queried_revision": 63,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "province",
+        "name_identifier": 37,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "city_province",
+        "name_identifier": 19254,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "city_sight",
+        "name_identifier": 25006,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 3,
+          "type_key": "flag",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ]
+  },
+  "actual_shown_options": [
+    {
+      "rendered_index": 0,
+      "native_option_index": 4,
+      "shown": true,
+      "enabled": true,
+      "resolved_name": "我会在这里找到点东西带回家。"
+    },
+    {
+      "rendered_index": 1,
+      "native_option_index": 6,
+      "shown": true,
+      "enabled": true,
+      "resolved_name": "我花了一些时间思考耶稣的本质"
+    },
+    {
+      "rendered_index": 2,
+      "native_option_index": 7,
+      "shown": true,
+      "enabled": true,
+      "resolved_name": "我不会再这里浪费任何时间。"
+    }
+  ],
+  "evidence_pins": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\capture-observations\\p3-current-context-a01.actual.json",
+      "bytes": 80458,
+      "sha256": "8c4a011b918e2692456130efd75358d7bdca57bf9b328581a0984d1ec1e22d18"
+    }
+  ],
+  "source_options": [
+    {
+      "source_option_ordinal": 5,
+      "name_key": "travel_city_option_souvenir",
+      "source_lines": [
+        1932,
+        2070
+      ],
+      "eligibility": "city_sight=pilgrims_and_shrines",
+      "effects": [
+        "Delay current travel plan7days",
+        "remove_short_term_gold=medium_gold_value",
+        "Christian branch calls create_artifact_pedestal_christian_relic_effect_hist, OWNER=this; no fixed rarity/stats claimed",
+        "Non-Christian branch creates learning book; this branch was not shown in current Christian choice set",
+        "stress_and_fulfillment_impact: arrogant=minor gain, greedy=minor gain"
+      ],
+      "dynamic_cost": "medium_gold_value uses monthly_character_income * medium_income_multiplier_value; treasury/non-top-liege/landed factor0.25 condition; min/max clamps; round up to multiple5. No live numeric quote was exposed",
+      "current_actual_rendered_index": 0,
+      "current_actual_native_option_index": 4,
+      "current_actual_option_number": 5
+    },
+    {
+      "source_option_ordinal": 7,
+      "name_keys_in_source_order": [
+        "travel_city_option_learning",
+        "travel_city_contemplated_religion_tooltip"
+      ],
+      "source_lines": [
+        2198,
+        2288
+      ],
+      "eligibility": "city_sight=pilgrims_and_shrines AND religion=christianity_religion",
+      "effects": [
+        "Delay travel14days",
+        "If has_pious_pilgrimage_type_trigger: pious_type_option_effect; helper updates major special-type progress for eligible pious/hajj activity",
+        "add_piety=medium_piety_gain",
+        "random weights10/40/50: contemplated_life15years; mystic trait if absent plus random traitXP; well_rested_modifier10years",
+        "stress_and_fulfillment: base major loss; gregarious miniscule loss; temperate medium gain"
+      ],
+      "current_actual_rendered_index": 1,
+      "current_actual_native_option_index": 6
+    },
+    {
+      "source_option_ordinal": 8,
+      "name_key": "travel_city_option_opt_out",
+      "source_lines": [
+        2290,
+        2305
+      ],
+      "effects": [
+        "No travel delay or gold deduction in this option block",
+        "stress_and_fulfillment_impact: lifestyle_traveler=minor loss"
+      ],
+      "current_actual_rendered_index": 2,
+      "current_actual_native_option_index": 7
+    }
+  ],
+  "source_location_caveat": "Source condition is province2575; native province payload and city_sight flag identity remain unavailable. This is no independent coordinate or pilgrimage-phase arrival proof.",
+  "registry_at_analysis": {
+    "status": "not_registered",
+    "method": "Read-only search of vanilla_events sources; no matching definition key"
+  },
+  "selection_policy_changed": false,
+  "full_occurrence_contract_registered": false,
+  "live_reward_payment_or_business_credit": false,
+  "merge_target": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-cities-1020-source-analysis.json",
+  "immediate_effects": [
+    "wayfarer_storyteller_fame_effect(VALUE=roaming_reward_fame_high); play travel arrival music",
+    "Save current location as city_province; random eligible city_sight and optional sightseeing companion; these are immediate, not option reward"
+  ],
+  "after_effect": "All choices create memory_big_city_visited and store city_location=city_province, lines2307-2319",
+  "interpretation": "Grand-city sightseeing while travelling; not pilgrimage.5001 arrival, main pilgrimage reward, return, or total journey cost. The souvenir charge is an additional event cost outside the earlier70gold activity booking.",
+  "actual_effect_readback": "Not yet received at analysis creation; source effects are not proof of payment, relic creation, stress or travel delay",
+  "future_recognition": "Fresh native definition plus matching sourceSHA recognizes analyzed Christian-shrine shown variant; bind current root/options. Never reuse native4, scopes, or instance2 for a later occurrence. Existing dedicated policy first, then legal first-display fallback; no new recommendation policy.",
+  "loaded_definition_bytes_verified": false,
+  "scope_flag_branch_authority": "Source and actual shown-name eligibility mapping; city_sight typed flag payload remains unavailable"
+}

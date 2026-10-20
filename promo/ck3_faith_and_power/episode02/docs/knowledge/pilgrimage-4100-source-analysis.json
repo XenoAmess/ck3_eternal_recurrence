@@ -1,0 +1,432 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T13:13:23.984760+00:00",
+  "ck3_build": "1.20.0.4",
+  "analysis_status": "completed_source_analysis_actual_native_shown_options",
+  "event_definition_key": "pilgrimage.4100",
+  "live_native_definition_id": "pilgrimage.4100",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "relevant_lines": [
+        [
+          9446,
+          9619
+        ],
+        [
+          9698,
+          9717
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          665,
+          668
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_artifact_badge_scripted_effects.txt",
+      "bytes": 12465,
+      "sha256": "9da2e2f4e0fc70fb17d55afdb23b9dd2b2a92b7a4ffddaf3fe00c1f172b1c83e",
+      "relevant_lines": [
+        [
+          283,
+          317
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "relevant_lines": [
+        [
+          53,
+          71
+        ]
+      ]
+    }
+  ],
+  "event_definition_lines": [
+    9496,
+    9619
+  ],
+  "source_caller": "pilgrimage.5001 after schedules4100 after1day when no owned is_rome_pilgrim_badge. Other arrival callers exist; no live native callstack authority claimed.",
+  "actual_order": "5001 instance3 date53145648;4100 instance4 date53145672",
+  "run_id": "4-8e1c2f1861--faith-engine--R0012",
+  "binding": {
+    "bridge_pid": 2052,
+    "connection_generation": 1,
+    "actor_character_id": 31254,
+    "event_instance_id": 4,
+    "date_raw": 53145672,
+    "native_revision": 93,
+    "queried_revision": 94
+  },
+  "query_finished_at": "2026-10-20T13:06:03.720266+00:00",
+  "actual_native_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 93,
+    "date_raw": 53145672,
+    "current_event_instance_id": 4,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "pilgrimage.4100",
+    "calculated_event_id": 2744100,
+    "runtime_stats_ordinal": 3632,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "activity",
+        "name_identifier": 2,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 6,
+          "type_key": "activity",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "host",
+        "name_identifier": 62,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "province",
+        "name_identifier": 37,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "pilgrim_bystander",
+        "name_identifier": 20730,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 45511
+          }
+        }
+      },
+      {
+        "name": "pilgrim_vendor",
+        "name_identifier": 20731,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 66586
+          }
+        }
+      },
+      {
+        "name": "receiving_char",
+        "name_identifier": 44901,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 66586
+          }
+        }
+      },
+      {
+        "name": "badge_location",
+        "name_identifier": 15706,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "badge_acquirer",
+        "name_identifier": 44903,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 66586
+          }
+        }
+      },
+      {
+        "name": "quality",
+        "name_identifier": 205,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 1,
+          "type_key": "value",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          },
+          "numeric_value": {
+            "raw_fixed_point": "3000000",
+            "scale": 100000,
+            "decimal_value": "30",
+            "integer_value": "30"
+          }
+        }
+      },
+      {
+        "name": "wealth",
+        "name_identifier": 206,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 1,
+          "type_key": "value",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          },
+          "numeric_value": {
+            "raw_fixed_point": "3000000",
+            "scale": 100000,
+            "decimal_value": "30",
+            "integer_value": "30"
+          }
+        }
+      },
+      {
+        "name": "newly_created_artifact",
+        "name_identifier": 6709,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "created_pilgrim_badge",
+        "name_identifier": 20735,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "badge_to_buy",
+        "name_identifier": 20732,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“请给我一个徽章！”",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我的金钱有更好的用途。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "immutable_query_pin": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\p3-recovery-output-a03\\faith-e02-journey-083-0006-event-query.actual-results.json",
+    "bytes": 41438,
+    "sha256": "dd4be1e2b08accd720e99592454d0c7d0b40ff1df18357e4c1c618f6246c7cc7"
+  },
+  "loaded_definition_bytes_verified": false,
+  "registry_at_analysis": {
+    "status": "not_registered",
+    "method": "Read-only key search in vanilla_events source"
+  },
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "merge_target": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-4100-source-analysis.json",
+  "immediate_effects": [
+    "Find local adult AI bystander or create temporary one",
+    "Find suitable vendor or create one; native role does not prove vendor is newly created",
+    "Create badge owned by pilgrim_vendor; save badge_to_buy. Artifact saved-scope presence is not player ownership",
+    "Badge helper selects Santiago/Jerusalem/Rome(b_vaticano)/generic from vendor location; untyped native badge/province payload does not prove item identity or variant"
+  ],
+  "source_options": [
+    {
+      "source_option_ordinal": 1,
+      "name_key": "pilgrimage.4100.a",
+      "source_lines": [
+        9555,
+        9601
+      ],
+      "effects": [
+        "pay_short_term_gold to pilgrim_vendor: minor_gold_value; multiply1.25 only if badge_to_buy exists and rarity=illustrious",
+        "If involved_activity exists: add activity_log entry pilgrimage_badge_log, score50, show_in_conclusion=yes; its root effects conditionally set badge_to_buy owner=root with purchased history"
+      ],
+      "cost_is_dynamic": true,
+      "activity_log_score_is_piety": false
+    },
+    {
+      "source_option_ordinal": 2,
+      "name_key": "pilgrimage.4100.b",
+      "source_lines": [
+        9603,
+        9609
+      ],
+      "effects": [
+        "stress_impact greedy=minor_stress_impact_loss; no purchase or owner transfer in this option block"
+      ]
+    }
+  ],
+  "after_effect": "Clean vendor only when created_merchant AND root is AI; remove bystander only if created_bystander",
+  "numeric_preview_boundary": "Both native shown options legal; option0 effect-indicator rows empty and complete_effect_set=false. Empty indicators do not mean no gold cost.",
+  "source_dynamic_cost": "minor_gold_value uses3-month income multiplier, conditional treasury factor0.25, min/max clamp and rounding up to5; actual price requires wallet readback, not hardcoded31.25 for future cases",
+  "material_ownership_readback": "Not available from generic artifact scope; effect/source knowledge does not establish actual badge owner, exact artifactID, rarity, stats or equipment",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+}

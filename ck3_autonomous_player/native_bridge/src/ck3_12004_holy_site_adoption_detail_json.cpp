@@ -36,6 +36,7 @@ std::string PlanningFields(const AdoptionDetailSnapshot&v){
 
 std::string SerializeSelectedDecisionTerms12004(const SelectedDecisionTermsSnapshot12004&v){
  const auto&n=v.native;const bool ok=v.available&&v.context_verified;
+ const bool stock=ok&&v.stock_default_parameter_verified;
  const auto flag=[&](bool value){return std::string(B(value));};
  const auto text=[&](bool available,const std::string&value){return available?Q(value):std::string("null");};
  const bool bypass=ok&&n.bypass_requirements_observed,normal=bypass&&n.bypass_requirements_raw==0;
@@ -45,11 +46,14 @@ std::string SerializeSelectedDecisionTerms12004(const SelectedDecisionTermsSnaps
   ",\"decision_key\":"+Q(v.decision_key)+",\"capture_epoch\":"+std::to_string(v.capture_epoch)+
   ",\"date_raw\":"+std::to_string(v.date_raw)+",\"played_character_id\":"+std::to_string(v.played_character_id)+
   ",\"context_verified\":"+flag(ok)+",\"named_parameter_count\":"+std::to_string(v.parameter_count)+
-  ",\"context_adapter\":\"actual_empty_named_parameters_only\",\"can_confirm\":"+(ok?flag(n.native_can_confirm):"null")+
+  ",\"context_adapter\":"+Q(stock?"actual_create_hof_stock_default_parameter_only":"actual_empty_named_parameters_only")+",\"can_confirm\":"+(ok?flag(n.native_can_confirm):"null")+
   ",\"requirements_bypass_observed\":"+flag(bypass)+",\"requirements_bypass_raw\":"+
   (bypass?std::to_string(n.bypass_requirements_raw):"null")+
   ",\"ordinary_legality_observed\":"+flag(normal)+",\"ordinary_can_confirm\":"+
   (normal?flag(n.native_can_confirm):"null");
+ if(stock)out+=",\"stock_default_parameter\":{\"token_source\":\"stock_detail_default_token_slot_0x5D4C0D8\",\"canonical_token\":"+
+  std::to_string(v.stock_default_parameter_token)+",\"key\":"+std::to_string(v.stock_default_parameter_key)+
+  ",\"scope_kind\":4,\"scope_flags\":0,\"scope_payload\":4294967295,\"no_custom_controller\":true}";
  const auto add_text=[&](const char*name,bool available,const std::string&value){
   out+=",\"";out+=name;out+="_available\":"+flag(ok&&available)+",\"";out+=name;out+="\":"+text(ok&&available,value);
  };

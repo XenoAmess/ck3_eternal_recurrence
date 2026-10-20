@@ -410,6 +410,16 @@ jobs:
         run: python tools/test_ck3_live_run_id.py
       - name: Test shared CK3 acceptance without installed CK3
         run: |
+          python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_exact_tree_binding.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_research_delta.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_day.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_ck3_mod_acceptance_late_native_cleanup.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_hof_shared_terms_typing_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance.py
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_native_projection.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%

@@ -673,12 +673,21 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                             capture_output=True, text=True, check=True).stdout
     require(head == commit and not status.strip(), "Actual current Root must be clean at the exact qualified commit")
     ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", native_commit, commit], cwd=root, capture_output=True)
-    require(ancestor.returncode == 0, "Native compile commit must be a proven ancestor of current Root; native bytes are checked independently")
+    require(ancestor.returncode == 0 or (
+                ancestor.returncode == 1
+                and source_checkout.get("native_compile_commit_is_ancestor") is False
+                and (source_checkout.get("nonancestor_exact_tree_binding") is not None
+                     and source_checkout["nonancestor_exact_tree_binding"] == source_checkout["binding_ref"]
+                     or source_checkout.get("nonancestor_research_delta_binding") is not None
+                     and source_checkout["nonancestor_research_delta_binding"] == source_checkout["binding_ref"])),
+            "Native compile commit must be a proven ancestor or have a verified explicit exact-tree nonancestor binding")
     tracked_raw = subprocess.run(["git", "ls-files", "-z", "--", NATIVE_PREFIX], cwd=root,
                                  capture_output=True, check=True).stdout.decode("utf-8")
     tracked = {name[len(NATIVE_PREFIX):] for name in tracked_raw.split("\0") if name}
     declared_root = {row["native_relative"] for row in rows if "source" not in row}
-    require(tracked == declared_root, "Frozen native manifest omitted or added current Root tracked inputs")
+    added_research = set(source_checkout.get("added_runtime_research_paths", ()))
+    require(tracked == declared_root | added_research,
+            "Frozen native manifest omitted or added current Root tracked inputs")
     snapshot_root = Path(snapshot["snapshot_native_base"]).resolve()
     indexed = {}
     for row in rows:
@@ -696,6 +705,10 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                 original = source_checkout["runtime_shared_host_pin"]
                 require(Path(original["path"]).resolve() == root / HOST_RELATIVE,
                         "Verified shared-host runtime pin is from another source path")
+            if relative in source_checkout.get("runtime_research_pins", {}):
+                original = source_checkout["runtime_research_pins"][relative]
+                require(Path(original["path"]).resolve() == native_root / relative,
+                        "Verified runtime research pin is from another source path")
             checked(original)
         else:
             checked({"path": row["source"], "bytes": row["bytes"], "sha256": row["sha256"]})
@@ -799,7 +812,13 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             "fixture_link_support": link_support["ref"] if link_support else None,
             "source_checkout_binding": source_checkout["binding_ref"],
             "shared_python_host_delta": source_checkout.get("shared_python_host_delta"),
-            "shared_host_qualification": source_checkout.get("shared_host_qualification")}
+            "shared_host_qualification": source_checkout.get("shared_host_qualification"),
+            "nonancestor_exact_tree_binding": source_checkout.get("nonancestor_exact_tree_binding"),
+            "native_compile_commit_is_ancestor": ancestor.returncode == 0,
+            "nonancestor_research_delta_binding": source_checkout.get("nonancestor_research_delta_binding"),
+            "full_native_tree_equal": source_checkout.get("full_native_tree_equal"),
+            "compiled_inputs_equal": source_checkout.get("compiled_inputs_equal"),
+            "research_delta": source_checkout.get("research_delta")}
 
 
 def project_host(root, old_host, old_runtime, new_runtime, source_files):

@@ -6,6 +6,7 @@ No game, installation path, evidence file or gameplay driver is read here.
 from __future__ import annotations
 
 from copy import deepcopy
+from typing import Literal, NotRequired, TypedDict
 
 
 _EXE = "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
@@ -17,11 +18,80 @@ _SITES = "common/religion/holy_site_types/00_holy_site_types.txt"
 _SITES_SHA = "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40"
 
 
+
+class SourceOnlyEvent(TypedDict):
+    """Source knowledge and optional historical receipts, never a current event."""
+
+    source_document: str
+    static_definition_id: Literal["pilgrimage.5001", "travel_start_event.1060", "travel_events_cities.1020", "pilgrimage.4100"]
+    live_native_definition_id: str | None
+    analysis_status: Literal["source_bound_not_live_observed", "historical_live_native_definition_observed", "completed_source_analysis_native_current_shown_variant", "native_definition_observed_existing_source_analysis_reused", "completed_source_analysis_actual_native_shown_options"]
+    full_occurrence_contract_registered: Literal[False]
+    selection_policy_changed: Literal[False]
+    historical_observation_is_current_state: Literal[False]
+    # Omitted when no such receipt exists; absence is not a null/empty receipt.
+    occurrence_document: NotRequired[str]
+    post_observation_document: NotRequired[str]
+    related_interaction_document: NotRequired[str]
+
+
+_EVENT_DOCUMENTS = "promo/ck3_faith_and_power/episode02/docs/knowledge/"
+_SOURCE_ONLY_EVENTS: list[SourceOnlyEvent] = [
+    {"source_document": _EVENT_DOCUMENTS + "pilgrimage-5001-source-analysis.json",
+     "static_definition_id": "pilgrimage.5001", "live_native_definition_id": "pilgrimage.5001",
+     "analysis_status": "native_definition_observed_existing_source_analysis_reused",
+     "occurrence_document": _EVENT_DOCUMENTS + "pilgrimage-5001-r0012-occurrence-analysis.json",
+     "post_observation_document": _EVENT_DOCUMENTS + "r0012-5001-4100-post.json",
+     "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+     "historical_observation_is_current_state": False},
+    {"source_document": _EVENT_DOCUMENTS + "travel-start-1060-source-analysis.json",
+     "static_definition_id": "travel_start_event.1060", "live_native_definition_id": "travel_start_event.1060",
+     "analysis_status": "historical_live_native_definition_observed",
+     "occurrence_document": _EVENT_DOCUMENTS + "travel-start-1060-r0012-occurrence.json",
+     "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+     "historical_observation_is_current_state": False},
+    {"source_document": _EVENT_DOCUMENTS + "travel-cities-1020-source-analysis.json",
+     "static_definition_id": "travel_events_cities.1020", "live_native_definition_id": "travel_events_cities.1020",
+     "analysis_status": "completed_source_analysis_native_current_shown_variant",
+     "post_observation_document": _EVENT_DOCUMENTS + "r0012-event2-interaction35-post.json",
+     "related_interaction_document": _EVENT_DOCUMENTS + "r0012-arrange-marriage-source-occurrence.json",
+     "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+     "historical_observation_is_current_state": False},
+    {"source_document": _EVENT_DOCUMENTS + "pilgrimage-4100-source-analysis.json",
+     "static_definition_id": "pilgrimage.4100", "live_native_definition_id": "pilgrimage.4100",
+     "analysis_status": "completed_source_analysis_actual_native_shown_options",
+     "post_observation_document": _EVENT_DOCUMENTS + "r0012-5001-4100-post.json",
+     "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+     "historical_observation_is_current_state": False},
+]
+
+
+def _validate_source_only_events(events: list[SourceOnlyEvent]) -> None:
+    """Validate the shared static rows without reading their referenced files."""
+    expected = {"pilgrimage.5001", "travel_start_event.1060", "travel_events_cities.1020", "pilgrimage.4100"}
+    if len(events) != 4 or {event["static_definition_id"] for event in events} != expected:
+        raise ValueError("E02 source-event definition set differs")
+    for event in events:
+        definition = event["static_definition_id"]
+        live_id = event["live_native_definition_id"]
+        if live_id != definition:
+            raise ValueError("E02 source-event historical native identity differs")
+        if (event["full_occurrence_contract_registered"] is not False
+                or event["selection_policy_changed"] is not False
+                or event["historical_observation_is_current_state"] is not False):
+            raise ValueError("E02 historical reference cannot grant current state or policy")
+        for field in ("source_document", "occurrence_document", "post_observation_document", "related_interaction_document"):
+            path = event.get(field)
+            if path is not None and (not isinstance(path, str) or not path.startswith(_EVENT_DOCUMENTS)
+                    or ".." in path.split("/") or ":" in path or "\\" in path):
+                raise ValueError("E02 source-event document must be repository-relative")
+
+
 def _source(path: str, sha256: str, first: int, last: int) -> dict[str, object]:
     return {"game_relative_path": path, "sha256": sha256, "line_ranges": [[first, last]]}
 
 
-_RESEARCH = {
+_RESEARCH: dict[str, object] = {
     "schema": "xar.ck3.holy-site-episode02-research.v1",
     "ck3_build": "1.20.0.4",
     "executable_sha256": _EXE,
@@ -126,21 +196,15 @@ _RESEARCH = {
                 "Planner selection, final configured full10 activity quote (not proven whole-journey cost), Start, arrival, destination completion and return are separate observed states.",
                 "The ordinary-site half multiplier belongs to its specific piety reward calculation, not every reward. A destination stay is not the whole travel duration.",
                 "An end-window tooltip or empty activity list alone does not establish reward receipt or return home; retain actual IDs, event state and independent outcome.",
+                "Empty event effect_indicators.rows with complete_effect_set=false and unavailable resource_deltas does not prove no cost; pilgrimage.4100 has a normal scripted purchase charge.",
+                "pilgrimage.4100 activity_log score50 is a log score, not 50 piety. Historical R0012 post reads confirm an extra31.25gold charge for that occurrence only; future prices remain dynamic.",
+                "An arrival/badge event window consumed does not prove pilgrim trait/XP, badge ownership/full artifact ID/equipment, full journey conclusion or return.",
             ],
             "sources": [
                 _source("common/scripted_effects/00_pilgrimage_effects.txt", "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80", 516, 629),
                 _source("events/activities/pilgrimage_activity/pilgrimage_events.txt", "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06", 15187, 15279),
             ],
-            "source_only_events": [
-                {"source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-5001-source-analysis.json",
-                 "static_definition_id": "pilgrimage.5001", "live_native_definition_id": None,
-                 "analysis_status": "source_bound_not_live_observed",
-                 "full_occurrence_contract_registered": False, "selection_policy_changed": False},
-                {"source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
-                 "static_definition_id": "travel_start_event.1060", "live_native_definition_id": None,
-                 "analysis_status": "completed_source_analysis_actual_visual_popup_native_definition_unqueried",
-                 "full_occurrence_contract_registered": False, "selection_policy_changed": False},
-            ],
+            "source_only_events": _SOURCE_ONLY_EVENTS,
             "unknowns": ["Current choices/configured activity quote/Start permission; whole-journey cost is not established, nor real elapsed travel and independent actual reward/return state."],
         },
         "great_holy_war": {
@@ -175,4 +239,5 @@ _RESEARCH = {
 
 def episode02_research() -> dict[str, object]:
     """Return independent source-valued knowledge without reading the world."""
+    _validate_source_only_events(_SOURCE_ONLY_EVENTS)
     return deepcopy(_RESEARCH)

@@ -81,8 +81,22 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
     require(not binding_path.is_symlink(), "Source checkout binding cannot be symbolic")
     binding_ref = pin(binding_path)
     value = json.loads(binding_path.read_text(encoding="utf-8-sig"))
+    exact_tree = (isinstance(value, dict)
+                  and value.get("schema") == "ck3-native-worktree-exact-tree-source-binding-v1")
+    research_delta = (isinstance(value, dict)
+                      and value.get("schema") == "ck3-native-worktree-research-delta-source-binding-v1")
+    require(not (exact_tree or research_delta) or native_shared_python_host_delta is None,
+            "Exact-tree nonancestor binding cannot allow any shared-host source difference")
     fields = FIELDS if native_shared_python_host_delta is None else DELTA_FIELDS
     schema = SCHEMA if native_shared_python_host_delta is None else "ck3-native-worktree-shared-python-host-binding-v1"
+    if exact_tree:
+        fields = FIELDS | {"native_compile_commit_is_ancestor", "compiled_inputs"}
+        schema = "ck3-native-worktree-exact-tree-source-binding-v1"
+    if research_delta:
+        fields = FIELDS | {"native_compile_commit_is_ancestor", "compiled_inputs",
+                           "runtime_native_subtree_tree_id", "full_native_tree_equal",
+                           "compiled_inputs_equal", "research_delta"}
+        schema = "ck3-native-worktree-research-delta-source-binding-v1"
     require(isinstance(value, dict) and set(value) == fields and value.get("schema") == schema,
             "Exact explicit Native worktree source-binding schema required")
     require(value["machine_id"] == machine and qualification.get("machine_id") == machine
@@ -113,11 +127,29 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
             "Native source and runtime repositories must be actual linked worktrees of the declared Git store")
     ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", native_commit, runtime_commit],
                               cwd=root, capture_output=True)
-    require(ancestor.returncode == 0, "Native compile commit must be an ancestor of the actual runtime commit")
+    if exact_tree or research_delta:
+        require(ancestor.returncode == 1 and value["native_compile_commit_is_ancestor"] is False,
+                "Exact-tree opt-in must truthfully identify an actual nonancestor compile commit")
+    else:
+        require(ancestor.returncode == 0, "Native compile commit must be an ancestor of the actual runtime commit")
     subtree = git(root, "rev-parse", runtime_commit + ":" + NATIVE_PREFIX.rstrip("/"))
     compile_subtree = git(native_repo, "rev-parse", native_commit + ":" + NATIVE_PREFIX.rstrip("/"))
     shared_host = None
-    if native_shared_python_host_delta is None:
+    research_context = None
+    if research_delta:
+        require(value["full_native_tree_equal"] is False and value["compiled_inputs_equal"] is True
+                and subtree != compile_subtree and value["native_subtree_tree_id"] == compile_subtree
+                and value["runtime_native_subtree_tree_id"] == subtree,
+                "Research opt-in must truthfully preserve unequal full Native trees and unchanged compiled inputs")
+        path = Path(__file__).with_name("ck3_mod_acceptance_native_research_delta.py")
+        spec = importlib.util.spec_from_file_location("ck3_native_research_delta", path)
+        research_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(research_module)
+        research_context = research_module.qualify_research_delta(
+            value["research_delta"], root=root, native_repo=native_repo,
+            runtime_commit=runtime_commit, native_commit=native_commit,
+            qualification=qualification, snapshot=snapshot)
+    elif native_shared_python_host_delta is None:
         require(subtree == value["native_subtree_tree_id"] == compile_subtree,
                 "Runtime and compile commits have different Native Git trees")
     else:
@@ -138,7 +170,10 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
     native_tracked = set(git(native_repo, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
     rows = snapshot.get("files", [])
     declared = {NATIVE_PREFIX + row["native_relative"] for row in rows if "source" not in row}
-    require(tracked == native_tracked == declared and len(declared) == len(rows)
+    added_research = (set(research_context["added_runtime_research_paths"])
+                      if research_context is not None else set())
+    require(tracked == declared | {NATIVE_PREFIX + relative for relative in added_research}
+            and native_tracked == declared and len(declared) == len(rows)
             and snapshot.get("source_count") == len(rows),
             "Direct worktree snapshot must cover every unique tracked Native input, without derivatives")
     for row in rows:
@@ -156,9 +191,36 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
             if (shared_host is not None and base == runtime_native
                     and relative == "research/run_ck3_12002_mcp_live.py"):
                 wanted = {key: shared_host["runtime_host_pin"][key] for key in ("bytes", "sha256")}
+            if (research_context is not None and base == runtime_native
+                    and relative in research_context["runtime_research_pins"]):
+                wanted = {key: research_context["runtime_research_pins"][relative][key]
+                          for key in ("bytes", "sha256")}
             require({key: actual[key] for key in wanted} == wanted,
                     "Actual Native source raw pin differs across the runtime, compile checkout or frozen snapshot: " + relative)
     result = {"native_source_base": original_native, "binding_ref": binding_ref}
+    if exact_tree or research_delta:
+        # Strict exact-tree keeps equal trees/pathsets. The separate reviewed
+        # research schema has checked its fixed M/A/M delta and every other raw
+        # input; both routes retain the original actual compiled closure.
+        path = Path(__file__).with_name("ck3_mod_acceptance_shared_python_host_delta.py")
+        spec = importlib.util.spec_from_file_location("ck3_exact_tree_compiled_inputs", path)
+        compiled_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(compiled_module)
+        actual_compiled = compiled_module.compiled_inputs(qualification, snapshot)
+        path = Path(__file__).with_name("ck3_mod_acceptance_exact_native_tree_binding.py")
+        spec = importlib.util.spec_from_file_location("ck3_exact_native_tree_contract", path)
+        contract_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(contract_module)
+        contract_module.validate_compiled_inputs(value["compiled_inputs"], actual_compiled)
+        result.update(native_compile_commit_is_ancestor=False)
+        if exact_tree:
+            result.update(nonancestor_exact_tree_binding=binding_ref)
+        else:
+            result.update(nonancestor_research_delta_binding=binding_ref,
+                          full_native_tree_equal=False, compiled_inputs_equal=True,
+                          runtime_research_pins=research_context["runtime_research_pins"],
+                          added_runtime_research_paths=research_context["added_runtime_research_paths"],
+                          research_delta=value["research_delta"])
     if shared_host is not None:
         result.update(runtime_shared_host_pin=shared_host["runtime_host_pin"],
                       shared_python_host_delta=shared_host["ref"],

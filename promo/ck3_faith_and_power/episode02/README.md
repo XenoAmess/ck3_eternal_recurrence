@@ -3,6 +3,7 @@
 - [游玩智能体研究入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)：机制、所需当前观测、来源和反例；既有知识 MCP 已返回二期摘要，普通 auto 自动调用与事件完整 registry 合同仍未接通。
 - [24分33.600秒完整制作预览](C:/workspace/ck3-faith-and-power-20261017/episode02/review-static-70cue-a01/episode02-production-preview.mp4)：70 cue 静帧讲解预览，持续标注23项实拍结果待补；不是正式拍摄完成版。
 - [新增三句后的73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)：实测时间轴24:59.733，尚未重新渲染；按配方先执行来源投影，不能直接套旧装配器。
+- [Q21与本轮朝圣实拍](docs/production-b21-and-p3-20261020.md)：已录普通出发和罗马抵达，完整归返待补；原失败退出和预算超额保持，新增四个历史事件知识可供智能体查询。
 
 第二期融合旧二、三期尚有新增价值的内容，以“已有圣地，下一笔资源投在哪里”为主线，连接圣物用途、类型选择、朝圣和宗教权力。当前完整首版目标约27—30分钟，实际时长待案例补入后测定，不为片长重复一期。
 
@@ -18,10 +19,10 @@
 - [新执行资格与七章声音](docs/production-b5-and-voices-20261020.md)：B5生产DLL、19项原生和37项接口验证、两条拍摄流程、后36段声音以及B6容量准入。
 - [朝圣第二场诊断与修复](docs/filming-b6-and-request-seam-20261020.md)：本场70／100金默认活动费、open请求字段缺失、真实解析验证、专用事件策略与正常关场。
 - 机制研究：[圣物与类型效果](docs/research-artifacts-and-site-effects.md)、[普通朝圣](docs/research-pilgrimage.md)、[精神领袖与大圣战](docs/research-spiritual-head-and-ghw.md)。
-- [最新导演进度与相对节点](docs/director-progress-and-schedule-20261020.md)：固定声音23:32.267、53/65固定视觉、当前35项画面／结果缺口，以及并行研究、后续实拍和完整首版的滚动工时。
+- [早期导演进度与相对节点](docs/director-progress-and-schedule-20261020.md)：保留当时53/65固定视觉及35项缺口截点；最新完成与剩余以执行进度为准。
 - [B9生产构建、接口资格与并行后继](docs/production-b9-and-parallel-20261020.md)：新DLL与8个原生夹具、复用66项控制层／当前38项SDK及Root33项资格分别记账；observer原RED、后继6目标68 owned场景、GHW body 9项消费者及B6/B8精确回收；朝圣完整结果仍待实拍。
 - [B13／B14实际、作者输入与CI边界](docs/filming-b10-and-b11-plan-20261020.md)：B14供奉链与正常闭场已证；固定53／65及装备1／24分列，支持修复已应用、本地原CI模块25项通过，远端CI待新提交验证。
 
-截至2026-10-20 10:20Z，`machine_id: 4-8e1c2f1861`：最新作者配方73段均有视觉、65段固定内容齐全，正式实拍结果仍为1／24、23项待补。已渲染的完整预览仍是上方70段24:33.600版；73段24:59.733仅完成配方、时间轴和消费者验证。B17新增三句只讲该场真实出发及活动费，不冒充抵达或归返。B18已实际正常typed退出并释放CAS12705，但教宗原生报价参数尚未合格、未提交Confirm；重复open与漏交及时闭场响应造成的原run2／host1和关闭资格false原样保留。后续麦加、完整朝圣与独立教宗Native修复并行推进，实际结果和来源详见[执行进度](docs/production-progress.md)。
+截至2026-10-20 13:54Z，`machine_id: 4-8e1c2f1861`：73段均有作者视觉、65段固定内容齐全，已渲染预览仍为70段24:33.600；新实拍尚未全部形成正式结果绑定，不能把1／24字段理解为影片只完成4%。B20已实证出发70金、城市消费50金、罗马抵达压力15→4及徽章另支出31.25金；录像出现朝圣者特质提示，完整结算/归返仍未完成。该场退出过晚，最终受管清理CK3 exit1，原normal/failure-lifecycle=false与nonraw超额均保留；现场CAS12783已释放。Q21骑士读取修复已编译验证，游戏内净收益待下一场；共享知识和公共单日修复已接入，源码/CI、新runtime、后继实拍和案例旁白继续并行。细节及精确原件见[执行进度](docs/production-progress.md)。
 
 一期已由用户确认成功，其交付、17章范围与制作经验以[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)为准。旧[三期导演提案](../director-plan.md)保留历史身份，不再作为当前集数和拍摄清单。

@@ -68,8 +68,9 @@ struct AdoptionDetailSnapshot {
   std::string unavailable_reason;
 };
 
-// Shared read-only selected-decision terms. This first bounded adapter admits
-// actual empty-parameter contexts; non-empty contexts stay unavailable.
+// Shared read-only selected-decision terms. Empty contexts keep their original
+// contract. Only create_hof's source-proven stock default row is additionally
+// eligible; no arbitrary named scope or custom controller is admitted.
 // Private pointers are supplied only by the already verified keyed GUI model.
 struct SelectedDecisionTermsSnapshot12004 {
   bool available=false,context_verified=false;
@@ -77,6 +78,8 @@ struct SelectedDecisionTermsSnapshot12004 {
   std::int32_t date_raw=0,played_character_id=-1;
   std::string decision_key,unavailable_reason="selected_detail_not_qualified";
   std::uint32_t parameter_count=0;
+  bool stock_default_parameter_verified=false;
+  std::uint32_t stock_default_parameter_token=0,stock_default_parameter_key=0;
   AdoptionDetailSnapshot native{};
 };
 bool ReadSelectedDecisionTerms12004(const AdoptionDetailBindings &,

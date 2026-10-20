@@ -1,0 +1,208 @@
+{
+  "schema": "faith-e02-event-batch-independent-post-append-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T12:29:20.918965+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0012",
+  "binding": {
+    "bridge_pid": 2052,
+    "connection_generation": 1,
+    "actor_character_id": 31254,
+    "date_raw": 53145456
+  },
+  "original_query_time_package_unchanged": true,
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\capture-observations\\r0012-city-event2-firstshown-a01.actual.json",
+      "bytes": 66445,
+      "sha256": "6ca2440c3f50ecee44c8f767ba771fd4cd14eeefe5a506581052a4284f36e611"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\capture-observations\\r0012-marriage35-reject-left-a01.actual.json",
+      "bytes": 62754,
+      "sha256": "5b67547196bc766ca180a88f6ead63faa1ee8d84d2e96f385711f0c9091ad43b"
+    }
+  ],
+  "event2": {
+    "definition_key": "travel_events_cities.1020",
+    "action_step_id": "r0012-city-event2-firstshown-a01",
+    "action_finished_at": "2026-10-20T12:19:35.469447+00:00",
+    "ack": {
+      "step": "select-event-option-5",
+      "accepted": true,
+      "status": "submitted",
+      "progress_status": "postcondition"
+    },
+    "typed_selection_readback": {
+      "status": "event_instance_advanced",
+      "postcondition_verified": true,
+      "old_event_instance_id": 2,
+      "new_event_instance_id": null,
+      "selected_option_number": 5,
+      "selected_native_option_index": 4,
+      "starting_snapshot_id": "native:62",
+      "starting_revision": 63,
+      "ending_snapshot_id": "native:63",
+      "ending_revision": 64,
+      "episode_run_id": null,
+      "connection_generation": 1,
+      "bridge_pid": 2052,
+      "starting_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 0,
+        "unavailable_reason": null
+      },
+      "ending_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 15,
+        "unavailable_reason": null
+      },
+      "starting_played_character_event_traits": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 62,
+        "date_raw": 53145456,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "ending_played_character_event_traits": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 63,
+        "date_raw": 53145456,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "starting_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 18522395,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 13522395,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "starting_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 220429460,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 220429460,
+        "scale": 100000,
+        "unavailable_reason": null
+      }
+    },
+    "independent_snapshot_step_id": "r0012-city-event2-firstshown-a01-post",
+    "independent_snapshot_finished_at": "2026-10-20T12:19:35.780210+00:00",
+    "independent_snapshot": {
+      "snapshot_id": "native:63",
+      "revision": 64,
+      "native_revision": 63,
+      "date_raw": 53145456,
+      "paused": true,
+      "played_character_gold": {
+        "raw": 13522395,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "raw": 220429460,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "raw": 2005310000,
+        "scale": 100000
+      },
+      "active_event": null,
+      "pending_character_interaction": {
+        "instance_id": 35,
+        "sender_character_id": 34028,
+        "auto_accept_notification": false,
+        "source": "native"
+      }
+    },
+    "old_instance2_absent": true,
+    "wallet_delta_raw": -5000000,
+    "wallet_scale": 100000,
+    "actual_gold_decrease": 50,
+    "stress_points_before": 0,
+    "stress_points_after": 15,
+    "artifact_inventory_observed": false,
+    "travel_delay_or_new_ETA_observed": false,
+    "meaning": "Current source shows souvenir cost; paused same-date independent wallet confirms50gold decrease. Artifact creation and+7day ETA remain source-only. This is additional event cost, not whole-journey total."
+  },
+  "interaction35": {
+    "definition_key": "arrange_marriage_interaction",
+    "action_step_id": "r0012-marriage35-reject-left-a01",
+    "action_finished_at": "2026-10-20T12:20:07.980935+00:00",
+    "native_reply_result": {
+      "step": "reject-pending-character-interaction",
+      "accepted": false,
+      "status": "submitted",
+      "backend_id": "native-headless",
+      "interaction_result": {
+        "status": "rejected",
+        "instance_id": 35,
+        "sender_character_id": 34028
+      },
+      "remaining_pending_character_interaction": null,
+      "paused": true,
+      "snapshot_id": "native:64",
+      "revision": 65,
+      "interaction_instance_id": 35,
+      "sender_character_id": 34028
+    },
+    "accepted_false_means_declined_not_dispatch_failure": true,
+    "independent_snapshot_step_id": "r0012-marriage35-reject-left-a01-post",
+    "independent_snapshot_finished_at": "2026-10-20T12:20:08.322423+00:00",
+    "independent_snapshot": {
+      "snapshot_id": "native:64",
+      "revision": 65,
+      "native_revision": 64,
+      "date_raw": 53145456,
+      "paused": true,
+      "played_character_gold": {
+        "raw": 13522395,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "raw": 220429460,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "raw": 2005310000,
+        "scale": 100000
+      },
+      "active_event": null,
+      "pending_character_interaction": null
+    },
+    "old_pending35_absent": true,
+    "marriage_or_material_decline_effects_independently_verified": false
+  },
+  "arrival_conclusion_or_return_claimed": false,
+  "whole_journey_cost_known": false,
+  "tests_run": 0,
+  "game_calls_by_analyst": 0
+}

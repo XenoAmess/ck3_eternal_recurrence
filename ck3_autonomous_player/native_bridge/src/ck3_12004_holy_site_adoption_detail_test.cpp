@@ -17,7 +17,7 @@ struct Fixture{
  static constexpr std::uintptr_t base=0x140000000;
  static constexpr std::uint32_t actor=0x03000004,site_id=0x81000002,token=44;
  Bytes<0x28>owner{};Bytes<0x90>gfx{};Bytes<0x1C0>handler{};Bytes<0x250>detail{};
- Bytes<0x40>controller{},context{},definition{};Bytes<128>entries{};Bytes<48>dict{};
+ Bytes<0x40>controller{},context{};Bytes<0x1E28>definition{};Bytes<128>entries{};Bytes<48>dict{};
  Bytes<0x30>store{};Bytes<0x50>slots{};Bytes<0x18>site{};Bytes<0x20>settings{};
  Bytes<48>detail_dict{};Bytes<0x30>character_store{};Bytes<0x50>character_slots{};
  Bytes<0x1C8>character{};Bytes<0x450>character_state{};Bytes<0x10>clock{};Bytes<0x60>cooldown_rows{};
@@ -33,6 +33,8 @@ struct Fixture{
  bool selected_change_quote=false,selected_change_affordability=false;
  bool selected_change_e0=false,selected_change_current=false,selected_change_definition=false,selected_change_bypass=false;
  bool selected_change_can=false;
+ std::uint32_t default_token=71;bool default_pin_bad=false,default_row_unreadable=false;
+ unsigned default_change=0;
  Fixture(){
   Put(owner,0x10,gfx.data());Put(gfx,0x88,handler.data());Put(handler,0x1B8,detail.data());
   Put(detail,0,base+0x455D4F8);Put(detail,0xA0,handler.data());Put(detail,0x60,site.data());
@@ -66,11 +68,21 @@ struct Fixture{
   Put(detail,0xF8,static_cast<void*>(nullptr));Put(detail,0x100,std::int32_t{0});
   Put(detail,0x104,std::int32_t{0});Put(detail,0x108,static_cast<void*>(nullptr));
  }
+ void SelectedStockDefault(){
+  SelectedDecision();Put(detail,0x248,static_cast<void*>(nullptr));Put(definition,0x1E20,static_cast<void*>(nullptr));
+  Put(detail,0xF8,detail_dict.data());Put(detail,0x100,std::int32_t{2});Put(detail,0x104,std::int32_t{1});
+  Put(detail_dict,0,default_token);Put(detail_dict,8,std::uint16_t{4});Put(detail_dict,10,std::uint16_t{0});
+  Put(detail_dict,12,std::uint32_t{0xA5A5A5A5});Put(detail_dict,16,std::uint64_t{0xFFFFFFFFU});
+ }
  template<class B>static void Scope(B&b,std::size_t o,std::uint32_t id){Put(b,o,std::uint16_t{23});Put(b,o+2,std::uint16_t{0});Put(b,o+8,static_cast<std::uint64_t>(id));}
 };
 Fixture*f=nullptr;
 struct Code{std::uintptr_t rva;std::string_view hex;};
 constexpr Code code[]{
+  {0x14712D0,"4c89b7d0000000899fd8000000488bcfe81b040000"},
+  {0x1471729,"894c2430b8ffffffff4889442438488d8df80000004c8d4424308b158fa98d04"},
+  {0x1471749,"e8a2892c02"},
+  {0x373A0F0,"405356574883ec204c8b09488bf94863490c8bda498bf0488d1449498d04d14c"},
  {0x1471140,"33d2e9c90a0000"},{0x1471C10,"48895c240848896c24104889742418574883ec60488bea488bf140b701488b89"},
  {0x1471190,"40534883ec60488bd933d2e8700a000084c0745a488d542420488bcbe80f0b00"},
  {0x1471CC0,"48895c2410555657415641574883ec30488bfa488be94533ff44897c2420448b"},
@@ -91,6 +103,9 @@ constexpr Code code[]{
  {0x2957F10,"48895c241048897424185557415441564157488dac24b0fdffff4881ec50030000"}};
 bool Copy(void*,const void*p,void*out,std::size_t n)noexcept{
  const auto address=reinterpret_cast<std::uintptr_t>(p);
+ if(address==Fixture::base+0x5D4C0D8&&n==4){std::memcpy(out,&f->default_token,4);return true;}
+ if(f->default_pin_bad&&address==Fixture::base+0x1471729)return false;
+ if(f->default_row_unreadable&&p==f->detail_dict.data())return false;
  for(const auto&c:code)if(address==Fixture::base+c.rva){
   if(n>c.hex.size()/2)return false;
   const auto digit=[](char v){return v>='0'&&v<='9'?v-'0':v-'a'+10;};
@@ -125,6 +140,15 @@ void __fastcall Evaluate(const void*cost,const void*context,std::int64_t*out){
  if(f->selected_change_current)f->actual_actor=Fixture::actor+1;
  if(f->selected_change_definition)f->SelectedDecision("other_decision");
  if(f->selected_change_bypass)f->settings[0x10]=std::byte{1};
+ if(f->default_change==1)Put(f->detail_dict,16,std::uint64_t{0xFFFFFFFFFFFFFFFFULL});
+ else if(f->default_change==2){++f->default_token;Put(f->detail_dict,0,f->default_token);}
+ else if(f->default_change==3)Put(f->detail,0x248,f->controller.data());
+ else if(f->default_change==4)Put(f->definition,0x1E20,f->controller.data());
+ else if(f->default_change==5)Put(f->detail,0x104,std::int32_t{2});
+ else if(f->default_change==6)Put(f->detail_dict,8,std::uint16_t{23});
+ else if(f->default_change==7)Put(f->detail_dict,10,std::uint16_t{1});
+ else if(f->default_change==8)Put(f->detail_dict,0,f->default_token+1);
+ else if(f->default_change==9)Put(f->detail_dict,12,std::uint32_t{0x5A5A5A5A});
 }
 bool __fastcall Affordable(const void*cost,const void*context,const void*actor,void*reason){
  Check(cost==f->costs.data()&&context==f->detail.data()+0xE0&&actor==f->character.data()&&!reason,"affordability binds actual actor/context");
@@ -152,6 +176,72 @@ void SaveSelected(const std::filesystem::path&d,const char*name,const h::Selecte
  Check(f&&f->confirms==0,"selected-terms reader never calls Confirm");
  const auto path=d/name;Check(!std::filesystem::exists(path),"selected-terms output requires a fresh fixture directory");
  std::ofstream out(path);out<<text<<'\n';Check(bool(out),"production selected-terms serializer packet written");
+}
+void StockDefaultSelectedTermsOnly(const std::filesystem::path&d){
+ const auto frame=Frame();unsigned cases=0;
+ const auto read=[&](Fixture&v,h::AdoptionDetailBindings&b,h::SelectedDecisionTermsSnapshot12004&out){
+  return h::ReadSelectedDecisionTerms12004(b,frame,v.detail.data(),v.definition.data(),"create_hof_decision",out);
+ };
+ for(unsigned variant=0;variant<5;++variant){
+  Fixture v;v.SelectedStockDefault();v.legal=variant!=1;v.affordable=variant!=2;
+  if(variant==3)v.settings[0x10]=std::byte{1};
+  if(variant==4)v.costs={0,-1,0,0,0,0,0,0,0,0};
+  auto b=Bind(v);if(variant==4)b.requirements_settings=nullptr;
+  h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&out.context_verified&&out.stock_default_parameter_verified&&
+   out.parameter_count==1&&out.stock_default_parameter_key==v.default_token&&out.stock_default_parameter_token==v.default_token,
+   "source-proven default row matches dynamic canonical token, not an invented parameter name");
+  Check(out.native.native_can_confirm==v.legal&&out.native.native_affordable==v.affordable&&out.native.native_resource_vector_raw==v.costs,
+   "stock default preserves false legality, unaffordable, signed/zero raw10 observations");
+  Check(v.evaluations==2&&v.affordability_reads==2&&v.can_reads==2&&v.confirms==0&&v.reasons==v.destroys,
+   "borrow actual detail context twice; no dictionary factory or Confirm");
+  const auto wire=h::SerializeSelectedDecisionTerms12004(out);
+  Check(wire.find("actual_create_hof_stock_default_parameter_only")!=std::string::npos&&wire.find("\"scope_payload\":4294967295")!=std::string::npos,
+   "production serializer publishes only verified stock-default identity");
+  SaveSelected(d,("stock-default-observed-"+std::to_string(variant)+".json").c_str(),out);++cases;
+ }
+ for(unsigned variant=0;variant<12;++variant){
+  Fixture v;v.SelectedStockDefault();v.legal=true;
+  if(variant==0)Put(v.detail_dict,0,v.default_token+1);
+  else if(variant==1)Put(v.detail_dict,8,std::uint16_t{23});
+  else if(variant==2)Put(v.detail_dict,10,std::uint16_t{1});
+  else if(variant==3)Put(v.detail_dict,16,std::uint64_t{0xFFFFFFFFFFFFFFFFULL});
+  else if(variant==4)Put(v.detail,0x104,std::int32_t{2});
+  else if(variant==5)Put(v.detail,0x248,v.controller.data());
+  else if(variant==6)Put(v.definition,0x1E20,v.controller.data());
+  else if(variant==7)v.SelectedDecision("other_decision");
+  else if(variant==8)v.default_pin_bad=true;
+  else if(variant==9)v.default_row_unreadable=true;
+  else if(variant==10)Put(v.detail,0xD8,Fixture::actor+1);
+  else Put(v.character,xar::ck3_12004::kCharacterFullIdOffset,Fixture::actor+1);
+  auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(!read(v,b,out)&&!out.available&&!out.stock_default_parameter_verified&&v.can_reads==0&&v.evaluations==0&&v.confirms==0,
+   "wrong default identity, count/controller/key/build/source/full actor generation rejects before getters");
+  SaveSelected(d,("stock-default-entry-rejected-"+std::to_string(variant)+".json").c_str(),out);++cases;
+ }
+ for(unsigned variant=1;variant<=9;++variant){
+  Fixture v;v.SelectedStockDefault();v.legal=true;v.default_change=variant;
+  auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  const bool ok=read(v,b,out);
+  Check(variant==9?ok:!ok,"actual row semantic mutation rejects even when dictionary header is unchanged; padding is excluded");
+  if(variant!=9)Check(!out.available&&!out.stock_default_parameter_verified&&
+   h::SerializeSelectedDecisionTerms12004(out).find("\"resource_quote\":null")!=std::string::npos,
+   "row/token/controller mutation cannot retain native permission or quote");
+  Check(v.confirms==0,"mutation consumer never confirms");
+  SaveSelected(d,("stock-default-freshness-"+std::to_string(variant)+".json").c_str(),out);++cases;
+ }
+ for(unsigned variant=0;variant<4;++variant){
+  Fixture v;v.SelectedStockDefault();v.legal=true;
+  if(variant==0)v.selected_change_quote=true;
+  else if(variant==1)v.selected_change_affordability=true;
+  else if(variant==2)v.selected_change_bypass=true;
+  else v.selected_change_can=true;
+  auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(!read(v,b,out)&&!out.available&&!out.stock_default_parameter_verified&&v.confirms==0,
+   "new default adapter retains old quote/affordability/bypass/CanConfirm double-read guards");
+  SaveSelected(d,("stock-default-getter-change-"+std::to_string(variant)+".json").c_str(),out);++cases;
+ }
+ std::cout<<"PASS stock_default_cases="<<cases<<" actual_reader=true actual_serializer=true synthetic_storage=true synthetic_callbacks=true confirm_calls=0 live=false\n";
 }
 void SelectedTermsOnly(const std::filesystem::path&d){
  const auto frame=Frame();unsigned cases=0;
@@ -325,6 +415,7 @@ int main(int argc,char**argv){try{
  Check(argc==2||argc==3,"output directory required");const std::filesystem::path d(argv[1]);std::filesystem::create_directories(d);
  if(argc==3){
   if(std::string_view(argv[2])=="--management-only"){ManagementOnly(d);return 0;}
+  if(std::string_view(argv[2])=="--stock-default-selected-terms-only"){StockDefaultSelectedTermsOnly(d);return 0;}
   Check(std::string_view(argv[2])=="--selected-terms-only","unknown fixture mode");SelectedTermsOnly(d);return 0;
  }
  Fixture v;auto b=Bind(v);const auto c=Frame();h::AdoptionDetailSnapshot s{};

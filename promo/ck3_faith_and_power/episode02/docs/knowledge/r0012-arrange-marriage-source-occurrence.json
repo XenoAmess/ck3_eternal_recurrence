@@ -1,0 +1,191 @@
+{
+  "schema": "faith-e02-stock-interaction-source-analysis-v1",
+  "definition_key": "arrange_marriage_interaction",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T12:21:12.456814+00:00",
+  "ck3_build": "1.20.0.4",
+  "analysis_status": "existing_exact4_source_knowledge_reused_actual_new_occurrence",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_marriage_interactions.txt",
+      "bytes": 170817,
+      "sha256": "9481fd44a078f2d06034dd4a2107fe183f231d2b49d8b90f106c1d54f7a501f0",
+      "relevant_lines": [
+        808,
+        827
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\pending_arrange_marriage_source_v1.py",
+      "bytes": 6389,
+      "sha256": "bc32dae00a6f53a1284a1ababbc00e76c471d40fcc6d25f8f7a24147833822e1",
+      "relevant_lines": [
+        11,
+        62
+      ]
+    }
+  ],
+  "actual_batch_binding": {
+    "run_id": "4-8e1c2f1861--faith-engine--R0012",
+    "bridge_pid": 2052,
+    "connection_generation": 1,
+    "pending_interaction_id": 35,
+    "date_raw": 53145456,
+    "snapshot_revision": 62,
+    "queried_revision": 63
+  },
+  "actual_roles": {
+    "actor_character_id": 34028,
+    "recipient_character_id": 31254,
+    "secondary_actor_character_id": 39049,
+    "secondary_recipient_character_id": 38924,
+    "intermediary_character_id": -1
+  },
+  "actual_routing": {
+    "kind": 0,
+    "played_character_id": 31254,
+    "current_responder_role": "recipient",
+    "reply_execution_channel": "recipient",
+    "local_route": true,
+    "auto_accept_notification": false
+  },
+  "actual_deadline": {
+    "age_days": 22,
+    "expiration_days": 60,
+    "remaining_days": 38,
+    "expiry_boundary_status": "not_reached"
+  },
+  "actual_auto_accept": {
+    "status": "available",
+    "value": false,
+    "reason": null
+  },
+  "actual_reply_legality": {
+    "accept": {
+      "status": "available",
+      "allowed": true,
+      "reason": null
+    },
+    "reject": {
+      "status": "available",
+      "allowed": true,
+      "reason": null
+    },
+    "block": {
+      "status": "available",
+      "allowed": true,
+      "reason": null
+    },
+    "acknowledge": {
+      "status": "available",
+      "allowed": false,
+      "reason": "normal_reply_channel"
+    }
+  },
+  "actual_send_options": {
+    "exclusive": false,
+    "definition_count": 6,
+    "context_count": 6,
+    "rows": [
+      {
+        "native_index": 0,
+        "numeric_flag_identifier": 219,
+        "selected": false,
+        "is_shown": true,
+        "is_valid": true,
+        "canonical_flag_status": "unavailable",
+        "canonical_flag_key": null,
+        "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+      },
+      {
+        "native_index": 1,
+        "numeric_flag_identifier": 29,
+        "selected": false,
+        "is_shown": true,
+        "is_valid": true,
+        "canonical_flag_status": "unavailable",
+        "canonical_flag_key": null,
+        "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+      },
+      {
+        "native_index": 2,
+        "numeric_flag_identifier": 49,
+        "selected": false,
+        "is_shown": false,
+        "is_valid": true,
+        "canonical_flag_status": "unavailable",
+        "canonical_flag_key": null,
+        "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+      },
+      {
+        "native_index": 3,
+        "numeric_flag_identifier": 16892,
+        "selected": false,
+        "is_shown": false,
+        "is_valid": false,
+        "canonical_flag_status": "unavailable",
+        "canonical_flag_key": null,
+        "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+      },
+      {
+        "native_index": 4,
+        "numeric_flag_identifier": 15067,
+        "selected": false,
+        "is_shown": false,
+        "is_valid": false,
+        "canonical_flag_status": "unavailable",
+        "canonical_flag_key": null,
+        "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+      },
+      {
+        "native_index": 5,
+        "numeric_flag_identifier": 17982,
+        "selected": false,
+        "is_shown": false,
+        "is_valid": false,
+        "canonical_flag_status": "unavailable",
+        "canonical_flag_key": null,
+        "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed"
+      }
+    ]
+  },
+  "actual_terms_readiness": {
+    "stable_definition_ready": true,
+    "roles_ready": true,
+    "target_type_key_ready": true,
+    "target_typed_identity_ready": true,
+    "send_options_ready": true,
+    "routing_ready": true,
+    "deadline_ready": true,
+    "auto_accept_ready": true,
+    "reply_legality_ready": true,
+    "generic_costs_ready": true,
+    "special_war_binding_ready": false,
+    "special_outcome_terms_ready": false,
+    "structured_terms_ready": false,
+    "same_frame_ready": true,
+    "interaction_semantic_decision_ready": false,
+    "not_ready_reasons": [
+      "special_interaction_subtype_opaque",
+      "special_outcome_terms_unavailable",
+      "structured_exchanges_unavailable",
+      "structured_effect_preview_unavailable"
+    ]
+  },
+  "actual_cost_boundary": "Native structured cost values are ten zero slots, payer actor/on_send/already_applied; not a recipient refund or proof of no wider marriage effects",
+  "source_on_decline": [
+    "puppet_or_actor: if different from recipient, trigger marriage_interaction.0011",
+    "puppet_or_actor: remove grand_wedding_promise_pending only if present",
+    "secondary_actor: add player_declined_marriage flag5years"
+  ],
+  "policy_boundary": "Reuse existing exact4 reject-only source knowledge; current P3 legal normal-left reject is authorized, not a marriage-accept contract. Native accept allowed does not close opaque special terms or secondary-pair outcome.",
+  "actual_choice_outcome": "Not included in this query-only record; ACK and old pending absence require separate original receipts",
+  "material_effects_independently_verified": false,
+  "evidence_pin": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\capture-observations\\p3-current-context-a01.actual.json",
+    "bytes": 80458,
+    "sha256": "8c4a011b918e2692456130efd75358d7bdca57bf9b328581a0984d1ec1e22d18"
+  },
+  "new_registry_contract_registered": false,
+  "merge_target": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0012-arrange-marriage-source-occurrence.json"
+}

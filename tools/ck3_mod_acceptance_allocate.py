@@ -1,8 +1,9 @@
-"""One shared allocation followed immediately by the existing screen keeper."""
+﻿"""One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
 from datetime import datetime,timezone
 import hashlib,json,os,platform,re,subprocess,sys,time
 from pathlib import Path
+from typing import Literal, TypedDict
 from ck3_mod_acceptance import Selection,path_at,check_pin,pin,read_json
 from ck3_mod_acceptance_prepare import write_json
 
@@ -1200,7 +1201,136 @@ def previous_missing_normal_resource_closure(previous, freeze, bundle, close_pat
                 'control_files_absent':absent, 'administrative_resource_admission_only':True}}
 
 
-def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_root, release_path, bus_packet):
+class LateNativeCleanupFacts(TypedDict):
+    closure_kind: Literal['retained-wait-expired-then-native-cleanup']
+    original_ck3_exit_code: None
+    original_retained_wait_signaled: Literal[False]
+    actual_retained_os0: Literal[False]
+    native_reported_ck3_exit_code: int
+    native_process_exit_code: None
+    failure_lifecycle_completed: Literal[False]
+    native_cleanup_qualified: None
+
+
+def _late_object(value: object, label: str) -> dict[str, object]:
+    if not isinstance(value, dict) or any(not isinstance(k, str) for k in value):
+        raise ValueError(label + ' must be an object')
+    return {k: v for k, v in value.items() if isinstance(k, str)}
+
+
+def _late_integer(value: object, label: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError(label + ' must be an integer, not bool')
+    return value
+
+
+def _late_check(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
+def validate_late_native_cleanup(normal_value: object, retained_value: object,
+        game_value: object, native_value: object, report_value: object,
+        normal_written_ns: int) -> LateNativeCleanupFacts:
+    """Keep an unsignaled original wait distinct from later native Job cleanup."""
+    normal = _late_object(normal_value, 'Original normal-close result')
+    retained = _late_object(retained_value, 'Original retained wait')
+    game = _late_object(game_value, 'Original retained identity')
+    native = _late_object(native_value, 'Later native report')
+    report = _late_object(report_value, 'Original host report')
+    shutdown = _late_object(native.get('shutdown'), 'Later native shutdown')
+    pid = _late_integer(game.get('pid'), 'Original CK3 PID')
+    created = game.get('create_time')
+    _late_check(pid > 0 and type(created) in (int, float) and
+        game.get('retained_synchronize_query_handle_acquired') is True and
+        retained.get('retained_synchronize_query_handle_acquired') is True and
+        _late_integer(retained.get('pid'), 'Retained wait PID') == pid ==
+        _late_integer(native.get('pid'), 'Native CK3 PID') ==
+        _late_integer(shutdown.get('ck3_pid'), 'Shutdown CK3 PID') and
+        type(retained.get('create_time')) in (int, float) and retained.get('create_time') == created,
+        'Late cleanup crossed the actual retained CK3 identity')
+    _late_check(retained.get('signaled') is False and 'exit_code' in retained and
+        retained['exit_code'] is None and retained.get('actual_retained_os0') is False and
+        retained == normal.get('retained_handle'),
+        'Late cleanup requires the original unsignaled/null retained wait')
+    _late_check(normal.get('normal_close_qualified') is False and normal.get('business_pass') is False and
+        normal.get('failure_lifecycle_completed') is False and normal.get('managed_thread_finished') is False and
+        normal.get('host_finished_at') is None and normal.get('cleanup_ok') is None and
+        normal.get('host_error') == report.get('error') and isinstance(report.get('error'), str) and
+        bool(report['error']), 'Late cleanup must preserve the failed original close')
+    code = _late_integer(shutdown.get('ck3_exit_code'), 'Native-reported cleanup exit')
+    _late_check(code != 0 and native.get('process_exit_code') is None and
+        native.get('exit_reason') == 'stop' and shutdown.get('ok') is True and
+        shutdown.get('tree_gone') is True and shutdown.get('cleanup_proven') is True and
+        _late_integer(shutdown.get('job_active_processes_final'), 'Final native Job count') == 0,
+        'Late cleanup is native Job cleanup, not retained OS0 or normal exit')
+    finished = native.get('finished_at')
+    _late_check(isinstance(finished, str), 'Later native finish time is missing')
+    if not isinstance(finished, str):
+        raise ValueError('Later native finish time is missing')
+    stamp = datetime.fromisoformat(finished)
+    _late_check(stamp.tzinfo is not None and
+        _late_integer(normal_written_ns, 'Original normal-close write time') > 0 and
+        stamp.timestamp() * 1_000_000_000 > normal_written_ns,
+        'Native cleanup did not finish after the original retained wait expired')
+    return {'closure_kind': 'retained-wait-expired-then-native-cleanup',
+        'original_ck3_exit_code': None, 'original_retained_wait_signaled': False,
+        'actual_retained_os0': False, 'native_reported_ck3_exit_code': code,
+        'native_process_exit_code': None, 'failure_lifecycle_completed': False,
+        'native_cleanup_qualified': None}
+
+
+def validate_late_public_wait(value_raw: object, started_raw: object, process_raw: object,
+        argv_raw: object, machine: str, mode: Literal['run', 'allocate'], code: int) -> list[str]:
+    """Consume the actual recorded-Popen format without fabricating legacy fields."""
+    value = _late_object(value_raw, 'Original public wait')
+    started = _late_object(started_raw, 'Original public STARTED')
+    process = _late_object(process_raw, 'Original public retained Popen')
+    _late_check(isinstance(argv_raw, list) and all(isinstance(arg, str) for arg in argv_raw),
+        'Original public argv must be a string list')
+    if not isinstance(argv_raw, list):
+        raise ValueError('Original public argv is missing')
+    argv = [arg for arg in argv_raw if isinstance(arg, str)]
+    _late_check(all(row.get('machine_id') == machine and row.get('argv') == argv
+        for row in (value, started, process)) and
+        _late_integer(value.get('original_popen_wait_result'), 'Original Popen wait') == code and
+        _late_integer(value.get('exit_code'), 'Original public exit') == code and
+        started.get('original_popen_wait_result') is None and
+        process.get('original_popen_wait_result') is None and
+        _late_integer(value.get('pid'), 'Original public PID') ==
+        _late_integer(process.get('pid'), 'Retained public PID') > 0,
+        'Late cleanup public original Popen identity/wait differs: ' + mode)
+    start, end = value.get('started_at_utc'), value.get('finished_at_utc')
+    digest = value.get('argv_sha256')
+    _late_check(isinstance(digest, str) and len(digest) == 64 and
+        all(ch in '0123456789abcdef' for ch in digest), 'Original public argv SHA is missing')
+    _late_check(isinstance(start, str) and isinstance(end, str) and
+        all(row.get('started_at_utc') == start and row.get('argv_sha256') == value.get('argv_sha256')
+            for row in (started, process)), 'Original public start/argv binding differs')
+    if not isinstance(start, str) or not isinstance(end, str):
+        raise ValueError('Original public wait times missing')
+    first, last = datetime.fromisoformat(start), datetime.fromisoformat(end)
+    _late_check(first.tzinfo is not None and last.tzinfo is not None and last >= first,
+        'Original public Popen completion precedes its start')
+    return argv
+
+
+def validate_late_failed_day(diagnostic_raw: object, row_raw: object) -> None:
+    """The original unknown request is a host advance_day, not a missing MCP tool."""
+    diagnostic = _late_object(diagnostic_raw, 'Original failed-day selection')
+    row = _late_object(row_raw, 'Original failed day')
+    plan = _late_object(row.get('plan'), 'Original failed day plan')
+    _late_check(diagnostic.get('kind') == 'advance_day' and 'tool' not in diagnostic and
+        row.get('id') == diagnostic.get('step_id') and isinstance(row.get('id'), str) and
+        plan.get('kind') == 'advance_day' and 'tool' not in plan and
+        _late_integer(plan.get('days'), 'Original failed requested days') == 1 and
+        row.get('ok') is False and isinstance(row.get('error'), str) and bool(row['error']) and
+        isinstance(row.get('finished_at'), str) and bool(row['finished_at']),
+        'Late-cleanup source-bound failed natural day differs')
+
+
+def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, object], close_path: Path,
+        keeper_root: Path, release_path: Path, bus_packet: dict[str, object]) -> dict[str, object]:
     """Admit an ended failed live attempt's resources; never grant normal-exit credit."""
     import psutil
     previous, keeper_root = previous.resolve(), keeper_root.resolve()
@@ -1220,6 +1350,8 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
     if bundle.get('closure_kind') == 'expired-keeper-missing-final-report':
         return previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path,
                                                        keeper_root, release_path, bus_packet)
+    late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
+    public_pids = []
     refs, evidence = bundle.get('original_evidence'), {}
     require(isinstance(refs, dict), 'Original failed-live evidence pins required')
     def original(key, expected=None, *, decode=True, max_bytes=1048576):
@@ -1260,11 +1392,19 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
             'Failed-live supervisor argv belongs to another run/keeper')
     def public_wait(mode, code):
         value = original(mode + '_wait')
-        require(value.get('machine_id') == bundle['machine_id'] and value.get('phase') == mode and
-                value.get('actual_original_popen_wait') is True and value.get('completed_at_utc') and
-                type(value.get('returncode')) is int and value['returncode'] == code,
-                'Failed-live actual public wait differs: ' + mode)
-        argv = value.get('argv'); require(isinstance(argv, list), 'Actual public argv missing')
+        parent = Path(refs[mode + '_wait']['path']).resolve().parent
+        if late_cleanup:
+            argv = validate_late_public_wait(value,
+                original(mode + '_started', parent/'STARTED.actual.json'),
+                original(mode + '_process', parent/'ORIGINAL-PROCESS.actual.json'),
+                json.loads(original(mode + '_argv', parent/'argv.json', decode=False)), bundle['machine_id'], mode, code)
+            public_pids.append(value['pid'])
+        else:
+            require(value.get('machine_id') == bundle['machine_id'] and value.get('phase') == mode and
+                    value.get('actual_original_popen_wait') is True and value.get('completed_at_utc') and
+                    type(value.get('returncode')) is int and value['returncode'] == code,
+                    'Failed-live actual public wait differs: ' + mode)
+            argv = value.get('argv'); require(isinstance(argv, list), 'Actual public argv missing')
         index = next((i for i, arg in enumerate(argv) if Path(arg).name == 'ck3_mod_acceptance.py'), -1)
         require(index >= 0 and argv[index + 1] == mode, 'Failed-live public command mode differs')
         def argument(flag):
@@ -1281,12 +1421,12 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
         else:
             require(Path(argument('--keeper-output')).resolve() == keeper_root,
                     'Failed-live allocator keeper differs')
-        parent = Path(refs[mode + '_wait']['path']).resolve().parent
-        intent = original(mode + '_intent', parent/'intent.json')
-        require(intent.get('argv') == argv and intent.get('phase') == mode,
-                'Failed-live original command intent differs')
-        original(mode + '_stdout', parent/'stdout.log', decode=False, max_bytes=16777216)
-        original(mode + '_stderr', parent/'stderr.log', decode=False, max_bytes=16777216)
+        if not late_cleanup:
+            intent = original(mode + '_intent', parent/'intent.json')
+            require(intent.get('argv') == argv and intent.get('phase') == mode,
+                    'Failed-live original command intent differs')
+        original(mode + '_stdout', parent/('stdout.txt' if late_cleanup else 'stdout.log'), decode=False, max_bytes=16777216)
+        original(mode + '_stderr', parent/('stderr.txt' if late_cleanup else 'stderr.log'), decode=False, max_bytes=16777216)
         return Path(argument('--runtime')).resolve()
     require(public_wait('run', 2) == public_wait('allocate', 0), 'Failed-live public runtime differs')
     report = original('native_report', previous/'native-report.json', max_bytes=67108864)
@@ -1310,19 +1450,26 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
             normal.get('host_error') == report['error'], 'Failed-live original close claims normal/business credit')
     game = original('retained_identity', previous/'case-output/retained-current-process-identity.json')
     retained = original('retained_exit', previous/'case-output/actual-retained-handle-os-exit.json')
-    require(game.get('retained_synchronize_query_handle_acquired') is True and
+    late_facts = None
+    if late_cleanup:
+        late_facts = validate_late_native_cleanup(normal, retained, game, native, report,
+            (previous/'case-output/normal-close-result.json').stat().st_mtime_ns)
+    else:
+        require(game.get('retained_synchronize_query_handle_acquired') is True and
             retained.get('retained_synchronize_query_handle_acquired') is True and
             retained.get('pid') == game.get('pid') == native.get('pid') and
             retained.get('create_time') == game.get('create_time') and retained.get('signaled') is True and
             type(retained.get('exit_code')) is int and retained['exit_code'] != 0 and
             retained.get('actual_retained_os0') is False and retained == normal.get('retained_handle') and
             shutdown.get('ck3_exit_code') == retained['exit_code'],
-            'Failed-live original retained nonzero CK3 exit differs')
+                'Failed-live original retained nonzero CK3 exit differs')
     diagnostic = bundle.get('failed_query', {})
     rows = [row for row in report.get('steps', []) if row.get('id') == diagnostic.get('step_id')]
     require(len(rows) == 1 and rows[0].get('ok') is False and rows[0].get('error') and
             rows[0].get('finished_at') and rows[0].get('plan', {}).get('tool') == diagnostic.get('tool'),
             'Failed-live source-bound failed query is missing')
+    if late_cleanup:
+        validate_late_failed_day(diagnostic, rows[0])
     original('server_stderr', report['server_stderr'], decode=False, max_bytes=16777216)
     keeper = original('keeper_report', keeper_root/'report.json')
     waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
@@ -1347,6 +1494,8 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
         require(not present, 'Failed-live original process still present: ' + label)
     require(not psutil.pid_exists(supervisor['pid']) and not psutil.pid_exists(host['supervisor_pid']),
             'Failed-live original supervisor still present')
+    require(all(type(pid) is int and pid > 0 and not psutil.pid_exists(pid) for pid in public_pids),
+            'Late-cleanup original run/allocator process still present')
     inventory = runtime_process_inventory(psutil, os.getpid())
     require(not inventory['blockers'], 'Failed-live runtime/CK3/controller still running')
     selected_host = Path(freeze['argv'][4]).resolve()
@@ -1359,7 +1508,7 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
     absent = {name:not (state/'control'/name).exists() for name in ('ck3.json', 'unsafe-cleanup.json')}
     absent['watchdog-*.ready.json'] = not list((state/'control').glob('watchdog-*.ready.json'))
     require(all(absent.values()), 'Failed-live PID/unsafe/watchdog controls remain')
-    return {'mode':'previous-shared-failed-live-resource-closed', 'failure_cleanup':{
+    result = {'mode':'previous-shared-failed-live-resource-closed', 'failure_cleanup':{
         'close':pin(close_path), 'original_evidence':evidence,
         'original_host_exit_code':host_exit['returncode'], 'original_host_wait_proven':True,
         'original_ck3_exit_code':retained['exit_code'], 'actual_retained_os0':False,
@@ -1367,6 +1516,9 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
         'native_job_cleanup_observed':True, 'normal_close_qualified':False, 'typed_normal_exit_proven':False,
         'business_pass':False, 'release_pass':False, 'control_files_absent':absent,
         'administrative_resource_admission_only':True}, 'actual_process_inventory':inventory}
+    if late_facts is not None:
+        result['failure_cleanup'].update(late_facts)
+    return result
 
 
 def previous_failed_resource_closure(previous,freeze,close_path,keeper_root,release_path,bus_packet):
@@ -1873,7 +2025,7 @@ def allocate_and_keep(selection,args):
         files.update({p:pin(p) for p in sorted(selection.adapter_path.parent.glob('*')) if p.is_file()})
         shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
         files.update({p:pin(p) for p in (shared_tools/'ck3_mod_acceptance.py',
-            shared_tools/'ck3_mod_acceptance_client.py',shared_tools/'ck3_mod_acceptance_prepare.py')})
+            shared_tools/'ck3_mod_acceptance_client.py',shared_tools/'ck3_mod_acceptance_native_day.py',shared_tools/'ck3_mod_acceptance_prepare.py')})
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
         for row in [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()]:

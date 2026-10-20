@@ -1,5 +1,9 @@
 """Read actual exact .3 decision model identity without projecting UI action qualification."""
 from .ingame_decisions_open_contract import result_build
+from ..selected_decision_terms_v1 import (
+    is_selected_resource_quote_v1,
+    selected_parameter_context_verified_v1 as selected_parameter_context_verified_v1,
+)
 
 STEP = "query-ingame-decision-item-v1"
 CAPABILITY = "game.command.query-ingame-decision-item-v1"
@@ -79,13 +83,14 @@ def normalize_decision_item(raw: object, binding: dict[str, object], requested_k
 
 def normalize_selected_decision_terms_v1(value: object, binding: dict[str, object],
                                          requested_key: str) -> dict[str, object]:
-    """Only current exact .4 empty-parameter detail terms; no action credit."""
+    """Exact .4 empty or fixed create_hof stock-default terms; no action credit."""
     if (not isinstance(value, dict)
             or value.get("schema") != "ck3-selected-decision-terms-v1"
             or value.get("read_only") is not True
             or value.get("action_ready") is not False
             or value.get("decision_confirm_invoked") is not False
-            or value.get("context_adapter") != "actual_empty_named_parameters_only"
+            or value.get("context_adapter") not in {
+                "actual_empty_named_parameters_only", "actual_create_hof_stock_default_parameter_only"}
             or value.get("decision_key") != requested_key
             or type(value.get("available")) is not bool
             or value.get("game_version") != "1.20.0.4"
@@ -96,9 +101,13 @@ def normalize_selected_decision_terms_v1(value: object, binding: dict[str, objec
     for key in ("played_character_id", "date_raw"):
         if type(value.get(key)) is not int or value[key] != binding[key]:
             raise ValueError(f"selected decision terms changed {key}")
-    if type(value.get("capture_epoch")) is not int or value["capture_epoch"] < 0:
+    capture_epoch = value.get("capture_epoch")
+    if type(capture_epoch) is not int or capture_epoch < 0:
         raise ValueError("selected decision terms lacks an actual capture epoch")
     if not value["available"]:
+        if (value["context_adapter"] != "actual_empty_named_parameters_only"
+                or value.get("stock_default_parameter") is not None):
+            raise ValueError("unavailable selected terms cannot claim a verified stock parameter")
         if not isinstance(value.get("unavailable_reason"), str) or not value["unavailable_reason"]:
             raise ValueError("unavailable selected decision terms lacks reason")
         if (value.get("context_verified") is not False
@@ -111,8 +120,8 @@ def normalize_selected_decision_terms_v1(value: object, binding: dict[str, objec
                     "requirements_description", "cost_description", "resource_quote", "cooldown"))):
             raise ValueError("unavailable selected terms must not invent observed values")
         return dict(value)
-    if (value.get("capture_epoch") <= 0 or value.get("context_verified") is not True or value.get("named_parameter_count") != 0
-            or type(value.get("named_parameter_count")) is not int
+    if (capture_epoch <= 0 or value.get("context_verified") is not True
+            or not selected_parameter_context_verified_v1(value, requested_key)
             or type(value.get("can_confirm")) is not bool):
         raise ValueError("selected decision context is unqualified")
     for key in ("requirements_bypass_observed", "ordinary_legality_observed",
@@ -135,11 +144,7 @@ def normalize_selected_decision_terms_v1(value: object, binding: dict[str, objec
             raise ValueError(f"selected terms lost {key} availability")
     quote = value.get("resource_quote")
     if value["resource_quote_available"]:
-        if (not isinstance(quote, dict) or set(quote) != {"raw_scale", "resource_vector_raw", "native_affordable"}
-                or type(quote["raw_scale"]) is not int or quote["raw_scale"] != 100000 or type(quote["native_affordable"]) is not bool
-                or not isinstance(quote["resource_vector_raw"], list)
-                or len(quote["resource_vector_raw"]) != 10
-                or any(type(n) is not int or not -(1 << 63) <= n < (1 << 63) for n in quote["resource_vector_raw"])):
+        if not is_selected_resource_quote_v1(quote):
             raise ValueError("selected terms malformed native resource quote")
     elif quote is not None:
         raise ValueError("unavailable selected quote must stay null")

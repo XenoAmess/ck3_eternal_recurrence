@@ -1,0 +1,228 @@
+{
+  "schema": "faith-e02-stock-event-occurrence-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T13:04:44.899125+00:00",
+  "analysis_status": "native_definition_observed_existing_source_analysis_reused",
+  "event_definition_key": "pilgrimage.5001",
+  "live_native_definition_id": "pilgrimage.5001",
+  "run_id": "4-8e1c2f1861--faith-engine--R0012",
+  "binding": {
+    "bridge_pid": 2052,
+    "connection_generation": 1,
+    "actor_character_id": 31254,
+    "event_instance_id": 3,
+    "date_raw": 53145648,
+    "native_revision": 88,
+    "queried_revision": 89
+  },
+  "query_step_id": "faith-e02-journey-083-0002-event-query",
+  "query_finished_at": "2026-10-20T13:00:03.545298+00:00",
+  "actual_native_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 88,
+    "date_raw": 53145648,
+    "current_event_instance_id": 3,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "pilgrimage.5001",
+    "calculated_event_id": 2745001,
+    "runtime_stats_ordinal": 3633,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "activity",
+        "name_identifier": 2,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 6,
+          "type_key": "activity",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "host",
+        "name_identifier": 62,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "province",
+        "name_identifier": 37,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我走过了神圣的道路。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "trait",
+              "operation": "add",
+              "trait": {
+                "status": "available",
+                "native_id": 181,
+                "key": "pilgrim"
+              }
+            },
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "source_report_observed_pin": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\native-report.json",
+    "bytes": 9095268,
+    "sha256": "c929080b9840efea3608d2bf4bd570a764ee6cdaf8c585b2dbd4c2636b0dcc6e"
+  },
+  "source_report_may_change": true,
+  "evidence_method": "Semantic extract of completed original typed query row; no game query by analyst",
+  "reused_source_analysis": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-5001-source-analysis.json",
+    "bytes": 2697,
+    "sha256": "5440c05b2c51f4a141905e99971eb65f92169771153f89635b19d9659fba3008"
+  },
+  "reused_source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    }
+  ],
+  "new_variant_localization_pin": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+    "bytes": 136481,
+    "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+    "relevant_lines": [
+      636,
+      672,
+      673
+    ]
+  },
+  "variant_mapping": "Only current rendered0/native0 label matches pilgrimage.4001.a ordinary name branch; no button index reused for future events",
+  "source_effects_reused": [
+    {
+      "source_option_ordinal": 1,
+      "name_keys_in_source_order": [
+        "pilgrimage.4001.a_dead",
+        "pilgrimage.4001.a_cynical",
+        "pilgrimage.4001.a"
+      ],
+      "name_conditions": [
+        "pilgrimage_death_bury_home variable",
+        "cynical trait",
+        "ordinary fallback"
+      ],
+      "effects": [
+        "give_pilgrim_trait_or_xp_effect = yes",
+        "pilgrimage_arrival_stress_loss_effect = yes"
+      ],
+      "fixed_numeric_reward_claimed": false,
+      "native_option_index_not_inferred": true
+    }
+  ],
+  "source_after_effect_reused": "If no owned artifact has variable is_rome_pilgrim_badge, trigger pilgrimage.4100 after1day",
+  "before_selection_piety": {
+    "raw": 2017810000,
+    "scale": 100000
+  },
+  "as_of_query_selection_ack_observed": false,
+  "as_of_query_window_consumed_observed": false,
+  "pilgrim_trait_or_xp_independently_observed": false,
+  "interpretation": "Current same-player native5001 is source-bound Rome arrival-event evidence. Generic saved activity/province payload identity remains unavailable; no independent home coordinates or full journey completion.",
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "merge_target": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-5001-r0012-occurrence-analysis.json",
+  "immutable_query_pin": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b20-a01\\live\\4-8e1c2f1861--faith-engine--R0012\\p3-recovery-output-a03\\faith-e02-journey-083-0002-event-query.actual-results.json",
+    "bytes": 30153,
+    "sha256": "c2da400c1b9fe4a19349a456c1ebad1a4db881af69515770e83820a26f3f72c8"
+  },
+  "query_context_equal_original_completed_row": true,
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+}
