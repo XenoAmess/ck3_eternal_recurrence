@@ -1,0 +1,214 @@
+{
+  "schema": "xar.e04.R0217-first30-AI-visual-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:46:01.975803+00:00",
+  "reviewer": "/root/predecessor_admission",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "source_raw_retained_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "source_recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\RECIPE.actual.json",
+    "bytes": 4749,
+    "sha256": "ceb7f7e980bd5bcb4837a1421ada1fdc95956b62903b11668ecaedd23cf5be94"
+  },
+  "source_execution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\EXECUTION.actual.json",
+    "bytes": 22977,
+    "sha256": "ff341aaeb788d99d2a133c80c3d239ca97a6e6061c432b12402395e9894fbb6a"
+  },
+  "contact_audit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CONTACTS-AUDIT.actual.json",
+    "bytes": 5206,
+    "sha256": "6d89fdc268f1ff5f68e94a239b283bafea26eb43cf59c539c9b800f1803d7e8b"
+  },
+  "actual_visual_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\REVIEW-GROUPS.actual.json",
+    "bytes": 4507,
+    "sha256": "7bdd959e25743e3dee911b7e00dca8ef51c39d6ae5013f243e73b708eae8b934"
+  },
+  "source_frame_pts": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\SOURCE-FRAME-PTS.tsv",
+    "bytes": 13921,
+    "sha256": "a99170652c13dcf8d00900f2c0a602eb0e02ea5337e1164357f5d890a13f4cc0"
+  },
+  "source_bound_previous_scope": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SCOPE-AND-REVIEW-PLAN.actual.json",
+    "bytes": 10155,
+    "sha256": "bdb95ab651edfa656a2a5c2dac98cf607e9f73ff09f85a7ee640e44ec654391f"
+  },
+  "native_scope_details": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\NATIVE-SCOPE-DETAILS.actual.json",
+    "bytes": 17648,
+    "sha256": "369c6c0e9999901528fb27609a34a1f2fc99db7a65862bc213a25074b401e1f5"
+  },
+  "actual_review_scope": {
+    "source_frames_half_open": [
+      0,
+      900
+    ],
+    "source_pts_seconds_half_open": [
+      0,
+      30
+    ],
+    "last_source_pts_seconds": 29.967,
+    "contact_sheets_actually_viewed": 57,
+    "real_source_cells_actually_viewed": 900,
+    "every_real_source_cell_viewed": true,
+    "tool": "tools.view_image(detail=original)",
+    "contact_scaled_source_geometry": [
+      320,
+      180
+    ],
+    "contact_sheet_geometry": [
+      1280,
+      792
+    ],
+    "fullres_originals_actually_viewed": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-05s.jpg",
+        "bytes": 74858,
+        "sha256": "c99e7d8c53531d61284762361ca5227e7eac2843004fa075eb5934a654279d9b"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-10s.jpg",
+        "bytes": 74087,
+        "sha256": "ceb7d57d900e41f4e7e5fdd706a30127b696f20a6a84441f5e85031f7215fd17"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-15s.jpg",
+        "bytes": 74044,
+        "sha256": "c5351481762f0d37084dbd2d9877ac7a994e06c06e3e47a7db2e9e967fc90f5c"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-20s.jpg",
+        "bytes": 74021,
+        "sha256": "ca515a3d74ad6a6fb6b7d6af1e7b71568a745b35d8f4ba23aee7ee0368dfcb75"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-25s.jpg",
+        "bytes": 73621,
+        "sha256": "68025c543500008b6157cb06c9dcb634d54b41ca04533ad37e25d7c4cfdb4194"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-30s.jpg",
+        "bytes": 73909,
+        "sha256": "6709f2c5e4d99e9cdc082289140f74584d7e6a233718d0d3c5c3a400664bf140"
+      }
+    ],
+    "fullres_geometry": [
+      1280,
+      720
+    ],
+    "last_sheet_actual_cells": 4,
+    "last_sheet_intentional_fill_cells": 12
+  },
+  "visual_result": "PASS_BOUNDED_CONTINUOUS_PREFIX_REVIEW",
+  "observations": {
+    "game_map_HUD_and_portrait_continuously_visible": true,
+    "external_or_legacy_blue_overlay_seen": false,
+    "obscuring_popover_or_modal_seen": false,
+    "black_or_corrupt_real_source_frame_seen": false,
+    "obvious_shot_or_camera_cut_seen": false,
+    "natural_map_army_marker_position_change_visible": true,
+    "fullres_before": {
+      "source_seconds": [
+        5,
+        10
+      ],
+      "army_map_marker_count": 6746,
+      "date": "1067-01-26",
+      "paused_visible": true
+    },
+    "fullres_after": {
+      "source_seconds": [
+        15,
+        20,
+        25,
+        30
+      ],
+      "army_map_marker_count": 6510,
+      "date": "1067-01-27",
+      "paused_visible": true
+    },
+    "readable_endpoint_change_bracket_seconds": {
+      "after": 10,
+      "at_or_before": 15
+    },
+    "exact_counter_change_frame_asserted": false,
+    "exact_native_callback_pts_asserted": false,
+    "readable_route_or_arrival_label_from_video_asserted": false,
+    "army_pane_present": false,
+    "fine_HUD_text_independently_read_from_320_cells": false
+  },
+  "retained_native_basis": {
+    "original_case": {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/R04-BAYEUX-RESULT.json",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "bytes": 239982,
+      "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+    },
+    "original_direct_v2_projection": {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/DIRECT-V2-PROJECTION.actual.json",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "bytes": 82474,
+      "sha256": "41f2e90525c664cef89d2f279df64a8e30e26909ff703c49a395e1a18c81501c"
+    },
+    "original_independent_consumption": {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/INDEPENDENT-CONSUMPTION.actual.json",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "bytes": 68199,
+      "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca"
+    },
+    "original_case_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "original_process": {
+      "pid": 16780,
+      "create_time": 1792467500.833546,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "target_province_id": 1513,
+    "actual_arrived": true,
+    "actual_Move_attempts": 1,
+    "actual_days": 7,
+    "preparatory_Move_and_first_six_days_filmed": false,
+    "filmed_natural_observation_day": 7,
+    "qualified_individual_positive_invocations": 17,
+    "retained_individual_physical_debit_subtotal": 236,
+    "five_empty_DATA_invocations_excluded": true,
+    "active_phase_observed_for_qualified_owner_children": false,
+    "complete_county_phase_coverage": false,
+    "county_total_debit": null,
+    "whole_army_net_attributed": false,
+    "R04_entire_card_closed": false,
+    "basis_note": "Previously qualified exact direct-v2 per-invocation source/physical capture and independent replay are reused; this visual pass does not replay native input or widen the claim."
+  },
+  "recommendation": {
+    "status": "RECOMMEND_ROOT_ACCEPT_BOUNDED_R04_SOURCE_SHOT",
+    "claim": "On the filmed natural observation day, R0217 retained17 source-qualified individual direct physical debits, subtotal236; HUD6746 to6510 and1067-01-26 to01-27 provide visible same-run context.",
+    "justification": "Original M scope permits an actual source-proven individual event and complete natural transition. All900 first30s source frames are now visually covered; original fullres endpoints are readable; existing native proof binds actual caller/request, true entry and physical debit. An army pane is not added as a new requirement.",
+    "root_key_sheet_and_fullres_review": "Pending Root decision; expected direct review of contact000/018/025/028/056 plus existing raw05/10/15/30.",
+    "Root_accepted": null,
+    "formal_dynamic_count_mutated": false,
+    "count_up_to_236_is_not_whole_county_net": true,
+    "whole_county_net_claim": false,
+    "complete_phase_or_full_R04_claim": false,
+    "seven_days_or_Move_fully_filmed_claim": false,
+    "final_film_human_1x_or_OneDrive_signoff_claim": false
+  },
+  "actions": {
+    "single_FFmpeg_original_wait_returncode": 0,
+    "original_ffmpeg_currently_absent": true,
+    "extra_game_day": 0,
+    "extra_Move": 0,
+    "SDK_queries": 0,
+    "new_probe": 0,
+    "raw_rehash": 0,
+    "raw_copy": 0,
+    "new_fullres_samples": 0,
+    "full83s_or36s_decode_repeated": false,
+    "new_video_audio_TTS_outputs": 0,
+    "remaining_heavy_bytes": 0
+  }
+}

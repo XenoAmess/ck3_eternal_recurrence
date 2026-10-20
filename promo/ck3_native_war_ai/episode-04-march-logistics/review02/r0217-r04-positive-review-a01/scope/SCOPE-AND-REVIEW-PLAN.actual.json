@@ -1,0 +1,226 @@
+{
+  "schema": "xar.e04.R0217-positive-original-M-scope-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:19:15.595358+00:00",
+  "reviewed_master_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+  "execution_source_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "review_kind": "OFFLINE_METADATA_SCOPE_AND_REVIEW_PLAN_ONLY",
+  "original_M": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+    "bytes": 27122,
+    "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+  },
+  "scope_verdict": "BOUNDED_DIRECT_V2_INDIVIDUAL_DEBIT_POSITIVE_IS_COMPATIBLE_WITH_R04_THEME; SOURCE_SHOT_NOT_YET_ACCEPTED",
+  "reasons": [
+    "M81 explicitly says identify this individual event by source-proven actual caller, and M83 asks entry/budget/physical debit correspondence; whole county NET is not stated as the only positive unit.",
+    "Already qualified direct-v2 calls prove actual per-invocation physical application. A subtotal is admissible if kept separate from unknown county total and public/physical endpoint deltas.",
+    "Root R12 decision counts a theme with at least one accepted original-M source shot, not a full variant suite. It explicitly separates final human1x/signoff and declines a new all-packet-PTS prerequisite.",
+    "Original M26 allows a submitted action OR a complete natural transition. R0217 can propose the filmed final-day crossing, but cannot claim its unfilmed Move or earlier six days were filmed."
+  ],
+  "admissible_actual_claim": "本场17次已核实的县进入direct-v2直接调用，实际physical debit小计236；另5个空DATA调用未计入，县总额仍未知。",
+  "demonstration_call": {
+    "sequence": 1192,
+    "source_caller_return_rva": "0x24E25EE",
+    "writer_invocation_token": 37,
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "regiment_id": 0,
+    "request_raw": 3500000,
+    "request_scale": 100000,
+    "physical_before": 1000,
+    "physical_after": 965,
+    "physical_debit": 35,
+    "interpretation": "One already-qualified actual direct invocation; no claim that HUD individually displays this35 or that this establishes a complete county budget formula"
+  },
+  "actual_limits": {
+    "qualified_positive_calls": 17,
+    "individual_physical_debit_subtotal": 236,
+    "qualified_zero_other_calls": 1,
+    "excluded_empty_DATA_calls": 5,
+    "excluded_sequences": [
+      1207,
+      1208,
+      1209,
+      1210,
+      1211
+    ],
+    "county_total_debit": null,
+    "R04_entire_card_closed": false,
+    "global_new_writer_window_delta": 192,
+    "global_window_continuous": true,
+    "physical_unique_endpoints": [
+      6741,
+      6505
+    ],
+    "public_visible_counters": [
+      6746,
+      6510
+    ],
+    "matching_subtotal_and_endpoint_net_is_not_county_attribution": true,
+    "all_selected_owner_active_phase_observed": false,
+    "enclosing_full_county_parent_or_complete_phase_not_claimed": true,
+    "source_actor": 33388,
+    "source_normal_campaign": "R206 William normal S0",
+    "original_M169_new_Robert_full_episode_or_common_T0_not_claimed": true
+  },
+  "source_binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "pid": 16780,
+    "create_time": 1792467500.833546,
+    "native_query_frame": {
+      "queried_snapshot_id": "native:25",
+      "queried_revision": 26,
+      "queried_native_revision": 25,
+      "queried_date_raw": 53147544,
+      "queried_connection_generation": 1,
+      "queried_episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217"
+    },
+    "native_before_fences": {
+      "latest_sequence": 1191,
+      "oldest_available_sequence": 680,
+      "overwritten_events": 679,
+      "unattributed_capture_failures": 0
+    },
+    "native_after_fences": {
+      "latest_sequence": 1383,
+      "oldest_available_sequence": 872,
+      "overwritten_events": 871,
+      "unattributed_capture_failures": 0
+    },
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "bytes": 57159155,
+      "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+    },
+    "movie": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+      "bytes": 4398526,
+      "sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c"
+    },
+    "capture_source": {
+      "kind": "gdigrab-desktop-client-region",
+      "owned_ck3_pid": 16780,
+      "owned_ck3_create_time": 1792467500.833546,
+      "hwnd": 21498352,
+      "foreground_hwnd": 21498352,
+      "desktop": [
+        2560,
+        1440
+      ],
+      "client_screen_rect": [
+        640,
+        360,
+        1920,
+        1080
+      ],
+      "occluding_windows": [],
+      "coordinates": "physical-primary-screen-pixels",
+      "direct_hwnd_capture": false,
+      "window_border_included": false,
+      "observed_at_utc": "2026-10-20T03:57:59.886023+00:00",
+      "output_size": [
+        1280,
+        720
+      ]
+    },
+    "association": "same R0217/PID/Army0, seventh-day date53147544 and independently confirmed arrival1513; not wall-time-interpolated exact native callback PTS",
+    "precise_native_event_PTS": null,
+    "existing_technical_QA": {
+      "raw_strict_decode_exit": 0,
+      "raw_decoded_frames": 2494,
+      "movie_strict_decode_exit": 0,
+      "movie_decoded_frames": 1080,
+      "reused_without_new_decode": true
+    },
+    "current_stat_raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "observed_bytes": 57159155,
+      "expected_bytes": 57159155,
+      "expected_bytes_match": true,
+      "mtime_ns": 1792468765548903800,
+      "source_retained_sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf",
+      "payload_read": false,
+      "payload_rehashed": false
+    },
+    "current_stat_movie": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+      "observed_bytes": 4398526,
+      "expected_bytes": 4398526,
+      "expected_bytes_match": true,
+      "mtime_ns": 1792473306722281400,
+      "source_retained_sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c",
+      "payload_read": false,
+      "payload_rehashed": false
+    }
+  },
+  "already_reviewed": {
+    "raw_six_sparse_samples_seconds": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30
+    ],
+    "source_visible_counter_and_date_transition_interval_seconds": {
+      "exclusive_start": 10,
+      "inclusive_end": 15
+    },
+    "correction_source": "ROOT-WINDOW-CORRECTION.actual.json, supersedes original15s Jan26 reading; actual15s6510/Jan27",
+    "movie_caption_samples": [
+      "caption-1-before.jpg",
+      "caption-2-boundary.jpg",
+      "caption-3-boundary.jpg",
+      "caption-4-boundary.jpg",
+      "end-card.jpg"
+    ],
+    "captions_readable_by_Root": true,
+    "continuous_selected_source_review": false
+  },
+  "exact_remaining_visual_plan": {
+    "proposed_source_span_seconds_half_open": [
+      0,
+      30
+    ],
+    "proposed_source_frames_half_open": [
+      0,
+      900
+    ],
+    "fps": 30,
+    "purpose": "one R04 original-M natural-crossing positive source-shot candidate; not whole83s raw or final36s film signoff",
+    "phase1": "Review retained original-size raw5s/10s pre-state for selected Army/date/counter and a readable native warning OR visible committed route. Current sparse receipt does not attest route/warning.",
+    "phase2": "Review every selected source frame0..899 in bounded AI sheets/sequence, with original-resolution checks around actual UI transition within(10,15]. Verify no cuts, occlusion, stale frames or omitted natural crossing; no exact native callback timestamp inference.",
+    "phase3": "Confirm original15s/20s/25s/30s steady result:6510/Jan27, same selected Army, real arrival/empty-route where visually available; retain the native independent arrival1513 separately.",
+    "phase4": "Root explicitly signs only the bounded claim and exact source span after checking the necessary states. If route/crossing cannot be read, keep pending or describe only map counter-change B-roll; do not pad with the unfilmed Move.",
+    "planned_pre_post_lengths": "M26 planned6–10s pre and8–15s post; [0,30) has known old count at10s and stable new count at15s through30s. Exact readability/transition must be judged, not assumed from sparse timestamps.",
+    "no_new_hard_gates": [
+      "No demand for human1x or final-film signoff before a bounded theme source-shot decision.",
+      "No demand to close county_total/R04 full card or the five excluded empty DATA cases before stating the existing17-call subtotal.",
+      "No repeated83s/36s full decode or all2494-packet table; existing exact-source technical QA is retained.",
+      "No whole83s original-resolution all-frame review when the proposed claim uses only[0,30)."
+    ],
+    "current_execution_authorized": false,
+    "new_decode_image_generation_render_or_screen_execution": false
+  },
+  "proposed_counter_action": "NONE_NOW; if Root later accepts the visually verified bounded R04 source shot, count that theme once, preserving full_R04=false and all other counters",
+  "current_credit_added": 0,
+  "formal_dynamic_credit_granted": false,
+  "new_business_or_research_credit": false,
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SOURCE-REVIEW.actual.json",
+    "bytes": 65392,
+    "sha256": "749e3f19c32f24d0d292df8df7ae2072f107d5458f7291734d578b078d745652"
+  },
+  "native_details": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\NATIVE-SCOPE-DETAILS.actual.json",
+    "bytes": 17648,
+    "sha256": "369c6c0e9999901528fb27609a34a1f2fc99db7a65862bc213a25074b401e1f5"
+  },
+  "SDK_calls": 0,
+  "game_screen_actions": 0,
+  "new_media_decode": 0,
+  "new_raw_hash": 0,
+  "new_native_consumer_replay": 0,
+  "source_edits": 0
+}

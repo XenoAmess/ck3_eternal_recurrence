@@ -1,0 +1,169 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:42:59.432183+00:00",
+  "source_execution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\EXECUTION.actual.json",
+    "bytes": 22977,
+    "sha256": "ff341aaeb788d99d2a133c80c3d239ca97a6e6061c432b12402395e9894fbb6a"
+  },
+  "exactly900_unique_ordered_frames": true,
+  "first_source_frame": [
+    "0",
+    "0",
+    "0"
+  ],
+  "last_source_frame": [
+    "899",
+    "29967",
+    "29.967"
+  ],
+  "pts_delta_ms_counts": {
+    "33": 599,
+    "34": 300
+  },
+  "no_fps_filter_setpts_or_retiming": true,
+  "contact_count": 57,
+  "all_contact_geometry_format": {
+    "width": 1280,
+    "height": 792,
+    "format": "JPEG"
+  },
+  "last_sheet_actual_source_frames": [
+    896,
+    897,
+    898,
+    899
+  ],
+  "last_sheet_black_fill_cells": 12,
+  "key_sheets": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-000.jpg",
+      "bytes": 94539,
+      "sha256": "ae1fa80497b2a9571121ed271c77807ea83b787d827bddd6d7928eabc782a606",
+      "source_frames_half_open": [
+        0,
+        16
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-009.jpg",
+      "bytes": 95236,
+      "sha256": "501261cd7fddf9701f46200da99b1716964667100f1bd2bca3e32a3f95c6ade3",
+      "source_frames_half_open": [
+        144,
+        160
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-018.jpg",
+      "bytes": 95237,
+      "sha256": "865be82968570f69185cf04c00f5122afcda0ffb6d7e28e00ee1a20c08535e47",
+      "source_frames_half_open": [
+        288,
+        304
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-022.jpg",
+      "bytes": 95896,
+      "sha256": "fa4672bc066c05162064d2705676638f22eae6b5431146f90f6d414a6348e1b4",
+      "source_frames_half_open": [
+        352,
+        368
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-023.jpg",
+      "bytes": 95681,
+      "sha256": "41d2892c23f425b6532535e92556a94265933213be21b47e73e2d09081a56ab3",
+      "source_frames_half_open": [
+        368,
+        384
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-024.jpg",
+      "bytes": 96225,
+      "sha256": "0f5a3a77514b18f7987e73b0b8e320b182d1da6813283d8c0e086ce833c7d4a5",
+      "source_frames_half_open": [
+        384,
+        400
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-025.jpg",
+      "bytes": 97053,
+      "sha256": "45e3cb8749f75a78a4852352ca91ffc5934f4d18a5a3bf47e8f160f8f50f4fb1",
+      "source_frames_half_open": [
+        400,
+        416
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-026.jpg",
+      "bytes": 96080,
+      "sha256": "f753c8a47ef1f7fe56b2be7d6da776fd79dca309ef8f29b8986a336a265dc4c4",
+      "source_frames_half_open": [
+        416,
+        432
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-027.jpg",
+      "bytes": 95692,
+      "sha256": "e382423cc896359f7f16f85e3f4ef4e1f4eeaa007b541f2cbdebbb1a0ec80a0d",
+      "source_frames_half_open": [
+        432,
+        448
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-028.jpg",
+      "bytes": 95701,
+      "sha256": "0dcbb8d8cbbbea989de46d87e3a22f1a58fccbc5a9cda7cc2ad61807418f67ba",
+      "source_frames_half_open": [
+        448,
+        464
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-056.jpg",
+      "bytes": 30324,
+      "sha256": "5b4f2afb8f2023fca83f0c016034e66038ee9d3df07b1b34573d479abeaf5e53",
+      "source_frames_half_open": [
+        896,
+        900
+      ],
+      "actual_cells": 4,
+      "fill_cells": 12
+    }
+  ],
+  "original_ffmpeg_pid": 33796,
+  "original_wait_returncode": 0,
+  "original_ffmpeg_currently_absent": true,
+  "raw_payload_body_read": false,
+  "new_raw_hash": false,
+  "new_probe": false,
+  "new_decode": false,
+  "visual_review_yet_completed": false
+}

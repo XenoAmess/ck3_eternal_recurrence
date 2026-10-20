@@ -1,0 +1,1290 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:14:31.534224+00:00",
+  "reviewed_master_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+  "immutable_execution_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0217-POSITIVE-SCOPE-SMALL-METADATA-CHILD.actual-a01.json",
+    "bytes": 3540,
+    "sha256": "297a1e02aa6b6a04126e164f023ab8e0eeb21136e106adbb96851a27122ce711"
+  },
+  "original_M": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+    "bytes": 27122,
+    "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+  },
+  "original_M_slices": [
+    {
+      "first_line": 1,
+      "last_line": 9,
+      "text": "1: # Review02 实验卡：新原版 Robert 1066 战役\n2: \n3: 机器 `desktop-3fevhd2-1c74096080`。本包是离线执行候选，没有启动游戏、桌面、SDK、录制、构建或写入跟踪文件，没有新增实机结论。编制时 Root 提供的本机状态为 **Steam 1.20.1、离线；1.20.0.4 尚未下载完成**。这不是本包再次检测的安装事实。目标严格为 **1.20.0.4 / Steam25734779 / EXE101040248 B / SHA98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518**。\n4: \n5: 源码阅读点为 `4c16cec6e2b4ecd0f12faa5c0f23237a7bd01843`。本机新native生产flags由Root本轮构建负责；本包不把二进制存在、编译器产物、远端fixture GREEN或宏ON写成冷载资格。执行时使用Root最后冻结的source/build/options/Defender实际回执及新hello，而不是把这个阅读点当作运行时来源。各卡仍需真实窗口、实际输入和现有 `native_research_plan.py check --for-observation` 准入；本包没有冒充已经通过。\n6: \n7: ## 共用绑定和执行顺序\n8: \n9: 先跑 **R00→R01→R02**。随后损耗/补员 **R03–R06**、分合军 **R09**、Halt **R11–R13** 在同一正常战役的独立小窗口依次做；现金源研究可与这些现场离线并行，实付款 **R07/R08** 要等缺口真正闭合。最后另冻结 **R10** 的共同T0和三臂。CK3、SDK、录制和screen lease只有一个现场owner；并行线程仅消费落盘结果、研究源码和整理镜头。"
+    },
+    {
+      "first_line": 17,
+      "last_line": 26,
+      "text": "17: 1. `ck3_take_snapshot({})`得到S0：Robert29829/alive/map_ready/paused，actual date、public/native revision、episode、路线/目标/状态、pending事件、玩家roster及战争。PID、connection generation、版本若未在payload发布，用独立bridge diagnostics/本次启动外层绑定，原source null保留，不回填成payload已读。暂停时schema未发布的commander不猜，使用独立typed commander查询。\n18: 2. 对**明确研究主体**调用`ck3_query_army_strengths`。归因窗口用`profile=\"observed_history_full_v1\"`，两个ordered mode均`observed_prepared`；一般侦察才用`ordinary_core_v1`。后者会省略保留phase journals，不能拿来证明没有历史事件。完整profile的null也不是ready。\n19: 3. `ck3_query_army_commander_candidates_v1(army_id=U, expected_revision=R)`；需要战争语境时读`ck3_query_war_occupation_targets_v1(W,R)`。费用卡另读private cash查询；Python private开关及实际native family必须已准入。\n20: 4. `ck3_take_snapshot({})`得S1。要求same actor/episode/PID/generation/date/pause、该研究对象身份与action前后预定不变量一致；native/public revision按真实值分列，不要求它们彼此相等。S1中的缓存strength不算第二次独立人数查询；实际区间端点必须各有真正query。请求之外的CUnit缺失或全局scope partial不自动否定本军已available的字段；声称全部strategyArmy总数时必须覆盖真正所需主体，不能用unknown补0。若获取中revision变化，保存原始返回并只重取只读包，不能自动重发动作。\n21: 5. 每个journal在窗口开始单独保存sequence fence、oldest/latest、overwrite/failure/drop/truncation。只消费新sequence并去重。不同journal的sequence不是共同执行时钟；只有已证明的parent/event context才能直接排序。无共同键时，以具体FullID/日期/caller和窄稳定窗口支持的对应关系单独列为推断，不伪造一条总账。loss512事件、每事件64DATA；regular-core环只有4条，必须每个实际日及时取出。\n22: 6. Native55按**query-time完整ArRg成员**关联历史，不能声称它观察了invocation-time CArmy归属。损耗卡保持该窗稳定完整队列；发生分合军时另切窗，不能把查询后成员加入旧事件。physical slot按真实别名去重；cached current delta、physical debit、Army净人数变化分列。\n23: \n24: ### 共同动态镜头合同 M\n25: \n26: 每段记录真实原片PTS/动作marks与同一次native取证的关联。动作前6–10秒看实际军队/日期/读数，提交或自然转移完整保留，结果稳定后8–15秒看独立后态。结算不靠剪辑制造发生；若推进本身耗时长，先预算并录制完整事件窗口，不能用旧场景暂停画面补过程。各小窗口独立run/attempt，原片分段及字幕加速标签如实记录。此处秒数是拟取用镜头长度，不承诺原生日推进只需这些秒。"
+    },
+    {
+      "first_line": 77,
+      "last_line": 83,
+      "text": "77: ## R04 县界移动损耗与周期损耗分开\n78: \n79: **输入**：本机.4当前county-entry输入可读、合法路线及实际到达候选；核.4 minimum slot为`5C68C64`，不能继承旧.3误解释。优先避开本军周期桶；取同档合法无县界损耗条件的短对照。\n80: \n81: **步骤**：完整route/起点/target/normalized progress→native Move一次→逐exact日→实际county/province变更、route/state后读及新writer事件。用`.4`已证明的实际caller识别该笔事件；Native55的`other_writer_caller`本身不能自动等于county loss。\n82: \n83: **验收**：原生进入条件、当次预算输入、真实进入和physical debit一致；或明确标为source＋有定向对照的端点推断。实际caller仍未闭合时，缺口是具体callee/caller链，不重造整个loss平台；先离线补齐再授“执行闭环”。**上限**：单次路线最多14日，不能延长成绕图等事件。**镜头**：原生警告/路线→真正跨界→整数结果，普通移动不一概说5%或100人。"
+    },
+    {
+      "first_line": 93,
+      "last_line": 101,
+      "text": "93: ## R06 缺员补员：自然入口、实际physical ADD与开关\n94: \n95: **输入**：新campaign实际普通缺员MAA；完整7chunk/全部DATA、资金/开关/位置/owner-holder上下文。moving state7不一概禁补员；prepared F与fresh fraction独立。\n96: \n97: **步骤**：在自然regular-core机会前F记录fence；每个exact日后full profile及时读`actual_army_regular_core_observations_v1`。要求真正`2A98AC0` entry/独立return、其`2A9A570` parent/caller_return `2A9A8E2`、同clock/thread/date、完整ordered manager occurrences和七chunk。按同物理对象/ordinal比entry/returned并核actual raised refresh。重复manager occurrence可能真实重复执行，不能因为DATA别名而重复计算物理增兵。\n98: \n99: **开关对照**：同新T0两次独立正常回放，启用且资金满足 vs 正常关闭MAA每月补员，各跨相同自然结算机会。当前仓库未在本包核到专名toggle MCP；**不得发明toggle step**。先使用Root已核的合法原生GUI/动作路径并独立读回，若不存在就补最小普通原生操作，再执行此子卡。未做开关对照只授这一次实际增兵，不能授全部条件。\n100: \n101: **验收**：actual entry/return物理current增加及其真正执行输入；条件模型的q、`fixed_chunk0_prepare`计算、仅prepared刷新均不算实际ADD。partial/缺entry不能用return补全；ring4被覆盖就不授完整窗。没有增兵也保留真实q0/不合资格反例，不伪填0收益。最多一次相关月机会＋2日，实际日上限35。**镜头**：开关操作及读回→缺额→真实补兵，库存恢复另一个窗口单列，不串成一个事件。"
+    },
+    {
+      "first_line": 167,
+      "last_line": 173,
+      "text": "167: ## 本期最低放行与输出\n168: \n169: 必须有：本期.4新Robert正常来源；十日精确采样；至少清楚分开的普通损耗和真饥饿执行正例；真实补员整数/必要条件；三种路线操作后态。若保留“三方案哪种好”和费用承诺，必须有三臂合格终点及本期实际付款/结算；没有就继续研究或明确重设题目范围，不能靠重复“未确认”凑成片。\n170: \n171: 每卡产出：input pins、实际请求/结果、F前后、自己的journal fence和新事件、正常save、source/evidence层次、停止原因、raw marks/clean span与原始显示文案、可说结论和仍不可说内容。出现0事件、partial、source inference和actual application分别记录。新TTS在核心卡通过后才制作；最终machine audit、AI抽帧、人工1×完整看听、signoff、OneDrive客户端交付分别验收。\n172: \n173: 本包不提供当前完成百分比；已有编译/源研究减少工程工作，但不增加本场研究日、实际付款、拍摄或新片完成信用。"
+    }
+  ],
+  "director_current_theme_scope": "# 第4期导演与研究计划：行军、补给与损耗\n\n## 2026-10-20 10:42 UTC：R12阳性原M源镜头签出，正式动态主题1/11\n\n`machine_id: desktop-3fevhd2-1c74096080`。依据[Root实际裁定](review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json)（SHA-256 `9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88`）及[11主题小账本](review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)，正式动态的计数单位为R03–R13各主题至少一段已验原M源镜头。当前 **1/11（9.09%）**，仅R12阳性；其余10主题待签出。下方0/11等旧记录保留为当时快照。\n\n本次接受同R0175原raw **[0,34)秒**：locked完整多跳路线→一次Halt仅保留原首段→自然到原front，正是原M第157行三态镜头。动作前约5.33秒，相对拟6秒少约0.67秒，原样披露；独立后态14秒。AI审全64张sheet，Root审12张关键sheet及4/10/34秒原分辨率图；未冒充人工1×或最终签核。原片/约24MB JPEG仅精确引用，本次不复制、重hash、解码或渲染。\n\n该签出不包含单跳拒绝、精确等号、R12整套变体、R13、完整章节/最终片或OneDrive交付。研究 **10/14**、业务 **7/11**、ABC **0/3**、B库存驻点 **0/2**不变；R0219 runwait2/noDay/noADD与正常闭场仍独立保留。\n\n",
+  "R12_root_precedent": {
+    "decision": "Accept one R12 formal dynamic source shot: original locked multi-hop route, one Halt retaining the original first leg, and natural arrival at the original front. Original M line157 names precisely these three visible states. Single-hop refusal and exact cutoff equality are not claimed by this shot.",
+    "formal_counter": {
+      "name": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
+      "previous": "0/11",
+      "current": "1/11",
+      "percentage": 9.090909090909092,
+      "accepted_themes": [
+        "R12"
+      ],
+      "pending_themes": [
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R13"
+      ],
+      "unit": "theme with an accepted source shot; not a count of completed research variants, chapters or finished films",
+      "full_R12_variant_suite_film_qualified": false
+    },
+    "actual_review": {
+      "delegated_allframe_reviewer": "/root/media_chapter",
+      "actual_contact_sheets": 64,
+      "actual_frames_inclusive": [
+        0,
+        1023
+      ],
+      "cell_pixels": [
+        640,
+        360
+      ],
+      "Root_actual_contact_sheets": [
+        "000",
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "009",
+        "010",
+        "037",
+        "063"
+      ],
+      "Root_actual_original_resolution_samples_seconds": [
+        4,
+        10,
+        34
+      ],
+      "Root_all64": false,
+      "whole_original_resolution_allframe_text_review": false,
+      "human_1x": false,
+      "human_signoff": false,
+      "clean_scope": "All selected frames visually reviewed by delegated AI; Root checked transitions/endpoints and full-resolution essential Army HUD/route/date/boat. Native right notification does not obscure the required Army region. This is AI clean-source review, not human whole-film signoff."
+    },
+    "technical_evidence_reused": {
+      "strict_whole_raw_decode_report": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\report.json",
+        "bytes": 7089,
+        "sha256": "d1dd39c0cc9b6bc4bd386b4ab9e65d361ca7902043713d8615039591e7a187eb"
+      },
+      "strict_decode_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\result.json",
+        "bytes": 1129,
+        "sha256": "9852d3fdd922052058cb69170f5a0487f9bb737f05bc7e8a140f9636645cc939"
+      },
+      "known_result": "原45秒/1350帧strict decode exit0；2560x1440/30fps；原raw无音轨。未重跑。",
+      "all1350packet_PTS_table_retained": false,
+      "fullpacketPTS_new_pass_executed": false,
+      "not_an_added_original_contract_gate": "原M要真实PTS/动作marks，没有每条旧raw必须全1350packet表的硬门槛。不能把原先可选PTS-only补充方案升为本镜头原合同前置。"
+    }
+  },
+  "R0217_document": "# R0217：七日到达、17次直接扣兵与83秒新原片\n\n`machine_id: desktop-3fevhd2-1c74096080`。实际执行2026-10-20 03:34–04:33 UTC；04:50 UTC封小型原件。完整run为`desktop-3fevhd2-1c74096080--vanilla--R0217`，场次别名R221，screen任务`e04-common-12004-a222`。所有安装、桌面、进程、权限、存储及实机事实仅属于该机器。\n\n本轮已完成交接要求的首个现场节点：新游戏正常收束，新增连续原片83.133秒。当前已完成技术解码与三张稀疏图的AI直接审阅；整段continuous-clean、人工1×及human signoff仍未完成，因此正式动态仍0/11。研究10/14、业务7/11、ABC0/3不变。\n\n## 实际推进和扣兵\n\n普通R206正常S0，公开入口源码冻结`efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b`、native树`28dda02c23eda2efdc0a09c8a9cba122dd06cca9`，实际a39生产资格与原始绑定随[索引](evidence/episode04-r0217-20261020/SOURCE-INDEX.actual.json)保留。实际CK3为1.20.0.4/build25734779。唯一Move从1506指向1513，连续7个精确日，raw date53147376→53147544；到1513、route空、target null、暂停、无战斗和撤退。前六日与Move未录制，第七日才启动一次相机，不能扩写成七日全程入镜。\n\n[独立重放](evidence/episode04-r0217-20261020/research/INDEPENDENT-CONSUMPTION.actual.json)严格取得17次direct-v2合格正额调用、物理扣兵小计236，另1次合格zero/other；全局新writer窗192条连续、无epoch错配。unique physical端点6741→6505，净-236。画面军队计数6746→6510另列，不与实体口径混写。\n\n5次调用seq1207–1211/ArRg56–60仍因`physical_association_incomplete`排除：关联数0、完整physical capture、各request0/debit0。冻结native[空DATA审计](evidence/episode04-r0217-20261020/research/empty-data-audit/CONCLUSION.md)证明其窄物理零事实；原函数仍被调用，不能泛称writer无副作用，也未改direct-v2守卫或追授资格。**county_total_debit=null、R04_entire_card_closed=false**。小计与端点相等不能替代县总额。\n\n[82KB真实投影](evidence/episode04-r0217-20261020/research/DIRECT-V2-PROJECTION.actual.json)保留consumer必需5个完整row叶、完整writer journal/27团roster/双ID/帧与fences，并明确不是完整Driver原件。随包`verify_portable.py`已对该投影实际重放PASS。7份精确日的modal_actions均0，无新增陌生事件输入；不是未处理事件待办。\n\n## 录像与退出\n\n原片留在`C:/ck3-e04-resume-20261020-a01/r221-scene-a01/raw-a01/take01/raw.mkv`，只录实际1280×720客户区，不录整屏。新原片为map-context，没有声称原生军队详情面板已显示。H.264/yuv420p、30fps、2494帧、83.133秒；无音轨来自录制`-an`意图。[一次严格全片解码和PTS检查](evidence/episode04-r0217-20261020/media/QA.actual.json)通过，DTS递增、PTS无重复，gap33/34ms。三张[首图](evidence/episode04-r0217-20261020/media/first.jpg)、[中点](evidence/episode04-r0217-20261020/media/midpoint-not-event-boundary.jpg)、[尾图](evidence/episode04-r0217-20261020/media/tail.jpg)已由Root直接查看，无悬停、遮挡、旧蓝色窗或Quit UI；中点不是精确事件PTS。没有由三张图授整片clean。\n\nOFFclear/Save均true、errors[]。退出时短虚拟键Esc没有打开菜单，失败和实际原图保留；经过实际焦点/English0409检查后，一次SendInput scan-code Esc才打开菜单。所有鼠标仍走canonical坐标映射与receipt。Root直接看见autosave未勾选，点击退出到桌面；原生process_exit为04:21:18.729Z。随后[正常闭场结果](evidence/episode04-r0217-20261020/case/normal-close-result.json)核到retained OS0、native exit0、managed thread finished、cleanup_ok、host原wait0；[public原wait](evidence/episode04-r0217-20261020/close/public-original-wait.json)为0。keeper原report/thread及allocator原wait0后，screen CAS **7254→7257**、resources空，实际无CK3/FFmpeg。业务整卡false与流程正常0分开。\n\n原始GUI截图留在scene/quit-a01；Git仅保留小回执与录像派生JPEG，JPEG不替代Quit原图。STOP文本曾写近似04:27，真实文件/keeper终态04:31:05为准；一个被拒绝titlebar click后的截图文件名也过早写了actual，实际点击以`titlebar-focus-after-a02.png.json`为准。原件不倒改，索引明确纠正。\n\n## 容量、影片和接续\n\n[实际闭场结算](../maintenance/evidence/episode04-capacity-20261020/R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json)计逻辑861,356,025B、unique AllocationSize871,594,056B，scene future=0；无physical或unused credit。shared128MiB和历史42,132,678B继续保守carry，D仍禁止重型写入。新场次/媒体重写须按统一策略重新申请有限scope，不能沿用05:00Z场次截止。\n\n本轮此前已生成[34分37秒方法＋独立证据审阅片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/full-method-plus-evidence-a01/DELIVERY.actual.json)，它不含本R0217新片，仍为审阅稿、未人审、未作为新成片上传。现有新证据可直接进入下一轮剪辑；未闭R06/R08/B驻点/ABC及完整动态镜头继续独立推进，不把它们串成所有剪辑的前置。\n\n### 05:23 UTC插片及最终容量补记\n\n同一`machine_id: desktop-3fevhd2-1c74096080`。[36秒审阅插片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md)已实际生成：连续raw0–30秒＋6秒结论卡，1920×1080/30fps/1080帧/AAC48k，新片一次严格AV解码与PTS检查通过。实物4,398,526B、SHA`eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c`；只有本R0217回放。四句字幕将画面/实体口径、17笔小计及县总额未知分别说明，Root已直接看五张字幕与末卡图；仍不是人工1×或continuous-clean。它没有拼进上面的34分37秒版本，也没有对外上传。\n\nRoot第一次把raw15秒日期读成Jan26，随后直接重看原尺寸图确认为Jan27；[原件保留及更正](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-WINDOW-CORRECTION.actual.json)明确军旗和日期变化均只定位(10,15]秒，不授精确native事件PTS。连续window及电影不需重渲染。\n\n05:23:20Z[最终容量检查](../maintenance/evidence/episode04-capacity-20261020/CAPACITY-CHECKPOINT.actual-a04.json)已关闭native/scene/media/shared的全部执行future预留；历史42,132,678B仍为carry-only且无执行权，不冒充0。新插片scope实际9,765,134B、allocation9,935,088B；C408GiB有限总额仍08:00Z到期，未续期，D仍heavy0。容量任务bus done、resources空、sequence7274。旧a03和04:50段的shared保留是历史时点，最新状态以a04为准。\n",
+  "terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T03:59:25.102744+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "status": "ENTRY_WINDOW_ACTUAL_ARRIVAL_CONSUMED",
+    "arrived": true,
+    "actual_days": 7,
+    "Move_attempts": 1,
+    "OFFclear": true,
+    "Save": true,
+    "errors": [],
+    "full_result_path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-RESULT.json",
+    "business_pass": false,
+    "R04_entire_card_closed": false,
+    "finaldate": 53147544,
+    "finalprovince": 1513
+  },
+  "film": {
+    "schema": "xar.e04.owned-client-window-take-terminal.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T03:59:25.771934+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "state": "NORMAL_TREE_EMPTY",
+    "capture_source": {
+      "kind": "gdigrab-desktop-client-region",
+      "owned_ck3_pid": 16780,
+      "owned_ck3_create_time": 1792467500.833546,
+      "hwnd": 21498352,
+      "foreground_hwnd": 21498352,
+      "desktop": [
+        2560,
+        1440
+      ],
+      "client_screen_rect": [
+        640,
+        360,
+        1920,
+        1080
+      ],
+      "occluding_windows": [],
+      "coordinates": "physical-primary-screen-pixels",
+      "direct_hwnd_capture": false,
+      "window_border_included": false,
+      "observed_at_utc": "2026-10-20T03:57:59.886023+00:00",
+      "output_size": [
+        1280,
+        720
+      ]
+    },
+    "recorder_result": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\result.json",
+      "bytes": 1965,
+      "sha256": "080b734d19527e82f5974cf98422911dae1586a94f93df1463b9aa224b54e701"
+    },
+    "primary_action_error": null,
+    "recorder_finish_error": null,
+    "secondary_cleanup_error": null,
+    "finish_reason": "actual_observer_result_after_minimum_duration",
+    "elapsed_wall_seconds_at_terminal": 84.7563573,
+    "planned_recording_max_seconds": 180,
+    "hard_terminal_wall_seconds_met": true,
+    "actual_observer_result": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-TERMINAL.json",
+      "bytes": 607,
+      "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+    },
+    "one_actual_ffmpeg_job_no_replay": true,
+    "raw_video_human_approved": false,
+    "business_result_inferred_from_video": false
+  },
+  "ready_context": {
+    "schema": "ck3-mod-acceptance-run-context-v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "run_dir": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\keeper-a01",
+    "prepared_case": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\prepared-a01\\prepared-case.json",
+      "bytes": 9794,
+      "sha256": "c97f5d2f63233c94dc39719c0787f8b5238aa515f8f1bfa94bcf44ea2a8362d2"
+    },
+    "case_inputs": {
+      "normal_checkpoint_receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-02-save-once.json",
+        "bytes": 20858,
+        "sha256": "ab71834e88d71f3b4d059bc71a745d8ddb5b82377d835d955e11925c41d5926f"
+      },
+      "normal_checkpoint_build_receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\prepared-a01\\prepared.json",
+        "bytes": 13512,
+        "sha256": "73a26707d71cdf34b47ad7a2aef07422a488a37128e5a1434005d69780cc9675"
+      },
+      "plain_configuration": {
+        "pdx_settings.txt": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\pdx_settings.txt",
+          "bytes": 7133,
+          "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+        },
+        "tutorial.txt": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\tutorial.txt",
+          "bytes": 61,
+          "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+        },
+        "presets.txt": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\presets.txt",
+          "bytes": 2785,
+          "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+        },
+        "player/game_rules/presets.txt": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+          "bytes": 2785,
+          "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+        }
+      },
+      "phase": "readiness",
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "war_id": 1,
+      "goal_province_id": 1527,
+      "staging_province_id": 1506,
+      "agreed_commander_id": null,
+      "director_scope_revision": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+      "budgets": {
+        "command_timeout": 120,
+        "readiness_timeout": 1800,
+        "timeout": 7200,
+        "hold_seconds": 7200,
+        "poll_interval": 0.25
+      },
+      "r04_county_entry": {
+        "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01",
+        "capacity_admission": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-SOURCE-BOUND.actual-a01.json",
+          "bytes": 13706,
+          "sha256": "c612d0d89506d76bc90970c9ef3f1c1f915e9ea4628d81006ff5f63a53cb371e"
+        },
+        "expected_source_save_sha256": "aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da",
+        "expected_start_date_raw": 53147376,
+        "origin_province": 1506,
+        "target_province": 1513,
+        "actor_id": 33388,
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "capture_after_days": 6,
+        "max_days": 7,
+        "driver_limit_bytes": 1073741824,
+        "profile_limit_bytes": 805306368,
+        "deadline_utc": "2026-10-20T05:00:00Z",
+        "camera_timeout_seconds": 900,
+        "prefix": "R221CountyPublic",
+        "before_move_frame_required": true
+      }
+    },
+    "product": "war-episode04-r10",
+    "case": "r10-common-preparation",
+    "frozen_argv": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\frozen-argv.json",
+      "bytes": 37598,
+      "sha256": "862353c073d15fdc872722134932d7f2318c2649c931fffb646835452093215f"
+    }
+  },
+  "native_metadata": {
+    "independent_keys": [
+      "schema",
+      "machine_id",
+      "observed_at_utc",
+      "run_id",
+      "terminal_pin",
+      "full_result_pin",
+      "terminal_status",
+      "actual_days_summary",
+      "daily_record_count",
+      "actual_days_records",
+      "terminal_arrived",
+      "terminal_finaldate",
+      "terminal_finalprovince",
+      "terminal_OFFclear",
+      "terminal_Save",
+      "terminal_errors",
+      "preserved_error",
+      "Move_attempts",
+      "whole_county_debit",
+      "R04_entire_card_closed",
+      "normal_game_close_independently_observed",
+      "new_SDK_game_GUI_build_EXE_reads",
+      "new_source_changes",
+      "modals",
+      "independent_consumer_equals_scene_result",
+      "after_full_query_pin",
+      "consumer_source_pin",
+      "county_sample_status",
+      "qualified_positive_invocation_count",
+      "qualified_zero_or_other_count",
+      "individual_debit_sum",
+      "global_window_continuous",
+      "global_continuity_reasons",
+      "excluded_reasons",
+      "unbound_capture_skip_reasons",
+      "positive_call_facts",
+      "scene_window_summary"
+    ],
+    "projection_keys": [
+      "schema",
+      "machine_id",
+      "observed_at_utc",
+      "projection_not_complete_original",
+      "complete_Driver_or_transport_bytes_claimed",
+      "original_query_pin",
+      "original_result_pin",
+      "original_after_row_pointer",
+      "copied_keys",
+      "query_frame",
+      "process_binding",
+      "executable_sha256",
+      "baseline_writer_fences",
+      "after_writer_fences",
+      "sampling_ON",
+      "direct_source_pins",
+      "pins_are_not_a_transitive_source_closure",
+      "row",
+      "expected_consumer_result_canonical_sha256",
+      "actual_projected_replay_equals_original_scene_result",
+      "qualified_individual_calls",
+      "individual_debit_sum",
+      "whole_county_debit",
+      "whole_county_card_closed",
+      "new_runtime_or_source_qualification_granted"
+    ],
+    "scene_window_summary": {
+      "global_writer_delta": 192,
+      "delta_within_512": true,
+      "window_epoch_mismatched_sequences": [],
+      "window_positive_sequences": [
+        1192,
+        1193,
+        1194,
+        1195,
+        1196,
+        1197,
+        1198,
+        1199,
+        1200,
+        1201,
+        1202,
+        1203,
+        1204,
+        1205,
+        1212,
+        1213,
+        1214
+      ],
+      "retained_individual_debit_sum": 236,
+      "endpoint_unique_physical": {
+        "same_physical_identity_and_maximum": true,
+        "before_current": 6741,
+        "after_current": 6505,
+        "unique_net_current": -236,
+        "county_causal_attribution": false
+      }
+    },
+    "all_nonlarge_independent_values": {
+      "schema": "xar.e04.R0217-independent-consumption.v1",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T03:59:38.427001+00:00",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+      "terminal_pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-TERMINAL.json",
+        "bytes": 607,
+        "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4"
+      },
+      "full_result_pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R04-BAYEUX-RESULT.json",
+        "bytes": 239982,
+        "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+      },
+      "terminal_status": "ENTRY_WINDOW_ACTUAL_ARRIVAL_CONSUMED",
+      "actual_days_summary": 7,
+      "daily_record_count": 7,
+      "terminal_arrived": true,
+      "terminal_finaldate": 53147544,
+      "terminal_finalprovince": 1513,
+      "terminal_OFFclear": true,
+      "terminal_Save": true,
+      "terminal_errors": [],
+      "preserved_error": null,
+      "Move_attempts": 1,
+      "whole_county_debit": null,
+      "R04_entire_card_closed": false,
+      "normal_game_close_independently_observed": false,
+      "new_SDK_game_GUI_build_EXE_reads": 0,
+      "new_source_changes": 0,
+      "modals": {
+        "actual_collected_count": 0,
+        "records": []
+      },
+      "independent_consumer_equals_scene_result": true,
+      "after_full_query_pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\R221CountyPublic-r05obs-0059-entry-window-after-full-derived-normalized-full.json",
+        "bytes": 15369695,
+        "sha256": "312c5c04e1a2b08c10ef3b5d603c0ed3f46cfc51eca5d4f603944a7f2c2a06ce"
+      },
+      "consumer_source_pin": {
+        "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_county_primary_direct_owner_12004.py",
+        "bytes": 16172,
+        "sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c"
+      },
+      "county_sample_status": "retained_direct_owned_county_primary_positive",
+      "qualified_positive_invocation_count": 17,
+      "qualified_zero_or_other_count": 1,
+      "individual_debit_sum": 236,
+      "global_window_continuous": true,
+      "global_continuity_reasons": [],
+      "excluded_reasons": {
+        "native_direct_owner_capture_incomplete": 5
+      },
+      "unbound_capture_skip_reasons": {},
+      "scene_window_summary": {
+        "global_writer_delta": 192,
+        "delta_within_512": true,
+        "window_epoch_mismatched_sequences": [],
+        "window_positive_sequences": [
+          1192,
+          1193,
+          1194,
+          1195,
+          1196,
+          1197,
+          1198,
+          1199,
+          1200,
+          1201,
+          1202,
+          1203,
+          1204,
+          1205,
+          1212,
+          1213,
+          1214
+        ],
+        "retained_individual_debit_sum": 236,
+        "endpoint_unique_physical": {
+          "same_physical_identity_and_maximum": true,
+          "before_current": 6741,
+          "after_current": 6505,
+          "unique_net_current": -236,
+          "county_causal_attribution": false
+        }
+      }
+    },
+    "projection_shape": {
+      "schema": {
+        "kind": "str",
+        "count": null,
+        "keys": null
+      },
+      "machine_id": {
+        "kind": "str",
+        "count": null,
+        "keys": null
+      },
+      "observed_at_utc": {
+        "kind": "str",
+        "count": null,
+        "keys": null
+      },
+      "projection_not_complete_original": {
+        "kind": "bool",
+        "count": null,
+        "keys": null
+      },
+      "complete_Driver_or_transport_bytes_claimed": {
+        "kind": "bool",
+        "count": null,
+        "keys": null
+      },
+      "original_query_pin": {
+        "kind": "dict",
+        "count": 3,
+        "keys": [
+          "path",
+          "bytes",
+          "sha256"
+        ]
+      },
+      "original_result_pin": {
+        "kind": "dict",
+        "count": 3,
+        "keys": [
+          "path",
+          "bytes",
+          "sha256"
+        ]
+      },
+      "original_after_row_pointer": {
+        "kind": "str",
+        "count": null,
+        "keys": null
+      },
+      "copied_keys": {
+        "kind": "list",
+        "count": 5,
+        "keys": null
+      },
+      "query_frame": {
+        "kind": "dict",
+        "count": 6,
+        "keys": [
+          "queried_snapshot_id",
+          "queried_revision",
+          "queried_native_revision",
+          "queried_date_raw",
+          "queried_connection_generation",
+          "queried_episode_run_id"
+        ]
+      },
+      "process_binding": {
+        "kind": "dict",
+        "count": 12,
+        "keys": [
+          "machine_id",
+          "observed_at_utc",
+          "pid",
+          "create_time",
+          "hold",
+          "run_id",
+          "control_path",
+          "capacity_admission",
+          "original_retained_process",
+          "saved_campaign_source",
+          "requested_Root_deadline_utc",
+          "effective_deadline_utc"
+        ]
+      },
+      "executable_sha256": {
+        "kind": "str",
+        "count": null,
+        "keys": null
+      },
+      "baseline_writer_fences": {
+        "kind": "dict",
+        "count": 4,
+        "keys": [
+          "latest_sequence",
+          "oldest_available_sequence",
+          "overwritten_events",
+          "unattributed_capture_failures"
+        ]
+      },
+      "after_writer_fences": {
+        "kind": "dict",
+        "count": 4,
+        "keys": [
+          "latest_sequence",
+          "oldest_available_sequence",
+          "overwritten_events",
+          "unattributed_capture_failures"
+        ]
+      },
+      "sampling_ON": {
+        "kind": "dict",
+        "count": 5,
+        "keys": [
+          "step",
+          "accepted",
+          "status",
+          "army_observer_research_sampling_v1",
+          "backend_id"
+        ]
+      },
+      "direct_source_pins": {
+        "kind": "list",
+        "count": 3,
+        "keys": null
+      },
+      "pins_are_not_a_transitive_source_closure": {
+        "kind": "bool",
+        "count": null,
+        "keys": null
+      },
+      "row": {
+        "kind": "dict",
+        "count": 5,
+        "keys": [
+          "status",
+          "army_id",
+          "native_carmy_id",
+          "regiment_strengths",
+          "actual_loss_writer_observations_v1"
+        ]
+      },
+      "expected_consumer_result_canonical_sha256": {
+        "kind": "str",
+        "count": null,
+        "keys": null
+      },
+      "actual_projected_replay_equals_original_scene_result": {
+        "kind": "bool",
+        "count": null,
+        "keys": null
+      },
+      "qualified_individual_calls": {
+        "kind": "int",
+        "count": null,
+        "keys": null
+      },
+      "individual_debit_sum": {
+        "kind": "int",
+        "count": null,
+        "keys": null
+      },
+      "whole_county_debit": {
+        "kind": "NoneType",
+        "count": null,
+        "keys": null
+      },
+      "whole_county_card_closed": {
+        "kind": "bool",
+        "count": null,
+        "keys": null
+      },
+      "new_runtime_or_source_qualification_granted": {
+        "kind": "bool",
+        "count": null,
+        "keys": null
+      }
+    }
+  },
+  "film_plan": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "bytes": 57159155,
+      "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+    },
+    "source_window": {
+      "start_seconds": 0.0,
+      "end_seconds": 30.0,
+      "continuous_source": true,
+      "speed": 1.0
+    },
+    "game_seconds": 30.0,
+    "card_seconds": 6.0,
+    "total_seconds": 36.0,
+    "frames": 1080,
+    "exact_Chinese_statements": [
+      "画面军队计数：6746 → 6510（净−236）",
+      "实体兵槽：6741 → 6505；与画面计数分列。",
+      "17次已核实的县进入实际扣兵，小计236。",
+      "5个空DATA调用当前v2排除；县总额仍未知。"
+    ],
+    "county_total_debit": null,
+    "R04_entire_card_closed": false
+  },
+  "intake": {
+    "schema": "xar.e04.R0217-proof-insert-intake.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T05:09:13.102747+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "admission": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+      "bytes": 7018,
+      "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+    },
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "bytes": 57159155,
+      "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+    },
+    "raw_identity": {
+      "bytes": 57159155,
+      "mtime_ns": 1792468765548903800,
+      "st_dev": 13886423844274364792,
+      "st_ino": 562949954640679
+    },
+    "raw_payload_rehashed": false,
+    "raw_QA_repeated": false,
+    "existing_raw_QA": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\QA.actual.json",
+      "bytes": 4322,
+      "sha256": "0eefc024d9f32f7640b4bb25c2de70c48d2f5deb6433dd02cc0c9596debe84d5"
+    },
+    "source_commit": "7de543f32034832f08dba0d843a24f326200cc80",
+    "native_proof": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r0217-20261020\\research\\INDEPENDENT-CONSUMPTION.actual.json",
+      "bytes": 68199,
+      "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca"
+    },
+    "native_narrow_summary": {
+      "qualified_positive_calls": 17,
+      "individual_positive_subtotal": 236,
+      "unique_physical": {
+        "before": 6741,
+        "after": 6505
+      },
+      "excluded_empty_DATA_calls": 5,
+      "county_total_debit": null,
+      "whole_R04_closed": false
+    },
+    "latest_release": {
+      "tag": "v0.3.0",
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+      "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+      "wheel_digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+    },
+    "interpreter": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "installed_version": "0.3.0",
+      "direct_url": {
+        "archive_info": {
+          "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+          "hashes": {
+            "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+          }
+        },
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+      }
+    },
+    "CLI_help": {
+      "version": "xar-promo 0.3.0\n",
+      "top": "usage: xar-promo [-h] [--version]\n                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...\n\nCreate, verify, and preserve reusable promotional-video project metadata.\n\npositional arguments:\n  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}\n    init                create a ProjectConfig and its first bound run without\n                        overwriting files\n    start-run           create another run bound to the current exact\n                        ProjectConfig bytes\n    validate            validate a ProjectConfig, RunManifest, or legacy\n                        showcase v1 manifest\n    preserve            copy a file to immutable content-addressed storage and\n                        append its run record\n    signoff             append an explicit human decision bound to preserved\n                        artifact bytes\n    plan                compose and validate a pipeline plan without invoking\n                        providers or writing\n    build               run a composed pipeline and preserve success or\n                        failure material in its run\n    audit               write and preserve an automated audit without creating\n                        human approval\n    review              plan or create a pending human-review package without\n                        recording sign-off\n    export              validate or create an offline release bundle from an\n                        explicit policy\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n",
+      "start": "usage: xar-promo start-run [-h] --run-id RUN_ID\n                           [--run-directory RUN_DIRECTORY]\n                           [project_config]\n\npositional arguments:\n  project_config\n\noptions:\n  -h, --help            show this help message and exit\n  --run-id RUN_ID\n  --run-directory RUN_DIRECTORY\n                        directory for run-manifest.json (default:\n                        <project>/runs/<run-id>)\n",
+      "preserve": "usage: xar-promo preserve [-h] [--run-manifest RUN_MANIFEST]\n                          --artifact-id ARTIFACT_ID --collection {raw,derived}\n                          --role ROLE [--label LABEL]\n                          [--media-type MEDIA_TYPE]\n                          source\n\npositional arguments:\n  source\n\noptions:\n  -h, --help            show this help message and exit\n  --run-manifest RUN_MANIFEST\n  --artifact-id ARTIFACT_ID\n  --collection {raw,derived}\n  --role ROLE           semantic role such as capture, audio, subtitle, or\n                        deliverable\n  --label LABEL\n  --media-type MEDIA_TYPE\n"
+    },
+    "fonts": [
+      "C:/Windows/Fonts/msyh.ttc",
+      "C:/Windows/Fonts/arial.ttf"
+    ],
+    "skill": {
+      "path": "D:\\workspace\\xar_promo_toolchain\\codex-skill\\promo-video-pipeline\\SKILL.md",
+      "bytes": 3814,
+      "sha256": "94a0dbe08bef4e597a0a5253a10c1e330fadcf7786c68a897d05fb2db49bc935"
+    },
+    "task_bus": {
+      "ack": 7268,
+      "historical_events_not_copied": 7240,
+      "current_tasks": [
+        {
+          "task_id": "e04-capacity-resume-20261020-a01",
+          "resources": [
+            "e04-capacity-reservations"
+          ]
+        },
+        {
+          "task_id": "e04-r0217-proof-chapter-20261020-a01",
+          "resources": []
+        }
+      ]
+    },
+    "new_TTS_calls": 0,
+    "no_other_run_footage": true,
+    "human_signoff": false
+  },
+  "QA_raw": {
+    "schema": "xar.e04.r221-map-context-new-raw-technical-QA.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T04:09:22.037919+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "source_head": "efda0d8cfbeee1dbeffd05c5f662cfd0f5c4073b",
+    "status": "TECHNICAL_QA_PASS_PENDING_ROOT_SPARSE_VISUAL_REVIEW",
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "bytes": 57159155,
+      "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+    },
+    "admission": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-ADMISSION.actual-a01.json",
+      "bytes": 4864,
+      "sha256": "17ba18efcb38e0219f01c75dd2da0951cabb9c32832121ed637e5752e443f795"
+    },
+    "film_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\E04-WINDOW-R0217-TAKE01-film-result.actual.json",
+      "bytes": 1789,
+      "sha256": "aa2f4de7ec89a1676c3a1df16c7ed412abf94795b4e43639e53d6701955c177f"
+    },
+    "recorder_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\result.json",
+      "bytes": 1965,
+      "sha256": "080b734d19527e82f5974cf98422911dae1586a94f93df1463b9aa224b54e701"
+    },
+    "metadata": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "has_b_frames": 0,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/1000",
+          "start_time": "0.000000"
+        }
+      ],
+      "format": {
+        "format_name": "matroska,webm",
+        "start_time": "0.000000",
+        "duration": "83.133000",
+        "size": "57159155"
+      }
+    },
+    "PTS_summary": {
+      "packet_count": 2494,
+      "first_display_pts": 0.0,
+      "last_display_pts": 83.1,
+      "minimum_display_pts_gap": 0.032999999999994145,
+      "maximum_display_pts_gap": 0.034000000000006025,
+      "display_PTS_unique": true,
+      "DTS_strictly_increasing": true,
+      "has_b_frames": 0,
+      "Matroska_ms_quantization_expected": true,
+      "full_packet_dump_written": false
+    },
+    "strict_full_AV_decode_exit_code": 0,
+    "strict_full_AV_decode_stderr": "",
+    "full_new_file_decode_count": 1,
+    "decoded_frames": 2494,
+    "streamed_packet_count": 2494,
+    "actual_duration_seconds": 83.133,
+    "audio_tracks": 0,
+    "audio_absence_is_expected": true,
+    "sample_frames": [
+      {
+        "label": "first",
+        "requested_seconds": 0.5,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\first.jpg",
+          "bytes": 104628,
+          "sha256": "583d6512c9cd0eda8ab08e24d082426412a0a99707152086b934943fb812b8fe"
+        },
+        "Root_direct_review_pending": true
+      },
+      {
+        "label": "midpoint-not-event-boundary",
+        "requested_seconds": 41.5665,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\midpoint-not-event-boundary.jpg",
+          "bytes": 103542,
+          "sha256": "a0fba1fb0bf342e9d04a763c3acd4b482124c1e811bce7aab94da2810ee27674"
+        },
+        "Root_direct_review_pending": true
+      },
+      {
+        "label": "tail",
+        "requested_seconds": 82.633,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\tail.jpg",
+          "bytes": 103095,
+          "sha256": "8ce4f9a7311970e9a83f0106d4c0c1868500dd9174127c3947e1a60edddb9880"
+        },
+        "Root_direct_review_pending": true
+      }
+    ],
+    "boundary_anchor_available": false,
+    "midpoint_is_not_business_transition_proof": true,
+    "Root_direct_visual_review": false,
+    "continuous_clean": false,
+    "human_full_1x": false,
+    "human_signoff": false,
+    "formal_dynamic_credit_added": 0,
+    "business_conclusion_inferred_from_video": false,
+    "CK3_GUI_normal_close_inferred_from_recorder_close": false,
+    "old_video_QA_repeated": false,
+    "new_raw_or_video_copies": 0,
+    "owned_FFmpeg_at_close": [],
+    "SDK_or_screen_calls": 0,
+    "D_heavy_writes_bytes": 0,
+    "remaining_heavy_write_bytes": 0,
+    "storage_before_QA_receipt": {
+      "JPEG_bytes": 311265,
+      "metadata_bytes": 21297,
+      "aggregate_bytes": 332562
+    },
+    "retention_review_at_utc": "2026-10-22T04:00:00Z"
+  },
+  "QA_movie": {
+    "schema": "xar.e04.r0217-proof-review-technical-QA.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T05:16:01.335129+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "status": "NEW_BYTES_TECHNICAL_QA_PASS_PENDING_ROOT_IMAGES_AND_HUMAN_REVIEW",
+    "movie": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+      "bytes": 4398526,
+      "sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c"
+    },
+    "metadata": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/15360",
+          "start_time": "0.000000",
+          "duration": "36.000000",
+          "nb_frames": "1080"
+        },
+        {
+          "index": 1,
+          "codec_name": "aac",
+          "codec_type": "audio",
+          "sample_rate": "48000",
+          "channels": 2,
+          "r_frame_rate": "0/0",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/48000",
+          "start_time": "0.000000",
+          "duration": "36.000000",
+          "nb_frames": "1689"
+        }
+      ],
+      "format": {
+        "duration": "36.000000",
+        "size": "4398526"
+      }
+    },
+    "PTS_summary": {
+      "0": {
+        "packets": 1080,
+        "first_display_pts": 0.0,
+        "last_display_pts": 35.966667,
+        "max_display_pts_gap": 0.03333400000000353,
+        "DTS_strictly_increasing": true,
+        "display_PTS_unique": true
+      },
+      "1": {
+        "packets": 1689,
+        "first_display_pts": -0.021333,
+        "last_display_pts": 35.989333,
+        "max_display_pts_gap": 0.021334000000003073,
+        "DTS_strictly_increasing": true,
+        "display_PTS_unique": true
+      }
+    },
+    "strict_new_movie_AV_decode_exit_code": 0,
+    "strict_new_movie_AV_decode_stderr": "",
+    "strict_new_movie_AV_decode_count": 1,
+    "decoded_frames": 1080,
+    "sample_frames": [
+      {
+        "label": "caption-1-before",
+        "requested_seconds": 1.0,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-1-before.jpg",
+          "bytes": 90893,
+          "sha256": "fa2b84873e111a409200c41f792384ff52ada911c281c627635754a2a0d7b1d0"
+        },
+        "Root_direct_view_pending": true
+      },
+      {
+        "label": "caption-2-boundary",
+        "requested_seconds": 7.6,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-2-boundary.jpg",
+          "bytes": 92090,
+          "sha256": "ec2e93d521a0ac40a035af2383b4a342e4c591d42908ea8966a6c302ea102c80"
+        },
+        "Root_direct_view_pending": true
+      },
+      {
+        "label": "caption-3-boundary",
+        "requested_seconds": 15.1,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-3-boundary.jpg",
+          "bytes": 92008,
+          "sha256": "48269dab7b0fb9bc2f1cc533f9ed10dfc4f1ea5799b31d8dc65299eb7ad40795"
+        },
+        "Root_direct_view_pending": true
+      },
+      {
+        "label": "caption-4-boundary",
+        "requested_seconds": 22.6,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-4-boundary.jpg",
+          "bytes": 93534,
+          "sha256": "e0efe8e64c872c143fe136432a46482c3d48023f4d7d5af650a091738cc27c34"
+        },
+        "Root_direct_view_pending": true
+      },
+      {
+        "label": "end-card",
+        "requested_seconds": 34.0,
+        "image": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\end-card.jpg",
+          "bytes": 35585,
+          "sha256": "b5d6c370d2b3158a7227da64817bd467bde9c257a72fc28e1567cac1dfb0c8ff"
+        },
+        "Root_direct_view_pending": true
+      }
+    ],
+    "raw_QA_repeated": false,
+    "old_movie_QA_repeated": false,
+    "new_TTS_calls": 0,
+    "other_run_footage_used": false,
+    "county_total_debit": null,
+    "R04_entire_card_closed": false,
+    "formal_dynamic_credit_added": 0,
+    "continuous_clean": false,
+    "human_full_1x": false,
+    "human_signoff": false,
+    "Root_direct_new_movie_frames_reviewed": false,
+    "owned_FFmpeg_at_close": [],
+    "usage_before_QA_receipt": {
+      "aggregate_bytes": 9720213,
+      "JPEG_bytes": 848650,
+      "metadata_bytes": 74511
+    },
+    "D_heavy_write_bytes": 0,
+    "external_upload": false
+  },
+  "Root_choice": {
+    "schema": "xar.e04.r0217-Root-actual-sparse-review-and-window-choice.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+    "recorded_at_utc": "2026-10-20T05:14:44.545525+00:00",
+    "reviewer": "/root",
+    "reviewer_kind": "AI-agent",
+    "Root_direct_raw_samples_reviewed": true,
+    "review_source": "Root direct message after individually viewing the six exact raw JPEGs",
+    "frame_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+      "bytes": 2570,
+      "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+    },
+    "Root_observations": [
+      {
+        "raw_seconds": 5,
+        "army_counter": 6746,
+        "displayed_date": "Jan26"
+      },
+      {
+        "raw_seconds": 10,
+        "army_counter": 6746,
+        "displayed_date": "Jan26"
+      },
+      {
+        "raw_seconds": 15,
+        "army_counter": 6510,
+        "displayed_date": "Jan26"
+      },
+      {
+        "raw_seconds": 20,
+        "army_counter": 6510,
+        "displayed_date": "Jan27"
+      },
+      {
+        "raw_seconds": 25,
+        "army_counter": 6510,
+        "displayed_date": "Jan27"
+      },
+      {
+        "raw_seconds": 30,
+        "army_counter": 6510,
+        "displayed_date": "Jan27"
+      }
+    ],
+    "counter_change_interval_seconds": {
+      "lower_exclusive": 10,
+      "upper_inclusive": 15
+    },
+    "date_change_interval_seconds": {
+      "lower_exclusive": 15,
+      "upper_inclusive": 20
+    },
+    "exact_native_event_PTS_established": false,
+    "correction": "Producer earlier message misread the15s displayed date as Jan27. Root directly read Jan26; this choice uses the corrected Root observation and retains the distinct intervals.",
+    "source_start_seconds": 0,
+    "game_seconds": 30,
+    "card_seconds": 6,
+    "total_seconds": 36,
+    "source_window_continuous": true,
+    "source_speed": 1.0,
+    "Root_approved_new_insert_production": true,
+    "new_movie_QA_full_decode_count": 1,
+    "continuous_clean": false,
+    "human_full_1x": false,
+    "human_signoff": false,
+    "formal_dynamic_credit_added": 0,
+    "full_movie_reassembly_admitted": false
+  },
+  "Root_correction": {
+    "schema": "xar.e04.root-sparse-observation-correction.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "recorded_at_utc": "2026-10-20T05:22:10.939466+00:00",
+    "source": {
+      "kind": "parent_agent_message",
+      "agent": "/root",
+      "task": "e04-r0217-proof-chapter-20261020-a01",
+      "observation_time_utc_not_separately_supplied": true,
+      "verbatim": "Root更正：刚单独以detail original重新直接查看raw-15s.jpg，底部实际是Jan27，你最初读法正确。我的前条Jan26读错；请不要倒改已冻结ROOT-WINDOW-CHOICE，而追加带当前时间/root观察出处的CORRECTION：15s=6510/Jan27，计数及日期可见变化均仅定位(10,15]s，仍不代表精确native事件PTS。此纠正不改变连续0–30+6卡和已产出影片，不需重渲染。将纠正纳入small copyplan/DELIVERY。Root现在看5张movie帧。"
+    },
+    "corrects_immutable_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\ROOT-WINDOW-CHOICE.actual.json",
+      "bytes": 2105,
+      "sha256": "1b77f9342097d616b85d3201a3e6c53e79ffa009fbea4feaca37fd5754530985"
+    },
+    "image": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-15s.jpg",
+      "bytes": 74044,
+      "sha256": "c5351481762f0d37084dbd2d9877ac7a994e06c06e3e47a7db2e9e967fc90f5c"
+    },
+    "corrected_observation": {
+      "requested_raw_seconds": 15,
+      "UI_counter": 6510,
+      "date_display": "Jan27"
+    },
+    "counter_visible_change_interval_seconds": {
+      "exclusive_start": 10,
+      "inclusive_end": 15
+    },
+    "date_visible_change_interval_seconds": {
+      "exclusive_start": 10,
+      "inclusive_end": 15
+    },
+    "precise_native_event_PTS": false,
+    "selected_source_window_changed": false,
+    "movie_bytes_changed": false,
+    "new_decode_or_render_executed": false,
+    "historical_original_receipt_unchanged": true,
+    "human_review_or_signoff": false
+  },
+  "Root_sparse": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T05:27:17.679232+00:00",
+    "reviewer": "/root",
+    "direct_movie_images": [
+      "caption-1-before.jpg",
+      "caption-2-boundary.jpg",
+      "caption-3-boundary.jpg",
+      "caption-4-boundary.jpg",
+      "end-card.jpg"
+    ],
+    "image_root": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples",
+    "observed": "All four Chinese/English captions and subtotal/unknown conclusion readable, same-run map context, no crop/truncation observed in these samples.",
+    "raw15_correction": "Original raw-15s.jpg directly reviewed again at original size:6510/Jan27; prior Root Jan26 observation was mistaken; preserved ROOT-WINDOW-CORRECTION.actual.json is authoritative.",
+    "AI_sparse_review": true,
+    "full_continuous_review": false,
+    "human_1x": false,
+    "human_signoff": false,
+    "formal_dynamic_credit": false
+  },
+  "repository_source_pins": [
+    {
+      "path": "docs/ck3-native-ai/episode04-r0217-direct-debits-and-normal-close-20261020.md",
+      "bytes": 6806,
+      "sha256": "9164bc2fc382c433ac3532b13a89c37054d8bc58cf50b9488ce222964870edd4",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "64e38b007af9dfb06be10f73b3c5d7eee27b6ada"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+      "bytes": 69285,
+      "sha256": "695d82ba5e4e95a4d92f0b0e0ebabe13a3bdbc6557ba0981af8237385348ff8d",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "384ba36a091038654905eb56e4dece52a3416216"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+      "bytes": 8538,
+      "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "8482e3a18f5e75f6658b84e23cfcbea5bcc0f01b"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/INDEPENDENT-CONSUMPTION.actual.json",
+      "bytes": 68199,
+      "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "749c584183b86dcafaf7d7f1520b7e54252d0d2f"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/DIRECT-V2-PROJECTION.actual.json",
+      "bytes": 82474,
+      "sha256": "41f2e90525c664cef89d2f279df64a8e30e26909ff703c49a395e1a18c81501c",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "d825491aecc2ad29fdc9e1a1db28d596b416f4ea"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/R04-BAYEUX-TERMINAL.json",
+      "bytes": 607,
+      "sha256": "4d3361256f8fbc28a5fce139da56fb140c410c524cef6c79f4c1e89e428d33c4",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "7357bcf6f5e174bed666361e2afd58666756183d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/E04-WINDOW-R0217-TAKE01-film-result.actual.json",
+      "bytes": 1789,
+      "sha256": "aa2f4de7ec89a1676c3a1df16c7ed412abf94795b4e43639e53d6701955c177f",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "aa14f630fa03543404351bfde211b12222747d44"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/media/QA.actual.json",
+      "bytes": 4322,
+      "sha256": "0eefc024d9f32f7640b4bb25c2de70c48d2f5deb6433dd02cc0c9596debe84d5",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "81cba2b80ed8e402b954612579846e2010d23ddd"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/binding/ready-context.json",
+      "bytes": 4020,
+      "sha256": "4387a29138403b27e0e5cef956474f9b0b2b7f3b6f5ff8ce8156a56df42f30f5",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "a317280450acab7dc7bc6b7a32b8b6cd03d2e3e0"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/PLAN.actual.json",
+      "bytes": 4378,
+      "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "c9ae06fe978676b0237e0e288f7fabb6c328d7a3"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/INTAKE.actual.json",
+      "bytes": 6296,
+      "sha256": "72f9904706fe8460ffd3306801b0193f35e28ae7999d92b902d2b21b2037927c",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "c9d48aa966c01528d08da224b964924bb330cb84"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/QA.actual.json",
+      "bytes": 4506,
+      "sha256": "5784957d4f3e474ab859425f2906c983c99417f794ac04b95f14ba72a08f424f",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "c3fba9af116100e4e2aff013e0529be67ddd46ea"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-WINDOW-CHOICE.actual.json",
+      "bytes": 2105,
+      "sha256": "1b77f9342097d616b85d3201a3e6c53e79ffa009fbea4feaca37fd5754530985",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "06f76acde96755bbb66f81c356ab815310811387"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-WINDOW-CORRECTION.actual.json",
+      "bytes": 1887,
+      "sha256": "f6092b662f41ee4f02f71a04760497696a94fcd17b6a6baf029121681ca0aacd",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "3249d9382b32c175de3e9593bf76a7a435ef14cb"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-MOVIE-SPARSE-REVIEW.actual.json",
+      "bytes": 919,
+      "sha256": "3aa3ec235e09fc93e56c7d280ed466eb49f3ddbf96dae1816f6092ea6a0fdd88",
+      "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+      "git_blob": "3b340ecd015516e04aacdb1c9df73e09a2ab5b94"
+    }
+  ],
+  "poll": {
+    "previous_cursor": 0,
+    "acknowledged_cursor": 7472,
+    "remaining": 0
+  },
+  "active_tasks_read": true,
+  "media_payload_read": false,
+  "new_decode": false,
+  "new_qualification": false
+}

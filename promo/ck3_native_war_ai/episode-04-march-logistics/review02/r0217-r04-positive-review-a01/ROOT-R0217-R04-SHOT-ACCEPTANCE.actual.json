@@ -1,0 +1,149 @@
+{
+  "schema": "xar.e04.root.R04-positive-source-shot-adjudication.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:55:30.954695+00:00",
+  "reviewer": "/root",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "decision": "ACCEPT_BOUNDED_R04_INDIVIDUAL_PHYSICAL_DEBIT_SOURCE_SHOT",
+  "accepted_scope": {
+    "source_span_seconds_half_open": [
+      0,
+      30
+    ],
+    "source_frames_half_open": [
+      0,
+      900
+    ],
+    "source_geometry": [
+      1280,
+      720
+    ],
+    "fps": 30,
+    "actual_positive_direct_v2_invocations": 17,
+    "individual_physical_debit_subtotal": 236,
+    "visible_map_army_count_before": 6746,
+    "visible_map_army_count_after": 6510,
+    "visible_date_before": "1067-01-26",
+    "visible_date_after": "1067-01-27",
+    "unique_physical_endpoint_before": 6741,
+    "unique_physical_endpoint_after": 6505,
+    "visual_endpoint_change_bracket_seconds_exclusive_inclusive": [
+      10,
+      15
+    ],
+    "independent_native_arrival_province": 1513,
+    "actual_recorded_opportunity": "Seventh natural day of this independent R0217 replay",
+    "permitted_caption": "Seventeen independently accepted physical debit calls sum to 236. The map counter also falls by 236; the complete county total remains unknown.",
+    "original_M_basis": "R04 identifies that individual event by its proven exact-build caller and actual budget/entry/debit; natural transfer is permitted. Complete county NET is not required to accept this bounded source claim."
+  },
+  "root_actual_visual_review": {
+    "original_resolution_samples_seconds": [
+      5,
+      10,
+      15,
+      25
+    ],
+    "contact_sheets": [
+      0,
+      18,
+      25,
+      28,
+      56
+    ],
+    "Root_all57_sheets": false,
+    "delegated_actual_review": "predecessor_admission viewed all 57 sheets/900 real cells and six original samples",
+    "fine_text_not_claimed_from_thumbnails": true,
+    "continuous_clean_for_bounded_source": true,
+    "human_1x_or_final_signoff": false
+  },
+  "retained_limits": {
+    "county_total_debit": null,
+    "full_R04_qualified": false,
+    "whole_county_NET_attributed": false,
+    "active_phase_observed": false,
+    "empty_DATA_calls_excluded": 5,
+    "exact_native_callback_encoded_PTS": null,
+    "route_or_warning_text_readable_in_video": false,
+    "army_pane_present": false,
+    "Move_submission_or_first_six_days_recorded": false,
+    "new_game_day_action_submitted_in_review": false,
+    "same_Robert_life_or_ABC_T0_claim": false,
+    "finished_film_delivered": false
+  },
+  "metric_after": {
+    "research_cards_completed": 10,
+    "research_cards_total": 14,
+    "business_items_completed": 7,
+    "business_items_total": 11,
+    "formal_dynamic_themes_completed": 3,
+    "formal_dynamic_themes_total": 11,
+    "accepted_themes": [
+      "R04",
+      "R06",
+      "R12"
+    ],
+    "ABC_completed": 0,
+    "ABC_total": 3,
+    "B_sites_completed": 0,
+    "B_sites_total": 2
+  },
+  "original_independent_native_evidence": {
+    "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+    "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/INDEPENDENT-CONSUMPTION.actual.json",
+    "bytes": 68199,
+    "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca",
+    "consumer_rerun": false
+  },
+  "raw_video_pin_reused_without_new_body_hash": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "sources": {
+    "AI_visual_review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\AI-PREFIX-REVIEW.actual.json",
+      "bytes": 9173,
+      "sha256": "49ad7335df9470964a27c579cdf210c395708489c140ececbc912919a24b9366"
+    },
+    "strict_selected_prefix_execution": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\EXECUTION.actual.json",
+      "bytes": 22977,
+      "sha256": "ff341aaeb788d99d2a133c80c3d239ca97a6e6061c432b12402395e9894fbb6a"
+    },
+    "source_frame_PTS": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\SOURCE-FRAME-PTS.tsv",
+      "bytes": 13921,
+      "sha256": "a99170652c13dcf8d00900f2c0a602eb0e02ea5337e1164357f5d890a13f4cc0"
+    },
+    "contacts_audit": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CONTACTS-AUDIT.actual.json",
+      "bytes": 5206,
+      "sha256": "6d89fdc268f1ff5f68e94a239b283bafea26eb43cf59c539c9b800f1803d7e8b"
+    },
+    "recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\RECIPE.actual.json",
+      "bytes": 4749,
+      "sha256": "ceb7f7e980bd5bcb4837a1421ada1fdc95956b62903b11668ecaedd23cf5be94"
+    },
+    "original_M_and_source_review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SOURCE-REVIEW.actual.json",
+      "bytes": 65392,
+      "sha256": "749e3f19c32f24d0d292df8df7ae2072f107d5458f7291734d578b078d745652"
+    },
+    "native_scope_details": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\NATIVE-SCOPE-DETAILS.actual.json",
+      "bytes": 17648,
+      "sha256": "369c6c0e9999901528fb27609a34a1f2fc99db7a65862bc213a25074b401e1f5"
+    },
+    "current_R06_R12_metric": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\root-r0221-acceptance-a01\\ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json",
+      "bytes": 7705,
+      "sha256": "f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e"
+    },
+    "original_sparse_samples": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+      "bytes": 2570,
+      "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+    }
+  }
+}

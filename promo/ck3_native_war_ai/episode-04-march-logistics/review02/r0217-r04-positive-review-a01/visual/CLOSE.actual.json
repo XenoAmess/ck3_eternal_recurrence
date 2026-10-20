@@ -1,0 +1,1910 @@
+{
+  "schema": "xar.e04.R0217-first30-visual-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:47:17.918050+00:00",
+  "component_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "source_recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\RECIPE.actual.json",
+    "bytes": 4749,
+    "sha256": "ceb7f7e980bd5bcb4837a1421ada1fdc95956b62903b11668ecaedd23cf5be94"
+  },
+  "source_execution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\EXECUTION.actual.json",
+    "bytes": 22977,
+    "sha256": "ff341aaeb788d99d2a133c80c3d239ca97a6e6061c432b12402395e9894fbb6a"
+  },
+  "actual_AI_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\AI-PREFIX-REVIEW.actual.json",
+    "bytes": 9173,
+    "sha256": "49ad7335df9470964a27c579cdf210c395708489c140ececbc912919a24b9366"
+  },
+  "contact_audit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CONTACTS-AUDIT.actual.json",
+    "bytes": 5206,
+    "sha256": "6d89fdc268f1ff5f68e94a239b283bafea26eb43cf59c539c9b800f1803d7e8b"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0217-FIRST30-VISUAL-8M-SOURCE-BOUND.actual-a01.json",
+    "bytes": 7113,
+    "sha256": "13c2229890d45fac63bdf18a6c0e6192e3785ffd2b72a08e1248bdcebed3b33b"
+  },
+  "task_bus_poll": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task_id": "e04-r0217-positive-visual-20261020-a01",
+    "previous_cursor": 84,
+    "acknowledged_cursor": 167,
+    "events": [
+      {
+        "event_id": "5b64147271a54b2ab10e1c9ceeb0e084",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "heartbeat",
+        "next_step": "Run the same MCP-first matrix against exact fresh cache for L3",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 85,
+        "state": "running",
+        "summary": "Workshop item 3798404599 uploaded hidden; fresh cache strict 28/28 GREEN",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T05:33:46.367570+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "4a00d9e57bd4457dbf8e0a5f3f5ca8fb",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "status",
+        "next_step": "Upload three real CK3 screenshots, make item public, verify page, then commit changelog",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "SteamWorkshop"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 86,
+        "state": "running",
+        "summary": "Workshop 3798404599 fresh-cache L3 GREEN with 19 of 19 markers",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T06:03:32.159247+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "7ccd8f7ec72b4325a3feb633116dccd1",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "status",
+        "next_step": "Capture clean native player-facing CK3 frames, replace media and BBCode, then verify before publication",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 87,
+        "state": "running",
+        "summary": "Workshop item 3798404599 remains hidden; storefront screenshots were found to contain acceptance-only UI/text",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T06:29:59.217296+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "062e18408b6c4b9baf88153d0d7d3a70",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "heartbeat",
+        "next_step": "Capture clean native player-facing CK3 frames, replace media and BBCode, then verify before publication",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 88,
+        "state": "running",
+        "summary": "Workshop item 3798404599 remains hidden; storefront screenshots were found to contain acceptance-only UI/text",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T06:30:00.117516+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "994e07a5a3a14468bf3f347d2dae916c",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "status",
+        "next_step": "Run MCP-first CK3 capture with acceptance-only overlays closed",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 89,
+        "state": "running",
+        "summary": "Workshop item 3798404599 hidden; clean native screenshot capture in progress",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T06:43:08.488154+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "28d6b15df76c4770b78fa21bebbc55e7",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "heartbeat",
+        "next_step": "Run MCP-first CK3 capture with acceptance-only overlays closed",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 90,
+        "state": "running",
+        "summary": "Workshop item 3798404599 hidden; clean native screenshot capture in progress",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T06:56:14.013390+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "e23d07d3b030445b802c69ae17cd6864",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "heartbeat",
+        "next_step": "Run MCP-first CK3 capture with acceptance-only overlays closed",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 91,
+        "state": "running",
+        "summary": "Workshop item 3798404599 hidden; clean native screenshot capture in progress",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T07:27:23.848364+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "1c108257038a49d18a8c4ae02bcf8e09",
+        "git": {
+          "branch": null,
+          "dirty_entries": 13,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "status",
+        "next_step": "Validate, rebuild, update hidden Workshop package, then run fresh-cache L3 and compose clean native screenshots",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 92,
+        "state": "running",
+        "summary": "Player-facing copy revised; exact personal county ownership assertion added; Workshop item remains hidden",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T09:12:55.448287+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "83c769b40d0d4271812cb5c7ce9a3a51",
+        "git": {
+          "branch": null,
+          "dirty_entries": 17,
+          "head": "14245261085ef6ff1e4660d63b8709a60db875f3"
+        },
+        "kind": "heartbeat",
+        "next_step": "Validate, rebuild, update hidden Workshop package, then run fresh-cache L3 and compose clean native screenshots",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 93,
+        "state": "running",
+        "summary": "Player-facing copy revised; exact personal county ownership assertion added; Workshop item remains hidden",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T10:02:29.357552+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "e4a1c3599f834f11bf8f1ae0b03e00a8",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "f6815415212664c9884e7204c26d0cc7668e58cb"
+        },
+        "kind": "status",
+        "next_step": "Build 0.1.1 staging, update hidden item 3798404599, download fresh cache, run MCP-first L3",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master",
+          "SteamWorkshop"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 94,
+        "state": "running",
+        "summary": "0.1.1 copy and strict ownership contract pushed; preparing hidden Workshop update",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T10:10:33.360083+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "f22e5c8b8027443682a7beb845e04f8b",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "f6815415212664c9884e7204c26d0cc7668e58cb"
+        },
+        "kind": "status",
+        "next_step": "Run fresh-cache MCP-first L3 with exact personal county holder assertion and clean screenshot capture",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master",
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 95,
+        "state": "running",
+        "summary": "0.1.1 hidden Workshop update and fresh-cache 28/28 strict verification GREEN",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T10:46:19.295440+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "ac9f7acb20fd4a16948f9af4835c4dd9",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "f6815415212664c9884e7204c26d0cc7668e58cb"
+        },
+        "kind": "status",
+        "next_step": "Inspect clean native frames, compose three Workshop screenshots, then finalize tag/page/publication docs",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 96,
+        "state": "running",
+        "summary": "0.1.1 fresh-cache MCP-first L3 GREEN with exact personal county ownership proof",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T11:08:12.206865+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "dce9d9ec101a4e91936ff159e76ce244",
+        "git": {
+          "branch": null,
+          "dirty_entries": 2,
+          "head": "f6815415212664c9884e7204c26d0cc7668e58cb"
+        },
+        "kind": "status",
+        "next_step": "Run fresh-cache L3 with b_kaifeng camera settlement and geography OCR",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master",
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 97,
+        "state": "running",
+        "summary": "Adding MCP-native Kaifeng camera gate and recapturing clean Workshop frames",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T11:34:18.602259+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "f807184391fc4a31bea9bcebd087d5a5",
+        "git": {
+          "branch": null,
+          "dirty_entries": 3,
+          "head": "f6815415212664c9884e7204c26d0cc7668e58cb"
+        },
+        "kind": "heartbeat",
+        "next_step": "Run fresh-cache L3 with b_kaifeng camera settlement and geography OCR",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master",
+          "CK3"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 98,
+        "state": "running",
+        "summary": "Adding MCP-native Kaifeng camera gate and recapturing clean Workshop frames",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T11:51:12.428014+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "05211cec61bc4ac6b5b851d9f5737183",
+        "git": {
+          "branch": null,
+          "dirty_entries": 4,
+          "head": "f6815415212664c9884e7204c26d0cc7668e58cb"
+        },
+        "kind": "status",
+        "next_step": "Visually inspect native frames, compose and commit final media",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 99,
+        "state": "running",
+        "summary": "Kaifeng-centered fresh-cache MCP-first L3 GREEN; composing final Workshop media",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T12:10:04.597795+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "afe7b5ffa8aa4efd897a86471f918690",
+        "kind": "notification",
+        "level": "warning",
+        "message": "origin/master moved during Reclaim media push; rebased onto current master, do not push without fetch+rebase",
+        "schema": "codex.task_bus.v1",
+        "sequence": 100,
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T12:46:10.587341+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "185498279f1c43afa3b10abff5777075",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b28932eea526ad1a44843a013979a30b2b61d742"
+        },
+        "kind": "status",
+        "next_step": "Upload media strip, replace BBCode, make item public, verify public cache",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master",
+          "Steam Workshop"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 101,
+        "state": "running",
+        "summary": "Kaifeng-centered L3 and three clean screenshots committed; publishing Workshop page",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T12:54:03.615412+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "28ef43a24911458293658082cc6a5de2",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b28932eea526ad1a44843a013979a30b2b61d742"
+        },
+        "kind": "status",
+        "next_step": "Upload three verified screenshots, make item public, verify anonymous Steam API",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "Steam Workshop",
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 102,
+        "state": "running",
+        "summary": "Kaifeng-centered L3 and three clean screenshots committed; publishing Workshop media and visibility",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T13:45:28.962011+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "ac58feb7df1a468bb4943b8bf23f2208",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b28932eea526ad1a44843a013979a30b2b61d742"
+        },
+        "kind": "status",
+        "next_step": "Commit release records, tag 0.1.1, build exact-tag artifacts, finalize changelog and promo script",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "origin/master"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 103,
+        "state": "running",
+        "summary": "Workshop item 3798404599 is public; three Kaifeng-centered live screenshots and All Under Heaven DLC dependency are live",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T13:56:52.710481+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "08a691883c9d40f4a684019683fc0340",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "completed",
+        "next_step": "Await user review of docs/reclaim-the-motherland-promo-script.md before recording any promo video",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 104,
+        "state": "done",
+        "summary": "Reclaim the Motherland 0.1.1 implemented, L0/L1/L3 GREEN, public on Workshop 3798404599 with Kaifeng-centered media and All Under Heaven DLC, tag and changelog pushed",
+        "task_id": "ck3-reclaim-motherland-release-20260909",
+        "timestamp_utc": "2026-09-09T14:25:00.059027+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "55eb2886ca86445e8f068d2b49009f65",
+        "git": null,
+        "kind": "registered",
+        "next_step": "Inspect latest repository bootstrap and documentation paths",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess\\xar_promo_toolchain",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 105,
+        "state": "running",
+        "summary": "Require and bootstrap suno-engineer skill in xar_promo_toolchain docs and AGENTS.md",
+        "task_id": "xar-promo-suno-skill-bootstrap-20260909",
+        "timestamp_utc": "2026-09-09T15:44:23.242854+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "79b1d150fc8240508e2086bba5f863cf",
+        "git": {
+          "branch": "main",
+          "dirty_entries": 6,
+          "head": "57c42fca13ea459432c1caf76e069a1fbccf602c"
+        },
+        "kind": "status",
+        "next_step": "Commit, rebase, and push standalone promo-toolchain changes",
+        "repo": "D:\\workspace\\xar_promo_toolchain",
+        "resources": [
+          "origin/main"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 106,
+        "state": "running",
+        "summary": "Pinned suno-engineer bootstrap, docs, AGENTS contract, and tests are GREEN",
+        "task_id": "xar-promo-suno-skill-bootstrap-20260909",
+        "timestamp_utc": "2026-09-09T15:52:50.462349+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "932124f3df20432caa99247aca6db1bf",
+        "git": {
+          "branch": "main",
+          "dirty_entries": 0,
+          "head": "adb52f4404d21072f13762dc4e674e75e2c63a9b"
+        },
+        "kind": "completed",
+        "next_step": "Use the approved 88-second Suno specification when the user supplies generated candidates",
+        "repo": "D:\\workspace\\xar_promo_toolchain",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 107,
+        "state": "done",
+        "summary": "Pinned suno-engineer per-machine bootstrap, AGENTS/docs contract, and tests pushed to xar_promo_toolchain main at adb52f4",
+        "task_id": "xar-promo-suno-skill-bootstrap-20260909",
+        "timestamp_utc": "2026-09-09T15:59:07.490357+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "9a0c1c7681ab4f848e40ee68008385c4",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "registered",
+        "next_step": "Preserve source identity and run objective audio analysis",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 108,
+        "state": "running",
+        "summary": "Analyze uploaded Reclaim the Motherland Suno WAV against the 88-second promo cue contract",
+        "task_id": "reclaim-promo-music-review-20260910",
+        "timestamp_utc": "2026-09-09T16:17:51.893217+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "f0446273abb6456daff73c952417a162",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "completed",
+        "next_step": "Review the paired Suno candidate or regenerate with cadence at 84-86s and decay-only final 10-12s",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 109,
+        "state": "done",
+        "summary": "Uploaded Suno WAV preserved and objectively reviewed; 98.8s/PCM/clipping GREEN but 88s cadence and tail contract RED",
+        "task_id": "reclaim-promo-music-review-20260910",
+        "timestamp_utc": "2026-09-09T16:31:43.068189+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "3848a22a9bd04b66aa3bcb0d38759cdf",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "registered",
+        "next_step": "Create independent A02 run and run objective timeline analysis",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 110,
+        "state": "running",
+        "summary": "Preserve and compare second Reclaim Suno WAV candidate",
+        "task_id": "reclaim-promo-music-review-a02-20260910",
+        "timestamp_utc": "2026-09-09T16:38:14.706776+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "cf9bf9d83ef3498eb076ab1957ec4fdd",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "completed",
+        "next_step": "Human audition A02; if timbre passes, create timing-edited BGM master",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 111,
+        "state": "done",
+        "summary": "A02 preserved and objectively compared with A01",
+        "task_id": "reclaim-promo-music-review-a02-20260910",
+        "timestamp_utc": "2026-09-09T16:47:26.109841+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "69139d033e6743e78bb223b65efe3536",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "registered",
+        "next_step": "Create independent A03/A04 runs and execute objective timeline analysis",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 112,
+        "state": "running",
+        "summary": "Preserve and compare third Suno generation pair for Reclaim promo",
+        "task_id": "reclaim-promo-music-review-a03-a04-20260910",
+        "timestamp_utc": "2026-09-09T17:01:32.653970+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "d01c53c0d3d44948a2741a38dd7da0af",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "completed",
+        "next_step": "Human-audition A03, then create non-destructive timing edit and final mix",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 113,
+        "state": "done",
+        "summary": "A03/A04 preserved and compared; A03 is provisional winner",
+        "task_id": "reclaim-promo-music-review-a03-a04-20260910",
+        "timestamp_utc": "2026-09-09T17:07:50.115204+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "992d7e4c828b421483e353baace3f6f4",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "registered",
+        "next_step": "Inspect mod, promo, capture, voice, music, and Steam publication dependencies",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-planning"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 114,
+        "state": "running",
+        "summary": "Audit remaining user-supplied inputs before autonomous promo production",
+        "task_id": "reclaim-promo-input-audit-20260910",
+        "timestamp_utc": "2026-09-09T17:12:30.107441+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "e2b830916fa04f349d1b4841106f8c66",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "completed",
+        "next_step": "After confirmation, use A03, Edge TTS Xiaoxiao, existing released assets, and MCP-controlled CK3 capture",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-planning"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 115,
+        "state": "done",
+        "summary": "Promo input audit complete; only Suno generation rights and script lock require user confirmation",
+        "task_id": "reclaim-promo-input-audit-20260910",
+        "timestamp_utc": "2026-09-09T17:15:21.924470+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "1a0b2042b5be4a5a80a09fe8002e51b4",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "registered",
+        "next_step": "Freeze approved script/music/voice inputs and prepare toolchain-native production run",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "promo-production",
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 116,
+        "state": "running",
+        "summary": "Produce and validate the approved 88-second Reclaim the Motherland trailer",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T17:18:11.860020+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "078ac29566b944aca80cfd7b84e53f25",
+        "git": {
+          "branch": "main",
+          "dirty_entries": 0,
+          "head": "adb52f4404d21072f13762dc4e674e75e2c63a9b"
+        },
+        "kind": "registered",
+        "next_step": "Inspect 0.2.1 CLI, examples, dependencies, interpreter and integration files",
+        "repo": "D:\\workspace\\xar_promo_toolchain",
+        "resources": [
+          "promo-toolchain"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 117,
+        "state": "running",
+        "summary": "Read-only executable xar_promo integration audit for 88-second Reclaim promo",
+        "task_id": "reclaim-promo-toolchain-integration-audit-20260910",
+        "timestamp_utc": "2026-09-09T17:18:18.734652+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "e29526f0855844d8ba830dee3c68a3cf",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "registered",
+        "next_step": "Inspect scripts, artifacts, MCP camera and CK3 slot protocol",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [
+          "reclaim-promo-capture-readonly"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 118,
+        "state": "running",
+        "summary": "Read-only audit of Reclaim promo live capture path",
+        "task_id": "reclaim-promo-capture-audit-20260910",
+        "timestamp_utc": "2026-09-09T17:18:33.132159+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "f5a7df48c1e14688a107a5dfc324458c",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "8c38dbed3cdecc350b58352b7d4c22b0667729e8"
+        },
+        "kind": "status",
+        "next_step": "Freeze inputs in fresh origin/master detached worktree and prepare native xar-promo run",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 119,
+        "state": "running",
+        "summary": "Produce and validate the approved 88-second Reclaim the Motherland trailer",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T17:19:47.869571+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "04a4460a53a24a3c967a2e67ad71109b",
+        "git": {
+          "branch": "main",
+          "dirty_entries": 0,
+          "head": "adb52f4404d21072f13762dc4e674e75e2c63a9b"
+        },
+        "kind": "completed",
+        "next_step": "Parent implements checked-in ProjectConfig and project integration, installs FFmpeg, then creates a fresh render run",
+        "repo": "D:\\workspace\\xar_promo_toolchain",
+        "resources": [
+          "promo-toolchain"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 120,
+        "state": "done",
+        "summary": "Read-only xar_promo 0.2.1 integration audit complete; A03 source ready, Edge TTS ready, FFmpeg and project integration/capture bundle missing",
+        "task_id": "reclaim-promo-toolchain-integration-audit-20260910",
+        "timestamp_utc": "2026-09-09T17:30:09.900898+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "22968e00e50044f5823b4e21bc5a9599",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "8c38dbed3cdecc350b58352b7d4c22b0667729e8"
+        },
+        "kind": "status",
+        "next_step": "Generate TTS and capture Kaifeng-centered gameplay through CK3 slot",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 121,
+        "state": "running",
+        "summary": "Approved A03 and locked script; implementing checked-in xar-promo integration and immutable production policy",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T17:39:38.176665+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "e437645e51ee4721835ad3e3ea8de1f6",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "b4e41310e0c2d846925b01246da23e178540ed9b"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_reclaim_the_motherland_design",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 122,
+        "state": "done",
+        "summary": "Read-only capture audit complete: no reusable GREEN save/video; existing stills and Kaifeng evidence reusable; current acceptance runner needs a dedicated promo capture wrapper",
+        "task_id": "reclaim-promo-capture-audit-20260910",
+        "timestamp_utc": "2026-09-09T17:52:40.080829+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "686ce529f0374645870973cace683d39",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "e56a3e1279ddf17b1e80f135f0dabd4748dd2516"
+        },
+        "kind": "status",
+        "next_step": "Prepare TTS master, create native run, then acquire CK3 slot for Kaifeng capture",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "promo-audio"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 123,
+        "state": "running",
+        "summary": "Promo contract and native integration pushed at e56a3e12; generating frozen Xiaoxiao narration assets",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T17:58:15.805449+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "475d1460c5f54824844c4a8ec4bffeaa",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "75f890bd292ed04172bc7e8738d341d9a2c12a5f"
+        },
+        "kind": "status",
+        "next_step": "Capture Kaifeng-centered clean spans and bind raw recording to MCP-first acceptance evidence",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "CK3 exclusive local process"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 124,
+        "state": "running",
+        "summary": "CK3 controlled promo capture in progress",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T18:11:08.762833+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "cd633cb58f894f19b6514a94a2a9286d",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "75f890bd292ed04172bc7e8738d341d9a2c12a5f"
+        },
+        "kind": "heartbeat",
+        "next_step": "Capture Kaifeng-centered clean spans and bind raw recording to MCP-first acceptance evidence",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "CK3 exclusive local process"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 125,
+        "state": "running",
+        "summary": "CK3 controlled promo capture in progress",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T18:34:29.838783+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "d6b43b939b5e47e4b7930e8b8e759678",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "75f890bd292ed04172bc7e8738d341d9a2c12a5f"
+        },
+        "kind": "status",
+        "next_step": "Select clean spans, compose visual master, render and audit candidate",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 126,
+        "state": "running",
+        "summary": "MCP-first CK3 capture GREEN; slot released and raw/timeline inspection underway",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T18:36:19.277865+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "5cf382ca7e81409a982cf0a7619da162",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "75f890bd292ed04172bc7e8738d341d9a2c12a5f"
+        },
+        "kind": "status",
+        "next_step": "Patch desktop capture plus sampled non-black validation, test and commit before one justified CK3 rerun",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 127,
+        "state": "running",
+        "summary": "Acceptance logic GREEN but gdigrab window transport produced black raw video; failed attempt retained and desktop capture validation fix is underway",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T18:40:28.146850+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "9b74e96e5d9e44e3a883692afa00884e",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "75f890bd292ed04172bc7e8738d341d9a2c12a5f"
+        },
+        "kind": "heartbeat",
+        "next_step": "Patch desktop capture plus sampled non-black validation, test and commit before one justified CK3 rerun",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 128,
+        "state": "running",
+        "summary": "Acceptance logic GREEN but gdigrab window transport produced black raw video; failed attempt retained and desktop capture validation fix is underway",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T18:40:28.734160+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "7540161d6ee040389b024613dd687d27",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "ea912169f3f0347363ba8c1470af465fd52e378d"
+        },
+        "kind": "status",
+        "next_step": "Run MCP-first acceptance under desktop recording, release CK3 slot, then inspect sampled frames",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "ck3-exclusive"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 129,
+        "state": "running",
+        "summary": "Desktop capture and sampled black-frame gate are tested and pushed at ea912169; acquiring CK3 slot for one new evidence-bound capture attempt",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T18:47:58.299709+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "2fa4cbcdf8b740bbaa940d599f3dd97c",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "a2e43cc5097b6f4982cca4121191fef46cb29dcb"
+        },
+        "kind": "heartbeat",
+        "next_step": "Run MCP-first acceptance under desktop recording, release CK3 slot, then inspect sampled frames",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production",
+          "ck3-exclusive"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 130,
+        "state": "running",
+        "summary": "Desktop capture and sampled black-frame gate are tested and pushed at ea912169; acquiring CK3 slot for one new evidence-bound capture attempt",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T19:04:33.175754+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "7be161a845724c3ab060d1996f21ae95",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "a2e43cc5097b6f4982cca4121191fef46cb29dcb"
+        },
+        "kind": "status",
+        "next_step": "Inspect story-anchor frames, build 96-second visual master, then render and audit the candidate",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 131,
+        "state": "running",
+        "summary": "MCP-first CK3 capture a02 is visual GREEN: 11/11 sampled frames non-black and distinct; acceptance GREEN; CK3 slot released",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T19:12:42.964607+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "726dacfc540b4664a1a38e4c98710c24",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "ef751b3d85ea3ff76478e33fa22a0d90a58e79e9"
+        },
+        "kind": "heartbeat",
+        "next_step": "Inspect story-anchor frames, build 96-second visual master, then render and audit the candidate",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 132,
+        "state": "running",
+        "summary": "MCP-first CK3 capture a02 is visual GREEN: 11/11 sampled frames non-black and distinct; acceptance GREEN; CK3 slot released",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T20:55:32.095906+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "c7c1c478f8ff434d8ae6f227146cc865",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "ef751b3d85ea3ff76478e33fa22a0d90a58e79e9"
+        },
+        "kind": "heartbeat",
+        "next_step": "Inspect story-anchor frames, build 96-second visual master, then render and audit the candidate",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 133,
+        "state": "running",
+        "summary": "MCP-first CK3 capture a02 is visual GREEN: 11/11 sampled frames non-black and distinct; acceptance GREEN; CK3 slot released",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T22:01:51.391760+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "00fe2e810bc742ce9658164a01a7fa74",
+        "git": {
+          "branch": null,
+          "dirty_entries": 4,
+          "head": "ef751b3d85ea3ff76478e33fa22a0d90a58e79e9"
+        },
+        "kind": "heartbeat",
+        "next_step": "Inspect story-anchor frames, build 96-second visual master, then render and audit the candidate",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 134,
+        "state": "running",
+        "summary": "MCP-first CK3 capture a02 is visual GREEN: 11/11 sampled frames non-black and distinct; acceptance GREEN; CK3 slot released",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T22:21:18.714851+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "920decee410947d8864799e89f1ceedb",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "5e16f147d2f620089d2e6b9e838c98eed926fcb0"
+        },
+        "kind": "status",
+        "next_step": "Repository owner performs continuous 1x review of exact SHA 3E30299A... and explicitly approves or rejects before signoff",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 135,
+        "state": "waiting",
+        "summary": "96-second A03 candidate complete; CK3 capture, media audit, semantic review, and 18/18 hash-bound evidence GREEN; no signoff recorded",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-09T22:27:40.644434+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "32b58ab6963045cfb4385677dcb69d77",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "5e16f147d2f620089d2e6b9e838c98eed926fcb0"
+        },
+        "kind": "status",
+        "next_step": "Bind approved signoff to exact candidate bytes, validate run, export offline deliverable, and commit closure report",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [
+          "promo-production"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 136,
+        "state": "running",
+        "summary": "Repository owner approved exact candidate SHA 3E30299A... after requested 1x review; recording formal signoff",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-10T00:50:56.982598+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "af971cf314a24b539600b8d81c9c894a",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "4b1d7b37bc1c5991f154dd3a0c835c07e17e2f92"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_reclaim_promo_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 137,
+        "state": "done",
+        "summary": "Reclaim promo exact candidate approved by repository owner, signoff-000001 recorded, offline export GREEN, closure report pushed at 4b1d7b37",
+        "task_id": "reclaim-promo-production-20260910",
+        "timestamp_utc": "2026-09-10T00:56:50.852948+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "312626b4fe9b4e5fa8532f1c378b1171",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 8,
+          "head": "dfd714eea874eb352db89cf8beae3a2264369e78"
+        },
+        "kind": "registered",
+        "next_step": "编写总纲并加入 docs 索引",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "docs/ck3-mod-development-paradigm.md",
+          "docs/README.md"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 138,
+        "state": "running",
+        "summary": "建立新建与维护 CK3 Mod 的统一行为范式",
+        "task_id": "ck3-mod-paradigm-doc-20260910",
+        "timestamp_utc": "2026-09-10T12:03:55.807227+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "19c99e05ffa84e058b228309018d1579",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 8,
+          "head": "e79d8d849bfae4305723471f67db78dc91182665"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 139,
+        "state": "done",
+        "summary": "Unified CK3 mod creation, maintenance, acceptance, and publication paradigm documented on origin/master at e79d8d849bfae4305723471f67db78dc91182665",
+        "task_id": "ck3-mod-paradigm-doc-20260910",
+        "timestamp_utc": "2026-09-10T12:10:26.866971+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "d940d869f48940309e52b1b266a3540b",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "e79d8d849bfae4305723471f67db78dc91182665"
+        },
+        "kind": "registered",
+        "next_step": "Vanilla research, source implementation, and static acceptance",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [
+          "mod_xenoamess_quality_of_life",
+          "XQOL phase2 source files"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 140,
+        "state": "running",
+        "summary": "Implement XQOL phase-two batch decisions without using CK3 or the screen",
+        "task_id": "ck3-xqol-phase2-20260910",
+        "timestamp_utc": "2026-09-10T12:17:16.540608+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "41813d8c490046768517f6e82189f542",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 8,
+          "head": "e79d8d849bfae4305723471f67db78dc91182665"
+        },
+        "kind": "registered",
+        "next_step": "Trace vanilla on_actions, interactions, cost gates, and scopes",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "CK3 vanilla files (read-only)"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 141,
+        "state": "running",
+        "summary": "Read-only CK3 1.19.0.6 defensive call-to-war research",
+        "task_id": "ck3-xqol-phase2-vanilla-allies-20260910",
+        "timestamp_utc": "2026-09-10T12:18:10.937178+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "b69434bcb1b542e3a3248bf5d6df431b",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 10,
+          "head": "e79d8d849bfae4305723471f67db78dc91182665"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 143,
+        "state": "done",
+        "summary": "CK3 1.19.0.6 defensive free-call contract traced and delivered to parent; no files or GUI touched",
+        "task_id": "ck3-xqol-phase2-vanilla-allies-20260910",
+        "timestamp_utc": "2026-09-10T12:27:27.314258+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "82d874971aa24baa8b766817cc7bad6c",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 8,
+          "head": "718a60d538249fb6eecd47284e622fd33d71d260"
+        },
+        "kind": "status",
+        "next_step": "Audit potentially_accepted target/response semantics and effect scopes",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "D:\\workspace\\ck3_xqol_phase2 source (read-only)"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 144,
+        "state": "running",
+        "summary": "Read-only review of implemented automatic defensive call effect",
+        "task_id": "ck3-xqol-phase2-vanilla-allies-20260910",
+        "timestamp_utc": "2026-09-10T13:35:50.462827+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "573b312fa9f743e3a82f2923e63992dc",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 8,
+          "head": "718a60d538249fb6eecd47284e622fd33d71d260"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 146,
+        "state": "done",
+        "summary": "Reviewed current xqol helper read-only; identified invalid target/required_response schema and required eligibility/count guards.",
+        "task_id": "ck3-xqol-phase2-vanilla-allies-20260910",
+        "timestamp_utc": "2026-09-10T13:43:15.948764+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "80ddffbca8fa407ab018a1248304e27d",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 8,
+          "head": "718a60d538249fb6eecd47284e622fd33d71d260"
+        },
+        "kind": "status",
+        "next_step": "Wait for CI, then request local CK3 1.19.0.6 live acceptance when the screen is free.",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "ck3-screen:reserved-by-other-task"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 147,
+        "state": "running",
+        "summary": "XQOL phase-two implementation pushed at f4e3e0da; local static tests, deterministic build, and offline parser are GREEN; exact-master CI is running.",
+        "task_id": "ck3-xqol-phase2-20260910",
+        "timestamp_utc": "2026-09-10T13:55:59.858812+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "09941ba9007b42b49f2c73610955eddd",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "f4e3e0da87492c0faa846a85d66ef326395e957c"
+        },
+        "kind": "status",
+        "next_step": "Wait for the user to release the CK3/main-screen slot, then run local acceptance with the 30-minute startup timeout.",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [
+          "ck3-screen:waiting"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 148,
+        "state": "waiting",
+        "summary": "XQOL phase two is implemented and pushed at f4e3e0da. Local generator/static/unit/reproducible-build checks and open_kaishek parser are GREEN; GitHub CI run 34485333355 is GREEN. No CK3 or GUI was launched. Only local CK3 1.19.0.6 live acceptance remains.",
+        "task_id": "ck3-xqol-phase2-20260910",
+        "timestamp_utc": "2026-09-10T13:56:39.045706+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "8be7101905e64f1592dc6127b6762e15",
+        "kind": "notification",
+        "level": "action",
+        "message": "XQOL phase-two static work is complete at f4e3e0da and exact-master CI is GREEN. The task is waiting only for exclusive local CK3/main-screen access to run live acceptance; do not treat it as released or Workshop-published.",
+        "schema": "codex.task_bus.v1",
+        "sequence": 149,
+        "task_id": "ck3-xqol-phase2-20260910",
+        "timestamp_utc": "2026-09-10T13:56:39.451208+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "e08e0007186e42d2b97bbf56a331d5e5",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "f4e3e0da87492c0faa846a85d66ef326395e957c"
+        },
+        "kind": "status",
+        "next_step": "Freeze exact runtime provenance, run open_kaishek applicable preflight, then local CK3 1.19.0.6 acceptance with a 30-minute startup timeout.",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [
+          "ck3-screen:acquired"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 150,
+        "state": "running",
+        "summary": "Exclusive local CK3/main-screen access granted. Starting live acceptance for XQOL phase two at f4e3e0da.",
+        "task_id": "ck3-xqol-phase2-20260910",
+        "timestamp_utc": "2026-09-10T16:02:18.790857+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "37713c29a3344b9a8682a161555cdfc9",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "f4e3e0da87492c0faa846a85d66ef326395e957c"
+        },
+        "kind": "registered",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [
+          "D:\\workspace\\ck3_xqol_phase2 (read-only)"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 151,
+        "state": "running",
+        "summary": "Read-only review and minimal one-run CK3 fixture design for automatic free defensive calls.",
+        "task_id": "ck3-xqol-phase2-vanilla-allies-fixture-20260911",
+        "timestamp_utc": "2026-09-10T16:44:18.915819+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "3206a631c6ba4740867bd647fc275f0b",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "f4e3e0da87492c0faa846a85d66ef326395e957c"
+        },
+        "kind": "registered",
+        "next_step": "Inspect acceptance plan and fixture",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [
+          "D:\\workspace\\ck3_xqol_phase2 (read-only)"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 152,
+        "state": "running",
+        "summary": "Read-only XQOL fixture expansion review",
+        "task_id": "ck3-xqol-phase2-vanilla-interactions-fixture-20260911",
+        "timestamp_utc": "2026-09-10T16:45:14.829328+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "d8f6a675c781479094838c93152a9546",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "f4e3e0da87492c0faa846a85d66ef326395e957c"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 154,
+        "state": "done",
+        "summary": "Read-only audit complete; current acceptance lacks defensive behavior coverage; delivered minimal one-run fixture and log assertion contract with honest diarch boundary.",
+        "task_id": "ck3-xqol-phase2-vanilla-allies-fixture-20260911",
+        "timestamp_utc": "2026-09-10T17:02:43.684936+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "f510ee366d7b4c58a88487d72eae2986",
+        "git": {
+          "branch": null,
+          "dirty_entries": 1,
+          "head": "f4e3e0da87492c0faa846a85d66ef326395e957c"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_xqol_phase2",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 155,
+        "state": "done",
+        "summary": "Read-only one-run CK3 fixture expansion design completed and sent to coordinator; no files modified or GUI launched.",
+        "task_id": "ck3-xqol-phase2-vanilla-interactions-fixture-20260911",
+        "timestamp_utc": "2026-09-10T17:03:01.179803+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "2450ce86c48c441c804a26105aab01f2",
+        "git": {
+          "branch": null,
+          "dirty_entries": 5,
+          "head": "7bf1d6b5a33bff58ead6d1458b8c631f7a93f736"
+        },
+        "kind": "registered",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_xqol_phase2_gui_fix",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 156,
+        "state": "running",
+        "summary": "Implement standalone phase2 conversion/ransom/release acceptance fixture file only",
+        "task_id": "ck3-xqol-phase2-interaction-fixture-20260911",
+        "timestamp_utc": "2026-09-10T17:50:46.948479+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "b78956d4da38449a9588c7b0740d1742",
+        "git": {
+          "branch": null,
+          "dirty_entries": 5,
+          "head": "7bf1d6b5a33bff58ead6d1458b8c631f7a93f736"
+        },
+        "kind": "registered",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_xqol_phase2_gui_fix",
+        "resources": [
+          "D:\\workspace\\ck3_xqol_phase2_gui_fix\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+          "D:\\workspace\\ck3_xqol_phase2_gui_fix\\tools\\fixtures\\xqol_acceptance\\common\\scripted_guis\\zqa_phase2_defense_guis.txt"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 157,
+        "state": "running",
+        "summary": "Add two isolated phase2 defensive auto-call acceptance fixture files; no CK3 or existing-file edits",
+        "task_id": "ck3-xqol-phase2-defense-fixture-files-20260911",
+        "timestamp_utc": "2026-09-10T17:52:21.677096+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "a103397fd3ab483c8bd946227e0d0a6e",
+        "git": {
+          "branch": null,
+          "dirty_entries": 8,
+          "head": "2f896766704e70470391042097153eff258bd1e7"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_xqol_phase2_gui_fix",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 158,
+        "state": "done",
+        "summary": "Added standalone conversion/ransom/release phase2 external fixture; final open_kaishek parse round-trip GREEN; no existing files changed and no CK3 launch.",
+        "task_id": "ck3-xqol-phase2-interaction-fixture-20260911",
+        "timestamp_utc": "2026-09-10T18:04:01.641579+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "a6a27708e84943c192b75f97797ea3d3",
+        "git": {
+          "branch": null,
+          "dirty_entries": 8,
+          "head": "2f896766704e70470391042097153eff258bd1e7"
+        },
+        "kind": "completed",
+        "next_step": "Coordinator must wire zqa_setup_defense_matrix_effect and zqa_phase2_defense_verify_gui in existing pipeline/bridge and ensure the earlier fixture no longer emits the terminal DONE before this stage.",
+        "repo": "D:\\workspace\\ck3_xqol_phase2_gui_fix",
+        "resources": [
+          "D:\\workspace\\ck3_xqol_phase2_gui_fix\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+          "D:\\workspace\\ck3_xqol_phase2_gui_fix\\tools\\fixtures\\xqol_acceptance\\common\\scripted_guis\\zqa_phase2_defense_guis.txt"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 159,
+        "state": "done",
+        "summary": "Created two new defense acceptance fixture files only; Open Kaishek PARSED/roundTrip true with zero diagnostics for both; no CK3 run.",
+        "task_id": "ck3-xqol-phase2-defense-fixture-files-20260911",
+        "timestamp_utc": "2026-09-10T18:04:27.468790+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "11509c48efae4c06b0d27f14d26b549b",
+        "git": null,
+        "kind": "registered",
+        "next_step": "读取仓库规范与本机 EU5 原版结构",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 160,
+        "state": "running",
+        "summary": "勘察 CK3/Stellaris 参考工程并制定 EU5 模组开发与 OCR 验收规范",
+        "task_id": "eu5-mod-planning-20260911",
+        "timestamp_utc": "2026-09-11T02:05:43.904866+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "5ea81d8a6884428dac886ef157166f07",
+        "git": null,
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 161,
+        "state": "done",
+        "summary": "只读勘察完成：已形成 EU5 文档先行、exact-build 研究、OCR 主验收、分层证据与发布闭环规范；未启动游戏或占用屏幕",
+        "task_id": "eu5-mod-planning-20260911",
+        "timestamp_utc": "2026-09-11T02:12:58.301380+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "dcd5ca5a2b774a829a39f950fc93d4f5",
+        "git": null,
+        "kind": "registered",
+        "next_step": "核对 Git/GitHub 身份并生成仓库骨架",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 162,
+        "state": "running",
+        "summary": "建立 EU5 多 Mod 仓库规范、docs、AGENTS，并创建 public GitHub 仓库",
+        "task_id": "eu5-multimod-repo-bootstrap-20260911",
+        "timestamp_utc": "2026-09-11T02:16:24.814023+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "01eacbdb32f64491ba74d30d4135b63b",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "1ee44407b4e9a144c485a5413043cf9a8e20c39d"
+        },
+        "kind": "status",
+        "next_step": "创建 public GitHub 仓库并推送 master",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [
+          "origin/master",
+          "GitHub:XenoAmess/xenoamess_europa5_dev"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 163,
+        "state": "running",
+        "summary": "EU5 多 Mod 规划与规范已提交到本地 master 1ee4440",
+        "task_id": "eu5-multimod-repo-bootstrap-20260911",
+        "timestamp_utc": "2026-09-11T02:22:15.963889+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "b601cff6af4946d79feb66d3d6cd9c71",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "1ee44407b4e9a144c485a5413043cf9a8e20c39d"
+        },
+        "kind": "completed",
+        "next_step": "",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 164,
+        "state": "done",
+        "summary": "EU5 多 Mod 仓库规划与规范已落地，public GitHub master 已推送并核验为 1ee44407b4e9a144c485a5413043cf9a8e20c39d",
+        "task_id": "eu5-multimod-repo-bootstrap-20260911",
+        "timestamp_utc": "2026-09-11T02:22:50.890335+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "2a33bdfc9e4d45b6a1de05600705405a",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "1ee44407b4e9a144c485a5413043cf9a8e20c39d"
+        },
+        "kind": "registered",
+        "next_step": "研究 exact-build 原版殖民地互动、区域与领土转移合同",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 165,
+        "state": "running",
+        "summary": "分析并实现将宗主及附属在目标殖民区域内土地划给所选殖民地的 EU5 Mod",
+        "task_id": "eu5-colonial-region-transfer-20260911",
+        "timestamp_utc": "2026-09-11T02:28:56.055225+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "412ada63469c4d90a7257826b6ac63f1",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 3,
+          "head": "1ee44407b4e9a144c485a5413043cf9a8e20c39d"
+        },
+        "kind": "status",
+        "next_step": "提交并推送需求文档后，创建产品源码与静态验证工具",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 166,
+        "state": "running",
+        "summary": "需求分析与 exact-build 证据已落 docs，准备提交推送需求基线",
+        "task_id": "eu5-colonial-region-transfer-20260911",
+        "timestamp_utc": "2026-09-11T02:35:29.839579+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "5c8a0b39fcb341df811206f53040af1f",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 26,
+          "head": "0862b62b93f6e46f558bfd4a525402116abf7cc0"
+        },
+        "kind": "status",
+        "next_step": "复核暂存差异，提交并推送实现；保留 metadata、EU5语义profile与实机OCR门禁",
+        "repo": "D:\\workspace\\xenoamess_europa5_dev",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 167,
+        "state": "running",
+        "summary": "献给白绮的殖民领版图整理源码、11语本地化与静态工具已实现，准备最终提交推送",
+        "task_id": "eu5-colonial-region-transfer-20260911",
+        "timestamp_utc": "2026-09-11T02:48:08.026768+00:00",
+        "to": [
+          "*"
+        ]
+      }
+    ],
+    "remaining": 7299
+  },
+  "task_bus_status": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "schema": "codex.task_bus.v1",
+      "task_id": "e04-r0217-positive-visual-20261020-a01",
+      "state": "done",
+      "summary": "R0217 first30s900frames single decode and57sheets actually reviewed; narrow17debits236 recommendation only; no countyNET/fullR04; no SDK/game/extraMove/day; resources empty",
+      "next_step": "",
+      "resources": [],
+      "updated_at_utc": "2026-10-20T12:47:17.226030+00:00",
+      "pid": 11940,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "branch": "wip/e04-r06-a41-20261020",
+        "dirty_entries": 0
+      },
+      "last_sequence": 7488
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 7488,
+      "event_id": "a2b29f6d2c1b401396ccbbb56b38e507",
+      "timestamp_utc": "2026-10-20T12:47:17.227439+00:00",
+      "kind": "completed",
+      "task_id": "e04-r0217-positive-visual-20261020-a01",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R0217 first30s900frames single decode and57sheets actually reviewed; narrow17debits236 recommendation only; no countyNET/fullR04; no SDK/game/extraMove/day; resources empty",
+      "next_step": "",
+      "resources": [],
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "branch": "wip/e04-r06-a41-20261020",
+        "dirty_entries": 0
+      }
+    }
+  },
+  "own_final_registry": {
+    "git": {
+      "branch": "wip/e04-r06-a41-20261020",
+      "dirty_entries": 0,
+      "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c"
+    },
+    "last_sequence": 7488,
+    "next_step": "",
+    "pid": 11940,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0217 first30s900frames single decode and57sheets actually reviewed; narrow17debits236 recommendation only; no countyNET/fullR04; no SDK/game/extraMove/day; resources empty",
+    "task_id": "e04-r0217-positive-visual-20261020-a01",
+    "updated_at_utc": "2026-10-20T12:47:17.226030+00:00",
+    "age_seconds": 0,
+    "stale": false
+  },
+  "visual_review_result": "PASS_BOUNDED_CONTINUOUS_FIRST30S",
+  "recommended_claim_only": "17 previously qualified actual individual direct physical debits subtotal236; same-run visible natural day transition",
+  "Root_acceptance_at_close": null,
+  "formal_count_mutated": false,
+  "county_total_debit": null,
+  "whole_army_NET": false,
+  "full_R04": false,
+  "human_full_1x_review_claimed": false,
+  "original_ffmpeg_wait_returncode": 0,
+  "original_ffmpeg_pid": 33796,
+  "original_ffmpeg_currently_absent": true,
+  "source_frames": 900,
+  "contact_sheets": 57,
+  "new_fullres_samples": 0,
+  "remaining_heavy_bytes": 0,
+  "further_decode_or_other_heavy_jobs_planned": 0,
+  "all_inclusive_ceiling_bytes": 8388608,
+  "contacts_ceiling_bytes": 6291456,
+  "metadata_ceiling_bytes": 262144,
+  "actual_contacts_bytes": 5400908,
+  "actual_before_close_bytes": 5506238,
+  "actual_final_bytes_including_this_receipt": 5577714,
+  "actual_final_metadata_bytes": 176806,
+  "shared_pool_unused_or_refund_credit_claimed": false
+}

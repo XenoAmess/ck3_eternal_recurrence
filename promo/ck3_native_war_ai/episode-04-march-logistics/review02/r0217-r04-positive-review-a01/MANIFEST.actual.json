@@ -1,0 +1,180 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T13:05:55.539217+00:00",
+  "role": "derived integration map preserving original actual/pending source roles",
+  "copied_records": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\root-r0217-acceptance-a01\\ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 6102,
+        "sha256": "af7fff15c256023886f15253eb822e27018261ec6a957f3dfc9b3e52a9b54d88"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json",
+      "role": "Root actual later source-shot adjudication"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\AI-PREFIX-REVIEW.actual.json",
+        "bytes": 9173,
+        "sha256": "49ad7335df9470964a27c579cdf210c395708489c140ececbc912919a24b9366"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/AI-PREFIX-REVIEW.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\EXECUTION.actual.json",
+        "bytes": 22977,
+        "sha256": "ff341aaeb788d99d2a133c80c3d239ca97a6e6061c432b12402395e9894fbb6a"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/EXECUTION.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\SOURCE-FRAME-PTS.tsv",
+        "bytes": 13921,
+        "sha256": "a99170652c13dcf8d00900f2c0a602eb0e02ea5337e1164357f5d890a13f4cc0"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/SOURCE-FRAME-PTS.tsv",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CONTACTS-AUDIT.actual.json",
+        "bytes": 5206,
+        "sha256": "6d89fdc268f1ff5f68e94a239b283bafea26eb43cf59c539c9b800f1803d7e8b"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/CONTACTS-AUDIT.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\RECIPE.actual.json",
+        "bytes": 4749,
+        "sha256": "ceb7f7e980bd5bcb4837a1421ada1fdc95956b62903b11668ecaedd23cf5be94"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/RECIPE.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\DELIVERY.actual.json",
+        "bytes": 2989,
+        "sha256": "75417771886171d3cb41aa2e9849cb53b855154f75a905312a1e669e575a0dc8"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/DELIVERY.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\FFMPEG.stderr.log",
+        "bytes": 1639,
+        "sha256": "ff4b24fda81dac0d0027b32b57c9daa3808e3df5cec8493e8f90ea34dd454405"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/FFMPEG.stderr.log",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\REVIEW-GROUPS.actual.json",
+        "bytes": 4507,
+        "sha256": "7bdd959e25743e3dee911b7e00dca8ef51c39d6ae5013f243e73b708eae8b934"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/REVIEW-GROUPS.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CLOSE.actual.json",
+        "bytes": 71476,
+        "sha256": "c6b2f896324a0760c7017eaad1bf558e30ca696f38943eb1358a5b07605ffa56"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/visual/CLOSE.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SOURCE-REVIEW.actual.json",
+        "bytes": 65392,
+        "sha256": "749e3f19c32f24d0d292df8df7ae2072f107d5458f7291734d578b078d745652"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/scope/SOURCE-REVIEW.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\NATIVE-SCOPE-DETAILS.actual.json",
+        "bytes": 17648,
+        "sha256": "369c6c0e9999901528fb27609a34a1f2fc99db7a65862bc213a25074b401e1f5"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/scope/NATIVE-SCOPE-DETAILS.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SCOPE-AND-REVIEW-PLAN.actual.json",
+        "bytes": 10155,
+        "sha256": "bdb95ab651edfa656a2a5c2dac98cf607e9f73ff09f85a7ee640e44ec654391f"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/scope/SCOPE-AND-REVIEW-PLAN.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\CLOSE.actual.json",
+        "bytes": 2828,
+        "sha256": "a16d4350d62ab1ff66607d82bb6d218abbe8c6e61087336a2c6cad409c87d48f"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/scope/CLOSE.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\RESULT.md",
+        "bytes": 2147,
+        "sha256": "1880aeab53074053ed6b663f6d65700bedc48289aba4a86900213c9cbace30bf"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/scope/RESULT.md",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+        "bytes": 2570,
+        "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+      },
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/SIX-RAW-FRAMES.actual.json",
+      "role": "original source review/visual execution/closure metadata; earlier pending states unchanged"
+    }
+  ],
+  "native_evidence_reused_exact_Git": {
+    "git_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+    "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/research/INDEPENDENT-CONSUMPTION.actual.json",
+    "bytes": 68199,
+    "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca",
+    "consumer_rerun": false
+  },
+  "native_consumer_rerun": false,
+  "raw_JPEG_body_read_copied_or_rehashed": false,
+  "formal_dynamic_themes": "3/11",
+  "full_R04_qualified": false,
+  "county_total": null,
+  "human_1x_or_finished_film": false,
+  "source_path_clarification": {
+    "Root_original_bytes_unchanged": true,
+    "original_sparse_samples_path_in_Root_receipt": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+    "listed_path_readable_here": false,
+    "actual_matching_small_file": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+    "actual_bytes": 2570,
+    "actual_sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9",
+    "exact_original_Root_pin_matches": true
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "purpose": "accepted R04 bounded source and exact evidence review",
+    "review_due_utc": "2026-10-21T10:00:00Z",
+    "automatic_renewal": false,
+    "deletion_authorized": false
+  }
+}

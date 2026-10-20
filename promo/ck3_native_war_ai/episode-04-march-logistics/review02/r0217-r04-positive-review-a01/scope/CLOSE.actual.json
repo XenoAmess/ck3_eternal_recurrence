@@ -1,0 +1,78 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:19:18.219668+00:00",
+  "reviewed_master_commit": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+  "frozen_D_head_unchanged": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "D_tracked_clean_unchanged": true,
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SCOPE-AND-REVIEW-PLAN.actual.json",
+    "bytes": 10155,
+    "sha256": "bdb95ab651edfa656a2a5c2dac98cf607e9f73ff09f85a7ee640e44ec654391f"
+  },
+  "report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\RESULT.md",
+    "bytes": 2147,
+    "sha256": "1880aeab53074053ed6b663f6d65700bedc48289aba4a86900213c9cbace30bf"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0217-POSITIVE-SCOPE-SMALL-METADATA-CHILD.actual-a01.json",
+    "bytes": 3540,
+    "sha256": "297a1e02aa6b6a04126e164f023ab8e0eeb21136e106adbb96851a27122ce711"
+  },
+  "done": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "schema": "codex.task_bus.v1",
+      "task_id": "e04-r0217-positive-scope-review-20261020-a01",
+      "state": "done",
+      "summary": "R0217-bounded17-direct-debit-positive-compatible-M-visual-route-crossing-review-pending-no-credit",
+      "next_step": "",
+      "resources": [],
+      "updated_at_utc": "2026-10-20T12:19:18.166971+00:00",
+      "pid": 11272,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "branch": "wip/e04-r06-a41-20261020",
+        "dirty_entries": 0
+      },
+      "last_sequence": 7475
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 7475,
+      "event_id": "343c4be440184c1ca64401e690e2083d",
+      "timestamp_utc": "2026-10-20T12:19:18.168407+00:00",
+      "kind": "completed",
+      "task_id": "e04-r0217-positive-scope-review-20261020-a01",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R0217-bounded17-direct-debit-positive-compatible-M-visual-route-crossing-review-pending-no-credit",
+      "next_step": "",
+      "resources": [],
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "branch": "wip/e04-r06-a41-20261020",
+        "dirty_entries": 0
+      }
+    }
+  },
+  "poll": {
+    "previous_cursor": 7472,
+    "acknowledged_cursor": 7474,
+    "remaining": 0
+  },
+  "active_tasks_read": true,
+  "remaining_heavy_bytes": 0,
+  "lane_ceiling_bytes": 131072,
+  "child_deadline_utc": "2026-10-20T12:30:00Z",
+  "review_at_utc": "2026-10-22T12:19:15.595358+00:00",
+  "SDK_calls": 0,
+  "new_media_decode": 0,
+  "new_visual_review": 0,
+  "new_credit": 0
+}

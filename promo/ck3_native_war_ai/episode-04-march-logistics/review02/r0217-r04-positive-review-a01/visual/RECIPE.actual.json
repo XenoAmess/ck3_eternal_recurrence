@@ -1,0 +1,148 @@
+{
+  "schema": "xar.e04.R0217-first30-visual-recipe.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T12:32:57.825295+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "source_raw_retained_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "source_raw_current_stat": {
+    "bytes": 57159155,
+    "mtime_ns": 1792468765548903800,
+    "st_dev": 13886423844274364792,
+    "st_ino": 562949954640679,
+    "payload_read": false,
+    "rehash": false
+  },
+  "existing_QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\QA.actual.json",
+    "bytes": 4322,
+    "sha256": "0eefc024d9f32f7640b4bb25c2de70c48d2f5deb6433dd02cc0c9596debe84d5"
+  },
+  "existing_geometry": {
+    "index": 0,
+    "codec_name": "h264",
+    "codec_type": "video",
+    "width": 1280,
+    "height": 720,
+    "has_b_frames": 0,
+    "pix_fmt": "yuv420p",
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "start_time": "0.000000"
+  },
+  "existing_six_fullres_ref": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+    "bytes": 2570,
+    "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+  },
+  "existing_six_fullres_copied": false,
+  "source_scope_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-scope-review-a01\\SOURCE-REVIEW.actual.json",
+    "bytes": 65392,
+    "sha256": "749e3f19c32f24d0d292df8df7ae2072f107d5458f7291734d578b078d745652"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\run_visual.py",
+    "bytes": 5511,
+    "sha256": "38dbc56d25070499184577db7f639bef0f7a3e233873ae7b25e50275ca9dbfbc"
+  },
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-nostdin",
+    "-hide_banner",
+    "-nostats",
+    "-loglevel",
+    "info",
+    "-xerror",
+    "-err_detect",
+    "explode",
+    "-threads",
+    "1",
+    "-filter_threads",
+    "1",
+    "-filter_complex_threads",
+    "1",
+    "-t",
+    "30",
+    "-i",
+    "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "-filter_complex",
+    "[0:v:0]trim=start_frame=0:end_frame=900,showinfo@source=checksum=0,split=2[strict][sheetin];[sheetin]scale=320:180:flags=area,pad=320:198:0:0:color=black,drawtext=fontfile=consola.ttf:text='f%{n} PTS=%{pts}':fontcolor=white:fontsize=12:x=5:y=182,tile=4x4:nb_frames=16:color=black[sheets]",
+    "-map",
+    "[strict]",
+    "-an",
+    "-sn",
+    "-dn",
+    "-f",
+    "null",
+    "NUL",
+    "-map",
+    "[sheets]",
+    "-an",
+    "-sn",
+    "-dn",
+    "-c:v",
+    "mjpeg",
+    "-q:v",
+    "12",
+    "-threads:v",
+    "1",
+    "-fps_mode",
+    "vfr",
+    "-frames:v",
+    "57",
+    "-start_number",
+    "0",
+    "-f",
+    "image2",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-%03d.jpg"
+  ],
+  "cwd": "C:/Windows/Fonts",
+  "priority": "BELOW_NORMAL_PRIORITY_CLASS",
+  "single_FFmpeg_process": true,
+  "strict_decode_only_source_frames_half_open": [
+    0,
+    900
+  ],
+  "source_duration_seconds_half_open": [
+    0,
+    30
+  ],
+  "contacts": {
+    "count": 57,
+    "columns": 4,
+    "rows": 4,
+    "cell_source_scaled": [
+      320,
+      180
+    ],
+    "label_band_pixels": 18,
+    "output_geometry": [
+      1280,
+      792
+    ],
+    "JPEG_quality": 12,
+    "maximum_bytes": 6291456,
+    "labels": "source frame n and actual input PTS from drawtext before tile; no fps/setpts/retiming",
+    "last_sheet": "contact056: only f896..899 actual; remaining12 cells black fill, not source frames"
+  },
+  "budget": {
+    "all_inclusive_hard_ceiling_bytes": 8388608,
+    "contacts_ceiling_bytes": 6291456,
+    "metadata_ceiling_bytes": 262144,
+    "remaining_headroom_bytes": 1835008,
+    "dynamic_guard": "During active output reserve at most one measured JPEG write (minimum64KiB) plus16KiB metadata; no arbitrary7MiB acceptance threshold. Final qualification uses actual hard8MiB and component caps."
+  },
+  "no_audio_or_video_encode": true,
+  "only_still_JPEG_outputs": true,
+  "new_fullres_samples": 0,
+  "new_probe": false,
+  "no_whole83_or36_decode": true,
+  "raw_copy": false,
+  "raw_rehash": false,
+  "execution_requires_fresh_capacity_GREEN_bound_to_this_recipe": true
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "xar.e04.R0217-first30-visual-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:48:11.800107+00:00",
+  "component_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "execution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\EXECUTION.actual.json",
+    "bytes": 22977,
+    "sha256": "ff341aaeb788d99d2a133c80c3d239ca97a6e6061c432b12402395e9894fbb6a"
+  },
+  "AI_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\AI-PREFIX-REVIEW.actual.json",
+    "bytes": 9173,
+    "sha256": "49ad7335df9470964a27c579cdf210c395708489c140ececbc912919a24b9366"
+  },
+  "all57_review_groups": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\REVIEW-GROUPS.actual.json",
+    "bytes": 4507,
+    "sha256": "7bdd959e25743e3dee911b7e00dca8ef51c39d6ae5013f243e73b708eae8b934"
+  },
+  "contact_audit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CONTACTS-AUDIT.actual.json",
+    "bytes": 5206,
+    "sha256": "6d89fdc268f1ff5f68e94a239b283bafea26eb43cf59c539c9b800f1803d7e8b"
+  },
+  "closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\CLOSE.actual.json",
+    "bytes": 71476,
+    "sha256": "c6b2f896324a0760c7017eaad1bf558e30ca696f38943eb1358a5b07605ffa56"
+  },
+  "fresh_taskbus_cursor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\BUS-FINAL-DRAIN.actual.json",
+    "bytes": 6696,
+    "sha256": "83bca50b747549a6fab9c71d43ae72ee668ea48bb879ea035ac62c8680f14121"
+  },
+  "visual_result": "PASS_BOUNDED_FIRST30S_900_ACTUAL_FRAMES_57_SHEETS",
+  "Root_acceptance": null,
+  "formal_count_mutated": false,
+  "recommended_narrow_scope": "17 actual source-qualified individual direct physical debits subtotal236; visible same-run natural day transition",
+  "county_total_debit": null,
+  "whole_army_NET": false,
+  "full_R04": false,
+  "reviewed_key_contact_indices": [
+    0,
+    18,
+    25,
+    28,
+    56
+  ],
+  "contacts_directory": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts",
+  "reused_existing_fullres_directory": "C:/ck3-e04-resume-20261020-a01/r0217-proof-chapter-a01/raw-samples",
+  "new_fullres_copies_or_samples": 0,
+  "original_FFmpeg_wait0_and_current_absence_verified": true,
+  "remaining_heavy_bytes": 0,
+  "resources": [],
+  "taskbus_state": "done",
+  "taskbus_done_sequence": 7488,
+  "actual_contacts_bytes": 5400908,
+  "actual_final_metadata_bytes": 190317,
+  "actual_final_allinclusive_bytes": 5591225,
+  "contacts_hardcap_bytes": 6291456,
+  "metadata_hardcap_bytes": 262144,
+  "allinclusive_hardcap_bytes": 8388608,
+  "additional_global_credit_or_unused_refund_claimed": false,
+  "additional_writes_or_jobs_planned": false
+}

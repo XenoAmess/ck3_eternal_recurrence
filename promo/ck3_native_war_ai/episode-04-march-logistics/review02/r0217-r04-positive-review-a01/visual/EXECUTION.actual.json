@@ -1,0 +1,694 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:42:21.519620+00:00",
+  "started_at_utc": "2026-10-20T12:42:19.850937+00:00",
+  "source_recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\RECIPE.actual.json",
+    "bytes": 4749,
+    "sha256": "ceb7f7e980bd5bcb4837a1421ada1fdc95956b62903b11668ecaedd23cf5be94"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0217-FIRST30-VISUAL-8M-SOURCE-BOUND.actual-a01.json",
+    "bytes": 7113,
+    "sha256": "13c2229890d45fac63bdf18a6c0e6192e3785ffd2b72a08e1248bdcebed3b33b"
+  },
+  "ffmpeg_pid": 33796,
+  "original_wait_returncode": 0,
+  "source_frames_observed": 900,
+  "first_source_frame": [
+    0,
+    0,
+    "0"
+  ],
+  "last_source_frame": [
+    899,
+    29967,
+    "29.967"
+  ],
+  "exactly900_unique_ordered_source_frames": true,
+  "contact_count": 57,
+  "guard": null,
+  "reader_errors": [],
+  "actual_before_receipt": {
+    "total": 5452410,
+    "contacts": 5400908,
+    "metadata": 51502,
+    "count": 57,
+    "max_sheet": 97053
+  },
+  "peak_observed": {
+    "total": 5324675,
+    "contacts": 5275025,
+    "metadata": 49650,
+    "count": 55,
+    "max_sheet": 97053
+  },
+  "strict_first30_decode_and_contact_generation_passed": true,
+  "existing_full_raw_QA_repeated": false,
+  "new_probe": false,
+  "new_raw_hash": false,
+  "new_fullres_samples": 0,
+  "video_audio_or_TTS_outputs": 0,
+  "images": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-000.jpg",
+      "bytes": 94539,
+      "sha256": "ae1fa80497b2a9571121ed271c77807ea83b787d827bddd6d7928eabc782a606",
+      "source_frames_half_open": [
+        0,
+        16
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-001.jpg",
+      "bytes": 95650,
+      "sha256": "382d5a6400d392630334d091c6058987d3809720879a7486bf185bae735dac1c",
+      "source_frames_half_open": [
+        16,
+        32
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-002.jpg",
+      "bytes": 95551,
+      "sha256": "2318aff41c39e5312253cadf37b941427edbe3ce6d1782789413418883b9c777",
+      "source_frames_half_open": [
+        32,
+        48
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-003.jpg",
+      "bytes": 94683,
+      "sha256": "20543cbd05ab63a496d729e08d477bd6a3e24a2d1d8a3e1c60c3dde54be7aaae",
+      "source_frames_half_open": [
+        48,
+        64
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-004.jpg",
+      "bytes": 94574,
+      "sha256": "506a8d7595c560616ed826673e1819ab63db0249ee0fb91b81ef75a552f813da",
+      "source_frames_half_open": [
+        64,
+        80
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-005.jpg",
+      "bytes": 94896,
+      "sha256": "53d42fb7cee530a4e63a7346fe784d2f92785b51f615e9122b645224e469ef27",
+      "source_frames_half_open": [
+        80,
+        96
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-006.jpg",
+      "bytes": 96421,
+      "sha256": "cd1b8a96f0146b841d50c17d5ea713bca8f1700c698c0d4daab40904a9d482ec",
+      "source_frames_half_open": [
+        96,
+        112
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-007.jpg",
+      "bytes": 95980,
+      "sha256": "a9ab340900e28bf74960a963e0bbf5b324789248f0c86bad7b711ae786d2c14a",
+      "source_frames_half_open": [
+        112,
+        128
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-008.jpg",
+      "bytes": 95203,
+      "sha256": "10b33c2df732de5ac5e302a616d014438dac6d69f8328a806be47e077bcf2092",
+      "source_frames_half_open": [
+        128,
+        144
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-009.jpg",
+      "bytes": 95236,
+      "sha256": "501261cd7fddf9701f46200da99b1716964667100f1bd2bca3e32a3f95c6ade3",
+      "source_frames_half_open": [
+        144,
+        160
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-010.jpg",
+      "bytes": 95727,
+      "sha256": "de1671ad5302ca29141a9bd820fc9cacd955ac95b4cb8bf5097452322171fbb8",
+      "source_frames_half_open": [
+        160,
+        176
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-011.jpg",
+      "bytes": 96432,
+      "sha256": "1315f15da11eeaa0bd57c797568d7e9cbd414e3e7c824438154f2d92affc948d",
+      "source_frames_half_open": [
+        176,
+        192
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-012.jpg",
+      "bytes": 95807,
+      "sha256": "b84bf1e5a848f43c074a878fbe6f1fdde978d50f13551424c87875d0275ce79f",
+      "source_frames_half_open": [
+        192,
+        208
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-013.jpg",
+      "bytes": 95272,
+      "sha256": "2bd231da3618c7dd39e765d882f98d9523162e629bf89564427e8d9b535b6633",
+      "source_frames_half_open": [
+        208,
+        224
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-014.jpg",
+      "bytes": 95343,
+      "sha256": "d9f7e73944d5583d0296c46588a93c168ef966c5df8a9c3fb34b3d90775dfd0c",
+      "source_frames_half_open": [
+        224,
+        240
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-015.jpg",
+      "bytes": 96266,
+      "sha256": "ecde96af0c04a5091f8da368780909e41501aac8ebd6f6278abd94a63c7a6b34",
+      "source_frames_half_open": [
+        240,
+        256
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-016.jpg",
+      "bytes": 96359,
+      "sha256": "81c0442c11f05515095ff293db89a974dd758eab9db4c3b73b9bc295cde35ae6",
+      "source_frames_half_open": [
+        256,
+        272
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-017.jpg",
+      "bytes": 95433,
+      "sha256": "73bb8a71066d4d4865c8203f92b16b8cb71db27856079c5a8ff020eee5815e90",
+      "source_frames_half_open": [
+        272,
+        288
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-018.jpg",
+      "bytes": 95237,
+      "sha256": "865be82968570f69185cf04c00f5122afcda0ffb6d7e28e00ee1a20c08535e47",
+      "source_frames_half_open": [
+        288,
+        304
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-019.jpg",
+      "bytes": 95853,
+      "sha256": "081f46d09bbffe6ddc90bbc94e137f037fefc8dcbac953866143b9804cfa0751",
+      "source_frames_half_open": [
+        304,
+        320
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-020.jpg",
+      "bytes": 96827,
+      "sha256": "1c3fc3f4c06eb7ee621586d5a797a4fefa7b20889109cbe14c3f53b3a5d69852",
+      "source_frames_half_open": [
+        320,
+        336
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-021.jpg",
+      "bytes": 96400,
+      "sha256": "af93fdadbccb4976fad6a34dce823c4931f9eff9198b38b712c1a706bad26e80",
+      "source_frames_half_open": [
+        336,
+        352
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-022.jpg",
+      "bytes": 95896,
+      "sha256": "fa4672bc066c05162064d2705676638f22eae6b5431146f90f6d414a6348e1b4",
+      "source_frames_half_open": [
+        352,
+        368
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-023.jpg",
+      "bytes": 95681,
+      "sha256": "41d2892c23f425b6532535e92556a94265933213be21b47e73e2d09081a56ab3",
+      "source_frames_half_open": [
+        368,
+        384
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-024.jpg",
+      "bytes": 96225,
+      "sha256": "0f5a3a77514b18f7987e73b0b8e320b182d1da6813283d8c0e086ce833c7d4a5",
+      "source_frames_half_open": [
+        384,
+        400
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-025.jpg",
+      "bytes": 97053,
+      "sha256": "45e3cb8749f75a78a4852352ca91ffc5934f4d18a5a3bf47e8f160f8f50f4fb1",
+      "source_frames_half_open": [
+        400,
+        416
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-026.jpg",
+      "bytes": 96080,
+      "sha256": "f753c8a47ef1f7fe56b2be7d6da776fd79dca309ef8f29b8986a336a265dc4c4",
+      "source_frames_half_open": [
+        416,
+        432
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-027.jpg",
+      "bytes": 95692,
+      "sha256": "e382423cc896359f7f16f85e3f4ef4e1f4eeaa007b541f2cbdebbb1a0ec80a0d",
+      "source_frames_half_open": [
+        432,
+        448
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-028.jpg",
+      "bytes": 95701,
+      "sha256": "0dcbb8d8cbbbea989de46d87e3a22f1a58fccbc5a9cda7cc2ad61807418f67ba",
+      "source_frames_half_open": [
+        448,
+        464
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-029.jpg",
+      "bytes": 96360,
+      "sha256": "31f5a2c80e5f2fffd532961bffb744a789ab549ecb01dbc3ba564d7103549763",
+      "source_frames_half_open": [
+        464,
+        480
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-030.jpg",
+      "bytes": 96939,
+      "sha256": "33eb6e23a8332600ac41f4adb1601a8535b125e8a9f867473d5daeb417df2262",
+      "source_frames_half_open": [
+        480,
+        496
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-031.jpg",
+      "bytes": 95771,
+      "sha256": "89c8617ea62f7ef4bed949983f613d1291864fcd4727d58b15a3d7beaf7cff8d",
+      "source_frames_half_open": [
+        496,
+        512
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-032.jpg",
+      "bytes": 95536,
+      "sha256": "18b8378fac6a146acff7674ee292e6a251a7290276fee55c9d09d83436d8661f",
+      "source_frames_half_open": [
+        512,
+        528
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-033.jpg",
+      "bytes": 95644,
+      "sha256": "6f60d0b8bbe8bc3878b412e04e4c016279597192610b6fe5c579aa7d6c861899",
+      "source_frames_half_open": [
+        528,
+        544
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-034.jpg",
+      "bytes": 96565,
+      "sha256": "8bff6ee51f31b4564bb548b0a95079fbcc5c05bcbf0a871900b4762d5152c90e",
+      "source_frames_half_open": [
+        544,
+        560
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-035.jpg",
+      "bytes": 96373,
+      "sha256": "b3ed1f7ca2325547d5f26c012c53d4b2f61453f2576091fea662fb56107bb3b5",
+      "source_frames_half_open": [
+        560,
+        576
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-036.jpg",
+      "bytes": 95492,
+      "sha256": "2b5144d1016a13251744ed2cc1f95cad599474346fec7a03a8660a3ff38b1d2f",
+      "source_frames_half_open": [
+        576,
+        592
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-037.jpg",
+      "bytes": 95729,
+      "sha256": "2df10bd0950bb528a3cc8c25e88b73a6c7d10d2b15a29d2b09e05fe8826a00cc",
+      "source_frames_half_open": [
+        592,
+        608
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-038.jpg",
+      "bytes": 96005,
+      "sha256": "ada6ba6ad13a7d56ec7cf40ff30ba19dca1e461756b826dcaf9c37e676871b11",
+      "source_frames_half_open": [
+        608,
+        624
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-039.jpg",
+      "bytes": 96874,
+      "sha256": "5ed88931d59fdee87be621809a097a8895af2fab1c3a6dabb6a18e39b69ff152",
+      "source_frames_half_open": [
+        624,
+        640
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-040.jpg",
+      "bytes": 96395,
+      "sha256": "8c38f5f2fbfd7f6978e4a4cdfbb24e37bec0279d97f48f1cbc4290ad6ede997b",
+      "source_frames_half_open": [
+        640,
+        656
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-041.jpg",
+      "bytes": 95770,
+      "sha256": "2f3d6449dd37248f4f76f6fd5f0f886f25047d42866aca1fc738fc196bb74066",
+      "source_frames_half_open": [
+        656,
+        672
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-042.jpg",
+      "bytes": 95704,
+      "sha256": "bd1aba3c89e118175a9fee767b7f9955436080b99608e5b5ca9f01d49659e60f",
+      "source_frames_half_open": [
+        672,
+        688
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-043.jpg",
+      "bytes": 96328,
+      "sha256": "18435348ef60b457f2f14f499f72dde02b0e0eaf438d2adc118a0f7a0dd9494a",
+      "source_frames_half_open": [
+        688,
+        704
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-044.jpg",
+      "bytes": 96901,
+      "sha256": "a60bdca5c16db9af41f92f015171e9826702fb3e6008f686bc92e4ee868fb547",
+      "source_frames_half_open": [
+        704,
+        720
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-045.jpg",
+      "bytes": 95969,
+      "sha256": "0d709d47d5cf0d223a224ce350568cb75d1fba7d2a8d286f11b14d97457ef0c1",
+      "source_frames_half_open": [
+        720,
+        736
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-046.jpg",
+      "bytes": 95709,
+      "sha256": "a375be88b4dd8c5baf47dc92c287fe541785798025bf6339f19612011ae3e4c1",
+      "source_frames_half_open": [
+        736,
+        752
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-047.jpg",
+      "bytes": 95794,
+      "sha256": "61bd2653b3bcfd68921af6d56cdcab8f09e519230ab228d8e7e5cbb0471531fe",
+      "source_frames_half_open": [
+        752,
+        768
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-048.jpg",
+      "bytes": 96463,
+      "sha256": "1304a08515cbb6bb267d5242391b0a19bc51bda8c6ff1dba103630394a300a72",
+      "source_frames_half_open": [
+        768,
+        784
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-049.jpg",
+      "bytes": 96652,
+      "sha256": "78089743ce6f0846da8f27f57433afb2781802690132f292017c32ecfa2c30c4",
+      "source_frames_half_open": [
+        784,
+        800
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-050.jpg",
+      "bytes": 95772,
+      "sha256": "39f8dc70a4e61e0197ced4f005a9b4deaffbb8af46f79142ac7bd376b39799aa",
+      "source_frames_half_open": [
+        800,
+        816
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-051.jpg",
+      "bytes": 95602,
+      "sha256": "712d858cb352e858aa19a8a1f07d0137a14f30fdfc47b6a8d198697fa6234838",
+      "source_frames_half_open": [
+        816,
+        832
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-052.jpg",
+      "bytes": 95699,
+      "sha256": "b7da7f64650c53eab69fb4884acf4e8cd23081f5e190cf990e5ee50c91f2b686",
+      "source_frames_half_open": [
+        832,
+        848
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-053.jpg",
+      "bytes": 96622,
+      "sha256": "d154e44834aa817e359d71cff28b4e4ba3025d39d1802d0345d5f4733919cea2",
+      "source_frames_half_open": [
+        848,
+        864
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-054.jpg",
+      "bytes": 96340,
+      "sha256": "35308ad1288f81e8b92b7b4180e91de6ccdbed89719870e0c00eb8244a19e41c",
+      "source_frames_half_open": [
+        864,
+        880
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-055.jpg",
+      "bytes": 95559,
+      "sha256": "4b3def8055145144c7d805f8b8f3a66d5b905f58c9f656683d872626ebea7900",
+      "source_frames_half_open": [
+        880,
+        896
+      ],
+      "actual_cells": 16,
+      "fill_cells": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\contacts\\contact-056.jpg",
+      "bytes": 30324,
+      "sha256": "5b4f2afb8f2023fca83f0c016034e66038ee9d3df07b1b34573d479abeaf5e53",
+      "source_frames_half_open": [
+        896,
+        900
+      ],
+      "actual_cells": 4,
+      "fill_cells": 12
+    }
+  ],
+  "source_frame_PTS": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\SOURCE-FRAME-PTS.tsv",
+    "bytes": 13921,
+    "sha256": "a99170652c13dcf8d00900f2c0a602eb0e02ea5337e1164357f5d890a13f4cc0"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0217-positive-visual-a01\\FFMPEG.stderr.log",
+    "bytes": 1639,
+    "sha256": "ff4b24fda81dac0d0027b32b57c9daa3808e3df5cec8493e8f90ea34dd454405"
+  },
+  "visual_review_completed": false,
+  "formal_dynamic_credit": false,
+  "remaining_heavy_bytes": 0
+}

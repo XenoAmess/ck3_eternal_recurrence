@@ -1,5 +1,11 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-20 12:55 UTC：Root签出R0217限定R04阳性源镜头，正式动态3/11
+
+`machine_id: desktop-3fevhd2-1c74096080`；[Root实际裁定](review02/r0217-r04-positive-review-a01/ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json)（6102B，SHA`af7fff15c256023886f15253eb822e27018261ec6a957f3dfc9b3e52a9b54d88`）接受原片 **[0,30)秒/900actual帧**，[11主题账本](review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)现 **3/11（27.27%，R04+R06+R12）**。17个direct-v2个别物理扣兵阳性小计236；画面地图6746→6510与unique physical6741→6505分开陈述，完整county total=null/fullR04false，5空DATA调用仍excluded，未补完整县域NET。复用已入Git的68199B/70b206…原生独立证据，无新consumer/游戏/日步。
+
+委派AI审57sheets/900actual cells和6原分辨率样本，Root亲审5/10/15/25秒4fullres及000/018/025/028/056五sheets。只授限定连续源镜头；保守可读变化(10,15]秒，不授Move提交/前6日、Army pane、route/warning可读、active phase、精确callback PTS、same-life/ABC或人工1×/最终影片。研究10/14、业务7/11、B0/2、ABC0/3不变，旧0/1/2记录均保留。R08公共同CaseClient接线与A08独立cold小资格已在source84a719f7入库，ordinary native positive/fullR08仍false；下一包须使用新actualQ、真实allocate后的容量和Root grant，不能复用旧a07。
+
 ## 2026-10-20 12:29 UTC：Root签出R0221限定R06阳性源镜头，正式动态2/11
 
 `machine_id: desktop-3fevhd2-1c74096080`；依据[Root实际裁定](review02/r0221-target-add-positive-review-a01/ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json)（7705B，SHA `f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e`），接受同R0221原片 **[0,33)秒/990帧** 的原M单次补员阳性源镜头。[11主题账本](review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)现为 **2/11（18.18%，R06+R12）**；旧1/11段落保留为当时快照。画面Army6679→6689的+10，与同场原生独立证明Regi2602/slot1 current68→69的+1分别表述，未归因整军+10或给出精确原生事件PTS。

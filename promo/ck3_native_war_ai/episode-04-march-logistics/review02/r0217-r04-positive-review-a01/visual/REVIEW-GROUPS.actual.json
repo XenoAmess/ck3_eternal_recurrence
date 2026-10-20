@@ -1,0 +1,137 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewer": "/root/predecessor_admission",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "completed_at_utc": "2026-10-20T12:44:43Z",
+  "view_tool": "tools.view_image(detail=original), sequential groups; every listed actual source cell visually inspected",
+  "full_resolution_originals_also_viewed": [
+    "raw-05s.jpg",
+    "raw-10s.jpg",
+    "raw-15s.jpg",
+    "raw-20s.jpg",
+    "raw-25s.jpg",
+    "raw-30s.jpg"
+  ],
+  "groups": [
+    {
+      "sheets": [
+        0,
+        5
+      ],
+      "frames": [
+        0,
+        96
+      ],
+      "reviewed_at_utc": "2026-10-20T12:43:04Z",
+      "observation": "All 96 real cells viewed. Stable full game map and HUD/portrait layout; no blue overlay, external window, popover or black/corrupt source frame visible. Contact cells are too small for independent fine HUD text/route reading."
+    },
+    {
+      "sheets": [
+        6,
+        11
+      ],
+      "frames": [
+        96,
+        192
+      ],
+      "reviewed_at_utc": "2026-10-20T12:43:14Z",
+      "observation": "All 96 real cells viewed. Stable map/HUD composition through the before interval, with game animation only; no external or legacy overlay/popover, black/corrupt source cell or camera cut."
+    },
+    {
+      "sheets": [
+        12,
+        17
+      ],
+      "frames": [
+        192,
+        288
+      ],
+      "reviewed_at_utc": "2026-10-20T12:43:23Z",
+      "observation": "All 96 real cells viewed. Continuous same map/HUD composition in the before interval through PTS9.567; no external window, popover, blue panel, black/corrupt source frame or obvious edit."
+    },
+    {
+      "sheets": [
+        18,
+        23
+      ],
+      "frames": [
+        288,
+        384
+      ],
+      "reviewed_at_utc": "2026-10-20T12:43:33Z",
+      "observation": "All 96 real cells viewed. Same unobstructed map context through PTS12.767; no camera/shot cut or other window. At contact resolution the before army marker remains in the lower of its two observed positions; fine counter/date claims rely on original fullres."
+    },
+    {
+      "sheets": [
+        24,
+        29
+      ],
+      "frames": [
+        384,
+        480
+      ],
+      "reviewed_at_utc": "2026-10-20T12:43:41Z",
+      "observation": "All 96 real cells viewed. Army marker shifts upward within the same static map during the natural transition (not a camera cut); final marker layout is then stable. No blue overlay, other window/popover or black/corrupt source cell. Fine counter/date endpoints remain bound to existing10s/15s originals; no exact native callback clock or readable route asserted."
+    },
+    {
+      "sheets": [
+        30,
+        35
+      ],
+      "frames": [
+        480,
+        576
+      ],
+      "reviewed_at_utc": "2026-10-20T12:44:06Z",
+      "observation": "All 96 real cells viewed. Stable after marker and map/HUD layout, animated game scene continues; no external/blue overlay, popover, black/corrupt frame or camera cut."
+    },
+    {
+      "sheets": [
+        36,
+        41
+      ],
+      "frames": [
+        576,
+        672
+      ],
+      "reviewed_at_utc": "2026-10-20T12:44:16Z",
+      "observation": "All 96 real cells viewed. Same after map/HUD and army marker position through PTS22.367, with normal game animation; no obscuring window, popover, blue panel, black/corrupt source cell or cut."
+    },
+    {
+      "sheets": [
+        42,
+        47
+      ],
+      "frames": [
+        672,
+        768
+      ],
+      "reviewed_at_utc": "2026-10-20T12:44:25Z",
+      "observation": "All 96 real cells viewed. After map/HUD composition remains continuous through PTS25.567; no blue/other overlay, popover, black/corrupt source frame, or cut."
+    },
+    {
+      "sheets": [
+        48,
+        53
+      ],
+      "frames": [
+        768,
+        864
+      ],
+      "reviewed_at_utc": "2026-10-20T12:44:34Z",
+      "observation": "All 96 real cells viewed. Same after map/HUD and marker through PTS28.767; no other/blue overlay, popover, black/corrupt source frame or shot cut."
+    },
+    {
+      "sheets": [
+        54,
+        56
+      ],
+      "frames": [
+        864,
+        900
+      ],
+      "reviewed_at_utc": "2026-10-20T12:44:43Z",
+      "observation": "All 36 actual source cells viewed. Same unobstructed after map/HUD through f899 PTS29.967. contact056 contains four actual first-row cells and twelve intentional black fill cells; fill is not called source black frames or extra reviewed footage."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+Input #0, matroska,webm, from 'C:\ck3-e04-resume-20261020-a01\r221-scene-a01\raw-a01\take01\raw.mkv':
+  Metadata:
+    ENCODER         : Lavf63.1.101
+  Duration: 00:01:23.13, start: 0.000000, bitrate: 5500 kb/s
+  Stream #0:0: Video: h264 (Constrained Baseline), yuv420p(tv, progressive), 1280x720, 30 fps, 30 tbr, 1k tbn
+    Metadata:
+      ENCODER         : Lavc63.1.101 libx264
+      DURATION        : 00:01:23.133000000
+Stream mapping:
+  Stream #0:0 (h264) -> trim:default
+  split -> Stream #0:0 (wrapped_avframe)
+  tile:default -> Stream #1:0 (mjpeg)
+Output #0, null, to 'NUL':
+  Metadata:
+    encoder         : Lavf63.1.101
+  Stream #0:0: Video: wrapped_avframe, yuv420p(tv, progressive), 1280x720, q=2-31, 200 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc63.1.101 wrapped_avframe
+Output #1, image2, to 'C:\ck3-e04-resume-20261020-a01\r06-resume-a02\r0217-positive-visual-a01\contacts\contact-%03d.jpg':
+  Metadata:
+    encoder         : Lavf63.1.101
+  Stream #1:0: Video: mjpeg, yuv420p(pc, progressive), 1280x792, q=2-31, 200 kb/s, 1.88 fps, 1.88 tbn
+    Metadata:
+      encoder         : Lavc63.1.101 mjpeg
+    Side data:
+      CPB properties: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A
+[out#0/null @ 0000025e29284d80] video:373KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+[out#1/image2 @ 0000025e29284f80] video:5274KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=  900 fps=594 q=-0.0 Lq=12.0 size=N/A time=00:00:30.00 bitrate=N/A speed=19.8x elapsed=0:00:01.51    
