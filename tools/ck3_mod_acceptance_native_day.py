@@ -25,6 +25,11 @@ class DayClient(Protocol):
     output: Path
 
     def guard(self, reserve: Literal[90] = 90) -> object: ...
+    def snapshot(self, allow_actor_change: bool = False,
+                 require_event_free: bool = True) -> object: ...
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> Object: ...
     def execute_plan(self, steps: list[Object], name: str, timeout: float | None = None,
                      reserve: Literal[90] = 90) -> list[object]: ...
     def validate_frame(self, frame: object, allow_actor_change: bool = False,
@@ -81,6 +86,12 @@ def native_day_advertised(report: Object) -> bool:
     return STEP in actions and _CLOCK_CAPABILITIES <= bridge
 
 
+def native_day_request_count(report: Object, *, allow_actor_change: bool) -> int:
+    """Count the fresh readonly frame plus one dispatch only on the native route."""
+    need(type(allow_actor_change) is bool, "Original actor policy must be bool")
+    return 2 if not allow_actor_change and native_day_advertised(report) else 1
+
+
 def latest_frame(report: Object) -> Object:
     rows = report.get("steps", [])
     if not isinstance(rows, list):
@@ -114,6 +125,50 @@ def frame_owner(frame: Object) -> tuple[int, int, int]:
          integer(frame.get("native_revision"), "actual native revision") > 0,
          "Native day requires actual revisions")
     return owner
+
+
+def fresh_native_day_before(previous: Object, fresh: Object, *,
+                            allow_event_boundary: bool = False) -> Object:
+    """Keep the current intent's owner/date while admitting a newer paused revision."""
+    need(frame_owner(previous) == frame_owner(fresh), "Fresh native day crossed its original owner")
+    need(previous.get("episode_run_id") == fresh.get("episode_run_id"),
+         "Fresh native day crossed its original episode")
+    need(integer(previous.get("date_raw"), "previous date") ==
+         integer(fresh.get("date_raw"), "fresh date"), "Fresh native day changed its original date")
+    need(type(allow_event_boundary) is bool, "Original event policy must be bool")
+    if fresh.get("active_event") is not None:
+        need(allow_event_boundary, "Native day begins event-free; observe the new event first")
+        obj(fresh.get("active_event"), "actual fresh event")
+    for key in ("revision", "native_revision"):
+        need(integer(fresh.get(key), "fresh " + key) >= integer(previous.get(key), "previous " + key),
+             "Fresh native day revisions regressed")
+    return fresh
+
+
+def project_pre_day_event_boundary(previous: Object, fresh: Object, *,
+                                   snapshot_step_id: str) -> Object:
+    """Expose a real readonly event boundary without claiming a native day call."""
+    fresh_native_day_before(previous, fresh, allow_event_boundary=True)
+    need(previous.get("active_event") is None, "Original native day begins event-free")
+    obj(fresh.get("active_event"), "actual fresh event")
+    need(isinstance(snapshot_step_id, str) and snapshot_step_id.startswith("case-snapshot-") and
+         snapshot_step_id.removeprefix("case-snapshot-").isdigit(), "Actual snapshot step ID required")
+    source = "actual-pre-day-snapshot-event-boundary"
+    result: NaturalDayResult = {
+        "before": previous, "running_successor": None, "event_boundary": fresh,
+        "after": fresh, "requested_days": 1,
+        "target_date_raw": integer(previous.get("date_raw"), "previous date") + 24,
+        "elapsed_hours": 0, "progress_status": "event_boundary_before_dispatch",
+        "requested_interval_complete": False, "event_resolution": "typed_query_required",
+        "preflight": {"source": source, "world_dispatch_attempted": False},
+        "selected_event_options": 0,
+        "actor_transition": {"allowed": False, "observed": False,
+            "before": frame_owner(previous)[2], "after": frame_owner(fresh)[2],
+            "predecessor_death_proved": False},
+    }
+    return {"id": snapshot_step_id, "ok": True, "error": None,
+            "after_snapshot": fresh, "source": source,
+            "world_dispatch_attempted": False, "result": result}
 
 
 def project_native_day(row: Object, before: Object, *, allow_event_boundary: bool) -> Object:

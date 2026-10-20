@@ -7,6 +7,9 @@ import hashlib
 import json
 from pathlib import Path
 from typing import TYPE_CHECKING
+from ck3_mod_acceptance_native_day import (
+    DayClient as PublicDayClient, native_day_request_count, obj, need,
+)
 
 if TYPE_CHECKING:
     from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_observations import MilestoneObservation
@@ -62,7 +65,8 @@ def validate_contract(context):
 
 class BudgetedClient:
     """Count every original business control; snapshots/day calls count too."""
-    def __init__(self, client, cap):
+    def __init__(self, client: PublicDayClient, cap: int) -> None:
+        need(type(cap) is int and cap > 0, "Finite public request cap must be a positive integer")
         self._client = client
         self.public_requests_cap = cap
         self.public_requests_used = 0
@@ -70,18 +74,24 @@ class BudgetedClient:
     def __getattr__(self, name):
         return getattr(self._client, name)
 
-    def claim(self, count):
-        require(self.public_requests_used + count <= self.public_requests_cap,
-                "Finite public request cap reached; preserve original results and normal Quit reserve")
+    def claim(self, count: int) -> None:
+        need(type(count) is int and count > 0, "Public request count must be a positive integer")
+        need(self.public_requests_used + count <= self.public_requests_cap,
+             "Finite public request cap reached; preserve original results and normal Quit reserve")
         self.public_requests_used += count  # Unknown submissions remain consumed.
 
     def snapshot(self, **kwargs):
         self.claim(1)
         return self._client.snapshot(**kwargs)
 
-    def advance_day(self, *args, **kwargs):
-        self.claim(1)
-        return self._client.advance_day(*args, **kwargs)
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> dict[str, object]:
+        # _client is the original CaseClient: its fresh snapshot does not pass
+        # through this wrapper's snapshot(), so reserve both real tool calls here.
+        report = obj(self._client.guard(90), "actual held report for request budget")
+        self.claim(native_day_request_count(report, allow_actor_change=allow_actor_change))
+        return self._client.advance_day(days, timeout, allow_event_boundary, allow_actor_change)
 
     def execute_plan(self, steps, *args, **kwargs):
         self.claim(len(steps))

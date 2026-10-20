@@ -23,3 +23,23 @@ B22/R0013 的 Q21 骑士 reader 在游戏内可用。人物15893、10322同一�
 下一场优先补一次完整普通朝圣，分别验证出发、抵达、结算、活动终态和独立当前位置；不为固定事件ID或正奖励重刷。原生位置DTO仍未绑定，采用已有角色窗口与原版头像位置提示作独立视觉观察，方法单列。遗物个人装备／供奉两冷臂、普通／major完整双报价、同世界一次H2建制及H3只读状态并行准备。H1/H2新显式串联caller的7项消费者和修改范围strict检查通过，公共prepare与实机仍未执行。
 
 容量修复只把录制服务整场上限896MiB改为2048MiB，raw512MiB、四段、总300秒及实际整场占用守卫保持；3项定向消费者和修改谓词类型检查通过，不是新录制资格。后继使用新的完整准入、当前源码绑定和公共prepare，不回写旧B23被896MiB限制拒绝的原失败。已有Q21 DLL继续沿用精确来源证明，不因离线Python改动重编原生矩阵。
+
+## 2026-10-21 正常关闭勘误与后继截点
+
+`machine_id: 4-8e1c2f1861`；本条于 `2026-10-20T17:02:48.402489+00:00` 读取已封小回执后追加，不替换上文历史截点。
+
+R0013 最终 `normal-close-result.json` 的 `normal_close_qualified=true`，原生进程退出0与保留句柄退出0均已记录。此前场景摘要误将早期交接假设记为关闭合同未通过，现按[关闭勘误原件](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b22-a01/SCENE-CLOSURE-CORRECTION.actual.json)纠正（2281 B，SHA-256 `2181217b4d4d13b5838a24d2670fb2d629c96fef642118146ee50aaabe89193d`）；[最终关闭结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b22-a01/live/4-8e1c2f1861--faith-engine--R0013/case-output/normal-close-result.json)为10728 B、SHA-256 `22723254a7be69d273d40c46e48493455858be8c74b64ccd034730b60c305003`。原host退出1、`business_pass=false`及早期canonical审图回执的`actual_os0_proven=false`保持原样；最终正常关闭不改变麦加收益归因未知或混杂段排除。
+
+C10 `7bc3b62c5f01510db1eb74f1e2f13eb23eb0e7e7` 的[Official CI39452484280](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39452484280)已在16:32:09Z实际读为失败：step53通过，step94的8项测试出现4个错误，原因是夹具的局部AST提取遗漏实际`advance_day`所需全局名称，触发`NameError: need`。远端runner的`machine_id: unknown`；本机读取记录见[CI终态](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/ROOT-C10-CI.a03.actual.json)。[外置test-only候选](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/ci-c10-step94-repair-a01/DELIVERY.actual.json)已实际完成8项、0跳过、原等待0及修改范围strict检查；尚未合入或取得新CI终态，不标为CI通过。
+
+后继R0014仍在推进。已封小回执记录16:42:57Z一次Start调用、随后独立活动身份及同日金币243→173；70金是当前配置的活动费用，全程费用未证。[Start原回执](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b23-a01/live/4-8e1c2f1861--faith-engine--R0014/case-output/ordinary-pilgrimage-0014-receipt.json)、[独立钱包观察](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b23-a01/live/4-8e1c2f1861--faith-engine--R0014/case-output/ordinary-pilgrimage-post-start-wallet-observation.json)和[16:46:47Z旅程起始快照](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b23-a01/live/4-8e1c2f1861--faith-engine--R0014/case-output/faith-e02-journey-001-started-once.json)仅证明这个前缀；整趟朝圣、结算、归返、当前位置和特质经验尚未在本条验明，不借B20或B17独立世界补成连续旅程。当前执行与后续真实结果分别进入[10月21日日报](../../../../docs/autonomous-agent-progress/daily/2026-10-21.md)及[当次计划补录](../../../../docs/autonomous-agent-progress/meetings/daily/2026-10-21.md)。
+
+## 2026-10-21 01:42 后继实况与修复
+
+`machine_id: 4-8e1c2f1861`；本条观察截至2026-10-20T17:42:13Z。R0014在70个已证自然日后，day0119使用revision229，服务端实际为230，在Arm及推进提交前拒绝。原host随后以stop清理游戏，保留句柄退出1；不能记成自主崩溃或正常Quit。[实际闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b23-a01/SCENE-CLOSURE.actual.json)为5673 B、SHA-256 `c5b0d10fae55569a5a4f7bcb417d27f712c1c109b9b05bb63c8cafd9a2200021`：原run2、host1、allocator0、keeper正常停止，CAS12854空资源，正常关闭与业务均false。抵达罗马不构成结算或归返；本轮五事件全部离线分析并写入[来源绑定总表](knowledge/r0014-event-batch-summary.json)。
+
+最小修复改为每次原生日推进前取得独立当前快照，继续传明确revision且只派发一次；未知结果不重试。刷新恰好看到事件时返回真实0小时边界，交回既有事件采集和第一显示项处理；不制造推进回执或一天成绩。P3预算显式计入新增只读调用。来源、定向消费者与类型检查见[修复交付](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/p3-r0014-day0119-diagnosis-a01/a02/DELIVERY.a02.actual.json)。
+
+B28的首次公开预检另发现旧H1适配器缺少`verify_case`；它尚未分配现场或启动游戏。新增入口委派给已有严格单臂验证器，仍拒绝partial、unknown与跨run原件，且不授整产品业务通过。Root已按资格字节集成这些改动及test-only夹具修复，实际组合测试19项通过、原进程等待0；[组合回执](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/c11-root-integration-a01/COMBINED-ROOT-TARGETED.a02.actual.json)保留首次因缺测试导入路径而失败的调用与其后正确调用，二者不混计。新正式CI仍待提交后的实际终态。
+
+制作端当前延续清单为[71段实际装配](C:/workspace/ck3-faith-and-power-20261017/episode02/final-authoring-b24-a01/CASE-BLOCKS.manifest.A1-P12-actual.a01.json)：65固定段、B12及5句新声共1486.933333秒，9/24必需槽已绑定、15待补、目标88段。P12两句实测24.533333秒；未执行新完整视频渲染，R0014未完成部分没有冒充完整旅程。

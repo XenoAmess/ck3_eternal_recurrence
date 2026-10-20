@@ -51,6 +51,8 @@
 
 4100 第一显示购买项的 `effect_indicators.rows=[]`，同时 `complete_effect_set=false`、资源变化 unavailable；空图标列表不能理解为免费。原脚本使用动态 `minor_gold_value` 付款，特定 illustrious 分支再乘 1.25。独立后态证实该次额外扣 31.25 金、压力 4→4、该按钮前后虔诚不变；`activity_log score50` 是活动日志评分，不是 50 虔诚。两事件之间的自然日变化与每次按钮差值分开，不把一次价格硬编码给未来事件。徽章完整 ID／所有权、稀有度、装备和属性仍未独立核实，不能写成玩家已获得可用徽章。
 
+R0014 批次（来源机器 `4-8e1c2f1861`，2026-10-20）：[3001 原版来源分析](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3001-source-analysis.json)、[3001 实际选择与独立后态](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3001-r0014-occurrence.json)、[1020 新显示变体](../../promo/ck3_faith_and_power/episode02/docs/knowledge/travel-cities-1020-r0014-display-variant.json)、[五事件完整批次清单](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0014-event-batch-summary.json)现由同一知识 MCP 的 `episode02_research.topics.pilgrimage.documents` 显式返回。3001 第一显示项已分别确认 ACK、旧窗口消失和同人物同日期虔诚增加 100；条件疾病、pilgrim／learning XP 未独立读取，这不是全程最终结算。1020 新变体只涉及未选学习项的实际显示名称，原版同一选项块存在两个 name 声明，不能凭历史名称／序号推断本次许可。五个实际事件为 1060／3001／1020／5001／4100；该场未观察到 7000／9001、全程结束或人物在家位置，仍是未完成旅程。新增链接不把来源知识升级成完整实例 registry、当前世界状态、原生许可或普通 auto 策略。
+
 这些文件提供版本／来源绑定的已分析知识，尚未自动加载进 `ck3_query_vanilla_event_knowledge_v1` 的完整实例合同。遇到新事件仍须先保存原生 definition／instance、双方角色和实际显示顺序，再按现有原生第一显示项策略继续；仅有画面时不得猜 native ID 或选择成功。完整接线状态和反例在 JSON 中明确标注。
 
 开发入口：[知识摘要模块](../../ck3_autonomous_player/src/xar_autoplayer/holy_site_episode02_research.py)、[既有知识查询](../../ck3_autonomous_player/src/xar_autoplayer/holy_site_planning_knowledge.py)、[MCP 注册](../../ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py)。研究进展与业务、策略接入分别记账；后续接入普通规划器时必须补实际消费证据。

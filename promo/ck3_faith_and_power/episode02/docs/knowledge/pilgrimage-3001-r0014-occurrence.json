@@ -1,0 +1,331 @@
+{
+  "schema": "faith-e02-stock-event-occurrence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T16:53:10.627159+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0014",
+  "event_definition_key": "pilgrimage.3001",
+  "event_instance_id": 2,
+  "bridge_pid": 3828,
+  "connection_generation": 1,
+  "actor_character_id": 31254,
+  "native_query_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 26,
+    "date_raw": 53144496,
+    "current_event_instance_id": 2,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "pilgrimage.3001",
+    "calculated_event_id": 1763001,
+    "runtime_stats_ordinal": 1688,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "travel_plan",
+        "name_identifier": 211,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 35,
+          "type_key": "travel_plan",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "dummy_clergy_gender",
+        "name_identifier": 17404,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 1
+          }
+        }
+      },
+      {
+        "name": "zealous_priest",
+        "name_identifier": 17403,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 58490
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "对虔诚的天主教徒来说，一点小雨算什么？",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "trait",
+              "operation": "add",
+              "trait": {
+                "status": "available",
+                "native_id": 109,
+                "key": "ill"
+              }
+            },
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "别这么疯狂，我会待在我的帐篷里。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "before_selection": {
+    "snapshot_id": "native:26",
+    "date_raw": 53144496,
+    "revision": 27,
+    "native_revision": 26,
+    "paused": true,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 26,
+        "date_raw": 53144496,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "played_character_gold": {
+      "raw": 17300000,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 220000000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 2000000000,
+      "scale": 100000
+    },
+    "active_event": {
+      "source": "native",
+      "instance_id": 2,
+      "option_count": 2,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        },
+        {
+          "index": 1,
+          "option_number": 2,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "selected_option_number": 1,
+  "selected_native_option_index": 0,
+  "submission_attempted": true,
+  "ack_accepted": true,
+  "old_instance_gone_in_independent_snapshot": true,
+  "independent_after_selection": {
+    "snapshot_id": "native:27",
+    "date_raw": 53144496,
+    "revision": 28,
+    "native_revision": 27,
+    "paused": true,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 27,
+        "date_raw": 53144496,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "played_character_gold": {
+      "raw": 17300000,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 220000000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 2010000000,
+      "scale": 100000
+    },
+    "active_event": null
+  },
+  "same_actor_same_date_delta": {
+    "piety_raw": 10000000,
+    "scale": 100000,
+    "piety_points": 100,
+    "gold_raw": 0,
+    "prestige_raw": 0,
+    "stress_points": 0
+  },
+  "native_ill_membership_observed": false,
+  "native_ill_membership": null,
+  "native_pneumonic_membership_observed": false,
+  "native_pneumonic_membership": null,
+  "pilgrim_trait_xp_observed": false,
+  "pilgrim_trait_xp": null,
+  "learning_lifestyle_xp_observed": false,
+  "learning_lifestyle_xp": null,
+  "special_type_progression_observed": false,
+  "special_type_progression": null,
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b23-a01\\live\\4-8e1c2f1861--faith-engine--R0014\\case-output\\faith-e02-journey-001-event-2-offline-analysis-input.json",
+      "bytes": 42388,
+      "sha256": "acbcf23aa2d5d6c664a39dc5b2549c5821c6f597a04157c5b7a3aacfef7a730e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b23-a01\\live\\4-8e1c2f1861--faith-engine--R0014\\case-output\\faith-e02-journey-001-event-2-selection-intent.json",
+      "bytes": 46717,
+      "sha256": "270ce916230010c52725d3e34b38db5be72546cf0945ef8696df5f0d40aa12f3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b23-a01\\live\\4-8e1c2f1861--faith-engine--R0014\\case-output\\faith-e02-journey-001-0005-event-query.actual-results.json",
+      "bytes": 32267,
+      "sha256": "767a7a1c2c93ed6b6d6f8a027f8e278e2cf41c4a18253d7158d2c8641ec80cad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b23-a01\\live\\4-8e1c2f1861--faith-engine--R0014\\case-output\\faith-e02-journey-001-0006-event-select-once.actual-results.json",
+      "bytes": 23932,
+      "sha256": "625729469a8ff1fdc4c9156155159b9ef14dd876c989f7cbb6ead001446b5ae0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b23-a01\\live\\4-8e1c2f1861--faith-engine--R0014\\case-output\\faith-e02-journey-001-event-2-selection-observed.json",
+      "bytes": 21739,
+      "sha256": "d0c6f7cd2f631c41a26d09a21e49a9fa3abc6e55dbc859421cef7709ebffaa21"
+    }
+  ],
+  "boundary": "The icon lists a possible conditional illness effect, not diagnosed illness. Snapshot stress0->0 does not prove zero scripted stress relief. The piety change is this event selection, not the final pilgrimage settlement."
+}

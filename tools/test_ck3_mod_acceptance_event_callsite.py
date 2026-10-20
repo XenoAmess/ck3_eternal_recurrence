@@ -1,8 +1,12 @@
-"""Portable public-method boundary tests, synthetic rows only; never CK3."""
+﻿"""Portable public-method boundary tests, synthetic rows only; never CK3."""
 from pathlib import Path
 import ast
 import copy
 import unittest
+from typing import Literal
+
+from ck3_mod_acceptance_client import CaseClient
+from ck3_mod_acceptance_native_day import Object, obj
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -22,7 +26,7 @@ def public_function(relative, name, namespace):
 
 REQUIRE_NS = {}
 require = public_function('tools/ck3_mod_acceptance_cases/_business.py', 'require', REQUIRE_NS)
-advance_day = public_function('tools/ck3_mod_acceptance_client.py', 'advance_day', {'require': require})
+advance_day = CaseClient.advance_day
 
 
 def day_row(event=False):
@@ -38,22 +42,38 @@ def day_row(event=False):
     }}
 
 
+DayCall = tuple[list[Object], str, float | None, Literal[90]]
+
+
 class DayClient:
-    def __init__(self, row):
+    def __init__(self, row: Object) -> None:
         self._seq = 0
         self.row = row
-        self.submissions = []
-        self.validations = []
+        self.submissions: list[DayCall] = []
+        self.validations: list[tuple[Object, bool, bool]] = []
 
-    def execute_plan(self, steps, name, timeout=None):
-        self.submissions.append((copy.deepcopy(steps), name, timeout))
+    def guard(self, reserve: Literal[90] = 90) -> Object:
+        # This authored held report intentionally does not advertise the native
+        # exact-day route: these tests cover the existing host event boundary.
+        if type(reserve) is not int or reserve != 90:
+            raise AssertionError('Original guard reserve must remain90')
+        return {'phase': 'hold', 'steps': [], 'capabilities': {
+            'action_steps': [], 'bridge_capabilities': []}}
+
+    def execute_plan(self, steps: list[Object], name: str, timeout: float | None = None,
+                     reserve: Literal[90] = 90) -> list[Object]:
+        if type(reserve) is not int or reserve != 90:
+            raise AssertionError('Original execute reserve must remain90')
+        self.submissions.append((copy.deepcopy(steps), name, timeout, reserve))
         return [self.row]
 
-    def validate_frame(self, frame, allow_actor_change=False, require_event_free=True):
-        self.validations.append((frame, allow_actor_change, require_event_free))
-        if require_event_free and frame.get('active_event') is not None:
+    def validate_frame(self, frame: object, allow_actor_change: bool = False,
+                       require_event_free: bool = True) -> Object:
+        value = obj(frame, 'authored actual frame')
+        self.validations.append((value, allow_actor_change, require_event_free))
+        if require_event_free and value.get('active_event') is not None:
             raise ValueError('Synthetic actual frame still has an event')
-        return frame
+        return value
 
 
 class EventClient:
@@ -88,7 +108,9 @@ class CommonEventBoundaryTests(unittest.TestCase):
     def test_normal_day_default_is_unchanged_and_does_not_send_optins(self):
         actual = day_row()
         client = DayClient(actual)
-        self.assertIs(advance_day(client), actual)
+        original = copy.deepcopy(actual)
+        self.assertEqual(advance_day(client), actual)
+        self.assertEqual(actual, original)
         step = client.submissions[0][0][0]
         self.assertEqual(step, {'id': 'case-natural-day-0001', 'kind': 'advance_day', 'days': 1, 'timeout': 300})
         self.assertEqual(len(client.submissions), 1)
@@ -102,7 +124,9 @@ class CommonEventBoundaryTests(unittest.TestCase):
     def test_optin_is_sent_and_partial_event_row_is_preserved_without_credit(self):
         actual = day_row(event=True)
         client = DayClient(actual)
-        self.assertIs(advance_day(client, allow_event_boundary=True), actual)
+        original = copy.deepcopy(actual)
+        self.assertEqual(advance_day(client, allow_event_boundary=True), actual)
+        self.assertEqual(actual, original)
         self.assertIs(client.submissions[0][0][0]['allow_event_boundary'], True)
         self.assertNotIn('allow_actor_change', client.submissions[0][0][0])
         self.assertFalse(actual['result']['requested_interval_complete'])

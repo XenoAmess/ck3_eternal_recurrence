@@ -457,3 +457,24 @@ def run_case(context_value: object, client: Client) -> Q.Obj:
                   promotion_outcome_unknown=run.unknown, promotion_intent=run.intent, receipts=run.receipts)
     Q.write_once(run.output / "h1-arm-result.json", result)
     return result
+
+
+def verify_case(context_value: object) -> Q.Obj:
+    """Validate this completed arm through the existing strict quote consumer."""
+    context = Q.obj(context_value)
+    c = validate_contract(context)
+    # The join imports this adapter's pure term readers; defer that import until
+    # the public loader has finished loading the adapter.
+    from faith_e02_h1_join import checked_arm
+    ref = Q.pin(Path(Q.text(context.get("output"))) / "h1-arm-result.json")
+    result = checked_arm(ref, Q.arm(c["arm"]))
+    Q.require(result.get("run_id") == context.get("run_id")
+              and result.get("machine_id") == c["machine_id"]
+              and Q.integer(result.get("holy_site_id")) == Q.integer(c["holy_site_id"]),
+              "Actual H1 result belongs to another public run")
+    return {"status": result["status"], "arm": result["arm"], "h1_quoted": True,
+            "hof_confirm_submissions": 0, "arm_result": ref,
+            "business_pass": False, "business_contract_applicable": False,
+            "case_contract_qualified": False, "gui_contract_qualified": False,
+            "whole_product_acceptance_credit": False, "product_release_pass": False,
+            "automatic_retry": False}

@@ -1,0 +1,139 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "pilgrimage.3001",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T16:53:10.627159+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+    }
+  ],
+  "definition_lines": [
+    6791,
+    6944
+  ],
+  "type": "character_event",
+  "theme": "travel_pilgrimage",
+  "title_key": "pilgrimage.3001.t",
+  "description_key": "pilgrimage.3001.desc",
+  "localization_lines": [
+    544,
+    548
+  ],
+  "trigger": "Christian religion AND is_location_valid_for_travel_event_on_land.",
+  "cooldown": {
+    "years": 15
+  },
+  "caller": "pilgrimage_journey_events -> pilgrimage_travel_events random_events weighted entry100 at on_action line86; travel eligibility and event triggers still apply. Not guaranteed.",
+  "caller_lines": [
+    4,
+    17,
+    32,
+    37,
+    85,
+    88
+  ],
+  "immediate_lines": [
+    6826,
+    6865
+  ],
+  "immediate_effects": [
+    "Play general crusade music; establish dummy clergy gender.",
+    "If current travel entourage has clergy, pick qualifying entourage member as zealous_priest.",
+    "Otherwise create age40 priest at root location with root faith/rite/culture and ensure zealous trait."
+  ],
+  "source_options": [
+    {
+      "name_key": "pilgrimage.3001.a",
+      "source_lines": [
+        6867,
+        6923
+      ],
+      "actual_rendered_index": 0,
+      "actual_native_option_index": 0,
+      "actual_resolved_name": "对虔诚的天主教徒来说，一点小雨算什么？",
+      "effects": [
+        "pious_type_option_effect: only involved activity with pious OR hajj option gains major activity-special-type progress.",
+        "add_piety = medium_piety_gain (00_basic_values:1133/1166 resolves base100).",
+        "Unless whole_of_body: if not ill, conditional illness random chance=35 + health*(-2.5); contract_disease_effect DISEASE=ill TREATMENT_EVENT=no.",
+        "Else if already ill and not pneumonic: random chance=15 + health*(-1.5); contract_disease_effect DISEASE=pneumonic TREATMENT_EVENT=no.",
+        "give_pilgrim_xp_effect: if pilgrim trait and its XP<100, +5 pilgrim XP; else if learning lifestyle, medium learning lifestyle XP; else if zealous, medium stress/fulfillment relief; otherwise minor relief."
+      ],
+      "health_value_observed": false,
+      "fixed_illness_probability_claimed": false,
+      "ill_or_pneumonic_acquired_claimed": false
+    },
+    {
+      "name_key": "pilgrimage.3001.b",
+      "source_lines": [
+        6925,
+        6928
+      ],
+      "actual_rendered_index": 1,
+      "actual_native_option_index": 1,
+      "actual_resolved_name": "别这么疯狂，我会待在我的帐篷里。",
+      "effects": [
+        "add_piety = miniscule_piety_loss, base -25 from 00_basic_values:1131/1139-1142."
+      ],
+      "executed_this_occurrence": false
+    }
+  ],
+  "effect_helper_lines": {
+    "give_pilgrim_xp_effect": [
+      488,
+      513
+    ],
+    "pious_type_option_effect": [
+      1225,
+      1239
+    ]
+  },
+  "after_lines": [
+    6929,
+    6943
+  ],
+  "after_effect": "Hidden cleanup only if root is AI AND a travel entourage member other than zealous_priest exists: silent_disappearance_effect on zealous_priest. This is not claimed for the observed human root.",
+  "actual_occurrence": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\p3-r0014-event-knowledge-a01\\pilgrimage-3001-r0014-occurrence.json",
+    "bytes": 10184,
+    "sha256": "571c71f53bc359568f88f3eb21cc95cf3f910779e01c1ea1e201dd894898ac0d"
+  },
+  "registry_at_analysis": {
+    "status": "not_registered",
+    "reason": "event_definition_key_not_registered",
+    "policy_used": "native_first_displayed_v1",
+    "new_registry_registration_performed": false
+  },
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "decision_tradeoff": "A gives piety/progression but can cause illness; B stays sheltered and loses piety. Use current health/traits and campaign needs when a dedicated policy is qualified; the observed incomplete icon preview cannot prove complete consequences.",
+    "submission_rule": "Match current typed definition/root/shown enabled mapping, submit once, then independently observe old window and original actor. Unknown acknowledgement is never replayed.",
+    "ordinary_auto_new_policy_enabled": false,
+    "full_registry_qualified": false
+  }
+}
