@@ -18,9 +18,9 @@ COOLDOWN = "ck3_query_player_holy_site_decision_cooldown_v1"
 PROMOTE = "ck3_confirm_holy_site_decision_v1"
 CENSUS = "ck3_inspect_gui_window_tree_v1"
 READS = frozenset({SITES, RELIGION, GOVERNANCE, DETAIL, COOLDOWN, CENSUS, QUERY,
-                  "ck3_get_capabilities", "ck3_take_snapshot"})
+                  "ck3_get_capabilities", "ck3_take_snapshot", "ck3_query_ingame_ui_window_v1"})
 PRESENT = frozenset({"ck3_open_ingame_decisions_v1", "ck3_select_ingame_decision_item_v1",
-                     "ck3_open_holy_site_decision_v1"})
+                     "ck3_open_holy_site_decision_v1", "ck3_open_holy_site_window_v1"})
 LIFECYCLE = frozenset({"ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1",
                       "ck3_observe_normal_exit_v1"})
 MAX_CALLS = 64
@@ -194,6 +194,14 @@ def validate_step(name: str, tool: str, args: Obj, branch: Arm, site: int,
         needed = {"action", "holy_site_id"}
         require(branch == "promote" and args.get("action") == "promote"
                 and integer(args.get("holy_site_id")) == site, "Only finite target promotion")
+    elif tool == "ck3_open_holy_site_window_v1":
+        needed = {"holy_site_id"}
+        require(branch == "promote" and integer(args.get("holy_site_id")) == site,
+                "Only the actual promotion site window")
+    elif tool == "ck3_query_ingame_ui_window_v1":
+        needed = {"window_kind"}
+        require(branch == "promote" and args.get("window_kind") == "holy_site",
+                "Only the actual promotion site window query")
     elif tool == COOLDOWN:
         needed = {"action"}
         require(branch == "promote" and args.get("action") == "promote", "Only actual promotion cooldown")

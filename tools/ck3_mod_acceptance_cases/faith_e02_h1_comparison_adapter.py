@@ -355,7 +355,26 @@ def promotion_terms(value: object, site: int) -> Q.Obj:
             "cost_description": Q.text(v.get("native_cost_description"))}
 
 
+def selected_promotion_site_window(value: object, site: int) -> bool:
+    v = Q.obj(value)
+    return (v.get("available") is True and v.get("effective_visible") is True
+            and v.get("subject_id_available") is True
+            and Q.integer(v.get("current_subject_id")) == Q.integer(site))
+
+
+def ensure_promotion_site_window(run: ArmRun) -> Q.Obj:
+    query: Q.Obj = {"window_kind": "holy_site"}
+    window = run.result("ck3_query_ingame_ui_window_v1", query)
+    if not selected_promotion_site_window(window, run.site):
+        run.result("ck3_open_holy_site_window_v1", {"holy_site_id": run.site})
+        window = run.result("ck3_query_ingame_ui_window_v1", query)
+    Q.require(selected_promotion_site_window(window, run.site),
+              "Original promotion site window not independently visible and selected")
+    return window
+
+
 def promote_once(run: ArmRun, before_sites: dict[str, bool]) -> Q.Obj:
+    ensure_promotion_site_window(run)
     target: Q.Obj = {"action": "promote", "holy_site_id": run.site}
     run.result("ck3_open_holy_site_decision_v1", target)
     first = promotion_terms(run.result(Q.DETAIL, target), run.site)

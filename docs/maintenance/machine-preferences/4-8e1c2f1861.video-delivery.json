@@ -1,0 +1,41 @@
+{
+  "schema": "xar.machine.video-delivery-preferences.v1",
+  "machine_id": "4-8e1c2f1861",
+  "preference_recorded_at_utc": "2026-10-20T18:27:55.375552+00:00",
+  "authority": {
+    "kind": "explicit_user_instruction",
+    "user_instruction": "这台机器连不上onedrive，仅限这台机器后续视频本地交付。",
+    "original_record": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/MACHINE-VIDEO-DELIVERY-PREFERENCE.user-20261021.json",
+      "bytes": 981,
+      "sha256": "7fdcaa74b1cd9df364a1282a5eb57f1f6aa536f86009861c466ef3a2dab7a859"
+    }
+  },
+  "scope": "Current and future video deliveries executed on this machine only",
+  "delivery_mode": "local_only",
+  "local_delivery_basis": "Actual selected video file is readable locally and its exact local path is supplied at delivery",
+  "onedrive_upload_required": false,
+  "onedrive_setup_or_retry_required": false,
+  "other_machines_unchanged": true,
+  "user_preference_until_explicit_revocation_or_replacement": true,
+  "no_autoexpiry": true,
+  "expires_at_utc": null,
+  "process_asset_expiry_revokes_preference": false,
+  "reason": {
+    "source": "user_report",
+    "reported_connection_unavailable": true,
+    "agent_network_test_performed_for_this_record": false
+  },
+  "machine_identity": {
+    "command": "python -B tools/ck3_live_run_id.py machine",
+    "actual_output": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-20T18:31:14.268932+00:00",
+    "source": "Codex editorial documentation task tool readback on this machine"
+  },
+  "retention": {
+    "video_files_permanent_retention_granted": false,
+    "existing_storage_policy_unchanged": true,
+    "preference_lifetime_is_separate_from_process_asset_retention": true
+  },
+  "record_observed_at_utc": "2026-10-20T18:31:14.268932+00:00"
+}
