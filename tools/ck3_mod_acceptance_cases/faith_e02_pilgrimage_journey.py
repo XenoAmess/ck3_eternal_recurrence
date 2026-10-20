@@ -216,6 +216,7 @@ class _Journey:
         return latest
 
     def observe_identity(self, frame, reason="key_node"):
+        frame = self.snapshot(frame, same_date=True)
         row, after, ref = self.call("identity", IDENTITIES, {}, frame)
         value = row["result"]
         _need(value.get("schema") == "ck3_12004_player_pilgrimage_activities_v1" and
