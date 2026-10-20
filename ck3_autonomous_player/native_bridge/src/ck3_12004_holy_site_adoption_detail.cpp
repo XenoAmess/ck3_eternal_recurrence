@@ -50,6 +50,16 @@ bool CostPlanningPins(const AdoptionDetailBindings&b)noexcept{
  Pin(b,0x310B390,"488bc448895808574881ecc0000000498bd9498bf80f57c00f1140a80f1140b8")&&
  Pin(b,0x310E6F0,"48895c24085556574154415541564157488dac2490fdffff4881ec700300004d");
 }
+bool StockDefaultParameterPins(const AdoptionDetailBindings&b)noexcept{
+ // Exact .4 dispatcher -> actual E0/F8 rebuild. The 32B store block proves
+ // kind4/flags0, ZERO-extended FFFFFFFF payload and the dynamic key slot.
+ // Complete frozen source and split dictionary extents are research inputs;
+ // these loaded pins do not call the original dictionary writer.
+ return Pin(b,0x14712D0,"4c89b7d0000000899fd8000000488bcfe81b040000")&&
+  Pin(b,0x1471729,"894c2430b8ffffffff4889442438488d8df80000004c8d4424308b158fa98d04")&&
+  Pin(b,0x1471749,"e8a2892c02")&&
+  Pin(b,0x373A0F0,"405356574883ec204c8b09488bf94863490c8bda498bf0488d1449498d04d14c");
+}
 bool Typed(const AdoptionDetailBindings&b,const void*p,std::uintptr_t vt,std::uint32_t td)noexcept{
  std::uintptr_t actual=0,col=0;std::uint32_t signature=0,type=0,self=0;
  return Read(b,p,0,actual)&&actual==b.image_base+vt&&actual>=8&&
@@ -303,6 +313,9 @@ bool ReadSelectedDecisionTerms12004(const AdoptionDetailBindings&b,
    const void*definition=nullptr;const void*actor_object=nullptr;
    std::uint32_t actor=absent,current_actor=absent;
    std::int32_t option=-1;std::string key;Scope scope{};Header dictionary{};
+   std::uint32_t stock_token=0;NamedScope stock_parameter{};
+   const void*custom_controller=nullptr,*controller_definition=nullptr;
+   bool stock_default=false;
    bool operator==(const GenericPass&)const=default;
   };
   const auto context=[&](GenericPass&p)->bool{
@@ -315,8 +328,19 @@ bool ReadSelectedDecisionTerms12004(const AdoptionDetailBindings&b,
       !ScopeAt(b,detail,0xE0,p.scope)||p.scope.kind!=4||p.scope.flags!=0||p.scope.payload!=p.actor||
       !Array(b,detail,0xF8,p.dictionary))return false;
    out.parameter_count=static_cast<std::uint32_t>(p.dictionary.count);
-   // No arbitrary Scope-kind semantics or selected_item is fabricated.
-   if(p.dictionary.count!=0)return false;
+   // The stock rebuild unconditionally inserts this default Scope. Do not
+   // infer its canonical string name, synthesize a context or use HolySite's
+   // selected_item. All other nonempty dictionaries remain unavailable.
+   if(p.dictionary.count!=0){
+    if(expected_key!="create_hof_decision"||p.dictionary.count!=1||!StockDefaultParameterPins(b)||
+       !Read(b,reinterpret_cast<const void*>(b.image_base+0x5D4C0D8),0,p.stock_token)||
+       !Read(b,p.dictionary.data,0,p.stock_parameter.key)||!ScopeAt(b,p.dictionary.data,8,p.stock_parameter.value)||
+       p.stock_parameter.key!=p.stock_token||p.stock_parameter.value.kind!=4||p.stock_parameter.value.flags!=0||
+       p.stock_parameter.value.payload!=std::uint64_t{0xFFFFFFFFU}||
+       !Read(b,detail,0x248,p.custom_controller)||p.custom_controller||
+       !Read(b,p.definition,0x1E20,p.controller_definition)||p.controller_definition)return false;
+    p.stock_default=true;
+   }
    const void*storage=nullptr,*slots=nullptr;std::int32_t count=0,actual=-1;
    return Read(b,b.character_storage,0,storage)&&storage&&
     Read(b,storage,ck3_12004::kCharacterStorageCapacityOffset,count)&&count>0&&
@@ -370,6 +394,9 @@ bool ReadSelectedDecisionTerms12004(const AdoptionDetailBindings&b,
    return fail("selected_terms_can_confirm_changed");
   if(!context(last)||first!=last)return fail("selected_terms_actual_context_changed");
   n.bypass_requirements_observed=bypass_observed;n.bypass_requirements_raw=bypass_before;
+  out.stock_default_parameter_verified=first.stock_default;
+  out.stock_default_parameter_token=first.stock_token;
+  out.stock_default_parameter_key=first.stock_parameter.key;
   n.available=true;out.available=true;out.context_verified=true;out.unavailable_reason.clear();
   return true;
  }catch(...){out.available=false;out.context_verified=false;out.native={};

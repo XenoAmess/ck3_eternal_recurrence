@@ -79,13 +79,14 @@ def normalize_decision_item(raw: object, binding: dict[str, object], requested_k
 
 def normalize_selected_decision_terms_v1(value: object, binding: dict[str, object],
                                          requested_key: str) -> dict[str, object]:
-    """Only current exact .4 empty-parameter detail terms; no action credit."""
+    """Exact .4 empty or fixed create_hof stock-default terms; no action credit."""
     if (not isinstance(value, dict)
             or value.get("schema") != "ck3-selected-decision-terms-v1"
             or value.get("read_only") is not True
             or value.get("action_ready") is not False
             or value.get("decision_confirm_invoked") is not False
-            or value.get("context_adapter") != "actual_empty_named_parameters_only"
+            or value.get("context_adapter") not in {
+                "actual_empty_named_parameters_only", "actual_create_hof_stock_default_parameter_only"}
             or value.get("decision_key") != requested_key
             or type(value.get("available")) is not bool
             or value.get("game_version") != "1.20.0.4"
@@ -99,6 +100,9 @@ def normalize_selected_decision_terms_v1(value: object, binding: dict[str, objec
     if type(value.get("capture_epoch")) is not int or value["capture_epoch"] < 0:
         raise ValueError("selected decision terms lacks an actual capture epoch")
     if not value["available"]:
+        if (value["context_adapter"] != "actual_empty_named_parameters_only"
+                or value.get("stock_default_parameter") is not None):
+            raise ValueError("unavailable selected terms cannot claim a verified stock parameter")
         if not isinstance(value.get("unavailable_reason"), str) or not value["unavailable_reason"]:
             raise ValueError("unavailable selected decision terms lacks reason")
         if (value.get("context_verified") is not False
@@ -111,8 +115,8 @@ def normalize_selected_decision_terms_v1(value: object, binding: dict[str, objec
                     "requirements_description", "cost_description", "resource_quote", "cooldown"))):
             raise ValueError("unavailable selected terms must not invent observed values")
         return dict(value)
-    if (value.get("capture_epoch") <= 0 or value.get("context_verified") is not True or value.get("named_parameter_count") != 0
-            or type(value.get("named_parameter_count")) is not int
+    if (value.get("capture_epoch") <= 0 or value.get("context_verified") is not True
+            or not selected_parameter_context_verified_v1(value, requested_key)
             or type(value.get("can_confirm")) is not bool):
         raise ValueError("selected decision context is unqualified")
     for key in ("requirements_bypass_observed", "ordinary_legality_observed",
@@ -161,3 +165,25 @@ def normalize_selected_decision_terms_v1(value: object, binding: dict[str, objec
     elif clock is not None:
         raise ValueError("unobserved selected cooldown must stay null")
     return dict(value)
+
+
+def selected_parameter_context_verified_v1(value: dict[str, object], requested_key: str) -> bool:
+    """Fixed wire identity only; the native reader proves the actual source row."""
+    count = value.get("named_parameter_count")
+    if type(count) is not int:
+        return False
+    parameter = value.get("stock_default_parameter")
+    if value.get("context_adapter") == "actual_empty_named_parameters_only":
+        return count == 0 and parameter is None
+    if (value.get("context_adapter") != "actual_create_hof_stock_default_parameter_only"
+            or requested_key != "create_hof_decision" or count != 1
+            or not isinstance(parameter, dict) or set(parameter) != {
+                "token_source", "canonical_token", "key", "scope_kind", "scope_flags", "scope_payload", "no_custom_controller"}):
+        return False
+    return (parameter["token_source"] == "stock_detail_default_token_slot_0x5D4C0D8"
+            and type(parameter["canonical_token"]) is int and 0 <= parameter["canonical_token"] <= 0xFFFFFFFF
+            and type(parameter["key"]) is int and parameter["key"] == parameter["canonical_token"]
+            and type(parameter["scope_kind"]) is int and parameter["scope_kind"] == 4
+            and type(parameter["scope_flags"]) is int and parameter["scope_flags"] == 0
+            and type(parameter["scope_payload"]) is int and parameter["scope_payload"] == 0xFFFFFFFF
+            and parameter["no_custom_controller"] is True)

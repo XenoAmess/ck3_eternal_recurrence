@@ -36,6 +36,28 @@ def read_pin(ref):
     return json.loads(Path(ref["path"]).read_text(encoding="utf-8-sig"))
 
 
+
+def selected_parameter_context_verified_v1(value, requested_key):
+    """Fixed wire identity only; the native reader proves the actual source row."""
+    count = value.get("named_parameter_count")
+    if type(count) is not int:
+        return False
+    parameter = value.get("stock_default_parameter")
+    if value.get("context_adapter") == "actual_empty_named_parameters_only":
+        return count == 0 and parameter is None
+    if (value.get("context_adapter") != "actual_create_hof_stock_default_parameter_only"
+            or requested_key != "create_hof_decision" or count != 1
+            or not isinstance(parameter, dict) or set(parameter) != {
+                "token_source", "canonical_token", "key", "scope_kind", "scope_flags", "scope_payload", "no_custom_controller"}):
+        return False
+    return (parameter["token_source"] == "stock_detail_default_token_slot_0x5D4C0D8"
+            and type(parameter["canonical_token"]) is int and 0 <= parameter["canonical_token"] <= 0xFFFFFFFF
+            and type(parameter["key"]) is int and parameter["key"] == parameter["canonical_token"]
+            and type(parameter["scope_kind"]) is int and parameter["scope_kind"] == 4
+            and type(parameter["scope_flags"]) is int and parameter["scope_flags"] == 0
+            and type(parameter["scope_payload"]) is int and parameter["scope_payload"] == 0xFFFFFFFF
+            and parameter["no_custom_controller"] is True)
+
 def quote_terms(row, actor, date_raw):
     require(row.get("ok") is True and not row.get("error"), "HoF actual quote query failed")
     value = row.get("result")
@@ -56,9 +78,8 @@ def quote_terms(row, actor, date_raw):
         and terms.get("read_only") is True and terms.get("action_ready") is False
         and terms.get("decision_confirm_invoked") is False
         and terms.get("context_verified") is True
-        and terms.get("named_parameter_count") == 0
-        and terms.get("context_adapter") == "actual_empty_named_parameters_only",
-        "HoF actual selected empty-parameter terms unavailable")
+        and selected_parameter_context_verified_v1(terms, DECISION),
+        "HoF actual selected qualified parameter terms unavailable")
     require(terms.get("requirements_bypass_observed") is True
         and type(terms.get("requirements_bypass_raw")) is int and terms["requirements_bypass_raw"] == 0
         and terms.get("ordinary_legality_observed") is True
@@ -91,8 +112,9 @@ def verify_quote_pair(claim):
         require(isinstance(packet.get("rows"), list) and len(packet["rows"]) == 1,
                 "HoF quote receipt must contain one actual query")
         values.append(quote_terms(packet["rows"][0], claim["actor"], claim["date_raw"]))
-    for field in ("resource_quote", "requirements_description", "cost_description"):
-        require(values[0][field] == values[1][field], "HoF actual quotes changed: " + field)
+    for field in ("resource_quote", "requirements_description", "cost_description",
+                  "context_adapter", "named_parameter_count", "stock_default_parameter"):
+        require(values[0].get(field) == values[1].get(field), "HoF actual quotes changed: " + field)
     return values
 
 
