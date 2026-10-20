@@ -1,0 +1,64 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:23:15.707915+00:00",
+  "waits": [
+    {
+      "label": "current_c1b",
+      "source_head": "c1b03ace000ebbd496a52a1143c4c47427a63a05",
+      "started_at_utc": "2026-10-20T15:23:00.651546+00:00",
+      "observed_at_utc": "2026-10-20T15:23:08.231385+00:00",
+      "original_popen_pid": 37396,
+      "original_popen_wait": 0,
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\review_and_test.py",
+        "child",
+        "current_c1b"
+      ],
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\current_c1b.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\current_c1b.stderr.log",
+        "bytes": 461,
+        "sha256": "0da0d0898192c9c3ff5e5e6ab129cf2f2fcd2f05bf9a350308adeb4ed3f14b1d"
+      }
+    },
+    {
+      "label": "frozen_bc",
+      "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "started_at_utc": "2026-10-20T15:23:08.240732+00:00",
+      "observed_at_utc": "2026-10-20T15:23:15.688630+00:00",
+      "original_popen_pid": 2772,
+      "original_popen_wait": 0,
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\review_and_test.py",
+        "child",
+        "frozen_bc"
+      ],
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\frozen_bc.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\frozen_bc.stderr.log",
+        "bytes": 457,
+        "sha256": "f6f3a533ceefb28d3ca890fa8453a7a03388cdfd295da8b446b592f9f8699b29"
+      }
+    }
+  ],
+  "SDK_game_native_UI": false,
+  "D_W_modified": false,
+  "tests_total": 4,
+  "whole_222_matrix_run": false
+}

@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:23:15.622346+00:00",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "driver_bytes": 1652126,
+  "driver_sha256": "df9e04917befccd508a593fb70f4a8845a27d9be3b6d644983d3a3da8d425c3a",
+  "stripped_baseline_bytes": 1651613,
+  "stripped_baseline_sha256": "b1830e03567f6227bf3927318eab20ecc515df1f93ae966409d0d15e3e2bf09c",
+  "baseline_differs": true,
+  "new_wait_progress_calls_preserved": {
+    "start_wait_progress_v1(self,": {
+      "before": 0,
+      "after": 0
+    },
+    "finish_wait_progress_v1(self,": {
+      "before": 0,
+      "after": 0
+    },
+    "progress.observe_candidate(changed)": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "complete_current_modules_loaded": [],
+  "tests_run": 2,
+  "success": true,
+  "failures": 0,
+  "errors": 0,
+  "Native_OS_schedule_boundaries": "Original focused test fakes; not live qualification",
+  "original_behavior_assertions_preserved": true
+}

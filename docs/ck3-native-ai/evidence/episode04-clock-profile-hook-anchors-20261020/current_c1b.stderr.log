@@ -1,0 +1,7 @@
+test_actual_three_production_clock_methods_preserve_commands_and_return (clock_candidate_current_c1b.ClockTests.test_actual_three_production_clock_methods_preserve_commands_and_return) ... ok
+test_production_clock_exception_and_cleanup_are_unchanged (clock_candidate_current_c1b.ClockTests.test_production_clock_exception_and_cleanup_are_unchanged) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 5.038s
+
+OK

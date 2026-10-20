@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:24:52.271811+00:00",
+  "source_head": "c1b03ace000ebbd496a52a1143c4c47427a63a05",
+  "AST_equal_except_UNPROFILE_HUNKS_literal": true,
+  "plain_assert_counts": [
+    2,
+    2
+  ],
+  "behavior_test_AST_and_all_unittest_assertions_unchanged": true,
+  "D_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "D_tracked_clean": true,
+  "W_D_modified": false,
+  "patch_check": {
+    "command": "git -C <W> apply --check --cached --whitespace=error <candidate.patch>",
+    "actual_tool_returncode": 0,
+    "source": "tools.exec_command chunk22c1f0 on2026-10-20T15:23:34Z; read-only index check",
+    "cached_check_does_not_mutate_index": true
+  },
+  "authority": {
+    "cap_bytes": 7033,
+    "cap_sha256": "04a17733f04b0dce13a11af19fba2f0b8809225d1a337693c665c628386e4b76",
+    "scope_hard_stop_utc": "2026-10-20T16:15:00Z",
+    "lane_ceiling_bytes": 65536
+  },
+  "boundary": "Test-only exact hook anchors; no clock driver/native/runtime change; no CI or game qualification"
+}

@@ -1,0 +1,92 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:23:00.564003+00:00",
+  "source_rows": [
+    {
+      "label": "current_c1b",
+      "head": "c1b03ace000ebbd496a52a1143c4c47427a63a05",
+      "bytes": 1655471,
+      "sha256": "9d294a2a3e9e3734bca89461d9eaa205ed9b60945689a45f4cb1325c8ea258e9",
+      "legacy_anchor_counts": [
+        0,
+        0,
+        0
+      ],
+      "candidate_anchor_counts": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "label": "frozen_bc",
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "bytes": 1652126,
+      "sha256": "df9e04917befccd508a593fb70f4a8845a27d9be3b6d644983d3a3da8d425c3a",
+      "legacy_anchor_counts": [
+        1,
+        1,
+        1
+      ],
+      "candidate_anchor_counts": [
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "test_source": {
+    "path": "ck3_autonomous_player/tests/unit/test_clock_observation_timing_v1.py",
+    "bytes": 15122,
+    "sha256": "ccb50156aed96eefdbf345a1e375226553cf3bc2b82482a8447a224a5c22128a"
+  },
+  "candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\test_clock_observation_timing_v1.candidate.py",
+    "bytes": 14429,
+    "sha256": "417be746c6261a8a66a2a4c1e443c32b1afc168eae7b6b0c5f18c1795e3bb54d"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\CLOCK-PROFILE-HOOK-ANCHORS.candidate.patch",
+    "bytes": 2475,
+    "sha256": "96e73ca035162109ebe637edbdac12f90bf4f061e7a1da15204ce8f892fb951c"
+  },
+  "dependencies": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/clock_observation_timing_v1.py",
+      "current_sha256": "34ffbd45381675db60faeb0e36146508cd6234465690d48d7a507ef40e29bda0",
+      "bc_sha256": "34ffbd45381675db60faeb0e36146508cd6234465690d48d7a507ef40e29bda0",
+      "same": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_timing.py",
+      "current_sha256": "593cb5e266c12277b8fed6b90069336cdd5ff292fdf29ef742e8fe98004c40ac",
+      "bc_sha256": "593cb5e266c12277b8fed6b90069336cdd5ff292fdf29ef742e8fe98004c40ac",
+      "same": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "current_sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+      "bc_sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+      "same": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_daily_watch_v1.py",
+      "current_sha256": "22d3406c346d753d11550ce1610f0b77c13bccec61d5d92345a09a50efcf0bdb",
+      "bc_sha256": "22d3406c346d753d11550ce1610f0b77c13bccec61d5d92345a09a50efcf0bdb",
+      "same": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_clock_failure_diagnostic_v1.py",
+      "current_sha256": "aa5211bccdc269aa19e1d206feb4a82f738af44b7a452f15ad7d0490eb8ad142",
+      "bc_sha256": "8bf4dc3413fae7634999e3bd1b3509c2b9f2b9a58e0a13ee1abb7a477c52276f",
+      "same": false
+    }
+  ],
+  "fixture": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\fixtures\\clock_actual_sem65_projection.json",
+    "bytes": 3061,
+    "sha256": "e70f6fb4f514939544053e17739b912789114464b67bf1372e8bc45f89112354"
+  }
+}
