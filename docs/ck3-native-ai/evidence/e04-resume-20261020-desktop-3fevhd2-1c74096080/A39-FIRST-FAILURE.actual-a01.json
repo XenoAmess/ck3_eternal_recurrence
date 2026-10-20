@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.a39-first-build-failure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:41:27.320631+00:00",
+  "status": "ACTUAL_PUBLIC_TARGET_C1083_NO_QUALIFICATION",
+  "source_head": "9870b72f80870af1e3a646d34e23e7972f327761",
+  "native_build_source_head": "9870b72f80870af1e3a646d34e23e7972f327761",
+  "runtime_source_head": "95b17262faf5e36d7b17cebde5184dc554d5b862",
+  "native_tree": "797ebc88524ed0012969eb358ffb489c0bc89434",
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-PLAN.actual-a01.json",
+    "bytes": 37068,
+    "sha256": "a2a99efed7401c56e2b7440258ad7fc1a24ee688e0004cb09f7e25e39f414f46"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+    "bytes": 5124,
+    "sha256": "f267218d1b192b072ea5b9f7070ee5392d2fe4bda1e6dd3f0a772f446badcd5f"
+  },
+  "producer_exit_code": 1,
+  "cmake_build_exit_code": 2,
+  "phase": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\result.actual.json",
+    "bytes": 18216,
+    "sha256": "8ec1c925e7588f7e92de88d18949771c980de0cdd50ffe833c5060210881eac6"
+  },
+  "phase_stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\stdout.txt",
+    "bytes": 103764,
+    "sha256": "b4cf477ac389ebc4a17caf096adb90ca0a76a31bc67679aab5b4a5c1bdf3dfbc"
+  },
+  "phase_stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\stderr.txt",
+    "bytes": 657,
+    "sha256": "8b4b11e088558cde4c83da2537581afafa35bbcf463e29f3cf2334de6a3d5293"
+  },
+  "producer_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\native-msvc-result.json",
+    "bytes": 2313,
+    "sha256": "33e71f0c7471fb7594e69b6c268db6ff5a9cf43a4dd09d63de0b5a7a75f39889"
+  },
+  "configure_log": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\msvc-configure.log",
+    "bytes": 920,
+    "sha256": "db70844c2848c948d704d26901590bde9f24a92c12eff6275cecce07c8f639ab"
+  },
+  "build_log": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\msvc-build.log",
+    "bytes": 89821,
+    "sha256": "addfd78ed95afc6a899761512b85ad6ccd1a6e974d47cf3bfed6744f3c6eac2c"
+  },
+  "frozen_generated_inputs": [
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\compile_commands.json",
+        "bytes": 4529984,
+        "sha256": "cc4e0d316a53f08e9de783a115394d39988fcf311f8fd336f077b8e4183d2215"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\compile_commands.json.frozen-a01",
+        "bytes": 4529984,
+        "sha256": "cc4e0d316a53f08e9de783a115394d39988fcf311f8fd336f077b8e4183d2215"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\CMakeCache.txt",
+        "bytes": 47763,
+        "sha256": "e32594c5754de512bf2d3d604b1de97aec4ce5b5d381c03f23e69dd166b70ef9"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\CMakeCache.txt.frozen-a01",
+        "bytes": 47763,
+        "sha256": "e32594c5754de512bf2d3d604b1de97aec4ce5b5d381c03f23e69dd166b70ef9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\build.ninja",
+        "bytes": 7041265,
+        "sha256": "dc429341fc90395e82023387a1afe342195827e67a48aee4892b86d349cb7979"
+      },
+      "frozen": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\build.ninja.frozen-a01",
+        "bytes": 7041265,
+        "sha256": "dc429341fc90395e82023387a1afe342195827e67a48aee4892b86d349cb7979"
+      }
+    }
+  ],
+  "actual_failed_target": "xar_ck3_12003_war_cash_net_income_test",
+  "diagnostic": "C1083: holy_order_loan_war_cash_attach_12004.hpp not found; all three actual target TUs compile with native/include only and no research include",
+  "minimal_shared_CMake_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\war-cash-shared-target-fix.candidate.patch",
+    "bytes": 777,
+    "sha256": "cb373d88ff379af8a6d9fae19e5757987f8c0824a8eb364af5aac0d99bbb7215"
+  },
+  "aggregate_actual_bytes": 264814735,
+  "aggregate_peak_bytes": 264814735,
+  "new_EXEs_executed": false,
+  "SYSTEM_registration_reached": false,
+  "cold_executed": false,
+  "CK3_contacted": false,
+  "production_bytes_qualified": false,
+  "focused_cold_qualified": false,
+  "keep_original_paths_immutable": true,
+  "recovery": "Root commits one-line existing-target runtime linkage; new plan/phase/evidence-dir; incremental reuse of this same guarded build root only"
+}

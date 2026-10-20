@@ -24,3 +24,10 @@
 `machine_id: desktop-3fevhd2-1c74096080`。公共R04已增加本场before-Move首帧等待：实际canonical客户端图经Root直接审阅并回读后才进行唯一preview/Move；它与第七日真实相机Start分开。新增一个三场景compound检查通过，原六项未机械重跑。另将R219缺keeper最终报告的真实异常前驱接入既有public allocate；[专题及原件](episode04-r219-abnormal-resource-predecessor-12004.md)保存7124→7127、host0但正常闭场false、原PID/create-time及新鲜无进程读回。13项新增加15项相关既有focused通过，仅授资源接续，不补造keeper线程退出、CK3 OS0或业务成功。
 
 首包已推master `8e9642adceb686e0457b3cb866ab5c3c9436040f`，官方Linear已成功、static当时仍运行。a39实际公共生产编译正在执行，未取得生产冷测或实机信用。下一场仍须等实际新native资格及最终源/容量绑定后才分配编号和取得新鲜Steam离线画面。
+
+
+## 2026-10-20T02:42:47.662576+00:00 a39真实构建缺口
+
+`machine_id: desktop-3fevhd2-1c74096080`。首个a39公共producer实际退出1、Ninja退出2；维护费净收入独立cold target的reader/serializer/test三TU报C1083，实际cl仅有native/include，缺少research头及真实loan serializer链接闭包。原失败日志、配置、compile argv和已编译对象保留在[实际失败回执](evidence/e04-resume-20261020-desktop-3fevhd2-1c74096080/A39-FIRST-FAILURE.actual-a01.json)所指路径，264,814,735 B当时聚合；未运行SYSTEM、cold或游戏。
+
+公共CMake仅为该既有target链接 `xar_ck3_12002_runtime`，继承其PUBLIC research include和原生产依赖。生产TU内容不变。后继以同a39根和原1GiB同账增量续建，使用新phase/日志/来源绑定，不覆盖首失败、不从头重建全树、不增加外置CMake替代实现。该修复本身尚不授构建或实机通过；以实际a02生产/cold回执为准。
