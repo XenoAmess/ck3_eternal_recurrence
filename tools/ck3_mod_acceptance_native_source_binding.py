@@ -1,0 +1,133 @@
+"""Explicit equivalence for an actual clean linked Native source worktree.
+
+This verifies source provenance only. It never confers build or live credit.
+The qualified build's snapshot and CMake paths retain their original identities.
+"""
+from __future__ import annotations
+
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
+SCHEMA = "ck3-native-worktree-source-binding-v1"
+FIELDS = frozenset({
+    "schema", "machine_id", "observed_at_utc", "runtime_repo_root",
+    "runtime_source_commit", "native_source_repo_root", "native_source_commit",
+    "native_source_base", "native_subtree_tree_id", "common_git_directory",
+    "qualified_native", "snapshot",
+})
+
+
+def require(value, message):
+    if not value:
+        raise ValueError(message)
+
+
+def pin(path):
+    path = Path(path).resolve()
+    raw = path.read_bytes()
+    return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def git(repo, *args):
+    return subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, check=True).stdout.strip()
+
+
+def timestamp(value):
+    require(isinstance(value, str), "Explicit timezone-aware source observation required")
+    result = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    require(result.tzinfo is not None, "Source observation must include its timezone")
+    return result.astimezone(timezone.utc)
+
+
+def checkout(repo, commit):
+    require(Path(git(repo, "rev-parse", "--show-toplevel")).resolve() == repo,
+            "Declared source repository is not its actual Git top level")
+    require(git(repo, "rev-parse", "HEAD") == commit
+            and not git(repo, "status", "--porcelain", "--untracked-files=all"),
+            "Source checkout must be clean at its exact declared commit")
+    return (repo / git(repo, "rev-parse", "--git-common-dir")).resolve()
+
+
+def qualified_native_source_checkout(binding_path, *, root, runtime_commit, native_commit,
+                                     machine, qualified_native_ref, qualification, snapshot_ref,
+                                     snapshot):
+    """Return the actual original Native root and optional checked binding pin.
+
+    Without an explicit binding the historical same-Root requirement is exact.
+    Alternate source roots must be direct linked-worktree sources, never renamed
+    copies or an inferred equivalence based on a path, commit or operator alone.
+    """
+    root = Path(root).resolve()
+    runtime_native = (root / NATIVE_PREFIX).resolve()
+    original_native = Path(snapshot["Root_native_source_base"]).resolve()
+    if binding_path is None:
+        require(original_native == runtime_native, "Snapshot is from another Root native tree")
+        return {"native_source_base": runtime_native, "binding_ref": None}
+
+    require(original_native != runtime_native,
+            "An alternate checkout binding must identify an actual distinct source root")
+    binding_path = Path(binding_path)
+    require(not binding_path.is_symlink(), "Source checkout binding cannot be symbolic")
+    binding_ref = pin(binding_path)
+    value = json.loads(binding_path.read_text(encoding="utf-8-sig"))
+    require(isinstance(value, dict) and set(value) == FIELDS and value.get("schema") == SCHEMA,
+            "Exact explicit Native worktree source-binding schema required")
+    require(value["machine_id"] == machine and qualification.get("machine_id") == machine
+            and snapshot.get("machine_id") == machine,
+            "Native source binding, qualification and snapshot must name this machine")
+    require(value["runtime_source_commit"] == runtime_commit
+            and value["native_source_commit"] == native_commit
+            and qualification.get("source_commit") == native_commit
+            and snapshot.get("root_commit") == native_commit
+            and re.fullmatch("[0-9a-f]{40}", runtime_commit)
+            and re.fullmatch("[0-9a-f]{40}", native_commit),
+            "Source binding must preserve the distinct exact runtime and compile commits")
+    require(value["qualified_native"] == qualified_native_ref
+            and pin(qualified_native_ref["path"]) == qualified_native_ref
+            and value["snapshot"] == snapshot_ref and pin(snapshot_ref["path"]) == snapshot_ref,
+            "Source binding must pin the actual qualification and original source snapshot")
+    observed = timestamp(value["observed_at_utc"])
+    require(timestamp(qualification.get("observed_at_utc")) <= observed <= datetime.now(timezone.utc),
+            "Source binding observation must follow the actual qualified build and not be in the future")
+    native_repo = Path(value["native_source_repo_root"]).resolve()
+    require(Path(value["runtime_repo_root"]).resolve() == root
+            and (native_repo / NATIVE_PREFIX).resolve() == original_native
+            and Path(value["native_source_base"]).resolve() == original_native
+            and Path(snapshot["snapshot_native_base"]).resolve() == original_native,
+            "Explicit alternate source must retain its real direct Native worktree paths")
+    root_common, native_common = checkout(root, runtime_commit), checkout(native_repo, native_commit)
+    require(root_common == native_common == Path(value["common_git_directory"]).resolve(),
+            "Native source and runtime repositories must be actual linked worktrees of the declared Git store")
+    ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", native_commit, runtime_commit],
+                              cwd=root, capture_output=True)
+    require(ancestor.returncode == 0, "Native compile commit must be an ancestor of the actual runtime commit")
+    subtree = git(root, "rev-parse", runtime_commit + ":" + NATIVE_PREFIX.rstrip("/"))
+    require(subtree == value["native_subtree_tree_id"]
+            == git(native_repo, "rev-parse", native_commit + ":" + NATIVE_PREFIX.rstrip("/")),
+            "Runtime and compile commits have different Native Git trees")
+    tracked = set(git(root, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
+    native_tracked = set(git(native_repo, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
+    rows = snapshot.get("files", [])
+    declared = {NATIVE_PREFIX + row["native_relative"] for row in rows if "source" not in row}
+    require(tracked == native_tracked == declared and len(declared) == len(rows)
+            and snapshot.get("source_count") == len(rows),
+            "Direct worktree snapshot must cover every unique tracked Native input, without derivatives")
+    for row in rows:
+        relative = row["native_relative"]
+        require(isinstance(relative, str) and relative and "\\" not in relative and ":" not in relative
+                and not relative.startswith("/") and all(p not in {"", ".", ".."} for p in relative.split("/"))
+                and "original_source_pin" not in row,
+                "Direct Native worktree source paths must be safe, unique, unmodified tracked inputs")
+        expected = {"bytes": row["bytes"], "sha256": row["sha256"]}
+        for base in (runtime_native, original_native):
+            path = base / relative
+            require(not path.is_symlink(), "Native worktree source inputs cannot be symbolic")
+            actual = pin(path)
+            require({key: actual[key] for key in expected} == expected,
+                    "Actual Native source raw pin differs across the runtime, compile checkout or frozen snapshot: " + relative)
+    return {"native_source_base": original_native, "binding_ref": binding_ref}

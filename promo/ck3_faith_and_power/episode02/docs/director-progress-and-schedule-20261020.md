@@ -1,5 +1,30 @@
 # 第二期导演进度、剩余工作量与相对节点
 
+## 13:55滚动更新：原生冷编译与M3合并并行
+
+`machine_id: 4-8e1c2f1861`，观察截至`2026-10-20T05:55:00Z`。B16以冻结的M2源码`05ad9dbc68308b908e1d4109509c952a263fc596`直接冷构建；freeze、configure-production及inspect-production实际退出0，生产838编译单元／833个独立源文件检查通过，build-production已启动，尚未取得新DLL、19目标实际运行或游戏内收益资格。来源：[本轮准入](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b16-a01/ADMISSION-EXECUTION-a01.json)与[冻结执行输入](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b16-a01/qualifications/cold-build-preparation-a01/EXECUTION-INPUTS.a03.frozen.json)。
+
+M3分段录制、精确归档迁移、Native独立工作树来源绑定及同Faith人物筛选已合入当前工作树；合并后窄审确认两个来源合同及M2 capability hooks完整，旧binding先清除再写入当前值。此前17＋2、21及19项消费者的信用分别保留，本次未重跑；实际新runtime与四段录制仍待取得。M2官方CI失败仅涉及两份交接中的禁用脚本解释器文字，后续`ff78f42506afc1ad5aa2c02b86547b3078853867`已修正，当前机器完整Python-only检查实际GREEN；不将该修正计作原生构建验收。B14精确回收第一次执行在旧源码pin校验处拒绝，删除0 B，须以M3冻结来源生成新版本计划后再执行。
+
+## 13:40滚动更新：B15已证降级与实扣，A1收益仍待刷新／typed后态
+
+`machine_id: 4-8e1c2f1861`，本节来源截至`2026-10-20T05:33:21.126604Z`。R0008原始同Rite两人物前提未满足时world action为0；保留该原件后，以同Faith、不同Rite的窄continuation继续，3项predicate检查通过。site27麦地那仅一次Demote，独立post确认主要关系true→false，虔诚4250→3250，原生full10报价与实际扣1000一致。人物15893／10322各自Rite15／16、Faith50、奉献等级4／1、六属性与其他钱包控制保持；外交18／13和原文named Medina＋4／＋1都未变，cache generation未知。因此本场只能提供降级与成本案例来源，A1净收益／单站归因仍不闭，不能把视频剪成“外交下降已实证”。[本场实际结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b15-a01/same-faith-continuation-a01/case-output/a1-same-faith-result.json)。
+
+M2源码`05ad9dbc68308b908e1d4109509c952a263fc596`已push，profile v3的19个有限目标／47个直接编译单元通过源码审查，未冷构建新DLL或取得新getter实机资格。[M2来源](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b16-a01/qualifications/source-integration-a01/SOURCE-PUSH.actual.json)。M3录制器17项与转发2项owned消费者及源审通过，候选显式支持至多4take、合计300秒、模板每take峰值128MiB、总raw512MiB／scene896MiB；它仍未应用、未实际录制，不能把配置能力计为已经拍到4段。[M3候选](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/segmented-recorder-source-a01/DELIVERY.actual.json)。
+
+当前正式recipe仍68cue／56有视觉、固定53／65、required1／24，35pending＝12固定＋23required；B15还未新增正式信用。目标继续约30分钟，当前完整首版预测约27–30分钟，不改导演V0。剩余3–6小时是从本节点起、各门槛首轮可用时的滚动制作估计，包含构建、现场、案例声音和审片；不是固定交付钟点，失败或真实旅程／刷新等待会重排。
+
+|相对节点|下一项可验收成果与依赖|
+|---|---|
+|N1 Native冷构建|冻结M2输入、新grant与producer后，取得新DLL、19有限目标、SDK／公共runtime的实际资格；当前只完成源码阶段。|
+|N2 P3四关键窗口|M3先应用并绑定实际来源，再在独占现场采完整报价／可Start、一次Start及后读、真实出行阶段、结算／归返窗口；每窗以实际节点为准。|
+|N3 H2真实quote|取得原版实际报价／条件，合法时再采确认、新领袖与钱包后态；不能用规则卡替代。|
+|N4 typed收益／自然刷新|新getter目前面向骑士战斗力，奉献等级影响仍缺实际通道；双人物按实际可用刷新再读，cache未知不能冒称已刷新或已归因。|
+|N5 旁白并行|原件、语义与正式来源绑定一旦通过，即并行写结果句、配音及双语字幕，不预写未来收益。|
+|N6 全片审阅|正式consumer缺口闭合后再合成、核画面／字幕／声音与完整时长，完成一次全片审阅。|
+
+05:39:53Z闭场追加：游戏OS／native、原host／公共run／allocator／keeper实际等待0；fresh Steam离线原图已直接审阅，显示实读恢复1024×768，screen CAS12631done／resources[]。场景4KiB路径上界431,747,072 B（非物理分配量），future场景写入0、闭场小尾项65,536 B，共享池未擅关闭。素材仅原片72.8秒／60,226,433 B、1438VFR帧，full strict decode0；3.967秒报价／钱包4250与69秒窗口关闭／钱包3250两实看帧都有右上tooltip，只授静帧／ROI，不授连续clean。[媒体回执](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b15-media-review-a01/CLOSURE.actual.json)。
+
 ## 12:55滚动更新：供奉链已拍，后续研究与实拍并行
 
 `machine_id: 4-8e1c2f1861`，观察截至`2026-10-20T04:50:00Z`。B14已经真实完成267供奉到麦加26、独立物主／槽位／库存后态及认可稀有度合计4→8；正常退出、保留OS／native退出0、原run／host／keeper／allocator等待0、Steam离线与CAS12604释放均已取得。[闭场证据](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/SCENE-CLOSURE.actual.json)和[最终容量读回](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/monitoring/storage-sealed-a01.actual.json)分列保存。

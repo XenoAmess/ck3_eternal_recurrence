@@ -215,7 +215,7 @@ def load_base(runtime_path):
     return runtime, manifest, refs, source
 
 
-def qualify(chain, path, commit, root, changed_paths, machine):
+def qualify(chain, path, commit, root, changed_paths, machine, archive_context=None):
     value = read(path)
     require(value.get("machine_id") == machine and value.get("source_commit") == commit,
             "Actual changed-chain receipt must bind this new Root commit: " + chain)
@@ -242,7 +242,8 @@ def qualify(chain, path, commit, root, changed_paths, machine):
         path_value = Path(row["path"]).resolve()
         if path_value.is_relative_to(root):
             indexed[path_value.relative_to(root).as_posix()] = row
-    relevant = [p for p in changed_paths if chain in classify(p)]
+    retired = archive_context.retired_paths(root, commit) if archive_context else frozenset()
+    relevant = [p for p in changed_paths if p not in retired and chain in classify(p)]
     if chain == "pilgrimage_wire_seam":
         critical_paths = {SDK_PREFIX + "xar_autoplayer/bridge/" + name for name in CRITICAL_TRANSPORTS}
         require(critical_paths <= set(indexed), "Current SDK seam receipt must pin all eight actual critical SDK files")
@@ -253,7 +254,7 @@ def qualify(chain, path, commit, root, changed_paths, machine):
     return pin(path)
 
 
-def apply_delta(delta_path, runtime_path, manifest, source, root, commit):
+def apply_delta(delta_path, runtime_path, manifest, source, root, commit, archive_context=None):
     value = read(delta_path)
     require(value.get("schema") in {"ck3-shared-source-delta-v1", "faith-next-shared-source-delta-v1"}
             and value.get("machine_id") == manifest["machine_id"]
@@ -280,17 +281,21 @@ def apply_delta(delta_path, runtime_path, manifest, source, root, commit):
     changes = value["changes"]
     require(sorted(actual_names) == sorted(row["path"] for row in changes)
             and len(changes) == len({row["path"] for row in changes}), "Delta omitted or duplicated actual Root diff paths")
+    require(("archive_relocations" in value) == (archive_context is not None),
+            "Optional archive contract requires its validated shared context")
+    retired = archive_context.retired_paths(root, commit, delta_path) if archive_context else frozenset()
     files = dict(source["files"])
     required = set()
     for row in changes:
         relative = row["path"]
-        required.update(classify(relative))
+        if relative not in retired:
+            required.update(classify(relative))
         require(row["before"] == files.get(relative), "Before raw signature differs from frozen global index: " + relative)
         current = (root / relative).resolve()
         require(current.is_relative_to(root), "Changed source escaped Root")
         after = {k: pin(current)[k] for k in ("bytes", "sha256")} if current.is_file() else None
         require(after == row["after"], "Current changed source differs from frozen delta: " + relative)
-        require(after is not None or row["before"] is None,
+        require(after is not None or row["before"] is None or relative in retired,
                 "Removing an indexed implementation requires a separately qualified full shared base; deletion is outside this lightweight contract")
         if after is None:
             files.pop(relative, None)
@@ -595,7 +600,7 @@ def qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, b
         name: {owners[path] for path in paths} for name, paths in actual_inputs.items()}}
 
 
-def qualify_native(path, root, commit, machine, previous_dll, previous_manifest):
+def qualify_native(path, root, commit, machine, previous_dll, previous_manifest, native_source_checkout_binding=None):
     value = read(path)
     native_commit = value.get("source_commit", "")
     require(value.get("schema") == "ck3-qualified-native-build-v1" and value.get("machine_id") == machine
@@ -645,7 +650,12 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
             and verification.get("all_original_inputs_still_exactly_verified") == len(rows),
             "Complete frozen source verification required")
     native_root = (root / NATIVE_PREFIX).resolve()
-    require(Path(snapshot["Root_native_source_base"]).resolve() == native_root, "Snapshot is from another Root native tree")
+    source_checkout = module(HERE / "ck3_mod_acceptance_native_source_binding.py",
+                             "ck3_native_source_binding").qualified_native_source_checkout(
+        native_source_checkout_binding, root=root, runtime_commit=commit, native_commit=native_commit,
+        machine=machine, qualified_native_ref=pin(path), qualification=value,
+        snapshot_ref=refs["snapshot"], snapshot=snapshot)
+    compile_native_root = source_checkout["native_source_base"]
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
     status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"], cwd=root,
                             capture_output=True, text=True, check=True).stdout
@@ -666,7 +676,7 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
         original = row.get("original_source_pin")
         if original:
             require(relative == "CMakeLists.txt", "Only a separately identified test-registration CMake derivative is allowed")
-            require(Path(original["path"]).resolve() == native_root / relative, "Original CMake source belongs to another tree")
+            require(Path(original["path"]).resolve() == compile_native_root / relative, "Original CMake source belongs to another tree")
             checked(original)
         elif "source" not in row:
             original = {"path": str(native_root / relative), "bytes": row["bytes"], "sha256": row["sha256"]}
@@ -770,7 +780,8 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
             "profile": profile, "old_profile": old_profile, "dll": refs["published_dll"],
             "native_files": native_files, "snapshot_root": str(snapshot_root), "compile_commit": native_commit,
             "execution_wire": execution_wire, "profile_expansion": expansion["ref"] if expansion else None,
-            "fixture_link_support": link_support["ref"] if link_support else None}
+            "fixture_link_support": link_support["ref"] if link_support else None,
+            "source_checkout_binding": source_checkout["binding_ref"]}
 
 
 def project_host(root, old_host, old_runtime, new_runtime, source_files):
@@ -836,6 +847,8 @@ def main(argv=None):
     for name in ("base-runtime", "source-delta", "scene-root", "storage-admission", "products", "case-inputs", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--qualified-native", type=Path, required=True, help="exact actual native production-build qualification")
+    parser.add_argument("--native-source-checkout-binding", type=Path,
+                        help="explicit actual equivalence receipt for a clean linked Native source worktree")
     parser.add_argument("--task-prefix", default="ck3-acceptance-")
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--product", required=True)
@@ -871,8 +884,13 @@ def main(argv=None):
     require(not destination.is_relative_to(root), "Root source writes are forbidden")
     require(not Path(args.output).is_symlink() and not args.storage_admission.is_symlink(), "No symbolic output/admission")
     require(shutil.disk_usage(scene).free >= grant["required_free_bytes"], "Current volume no longer satisfies full fresh admission")
-    files, required, changed_paths = apply_delta(args.source_delta, args.base_runtime, manifest, source, root, args.source_commit)
     delta = read(args.source_delta)
+    archive_context = None
+    if "archive_relocations" in delta:
+        from ck3_mod_acceptance_archive_relocations import validate_archive_relocations
+        archive_context = validate_archive_relocations(args.source_delta, source, root, args.source_commit,
+            args.products, args.product, args.case, args.case_inputs, args.input_binder_command)
+    files, required, changed_paths = apply_delta(args.source_delta, args.base_runtime, manifest, source, root, args.source_commit, archive_context)
     diff_observed = datetime.fromisoformat(read(delta["Root_diff_receipt"]["path"])["observed_at_utc"].replace("Z", "+00:00"))
     require(datetime.fromisoformat(grant["observed_at_utc"].replace("Z", "+00:00")) <= diff_observed <= current,
             "Root complete-diff observation is outside the fresh next-scene admission")
@@ -889,12 +907,13 @@ def main(argv=None):
             chain = "pilgrimage_wire_seam"
         require(separator and chain not in receipts, "Unique CHAIN=receipt required")
         receipts[chain] = Path(path)
-    native_bundle = qualify_native(args.qualified_native, root, args.source_commit, machine, refs["dll"], manifest)
+    native_bundle = qualify_native(args.qualified_native, root, args.source_commit, machine, refs["dll"], manifest,
+                                   getattr(args, "native_source_checkout_binding", None))
     required.discard("new_native_base_required")
     if native_bundle["execution_wire"]:
         required.add("pilgrimage_wire_seam")
     require(required <= set(receipts), "Missing actual changed-chain qualifications: " + str(sorted(required - set(receipts))))
-    qualified = {chain: qualify(chain, receipts[chain], args.source_commit, root, changed_paths, machine) for chain in sorted(required)}
+    qualified = {chain: qualify(chain, receipts[chain], args.source_commit, root, changed_paths, machine, archive_context) for chain in sorted(required)}
     if native_bundle["execution_wire"]:
         actual_sdk = read(receipts["pilgrimage_wire_seam"])
         require(actual_sdk.get("actual_execution_wire_packets") == native_bundle["execution_wire"]["ref"],
@@ -949,6 +968,9 @@ def main(argv=None):
     new_manifest["native_input_identity_evidence"] = native_bundle["qualification_ref"]
     new_manifest["native_compile_source_commit"] = native_bundle["compile_commit"]
     new_manifest["native_compile_working_tree_dirty"] = False
+    new_manifest.pop("native_source_checkout_binding", None)
+    if native_bundle["source_checkout_binding"] is not None:
+        new_manifest["native_source_checkout_binding"] = native_bundle["source_checkout_binding"]
     new_manifest["shared_provider_scope"] = "one public SDK/host, qualified global production DLL, independent product policy only"
     manifest_ref = add("manifest.json", new_manifest)
     new_runtime = {k: v for k, v in runtime.items() if k not in {"manifest", "paths", "recording", "graphics_cache"}}
@@ -982,6 +1004,7 @@ def main(argv=None):
         "source_commit": args.source_commit, "base_runtime": pin(args.base_runtime), "base_manifest": runtime["manifest"],
         "exact_Root_delta": pin(args.source_delta), "actual_changed_chain_receipts": qualified,
         "builder_program": pin(__file__),
+        "archive_relocations": archive_context.evidence() if archive_context else None,
         "qualified_native_build": native_bundle["qualification_ref"],
         "index_only_unselected_changes": index_only,
         "index_only_scope": "complete committed delta retained; global SDK/host/publiccase/controller AST has no imports or executable references to these independent research/CI/OBS producers; no business requalification claimed",

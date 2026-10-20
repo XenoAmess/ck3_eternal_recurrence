@@ -1,4 +1,12 @@
-# B10至B14：实拍、作者输入与生产资格
+# B10至B15：实拍、作者输入与生产资格
+
+## 10月20日13:40：R0008麦地那降级与full10实扣，收益对照仍开放
+
+`machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T05:33:21.126604Z`。原同Rite两人物前提未满足时没有world action；窄continuation保留原件，仅放行同Faith50／不同Rite15、16的真实两人物，3项predicate通过。site27麦地那一次Demote／post确认只变该主要关系true→false，虔诚4250→3250，与原full10报价1000相符，未知动作false。人物15893／10322各自等级4／1、六属性、其他钱包控制稳定；外交18／13及named Medina＋4／＋1不变，cache未知，不能说主要圣地收益已消失／已证成，A1归因不闭。[原结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b15-a01/same-faith-continuation-a01/case-output/a1-same-faith-result.json)。
+
+[媒体QA](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b15-media-review-a01/REVIEW.actual.json)确认唯一原片72.8秒、60,226,433 B、SHA-256 `bc742ac723f27e9545c2a2da17da9d344abe0e36d751d0f01c6eaec087cb4044`，full strict decode0／1438VFR；只直接审了3.967与69秒两帧，可展示原版报价与扣款前后，右上tooltip使整帧／连续clean不合格，不能当作属性下降镜头。05:39:53Z闭场追加已核游戏OS／native与原host／run／allocator／keeper0，fresh Steam离线直接审阅、显示实读恢复1024×768，CAS12631done／resources[]；场景future0，闭场小尾65,536 B，共享池未擅关闭。本轮不改正式68cue／56视觉、fixed53／65、required1／24及35pending。
+
+M2已push `05ad9dbc`，新19／47仅源审、未冷构建；M3显式四take候选17录制器＋2转发检查通过，4take／总300秒／模板128MiB峰值／512MiB raw／896MiB scene均是待应用的受限配置，不是已录制成绩。后继现场须等真实构建、来源与新grant；[滚动3–6小时节点及收益新缺口](director-progress-and-schedule-20261020.md)分列，导演V0目标约30分钟保持。
 
 ## 10月20日12:49：B14正常闭场；两条供奉子结果接入，累计68cue／56有图
 

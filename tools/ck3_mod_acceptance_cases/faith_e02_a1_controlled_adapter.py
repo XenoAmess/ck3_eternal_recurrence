@@ -26,6 +26,10 @@ SCOPE={'one_demote27':True,'other_world_actions':False,'artifact_movement':False
        'mandatory_native_interruption_policy':True,'interruption_invalidates_controlled_case':True}
 require=Q.require
 
+def eligible_actor(value,faith):
+    return type(value) is dict and value.get('available') is True and value.get('faith_id')==faith
+
+
 def read(p):return json.loads(Path(p).read_text(encoding='utf-8-sig'))
 def pin(path):
     path=Path(path).resolve();h=hashlib.sha256()
@@ -315,8 +319,8 @@ def collect(case,result):
             if not Q.ref(target) or target in tried:continue
             tried.add(target)
             value=case.actors([target])[str(target)]
-            if value['faith_id']==faith and value['rite_id']==rite_id:ids.append(target);break
-    require(len(ids)==2 and ids[0]!=ids[1],'No two actual distinct same-Rite/Faith recipients; never fabricate a second person')
+            if eligible_actor(value,faith):ids.append(target);break
+    require(len(ids)==2 and ids[0]!=ids[1],'No two actual distinct same-Faith recipients; never fabricate a second person')
     baseline=case.actors(ids);repeat=case.actors(ids)
     require({k:actor_projection(v)for k,v in baseline.items()}=={k:actor_projection(v)for k,v in repeat.items()},'Baseline actor values/text changed during independent reads')
     result.update(religion_before=religion,faith_id=faith,rite_id=rite_id,actor_ids=ids,sites_before=site_raw,

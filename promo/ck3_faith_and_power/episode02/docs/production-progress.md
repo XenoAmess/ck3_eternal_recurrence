@@ -1,5 +1,11 @@
 # 第二期执行进度
 
+## 10月20日13:40：B15降级／实扣已证，M2与M3仍为下一轮来源资格
+
+`machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T05:33:21.126604Z`。R0008原同Rite前提阻止阶段world0；同Faith不同Rite窄continuation的3项predicate通过后，只对麦地那27作一次Demote。独立post确认仅选定主要关系true→false、full10虔诚实扣1000（4250→3250），双人物自己的Rite15／16、Faith50、等级4／1、六属性及其他钱包控制稳定；外交18／13与named Medina＋4／＋1未变，cache未知，A1收益槽不闭。原片72.8秒／60,226,433 B、1438VFR、strict decode0，仅两点静帧／ROI可用，右上tooltip仍在，无连续clean。05:39:53Z追加已核游戏OS／native及原host／run／allocator／keeper0、fresh Steam离线原图、显示1024×768恢复及CAS12631释放；闭场成功不授A1收益信用。[本场及节点](director-progress-and-schedule-20261020.md)。
+
+M2 `05ad9dbc`已push，19有限目标／47直接编译单元仅源审PASS、未冷构建；M3 17＋2消费者／源审PASS的四段候选未应用／未实机（总300秒、模板128MiB峰值、raw512MiB／scene896MiB）。正式recipe仍68cue／56视觉、fixed53／65、required1／24、35pending，不给B15虚信用。下一节点按Native冷构建→P3四窗口→H2真实报价→typed收益／自然刷新→旁白并行→全片审阅；剩余3–6小时为条件式滚动估计，目标约30分钟与导演V0不变，不承诺具体钟点。
+
 ## 10月20日12:49：B14正常闭场，68cue／56视觉；本地原CI模块25项通过
 
 `machine_id: 4-8e1c2f1861`，截至`2026-10-20T04:48:52.452189Z`。R0007 typed Quit取得保留OS0／native0，原run／host／keeper／allocator等待0；fresh Steam离线直接审阅、1024×768恢复、CAS12604done，B14正常闭场合格，B12旧失败保持。两条供奉PNG子结果新增展示21.8667秒，累计68cue／56有图，固定53／65与required1／24分列，35pending不变，未render／试听，整comparison与净收益未证。麦加骑士／奉献影响后态仍缺，外交原文是麦地那，delta0不是机制失败。[闭场、作者输入与来源](filming-b10-and-b11-plan-20261020.md)。

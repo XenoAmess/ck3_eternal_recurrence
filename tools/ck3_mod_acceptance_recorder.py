@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 import hashlib
 import importlib.util
 import json
+import math
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -71,9 +73,16 @@ def require_no_legacy_blue_overlay():
 class BoundedScreenRecorder:
     def __init__(self, *, root, output, keeper, ffmpeg, ffprobe, machine_id,
                  admission_receipt, seconds=120, peak_bytes=512 * 1024**2,
-                 required_size=(2560, 1440)):
-        if not 10 <= seconds <= 300 or peak_bytes < 512 * 1024**2:
+                 required_size=(2560, 1440), segmented=False):
+        if segmented:
+            if (type(seconds) is not int or not 10 <= seconds <= 120
+                    or type(peak_bytes) is not int
+                    or not 8 * 1024**2 < peak_bytes <= 512 * 1024**2
+                    or peak_bytes < seconds * 1_000_000 + 2_000_000 + 4 * 1024**2):
+                raise ValueError("Invalid explicit segmented take allocation")
+        elif not 10 <= seconds <= 300 or peak_bytes < 512 * 1024**2:
             raise ValueError("Recorder requires 10–300 seconds and at least a 512 MiB raw reservation")
+        self.segmented = segmented
         self.root, self.output = Path(root).resolve(), Path(output).resolve()
         self.keeper, self.ffmpeg, self.ffprobe = keeper, Path(ffmpeg).resolve(), Path(ffprobe).resolve()
         self.machine_id, self.admission = machine_id, Path(admission_receipt).resolve()
@@ -109,6 +118,12 @@ class BoundedScreenRecorder:
                     "-framerate", "30", "-draw_mouse", "0", "-i", "desktop", "-t", str(self.seconds),
                     "-c:v", "libx264", "-preset", "ultrafast", "-crf", "18", "-maxrate", "18M",
                     "-bufsize", "36M", "-pix_fmt", "yuv420p", "-an", str(raw)]
+            if self.segmented:
+                argv[argv.index("-maxrate") + 1] = "8M"
+                argv[argv.index("-bufsize") + 1] = "16M"
+                # FFmpeg documents -fs as approximate: retain an 8 MiB margin
+                # and verify actual final bytes. A decimal integer means bytes.
+                argv[-1:-1] = ["-fs", str(self.peak_bytes - 8 * 1024**2)]
             self.start_ns = time.monotonic_ns()
             intent = {"schema": "ck3-mod-acceptance-recorder-intent-v1", "machine_id": self.machine_id,
                       "observed_at_utc": utc(), "evidence_source": "BoundedScreenRecorder.start; actual keeper process-create gate and source bindings",
@@ -118,6 +133,10 @@ class BoundedScreenRecorder:
                       "admission": file_identity(self.admission), "recorder_job_source": file_identity(source),
                       "project_source": file_identity(Path(__file__)), "ffmpeg": file_identity(self.ffmpeg),
                       "ffprobe": file_identity(self.ffprobe), "clean_spans_certified": False}
+            if self.segmented:
+                intent.update(segmented=True, approximate_output_limit_bytes=self.peak_bytes - 8 * 1024**2,
+                              output_limit_is_absolute=False, encoder_maxrate_bits_per_second=8_000_000,
+                              encoder_buffer_bits=16_000_000)
             write(self.output / "recorder-intent.json", intent)
             (self.output / "marks.jsonl").open("x", encoding="utf-8").close()
             self.streams = [(self.output / "ffmpeg.stdout.bin").open("xb"), (self.output / "ffmpeg.stderr.txt").open("xb")]
@@ -151,6 +170,9 @@ class BoundedScreenRecorder:
             raw = self.output / "raw-gameplay.mkv"
             if raw.is_file() and raw.stat().st_size > self.peak_bytes:
                 return self.abort("reserved raw byte ceiling exceeded")
+            if (self.segmented and raw.is_file()
+                    and raw.stat().st_size >= self.peak_bytes - 8 * 1024**2):
+                return self.finish()
             if self.recorder.poll() is None:
                 return {"state": "RECORDING_UNREVIEWED", "pid": self.recorder.pid}
             return self.finish()
@@ -167,12 +189,20 @@ class BoundedScreenRecorder:
             if self.recorder is None:
                 return {"state": "NOT_STARTED"}
             job = self.recorder.finish(receipt=self.output / "job-terminal.json", unsafe_marker=self.output / "unsafe-recorder-cleanup.json")
-            if job.get("job_active_processes") != 0:
+            if (job.get("job_active_processes") != 0
+                    or self.segmented and type(job.get("job_active_processes")) is not int):
                 raise RuntimeError("Recorder process tree remains unproven")
             self._close()
             raw = self.output / "raw-gameplay.mkv"
             command = [str(self.ffprobe), "-v", "error", "-show_streams", "-show_format", "-of", "json", str(raw)]
-            result = subprocess.run(command, capture_output=True, timeout=60)
+            probe_error = None
+            try:
+                result = subprocess.run(command, capture_output=True, timeout=60)
+            except BaseException as error:
+                if not self.segmented:
+                    raise
+                probe_error = repr(error)
+                result = subprocess.CompletedProcess(command, None, stdout=b"", stderr=probe_error.encode("utf-8"))
             (self.output / "ffprobe.stdout.json").write_bytes(result.stdout)
             (self.output / "ffprobe.stderr.txt").write_bytes(result.stderr)
             self.terminal = {"schema": "ck3-mod-acceptance-recorder-final-v1", "machine_id": self.machine_id,
@@ -182,6 +212,24 @@ class BoundedScreenRecorder:
                              "probe_argv": command, "probe_exit_code": result.returncode,
                              "marks": file_identity(self.output / "marks.jsonl"), "clean_spans_certified": False,
                              "native_business_verified": False, "human_review_performed": False}
+            if self.segmented:
+                duration = None
+                try:
+                    candidate = float(json.loads(result.stdout)["format"]["duration"])
+                    if result.returncode == 0 and math.isfinite(candidate) and candidate > 0:
+                        duration = candidate
+                except (ValueError, TypeError, KeyError, OverflowError):
+                    pass
+                raw_pin = self.terminal["raw"]
+                qualified = (self.terminal["result"] == "ENCODED_UNREVIEWED"
+                             and duration is not None and duration <= self.seconds
+                             and raw_pin is not None and 0 < raw_pin["bytes"] <= self.peak_bytes)
+                self.terminal.update(schema="ck3-mod-acceptance-recorder-final-v2",
+                    duration_seconds=duration, duration_known=duration is not None,
+                    duration_charge_seconds=(duration if qualified else max(
+                        self.seconds, duration or 0, (time.monotonic_ns() - self.start_ns) / 1e9)),
+                    budget_qualified=qualified, probe_error=probe_error,
+                    result="ENCODED_UNREVIEWED" if qualified else "RED_PRESERVED")
             write(self.output / "recorder-final.json", self.terminal)
             return self.terminal
 
@@ -190,13 +238,20 @@ class BoundedScreenRecorder:
             if self.terminal or self.recorder is None:
                 return self.terminal or {"state": "NOT_STARTED"}
             job = self.recorder.abort(receipt=self.output / "job-abort.json", unsafe_marker=self.output / "unsafe-recorder-cleanup.json")
-            if job.get("job_active_processes") != 0:
+            if (job.get("job_active_processes") != 0
+                    or self.segmented and type(job.get("job_active_processes")) is not int):
                 raise RuntimeError("Aborted recorder process tree remains unproven")
             self._close()
             self.terminal = {"schema": "ck3-mod-acceptance-recorder-abort-v1", "machine_id": self.machine_id,
                              "observed_at_utc": utc(), "evidence_source": "BoundedScreenRecorder.abort actual Job tree-empty result",
                              "state": "RED_PRESERVED", "reason": reason, "job": job,
                              "clean_spans_certified": False, "human_review_performed": False}
+            if self.segmented:
+                raw = self.output / "raw-gameplay.mkv"
+                self.terminal.update(schema="ck3-mod-acceptance-recorder-abort-v2",
+                    raw=file_identity(raw) if raw.is_file() else None,
+                    duration_seconds=None, duration_known=False, budget_qualified=False,
+                    duration_charge_seconds=max(self.seconds, (time.monotonic_ns() - self.start_ns) / 1e9))
             write(self.output / "recorder-abort.json", self.terminal)
             return self.terminal
 
@@ -220,8 +275,23 @@ def _pin(reference):
     return Path(reference["path"]).resolve()
 
 
+def _tree_bytes(root):
+    """Conservative logical bytes; physical allocation is still scene monitored."""
+    root = Path(root)
+    if not root.exists():
+        return 0
+    total = 0
+    for path in (root, *root.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("Recording budget cannot cross symlinks")
+        if path.is_file():
+            total += path.stat().st_size
+    return total
+
+
 class ScreenCaptureService:
     """One request thread inside the original keeper process and instance."""
+    segmented = False
     def __init__(self, *, keeper, keeper_root, repo, config_path, config_sha256, task_id, recorder_factory=BoundedScreenRecorder):
         self.keeper, self.keeper_root, self.repo = keeper, Path(keeper_root).resolve(), Path(repo).resolve()
         self.config_path, self.config_sha256, self.task_id = Path(config_path).resolve(), config_sha256.lower(), task_id
@@ -229,9 +299,22 @@ class ScreenCaptureService:
             raise ValueError("Recording config changed")
         self.config = _object(self.config_path)
         required = {"schema", "machine_id", "capture_root", "ffmpeg", "ffprobe", "recorder_job", "storage_reservation", "reservation_task", "max_seconds", "peak_bytes", "required_size"}
-        if set(self.config) != required or self.config["schema"] != "ck3-mod-acceptance-recording-config-v1":
+        self.segmented = self.config.get("schema") == "ck3-mod-acceptance-recording-config-v2"
+        if self.segmented:
+            required |= {"max_takes", "total_seconds", "total_raw_bytes"}
+        if (set(self.config) != required or self.config["schema"] not in {
+                "ck3-mod-acceptance-recording-config-v1", "ck3-mod-acceptance-recording-config-v2"}):
             raise ValueError("Unknown shared recorder configuration")
-        if not 10 <= self.config["max_seconds"] <= 300 or self.config["peak_bytes"] < 512 * 1024**2:
+        if self.segmented:
+            if (any(type(self.config[key]) is not int for key in
+                    ("max_takes", "total_seconds", "total_raw_bytes", "max_seconds", "peak_bytes"))
+                    or not 1 <= self.config["max_takes"] <= 4
+                    or not 10 <= self.config["total_seconds"] <= 300
+                    or not 10 <= self.config["max_seconds"] <= 120
+                    or not 8 * 1024**2 < self.config["peak_bytes"] <= self.config["total_raw_bytes"] <= 512 * 1024**2
+                    or self.config["peak_bytes"] < self.config["max_seconds"] * 1_000_000 + 2_000_000 + 4 * 1024**2):
+                raise ValueError("Invalid explicit segmented recording allocation")
+        elif not 10 <= self.config["max_seconds"] <= 300 or self.config["peak_bytes"] < 512 * 1024**2:
             raise ValueError("Invalid bounded recording allocation")
         self.ffmpeg, self.ffprobe = _pin(self.config["ffmpeg"]), _pin(self.config["ffprobe"])
         job = _pin(self.config["recorder_job"])
@@ -243,11 +326,88 @@ class ScreenCaptureService:
         self.capture_root = Path(self.config["capture_root"]).resolve()
         if any(path.is_symlink() for path in (self.capture_root, *self.capture_root.parents)):
             raise ValueError("Capture output must not cross symlinks")
+        self.take_ledger, self.segment_blocked = [], None
+        self.segment_lock = threading.RLock()
+        if self.segmented:
+            reservation = _object(self.storage)
+            self.scene_root = Path(reservation["approved_root"]).resolve()
+            self.scene_peak = reservation["this_write_peak_bytes"]
+            self.raw_peak = reservation["raw_subcap_bytes"]
+            if (not self.capture_root.is_relative_to(self.scene_root) or self.capture_root == self.scene_root
+                    or type(self.scene_peak) is not int or not 0 < self.scene_peak <= 896 * 1024**2
+                    or type(self.raw_peak) is not int or not 0 < self.raw_peak <= 512 * 1024**2
+                    or self.config["total_raw_bytes"] > self.raw_peak):
+                raise ValueError("Segmented recorder requires the existing scene and raw ceilings")
+            if self.capture_root.exists() and any(self.capture_root.iterdir()):
+                raise ValueError("Segmented recorder cannot reset an existing capture ledger or attempt")
         self.requests, self.responses = self.keeper_root / "recorder-requests", self.keeper_root / "recorder-responses"
         self.done, self.thread, self.recorder, self.error = threading.Event(), None, None, None
         self.seen, self.recorder_factory = set(), recorder_factory
         self.capture_names, self.completed_takes = set(), []
         self.started_at = utc()
+
+    def _segment_event(self, event, entry):
+        row = {"schema": "ck3-mod-acceptance-segmented-ledger-v1",
+               "machine_id": self.config["machine_id"], "observed_at_utc": utc(),
+               "event": event, "take": dict(entry)}
+        with (self.capture_root / "segmented-ledger.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+
+    def _sync_segment_terminal(self):
+        if not self.segmented or not self.take_ledger or self.recorder is None:
+            return
+        entry = self.take_ledger[-1]
+        terminal = self.recorder.terminal
+        if not isinstance(terminal, dict):
+            return
+        invalidated = entry["state"] == "TERMINAL_QUALIFIED" and terminal.get("budget_qualified") is False
+        if entry["state"] != "START_INTENT" and not invalidated:
+            return
+        job = terminal.get("job", {})
+        charge = terminal.get("duration_charge_seconds")
+        known = (terminal.get("budget_qualified") is True
+                 and type(job.get("job_active_processes")) is int and job["job_active_processes"] == 0
+                 and type(charge) in (int, float) and math.isfinite(charge) and charge > 0)
+        fallback_charge = (max(entry["seconds_reserved"], charge)
+                           if type(charge) in (int, float) and math.isfinite(charge)
+                           else entry["seconds_reserved"])
+        entry.update(state="TERMINAL_QUALIFIED" if known else "TERMINAL_UNPROVEN",
+                     duration_charge_seconds=charge if known else fallback_charge,
+                     terminal=terminal)
+        if not known:
+            self.segment_blocked = "Previous take failed or its bytes/duration/Job are unproven"
+        self._segment_event("terminal-invalidated" if invalidated else "terminal", entry)
+
+    def _segment_limits(self, *, reserve=0):
+        _pin(self.config["storage_reservation"])
+        capture_used = _tree_bytes(self.capture_root)
+        scene_used = _tree_bytes(self.scene_root)
+        if (capture_used + reserve > min(self.config["total_raw_bytes"], self.raw_peak)
+                or scene_used + reserve > self.scene_peak):
+            raise ValueError("Segmented raw or aggregate scene ceiling would be exceeded")
+        return {"capture_tree_logical_bytes": capture_used, "scene_tree_logical_bytes": scene_used}
+
+    def _segment_poll(self):
+        if not self.segmented:
+            return
+        try:
+            self._segment_limits()
+        except ValueError as error:
+            self.segment_blocked = str(error)
+            if self.recorder is not None and self.recorder.terminal is None:
+                self.recorder.abort(str(error))
+            elif self.recorder is not None and self.recorder.terminal.get("budget_qualified") is True:
+                # Retain the original final/Job receipt; a separate append-only
+                # budget verdict prevents a healthy encoder exit hiding overrun.
+                terminal = dict(self.recorder.terminal)
+                terminal.update(result="RED_PRESERVED", budget_qualified=False,
+                                budget_failure=str(error),
+                                original_recorder_terminal=file_identity(self.recorder.output / "recorder-final.json"))
+                write(self.recorder.output / "segmented-budget-overrun.json", terminal)
+                self.recorder.terminal = terminal
+        self._sync_segment_terminal()
 
     def start(self):
         if self.thread is not None:
@@ -290,6 +450,12 @@ class ScreenCaptureService:
         return live, frozen
 
     def handle(self, request):
+        if not self.segmented:
+            return self._handle(request)
+        with self.segment_lock:
+            return self._handle(request)
+
+    def _handle(self, request):
         if set(request) - {"schema", "id", "operation", "live_root", "capture_name", "label", "native_receipt"}:
             raise ValueError("Unknown recorder request field")
         if request.get("schema") != "ck3-mod-acceptance-recorder-request-v1":
@@ -300,6 +466,8 @@ class ScreenCaptureService:
         if operation == "abort":
             return self.abort_for_lease()
         live, frozen = self._live(request["live_root"])
+        if self.segmented:
+            self._segment_poll()
         if operation == "start":
             # Reject before consuming a take name or creating a recorder object.
             require_no_legacy_blue_overlay()
@@ -314,6 +482,17 @@ class ScreenCaptureService:
             output = self.capture_root / name
             if name in self.capture_names or output.exists() or not output.is_relative_to(self.capture_root):
                 raise ValueError("Use an unconsumed capture directory inside configured root")
+            seconds = self.config["max_seconds"]
+            if self.segmented:
+                if self.segment_blocked:
+                    raise ValueError(self.segment_blocked)
+                if len(self.take_ledger) >= self.config["max_takes"]:
+                    raise ValueError("Segmented take count exhausted")
+                charged = sum(row["duration_charge_seconds"] for row in self.take_ledger)
+                seconds = min(seconds, math.floor(self.config["total_seconds"] - charged))
+                if seconds < 10:
+                    raise ValueError("Segmented duration budget exhausted")
+                self._segment_limits(reserve=self.config["peak_bytes"])
             reservation = _object(self.storage)
             capture_limits = [row['peak_bytes'] for row in reservation.get('reservations', [])
                               if row.get('task') == self.config['reservation_task']]
@@ -328,15 +507,33 @@ class ScreenCaptureService:
             if self.recorder is not None:
                 self.completed_takes.append({'output': str(self.recorder.output), 'terminal': self.recorder.terminal})
             self.capture_names.add(name)
-            self.recorder = self.recorder_factory(root=self.repo, output=output, keeper=self.keeper,
+            options = {}
+            if self.segmented:
+                entry = {"capture_name": name, "output": str(output), "state": "START_INTENT",
+                         "seconds_reserved": seconds, "duration_charge_seconds": seconds,
+                         "peak_reserved_bytes": self.config["peak_bytes"]}
+                self.take_ledger.append(entry)
+                self._segment_event("start-intent", entry)
+                options["segmented"] = True
+                self.recorder = None
+            try:
+                self.recorder = self.recorder_factory(root=self.repo, output=output, keeper=self.keeper,
                 ffmpeg=self.ffmpeg, ffprobe=self.ffprobe, machine_id=self.config["machine_id"],
-                admission_receipt=live / "launch-intent.json", seconds=self.config["max_seconds"],
-                peak_bytes=self.config["peak_bytes"], required_size=self.config["required_size"])
-            return self.recorder.start()
+                admission_receipt=live / "launch-intent.json", seconds=seconds,
+                peak_bytes=self.config["peak_bytes"], required_size=self.config["required_size"], **options)
+                return self.recorder.start()
+            except BaseException as error:
+                if self.segmented:
+                    self.segment_blocked = "Take start failed or outcome unknown; never replay"
+                    entry.update(state="START_FAILED", error=repr(error))
+                    self._segment_event("start-failed", entry)
+                raise
         if self.recorder is None:
             raise ValueError("Recorder has not started")
-        if operation == "status": return self.recorder.status()
-        if operation == "finish": return self.recorder.finish()
+        if operation in {"status", "finish"}:
+            result = self.recorder.status() if operation == "status" else self.recorder.finish()
+            self._segment_poll()
+            return self.recorder.terminal if self.segmented and self.recorder.terminal is not None else result
         label = request.get("label", "")
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,160}", label):
             raise ValueError("A native phase mark label is required")
@@ -366,6 +563,9 @@ class ScreenCaptureService:
                     write(self.responses / path.name, response)
                 if self.recorder is not None and self.recorder.terminal is None:
                     self.recorder.status()  # Enforce byte cap and actual normal completion.
+                if self.segmented:
+                    with self.segment_lock:
+                        self._segment_poll()
         except BaseException as error:
             self.error = repr(error)
             self.abort_for_lease()
@@ -373,7 +573,10 @@ class ScreenCaptureService:
             write(self.keeper_root / "recording-service-failure.json", self.report())
 
     def abort_for_lease(self):
-        return self.recorder.abort() if self.recorder is not None else {"state": "NOT_STARTED"}
+        result = self.recorder.abort() if self.recorder is not None else {"state": "NOT_STARTED"}
+        if self.segmented:
+            self._sync_segment_terminal()
+        return result
 
     def stop(self):
         self.done.set()
@@ -385,10 +588,20 @@ class ScreenCaptureService:
         write(self.keeper_root / "recording-service-final.json", self.report())
 
     def report(self):
-        return {"schema": "ck3-mod-acceptance-recording-service-report-v1", "machine_id": self.config["machine_id"],
+        result = {"schema": "ck3-mod-acceptance-recording-service-report-v1", "machine_id": self.config["machine_id"],
                 "observed_at_utc": utc(), "evidence_source": "same keeper request thread and recorder terminal state",
                 "screen_task": self.task_id, "thread_exited": self.thread is not None and not self.thread.is_alive(),
                 "failure": self.error, "requests_consumed": sorted(self.seen),
                 "capture_names_consumed": sorted(self.capture_names), "completed_takes": self.completed_takes,
                 "recorder_terminal": None if self.recorder is None else self.recorder.terminal,
                 "no_additional_screen_owner": True, "business_pass": False, "clean_spans_certified": False}
+        if self.segmented:
+            result.update(schema="ck3-mod-acceptance-recording-service-report-v2",
+                          take_ledger=self.take_ledger, segment_blocked=self.segment_blocked,
+                          total_duration_charge_seconds=sum(row["duration_charge_seconds"] for row in self.take_ledger),
+                          limits={key: self.config[key] for key in (
+                              "max_takes", "total_seconds", "total_raw_bytes", "max_seconds", "peak_bytes")},
+                          usage={"capture_tree_logical_bytes": _tree_bytes(self.capture_root),
+                                 "scene_tree_logical_bytes": _tree_bytes(self.scene_root)},
+                          output_limit_is_absolute=False)
+        return result
