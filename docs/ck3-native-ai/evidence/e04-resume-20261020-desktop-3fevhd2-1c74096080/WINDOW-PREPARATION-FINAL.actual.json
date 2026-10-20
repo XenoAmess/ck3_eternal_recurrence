@@ -1,0 +1,69 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:32:35.454550+00:00",
+  "source": "Actual machine helper, read-only public source inspection and named focused tool executions",
+  "base_head": "8e9642adceb686e0457b3cb866ab5c3c9436040f",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\window-preparation\\metadata_take.py",
+      "bytes": 17049,
+      "sha256": "3b0194370ef11081880c239cdbd9efb714940b390bf5c3279646722bb04919cb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\window-preparation\\README.md",
+      "bytes": 3701,
+      "sha256": "409f0cd6354facceb3be1bc44f5cbe15d120f65071ab9e1a2531a5ae64f083a0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 50177,
+      "sha256": "59f2981c732bb58f6f77236bbb4f518fb5060283fcf351026816e63c56d095b1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_r04_before_move_frame.py",
+      "bytes": 5152,
+      "sha256": "35866fcf0a1af75e785368809302aa3777e82b82c905aad580eacc6974e00228"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r04-public-county-observation.md",
+      "bytes": 6764,
+      "sha256": "a9bf0e55ddac2ccded52fd85c83b1971632992db1ba8c24de524916cd5c6e785"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\window_take.py",
+      "bytes": 27125,
+      "sha256": "5d5e403d9af9c453c677bb965e5ee1896c4ba6d74b1ba1ccaf26bb907692739b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\window_take_actor.py",
+      "bytes": 9858,
+      "sha256": "00b217654d04bbf1f3e9d1c585b0089685df6707049ad884ba320903ca42f478"
+    }
+  ],
+  "barrier_test": {
+    "command": "python -B -X utf8 tools/test_r04_before_move_frame.py",
+    "exit_code": 0,
+    "tests": 1,
+    "scenarios": [
+      "wrong identity rejects",
+      "missing signal times out with Move0",
+      "valid frame metadata unlocks only review gate"
+    ],
+    "stdout": ".\n----------------------------------------------------------------------\nRan 1 test in 0.066s\n\nOK"
+  },
+  "metadata_syntax_help": {
+    "command": "python -B -X utf8 C:/ck3-e04-resume-20261020-a01/window-preparation/metadata_take.py --help",
+    "exit_code": 0
+  },
+  "static_TakeSpec_actual_status": "PENDING actual allocated READY/runtime/capacity/context/offline-review/FFmpeg inputs; generator executes real TakeSpec/Selection validation when supplied",
+  "current_take_config_written": false,
+  "actual_client_inspected": false,
+  "screen_acquired": false,
+  "SDK_calls": 0,
+  "game_started": false,
+  "recording_started": false,
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Python file-only coordination and metadata binding; no CK3 script semantic subset"
+  }
+}

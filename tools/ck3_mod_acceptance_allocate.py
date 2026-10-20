@@ -906,6 +906,155 @@ def previous_runtime_failure_closure(previous,freeze,report,close_path,keeper_ro
         'release_pass':False,'control_files_absent':absent,'administrative_resource_admission_only':True},
         'actual_process_inventory':inventory}
 
+def previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path, keeper_root,
+                                             release_path, bus_packet):
+    """Retire absent failed-live resources without inventing a missing keeper exit."""
+    import psutil
+    machine = freeze.get('identity_allocation', {}).get('machine_id')
+    require(bundle.get('machine_id') == machine and bundle.get('observed_at_utc') and
+            bundle.get('closure_kind') == 'expired-keeper-missing-final-report' and
+            bundle.get('keeper_final_report_missing') is True,
+            'Expired-keeper closure machine/kind/observation differs')
+    refs, evidence = bundle.get('original_evidence'), {}
+    require(isinstance(refs, dict), 'Expired-keeper original evidence pins required')
+    def original(key, expected=None):
+        row = refs[key]; path = Path(row['path']).resolve()
+        require((expected is None or path == Path(expected).resolve()) and
+                type(row.get('bytes')) is int and 0 <= row['bytes'] <= 1048576,
+                'Expired-keeper original path/bound differs: ' + key)
+        check_pin(path, row); evidence[key] = row
+        return read_json(path)
+    original('frozen_argv', previous/'frozen-argv.json')
+    ready = original('ready_context', previous/'ready-context.json')
+    require(ready.get('run_id') == freeze['run_id'] and
+            Path(ready.get('run_dir', '')).resolve() == previous and
+            Path(ready.get('keeper_root', '')).resolve() == keeper_root and
+            ready.get('frozen_argv') == refs['frozen_argv'],
+            'Expired-keeper READY crossed frozen run/keeper')
+    prepared = original('prepared_case', ready['prepared_case']['path'])
+    require(refs['prepared_case'] == ready['prepared_case'] and
+            Path(prepared['startup']['state_dir']).resolve() == Path(freeze['state_dir']).resolve() and
+            prepared['runtime_manifest'] == freeze['runtime_manifest'],
+            'Expired-keeper preparation crossed runtime/state')
+    host = original('host_started', previous/'host-started.json')
+    exited = original('host_exit', previous/'host-original-process-exit.json')
+    supervisor = original('host_supervisor', previous/'host-supervisor-started.json')
+    require(host.get('run_id') == exited.get('run_id') == freeze['run_id'] and
+            host.get('actual_popen_retained') is True and host.get('argv') == freeze['argv'] and
+            exited.get('pid') == host.get('pid') and exited.get('actual_original_popen_wait') is True and
+            type(exited.get('returncode')) is int and exited.get('normal_ck3_exit_inferred') is False,
+            'Expired-keeper original host wait/run differs; host code is not CK3 exit proof')
+    def argument(argv, flag):
+        require(isinstance(argv, list) and argv.count(flag) == 1 and argv.index(flag) + 1 < len(argv),
+                'Expired-keeper original argument missing: ' + flag)
+        return argv[argv.index(flag) + 1]
+    require('--supervise' in supervisor.get('argv', []) and
+            Path(argument(supervisor['argv'], '--run-root')).resolve() == previous and
+            Path(argument(supervisor['argv'], '--keeper-root')).resolve() == keeper_root,
+            'Expired-keeper original supervisor crossed run/keeper')
+    keeper = original('keeper_process', previous/'keeper-process.json')
+    require(Path(argument(keeper.get('argv'), '--root')).resolve() == keeper_root and
+            argument(keeper['argv'], '--task') == freeze['screen_task'],
+            'Expired-keeper original process crossed task/root')
+    game = original('retained_identity', previous/'case-output/retained-current-process-identity.json')
+    normal = original('normal_close', previous/'case-output/normal-close-result.json')
+    retained = normal.get('retained_handle', {})
+    require(normal.get('normal_close_qualified') is False and normal.get('business_pass') is False and
+            retained.get('actual_retained_os0') is False and
+            retained.get('pid') == game.get('pid') and retained.get('create_time') == game.get('create_time'),
+            'Expired-keeper original close claims normal/business credit or crossed CK3 identity')
+    handover = original('handover_snapshot')
+    require(handover.get('machine_id') == machine and handover.get('observed_at_utc') and
+            handover.get('keeper_final_report_exists') is False and
+            handover.get('normal_close_qualified') is False,
+            'Expired-keeper historical missing report/negative qualification is unbound')
+    for key in ('host_exit', 'normal_close'):
+        matches = [row for row in handover.get('leaves', [])
+                   if Path(row.get('path', '')).resolve() == Path(refs[key]['path']).resolve()]
+        require(len(matches) == 1 and matches[0].get('source_machine_id') == machine and
+                matches[0].get('source_sha256') == refs[key]['sha256'] and
+                matches[0].get('bytes') == refs[key]['bytes'],
+                'Expired-keeper handover source pin differs: ' + key)
+    require(not (keeper_root/'report.json').exists() and
+            not (previous/'keeper-actual-parent-exit.json').exists(),
+            'Expired-keeper missing-report recovery cannot replace existing keeper evidence')
+    original('release', release_path)
+    canonical = read_json(release_path)
+    bus_dir = Path(argument(keeper['argv'], '--bus-dir')).resolve()
+    require(canonical.get('schema') == 'xar-screen-release-canonical-reconstruction-v1' and
+            Path(canonical.get('source_event_stream', '')).resolve() == bus_dir/'events.jsonl' and
+            Path(canonical['actual_task_pin']['path']).resolve() == bus_dir/'tasks'/(freeze['screen_task']+'.json'),
+            'Expired-keeper retirement must bind the original keeper canonical bus')
+    release = read_failed_runtime_release(release_path)
+    task, event = release['task'], release.get('event', {})
+    retirement = event.get('retirement', {})
+    require(task.get('task_id') == event.get('task_id') == freeze['screen_task'] and
+            task.get('state') == event.get('state') == 'waiting' and
+            task.get('resources') == event.get('resources') == [] and event.get('kind') == 'status' and
+            type(event.get('sequence')) is int and event['sequence'] == task.get('last_sequence') and
+            retirement.get('kind') == 'expired-own-claim-released' and
+            retirement.get('business_status') == 'unresolved_red' and
+            type(retirement.get('prior_sequence')) is int and retirement['prior_sequence'] < event['sequence'],
+            'Expired-keeper exact abnormal CAS retirement differs')
+    prior = bundle.get('retired_prior_event', {})
+    require(type(prior.get('byte_offset')) is int and prior['byte_offset'] >= 0 and
+            type(prior.get('bytes')) is int and 0 < prior['bytes'] <= 1048576,
+            'Expired-keeper retired prior event offset/bound missing')
+    with (bus_dir/'events.jsonl').open('rb') as stream:
+        stream.seek(prior['byte_offset']); raw = stream.read(prior['bytes'])
+    require(hashlib.sha256(raw).hexdigest() == prior.get('sha256'),
+            'Expired-keeper retired prior canonical event bytes differ')
+    old = json.loads(raw)
+    require(old.get('task_id') == freeze['screen_task'] and old.get('sequence') == retirement['prior_sequence'] and
+            old.get('state') == 'running' and old.get('resources') == ['ck3-screen:acquired'] and
+            (datetime.fromisoformat(event['timestamp_utc']) -
+             datetime.fromisoformat(old['timestamp_utc'])).total_seconds() > 600,
+            'Expired-keeper retirement did not close the exact expired claim')
+    tasks = bus_packet.get('tasks')
+    require(isinstance(tasks, list) and not any('ck3-screen:acquired' in row.get('resources', []) for row in tasks),
+            'Expired-keeper still has an actual screen owner')
+    matching = [row for row in tasks if row.get('task_id') == freeze['screen_task']]
+    require(len(matching) == 1 and matching[0].get('last_sequence') == event['sequence'] and
+            matching[0].get('state') == 'waiting' and matching[0].get('resources') == [],
+            'Expired-keeper current bus task differs from exact retired claim')
+    identities = {}
+    for label, identity in (('host', host), ('CK3', game), ('keeper', keeper)):
+        require(type(identity.get('pid')) is int and identity['pid'] > 0 and
+                type(identity.get('create_time')) in (int, float), 'Expired-keeper original identity absent: ' + label)
+        try: present = psutil.Process(identity['pid']).create_time() == identity['create_time']
+        except psutil.NoSuchProcess: present = False
+        require(not present, 'Expired-keeper original process still present: ' + label)
+        identities[label] = {'pid':identity['pid'], 'create_time':identity['create_time'], 'present':False}
+    require(all(type(pid) is int and pid > 0 and not psutil.pid_exists(pid)
+                for pid in (supervisor.get('pid'), host.get('supervisor_pid'))),
+            'Expired-keeper original supervisor still present or identity missing')
+    inventory = runtime_process_inventory(psutil, os.getpid())
+    require(not inventory['blockers'], 'Expired-keeper runtime/CK3/controller still running')
+    selected_host = Path(freeze['argv'][4]).resolve()
+    for process in psutil.process_iter(['pid', 'name']):
+        if (process.info.get('name') or '').lower().startswith(('python', 'pypy')):
+            try: argv = process.cmdline()
+            except psutil.NoSuchProcess: continue
+            require(not any(Path(arg).resolve() == selected_host for arg in argv
+                            if arg and Path(arg).name.lower() == selected_host.name.lower()),
+                    'Expired-keeper frozen host interpreter or redirector still present')
+    state = Path(freeze['state_dir']).resolve()
+    absent = {name:not (state/'control'/name).exists() for name in ('ck3.json', 'unsafe-cleanup.json')}
+    absent['watchdog-*.ready.json'] = not list((state/'control').glob('watchdog-*.ready.json'))
+    require(all(absent.values()), 'Expired-keeper PID/unsafe/watchdog controls remain')
+    inventory.update(machine_id=machine, original_identities=identities, source=pin(Path(__file__)))
+    return {'mode':'previous-shared-failed-live-expired-keeper-resource-closed',
+            'actual_process_inventory':inventory, 'failure_cleanup':{
+                'close':pin(close_path), 'original_evidence':evidence, 'abnormal_resource_closure':True,
+                'retired_prior_sequence':old['sequence'], 'retirement_sequence':event['sequence'],
+                'original_host_exit_code':exited['returncode'], 'original_host_wait_proven':True,
+                'original_keeper_wait_proven':False, 'keeper_thread_exit_proven':False,
+                'keeper_final_report_missing':True, 'original_ck3_exit_code':None, 'actual_retained_os0':False,
+                'native_cleanup_qualified':None, 'normal_close_qualified':False, 'typed_normal_exit_proven':False,
+                'business_pass':False, 'release_pass':False, 'control_files_absent':absent,
+                'administrative_resource_admission_only':True}}
+
+
 def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_root, release_path, bus_packet):
     """Admit an ended failed live attempt's resources; never grant normal-exit credit."""
     import psutil
@@ -920,6 +1069,9 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
             all(bundle.get(key) is False for key in ('normal_close_qualified', 'typed_normal_exit_proven',
                                                     'business_pass', 'release_pass')),
             'Failed-live closure identity or negative qualification differs')
+    if bundle.get('closure_kind') == 'expired-keeper-missing-final-report':
+        return previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path,
+                                                       keeper_root, release_path, bus_packet)
     refs, evidence = bundle.get('original_evidence'), {}
     require(isinstance(refs, dict), 'Original failed-live evidence pins required')
     def original(key, expected=None, *, decode=True, max_bytes=1048576):
@@ -1472,7 +1624,8 @@ def allocate_and_keep(selection,args):
                 Path(freeze.get('identity_allocation',{}).get('state_root','')).resolve()==state_root,
                 'Previous shared scene belongs to another actual machine/ID state')
         report_reference=None;report_projection=None
-        failure_schema=read_json(failure_path).get('schema') if failure_path else None
+        failure_bundle=read_json(failure_path) if failure_path else {}
+        failure_schema=failure_bundle.get('schema')
         allocated_unused=failure_schema=='ck3-public-cell-pre-consumption-close-v1'
         allocated_unrun=failure_schema=='ck3-mod-acceptance-allocated-unrun-closure-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
@@ -1480,13 +1633,14 @@ def allocate_and_keep(selection,args):
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
+        expired_keeper=(failed_live and failure_bundle.get('closure_kind')=='expired-keeper-missing-final-report')
         if allocated_unused or allocated_unrun or never_launched or prelaunch_host or pre_ready or failed_resource or failed_live:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
         else:
             report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
-        prior_keeper=read_json(args.previous_keeper/'report.json') if not pre_ready else None
+        prior_keeper=read_json(args.previous_keeper/'report.json') if not (pre_ready or expired_keeper) else None
         # The canonical bus event/task reconstruction is valid for a successful
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
@@ -1518,7 +1672,7 @@ def allocate_and_keep(selection,args):
                              previous_session_closure(previous,freeze,report,report_reference))
         if report_projection is not None:
             session_closure['native_cleanup_projection']=report_projection
-        if not pre_ready:
+        if not (pre_ready or expired_keeper):
             require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
         require_latest_screen_release(release,args.latest_screen_release)
         closure={**session_closure,'run_id':freeze['run_id'],

@@ -131,13 +131,14 @@ def settings(value):
     need(required <= set(value), 'Incomplete public R04 settings: ' + ','.join(sorted(required-set(value))))
     allowed = required | {'next_full_reserve_bytes', 'normal_close_reserve', 'cleanup_save_reserve',
                          'one_day_timeout', 'max_packet_bytes', 'mirror_limit_bytes',
-                         'cleanup_mirror_reserve_bytes', 'poll_seconds', 'speed', 'max_modal_choices'}
+                         'cleanup_mirror_reserve_bytes', 'poll_seconds', 'speed', 'max_modal_choices', 'before_move_frame_required'}
     need(set(value) <= allowed, 'Unknown public R04 settings')
     defaults = dict(next_full_reserve_bytes=64*1024*1024, normal_close_reserve=900,
                     cleanup_save_reserve=120, one_day_timeout=120, max_packet_bytes=32*1024*1024,
                     mirror_limit_bytes=67*1024*1024, cleanup_mirror_reserve_bytes=3*1024*1024,
-                    poll_seconds=.25, speed=5, max_modal_choices=64)
+                    poll_seconds=.25, speed=5, max_modal_choices=64, before_move_frame_required=False)
     a = SimpleNamespace(**{**defaults, **value})
+    need(type(a.before_move_frame_required) is bool, 'before_move_frame_required must be boolean')
     for key in ('expected_start_date_raw', 'origin_province', 'target_province', 'actor_id'):
         need(type(getattr(a, key)) is int and getattr(a, key)>0, 'Actual R04 '+key+' required')
     need(type(a.army_id) is int and 0<=a.army_id<2**31 and
@@ -374,6 +375,72 @@ def validate_contract(context):
                          machine_id=current_machine_id(),source_head=head,a=a)
 
 
+def await_before_move_frame(io, frame, result, a, *, _time=time.time,
+                           _monotonic=time.monotonic, _sleep=time.sleep):
+    """Wait for a pinned canonical frame review; this does not start a camera."""
+    if not a.before_move_frame_required:
+        return None
+    maximum_wait=a.camera_timeout_seconds
+    need(0<maximum_wait<=900, 'Before-Move frame wait must be bounded to 900 seconds')
+    need(result['Move_attempts']==0, 'Before-Move frame review must precede the sole Move')
+    output=Path(io.client.output)
+    awaiting=output/'before-move-frame-awaiting.json'
+    signal=output/'before-move-frame-reviewed.json'
+    need(not awaiting.exists() and not signal.exists(), 'Before-Move frame namespace already consumed')
+    expected=dict(machine_id=io.context['machine_id'],run_id=io.client.selection.run_dir.name,
+                  bridge_pid=frame['diagnostics']['bridge_pid'],date_raw=frame['date_raw'])
+    source=io.client.checkpoint('R04-BEFORE-MOVE-FRAME-SOURCE',frame)
+    payload=dict(**expected,observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                 signal_path=str(signal.resolve()),source_frame=pin(source),maximum_wait_seconds=maximum_wait,
+                 retained_create_time=result['actual_binding']['create_time'],coordination_only=True,
+                 action_kind='review-frame-only',Move_attempts=0,camera_started=False,
+                 normal_close_reserve_seconds=a.normal_close_reserve,
+                 cleanup_save_reserve_seconds=a.cleanup_save_reserve)
+    io.client.checkpoint('before-move-frame-awaiting',payload)
+    until=_monotonic()+maximum_wait
+    reserve=a.normal_close_reserve+a.cleanup_save_reserve+a.one_day_timeout
+    while _monotonic()<until:
+        io.client.guard(reserve=reserve)
+        need(_time()+reserve<io.settings['deadline_unix_seconds'],
+             'Original deadline reached before frame review; no Move')
+        if signal.is_file():
+            row=read(signal)
+            need(all(type(row.get(k)) is type(v) and row.get(k)==v for k,v in expected.items()) and
+                 row.get('frame_reviewed') is True and row.get('camera_started') is not True,
+                 'Before-Move frame signal machine/run/PID/date differs')
+            review_ref=row.get('review_receipt')
+            need(type(review_ref) is dict, 'Canonical Root frame review receipt required')
+            review=small_json(review_ref)
+            need(review.get('schema')=='xar.e04.owned-client-root-review.v1' and
+                 review.get('machine_id')==expected['machine_id'] and review.get('run_id')==expected['run_id'] and
+                 review.get('reviewer')=='/root' and review.get('root_reviewed_window_only') is True and
+                 review.get('root_reviewed_no_hover') is True and review.get('content') in ('army-supply','map-context'),
+                 'Canonical Root direct frame review identity/status differs')
+            now=datetime.now(timezone.utc)
+            need(0<=(now-datetime.fromisoformat(review['reviewed_at_utc'].replace('Z','+00:00'))).total_seconds()<=120,
+                 'Before-Move Root frame review is stale')
+            capture_ref=review.get('capture');need(type(capture_ref) is dict, 'Canonical original capture pin required')
+            capture=small_json(capture_ref);source=capture.get('source') or {}
+            need(capture.get('schema')=='xar.e04.owned-client-original-frame.v1' and
+                 capture.get('machine_id')==expected['machine_id'] and capture.get('run_id')==expected['run_id'] and
+                 capture.get('pid')==expected['bridge_pid']==source.get('owned_ck3_pid') and
+                 source.get('owned_ck3_create_time')==result['actual_binding']['create_time'] and
+                 capture.get('recording_started') is False,
+                 'Canonical original frame crossed actual CK3 lifetime')
+            need(0<=(now-datetime.fromisoformat(capture['observed_at_utc'].replace('Z','+00:00'))).total_seconds()<=180,
+                 'Before-Move original frame is stale')
+            for key in ('desktop_original','client_original'):
+                ref=capture[key];need(pin(ref['path'])==ref,'Before-Move original image pin changed')
+            need(review.get('client_original')==capture['client_original'], 'Root review client original differs')
+            proof=dict(status='ACTUAL_BEFORE_MOVE_FRAME_REVIEW_CONSUMED',**expected,
+                       awaiting=pin(awaiting),signal=pin(signal),review_receipt=review_ref,capture=capture_ref,
+                       camera_started=False,Move_submitted=False,business_or_video_approved=False)
+            io.client.checkpoint('before-move-frame-review-consumed',proof)
+            return proof
+        _sleep(min(.25,max(0,until-_monotonic())))
+    raise TimeoutError('Before-Move frame review absent; no Move submitted')
+
+
 def verify_case(context):
     """Read preserved progress even when the optional observation stopped RED."""
     from ck3_live_run_id import current_machine_id
@@ -483,6 +550,10 @@ def run_case(context,client):
              'Another observer owner remains active')
         result['entry_window_plan']=dict(snapshot_only_days=a.capture_after_days,single_observation_day=a.max_days,
             full_query_count_planned=2,early_arrival_has_no_owner_claim=True,arrival_on_observation_day_not_assumed=True)
+        if a.before_move_frame_required:
+            held=snap('before-move-frame-current')
+            result['before_move_frame']=await_before_move_frame(io,held,result,a)
+            held_day_frame(held,snap('before-move-frame-independent-after'),army_id=a.army_id,actor_id=a.actor_id)
         preview_frame=snap('fresh-target-preview-source')
         unit=selected_unit(preview_frame,a.army_id)
         need(preview_frame['date_raw']==a.expected_start_date_raw and

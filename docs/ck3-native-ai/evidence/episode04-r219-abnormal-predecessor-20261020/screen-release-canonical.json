@@ -1,0 +1,59 @@
+{
+  "schema": "xar-screen-release-canonical-reconstruction-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:31:23.774591+00:00",
+  "source_event_stream": "D:\\workspace\\.codex-task-bus\\events.jsonl",
+  "source_event_byte_offset": 4197339,
+  "source_event_bytes": 719,
+  "source_event_raw_utf8": "{\"event_id\": \"9f885ff2ee1747b896c23aeb5bf8efb1\", \"git\": {\"branch\": \"research/e04-next-runtime-3e7d337\", \"dirty_entries\": 0, \"head\": \"3e7d337dc4edadde26642ad23fee85df5e41ecf9\"}, \"kind\": \"status\", \"next_step\": \"Fresh offline/nonce review then one shared host launch\", \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\", \"resources\": [], \"retirement\": {\"business_status\": \"unresolved_red\", \"kind\": \"expired-own-claim-released\", \"prior_sequence\": 7124}, \"schema\": \"codex.task_bus.v1\", \"sequence\": 7127, \"state\": \"waiting\", \"summary\": \"R219_no_live_game_recorder_keeper_observed_stale_lease_retired_business_unresolved_RED\", \"task_id\": \"e04-common-12004-a220\", \"timestamp_utc\": \"2026-10-20T01:50:29.867054+00:00\", \"to\": [\"*\"]}\n",
+  "source_event_raw_sha256": "49f913655273ffb3269d7d69be48875f129577aa1bb334454a18288258311d9a",
+  "event": {
+    "event_id": "9f885ff2ee1747b896c23aeb5bf8efb1",
+    "git": {
+      "branch": "research/e04-next-runtime-3e7d337",
+      "dirty_entries": 0,
+      "head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9"
+    },
+    "kind": "status",
+    "next_step": "Fresh offline/nonce review then one shared host launch",
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "retirement": {
+      "business_status": "unresolved_red",
+      "kind": "expired-own-claim-released",
+      "prior_sequence": 7124
+    },
+    "schema": "codex.task_bus.v1",
+    "sequence": 7127,
+    "state": "waiting",
+    "summary": "R219_no_live_game_recorder_keeper_observed_stale_lease_retired_business_unresolved_RED",
+    "task_id": "e04-common-12004-a220",
+    "timestamp_utc": "2026-10-20T01:50:29.867054+00:00",
+    "to": [
+      "*"
+    ]
+  },
+  "actual_task_pin": {
+    "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-common-12004-a220.json",
+    "bytes": 602,
+    "sha256": "b65d71496dd308f126eb9640093acfc2fe85ddc02d9573c088dfd12a765742ea"
+  },
+  "task": {
+    "git": {
+      "branch": "research/e04-next-runtime-3e7d337",
+      "dirty_entries": 0,
+      "head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9"
+    },
+    "last_sequence": 7127,
+    "next_step": "Fresh offline/nonce review then one shared host launch",
+    "pid": 15940,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "waiting",
+    "summary": "R219_no_live_game_recorder_keeper_observed_stale_lease_retired_business_unresolved_RED",
+    "task_id": "e04-common-12004-a220",
+    "updated_at_utc": "2026-10-20T01:50:29.865686+00:00"
+  },
+  "release_confirmed_by_canonical_readback": true
+}

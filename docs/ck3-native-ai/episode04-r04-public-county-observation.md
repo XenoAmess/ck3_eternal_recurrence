@@ -25,6 +25,7 @@
   "profile_limit_bytes": 805306368,
   "deadline_utc": "<新 Root 时限>",
   "camera_timeout_seconds": 900,
+  "before_move_frame_required": true,
   "prefix": "<本场唯一命名空间>"
 }
 ```
@@ -44,6 +45,8 @@
 
 profile 用量包含 `component_additional_roots.profile`。嵌套及重复根先合并，再按文件路径去重；它与 Driver 分别受各自上限约束。计量只读取目录元数据，不读取存档等大文件正文，也不遍历共同父目录。
 
+当前新场显式设置 `before_move_frame_required=true`。actor 在唯一 preview/Move 前发布 `case-output/before-move-frame-awaiting.json`，最多等待 900 秒；Root 用同一正式录制配置执行 canonical `prepare-frame`，直接审阅原图，再生成 `ROOT-REVIEW.actual.json`，将其精确 pin 及 awaiting 中的机器/run/PID/date 写入 `before-move-frame-reviewed.json`。actor 核对原始 capture 的 PID/创建时间、两份原图 pin、审阅新鲜度，并重新读取同日原生帧后才允许推进。此 barrier 不执行录制，超时或身份不符时 Move 保持 0，仍进入原 OFF/Save/正常退出。默认不启用的旧 case 输入保持原语义。
+
 正式录制配置必须在推进前绑定这组固定路径：
 
 ```text
@@ -60,3 +63,5 @@ observer_result = <LIVE>/case-output/R04-BAYEUX-TERMINAL.json
 ## 本轮离线验证
 
 `machine_id: desktop-3fevhd2-1c74096080`；观察时间 2026-10-20T02:18–02:22Z。来源为主树 `python -B -X utf8 tools/test_r04_county_entry.py` 的实际执行回执：六项 focused synthetic 回归通过，覆盖公共 hook/七日合同、终端回读保留六日及缺失/跨 run 拒绝、六日后超时、不重投未知单日、额外 profile 去重/独立上限、分盘精确身份及旧 marker/路径逃逸拒绝。`open_kaishek: not-applicable`，因为本次修改为 Python 路径/元数据/调用顺序，没有可由 CK3 脚本 parser 或有限运行时覆盖的脚本语义。该离线结果不代表新实机、录像或正常退出通过。
+
+2026-10-20T02:31:16Z，同一 `machine_id` 在主树执行 `python -B -X utf8 tools/test_r04_before_move_frame.py`，新增一项 compound synthetic 回归通过：错误 date 拒绝、无 signal 超时且 Move 0、合法 frame review 只解除帧审阅等待并保持 `camera_started=false`。源码基线为 `8e9642adceb686e0457b3cb866ab5c3c9436040f` 加本次 Python barrier；旧六项未无变化重复执行。该结果仍不授予新场实机或录制资格。

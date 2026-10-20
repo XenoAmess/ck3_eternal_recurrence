@@ -1,0 +1,111 @@
+{
+  "schema": "ck3-mod-acceptance-exact-candidate-integration-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:34:54.874886+00:00",
+  "head_at_apply": "8e9642adceb686e0457b3cb866ab5c3c9436040f",
+  "baseline": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 123178,
+    "sha256": "5c90f46754660062dd9a561345724a0432591000ac472c5f81045f488acfd1b9"
+  },
+  "applied_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 134820,
+    "sha256": "c69937b6595d6b63a63626e2e31dff2189cdd18a1b2ad5bf76047d09d74c9cd5"
+  },
+  "applied_test": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_expired_keeper.py",
+    "bytes": 13080,
+    "sha256": "77c1e2305b4a95dc2c011d85bf1b3c6453bd34e0e3c6146d51709f8663975fb7"
+  },
+  "source_candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\candidate\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 134820,
+    "sha256": "c69937b6595d6b63a63626e2e31dff2189cdd18a1b2ad5bf76047d09d74c9cd5"
+  },
+  "source_test": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\candidate\\tools\\test_ck3_mod_acceptance_expired_keeper.py",
+    "bytes": 13080,
+    "sha256": "77c1e2305b4a95dc2c011d85bf1b3c6453bd34e0e3c6146d51709f8663975fb7"
+  },
+  "byte_identical_to_validated_candidate": true,
+  "tests_not_repeated_without_source_change": true,
+  "copied_evidence": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\ACTUAL-VALIDATION.a02.actual.json",
+        "bytes": 7609,
+        "sha256": "b3bd0e2b5e064d9ac19090bf95b65e2557c8804e2bd1d61a76b858d75ed2c988"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r219-abnormal-predecessor-20261020\\actual-validation.json",
+        "bytes": 7609,
+        "sha256": "b3bd0e2b5e064d9ac19090bf95b65e2557c8804e2bd1d61a76b858d75ed2c988"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\ACTUAL-INPUTS.actual.json",
+        "bytes": 1473,
+        "sha256": "5cb8c3faba147937fd8e9161bcd7e783cbc06446fd0d7b9a87f5988288f1a082"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r219-abnormal-predecessor-20261020\\actual-inputs.json",
+        "bytes": 1473,
+        "sha256": "5cb8c3faba147937fd8e9161bcd7e783cbc06446fd0d7b9a87f5988288f1a082"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\R219-FAILED-LIVE-RESOURCE-CLOSURE.actual.json",
+        "bytes": 4069,
+        "sha256": "2c489416c0b783cf0f6daf3e6865b4fa6a49a07d9f7c7f2e69011f2c1ce5cfbe"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r219-abnormal-predecessor-20261020\\failed-live-resource-closure.json",
+        "bytes": 4069,
+        "sha256": "2c489416c0b783cf0f6daf3e6865b4fa6a49a07d9f7c7f2e69011f2c1ce5cfbe"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\R219-SCREEN-RELEASE.canonical.actual.json",
+        "bytes": 2967,
+        "sha256": "9f29ca2533c2f19dc99dab444faa4da87fd6f0a70f05b790b0fdc8cf232553a9"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r219-abnormal-predecessor-20261020\\screen-release-canonical.json",
+        "bytes": 2967,
+        "sha256": "9f29ca2533c2f19dc99dab444faa4da87fd6f0a70f05b790b0fdc8cf232553a9"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\FOCUSED-TESTS.a02.actual.json",
+        "bytes": 946,
+        "sha256": "97caeaaef1a8c3ffd499583e310c83e0cf2b44578bcffb345d955c597b753f79"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r219-abnormal-predecessor-20261020\\focused-tests.json",
+        "bytes": 946,
+        "sha256": "97caeaaef1a8c3ffd499583e310c83e0cf2b44578bcffb345d955c597b753f79"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\FOCUSED-TESTS.a02.actual.txt",
+        "bytes": 5274,
+        "sha256": "db7a3402c5a51e653d06352399af389c8ddcb552fc035587729175dc556296f4"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r219-abnormal-predecessor-20261020\\focused-tests.txt",
+        "bytes": 5274,
+        "sha256": "db7a3402c5a51e653d06352399af389c8ddcb552fc035587729175dc556296f4"
+      }
+    }
+  ],
+  "native_tree_edited": false,
+  "game_or_screen_actions": 0,
+  "normal_close_qualified": false,
+  "business_pass": false
+}

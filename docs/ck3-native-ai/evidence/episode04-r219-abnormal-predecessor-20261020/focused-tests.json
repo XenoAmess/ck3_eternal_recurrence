@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:33:50.019294+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\candidate\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 134820,
+    "sha256": "c69937b6595d6b63a63626e2e31dff2189cdd18a1b2ad5bf76047d09d74c9cd5"
+  },
+  "test_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\candidate\\tools\\test_ck3_mod_acceptance_expired_keeper.py",
+    "bytes": 13080,
+    "sha256": "77c1e2305b4a95dc2c011d85bf1b3c6453bd34e0e3c6146d51709f8663975fb7"
+  },
+  "tests_run": 28,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "fixture_only": true,
+  "CK3_screen_native_calls": 0,
+  "report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\FOCUSED-TESTS.a02.actual.txt",
+    "bytes": 5274,
+    "sha256": "db7a3402c5a51e653d06352399af389c8ddcb552fc035587729175dc556296f4"
+  }
+}

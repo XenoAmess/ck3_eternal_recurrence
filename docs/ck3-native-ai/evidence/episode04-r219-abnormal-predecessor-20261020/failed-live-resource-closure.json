@@ -1,0 +1,75 @@
+{
+  "schema": "ck3-mod-acceptance-failed-live-resource-closure-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0215",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:31:23.777479+00:00",
+  "keeper_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\keeper-a01",
+  "closure_kind": "expired-keeper-missing-final-report",
+  "keeper_final_report_missing": true,
+  "normal_close_qualified": false,
+  "typed_normal_exit_proven": false,
+  "business_pass": false,
+  "release_pass": false,
+  "original_evidence": {
+    "frozen_argv": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\frozen-argv.json",
+      "bytes": 31821,
+      "sha256": "4b0f6da642a52ec0457198a90aa9d3b947cfbd1417f9159ba8e5d48c260b0b22"
+    },
+    "ready_context": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\ready-context.json",
+      "bytes": 5430,
+      "sha256": "153ae04869d9b6db2bf1cbc8c62394baf91e7a477e61fca60dc2ec106535e186"
+    },
+    "prepared_case": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\prepared-a01\\prepared-case.json",
+      "bytes": 11744,
+      "sha256": "111af5eae20191e989375477ea5b1d54f88c6093398ce096b681ec6555da6c94"
+    },
+    "host_started": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\host-started.json",
+      "bytes": 4078,
+      "sha256": "57027038a71a9d6841108cd435b86faa4989039ac829ad84005bb18c81277f81"
+    },
+    "host_exit": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\host-original-process-exit.json",
+      "bytes": 244,
+      "sha256": "9126cc481f4fc3c6e13856d190efa356e7b776909fc88eae810e69f701dfb5a0"
+    },
+    "host_supervisor": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\host-supervisor-started.json",
+      "bytes": 1098,
+      "sha256": "0deb241de20ec39950ebc5a9750e8533bdb0f20faf63d4d1907072df4a748d3e"
+    },
+    "keeper_process": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\keeper-process.json",
+      "bytes": 750,
+      "sha256": "41ae04a28fb2f32c8219f4a57fcd0974b0a9085754d35aa98adbd9218bae59a4"
+    },
+    "retained_identity": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\case-output\\retained-current-process-identity.json",
+      "bytes": 109,
+      "sha256": "e7e5677d98f16f358720cde044072af44323bde757991371e897200e4c6fead4"
+    },
+    "normal_close": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\case-output\\normal-close-result.json",
+      "bytes": 710,
+      "sha256": "dec9588cd74764f1d27a5890c79b0196410954f21349fc245e8127fd782783b1"
+    },
+    "handover_snapshot": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\evidence\\2026-10-20-e04-desktop-3fevhd2-1c74096080\\snapshot.json",
+      "bytes": 96064,
+      "sha256": "6d7d79c0fac09aee208be59dd8e31bbebca763ae1f65dad546667bcb48dd420b"
+    },
+    "release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\predecessor\\R219-SCREEN-RELEASE.canonical.actual.json",
+      "bytes": 2967,
+      "sha256": "9f29ca2533c2f19dc99dab444faa4da87fd6f0a70f05b790b0fdc8cf232553a9"
+    }
+  },
+  "retired_prior_event": {
+    "byte_offset": 4195573,
+    "bytes": 608,
+    "sha256": "01d8fd5612b2828193a8122aa18704d8f21b45e202b74c28ddad94c91d04deda"
+  }
+}
