@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.root-sparse-observation-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-20T05:22:10.939466+00:00",
+  "source": {
+    "kind": "parent_agent_message",
+    "agent": "/root",
+    "task": "e04-r0217-proof-chapter-20261020-a01",
+    "observation_time_utc_not_separately_supplied": true,
+    "verbatim": "Root更正：刚单独以detail original重新直接查看raw-15s.jpg，底部实际是Jan27，你最初读法正确。我的前条Jan26读错；请不要倒改已冻结ROOT-WINDOW-CHOICE，而追加带当前时间/root观察出处的CORRECTION：15s=6510/Jan27，计数及日期可见变化均仅定位(10,15]s，仍不代表精确native事件PTS。此纠正不改变连续0–30+6卡和已产出影片，不需重渲染。将纠正纳入small copyplan/DELIVERY。Root现在看5张movie帧。"
+  },
+  "corrects_immutable_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\ROOT-WINDOW-CHOICE.actual.json",
+    "bytes": 2105,
+    "sha256": "1b77f9342097d616b85d3201a3e6c53e79ffa009fbea4feaca37fd5754530985"
+  },
+  "image": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-15s.jpg",
+    "bytes": 74044,
+    "sha256": "c5351481762f0d37084dbd2d9877ac7a994e06c06e3e47a7db2e9e967fc90f5c"
+  },
+  "corrected_observation": {
+    "requested_raw_seconds": 15,
+    "UI_counter": 6510,
+    "date_display": "Jan27"
+  },
+  "counter_visible_change_interval_seconds": {
+    "exclusive_start": 10,
+    "inclusive_end": 15
+  },
+  "date_visible_change_interval_seconds": {
+    "exclusive_start": 10,
+    "inclusive_end": 15
+  },
+  "precise_native_event_PTS": false,
+  "selected_source_window_changed": false,
+  "movie_bytes_changed": false,
+  "new_decode_or_render_executed": false,
+  "historical_original_receipt_unchanged": true,
+  "human_review_or_signoff": false
+}

@@ -1,0 +1,31 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: CN,Microsoft YaHei,38,&H00E1F2F8,&H00E1F2F8,&H00131820,&H00000000,-1,0,0,0,100,100,0,0,1,2,0,8,120,120,0,1
+Style: EN,Arial,25,&H00ACD2E1,&H00ACD2E1,&H00131820,&H00000000,0,0,0,0,100,100,0,0,1,1,0,8,120,120,0,1
+Style: Label,Microsoft YaHei,22,&H006CBFE9,&H006CBFE9,&H00131820,&H00000000,0,0,0,0,100,100,0,0,1,1,0,7,30,30,0,1
+Style: Card,Microsoft YaHei,52,&H006CBFE9,&H006CBFE9,&H00131820,&H00000000,-1,0,0,0,100,100,0,0,1,1,0,8,120,120,0,1
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+
+Dialogue: 9,0:00:00.00,0:00:36.00,Label,draft,0,0,0,,{\an9\pos(1870,35)}审阅草稿
+Dialogue: 2,0:00:00.00,0:00:30.00,Label,scope,0,0,0,,{\an7\pos(45,880)}R0217 · 同一场第七日记录
+Dialogue: 5,0:00:00.00,0:00:07.50,CN,,0,0,0,,{\an8\pos(960,925)}画面军队计数：6746 → 6510（净−236）
+Dialogue: 4,0:00:00.00,0:00:07.50,EN,,0,0,0,,{\an8\pos(960,993)}UI count: 6,746 to 6,510, net -236.
+Dialogue: 5,0:00:07.50,0:00:15.00,CN,,0,0,0,,{\an8\pos(960,925)}实体兵槽：6741 → 6505；与画面计数分列。
+Dialogue: 4,0:00:07.50,0:00:15.00,EN,,0,0,0,,{\an8\pos(960,993)}Physical soldiers: 6,741 to 6,505. These are separate readouts.
+Dialogue: 5,0:00:15.00,0:00:22.50,CN,,0,0,0,,{\an8\pos(960,925)}17次已核实的县进入实际扣兵，小计236。
+Dialogue: 4,0:00:15.00,0:00:22.50,EN,,0,0,0,,{\an8\pos(960,993)}17 verified county-entry debit calls; subtotal: 236.
+Dialogue: 5,0:00:22.50,0:00:30.00,CN,,0,0,0,,{\an8\pos(960,925)}5个空DATA调用当前v2排除；县总额仍未知。
+Dialogue: 4,0:00:22.50,0:00:30.00,EN,,0,0,0,,{\an8\pos(960,993)}Five empty-DATA calls are excluded by v2. The county total is unknown.
+Dialogue: 4,0:00:30.00,0:00:36.00,Card,,0,0,0,,{\an8\pos(960,150)}已核实17次县进入实际扣兵
+Dialogue: 5,0:00:30.00,0:00:36.00,Card,,0,0,0,,{\an8\pos(960,330)\fs104}小计236人
+Dialogue: 5,0:00:30.00,0:00:36.00,Card,,0,0,0,,{\an8\pos(960,550)\fs54}县总额仍未知
+Dialogue: 4,0:00:30.00,0:00:36.00,EN,,0,0,0,,{\an8\pos(960,690)\fs32}17 verified calls. Subtotal 236. County total unknown.
+Dialogue: 3,0:00:30.00,0:00:36.00,Label,,0,0,0,,{\an8\pos(960,835)\fs30}5个空DATA调用当前v2排除；不以小计追认县总额。
+Dialogue: 3,0:00:30.00,0:00:36.00,Label,,0,0,0,,{\an8\pos(960,935)\fs24}同一场第七日实录 · 未授整卡完成、正式动态或人工签核

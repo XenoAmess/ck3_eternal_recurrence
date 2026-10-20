@@ -1,0 +1,121 @@
+{
+  "schema": "xar.e04.r0217-proof-render-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:14:47.803784+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+    "bytes": 7018,
+    "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+  },
+  "intake": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\INTAKE.actual.json",
+    "bytes": 6296,
+    "sha256": "72f9904706fe8460ffd3306801b0193f35e28ae7999d92b902d2b21b2037927c"
+  },
+  "Root_window_choice": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\ROOT-WINDOW-CHOICE.actual.json",
+    "bytes": 2105,
+    "sha256": "1b77f9342097d616b85d3201a3e6c53e79ffa009fbea4feaca37fd5754530985"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "music": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\assets\\music\\quiet-courtly-tension.wav",
+    "bytes": 30726160,
+    "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+  },
+  "ASS": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\captions.ass",
+    "bytes": 2720,
+    "sha256": "b657f2d1515c1f1278a03925633a9675233be4530fc3806499f6c674a8043e59"
+  },
+  "implementation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\render_insert.py",
+    "bytes": 8377,
+    "sha256": "89537229b47ed8aaa451fce6eaf7c076b1839d99a906b2ae95e9fe9dc1047ed8"
+  },
+  "source_window": {
+    "start_seconds": 0.0,
+    "end_seconds": 30.0,
+    "continuous_source": true,
+    "speed": 1.0
+  },
+  "game_seconds": 30.0,
+  "card_seconds": 6.0,
+  "total_seconds": 36.0,
+  "frames": 1080,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-threads",
+    "1",
+    "-filter_complex_threads",
+    "1",
+    "-nostdin",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-n",
+    "-i",
+    "C:/ck3-e04-resume-20261020-a01/r221-scene-a01/raw-a01/take01/raw.mkv",
+    "-i",
+    "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+    "-f",
+    "lavfi",
+    "-i",
+    "color=c=0x211813:s=1920x1080:r=30:d=6.000000",
+    "-filter_complex",
+    "[0:v]trim=duration=30.000000,setpts=PTS-STARTPTS,scale=1536:864:flags=lanczos,pad=1920:1080:192:0:color=0x211813,setsar=1,fps=30,drawbox=x=0:y=864:w=1920:h=216:color=0x35291F:t=fill,drawbox=x=0:y=864:w=1920:h=3:color=0xCBA56A:t=fill,format=yuv420p[game];[2:v]trim=duration=6.000000,setpts=PTS-STARTPTS,setsar=1,fps=30,format=yuv420p[card];[game][card]concat=n=2:v=1:a=0,fps=30,trim=duration=36.000000,setpts=PTS-STARTPTS,ass=filename='C\\:/ck3-e04-resume-20261020-a01/r0217-proof-chapter-a01/work-a01/captions.ass',format=yuv420p[v];[1:a]atrim=duration=36.000000,asetpts=PTS-STARTPTS,aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,volume=-17dB,afade=t=in:st=0:d=1,afade=t=out:st=33.000000:d=3[a]",
+    "-map",
+    "[v]",
+    "-map",
+    "[a]",
+    "-t",
+    "36.000000",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "veryfast",
+    "-crf",
+    "21",
+    "-pix_fmt",
+    "yuv420p",
+    "-c:a",
+    "aac",
+    "-b:a",
+    "192k",
+    "-ar",
+    "48000",
+    "-ac",
+    "2",
+    "-movflags",
+    "+faststart",
+    "-threads:v",
+    "1",
+    "-frames:v",
+    "1080",
+    "-profile:v",
+    "high",
+    "-level:v",
+    "4.0",
+    "-video_track_timescale",
+    "15360",
+    "C:/ck3-e04-resume-20261020-a01/r0217-proof-chapter-a01/work-a01/movie.partial.mp4"
+  ],
+  "exact_Chinese_statements": [
+    "画面军队计数：6746 → 6510（净−236）",
+    "实体兵槽：6741 → 6505；与画面计数分列。",
+    "17次已核实的县进入实际扣兵，小计236。",
+    "5个空DATA调用当前v2排除；县总额仍未知。"
+  ],
+  "new_TTS_calls": 0,
+  "other_run_footage": false,
+  "source_raw_QA_repeated": false,
+  "county_total_debit": null,
+  "R04_entire_card_closed": false,
+  "formal_dynamic_credit_added": 0,
+  "human_signoff": false
+}

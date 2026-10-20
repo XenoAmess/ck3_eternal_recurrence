@@ -1,0 +1,44 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-e04-r0217-narrow-debit-subtotal-review",
+    "title": "R0217：17次扣兵与236人小计审阅插片"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 40
+  },
+  "chapters": [
+    {
+      "id": "r0217-proof",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "同一场第七日县进入扣兵小计"
+      },
+      "cues": [
+        {
+          "id": "r0217-proof",
+          "narration": {
+            "zh-CN": "无口播；只复用原有配乐与画面文字。"
+          },
+          "subtitles": {
+            "zh-CN": "画面军队计数：6746 → 6510（净−236） 实体兵槽：6741 → 6505；与画面计数分列。 17次已核实的县进入实际扣兵，小计236。 5个空DATA调用当前v2排除；县总额仍未知。",
+            "en": "UI count: 6,746 to 6,510, net -236. Physical soldiers: 6,741 to 6,505. These are separate readouts. 17 verified county-entry debit calls; subtotal: 236. Five empty-DATA calls are excluded by v2. The county total is unknown."
+          }
+        }
+      ]
+    }
+  ]
+}

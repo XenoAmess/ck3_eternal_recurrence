@@ -1,0 +1,117 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:27:17.679232+00:00",
+  "exact_files": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md",
+      "bytes": 2079,
+      "sha256": "68c8bf639d1cdc50217fb926109a39206f9b0b4e20f72b4df6ff9aa285910d49"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/INTAKE.actual.json",
+      "bytes": 6296,
+      "sha256": "72f9904706fe8460ffd3306801b0193f35e28ae7999d92b902d2b21b2037927c"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/PLAN.actual.json",
+      "bytes": 4378,
+      "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ENCODE.actual.json",
+      "bytes": 862,
+      "sha256": "c68bf436798fa02b04b76a73c6259968c40300e0274b85d4cfb4097ccd74c178"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/QA.actual.json",
+      "bytes": 4506,
+      "sha256": "5784957d4f3e474ab859425f2906c983c99417f794ac04b95f14ba72a08f424f"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/DELIVERY.actual.json",
+      "bytes": 7282,
+      "sha256": "1d7e6e07e5095575635b30faac2a196d8a34af4134a353e5991378b04bd0c336"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-WINDOW-CHOICE.actual.json",
+      "bytes": 2105,
+      "sha256": "1b77f9342097d616b85d3201a3e6c53e79ffa009fbea4feaca37fd5754530985"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/SIX-RAW-FRAMES.actual.json",
+      "bytes": 2570,
+      "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/project/promo-project.json",
+      "bytes": 1336,
+      "sha256": "bfa1201ee5d3e8f1efcf6c23a703c104ec413c666be650dcff568c7d76323504"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/work-a01/captions.ass",
+      "bytes": 2720,
+      "sha256": "b657f2d1515c1f1278a03925633a9675233be4530fc3806499f6c674a8043e59"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/context.py",
+      "bytes": 3455,
+      "sha256": "e6a13bd507d4fcc9a0fe01a4f2fd6e9736889c8e7f0d953773b79b89aeb93f2a"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/render_insert.py",
+      "bytes": 8377,
+      "sha256": "89537229b47ed8aaa451fce6eaf7c076b1839d99a906b2ae95e9fe9dc1047ed8"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/qa_insert.py",
+      "bytes": 5617,
+      "sha256": "12d58bf4791af355d6404fa66d83434e03cf9923793af19f9d998bb2a4152466"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-WINDOW-CORRECTION.actual.json",
+      "bytes": 1887,
+      "sha256": "f6092b662f41ee4f02f71a04760497696a94fcd17b6a6baf029121681ca0aacd"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/DELIVERY.a02.actual.json",
+      "bytes": 8108,
+      "sha256": "cf399f28471fe47c874999a9d7ef1d7dad0f0b3a19e6e3ba05e18cd4ba7d1267"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+      "bytes": 7018,
+      "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/R0217-PROOF-CHAPTER-ADMISSION-TRANSACTION.actual-a01.json",
+      "bytes": 872,
+      "sha256": "d434fa0c27e6d97c4c3ac96efbc50a4f85d00db0818eaf0a6ba6f1f9f9822293"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/R0217-PROOF-CHAPTER-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 29354,
+      "sha256": "8ba6256995d52dade294a7e18a14f947cba2839bfd0a4c796434b05566aa7a62"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/SHARED-POOL-FINAL-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 8537,
+      "sha256": "edb296d8b9d319b46d320430881495130139aa33db5f4b3713edccc614d8da37"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/SHARED-FINAL-CLOSE-TRANSACTION.actual-a01.json",
+      "bytes": 836,
+      "sha256": "cf43d7380fb2af86078e2084a3904b98d1e9e137e833980c858a9dac4525a603"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/CAPACITY-CHECKPOINT.actual-a04.json",
+      "bytes": 3515,
+      "sha256": "ce2a0e106bb27415b9a92a9671234653a981c070a0220d46a8e3243453793c4e"
+    },
+    {
+      "path": "docs/maintenance/evidence/episode04-capacity-20261020/CURRENT-CLAIM-SNAPSHOT.actual-a02.json",
+      "bytes": 14584,
+      "sha256": "4d5606434e151fea91d965a6d9b68ed8920231dd916db5a7939db14defc900d3"
+    }
+  ],
+  "total_bytes": 126294
+}

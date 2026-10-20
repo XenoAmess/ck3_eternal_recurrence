@@ -27,3 +27,11 @@ OFFclear/Save均true、errors[]。退出时短虚拟键Esc没有打开菜单，�
 [实际闭场结算](../maintenance/evidence/episode04-capacity-20261020/R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json)计逻辑861,356,025B、unique AllocationSize871,594,056B，scene future=0；无physical或unused credit。shared128MiB和历史42,132,678B继续保守carry，D仍禁止重型写入。新场次/媒体重写须按统一策略重新申请有限scope，不能沿用05:00Z场次截止。
 
 本轮此前已生成[34分37秒方法＋独立证据审阅片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/full-method-plus-evidence-a01/DELIVERY.actual.json)，它不含本R0217新片，仍为审阅稿、未人审、未作为新成片上传。现有新证据可直接进入下一轮剪辑；未闭R06/R08/B驻点/ABC及完整动态镜头继续独立推进，不把它们串成所有剪辑的前置。
+
+### 05:23 UTC插片及最终容量补记
+
+同一`machine_id: desktop-3fevhd2-1c74096080`。[36秒审阅插片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md)已实际生成：连续raw0–30秒＋6秒结论卡，1920×1080/30fps/1080帧/AAC48k，新片一次严格AV解码与PTS检查通过。实物4,398,526B、SHA`eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c`；只有本R0217回放。四句字幕将画面/实体口径、17笔小计及县总额未知分别说明，Root已直接看五张字幕与末卡图；仍不是人工1×或continuous-clean。它没有拼进上面的34分37秒版本，也没有对外上传。
+
+Root第一次把raw15秒日期读成Jan26，随后直接重看原尺寸图确认为Jan27；[原件保留及更正](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/ROOT-WINDOW-CORRECTION.actual.json)明确军旗和日期变化均只定位(10,15]秒，不授精确native事件PTS。连续window及电影不需重渲染。
+
+05:23:20Z[最终容量检查](../maintenance/evidence/episode04-capacity-20261020/CAPACITY-CHECKPOINT.actual-a04.json)已关闭native/scene/media/shared的全部执行future预留；历史42,132,678B仍为carry-only且无执行权，不冒充0。新插片scope实际9,765,134B、allocation9,935,088B；C408GiB有限总额仍08:00Z到期，未续期，D仍heavy0。容量任务bus done、resources空、sequence7274。旧a03和04:50段的shared保留是历史时点，最新状态以a04为准。

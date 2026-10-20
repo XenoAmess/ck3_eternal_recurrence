@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:27:17.679232+00:00",
+  "reviewer": "/root",
+  "direct_movie_images": [
+    "caption-1-before.jpg",
+    "caption-2-boundary.jpg",
+    "caption-3-boundary.jpg",
+    "caption-4-boundary.jpg",
+    "end-card.jpg"
+  ],
+  "image_root": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples",
+  "observed": "All four Chinese/English captions and subtotal/unknown conclusion readable, same-run map context, no crop/truncation observed in these samples.",
+  "raw15_correction": "Original raw-15s.jpg directly reviewed again at original size:6510/Jan27; prior Root Jan26 observation was mistaken; preserved ROOT-WINDOW-CORRECTION.actual.json is authoritative.",
+  "AI_sparse_review": true,
+  "full_continuous_review": false,
+  "human_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit": false
+}

@@ -2,6 +2,8 @@
 
 ## 2026-10-20 04:50 UTC：R0217正常闭场与新增83秒原片
 
+05:23 UTC补记，同一`machine_id: desktop-3fevhd2-1c74096080`：已进一步产出[36秒字幕审阅插片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md)，连续本场raw0–30秒＋6秒小计/未知结论卡，一次新片AV/PTS通过。Root五张字幕图直接审阅完成，完整1×/clean仍未授；所有执行future预留现为0、历史42MB仅carry-only，容量bus7274资源空。
+
 `machine_id: desktop-3fevhd2-1c74096080`。[R0217最新实证](episode04-r0217-direct-debits-and-normal-close-20261020.md)：唯一Move、7个精确日并到1513，17次direct-v2正额个别调用实际扣兵小计236；5次空DATA调用仍严格排除，县总额null、R04整卡false。OFF/Save与正常GUI/retained OS0/native0/host0/public0/keeper0已证，screen CAS7254→7257资源空。新客户区原片83.133秒完整解码/PTS通过，三图AI直接看过；未授continuous-clean/人工1×，正式动态0/11。研究10/14、业务7/11、ABC0/3不变。34分37秒审阅片已生成，仍为draft；不要将下方历史状态当最新现场。源efda/native28dda/a39只绑定本场。
 
 

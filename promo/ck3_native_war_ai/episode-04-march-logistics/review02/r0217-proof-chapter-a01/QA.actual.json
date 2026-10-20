@@ -1,0 +1,142 @@
+{
+  "schema": "xar.e04.r0217-proof-review-technical-QA.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:16:01.335129+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "status": "NEW_BYTES_TECHNICAL_QA_PASS_PENDING_ROOT_IMAGES_AND_HUMAN_REVIEW",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+    "bytes": 4398526,
+    "sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c"
+  },
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1920,
+        "height": 1080,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_time": "0.000000",
+        "duration": "36.000000",
+        "nb_frames": "1080"
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "sample_rate": "48000",
+        "channels": 2,
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_time": "0.000000",
+        "duration": "36.000000",
+        "nb_frames": "1689"
+      }
+    ],
+    "format": {
+      "duration": "36.000000",
+      "size": "4398526"
+    }
+  },
+  "PTS_summary": {
+    "0": {
+      "packets": 1080,
+      "first_display_pts": 0.0,
+      "last_display_pts": 35.966667,
+      "max_display_pts_gap": 0.03333400000000353,
+      "DTS_strictly_increasing": true,
+      "display_PTS_unique": true
+    },
+    "1": {
+      "packets": 1689,
+      "first_display_pts": -0.021333,
+      "last_display_pts": 35.989333,
+      "max_display_pts_gap": 0.021334000000003073,
+      "DTS_strictly_increasing": true,
+      "display_PTS_unique": true
+    }
+  },
+  "strict_new_movie_AV_decode_exit_code": 0,
+  "strict_new_movie_AV_decode_stderr": "",
+  "strict_new_movie_AV_decode_count": 1,
+  "decoded_frames": 1080,
+  "sample_frames": [
+    {
+      "label": "caption-1-before",
+      "requested_seconds": 1.0,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-1-before.jpg",
+        "bytes": 90893,
+        "sha256": "fa2b84873e111a409200c41f792384ff52ada911c281c627635754a2a0d7b1d0"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "caption-2-boundary",
+      "requested_seconds": 7.6,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-2-boundary.jpg",
+        "bytes": 92090,
+        "sha256": "ec2e93d521a0ac40a035af2383b4a342e4c591d42908ea8966a6c302ea102c80"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "caption-3-boundary",
+      "requested_seconds": 15.1,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-3-boundary.jpg",
+        "bytes": 92008,
+        "sha256": "48269dab7b0fb9bc2f1cc533f9ed10dfc4f1ea5799b31d8dc65299eb7ad40795"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "caption-4-boundary",
+      "requested_seconds": 22.6,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-4-boundary.jpg",
+        "bytes": 93534,
+        "sha256": "e0efe8e64c872c143fe136432a46482c3d48023f4d7d5af650a091738cc27c34"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "end-card",
+      "requested_seconds": 34.0,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\end-card.jpg",
+        "bytes": 35585,
+        "sha256": "b5d6c370d2b3158a7227da64817bd467bde9c257a72fc28e1567cac1dfb0c8ff"
+      },
+      "Root_direct_view_pending": true
+    }
+  ],
+  "raw_QA_repeated": false,
+  "old_movie_QA_repeated": false,
+  "new_TTS_calls": 0,
+  "other_run_footage_used": false,
+  "county_total_debit": null,
+  "R04_entire_card_closed": false,
+  "formal_dynamic_credit_added": 0,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "Root_direct_new_movie_frames_reviewed": false,
+  "owned_FFmpeg_at_close": [],
+  "usage_before_QA_receipt": {
+    "aggregate_bytes": 9720213,
+    "JPEG_bytes": 848650,
+    "metadata_bytes": 74511
+  },
+  "D_heavy_write_bytes": 0,
+  "external_upload": false
+}

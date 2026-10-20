@@ -1,0 +1,194 @@
+{
+  "schema": "xar.e04.r0217-proof-review-insert-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:21:20.254467+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "source_commit_at_intake": "7de543f32034832f08dba0d843a24f326200cc80",
+  "status": "NEW_36S_REVIEW_INSERT_TECHNICAL_QA_PASSED_PENDING_ROOT_SPARSE_IMAGES_AND_HUMAN_REVIEW",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+    "bytes": 4398526,
+    "sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c"
+  },
+  "container_duration_seconds": 36.0,
+  "video_frames": 1080,
+  "geometry": [
+    1920,
+    1080
+  ],
+  "fps": "30/1",
+  "audio": {
+    "codec": "aac",
+    "sample_rate": 48000,
+    "channels": 2,
+    "content": "existing theme only; no TTS/narration generated"
+  },
+  "source_window": {
+    "start_seconds": 0.0,
+    "end_seconds": 30.0,
+    "continuous_source": true,
+    "speed": 1.0
+  },
+  "source_raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "source_raw_copied_or_QA_repeated": false,
+  "single_source_run_only": true,
+  "source_context": "Only the seventh-day map-context recording; earlier Move and first6days were not recorded.",
+  "narrow_claims": {
+    "UI_counter": [
+      6746,
+      6510
+    ],
+    "physical_soldiers": [
+      6741,
+      6505
+    ],
+    "qualified_positive_debit_calls": 17,
+    "individual_debit_subtotal": 236,
+    "empty_DATA_calls_excluded_by_current_v2": 5,
+    "county_total_debit": null,
+    "R04_entire_card_closed": false
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+    "bytes": 7018,
+    "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+  },
+  "intake": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\INTAKE.actual.json",
+    "bytes": 6296,
+    "sha256": "72f9904706fe8460ffd3306801b0193f35e28ae7999d92b902d2b21b2037927c"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\PLAN.actual.json",
+    "bytes": 4378,
+    "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642"
+  },
+  "QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\QA.actual.json",
+    "bytes": 4506,
+    "sha256": "5784957d4f3e474ab859425f2906c983c99417f794ac04b95f14ba72a08f424f"
+  },
+  "native_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\run-a01\\run-manifest.json",
+    "bytes": 1664,
+    "sha256": "5f8aebb631a349fd30fcc24ebef96090a4c1ab66a4f88a33f8041816b2d9f524"
+  },
+  "Root_window_choice": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\ROOT-WINDOW-CHOICE.actual.json",
+    "bytes": 2105,
+    "sha256": "1b77f9342097d616b85d3201a3e6c53e79ffa009fbea4feaca37fd5754530985"
+  },
+  "six_raw_frames_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+    "bytes": 2570,
+    "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+  },
+  "new_movie_sample_frames": [
+    {
+      "label": "caption-1-before",
+      "requested_seconds": 1.0,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-1-before.jpg",
+        "bytes": 90893,
+        "sha256": "fa2b84873e111a409200c41f792384ff52ada911c281c627635754a2a0d7b1d0"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "caption-2-boundary",
+      "requested_seconds": 7.6,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-2-boundary.jpg",
+        "bytes": 92090,
+        "sha256": "ec2e93d521a0ac40a035af2383b4a342e4c591d42908ea8966a6c302ea102c80"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "caption-3-boundary",
+      "requested_seconds": 15.1,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-3-boundary.jpg",
+        "bytes": 92008,
+        "sha256": "48269dab7b0fb9bc2f1cc533f9ed10dfc4f1ea5799b31d8dc65299eb7ad40795"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "caption-4-boundary",
+      "requested_seconds": 22.6,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\caption-4-boundary.jpg",
+        "bytes": 93534,
+        "sha256": "e0efe8e64c872c143fe136432a46482c3d48023f4d7d5af650a091738cc27c34"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "label": "end-card",
+      "requested_seconds": 34.0,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\movie-samples\\end-card.jpg",
+        "bytes": 35585,
+        "sha256": "b5d6c370d2b3158a7227da64817bd467bde9c257a72fc28e1567cac1dfb0c8ff"
+      },
+      "Root_direct_view_pending": true
+    }
+  ],
+  "new_movie_full_AV_decode_runs": 1,
+  "new_TTS_calls": 0,
+  "old_movie_QA_repeated": false,
+  "raw_full_decode_QA_repeated": false,
+  "other_run_footage": false,
+  "full_native_build_executed": false,
+  "public_render_API_used": true,
+  "native_CLI_final_preserve_and_authoring_validate": true,
+  "generic_audit_or_release_export_executed": false,
+  "Root_new_movie_sparse_review_pending": true,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0,
+  "ABC_credit_added": 0,
+  "external_upload": false,
+  "SDK_or_screen_actions": 0,
+  "D_heavy_write_bytes": 0,
+  "old_originals_modified_or_deleted": false,
+  "owned_FFmpeg_at_close": [],
+  "remaining_heavy_write_bytes": 0,
+  "retention": {
+    "policy_version": "1.0.0",
+    "asset_id": "e04.r0217.17-debits236.proof-review.a01",
+    "replica_id": "desktop-3fevhd2-1c74096080:r0217-proof-chapter-a01",
+    "owner_task": "e04-r0217-proof-chapter-20261020-a01",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "r0217-proof-chapter-a01",
+    "relative_path": ".",
+    "category": "derived",
+    "state": "pending-review",
+    "closed_at_utc_or_null": "2026-10-20T05:21:20.254467+00:00",
+    "last_used_at_utc": "2026-10-20T05:21:20.254467+00:00",
+    "expires_at_utc": "2026-10-22T05:21:20.254467+00:00",
+    "protected_until_utc_or_null": "2026-10-22T05:21:20.254467+00:00",
+    "protection_reason_or_null": "Concrete single-run36s review insert, exact recipe, new-byte QA and sparse JPEGs awaiting Root review/integration",
+    "active_references": [
+      "Root E04 current proof insert review"
+    ],
+    "source_pins_or_recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\PLAN.actual.json",
+      "bytes": 4378,
+      "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642"
+    },
+    "allocated_bytes_or_null": null,
+    "availability": "local_verified"
+  },
+  "storage_before_delivery_receipt": {
+    "aggregate_bytes": 9733015,
+    "JPEG_bytes": 848650,
+    "metadata_bytes": 87313
+  }
+}

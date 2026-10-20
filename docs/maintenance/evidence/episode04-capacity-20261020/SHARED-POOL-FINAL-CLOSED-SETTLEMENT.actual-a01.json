@@ -1,0 +1,174 @@
+{
+  "schema": "xar.e04.shared-pool-and-execution-final-closed-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:23:10.176888+00:00",
+  "source_head_at_close": "7de543f32034832f08dba0d843a24f326200cc80",
+  "owner": "/root",
+  "root_authorization": "2026-10-20 Root explicitly directed closing proof chapter then shared/capacity task; this closes all executable future scopes and leaves legacy carry unreconciled.",
+  "proof_chapter_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 29354,
+    "sha256": "8ba6256995d52dade294a7e18a14f947cba2839bfd0a4c796434b05566aa7a62"
+  },
+  "previous_scene_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 21574,
+    "sha256": "bb6f4a8084d227b7e38bddfaa622276f8093161e81cdce05cf038563fe8012cf"
+  },
+  "native_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+    "bytes": 1023,
+    "sha256": "bb3c0fdfdedd28ecc6fc0b4c5f9ce7887ca1f8e26316ee44120651ce5e1e6fe3"
+  },
+  "shared_QA_subscope_settlements": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 3292,
+      "sha256": "ccb42dbb2a7a9249bc1f1e2b12654382adca927a6aeeb6af9354a19ec84dd21a"
+    }
+  ],
+  "shared_aggregate_root": "C:\\ck3-e04-resume-20261020-a01",
+  "shared_measurement_at_close_before_this_small_final_receipt": {
+    "observed_at_utc": "2026-10-20T05:23:10.176639+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01",
+    "excludes": [
+      "C:\\ck3-e04-resume-20261020-a01\\media",
+      "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01"
+    ],
+    "logical_bytes": 52043250,
+    "files": 621,
+    "ceiling_bytes": 134217728,
+    "logical_margin_bytes": 82174478,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true,
+    "full128MiB_future_hold_not_reduced": true
+  },
+  "shared_old_reserved_peak_bytes": 134217728,
+  "shared_remaining_future_bytes": 0,
+  "known_C_work_package_future_bytes": 0,
+  "D_heavy_future_bytes": 0,
+  "legacy_C_unreconciled_conservative_carry_bytes": 42132678,
+  "legacy_provenance": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\LEGACY-42M-PROVENANCE.actual.json",
+    "bytes": 808,
+    "sha256": "d0c8c3006929ebf9f02c2f02f58e9c130f68571b70a3d88a9652920d725b54aa"
+  },
+  "legacy_balance_accounting": "Same ledger claim remains active carry-only; task execution and shared pool are closed. Full42,132,678B included in required-free/quota checks; no consumption assumption and no new execution grant.",
+  "all_work_package_execution_admissions_closed": true,
+  "new_game_native_or_media_admitted": false,
+  "active_process_census": {
+    "observed_at_utc": "2026-10-20T05:23:10.176888+00:00",
+    "source": "psutil process_iter pid/name/cmdline",
+    "CK3_FFmpeg_ffprobe": [],
+    "read_errors": []
+  },
+  "own_component_monitors_stopped": true,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T05:23:10.176681+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81699188736,
+      "available_to_caller_bytes": 81699188736,
+      "total_free_bytes": 81699188736,
+      "entire_volume_used_allocation_upper_bound_bytes": 429434757120,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T05:23:10.176681+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21691559936,
+      "available_to_caller_bytes": 21691559936,
+      "total_free_bytes": 21691559936,
+      "entire_volume_used_allocation_upper_bound_bytes": 478398447616,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_required_free_including_legacy_system_safety_bytes": 25811936454,
+  "C_free_margin_bytes": 55887252282,
+  "C_projected_whole_volume_upper_bound_including_legacy_system_bytes": 433771857094,
+  "C_quota_margin_bytes": 4314807098,
+  "finite_C_quota_bytes": 438086664192,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "quota_metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "D_required_free_including_system_safety_bytes": 21609054208,
+  "D_floor_margin_bytes": 82505728,
+  "D_heavy_execution_admitted": false,
+  "physical_free_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "already_retained_actuals_in_volume_used_not_added_twice": true,
+  "null_balances_assumed_zero": false,
+  "storage_policy_document": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+    "bytes": 17121,
+    "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "storage_policy_parameters": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_asset_index_read_no_deletion": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "retention": {
+    "shared_mixed_small_metadata_QA_and_archive_inputs_retained": true,
+    "current_purpose": "Root final integration, exact handover, finite review of required run and media evidence",
+    "purpose_and_protection_review_at_utc": "2026-10-22T05:23:10.176888+00:00",
+    "default_category_deadlines_still_apply": {
+      "derived_hours": 48,
+      "raw_evidence_hours": 720,
+      "record_hours": 4320
+    },
+    "necessary_current_baselines_and_active_inputs_keep_their_exact_prior_protection_receipts": true,
+    "closed_scope_is_not_whole_tree_delete_authorization": true,
+    "automatic_renewal": false
+  },
+  "postclose_small_finalization": "This bounded closure receipt and immutable snapshot/copyplan are finalization metadata generated under the closing shared128MiB task. Measurements are timestamped observations, not claims of permanently frozen directories. Any later heavy write requires fresh scope and budget; quota not renewed.",
+  "asset_group": {
+    "asset_id": "e04.shared-small-metadata-QA-20261020.a01",
+    "replica_id": "desktop-3fevhd2-1c74096080:e04-resume-shared128-a01",
+    "owner_task": "e04-capacity-resume-20261020-a01",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "e04-resume-20261020-a01",
+    "relative_path": ". excluding exact standalone media/native/scene roots in measurement",
+    "category": "unclassified",
+    "state": "closed-mixed-small-outputs-purpose-review-required",
+    "logical_bytes": 52043250,
+    "allocated_bytes_or_null": null,
+    "closed_at_utc_or_null": "2026-10-20T05:23:10.176888+00:00",
+    "last_used_at_utc": "2026-10-20T05:23:10.176888+00:00",
+    "expires_at_utc": "2026-10-22T05:23:10.176888+00:00",
+    "active_references": [
+      "Root final integration and handover of exact metadata, QA and archive inputs"
+    ],
+    "protected_until_utc_or_null": "2026-10-22T05:23:10.176888+00:00",
+    "protection_reason_or_null": "Bounded48h final-integration and mixed-category review, not blanket permanent retention or later whole-tree deletion permission",
+    "source_pins_or_recipe": {
+      "proof_chapter_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 29354,
+        "sha256": "8ba6256995d52dade294a7e18a14f947cba2839bfd0a4c796434b05566aa7a62"
+      },
+      "scene_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-SCENE-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 21574,
+        "sha256": "bb6f4a8084d227b7e38bddfaa622276f8093161e81cdce05cf038563fe8012cf"
+      },
+      "shared_QA_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R221-MEDIA-QA-SHARED-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 3292,
+        "sha256": "ccb42dbb2a7a9249bc1f1e2b12654382adca927a6aeeb6af9354a19ec84dd21a"
+      }
+    },
+    "availability": "local metadata-only complete observed inventory; individual body pins retained in prior receipts",
+    "automatic_renewal": false
+  }
+}

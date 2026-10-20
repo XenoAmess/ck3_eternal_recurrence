@@ -1,0 +1,75 @@
+{
+  "schema": "xar.e04.R0217-six-sparse-raw-frames.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:09:15.818792+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "frames": [
+    {
+      "requested_seconds": 5,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-05s.jpg",
+        "bytes": 74858,
+        "sha256": "c99e7d8c53531d61284762361ca5227e7eac2843004fa075eb5934a654279d9b"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "requested_seconds": 10,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-10s.jpg",
+        "bytes": 74087,
+        "sha256": "ceb7d57d900e41f4e7e5fdd706a30127b696f20a6a84441f5e85031f7215fd17"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "requested_seconds": 15,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-15s.jpg",
+        "bytes": 74044,
+        "sha256": "c5351481762f0d37084dbd2d9877ac7a994e06c06e3e47a7db2e9e967fc90f5c"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "requested_seconds": 20,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-20s.jpg",
+        "bytes": 74021,
+        "sha256": "ca515a3d74ad6a6fb6b7d6af1e7b71568a745b35d8f4ba23aee7ee0368dfcb75"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "requested_seconds": 25,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-25s.jpg",
+        "bytes": 73621,
+        "sha256": "68025c543500008b6157cb06c9dcb634d54b41ca04533ad37e25d7c4cfdb4194"
+      },
+      "Root_direct_view_pending": true
+    },
+    {
+      "requested_seconds": 30,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\raw-samples\\raw-30s.jpg",
+        "bytes": 73909,
+        "sha256": "6709f2c5e4d99e9cdc082289140f74584d7e6a233718d0d3c5c3a400664bf140"
+      },
+      "Root_direct_view_pending": true
+    }
+  ],
+  "OCR_used": false,
+  "captioned_output_plan_frozen": false,
+  "exact_change_PTS_established": false,
+  "usage": {
+    "aggregate_bytes": 463474,
+    "JPEG_bytes": 444540,
+    "metadata_bytes": 18934
+  }
+}

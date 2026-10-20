@@ -1,0 +1,70 @@
+{
+  "schema": "xar.e04.r0217-Root-actual-sparse-review-and-window-choice.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "recorded_at_utc": "2026-10-20T05:14:44.545525+00:00",
+  "reviewer": "/root",
+  "reviewer_kind": "AI-agent",
+  "Root_direct_raw_samples_reviewed": true,
+  "review_source": "Root direct message after individually viewing the six exact raw JPEGs",
+  "frame_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+    "bytes": 2570,
+    "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+  },
+  "Root_observations": [
+    {
+      "raw_seconds": 5,
+      "army_counter": 6746,
+      "displayed_date": "Jan26"
+    },
+    {
+      "raw_seconds": 10,
+      "army_counter": 6746,
+      "displayed_date": "Jan26"
+    },
+    {
+      "raw_seconds": 15,
+      "army_counter": 6510,
+      "displayed_date": "Jan26"
+    },
+    {
+      "raw_seconds": 20,
+      "army_counter": 6510,
+      "displayed_date": "Jan27"
+    },
+    {
+      "raw_seconds": 25,
+      "army_counter": 6510,
+      "displayed_date": "Jan27"
+    },
+    {
+      "raw_seconds": 30,
+      "army_counter": 6510,
+      "displayed_date": "Jan27"
+    }
+  ],
+  "counter_change_interval_seconds": {
+    "lower_exclusive": 10,
+    "upper_inclusive": 15
+  },
+  "date_change_interval_seconds": {
+    "lower_exclusive": 15,
+    "upper_inclusive": 20
+  },
+  "exact_native_event_PTS_established": false,
+  "correction": "Producer earlier message misread the15s displayed date as Jan27. Root directly read Jan26; this choice uses the corrected Root observation and retains the distinct intervals.",
+  "source_start_seconds": 0,
+  "game_seconds": 30,
+  "card_seconds": 6,
+  "total_seconds": 36,
+  "source_window_continuous": true,
+  "source_speed": 1.0,
+  "Root_approved_new_insert_production": true,
+  "new_movie_QA_full_decode_count": 1,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0,
+  "full_movie_reassembly_admitted": false
+}

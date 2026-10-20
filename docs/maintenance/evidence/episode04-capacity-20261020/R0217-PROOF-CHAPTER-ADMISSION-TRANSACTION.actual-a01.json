@@ -1,0 +1,21 @@
+{
+  "schema": "xar.e04.finite-media-admission-transaction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:06:53.642631+00:00",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+    "bytes": 7018,
+    "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+  },
+  "ledger_after": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 250655,
+    "sha256": "a190771248beaedf7319ba6fbc9c59fdbec24beb38c0aab6990008d69a24d8ef"
+  },
+  "new_independent_future_bytes": 134217728,
+  "shared_future_bytes_unchanged": 134217728,
+  "legacy_C_future_bytes_unchanged": 42132678,
+  "coordinator_lock_and_atomic_replace_used": true,
+  "new_root_not_created_by_capacity": true,
+  "physical_or_unused_credit_bytes": 0
+}

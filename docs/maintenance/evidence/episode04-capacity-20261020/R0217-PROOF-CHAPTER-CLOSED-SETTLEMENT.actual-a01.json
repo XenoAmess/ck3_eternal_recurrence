@@ -1,0 +1,873 @@
+{
+  "schema": "xar.e04.r0217-independent-proof-chapter-closed-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:23:00.108987+00:00",
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\DELIVERY.a02.actual.json",
+    "bytes": 8108,
+    "sha256": "cf399f28471fe47c874999a9d7ef1d7dad0f0b3a19e6e3ba05e18cd4ba7d1267"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+    "bytes": 7018,
+    "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+  },
+  "QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\QA.actual.json",
+    "bytes": 4506,
+    "sha256": "5784957d4f3e474ab859425f2906c983c99417f794ac04b95f14ba72a08f424f"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\PLAN.actual.json",
+    "bytes": 4378,
+    "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642"
+  },
+  "native_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\run-a01\\run-manifest.json",
+    "bytes": 1664,
+    "sha256": "5f8aebb631a349fd30fcc24ebef96090a4c1ab66a4f88a33f8041816b2d9f524"
+  },
+  "movie_from_actual_producer_hash_and_fresh_independent_stat": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+    "bytes": 4398526,
+    "sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c"
+  },
+  "movie_payload_rehashed": false,
+  "source_raw_fresh_identity_unchanged": {
+    "bytes": 57159155,
+    "mtime_ns": 1792468765548903800,
+    "st_dev": 13886423844274364792,
+    "st_ino": 562949954640679
+  },
+  "source_raw_payload_rehashed": false,
+  "independent_aggregate_measurement": {
+    "observed_at_utc": "2026-10-20T05:23:00.105419+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01",
+    "logical_bytes": 9765134,
+    "allocated_unique_bytes": 9935088,
+    "allocation_source": "Path.stat identity plus Windows GetFileInformationByHandleEx FileStandardInfo AllocationSize",
+    "JPEG_bytes": 848650,
+    "metadata_classified_by_extension_bytes": 119432,
+    "metadata_classification_note": "All files except declared media raster/audio/video extensions conservatively count as metadata, including scripts/logs/manifest and extensionless receipts; opaque CAS suffixes must be reviewed separately.",
+    "files": 104,
+    "file_stats": [
+      {
+        "relative_path": "append_root_correction.py",
+        "bytes": 3481,
+        "mtime_ns": 1792473725484634600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1970324838194715
+      },
+      {
+        "relative_path": "cli-config-validate.json",
+        "bytes": 655,
+        "mtime_ns": 1792473286940091100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062652
+      },
+      {
+        "relative_path": "cli-final-config-validate.json",
+        "bytes": 655,
+        "mtime_ns": 1792473362325658100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351882
+      },
+      {
+        "relative_path": "cli-final-run-validate.json",
+        "bytes": 651,
+        "mtime_ns": 1792473362768284000,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641418
+      },
+      {
+        "relative_path": "cli-preserve-movie.json",
+        "bytes": 872,
+        "mtime_ns": 1792473307390050500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062662
+      },
+      {
+        "relative_path": "cli-preserve-QA.json",
+        "bytes": 820,
+        "mtime_ns": 1792473361896914000,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062680
+      },
+      {
+        "relative_path": "cli-preserved-run-validate.json",
+        "bytes": 651,
+        "mtime_ns": 1792473307815942200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352025
+      },
+      {
+        "relative_path": "cli-run-started-validate.json",
+        "bytes": 651,
+        "mtime_ns": 1792473287790859700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352008
+      },
+      {
+        "relative_path": "cli-start-run.json",
+        "bytes": 615,
+        "mtime_ns": 1792473287369824400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352007
+      },
+      {
+        "relative_path": "close_insert.py",
+        "bytes": 6858,
+        "mtime_ns": 1792473345627301000,
+        "st_dev": 13886423844274364792,
+        "st_ino": 5629499535433097
+      },
+      {
+        "relative_path": "context.py",
+        "bytes": 3455,
+        "mtime_ns": 1792472948159128700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 3659174698458506
+      },
+      {
+        "relative_path": "COPYPLAN.a02.actual.json",
+        "bytes": 5106,
+        "mtime_ns": 1792473731073816100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641438
+      },
+      {
+        "relative_path": "COPYPLAN.actual.json",
+        "bytes": 4176,
+        "mtime_ns": 1792473680382121300,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641434
+      },
+      {
+        "relative_path": "DELIVERY.a02.actual.json",
+        "bytes": 8108,
+        "mtime_ns": 1792473731026213700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641437
+      },
+      {
+        "relative_path": "DELIVERY.actual.json",
+        "bytes": 7282,
+        "mtime_ns": 1792473680294624700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1688849861484056
+      },
+      {
+        "relative_path": "ENCODE.actual.json",
+        "bytes": 862,
+        "mtime_ns": 1792473306832083500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352017
+      },
+      {
+        "relative_path": "freeze_choice.py",
+        "bytes": 1779,
+        "mtime_ns": 1792473284274401400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1688849861483958
+      },
+      {
+        "relative_path": "INTAKE.actual.json",
+        "bytes": 6296,
+        "mtime_ns": 1792472953198284500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1688849861483916
+      },
+      {
+        "relative_path": "new-movie-PTS.actual.json",
+        "bytes": 1106,
+        "mtime_ns": 1792473353134861600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352031
+      },
+      {
+        "relative_path": "PLAN.actual.json",
+        "bytes": 4378,
+        "mtime_ns": 1792473287933112200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352009
+      },
+      {
+        "relative_path": "prep_six.py",
+        "bytes": 4030,
+        "mtime_ns": 1792472948160138200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 3377699721747851
+      },
+      {
+        "relative_path": "QA.actual.json",
+        "bytes": 4506,
+        "mtime_ns": 1792473361373366500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641412
+      },
+      {
+        "relative_path": "qa_insert.py",
+        "bytes": 5617,
+        "mtime_ns": 1792473345625286800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 4222124651879805
+      },
+      {
+        "relative_path": "README.md",
+        "bytes": 2079,
+        "mtime_ns": 1792473680345143600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641433
+      },
+      {
+        "relative_path": "render_insert.py",
+        "bytes": 8377,
+        "mtime_ns": 1792473075782638700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 8162774325828977
+      },
+      {
+        "relative_path": "ROOT-WINDOW-CHOICE.actual.json",
+        "bytes": 2105,
+        "mtime_ns": 1792473284546702200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062647
+      },
+      {
+        "relative_path": "ROOT-WINDOW-CORRECTION.actual.json",
+        "bytes": 1887,
+        "mtime_ns": 1792473730941438400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352092
+      },
+      {
+        "relative_path": "SIX-RAW-FRAMES.actual.json",
+        "bytes": 2570,
+        "mtime_ns": 1792472955835975800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351987
+      },
+      {
+        "relative_path": "work-a01\\captions.ass",
+        "bytes": 2720,
+        "mtime_ns": 1792473286495041800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062649
+      },
+      {
+        "relative_path": "work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+        "bytes": 4398526,
+        "mtime_ns": 1792473306722281400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352013
+      },
+      {
+        "relative_path": "work-a01\\audit\\render\\command.json",
+        "bytes": 2170,
+        "mtime_ns": 1792473287946246800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352012
+      },
+      {
+        "relative_path": "work-a01\\audit\\render\\result.json",
+        "bytes": 312,
+        "mtime_ns": 1792473306789101500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352016
+      },
+      {
+        "relative_path": "work-a01\\audit\\render\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473306788101600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352015
+      },
+      {
+        "relative_path": "work-a01\\audit\\render\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473306783104400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1407374884773326
+      },
+      {
+        "relative_path": "run-a01\\run-manifest.json",
+        "bytes": 1664,
+        "mtime_ns": 1792473361865708800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641417
+      },
+      {
+        "relative_path": "run-a01\\artifacts\\project-config\\sha256\\BF\\BFA1201EE5D3E8F1EFCF6C23A703C104EC413C666BE650DCFF568C7D76323504.json",
+        "bytes": 1336,
+        "mtime_ns": 1792473287333848000,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352002
+      },
+      {
+        "relative_path": "run-a01\\artifacts\\manifest-history\\sha256\\BA\\BAC878351935D576C233E96BF1A85D7BAA177AF01134404C4B67D4F67E16C93E.json",
+        "bytes": 1218,
+        "mtime_ns": 1792473361860711400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641416
+      },
+      {
+        "relative_path": "run-a01\\artifacts\\manifest-history\\sha256\\5F\\5F4917887D0BA6FF5188A548A03AA64EF42B27D38C4AF2A344A6FA62AE555358.json",
+        "bytes": 699,
+        "mtime_ns": 1792473307354445100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352023
+      },
+      {
+        "relative_path": "run-a01\\artifacts\\derived\\sha256\\EA\\EAAB2C0356A7C95191963F90A79A0EB7DDBF1CD73D72D3E02F466444E524981C.mp4",
+        "bytes": 4398526,
+        "mtime_ns": 1792473307217326600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352020
+      },
+      {
+        "relative_path": "run-a01\\artifacts\\derived\\sha256\\57\\5784957D4F3E474AB859425F2906C983C99417F794AC04B95F14BA72A08F424F.actual.json",
+        "bytes": 4506,
+        "mtime_ns": 1792473361778285200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641414
+      },
+      {
+        "relative_path": "raw-samples\\raw-05s.jpg",
+        "bytes": 74858,
+        "mtime_ns": 1792472953795708900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062609
+      },
+      {
+        "relative_path": "raw-samples\\raw-10s.jpg",
+        "bytes": 74087,
+        "mtime_ns": 1792472954091082700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062615
+      },
+      {
+        "relative_path": "raw-samples\\raw-15s.jpg",
+        "bytes": 74044,
+        "mtime_ns": 1792472954600387800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062621
+      },
+      {
+        "relative_path": "raw-samples\\raw-20s.jpg",
+        "bytes": 74021,
+        "mtime_ns": 1792472954989278400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062627
+      },
+      {
+        "relative_path": "raw-samples\\raw-25s.jpg",
+        "bytes": 73621,
+        "mtime_ns": 1792472955236304500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062633
+      },
+      {
+        "relative_path": "raw-samples\\raw-30s.jpg",
+        "bytes": 73909,
+        "mtime_ns": 1792472955753028100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351983
+      },
+      {
+        "relative_path": "project\\promo-project.json",
+        "bytes": 1336,
+        "mtime_ns": 1792473286496043600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1407374884773307
+      },
+      {
+        "relative_path": "movie-samples\\caption-1-before.jpg",
+        "bytes": 90893,
+        "mtime_ns": 1792473356971065300,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352040
+      },
+      {
+        "relative_path": "movie-samples\\caption-2-boundary.jpg",
+        "bytes": 92090,
+        "mtime_ns": 1792473358078950700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641390
+      },
+      {
+        "relative_path": "movie-samples\\caption-3-boundary.jpg",
+        "bytes": 92008,
+        "mtime_ns": 1792473359078162800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641396
+      },
+      {
+        "relative_path": "movie-samples\\caption-4-boundary.jpg",
+        "bytes": 93534,
+        "mtime_ns": 1792473359976352000,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641402
+      },
+      {
+        "relative_path": "movie-samples\\end-card.jpg",
+        "bytes": 35585,
+        "mtime_ns": 1792473360548400600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641408
+      },
+      {
+        "relative_path": "commands\\raw-frame-30s\\command.json",
+        "bytes": 710,
+        "mtime_ns": 1792472955303269700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351982
+      },
+      {
+        "relative_path": "commands\\raw-frame-30s\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792472955807996400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351986
+      },
+      {
+        "relative_path": "commands\\raw-frame-30s\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472955802999400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351985
+      },
+      {
+        "relative_path": "commands\\raw-frame-30s\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472955798002400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931351984
+      },
+      {
+        "relative_path": "commands\\raw-frame-25s\\command.json",
+        "bytes": 710,
+        "mtime_ns": 1792472955040851200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062632
+      },
+      {
+        "relative_path": "commands\\raw-frame-25s\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792472955293272000,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062636
+      },
+      {
+        "relative_path": "commands\\raw-frame-25s\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472955288274700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062635
+      },
+      {
+        "relative_path": "commands\\raw-frame-25s\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472955282278200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062634
+      },
+      {
+        "relative_path": "commands\\raw-frame-20s\\command.json",
+        "bytes": 710,
+        "mtime_ns": 1792472954640650400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062626
+      },
+      {
+        "relative_path": "commands\\raw-frame-20s\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792472955030852300,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062630
+      },
+      {
+        "relative_path": "commands\\raw-frame-20s\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472955028854600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062629
+      },
+      {
+        "relative_path": "commands\\raw-frame-20s\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472955022857200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062628
+      },
+      {
+        "relative_path": "commands\\raw-frame-15s\\command.json",
+        "bytes": 710,
+        "mtime_ns": 1792472954146230500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062620
+      },
+      {
+        "relative_path": "commands\\raw-frame-15s\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792472954634653900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062624
+      },
+      {
+        "relative_path": "commands\\raw-frame-15s\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472954633654900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062623
+      },
+      {
+        "relative_path": "commands\\raw-frame-15s\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472954627657900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062622
+      },
+      {
+        "relative_path": "commands\\raw-frame-10s\\command.json",
+        "bytes": 710,
+        "mtime_ns": 1792472953843335900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062614
+      },
+      {
+        "relative_path": "commands\\raw-frame-10s\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792472954135238200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062618
+      },
+      {
+        "relative_path": "commands\\raw-frame-10s\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472954130677700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062617
+      },
+      {
+        "relative_path": "commands\\raw-frame-10s\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472954121064500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062616
+      },
+      {
+        "relative_path": "commands\\raw-frame-05s\\command.json",
+        "bytes": 709,
+        "mtime_ns": 1792472953351573600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062608
+      },
+      {
+        "relative_path": "commands\\raw-frame-05s\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792472953831342600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062612
+      },
+      {
+        "relative_path": "commands\\raw-frame-05s\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472953826344900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062611
+      },
+      {
+        "relative_path": "commands\\raw-frame-05s\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792472953818565900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062610
+      },
+      {
+        "relative_path": "commands\\new-movie-strict-full-AV-decode\\command.json",
+        "bytes": 801,
+        "mtime_ns": 1792473353151852200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352033
+      },
+      {
+        "relative_path": "commands\\new-movie-strict-full-AV-decode\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473356591856100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352036
+      },
+      {
+        "relative_path": "commands\\new-movie-strict-full-AV-decode\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473356589559800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352035
+      },
+      {
+        "relative_path": "commands\\new-movie-strict-full-AV-decode\\stdout.txt",
+        "bytes": 1323,
+        "mtime_ns": 1792473356583561300,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899908062690
+      },
+      {
+        "relative_path": "commands\\new-movie-metadata\\command.json",
+        "bytes": 718,
+        "mtime_ns": 1792473352527951200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352027
+      },
+      {
+        "relative_path": "commands\\new-movie-metadata\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473352964418800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352030
+      },
+      {
+        "relative_path": "commands\\new-movie-metadata\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473352962420400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352029
+      },
+      {
+        "relative_path": "commands\\new-movie-metadata\\stdout.txt",
+        "bytes": 976,
+        "mtime_ns": 1792473352961420500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352028
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-end-card\\command.json",
+        "bytes": 751,
+        "mtime_ns": 1792473360062512700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641407
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-end-card\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473360622252200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641411
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-end-card\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473360617255200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641410
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-end-card\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473360613257800,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641409
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-4-boundary\\command.json",
+        "bytes": 771,
+        "mtime_ns": 1792473359160807600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641401
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-4-boundary\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473360051517600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641405
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-4-boundary\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473360046520600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641404
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-4-boundary\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473360041523400,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641403
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-3-boundary\\command.json",
+        "bytes": 771,
+        "mtime_ns": 1792473358169167200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641395
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-3-boundary\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473359149675200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641399
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-3-boundary\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473359144678100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641398
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-3-boundary\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473359139681100,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641397
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-2-boundary\\command.json",
+        "bytes": 770,
+        "mtime_ns": 1792473357058364600,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641389
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-2-boundary\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473358159557700,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641393
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-2-boundary\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473358154601500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641392
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-2-boundary\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473358148604200,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641391
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-1-before\\command.json",
+        "bytes": 766,
+        "mtime_ns": 1792473356596553900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352039
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-1-before\\result.json",
+        "bytes": 149,
+        "mtime_ns": 1792473357047370900,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954641387
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-1-before\\stderr.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473357041374300,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352042
+      },
+      {
+        "relative_path": "commands\\new-movie-frame-caption-1-before\\stdout.txt",
+        "bytes": 0,
+        "mtime_ns": 1792473357037376500,
+        "st_dev": 13886423844274364792,
+        "st_ino": 844424931352041
+      }
+    ],
+    "payload_body_bytes_read": 0,
+    "coverage_complete": true,
+    "elapsed_seconds": 0.027
+  },
+  "aggregate_actual_logical_bytes": 9765134,
+  "aggregate_actual_allocated_unique_bytes": 9935088,
+  "old_independent_reserved_peak_bytes": 134217728,
+  "remaining_heavy_write_bytes": 0,
+  "remaining_C_known_future_bytes": 134217728,
+  "remaining_shared_future_bytes_unchanged": 134217728,
+  "other_legacy_C_bytes_unchanged": 42132678,
+  "owned_FFmpeg_and_writer_census": {
+    "source": "psutil process_iter pid/name/cmdline",
+    "processes": [],
+    "read_errors": []
+  },
+  "settled_once": true,
+  "closed_scene_or_old_media_unused_borrowed_bytes": 0,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "retained_actual_already_in_whole_volume_used": true,
+  "source_raw_or_other_assets_modified_or_deleted": false,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T05:23:00.108799+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81699225600,
+      "available_to_caller_bytes": 81699225600,
+      "total_free_bytes": 81699225600,
+      "entire_volume_used_allocation_upper_bound_bytes": 429434720256,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T05:23:00.108799+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21691559936,
+      "available_to_caller_bytes": 21691559936,
+      "total_free_bytes": 21691559936,
+      "entire_volume_used_allocation_upper_bound_bytes": 478398447616,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_required_free_bytes": 25946154182,
+  "C_free_margin_bytes": 55753071418,
+  "C_projected_whole_volume_upper_bound_with_future_system_bytes": 433906037958,
+  "C_quota_margin_bytes": 4180626234,
+  "finite_C_quota_bytes": 438086664192,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "D_new_heavy_future_bytes": 0,
+  "D_floor_margin_bytes": 82505728,
+  "asset_group": {
+    "policy_version": "1.0.0",
+    "asset_id": "e04.r0217.17-debits236.proof-review.a01",
+    "replica_id": "desktop-3fevhd2-1c74096080:r0217-proof-chapter-a01",
+    "owner_task": "e04-r0217-proof-chapter-20261020-a01",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "r0217-proof-chapter-a01",
+    "relative_path": ".",
+    "category": "derived",
+    "state": "pending-review",
+    "closed_at_utc_or_null": "2026-10-20T05:21:20.254467+00:00",
+    "last_used_at_utc": "2026-10-20T05:21:20.254467+00:00",
+    "expires_at_utc": "2026-10-22T05:21:20.254467+00:00",
+    "protected_until_utc_or_null": "2026-10-22T05:21:20.254467+00:00",
+    "protection_reason_or_null": "Concrete single-run36s review insert, exact recipe, new-byte QA and sparse JPEGs awaiting Root review/integration",
+    "active_references": [
+      "Root E04 current proof insert review"
+    ],
+    "source_pins_or_recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\PLAN.actual.json",
+      "bytes": 4378,
+      "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642"
+    },
+    "allocated_bytes_or_null": 9935088,
+    "availability": "local_verified",
+    "logical_bytes": 9765134
+  },
+  "qualification_limits": {
+    "single_source_run_only": true,
+    "17_positive_debits_subtotal_236_only": true,
+    "county_total_unknown": true,
+    "R04_entire_card_closed": false,
+    "continuous_clean": false,
+    "human_full_1x": false,
+    "human_signoff": false,
+    "technical_QA_not_business_or_final_signoff": true
+  },
+  "no_new_native_or_game_or_media_scope_admitted": true
+}

@@ -1,0 +1,24 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:15:06.792467+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+    "bytes": 4398526,
+    "sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\PLAN.actual.json",
+    "bytes": 4378,
+    "sha256": "c32c3f77b4cc7af45e7c7d07368589ec09409d7c9412e168ed6f6ef7e9629642"
+  },
+  "status": "ENCODED_PENDING_NEW_BYTES_QA",
+  "usage": {
+    "aggregate_bytes": 4904025,
+    "JPEG_bytes": 444540,
+    "metadata_bytes": 60959
+  },
+  "new_TTS_calls": 0,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0
+}

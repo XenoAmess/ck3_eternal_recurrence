@@ -1,0 +1,100 @@
+{
+  "schema": "xar.e04.R0217-proof-insert-intake.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:09:13.102747+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R0217-PROOF-CHAPTER-C-ADMISSION.actual-a01.json",
+    "bytes": 7018,
+    "sha256": "684f1335ab366436f2c298cd889962648428b52fc7850ec36192890d16c1df2d"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "raw_identity": {
+    "bytes": 57159155,
+    "mtime_ns": 1792468765548903800,
+    "st_dev": 13886423844274364792,
+    "st_ino": 562949954640679
+  },
+  "raw_payload_rehashed": false,
+  "raw_QA_repeated": false,
+  "existing_raw_QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-media-qa-plan-a01\\execution-a01\\QA.actual.json",
+    "bytes": 4322,
+    "sha256": "0eefc024d9f32f7640b4bb25c2de70c48d2f5deb6433dd02cc0c9596debe84d5"
+  },
+  "source_commit": "7de543f32034832f08dba0d843a24f326200cc80",
+  "native_proof": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r0217-20261020\\research\\INDEPENDENT-CONSUMPTION.actual.json",
+    "bytes": 68199,
+    "sha256": "70b2064eae763581670213bda856719b649e68b667188e3a090a891e1d5ba5ca"
+  },
+  "native_narrow_summary": {
+    "qualified_positive_calls": 17,
+    "individual_positive_subtotal": 236,
+    "unique_physical": {
+      "before": 6741,
+      "after": 6505
+    },
+    "excluded_empty_DATA_calls": 5,
+    "county_total_debit": null,
+    "whole_R04_closed": false
+  },
+  "latest_release": {
+    "tag": "v0.3.0",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+    "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+    "wheel_digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "installed_version": "0.3.0",
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+        "hashes": {
+          "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+    }
+  },
+  "CLI_help": {
+    "version": "xar-promo 0.3.0\n",
+    "top": "usage: xar-promo [-h] [--version]\n                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...\n\nCreate, verify, and preserve reusable promotional-video project metadata.\n\npositional arguments:\n  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}\n    init                create a ProjectConfig and its first bound run without\n                        overwriting files\n    start-run           create another run bound to the current exact\n                        ProjectConfig bytes\n    validate            validate a ProjectConfig, RunManifest, or legacy\n                        showcase v1 manifest\n    preserve            copy a file to immutable content-addressed storage and\n                        append its run record\n    signoff             append an explicit human decision bound to preserved\n                        artifact bytes\n    plan                compose and validate a pipeline plan without invoking\n                        providers or writing\n    build               run a composed pipeline and preserve success or\n                        failure material in its run\n    audit               write and preserve an automated audit without creating\n                        human approval\n    review              plan or create a pending human-review package without\n                        recording sign-off\n    export              validate or create an offline release bundle from an\n                        explicit policy\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n",
+    "start": "usage: xar-promo start-run [-h] --run-id RUN_ID\n                           [--run-directory RUN_DIRECTORY]\n                           [project_config]\n\npositional arguments:\n  project_config\n\noptions:\n  -h, --help            show this help message and exit\n  --run-id RUN_ID\n  --run-directory RUN_DIRECTORY\n                        directory for run-manifest.json (default:\n                        <project>/runs/<run-id>)\n",
+    "preserve": "usage: xar-promo preserve [-h] [--run-manifest RUN_MANIFEST]\n                          --artifact-id ARTIFACT_ID --collection {raw,derived}\n                          --role ROLE [--label LABEL]\n                          [--media-type MEDIA_TYPE]\n                          source\n\npositional arguments:\n  source\n\noptions:\n  -h, --help            show this help message and exit\n  --run-manifest RUN_MANIFEST\n  --artifact-id ARTIFACT_ID\n  --collection {raw,derived}\n  --role ROLE           semantic role such as capture, audio, subtitle, or\n                        deliverable\n  --label LABEL\n  --media-type MEDIA_TYPE\n"
+  },
+  "fonts": [
+    "C:/Windows/Fonts/msyh.ttc",
+    "C:/Windows/Fonts/arial.ttf"
+  ],
+  "skill": {
+    "path": "D:\\workspace\\xar_promo_toolchain\\codex-skill\\promo-video-pipeline\\SKILL.md",
+    "bytes": 3814,
+    "sha256": "94a0dbe08bef4e597a0a5253a10c1e330fadcf7786c68a897d05fb2db49bc935"
+  },
+  "task_bus": {
+    "ack": 7268,
+    "historical_events_not_copied": 7240,
+    "current_tasks": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "resources": [
+          "e04-capacity-reservations"
+        ]
+      },
+      {
+        "task_id": "e04-r0217-proof-chapter-20261020-a01",
+        "resources": []
+      }
+    ]
+  },
+  "new_TTS_calls": 0,
+  "no_other_run_footage": true,
+  "human_signoff": false
+}

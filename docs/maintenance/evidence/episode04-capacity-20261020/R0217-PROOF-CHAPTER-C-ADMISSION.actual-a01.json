@@ -1,0 +1,159 @@
+{
+  "schema": "xar.e04.r0217-proof-chapter-c-only-finite-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T05:06:53.642631+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "heavy_write_execution_admitted": true,
+  "media_execution_admitted": true,
+  "scope_id": "r0217-proof-chapter-a01",
+  "owner": "/root",
+  "producer": "/root/media_chapter",
+  "source_head": "7de543f32034832f08dba0d843a24f326200cc80",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01",
+  "approved_output_roots": [
+    "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01"
+  ],
+  "aggregate_ceiling_bytes": 134217728,
+  "new_media_ceiling_bytes": 134217728,
+  "component_ceiling_bytes": {
+    "JPEG_all_scope": 1048576,
+    "metadata_all_scope": 262144
+  },
+  "scope_includes": [
+    "final clip",
+    "native CAS",
+    "necessary intermediate video and partials",
+    "QA",
+    "all JPEG",
+    "PNG cards and subtitles",
+    "receipts and manifests"
+  ],
+  "expected_peak_bytes_from_producer": 67108864,
+  "producer_contract": "All new outputs in exact independent root; approx30-40s review insert from single R0217 raw with17 direct-v2 positives /236 individual debit narrow result; no claim of whole-card completion. Six initial raw JPEG <=600KiB, all JPEG <=1MiB; metadata <=256KiB; clip<=8MiB, CAS<=8MiB, necessary video intermediate<=8MiB, cards/subtitles/QA<=10MiB. Aggregate hard128MiB. Exactly one FFmpeg below normal priority; no downloads/TTS/full-film copies/new game/D writes. Producer closes with exact delivery/QA/plan pins, actual aggregate, ownedFFmpeg=[], remaining_heavy_write_bytes=0 and finite review.",
+  "input_raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+    "bytes": 57159155,
+    "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+  },
+  "input_film_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\E04-WINDOW-R0217-TAKE01-film-result.actual.json",
+    "bytes": 1789,
+    "sha256": "aa2f4de7ec89a1676c3a1df16c7ed412abf94795b4e43639e53d6701955c177f"
+  },
+  "input_recorder_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\result.json",
+    "bytes": 1965,
+    "sha256": "080b734d19527e82f5974cf98422911dae1586a94f93df1463b9aa224b54e701"
+  },
+  "input_raw_fresh_identity": {
+    "bytes": 57159155,
+    "mtime_ns": 1792468765548903800,
+    "st_dev": 13886423844274364792,
+    "st_ino": 562949954640679
+  },
+  "input_raw_payload_rehashed": false,
+  "input_raw_read_only": true,
+  "input_copy_or_new_TTS_admitted": false,
+  "full_movie_reproduction_admitted": false,
+  "game_SDK_or_screen_operations_admitted": false,
+  "maximum_concurrent_ffmpeg_jobs": 1,
+  "priority": "BELOW_NORMAL",
+  "deadline_utc": "2026-10-20T06:30:00Z",
+  "run_hard_deadline_utc": "2026-10-20T06:30:00Z",
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "finite_C_quota_bytes": 438086664192,
+  "quota_metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "policy_version": "1.0.0",
+  "storage_policy_document": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+    "bytes": 17121,
+    "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "storage_policy_parameters": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_asset_index_read_no_deletion": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T05:06:53.642343+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81717133312,
+      "available_to_caller_bytes": 81717133312,
+      "total_free_bytes": 81717133312,
+      "entire_volume_used_allocation_upper_bound_bytes": 429416812544,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T05:06:53.642343+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21693468672,
+      "available_to_caller_bytes": 21693468672,
+      "total_free_bytes": 21693468672,
+      "entire_volume_used_allocation_upper_bound_bytes": 478396538880,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_required_free_bytes": 26080371910,
+  "C_free_margin_bytes": 55636761402,
+  "C_projected_whole_volume_including_all_future_system_bytes": 434022347974,
+  "C_quota_margin_bytes": 4064316218,
+  "D_heavy_write_execution_admitted": false,
+  "D_new_heavy_write_bytes": 0,
+  "D_required_free_bytes": 21609054208,
+  "D_floor_margin_bytes": 84414464,
+  "current_C_known_future_bytes_before": 134217728,
+  "current_C_known_future_bytes_after": 268435456,
+  "independent_new_future_bytes": 134217728,
+  "shared128MiB_future_unchanged": true,
+  "shared_current_measurement": {
+    "observed_at_utc": "2026-10-20T05:06:53.642279+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01",
+    "excludes": [
+      "C:\\ck3-e04-resume-20261020-a01\\media",
+      "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01"
+    ],
+    "logical_bytes": 51979772,
+    "files": 613,
+    "ceiling_bytes": 134217728,
+    "logical_margin_bytes": 82237956,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true,
+    "full128MiB_future_hold_not_reduced": true
+  },
+  "shared_offline_accounting_excludes": [
+    "C:\\ck3-e04-resume-20261020-a01\\media",
+    "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01",
+    "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+    "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01",
+    "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01"
+  ],
+  "other_legacy_C_bytes_unchanged": 42132678,
+  "null_balances_treated_as_zero": false,
+  "closed_scene_or_media_unused_borrowed_bytes": 0,
+  "physical_cleanup_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "fresh_process_census": {
+    "observed_at_utc": "2026-10-20T05:06:53.642631+00:00",
+    "processes": [],
+    "read_errors": [],
+    "source": "psutil process_iter"
+  },
+  "root_authorization": "2026-10-20 /root explicitly authorized unique30-40s R0217 proof review insert, independent C128MiB exact root, deadline06:30Z, no newTTS/fullfilm/game; fresh total check and existing408GiB quota; close media then shared/capacity task.",
+  "default_category": "derived",
+  "retention_review_at_utc": "2026-10-22T06:30:00Z",
+  "automatic_protection_or_quota_renewal": false
+}
