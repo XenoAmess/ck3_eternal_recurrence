@@ -8,6 +8,7 @@ import importlib.util
 import json
 from pathlib import Path
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -410,7 +411,7 @@ def profile_expansion_contract(value, refs, root, commit, machine, old_profile, 
     return {"ref": ref, "actual": actual, "contract": contract}
 
 
-def profile_expansion_scope(expansion, production, targets, snapshot_root, indexed, fixtures):
+def profile_expansion_scope(expansion, production, targets, snapshot_root, indexed, fixtures, fixture_link_owners=None):
     """Read actual File API bodies/macros; planned counts alone grant no credit."""
     if expansion is None:
         return
@@ -467,13 +468,99 @@ def profile_expansion_scope(expansion, production, targets, snapshot_root, index
                 continue
             closure.add(key)
             pending.extend(dep["id"] for dep in targets[key].get("dependencies", []) if dep["id"] in targets)
-        require({targets[key]["name"] for key in closure} == set(row["dependency_targets"]),
+        expected_closure = set(row["dependency_targets"]) | (fixture_link_owners or {}).get(name, set())
+        require({targets[key]["name"] for key in closure} == expected_closure,
                 "Expanded profile fixture dependency closure differs: " + name)
         bodies.update(relative for relative, _ in sources)
         bodies.update(contract.get("fixture_included_bodies", {}).get(name, []))
     expected = {relative: indexed[relative] for relative in sorted(bodies)}
     require(expansion["actual"].get("fixture_source_bindings") == expected,
             "Expanded profile finite direct/included body pins differ from actual frozen source")
+
+
+def fixture_object_inputs(target, snapshot_root, build_root):
+    """External objects are File API sources or explicit raw linker inputs."""
+    found = set()
+
+    def add(value, relative_root):
+        path = Path(value)
+        if path.suffix.lower() in {".obj", ".o"}:
+            found.add(path.resolve() if path.is_absolute() else (relative_root / path).resolve())
+
+    for source in target.get("sources", []):
+        if source.get("compileGroupIndex") is None:
+            add(source["path"], snapshot_root)
+    for fragment in target.get("link", {}).get("commandFragments", []):
+        for word in shlex.split(fragment["fragment"], posix=False):
+            add(word.strip('"'), build_root)
+    return found
+
+
+def qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, build_root,
+                                   indexed, production, targets, fixtures, reply, model):
+    names = {target["name"]: key for key, target in targets.items()}
+    actual_inputs = {row["target"]: fixture_object_inputs(targets[names[row["target"]]], snapshot_root, build_root)
+                     for row in fixtures}
+    actual_inputs = {name: paths for name, paths in actual_inputs.items() if paths}
+    ref = value.get("fixture_link_support")
+    if not actual_inputs and not ref:
+        return None
+    require(ref and actual_inputs, "Actual external fixture objects need their exact source-bound link-support receipt")
+    checked(ref)
+    support = read(ref["path"])
+    require(support.get("schema") == "ck3-fixture-production-object-link-support-v1"
+            and support.get("machine_id") == machine and support.get("source_commit") == value["source_commit"]
+            and support.get("actual_live_business_qualified") is False,
+            "Fixture link support must bind this actual native compile source and machine")
+    require(support.get("configured_scope") == refs["configured_scope"]
+            and support.get("production_freeze") == refs["production_freeze"]
+            and support.get("fixture_results") == fixtures,
+            "Fixture link support actual scope/freeze/finite execution pins differ")
+    declared = support.get("fixtures", {})
+    file_api = support.get("fixture_file_api", {})
+    require(set(declared) == set(file_api) == set(actual_inputs), "Fixture raw-object target set differs from actual File API")
+    target_files = {row["id"]: reply / safe_relative(row["jsonFile"])
+                    for row in model["configurations"][0]["targets"]}
+    for name, paths in actual_inputs.items():
+        require(checked(file_api[name]) == pin(target_files[names[name]]),
+                "Fixture raw-object link File API pin differs: " + name)
+        require(len(declared[name]) == len(paths)
+                and {Path(row["path"]).resolve() for row in declared[name]} == paths,
+                "Fixture raw-object links differ from actual File API: " + name)
+    objects = support.get("objects", [])
+    all_paths = set().union(*actual_inputs.values())
+    require(len(objects) == len(all_paths)
+            and {Path(row["object"]["path"]).resolve() for row in objects} == all_paths,
+            "Fixture support object set has omitted, duplicate or unlinked objects")
+    commands = read(scope["compile_commands"]["path"])
+    production_names = {target["name"]: target for target in production.values()}
+    checked_objects = {}
+    for row in objects:
+        obj = checked(row["object"])
+        path = Path(obj["path"]).resolve()
+        name, relative = row["production_target"], safe_relative(row["native_relative"])
+        require(name in production_names and path.is_relative_to(build_root / "CMakeFiles" / (name + ".dir")),
+                "Fixture support object is not an actual selected production target output")
+        source = checked(row["source"])
+        require(relative in indexed and source == indexed[relative], "Fixture support source pin differs from actual frozen source")
+        compiled = set()
+        for item in production_names[name].get("sources", []):
+            if item.get("compileGroupIndex") is not None:
+                item_path = Path(item["path"])
+                compiled.add(item_path.resolve() if item_path.is_absolute() else (snapshot_root / item_path).resolve())
+        require(Path(source["path"]).resolve() in compiled, "Fixture support body is not compiled in its selected production target")
+        command = row["actual_compile_command"]
+        require(command in commands and Path(command["directory"]).resolve() == build_root
+                and Path(command["file"]).resolve() == Path(source["path"]).resolve()
+                and Path(command["output"]).resolve() == path,
+                "Fixture support object/source/compile command differs from actual production compilation")
+        checked_objects[path] = obj
+    for rows in declared.values():
+        require(all(row == checked_objects[Path(row["path"]).resolve()] for row in rows),
+                "Fixture support target object pins differ from the actual hashed object set")
+    owners = {Path(row["object"]["path"]).resolve(): row["production_target"] for row in objects}
+    return {"ref": ref, "fixture_production_targets": {
+        name: {owners[path] for path in paths} for name, paths in actual_inputs.items()}}
 
 
 def qualify_native(path, root, commit, machine, previous_dll, previous_manifest):
@@ -612,7 +699,10 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
         require(Path(row["executable"]["path"]).resolve() in artifact_paths(actual_targets[names[row["target"]]]),
                 "Fixture executable is not its actual configured artifact")
         zero_execution(row["execution"], machine, row["executable"])
-    profile_expansion_scope(expansion, production, actual_targets, snapshot_root, indexed, fixtures)
+    link_support = qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, build_root,
+        indexed, production, actual_targets, fixtures, reply, model)
+    profile_expansion_scope(expansion, production, actual_targets, snapshot_root, indexed, fixtures,
+                            link_support["fixture_production_targets"] if link_support else None)
     binding = read(refs["defender_binding"]["path"])
     require(binding.get("machine_id") == machine and binding.get("status") == "verified"
             and binding.get("exact_executable_count") == len(fixtures), "Actual exact Defender setting readback required")
@@ -647,7 +737,8 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
     return {"qualification_ref": pin(path), "profile_ref": refs["profile"], "freeze_ref": refs["production_freeze"],
             "profile": profile, "old_profile": old_profile, "dll": refs["published_dll"],
             "native_files": native_files, "snapshot_root": str(snapshot_root), "compile_commit": native_commit,
-            "execution_wire": execution_wire, "profile_expansion": expansion["ref"] if expansion else None}
+            "execution_wire": execution_wire, "profile_expansion": expansion["ref"] if expansion else None,
+            "fixture_link_support": link_support["ref"] if link_support else None}
 
 
 def project_host(root, old_host, old_runtime, new_runtime, source_files):
