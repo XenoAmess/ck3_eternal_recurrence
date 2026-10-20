@@ -1,0 +1,67 @@
+{
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\ci-fixture-repair-a01\\prepare_and_check.py",
+    "focused"
+  ],
+  "started_at_utc": "2026-10-20T18:20:01.456726+00:00",
+  "ended_at_utc": "2026-10-20T18:20:04.880627+00:00",
+  "pid": 12524,
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "stdout_bytes": 1447,
+  "stdout_sha256": "c8b765184296f374c0d77efb837ce35c31136dabe6b6c1039a77b26a6459d301",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:20:04.880984+00:00",
+  "result": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T18:20:04.826350+00:00",
+    "status": "FOCUSED_SELECTED_METHOD_PASS",
+    "method": "test_actual_r3_reason_separates_cash_priority_555_from_shared_hostile_4783",
+    "actual_resource_anchor___file__": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\ci-fixture-repair-a01\\mirror\\ck3_autonomous_player\\tests\\unit\\test_siege_research_continuation_v2.py",
+    "anchor_is_real_file": true,
+    "fixture_is_real_file": true,
+    "scope": "one original method AST seam; omits unrelated heavy imports, not full class/master checkout",
+    "real_consumer_function_external_globals": [
+      "Mapping",
+      "QUERY_STEP",
+      "ROOT_STEP"
+    ],
+    "consumer_binding_modules_exact_D_bc_0f": true,
+    "records": [
+      {
+        "case": "original selected method, missing sibling",
+        "expected_error": "ModuleNotFoundError",
+        "missing_name": "decision_display_contract_v1",
+        "passed": true
+      },
+      {
+        "case": "candidate original selected method",
+        "preexisting_canonical_module": false,
+        "all_original_method_assertions_passed": true,
+        "sys_modules_and_path_restored": true,
+        "real_production_function_call_counts": {
+          "project_plan": 2,
+          "project_card": 1,
+          "reason_text": 3
+        }
+      },
+      {
+        "case": "candidate original selected method",
+        "preexisting_canonical_module": true,
+        "all_original_method_assertions_passed": true,
+        "sys_modules_and_path_restored": true,
+        "real_production_function_call_counts": {
+          "project_plan": 2,
+          "project_card": 1,
+          "reason_text": 3
+        }
+      }
+    ]
+  }
+}

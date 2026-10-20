@@ -1,0 +1,93 @@
+{
+  "schema": "xar.e04.ci-r05-git1915-repartition-FF-planning.v3",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:50:59.248593+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "financial_reservation_admitted": true,
+  "metadata_planning_execution_admitted": true,
+  "task_id": "e04-capacity-ci-r05-git-1915-20261020-a01",
+  "W_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "W_baseline_HEAD": "0f548b643782c479bc3eebd3ffef14d710c13d06",
+  "W_baseline_clean": true,
+  "W_baseline_logical_bytes": 68956851,
+  "W_additional_hard_ceiling_bytes": 1310720,
+  "receipt_root": "C:\\ck3-e04-resume-20261020-a01\\r08-ci-r05-publish-1915-a01",
+  "receipt_root_absent_before_admission_at_utc": "2026-10-20T18:39:36.014744+00:00",
+  "receipt_root_hard_ceiling_bytes": 786432,
+  "C_all_inclusive_additional_peak_bytes": 2097152,
+  "D_serial_Git_temporary_peak_ceiling_bytes": 16777216,
+  "known_selected_CI_R05_originals_plus_full_sparse_test_candidate_bytes": 172471,
+  "scope": "Prepare exact sourcecopy/fixture-test candidate and central documents for CI repair plus controlled R05 supplement only. Exact Root source plan approval required before Wcopy/stage/commit/push.",
+  "DR_new_source_or_native_cold_evidence_included": false,
+  "W_copy_stage_commit_push_execution_admitted": false,
+  "D_checkout_or_other_mutation_execution_admitted": false,
+  "Git_fetch_autoGC_or_index_refresh_execution_admitted": false,
+  "GIT_OPTIONAL_LOCKS": "0",
+  "native_build_SYSTEM_EXE_DR_game_SDK_FFmpeg_or_download_execution_admitted": false,
+  "producer_copyplan": null,
+  "hard_deadline_utc": "2026-10-20T19:15:00Z",
+  "quota_review_at_utc": "2026-10-20T19:15:00Z",
+  "old_N_and_Q_readonly_no_deadline_renewal": true,
+  "native64_is_separate_and_remains_fully_charged": true,
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 385498,
+    "sha256": "76a0cef1b930729edad185f1a05ddf42e7cf43ed53eee398f841384806193fe7"
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T18:50:38.404618+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77672419328,
+      "available_to_caller_bytes": 77672419328,
+      "total_free_bytes": 77672419328,
+      "entire_volume_used_allocation_upper_bound_bytes": 433461526528,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T18:50:38.404618+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21649494016,
+      "available_to_caller_bytes": 21649494016,
+      "total_free_bytes": 21649494016,
+      "entire_volume_used_allocation_upper_bound_bytes": 478440513536,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 69206016,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25881142470,
+    "C_floor_margin_bytes": 51791047482,
+    "C_projected_whole_volume_upper_bound_bytes": 437868061894,
+    "C_quota_margin_bytes": 218602298,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 23658496
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false,
+  "previous_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ci-r05-publish-1915-a01\\capacity\\GIT-CI-R05-1915-FINANCIAL-PLANNING.actual-a01.json",
+    "bytes": 3251,
+    "sha256": "7afd9acc0490039cde92527f998942417cf9c2f7abf2f022dbef09187509a4a3"
+  },
+  "W_delta_ceiling_bytes": 1310720,
+  "receipt_root_ceiling_bytes": 786432,
+  "aggregate_new_C_ceiling_bytes": 2097152,
+  "current_receipts_complete_logical_bytes": 328816,
+  "prospective_repartition_only": true,
+  "retroactive_admission": false,
+  "W_existing_object_FF_execution_admitted": true,
+  "approved_existing_object_FF_target": "6022a3de194c7bd2477185203d57b34269c6df5f",
+  "actual_W_HEAD_before_FF": "0f548b643782c479bc3eebd3ffef14d710c13d06",
+  "Root_authority": "Root directly reviewed6022 AGENTS/test diff and grants existing2commit FF only, then revised source-plan preparation. Do not overwrite upstream test. No fetch. Copy/stage/commit/push await exacta02 Root review.",
+  "previous_repartition_not_delivered_for_execution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ci-r05-publish-1915-a01\\capacity\\GIT-CI-R05-1915-REPARTITION-FF-PLANNING.actual-a02.json",
+    "bytes": 4209,
+    "sha256": "1c71e50c72c1a9c48b51344b98ae1d4847e03b8a61bf232e7417e8aa1968bcc7"
+  },
+  "correction": "a02 retained original hard-limit aliases alongside new values; discovered before delivery/execution. This a03 makes both canonical and alias ceilings equal. No retroactive scope expansion."
+}

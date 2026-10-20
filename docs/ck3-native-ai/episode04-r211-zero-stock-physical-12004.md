@@ -1,5 +1,10 @@
 # R211 零库存目标窗口：本场首帧来源
 
+> 2026-10-20追加；machine_id: `desktop-3fevhd2-1c74096080`；来源为Root18:10Z裁定、CI18:14:28Z闭场及fixture18:20:04Z实际回执。
+
+Root最终接受本R211段为受控机制补充，未授原M R05。旧controlled-initialization adoption保持；后续自然日callback不能修复原M所需正常campaign自然近阈值输入缺口。[888,912)秒窗口的UI净少404，对应供给337、围城/劫掠另67，精确callback-to-PTS仍null。正式仍5/11。[补充裁定、镜头范围及已入库原件引用](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-supplement-review-a01/README.md)。
+
+
 本页记录 R211 自己的暂停查询，不以 R209 的预测代替本场读回。执行机器 `machine_id: desktop-3fevhd2-1c74096080`；session 为 `desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005`。本研究线程只消费既有原件，没有 SDK、游戏操作或新构建。
 
 ## 首帧实测

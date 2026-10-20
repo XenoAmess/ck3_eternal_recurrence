@@ -1,0 +1,325 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:19:50.344312+00:00",
+  "exact_head": "0f548b643782c479bc3eebd3ffef14d710c13d06",
+  "parent_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\capacity\\CI-FIXTURE-REPAIR192-SOURCE4-CHILD-ADMISSION.actual-a01.json",
+    "bytes": 3157,
+    "sha256": "e295a582ca2e08aece8c8c4d9fc4017660bcb858d75871e452a124141905abdb"
+  },
+  "repo_target": "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+  "baseline_inputs": [
+    {
+      "repo_path": "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+      "bytes": 18406,
+      "sha256": "0a72ed6e633147b9d7297971f2584fa7779122ffeac1e1ab97d47712832dd960"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/tests/fixtures/p55_actual265_route_projection.json",
+      "bytes": 73742,
+      "sha256": "235471d90d4b06b75369e0400e7ce9ce8479e7efd92ad0d90c9f2bd089b6a881"
+    },
+    {
+      "repo_path": "tools/g2_saved_campaign/decision_display_contract_v1.py",
+      "bytes": 20286,
+      "sha256": "d94c95f3cd37b0ef2c555677cb70efde32a9d84f912e355dd4bf5431e0a01c1a"
+    },
+    {
+      "repo_path": "tools/g2_saved_campaign/decision_observation_feed.py",
+      "bytes": 4887,
+      "sha256": "4adfa9a0e9515dae7c40b580d903f7236defa7c8315d05a82c5fb3ff12110c14"
+    },
+    {
+      "repo_path": "tools/g2_saved_campaign/live_decision_overlay.py",
+      "bytes": 15662,
+      "sha256": "306b432402ee565cfd7eea4fa47296fb46aad515ea64c49fe5d53a51f2ec46f2"
+    }
+  ],
+  "actual_D_read_only_dependencies": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py",
+      "bytes": 24986,
+      "sha256": "f930fecd6a5c76855236a69dd6ef825a583bd139e921825410cd99cb26c707dc",
+      "bc_blob_equals_0f_blob_equals_actual_D_bytes": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_mercenary_context.py",
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_mercenary_context.py",
+      "bytes": 11353,
+      "sha256": "54acb5c62c90d10c600acd92d957dc86e738ddaa6520f3d2803694570179fe81",
+      "bc_blob_equals_0f_blob_equals_actual_D_bytes": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\campaign_root_context_contract.py",
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "bytes": 56460,
+      "sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3",
+      "bc_blob_equals_0f_blob_equals_actual_D_bytes": true
+    }
+  ],
+  "candidate_test": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\ci-fixture-repair-a01\\mirror\\ck3_autonomous_player\\tests\\unit\\test_siege_research_continuation_v2.py",
+    "bytes": 19010,
+    "sha256": "c8968d3fc4b79ae0411219d2c83906c3fe42d8b477326d187945ff9c9a551acc"
+  },
+  "mirror_bytes": 133587,
+  "all_original_assertion_ASTs_preserved": true,
+  "whole_src_subtrees_equal": false,
+  "whole_class_or_exact_checkout_test_claimed": false,
+  "read_Popen_receipts": [
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.064759+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.148039+00:00",
+      "pid": 24840,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 18406,
+      "stdout_sha256": "0a72ed6e633147b9d7297971f2584fa7779122ffeac1e1ab97d47712832dd960",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:ck3_autonomous_player/tests/fixtures/p55_actual265_route_projection.json"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.148286+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.239916+00:00",
+      "pid": 24544,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 73742,
+      "stdout_sha256": "235471d90d4b06b75369e0400e7ce9ce8479e7efd92ad0d90c9f2bd089b6a881",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:tools/g2_saved_campaign/decision_display_contract_v1.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.240459+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.331459+00:00",
+      "pid": 1012,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 20286,
+      "stdout_sha256": "d94c95f3cd37b0ef2c555677cb70efde32a9d84f912e355dd4bf5431e0a01c1a",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:tools/g2_saved_campaign/decision_observation_feed.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.331726+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.421186+00:00",
+      "pid": 21984,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 4887,
+      "stdout_sha256": "4adfa9a0e9515dae7c40b580d903f7236defa7c8315d05a82c5fb3ff12110c14",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:tools/g2_saved_campaign/live_decision_overlay.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.421377+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.510709+00:00",
+      "pid": 25000,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 15662,
+      "stdout_sha256": "306b432402ee565cfd7eea4fa47296fb46aad515ea64c49fe5d53a51f2ec46f2",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.631186+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.725185+00:00",
+      "pid": 28768,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 24986,
+      "stdout_sha256": "f930fecd6a5c76855236a69dd6ef825a583bd139e921825410cd99cb26c707dc",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "bc63851081462413d0cc6ebe62e37490707ee6a9:ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.725637+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.833855+00:00",
+      "pid": 26900,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 24986,
+      "stdout_sha256": "f930fecd6a5c76855236a69dd6ef825a583bd139e921825410cd99cb26c707dc",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:ck3_autonomous_player/src/xar_autoplayer/bridge/player_mercenary_context.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.869551+00:00",
+      "ended_at_utc": "2026-10-20T18:19:49.978386+00:00",
+      "pid": 32456,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 11353,
+      "stdout_sha256": "54acb5c62c90d10c600acd92d957dc86e738ddaa6520f3d2803694570179fe81",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "bc63851081462413d0cc6ebe62e37490707ee6a9:ck3_autonomous_player/src/xar_autoplayer/bridge/player_mercenary_context.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:49.978590+00:00",
+      "ended_at_utc": "2026-10-20T18:19:50.070440+00:00",
+      "pid": 33320,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 11353,
+      "stdout_sha256": "54acb5c62c90d10c600acd92d957dc86e738ddaa6520f3d2803694570179fe81",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "0f548b643782c479bc3eebd3ffef14d710c13d06:ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:50.104836+00:00",
+      "ended_at_utc": "2026-10-20T18:19:50.223432+00:00",
+      "pid": 22648,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 56460,
+      "stdout_sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--no-optional-locks",
+        "-c",
+        "gc.auto=0",
+        "-c",
+        "maintenance.auto=false",
+        "-C",
+        "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+        "show",
+        "bc63851081462413d0cc6ebe62e37490707ee6a9:ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py"
+      ],
+      "started_at_utc": "2026-10-20T18:19:50.223799+00:00",
+      "ended_at_utc": "2026-10-20T18:19:50.314571+00:00",
+      "pid": 24328,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 56460,
+      "stdout_sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+--- a/ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py
++++ b/ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py
+@@ -7,6 +7,7 @@
+ import copy
+ import importlib.util
+ import json
++import sys
+ from pathlib import Path
+ import unittest
+ from unittest import mock
+@@ -140,11 +141,19 @@
+         # import invokes a desktop, process, SDK, or live overlay operation.
+         root = Path(__file__).parents[3]
+         modules = []
+-        for name in ("decision_observation_feed", "live_decision_overlay"):
+-            path = root / "tools/g2_saved_campaign" / (name + ".py")
+-            spec = importlib.util.spec_from_file_location("war_reason_test_" + name, path)
+-            module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+-            modules.append(module)
++        contract_name = "decision_display_contract_v1"
++        contract_path = root / "tools/g2_saved_campaign" / (contract_name + ".py")
++        contract_spec = importlib.util.spec_from_file_location(contract_name, contract_path)
++        contract = importlib.util.module_from_spec(contract_spec)
++        # Register the real sibling for its dataclasses and the feed import;
++        # restore any prior module when this local loading context exits.
++        with mock.patch.dict(sys.modules, {contract_name: contract}):
++            contract_spec.loader.exec_module(contract)
++            for name in ("decision_observation_feed", "live_decision_overlay"):
++                path = root / "tools/g2_saved_campaign" / (name + ".py")
++                spec = importlib.util.spec_from_file_location("war_reason_test_" + name, path)
++                module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
++                modules.append(module)
+         compact = modules[0].compact_plan(result)
+         self.assertEqual(compact["reason"], original["reason"])
+         rendered = modules[1].reason_text(compact)

@@ -1,0 +1,69 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:21:14.682361+00:00",
+  "status": "SOURCE_ONLY_CANDIDATE_FOCUSED_SELECTED_METHOD_PASS",
+  "repo_target": "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+  "exact_baseline": "0f548b643782c479bc3eebd3ffef14d710c13d06",
+  "files": [
+    {
+      "relative_path": "BUS.actual.jsonl",
+      "bytes": 6119,
+      "sha256": "524c9652dbaf629d7a6252a2a77e7da75a74e5910d456b44071c3dd6dbcae54b"
+    },
+    {
+      "relative_path": "FOCUSED-ORIGINAL-WAIT.actual.json",
+      "bytes": 2533,
+      "sha256": "29e8e01db5d847b22ed23c37110a305b2f724455f510ba2d341f2918671cb4c7"
+    },
+    {
+      "relative_path": "mirror/ck3_autonomous_player/tests/fixtures/p55_actual265_route_projection.json",
+      "bytes": 73742,
+      "sha256": "235471d90d4b06b75369e0400e7ce9ce8479e7efd92ad0d90c9f2bd089b6a881"
+    },
+    {
+      "relative_path": "mirror/ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+      "bytes": 19010,
+      "sha256": "c8968d3fc4b79ae0411219d2c83906c3fe42d8b477326d187945ff9c9a551acc"
+    },
+    {
+      "relative_path": "mirror/tools/g2_saved_campaign/decision_display_contract_v1.py",
+      "bytes": 20286,
+      "sha256": "d94c95f3cd37b0ef2c555677cb70efde32a9d84f912e355dd4bf5431e0a01c1a"
+    },
+    {
+      "relative_path": "mirror/tools/g2_saved_campaign/decision_observation_feed.py",
+      "bytes": 4887,
+      "sha256": "4adfa9a0e9515dae7c40b580d903f7236defa7c8315d05a82c5fb3ff12110c14"
+    },
+    {
+      "relative_path": "mirror/tools/g2_saved_campaign/live_decision_overlay.py",
+      "bytes": 15662,
+      "sha256": "306b432402ee565cfd7eea4fa47296fb46aad515ea64c49fe5d53a51f2ec46f2"
+    },
+    {
+      "relative_path": "prepare_and_check.py",
+      "bytes": 13191,
+      "sha256": "9afa86e45e4bae068f14763601a0617578b646be68fefe61dcc51b6ad85093a8"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 2769,
+      "sha256": "51010d1cc8ca20faf138bca7524f479dbad9414367d5c7385b989b1d8b0bd09f"
+    },
+    {
+      "relative_path": "SIBLING-CONTRACT-IMPORT.candidate.patch",
+      "bytes": 1972,
+      "sha256": "7fe53841364d3b9e528ce75f845bc9c533be6a236c3e8abd4fef3ec56c35b0dc"
+    },
+    {
+      "relative_path": "SOURCE-AND-PREPARATION.actual.json",
+      "bytes": 12548,
+      "sha256": "a883e2ce46eea5d9e779c4fa2b4c5cb835882a06a9c7125f1298cb98608b31e5"
+    }
+  ],
+  "aggregate_bytes_before_this_receipt": 172719,
+  "D_W_Git_build_SDK_game_screen_mutations": 0,
+  "owned_processes": [],
+  "remaining_future_bytes": 0,
+  "no_business_or_full_CI_qualification": true
+}

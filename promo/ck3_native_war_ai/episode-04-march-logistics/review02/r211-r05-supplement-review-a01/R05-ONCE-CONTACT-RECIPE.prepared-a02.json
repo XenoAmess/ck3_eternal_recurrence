@@ -1,0 +1,234 @@
+{
+  "schema": "xar.e04.R05-R211-controlledzero-once-visual5-PROPOSAL.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T17:53:09.898157+00:00",
+  "status": "PLANNING_ONLY_SOURCEBOUND_AND_ROOT_EXECUTION_PENDING",
+  "planning_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r05-r211-source-visual5-a01\\capacity\\R05-R211-VISUAL5-1830-FINANCIAL-PLANNING-ADMISSION.actual-a01.json",
+    "bytes": 4725,
+    "sha256": "5ca6f3007d9eee0555c81e203a065bc8106ca5700c2ac0d41bd22a828e6f2a0c"
+  },
+  "output_root": "C:\\ck3-e04-resume-20261020-a01\\r05-r211-source-visual5-a01",
+  "hard_deadline_utc": "2026-10-20T18:30:00Z",
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r05-r211-source-visual5-a01\\r05_once_contacts.prepared-a02.py",
+    "bytes": 11352,
+    "sha256": "b4d4ad95f85039bcfaa99603039ab9769f61786f4a462376028203e2063792a6"
+  },
+  "successful_parser_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\r07_once_contacts.prepared-a02.py",
+    "bytes": 10430,
+    "sha256": "64e02dcd8968b157006cd0eef88554875d9352cbdaa98c568ea8f20ea9c58406"
+  },
+  "retained_source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/raw-r211/take02/raw.mkv",
+    "bytes": 589432005,
+    "sha256": "2a738ecf3dbf29e64cd79526542f4fe939b2a5c590be67c0cac1c399a2febbee"
+  },
+  "retained_source_stat": {
+    "bytes": 589432005,
+    "mtime_ns": 1792323822602860400,
+    "st_dev": 7220568048185129294,
+    "st_ino": 281474981310379
+  },
+  "source_stat_observed_at_utc": "2026-10-20T17:52:00.883413+00:00",
+  "raw_body_opened_or_hashed_for_preparation": false,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-nostdin",
+    "-hide_banner",
+    "-nostats",
+    "-loglevel",
+    "info",
+    "-threads",
+    "1",
+    "-filter_threads",
+    "1",
+    "-filter_complex_threads",
+    "1",
+    "-copyts",
+    "-ss",
+    "888",
+    "-t",
+    "24.001",
+    "-i",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\raw-r211\\take02\\raw.mkv",
+    "-an",
+    "-sn",
+    "-dn",
+    "-vf",
+    "trim=start_frame=0:end_frame=720,showinfo@source=checksum=0,scale=240:135:flags=area,pad=240:153:0:0:color=black,drawtext=fontfile=consola.ttf:text='k%{n} PTS=%{pts}':fontcolor=white:fontsize=10:x=3:y=137,tile=4x4:nb_frames=16:color=black",
+    "-c:v",
+    "mjpeg",
+    "-q:v",
+    "18",
+    "-threads:v",
+    "1",
+    "-fps_mode",
+    "vfr",
+    "-frames:v",
+    "45",
+    "-f",
+    "image2pipe",
+    "pipe:1"
+  ],
+  "cwd": "C:/Windows/Fonts",
+  "expected_sheet_dimensions": [
+    960,
+    608
+  ],
+  "cell_source": [
+    240,
+    135
+  ],
+  "effective_label_band_pixels": 17,
+  "JPEG_q": 18,
+  "layout": [
+    4,
+    4
+  ],
+  "source_seconds_half_open": [
+    888,
+    912
+  ],
+  "selected_window_local_frames_half_open": [
+    0,
+    720
+  ],
+  "source_frames": 720,
+  "sheets": 45,
+  "last_sheet": {
+    "window_local_frames_half_open": [
+      704,
+      720
+    ],
+    "valid_cells": 16,
+    "padding_cells": 0
+  },
+  "cap": {
+    "total_bytes": 5242880,
+    "contacts_bytes": 4194304,
+    "metadata_bytes": 262144,
+    "conditional_fullres_bytes": 0,
+    "spare_bytes": 786432
+  },
+  "initial_all_planning_metadata_ceiling_bytes": 131072,
+  "estimated_contacts_bytes": [
+    1500000,
+    2831155
+  ],
+  "estimated_all_final_metadata_max": 229376,
+  "conditional_new_fullres": false,
+  "existing_fullres_reference_only": [
+    {
+      "source_second": 897.5,
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/transition-a01/at-897.5.png",
+      "bytes": 1347706,
+      "sha256": "4d867d3588d04ee576378ab0025e60a07f8de6364adefdfce645eaa88a843fa6"
+    },
+    {
+      "source_second": 898,
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/transition-a01/at-898.png",
+      "bytes": 1348342,
+      "sha256": "84fc2c470cd0fd8bb7c96f3644bfa824ad5f3cc65d9091b0063c92742236374c"
+    }
+  ],
+  "existing_raw_QA": {
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r211-window-take02\\media-review.json",
+      "bytes": 3513,
+      "sha256": "3461cc6ca9b09ac3a7b705071da16dea37676276dad77c9ee6bdb86b8e1e598c"
+    },
+    "historical_machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-18T11:53:13Z",
+    "source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+    "raw_duration_seconds": 967.9,
+    "raw_frame_count": 29037,
+    "geometry": [
+      1280,
+      720
+    ],
+    "fps": "30/1",
+    "full_decode_exit": 0,
+    "old_count_frames_exit": 0,
+    "wall_seconds": 971.2267486,
+    "raw_timebase_not_saved_here": null,
+    "all_fullraw_frame_PTS_audit": null,
+    "all_fullraw_PTS_no_missing_or_regression_claim": false,
+    "old_QA_repeated": false
+  },
+  "source_window_mapping": {
+    "edit": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-edit-candidate-a01\\R211-R05-EDIT-INPUT.candidate-a01.json",
+      "bytes": 8378,
+      "sha256": "caf1472f2013b3487cc3096fc2ff8c81d442c9d02d5f1f124d20755c426ca8ae"
+    },
+    "preview_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\media-review-take02-a01\\preview-a01\\PREVIEW-RESULT.actual.json",
+      "bytes": 4169,
+      "sha256": "407139786a38150551fd5df389837aa97b80ede29c622b87d15b94b6694f783d"
+    },
+    "source_to_preview_interval_seconds": [
+      888,
+      912
+    ],
+    "preview_reencoded": true,
+    "preview_720frame_decode_pass_not_new_raw_PTS_proof": true,
+    "visual_transition_bracket": "(897.5,898]",
+    "exact_native_callback_PTS": null,
+    "planned_pre_seconds": [
+      9.5,
+      10
+    ],
+    "planned_post_seconds": [
+      14,
+      14.5
+    ]
+  },
+  "original_M_scope": {
+    "proposed": "One adopted controlled-zero natural supply-debit positive; no natural depletion from positive stock",
+    "native_Root_adoption": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r211-zero-stock-physical-12004\\integration-adoption.actual.json",
+      "bytes": 1876,
+      "sha256": "9759b94b41e946a2e08c8c7e0e23eb4760b64d977085427069b9a651fc931428"
+    },
+    "actual_337_plus_other67": true,
+    "callback_sequence": 93,
+    "callback_thread_id": 2464,
+    "date_raw": 53147760,
+    "visual_6746_to6342_net404_not_all_supply": true,
+    "initialization_not_filmed_in_this_window": true,
+    "original_natural_depletion_card_still_unmet": true,
+    "whole_variants_and_allcycle": false
+  },
+  "actual_PTS_method": "The old raw QA lacks retained full-frame PTS/timebase. Do not use27s insert or24s reencode PTS as raw proof. Sole new authorized source extraction must capture showinfo source time_base and actual720 selected frame PTS; use actual tick*timebase, first888s and last888+719/30 within1ms, ordered~1/30s within1ms. k is exact window-local frame ordinal; global26640+k is nominal30fps annotation only. No UTC/native interpolation. Failure keeps partial/no automatic retry; no whole-raw gate added.",
+  "one_pass_rules": [
+    "Financial/planning cap cannot launch. Actual source-bound cap must set source_bound_single_extraction_execution_admitted=true and FFmpeg_execution_admitted=true, bind recipe/runner/source/window/root; Root then grants once.",
+    "One FFmpeg Popen BELOW_NORMAL,threads1,no concurrent FFmpeg. Before source run fresh latest formal gh Release metadata only/no download.",
+    "Accurate input seek888/copyts with24.001s bound, trim720;45contacts. No newffprobe/hashraw/copy/full968sdecode/video/TTS/game/SDK.",
+    "Read actual JPEG geometry before960x608assert; exact nextJPEG bytes before4MiBcontacts/5MiBtotal commit. Allmetadata256KiB includes existing capacity/planning/extraction/QA/AI/Rootreceipt.",
+    "Lossless gzipstderr, actualPTS/timebase,per-sheet usage,originalwait and independent postwait CRC/hash/owned0 retained. Hard18:30with closure reserve, no retry.",
+    "Actual AI must view all720cells,existing2fullres for glyphs;Root actual view attribution separate. No human1x/finalfilm/formal6of11 claim."
+  ],
+  "Root_existing_keyview": "Actual Root message: directlyviewed two originals897.5/898,read6746→6342,Feb4→5,supply0/300 bothsides; readable map/army,no blue/desktop/hover/eventmodal. This is sparse keyview only.",
+  "formal_credit": false,
+  "execution_authorized": false,
+  "prior_a01_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r05-r211-source-visual5-a01\\R05-ONCE-CONTACT-RECIPE.prepared-a01.json",
+    "bytes": 8986,
+    "sha256": "ebfd72cd2135316bb2e68eef7b457e7349b36dee1e02dc8dca23094fc2d43507"
+  },
+  "PTS_grid_indices_half_open": [
+    26640,
+    27360
+  ],
+  "physical_original_ordinal": null,
+  "physical_original_ordinal_range": null,
+  "physical_ordinal_reason": "No retained full-prefix framePTS audit proves absolute physical source ordinal at888s. New extraction certifies720 exact local frames with actual sourcePTS only.26640..27359 is nominal30fps PTS-grid index, never claimed physical source ordinal.",
+  "actual_source_PTS_expected_first_last": [
+    888,
+    911.9666666666667
+  ],
+  "expected_new_selected_window_local_frames": 720,
+  "supply_both_original_samples": "0/300 and0/300; no0-to300increase"
+}
