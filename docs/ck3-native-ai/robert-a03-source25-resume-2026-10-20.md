@@ -50,3 +50,7 @@ DISPLAY01因Root漏建recordings父目录，在任何worker／OBS启动前失败
 用户要求高并发后，M6复用实例机会恢复、M7专用Service投影合同、非主导护资战争决策、性能四路均有独立候选／资格；源码资格不计游戏成绩。M6旧gain25仍缺独立terminal，M7仍缺实际H正见证与广度，G2保持6/8。heartbeat早醒候选被反例证明没有吞吐收益，未作为性能修复采用；Source26拟采用逐字节等价的历史编码LF单次join，收益仍须实测。战争procurement扩展发现跨战争共享资金包缺口，未直接采用。下一必要冷边界同时补启动期有限等待与录制validator完整路径；稳态RPC期限不随意放大。
 
 统一full仍27377 B／`332fabb30cc6f6a62d2f8974cd6e55d12036425f5b7f02aa8cf56709af6ee42a`、复核06:30Z。新增小源码／资格从已取消的C20未来预算精确转划；旧attempt占用不退款、不删除失败事实。原30年全墙钟起点2026-10-19T03:26:49.420926Z不重置，1秒／日及10950日目标均未完成。
+
+04:12Z补注（同machine_id）：上段screen释放的CAS期望值是7528，实际完成序列为7529、done／resources=[]，以闭场索引内原actual release为准。原全墙钟已超过24小时，即使余下5521日瞬时完成，整场10950日的均值也已大于7.89秒／日，无法再达到整场1秒／日；后续必须并列报告真实FULL局部吞吐与原整场wall，不能扣除维护、失败或重置起点宣称达标。
+
+04:25Z用户要求休假收尾：实际CK3为空、screen已释放；Source26只封12叶RAM组合和资格，canonicalGit／双导出／runtime均未执行。A05 union仍是有已知wrapper解包阻塞点的草稿。完整后继入口、精确pin、容量期限及恢复顺序见[Source26／A05休假交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)，不要直接Run草稿或沿用过期额度。

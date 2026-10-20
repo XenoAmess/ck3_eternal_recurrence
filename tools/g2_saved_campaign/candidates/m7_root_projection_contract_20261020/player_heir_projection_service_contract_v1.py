@@ -99,7 +99,8 @@ def validate_player_heir_projection_service_v1(value, *, root, result):
         parsed = parse_optional_player_heir_component_v1(root[COMPONENT], root=root)
         observation = parsed.observation
         _require(parsed.status == "parsed" and observation is not None, "native component")
-        _require(observation.source_fixture is False
+        _require(root.get("player_character_alive") is True
+                 and observation.source_fixture is False
                  and all(getattr(observation, key) is True for key in (
                      "available", "original_getter_source_bound", "getter_observed",
                      "candidate_present", "candidate_alive", "identity_and_frame_stable",

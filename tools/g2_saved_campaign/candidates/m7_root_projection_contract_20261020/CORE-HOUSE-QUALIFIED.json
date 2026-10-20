@@ -65,5 +65,21 @@
     "policy_version": "1.0.0",
     "review_at_utc": "2026-10-27T06:30:00Z",
     "reason": "Current candidate and earlier bytes until integration"
+  },
+  "root_alive_followup": {
+    "proof": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-PARALLEL-QUALIFICATION0630-01\\m7\\ROOT-ALIVE-QUALIFIED.json",
+      "bytes": 1704,
+      "sha256": "571027ffeaeba158c56546122f55de7d82cb325be85ed9878d85ba8f190ac7bf"
+    },
+    "helper_after_bytes": 6289,
+    "helper_after_sha256": "b9ce86b1a220e25f448bddda97cc1993c9d7ebd9f3e7b7e40ec559133d3a66db",
+    "cases": {
+      "valid_positive": "accepted",
+      "dead_parent_positive": "rejected",
+      "unknown": "accepted"
+    },
+    "prior_exact_bytes_in_Git": "d867",
+    "observed_at_utc": "2026-10-20T04:13:15.328745+00:00"
   }
 }

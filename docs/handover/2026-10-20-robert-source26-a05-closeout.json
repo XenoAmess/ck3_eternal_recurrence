@@ -1,0 +1,120 @@
+{
+  "schema": "xar.robert.Source26-A05-vacation-closeout/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T04:25:00+00:00",
+  "reason": "User explicitly requested gentle vacation closeout and handoff documentation",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine actual stdout, tool b5f685",
+  "fresh_kernel_observation": {
+    "observed_at_utc": "2026-10-20T04:22:21.575423+00:00",
+    "source": "resume_reader.py active -> active_process_pids with signaled-dead filtering; tool a47fc4",
+    "active_CK3": [],
+    "signaled_dead_pids_not_counted_active": [127028, 139512, 188168]
+  },
+  "campaign": {
+    "campaign_id": "native-31254-6271ac8cd441",
+    "actor_id": 40526,
+    "episode_id": "native-40526-1bec95182886",
+    "founder_id": 31254,
+    "fixed_D0": 174,
+    "T0_raw": 53144328,
+    "current_raw": 53274624,
+    "current_date": "1081-07-31",
+    "end_raw": 53407128,
+    "credited_days": 5429,
+    "target_days": 10950,
+    "settled_cycles": 4753,
+    "last_SAVE_sequence": 10480,
+    "next_sequence_unsubmitted": 10481,
+    "original_wall_origin_utc": "2026-10-19T03:26:49.420926Z",
+    "new_gameplay_credit": 0,
+    "G2_completed_M": 6,
+    "G2_total_M": 8,
+    "M6_terminal_complete": false,
+    "M7_H_positive_actual": "unknown",
+    "one_second_per_day_achieved": false,
+    "original_whole_campaign_wall_one_second_per_day_now_possible": false
+  },
+  "A04": {
+    "run_id": "xenoamess-full-tower-eb9d2c1186--vanilla--R0002",
+    "status": "completed-red",
+    "actual_Game": {"pid": 182100, "creation_filetime": 134369407465127587, "exit_code": 1, "forced": true},
+    "SDK_actual_exit_codes": [1, 1],
+    "SEM_CAP_or_FULL_submitted": false,
+    "all_four_Tasks_unregistered_actual_absent": true,
+    "Task_jobs_final_active": 0,
+    "screen_task": "robert30-v20261020-a04-screen102",
+    "screen_CAS_expected": 7528,
+    "screen_release_completed_sequence": 7529,
+    "screen_state": "done",
+    "screen_resources": [],
+    "actual_closed_index": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/A04-FAILED-CLOSED-INDEX.json",
+      "bytes": 5527,
+      "sha256": "c12c0c5770b937fe38fe193b703351a613db39c3439f6475bebb3866a81335bc"
+    },
+    "recording": {
+      "session_id": "b72da700-8919-48ee-a855-c3c26730b923",
+      "completed_media_bytes": 65780082,
+      "completed_media_sha256": "6fde22f4ab4bbcf9aa33590fcd4fe134a3ee6dca45a6cf75c925ca1b07dc5b6b",
+      "display_stage_exit": 1,
+      "display_job_active_after_stage": 0,
+      "display_forced_tail_cleanup": false,
+      "remaining_display_failure": "ModuleNotFoundError ck3_capture_closed_receipt; complete media does not qualify wrapper success"
+    }
+  },
+  "Source26": {
+    "status": "PREPARED_NOT_CANONICAL_NOT_EXPORTED_NOT_RUNTIME_ADOPTED",
+    "actual_canonical_Git_writes": 0,
+    "actual_export_calls": 0,
+    "actual_runtime_adoptions": 0,
+    "actual_Task_or_Game_calls": 0,
+    "RAM_output_leaves": 12,
+    "RAM_complete_files": 1462,
+    "RAM_source_bytes": 59253402,
+    "RAM_complete_rows_JSON": {"bytes": 375601, "sha256": "e3285c759ff33b0ecb5d4488514b28b7ef5911cee1a1e8ae8a39c2c593ff61c3"},
+    "epoch_names_count": 31,
+    "actual_epoch_authority_claimed": false,
+    "future_ref": "refs/heads/campaign/robert-v20261019-source26-unified-cold-01",
+    "future_ref_show_ref_exit_code": 1,
+    "future_paths_verified_absent": [
+      "Z:/ck3_mod_rewrite/_runtime/source26-integration17",
+      "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src21",
+      "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/reference-c23-a05",
+      "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a05"
+    ],
+    "absence_observation_source": "Exact path glob observations e4c163/7c958d/2f5a6f and show-ref ef4f43; no future path manufactured",
+    "A05_union_status": "DRAFT_RAM_SOURCE_COMPILED_STATE_GUARD_PASS_COMPOSE_AND_ADOPT_NOT_RUN",
+    "A05_known_blocker": "Unregister wrapper requires actual.actual.absent_after; draft guard only unwraps one layer and rejects real1192-byte receipt",
+    "source_plan": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/A05-SOURCE26-QUALIFICATION0630-01/source26_writer/PLAN.json",
+      "bytes": 26306,
+      "sha256": "a2b3ba812b56361d7c4040c5c68fde3671c21bc2ff2302dda66c847c4307c51b"
+    }
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2026-10-20T06:30:00+00:00",
+    "automatic_extension": false,
+    "new_A05_full": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/STORAGE-CANONICAL-FULL-C23-A05-0630-02.json",
+      "bytes": 30016,
+      "sha256": "33fb6b500b444a93d2a0895034e846a4d0ea24e27cc3bc2a49eb4b956347683e",
+      "actual_new_consumers": 0,
+      "execution_release": false
+    },
+    "old_full_332f_and_T_U4_live_unchanged": true,
+    "next_executor_must_reaudit_policy_capacity_deadline_all_consumers": true,
+    "old_written_holds_refunded": false,
+    "protected_large_inputs_or_personal_assets_deleted": false
+  },
+  "Steam": {
+    "last_Root_personally_reviewed_offline_pixels_at_utc": "2026-10-20T03:26:37+00:00",
+    "online_switches_by_this_work": 0,
+    "fresh_offline_pixels_obtained_at_closeout": false,
+    "next_live_run_requires_new_fresh_offline_review": true
+  },
+  "root_bus_task": "robert-v20261019-resume-20261020-0214",
+  "root_bus_resources_at_closeout_observation": [],
+  "root_bus_done_will_be_set_after_handoff_commit_push": true,
+  "handoff": "docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md"
+}
