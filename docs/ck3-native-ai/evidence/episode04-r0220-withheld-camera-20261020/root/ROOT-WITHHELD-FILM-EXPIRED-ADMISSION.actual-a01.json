@@ -1,0 +1,62 @@
+{
+  "schema": "xar.e04.root-withheld-film-expired-os-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:05:01.804496+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "status": "ROOT_WITHHELD_FILM_AND_WORKER_PENDING_CASE_CLEANUP",
+  "reason": "Root took too long clearing visible native hover and checking fresh frames after issuing the source admission. Admission is now expired; do not launch the known stale probe or overwrite any original admission.",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\os-admission-a01\\SOURCE-ADMISSION.actual.json",
+    "bytes": 8839,
+    "sha256": "fc8229e7a85de09d834e2bd0eb78615f52d83b4355e4cd2ffd7865a1838b2d60"
+  },
+  "admission_age_seconds": 449.5709331035614,
+  "admission_TTL_seconds": 300,
+  "expired_at_utc": "2026-10-20T11:02:32.233563+00:00",
+  "camera_awaiting": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\before-action-camera-awaiting.json",
+    "bytes": 1016,
+    "sha256": "0134f1314d682b1029d921be009cbfe5d9372d4bd871450b0c5eb38b70878fef"
+  },
+  "camera_awaiting_original": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+    "bridge_pid": 18956,
+    "date_raw": 53149056,
+    "observed_at_utc": "2026-10-20T10:58:11.345618+00:00",
+    "action_kind": "exact-day",
+    "signal_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\before-action-camera-started.json",
+    "coordination_only": true,
+    "maximum_wait_seconds": 600,
+    "terminal_result_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06-REFILL-TERMINAL.json",
+    "prepared_observer": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\r06-worker-prepared\\PREPARED.actual.json",
+      "bytes": 101692,
+      "sha256": "33b4c22bb80f73020bfe8737e4da2fddbdf35bb83faf36da94def746211d5500"
+    },
+    "observer_started": false,
+    "clock_action_submitted": false
+  },
+  "actual_Root_UI_readback": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0220-ui-once-exec-a01\\ORIGINAL-ROWS.derived.json",
+    "bytes": 115329,
+    "sha256": "2a10bcd12f49719e5a7b60994ccaf70197dbcbd63e696d712c5e5f488281b590"
+  },
+  "actual_clear_no_hover_frame": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a04\\capture.actual.json",
+    "bytes": 1829,
+    "sha256": "6cbc9fb9480b1153d7f6372723250f4884fa997d017a5673892875bc6062f3d5"
+  },
+  "Root_direct_view_no_hover": true,
+  "Root_review_CLI_executed": false,
+  "film_executed": false,
+  "camera_Start_signal_present": false,
+  "observer_launch_directory_present": false,
+  "current_FFmpeg_or_probe_processes": [],
+  "Root_game_clock_or_Move_submissions": 0,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false,
+  "formal_dynamic": "1/11 unchanged; prior R12 only",
+  "next_order": "Complete optional UI once, cursor/clear frame and direct review before taking the fresh 3+1 OS census and admission; then immediately satisfy actual camera-awaiting and film. Keep the existing 180/120/300-second guards.",
+  "normal_cleanup_status": "PENDING original actor 600-second camera wait refusal and its finally OFF/Save, then normal GUI Quit and original OS/native/host waits; do not count absence as successful cleanup."
+}

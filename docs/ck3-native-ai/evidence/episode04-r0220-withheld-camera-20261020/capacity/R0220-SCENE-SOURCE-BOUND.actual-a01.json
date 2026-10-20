@@ -1,0 +1,398 @@
+{
+  "schema": "xar.e04.r06-new-1230-actual-allocated-scene-source-bound.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:45:16.179712+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "root_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\ROOT-NEW-FINITE-1230Z-APPROVAL.actual-a01.json",
+    "bytes": 1062,
+    "sha256": "50c8bc12ca257879828a5ff1fa7961bfe3c5a2c625e57299c44a81317adf392e"
+  },
+  "quota_review_at_utc": "2026-10-20T12:30:00Z",
+  "quota_bytes": 438086664192,
+  "C_system_growth_reserve_bytes": 4294967296,
+  "safety_free_bytes": 21474836480,
+  "run_hard_deadline_utc": "2026-10-20T12:30:00Z",
+  "latest_game_launch_at_utc": "2026-10-20T11:15:00Z",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "native_qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "native_closed": {
+    "path": "C:\\w\\e04a41\\A41-SELECTED-SCOPE-CLOSED.actual-a01.json",
+    "bytes": 12485,
+    "sha256": "bb0b212e0bead7ef1593d57c4d33a9f60823f9a697d5643b577fa90dd94850b0"
+  },
+  "original_normal_Mar31_S0": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r215-mar31-normal-source-a01\\R214-MAR31-NORMAL-S0-PROMOTION.actual-a01.json",
+    "bytes": 9210,
+    "sha256": "5890702bcafc5f3c21418c59797ba4bca7a01bedd339d304b10dfd37941d5337"
+  },
+  "predecessor_R0219_closed": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-NORMAL-CLOSED-BUSINESS-REFUSED-SETTLEMENT.actual-a01.json",
+    "bytes": 9116,
+    "sha256": "1b07563f9e476e670f8c5e754ad12666018b9872a8325b6cbf75c051376b516a"
+  },
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "driver_run_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "aggregate_scene_ceiling_bytes": 2415919104,
+  "component_roots": {
+    "profile": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01",
+    "driver": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220",
+    "raw": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\raw-a01",
+    "other": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04"
+  },
+  "component_additional_roots": {
+    "profile": [
+      "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\userdirs"
+    ]
+  },
+  "driver_parent_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs",
+  "component_ceiling_bytes": {
+    "profile": 805306368,
+    "driver": 1073741824,
+    "raw": 268435456,
+    "other": 268435456
+  },
+  "component_accounting": "Profile includes state-a01 and userdirs; driver is exact future allocated leaf; other excludes all component roots and userdirs. No overlap.",
+  "profile_prepare_execution_admitted": true,
+  "scene_prepare_execution_admitted": true,
+  "runtime_and_case_inputs_require_exact_prepare_binding_before_execution": false,
+  "allocate_ID_or_game_execution_admitted_by_this_capacity": false,
+  "game_execution_admitted": false,
+  "actual_post_allocate_run_bound_subcap_required": true,
+  "native_compile_execution_admitted": false,
+  "new_reclamation_execution_admitted": false,
+  "camera_or_film_execution_admitted": false,
+  "reserved_raw_future_bytes": 268435456,
+  "prior_R0219_raw_withdrawal_not_inherited": true,
+  "shared_collective_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+  "shared_collective_ceiling_bytes": 134217728,
+  "shared_pool_transferred_not_duplicated": true,
+  "collective_shared_at_transfer": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T10:37:55.046802+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 39643348,
+    "files": 981,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "D_heavy_write_bytes": 0,
+  "active_balances": {
+    "known_future": {
+      "C:/": 2550136832,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-1230-20261020-a01",
+        "known_future": {
+          "C:/": 2550136832,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T10:45:16.203216+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 80876277760,
+      "available_to_caller_bytes": 80876277760,
+      "total_free_bytes": 80876277760,
+      "entire_volume_used_allocation_upper_bound_bytes": 430257668096,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T10:45:16.203216+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21667332096,
+      "available_to_caller_bytes": 21667332096,
+      "total_free_bytes": 21667332096,
+      "entire_volume_used_allocation_upper_bound_bytes": 478422675456,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget": {
+    "C_known_future_bytes": 2550136832,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 28362073286,
+    "C_floor_margin_bytes": 52514204474,
+    "C_projected_whole_volume_upper_bound_bytes": 437144904902,
+    "C_quota_margin_bytes": 941759290,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 58277888
+  },
+  "legacy42132678_included": true,
+  "retained_actual_already_in_whole_volume_used": true,
+  "physical_or_unused_credit_bytes": 0,
+  "prior_monitors_originally_exited": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\PREDECESSOR-1100Z-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1055,
+    "sha256": "b034c31594c9baf7313fa71f023b05bbe0c6f14f69c0e7e8cbfc5944425a4f48"
+  },
+  "automatic_renewal": false,
+  "dynamic_MapReady_minimum_remaining_seconds": 2100,
+  "normal_close_reserve_seconds": 900,
+  "cleanup_reserve_seconds": 120,
+  "Root_planned_loading_reserve_seconds": 1800,
+  "scheme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\bind_prepare_a05.py",
+    "bytes": 3321,
+    "sha256": "ff368663ae63e9b0fb037e5f3a160403d8d74c9149a9c1573214e7dd2a61d6f8"
+  },
+  "common_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\packet_common.py",
+    "bytes": 349,
+    "sha256": "27a0cd7cd27da240749c95423bb289caec67655e866487dcb8fbaa1005759709"
+  },
+  "supersedes_prepare_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R06-NEW-FINITE-RESERVATION-PREPARE-ONLY.actual-a01.json",
+    "bytes": 6838,
+    "sha256": "9c09eb6484a5c7b9ff77d7f7fb9ec468e3258a76c7918ad41be627c32161e201"
+  },
+  "runtime_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\RUNTIME-DELIVERY.actual.json",
+    "bytes": 2922,
+    "sha256": "d83a8087e7851e2445fe896aacf1d43c71dedce6f48740de928de8d934d02f31"
+  },
+  "runtime": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\runtime.local.json",
+    "bytes": 2591,
+    "sha256": "822eed763873d96b5de5e03c65c85524572f5f65f4e9308fe0c48701e5e3d676"
+  },
+  "case_inputs": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\runtime-assembly-a05\\CASE-INPUTS.actual-a05.json",
+    "bytes": 5916,
+    "sha256": "b6fbb007dafbf15d46a34d4c388d182f137311250ba15658e42066d71dc53083"
+  },
+  "prepared_output": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\prepared-a01",
+  "exact_public_profile_prepare_admitted": true,
+  "public_prepare_does_not_allocate_or_launch": true,
+  "collective_shared_at_prepare_binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T10:39:36.312006+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 40319030,
+    "files": 1032,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "supersedes_prepare_binding_only": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R06-A05-EXACT-RUNTIME-PREPARE-ONLY.actual-a02.json",
+    "bytes": 8430,
+    "sha256": "26bfd1ba8579182fa147e7ee9eee09973b778c01957af1a3f42b93b509002ff7"
+  },
+  "run_id_allocated": true,
+  "run_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01",
+  "scene_execution_admitted": true,
+  "heavy_write_execution_admitted": true,
+  "launch_execution_admitted": false,
+  "separate_Root_launch_authorization_required_before_game": true,
+  "post_allocate_capacity_scope_construction_admitted": true,
+  "game_launch_already_observed": false,
+  "operator_MCP_screen_and_fresh_offline_direct_review_still_required": true,
+  "prepared_case": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\prepared-a01\\prepared-case.json",
+    "bytes": 11432,
+    "sha256": "b207794a31860592b6414500523529d2e49e3709112782bee96df93536a5529f"
+  },
+  "allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\allocated-context.json",
+    "bytes": 5359,
+    "sha256": "72cb40e49bd4fe0ae18b8e60f24f6544c3e71be036b7d0b3f867eb6c17fc3cb5"
+  },
+  "frozen_argv": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\frozen-argv.json",
+    "bytes": 33778,
+    "sha256": "66dd9c84a711f173ae5978832172ba491b044ca8cc0c94cb817b944300188077"
+  },
+  "allocator_READY_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\ready-context.json",
+    "bytes": 5621,
+    "sha256": "f5eef7ee49386943b46b256fa07991e25d4d16004e042bd6a3168c60076aeaca"
+  },
+  "screen_acquire_registration": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\screen-registration.json",
+    "bytes": 1444,
+    "sha256": "0658b4eafe71c21baaec42caead0eb2229af484c23539a7680b48087a6a6d4cd"
+  },
+  "keeper_process": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\keeper-process.json",
+    "bytes": 716,
+    "sha256": "b0bb3be325fe5c4543701c52dbf94fbcf2b97c1583cdfe1c5ce36cd6724c0b22"
+  },
+  "allocator_original_Popen_exit_claimed_by_capacity": false,
+  "prepared_case_inputs_R06_capacity_leaf_remains_null_and_immutable": true,
+  "actual_post_allocate_scope_required_before_public_run": true,
+  "capacity_is_not_business_PASS_or_actual_launch_or_normal_close": true,
+  "component_monitor_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\scene_a04_measure.py",
+    "bytes": 6819,
+    "sha256": "d3031c511c5eefe6d20a42db7631a9e1df9807e37ac1bcb5002e163f946a95a4"
+  },
+  "binding_scheme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\bind_actual_a04.py",
+    "bytes": 5235,
+    "sha256": "cc8c726c1f18e8aae7b750ac2cef9048da0cd67467ac6c0a0ac86974cde84ec7"
+  },
+  "additional_future_bytes": 0,
+  "fresh_actual_component_measurement": {
+    "schema": "xar.e04.r06-four-component-live-metadata-monitor.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T10:45:16.332701+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+    "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04",
+    "components": {
+      "profile": {
+        "logical_bytes": 13860,
+        "allocated_unique_bytes": 20592,
+        "files": 6,
+        "ceiling_bytes": 805306368,
+        "logical_margin_bytes": 805292508
+      },
+      "driver": {
+        "logical_bytes": 706500,
+        "allocated_unique_bytes": 725216,
+        "files": 14,
+        "ceiling_bytes": 1073741824,
+        "logical_margin_bytes": 1073035324
+      },
+      "raw": {
+        "logical_bytes": 0,
+        "allocated_unique_bytes": 0,
+        "files": 0,
+        "ceiling_bytes": 268435456,
+        "logical_margin_bytes": 268435456
+      },
+      "other": {
+        "logical_bytes": 2537945,
+        "allocated_unique_bytes": 2567744,
+        "files": 29,
+        "ceiling_bytes": 268435456,
+        "logical_margin_bytes": 265897511
+      }
+    },
+    "logical_total_bytes": 3258305,
+    "allocated_unique_total_bytes": 3313552,
+    "measurement_is_live_not_atomic_snapshot": true,
+    "metadata_coverage_complete": true,
+    "errors": [],
+    "errors_count": 0,
+    "elapsed_seconds": 0.152,
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 284155,
+      "sha256": "9e6784d118c31a0f606ae18c5ea8ca11b42766da24cc5f9f0bcc949c633e19fe"
+    },
+    "active_balances": {
+      "known_future": {
+        "C:/": 2550136832,
+        "D:/": 0
+      },
+      "legacy": {
+        "C:/": 42132678,
+        "D:/": 0
+      },
+      "claims": [
+        {
+          "task_id": "e04-capacity-resume-20261020-a01",
+          "known_future": {
+            "C:/": 0,
+            "D:/": 0
+          },
+          "legacy": {
+            "C:/": 42132678,
+            "D:/": 0
+          },
+          "carry_only": true
+        },
+        {
+          "task_id": "e04-capacity-r06-1230-20261020-a01",
+          "known_future": {
+            "C:/": 2550136832,
+            "D:/": 0
+          },
+          "legacy": {
+            "C:/": 0,
+            "D:/": 0
+          },
+          "carry_only": false
+        }
+      ]
+    },
+    "fresh_volumes": {
+      "C:/": {
+        "volume": "C:/",
+        "observed_at_utc": "2026-10-20T10:45:16.203216+00:00",
+        "total_bytes": 511133945856,
+        "free_bytes": 80876277760,
+        "available_to_caller_bytes": 80876277760,
+        "total_free_bytes": 80876277760,
+        "entire_volume_used_allocation_upper_bound_bytes": 430257668096,
+        "source": "Windows GetDiskFreeSpaceExW"
+      },
+      "D:/": {
+        "volume": "D:/",
+        "observed_at_utc": "2026-10-20T10:45:16.203216+00:00",
+        "total_bytes": 500090007552,
+        "free_bytes": 21667332096,
+        "available_to_caller_bytes": 21667332096,
+        "total_free_bytes": 21667332096,
+        "entire_volume_used_allocation_upper_bound_bytes": 478422675456,
+        "source": "Windows GetDiskFreeSpaceExW"
+      }
+    },
+    "budget": {
+      "C_known_future_bytes": 2550136832,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 28362073286,
+      "C_floor_margin_bytes": 52514204474,
+      "C_projected_whole_volume_upper_bound_bytes": 437144904902,
+      "C_quota_margin_bytes": 941759290,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 58277888
+    },
+    "shared_actual_logical_bytes": 40585010,
+    "shared_collective_ceiling_bytes": 134217728,
+    "remaining_hard_deadline_seconds": 6283.796587,
+    "alarms": [],
+    "running_claim_full_future_not_reduced": true,
+    "payload_body_bytes_read": 0,
+    "SDK_game_screen_actions": 0
+  }
+}

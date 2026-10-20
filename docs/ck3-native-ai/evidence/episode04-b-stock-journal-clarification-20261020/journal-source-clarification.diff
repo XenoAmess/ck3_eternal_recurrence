@@ -1,0 +1,11 @@
+diff --git a/docs/ck3-native-ai/episode04-r10-stock-growth-opportunity-12004.md b/docs/ck3-native-ai/episode04-r10-stock-growth-opportunity-12004.md
+--- a/docs/ck3-native-ai/episode04-r10-stock-growth-opportunity-12004.md
++++ b/docs/ck3-native-ai/episode04-r10-stock-growth-opportunity-12004.md
+@@ -18,3 +18,7 @@
+ 后者只消费已有实际自然callback：新sequence晚于before fence、相同完整Army/native身份、正确完整CDate64、无capture failure、same-instance、event前后均为同一驻留省、stock正差分，并由正常day/claim/clock与完整端点stock链对齐。当前R06 owner确认只regular_core scoped ON，supply journal保持既有OFF；缺叶/null保持unknown，不为B擅开族。若未来已有Root明确捕获机会可满足合同，再调用现有 `comparison/strategy_b_site_growth.py`。一天的troop +10、月界flag、getter正值或条件投影均不能替它。
+ 
+ 本包增加的是准确的机会选择输入。它不新增growth正例、不授予future runtime/capacity、不开新场、不改变R06策略。[仓库相对来源与精确pin](evidence/episode04-r10-stock-growth-opportunity-12004/index.json)引用既有canonical原件；原片、Save与大normalized raw未复制。
++
++## 2026-10-20：独立journal来源澄清
++
++机器 `desktop-3fevhd2-1c74096080`，`2026-10-20T10:41:03Z` 复核源码 `4fc8d0f4cae53735274475bd3e7fc3afbb958f7c`：上文的九族research sampling之regular_core-only读回不能推出独立supply journal OFF；九族总名单已含regular_core，该journal不在其中。`bridge.cpp:30408-30414`在bridge初始化安装独立`InstallActualSupplyCallbackJournal12004`；`army_observer_research_sampling_control.py:10-13`的九族名单不含该journal。源码安装也不能代替当场`observer_installed`/实际事件、Province、sequence和failure读回。旧OFF回执与旧场次事实保留，不能追认未捕获事件。新场只消费原场次自然保留的完整端点与callback，缺失即no-credit，不开新toggle、query或自然日；详见[被动消费合同](episode04-b-stock-passive-evidence-12004.md)。

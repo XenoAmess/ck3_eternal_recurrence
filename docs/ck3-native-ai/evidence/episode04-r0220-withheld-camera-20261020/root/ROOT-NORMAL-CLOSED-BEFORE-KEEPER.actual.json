@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:19:47.782717+00:00",
+  "source": "Actual normal-close retained OS0/native0, original host Popen wait0, current no game/recorder/probe; original business terminal preserved",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "normal_close_qualified": true,
+  "host_original_wait0": {
+    "at_utc": "2026-10-20T11:17:47.929408+00:00",
+    "pid": 21804,
+    "returncode": 0,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "business_terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+    "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+    "actual_days": 0,
+    "exact_day_verified": false,
+    "actual_ADD_observed": false,
+    "finaldate": 53149056,
+    "OFFclear": true,
+    "Save": true,
+    "native_restore_verified": true,
+    "errors": [],
+    "full_R06_qualified": false
+  },
+  "keeper_and_screen_release": "PENDING"
+}

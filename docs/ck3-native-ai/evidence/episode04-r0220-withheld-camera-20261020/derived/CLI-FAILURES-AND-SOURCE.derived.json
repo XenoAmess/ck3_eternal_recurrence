@@ -1,0 +1,63 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:28:01.112346+00:00",
+  "role": "derived narrow source/readback attribution; no failed CLI replay",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "source": {
+    "repository_relative_path": "tools/desktop_coordinate_map.py",
+    "bytes": 22870,
+    "sha256": "3ef119ae95ae9c084844bcabecc63223413e3ad06ff64d67789fe320adb70991",
+    "git_blob": "ab9342e5dbc73d1e905a908769d51f782fef86cd",
+    "excerpts": [
+      {
+        "first": 228,
+        "last": 248,
+        "text": "228:     \"\"\"Optional file-age check; mtime never proves fresh desktop pixels.\"\"\"\n229:     if maximum_seconds is None:\n230:         return None\n231:     if not math.isfinite(maximum_seconds) or maximum_seconds <= 0:\n232:         raise ValueError(\"maximum source age must be finite and positive\")\n233:     import time\n234:     modified = source_image.stat().st_mtime\n235:     observed = time.time()\n236:     age = observed - modified\n237:     if not math.isfinite(age) or age < 0 or age > maximum_seconds:\n238:         values = {\"source_mtime_unix\": modified, \"checked_at_unix\": observed,\n239:                   \"age_seconds\": age, \"maximum_seconds\": maximum_seconds}\n240:         nonfinite = {name: repr(value) for name, value in values.items()\n241:                      if not math.isfinite(value)}\n242:         observation = {name: value if math.isfinite(value) else None\n243:                        for name, value in values.items()}\n244:         if nonfinite:\n245:             observation[\"nonfinite_values\"] = nonfinite\n246:         reason = (\"source_age_nonfinite\" if not math.isfinite(age) else\n247:                   \"source_mtime_in_future\" if age < 0 else \"source_image_expired\")\n248:         raise SourceImageAgeError(observation, reason)"
+      },
+      {
+        "first": 338,
+        "last": 363,
+        "text": "338:     parser.add_argument(\"--reviewed-left\", type=float)\n339:     parser.add_argument(\"--reviewed-top\", type=float)\n340:     parser.add_argument(\"--reviewed-width\", type=int)\n341:     parser.add_argument(\"--reviewed-height\", type=int)\n342:     parser.add_argument(\"--expected-foreground-hwnd\", type=lambda value: int(value, 0),\n343:                         help=\"Require this actual foreground HWND before/after click or move; never activate it\")\n344:     parser.add_argument(\"--max-source-age-seconds\", type=float,\n345:                         help=\"Optional click-only screenshot mtime age limit; does not prove live pixels\")\n346:     parser.add_argument(\"--receipt\", type=Path,\n347:                         help=\"New PNG screenshot path ending in .png (not JSON); parent directories are created before input; mapping JSON is printed separately\")\n348:     args = parser.parse_args(argv)\n349:     if args.click and args.receipt is None:\n350:         parser.error(\"--click requires --receipt\")\n351:     if args.button != \"left\" and not args.click:\n352:         parser.error(\"--button right requires --click\")\n353:     if args.move and not args.dry_run and args.receipt is None:\n354:         parser.error(\"--move requires --receipt\")\n355:     if not args.click and not args.move and args.receipt is not None:\n356:         parser.error(\"--receipt is only valid with --click or --move\")\n357:     if args.dry_run and not args.move:\n358:         parser.error(\"--dry-run is only valid with --move\")\n359:     reviewed = (args.reviewed_left, args.reviewed_top, args.reviewed_width, args.reviewed_height)\n360:     if args.move and any(value is None for value in reviewed):\n361:         parser.error(\"--move requires an explicit reviewed left/top/width/height region\")\n362:     if not args.move and any(value is not None for value in reviewed):\n363:         parser.error(\"reviewed region is only valid with --move\")"
+      },
+      {
+        "first": 433,
+        "last": 438,
+        "text": "433:     if args.click and (args.expected_foreground_hwnd is not None or args.max_source_age_seconds is not None):\n434:         output = guarded_click(mapping=result, source_image=args.source_image, receipt_path=args.receipt,\n435:             desktop=pyautogui, button=args.button, expected_foreground_hwnd=args.expected_foreground_hwnd,\n436:             max_source_age_seconds=args.max_source_age_seconds)\n437:         print(json.dumps(output, ensure_ascii=False, sort_keys=True))\n438:         return 3 if output[\"failures\"] else 0"
+      }
+    ]
+  },
+  "actual_small_sidecars": [
+    "gui-sidecars/after-quit-menu.png.json",
+    "gui-sidecars/after-quit-menu-a02.png.json"
+  ],
+  "actual_sidecar_meaning": "two source-age rejections; input_performed=false and click_completed=false, not successful clicks",
+  "Root_transcript_only": [
+    {
+      "event": "reviewed-region parameters supplied with click",
+      "result": "argparse rejection",
+      "standalone_raw_receipt": null
+    },
+    {
+      "event": "initial pointer move omitted reviewed region",
+      "result": "argparse rejection",
+      "standalone_raw_receipt": null
+    }
+  ],
+  "transcript_attribution": "Direct /root collaboration report; no standalone raw was retained; do not manufacture one",
+  "actual_pointer_moves": {
+    "first": [
+      100,
+      100
+    ],
+    "second": [
+      865,
+      905
+    ],
+    "source": "unchanged actual sidecars; Root reported first still hovered and a04 direct image clean"
+  },
+  "frame_execution_provenance": {
+    "a01_a02": "original Popen wait0 receipts copied",
+    "a03_a04": "Root direct toolreturn0 report only, not original Popen JSON"
+  },
+  "no_images_opened_or_rehashed": true
+}

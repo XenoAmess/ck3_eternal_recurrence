@@ -1,5 +1,16 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-20 11:22 UTC：R0220过期准入未启动日步，已正常闭场
+
+`machine_id: desktop-3fevhd2-1c74096080`；[实际小原件与分层清单](evidence/episode04-r0220-withheld-camera-20261020/MANIFEST.actual.json)。本场public run原wait **0**（11:17:47 UTC），内层R06仍为`STOPPED_ERROR_PRESERVED_NO_REPLAY / Canonical R06 camera Start absent`，**0day/noADD/fullR06false**；不能沿用R0219的wait2或把外层0当业务通过。
+
+SOURCEADMISSION为10:57:32.233563 UTC、TTL300秒，11:02:32过期。Root先签准入再清hover审图耗时，明确承认执行顺序失误并withhold；旧proof不改、不假Start。regular_core内部ON accepted，但worker EXE、film、cameraStart及clock均未启动。等待原600秒超时后，原actor finally实际OFF/clear、普通Save和独立同日53149056读回，native_restore_verified=true属未启动worker情形。四项OS观测为census3+admission最新1，不能当debugger observed-generation。
+
+GUI正常退出实际retained OS0/native0/host原0、keeper0/allocator0，screen CAS7435→7437、done/resources[]；旧withheld当时pending原件保留，后态另列。普通native_campaign Save的driver_state_replace仍`unconfirmed/save_binding_mismatch`，不授one-life。两次source-age点击拒绝均无输入，argparse失败仅Root transcript归因、无独立raw，不伪造回执。
+
+后继顺序改为先optional UI/frame/Rootreview，再新鲜OS3+1、立即canonical Start；新13:15 finite包独立，不续旧11:15 launch cutoff或过期proof。[B独立journal来源更正](episode04-r10-stock-growth-opportunity-12004.md)只追加澄清，九族regular_core-only不能推出独立supply journal OFF；R0220没有after/day pair，不跑adapter、不授增长。正式动态 **1/11**（仅既有R12源镜头）、研究 **10/14**、业务 **7/11**、B **0/2**、ABC **0/3**不变。
+
+
 ## 2026-10-20 10:42 UTC：R12阳性原M源镜头签出，正式动态主题1/11
 
 `machine_id: desktop-3fevhd2-1c74096080`。依据[Root实际裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json)（SHA-256 `9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88`）及[11主题小账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)，正式动态的计数单位为R03–R13各主题至少一段已验原M源镜头。当前 **1/11（9.09%）**，仅R12阳性；其余10主题待签出。下方0/11等旧记录保留为当时快照。

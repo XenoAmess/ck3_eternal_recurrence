@@ -1,0 +1,806 @@
+{
+  "schema": "xar.e04.r0220.small_evidence_manifest.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:32:42.345795+00:00",
+  "role": "actual byte-readback manifest of supplied original small records and labelled derivations",
+  "original_rows": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\ROOT-WITHHELD-FILM-EXPIRED-ADMISSION.actual-a01.json",
+        "bytes": 3668,
+        "sha256": "445ea7c45ed4521d02e2cbd3c7f907141e77f03b760674c4fecd38db455c5ad8"
+      },
+      "archive_relative_path": "root/ROOT-WITHHELD-FILM-EXPIRED-ADMISSION.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/root/ROOT-WITHHELD-FILM-EXPIRED-ADMISSION.actual-a01.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\ROOT-NORMAL-CLOSED-BEFORE-KEEPER.actual.json",
+        "bytes": 1143,
+        "sha256": "005aa9ed2a6faf9c631dea8f44ba8c82d7282f238c7999314c89a9905c6b466e"
+      },
+      "archive_relative_path": "root/ROOT-NORMAL-CLOSED-BEFORE-KEEPER.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/root/ROOT-NORMAL-CLOSED-BEFORE-KEEPER.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\SCREEN-RELEASE.actual-a01.json",
+        "bytes": 1235,
+        "sha256": "cb20883f834b317743b1d1270a66a575144af25aff1da1552c472ee3db4bca7b"
+      },
+      "archive_relative_path": "root/SCREEN-RELEASE.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/root/SCREEN-RELEASE.actual-a01.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\R06-POST-ALLOCATE-SCOPE.actual-a05.json",
+        "bytes": 1614,
+        "sha256": "72bd39d525175f5e8d646f8fad771db6bf273544492b73e34aff2ea48d906ad1"
+      },
+      "archive_relative_path": "root/R06-POST-ALLOCATE-SCOPE.actual-a05.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/root/R06-POST-ALLOCATE-SCOPE.actual-a05.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\R06-SCOPED-REVIEWED-CONTEXT.actual-a05.json",
+        "bytes": 6195,
+        "sha256": "514b3edc6fa5452143e378c3d649db3f3baa7c57a0d881b0e164fb23262faec5"
+      },
+      "archive_relative_path": "root/R06-SCOPED-REVIEWED-CONTEXT.actual-a05.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/root/R06-SCOPED-REVIEWED-CONTEXT.actual-a05.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\os-admission-a01\\SOURCE-ADMISSION.actual.json",
+        "bytes": 8839,
+        "sha256": "fc8229e7a85de09d834e2bd0eb78615f52d83b4355e4cd2ffd7865a1838b2d60"
+      },
+      "archive_relative_path": "admission/SOURCE-ADMISSION.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/admission/SOURCE-ADMISSION.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\os-admission-a01\\THREAD-CENSUS.actual.json",
+        "bytes": 30162,
+        "sha256": "6e54d6fbdfd4b08db612d4cb04a995eddec5bbd610badd68e709af0edcee8aaa"
+      },
+      "archive_relative_path": "admission/THREAD-CENSUS.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/admission/THREAD-CENSUS.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06-WORKER-RESULT.json",
+        "bytes": 107792,
+        "sha256": "b4cf2636fc1783001065de26d387c09c14b0734116a9c30dad70070ca5d4936d"
+      },
+      "archive_relative_path": "case/R06-WORKER-RESULT.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06-WORKER-RESULT.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06-REFILL-TERMINAL.json",
+        "bytes": 382,
+        "sha256": "6bb88c63aa74a5fdf7306e1520bee22f537e58ec8236a93514f231255194fdfb"
+      },
+      "archive_relative_path": "case/R06-REFILL-TERMINAL.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06-REFILL-TERMINAL.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\entry-run-result.json",
+        "bytes": 142647,
+        "sha256": "285a5ce0a0d618dce1747db1a8c91768fcbb92b282f7a34a0b5cc6b1faef2ab0"
+      },
+      "archive_relative_path": "case/entry-run-result.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/entry-run-result.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\normal-close-result.json",
+        "bytes": 9516,
+        "sha256": "bcbaaa63091bdab2e34439e63e28d504356d287c6d58cced1003eadc75817fe0"
+      },
+      "archive_relative_path": "case/normal-close-result.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/normal-close-result.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\normal-quit-awaiting.json",
+        "bytes": 637,
+        "sha256": "c6a599779e57ebaeaebb4bed0b89e1ff568d6e5b7e9ab23acf3babb48be49e87"
+      },
+      "archive_relative_path": "case/normal-quit-awaiting.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/normal-quit-awaiting.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\normal-quit-root-result.json",
+        "bytes": 2244,
+        "sha256": "ad2bf922712efbed7be387f6c40c97043a23a6888458d05ef82f56ff332668b4"
+      },
+      "archive_relative_path": "case/normal-quit-root-result.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/normal-quit-root-result.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 179,
+        "sha256": "25a7479db90f6e007e009314489f4cd4c57ee9c0358aad4067c73c4248e82fa7"
+      },
+      "archive_relative_path": "case/actual-retained-handle-os-exit.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/actual-retained-handle-os-exit.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\retained-current-process-identity.json",
+        "bytes": 110,
+        "sha256": "113b868fdcb23bb111c604ad4f87cbb2702f7ed70769cdac835812b71c5a51bf"
+      },
+      "archive_relative_path": "case/retained-current-process-identity.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/retained-current-process-identity.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\r10-common-preparation-result.json",
+        "bytes": 4247,
+        "sha256": "23a8b755c2de4a2f27a22e6d7ab6fa5c1825a9a31da6b3726ed8f4e2538971de"
+      },
+      "archive_relative_path": "case/r10-common-preparation-result.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/r10-common-preparation-result.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\readiness-window-result.json",
+        "bytes": 1548,
+        "sha256": "08181af05f7520d1edd70dc8c67d0db060e393e5146ed6b4d5a80ec521b6c716"
+      },
+      "archive_relative_path": "case/readiness-window-result.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/readiness-window-result.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\r06-before-observer-awaiting.json",
+        "bytes": 5578,
+        "sha256": "de685ab9dbbecefb63ff2677b2ab6764b4a0d59692a2dae250ef6902e207ff1e"
+      },
+      "archive_relative_path": "case/r06-before-observer-awaiting.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/r06-before-observer-awaiting.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\r06-before-observer-started.json",
+        "bytes": 444,
+        "sha256": "52aa820faf4d00f147630860bb9c225aca2417c314a300900f64b9f5f5920d01"
+      },
+      "archive_relative_path": "case/r06-before-observer-started.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/r06-before-observer-started.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\before-action-camera-awaiting.json",
+        "bytes": 1016,
+        "sha256": "0134f1314d682b1029d921be009cbfe5d9372d4bd871450b0c5eb38b70878fef"
+      },
+      "archive_relative_path": "case/before-action-camera-awaiting.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/before-action-camera-awaiting.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0008-sampling-regular_core.actual-results.json",
+        "bytes": 52376,
+        "sha256": "dc302f4a8b89fdd82b478be85d6d7930c2bd772bc1c24295290528d614972e05"
+      },
+      "archive_relative_path": "case/R06A05-r05obs-0008-sampling-regular_core.actual-results.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06A05-r05obs-0008-sampling-regular_core.actual-results.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0018-sampling-all.actual-results.json",
+        "bytes": 55722,
+        "sha256": "35a4ad47bc9976f9eacb73b76ca7896cad6dabac56903d642c92d12c63227556"
+      },
+      "archive_relative_path": "case/R06A05-r05obs-0018-sampling-all.actual-results.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06A05-r05obs-0018-sampling-all.actual-results.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0020-Save-once.actual-results.json",
+        "bytes": 55159,
+        "sha256": "dfc0e0e8e230e7f496b417a8002664a031ffaf63cafaa5b192436d6f5ac7b57b"
+      },
+      "archive_relative_path": "case/R06A05-r05obs-0020-Save-once.actual-results.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06A05-r05obs-0020-Save-once.actual-results.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0021-Save-independent-after.actual-results.json",
+        "bytes": 102807,
+        "sha256": "169cb5e6a92525a68dc2a4be1055b666dc684d1b8500d097dbc0f630efeb7ef5"
+      },
+      "archive_relative_path": "case/R06A05-r05obs-0021-Save-independent-after.actual-results.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06A05-r05obs-0021-Save-independent-after.actual-results.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0004-r06-q-gate-full-full-wire-proof.json",
+        "bytes": 1751,
+        "sha256": "9c1bd442e0649a5cd6761591efa1738bdbfb40ac92f81df95f1b6bccd6183962"
+      },
+      "archive_relative_path": "case/R06A05-r05obs-0004-r06-q-gate-full-full-wire-proof.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06A05-r05obs-0004-r06-q-gate-full-full-wire-proof.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0012-r06-before-full-full-wire-proof.json",
+        "bytes": 1752,
+        "sha256": "ecf021852cd33e39708bd68bb9377278b2a250946b208e597a34d9f07cf9cb16"
+      },
+      "archive_relative_path": "case/R06A05-r05obs-0012-r06-before-full-full-wire-proof.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/case/R06A05-r05obs-0012-r06-before-full-full-wire-proof.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\allocated-context.json",
+        "bytes": 5359,
+        "sha256": "72cb40e49bd4fe0ae18b8e60f24f6544c3e71be036b7d0b3f867eb6c17fc3cb5"
+      },
+      "archive_relative_path": "allocation/allocated-context.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/allocated-context.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\frozen-argv.json",
+        "bytes": 33778,
+        "sha256": "66dd9c84a711f173ae5978832172ba491b044ca8cc0c94cb817b944300188077"
+      },
+      "archive_relative_path": "allocation/frozen-argv.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/frozen-argv.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\ready-context.json",
+        "bytes": 5621,
+        "sha256": "f5eef7ee49386943b46b256fa07991e25d4d16004e042bd6a3168c60076aeaca"
+      },
+      "archive_relative_path": "allocation/ready-context.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/ready-context.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\host-started.json",
+        "bytes": 3764,
+        "sha256": "b2fa3280e8c2fd1228285df864529040863640007f78f17fb331a2f53ad76aa3"
+      },
+      "archive_relative_path": "allocation/host-started.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/host-started.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\host-supervisor-started.json",
+        "bytes": 956,
+        "sha256": "791cbfb3ae73b941776055a22ba95f2d21d74b8435455b7bab1cdcfec60b4744"
+      },
+      "archive_relative_path": "allocation/host-supervisor-started.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/host-supervisor-started.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\host-original-process-exit.json",
+        "bytes": 245,
+        "sha256": "406dfede69c1db6d59200584968b34098db861b6c2b7b893fce406852215a2bb"
+      },
+      "archive_relative_path": "allocation/host-original-process-exit.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/host-original-process-exit.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\keeper-actual-parent-exit.json",
+        "bytes": 598,
+        "sha256": "4799cd6e08547b4af765348ecb590fd3d0eef4625c0e3b957698e48c2bce3713"
+      },
+      "archive_relative_path": "allocation/keeper-actual-parent-exit.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/keeper-actual-parent-exit.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\keeper-process.json",
+        "bytes": 716,
+        "sha256": "b0bb3be325fe5c4543701c52dbf94fbcf2b97c1583cdfe1c5ce36cd6724c0b22"
+      },
+      "archive_relative_path": "allocation/keeper-process.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/allocation/keeper-process.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\prepared-a01\\prepared-case.json",
+        "bytes": 11432,
+        "sha256": "b207794a31860592b6414500523529d2e49e3709112782bee96df93536a5529f"
+      },
+      "archive_relative_path": "prepared/prepared-case.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/prepared/prepared-case.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\take-metadata-a01\\take01-input.actual.json",
+        "bytes": 3452,
+        "sha256": "82903fdf81be7572f450dec2e6e247e06537d5aa084a0fbea4f51452efffc1d6"
+      },
+      "archive_relative_path": "camera/take01-input.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/camera/take01-input.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\keeper-a01\\report.json",
+        "bytes": 435,
+        "sha256": "dac85028d0bf375c1408832a43e3ae4399455227bf9f3612e942aa026223df00"
+      },
+      "archive_relative_path": "keeper/report.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/keeper/report.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\keeper-a01\\STOP",
+        "bytes": 114,
+        "sha256": "840c95e8dbf75b2acff21c34fb52603670dfa38a596f23ef8934c80c3fc2d3e8"
+      },
+      "archive_relative_path": "keeper/STOP",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/keeper/STOP",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\prepare-exec-a05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1946,
+        "sha256": "87975b45541f0ecb7e585007ba2038629c8a7719cddf2fa56e20c9e6fede2fc2"
+      },
+      "archive_relative_path": "public/prepare-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/prepare-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\plan-exec-a05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1813,
+        "sha256": "fff70fa11a432acf82b7b6a99c1a095d05cd14846c9c70a8e9098142b0b9be5a"
+      },
+      "archive_relative_path": "public/plan-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/plan-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\allocate-exec-a05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1548,
+        "sha256": "48448aae64744921989abcf4bf882aaeefe3617bbfed2ee80e0a0e41965666d5"
+      },
+      "archive_relative_path": "public/allocate-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/allocate-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\preflight-exec-a05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1207,
+        "sha256": "58a94223bdaeebeba65f42372d8a07315df01195a44e42d26c6603ca5389892a"
+      },
+      "archive_relative_path": "public/preflight-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/preflight-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1194,
+        "sha256": "01c29d2e32b974d425404f53b83a0a92aac444033ba7cbba578ae09b8adfa56e"
+      },
+      "archive_relative_path": "public/run-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/run-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0220-prepare-frame-exec-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 887,
+        "sha256": "02cf1542673373efd9d2d9c8e156eead80af3d09797bc5a7367ddfe77533a55a"
+      },
+      "archive_relative_path": "public/prepare-frame-a01-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/prepare-frame-a01-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0220-prepare-frame-exec-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 886,
+        "sha256": "5848080d37316264bda86dacb2706bbf24aedc70cdda326733dbba8066d5d07c"
+      },
+      "archive_relative_path": "public/prepare-frame-a02-ORIGINAL-WAIT.actual.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/public/prepare-frame-a02-ORIGINAL-WAIT.actual.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-quit-menu.png.json",
+        "bytes": 1316,
+        "sha256": "4a7350e457a164dafad63870cd806dcdb221c5623ab5c11fdc4d3dfd3a5b4ead"
+      },
+      "archive_relative_path": "gui-sidecars/after-quit-menu.png.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/gui-sidecars/after-quit-menu.png.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-quit-menu-a02.png.json",
+        "bytes": 1323,
+        "sha256": "685ef0c3fe9f52ebf7fa08f868b504d4371f5c759972eb17b40889282fe03688"
+      },
+      "archive_relative_path": "gui-sidecars/after-quit-menu-a02.png.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/gui-sidecars/after-quit-menu-a02.png.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-final-quit.png.json",
+        "bytes": 1521,
+        "sha256": "a5dd83d66bd92f00f53cee9d64b1d37c338e51a100cda0dfce843b022d06ee3d"
+      },
+      "archive_relative_path": "gui-sidecars/after-final-quit.png.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/gui-sidecars/after-final-quit.png.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\cursor-clear-a01\\after-move.png.json",
+        "bytes": 1884,
+        "sha256": "319a3363852c3d24eaaaa95966b8e8a94e00d9677ca92ec9970c8a237e9f2ad0"
+      },
+      "archive_relative_path": "gui-sidecars/cursor-clear-a01.png.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/gui-sidecars/cursor-clear-a01.png.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\cursor-clear-a02\\after-move.png.json",
+        "bytes": 1888,
+        "sha256": "8a79ed7789932fd203b556881d875fb3ba3a90c2aefbd0f4b7e2d85535afec72"
+      },
+      "archive_relative_path": "gui-sidecars/cursor-clear-a02.png.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/gui-sidecars/cursor-clear-a02.png.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-SCENE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 15785,
+        "sha256": "4a53b0e554a2760581ad34848ba35d180533cf53a949a07b514a313169ebf225"
+      },
+      "archive_relative_path": "capacity/R0220-SCENE-SOURCE-BOUND.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-SCENE-SOURCE-BOUND.actual-a01.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\runtime.local.json",
+        "bytes": 2591,
+        "sha256": "822eed763873d96b5de5e03c65c85524572f5f65f4e9308fe0c48701e5e3d676"
+      },
+      "archive_relative_path": "runtime/runtime.local.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/runtime/runtime.local.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\manifest.json",
+        "bytes": 4271,
+        "sha256": "833a25413962705b05afd8911f5ee0f0822c3b8986a25d5b8100301192645c75"
+      },
+      "archive_relative_path": "runtime/manifest.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/runtime/manifest.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\native-source-index.json",
+        "bytes": 15471,
+        "sha256": "8fc7168c1c70375202c6b877a426e5fb802d1110ee1cb5f6071ddb6fe515acc6"
+      },
+      "archive_relative_path": "runtime/native-source-index.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/runtime/native-source-index.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\source-index.json",
+        "bytes": 17906,
+        "sha256": "c85fa2dfaa7fb7e2ded5076246e215569f8eab28033841f1deaf86249ebef82f"
+      },
+      "archive_relative_path": "runtime/source-index.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/runtime/source-index.json",
+      "role": "unchanged original small receipt",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-NORMAL-CLOSED-SOURCE-EXPIRED-SETTLEMENT.actual-a01.json",
+        "bytes": 13503,
+        "sha256": "07861cf82999b66c16f2a3c1fbcd641c3308f1dc45a398b52834af6be688523d"
+      },
+      "archive_relative_path": "capacity/R0220-NORMAL-CLOSED-SOURCE-EXPIRED-SETTLEMENT.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-NORMAL-CLOSED-SOURCE-EXPIRED-SETTLEMENT.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: typed actual normal close, no camera, nested error/no day and actual usage/future0",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-ACTUAL-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+        "bytes": 2980,
+        "sha256": "418a1a558ab055027942a23f4a7b63747827908a82795c4ccd24f430fe5f42ba"
+      },
+      "archive_relative_path": "capacity/R0220-ACTUAL-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-ACTUAL-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: short CAS scene future0 credit0 transaction",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1389,
+        "sha256": "ec8bd7ed7d0cbb6dee3b19bbb1eddd99832b56e602029b410eee7f653d7c1394"
+      },
+      "archive_relative_path": "capacity/R0220-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: combined guard original session92787 exit0",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\NEW-1230Z-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1087,
+        "sha256": "c4b2debea0b3da048e6c4d3b4c01afc38c340c2afdac4846f2ffa45fe2344125"
+      },
+      "archive_relative_path": "capacity/NEW-1230Z-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/NEW-1230Z-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: volume guard original session38945 exit0",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-PRECONVERSION-COMPONENT-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1068,
+        "sha256": "c4ebc511916652e7c801660a78eca1b5b5f9652ad34ac5a062dcb8900b8122a4"
+      },
+      "archive_relative_path": "capacity/R0220-PRECONVERSION-COMPONENT-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-PRECONVERSION-COMPONENT-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: old fullfuture component monitor original exit0 before accounting conversion",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-ACTUAL-UNSPENT-FIRST-CONVERSION.actual-a01.json",
+        "bytes": 14789,
+        "sha256": "3ca2391f275263c1459a01e067ba2b4cf5f2b9e19ee3e575f74ce1f8a37d5f28"
+      },
+      "archive_relative_path": "capacity/R0220-ACTUAL-UNSPENT-FIRST-CONVERSION.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-ACTUAL-UNSPENT-FIRST-CONVERSION.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: paired complete observations and actual-plus-unspent first transaction",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\ROOT-R0220-CONSUMED-CONVERSION-APPROVAL.actual-a01.json",
+        "bytes": 1436,
+        "sha256": "ccfd21c812a1965e0a9df8cf25dca531a20b43cde43a9835914226f630a0a7ee"
+      },
+      "archive_relative_path": "capacity/ROOT-R0220-CONSUMED-CONVERSION-APPROVAL.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/ROOT-R0220-CONSUMED-CONVERSION-APPROVAL.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: Root actual accounting conversion authority",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\monitor_r0220_actual_unspent.py",
+        "bytes": 8393,
+        "sha256": "e5138163a20da2d190ba014aaac7b3f5a65e52a98189b00d8c996f24703d8def"
+      },
+      "archive_relative_path": "capacity/monitor_r0220_actual_unspent.py",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/monitor_r0220_actual_unspent.py",
+      "role": "unchanged supplied old R0220 capacity record/source: exact dynamic accounting guard source",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\scene_a04_consumed_measure.py",
+        "bytes": 6868,
+        "sha256": "12f93601ff5703cc52878a139ca14c08c6009f6d732c00a42f91990bc2727678"
+      },
+      "archive_relative_path": "capacity/scene_a04_consumed_measure.py",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/scene_a04_consumed_measure.py",
+      "role": "unchanged supplied old R0220 capacity record/source: exact metadata-only four-component scanner source",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\settle_r0220_actual_closed.py",
+        "bytes": 7056,
+        "sha256": "280d032983133ca94234fed71aeacf90f17332c66091b582cbfbf55564f1be05"
+      },
+      "archive_relative_path": "capacity/settle_r0220_actual_closed.py",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/settle_r0220_actual_closed.py",
+      "role": "unchanged supplied old R0220 capacity record/source: exact actual typed closure settlement source",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\packet_common.py",
+        "bytes": 349,
+        "sha256": "27a0cd7cd27da240749c95423bb289caec67655e866487dcb8fbaa1005759709"
+      },
+      "archive_relative_path": "capacity/packet_common.py",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/packet_common.py",
+      "role": "unchanged supplied old R0220 capacity record/source: original12:30 packet helper; historical deadline unchanged",
+      "raw_declared_machine_id": "unknown"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0220-ORIGINAL-WAIT-TIME-CLARIFICATION.actual-a01.json",
+        "bytes": 769,
+        "sha256": "a7d33c9062801633a44f395fc9a03ef26fefaeeb1ccae7f7ce0f0c6c504d36be"
+      },
+      "archive_relative_path": "capacity/R0220-ORIGINAL-WAIT-TIME-CLARIFICATION.actual-a01.json",
+      "proposed_repo_target": "docs/ck3-native-ai/evidence/episode04-r0220-withheld-camera-20261020/capacity/R0220-ORIGINAL-WAIT-TIME-CLARIFICATION.actual-a01.json",
+      "role": "unchanged supplied old R0220 capacity record/source: bounded correction of original free-text typo, retaining original timestamp/bytes",
+      "raw_declared_machine_id": "desktop-3fevhd2-1c74096080"
+    }
+  ],
+  "derived_rows": [
+    {
+      "archive_relative_path": ".gitattributes",
+      "bytes": 80,
+      "sha256": "5bf250ccc91d73349db9619e7f6b559d74c13e75139d75f3214ebaf421c60035",
+      "role": "derived integration/analysis metadata"
+    },
+    {
+      "archive_relative_path": "README.md",
+      "bytes": 1832,
+      "sha256": "1c4c3905a5d425b099f361d93bc3287da1ed78c2a79c5250dfad4ce8d8755652",
+      "role": "derived integration/analysis metadata"
+    },
+    {
+      "archive_relative_path": "derived/CLI-FAILURES-AND-SOURCE.derived.json",
+      "bytes": 5702,
+      "sha256": "d7a164c6f02e973bb3e9344800ae6de31635d6881cb4b9294159396d965b5fdb",
+      "role": "derived integration/analysis metadata"
+    },
+    {
+      "archive_relative_path": "derived/EXTERNAL-REFERENCES.derived.json",
+      "bytes": 12622,
+      "sha256": "8b97c5f69f49e589cee7d4c46e6a426cbfc957401935d878496c7e92bdedb4b9",
+      "role": "derived integration/analysis metadata"
+    },
+    {
+      "archive_relative_path": "derived/MACHINE-BINDING.derived.json",
+      "bytes": 2141,
+      "sha256": "a0bf9abef2c7cc6b74484c81277848a6eab63d8e6c95ff274d196cb238e53c09",
+      "role": "derived integration/analysis metadata"
+    },
+    {
+      "archive_relative_path": "derived/R0220-OUTCOME.derived.json",
+      "bytes": 2783,
+      "sha256": "44cd5dd31d105db98c247d5c732b8b2b9495f4855f56124a70cb269244a8d607",
+      "role": "derived integration/analysis metadata"
+    },
+    {
+      "archive_relative_path": "derived/SAVE-BOUNDARY.derived.json",
+      "bytes": 3261,
+      "sha256": "a10fc97e3f8f08f894fff0d98bdcbc2654ba2880245726753f8fc912bf84f94a",
+      "role": "derived integration/analysis metadata"
+    }
+  ],
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "integration_base": "84380d331cefeaef4089f5f3b693a1da765f532b",
+  "Root_withheld_original_sha256": "445ea7c45ed4521d02e2cbd3c7f907141e77f03b760674c4fecd38db455c5ad8",
+  "capacity_selection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0220-evidence-a01\\CAPACITY-SELECTED.prepared.json",
+    "bytes": 8240,
+    "sha256": "5af1e688dee0ecab056fe419162254c0eb12588c098758d9b70cbb5ac2922bbd"
+  },
+  "public_run_original_wait": 0,
+  "nested_R06_error": "Canonical R06 camera Start absent",
+  "actual_days": 0,
+  "ADD_observed": false,
+  "normal_close_is_separate": true,
+  "one_life_binding_granted": false,
+  "missing_raw_machine_id_preserved": "unknown with separate append-only machine attribution",
+  "large_payload_copy_or_rehash": false,
+  "new_SDK_game_screen_build_test_actions": 0
+}

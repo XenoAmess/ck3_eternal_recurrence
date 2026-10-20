@@ -1,0 +1,124 @@
+{
+  "schema": "xar.e04.independent_supply_journal_clarification.source_index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:53:43.257213+00:00",
+  "role": "derived independently read source index; prepared, no repository application",
+  "integration_head": "84380d331cefeaef4089f5f3b693a1da765f532b",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "sources": [
+    {
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1611813,
+      "sha256": "41a3e271793e59cb87469324f0ef04611cc0277bedcc06d6fe1043c10fb83953",
+      "git_blob": "b9a5350f2ec7c18907758487832e0562e0fe7b7e",
+      "evidence_slices": [
+        {
+          "first": 30408,
+          "last": 30414,
+          "text": "30408:     xar::ck3_12004::ActualSupplyCallbackJournalInstallEnvironmentV1 supply_environment{};\n30409:     supply_environment.bindings =\n30410:         xar::ck3_12004::BindActualSupplyCallbackJournalImage12004(base, sha);\n30411:     supply_environment.primary_thread_suspended_proven = true;\n30412:     if (!xar::ck3_12004::InstallActualSupplyCallbackJournal12004(\n30413:             g_actual_supply_callback_journal_12004_v1, supply_environment, sha))\n30414:       return FALSE;"
+        }
+      ]
+    },
+    {
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_supply_callback_journal.cpp",
+      "bytes": 19095,
+      "sha256": "2d4ab90977b6d9f920f81563ea8d082d7b53ec01757c2e0e2a18b1a3498c8093",
+      "git_blob": "46e5bd8fd016589d1285a12ac1256e07d25985df",
+      "evidence_slices": [
+        {
+          "first": 244,
+          "last": 274,
+          "text": "244: bool InstallActualSupplyCallbackJournal12004(\n245:     ActualSupplyCallbackJournalDetourStateV1 &state,\n246:     const ActualSupplyCallbackJournalInstallEnvironmentV1 &environment,\n247:     std::string_view executable_sha256) noexcept {\n248:   state.failure_flags.store(actual_supply_callback_install_none, std::memory_order_relaxed);\n249:   if (executable_sha256 != kExecutableSha256 || !environment.bindings.enabled ||\n250:       environment.bindings.image_base == 0) {\n251:     Fail(state, actual_supply_callback_install_exact_build);\n252:     return false;\n253:   }\n254:   if (!environment.primary_thread_suspended_proven) {\n255:     Fail(state, actual_supply_callback_install_quiescence);\n256:     return false;\n257:   }\n258:   if (state.installed.load(std::memory_order_acquire) != 0) return true;\n259:   ActualSupplyCallbackJournalDetourStateV1 *expected = nullptr;\n260:   if (!g_active_state.compare_exchange_strong(expected, &state,\n261:                                                std::memory_order_acq_rel)) {\n262:     Fail(state, actual_supply_callback_install_already_installed);\n263:     return false;\n264:   }\n265:   state.callback_target = environment.callback_target_override != 0\n266:       ? environment.callback_target_override\n267:       : environment.bindings.image_base + kActualSupplyCallbackRva12004;\n268:   state.memory_context = environment.memory_context;\n269:   state.virtual_free = environment.virtual_free_override != nullptr\n270:       ? environment.virtual_free_override : &DefaultFree;\n271:   state.virtual_protect = environment.virtual_protect_override != nullptr\n272:       ? environment.virtual_protect_override : &DefaultProtect;\n273:   state.flush_instruction_cache = environment.flush_instruction_cache_override != nullptr\n274:       ? environment.flush_instruction_cache_override : &DefaultFlush;"
+        },
+        {
+          "first": 341,
+          "last": 360,
+          "text": "341: std::optional<game::ArmyActualSupplyCallbackObservationsV1>\n342: ReadActualSupplyCallbackObservations12004(\n343:     std::int32_t army_id, std::int32_t native_carmy_id) noexcept {\n344:   if (!g_available.load(std::memory_order_acquire)) return std::nullopt;\n345:   try {\n346:     game::ArmyActualSupplyCallbackObservationsV1 result{};\n347:     const auto *active = g_active_state.load(std::memory_order_acquire);\n348:     result.observer_installed = active != nullptr &&\n349:         active->installed.load(std::memory_order_acquire) != 0;\n350:     const std::lock_guard lock(g_journal_mutex);\n351:     result.latest_sequence = g_latest_sequence;\n352:     result.oldest_available_sequence = g_latest_sequence == 0 ? 0\n353:         : g_latest_sequence <= g_slots.size() ? 1\n354:         : g_latest_sequence - g_slots.size() + 1;\n355:     result.overwritten_events = g_latest_sequence > g_slots.size()\n356:         ? g_latest_sequence - g_slots.size() : 0;\n357:     result.unattributed_capture_failures = g_unattributed_failures;\n358:     for (auto sequence = result.oldest_available_sequence;\n359:          sequence != 0 && sequence <= g_latest_sequence; ++sequence) {\n360:       const auto &slot = g_slots[(sequence - 1) % g_slots.size()];"
+        }
+      ]
+    },
+    {
+      "repository_relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "bytes": 13969,
+      "sha256": "927fdbb94ae5c07a14f4039595c865af3b28eac0ecdb0fb629ead9b38016b5ae",
+      "git_blob": "87caaa74ffea40094c35718d8ad0a3e52364ad6b",
+      "evidence_slices": [
+        {
+          "first": 10,
+          "last": 13,
+          "text": "10: FAMILIES = (\n11:     \"natural_phase\", \"regular_core\", \"daily_assault_preparation\", \"assault_placement\",\n12:     \"assault_consumer\", \"assault_group_release\", \"gathering\", \"cleanup\", \"pre_date_prefix\",\n13: )"
+        }
+      ]
+    },
+    {
+      "repository_relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_callback_observations_contract.py",
+      "bytes": 5637,
+      "sha256": "ce5d436e91683852af266188bfd0404b62458ade5ee6b886a2bacde17db01a0c",
+      "git_blob": "12c6350ea2731ab946f597413125f34f704ac1fc",
+      "evidence_slices": [
+        {
+          "first": 65,
+          "last": 85,
+          "text": "65: def normalize_actual_supply_callback_observations_v1(\n66:     value: object, *, current_army_id: int, current_native_carmy_id: int,\n67: ) -> dict[str, object] | None:\n68:     \"\"\"Preserve measured zero and partial reads; legacy absent leaf stays absent.\"\"\"\n69:     if value is None:\n70:         return None\n71:     family = _object(value, _FAMILY_KEYS, \"actual_supply_callback_observations_v1\")\n72:     if (family[\"status\"] != \"available\"\n73:             or family[\"source\"] != \"native_natural_supply_callback_entry_return\"\n74:             or family[\"identity_basis\"] != \"public_unit_and_native_carmy_full_ids_at_invocation\"):\n75:         raise ValueError(\"native actual supply callback provenance is malformed\")\n76:     result: dict[str, object] = {\n77:         \"status\": family[\"status\"], \"source\": family[\"source\"],\n78:         \"identity_basis\": family[\"identity_basis\"],\n79:         \"observer_installed\": _boolean(family[\"observer_installed\"], \"observer_installed\"),\n80:     }\n81:     for key in (\"oldest_available_sequence\", \"latest_sequence\", \"overwritten_events\",\n82:                 \"unattributed_capture_failures\", \"event_count\"):\n83:         result[key] = _integer(family[key], key, bits=64, unsigned=True)\n84:     events = family[\"events\"]\n85:     if not isinstance(events, list) or len(events) != result[\"event_count\"]:"
+        },
+        {
+          "first": 93,
+          "last": 109,
+          "text": "93:             \"sequence\": _integer(event[\"sequence\"], name + \".sequence\", bits=64, unsigned=True),\n94:             \"army_id\": _integer(event[\"army_id\"], name + \".army_id\"),\n95:             \"native_carmy_id\": _integer(event[\"native_carmy_id\"], name + \".native_carmy_id\"),\n96:             \"passed_date_raw64\": _integer(event[\"passed_date_raw64\"],\n97:                 name + \".passed_date_raw64\", bits=64, unsigned=True, optional=True),\n98:             \"caller_return_rva\": _integer(event[\"caller_return_rva\"],\n99:                 name + \".caller_return_rva\", bits=64, unsigned=True, optional=True),\n100:             \"before\": _values(event[\"before\"], name + \".before\"),\n101:             \"after\": _values(event[\"after\"], name + \".after\"),\n102:             \"same_instance_after\": _boolean(event[\"same_instance_after\"],\n103:                 name + \".same_instance_after\"),\n104:             \"capture_failure_flags\": _integer(event[\"capture_failure_flags\"],\n105:                 name + \".capture_failure_flags\", unsigned=True),\n106:         }\n107:         if (row[\"army_id\"] != current_army_id\n108:                 or row[\"native_carmy_id\"] != current_native_carmy_id):\n109:             raise ValueError(f\"native {name} does not match both current full Army identities\")"
+        }
+      ]
+    }
+  ],
+  "target_document": {
+    "repository_relative_path": "docs/ck3-native-ai/episode04-r10-stock-growth-opportunity-12004.md",
+    "base_git_blob": "acc582c9a60faa0e986fefdad81f33662825f60c",
+    "base_bytes": 4870,
+    "base_sha256": "1152ec6f8e2bc4a96cd9982d980262d4057853e1c61680f7bfda742db1a1390d"
+  },
+  "original_candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-passive-adapter-a01\\journal-source-clarification.diff",
+    "bytes": 2063,
+    "sha256": "aab97815dd48123fecda26a7d8fa82f39493bf17fe080ee7bfc421d916f53cd6"
+  },
+  "corrected_candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-journal-intake-a01\\package\\journal-source-clarification.diff",
+    "bytes": 2116,
+    "sha256": "1319a8c19bd50c9d8982d52674fddc837396a4a2c637e749ed015cdff43ee664"
+  },
+  "correction": "The nine-family total includes regular_core; clarify its regular_core-only state separately from the independent supply journal.",
+  "conclusions": [
+    "Exact bridge startup separately installs actual supply callback journal; successful installation is still not proof of this session capture.",
+    "Nine-family sampling controls do not enumerate the supply callback journal; regular_core-only or all-nine OFF does not by itself prove journal OFF.",
+    "Actual observer_installed, full event Province/date/identity, sequence and failure leaves decide capture; missing or partial is unknown.",
+    "R0219 has no retained R06 pair or day claim; no stock-growth or site credit."
+  ],
+  "actual_no_pair_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-passive-adapter-a01\\ACTUAL-R0219-NO-PAIR.actual.json",
+    "bytes": 7261,
+    "sha256": "2b05071ee7bb96175c1c9d0cb4780671a1e686500ae03a6fbf9ce6295ba17fc7"
+  },
+  "independent_metadata_no_pair_readback": {
+    "case_output": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output",
+    "file_count": 52,
+    "pattern_results": {
+      "*r06-before*": [],
+      "*r06-after*": [],
+      "*once-claim*": [],
+      "*R06-WORKER-RESULT*": [],
+      "*R06-REFILL-TERMINAL*": []
+    },
+    "case_error": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\case-error-preserved.json",
+      "bytes": 200,
+      "sha256": "46dd91fa392dd6b8c075be84c0ade31e2219711cf09cf3ae236d80798565ba98"
+    }
+  },
+  "no_large_R10_strength_body_read": true,
+  "pure_adapter_or_synthetic_tests_not_integrated": true,
+  "B_qualified_sites": "0/2",
+  "ABC": "0/3",
+  "new_SDK_query_day_game_screen_build_actions": 0,
+  "old_OFF_records_and_old_document_text_retained": true,
+  "git_apply_cached_check_exit": 0
+}

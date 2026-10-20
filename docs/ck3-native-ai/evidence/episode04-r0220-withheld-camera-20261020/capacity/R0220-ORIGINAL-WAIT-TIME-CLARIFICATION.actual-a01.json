@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:31:28.553515+00:00",
+  "original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1389,
+    "sha256": "ec8bd7ed7d0cbb6dee3b19bbb1eddd99832b56e602029b410eee7f653d7c1394"
+  },
+  "field": "actual_tool_observation",
+  "clarification": "The free-text literal10:23:41 in the original is a typo immediately corrected in that same field to actual11:23:41.915041Z. Original actual_exit_at_utc is11:23:41.915041Z and original write_stdin returned exit_code0. No evidence timestamp or original file changed.",
+  "actual_original_wait_returncode": 0,
+  "original_evidence_modified": false
+}

@@ -1,0 +1,128 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "bridge_pid": 18956,
+  "process_creation_filetime": 134369668983922884,
+  "date_raw": 53149056,
+  "observed_at_utc": "2026-10-20T10:54:33.397989+00:00",
+  "signal_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\r06-before-observer-started.json",
+  "producer": {
+    "qualification": {
+      "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+      "bytes": 26157,
+      "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+    },
+    "build_result": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\native-msvc-result.json",
+      "bytes": 1661,
+      "sha256": "6212c4dcf1b5f8f51aa8309060ab69395112bdea8dad6a38a7fc2e056b13d9c8"
+    },
+    "SYSTEM_receipt": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\receipt.json",
+      "bytes": 270898,
+      "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+    },
+    "cold_result": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-evidence-a01\\FOCUSED-WORKER-COLD.actual.json",
+      "bytes": 12026,
+      "sha256": "ae0c1adf969e4a271edc52e1376d1eeb5d9252098fcd83bfa32247edf584f80d"
+    },
+    "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "observer_exe": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+    "observer_exe_sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5",
+    "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "carrier_module_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "carrier_source_epoch": 20261018,
+    "cmake_defines": {
+      "XAR_ENABLE_REFILL_ADD_HWPROBE_12004": "ON",
+      "XAR_ENABLE_REFILL_STACK_Q_COLD_12004": "OFF",
+      "XAR_ENABLE_REFILL_V3_COLD_PROBE_12004": "OFF",
+      "XAR_ENABLE_REFILL_CARRIER_THREAD_DISCOVERY_12004": "ON",
+      "XAR_ENABLE_REFILL_V5_COLD_PROBE_12004": "OFF"
+    }
+  },
+  "conditional_positive_target": {
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "arrg_full_id_i32": 82,
+    "army_full_id_i32": 0,
+    "q_index": 1,
+    "conditional_shared_q_i32": 1,
+    "native_unit_position_eligible": true
+  },
+  "q_gate_full_parent_proof": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\native-report.native-wire.jsonl",
+    "file_identity": [
+      13886423844274364792,
+      1407374884073542
+    ],
+    "begin": 19693712,
+    "end": 31668697,
+    "bytes": 11974985,
+    "sha256": "fda0d9cdad2866ad5870a9ae608a22f6abfefbb3690b6c61ec71b268fa8ef592",
+    "native_request_id": "step-7-cdcf400b2703",
+    "query_sequence": 2,
+    "request_line": {
+      "begin": 19756681,
+      "end": 19756982,
+      "sha256": "2a4ec889062312c756ea1c057d997f08fbb1a7ec7a66aff88c4c3ca4dfa80d99"
+    },
+    "response_line": {
+      "begin": 19762706,
+      "end": 31554211,
+      "sha256": "309f8dd9855634d0505e30f161679d8bbbfc770df14eacfc3db01cc69592f228"
+    },
+    "source": "existing shared host native-wire original range",
+    "complete_Driver_packet": false,
+    "query_reissued": false,
+    "public_step_id": "R06A05-r05obs-0004-r06-q-gate-full",
+    "public_control_name": "R06A05-r05obs-0004-r06-q-gate-full",
+    "public_original": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0004-r06-q-gate-full.actual-results.json",
+    "representation": "derived production-normalized native wire result plus actual paired host frames; not complete Driver packet",
+    "normalized_source_binding": {
+      "before": {
+        "revision": 3,
+        "native_revision": 2,
+        "snapshot_id": "native:2",
+        "date_raw": 53149056,
+        "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+      },
+      "after": {
+        "revision": 3,
+        "native_revision": 2,
+        "snapshot_id": "native:2",
+        "date_raw": 53149056,
+        "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+      }
+    }
+  },
+  "next_calendar": {
+    "schema_version": 1,
+    "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+    "stage": "source_derived_conditional_next_date_pair",
+    "status": "available",
+    "ready": true,
+    "unavailable_reason": null,
+    "subject_army_id_u32": 0,
+    "subject_carmy_id_u32": 0,
+    "current_date_storage_raw64": 300336128075693440,
+    "current_date_raw_i32": 53149056,
+    "current_native_day_index_raw_i32": 389544,
+    "source_derived_next_date_raw_i32": 53149080,
+    "source_derived_next_native_day_index_raw_i32": 389545,
+    "source_derived_next_date_storage_raw64": 300337098738302360,
+    "source_derived_next_calendar_day_u8": 0,
+    "source_derived_next_calendar_month_u8": 3,
+    "source_derived_full_cdate64_ready": true,
+    "actual_future_date_stage_observed": false,
+    "actual_future_callback_observed": false,
+    "future_bucket_mutations_reconstructed": false,
+    "future_stock_or_strength_ready": false,
+    "full_daily_supply_transition_ready": false,
+    "full_monthly_ready": false
+  },
+  "maximum_actual_days": 1,
+  "observer_started": false,
+  "maximum_wait_seconds": 600
+}

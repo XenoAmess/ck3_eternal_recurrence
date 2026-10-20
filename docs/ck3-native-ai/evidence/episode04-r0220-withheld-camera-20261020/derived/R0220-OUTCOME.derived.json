@@ -1,0 +1,65 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "observed_at_utc": "2026-10-20T11:28:01.194869+00:00",
+  "role": "derived bounded outcome summary; original records remain separate",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "public_run_original_wait": 0,
+  "public_entry_status": "REVIEWED_LAUNCHER_RETURNED",
+  "nested_R06_status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+  "nested_R06_error": {
+    "type": "ValueError",
+    "message": "Canonical R06 camera Start absent"
+  },
+  "actual_days": 0,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false,
+  "source_admission_time": "2026-10-20T10:57:32.233563+00:00",
+  "source_admission_TTL_seconds": 300,
+  "expired_at_utc": "2026-10-20T11:02:32.233563+00:00",
+  "Root_withheld_at": "2026-10-20T11:05:01.804496+00:00",
+  "Root_withheld_then_cleanup_pending_not_rewritten": true,
+  "Root_execution_order_mistake": "Root explicitly reported taking too long clearing hover/reviewing frames after census; withheld actual Start when admission expired",
+  "research_sampling_regular_core_ON_accepted": true,
+  "worker_EXE_started": false,
+  "film_started": false,
+  "camera_Start_signal": false,
+  "clock_Arm_Resume_submitted": false,
+  "current_absence_metadata_readback": {
+    "before-action-camera-started.json": true,
+    "r06-worker-launch": true
+  },
+  "OS_thread_observations": {
+    "census_snapshots": 3,
+    "admission_latest": 1,
+    "total": 4,
+    "debugger_observed_generations_claimed": false,
+    "thread_count_is_not_observed_generation": true
+  },
+  "cleanup": {
+    "normal_Save_verified": true,
+    "sampling_OFF_clear_verified": true,
+    "finaldate": 53149056,
+    "native_restore_verified": true,
+    "meaning": "true actor result with no worker launch; no fabricated debugger detach or runtime ADD result"
+  },
+  "normal_close_qualified": true,
+  "retained_OS0": true,
+  "native_exit0": true,
+  "host_original_wait": 0,
+  "keeper_original_wait": 0,
+  "allocator_original_wait": 0,
+  "current_counters": {
+    "formal_dynamic": "1/11 prior accepted R12 only",
+    "research": "10/14",
+    "business": "7/11",
+    "B_stock": "0/2",
+    "ABC": "0/3"
+  },
+  "B_passive_pair": "r06-before exists but no r06-after or one-day claim; no pair/growth credit, no adapter executed",
+  "modal_result_count": 0,
+  "new_modal_analysis_needed": false,
+  "next_order": "Optional UI once, cursor/clear frame and Root direct review before fresh OS3+1 census/admission, then immediate canonical Start. Preserve180/120/300 guards.",
+  "successor": "New independent13:15 finite packet is a separate admission; not extension/reuse of old11:15 launch cutoff or this expired source proof"
+}

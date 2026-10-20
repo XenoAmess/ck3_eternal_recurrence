@@ -1,0 +1,89 @@
+{
+  "action": "move",
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 252315178,
+    "foreground_hwnd": 252315178,
+    "foreground_pid": 18956,
+    "foreground_thread_id": 29928,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 252315178,
+    "foreground_hwnd": 252315178,
+    "foreground_pid": 18956,
+    "foreground_thread_id": 29928,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "mouse_buttons_after": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "mouse_buttons_before": {
+    "left": false,
+    "middle": false,
+    "right": false,
+    "x1": false,
+    "x2": false
+  },
+  "move_completed": true,
+  "observed_point": [
+    80.0,
+    80.0
+  ],
+  "pointer_after": [
+    100,
+    100
+  ],
+  "pointer_before": [
+    1280,
+    764
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    2048,
+    1152
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\cursor-clear-a01\\after-move.png",
+  "receipt_sha256": "2202D2AAFF18E4C83D33EBD89BB0A66CFB9FFA171BE3D214D65E36025744B6F6",
+  "reviewed_bounds": [
+    0.0,
+    0.0,
+    512,
+    288
+  ],
+  "screen_point": [
+    100,
+    100
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\cursor-clear-a01\\after-move.png.json",
+  "source_image": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a02\\desktop-original.png",
+    "sha256": "F5A3A35FFC9BA59180FB0B13375F4D03EE6613027A27FF84E7358FA2F07F56EA"
+  },
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "pointer-move-readback-matched"
+}

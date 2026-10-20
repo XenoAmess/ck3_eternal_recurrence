@@ -1,0 +1,158 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:49:12.844924+00:00",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-passive-adapter-a01\\finalize_candidate.py",
+    "bytes": 7374,
+    "sha256": "e4f10ee474e028dd32089faa605aae461921bc336477cd93f1a94f972ee677a2"
+  },
+  "case_output": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output",
+  "source_refs": {
+    "case_error": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\case-error-preserved.json",
+      "bytes": 200,
+      "sha256": "46dd91fa392dd6b8c075be84c0ade31e2219711cf09cf3ae236d80798565ba98"
+    },
+    "r10_native_snapshot": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-before.actual-results.json",
+      "bytes": 101461,
+      "sha256": "d95ea012b333a47a7d24acd171aab524835eda67ee85ddc24cc4bdcdcef5e33d"
+    },
+    "r10_occupation": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-occupation.actual-results.json",
+      "bytes": 164956,
+      "sha256": "48b6544349f5b069bf12012e8a4823737cc19bec85e915feace5cb31353020f5"
+    },
+    "entry_result": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\entry-run-result.json",
+      "bytes": 18802,
+      "sha256": "dd21f78ba8f12b5b3b38cfc94a46916f0a65d552804b42e9c9c864e857d38521"
+    }
+  },
+  "original_native_episode_field_present": false,
+  "original_native_episode_run_id": null,
+  "native_date_raw": 53149056,
+  "retained_file_count": 60,
+  "R06_retained_pair_and_claim_search": {
+    "*r06-before*": [],
+    "*r06-after*": [],
+    "*once-claim*": [],
+    "*R06-WORKER-RESULT*": [],
+    "*R06-REFILL-TERMINAL*": []
+  },
+  "existing_R10_occupation_result_keys": [
+    "accepted",
+    "backend_id",
+    "date_raw",
+    "queried_connection_generation",
+    "queried_episode_run_id",
+    "queried_native_revision",
+    "queried_revision",
+    "queried_snapshot_id",
+    "query_sequence",
+    "read_only",
+    "snapshot_revision",
+    "status",
+    "step",
+    "war_occupation_targets_v1"
+  ],
+  "R10_occupation_is_a_day0_query_not_a_stock_callback_pair": true,
+  "r10_derived_full_stat_only": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-strengths-derived-normalized-full.json",
+    "bytes": 18892581,
+    "body_read": false,
+    "sha256": null,
+    "reason": "R10-only18.9MB derivative; no R06 pair exists, so no large body read/hash is needed"
+  },
+  "supply_callback_leaf_and_2170_complete_chain_confirmed": false,
+  "reason": "No R06 before/after, worker or one-day claim retained; stock/callback content of the large R10-only body remains uninspected",
+  "derived_adapter_input": {
+    "binding": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+      "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c"
+    },
+    "source_date_raw": 53149056,
+    "observed_at_utc": "2026-10-20T10:49:12.844924+00:00",
+    "source_context_refs": {
+      "case_error": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\case-error-preserved.json",
+        "bytes": 200,
+        "sha256": "46dd91fa392dd6b8c075be84c0ade31e2219711cf09cf3ae236d80798565ba98"
+      },
+      "r10_native_snapshot": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-before.actual-results.json",
+        "bytes": 101461,
+        "sha256": "d95ea012b333a47a7d24acd171aab524835eda67ee85ddc24cc4bdcdcef5e33d"
+      },
+      "r10_occupation": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-occupation.actual-results.json",
+        "bytes": 164956,
+        "sha256": "48b6544349f5b069bf12012e8a4823737cc19bec85e915feace5cb31353020f5"
+      },
+      "entry_result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\entry-run-result.json",
+        "bytes": 18802,
+        "sha256": "dd21f78ba8f12b5b3b38cfc94a46916f0a65d552804b42e9c9c864e857d38521"
+      }
+    },
+    "before": null,
+    "after": null,
+    "day": null
+  },
+  "derived_assessment": {
+    "schema": "xar.e04.B-passive-stock-pair-assessment.v1",
+    "representation": "derived passive semantic assessment; not original native/Driver/normal-day record",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T10:49:12.844924+00:00",
+    "binding": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+      "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c"
+    },
+    "source_context_refs": {
+      "case_error": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\case-error-preserved.json",
+        "bytes": 200,
+        "sha256": "46dd91fa392dd6b8c075be84c0ade31e2219711cf09cf3ae236d80798565ba98"
+      },
+      "r10_native_snapshot": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-before.actual-results.json",
+        "bytes": 101461,
+        "sha256": "d95ea012b333a47a7d24acd171aab524835eda67ee85ddc24cc4bdcdcef5e33d"
+      },
+      "r10_occupation": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-ready-occupation.actual-results.json",
+        "bytes": 164956,
+        "sha256": "48b6544349f5b069bf12012e8a4823737cc19bec85e915feace5cb31353020f5"
+      },
+      "entry_result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\entry-run-result.json",
+        "bytes": 18802,
+        "sha256": "dd21f78ba8f12b5b3b38cfc94a46916f0a65d552804b42e9c9c864e857d38521"
+      }
+    },
+    "source_date_raw": 53149056,
+    "original_refs": {
+      "before": null,
+      "after": null,
+      "day": null
+    },
+    "native_episode_before": null,
+    "native_episode_after": null,
+    "native_episode_fields_observed": false,
+    "stock_callback_chain_passed": false,
+    "status": "NO_CREDIT",
+    "source_pin_integrity_verified_by_this_pure_function": false,
+    "one_life_qualification_granted": false,
+    "normal_day_record_created": false,
+    "B_single_site_qualified": false,
+    "B_qualified_sites": 0,
+    "formal_ABC_completed_arms": 0,
+    "SDK_calls": 0,
+    "new_queries": 0,
+    "new_days": 0,
+    "reason": "retained before/after pair missing"
+  }
+}

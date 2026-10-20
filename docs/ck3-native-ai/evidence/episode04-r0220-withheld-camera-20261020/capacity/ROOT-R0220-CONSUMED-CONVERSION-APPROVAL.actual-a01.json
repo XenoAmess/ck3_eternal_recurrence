@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:57:02.520433+00:00",
+  "authorized_by": "/root",
+  "source": "Direct Root message approving exact proposal eb50699e, no release or reclamation credit",
+  "proposal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-ACTUAL-UNSPENT-CONVERSION-PROPOSAL.prepared-a01.json",
+    "bytes": 13624,
+    "sha256": "eb50699eaa589e2b745e6f08ae0715d1577b1a7295b848d5e40d6861376f83c5"
+  },
+  "method": "Only paired complete conservative actual occupancy lowers unspent. Every component hardcap, whole-volume actual, system4GiB, legacy42132678, shared134217728 remain unchanged. Shrink restores future; unknown/partial restores fullscene and RED. All observations outside short CAS.",
+  "scene_measurement_parent": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\scene_a04_measure.py",
+    "bytes": 6819,
+    "sha256": "d3031c511c5eefe6d20a42db7631a9e1df9807e37ac1bcb5002e163f946a95a4"
+  },
+  "scene_measurement_successor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\scene_a04_consumed_measure.py",
+    "bytes": 6868,
+    "sha256": "12f93601ff5703cc52878a139ca14c08c6009f6d732c00a42f91990bc2727678"
+  },
+  "old_actor_filmcap_prepared_unchanged": true,
+  "quota_deadline_unchanged": true,
+  "physical_or_unused_credit_bytes": 0
+}

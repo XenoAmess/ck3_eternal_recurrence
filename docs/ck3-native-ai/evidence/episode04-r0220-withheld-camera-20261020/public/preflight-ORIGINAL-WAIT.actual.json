@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:47:23.895580+00:00",
+  "started_at_utc": "2026-10-20T10:47:22.849304+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "preflight",
+    "--runtime",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\runtime.local.json",
+    "--products",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+    "--product",
+    "war-episode04-r10",
+    "--case",
+    "r10-common-preparation",
+    "--prepared-case",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\prepared-a01\\prepared-case.json",
+    "--run-context",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\R06-SCOPED-REVIEWED-CONTEXT.actual-a05.json"
+  ],
+  "document": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\runtime-assembly-a05\\PUBLIC-ARGV.actual-a06.json",
+  "bindings_source": null,
+  "phase": "preflight",
+  "pid": 24788,
+  "actual_original_popen_wait": true,
+  "returncode": 0
+}

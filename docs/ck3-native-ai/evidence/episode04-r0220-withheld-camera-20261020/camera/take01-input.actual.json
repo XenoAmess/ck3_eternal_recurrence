@@ -1,0 +1,59 @@
+{
+  "schema": "xar.e04.owned-window-take-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "repo_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04",
+  "run_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\keeper-a01",
+  "screen_task": "e04-common-12004-a225",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+    "bytes": 10577,
+    "sha256": "d7b123a444c8eca3df5aff1be7758c80cc3d49de1aed55992a7a87e5b57db745"
+  },
+  "steam_offline_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\steam-review-a05\\ROOT-DIRECT-REVIEW.actual.json",
+    "bytes": 1572,
+    "sha256": "36cfd23a168f0893d830997992a6f57c76cb5fd321eb2013008eae224b06728f"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "runtime": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a04\\runtime.local.json",
+  "products": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+  "product_key": "war-episode04-r10",
+  "case_key": "r10-common-preparation",
+  "context": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\R06-SCOPED-REVIEWED-CONTEXT.actual-a05.json",
+  "prepared": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\prepared-a01\\prepared-case.json",
+  "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01",
+  "raw_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\raw-a01",
+  "take_id": "take01",
+  "case_output": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output-window-take01",
+  "ui_case_output": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output-window-ui-unused",
+  "query_prefix": "r06-camera-r0220-take01",
+  "ui_query_prefix": "r06-ui-unused-r0220-take01",
+  "army_id": 0,
+  "content_kind": "map-context",
+  "expected_client_size": [
+    1280,
+    720
+  ],
+  "recording_seconds": 36,
+  "hard_terminal_seconds": 96,
+  "minimum_recording_seconds": 30,
+  "raw_budget_bytes": 268435456,
+  "normal_close_reserve_seconds": 900,
+  "cleanup_reserve_seconds": 120,
+  "receipt_label": "E04-R06-R0220-TAKE01",
+  "camera_output_name": "case-output",
+  "camera_awaiting": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\before-action-camera-awaiting.json",
+  "camera_signal": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\before-action-camera-started.json",
+  "observer_result": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06-REFILL-TERMINAL.json",
+  "expected_geometry_is_intent_not_current_observation": true,
+  "metadata_only": true,
+  "recording_started": false,
+  "UI_selection_in_film_forbidden": true
+}

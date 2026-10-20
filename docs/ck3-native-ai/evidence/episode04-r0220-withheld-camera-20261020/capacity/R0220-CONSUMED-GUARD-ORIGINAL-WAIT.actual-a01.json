@@ -1,0 +1,30 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:24:31.109644+00:00",
+  "original_exec_session_id": 92787,
+  "actual_original_wait_returncode": 0,
+  "actual_tool_observation": "write_stdin original92787 exit_code0; guard_exited10:23:41 corrected actual11:23:41.915041Z, exact stopflag true",
+  "actual_exit_at_utc": "2026-10-20T11:23:41.915041Z",
+  "owner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD-OWNED.actual-a01.json",
+    "bytes": 2000,
+    "sha256": "a409949a3b60bc65e9e80fd1feb36a285bb13ace080abdf3581357b7b7018bc0"
+  },
+  "stop_flag": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD.STOP",
+    "bytes": 326,
+    "sha256": "0e7d343bae0f4b60e979768f26df4b97e71110b69fef0ea58133ccca7fe19e99"
+  },
+  "journals": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD.actual-part0001.jsonl",
+      "bytes": 248832,
+      "sha256": "453177d06421c44338235e8a356418d3f0ad5728fd633a50eb05562cde4fa92e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD.actual-part0002.jsonl",
+      "bytes": 30214,
+      "sha256": "a7dd76a1f637015da30fae24bb666f0f55f774b4bd67a72058704fd74c220452"
+    }
+  ]
+}

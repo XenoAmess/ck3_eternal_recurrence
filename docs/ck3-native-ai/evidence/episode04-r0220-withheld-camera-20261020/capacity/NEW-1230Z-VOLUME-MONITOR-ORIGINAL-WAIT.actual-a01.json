@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:24:31.147629+00:00",
+  "original_exec_session_id": 38945,
+  "actual_original_wait_returncode": 0,
+  "actual_exit_at_utc": "2026-10-20T11:23:42.911223Z",
+  "actual_tool_observation": "write_stdin original38945 exit_code0; monitor_exited true/exact stopflag true",
+  "owner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\NEW-1230Z-FINITE-MONITOR-OWNED.actual-a01.json",
+    "bytes": 1372,
+    "sha256": "d964821fddd1f5ab5016d6c89c49df652d32991600b3c4aff259819d38791be4"
+  },
+  "stop_flag": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\NEW-1230Z-FINITE-MONITOR.STOP",
+    "bytes": 326,
+    "sha256": "0d715d84777d6071359b4102810004cd9ba9bfee6622ec9d9689e71c9d43582b"
+  },
+  "journal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\NEW-1230Z-FINITE-MONITOR.actual.jsonl",
+    "bytes": 196145,
+    "sha256": "558d8e8fbcf538bb28eb515f45c5d522f220720c580a19e03cfea402ead1192f"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\native-report.native-wire.jsonl",
+  "file_identity": [
+    13886423844274364792,
+    1407374884073542
+  ],
+  "begin": 36574155,
+  "end": 48549174,
+  "bytes": 11975019,
+  "sha256": "8811bd070cddd1a0d1d817fbdf915b529c5e5f98afe5906fd9c175eebe166a17",
+  "native_request_id": "step-12-801a2e2ec59b",
+  "query_sequence": 3,
+  "request_line": {
+    "begin": 36637132,
+    "end": 36637434,
+    "sha256": "72c24b84d0a10ce9e885849a68aebf88cb44678f668e8358eb850cbc0b797e8d"
+  },
+  "response_line": {
+    "begin": 36637434,
+    "end": 48428940,
+    "sha256": "aa80b523c4bff9a59cbb934c21106abfbaa210b400f2c0c6462fbcfa5b35c945"
+  },
+  "source": "existing shared host native-wire original range",
+  "complete_Driver_packet": false,
+  "query_reissued": false,
+  "public_step_id": "R06A05-r05obs-0012-r06-before-full",
+  "public_control_name": "R06A05-r05obs-0012-r06-before-full",
+  "public_original": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0012-r06-before-full.actual-results.json",
+  "representation": "derived production-normalized native wire result plus actual paired host frames; not complete Driver packet",
+  "normalized_source_binding": {
+    "before": {
+      "revision": 3,
+      "native_revision": 2,
+      "snapshot_id": "native:2",
+      "date_raw": 53149056,
+      "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+    },
+    "after": {
+      "revision": 3,
+      "native_revision": 2,
+      "snapshot_id": "native:2",
+      "date_raw": 53149056,
+      "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+    }
+  }
+}

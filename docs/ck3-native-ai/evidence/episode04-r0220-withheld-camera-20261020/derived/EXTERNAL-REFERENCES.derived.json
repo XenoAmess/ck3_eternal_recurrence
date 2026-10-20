@@ -1,0 +1,294 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:28:00.917769+00:00",
+  "role": "derived refs-only index, not substitute raw",
+  "references": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\r06-worker-prepared\\PREPARED.actual.json",
+      "bytes": 101692,
+      "sha256": "33b4c22bb80f73020bfe8737e4da2fddbdf35bb83faf36da94def746211d5500",
+      "role": "prepared-only metadata; over100KB, retained pin reused, body not reread or copied",
+      "stat_bytes": 101692,
+      "payload_hash_reread": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a01\\capture.actual.json",
+      "bytes": 1829,
+      "sha256": "538567a9547e8bed43e7bf356422e6a3e674c18c2a4533354af04d3aef9d9706",
+      "role": "small frame metadata pinned only; PNG payload not read/copied",
+      "images_referenced_by_original_metadata": {
+        "schema": "xar.e04.owned-client-original-frame.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T10:58:28.515378+00:00",
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+        "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+          "bytes": 10577,
+          "sha256": "d7b123a444c8eca3df5aff1be7758c80cc3d49de1aed55992a7a87e5b57db745"
+        },
+        "lease_sequence_observed": 7422,
+        "pid": 18956,
+        "source": {
+          "kind": "gdigrab-desktop-client-region",
+          "owned_ck3_pid": 18956,
+          "owned_ck3_create_time": 1792493298.3922884,
+          "hwnd": 252315178,
+          "foreground_hwnd": 252315178,
+          "desktop": [
+            2560,
+            1440
+          ],
+          "client_screen_rect": [
+            640,
+            360,
+            1920,
+            1080
+          ],
+          "occluding_windows": [],
+          "coordinates": "physical-primary-screen-pixels",
+          "direct_hwnd_capture": false,
+          "window_border_included": false,
+          "observed_at_utc": "2026-10-20T10:58:26.864650+00:00",
+          "output_size": [
+            1280,
+            720
+          ]
+        },
+        "desktop_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a01\\desktop-original.png",
+          "bytes": 1936429,
+          "sha256": "fa4b406ffd447062f5489ed85b2ea3a1c9e8507d96c52c0d7bc011c9b6f6910c"
+        },
+        "client_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a01\\ck3-client-original.png",
+          "bytes": 1614049,
+          "sha256": "f5b3d640a8619ad1a5add34b27e6b5fbcc93066708a81e9786d8d9d5ec19f076"
+        },
+        "native_snapshot_at_capture": "not queried by screen-only prepare",
+        "recording_started": false,
+        "whole_desktop_recorded": false,
+        "video_approved": false
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a02\\capture.actual.json",
+      "bytes": 1829,
+      "sha256": "d1a809c1455038d623508e796c42ba6c987c0cde413db14737645edd86aca89b",
+      "role": "small frame metadata pinned only; PNG payload not read/copied",
+      "images_referenced_by_original_metadata": {
+        "schema": "xar.e04.owned-client-original-frame.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T11:00:36.148594+00:00",
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+        "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+          "bytes": 10577,
+          "sha256": "d7b123a444c8eca3df5aff1be7758c80cc3d49de1aed55992a7a87e5b57db745"
+        },
+        "lease_sequence_observed": 7424,
+        "pid": 18956,
+        "source": {
+          "kind": "gdigrab-desktop-client-region",
+          "owned_ck3_pid": 18956,
+          "owned_ck3_create_time": 1792493298.3922884,
+          "hwnd": 252315178,
+          "foreground_hwnd": 252315178,
+          "desktop": [
+            2560,
+            1440
+          ],
+          "client_screen_rect": [
+            640,
+            360,
+            1920,
+            1080
+          ],
+          "occluding_windows": [],
+          "coordinates": "physical-primary-screen-pixels",
+          "direct_hwnd_capture": false,
+          "window_border_included": false,
+          "observed_at_utc": "2026-10-20T11:00:34.584537+00:00",
+          "output_size": [
+            1280,
+            720
+          ]
+        },
+        "desktop_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a02\\desktop-original.png",
+          "bytes": 1937200,
+          "sha256": "f5a3a35ffc9ba59180fb0b13375f4d03ee6613027a27ff84e7358fa2f07f56ea"
+        },
+        "client_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a02\\ck3-client-original.png",
+          "bytes": 1614773,
+          "sha256": "b5d9ce7bed2d7ac935db33300b72b074d0b4386141b6b7286e19a5526738697c"
+        },
+        "native_snapshot_at_capture": "not queried by screen-only prepare",
+        "recording_started": false,
+        "whole_desktop_recorded": false,
+        "video_approved": false
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a03\\capture.actual.json",
+      "bytes": 1829,
+      "sha256": "cc6a2f7394defdeb443bc1058fbeb68d7576c0e25f13e3331c84337975787f6b",
+      "role": "small frame metadata pinned only; PNG payload not read/copied",
+      "images_referenced_by_original_metadata": {
+        "schema": "xar.e04.owned-client-original-frame.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T11:01:39.685448+00:00",
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+        "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+          "bytes": 10577,
+          "sha256": "d7b123a444c8eca3df5aff1be7758c80cc3d49de1aed55992a7a87e5b57db745"
+        },
+        "lease_sequence_observed": 7424,
+        "pid": 18956,
+        "source": {
+          "kind": "gdigrab-desktop-client-region",
+          "owned_ck3_pid": 18956,
+          "owned_ck3_create_time": 1792493298.3922884,
+          "hwnd": 252315178,
+          "foreground_hwnd": 252315178,
+          "desktop": [
+            2560,
+            1440
+          ],
+          "client_screen_rect": [
+            640,
+            360,
+            1920,
+            1080
+          ],
+          "occluding_windows": [],
+          "coordinates": "physical-primary-screen-pixels",
+          "direct_hwnd_capture": false,
+          "window_border_included": false,
+          "observed_at_utc": "2026-10-20T11:01:38.113512+00:00",
+          "output_size": [
+            1280,
+            720
+          ]
+        },
+        "desktop_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a03\\desktop-original.png",
+          "bytes": 1947166,
+          "sha256": "9ef5a0c60602bfb6a3071a7aff5e0f97b308febbf972cde6a54fa5a55d97d115"
+        },
+        "client_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a03\\ck3-client-original.png",
+          "bytes": 1626094,
+          "sha256": "66c5aa238764972113e17fb7f13775e4470e69f167db2e77a695a24727f194a5"
+        },
+        "native_snapshot_at_capture": "not queried by screen-only prepare",
+        "recording_started": false,
+        "whole_desktop_recorded": false,
+        "video_approved": false
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a04\\capture.actual.json",
+      "bytes": 1829,
+      "sha256": "6cbc9fb9480b1153d7f6372723250f4884fa997d017a5673892875bc6062f3d5",
+      "role": "small frame metadata pinned only; PNG payload not read/copied",
+      "images_referenced_by_original_metadata": {
+        "schema": "xar.e04.owned-client-original-frame.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T11:02:33.090833+00:00",
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+        "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+          "bytes": 10577,
+          "sha256": "d7b123a444c8eca3df5aff1be7758c80cc3d49de1aed55992a7a87e5b57db745"
+        },
+        "lease_sequence_observed": 7424,
+        "pid": 18956,
+        "source": {
+          "kind": "gdigrab-desktop-client-region",
+          "owned_ck3_pid": 18956,
+          "owned_ck3_create_time": 1792493298.3922884,
+          "hwnd": 252315178,
+          "foreground_hwnd": 252315178,
+          "desktop": [
+            2560,
+            1440
+          ],
+          "client_screen_rect": [
+            640,
+            360,
+            1920,
+            1080
+          ],
+          "occluding_windows": [],
+          "coordinates": "physical-primary-screen-pixels",
+          "direct_hwnd_capture": false,
+          "window_border_included": false,
+          "observed_at_utc": "2026-10-20T11:02:31.461779+00:00",
+          "output_size": [
+            1280,
+            720
+          ]
+        },
+        "desktop_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a04\\desktop-original.png",
+          "bytes": 1946965,
+          "sha256": "5aae39702d09c7d9a65dfe346738e0f49ef46af9563512f771c0034b876e1f37"
+        },
+        "client_original": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a04\\ck3-client-original.png",
+          "bytes": 1623932,
+          "sha256": "41276b5a840ec08714a0c523876e3ed3aa0242396310b494c3eb62b39f49ee48"
+        },
+        "native_snapshot_at_capture": "not queried by screen-only prepare",
+        "recording_started": false,
+        "whole_desktop_recorded": false,
+        "video_approved": false
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\native-report.json",
+      "bytes": 16015505,
+      "mtime_ns": 1792495067500352800,
+      "sha256": null,
+      "payload_hash_reread": false,
+      "role": "large report stat-only, no body read/copy"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0004-r06-q-gate-full-derived-normalized-full.json",
+      "bytes": 18892579,
+      "mtime_ns": 1792493668250567400,
+      "sha256": null,
+      "payload_hash_reread": false,
+      "role": "large full Army derivative stat-only; original full-wire proof copied separately"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0012-r06-before-full-derived-normalized-full.json",
+      "bytes": 18892579,
+      "mtime_ns": 1792493885881816100,
+      "sha256": null,
+      "payload_hash_reread": false,
+      "role": "large full Army derivative stat-only; original full-wire proof copied separately"
+    },
+    {
+      "role": "normal source Save original pin reused; no payload stat/hash/read performed",
+      "source": {
+        "source_sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+        "source_bytes": 74273410,
+        "actor_character_id": 33388,
+        "date_raw": 53149056,
+        "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+        "native_saved_campaign_status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_VANILLA_PROFILE",
+        "actual_launch_status": "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED",
+        "actual_ck3_pid": 18956,
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+      }
+    }
+  ],
+  "media_or_wire_or_Save_payloads_copied": false
+}

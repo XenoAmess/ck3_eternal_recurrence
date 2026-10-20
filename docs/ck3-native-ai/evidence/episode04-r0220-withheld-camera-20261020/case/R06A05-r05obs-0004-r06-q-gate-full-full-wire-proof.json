@@ -1,0 +1,46 @@
+{
+  "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\native-report.native-wire.jsonl",
+  "file_identity": [
+    13886423844274364792,
+    1407374884073542
+  ],
+  "begin": 19693712,
+  "end": 31668697,
+  "bytes": 11974985,
+  "sha256": "fda0d9cdad2866ad5870a9ae608a22f6abfefbb3690b6c61ec71b268fa8ef592",
+  "native_request_id": "step-7-cdcf400b2703",
+  "query_sequence": 2,
+  "request_line": {
+    "begin": 19756681,
+    "end": 19756982,
+    "sha256": "2a4ec889062312c756ea1c057d997f08fbb1a7ec7a66aff88c4c3ca4dfa80d99"
+  },
+  "response_line": {
+    "begin": 19762706,
+    "end": 31554211,
+    "sha256": "309f8dd9855634d0505e30f161679d8bbbfc770df14eacfc3db01cc69592f228"
+  },
+  "source": "existing shared host native-wire original range",
+  "complete_Driver_packet": false,
+  "query_reissued": false,
+  "public_step_id": "R06A05-r05obs-0004-r06-q-gate-full",
+  "public_control_name": "R06A05-r05obs-0004-r06-q-gate-full",
+  "public_original": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\R06A05-r05obs-0004-r06-q-gate-full.actual-results.json",
+  "representation": "derived production-normalized native wire result plus actual paired host frames; not complete Driver packet",
+  "normalized_source_binding": {
+    "before": {
+      "revision": 3,
+      "native_revision": 2,
+      "snapshot_id": "native:2",
+      "date_raw": 53149056,
+      "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+    },
+    "after": {
+      "revision": 3,
+      "native_revision": 2,
+      "snapshot_id": "native:2",
+      "date_raw": 53149056,
+      "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220"
+    }
+  }
+}

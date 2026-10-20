@@ -1,0 +1,13 @@
+{
+  "schema": "xar.promo.screen-lease-keeper/v1",
+  "task_id": "e04-common-12004-a225",
+  "last_sequence": 7435,
+  "failure": null,
+  "thread_exited": true,
+  "journal": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\keeper-a01\\journal.jsonl",
+  "at_utc": "2026-10-20T11:19:47.878855+00:00",
+  "entry_error": null,
+  "checkout_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "screen_released": false,
+  "game_actions": false
+}

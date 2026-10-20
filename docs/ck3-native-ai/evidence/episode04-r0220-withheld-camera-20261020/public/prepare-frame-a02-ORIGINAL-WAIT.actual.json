@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:00:36.270712+00:00",
+  "started_at_utc": "2026-10-20T11:00:31.512238+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\window_take_actor.py",
+    "prepare-frame",
+    "--config",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\take-metadata-a01\\take01-input.actual.json",
+    "--output",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\frame-before-camera-a02",
+    "--execute"
+  ],
+  "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-R0220-LIVE-ARGV.actual-a02.json",
+  "key": "prepare_frame",
+  "pid": 1704,
+  "actual_original_popen_wait": true,
+  "returncode": 0
+}

@@ -1,0 +1,140 @@
+{
+  "schema": "ck3-mod-acceptance-shared-runtime-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:38:33.200757+00:00",
+  "source_root": {
+    "path_key": "source_root"
+  },
+  "host": {
+    "path_key": "host",
+    "bytes": 318504,
+    "sha256": "f912aca7602873312af0d64ed8d5fda5a4fb542e86f76e8bfdc273c5d1d270ed"
+  },
+  "source_index": {
+    "path_key": "source_index",
+    "bytes": 17906,
+    "sha256": "c85fa2dfaa7fb7e2ded5076246e215569f8eab28033841f1deaf86249ebef82f"
+  },
+  "native_source_index": {
+    "path_key": "native_source_index",
+    "bytes": 15471,
+    "sha256": "8fc7168c1c70375202c6b877a426e5fb802d1110ee1cb5f6071ddb6fe515acc6"
+  },
+  "native": {
+    "dll": {
+      "path_key": "dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+    },
+    "injector": {
+      "path_key": "injector",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+    }
+  },
+  "game": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "capabilities": {
+    "ck3_acknowledge_pending_character_interaction": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_confirm_ingame_decision_outcome_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_execute_step": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_get_capabilities": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_move_army": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_open_ingame_decisions_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_commander_candidates_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_observer_research_sampling_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_strengths": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_current_event_window_context_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_ingame_ui_window_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_loaded_feature_manifest_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_pending_character_interaction_context_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_war_cash_current_resources_private_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_reply_pending_character_interaction": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_save_checkpoint": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_select_army_ui_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_select_event_option": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_select_ingame_decision_item_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_set_army_observer_research_sampling_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_take_snapshot": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    }
+  },
+  "host_features": {
+    "saved_campaign_inject_after_load": false,
+    "war_cash_queries": true
+  },
+  "qualification": {
+    "actual_producer": {
+      "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+      "bytes": 26157,
+      "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+    },
+    "runtime_source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+    "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "actual_live_qualified": false
+  }
+}

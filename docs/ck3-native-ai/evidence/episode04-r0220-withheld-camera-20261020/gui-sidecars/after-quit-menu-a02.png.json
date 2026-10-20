@@ -1,0 +1,52 @@
+{
+  "action": "click",
+  "age_seconds": 127.06497693061829,
+  "button": "left",
+  "checked_at": 1792494901.7690163,
+  "click_completed": false,
+  "error": "source screenshot is expired or has a future modification time",
+  "expected_foreground_hwnd": 252315178,
+  "failures": [
+    "source_image_expired"
+  ],
+  "input_performed": false,
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "maximum": 120.0,
+  "observed_point": [
+    710.0,
+    664.0
+  ],
+  "preview_bounds": [
+    0.0,
+    0.0,
+    2048,
+    1152
+  ],
+  "reason": "source_image_expired",
+  "receipt_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-quit-menu-a02.png",
+  "screen_point": [
+    888,
+    830
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-quit-menu-a02.png.json",
+  "source_age_before": {
+    "age_seconds": 127.06497693061829,
+    "checked_at_unix": 1792494901.7690163,
+    "maximum_seconds": 120.0,
+    "source_mtime_unix": 1792494774.7040393
+  },
+  "source_image": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\menu-fresh-a03.png",
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "source_mtime": 1792494774.7040393,
+  "status": "rejected"
+}

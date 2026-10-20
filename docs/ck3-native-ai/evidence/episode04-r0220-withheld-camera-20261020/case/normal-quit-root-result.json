@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "reviewer": "/root",
+  "pid": 18956,
+  "create_time": 1792493298.3922884,
+  "original_hold_deadline": 1792497203.7577112,
+  "quit_request": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0220\\case-output\\normal-quit-awaiting.json",
+    "bytes": 637,
+    "sha256": "c6a599779e57ebaeaebb4bed0b89e1ff568d6e5b7e9ab23acf3babb48be49e87"
+  },
+  "normal_gui_quit": true,
+  "direct_reviewed": true,
+  "review_method": "explicit operator direct image review; no automatic image-content judgment",
+  "autosave_unchecked_observed": true,
+  "autosave_unchecked_screenshot": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\confirm-original.png",
+    "bytes": 1801555,
+    "sha256": "6a8d0d95236f6b31438e4f622a60ca8c5fa7b06a0f60aec1d11729bfb90be925"
+  },
+  "final_click": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-final-quit.png.json",
+    "bytes": 1521,
+    "sha256": "a5dd83d66bd92f00f53cee9d64b1d37c338e51a100cda0dfce843b022d06ee3d"
+  },
+  "after_click_screenshot": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-final-quit.png",
+    "bytes": 1771018,
+    "sha256": "10db684789493daae1f8adfd88726f2d69c50fb473e1cba3e44a060fe95aae14"
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\confirm-original.png",
+      "bytes": 1801555,
+      "sha256": "6a8d0d95236f6b31438e4f622a60ca8c5fa7b06a0f60aec1d11729bfb90be925"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-final-quit.png.json",
+      "bytes": 1521,
+      "sha256": "a5dd83d66bd92f00f53cee9d64b1d37c338e51a100cda0dfce843b022d06ee3d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\quit-r0220-a01\\after-final-quit.png",
+      "bytes": 1771018,
+      "sha256": "10db684789493daae1f8adfd88726f2d69c50fb473e1cba3e44a060fe95aae14"
+    }
+  ],
+  "actual_os0_proven": false,
+  "actual_native0_proven": false,
+  "process_exit_claimed": false,
+  "business_pass": false
+}

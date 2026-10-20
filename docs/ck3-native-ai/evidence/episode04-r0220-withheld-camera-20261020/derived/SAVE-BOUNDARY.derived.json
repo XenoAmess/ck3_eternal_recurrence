@@ -1,0 +1,84 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:29:03.681234+00:00",
+  "role": "derived Save boundary, unchanged original R06 result is retained separately",
+  "original": {
+    "archive_relative_path": "case/R06-WORKER-RESULT.json",
+    "bytes": 107792,
+    "sha256": "b4cf2636fc1783001065de26d387c09c14b0734116a9c30dad70070ca5d4936d"
+  },
+  "checkpoint": {
+    "status": "saved",
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 74272517,
+    "sha256": "3ab1e34f241e7affdefa1dd0df0439b735888d7066e3e0967c6a0b1e8ff3a612",
+    "date_raw": 53149056,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 15,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "driver_state_replace_receipt": {
+    "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+    "status": "unconfirmed",
+    "write_replace_returned": true,
+    "save_binding_verified": false,
+    "reason": "save_binding_mismatch",
+    "attempt_binding": {
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0220",
+      "bridge_pid": 18956,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "rogue_one_life",
+        "xar_enabled": "xar_on",
+        "pact_contract": "terminal_settlement_required",
+        "source": "legacy-driver-default",
+        "environment_sha256": null
+      },
+      "campaign_goal": null
+    },
+    "binding_contract": "one_life_episode_identity_v1",
+    "checkpoint_episode_projection": "native_campaign",
+    "missing_checkpoint_binding_fields": [
+      "episode_character_id",
+      "episode_run_id"
+    ],
+    "recorded_session_binding": {
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0220",
+      "bridge_pid": 18956,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "save_history_index": 15,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 74272517,
+      "sha256": "3ab1e34f241e7affdefa1dd0df0439b735888d7066e3e0967c6a0b1e8ff3a612",
+      "date_raw": 53149056,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 15,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "encoded_history_rows": 15,
+    "driver_state_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01\\native-session\\driver-state.json"
+  },
+  "actual_independent_Save_after": {
+    "date_raw": 53149056,
+    "paused": true
+  },
+  "one_life_binding_granted": false,
+  "Save_payload_read_or_rehashed": false,
+  "native_restore_flag_meaning": "R06 actor reports true with worker never launched; no debugger attachment/detachment is invented"
+}

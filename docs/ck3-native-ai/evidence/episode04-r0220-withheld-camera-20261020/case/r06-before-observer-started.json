@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0220",
+  "bridge_pid": 18956,
+  "process_creation_filetime": 134369668983922884,
+  "date_raw": 53149056,
+  "source_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\os-admission-a01\\SOURCE-ADMISSION.actual.json",
+    "bytes": 8839,
+    "sha256": "fc8229e7a85de09d834e2bd0eb78615f52d83b4355e4cd2ffd7865a1838b2d60"
+  }
+}
