@@ -71,6 +71,10 @@ class LatestCameraFollowWorker:
                 summary["native_actual"] = {key: native.get(key) for key in (
                     "status", "request_sequence", "county_count", "zoom_index", "bounds",
                     "camera_postcondition_verified", "coverage_verified", "native_elapsed_us")}
+                summary["native_actual"].update({k: native[k] for k in (
+                    "state", "owner_epoch", "scope_generation", "fullarmy_id", "province_id",
+                    "combat_id", "target_updates", "pending_slot_capacity", "pending_slots_visited",
+                    "reader_reason", "reader_elapsed_us", "reader_clock_available") if k in native})
         return {
             "request_id": actual["request_id"],
             "status": actual["status"],

@@ -151,6 +151,7 @@ class NativeCameraPresentationClient:
             raise ValueError("camera presentation needs an exact Windows CK3 PID")
         self.pid, self._handle, self._view, self._hwnd = pid, None, None, None
         self._last_result_sequence, self._latest = -1, None
+        self._tracking_binding = None
         self._lock = threading.Lock()
         self._kernel = ctypes.WinDLL("kernel32", use_last_error=True)
         self._kernel.OpenFileMappingW.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_wchar_p]
@@ -196,19 +197,36 @@ class NativeCameraPresentationClient:
         with self._lock:
             self._open()
             self._hwnd = desktop1_game_window(self.pid, self._hwnd)
-            modes = {"cancel": 0, "realm": 1, "hotspot": 2, "query": 3}
+            modes = {"cancel": 0, "realm": 1, "hotspot": 2, "query": 3, "tracked_hotspot": 4}
+            tracking_request = None
+            if intent["mode"] == "tracked_hotspot":
+                from .camera_tracking_v1 import read_capability_v1
+                epoch = read_capability_v1(self._view, self.pid)
+                if epoch is None:
+                    return {"status": "unavailable", "reason": "native_tracking_capability_unavailable",
+                            "camera_postcondition_verified": False, "native_command_pipe_used": False}
             request = _Request(mode=modes[intent["mode"]], actor=frame["actor_character_id"],
                                date_raw=frame["date_raw"],
-                               expires_uptime_ms=self._kernel.GetTickCount64() + 10000,
+                               expires_uptime_ms=self._kernel.GetTickCount64() + (
+                                   120000 if intent["mode"] == "tracked_hotspot" else 10000),
                                hwnd=self._hwnd, padding=.32 if intent["mode"] == "realm" else .15)
             key = str(intent.get("title_key", "")).encode("ascii")
             if len(key) >= 128:
                 raise ValueError("hotspot title key exceeds presentation channel limit")
             request.title_key = key
             sequence = (self._sequence("request_sequence") + 2) & 0xFFFFFFFE
+            if intent["mode"] == "tracked_hotspot":
+                from .camera_tracking_v1 import make_request_v1, OFFSET, Shared as TrackingShared
+                tracking_request = make_request_v1(intent, frame, sequence, epoch)
             self._set_sequence(sequence - 1)
             ctypes.memmove(self._view + _Shared.request.offset, ctypes.byref(request), ctypes.sizeof(request))
+            if tracking_request is not None:
+                ctypes.memmove(self._view + OFFSET + TrackingShared.request.offset,
+                               ctypes.byref(tracking_request), ctypes.sizeof(tracking_request))
             self._set_sequence(sequence)
+            self._tracking_binding = ({key: getattr(tracking_request, key) for key in (
+                "request_sequence", "owner_epoch", "scope_generation", "actor", "fullarmy_id")}
+                if tracking_request is not None else None)
             return {"status": "queued_native_presentation", "request_sequence": sequence,
                     "mode": intent["mode"], "reason": intent.get("reason"),
                     "native_command_pipe_used": False, "desktop": 1,
@@ -218,6 +236,9 @@ class NativeCameraPresentationClient:
         with self._lock:
             if not self._view:
                 return None
+            if self._tracking_binding is not None:
+                from .camera_tracking_v1 import latest_tracking_v1
+                return latest_tracking_v1(self._view, self._tracking_binding)
             sequence = self._sequence("result_sequence")
             if sequence & 1 or sequence == self._last_result_sequence:
                 return self._latest
@@ -246,6 +267,7 @@ class NativeCameraPresentationClient:
             return self._latest
 
     def close(self):
+        self._tracking_binding = None
         if self._view:
             self._kernel.UnmapViewOfFile(self._view)
             self._view = None

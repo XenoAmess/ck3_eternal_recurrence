@@ -735,10 +735,11 @@ class GameplayBridgeService:
             if not isinstance(war, dict):
                 continue
             armies = [
-                {key: army.get(key) for key in (
+                {key: (list(army[key]) if isinstance(army.get(key), list) else None)
+                      if key == "route_province_ids" else army.get(key) for key in (
                     "army_id", "current_province_id", "in_combat", "controllable",
                     "army_state", "siege_days_left", "retreating",
-                    "move_target_province_id",
+                    "move_target_province_id", "route_province_ids",
                 )}
                 for army in war.get("allied_armies") or []
                 if isinstance(army, dict)
@@ -828,6 +829,11 @@ class GameplayBridgeService:
         # an applied camera result or a failed hotspot observation.
         if context["mode"] == "cancel" and actual.get("status") == "cancelled":
             return actual
+        if context["mode"] == "tracked_hotspot":
+            date = actual.get("date_raw")
+            return actual if (actual.get("actor_character_id") == context["owner"][0]
+                and type(date) is int and context["frame"]["date_raw"] <= date <= context["max_date_raw"]
+                and actual.get("camera_postcondition_verified") is False) else None
         date = actual.get("date_raw")
         submitted_date = context["frame"]["date_raw"]
         if (actual.get("actor_character_id") != context["owner"][0]
@@ -886,6 +892,15 @@ class GameplayBridgeService:
             frame = payload.get("source_frame") or {}
             date = frame.get("date_raw")
             self._sync_camera_presentation_owner(frame)
+            if "tracking_scope" in payload:
+                from .camera_tracking_v1 import tracking_intent_v1
+                tracking_intent = tracking_intent_v1(payload, self._war_hotspot_camera_index)
+                if tracking_intent is None:
+                    return {"status": "unavailable", "reason": "tracking_scope_or_route_unverified",
+                            "native_command_submitted": False, "same_frame_with_gameplay_claim": False}
+                return {**self._publish_camera_presentation_v1(tracking_intent, payload),
+                        "source_frame": dict(frame), "hotspot": hotspot,
+                        "continuous_frame_coverage_verified": False}
             actual = self._bound_camera_presentation_actual(frame)
             context = self._camera_presentation_request_context
             if (actual is not None and
@@ -976,6 +991,7 @@ class GameplayBridgeService:
             "sequence": sequence, "owner": owner, "frame": dict(frame),
             "key": self._camera_presentation_target_key(frame, intent),
             "mode": intent["mode"], "title_key": intent.get("title_key"),
+            "max_date_raw": intent.get("max_date_raw"),
         }
         return result
 
