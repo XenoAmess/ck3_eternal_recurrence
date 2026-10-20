@@ -65,6 +65,9 @@ advance_day = public_function('tools/ck3_mod_acceptance_client.py', 'advance_day
     'native_day_advertised': native_day.native_day_advertised,
     'latest_frame': native_day.latest_frame, 'frame_owner': native_day.frame_owner,
     'project_native_day': native_day.project_native_day,
+    'native_day_request_count': native_day.native_day_request_count,
+    'fresh_native_day_before': native_day.fresh_native_day_before,
+    'project_pre_day_event_boundary': native_day.project_pre_day_event_boundary,
 })
 
 
@@ -81,11 +84,14 @@ def day_row(event: bool = False) -> DayRow:
     }}
 
 
+DayCall = tuple[list[Object], str, float | None, Literal[90]]
+
+
 class DayClient:
     def __init__(self, row: DayRow) -> None:
         self._seq = 0
         self.row = row
-        self.submissions: list[tuple[list[Object], str, float | None]] = []
+        self.submissions: list[DayCall] = []
         self.validations: list[tuple[Object, bool, bool]] = []
         self.guard_reserves: list[int] = []
         self.execution_reserves: list[int] = []
@@ -95,14 +101,15 @@ class DayClient:
             raise AssertionError('Actual day guard must retain its 90-second reserve')
         self.guard_reserves.append(reserve)
         # Explicit legacy host: this report does not advertise native exact-day support.
-        return {'capabilities': {'action_steps': [], 'bridge_capabilities': []}}
+        return {'phase': 'hold', 'steps': [], 'capabilities': {
+            'action_steps': [], 'bridge_capabilities': []}}
 
     def execute_plan(self, steps: list[Object], name: str,
                      timeout: float | None = None, reserve: Literal[90] = 90) -> list[object]:
         if type(reserve) is not int or reserve != 90:
             raise AssertionError('Actual day execution must retain its 90-second reserve')
         self.execution_reserves.append(reserve)
-        self.submissions.append((copy.deepcopy(steps), name, timeout))
+        self.submissions.append((copy.deepcopy(steps), name, timeout, reserve))
         return [self.row]
 
     def validate_frame(self, frame: object, allow_actor_change: bool = False,

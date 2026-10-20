@@ -190,7 +190,13 @@ _RESEARCH: dict[str, object] = {
             "unknowns": ["This actor's current normal legality, complete payable quote and actual post-creation recipient/title state."],
         },
         "pilgrimage": {
-            "documents": [_REFERENCE, _PILGRIMAGE],
+            "documents": [
+                _REFERENCE, _PILGRIMAGE,
+                _EVENT_DOCUMENTS + "pilgrimage-3001-source-analysis.json",
+                _EVENT_DOCUMENTS + "pilgrimage-3001-r0014-occurrence.json",
+                _EVENT_DOCUMENTS + "travel-cities-1020-r0014-display-variant.json",
+                _EVENT_DOCUMENTS + "r0014-event-batch-summary.json",
+            ],
             "rules": [
                 "Read the current Rite and actual legal planner choices; mandatory_hajj without hajjaj can exclude ordinary pious/worldly choices.",
                 "Planner selection, final configured full10 activity quote (not proven whole-journey cost), Start, arrival, destination completion and return are separate observed states.",
@@ -199,6 +205,9 @@ _RESEARCH: dict[str, object] = {
                 "Empty event effect_indicators.rows with complete_effect_set=false and unavailable resource_deltas does not prove no cost; pilgrimage.4100 has a normal scripted purchase charge.",
                 "pilgrimage.4100 activity_log score50 is a log score, not 50 piety. Historical R0012 post reads confirm an extra31.25gold charge for that occurrence only; future prices remain dynamic.",
                 "An arrival/badge event window consumed does not prove pilgrim trait/XP, badge ownership/full artifact ID/equipment, full journey conclusion or return.",
+                "Historical R0014 pilgrimage.3001 first-shown choice had ACK plus independent old-window disappearance and +100 piety on the same actor/date. Conditional illness and pilgrim/learning XP remain unobserved; this is not final pilgrimage settlement.",
+                "travel_events_cities.1020 R0014 has a different unselected learning-option label in the same official option block; bind current native shown options, never reuse the historical label/index as current permission.",
+                "The R0014 five-event batch contains 1060, 3001, 1020, 5001 and 4100; it ended without observed 7000/9001, full journey completion or independent home position. These source/actual references add no occurrence registry or ordinary-auto execution policy.",
             ],
             "sources": [
                 _source("common/scripted_effects/00_pilgrimage_effects.txt", "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80", 516, 629),

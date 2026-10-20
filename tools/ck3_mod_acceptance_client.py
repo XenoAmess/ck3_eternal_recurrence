@@ -8,7 +8,7 @@ from pathlib import Path
 from collections.abc import Mapping, Sequence
 from ck3_mod_acceptance_background_types import (
     CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object)
-from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day)
+from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day, native_day_request_count, fresh_native_day_before, project_pre_day_event_boundary)
 import subprocess
 import time
 
@@ -521,14 +521,26 @@ class CaseClient:
         need(type(allow_event_boundary) is bool and type(allow_actor_change) is bool,
              'Original day policy flags must be bool')
         report = obj(self.guard(90), 'actual held report')
-        native = not allow_actor_change and native_day_advertised(report)
+        native = native_day_request_count(report, allow_actor_change=allow_actor_change) == 2
         before: dict[str, object] | None = None
+        if native:
+            previous = obj(self.validate_frame(latest_frame(report)), 'actual prior paused frame')
+            before = fresh_native_day_before(
+                previous, obj(self.snapshot(require_event_free=False), 'fresh paused before'),
+                allow_event_boundary=allow_event_boundary)
+            if before.get('active_event') is not None:
+                snapshot_name = 'case-snapshot-' + str(self._seq).zfill(4)
+                boundary = project_pre_day_event_boundary(previous, before, snapshot_step_id=snapshot_name)
+                self.checkpoint(snapshot_name + '.native-day-boundary', {
+                    'raw_public_row_path': str(self.output / (snapshot_name + '.actual-results.json')),
+                    'projection_source': 'actual-pre-day-snapshot-event-boundary', 'row': boundary})
+                return boundary
         self._seq += 1
         name = 'case-natural-day-' + str(self._seq).zfill(4)
         step: dict[str, object] = {'id': name, 'kind': 'advance_day', 'days': 1, 'timeout': timeout}
         if native:
-            before = obj(self.validate_frame(latest_frame(report)), 'actual paused before')
-            frame_owner(before)
+            if before is None:
+                raise ValueError('Fresh native before frame missing')
             step = {'id': name, 'tool': 'ck3_execute_step', 'args': {
                 'step': NATIVE_DAY_STEP, 'expected_revision': integer(before.get('revision'), 'before revision')},
                 'fresh_revision': False}
