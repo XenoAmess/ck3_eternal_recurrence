@@ -208,9 +208,13 @@ def append_delta(journal: dict[str, object], rows: list[dict[str, object]],
         raise JournalCapacity("delta exceeds bounded journal eligibility")
     entry = {**body, "sha256": _sha(encoded_delta)}
     next_journal = {**journal, "entries": [*journal["entries"], entry]}
-    if len(_canonical(next_journal)) > MAX_JOURNAL_BYTES:
+    encoded_journal = _canonical(next_journal)
+    if len(encoded_journal) > MAX_JOURNAL_BYTES:
         raise JournalCapacity("journal exceeds bounded consolidation threshold")
-    return next_journal
+    # Keep the hot cache in the same JSON value domain as the published file.
+    # DTO tuples become lists, and caller-owned mutable values cannot later
+    # make an unchanged journal appear foreign to the strict pair guards.
+    return json.loads(encoded_journal)
 
 
 def mark_consolidation(journal: dict[str, object], full_bytes: bytes) -> dict[str, object]:
