@@ -31,3 +31,10 @@
 `machine_id: desktop-3fevhd2-1c74096080`。首个a39公共producer实际退出1、Ninja退出2；维护费净收入独立cold target的reader/serializer/test三TU报C1083，实际cl仅有native/include，缺少research头及真实loan serializer链接闭包。原失败日志、配置、compile argv和已编译对象保留在[实际失败回执](evidence/e04-resume-20261020-desktop-3fevhd2-1c74096080/A39-FIRST-FAILURE.actual-a01.json)所指路径，264,814,735 B当时聚合；未运行SYSTEM、cold或游戏。
 
 公共CMake仅为该既有target链接 `xar_ck3_12002_runtime`，继承其PUBLIC research include和原生产依赖。生产TU内容不变。后继以同a39根和原1GiB同账增量续建，使用新phase/日志/来源绑定，不覆盖首失败、不从头重建全树、不增加外置CMake替代实现。该修复本身尚不授构建或实机通过；以实际a02生产/cold回执为准。
+
+
+## 2026-10-20T02:52Z 整长审阅版实际生成
+
+`machine_id: desktop-3fevhd2-1c74096080`。已生成[34分36.94秒整长审阅版及精确配方](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/full-method-plus-evidence-a01/README.md)：原32分26.867秒方法版加130秒独立实录补充，5章导航，62,305帧，101,671,823 B，SHA-256 `473ea068e33026de746954880e4388c88ac2b6731daa34a8a19c4d53446054d7`。新文件一次严格全AV解码exit0、stderr空，PTS/DTS检查通过；4张全片首尾/分界帧有限直接审阅。未重编码、未新TTS、未重跑旧输入QA、未上传、未人工1×签核。各独立回放与未验归因的原说明保留；正式动态仍0/11、ABC仍0/3。
+
+本场a39生产DLL/host/injector及六个受影响cold已真实链接。净收入cold的共享CMake依赖修复已由实际链接验证；第二次producer另因错误选择要求allON的B11 fixture而退出1，此时本场新增provider为OFF，不能据此宣称生产能力失败或开启无关provider。原失败记录保留；后继同根、原1GiB内仅替换成依赖逐TU核对过的公共finite mailbox cold，再做实际精确SYSTEM和7项focused cold。此刻尚未授最终native资格或启动新游戏。

@@ -1,0 +1,423 @@
+{
+  "schema": "xar.e04.full-review-intake.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:44:04.261245+00:00",
+  "source_commit": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "official_release": {
+    "query_argv": [
+      "gh",
+      "api",
+      "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+    ],
+    "tag": "v0.3.0",
+    "release_id": 415596198,
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+    "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+    "wheel_digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "installed_version": "0.3.0",
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+        "hashes": {
+          "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+    }
+  },
+  "skill": {
+    "path": "D:\\workspace\\xar_promo_toolchain\\codex-skill\\promo-video-pipeline\\SKILL.md",
+    "bytes": 3814,
+    "sha256": "94a0dbe08bef4e597a0a5253a10c1e330fadcf7786c68a897d05fb2db49bc935"
+  },
+  "source_CAS_retirement_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\D-TWO-WORK-MOVIES-RETIREMENT.actual.json",
+    "bytes": 3883,
+    "sha256": "1fb600fef18d3a2c3bbb9f51855ad297fdefb836a70aa45605f2e2dea7c31e2e"
+  },
+  "appendix_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\media\\DELIVERY.actual.json",
+    "bytes": 6672,
+    "sha256": "bb2ec602779ff832e54a6cf033ae6e0b6bfeb6eab3bb821d361576deb5f20715"
+  },
+  "input_identity_reused_from_same_session_exact_receipts": true,
+  "sources": [
+    {
+      "id": "historical-method69",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+        "bytes": 89450267,
+        "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b"
+      },
+      "expected_frames_from_existing_QA": 58406,
+      "fresh_stat": {
+        "size": 89450267,
+        "mtime_ns": 1792308837303232400
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 328,
+            "start_time": "0.021354",
+            "duration_ts": 29903872,
+            "duration": "1946.866667",
+            "bit_rate": "180359",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "58406",
+            "extradata_size": 47,
+            "extradata_hash": "SHA256:2406e9bd9cfdc6ad014c3d988dbaaeee1305d2c3d7614505ae5a4faff2301a55",
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.101 libx264"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 93450624,
+            "duration": "1946.888000",
+            "bit_rate": "178384",
+            "nb_frames": "91363",
+            "extradata_size": 5,
+            "extradata_hash": "SHA256:b3108813350006ef07740046fab14af9c374938867d16db02fe1a8baa5e72f10",
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          }
+        ],
+        "format": {
+          "filename": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+          "nb_streams": 2,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "1946.888021",
+          "size": "89450267",
+          "bit_rate": "367562",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf63.1.101"
+          }
+        }
+      }
+    },
+    {
+      "id": "later-evidence-appendix",
+      "file": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+        "bytes": 12222689,
+        "sha256": "74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00"
+      },
+      "expected_frames_from_existing_QA": 3899,
+      "fresh_stat": {
+        "size": 12222689,
+        "mtime_ns": 1792462492909625900
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "mime_codec_string": "avc1.640028",
+            "width": 1920,
+            "height": 1080,
+            "coded_width": 1920,
+            "coded_height": 1080,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "16:9",
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "7486080/249659",
+            "time_base": "1/15360",
+            "start_pts": 328,
+            "start_time": "0.021354",
+            "duration_ts": 1997272,
+            "duration": "130.030729",
+            "bit_rate": "559430",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "3899",
+            "extradata_size": 47,
+            "extradata_hash": "SHA256:2406e9bd9cfdc6ad014c3d988dbaaeee1305d2c3d7614505ae5a4faff2301a55",
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "encoder": "Lavc63.1.101 libx264"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "mime_codec_string": "mp4a.40.2",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 6242499,
+            "duration": "130.052063",
+            "bit_rate": "183648",
+            "nb_frames": "6102",
+            "extradata_size": 5,
+            "extradata_hash": "SHA256:b3108813350006ef07740046fab14af9c374938867d16db02fe1a8baa5e72f10",
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler"
+            }
+          },
+          {
+            "index": 2,
+            "codec_name": "bin_data",
+            "codec_long_name": "binary data",
+            "codec_type": "data",
+            "codec_tag_string": "text",
+            "codec_tag": "0x74786574",
+            "id": "0x3",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/384000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 49940000,
+            "duration": "130.052083",
+            "bit_rate": "13",
+            "nb_frames": "4",
+            "extradata_size": 63,
+            "extradata_hash": "SHA256:7aad211209d7ce5c81f1312b069f693180c9981ace94271c77e00549a3d7fe0d",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "eng",
+              "handler_name": "SubtitleHandler"
+            }
+          }
+        ],
+        "format": {
+          "filename": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+          "nb_streams": 3,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "130.052083",
+          "size": "12222689",
+          "bit_rate": "751864",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "title": "军队人数变化：四段独立实录审阅章",
+            "encoder": "Lavf63.1.101",
+            "comment": "Review draft. Separate replays. No human signoff."
+          }
+        }
+      }
+    }
+  ],
+  "semantics": {
+    "first_part": "Historical method review; its pending-shot assertions describe that source attempt",
+    "second_part": "Later four-insert review appendix across separate replays",
+    "causal_unification": false,
+    "formal_movie_claim": false,
+    "old_source_QA_repeated": false
+  },
+  "expected_frames": 62305,
+  "estimated_video_seconds": 2076.8333333333335,
+  "estimated_final_bytes": 101672956,
+  "estimated_peak_bytes": 234881024,
+  "requested_ceiling_bytes": 268435456,
+  "C_volume": {
+    "total": 511133945856,
+    "used": 427104169984,
+    "free": 84029775872
+  },
+  "cli": {
+    "['--version']": "xar-promo 0.3.0\n",
+    "['--help']": "usage: xar-promo [-h] [--version]\n                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...\n\nCreate, verify, and preserve reusable promotional-video project metadata.\n\npositional arguments:\n  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}\n    init                create a ProjectConfig and its first bound run without\n                        overwriting files\n    start-run           create another run bound to the current exact\n                        ProjectConfig bytes\n    validate            validate a ProjectConfig, RunManifest, or legacy\n                        showcase v1 manifest\n    preserve            copy a file to immutable content-addressed storage and\n                        append its run record\n    signoff             append an explicit human decision bound to preserved\n                        artifact bytes\n    plan                compose and validate a pipeline plan without invoking\n                        providers or writing\n    build               run a composed pipeline and preserve success or\n                        failure material in its run\n    audit               write and preserve an automated audit without creating\n                        human approval\n    review              plan or create a pending human-review package without\n                        recording sign-off\n    export              validate or create an offline release bundle from an\n                        explicit policy\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n",
+    "['start-run', '--help']": "usage: xar-promo start-run [-h] --run-id RUN_ID\n                           [--run-directory RUN_DIRECTORY]\n                           [project_config]\n\npositional arguments:\n  project_config\n\noptions:\n  -h, --help            show this help message and exit\n  --run-id RUN_ID\n  --run-directory RUN_DIRECTORY\n                        directory for run-manifest.json (default:\n                        <project>/runs/<run-id>)\n",
+    "['preserve', '--help']": "usage: xar-promo preserve [-h] [--run-manifest RUN_MANIFEST]\n                          --artifact-id ARTIFACT_ID --collection {raw,derived}\n                          --role ROLE [--label LABEL]\n                          [--media-type MEDIA_TYPE]\n                          source\n\npositional arguments:\n  source\n\noptions:\n  -h, --help            show this help message and exit\n  --run-manifest RUN_MANIFEST\n  --artifact-id ARTIFACT_ID\n  --collection {raw,derived}\n  --role ROLE           semantic role such as capture, audio, subtitle, or\n                        deliverable\n  --label LABEL\n  --media-type MEDIA_TYPE\n",
+    "['review', '--help']": "usage: xar-promo review [-h] --storyboard STORYBOARD --probe PROBE\n                        --output-directory OUTPUT_DIRECTORY\n                        --audit-directory AUDIT_DIRECTORY --ffmpeg FFMPEG\n                        [--working-directory WORKING_DIRECTORY] [--plan-only]\n                        deliverable\n\npositional arguments:\n  deliverable\n\noptions:\n  -h, --help            show this help message and exit\n  --storyboard STORYBOARD\n                        storyboard timeline JSON\n  --probe PROBE         retained xar-promo-bound-media-probe v1 envelope for\n                        the deliverable\n  --output-directory OUTPUT_DIRECTORY\n  --audit-directory AUDIT_DIRECTORY\n  --ffmpeg FFMPEG       ffmpeg executable or path\n  --working-directory WORKING_DIRECTORY\n  --plan-only           validate inputs and print the frame plan without\n                        creating directories or files\n"
+  }
+}

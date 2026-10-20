@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:47:28.314760+00:00",
+  "main_parts": [
+    {
+      "id": "historical-method69",
+      "start_seconds": 0.0,
+      "end_seconds": 1946.888021
+    },
+    {
+      "id": "later-evidence-appendix",
+      "start_seconds": 1946.888021,
+      "end_seconds": 2076.940104
+    }
+  ],
+  "chapters": [
+    {
+      "id": "historical-method69",
+      "start_seconds": 0.0,
+      "end_seconds": 1946.888021,
+      "title": "第一部分／原方法审阅版（历史状态）"
+    },
+    {
+      "id": "r194-r196",
+      "start_seconds": 1946.888021,
+      "end_seconds": 2001.8760419999999,
+      "title": "实录补充／分兵合军与登船（独立回放）"
+    },
+    {
+      "id": "r211",
+      "start_seconds": 2001.8760419999999,
+      "end_seconds": 2028.897396,
+      "title": "实录补充／受控零库存（供给337另67）"
+    },
+    {
+      "id": "r215",
+      "start_seconds": 2028.897396,
+      "end_seconds": 2049.91875,
+      "title": "实录补充／月界净增10（闭包未完）"
+    },
+    {
+      "id": "r217",
+      "start_seconds": 2049.91875,
+      "end_seconds": 2076.940104,
+      "title": "实录补充／县边净减236（归因待验）"
+    }
+  ],
+  "causal_unification": false
+}

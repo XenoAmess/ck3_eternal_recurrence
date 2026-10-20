@@ -1,0 +1,38 @@
+{
+  "schema": "xar.e04.full-review-sparse-ai-observation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:52:26.409889+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\E04-METHOD69-PLUS-INDEPENDENT-EVIDENCE-34m37s-REVIEW-a01.mp4",
+    "bytes": 101671823,
+    "sha256": "473ea068e33026de746954880e4388c88ac2b6731daa34a8a19c4d53446054d7"
+  },
+  "reviewer_type": "AI-agent",
+  "frames": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\qa-a01\\pending-review\\frames\\frame-000001.png",
+      "bytes": 1389198,
+      "sha256": "770a196b977562b11e06d9252734ac8ff9b550402a22f52f496441f7321f21b4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\qa-a01\\pending-review\\frames\\frame-000002.png",
+      "bytes": 486437,
+      "sha256": "caf69d984e08b95e5cb6c17c65b0ffc64ae45b6cae0651425addc49a6dbdc06c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\qa-a01\\pending-review\\frames\\frame-000003.png",
+      "bytes": 1263971,
+      "sha256": "3865cd3717cbf23054111ad682f515bdfeefd754539cc86a4a62b057d6ab24b6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\qa-a01\\pending-review\\frames\\frame-000004.png",
+      "bytes": 278827,
+      "sha256": "c0d98a98423abe8f9269daaef8c5f47bee5b349372566fb3bd0489f90733d9bc"
+    }
+  ],
+  "observation": "Four exact new-file images were inspected: historical method opening, historical method final card, independent evidence appendix opening, and final R217 attribution-unverified card. These are sparse frames only.",
+  "human_complete_1x": false,
+  "human_signoff": false,
+  "continuous_clean": false,
+  "formal_dynamic_credit_added": 0
+}

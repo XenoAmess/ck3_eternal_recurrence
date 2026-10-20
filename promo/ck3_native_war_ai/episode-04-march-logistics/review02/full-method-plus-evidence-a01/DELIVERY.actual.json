@@ -1,0 +1,171 @@
+{
+  "schema": "xar.e04.full-method-plus-independent-evidence-review-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:52:26.409889+00:00",
+  "task": "e04-full-review-media-20261020-a01",
+  "status": "FULL_LENGTH_REVIEW_MOVIE_NEW_BYTE_QA_PASSED_PENDING_HUMAN_1X_AND_SIGNOFF",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\E04-METHOD69-PLUS-INDEPENDENT-EVIDENCE-34m37s-REVIEW-a01.mp4",
+    "bytes": 101671823,
+    "sha256": "473ea068e33026de746954880e4388c88ac2b6731daa34a8a19c4d53446054d7"
+  },
+  "container_seconds": 2076.940104,
+  "video_frames": 62305,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "nominal_fps": "30/1",
+  "audio": {
+    "codec": "aac",
+    "sample_rate": 48000,
+    "channels": 2
+  },
+  "source_inputs": [
+    {
+      "id": "historical-method69",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+        "bytes": 89450267,
+        "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b"
+      },
+      "expected_frames_from_existing_QA": 58406
+    },
+    {
+      "id": "later-evidence-appendix",
+      "file": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\media\\work-a01\\E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4",
+        "bytes": 12222689,
+        "sha256": "74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00"
+      },
+      "expected_frames_from_existing_QA": 3899
+    }
+  ],
+  "source_identity_sha_evidence_reused": {
+    "retirement_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\D-TWO-WORK-MOVIES-RETIREMENT.actual.json",
+      "bytes": 3883,
+      "sha256": "1fb600fef18d3a2c3bbb9f51855ad297fdefb836a70aa45605f2e2dea7c31e2e"
+    },
+    "appendix_delivery": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\media\\DELIVERY.actual.json",
+      "bytes": 6672,
+      "sha256": "bb2ec602779ff832e54a6cf033ae6e0b6bfeb6eab3bb821d361576deb5f20715"
+    },
+    "new_task_repeated_old_body_hash_or_decode": false,
+    "new_task_actual_input_stat_and_stream_metadata_verified": true
+  },
+  "current_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "official_release": {
+    "query_argv": [
+      "gh",
+      "api",
+      "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+    ],
+    "tag": "v0.3.0",
+    "release_id": 415596198,
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+    "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+    "wheel_digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+  },
+  "interpreter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "installed_version": "0.3.0",
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+        "hashes": {
+          "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+    }
+  },
+  "assembly": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\ASSEMBLY.actual.json",
+    "bytes": 1358,
+    "sha256": "0fcabea537b6907717dc257af64fe69ff3e131352568a24ea258d5bc6d7d0cfb"
+  },
+  "qa": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\QA.actual.json",
+    "bytes": 8458,
+    "sha256": "7418cc9e123ea8d04160f6f9a28eed67f5f357181256884ab1bbe861659fa423"
+  },
+  "sparse_visual": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\SPARSE-VISUAL.actual.json",
+    "bytes": 1770,
+    "sha256": "ea2464931fb3601a1b755e384852e15cb2a396049890e75cbb937c3a440ad15f"
+  },
+  "native_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\run-a01\\run-manifest.json",
+    "bytes": 7604,
+    "sha256": "e5cdaddab5404f89a407f615de321ac6653f622f487d6d867c6957bc975cf875"
+  },
+  "pending_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\qa-a01\\pending-review\\PENDING-PACKAGE.actual.json",
+    "bytes": 3020,
+    "sha256": "f93a049233c585805371847b19c26007769abf700c196ced0d88cc17b4b97ade"
+  },
+  "native_authoring_validation": "passed",
+  "native_build_executed": false,
+  "CLI_external_material_preserve_executed": true,
+  "generic_audit_executed": false,
+  "review_CLI_plan_only": true,
+  "review_public_API_actual_executed": true,
+  "historical_method_unchanged": true,
+  "independent_replays_preserved": true,
+  "new_reviewable_full_movie_seconds": 2076.940104,
+  "new_source_footage_seconds": 0,
+  "new_full_AV_decode_runs": 1,
+  "old_input_QA_repeated": false,
+  "new_TTS_calls": 0,
+  "reencoded_original_video_frames": 0,
+  "continuous_clean": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit_added": 0,
+  "ABC_credit_added": 0,
+  "external_upload": false,
+  "owned_FFmpeg_processes_at_close": [],
+  "D_heavy_write_bytes": 0,
+  "game_or_screen_actions": 0,
+  "old_assets_changed_or_deleted": false,
+  "retention": {
+    "policy_version": "1.0.0",
+    "asset_id": "e04.full-method69-plus-independent-evidence.a01",
+    "replica_id": "desktop-3fevhd2-1c74096080:full-review-a01",
+    "owner_task": "e04-full-review-media-20261020-a01",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "e04-resume-20261020-a01/full-review-a01",
+    "relative_path": ".",
+    "category": "derived",
+    "state": "pending-human-review",
+    "closed_at_utc_or_null": "2026-10-20T02:52:26.409889+00:00",
+    "last_used_at_utc": "2026-10-20T02:52:26.409889+00:00",
+    "expires_at_utc": "2026-10-22T02:52:26.409889+00:00",
+    "protected_until_utc_or_null": "2026-10-22T02:52:26.409889+00:00",
+    "protection_reason_or_null": "Concrete full-length review movie and minimum exact recipe, QA and pending review awaiting parent review/integration",
+    "active_references": [
+      "Root E04 full-length review"
+    ],
+    "source_pins_or_recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\PLAN.actual.json",
+      "bytes": 2335,
+      "sha256": "9722f92ebc6b61df5ec63b286b5caccf1800f62f8f828af52861ae57158c49fe"
+    },
+    "availability": "local_verified",
+    "allocated_bytes_or_null": null
+  },
+  "storage": {
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01",
+    "aggregate_ceiling_bytes": 268435456,
+    "aggregate_before_final_record": 223079090,
+    "remaining_heavy_write_bytes": 0,
+    "C_volume": {
+      "total": 511133945856,
+      "used": 427498713088,
+      "free": 83635232768
+    }
+  }
+}

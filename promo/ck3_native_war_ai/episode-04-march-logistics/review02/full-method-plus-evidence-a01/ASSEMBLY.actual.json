@@ -1,0 +1,35 @@
+{
+  "schema": "xar.e04.full-review-assembly.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:47:30.230997+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\E04-METHOD69-PLUS-INDEPENDENT-EVIDENCE-34m37s-REVIEW-a01.mp4",
+    "bytes": 101671823,
+    "sha256": "473ea068e33026de746954880e4388c88ac2b6731daa34a8a19c4d53446054d7"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\FULL-REVIEW256-C-ADMISSION.actual-a01.json",
+    "bytes": 3421,
+    "sha256": "085a9402c6a1e49f6031b608e1be21e5b114b58e8ce7bd94e98a4963384f353f"
+  },
+  "input_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\INTAKE.actual.json",
+    "bytes": 18564,
+    "sha256": "6f04045425f15a971ec2d2976fde18c76d66988273e0a1d0a58f09505a8991d0"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\PLAN.actual.json",
+    "bytes": 2335,
+    "sha256": "9722f92ebc6b61df5ec63b286b5caccf1800f62f8f828af52861ae57158c49fe"
+  },
+  "status": "ASSEMBLED_STREAM_COPY_PENDING_NEW_BYTES_QA",
+  "full_native_build_executed": false,
+  "reencoded_video_frames": 0,
+  "new_TTS_calls": 0,
+  "old_input_QA_repeated": false,
+  "formal_dynamic_credit_added": 0,
+  "human_1x": false,
+  "human_signoff": false,
+  "uploaded": false,
+  "root_bytes": 101719539
+}

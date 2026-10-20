@@ -1,0 +1,64 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-e04-full-method-plus-evidence-review-a01",
+    "title": "战争四期：原方法版与独立实录补充审阅电影"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2400
+  },
+  "chapters": [
+    {
+      "id": "historical-method69",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "原方法审阅版：其状态属于历史录制"
+      },
+      "cues": [
+        {
+          "id": "historical-method69",
+          "narration": {
+            "zh-CN": "原方法审阅版：其状态属于历史录制"
+          },
+          "subtitles": {
+            "zh-CN": "原方法审阅版：其状态属于历史录制",
+            "en": "Historical method review: source-attempt status"
+          }
+        }
+      ]
+    },
+    {
+      "id": "later-evidence-appendix",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "后续独立实录补充章：四段独立回放"
+      },
+      "cues": [
+        {
+          "id": "later-evidence-appendix",
+          "narration": {
+            "zh-CN": "后续独立实录补充章：四段独立回放"
+          },
+          "subtitles": {
+            "zh-CN": "后续独立实录补充章：四段独立回放",
+            "en": "Later independent evidence appendix: separate replays"
+          }
+        }
+      ]
+    }
+  ]
+}

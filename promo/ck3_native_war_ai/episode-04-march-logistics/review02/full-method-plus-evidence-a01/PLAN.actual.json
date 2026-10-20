@@ -1,0 +1,65 @@
+{
+  "schema": "xar.e04.full-review-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:47:28.326441+00:00",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\FULL-REVIEW256-C-ADMISSION.actual-a01.json",
+    "bytes": 3421,
+    "sha256": "085a9402c6a1e49f6031b608e1be21e5b114b58e8ce7bd94e98a4963384f353f"
+  },
+  "intake": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\INTAKE.actual.json",
+    "bytes": 18564,
+    "sha256": "6f04045425f15a971ec2d2976fde18c76d66988273e0a1d0a58f09505a8991d0"
+  },
+  "implementation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\assemble.py",
+    "bytes": 8023,
+    "sha256": "d505fd9124121199fee944fd9415a2f89464d6f78465be5f03d36816f88fc0f0"
+  },
+  "mode": "public plan_concat/execute_render_plan external material followed by native CLI preserve",
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.EXE",
+    "-threads",
+    "1",
+    "-nostdin",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-n",
+    "-f",
+    "concat",
+    "-safe",
+    "0",
+    "-i",
+    "C:/ck3-e04-resume-20261020-a01/full-review-a01/work-a01/sources.ffconcat",
+    "-i",
+    "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\chapters.ffmetadata",
+    "-c",
+    "copy",
+    "-movflags",
+    "+faststart",
+    "-map",
+    "0:v:0",
+    "-map",
+    "0:a:0",
+    "-map_chapters",
+    "1",
+    "-map_metadata",
+    "1",
+    "C:/ck3-e04-resume-20261020-a01/full-review-a01/work-a01/movie.partial.mp4"
+  ],
+  "generated_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\sources.ffconcat",
+      "content": "file 'D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full69-typo-repair-a02/runs/review02-full69-typography-a02/artifacts/derived/sha256/8F/8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4'\nfile '../../media/work-a01/E04-ARMY-OBSERVATIONS-130s-REVIEW-DRAFT-a01.mp4'\n"
+    }
+  ],
+  "reencoding": false,
+  "new_TTS": false,
+  "expected_frames": 62305,
+  "estimated_container_seconds": 2076.940104,
+  "nominal_fps": 30,
+  "historical_method_status_is_not_rewritten": true,
+  "four_appendix_replays_are_not_one_causal_run": true
+}
