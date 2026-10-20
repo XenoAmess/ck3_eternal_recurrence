@@ -17,6 +17,7 @@ BOM = b"\xef\xbb\xbf"
 HOST_RELATIVE = "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
 SDK_PREFIX = "ck3_autonomous_player/src/"
 NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
+PROFILE_EXPANSION_RELATIVE = "tools/ck3_mod_acceptance_native_profile_expansions.json"
 TEST_PREFIX = "ck3_autonomous_player/tests/"
 CRITICAL_TRANSPORTS = frozenset({
     "player_pilgrimage_planner_private_transport.py", "player_pilgrimage_activities_private_transport.py",
@@ -31,7 +32,66 @@ EXTRA_CAPABILITIES = {
     "ck3_query_player_rite_governance_v1": ["XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1"],
     "ck3_select_ingame_decision_item_v1": ["XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1", "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1"],
     "ck3_confirm_ingame_decision_outcome_v1": ["XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1", "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1"],
+    "ck3_query_player_artifact_personal_use_v1": ["XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1"],
+    "ck3_submit_player_artifact_personal_use_v1": ["XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1"],
+    "ck3_query_player_artifact_personal_use_action_post_v1": ["XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1"],
+    "ck3_query_player_ghw_permissions_v1": ["XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1"],
+    "ck3_query_character_skill_effects_v1": ["XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1"],
+    "ck3_open_player_inventory_window_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
+    "ck3_query_player_inventory_window_open_post_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
+    "ck3_query_ingame_ui_window_v1": [],
+    "ck3_open_holy_site_window_v1": [],
+    "ck3_query_player_holy_site_creation_context_v1": ["XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1"],
+    "ck3_query_player_holy_site_relic_action_context_v1": [],
+    "ck3_query_player_holy_site_relic_context_v1": [],
+    "ck3_query_player_holy_site_relic_permissions_v1": [],
+    "ck3_open_holy_site_creation_window_v1": ["XAR_ENABLE_HOLY_SITE_CREATION_UI12004"],
+    "ck3_select_holy_site_creation_type_v1": ["XAR_ENABLE_HOLY_SITE_CREATION_UI12004"],
+    "ck3_select_holy_site_creation_barony_v1": ["XAR_ENABLE_HOLY_SITE_CREATION_UI12004"],
+    "ck3_set_holy_site_creation_artifact_selection_v1": ["XAR_ENABLE_HOLY_SITE_CREATION_UI12004"],
+    "ck3_select_holy_site_relic_artifact_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004"],
+    "ck3_set_holy_site_relic_slot_selection_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004"],
+    "ck3_enshrine_holy_site_relic_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004", "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004"],
+    "ck3_remove_holy_site_relic_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004", "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004"],
 }
+REGISTRATION_READ_ONLY_FLAGS = {
+    "ck3_query_player_holy_site_creation_context_v1": "allow_private_player_holy_site_creation_context_query",
+    "ck3_query_player_holy_site_relic_action_context_v1": "allow_private_player_holy_site_relic_action_context_query",
+    "ck3_query_player_holy_site_relic_permissions_v1": "allow_private_player_holy_site_relic_permissions_query",
+    "ck3_query_player_holy_site_relic_context_v1": "allow_private_player_holy_site_relic_context_query",
+    "ck3_query_player_holy_site_v1": "allow_private_player_holy_site_query",
+    "ck3_query_player_artifact_personal_use_v1": "allow_private_player_artifact_personal_use_query",
+    "ck3_query_player_ghw_permissions_v1": "allow_private_player_ghw_permissions_query",
+    "ck3_query_character_skill_effects_v1": "allow_private_character_skill_effects_query",
+}
+REGISTRATION_ACTION_FLAGS = {
+    "opt_in_player_pilgrimage_execution": "allow_private_player_pilgrimage_execution",
+    "opt_in_holy_site_creation_ui": "allow_private_player_holy_site_creation_ui",
+    "opt_in_holy_site_creation_create_once": "allow_private_player_holy_site_creation_create_once",
+    "opt_in_holy_site_relic_actions": "allow_private_holy_site_relic_actions",
+    "opt_in_player_artifact_personal_use_actions": "allow_private_player_artifact_personal_use_actions",
+    "opt_in_player_inventory_window_open": "allow_private_player_inventory_window_open",
+    "opt_in_player_rite_creation_actions": "allow_private_player_rite_creation_actions",
+}
+
+
+def registration_driver(case):
+    """Mirror existing public case/host permissions for factory listing only."""
+    class RegistrationOnlyDriver:
+        case_declared_read_only_mcp_tools = set(case.get("opt_in_read_only_mcp_tools", []))
+
+        def capabilities(self):
+            return {}
+
+        def take_snapshot(self):
+            raise RuntimeError("registration-only validation must never take a game snapshot")
+
+    driver = RegistrationOnlyDriver()
+    for tool, name in REGISTRATION_READ_ONLY_FLAGS.items():
+        setattr(driver, name, tool in driver.case_declared_read_only_mcp_tools)
+    for key, name in REGISTRATION_ACTION_FLAGS.items():
+        setattr(driver, name, case.get(key) is True)
+    return driver
 
 
 def require(value, message):
@@ -308,6 +368,114 @@ def qualified_execution_packets(ref, fixtures, snapshot_root, machine):
     return {"ref": ref, "folder": str(folder)}
 
 
+def profile_expansion_contract(value, refs, root, commit, machine, old_profile, profile):
+    """A flag change needs a source-reviewed contract plus exact actual receipts."""
+    if profile.get("flags") == old_profile.get("flags"):
+        return None
+    require(value.get("profile_expansion"),
+            "This public native refresh preserves the prior reviewed full feature profile; profile expansion needs separate review")
+    ref = checked(value["profile_expansion"])
+    actual = read(ref["path"])
+    require(actual.get("schema") == "ck3-native-profile-expansion-v1"
+            and actual.get("machine_id") == machine and actual.get("source_commit") == value["source_commit"]
+            and actual.get("actual_live_business_qualified") is False,
+            "Profile expansion must bind the actual final native compile commit and machine")
+    contract_ref = checked(actual["contract"])
+    contract_path = (root / PROFILE_EXPANSION_RELATIVE).resolve()
+    require(Path(contract_ref["path"]).resolve() == contract_path,
+            "Profile expansion contract must be the common committed source contract")
+    committed = subprocess.run(["git", "show", value["source_commit"] + ":" + PROFILE_EXPANSION_RELATIVE],
+                               cwd=root, capture_output=True, check=True).stdout
+    require(sig(committed) == {k: contract_ref[k] for k in ("bytes", "sha256")},
+            "Profile expansion contract differs from the actual native compile commit")
+    contract = read(contract_path)
+    require(contract.get("schema") == "ck3-native-profile-expansion-contract-v1"
+            and actual.get("contract_id") == contract.get("contract_id"), "Reviewed profile expansion contract identity differs")
+    checked(actual["previous_profile"])
+    require(read(actual["previous_profile"]["path"]) == old_profile
+            and old_profile.get("flags") == contract.get("before_flags"), "Profile expansion prior profile differs")
+    for name in ("profile", "snapshot", "configured_scope", "production_freeze"):
+        require(actual.get(name) == refs[name], "Profile expansion actual pin differs: " + name)
+    require(actual.get("fixture_results") == value.get("fixture_results"),
+            "Profile expansion finite execution pins differ")
+    expected = dict(old_profile["flags"])
+    changes = contract.get("flag_changes", {})
+    require(changes, "Empty profile expansion cannot authorize changed flags")
+    for name, change in changes.items():
+        before = change["before"]
+        require((name not in expected) if before is None else expected.get(name) == before,
+                "Reviewed profile expansion prior flag differs: " + name)
+        expected[name] = change["after"]
+    require(profile.get("flags") == expected, "Profile expansion changes flags outside the reviewed exact delta")
+    return {"ref": ref, "actual": actual, "contract": contract}
+
+
+def profile_expansion_scope(expansion, production, targets, snapshot_root, indexed, fixtures):
+    """Read actual File API bodies/macros; planned counts alone grant no credit."""
+    if expansion is None:
+        return
+    contract = expansion["contract"]
+    names = {row["name"]: key for key, row in targets.items()}
+
+    def compiled(target):
+        result = []
+        for src in target.get("sources", []):
+            if src.get("compileGroupIndex") is None:
+                continue
+            path = Path(src["path"])
+            path = path.resolve() if path.is_absolute() else (snapshot_root / path).resolve()
+            require(path.is_relative_to(snapshot_root), "Expanded profile TU escapes the frozen snapshot")
+            relative = path.relative_to(snapshot_root).as_posix()
+            require(relative in indexed, "Expanded profile TU is missing its actual source pin")
+            groups = target.get("compileGroups", [])
+            index = src["compileGroupIndex"]
+            require(type(index) is int and 0 <= index < len(groups), "Expanded profile TU compile group is missing")
+            defines = {row["define"] for row in groups[index].get("defines", [])}
+            result.append((relative, defines))
+        return result
+
+    actual_sources = {row["name"]: [relative for relative, _ in compiled(row)] for row in production.values()}
+    require({key: len(rows) for key, rows in actual_sources.items()} == contract["production_TUs"],
+            "Expanded profile production TU counts differ from reviewed contract")
+    require({key: sorted(rows) for key, rows in actual_sources.items()}
+            == {key: sorted(rows) for key, rows in contract["production_source_lists"].items()},
+            "Expanded profile production source bodies differ from reviewed contract")
+    for row in contract["production_macro_contracts"]:
+        matches = [defines for relative, defines in compiled(targets[names[row["target"]]])
+                   if relative == row["native_relative"]]
+        require(len(matches) == 1 and set(row["present"]) <= matches[0]
+                and not (set(row["absent"]) & {value.split("=", 1)[0] for value in matches[0]}),
+                "Expanded profile per-TU present/absent macros differ: " + row["native_relative"])
+    contracts = {row["target"]: row for row in contract["fixture_contracts"]}
+    require(set(contracts) == {row["target"] for row in fixtures} == set(contract["fixture_sources"]),
+            "Expanded profile exact reviewed finite target set differs")
+    bodies = set()
+    for name, row in contracts.items():
+        target = targets[names[name]]
+        sources = compiled(target)
+        require(len(sources) == row["translation_units"]
+                and sorted(relative for relative, _ in sources) == sorted(contract["fixture_sources"][name]),
+                "Expanded profile fixture source bodies differ: " + name)
+        for _, defines in sources:
+            require(set(row.get("required_defines", [])) <= defines
+                    and not (set(row.get("forbidden_defines", [])) & defines),
+                    "Expanded profile fixture compile definitions differ: " + name)
+        pending, closure = [names[name]], set()
+        while pending:
+            key = pending.pop()
+            if key in closure:
+                continue
+            closure.add(key)
+            pending.extend(dep["id"] for dep in targets[key].get("dependencies", []) if dep["id"] in targets)
+        require({targets[key]["name"] for key in closure} == set(row["dependency_targets"]),
+                "Expanded profile fixture dependency closure differs: " + name)
+        bodies.update(relative for relative, _ in sources)
+        bodies.update(contract.get("fixture_included_bodies", {}).get(name, []))
+    expected = {relative: indexed[relative] for relative in sorted(bodies)}
+    require(expansion["actual"].get("fixture_source_bindings") == expected,
+            "Expanded profile finite direct/included body pins differ from actual frozen source")
+
+
 def qualify_native(path, root, commit, machine, previous_dll, previous_manifest):
     value = read(path)
     native_commit = value.get("source_commit", "")
@@ -341,8 +509,7 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
     old_profile = previous_profile(previous_manifest, previous_dll)
     require(profile.get("machine_id") == machine and profile.get("repository_default_flags_changed") is False,
             "Actual machine-bound profile preserving repository defaults required")
-    require(profile.get("flags") == old_profile.get("flags"),
-            "This public native refresh preserves the prior reviewed full feature profile; profile expansion needs separate review")
+    expansion = profile_expansion_contract(value, refs, root, commit, machine, old_profile, profile)
     require(all(profile["flags"].get(flag) == "OFF" for flag in FORBIDDEN_OLD_FLAGS),
             "Old feast Start and unqualified cost helpers must stay OFF")
     for name in ("profile", "cmake"):
@@ -445,6 +612,7 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
         require(Path(row["executable"]["path"]).resolve() in artifact_paths(actual_targets[names[row["target"]]]),
                 "Fixture executable is not its actual configured artifact")
         zero_execution(row["execution"], machine, row["executable"])
+    profile_expansion_scope(expansion, production, actual_targets, snapshot_root, indexed, fixtures)
     binding = read(refs["defender_binding"]["path"])
     require(binding.get("machine_id") == machine and binding.get("status") == "verified"
             and binding.get("exact_executable_count") == len(fixtures), "Actual exact Defender setting readback required")
@@ -479,7 +647,7 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest)
     return {"qualification_ref": pin(path), "profile_ref": refs["profile"], "freeze_ref": refs["production_freeze"],
             "profile": profile, "old_profile": old_profile, "dll": refs["published_dll"],
             "native_files": native_files, "snapshot_root": str(snapshot_root), "compile_commit": native_commit,
-            "execution_wire": execution_wire}
+            "execution_wire": execution_wire, "profile_expansion": expansion["ref"] if expansion else None}
 
 
 def project_host(root, old_host, old_runtime, new_runtime, source_files):
@@ -718,18 +886,8 @@ def main(argv=None):
     import asyncio
     from xar_autoplayer.bridge.mcp_server import create_server
 
-    class RegistrationOnlyDriver:
-        case_declared_read_only_mcp_tools = set(selection.case.get("opt_in_read_only_mcp_tools", []))
-        allow_private_player_pilgrimage_execution = selection.case.get("opt_in_player_pilgrimage_execution") is True
-
-        def capabilities(self):
-            return {}
-
-        def take_snapshot(self):
-            raise RuntimeError("registration-only validation must never take a game snapshot")
-
     async def registered_names():
-        return {row.name for row in await create_server(RegistrationOnlyDriver()).list_tools()}
+        return {row.name for row in await create_server(registration_driver(selection.case)).list_tools()}
 
     registered = asyncio.run(registered_names())
     require(needed <= registered, "Actual global MCP factory does not register required case tools: " + str(sorted(needed - registered)))

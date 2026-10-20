@@ -432,5 +432,237 @@ class QualifiedNativeConsumer(unittest.TestCase):
             builder.check_index_only_changes(self.root, ['tools/g2_saved_campaign/actual_dependency.py'])
 
 
+class ProfileExpansionConsumer(unittest.TestCase):
+    """Owned files test profile expansion through the real public consumer."""
+    put = QualifiedNativeConsumer.put
+    flush = QualifiedNativeConsumer.flush
+    consume = QualifiedNativeConsumer.consume
+    tearDown = QualifiedNativeConsumer.tearDown
+
+    def setUp(self):
+        QualifiedNativeConsumer.setUp(self)
+        reviewed = builder.read(HERE / 'ck3_mod_acceptance_native_profile_expansions.json')
+        self.new_flags = list(reviewed['flag_changes'])
+        self.profile['flags'].update({name: 'ON' for name in self.new_flags})
+        self.targets[0]['compileGroups'] = [{'defines': [{'define': name + '=1'} for name in self.new_flags]}]
+        self.targets[1]['compileGroups'] = [{'defines': []}]
+        self.targets[2].update({'sources': [{'path': 'src/dll.cpp', 'compileGroupIndex': 0}],
+                                'compileGroups': [{'defines': [{'define': 'XAR_B11_PROFILE_MASK=0'}]}],
+                                'dependencies': [{'id': 'protocol'}]})
+        self.contract = {'schema': 'ck3-native-profile-expansion-contract-v1', 'contract_id': 'owned-five-gate-test',
+            'before_flags': {flag: 'OFF' for flag in builder.FORBIDDEN_OLD_FLAGS},
+            'flag_changes': {name: {'before': None, 'after': 'ON'} for name in self.new_flags},
+            'production_TUs': {'xar_ck3_bridge': 1, 'xar_bridge_protocol': 1},
+            'production_source_lists': {'xar_ck3_bridge': ['src/dll.cpp'], 'xar_bridge_protocol': ['src/protocol.cpp']},
+            'production_macro_contracts': [{'target': 'xar_ck3_bridge', 'native_relative': 'src/dll.cpp',
+                'present': [name + '=1' for name in self.new_flags], 'absent': ['XAR_OWNED_UNDEFINED']}],
+            'fixture_contracts': [{'target': 'finite_fixture', 'translation_units': 1,
+                'dependency_targets': ['finite_fixture', 'xar_bridge_protocol'],
+                'required_defines': ['XAR_B11_PROFILE_MASK=0']}],
+            'fixture_sources': {'finite_fixture': ['src/dll.cpp']},
+            'fixture_included_bodies': {'finite_fixture': ['src/protocol.cpp']}}
+        contract_path = self.root / builder.PROFILE_EXPANSION_RELATIVE
+        contract_path.parent.mkdir(parents=True)
+        contract_path.write_bytes(builder.encoded(self.contract))
+        self.git('add', '.')
+        self.git('-c', 'user.name=finite-consumer', '-c', 'user.email=finite@example.invalid',
+                 'commit', '-qm', 'reviewed owned profile expansion')
+        self.commit = self.git('rev-parse', 'HEAD')
+        self.snapshot['root_commit'] = self.commit
+        self.expand_flush()
+
+    def git(self, *args):
+        return subprocess.run(['git', *args], cwd=self.root, capture_output=True, text=True, check=True).stdout.strip()
+
+    def expand_flush(self):
+        self.flush()
+        self.expansion = {'schema': 'ck3-native-profile-expansion-v1', 'machine_id': MACHINE,
+            'source_commit': self.commit, 'actual_live_business_qualified': False,
+            'contract_id': self.contract['contract_id'], 'contract': builder.pin(self.root / builder.PROFILE_EXPANSION_RELATIVE),
+            'previous_profile': builder.pin(self.base / 'old-profile.json'),
+            **{name: self.qualification[name] for name in ('profile', 'snapshot', 'configured_scope', 'production_freeze')},
+            'fixture_results': self.qualification['fixture_results'],
+            'fixture_source_bindings': {name: builder.pin(self.snapshot_root / name)
+                                        for name in ('src/dll.cpp', 'src/protocol.cpp')}}
+        self.save_expansion()
+
+    def save_expansion(self):
+        self.qualification['profile_expansion'] = self.put('profile-expansion', self.expansion)
+        self.qualification_path = Path(self.put('qualification', self.qualification)['path'])
+
+    def test_reviewed_expansion_real_consumer_accepts(self):
+        result = self.consume()
+        self.assertEqual(result['profile_expansion'], self.qualification['profile_expansion'])
+        self.assertEqual(len(result['native_files']), 2)
+
+    def test_missing_actual_expansion_is_rejected(self):
+        self.qualification.pop('profile_expansion')
+        self.qualification_path = Path(self.put('qualification', self.qualification)['path'])
+        with self.assertRaisesRegex(ValueError, 'preserves the prior reviewed'):
+            self.consume()
+
+    def test_sixth_unreviewed_flag_is_rejected(self):
+        self.profile['flags']['XAR_OWNED_EXTRA'] = 'ON'
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'outside the reviewed exact delta'):
+            self.consume()
+
+    def test_wrong_machine_or_compile_identity_is_rejected(self):
+        self.expansion['source_commit'] = '0' * 40
+        self.save_expansion()
+        with self.assertRaisesRegex(ValueError, 'native compile commit and machine'):
+            self.consume()
+
+    def test_contract_must_be_in_actual_compile_commit(self):
+        path = self.root / builder.PROFILE_EXPANSION_RELATIVE
+        path.write_bytes(path.read_bytes() + b'\n')
+        self.expansion['contract'] = builder.pin(path)
+        self.save_expansion()
+        with self.assertRaisesRegex(ValueError, 'differs from the actual native compile commit'):
+            self.consume()
+
+    def test_actual_scope_pin_cannot_be_substituted(self):
+        self.expansion['configured_scope'] = self.expansion['profile']
+        self.save_expansion()
+        with self.assertRaisesRegex(ValueError, 'actual pin differs: configured_scope'):
+            self.consume()
+
+    def test_production_source_change_with_same_count_is_rejected(self):
+        self.targets[0]['sources'][0]['path'] = 'src/protocol.cpp'
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'production source bodies differ'):
+            self.consume()
+
+    def test_missing_new_production_macro_is_rejected(self):
+        self.targets[0]['compileGroups'][0]['defines'].pop()
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'per-TU present/absent macros differ'):
+            self.consume()
+
+    def test_zero_valued_macro_is_still_defined(self):
+        self.targets[0]['compileGroups'][0]['defines'].append({'define': 'XAR_OWNED_UNDEFINED=0'})
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'per-TU present/absent macros differ'):
+            self.consume()
+
+    def test_fixture_body_change_with_same_count_is_rejected(self):
+        self.targets[2]['sources'][0]['path'] = 'src/protocol.cpp'
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'fixture source bodies differ'):
+            self.consume()
+
+    def test_fixture_mask_must_be_actual_compile_definition(self):
+        self.targets[2]['compileGroups'][0]['defines'] = [{'define': 'XAR_B11_PROFILE_MASK=1'}]
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'fixture compile definitions differ'):
+            self.consume()
+
+    def test_fixture_actual_dependency_closure_is_required(self):
+        self.targets[2]['dependencies'] = []
+        self.expand_flush()
+        with self.assertRaisesRegex(ValueError, 'fixture dependency closure differs'):
+            self.consume()
+
+    def test_included_body_pin_cannot_be_omitted(self):
+        self.expansion['fixture_source_bindings'].pop('src/protocol.cpp')
+        self.save_expansion()
+        with self.assertRaisesRegex(ValueError, 'direct/included body pins differ'):
+            self.consume()
+
+    def test_later_metadata_commit_keeps_actual_native_commit(self):
+        native_commit = self.commit
+        (self.root / 'metadata.txt').write_text('owned metadata only', encoding='utf-8')
+        self.git('add', '.')
+        self.git('-c', 'user.name=finite-consumer', '-c', 'user.email=finite@example.invalid',
+                 'commit', '-qm', 'owned descendant metadata')
+        self.commit = self.git('rev-parse', 'HEAD')
+        result = self.consume()
+        self.assertEqual(result['compile_commit'], native_commit)
+        self.assertNotEqual(result['compile_commit'], self.commit)
+
+
+class CapabilityRegistrationConsumer(unittest.TestCase):
+    """List the actual common MCP factory; invoke no game or business method."""
+    FIRST_FOUR = {
+        'required_mcp_tools': [
+            'ck3_enshrine_holy_site_relic_v1', 'ck3_get_capabilities', 'ck3_observe_normal_exit_v1',
+            'ck3_open_holy_site_creation_window_v1', 'ck3_open_holy_site_window_v1', 'ck3_open_player_inventory_window_v1',
+            'ck3_query_campaign_root_context_v1', 'ck3_query_character_skill_effects_v1',
+            'ck3_query_current_event_window_context_v1', 'ck3_query_ingame_ui_window_v1', 'ck3_query_normal_exit_context_v1',
+            'ck3_query_pending_character_interaction_context_v1', 'ck3_query_player_artifact_personal_use_action_post_v1',
+            'ck3_query_player_artifact_personal_use_v1', 'ck3_query_player_holy_site_creation_context_v1',
+            'ck3_query_player_holy_site_relic_action_context_v1', 'ck3_query_player_holy_site_relic_context_v1',
+            'ck3_query_player_holy_site_relic_permissions_v1', 'ck3_query_player_holy_site_v1',
+            'ck3_query_player_inventory_window_open_post_v1', 'ck3_query_player_religion_context_v1',
+            'ck3_remove_holy_site_relic_v1', 'ck3_reply_pending_character_interaction', 'ck3_request_normal_exit_v1',
+            'ck3_select_event_option', 'ck3_select_holy_site_creation_barony_v1', 'ck3_select_holy_site_creation_type_v1',
+            'ck3_select_holy_site_relic_artifact_v1', 'ck3_set_holy_site_creation_artifact_selection_v1',
+            'ck3_set_holy_site_relic_slot_selection_v1', 'ck3_submit_player_artifact_personal_use_v1', 'ck3_take_snapshot'],
+        'opt_in_read_only_mcp_tools': [
+            'ck3_query_character_skill_effects_v1', 'ck3_query_player_artifact_personal_use_v1',
+            'ck3_query_player_holy_site_creation_context_v1', 'ck3_query_player_holy_site_relic_action_context_v1',
+            'ck3_query_player_holy_site_relic_context_v1', 'ck3_query_player_holy_site_relic_permissions_v1',
+            'ck3_query_player_holy_site_v1', 'ck3_query_player_religion_context_v1'],
+        'opt_in_holy_site_creation_ui': True, 'opt_in_holy_site_relic_actions': True,
+        'opt_in_player_artifact_personal_use_actions': True, 'opt_in_player_inventory_window_open': True,
+    }
+    GHW = {
+        'required_mcp_tools': [
+            'ck3_get_capabilities', 'ck3_inspect_gui_window_tree_v1', 'ck3_observe_normal_exit_v1',
+            'ck3_open_ingame_decisions_v1', 'ck3_query_current_event_window_context_v1',
+            'ck3_query_ingame_decision_item_v1', 'ck3_query_normal_exit_context_v1',
+            'ck3_query_player_ghw_permissions_v1', 'ck3_query_player_holy_site_v1',
+            'ck3_query_player_pilgrimage_activities_v1', 'ck3_query_player_religion_context_v1',
+            'ck3_query_player_rite_governance_v1', 'ck3_request_normal_exit_v1', 'ck3_select_event_option',
+            'ck3_select_ingame_decision_item_v1', 'ck3_take_snapshot'],
+        'opt_in_read_only_mcp_tools': ['ck3_query_player_ghw_permissions_v1', 'ck3_query_player_holy_site_v1',
+            'ck3_query_player_pilgrimage_activities_v1', 'ck3_query_player_religion_context_v1',
+            'ck3_query_player_rite_governance_v1'],
+    }
+
+    @staticmethod
+    def registered(case):
+        import asyncio
+        sys.path.insert(0, str(HERE.parent / 'ck3_autonomous_player/src'))
+        from xar_autoplayer.bridge.mcp_server import create_server
+
+        async def names():
+            return {row.name for row in await create_server(builder.registration_driver(case)).list_tools()}
+        return asyncio.run(names())
+
+    def test_actual_factory_lists_all_first_four_32_tools(self):
+        self.assertEqual(len(self.FIRST_FOUR['required_mcp_tools']), 32)
+        self.assertLessEqual(set(self.FIRST_FOUR['required_mcp_tools']), self.registered(self.FIRST_FOUR))
+
+    def test_actual_factory_lists_ghw_16_and_optional_hof_confirm(self):
+        self.assertLessEqual(set(self.GHW['required_mcp_tools']), self.registered(self.GHW))
+        self.assertIn('ck3_confirm_ingame_decision_outcome_v1', self.registered(self.GHW))
+        self.assertFalse(builder.registration_driver(self.GHW).allow_private_player_artifact_personal_use_actions)
+
+    def test_undeclared_new_features_remain_unregistered(self):
+        names = self.registered({})
+        for tool in ('ck3_submit_player_artifact_personal_use_v1', 'ck3_query_player_artifact_personal_use_action_post_v1',
+                     'ck3_query_player_artifact_personal_use_v1', 'ck3_query_player_ghw_permissions_v1',
+                     'ck3_query_character_skill_effects_v1', 'ck3_open_player_inventory_window_v1',
+                     'ck3_query_player_inventory_window_open_post_v1'):
+            self.assertNotIn(tool, names)
+
+    def test_read_only_declaration_does_not_enable_artifact_action(self):
+        case = {'opt_in_read_only_mcp_tools': ['ck3_query_player_artifact_personal_use_v1']}
+        names = self.registered(case)
+        self.assertIn('ck3_query_player_artifact_personal_use_v1', names)
+        self.assertNotIn('ck3_submit_player_artifact_personal_use_v1', names)
+        self.assertNotIn('ck3_query_player_artifact_personal_use_action_post_v1', names)
+
+    def test_selected_new_capability_rules_cover_exact_five_flags(self):
+        reviewed = builder.read(HERE / 'ck3_mod_acceptance_native_profile_expansions.json')
+        new_tools = ['ck3_submit_player_artifact_personal_use_v1', 'ck3_query_player_artifact_personal_use_action_post_v1',
+                     'ck3_query_player_artifact_personal_use_v1', 'ck3_query_player_ghw_permissions_v1',
+                     'ck3_query_character_skill_effects_v1', 'ck3_open_player_inventory_window_v1',
+                     'ck3_query_player_inventory_window_open_post_v1']
+        self.assertEqual({flag for tool in new_tools for flag in builder.EXTRA_CAPABILITIES[tool]},
+                         set(reviewed['flag_changes']))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
