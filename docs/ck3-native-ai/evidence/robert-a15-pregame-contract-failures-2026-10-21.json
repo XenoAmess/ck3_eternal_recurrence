@@ -1,0 +1,108 @@
+{
+  "schema": "xar.ck3.A15-preGame-contract-failure-source-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T21:19:29.413958+00:00",
+  "status": "ACTUAL_TASK_FAILED_BEFORE_GAME_SDK_RECORDER",
+  "saved_progress": {
+    "days": 5429,
+    "target_days": 10950,
+    "complete_cycles": 4753,
+    "G2_complete": 6,
+    "G2_total": 8,
+    "new_days": 0,
+    "new_cycles": 0
+  },
+  "actual_failure": {
+    "supervisor_stage_line": 808,
+    "reason": "screen admission argv outside fresh runtime",
+    "Task_child_exit": 1,
+    "Task_bootstrap_exit": 1,
+    "Job_active_final": 0,
+    "forced_cleanup": false,
+    "Task_absent": true,
+    "Game_created": false,
+    "SDK_started": false,
+    "recorder_started": false,
+    "screen_released": true
+  },
+  "additional_pure_preflight_findings": [
+    {
+      "producer": "Root screen receipt",
+      "actual_field": "task_sequence",
+      "required_field": "sequence",
+      "consumer_lines": [
+        836,
+        885,
+        903,
+        914
+      ]
+    },
+    {
+      "producer": "A15 supervisor derive",
+      "function": "_validate_a12_attempt",
+      "live_sequence_guard": 10538,
+      "required_live_sequence": 10541,
+      "historical_10538_facts_preserved": true
+    },
+    {
+      "producer": "prepare_source28_a15_cold_union_v1._carry",
+      "actual_literal_value": "sha256 string",
+      "required_literal_value": "tuple[int,str] (bytes,sha256)",
+      "consumer": "root_c23_canonical_outer._check_c23_external_imports",
+      "policy_external_ExactRef_map_is_separate_and_correct": true
+    }
+  ],
+  "plan01_persistence_correction": {
+    "qualification01_only_memory_dict": true,
+    "actual_JSON_replay_failed": true,
+    "U15_writes_from01": 0,
+    "historical_source_ref": {
+      "bytes": 40322,
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source28_a15_cold_union_v1.py",
+      "sha256": "69211a79b751b79d51bc6922b7db8a9261b3a2fc27733c9a6e64f54468b05216"
+    },
+    "historical_source_currently_readable": false,
+    "plan02_disk_roundtrip_reverse_keys_and144_readback_passed": true
+  },
+  "sources": {
+    "Task_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-supervisor-a15\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "e7f387374b684a14641a7c484b97a188624eb3666f6bbbf2184c7cb42afd44be"
+    },
+    "Task_stderr": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-supervisor-a15\\stage.stderr.log",
+      "bytes": 658,
+      "sha256": "db9514324081631e634ade7520940616a1ac74d49a3b88492e59b6eb7f313f20"
+    },
+    "actual_preGame_closure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a15\\ROOT-A15-PREGAME-FAILURE-CLOSURE01.json",
+      "bytes": 2193,
+      "sha256": "737eaaaa0b7aaf98a355b1576e188cb1f0b316beb577ff73a6249b5ea38ae750"
+    },
+    "actual_screen_release": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a15\\ROOT-A15-SCREEN-RELEASE01.json",
+      "bytes": 2182,
+      "sha256": "c4201010752a11a6322b1cfc95113b2d0f70360b735279f9eb0ff44346de8379"
+    },
+    "prepared": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\A15-PREPARED01.json",
+      "bytes": 45212,
+      "sha256": "5f4552b60194828e4e9b34e74a7174da8ba5b3741be1209945f1a4231c3e7de9"
+    },
+    "adopted_plan02": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\source28-a15-prep01\\A15-COLD-PLAN02.json",
+      "bytes": 3609,
+      "sha256": "4b3e3f0520fa64fb86bed1e66cb7b80f9ec2ac0263699f844a5981c8df3f170a"
+    }
+  },
+  "qualification_limits": {
+    "A15_runtime_contract_qualified": false,
+    "candidate_retry02_actual_runtime_not_yet_written": true,
+    "newGame_native_business_credit": false,
+    "performance_target_achieved": false,
+    "public_CI_for_this_record": false
+  },
+  "wall_clock_origin_utc": "2026-10-19T03:26:49.420926Z",
+  "wall_clock_reset": false
+}
