@@ -1,0 +1,40 @@
+{
+  "schema": "xar.e04.complete-runtime-source-swap.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:39:42.041199+00:00",
+  "previous_head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+  "requested_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "actual_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "actual_branch": "",
+  "dirty_porcelain": "",
+  "actual_native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+  "runtime_archive_tag": "archive/war-e04-r08-runtime-20261020-bc638",
+  "archive_remote_peeled_commit": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "checkout_original_wait": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T14:39:41.597687+00:00",
+    "started_at_utc": "2026-10-20T14:39:41.051862+00:00",
+    "argv": [
+      "git",
+      "-C",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "switch",
+      "--detach",
+      "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    ],
+    "pid": 432,
+    "actual_original_popen_wait": true,
+    "returncode": 0
+  },
+  "owned_process_census_before": [],
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\D-BC638-EXACT-DETACHED-SOURCE-CHECKOUT-24M.actual-a01.json",
+    "bytes": 4994,
+    "sha256": "1d8ca59a481c599eb22df4ea52fea43ce7c99e24f23b35b89d9ea89ff15dc5f2"
+  },
+  "published_master_at_choice": "f960a1b4b46efa5359e403c9d308b2a808a2f7d0",
+  "master_native_tree_not_claimed_compiled": true,
+  "compiled_native_qualification_inferred": false,
+  "game_launched": false,
+  "old_run_or_evidence_rewritten": false
+}

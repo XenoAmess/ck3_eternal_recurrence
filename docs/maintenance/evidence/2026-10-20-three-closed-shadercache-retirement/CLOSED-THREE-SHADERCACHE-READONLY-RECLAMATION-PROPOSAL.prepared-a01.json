@@ -1,0 +1,219 @@
+{
+  "schema": "xar.e04.closed-profile-shadercache-rebuildable-proposal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:44:41.480029+00:00",
+  "execution_admitted": false,
+  "deletion_performed": false,
+  "source_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "current_scope_deadline_utc": "2026-10-20T14:45:00Z",
+  "policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+    "bytes": 17121,
+    "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "parameters": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_asset_registry": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "matching_current_machine_permanent_assets": 0,
+  "candidate_selection": "Only exact regular single-link .scache and .bin files in the three named closed profile shadercache roots. Not directory deletion. Each manifest batch <=1000 files.",
+  "candidate_sets": [
+    {
+      "run": "R0222",
+      "cache_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\profile\\shadercache",
+      "files": 3856,
+      "logical_bytes": 155352351,
+      "allocated_unique_bytes": 164062080,
+      "batch_count": 4,
+      "settings": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "scene_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R0222-ADMIN-NORMAL-CLOSED-DAY0-FAILED-SETTLEMENT.actual-a01.json",
+        "bytes": 8209,
+        "sha256": "e21c70ace5b345dea8ad311f77d1761f4822d4cee68564e617a64549bce006ff"
+      },
+      "inventory_uncompressed_bytes": 359706,
+      "inventory_uncompressed_metadata_sha256": "bcfbc7b330625a17486fe1f938843de504d9580ac1289e0f33ecd5fefa3e584d",
+      "inventory_compressed_bytes": 70471,
+      "inventory_path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\R0222-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+      "inventory": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\R0222-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+        "bytes": 70471,
+        "sha256": "91cfbea600b50d43c54c341d0356a88b6f9ebb10e0978a12575b7e7607c4b2c7"
+      }
+    },
+    {
+      "run": "R0221",
+      "cache_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01\\profile\\shadercache",
+      "files": 3916,
+      "logical_bytes": 159398340,
+      "allocated_unique_bytes": 168246016,
+      "batch_count": 4,
+      "settings": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "scene_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-NORMAL-CLOSED-CONSUMER-ERROR-SETTLEMENT.actual-a01.json",
+        "bytes": 15252,
+        "sha256": "86b4555b4bcf098a5e54a6409b515ea630e9b589cd7f901a4bbdb6b7200985a8"
+      },
+      "inventory_uncompressed_bytes": 365874,
+      "inventory_uncompressed_metadata_sha256": "fbf8a532b9250ad8f8ad949432e055cafcb0a10452a0fcb5f22ad6c3de001b15",
+      "inventory_compressed_bytes": 73041,
+      "inventory_path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\R0221-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+      "inventory": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\R0221-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+        "bytes": 73041,
+        "sha256": "444fa9b3037c679c6f8016aa9acf1117ae30280a2dc771a7bda7658c245fafe3"
+      }
+    },
+    {
+      "run": "R0220",
+      "cache_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01\\profile\\shadercache",
+      "files": 3916,
+      "logical_bytes": 159398340,
+      "allocated_unique_bytes": 168246016,
+      "batch_count": 4,
+      "settings": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "scene_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-NORMAL-CLOSED-SOURCE-EXPIRED-SETTLEMENT.actual-a01.json",
+        "bytes": 13503,
+        "sha256": "07861cf82999b66c16f2a3c1fbcd641c3308f1dc45a398b52834af6be688523d"
+      },
+      "inventory_uncompressed_bytes": 366303,
+      "inventory_uncompressed_metadata_sha256": "c77c074470fce77dbf450099ff10949c861e57111bbaf2f8b8c9a5cd7db8fb40",
+      "inventory_compressed_bytes": 72858,
+      "inventory_path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\R0220-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+      "inventory": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\R0220-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+        "bytes": 72858,
+        "sha256": "789a545f53419d97d138b0cec147651582b0dd20b93d0cb4e8ad0ce93cc45e27"
+      }
+    }
+  ],
+  "candidate_logical_bytes": 474149031,
+  "candidate_unique_allocated_bytes": 500554112,
+  "payload_SHA_unknown_preserved": true,
+  "no_content_identity_or_cross_profile_duplicate_claim": true,
+  "active_scene_native_future_bytes": 0,
+  "next_scene_1GiB_alone_after_current_C_future_closes_deficit_bytes": 310412486,
+  "next_scene_plus_new128MiB_metadata_after_current_C_future_closes_deficit_bytes": 444630214,
+  "current_fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T14:44:40.782645+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78147710976,
+      "available_to_caller_bytes": 78147710976,
+      "total_free_bytes": 78147710976,
+      "entire_volume_used_allocation_upper_bound_bytes": 432986234880,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T14:44:40.782645+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21647601664,
+      "available_to_caller_bytes": 21647601664,
+      "total_free_bytes": 21647601664,
+      "entire_volume_used_allocation_upper_bound_bytes": 478442405888,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "current_active_balances": {
+    "known_future": {
+      "C:/": 2097152,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-offline-1445-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "current_budget": {
+    "C_known_future_bytes": 2097152,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25814033606,
+    "C_floor_margin_bytes": 52333677370,
+    "C_projected_whole_volume_upper_bound_bytes": 437325432006,
+    "C_quota_margin_bytes": 761232186,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 38547456
+  },
+  "rebuild_recipe": {
+    "game_dir": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+    "runtime_manifest_reference": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\manifest.json",
+      "bytes": 3168,
+      "sha256": "0e5dbd2508526e0f81359d206fdcbe5cfb37e73ca55a927c4424c3d5cb514f8e"
+    },
+    "render_configuration_pins": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a04\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      }
+    ],
+    "method": "A separately admitted future stock CK3 launch of this game/build with retained rendering settings recompiles its DX11 shaders from retained installed game shader/assets. Keep game inputs and settings. Rebuilt cache files are new derived bytes, not replacement original evidence.",
+    "not_performed_in_this_proposal": true
+  },
+  "current_use_assessment": "R0220 source-admission timeout, R0221 consumer proof-size failure, R0222 import/sampling preadmission failure are preserved in typed/raw evidence. No diagnosed graphics/compiler-cache issue requires these cache bodies. The three runs are actually closed and future reuse uses immutable normal Mar31 S0 outside these caches, not an admitted reuse of these profiles.",
+  "policy_basis": "Rebuildable/superseded derived may be proposed for early expiry; mtime alone is not authority. Existing finite profile protection requires Root to shrink protection only for these exact intermediate caches before execution.",
+  "needed_before_any_execution": "New explicit Root exact authorization; fresh references/permanent registry/retention and no-writer check; per-file resolved-root, reliable OS identity and exclusive handle; changed/locked/unknown file skips; retain compact receipts and original-unreadable truth; measure actual volume free after each batch. No force, ACL changes, wildcard or tree delete.",
+  "exclusive_handles_not_acquired_by_this_readonly_proposal": true,
+  "logical_or_allocated_bytes_are_not_promised_physical_release": true,
+  "physical_or_unused_credit_bytes": 0,
+  "candidate_review_at_utc": "2026-10-20T16:00:00Z",
+  "automatic_renewal": false
+}

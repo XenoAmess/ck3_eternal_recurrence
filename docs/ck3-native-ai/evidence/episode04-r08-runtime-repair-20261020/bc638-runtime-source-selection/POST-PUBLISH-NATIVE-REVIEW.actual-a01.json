@@ -1,0 +1,591 @@
+{
+  "schema": "xar.e04.r0222-post-publish-native-git-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:34:58.263109+00:00",
+  "actual_D": {
+    "head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+    "native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+    "clean": true,
+    "checkout_performed": false
+  },
+  "published": {
+    "head": "fe7711cfce559fbac25062b415d854c850141b51",
+    "native_tree": "d6228503994d43b153041c5824cc0f9f41c698a1"
+  },
+  "compiled_main": {
+    "head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e"
+  },
+  "complete_native_diff": [
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake",
+      "before": {
+        "mode": "100644",
+        "blob": "383f6913aa4a251fade1fae8c70ece513e9673ee",
+        "bytes": 3916
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "c8efc0d056299da69366b848b8a44a4d553a7324",
+        "bytes": 5012
+      }
+    },
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_holy_site_adoption_detail.hpp",
+      "before": {
+        "mode": "100644",
+        "blob": "6dbba13b0791bd14bb0b9d370915d3ce25b83923",
+        "bytes": 6073
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "06ae3b9255c5e752b873eed9f62a081faf353fe9",
+        "bytes": 6278
+      }
+    },
+    {
+      "status": "A",
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/knight_stat_context_source12004.hpp",
+      "before": null,
+      "after": {
+        "mode": "100644",
+        "blob": "8de18d2810fad3854ee1b20d17d5b657f15238fc",
+        "bytes": 695
+      }
+    },
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_native.inc",
+      "before": {
+        "mode": "100644",
+        "blob": "407a2d296e8769ce2634615ad8d25053e620e80b",
+        "bytes": 3559
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "6ba2aef026a79aa3f5e3454609aa6cabd29ca62d",
+        "bytes": 4133
+      }
+    },
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_adoption_detail.cpp",
+      "before": {
+        "mode": "100644",
+        "blob": "9413abb9050f9487feee598a19e5e27744c49bf4",
+        "bytes": 31876
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "99c1ccb3af5197e6e2fca488808dba7cd9a01b5a",
+        "bytes": 33693
+      }
+    },
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_adoption_detail_json.cpp",
+      "before": {
+        "mode": "100644",
+        "blob": "d2d0f1fd2e0450e1db2c93cf083e925c58c070de",
+        "bytes": 9717
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "72559325d55606f31fc25456038e823e1db96230",
+        "bytes": 10177
+      }
+    },
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_adoption_detail_test.cpp",
+      "before": {
+        "mode": "100644",
+        "blob": "8226fcb36e23452b7316644f11a15e93be0adb1c",
+        "bytes": 34406
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "4d08f5e7bb35553766cf002bd434738c900131d1",
+        "bytes": 40920
+      }
+    },
+    {
+      "status": "M",
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_knight_stat_consumption.cpp",
+      "before": {
+        "mode": "100644",
+        "blob": "f20042e3569f29f46b578404a9da128443ff5ed7",
+        "bytes": 35110
+      },
+      "after": {
+        "mode": "100644",
+        "blob": "2f77a9fa0186b52a7d4cc47e5d09c8f0b87cb0f6",
+        "bytes": 41035
+      }
+    },
+    {
+      "status": "A",
+      "path": "ck3_autonomous_player/native_bridge/tests/knight_installed_context_source12004_fixture.cpp",
+      "before": null,
+      "after": {
+        "mode": "100644",
+        "blob": "d960eade2a21119152997bed7a700b8f0c52e88c",
+        "bytes": 12436
+      }
+    }
+  ],
+  "complete_source_and_public_diff": {
+    "scopes": [
+      "ck3_autonomous_player/native_bridge",
+      "ck3_autonomous_player/src",
+      "tools",
+      ".github"
+    ],
+    "name_status": [
+      [
+        "M",
+        ".github/workflows/static-ci.yml"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_holy_site_adoption_detail.hpp"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/native_bridge/include/xar_bridge/knight_stat_context_source12004.hpp"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_native.inc"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_adoption_detail.cpp"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_adoption_detail_json.cpp"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_adoption_detail_test.cpp"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/native_bridge/src/ck3_12004_knight_stat_consumption.cpp"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/native_bridge/tests/knight_installed_context_source12004_fixture.cpp"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_clock_failure_diagnostic_v1.py"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_clock_wait_progress_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_item_contract.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_tool_result_contract_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_origin_v1.py"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_projection_service_contract_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/tactical_clock_diagnostics_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/holy_site_episode02_research.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/src/xar_autoplayer/reused_sway_opportunity_v1.py"
+      ],
+      [
+        "A",
+        "ck3_autonomous_player/src/xar_autoplayer/selected_decision_terms_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/strategy.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py"
+      ],
+      [
+        "M",
+        "ck3_autonomous_player/src/xar_autoplayer/war_strategic_reserve_v1.py"
+      ],
+      [
+        "M",
+        "tools/ck3_mod_acceptance_allocate.py"
+      ],
+      [
+        "M",
+        "tools/ck3_mod_acceptance_build_runtime.py"
+      ],
+      [
+        "A",
+        "tools/ck3_mod_acceptance_cases/faith_e02_artifact_pair_adapter.py"
+      ],
+      [
+        "A",
+        "tools/ck3_mod_acceptance_cases/faith_e02_h1_comparison_adapter.py"
+      ],
+      [
+        "M",
+        "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py"
+      ],
+      [
+        "M",
+        "tools/ck3_mod_acceptance_client.py"
+      ],
+      [
+        "A",
+        "tools/ck3_mod_acceptance_exact_native_tree_binding.py"
+      ],
+      [
+        "A",
+        "tools/ck3_mod_acceptance_native_day.py"
+      ],
+      [
+        "M",
+        "tools/ck3_mod_acceptance_native_profile_expansions.json"
+      ],
+      [
+        "A",
+        "tools/ck3_mod_acceptance_native_research_delta.py"
+      ],
+      [
+        "M",
+        "tools/ck3_mod_acceptance_native_source_binding.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_artifact_pair_bind.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_artifact_pair_contract.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_artifact_pair_join.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_artifact_pair_queue.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_h1_case_source.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_h1_join.py"
+      ],
+      [
+        "A",
+        "tools/faith_e02_h1_queue.py"
+      ],
+      [
+        "M",
+        "tools/faith_e02_hof_queue.py"
+      ],
+      [
+        "A",
+        "tools/g2_saved_campaign/patch_complete_tool_result_v1.py"
+      ],
+      [
+        "A",
+        "tools/g2_saved_campaign/patch_observed_halt_close_loop_v1.py"
+      ],
+      [
+        "A",
+        "tools/g2_saved_campaign/storage_pin_contract_v1.py"
+      ],
+      [
+        "A",
+        "tools/g2_saved_campaign/storage_source26_a05_admit_v1.py"
+      ],
+      [
+        "A",
+        "tools/g2_saved_campaign/test_observed_halt_close_loop_v1.py"
+      ],
+      [
+        "M",
+        "tools/test_ck3_mod_acceptance_day_result.py"
+      ],
+      [
+        "A",
+        "tools/test_ck3_mod_acceptance_late_native_cleanup.py"
+      ],
+      [
+        "A",
+        "tools/test_ck3_mod_acceptance_native_day.py"
+      ],
+      [
+        "A",
+        "tools/test_ck3_mod_acceptance_native_exact_tree_binding.py"
+      ],
+      [
+        "A",
+        "tools/test_ck3_mod_acceptance_native_research_delta.py"
+      ],
+      [
+        "A",
+        "tools/test_data/native_research_delta_v1.json"
+      ],
+      [
+        "A",
+        "tools/test_faith_e02_artifact_pair.py"
+      ],
+      [
+        "A",
+        "tools/test_hof_shared_terms_typing_v1.py"
+      ],
+      [
+        "A",
+        "tools/test_r08_cleanup_and_sampling.py"
+      ],
+      [
+        "A",
+        "tools/test_r08_runtime_entry_smoke.py"
+      ],
+      [
+        "A",
+        "tools/test_r08_writer_cleanup_integration.py"
+      ],
+      [
+        "M",
+        "tools/test_r08_writer_one_day.py"
+      ],
+      [
+        "A",
+        "tools/test_r08_writer_save_gate.py"
+      ]
+    ],
+    "raw_command_stdout_sha256": "5a0d6c0479b8c5f7372ce8d70dc800cbf21a4f227d53e0c2a022705ffc771f25"
+  },
+  "native_diff_stdout_sha256": "31d8455e29f34ea5fdebdd84549f2a72fe4a2128bb65a6d8f26776d3032c847b",
+  "host": {
+    "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+    "entry": {
+      "mode": "100644",
+      "blob": "dcb35593b6f384ef106ba3bcbff278f6e9b54628",
+      "bytes": 319238
+    },
+    "equal_in_D39_bc_and_fe": true
+  },
+  "A08_five_producer_inputs": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/CMakeLists.txt",
+      "entry": {
+        "mode": "100644",
+        "blob": "10782f0011aba9ebb588bed90b389f6bf9f77fce",
+        "bytes": 566
+      },
+      "equal_in_D39_bc_and_fe": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/cold_observer.cpp",
+      "entry": {
+        "mode": "100644",
+        "blob": "d162b220e5658349af5728c9ed5d4af1154f51e8",
+        "bytes": 29565
+      },
+      "equal_in_D39_bc_and_fe": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/cold_target.cpp",
+      "entry": {
+        "mode": "100644",
+        "blob": "91868691ef30543a36144583dfcf80df431b67a0",
+        "bytes": 6298
+      },
+      "equal_in_D39_bc_and_fe": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/synthetic_write.asm",
+      "entry": {
+        "mode": "100644",
+        "blob": "07faeec2e9f841e7c727db8e5e5b59ca0c03c085",
+        "bytes": 218
+      },
+      "equal_in_D39_bc_and_fe": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_fixture.py",
+      "entry": {
+        "mode": "100644",
+        "blob": "b30c9a2289b381bd0fc357f56f86bd107650cd48",
+        "bytes": 1710
+      },
+      "equal_in_D39_bc_and_fe": true
+    }
+  ],
+  "independent_A08_gate": {
+    "path": "C:\\w\\e04r08a08\\cold-focused-a01\\EXECUTION-GATE.actual.json",
+    "bytes": 1340,
+    "sha256": "3b001849798b11f91cddae590dd96c17df2efad85edecc9a8802133cebf3bee5"
+  },
+  "original_A41_qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "original_current_source_selection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-reuse-qualification-a01\\CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json",
+    "bytes": 24448,
+    "sha256": "6b0aa118de42ccefe71c18d0f3ff46c72292244d2261060131600975f87b727b"
+  },
+  "candidate_runtime": {
+    "head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+    "full_native_tree_equal_to_D39": true,
+    "source_rows_identical_to_published": [
+      {
+        "path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+        "entry": {
+          "mode": "100644",
+          "blob": "c31d018e9c47d944d33b8ddd734da5cb810ff17f",
+          "bytes": 23002
+        },
+        "equal_in_bc_and_fe": true
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+        "entry": {
+          "mode": "100644",
+          "blob": "669b43a0a6b0edf3338edc5ad054d9be64c2efe5",
+          "bytes": 25750
+        },
+        "equal_in_bc_and_fe": true
+      },
+      {
+        "path": "tools/test_r08_cleanup_and_sampling.py",
+        "entry": {
+          "mode": "100644",
+          "blob": "47a393c9075492a204ac6fdfd6a5ce0430205f92",
+          "bytes": 8190
+        },
+        "equal_in_bc_and_fe": true
+      },
+      {
+        "path": "tools/test_r08_runtime_entry_smoke.py",
+        "entry": {
+          "mode": "100644",
+          "blob": "02f4af7e89cc249b422015472f3c57d7360a7926",
+          "bytes": 14778
+        },
+        "equal_in_bc_and_fe": true
+      },
+      {
+        "path": "tools/test_r08_writer_cleanup_integration.py",
+        "entry": {
+          "mode": "100644",
+          "blob": "2534f56668747b3a054449e6b840cd7dcf470f68",
+          "bytes": 5719
+        },
+        "equal_in_bc_and_fe": true
+      },
+      {
+        "path": "tools/test_r08_writer_save_gate.py",
+        "entry": {
+          "mode": "100644",
+          "blob": "dbdd83108cbc20fe7316580146c57fd7a9ff7a29",
+          "bytes": 3448
+        },
+        "equal_in_bc_and_fe": true
+      }
+    ],
+    "Root_selected": false,
+    "actual_checked_out": false,
+    "conditions": [
+      "Root explicit runtime source selection and capacity-bound exact checkout",
+      "Actual new clean checkout receipt before new current-source component selection/runtime assembly",
+      "Keep compiledfee/main93 and actual runtime commit distinct; never label publishedfe/d622 as compiled"
+    ]
+  },
+  "conclusions": {
+    "original_component_selection_valid_for_fe": false,
+    "all_non_python_native_inputs_equal_for_fe": false,
+    "A08_standalone_compiler_inputs_equal": true,
+    "A08_original_exact_paths_SYSTEM_evidence_retained": true,
+    "standalone_ordinary_memory_positive_or_live_qualified": false,
+    "same_original_component_reuse_basis_candidate_bc": true,
+    "new_native_build_declared_mandatory": false
+  },
+  "risks": [
+    "Publishedfe has real production C++/header changes in knight installed-context validation and holy-site selected-decision terms, plus tests/CMake. They are not merely Python research changes.",
+    "A41 related character-skill and holy-site feature flags are OFF, but flags alone do not prove changed source excluded from every compiled dependency or identical output bytes.",
+    "Existing new public research-delta schema permits only its fixed three M/A/M offline Python paths. It cannot authorize these nine native C++/CMake differences.",
+    "A08 five inputs and host are unchanged Git blobs, preserving the independent component scope. This does not grant a fresh runtime/game, permission, or ordinary native-memory positive result.",
+    "No full4770-input payload export, binary/hash scan, build, SDK, process action, or checkout was performed."
+  ],
+  "source_files_modified": 0,
+  "binary_body_bytes_read": 0,
+  "new_native_or_SDK_requests": 0,
+  "remaining_heavy_write_bytes": 0,
+  "retention_review_utc": "2026-10-20T14:45:00Z"
+}

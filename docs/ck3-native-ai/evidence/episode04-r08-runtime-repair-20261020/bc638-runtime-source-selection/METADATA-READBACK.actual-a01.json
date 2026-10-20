@@ -1,0 +1,35 @@
+{
+  "schema": "xar.e04.bc638-component-selection-metadata-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:50:42.356609+00:00",
+  "refs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-bc638-component-selection-a01\\CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json",
+      "bytes": 24958,
+      "sha256": "484912dda476351982302a9e2350d39d45f0e7325e70ec4446b45c862fa809ef"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-bc638-component-selection-a01\\GIT-EQUIVALENCE.actual-a01.json",
+      "bytes": 4436,
+      "sha256": "d1926a97a91bb916746296a4ee6ed4ff9ef422cd8fa5c5a500fed55b865d3a7f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-bc638-component-selection-a01\\SELECTED-SCOPE-CLOSED.actual-a01.json",
+      "bytes": 1807,
+      "sha256": "d0f47d4719251006676869547de2ace897595fe5f99d987d1e2032e50b16063a"
+    }
+  ],
+  "actual_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "actual_clean": true,
+  "original_closure_reference": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-reuse-qualification-a01\\NONPY-GIT-CLOSURE.actual-a01.json.gz",
+    "bytes": 196478,
+    "sha256": "ea3bee9892d40f1831b088f8495afc5eca03f94005427ad74dbb12ea517a72a8"
+  },
+  "closure_copied_or_reexported": false,
+  "binary_body_bytes_read": 0,
+  "official_CI_pass_claimed": false,
+  "source_files_modified": 0,
+  "runtime_assembly_or_scene_performed": false,
+  "remaining_heavy_write_bytes": 0
+}

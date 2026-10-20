@@ -231,3 +231,9 @@ Root 后续独立行政目录 6 rows 均 ok，普通 Save74,272,517B/b1aab6da…
 正式3/11、研究10/14、业务7/11、B0/2、ABC0/3 不变。下一批只能用经审阅的新 source/runtime 与新的有限容量/现场准入；本记录不授权重放 R0222、不提供新 SDK/UI/构建动作。
 
 源码修复已纳入本次提交：导入、完整 idle0、natural-phase ON 前置、两类独立 OFF 与 Save 验证退出闸；最终工作树17个针对性方法通过，首次稀疏夹具缺失和一次定向重跑单列保存。详见[R08修复验证](../ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/FINAL-WORKTREE-VALIDATION.actual.json)。全R08实机、付款归因与新镜头仍未授；正式3/11不变。
+
+## 2026-10-20 后继准备：bc638、真实默认前驱与容量
+
+`machine_id: desktop-3fevhd2-1c74096080`。D已实际detach至bc63851081462413d0cc6ebe62e37490707ee6a9并保持clean，archive tag已push；R08源码与master相同，运行Native6b91，master的新d622原生变动不追认为旧DLL已编译。[来源选择](../ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/bc638-runtime-source-selection/CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json)独立保留A41/A08原资格。R0222默认previous_native_cleanup/lease/latest-counter路径已只读实际通过，行政custom output不需要新schema或伪造canonical结果；原public2/host1保留。CI依赖顺序修正后的c1b03已实际通过R08步骤与Linear，完整Official仍待终态。
+
+三个已闭场shadercache完成[精确回收](../maintenance/three-closed-shadercache-retirement-2026-10-20.md)，用于后继预算；不授新game/DR/影片资格。新实际窗口须另绑来源、容量与新鲜Steam证明。研究10/14、业务7/11、正式动态3/11、B0/2、ABC0/3保持。

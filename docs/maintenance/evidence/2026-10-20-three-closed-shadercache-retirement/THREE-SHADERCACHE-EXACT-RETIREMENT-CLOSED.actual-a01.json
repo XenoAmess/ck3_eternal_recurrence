@@ -1,0 +1,236 @@
+{
+  "schema": "xar.e04.three-shadercache-exact-retirement-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:54:29.478727+00:00",
+  "proposal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1445-a01\\CLOSED-THREE-SHADERCACHE-READONLY-RECLAMATION-PROPOSAL.prepared-a01.json",
+    "bytes": 10633,
+    "sha256": "1d9b78b79593bc1c84984e25fc2e8309cfab9a803adf0603d25570811f86fe0a"
+  },
+  "Root_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\ROOT-EXACT-THREE-SHADERCACHE-1515-EXECUTION-APPROVAL.actual-a01.json",
+    "bytes": 3571,
+    "sha256": "ac77f92dedfae39de07e7a14e3d18a74a2760c9202b58eaea0d8e4b9d4665b86"
+  },
+  "batches": [
+    {
+      "batch_id": "R0222-1",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0222-1-RESULT.actual-a01.json.gz",
+        "bytes": 41988,
+        "sha256": "c9febf25671f2cd5ef300eb77ee63217286967c76305206c200695b21c714b1c"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 57043864,
+      "deleted_allocated_bytes": 59268112,
+      "observed_C_free_delta_bytes": 59256832,
+      "receipt_uncompressed_bytes": 117658,
+      "failure": null
+    },
+    {
+      "batch_id": "R0222-2",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0222-2-RESULT.actual-a01.json.gz",
+        "bytes": 41915,
+        "sha256": "1d2e38035b7fbc7f4417e697e13ef2536be2f4c9292e5d7a484de28470ae7ccf"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 55889283,
+      "deleted_allocated_bytes": 58096928,
+      "observed_C_free_delta_bytes": 58867712,
+      "receipt_uncompressed_bytes": 117604,
+      "failure": null
+    },
+    {
+      "batch_id": "R0222-3",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0222-3-RESULT.actual-a01.json.gz",
+        "bytes": 32569,
+        "sha256": "5bea5a2276a5ef21c7999f2093926ecf971bf53a0d9c293665d525c7b18c03be"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 23002317,
+      "deleted_allocated_bytes": 25318432,
+      "observed_C_free_delta_bytes": 25313280,
+      "receipt_uncompressed_bytes": 117050,
+      "failure": null
+    },
+    {
+      "batch_id": "R0222-4",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0222-4-RESULT.actual-a01.json.gz",
+        "bytes": 28544,
+        "sha256": "a143fe5e325d192117a8fe7fe23a61f5324f2bc85ef92a638eefe885f8c3d765"
+      },
+      "candidate_count": 856,
+      "deleted_count": 856,
+      "deleted_logical_bytes": 19416887,
+      "deleted_allocated_bytes": 21378608,
+      "observed_C_free_delta_bytes": 21700608,
+      "receipt_uncompressed_bytes": 100580,
+      "failure": null
+    },
+    {
+      "batch_id": "R0221-1",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0221-1-RESULT.actual-a01.json.gz",
+        "bytes": 41976,
+        "sha256": "78d240f4d4a3eebfe33306cd63a3dd02698a87282ede8c380c7ac178aa1b3879"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 58038579,
+      "deleted_allocated_bytes": 60252112,
+      "observed_C_free_delta_bytes": 60239872,
+      "receipt_uncompressed_bytes": 117665,
+      "failure": null
+    },
+    {
+      "batch_id": "R0221-2",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0221-2-RESULT.actual-a01.json.gz",
+        "bytes": 42076,
+        "sha256": "beef3c75c6c1fa1aab279bf031d705c9be5e355042e60758d424ed69c91b2b2c"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 57034797,
+      "deleted_allocated_bytes": 59228384,
+      "observed_C_free_delta_bytes": 59994112,
+      "receipt_uncompressed_bytes": 117619,
+      "failure": null
+    },
+    {
+      "batch_id": "R0221-3",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0221-3-RESULT.actual-a01.json.gz",
+        "bytes": 32649,
+        "sha256": "90ffff8167817fbb9034819306272e95613fa2a8341d1f0736913e8362d4d744"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 23207320,
+      "deleted_allocated_bytes": 25535520,
+      "observed_C_free_delta_bytes": 25530368,
+      "receipt_uncompressed_bytes": 117052,
+      "failure": null
+    },
+    {
+      "batch_id": "R0221-4",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0221-4-RESULT.actual-a01.json.gz",
+        "bytes": 30650,
+        "sha256": "e985bb8b4b2d5e2dea6e911b4c5d370b70d715fea1bd07ea4029d2f23517a354"
+      },
+      "candidate_count": 916,
+      "deleted_count": 916,
+      "deleted_logical_bytes": 21117644,
+      "deleted_allocated_bytes": 23230000,
+      "observed_C_free_delta_bytes": 24010752,
+      "receipt_uncompressed_bytes": 107443,
+      "failure": null
+    },
+    {
+      "batch_id": "R0220-1",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0220-1-RESULT.actual-a01.json.gz",
+        "bytes": 41963,
+        "sha256": "2e3b408387229bb70535ce36fe4ca075814da37a273f384b086f4e29859d9286"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 57858290,
+      "deleted_allocated_bytes": 60075984,
+      "observed_C_free_delta_bytes": 59457536,
+      "receipt_uncompressed_bytes": 117664,
+      "failure": null
+    },
+    {
+      "batch_id": "R0220-2",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0220-2-RESULT.actual-a01.json.gz",
+        "bytes": 42041,
+        "sha256": "46d5ff8d1391e54d0d45d0c0bf8d81a3d6dd62e76a4fe9c325e3eb253581e5bc"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 57215086,
+      "deleted_allocated_bytes": 59404512,
+      "observed_C_free_delta_bytes": 60174336,
+      "receipt_uncompressed_bytes": 117620,
+      "failure": null
+    },
+    {
+      "batch_id": "R0220-3",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0220-3-RESULT.actual-a01.json.gz",
+        "bytes": 32640,
+        "sha256": "1c46b932d6328c129b935ca12a328322528bb7bb2bce87c75020ef31754686fc"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 23268659,
+      "deleted_allocated_bytes": 25596960,
+      "observed_C_free_delta_bytes": 25591808,
+      "receipt_uncompressed_bytes": 117052,
+      "failure": null
+    },
+    {
+      "batch_id": "R0220-4",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\R0220-4-RESULT.actual-a01.json.gz",
+        "bytes": 30690,
+        "sha256": "93c525e3d1ca6fa7a14cc9bb213169956154052fced2fd827f9ece61babca593"
+      },
+      "candidate_count": 916,
+      "deleted_count": 916,
+      "deleted_logical_bytes": 21056305,
+      "deleted_allocated_bytes": 23168560,
+      "observed_C_free_delta_bytes": 23949312,
+      "receipt_uncompressed_bytes": 107443,
+      "failure": null
+    }
+  ],
+  "failure": null,
+  "all_planned_batches": 12,
+  "executed_batches": 12,
+  "deleted_files": 11688,
+  "deleted_logical_bytes": 474149031,
+  "deleted_allocated_unique_bytes": 500554112,
+  "single_pass_payload_bytes_read": 474149031,
+  "protected_non_shader_profile_files_before_and_after_identical": true,
+  "protected_non_shader_file_count": 96,
+  "fresh_volumes_after": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T14:54:29.501094+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78644064256,
+      "available_to_caller_bytes": 78644064256,
+      "total_free_bytes": 78644064256,
+      "entire_volume_used_allocation_upper_bound_bytes": 432489881600,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T14:54:29.501094+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21647380480,
+      "available_to_caller_bytes": 21647380480,
+      "total_free_bytes": 21647380480,
+      "entire_volume_used_allocation_upper_bound_bytes": 478442627072,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "original_deleted_payload_unavailable": true,
+  "new_game_native_build_SDK_screen_media_actions": 0,
+  "owned_deletion_writer_exits_after_receipt": true,
+  "remaining_heavy_write_bytes": 0,
+  "metadata_hard_ceiling_bytes": 1048576,
+  "metadata_bytes_before_final_receipt": 496468,
+  "purpose_review_at_utc": "2026-10-22T15:00:00Z"
+}

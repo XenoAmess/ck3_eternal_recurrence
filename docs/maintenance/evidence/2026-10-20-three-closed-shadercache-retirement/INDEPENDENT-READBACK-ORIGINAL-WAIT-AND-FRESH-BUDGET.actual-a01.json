@@ -1,0 +1,70 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:55:34.867960+00:00",
+  "retirement_final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\shadercache-reclamation-a01\\THREE-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json",
+    "bytes": 9432,
+    "sha256": "5ae0701318863940361db27f6f4d3a3cc1611536b06091d871d92ae7d77cc29d"
+  },
+  "actual_original_exec_session": 28280,
+  "actual_original_wait_returncode": 0,
+  "owned_exec_creation_time_not_captured_before_exit": true,
+  "current_exact_adapter_writer_census": [],
+  "deleted_original_paths_independently_unreadable": 11688,
+  "all12_result_metadata_pins_and_complete_single_pass_SHA_rows_verified": true,
+  "no_deleted_payload_rehash_possible_or_attempted": true,
+  "payload_hashed_once_bytes": 474149031,
+  "observed_C_free_delta_since_first_batch_before_bytes": 504770560,
+  "entire_volume_delta_not_exclusively_attributed_to_deletion": true,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T14:55:34.129847+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78647533568,
+      "available_to_caller_bytes": 78647533568,
+      "total_free_bytes": 78647533568,
+      "entire_volume_used_allocation_upper_bound_bytes": 432486412288,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T14:55:34.129847+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21647380480,
+      "available_to_caller_bytes": 21647380480,
+      "total_free_bytes": 21647380480,
+      "entire_volume_used_allocation_upper_bound_bytes": 478442627072,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "current_budget": {
+    "C_known_future_bytes": 2097152,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25814033606,
+    "C_floor_margin_bytes": 52833499962,
+    "C_projected_whole_volume_upper_bound_bytes": 436825609414,
+    "C_quota_margin_bytes": 1261054778,
+    "D_required_free_bytes": 21634220032,
+    "D_floor_margin_bytes": 13160448
+  },
+  "shared": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T14:55:34.623789+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 129477938,
+    "files": 4545,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "global_new_C_growth_from_baseline_bytes": 626678,
+  "global_new_C_growth_hardcap_bytes": 2097152,
+  "current_C_metadata_future_still_bytes": 2097152,
+  "current_D_serial_Git_future_still_bytes": 25165824,
+  "physical_or_unused_credit_bytes": 0,
+  "next_1GiB_scene_if_current_C2MiB_closes_quota_margin_bytes": 189410106,
+  "next_1GiB_scene_and_full128MiB_metadata_if_current_C2MiB_closes_margin_bytes": 55192378,
+  "future_game_or_new_metadata_scope_admitted": false
+}

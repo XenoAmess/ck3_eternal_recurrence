@@ -18,7 +18,9 @@
 | 低库存实际损失和围城损失如何区分？ | [R211 自然 callback 与离线重放](episode04-r211-zero-stock-physical-12004.md) | 同一实际窗口供给337、围城/劫掠67，由生产 join/selector/classifier 分开；受控初始化不当自然耗尽，404净差不全部归为饥饿。 |
 | 移动已锁定时还能怎样 Halt 或改道？ | [原生判据和接口](episode04-locked-halt-reroute-12004.md)、[R12 已锁定 Halt 实证](episode04-r12-locked-halt-r0175-12004.md)、[R13 已锁定改道实证](episode04-r13-locked-reroute-r0176-12004.md) | 用同帧实际 progress 与 loaded cutoff 的严格比较，实际路线和后来到达分别判断；不能假设 Halt 立即原地停止。早期机制页的待实测说明以其当时日期解释，后继实证从当前执行图进入。 |
 | 拆合军后怎样估算库存、容量和统帅影响？ | [库存权重与取整顺序](episode04-split-merge-stock-weight-order-12004.md)、[S端 flags0 权重](episode04-merge-source-weight-flags0-12004.md) | 分别读合前 D/S 权重与库存、合后实际统帅和容量；按已证分阶段整数运算比较。人数简单平均、候选统帅容量或相等边界不能替代实际 clamp。 |
-| 能否把补员开关或人数增长当实际补兵 ADD？ | [实际应用合同](episode04-refill-application-12004.md)、[公共 R06 单日入口与当前资格边界](episode04-r06-public-one-day-and-a40-boundary-20261020.md) | 开关、准备量、请求量、指令 ADD、实体变化分别判断。公共 R06 是研究/验收入口，不是已经接入普通自动游玩策略；当前没有新 R06 实机 ADD。 |
+| 能否把补员开关或人数增长当实际补兵 ADD？ | [实际应用合同](episode04-refill-application-12004.md)、[R0221 同次 Core 离线恢复](episode04-r0221-target-add-offline-recovery-12004.md)、[公共单日入口](episode04-r06-public-one-day-and-a40-boundary-20261020.md) | R0221 已证明选定 Regi2602/slot1 的指令 ADD 为 68→69；画面整军 +10 另记。原 live consumer 的大小限制失败保留，完整 Core NET、开关效果及全 R06 仍未闭合。公共研究入口尚未成为普通 planner 策略。 |
+| 当前维护费向量能否视为实际付款？ | [十槽向量与分量保留](episode04-r08-current-vector-component-retention-12004.md)、[R08 公共研究入口](r08-writer-common-public-entry.md)、[R0222 失败与行政闭场](episode04-r0222-failed-writer-and-administrative-close-20261020.md) | 资源槽、当前费率、实际扣款、付款方和周期分别判断。R0222 0 日、无 writer，独立 payment OFF 读回未知；后续退出或源码修复不能补成付款归因。 |
+| 休整点是否真的恢复携带补给？ | [被动库存证据合同](episode04-b-stock-passive-evidence-12004.md)、[实际机会与 journal 边界](episode04-r10-stock-growth-opportunity-12004.md) | 用同 Army、同地点与自然日期的真实库存正差分及实际 callback 判断；eligible/gain 分量、兵员补员或同值端点都不能替代库存增长。当前合格 B 点仍为 0/2。 |
 
 ## 可用性与运行时边界
 
@@ -29,3 +31,7 @@
 - **不会自动变成策略**：普通规划器没有“读取所有 Markdown 并执行”的通路。新增决策行为仍须将专题结论显式实现为 planner/policy 输入与规则，并验证实际结果。不要把实验脚本、prepared 候选或已编译构建视为已部署的自动策略。
 
 跨机器可复用机制、代码和归档输入；源机器的 Steam 离线、安装、权限、进程、空间与实机资格不能继承。新实机独立核 machine_id、实际版本和运行时绑定；来源机器及历史时间以各专题和原件为准。
+
+2026-10-20 补注：R0221 与 R0222 的上述实机记录来源为 `machine_id: desktop-3fevhd2-1c74096080`，观察及精确原件分别在两场专题。表中旧“没有新 R06 实机 ADD”已按后继独立证据更新；不把这次更新外推为其他机器通过或 planner 已自动读取研究。
+
+R08 后继运行源码与已编译组件的关系见[bc638 来源选择](evidence/episode04-r08-runtime-repair-20261020/bc638-runtime-source-selection/CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json)：运行 Native 树6b91与历史编译树fee分层；master远端新增的d622不能据此追认已编译。该记录授源码选择与原组件复用边界，不授新场实机或整套R08资格。

@@ -1296,3 +1296,5 @@ docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/** -text whites
 # Preserve exact R0222 and R08 runtime-repair receipts, including native CRLF.
 docs/ck3-native-ai/evidence/episode04-r0222-20261020/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+docs/maintenance/evidence/2026-10-20-three-closed-shadercache-retirement/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
