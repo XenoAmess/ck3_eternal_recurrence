@@ -1,5 +1,14 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-20 10:42 UTC：R12阳性原M源镜头签出，正式动态主题1/11
+
+`machine_id: desktop-3fevhd2-1c74096080`。依据[Root实际裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json)（SHA-256 `9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88`）及[11主题小账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)，正式动态的计数单位为R03–R13各主题至少一段已验原M源镜头。当前 **1/11（9.09%）**，仅R12阳性；其余10主题待签出。下方0/11等旧记录保留为当时快照。
+
+本次接受同R0175原raw **[0,34)秒**：locked完整多跳路线→一次Halt仅保留原首段→自然到原front，正是原M第157行三态镜头。动作前约5.33秒，相对拟6秒少约0.67秒，原样披露；独立后态14秒。AI审全64张sheet，Root审12张关键sheet及4/10/34秒原分辨率图；未冒充人工1×或最终签核。原片/约24MB JPEG仅精确引用，本次不复制、重hash、解码或渲染。
+
+该签出不包含单跳拒绝、精确等号、R12整套变体、R13、完整章节/最终片或OneDrive交付。研究 **10/14**、业务 **7/11**、ABC **0/3**、B库存驻点 **0/2**不变；R0219 runwait2/noDay/noADD与正常闭场仍独立保留。
+
+
 ## 2026-10-20 R0219 正常闭场补注（原交接历史保留）
 
 `machine_id: desktop-3fevhd2-1c74096080`。来源为 [R0219 小原件清单](../ck3-native-ai/evidence/episode04-r0219-normal-close-20261020/MANIFEST.actual.json)，观察截至 10:22:22 UTC。

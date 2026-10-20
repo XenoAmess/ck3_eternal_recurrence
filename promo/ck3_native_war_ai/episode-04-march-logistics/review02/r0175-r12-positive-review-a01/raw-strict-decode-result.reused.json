@@ -1,0 +1,25 @@
+{
+  "returncode": 0,
+  "started_at_utc": "2026-10-15T17:57:07.479050+00:00",
+  "completed_at_utc": "2026-10-15T17:57:16.271436+00:00",
+  "elapsed_seconds": 8.792396000120789,
+  "argv": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\argv.json",
+    "bytes": 1268,
+    "sha256": "ff0e7a386b622493d7be0b8274327f6b70fae7963869927699894356a359f495"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\stdout.bin",
+    "bytes": 410,
+    "sha256": "d16626bd7e32939bdd62999419f22921963670ff8ad6039a0fcaac8e0a5c1f40"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\stderr.bin",
+    "bytes": 5835,
+    "sha256": "1e28eeaafb115b1f9ae939bdf2f2c16216e3d946843af3948f97ab10475e50e7"
+  },
+  "all_partials_retained": true,
+  "owned_process_timed_out": false,
+  "command_runtime_limit_seconds": 60,
+  "fixed_deadline_utc": "2026-10-16T07:45:01.597000+00:00"
+}

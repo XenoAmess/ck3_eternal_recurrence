@@ -1,0 +1,229 @@
+{
+  "schema": "xar.e04.r0175-r12-positive-bounded-acceptance-recommendation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:38:59.057465+00:00",
+  "prepared_by": "/root/media_chapter",
+  "reviewer_type": "AI",
+  "status": "RECOMMEND_ACCEPT_R12_POSITIVE_SOURCE_SHOT_ONLY_PENDING_ROOT_ADJUDICATION",
+  "decision_recommendation": "建议按原M接纳R0175连续raw[0,34)为R12阳性子范围的可用动态源镜头：locked完整路线→一次Halt后只留原首段→自然到达原front。具体正式计数与最终有范围裁定交Root。",
+  "why": "原同一次native三态及单次提交证据已在；同源连续画面全部1024格由本AI代理实际逐格审阅，Root又实际复核关键变化、端点和三张原分辨率图，补足必要HUD/路线/日期/船状态的可读性。未发现遮挡必要军队区域的外部面板或场景切换。",
+  "candidate": {
+    "source_identity_reused": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\raw-locked-halt-a01\\raw.mkv",
+      "exists": true,
+      "bytes": 59537290,
+      "mtime_ns": 1792086841620205500,
+      "st_dev": 13886423844274364792,
+      "st_ino": 562949955370857,
+      "expected_bytes_match": true,
+      "retained_sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11",
+      "sha256_reread": false,
+      "read_payload": false
+    },
+    "in_seconds_inclusive": 0,
+    "out_seconds_exclusive": 34,
+    "in_frame_inclusive": 0,
+    "out_frame_exclusive": 1020,
+    "last_included_frame": 1019,
+    "last_included_PTS_seconds": 33.967,
+    "extra_endpoint_reference_frames": [
+      1020,
+      1023
+    ],
+    "retiming": false,
+    "single_run_single_continuous_raw": true,
+    "scope": "R12 positive locked-Halt retains original first leg and reaches original front; no R13, refusal suite, exact50, wholecard or wholefilm acceptance"
+  },
+  "raw_payload_opened_or_hashed_for_this_recommendation": false,
+  "original_eleven_theme_mapping_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\ELEVEN-SCOPES.actual.json",
+    "bytes": 20609,
+    "sha256": "170e2979f7355de17297ea8be0eb3b8561492ed54f4ecb0f593271d3468ce6e5"
+  },
+  "original_eleven_theme_mapping": [
+    {
+      "theme_id": "R03",
+      "original_title": "充足补给围城的真实兵员损失",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R04",
+      "original_title": "县界移动损耗与周期损耗分开",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R05",
+      "original_title": "真S<10饥饿正例",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R06",
+      "original_title": "缺员补员：自然入口、实际physical ADD与开关",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R07",
+      "original_title": "真登船付款（当前明确缺能力，先补源）",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R08",
+      "original_title": "真维护费结算（同样等待付款执行链）",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R09",
+      "original_title": "B微实验：新增1/1和统帅变化",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R10",
+      "original_title": "同新T0、同空间终点、90实际日ABC",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R11",
+      "original_title": "未锁定Halt",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    },
+    {
+      "theme_id": "R12",
+      "original_title": "已锁定多跳Halt与合法单跳拒绝",
+      "this_candidate_coverage": "仅本主题阳性多跳locked-Halt三态镜头；单跳拒绝未拍，不并入。"
+    },
+    {
+      "theme_id": "R13",
+      "original_title": "已锁定改道",
+      "this_candidate_coverage": "本次不覆盖，不新增动态资格。"
+    }
+  ],
+  "eleven_accounting_limit": "原11主题是R03..R13。尚未找到逐行formal-shot独立计数登记的原始规则；一个R12阳性子镜头不自动覆盖R12标题的拒绝反例，也不替代其余10主题。此建议不修改0/11，Root决定应登记何种范围与口径。",
+  "originalM_source": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+    },
+    "commonM_line26": "每段记录真实原片PTS/动作marks与同一次native取证的关联。动作前6–10秒看实际军队/日期/读数，提交或自然转移完整保留，结果稳定后8–15秒看独立后态。结算不靠剪辑制造发生；若推进本身耗时长，先预算并录制完整事件窗口，不能用旧场景暂停画面补过程。各小窗口独立run/attempt，原片分段及字幕加速标签如实记录。此处秒数是拟取用镜头长度，不承诺原生日推进只需这些秒。",
+    "R12_lines151_157": [
+      {
+        "line": 151,
+        "text": "## R12 已锁定多跳Halt与合法单跳拒绝"
+      },
+      {
+        "line": 153,
+        "text": "**输入**：另一独立同类路线窗口，明确locked且old_front!=old_tail，progress高于边界。若只剩一个hop或首尾同地，先归为独立拒绝反例，不能拿它验证“去后缀”。"
+      },
+      {
+        "line": 155,
+        "text": "**步骤**：F→`halt-army-U`→独立F route恰为[old_front]、progress保留→自然exact日实际到old_front并独立确认空route/位置。**验收**：三态各有实际来源；被拒绝保留validator及原因，不叫provider故障。最多该首段预览时长＋2实际日，基于新实际原生预测，不能从旧ETA减日。"
+      },
+      {
+        "line": 157,
+        "text": "**镜头**：locked前完整路线→Halt后只留首段→真正到达。精确equal cutoff为可选细粒度：只有原生raw恰等loaded值且独立后态才授实机等号；GUI显示50%、历史61.875%和静态strict>branch三者不互换。equal采不到不无限等，不用“未确认50%”占长口播。"
+      }
+    ],
+    "independent_final_gates_line171": "每卡产出：input pins、实际请求/结果、F前后、自己的journal fence和新事件、正常save、source/evidence层次、停止原因、raw marks/clean span与原始显示文案、可说结论和仍不可说内容。出现0事件、partial、source inference和actual application分别记录。新TTS在核心卡通过后才制作；最终machine audit、AI抽帧、人工1×完整看听、signoff、OneDrive客户端交付分别验收。"
+  },
+  "originalM_assessment": [
+    {
+      "requirement": "真实原片PTS/动作marks与同次native取证关联",
+      "assessment": "支持有界对应",
+      "evidence": "现成联系表每格显示真实视频帧序和PTS标签；长后缀变化(5.300,5.833]，陆军到离岸船图(19.900,20.000]。native同run/army三态与一次Halt独立回读对齐动作顺序；精确native callback PTS仍null，不按墙钟插值。"
+    },
+    {
+      "requirement": "locked前完整路线→Halt后只留首段→真正到达",
+      "assessment": "阳性三态镜头成立",
+      "evidence": "前原生route[1036,8653,1034,1033]、progress96666>loaded50000；独立后读route[1036]；自然后读currentProvince1036/route[]/embarked。视频长路线→短首段→离岸船图和稳定位置与之相符。省份数字身份取native，不假称缩略图直接读出1036。"
+    },
+    {
+      "requirement": "关键动作与自然转移完整连续保留",
+      "assessment": "支持raw[0,34)连续源窗口",
+      "evidence": "同一raw无加速、无跨run补过程。全64联系表涵盖f0..1023/0..34.100，候选f0..1019/0..33.967全部包含在内；额外4格只作端点参考。"
+    },
+    {
+      "requirement": "清楚画面/clean span",
+      "assessment": "建议通过有界AI视觉clean审阅",
+      "evidence": "本代理审全部64张每格640x360；Root实际12张key sheets和4/10/34s原大图可读。右通知17.433进入、17.467展开，未挡军队pane/选中marker。f598/19.933原生插图短暂清空是状态过渡，非整屏黑帧。未见桌面/旧蓝窗/切场。不能从此认证所有原分辨率文字或音视频1x播放体验。"
+    },
+    {
+      "requirement": "动作前6–10秒、稳定后8–15秒",
+      "assessment": "前态拟取用长度偏短，后态满足拟取用范围",
+      "evidence": "实际可见前态约5.33秒，较6秒少约0.67秒；最后明确长路线5.300秒，Root在f160/5.333已疑似缩短，保守已确认短路线5.833。清楚船后态20.000到cut34.000保留14秒。原M明确这些秒数为拟取用镜头长度，因此建议披露偏差后接纳本有界充分可见前态；不伪写6秒，不暗降硬性用户要求，最终由Root明示裁定。"
+    },
+    {
+      "requirement": "单跳合法拒绝/精确equal cutoff",
+      "assessment": "此阳性镜头不授拒绝子例或等号",
+      "evidence": "未拍拒绝不拼进阳性因果。exact equal cutoff原文为可选细粒度，96666>50000只证明本例高于边界。"
+    }
+  ],
+  "review_division": {
+    "AI_allframe_contact": {
+      "reviewer": "/root/media_chapter",
+      "actual_sheets": 64,
+      "actual_source_frames": 1024,
+      "source_frame_range_inclusive": [
+        0,
+        1023
+      ],
+      "source_label_PTS_seconds": [
+        0,
+        34.1
+      ],
+      "content_pixels_each_cell": [
+        640,
+        360
+      ],
+      "method": "实际逐张直接view全部64张、逐格审阅所有16格；非稀疏抽帧",
+      "source_receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\ai-review-a01\\AI-ALL64-REVIEW.actual.json",
+        "bytes": 70543,
+        "sha256": "645d9721ea6a239b6998bc1401e99743b5c85bc6bd100ae13b092bad739668df"
+      }
+    },
+    "Root_key_review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\ROOT-KEY-REVIEW-ATTRIBUTION.actual.json",
+      "bytes": 1332,
+      "sha256": "afd5e3e3d68233feef404d4e707bdb3f345b8a8f16da655e678cd449569ddea5"
+    },
+    "whole_original_resolution_allframe_text_review": false,
+    "Root_all64_review": false,
+    "human1x_or_signoff": false,
+    "formalM_decision": null
+  },
+  "technical_evidence_reused": {
+    "strict_whole_raw_decode_report": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\report.json",
+      "bytes": 7089,
+      "sha256": "d1dd39c0cc9b6bc4bd386b4ab9e65d361ca7902043713d8615039591e7a187eb"
+    },
+    "strict_decode_result": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\result.json",
+      "bytes": 1129,
+      "sha256": "9852d3fdd922052058cb69170f5a0487f9bb737f05bc7e8a140f9636645cc939"
+    },
+    "known_result": "原45秒/1350帧strict decode exit0；2560x1440/30fps；原raw无音轨。未重跑。",
+    "all1350packet_PTS_table_retained": false,
+    "fullpacketPTS_new_pass_executed": false,
+    "not_an_added_original_contract_gate": "原M要真实PTS/动作marks，没有每条旧raw必须全1350packet表的硬门槛。不能把原先可选PTS-only补充方案升为本镜头原合同前置。"
+  },
+  "superseded_agent_added_gate": "早期candidate.remaining_actual_actions[0]把逐raw1x观看写成必须，是本agent加的方法；此前AI-ALL64回执已更正。本建议沿原M的实际continuous evidence，不要求Root重复全64或完整1x播放。",
+  "finalfilm_gates_kept_separate": "原卡末尾明确machine audit、AI抽帧、人工1x完整看听、signoff和OneDrive分别验收。它们仍是成片/交付环节，不能拿全片人工1x/signoff阻止此源镜头有界审结；也不能把两位AI的审阅写成人工签核。",
+  "editorial_context": "原raw没有烧入本次编辑说明。建议最终使用时标R12阳性/本例locked数值来源native、真实动作括号和到达后态，不把方法片或refusal插成同一次动作。此处只给源镜头验收建议，不声称最终字幕/配音/成片已完成。",
+  "remaining_for_Root": "Root作有范围adjudication，明确接受raw[0,34)、前态约5.33秒拟取用偏差、阳性不含refusal、AI代理全帧+Root关键帧的真实review分工；随后由Root维护正式计数。没有本agent仍需补做的raw读取、packetpass、图像或转码。",
+  "formal_dynamic_counter_mutated": false,
+  "formal_dynamic_credit_added": 0,
+  "human_signoff": false,
+  "new_video_image_or_raw_bytes": 0,
+  "remaining_heavy": 0,
+  "capacity_binding": {
+    "Root_instruction": "当前metadata到11Z有效；仅metadata≤30KB",
+    "shared_transaction": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\METADATA-RECLAMATION-1100Z-TRANSACTION.actual-a01.json",
+      "bytes": 2921,
+      "sha256": "be445fdd1a11f1677ec0c6845aeca3dfa6fdc00c5ad991cd6cc5527952cf5d96"
+    },
+    "new_aggregate_hard_limit_bytes": 30000,
+    "no_new_future": true
+  }
+}

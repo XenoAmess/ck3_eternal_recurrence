@@ -1,0 +1,110 @@
+{
+  "schema": "xar.e04.dynamic-eleven-original-scope-reconciliation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:43:25.639156+00:00",
+  "original_cards": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+    "bytes": 27122,
+    "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+  },
+  "denominator_note": "Existing records report qualified dynamic0/11 alongside R03..R13 business denominator11. No separate row-by-row formal shot acceptance registry was found in inspected director/handover/EDL sources. This reconciles the eleven original business-scoped dynamic requirements; it does not invent an accepted denominator policy or grant whole-card credit from one subshot.",
+  "common_M": {
+    "line": 26,
+    "text": "每段记录真实原片PTS/动作marks与同一次native取证的关联。动作前6–10秒看实际军队/日期/读数，提交或自然转移完整保留，结果稳定后8–15秒看独立后态。结算不靠剪辑制造发生；若推进本身耗时长，先预算并录制完整事件窗口，不能用旧场景暂停画面补过程。各小窗口独立run/attempt，原片分段及字幕加速标签如实记录。此处秒数是拟取用镜头长度，不承诺原生日推进只需这些秒。"
+  },
+  "final_review_separation": {
+    "line": 171,
+    "text": "每卡产出：input pins、实际请求/结果、F前后、自己的journal fence和新事件、正常save、source/evidence层次、停止原因、raw marks/clean span与原始显示文案、可说结论和仍不可说内容。出现0事件、partial、source inference和actual application分别记录。新TTS在核心卡通过后才制作；最终machine audit、AI抽帧、人工1×完整看听、signoff、OneDrive客户端交付分别验收。"
+  },
+  "scopes": [
+    {
+      "card_id": "R03",
+      "title": "充足补给围城的真实兵员损失",
+      "first_line": 67,
+      "last_line": 76,
+      "original_text": "## R03 充足补给围城的真实兵员损失\n\n**输入**：R02合格；Robert的实际稳定围城军U/A；高库存、非饥饿、raid=false、无战斗/强攻/gathering/重组。实际siege association和occupation independently一致。启动窗口前F保存full roster/DATA及各journal fence。\n\n**步骤**：从本军真实clock/bucket/anchor找下一自然callback附近，逐exact日推进后立即F。读取`actual_supply_callback_observations_v1`和`actual_loss_writer_observations_v1`；不调用updater/writer制造事件。当前预算及条件投影仅作对照。\n\n**验收**：新的自然事件original调用/返回、same instance、complete physical capture；具体ArRg的真实physical debit>0。caller为合并siege/raid preferred只能直接授combined stage；本例raid=false、真实围城及稳定窗共同支持“围城周期损失”。source不区分的residual不硬分。Army前后净值可包含独立refill，必须分开解释。\n\n**边界**：若同日其它来源无法分开，保留actual debit但不授单因果；不宣布“没有损失”。最多35实际日／按pilot成本冻结wall上限。缺可达自然围城则正常campaign另找，不人为改敌方。**镜头**：M围城读数→自然结算→同军实际人数，短计算卡只说明本次。",
+      "existing_media_assessment": "R0177 event occurred after coastal raw; R191 is later candidate, not this scope priority."
+    },
+    {
+      "card_id": "R04",
+      "title": "县界移动损耗与周期损耗分开",
+      "first_line": 77,
+      "last_line": 84,
+      "original_text": "## R04 县界移动损耗与周期损耗分开\n\n**输入**：本机.4当前county-entry输入可读、合法路线及实际到达候选；核.4 minimum slot为`5C68C64`，不能继承旧.3误解释。优先避开本军周期桶；取同档合法无县界损耗条件的短对照。\n\n**步骤**：完整route/起点/target/normalized progress→native Move一次→逐exact日→实际county/province变更、route/state后读及新writer事件。用`.4`已证明的实际caller识别该笔事件；Native55的`other_writer_caller`本身不能自动等于county loss。\n\n**验收**：原生进入条件、当次预算输入、真实进入和physical debit一致；或明确标为source＋有定向对照的端点推断。实际caller仍未闭合时，缺口是具体callee/caller链，不重造整个loss平台；先离线补齐再授“执行闭环”。**上限**：单次路线最多14日，不能延长成绕图等事件。**镜头**：原生警告/路线→真正跨界→整数结果，普通移动不一概说5%或100人。",
+      "existing_media_assessment": "R0217 36s insert is technically ready, but only 17 verified individual debits subtotal236; 5 empty DATA excluded, county total null, not full R04."
+    },
+    {
+      "card_id": "R05",
+      "title": "真S<10饥饿正例",
+      "first_line": 85,
+      "last_line": 92,
+      "original_text": "## R05 真S<10饥饿正例\n\n**输入**：从这条新Robert正常campaign取得自然接近阈值的军队/存档；不得导入William低库存、写内存、改档或debug调供给。选候选时保存实际负月贡献、预计下一次成功更新机会、grace/fleet条件。无近阈值候选则先做正常后勤准备，不能把高库存减员充数。\n\n**步骤**：高库存同环境短负例；随后在自然临阈值窗口，F→exact day→F，捕获真实stock更新、严格<10状态/预算和`supply_preferred`真实writer debit。优先无围城/raid/战斗；自然场景含围城时，仅在独立caller和完整stage事件能分开时授供给分量，不把合计归饥饿。\n\n**验收**：库存阈值、宽限/舰队分支实际成立；真实非零**供给stage physical debit**，不是当前fraction×Army人数、writer request或净−N。没有精确10.00000样本时只说观察到严格低阈值的正例，不冒充等号测试。各段最多35日；远阈值长期准备另列预算和实际进展，不盲等八次更新。**镜头**：同军库存下降→真实状态提示→自然扣兵→整数，不能用旧1%still当完成。",
+      "existing_media_assessment": "R211 27s insert is playable and technical QA passed; controlled zero-stock admission differs from original natural-depletion card; needs full selected-window review and explicit adopted scope."
+    },
+    {
+      "card_id": "R06",
+      "title": "缺员补员：自然入口、实际physical ADD与开关",
+      "first_line": 93,
+      "last_line": 102,
+      "original_text": "## R06 缺员补员：自然入口、实际physical ADD与开关\n\n**输入**：新campaign实际普通缺员MAA；完整7chunk/全部DATA、资金/开关/位置/owner-holder上下文。moving state7不一概禁补员；prepared F与fresh fraction独立。\n\n**步骤**：在自然regular-core机会前F记录fence；每个exact日后full profile及时读`actual_army_regular_core_observations_v1`。要求真正`2A98AC0` entry/独立return、其`2A9A570` parent/caller_return `2A9A8E2`、同clock/thread/date、完整ordered manager occurrences和七chunk。按同物理对象/ordinal比entry/returned并核actual raised refresh。重复manager occurrence可能真实重复执行，不能因为DATA别名而重复计算物理增兵。\n\n**开关对照**：同新T0两次独立正常回放，启用且资金满足 vs 正常关闭MAA每月补员，各跨相同自然结算机会。当前仓库未在本包核到专名toggle MCP；**不得发明toggle step**。先使用Root已核的合法原生GUI/动作路径并独立读回，若不存在就补最小普通原生操作，再执行此子卡。未做开关对照只授这一次实际增兵，不能授全部条件。\n\n**验收**：actual entry/return物理current增加及其真正执行输入；条件模型的q、`fixed_chunk0_prepare`计算、仅prepared刷新均不算实际ADD。partial/缺entry不能用return补全；ring4被覆盖就不授完整窗。没有增兵也保留真实q0/不合资格反例，不伪填0收益。最多一次相关月机会＋2日，实际日上限35。**镜头**：开关操作及读回→缺额→真实补兵，库存恢复另一个窗口单列，不串成一个事件。",
+      "existing_media_assessment": "R215 visible +10 is not instruction ADD; no complete physical closure; no qualified dynamic mechanism proof."
+    },
+    {
+      "card_id": "R07",
+      "title": "真登船付款（当前明确缺能力，先补源）",
+      "first_line": 103,
+      "last_line": 110,
+      "original_text": "## R07 真登船付款（当前明确缺能力，先补源）\n\n**输入前置**：`capability-lane/payment-plan/plan.json`为现成finite source计划，其for-observation当前正确RED；actual .4boarding producer→payer→金额→金币写入还未闭合，不能执行一个不存在的payment tool。现成cash private查询仅库存/费率，不是此卡付款observer。\n\n**源完成后最小窗口**：同新正常T0，一支合法军队真正陆→海，另一独立回放同T0无登船/驻地；避开实际经济结算机会。F＋cash＋付款journal fence→Move一次→逐exact日→真实海陆state/Army/route/owner/command sender/actual payer与钱包独立后读。报价、实际付款、钱包净变化三列。\n\n**验收**：已证明的.4actual caller/receiver/payment amount，原函数恰好一次，唯一payer同账户raw前后真实写入；所有其他收入/支出独立，不从−17净差推登船费。捕获失败/unknown caller/环覆盖不算免费。未有路径绑定quote就把quote留unknown，不用1.19图标getter地址。**上限**：预览可达近海转换，单窗≤7实际日；找不到就换合法短route，不操纵敌方。**镜头**：海路警告→实际登船→真正扣款，现阶段只可准备，不能填数字。",
+      "existing_media_assessment": "R196 raw36..59.433 and existing55s chapter show camp-to-ship; 3-gold transaction proved separately, payment exact PTS uncalibrated; quote absent; original-v1 card still false, v2 research adopted."
+    },
+    {
+      "card_id": "R08",
+      "title": "真维护费结算（同样等待付款执行链）",
+      "first_line": 111,
+      "last_line": 118,
+      "original_text": "## R08 真维护费结算（同样等待付款执行链）\n\n**输入**：同.4已证明的经济settlement cadence、实际payer/费用分量/金币write及最小observer。先确认真实caller，不假定游戏月首、更不能以军队月更新当金币结算。现成gross/full-expenses/current/all-raised费率为辅助字段。\n\n**步骤**：自然近结算边界的正常军队，驻地与海上/移动对照各从同T0短窗。每个exact日读F/cash和新付款记录。保留原生用于该次结算的income、military applied component、其它expenses、舍入/周期与整体wallet write。\n\n**验收**：实际applied military分量和同一次钱包write能对账。若收入大于支出，wallet净增仍可能实际付了维护；不能说免费，也不能把NET和military再次相扣。current/all-raised是替代费率，不相加；无逐军分摊证据就只授actor-global。最多一个真实结算周期＋2日，cadence未知则本卡未准入，不无限等待。**镜头**：真实日期→结算→简短收支卡；未闭合不做ABC费用排名。",
+      "existing_media_assessment": "Applied military payment attribution remains unclosed; no footage can replace it."
+    },
+    {
+      "card_id": "R09",
+      "title": "B微实验：新增1/1和统帅变化",
+      "first_line": 119,
+      "last_line": 128,
+      "original_text": "## R09 B微实验：新增1/1和统帅变化\n\n**输入**：新正常campaign同日同地、ready、无combat/retreat的可分主军；F完整ArRg/DATA/Character predicate、typed commander、stock/cap/weights。不是复用旧B FullID。\n\n**步骤**：`split-army-half-U`一次；独立snapshot辨认child和native映射，原cohort守恒及双方commander；同地合法`merge-armies-dest-with-source`一次；F＋typed commander独立后读。再从**该新微实验baseline**独立试反向合军，不能在比较正式臂临时挑方向。时间不推进时精确记录same date；若native动作需异步下一帧等只读，不用额外resume制造后态。\n\n**分类**：逐个新增/消失FullID、type status、DATAavailable/count0、`native_loss_writer_skipped`和已发布character override；true与1/1刷新源可支持特殊Character分支，不能仅因1/1叫骑士。regular-core事件中若确实观察到该ID的override和refresh，授该次刷新原因；它不自动证明合军时谁创建/附加了新record。出生producer未见则具体保留unknown并离线定位最小合军callee，不全链重研究。\n\n**新B政策**：微实验后预注册合军方向及commander规则。自然换将/特殊记录若是合法方案效果，列为处理结果；原始cohort与全strategyArmy分别计量。若统一重任命，必须在所有臂同阶段使用实际合法typed assign并记录时间/代价，不能事后修B。无法解释而影响主要比较时不准入ABC。旧B第38日STOP不改。**镜头**：split前→两军→merge→选中存续军/将领/队列与供给，约30–60秒的实际动作链。",
+      "existing_media_assessment": "R194 business accepted; raw0..38.133 candidate covers selected250/75/251. Existing55s chapter omits merge action moment, child175 only native, not both UI armies readable; full intervening review needed."
+    },
+    {
+      "card_id": "R10",
+      "title": "同新T0、同空间终点、90实际日ABC",
+      "first_line": 129,
+      "last_line": 144,
+      "original_text": "## R10 同新T0、同空间终点、90实际日ABC\n\n**硬输入**：R02、损耗/补员主体归因和B诊断所需能力合格；若讲费用优劣，R07/R08也必须合格。新T0正常opaque save精确bytes/SHA＋原始保存回执＋.4build/profile/lifecycle/source；三臂独立state/profile/pipe/session由此正常载入，绝不改档或带旧driver假造日历。cold后F证明同actor、date、war、原队列/current/max/DATA、commander、position/route、stock/cap、cash及原始条件；PID/episode可以因冷载新生成，逐臂真实记录。\n\n**冻结策略**：A整军合法直达`P_goal`；B按R09已选方向分军，去事先验证有正月贡献的两点，达到**具体stock/缺额阈值或最长驻留日数**后会合合军再赴目标；C固定事先合法中转点后赴同目标。这些地点/阈值必须在看正式结果前由侦察填入`BINDINGS.template.json`，空值不准执行。休整点需真实stock增加资格，只有getter+20不够。\n\n**时间口径**：共同绝对`D_end=T0+90×24`，任何脚本续跑不重置。主要终点为第一次独立观测到`P_goal`、真实stationary/相应native siege状态、目标/完整route符合抵达定义；精确tickunknown时给(最后未到,首次已到]，宽≤1日。未到且真达到共同截止才叫90日censored；主动停或测量失败分别记录，不能冒充截尾。\n\n**共同日期与结果**：冻结T0+7/14/21/28日等共同报告点；每臂到达读数标真实各自日期，不将A第X日库存与C第Y日库存当同日效果。若要比较D90持有兵数/钱，三臂需继续至同日并预注册统一到达后政策；否则该列删除，不用到达时读数代填D90。到达耗时、抵达可用兵/stock和该臂到达前真正付款可比较为本次策略成本，但不是同长时间的纯rate效应。\n\n**每exact日**：ordinary主体读数＋关键边界full-history及时drain，actual loss/refill/boarding/maintenance分别累计，wallet净差仅对账。原cohort与全部strategyArmy分列，CUnit shadow不猜军队，未知native health不补0。NPC/驻军不要求所有世界值恒定；记录当省供给贡献者、ownership/relation、war状态和实际交战等**会改变解释的因素**。策略自然导致接敌是实际后果，不能删掉；若只做纯后勤归因，受影响窗口另标不可分，不改称世界控制成功。\n\n**异常政策**：同一已给定处理规则解决事件并继续普通战役；不可控战争终止/Robert死亡/失去控制作为实际竞争终点。采样越步、日志丢失、无法绑定原cohort时立即停止controlled资格，不再次接受15个偏差。正式run不为得到好结果反复重启。每臂wall预算用pilot实测估计冻结，不能口头承诺270日几分钟完成。\n\n**镜头**：每臂真实出发、路线动作、关键等待/恢复/转移、抵达短连续窗；时钟及A/B/C标识明确，等待加速注明倍率。最终表全部列来源及测量日期；最多给本次地形/敌情的条件推荐，不宣布通用赢家。",
+      "existing_media_assessment": "Formal sameT0 ABC0/3, B growth sites0/2; independent fragments do not close the package."
+    },
+    {
+      "card_id": "R11",
+      "title": "未锁定Halt",
+      "first_line": 145,
+      "last_line": 150,
+      "original_text": "## R11 未锁定Halt\n\n**输入**：新Robert军、多跳合法route，actual progress明显低于当前锁定边界，保留原生UI可停止状态。source `.4`进度getter24AB2D0及halt binder已存在；本包没有确认loaded cutoff已经由公开响应发布，缺失时不得填0.5当实际读回。\n\n**步骤**：F记录完整route/target/position/progress→`halt-army-U`一次→独立F。**验收**：same U/currentProvince、完整route为空、target null及真实状态；随后一exact日确认没有继续该已取消路段。状态异步则照实记录，不强制瞬时idle。submit/ACK不算停住。**镜头**：M按钮/路线→操作→路线消失/军队位置，不需精确50%才能解释实际行为。",
+      "existing_media_assessment": "R0174 raw0..20 candidate; prior6min R0173 raw has no Halt action; next-day native independent. Tooltip occlusion must be actually reviewed."
+    },
+    {
+      "card_id": "R12",
+      "title": "已锁定多跳Halt与合法单跳拒绝",
+      "first_line": 151,
+      "last_line": 158,
+      "original_text": "## R12 已锁定多跳Halt与合法单跳拒绝\n\n**输入**：另一独立同类路线窗口，明确locked且old_front!=old_tail，progress高于边界。若只剩一个hop或首尾同地，先归为独立拒绝反例，不能拿它验证“去后缀”。\n\n**步骤**：F→`halt-army-U`→独立F route恰为[old_front]、progress保留→自然exact日实际到old_front并独立确认空route/位置。**验收**：三态各有实际来源；被拒绝保留validator及原因，不叫provider故障。最多该首段预览时长＋2实际日，基于新实际原生预测，不能从旧ETA减日。\n\n**镜头**：locked前完整路线→Halt后只留首段→真正到达。精确equal cutoff为可选细粒度：只有原生raw恰等loaded值且独立后态才授实机等号；GUI显示50%、历史61.875%和静态strict>branch三者不互换。equal采不到不无限等，不用“未确认50%”占长口播。",
+      "existing_media_assessment": "Primary candidate: R0175 raw0..34s continuous, route shortening and original-front endpoint; actual native three states are complete; continuous clean and exact action marks still pending."
+    },
+    {
+      "card_id": "R13",
+      "title": "已锁定改道",
+      "first_line": 159,
+      "last_line": 166,
+      "original_text": "## R13 已锁定改道\n\n**输入**：R12相同种类但独立正常baseline，多跳locked，另一个真实合法目标`P_alt`，不用Halt后的单hop状态拼接。原生preview合法path实际来源保留。\n\n**步骤**：F保存old_front/后缀→`move-army-U-to-P_alt`一次→独立F完整route/target/progress→自然走完首段→再读新后续路线和真实新目标到达。**验收**：锁定首段实际保留，后缀按原生命令真正改变；新目标与路线不符、native拒绝或战斗介入均保留实际结果，不用地图相机中心当到达。只解释已证动作，不承诺所有地形/军队状态均允许。\n\n**镜头**：操作前旧路线→新命令即时路线→首段完成后新方向；约30–60秒可用动作链，等待片段有真实时码与倍率。未锁定Halt、已锁定Halt、改道分别三个真实例，不拼成同一次操作。",
+      "existing_media_assessment": "R0176 raw0..20 immediate reroute candidate, but alternate destination observation65.61/69.53s lies outside45s raw; cannot close complete three-state endpoint film."
+    }
+  ],
+  "credit_added": 0
+}

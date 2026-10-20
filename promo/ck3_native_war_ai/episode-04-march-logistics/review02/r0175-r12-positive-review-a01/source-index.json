@@ -1,0 +1,126 @@
+{
+  "schema": "xar.e04.r12_root_adjudication.integration_source_index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:45:36.095250+00:00",
+  "role": "derived integration index",
+  "sources": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\R12-POSITIVE-ACCEPTANCE-RECOMMENDATION.actual.json",
+        "bytes": 13761,
+        "sha256": "ef64857a3944b668eafefaec172620080d516fa35b839dce0e630ae5cb940260"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/R12-POSITIVE-ACCEPTANCE-RECOMMENDATION.actual.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\ROOT-KEY-REVIEW-ATTRIBUTION.actual.json",
+        "bytes": 1332,
+        "sha256": "afd5e3e3d68233feef404d4e707bdb3f345b8a8f16da655e678cd449569ddea5"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-KEY-REVIEW-ATTRIBUTION.actual.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\ai-review-a01\\AI-ALL64-REVIEW.actual.json",
+        "bytes": 70543,
+        "sha256": "645d9721ea6a239b6998bc1401e99743b5c85bc6bd100ae13b092bad739668df"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/AI-ALL64-REVIEW.actual.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\ai-review-a01\\DIRECT-OBSERVATIONS.actual.json",
+        "bytes": 5205,
+        "sha256": "cc75fd6d6504a5bd5f6b4f32536728d67123aeec2462d9fa44e959df43b9d222"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/DIRECT-OBSERVATIONS.actual.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\ELEVEN-SCOPES.actual.json",
+        "bytes": 20609,
+        "sha256": "170e2979f7355de17297ea8be0eb3b8561492ed54f4ecb0f593271d3468ce6e5"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ELEVEN-SCOPES.actual.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\SOURCE-PINS.actual.json",
+        "bytes": 3715,
+        "sha256": "de4ebf9b21cba1d268dbb9d0bc9e0832004c3663d1732d53b4c8111ce77035f6"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/SOURCE-PINS.actual.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\native-route-excerpts.json",
+        "bytes": 5046,
+        "sha256": "71b3ec60aa553b20ad1d3fd5ada99a27f710902eddb4365deb07701eb5f6fa80"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/native-route-excerpts.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\report.json",
+        "bytes": 7089,
+        "sha256": "d1dd39c0cc9b6bc4bd386b4ab9e65d361ca7902043713d8615039591e7a187eb"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/raw-technical-report.reused.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\result.json",
+        "bytes": 1129,
+        "sha256": "9852d3fdd922052058cb69170f5a0487f9bb737f05bc7e8a140f9636645cc939"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/raw-strict-decode-result.reused.json",
+      "role": "unchanged supplied pre-adjudication evidence"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\root-adjudication-a01\\ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 8538,
+        "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+      "role": "unchanged actual Root adjudication"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\SMALLARCHIVE-COPYPLAN.actual.json",
+        "bytes": 5456,
+        "sha256": "26ad95303219bb5733b904686428254131e6e97b86ef0576af88cabc1c93d282"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/SMALLARCHIVE-COPYPLAN.actual.json",
+      "role": "unchanged prepared copyplan predating Root decision"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\DELIVERY.actual.json",
+        "bytes": 2651,
+        "sha256": "4a91d605e3b83618fe26d20f87cadfd092dd16e3d3d4c2200b3480bb163154f9"
+      },
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/DELIVERY.actual.json",
+      "role": "unchanged pre-adjudication delivery"
+    }
+  ],
+  "unchanged_source_count": 12,
+  "integration_additions": [
+    "README.md",
+    ".gitattributes",
+    "formal-dynamic-theme-ledger.json",
+    "source-index.json"
+  ],
+  "no_media_payload_read_or_copy": true,
+  "no_new_decode_or_render": true,
+  "pre_adjudication_records_not_rewritten": true
+}

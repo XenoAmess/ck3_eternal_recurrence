@@ -1,0 +1,114 @@
+{
+  "schema": "xar.e04.formal_dynamic_theme_accepted_source_shots.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:45:36.094121+00:00",
+  "role": "derived tiny ledger bound to actual Root decision; no new media review",
+  "unit": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
+  "definition": "Each R03..R13 theme counts once after at least one accepted original-M source shot; no full-suite or finished-film equivalence",
+  "Root_decision": {
+    "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+    "bytes": 8538,
+    "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88"
+  },
+  "original_M": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+    "bytes": 27122,
+    "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+  },
+  "accepted_count": 1,
+  "total_themes": 11,
+  "percentage": 9.090909090909092,
+  "themes": [
+    {
+      "theme": "R03",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R04",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R05",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R06",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R07",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R08",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R09",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R10",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R11",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    },
+    {
+      "theme": "R12",
+      "status": "accepted_original_M_positive_source_shot",
+      "accepted_shots": [
+        {
+          "run": "R0175",
+          "span_seconds_half_open": [
+            0,
+            34
+          ],
+          "span_frames_half_open": [
+            0,
+            1020
+          ],
+          "source_fps": 30,
+          "Root_decision": "ROOT-R12-SHOT-ACCEPTANCE.actual.json"
+        }
+      ]
+    },
+    {
+      "theme": "R13",
+      "status": "pending_accepted_original_M_source_shot",
+      "accepted_shots": []
+    }
+  ],
+  "explicit_limits": [
+    "No single-hop refusal/equal-cutoff shot credit.",
+    "No boarding-fee or supply/refill causation from this route clip.",
+    "No extra-credit R13; no finished chapter, full film, human1x, signoff or OneDrive delivery.",
+    "No new raw copy/hash, packet pass, decoding, image generation or render; existing technical QA reused."
+  ],
+  "full_R12_variant_suite_film_qualified": false,
+  "human_1x": false,
+  "human_signoff": false,
+  "unchanged_counters": {
+    "research": "10/14",
+    "business": "7/11",
+    "ABC": "0/3",
+    "B_stock_sites": "0/2"
+  },
+  "historical_zero_records_retained": true,
+  "evidence_retention": {
+    "owner": "/root",
+    "purpose": "Accepted R12 source for Episode04 final edit and evidence review",
+    "review_at_utc": "2026-10-21T10:00:00Z",
+    "automatic_renewal": false
+  }
+}

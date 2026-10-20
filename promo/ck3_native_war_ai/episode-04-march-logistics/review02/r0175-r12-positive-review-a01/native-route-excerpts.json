@@ -1,0 +1,151 @@
+{
+  "schema": "xar.e04.R0175-native-route-excerpts-for-film.v1",
+  "state": "EXISTING_NATIVE_ROUTE_READS_EXCERPTED_ONLY",
+  "original_route": [
+    1036,
+    8653,
+    1034,
+    1033
+  ],
+  "retained_first_entry_after_Halt": [
+    1036
+  ],
+  "original_front_province_id": 1036,
+  "actual_original_front_empty_route": true,
+  "actual_reads": [
+    {
+      "phase": "before_Halt",
+      "response": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\desktop-3fevhd2-1c74096080--vanilla--R0175\\responses\\r12-film-halt-a02-001-film-before-action.json",
+        "bytes": 138197,
+        "sha256": "658bf693f3147199afff641d5318ba92b9b7162b0725811986d4f52a9d78fe08"
+      },
+      "at_utc": "2026-10-15T17:53:20.454126+00:00",
+      "date_raw": 53146248,
+      "revision": 102,
+      "native_revision": 101,
+      "paused": true,
+      "snapshot_id": "native:101",
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2624,
+        "move_target_province_id": 1033,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          1036,
+          8653,
+          1034,
+          1033
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 4,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "phase": "independent_after_Halt",
+      "response": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\desktop-3fevhd2-1c74096080--vanilla--R0175\\responses\\r12-film-post-a02-001-independent-post-before.json",
+        "bytes": 137779,
+        "sha256": "a0e041c81767533765308bb1b39de846efc612578cf3fde7dd5ae517e13e21c8"
+      },
+      "at_utc": "2026-10-15T17:53:22.861896+00:00",
+      "date_raw": 53146248,
+      "revision": 103,
+      "native_revision": 102,
+      "paused": true,
+      "snapshot_id": "native:102",
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2624,
+        "move_target_province_id": 1036,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          1036
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 1,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "phase": "original_front_stop",
+      "response": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\desktop-3fevhd2-1c74096080--vanilla--R0175\\responses\\r12-film-post-a02-010-post-status-stop-fresh-0.json",
+        "bytes": 143281,
+        "sha256": "6edac5f68b0d17937f3028b4f410a6c13350dbae0c831f5a8b244b5f37a8d644"
+      },
+      "at_utc": "2026-10-15T17:53:39.836196+00:00",
+      "date_raw": 53146296,
+      "revision": 107,
+      "native_revision": 106,
+      "paused": true,
+      "snapshot_id": "native:106",
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 1036,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "embarked",
+        "army_state_code": 4,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    }
+  ],
+  "Halt_ack": {
+    "file": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\desktop-3fevhd2-1c74096080--vanilla--R0175\\responses\\r12-film-halt-a02-002-halt.json",
+      "bytes": 2279,
+      "sha256": "1a025c109aaa64c34d741631a59a9dd87779d883026e235f6aaebef731820e94"
+    },
+    "at_utc": "2026-10-15T17:53:21.635567+00:00",
+    "body": {
+      "step": "halt-army-18",
+      "accepted": true,
+      "status": "halt_submitted",
+      "backend_id": "native-headless",
+      "war_action": {
+        "status": "halt_submitted",
+        "army_id": 18,
+        "submitted_date_raw": 53146248,
+        "postcondition_verified": false
+      }
+    }
+  },
+  "original_front_independent_snapshot_time_is_not_exact_arrival_tick": true,
+  "same_frame_progress_and_cutoff_requalified_by_media_audit": false,
+  "whole_R12_business_acceptance_reperformed": false,
+  "SDK_calls": 0,
+  "native_event_exact_encoded_frame": null
+}

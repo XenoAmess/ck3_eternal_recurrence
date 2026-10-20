@@ -1,0 +1,79 @@
+{
+  "schema": "xar.e04.media-acceptance-source-pins.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:43:25.639156+00:00",
+  "repo_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\AGENTS.md",
+      "bytes": 91189,
+      "sha256": "2926fe078987149794f7997395c8ad3f1d46d07a85c9ceb57c67471e79de71c8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "bytes": 20967,
+      "sha256": "72e4e825630289c552dc9156a328e19c8209427b4a6af14135a454f2e83ee591"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\director-plan.md",
+      "bytes": 67988,
+      "sha256": "3f975fa763777997b1c1e3824b79883f8850b598cdeef6a0c93b0bcd31fe07bd"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\report.json",
+      "bytes": 7089,
+      "sha256": "d1dd39c0cc9b6bc4bd386b4ab9e65d361ca7902043713d8615039591e7a187eb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\cut-candidates-a02.json",
+      "bytes": 14360,
+      "sha256": "37d3c41a8d554873a7c4dcc6ce7a35b1f94e7e8948913bc7dfa7cfbc338fe66d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\native-route-excerpts.json",
+      "bytes": 5046,
+      "sha256": "71b3ec60aa553b20ad1d3fd5ada99a27f710902eddb4365deb07701eb5f6fa80"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\recording-halt-pipeline-closure.actual-a01.json",
+      "bytes": 1066,
+      "sha256": "04d94dabc14d8f2da29f8bf44dbe218426293e6d236411fd9cca91ee9aefe0a5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r12-locked-halt-r0175-12004.md",
+      "bytes": 3578,
+      "sha256": "3e2100afcf3a0611bc783647d86181787cb964cd98e01d30061eaa801e784e01"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r13-locked-reroute-r0176-12004.md",
+      "bytes": 2289,
+      "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r194-forward-split-merge-12004.md",
+      "bytes": 8017,
+      "sha256": "e08a5472b9b4034fdf55cbd7b924b40bad674c1f028484cbd44d65361319fcac"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r196-shot-context-a01\\boarding-evidence-facts.actual-a01.json",
+      "bytes": 3764,
+      "sha256": "d3f62780ceae9913ce98562b9988a45843d7ba68dc93cafaf6b0a3bda2ba17f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r211-r05-render-27s-a01\\ROOT-DELIVERY.final-a02.json",
+      "bytes": 5720,
+      "sha256": "939977e67d94b6b9f4aacfa7989d56fc94d98624e9145f83bc30f1303bbbaacc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0217-proof-chapter-a01\\ROOT-MOVIE-SPARSE-REVIEW.actual.json",
+      "bytes": 919,
+      "sha256": "3aa3ec235e09fc93e56c7d280ed466eb49f3ddbf96dae1816f6092ea6a0fdd88"
+    }
+  ],
+  "media_payload_reads": 0
+}

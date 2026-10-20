@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.r0175-r12-recommendation-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:38:59.057465+00:00",
+  "source": "This agent actual64-sheet review plus exact Root reported keyreviews; retained metadata pins only",
+  "recommendation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\R12-POSITIVE-ACCEPTANCE-RECOMMENDATION.actual.json",
+    "bytes": 13761,
+    "sha256": "ef64857a3944b668eafefaec172620080d516fa35b839dce0e630ae5cb940260"
+  },
+  "root_key_review_attribution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\ROOT-KEY-REVIEW-ATTRIBUTION.actual.json",
+    "bytes": 1332,
+    "sha256": "afd5e3e3d68233feef404d4e707bdb3f345b8a8f16da655e678cd449569ddea5"
+  },
+  "copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\SMALLARCHIVE-COPYPLAN.actual.json",
+    "bytes": 5456,
+    "sha256": "26ad95303219bb5733b904686428254131e6e97b86ef0576af88cabc1c93d282"
+  },
+  "output_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01",
+  "files_before_this_receipt": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\freeze_recommendation.py",
+      "bytes": 12153,
+      "sha256": "53f3a3ab9e9ec6dbd68e39997084b8e7e3a63cb01b4ecd796e465355ad31e6c3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\R12-POSITIVE-ACCEPTANCE-RECOMMENDATION.actual.json",
+      "bytes": 13761,
+      "sha256": "ef64857a3944b668eafefaec172620080d516fa35b839dce0e630ae5cb940260"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\ROOT-KEY-REVIEW-ATTRIBUTION.actual.json",
+      "bytes": 1332,
+      "sha256": "afd5e3e3d68233feef404d4e707bdb3f345b8a8f16da655e678cd449569ddea5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\SMALLARCHIVE-COPYPLAN.actual.json",
+      "bytes": 5456,
+      "sha256": "26ad95303219bb5733b904686428254131e6e97b86ef0576af88cabc1c93d282"
+    }
+  ],
+  "hard_new_metadata_aggregate_limit_bytes": 30000,
+  "remaining_heavy": 0,
+  "new_raw_reads": 0,
+  "new_packet_PTS_passes": 0,
+  "new_images": 0,
+  "transcodes": 0,
+  "main_repo_mutations": 0,
+  "formal_counter_mutations": 0,
+  "human_signoff": false,
+  "copyplan_source_metadata_total_bytes_excluding_plan_and_this_receipt": 128429
+}

@@ -1,0 +1,192 @@
+{
+  "schema": "xar.e04.root-formal-dynamic-source-shot-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:42:54.384011+00:00",
+  "decision_by": "/root",
+  "reviewer_type": "AI",
+  "status": "ACCEPTED_R12_POSITIVE_CONTINUOUS_SOURCE_SHOT",
+  "source_recommendation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\media-acceptance\\adjudication-a01\\R12-POSITIVE-ACCEPTANCE-RECOMMENDATION.actual.json",
+    "bytes": 13761,
+    "sha256": "ef64857a3944b668eafefaec172620080d516fa35b839dce0e630ae5cb940260"
+  },
+  "decision": "Accept one R12 formal dynamic source shot: original locked multi-hop route, one Halt retaining the original first leg, and natural arrival at the original front. Original M line157 names precisely these three visible states. Single-hop refusal and exact cutoff equality are not claimed by this shot.",
+  "original_M": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+    },
+    "commonM_line26": "每段记录真实原片PTS/动作marks与同一次native取证的关联。动作前6–10秒看实际军队/日期/读数，提交或自然转移完整保留，结果稳定后8–15秒看独立后态。结算不靠剪辑制造发生；若推进本身耗时长，先预算并录制完整事件窗口，不能用旧场景暂停画面补过程。各小窗口独立run/attempt，原片分段及字幕加速标签如实记录。此处秒数是拟取用镜头长度，不承诺原生日推进只需这些秒。",
+    "R12_lines151_157": [
+      {
+        "line": 151,
+        "text": "## R12 已锁定多跳Halt与合法单跳拒绝"
+      },
+      {
+        "line": 153,
+        "text": "**输入**：另一独立同类路线窗口，明确locked且old_front!=old_tail，progress高于边界。若只剩一个hop或首尾同地，先归为独立拒绝反例，不能拿它验证“去后缀”。"
+      },
+      {
+        "line": 155,
+        "text": "**步骤**：F→`halt-army-U`→独立F route恰为[old_front]、progress保留→自然exact日实际到old_front并独立确认空route/位置。**验收**：三态各有实际来源；被拒绝保留validator及原因，不叫provider故障。最多该首段预览时长＋2实际日，基于新实际原生预测，不能从旧ETA减日。"
+      },
+      {
+        "line": 157,
+        "text": "**镜头**：locked前完整路线→Halt后只留首段→真正到达。精确equal cutoff为可选细粒度：只有原生raw恰等loaded值且独立后态才授实机等号；GUI显示50%、历史61.875%和静态strict>branch三者不互换。equal采不到不无限等，不用“未确认50%”占长口播。"
+      }
+    ],
+    "independent_final_gates_line171": "每卡产出：input pins、实际请求/结果、F前后、自己的journal fence和新事件、正常save、source/evidence层次、停止原因、raw marks/clean span与原始显示文案、可说结论和仍不可说内容。出现0事件、partial、source inference和actual application分别记录。新TTS在核心卡通过后才制作；最终machine audit、AI抽帧、人工1×完整看听、signoff、OneDrive客户端交付分别验收。"
+  },
+  "raw_identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\raw-locked-halt-a01\\raw.mkv",
+    "exists": true,
+    "bytes": 59537290,
+    "mtime_ns": 1792086841620205500,
+    "st_dev": 13886423844274364792,
+    "st_ino": 562949955370857,
+    "expected_bytes_match": true,
+    "retained_sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11",
+    "sha256_reread": false,
+    "read_payload": false
+  },
+  "selected_span": {
+    "in_seconds_inclusive": 0,
+    "out_seconds_exclusive": 34,
+    "in_frame_inclusive": 0,
+    "out_frame_exclusive": 1020,
+    "source_fps": 30,
+    "source_resolution": [
+      2560,
+      1440
+    ],
+    "retiming": false,
+    "derived_clip_rendered": false
+  },
+  "action_alignment": {
+    "visible_route_shortening_seconds": [
+      5.3,
+      5.833
+    ],
+    "visible_arrival_transition_seconds": [
+      19.9,
+      20.0
+    ],
+    "exact_native_callback_PTS": null,
+    "native_binding": "Same R0175/Army18: full route [1036,8653,1034,1033], progress96666>50000; once Halt and independent route[1036]; natural two-day independent position1036, emptyroute and embarked. No wall-clock interpolation."
+  },
+  "length_adjudication": {
+    "actual_pre_state_seconds_approximately": 5.33,
+    "planned_pre_seconds": [
+      6,
+      10
+    ],
+    "shortfall_to_planned_minimum_seconds_approximately": 0.67,
+    "post_state_seconds": 14,
+    "planned_post_seconds": [
+      8,
+      15
+    ],
+    "reason": "Original common M explicitly calls these planned selection lengths. The uninterrupted 5.33-second pre-state is legible in the original resolution and linked to native identity; disclose the difference and accept the bounded shot. No padding or altered game time."
+  },
+  "actual_review": {
+    "delegated_allframe_reviewer": "/root/media_chapter",
+    "actual_contact_sheets": 64,
+    "actual_frames_inclusive": [
+      0,
+      1023
+    ],
+    "cell_pixels": [
+      640,
+      360
+    ],
+    "Root_actual_contact_sheets": [
+      "000",
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "009",
+      "010",
+      "037",
+      "063"
+    ],
+    "Root_actual_original_resolution_samples_seconds": [
+      4,
+      10,
+      34
+    ],
+    "Root_all64": false,
+    "whole_original_resolution_allframe_text_review": false,
+    "human_1x": false,
+    "human_signoff": false,
+    "clean_scope": "All selected frames visually reviewed by delegated AI; Root checked transitions/endpoints and full-resolution essential Army HUD/route/date/boat. Native right notification does not obscure the required Army region. This is AI clean-source review, not human whole-film signoff."
+  },
+  "technical_evidence_reused": {
+    "strict_whole_raw_decode_report": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\report.json",
+      "bytes": 7089,
+      "sha256": "d1dd39c0cc9b6bc4bd386b4ab9e65d361ca7902043713d8615039591e7a187eb"
+    },
+    "strict_decode_result": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\strict-whole-decode-and-samples\\result.json",
+      "bytes": 1129,
+      "sha256": "9852d3fdd922052058cb69170f5a0487f9bb737f05bc7e8a140f9636645cc939"
+    },
+    "known_result": "原45秒/1350帧strict decode exit0；2560x1440/30fps；原raw无音轨。未重跑。",
+    "all1350packet_PTS_table_retained": false,
+    "fullpacketPTS_new_pass_executed": false,
+    "not_an_added_original_contract_gate": "原M要真实PTS/动作marks，没有每条旧raw必须全1350packet表的硬门槛。不能把原先可选PTS-only补充方案升为本镜头原合同前置。"
+  },
+  "formal_counter": {
+    "name": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
+    "previous": "0/11",
+    "current": "1/11",
+    "percentage": 9.090909090909092,
+    "accepted_themes": [
+      "R12"
+    ],
+    "pending_themes": [
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R10",
+      "R11",
+      "R13"
+    ],
+    "unit": "theme with an accepted source shot; not a count of completed research variants, chapters or finished films",
+    "full_R12_variant_suite_film_qualified": false
+  },
+  "unchanged_counters": {
+    "research": "10/14",
+    "business": "7/11",
+    "ABC": "0/3",
+    "B_stock_sites": "0/2"
+  },
+  "limits": [
+    "No single-hop refusal/equal-cutoff shot credit.",
+    "No boarding-fee or supply/refill causation from this route clip.",
+    "No extra-credit R13; no finished chapter, full film, human1x, signoff or OneDrive delivery.",
+    "No new raw copy/hash, packet pass, decoding, image generation or render; existing technical QA reused."
+  ],
+  "root_actual_source_stat_at_decision": {
+    "bytes": 59537290,
+    "mtime_ns": 1792086841620205500,
+    "st_dev": 13886423844274364792,
+    "st_ino": 562949955370857,
+    "payload_hash_reread": false
+  },
+  "evidence_retention": {
+    "owner": "/root",
+    "purpose": "Accepted R12 source for Episode04 final edit and evidence review",
+    "review_at_utc": "2026-10-21T10:00:00Z",
+    "automatic_renewal": false
+  }
+}

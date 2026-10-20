@@ -1,0 +1,146 @@
+{
+  "schema": "xar.e04.r0175-AI-direct-contact-review-notes.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewer": "/root/media_chapter",
+  "reviewer_type": "AI",
+  "observation_session_start_utc": "2026-10-20T09:23:29Z",
+  "all64_view_complete_no_later_than_utc": "2026-10-20T09:29:14Z",
+  "source": "Actual tools.view_image(detail=original) on each existing sheet000..063, rendered with image detail original; ordered groups of 8 sheets, all 16 cells each, no raw read",
+  "groups": [
+    {
+      "sheets": [
+        0,
+        7
+      ],
+      "frames": [
+        0,
+        127
+      ],
+      "PTS": [
+        "00:00:00.000",
+        "00:00:04.233"
+      ],
+      "finding": "All128 tiled frames directly viewed. Game map and selected army pane remain visible; land/cavalry pane, long route depiction. No desktop, black/stale capture cut or retired blue overlay seen. Original game text is too small for every-digit certification; label bands readable."
+    },
+    {
+      "sheets": [
+        8,
+        15
+      ],
+      "frames": [
+        128,
+        255
+      ],
+      "PTS": [
+        "00:00:04.267",
+        "00:00:08.500"
+      ],
+      "finding": "All128 frames directly viewed. Long route depiction visible in sheet008/009, visibly shortened/absent long suffix by sheet010 bottom and remains shortened through015. Conservative visible bracket last clear long suffix f159=5.300 to clear shortened f175=5.833; precise single frame not claimed. Selected land army pane remains. No desktop/blue overlay or large obstruction."
+    },
+    {
+      "sheets": [
+        16,
+        23
+      ],
+      "frames": [
+        256,
+        383
+      ],
+      "PTS": [
+        "00:00:08.533",
+        "00:00:12.767"
+      ],
+      "finding": "All128 frames directly viewed. Selected land army pane and local first-edge route/state continue; long southern suffix does not reappear. No new notification or large occlusion. Map/army/HUD visible, no desktop or retired blue overlay. Paused visual state is not itself a capture freeze."
+    },
+    {
+      "sheets": [
+        24,
+        31
+      ],
+      "frames": [
+        384,
+        511
+      ],
+      "PTS": [
+        "00:00:12.800",
+        "00:00:17.033"
+      ],
+      "finding": "All128 frames directly viewed. Land army/first-edge map stays visible; game pause label clears around f473=15.767 and controls change, compatible with resumed natural advance; no exact date reading claimed at this scale. Long suffix stays absent; no notification obstruction yet."
+    },
+    {
+      "sheets": [
+        32,
+        39
+      ],
+      "frames": [
+        512,
+        639
+      ],
+      "pts": [
+        "17.067",
+        "21.300"
+      ],
+      "findings": [
+        "Frame 522 at 17.400 has clear right side; frame 523 at 17.433 shows notification entering; frame 524 at 17.467 shows expanded right relation notification. It does not cover selected army pane or the near-center army marker.",
+        "Frame 597 at 19.900 retains cavalry/land illustration. Frame 598 at 19.933 briefly shows an empty/dark native illustration transition. Frame 599 at 19.967 begins the offshore marker and ship illustration; frame 600 at 20.000 clearly shows ship illustration. Paused label is visible again by frame 601.",
+        "Map and army UI remain visible throughout. No desktop or retired blue decision panel. Exact small text is not qualified."
+      ]
+    },
+    {
+      "sheets": [
+        40,
+        47
+      ],
+      "frames": [
+        640,
+        767
+      ],
+      "pts": [
+        "21.333",
+        "25.567"
+      ],
+      "findings": [
+        "All 128 visible cells retain the same offshore selected-army marker and ship illustration at bottom left, with paused label.",
+        "The ordinary right-side notification persists without covering the left selected-army pane or near-central marker.",
+        "No desktop, retired blue panel, unexpected black frame or other large occlusion. Small text not qualified."
+      ]
+    },
+    {
+      "sheets": [
+        48,
+        55
+      ],
+      "frames": [
+        768,
+        895
+      ],
+      "pts": [
+        "25.600",
+        "29.833"
+      ],
+      "findings": [
+        "All 128 cells continue the same paused offshore selected-army marker and ship illustration.",
+        "Right-side notification remains; no new overlay over the left selected-army pane or marker. No desktop, retired blue panel, unexplained black frame or visible jump. Small text not qualified."
+      ]
+    },
+    {
+      "sheets": [
+        56,
+        63
+      ],
+      "frames": [
+        896,
+        1023
+      ],
+      "pts": [
+        "29.867",
+        "34.100"
+      ],
+      "findings": [
+        "All 128 cells retain the same paused offshore selected-army marker and ship illustration through the final frame 1023 at 34.100.",
+        "Right-side notification continues without covering army pane/marker. No desktop, retired blue panel, unexplained black frame, new large occlusion or visible scene cut. Small text not qualified.",
+        "Candidate frames 0..1019 fit [0,34.000); frames 1020..1023 are retained endpoint references, not an extension silently added to the candidate."
+      ]
+    }
+  ]
+}

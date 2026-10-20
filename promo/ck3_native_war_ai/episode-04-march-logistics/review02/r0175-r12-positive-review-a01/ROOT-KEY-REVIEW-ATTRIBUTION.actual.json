@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "received_in_this_agent_turn_utc_no_later_than": "2026-10-20T10:38:59.057465+00:00",
+  "observer": "/root",
+  "observer_type": "AI",
+  "source": "Parent /root NEW_TASK collaboration message received for this recommendation; Root reports actual tools.view_image direct reviews",
+  "sheets_actually_directly_viewed": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    37,
+    63
+  ],
+  "sheet_count": 12,
+  "fullresolution_existing_samples": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\samples\\frame-01.jpg",
+      "PTS_seconds": 4
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\samples\\frame-02.jpg",
+      "PTS_seconds": 10
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\samples\\frame-04.jpg",
+      "PTS_seconds": 34
+    }
+  ],
+  "reported_readability": "Root以detailoriginal查看上述三张旧大图，能读清军队、路线、时间和船状态。",
+  "other_fullresolution_frames_reviewed_by_Root": false,
+  "not_Root_all64": true,
+  "not_human1x": true,
+  "exact_Root_view_timestamps_not_supplied": true
+}
