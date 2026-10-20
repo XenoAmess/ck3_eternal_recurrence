@@ -51,3 +51,23 @@ B28的首次公开预检另发现旧H1适配器缺少`verify_case`；它尚未�
 正式SDK的决议查询外层没有`capture_epoch`；独立原生采集序号在`selected_terms.capture_epoch`。H1两处消费者错误读取外层缺失字段，现按正式嵌套合同修复，保留严格整数边界、双方身份、同场绑定和两条独立query递增要求。[修复与实际定向验证](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/h1-verify-entry-fix-a01/nested-quote-epoch-a02/DELIVERY.actual.json)记录原009 SDK JSON进入真实消费者的优化模式单项验证通过、strict四源通过；缺第二份原始query仍拒绝完成。不修改SDK生产者，不重编Native，不将Select后观察冒充第二份query。
 
 原009仅可证明本场一次完整十币种报价：300虔诚、225金币，其余八项为零；原生序号14094。当前Faith103确已采用纳杰夫32，关联边`eminent=false`表示普通等级，不能误读为未采用，其他Faith的等级不代入。本场[透明历史事实](C:/workspace/ck3-faith-and-power-20261017/episode02/h1-h2-composite-candidate-a01/narration-next-a01/B28-R0015-PARTIAL-FACTS.actual.json)不填H1完成槽。旧录制监看读文件时失败，唯一11.9秒补充片段仅为退出确认画面，不授报价上屏信用；后继使用独立场次及有界文件读取重试的新监看。
+
+## 2026-10-21 普通报价臂与主要臂的实际结果
+
+`machine_id: 4-8e1c2f1861`；本条于`2026-10-20T19:31:53.696851+00:00`读回已封原件后追加。两场均使用C12 `62bd402fc2f23ed9826e3ec25ab02d01ef45bcd1`，不改写R0015的解析失败或此前退出记录。
+
+B33/R0016普通臂已取得两次明确的独立query：`h1-ordinary-009/010`的原生采集序号11271→11683，原版费用文字均为300虔诚、225金币，完整十资源报价可读。这是同一普通状态的重复核验，不是普通／主要成对比较。人物31254、Faith103、Rite150及同日场景保持；升格0次、建制Confirm0次，独立后态中金币243、威望2200、虔诚14800均未变化。[18:55:38Z来源绑定事实](C:/workspace/ck3-faith-and-power-20261017/episode02/h1-h2-composite-candidate-a01/narration-next-a01/B33-R0016-ORDINARY-FACTS.actual.json)保留两份原query指针与SHA；[原单臂结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b33-h1-ordinary-retry-a01/live/4-8e1c2f1861--faith-engine--R0016/case-output/h1-arm-result.json)仍为`QUOTED_NO_HOF_SUBMISSION`、`business_pass=false`。报价225金币未实际支付，不能当作建制成交价或H2结果。
+
+R0016已正常关闭：[18:54:30Z闭场原件](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b33-h1-ordinary-retry-a01/SCENE-CLOSURE.actual.json)记录保留游戏句柄退出0、原host／public run／allocator等待0、keeper停止且无failure、原生退出与清理成立。新鲜Steam离线画面已由场内操作者直接审阅，桌面恢复1024×768；[屏幕释放](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b33-h1-ordinary-retry-a01/SCREEN-RELEASE.actual.json)为CAS12880、空资源。正常关闭不把普通单臂提升为完整H1业务通过。
+
+B29/R0017主要臂未进入实际升格。[19:16:52Z的004原回执](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b29-h-major-a01/live/4-8e1c2f1861--faith-engine--R0017/case-output/h1-promote-004.actual-results.json)已明确`holy_site_decision_requires_visible_selected_site`，圣地窗口不可见、`dispatch_invoked=false`；[19:16:55Z的005查询](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b29-h-major-a01/live/4-8e1c2f1861--faith-engine--R0017/case-output/h1-promote-005.actual-results.json)随后返回`adoption_detail_definition_unavailable_or_different`，报价和`native_can_confirm`均不可用。不能把005单独说成游戏拒绝升格、资金不足或主要报价已经读到；前一步可见选中圣地的前置条件尚未满足。整场未提交升格、建制确认或战争业务变更；[组合结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b29-h-major-a01/live/4-8e1c2f1861--faith-engine--R0017/case-output/h1-h2-ghw-composite-result.json)为`PARTIAL`、`business_pass=false`，H1主要臂、H2与同世界H3均未完成。[19:20:29Z录制服务终态](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b29-h-major-a01/keepers/a01/recording-service-final.json)的请求、take账本与完成段均为空，实际录像0段，不把原版PNG当成已拍动态过程。
+
+R0017同样正常关闭：[19:21:54Z闭场原件](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b29-h-major-a01/SCENE-CLOSURE.actual.json)记录游戏OS0、原host／public run／allocator等待0、keeper停止无failure，正常关闭true而业务false；fresh Steam离线已直接审图，1024×768恢复，[屏幕CAS12889](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b29-h-major-a01/SCREEN-RELEASE.actual.json)释放为空资源。
+
+制作端继续按既有71/88段实际作者输入、9/24必需槽绑定记账，15槽及17句新声待补；本批普通报价事实没有被误计为完整成对H1槽。可播放预览仍为原70段24:33.600，未新渲染完整片。B30完整普通朝圣、主要臂前置修复后的真实报价与H2后态、遗物两独立臂及最终成片均待各自实际证据，不预写成功或固定交付时刻。
+
+## 2026-10-21 主要圣地调用前置修复
+
+`machine_id: 4-8e1c2f1861`；来源为R0017封闭原件及`2026-10-20T19:30Z`前后的定向源码验收。薄调用层在升格决议前补齐原生圣地窗口查询：若目标未可见选中，只打开该目标一次，再独立查询确认目标ID与可见状态，随后进入原来的决议、完整报价、Can、审阅和唯一提交流程。有限队列只增加该前置所需的两个既有工具；不增加动作预算，不放宽缺失报价、身份、后态或一次提交守卫，不重编Native。
+
+[修复交付及定向验收](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/h1-promotion-identity-contract-a01/DELIVERY.actual.json)保留R0017的004／005真实拒绝输入；有限消费者与三源strict检查通过。可见窗口的人工构造输入仅用于检查调用路由，不能证明新的实机升格或主要报价已经取得。旧R0017仍为PARTIAL；下一场必须重新取得原生许可、费用、真实界面与独立后态。
