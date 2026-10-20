@@ -1,6 +1,6 @@
 # 罗贝尔原局 Source26／A05 接续（2026-10-20）
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`；04:42Z重新执行`tools/ck3_live_run_id.py machine`确认一致。以下滚动至04:58Z；[交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)保留原失败及路径别名。本记录区分源码与实际SDK。
+`machine_id: xenoamess-full-tower-eb9d2c1186`；04:42Z及06:21Z重新执行`tools/ck3_live_run_id.py machine`确认一致。下文按各段观察时间追加；[交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)保留原失败及路径别名。本记录区分源码与实际SDK。
 
 ## 四项目标
 
@@ -8,7 +8,7 @@
 | --- | --- |
 | G2八个M | **6/8**；M6仍缺同实例自然终态和更后普通消费；M7实际H及原广度未闭。 |
 | 1秒／日优化 | **未达成**。原全墙钟已超过24小时，即余下游戏日瞬时完成，10950日整场均值也大于7.89秒／日。后继FULL单独测完整wall，原维护时间继续计入。 |
-| 30年 | **5429/10950日，49.58%，剩5521日**；4753完整周期、SAVE10480、NEXT10481。原raw53144328→53407128及campaign不变。 |
+| 30年 | **5429/10950日，49.58%，剩5521日**；4753完整周期、SAVE10480；06:30Z实际SEM消费后NEXT10482。原raw53144328→53407128及campaign不变。 |
 | 决策能力提升 | 已有自然继承子链和具名Sway收益；终态、实际H、完整战争与跨政府广度仍有缺口。新Source26的M6/M7、战时护资、持久化及启动等待只保持各自源码／离线资格。 |
 
 Source25 `9b791aae`已规范提交、双导出。04:44Z Root完成Source26唯一writer：commit `394865df3259be5db29014ab1d17db7bdd48c21d`，anchor `_runtime/source26-integration17/SOURCE26-CANONICAL-ANCHOR.json`为7045 B／SHA `d2bf903d4a0f18cc819721451d42e390a58529f76a19ad2df301e85df5b78e85`。04:46:38Z双generic export实际完成，各1462行／59253402 B；COMPLETE为2427 B／`3f8a95a08790e0e2168f64547192b4fc9937a3fa0809536daf5f662c86673cc8`。policy-free BASE为389934 B／`30ba9778f6d4be917d29f1ab9a2a2b2aa414f5fedbfa03cdb7a8a9bebebd0517`，保留native历史三方来源。A05 union首次完整RAM组合通过：119个unique输出、峰1781760 B低于4MiB；当时仅RAM，随后实际采用见下文。A03/A04失败没有新增游戏信用。
@@ -38,4 +38,16 @@ Source25 `9b791aae`已规范提交、双导出。04:44Z Root完成Source26唯一
 05:13:12Z的`steam-offline-a05-new02/probe-1/steam-moved.png`由Root亲审确见离线；真实Steam窗口位移及新边缘像素提供响应证据，任务栏11:18的滞后时钟不当作当前时间。05:21:46Z新run `xenoamess-full-tower-eb9d2c1186--vanilla--R0003`的supervisor Task实际Run／STARTED，05:23:23Z在冷校验后、Game创建前因离线像素超过600秒退出，原guard保留。`ROOT-FRESH-SUPERVISOR-CLOSED-C23-A05.json`明确`NO_GAME_CREATION_ATTEMPTED`，bootstrap exit1／Job0／forced=false，无Game、SDK、SEM/CAP、录制或新增天数。05:24:55Z实际Task注销，05:24:56Z screen103 CAS7580释放及R0003 completed-red；失败索引`A05-SOURCE-PRELAUNCH-FAILURE-INDEX01.json`为2348 B／`57988d13bce96d0d3632ae9412ce012a3f585be17b9e14d7b6f9a87aca1e3b1f`。不能删除admitted记录重跑同一Task，后继采用独立A06命名空间及新nonce，新图须紧邻Run。
 
 05:25:32Z只读核当前master `fef0f535729ea8949f437d284bb1c66ba8cfecb4`：[Linear39372901164](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39372901164)成功；[Official39372901172](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39372901172)已通过旧故障step87、仍在运行，未预授整条成功。远端runner `machine_id: unknown`。其他机器的`361626a0`修复和本文机器的A05失败分别记账。G2仍6/8、5429日、1秒／日未达，M6／M7／性能只读检查与A06准备并行。
+
+## 06:46Z A06／A07 后续事实
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。A06实际恢复旧地图并录制，但Root生成的Mod证据缺三个字段，SDK校验拒绝；无SEM/CAP/FULL。Game最终forced1、Job0，录制完成304217342 B；全部原件及失败索引`O/A06-SOURCE-PREFLIGHT-FAILURE-INDEX01.json`4092 B／`56d898e80e8dac113844dcefedc669d26c9d906b0b0757becb2b337b2c99a44b`保留。已将原SDK完整Mod验证前置到[cold-owner生成器](../../tools/g2_saved_campaign/prepare_c23_a03_cold_owner_metadata_v1.py)，不补缺字段；实际RAM正例及缺字段反例通过。
+
+A07独立准备119输出；06:22:00Z新R0005监督Run，Game244624／FILETIME134369509365547275，Root亲审新鲜Steam离线图、1081-07-31地图及灰色文字后06:25:54Z放行。SDK实际Queue256976／App187840成功初始化；06:30:40Z原生SEM10481完整返回，确认原actor40526／episode／日期。随后Queue消费发现新namespace缺原局`campaign-score`目录，拒绝把1081帧用于建立1066锚点。不是原生SEM失败；CAP、FULL、日期推进均未发生。
+
+06:35Z按原通道收SDK，实际Queue1／App0；录制engine0与publisher0，原媒体完成441016607 B。监督一次WM_CLOSE未获Game退出，最终forced1／Job0／treegone，不能报正常Game关闭。两Task均Job0、无剩余强杀且注销读回absent；06:40:57Z screen105从7619释放到7621、done／resources=[]，R0005 completed-red。失败索引`O/A07-SOURCE-POSTPROCESS-FAILURE-INDEX01.json`4401 B／`c9dadda8deba605681410586faec17eed9ce9c9b908b88dfc021dd057d24d6c8`。不重Run旧Task，不重发SEM10481。
+
+原计分anchor、000至178月及cursor完整保留；后继A08准备同FileID目录关联。原SEM恢复合法追加Driver第5269行`restore-checkpoint`；保存描述和四sidecars不变。06:45Z原canonical cold validator实际通过新Driver，SHA`d8758d6913d915f2e29ffeb3d880db9f33706d36a5cd94898ac01d7e50b7b60c`；小复核`O/A08-POST-SEM-DRIVER-REVIEW02.json`8024 B／`1447501126fce982da6d11b2561ce4bd1cc504e18ee8b3b533e3bc3885ba2f4b`明确勘误01中误读history键的0，真实键为command_history。此时A08仍在准备，G2／天数／性能不增信用。
+
+CI补记：旧fef随后step100失败，已整改两份文档的禁用shell术语；exact`ff78f425`的[Official39375878467](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39375878467)与Linear均成功，87／100通过。远端runner仍`machine_id: unknown`；不外推其他head或实机资格。
 

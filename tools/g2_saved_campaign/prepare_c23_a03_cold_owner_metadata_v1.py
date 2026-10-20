@@ -134,6 +134,58 @@ def saved_basis(*,runtime_root=DEFAULT_RUNTIME):
         'Driver_SAVE_body_reads':0,'metadata_outputs_written':0,'SDK_started':False}
 
 
+def validate_mod_absence_pre_gate_v1(*,runtime_root,freeze,absence,checkpoint):
+    """Run frozen SDK pure consumers before any future gate is constructed.
+
+    Missing evidence is rejected, never synthesized. This validates metadata;
+    it grants no live Game, recording, Native or preflight qualification.
+    """
+    runtime=Path(runtime_root).resolve(strict=True)
+    root=Path(freeze['source_root']).resolve(strict=True)
+    require(freeze.get('machine_id')==MACHINE and root.is_dir(),'same-machine frozen SDK required')
+    names=('succession_transition_contract','turn_bundle_contract')
+    rows={row['relative']:row for row in freeze['files']}
+    pins={}
+    for name in names:
+        relative='xar_autoplayer/bridge/'+name+'.py';row=rows[relative]
+        path=(root/relative).resolve(strict=True)
+        require(path.is_relative_to(root),'SDK pure consumer escaped frozen source root')
+        item=ref(path)
+        require(item['bytes']==row['bytes'] and item['sha256']==row['sha256'],
+            'actual frozen SDK pure consumer row differs: '+relative)
+        pins[name]=item
+    old=list(sys.path);sys.path.insert(0,str(root))
+    try:
+        for name in ('xar_autoplayer','xar_autoplayer.bridge',
+                'xar_autoplayer.bridge.succession_transition_contract',
+                'xar_autoplayer.bridge.turn_bundle_contract'):
+            cached=sys.modules.get(name)
+            require(cached is None or Path(cached.__file__).resolve().is_relative_to(root),
+                'foreign cached SDK package/consumer refused')
+        modules={name:importlib.import_module('xar_autoplayer.bridge.'+name) for name in names}
+        for name,module in modules.items():
+            expected=Path(pins[name]['path'])
+            require(Path(module.__file__).resolve()==expected
+                and Path(module.__spec__.origin).resolve()==expected,
+                'imported SDK consumer origin differs: '+name)
+            require(ref(expected)==pins[name],'SDK consumer changed while importing')
+        env_ref=ref(runtime/'state/profile/xar-autoplayer-environment.json',65536)
+        manifest=checked(env_ref,65536)
+        require(manifest.get('machine_id')==MACHINE,'actual environment belongs to another machine')
+        prepared={**manifest,'verified_mod_absence':absence}
+        contract=modules['succession_transition_contract']
+        require(contract.verify_xar_mod_absence_evidence_v1(prepared) is True,
+            'actual SDK mod-absence consumer refused evidence')
+        binding=contract.bind_succession_lifecycle_from_environment_v1(prepared,
+            lifecycle='ordinary_campaign_succession',ordinary_campaign_no_pact=True)
+        require(binding==checkpoint['succession_lifecycle'],'checkpoint lifecycle differs before owner gate')
+    finally:sys.path[:]=old
+    return {'schema':'xar.c23.pre-gate-mod-absence-pure-validation/v1','machine_id':MACHINE,
+        'status':'PURE_CONSUMERS_PASSED_NO_LIVE_GAME_CREDIT','environment_manifest':env_ref,
+        'SDK_consumer_sources':pins,'lifecycle_binding':binding,'evidence_fields_added':0,
+        'Game_Native_RPC_calls':0,'metadata_outputs_written':0}
+
+
 def compose(inputs):
     """Return four new metadata bytes and an exact quote; no runtime mutation."""
     require(isinstance(inputs,dict) and inputs.get('schema')=='xar.C23-A03-cold-owner-metadata-input/v1'
@@ -164,6 +216,8 @@ def compose(inputs):
         absence=checked(inputs['mod_absence'],32768)
         require(absence.get('machine_id')==MACHINE and absence.get('game_pid')==launch['pid']
             and absence.get('game_creation_filetime')==launch['creation_filetime'],'current Game mod-absence identity required')
+        validate_mod_absence_pre_gate_v1(runtime_root=runtime,freeze=freeze,absence=absence,
+            checkpoint=checked(basis['seed'])['actual_saved_checkpoint'])
         refs=inputs['recording'];require(set(refs)=={'request','job','started','first_frame_admission','publisher_started'},
             'five exact new recording references required')
         request=checked(refs['request'],16384);job=checked(refs['job'],65536)
