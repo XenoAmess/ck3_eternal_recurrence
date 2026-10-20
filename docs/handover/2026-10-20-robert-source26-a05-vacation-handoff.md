@@ -111,3 +111,5 @@ Source26最终compositor [prepare_source26_sdk_v1.py](../../tools/g2_saved_campa
 原全墙钟已经超过24小时，即使余5521日瞬时完成，10950日整场均值下界也大于7.89秒／日。因此旧场整场1秒／日数学上已不可达；继续优化时并列报告实际FULL局部吞吐及原整场wall，不扣维护或重置起点宣称达标。原终点仍53407128；真实达到后按原month360 observation、最终checkpoint、15秒结尾画面／正常关闭合同收尾。
 
 本机任何shell操作显式用cmd.exe，禁止PowerShell；游戏现场始终唯一owner。休假结束前不自动启动新场。主线已有源码与资格提交，交接及最终薄producer随本文件线性提交。04:28Z已读2e096f7f的Linear39368354655成功、Official39368354657仍in_progress；未授整包GREEN。更早Official39359517349因外置faith scout来源缺失等失败，不能猜造来源或放宽守卫，也不能把旧RED冒称新CI结论。
+
+最终封存补记（同machine_id）：交接及源码已commit／push `976ef8c8159b3b0e1ee1de4e15ed43d598319278`；Root任务于04:29:47Z置done／resources=[]／序列7532。全部并行执行者已停止。存储最终小回执`B/VACATION-PREPARED-NOT-EXECUTED-CLOSEOUT0630-01.json`7224 B／`77f0a3d05fb3cf10d60b5a3439d6e4f60cee7754d7fcc9aa918d4889e5ea0695`，ShortHEAD rev208／ALLHEAD26；04:26Z独立核无相关Python／活动CK3，Source26执行仍0。15个既有无关untracked原样保留，未混入本次提交。此补记与小回执引用随最后文档提交推送，不改变原执行事实或到期时间。

@@ -116,5 +116,20 @@
   "root_bus_task": "robert-v20261019-resume-20261020-0214",
   "root_bus_resources_at_closeout_observation": [],
   "root_bus_done_will_be_set_after_handoff_commit_push": true,
-  "handoff": "docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md"
+  "handoff": "docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md",
+  "final_bus_observation": {
+    "observed_at_utc": "2026-10-20T04:29:47.733076+00:00",
+    "state": "done",
+    "resources": [],
+    "sequence": 7532,
+    "handoff_commit_pushed": "976ef8c8159b3b0e1ee1de4e15ed43d598319278"
+  },
+  "final_storage_closeout": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/VACATION-PREPARED-NOT-EXECUTED-CLOSEOUT0630-01.json",
+    "bytes": 7224,
+    "sha256": "77f0a3d05fb3cf10d60b5a3439d6e4f60cee7754d7fcc9aa918d4889e5ea0695",
+    "ShortHEAD_revision": 208,
+    "ALLHEAD_revision": 26,
+    "all_parallel_executors_stopped": true
+  }
 }
