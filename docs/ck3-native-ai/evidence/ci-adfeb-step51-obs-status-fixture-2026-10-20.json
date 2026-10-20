@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "scope": "source-only OBS continuous-watch fixture repair",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-20T01:03:10Z",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool 6177fe",
+  "official_ci": {
+    "head": "adfeb53fd2dfa9b93e389002ba30ae3479add47c",
+    "run": 39348546607,
+    "job": 118386957821,
+    "step": 51,
+    "runner_machine_id": "unknown",
+    "result": "3 failed, 83 passed, 53 subtests passed in 4.58s",
+    "trace": "_runtime/official-ci-adfeb53f-step51-trace01.json",
+    "trace_bytes": 3584,
+    "trace_sha256": "674df431eef88b190d4659c138d665a8b8bcef46299499f929845df9c0768923",
+    "original_log": "5840-byte ZIP member, RAM only; no retained original path",
+    "original_sha256": "89e101340cc07732ed1a0ca2dde88714cd3d7a252bba41256191479397a8163f",
+    "status_unchanged": "Original CI remains RED; skipped later gates are not passes."
+  },
+  "root_cause": "Static source diagnosis: FileGrowthWatch now reads active/paused status for every growth sample. The old two-value status iterable supplied active then inactive before any stop RPC and was exhausted when the guard attempted its owned stop. This obsolete fixture could not model continuous active recording. No deeper production exception stack was present in the CI trace.",
+  "change": "Only run_continuous_growth_watch uses a stateful fake: status stays active/unpaused until its stop_record side effect changes the backend state to inactive and returns the bound path. Existing stop-once, independent-client, >1200-second, >1-GiB, disk-reserve and original stalled-growth-error assertions are unchanged.",
+  "test_leaf": {
+    "path": "tools/test_ck3_obs_capture.py",
+    "before_bytes": 53781,
+    "before_sha256": "fa5c2441d86861eeb52609b8f6690769dc51b19271282592946d1cb09c989266",
+    "after_bytes": 53929,
+    "after_sha256": "01cefd49d0a61cae38d877a0288ff67049fb7f67f5bf61387de55c3e71aeff1a"
+  },
+  "production_unchanged": {
+    "path": "tools/ck3_obs_capture.py",
+    "bytes": 71770,
+    "sha256": "9af7bf7e2faa757ff07f759990cb10a1425852bde001554e924b228598515a0c",
+    "before_and_after_equal": true
+  },
+  "verification": {
+    "runs": 1,
+    "class": "tools/test_ck3_obs_capture.py::CaptureContractTests",
+    "methods": [
+      "test_continuous_independent_watch_has_no_1200_second_or_1gib_cap",
+      "test_continuous_independent_watch_owns_one_stop_at_actual_disk_reserve",
+      "test_continuous_recording_fault_still_stops_once_and_preserves_failure"
+    ],
+    "result": "3 passed in 10.70s",
+    "tool_chunks": ["c99976", "d7e3de"],
+    "options": "tools/.venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider; exactly the three nodes above",
+    "full_suite_run": false,
+    "live_OBS_or_game_credit": false
+  },
+  "storage": {
+    "aggregate_cap_bytes": 81920,
+    "card": "CI-ADFEB-STEP51-MOCK-FIXTURE-SOURCE16-TO80KiB-ADD64KiB01.json",
+    "card_sha256": "fe8868c30c617bde139ef9aa5896eab864dc655dbf91fcf9dca292eef401c9ca",
+    "scope": "Whole modified test plus this proof; 80 KiB supersedes 16 KiB, net increase 64 KiB.",
+    "scratch_hard_budget_bytes": 0,
+    "initial_scratch_quote_met": false,
+    "new_helpers": 0,
+    "temporary_writes": "Existing unittest TemporaryDirectory fixtures wrote synthetic executable/profile/output/guard files; addCleanup completed normally. No separate scratch helper or retained test output was created.",
+    "independent_temp_absence_readback": false,
+    "physical_peak_bytes": "unknown"
+  },
+  "boundaries": "No production source, frozen runtime/SDK, Git, game, desktop, Native or Task action changed; no real process or socket was used by these mocked tests."
+}

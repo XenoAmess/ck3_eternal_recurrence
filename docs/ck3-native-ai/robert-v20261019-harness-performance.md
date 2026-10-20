@@ -24,3 +24,13 @@
 每项为五轮交替测量，完整输出逐字节一致；没有大文件落盘。这是编码组件收益，实际响应大小与出现频率尚待当前闭合窗口核实，不能据此声称达到 1 秒/日。候选由现有严格转换器生成，SHA `cae7a895ea1307fec08f81ce3b2e735c9853470ca2784d4fe1b24297c76f65d5`，263,109 字节；[实际源最小补丁](../../tools/g2_saved_campaign/patches/robert-v20261019-owner-json-once.patch) 为 2,581 字节，SHA `57e1bdeef52ee544f3f3cbafdbd98270d37749c2ce6f94850b633262a9db159b`。当前未采用，不能热换活跃 owner。下一次实际 SDK owner 交接时，由唯一 runtime owner 从精确原源生成候选，把公共 `owner_response_json_once_v1.py` 连同 Queue 纳入原 source pins、保管与开局合同后采用；补丁不能代替精确输入 SHA 核对。
 
 所有新增源码、证据与临时小回执均计入已获准研究共享预算，未新设容量预留。紧凑证据保留至 2027-04-17 复核；原因是可重建的精确来源与行为等价证明，不保留额外合成大输入。
+
+## 2026-10-20：长期增长成本与新批次筛查
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`，身份来源为本轮machine回执`7992e5`。截至2026-10-20T00:40:37Z的源码分析由performance_python完成；Root以`1e2f8d`实际读取C23 Queue的`artifact_bytes`原函数复核。当前Queue为269127 B／cc074ddc，单次response编码已在冻结控制链中，不再作为新优化候选。以下没有新计时、测试或游戏调用，不能授实际提速信用。
+
+第一优先假设是历史收据增长成本。`consume_sequence`每RPC先guard，`full_loop`每轮又guard；通常AUTO与MET一轮至少枚举三次INBOX、OUTBOX、display及Q四个平坦目录。每次均为新鲜scandir，无保留的总字节缓存；Windows DirEntry可能缓存stat，不能将每个entry直接算作一次OS调用。历史不分代时，总扫描工作量随请求数近似平方增长。后续研究需保留容量、foreign／malformed输入和unknown／replay守卫，不能直接用不感知外部修改的计数器替换新鲜检查；本轮未改此函数。
+
+第二假设是上屏链的重复固定输入校验。同一publication在relay／provider／publisher多次读固定源码及STARTED／config，同时等待精确ACK；来源、实时PID代次、顺序和提交前上屏仍须保留。只有实际占比显著时，才研究同一次publication内复用已验不可变输入或等价唤醒，不能跳过ACK。23外置模块、cold五ref及完整源码rows核对仅启动一次，已排除为每AUTO成本；批次0.2秒等待也不冒作每AUTO延迟。
+
+首批先用`full_timing_origin=new_submission_same_producer`与`full_wall_ns`，配`full_rpc_rows_v1`的计数／错误、`interval_union_seconds`及`full_wall_minus_rpc_union_seconds`筛查，不能把嵌套RPC elapsed直接相加再相减。分母采用前后真实日期差，0日批次也保留完整wall；原03:26:49.420926Z全墙钟继续累计。剩余混合开销大也不直接归因Driver；没有现成细分字段时保持unknown，不另开游戏或加测量RPC。

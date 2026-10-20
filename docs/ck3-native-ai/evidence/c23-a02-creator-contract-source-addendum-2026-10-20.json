@@ -1,0 +1,58 @@
+{
+  "schema": "xar.c23.a02-creator-contract-source-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T01:07:42.648469+00:00",
+  "status": "SOURCE_ONLY_FROZEN_NOT_RUNTIME_ADMITTED",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_full_enabled_cold_controls_v1.py",
+    "bytes": 37154,
+    "sha256": "b63eacea6eae778678e7a05f755e033bb426e67da8c0cebc5bb465f3199051d9"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_a02_creator_contract_v1.py",
+    "bytes": 11718,
+    "sha256": "e595f0b9af873992fd8e9b7a4c735603a3c45f9d4c789518f71a916258ef935f"
+  },
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c23-full-enabled-cold-controls-source-plan-2026-10-20.json",
+    "bytes": 21229,
+    "sha256": "8f1c9823212c7d429d09a6a12b787447d378bf4ceb552ebc8b5c06eb2f671442"
+  },
+  "prior_source_whole_bytes": 97908,
+  "failure_source": [
+    1975,
+    "4351bc77b2c122722d6b135a4918a6922152245e5578b9400bd8857619545170"
+  ],
+  "integration_fault": "Complete44 source closure was forwarded to original max8 entry contract. Prior AST/import checks did not exercise actual parameter shape; real launch failed after suspended creation, before custody/injection/resume. Actual createdPIDunknown, not0Game.",
+  "delta": [
+    "Complete44 list remains unique and every actual file hashed;23 external algorithms and cached-origin guards retained.",
+    "Separate canonical_entry_source_pins fixed6 T names exact path/SHA subset44; original verifier called preCreate, callback/ChildPlan/receiver/max8/digest unchanged. Not truncating first8.",
+    "Five supervisor outputs/journal moved to A02 names; Rootreleased new nonce/config/CLI binds knownfailedTask1/1Job0/unregistered. Oldmarkers preserved.",
+    "Eight changed readers share RootFinal-A02; only supervisor/outer have logic changes, other6 only exact RootFinal literal. Ordinaryplanner/WAL313/flags/0bff preserved."
+  ],
+  "qualification": {
+    "first_fixture": {
+      "chunk": "acfbd4",
+      "exit_code": 1,
+      "reason": "isolated AST execution scope omitted production MACHINE constant"
+    },
+    "same_one_test_corrected": {
+      "chunk": "c121c9",
+      "exit_code": 0,
+      "seconds": 3.956,
+      "scope": "Real generated Outer guards/prepare_factory; exact original Creator factory/callback/ChildPlan/consume/receiver; src19 OriginIO send/recv.44 predecessor actual pins hashed;6 absolute entries preserved across3roles.",
+      "substitutions": "RAM Windowsfacade/custody/resources/pipes and facadeclass import only; no Popen/Native/Game/OShandle calls.",
+      "negative_cases": "all44/9/empty/fewer/wrongSHA,callbacktwice,receiver44,bootstrap/send/recv>16K,Rootreleasefalse",
+      "suffix_max_bytes": 1693,
+      "M0_worstcase_bound": 3507
+    },
+    "old_matrices_rerun": false,
+    "actual_Run_replayed": false
+  },
+  "inverse": "Original namespace porter inverse retained; six nonlogic leaves only RootFinal basename changes. Original Creator/SDK/Native files untouched.",
+  "RAM_graph_bytes": 523301,
+  "RAM_modules": 18,
+  "D_Game_Task_Git_changes": 0,
+  "actualRuntimeH": "NOTRUN",
+  "scratch_bytes": 0
+}

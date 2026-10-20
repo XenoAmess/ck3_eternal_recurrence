@@ -3,7 +3,7 @@
   "machine_id": "xenoamess-full-tower-eb9d2c1186",
   "observed_at_utc": "2026-10-20T00:05:50.921528Z",
   "identity_evidence": "tools/ck3_live_run_id.py machine; task read-only tool output",
-  "status": "SOURCE_ONLY_ACTUAL_COLD_FIVE_REFS_AND_ROOT_REVIEW_REQUIRED",
+  "status": "SOURCE_ONLY_DEADLINE_CANDIDATE_PENDING_MANUAL_STORAGE_REVIEW_AND_ROOT_APPROVAL",
   "owner": "c23_cold_feeder",
   "storage_card": {
     "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/C23-COLD-FEEDER-NEW-SOURCE64KiB-COMMITMENT01.json",
@@ -30,7 +30,8 @@
     "-B",
     "-X",
     "utf8",
-    "tools/g2_saved_campaign/qualify_c23_cold_feeder_v1.py"
+    "tools/g2_saved_campaign/qualify_c23_cold_feeder_v1.py",
+    "--deadline-only"
   ],
   "runtime_graph_names": [
     "root_p37c23_same_game_loop_feeder100.py",
@@ -44,8 +45,8 @@
   "runtime_materialization_authority": "Root/runtime only; this source package grants none",
   "existing_timing_entry": {
     "path": "tools/g2_saved_campaign/prepare_c23_full_enabled_cold_controls_v1.py",
-    "bytes": 29500,
-    "sha256": "423706af13d8565332b8ed6e50e5d29b107666e54aac607d2e44afba70b8e0d9",
+    "bytes": 37154,
+    "sha256": "b63eacea6eae778678e7a05f755e033bb426e67da8c0cebc5bb465f3199051d9",
     "function": "transform_cold_feeder_source(raw, source_ref=exact_ref)",
     "selection": "original pinned function AST unchanged; bounded timing dependencies selected only; no eighteen-control graph construction"
   },
@@ -125,7 +126,7 @@
     ],
     "expected_marker_body_location": "ROOT-CONTINUOUS-FEEDER-STATUS-P37C23.json first_batch, written after original result_for success, offline batch and continuity settlement",
     "rule": "Root actually reads first FULL lifecycle origin/mono and ledger, then create-only writes exact marker. Missing waits with zero RPC and checks original STOP/SDK closure/deadline; incorrect rejects; correct releases once and is not polled each later batch.",
-    "deadline_utc": "2026-10-20T01:48:56.993837Z",
+    "deadline_utc": "2026-10-20T03:48:56.993837Z",
     "deadline_extension_allowed": false,
     "speed_credit": "Only actual same-producer publish to validated receipt scalars; Queue local sums and following/restart origins cannot substitute"
   },
@@ -134,7 +135,38 @@
     "Five actual references required; delegated cold/Source24/new-recording validators invoked; old Game rejected",
     "4734 -> saved4753 alignment preserves other original metadata and zero new credit; one-Task HOLD missing/wrong/correct gate"
   ],
+  "manual_deadline_revision": {
+    "observed_at_utc": "2026-10-20T00:36:27.081549Z",
+    "authority": "Root explicitly requested a new manual storage purpose/growth/deadline review before any install; this source change itself grants no renewal or runtime permission.",
+    "reason": "Remaining5521 days at observed1.2176 seconds/day require about112 minutes plus15 minutes cold preparation; the prior deadline would truncate the authorized finite continuation.",
+    "previous_deadline_utc": "2026-10-20T01:48:56.993837Z",
+    "candidate_fixed_deadline_utc": "2026-10-20T03:48:56.993837Z",
+    "byte_caps_changed": false,
+    "automatic_renewal": false,
+    "runtime_install_status": "NOT_INSTALLED_BY_THIS_SOURCE_PACKAGE",
+    "required_next_authority": "Actual manual storage review and Root approval before runtime installation",
+    "single_delta_check": "--deadline-only: new literal passes the admission deadline guard while absent five refs still reject; old literal rejects; exact marker at02:00 passes new bound, wrong/expired deadline and equality at new deadline reject.",
+    "other_three_focused_rerun": false,
+    "previous_three_focused_proof": {
+      "commit": "adfeb53f",
+      "status": "Historical source-only3PASS at2026-10-20T00:15:30.774056Z; not reinterpreted as this new deadline qualification",
+      "producer": {"bytes": 25270, "sha256": "dc73df297ec1337af76b7a79fe2f8da3e18955260a7eb1b9a35253bebcd1e146"},
+      "qualifier": {"bytes": 18945, "sha256": "b1ad1251889920b4812b287e58c53a62095852ad33df49e5dc21c81ddad202d6"},
+      "plan": {"bytes": 7475, "sha256": "a264ee7522f5f6bf92f5270254f7b8f56933e6e2bf597a3d3dfe19a0770a6bea"}
+    },
+    "timing_dependency_delta": "Prior423706/29500 full producer was superseded by currentba9b/30025 after the unrelated supervisor import-order correction. The selected transform_cold_feeder_source function and timing dependencies remain unchanged; firstHOLD, five references, planner and timing algorithms are untouched."
+  },
   "task_close": "Report exact three source pins, source gross and logical participation quote; no Git/index/master writes or runtime H/day/cycle/performance credit.",
+  "a02_source_revision": {
+    "observed_at_utc": "2026-10-20T01:09:58.239779Z",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "authority": "Root requested only the exact current control-source dependency and the common RootFinal-A02 reader after the real preinject/resume source-domain rejection; no new Game, SDK, FULL or credit was produced by this source work.",
+    "dependency": "Current37154/b63e replaces superseded30025/ba9b. The selected transform_cold_feeder_source AST was compared against adfeb53f and is exactly unchanged: SHA256 b9d3a1ca97b7d06d5bf4b0648df64f1b63061303ebe59fea96b14ff92890fceb.",
+    "only_generated_reader_delta": "ROOT-FINAL-SDK-FREEZE-P37C23.json -> ROOT-FINAL-SDK-FREEZE-P37C23-A02.json; actual five references and the fixed03:48 deadline remain required and unchanged.",
+    "verification": "One pure-RAM build_sources and exact three-output/read-name scan only; previous focused matrices are not rerun or regraded.",
+    "runtime_adoption": "Root/runtime must preserve the exact installed original before adopting the new pinned feeder. No D installation, Task or Git action is authorized by this source package.",
+    "replacement_peak_quote": "Current graph79153B; new graph79157B. Keeping the old41714B feeder plus the new41718B feeder with unchanged34988B ledger and2451B launcher requires120871B logical footprint before any other temporary copies. This exceeds the original single-materialization98304B by22567B; storage/Root must cover preservation and replacement explicitly rather than count only net4B."
+  },
   "limitations": [
     "Source-only synthetic new identities in focused fixtures cannot qualify actual startup.",
     "Actual Python resident/AST memory peak is not measured.",

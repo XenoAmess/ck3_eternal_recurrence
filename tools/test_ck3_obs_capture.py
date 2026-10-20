@@ -472,8 +472,13 @@ class CaptureContractTests(unittest.TestCase):
         peer = self.client()
         output = self.recordings / (self.session + ".mkv")
         output.write_bytes(b"synthetic closed output")
-        peer.get_record_status.side_effect = [SimpleNamespace(output_active=True), SimpleNamespace(output_active=False)]
-        peer.stop_record.return_value = SimpleNamespace(output_path=str(output))
+        recording_active = [True]
+        peer.get_record_status.side_effect = lambda: SimpleNamespace(
+            output_active=recording_active[0], output_paused=False)
+        def stop_record():
+            recording_active[0] = False
+            return SimpleNamespace(output_path=str(output))
+        peer.stop_record.side_effect = stop_record
         obs = SimpleNamespace(ReqClient=mock.Mock(return_value=peer))
         clock = [0.0]
         class Request:

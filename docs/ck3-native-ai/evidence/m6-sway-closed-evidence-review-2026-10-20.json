@@ -1,0 +1,36 @@
+{
+  "schema": "xar.m6.closed-sidecar-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T00:50:51.301328+00:00",
+  "identity_evidence": "Root machine tool7992e5",
+  "source_validity": "Closed DriverClose C23 at2026-10-20T00:44:43Z,3972B SHA0128e254c37fda68c9a79508d4878d670bded05a78a83eb6d738b1694fbb3bf2; two raw sidecars copied byte-identically before next runtime",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\m6-sway-closed-ledger-2026-10-20.json",
+      "bytes": 21864,
+      "sha256": "edfd6027bf508bda9ea9183c8820a18014192d20789f6ae929b4e0c503c63580"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\m6-sway-closed-schedule-2026-10-20.json",
+      "bytes": 419,
+      "sha256": "94a6fa3cb8879392cc5be39670f2085b69eb6a6e72d1213e0976618a9d57ff54"
+    }
+  ],
+  "action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+  "actor": 40526,
+  "target": 34973,
+  "scheme_instance_id": 83887164,
+  "scheme_instance_generation": 5,
+  "actual_applied_start": true,
+  "independent_active_read": true,
+  "named_gain_value": 25,
+  "named_gain_following_native_revision": 1600,
+  "named_gain_following_date_raw": 53225544,
+  "terminal_observed": false,
+  "terminal_next_turn_credit": false,
+  "credit_rule": "Do not infer terminal from instance absence, slot reuse, thin event scope or stale next_turn_consumed",
+  "M6_complete": false,
+  "G2_completed_modules": 6,
+  "new_Game_RPC_tests": 0,
+  "review_at_utc": "2026-11-19T00:50:51.301328+00:00"
+}

@@ -5,13 +5,13 @@
   "status": "SOURCE_READY_RUNTIME_NOT_ADMITTED",
   "producer": {
     "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_full_enabled_cold_controls_v1.py",
-    "bytes": 30025,
-    "sha256": "ba9b0da2decf5a341f415ecf205fad7d040c4e70ee6a8c398141b23ccfef509c"
+    "bytes": 37154,
+    "sha256": "b63eacea6eae778678e7a05f755e033bb426e67da8c0cebc5bb465f3199051d9"
   },
   "qualifier": {
     "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_full_enabled_cold_controls_v1.py",
-    "bytes": 20383,
-    "sha256": "913dab6d5041f5aa7f6e5a3e953c2a8ef97f3ad07256f3a0b9728d2bd0dbfa30"
+    "bytes": 20429,
+    "sha256": "292beed80e22411ab89ded7ef7ea172c5e3e260cf3ee951d363b495a8c15608e"
   },
   "finite_input_helper": {
     "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c23_source_abort_checkpoint_inputs_v1.py",
@@ -53,18 +53,18 @@
     "RAM_outputs": [
       {
         "basename": "root_p37c23_sdk_queue.py",
-        "bytes": 269127,
-        "sha256": "cc074ddc2fd723f1235994b8e5acb71ec891b8fe18a35b142342408d3b969c8d"
+        "bytes": 269159,
+        "sha256": "f7dddc9485086ef203a2a169161a7245964d54790c641390ca5af3f4411171e3"
       },
       {
         "basename": "root_p37c23_mcp_entry.py",
-        "bytes": 12896,
-        "sha256": "77d0d32618ab9c6e1c15f9edc5ee154abb2c71292a7edf5c0f9cac35fc461dd8"
+        "bytes": 12908,
+        "sha256": "04bad62a2d8c65e7d58d563589a77ab6f0e24e42152a7b9b08c5d48604cdd44c"
       },
       {
         "basename": "root_native_build_binding_p37c23.py",
-        "bytes": 4098,
-        "sha256": "bac64031e86b21c7e10beac7132a42d7a85197593e8a168d5b87b1a9a6d11b34"
+        "bytes": 4102,
+        "sha256": "3ccffe28161156d0f0c884165893be337a66c21612630f54669ce4bcc4c30a8e"
       },
       {
         "basename": "root_p37c23_automatic_natural_succession_handoff.py",
@@ -78,23 +78,23 @@
       },
       {
         "basename": "launch_sdk_p37c23_owner.py",
-        "bytes": 5876,
-        "sha256": "ba841b763223f3286752196a95d564a51158e80ad6f6a3039b0246734a1a730f"
+        "bytes": 5888,
+        "sha256": "e38edb011967ed9c379eea90db39916abb3b67798652ebf3fbb4781f37c443a8"
       },
       {
         "basename": "root_p37c23_cold_resume.py",
-        "bytes": 20074,
-        "sha256": "3fda1769a984cb762458533d6005802662f0799100ce697171f52975a143a5d3"
+        "bytes": 20078,
+        "sha256": "92c0e27980d9aad6fbbbef2ed7e5e35e5794be2f0ed0ca892b420b5f07e30b96"
       },
       {
         "basename": "root_checkpoint_bootstrap_c23.py",
-        "bytes": 10596,
-        "sha256": "98f7f878ea2ee894854ff6dbdf96dcb0715b0dd3d3d1160de3da12c3946395ad"
+        "bytes": 10600,
+        "sha256": "c691fe4dbd69974114179f476a72493582c15d3c8815553713810e8061e329ea"
       },
       {
         "basename": "root_native30_supervisor_c23.py",
-        "bytes": 34968,
-        "sha256": "039a19f51dabc06500885c08dd6a74c1cc7a00fad68eca6d71ebee1441d119f5"
+        "bytes": 37929,
+        "sha256": "cd4fbc6ad653be78b6004d3becd79e3fe8e37a759cf5f46a06285f6924db3e8e"
       },
       {
         "basename": "root_record_shutdown_c23.py",
@@ -123,8 +123,8 @@
       },
       {
         "basename": "root_c23_canonical_outer.py",
-        "bytes": 16950,
-        "sha256": "eded7e07332eeb76a0dd2286be1e4eec61397a9dc6e104a52ef90ed38e8370c1"
+        "bytes": 18769,
+        "sha256": "03ed5642e98e69990ee0b0fa75ce709b75f703e1d2457d88dfb42b651855877e"
       },
       {
         "basename": "root_c23_source_abort_checkpoint_inputs.py",
@@ -142,7 +142,7 @@
         "sha256": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
       }
     ],
-    "logical_bytes": 518453,
+    "logical_bytes": 523301,
     "materialized_files": 0,
     "participation_cap_bytes": 2621440,
     "main_source": "Actual C22 seven-controls predecessor plus true canonical enabled creator hunks; no disabled timing build_sources result is overlaid.",
@@ -314,7 +314,23 @@
     "keeper": "Use then-current sole screen CAS, actual clean host repo/HEAD, current ready CLI9198718F...305D7F and installed pin. No old7444 task/CAS or expired Steam image reused.",
     "storage": "Use then-actual fully admitted canonical storage view and ACCOUNT input, same SHA in launch/keeper/profile/job. ACCOUNT61/1492 and narrow77ba are historical, not adoption authority. M0 owns canonical schema; no bypass.",
     "first_SEM_CAP": "Actual loaded SAVE date53274624/actor40526/episode/goal/lifecycle, new Game identity/pipe/connection, cold_checkpoint restored active_resumed with no error. Only then Root new map; restore itself gives zero cycle/action credit.",
-    "external_import_source_pins": "canonical_preload_policy.external_import_source_pins is a dict keyed by each of the23 frozen module names; value exactref{path:T/module.py,bytes,sha256}. Every entry must also belong to entry_source_pins with identical absolute path/SHA. Actual file bytes and cached module origin checked before supervisor/owner/App use; missing refuses."
+    "external_import_source_pins": "canonical_preload_policy.external_import_source_pins is a dict keyed by each of the23 frozen module names; value exactref{path:T/module.py,bytes,sha256}. Every entry must also belong to entry_source_pins with identical absolute path/SHA. Actual file bytes and cached module origin checked before supervisor/owner/App use; missing refuses.",
+    "shared_RootFinal": "All eight changed graph readers use T/ROOT-FINAL-SDK-FREEZE-P37C23-A02.json, which pins new A02 policy. Preserve original96ac RootFinal. Native/session/profile/owner/pair/recording hardpaths remain C23.",
+    "canonical_entry_source_pins": "Complete policy.entry_source_pins44 remains bounded actual-file hash closure. policy.canonical_entry_source_pins exactly six fixed absolute T script-path/SHA pairs: supervisor/bootstrap/owner/Queue/MCPentry/outer. All are NEW graph hashes and exact subset44. Original max8 verifier runs in prepare_factory before Game Create, then callback/ChildPlan/receiver unchanged.",
+    "attempt_a02": {
+      "CLI": "--attempt a02 --attempt-nonce <32lowerhex>",
+      "config": "cold_attempt={attempt_id:a02,nonce:same CLI token,execution_owner:Root,root_direct_execution_release:true,prior_failure:exactref(1975/4351bc77b2c122722d6b135a4918a6922152245e5578b9400bd8857619545170)}",
+      "nonce": "Cold nonce is independent from original wrapper TaskSPEC nonce; SPEC.sha fixes CLI token. Never old failed Task nonce.",
+      "new_outputs": [
+        "ROOT-SUPERVISOR-ADMITTED-C23-A02.json",
+        "ROOT-FRESH-PROFILE-PREPARED-C23-A02.json",
+        "ROOT-NATIVE30-GAME-ENVIRONMENT-BOUND-C23-A02.json",
+        "ROOT-SCREEN-KEEPER-C23-A02.jsonl",
+        "ROOT-FRESH-SUPERVISOR-CLOSED-C23-A02.json"
+      ],
+      "old_markers": "STOP-OWNED-GAME-C23/EXIT-SDK-P37C23/ROOT-SDK-EXIT-REQUESTED-C23.json/REQUEST-ADMISSION-CLOSED-C23/ROOT-GAME-CLOSE-REQUEST-C23.json present refuses; never clear.",
+      "kernel": "Original failed launch created a suspended process; actualPIDunknown after original cleanup. No0Game/normal0 claim; runtime still must verify cleanup before new authorized Task."
+    }
   },
   "FULL_timing": {
     "Queue_rows_enabled": true,
@@ -339,5 +355,10 @@
     "scratch_bytes": 0,
     "source_hard_bytes": 98304,
     "future_actual_card": "Separate Root/storage admission required for source output and deployment; no permission implied by this source plan."
+  },
+  "a02_qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_a02_creator_contract_v1.py",
+    "bytes": 11718,
+    "sha256": "e595f0b9af873992fd8e9b7a4c735603a3c45f9d4c789518f71a916258ef935f"
   }
 }

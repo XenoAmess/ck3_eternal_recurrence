@@ -272,6 +272,7 @@ class C23Cross(unittest.TestCase):
         raw=b'RAM-only source';digest=p.sha(raw)
         class MemoryPath:
             def __init__(self,value):self.value=str(value)
+            def is_absolute(self):return True
             def __truediv__(self,name):return MemoryPath(self.value+'/'+name)
             def resolve(self,strict=True):return self
             def __str__(self):return self.value

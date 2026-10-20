@@ -14,7 +14,7 @@ from types import SimpleNamespace
 OWN = Path(__file__).resolve().parent
 T = Path('D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime')
 MACHINE = 'xenoamess-full-tower-eb9d2c1186'
-DEADLINE = '2026-10-20T01:48:56.993837Z'
+DEADLINE = '2026-10-20T03:48:56.993837Z'
 ADMISSION = 'ROOT-C23-COLD-FEEDER-ADMISSION100.json'
 FEEDER = 'root_p37c23_same_game_loop_feeder100.py'
 LEDGER = 'root_continuity_window_c23_100.py'
@@ -25,7 +25,7 @@ BASES = {
  'launch_c18_feeder93.py': (2459, 'f6097214339d6e759d8559009a53672e181ef527cc2c6ee239458c99019116b5'),
 }
 DEPENDENCIES = {
- 'prepare_c23_full_enabled_cold_controls_v1.py': (29500, '423706af13d8565332b8ed6e50e5d29b107666e54aac607d2e44afba70b8e0d9'),
+ 'prepare_c23_full_enabled_cold_controls_v1.py': (37154, 'b63eacea6eae778678e7a05f755e033bb426e67da8c0cebc5bb465f3199051d9'),
  'prepare_full_batch_timing_sources_v1.py': (7282, '112d4154a4ac39261749c2be0be0097f1b8c188b7905cbd97091dc89765ef1a8'),
  'full_lifecycle_timing_v1.py': (2480, 'dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca'),
  'full_batch_timing_v1.py': (7638, '197e4308b7d0f5a70a8c3474ec0b58581997f3e60bfc2d8414c668dae07c8e0b'),
@@ -35,6 +35,7 @@ MAP = (
  ('root_continuity_window_c18_93', 'root_continuity_window_c23_100'),
  ('root_p37c18_same_game_loop_feeder93.py', 'root_p37c23_same_game_loop_feeder100.py'),
  ('P37C18', 'P37C23'),
+ ('ROOT-FINAL-SDK-FREEZE-P37C23.json', 'ROOT-FINAL-SDK-FREEZE-P37C23-A02.json'),
  ('REQUEST-ADMISSION-CLOSED-C18', 'REQUEST-ADMISSION-CLOSED-C23'),
  ('p37-queue/ROOT-C18-NORMAL-SOURCE-WARM-BOUND.json', 'p37-queue/ROOT-C23-NORMAL-COLD-BOUND.json'),
  ('ROOT-ACTUAL-GAME-LAUNCH-C11.json', 'ROOT-ACTUAL-GAME-LAUNCH-C23.json'),
@@ -48,7 +49,7 @@ ADMITTED = '''def admitted():
         and a.get("machine_id") == "xenoamess-full-tower-eb9d2c1186"
         and a.get("ordinary_cycle_credit") == 0 and a.get("original_actions_replayed") is False
         and a.get("window_origin_reset") is False
-        and a.get("review_deadline_utc") == "2026-10-20T01:48:56.993837Z",
+        and a.get("review_deadline_utc") == "2026-10-20T03:48:56.993837Z",
         "exact C23 source-only preparation is not an actual cold admission")
     refs = a.get("sources")
     c23_require(isinstance(refs, dict) and set(refs) ==

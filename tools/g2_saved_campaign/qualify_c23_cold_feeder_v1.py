@@ -258,9 +258,47 @@ class Focused(unittest.TestCase):
             and isinstance(n.func, ast.Name) and n.func.id == 'c23_first_batch_hold']
         self.assertEqual(len(gates), 1)
 
+    def test_04_strict_manually_reviewed_deadline_binding(self):
+        newer = '2026-10-20T03:48:56.993837Z'
+        older = '2026-10-20T01:48:56.993837Z'
+        self.assertEqual(ns['DEADLINE'], newer)
+        self.assertIn(newer, ns['ADMITTED'])
+        self.assertNotIn(older, ns['ADMITTED'])
+        admission = {'schema': 'xar.C23-saved-frontier-feeder/v1', 'machine_id': MACHINE,
+            'ordinary_cycle_credit': 0, 'original_actions_replayed': False,
+            'window_origin_reset': False, 'review_deadline_utc': newer, 'sources': {}}
+        env = {'N': T, 'c23_checked_file': lambda *args: copy.deepcopy(admission)}
+        selected(('c23_require', 'admitted'), env)
+        with self.assertRaisesRegex(ValueError, 'all five actual cold references required'):
+            env['admitted']()  # The exact new deadline passes, then missing actual refs still reject.
+        admission['review_deadline_utc'] = older
+        with self.assertRaisesRegex(ValueError, 'not an actual cold admission'):
+            env['admitted']()
+        class FixedClock:
+            current = datetime(2026, 10, 20, 2, 0, tzinfo=timezone.utc)
+            @classmethod
+            def now(cls, tz): return cls.current
+            fromisoformat = staticmethod(datetime.fromisoformat)
+        env = {'datetime': FixedClock, 'timezone': timezone}
+        selected(('c23_require', 'c23_accept_continue'), env)
+        expected = {'review_deadline_utc': newer, 'hold_started_at_utc': '2026-10-20T01:59:00+00:00'}
+        marker = {'schema': 'xar.C23-first-FULL-root-continue/v1', 'reviewer': '/root',
+            'reviewed_at_utc': '2026-10-20T02:00:00+00:00', 'first_batch': expected}
+        self.assertTrue(env['c23_accept_continue'](marker, expected))
+        wrong = copy.deepcopy(marker); wrong['first_batch']['review_deadline_utc'] = older
+        with self.assertRaises(ValueError): env['c23_accept_continue'](wrong, expected)
+        expired = dict(expected, review_deadline_utc=older)
+        wrong['first_batch'] = expired
+        with self.assertRaises(ValueError): env['c23_accept_continue'](wrong, expired)
+        FixedClock.current = datetime.fromisoformat(newer.replace('Z', '+00:00'))
+        with self.assertRaises(ValueError): env['c23_accept_continue'](marker, expected)
+
 
 def main():
-    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Focused))
+    require(sys.argv[1:] in ([], ['--deadline-only']), 'only the explicit finite deadline check selector is accepted')
+    suite = (unittest.TestSuite([Focused('test_04_strict_manually_reviewed_deadline_binding')])
+        if sys.argv[1:] else unittest.defaultTestLoader.loadTestsFromTestCase(Focused))
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
     owned = [OWN / n for n in ('prepare_c23_cold_feeder_v1.py', 'qualify_c23_cold_feeder_v1.py', 'c23_cold_feeder_plan_v1.json')]
     source_rows = [{'path': str(p.resolve()), 'bytes': p.stat().st_size,
         'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for p in owned]

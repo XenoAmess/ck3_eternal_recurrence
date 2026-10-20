@@ -209,6 +209,17 @@ def local_import_closure(graph):
 def external_import_guard_source():
     return '\n_C23_EXTERNAL_IMPORT_PINS='+repr(EXTERNAL_IMPORT_PINS)+'''\n
 def _check_c23_external_imports(root, policy):
+    pins=policy.get('entry_source_pins')
+    require(isinstance(pins,(list,tuple)) and 0<len(pins)<=64, 'bounded complete source closure required')
+    paths=[]
+    for row in pins:
+        require(isinstance(row,(list,tuple)) and len(row)==2 and isinstance(row[0],str)
+            and Path(row[0]).is_absolute() and isinstance(row[1],str) and len(row[1])==64,
+            'exact complete source path/SHA required')
+        path=Path(row[0]).resolve(strict=True);paths.append(str(path))
+        with path.open('rb') as stream:raw=stream.read(1048577)
+        require(len(raw)<=1048576 and hashlib.sha256(raw).hexdigest()==row[1], 'complete source closure changed')
+    require(len(paths)==len(set(paths)), 'duplicate complete source path')
     refs=policy.get('external_import_source_pins')
     require(isinstance(refs,dict) and set(refs)==set(_C23_EXTERNAL_IMPORT_PINS), 'all frozen external algorithms must be explicitly pinned')
     entries={str(Path(p).resolve(strict=True)):h for p,h in policy['entry_source_pins']}
@@ -220,6 +231,57 @@ def _check_c23_external_imports(root, policy):
         require(len(raw)==size and hashlib.sha256(raw).hexdigest()==digest, 'external algorithm changed: '+name)
         module=sys.modules.get(name)
         require(module is None or Path(module.__file__).resolve(strict=True)==path, 'foreign cached external algorithm: '+name)
+
+def _c23_canonical_entries(root, policy, chain):
+    names={'root_native30_supervisor_c23.py','root_checkpoint_bootstrap_c23.py',
+        'launch_sdk_p37c23_owner.py','root_p37c23_sdk_queue.py',
+        'root_p37c23_mcp_entry.py','root_c23_canonical_outer.py'}
+    rows=policy.get('canonical_entry_source_pins')
+    require(isinstance(rows,(list,tuple)) and len(rows)==6
+        and all(isinstance(r,(list,tuple)) and len(r)==2 for r in rows), 'exact six canonical entries required')
+    complete={str(Path(p).resolve(strict=True)):h for p,h in policy['entry_source_pins']}
+    require({Path(p).name for p,h in rows}==names
+        and all(Path(p).resolve(strict=True).parent==root and complete.get(str(Path(p).resolve(strict=True)))==h
+            for p,h in rows), 'canonical entries must be exact complete-closure subset')
+    # Original max8 verifier runs here before Game Create and again in the
+    # original callback/ChildPlan/receiver. Never forward all44 as entry pins.
+    return chain._verified_entry_sources(rows)
+'''
+
+
+def a02_attempt_guard_source():
+    return '''
+def _validate_a02_attempt(args, config):
+    value=config.get('cold_attempt') or {}
+    if (args.attempt!='a02' or value.get('attempt_id')!='a02'
+            or value.get('execution_owner')!='Root' or value.get('root_direct_execution_release') is not True
+            or re.fullmatch('[0-9a-f]{32}',str(args.attempt_nonce)) is None
+            or value.get('nonce')!=args.attempt_nonce):
+        raise ValueError('explicit Root released a02 attempt/nonce required')
+    ref=value['prior_failure']
+    def pinned(item):
+        path=Path(item['path']).resolve(strict=True)
+        with path.open('rb') as stream:raw=stream.read(16385)
+        if len(raw)>16384 or len(raw)!=item['bytes'] or hashlib.sha256(raw).hexdigest()!=item['sha256']:
+            raise ValueError('a02 prior failure source differs')
+        return json.loads(raw)
+    if ref.get('bytes')!=1975 or ref.get('sha256')!='4351bc77b2c122722d6b135a4918a6922152245e5578b9400bd8857619545170':
+        raise ValueError('only exact first C23 failed launch is admitted for a02')
+    failure=pinned(ref);sources=failure['source_refs'];closed=pinned(sources['supervisor_closed'])
+    task=pinned(sources['Task_closed']);unregistered=pinned(sources['Task_unregistered'])
+    if (failure.get('machine_id')!='xenoamess-full-tower-eb9d2c1186'
+            or failure.get('status')!='C23_FIRST_SUPERVISOR_LAUNCH_FAILED_ORIGINAL_CLEANUP_CLOSED'
+            or failure.get('new_Game_receipt_exists') is not False or failure.get('new_App_created') is not False
+            or failure.get('SAVE10480_unchanged_by_Game_execution') is not True
+            or (closed.get('failure') or {}).get('message')!='CK3 launch contract failed safely: frozen entry source pins required'
+            or (closed.get('keeper') or {}).get('thread_exited') is not True
+            or task.get('child_exit_code')!=1 or task.get('bootstrap_exit_code')!=1
+            or task.get('job_active_after_stage')!=0 or task.get('forced_remaining_cleanup') is not False
+            or value['nonce']==task.get('nonce') or (unregistered.get('actual') or {}).get('absent_after') is not True):
+        raise ValueError('a02 exact failed Task closure and unchanged checkpoint required')
+    # This authorizes no claim of zero Game creation. The original launch
+    # competing-process/kernel checks and Root actual cleanup review remain.
+    return value
 '''
 
 
@@ -383,8 +445,38 @@ def _compose_source_graph(*,full_timing=True):
     outer=swap(outer,"        self.policy = checked(self.freeze['canonical_preload_policy'])\n",
         "        self.policy = checked(self.freeze['canonical_preload_policy'])\n"
         '        _check_c23_external_imports(self.root, self.policy)\n')
+    outer=swap(outer,'        chain = self.tools()\n        from xar_autoplayer.bridge.native_loaded_provider_windows_v1 import WindowsNativeCustodyFacadeV1\n        self.factory',
+        '        chain = self.tools()\n        entries = _c23_canonical_entries(self.root, self.policy, chain)\n'
+        '        from xar_autoplayer.bridge.native_loaded_provider_windows_v1 import WindowsNativeCustodyFacadeV1\n        self.factory')
+    outer=swap(outer,"entry_source_pins=self.policy['entry_source_pins'], enabled=True)",
+        'entry_source_pins=entries, enabled=True)')
     outer+=external_import_guard_source()
     graph['root_c23_canonical_outer.py']=outer.encode()
+    supervisor=graph['root_native30_supervisor_c23.py'].decode()
+    supervisor=swap(supervisor,'def main(args):\n',a02_attempt_guard_source()+'\n\ndef main(args):\n')
+    supervisor=swap(supervisor,'    clean, screen, config = map(read, (args.clean_source_freeze, args.screen_admission, args.launch_config))\n',
+        '    clean, screen, config = map(read, (args.clean_source_freeze, args.screen_admission, args.launch_config))\n'
+        '    _validate_a02_attempt(args, config)\n'
+        '    if any((N/name).exists() for name in ("STOP-OWNED-GAME-C23", "EXIT-SDK-P37C23", "ROOT-SDK-EXIT-REQUESTED-C23.json", "REQUEST-ADMISSION-CLOSED-C23", "ROOT-GAME-CLOSE-REQUEST-C23.json")):\n'
+        '        raise ValueError("old C23 stop/exit marker present; a02 cannot clear or reuse it")\n')
+    supervisor=swap(supervisor,'    raise SystemExit(main(parser.parse_args()))',
+        '    parser.add_argument("--attempt", choices=("a02",), required=True)\n'
+        '    parser.add_argument("--attempt-nonce", required=True)\n'
+        '    raise SystemExit(main(parser.parse_args()))')
+    # These five existing attempt receipts/journal alone get new names. The
+    # absent first successful C23 launch/SDK/display paths remain unchanged.
+    attempt_names=['ROOT-SUPERVISOR-ADMITTED-C23.json','ROOT-FRESH-PROFILE-PREPARED-C23.json',
+        'ROOT-NATIVE30-GAME-ENVIRONMENT-BOUND-C23.json','ROOT-SCREEN-KEEPER-C23.jsonl',
+        'ROOT-FRESH-SUPERVISOR-CLOSED-C23.json']
+    supervisor=port(supervisor,[(n,n.replace('-C23.','-C23-A02.')) for n in attempt_names])
+    supervisor=swap(supervisor,'    write(N / "ROOT-SUPERVISOR-ADMITTED-C23-A02.json", {"at_utc": now().isoformat(),',
+        '    write(N / "ROOT-SUPERVISOR-ADMITTED-C23-A02.json", {"attempt_id":"a02", "attempt_nonce":args.attempt_nonce, "at_utc": now().isoformat(),')
+    supervisor=swap(supervisor,'        write(N / "ROOT-FRESH-SUPERVISOR-CLOSED-C23-A02.json", {"at_utc": now().isoformat(),',
+        '        write(N / "ROOT-FRESH-SUPERVISOR-CLOSED-C23-A02.json", {"attempt_id":"a02", "attempt_nonce":args.attempt_nonce, "at_utc": now().isoformat(),')
+    graph['root_native30_supervisor_c23.py']=supervisor.encode()
+    root_final='ROOT-FINAL-SDK-FREEZE-P37C23.json'
+    graph={n:port(b.decode(),[(root_final,'ROOT-FINAL-SDK-FREEZE-P37C23-A02.json')]).encode()
+        for n,b in graph.items()}
     # Original lifecycle semantics are kept. FULL receipts may carry bounded
     # timing; the optional segmented control probe is explicitly not enabled.
     graph['root_p37c23_sdk_queue.py'],_=timing.transform_queue(graph['root_p37c23_sdk_queue.py'],enabled=full_timing)
