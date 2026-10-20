@@ -21271,11 +21271,25 @@ def _sole_committed_moving_contact_first(
     )
     if advance_step not in available_steps:
         return None
+    window_days = 1
+    for candidate_days in (3, 2):
+        window_step = advance_route_contact_window_step(
+            army_id, target, hostile_army_ids, horizon_days=candidate_days,
+        )
+        if window_step in available_steps:
+            advance_step = window_step
+            window_days = candidate_days
+            break
     return {
         "policy": "one-life-turn-v1",
         "phase": "native_war_moving_contact_before_strength_progress",
         "selected_step": advance_step,
-        "reason": "the exact same-frame full-hostile native timeline proves the sole committed moving army contact-free for one day; replan after the bounded advance",
+        "reason": (
+            f"same-frame complete hostile timelines admit {window_days} days for the sole moving army; the watched native clock stops on actual arrival, target, combat, retreat or pause changes"
+            if window_days > 1 else
+            "the exact same-frame full-hostile native timeline proves the sole committed moving army contact-free for one day; replan after the bounded advance"
+        ),
+        "route_contact_window_days": window_days,
         "route_audit": {**audit, "contact_horizon": proof},
         "active_wars": war_summary,
     }

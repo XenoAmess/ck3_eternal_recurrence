@@ -1,6 +1,6 @@
 # 罗贝尔原局 Source26／A05 接续（2026-10-20）
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`；04:42Z及06:21Z重新执行`tools/ck3_live_run_id.py machine`确认一致。下文按各段观察时间追加；[交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)保留原失败及路径别名。本记录区分源码与实际SDK。
+`machine_id: xenoamess-full-tower-eb9d2c1186`；04:42Z及06:21Z重新执行`tools/ck3_live_run_id.py machine`确认一致。下文按各段观察时间追加；[交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)保留原失败及路径别名。
 
 ## 四项目标
 
@@ -8,7 +8,7 @@
 | --- | --- |
 | G2八个M | **6/8**；M6仍缺同实例自然终态和更后普通消费；M7已有下述自然H正见证，原广度未闭。 |
 | 1秒／日优化 | **未达成**。原全墙钟已超过24小时，即余下游戏日瞬时完成，10950日整场均值也大于7.89秒／日。后继FULL单独测完整wall，原维护时间继续计入。 |
-| 30年 | **5430/10950日，剩5520日**；已结算4760周期，raw53274648；SAVE10480仍为5429日。07:49:45Z新FULL10497遇原生clock未停止错误；不重发AUTO10501，正在恢复。原T0、终点及campaign不变。 |
+| 30年 | **已保存5429/10950日**；A08曾结算4760周期／5430日后遇clock错误，未保存部分回退7周期／1日。AUTO10501未知且不重发，正冷恢复SAVE10480；原T0、终点及campaign不变。 |
 | 决策能力提升 | 已有自然继承子链、具名Sway收益及本场实际H；M6终态、完整战争与跨政府广度仍有缺口。Source26已在下述A08运行，不能把源码改善直接换算成业务或性能验收。 |
 
 Source25 `9b791aae`已规范提交、双导出。04:44Z Root完成Source26唯一writer：commit `394865df3259be5db29014ab1d17db7bdd48c21d`，anchor `_runtime/source26-integration17/SOURCE26-CANONICAL-ANCHOR.json`为7045 B／SHA `d2bf903d4a0f18cc819721451d42e390a58529f76a19ad2df301e85df5b78e85`。04:46:38Z双generic export实际完成，各1462行／59253402 B；COMPLETE为2427 B／`3f8a95a08790e0e2168f64547192b4fc9937a3fa0809536daf5f662c86673cc8`。policy-free BASE为389934 B／`30ba9778f6d4be917d29f1ab9a2a2b2aa414f5fedbfa03cdb7a8a9bebebd0517`，保留native历史三方来源。A05 union首次完整RAM组合通过：119个unique输出、峰1781760 B低于4MiB；当时仅RAM，随后实际采用见下文。A03/A04失败没有新增游戏信用。
@@ -19,7 +19,7 @@ Source25 `9b791aae`已规范提交、双导出。04:44Z Root完成Source26唯一
 
 性能按实际WAL append、完整FULL wall／RPC并集测量，原全墙钟保持。陌生事件保存原生身份与选项，第一显示项续行，每批离线补来源；ACK与窗口消失分记。
 
-04:58Z Root增量：卡02已实际写入119个文件，44源校验、原max8创建子集及Task SPEC通过；最后actualsaved_basis因helper要求Source26未定义的`Native30_bound`而拒绝，仍无Task／Game／SDK。失败为交接O下`A05-ACTUAL-PREPARE-CONTRACT-FAILURE01.json`，2277 B／`44989b30155e402a956b152b67db6210a4d220a01b3567e5b8f0232724ffd825`。严格helper候选17637 B／bae312f0…仅RAM替换通过实际anchor／freeze／原saved_basis与13负例，必要冷amend尚在准备，不授通过。Root已手工请求存储复核本次用途、容量和消费者至10:30Z；该请求尚未生效，不自动延长原06:30Z。
+04:58Z实际写119文件后，actualsaved_basis因要求Source26未定义的`Native30_bound`拒绝；无Task／Game／SDK。O下失败`A05-ACTUAL-PREPARE-CONTRACT-FAILURE01.json`2277 B／`44989b30155e402a956b152b67db6210a4d220a01b3567e5b8f0232724ffd825`保留。严格helper及10:30Z手工复核的后续实际结果见下。
 
 ## exact master CI只读核查
 
@@ -63,5 +63,7 @@ M7新增当前原局候选投影的实际H观察：H5274／query2，native:1/pub
 
 容量按同一通用策略手工复核至10:30Z；A08恢复联合256KiB从原first64未来额度内划分，不增加global。原source01资格把逻辑长度误名为allocation，原件不覆盖；新admission追加Win32 FileStandardInfo更正：source12288、proof4096 B。07:47Z新增事件batch为0，离线分析输出亦为0，不制造空事件记录。
 
-当前exact`17bd4cdf`的Linear成功；[Official39382593386](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39382593386/job/118494880919#step:87:1)在step87因新Mecca adapter硬编码运行目录失败，已并行窄修；不声称此head双绿。CI runner `machine_id: unknown`。
+历史exact`17bd4cdf`：Linear成功，[Official39382593386](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39382593386)因Mecca硬编码运行路径失败；runner `machine_id: unknown`，修复终态见下。
+
+08:17Z追加，同machine1186：A08实际SDK1/0、Gameforced1／Job0、录制worker与publisher0，Task注销，screen106 CAS7657→7661释放。实际closed pair经原WAL API重建v2并通过canonical冷验；5277行保留，未补造RAM5281。旧pair原FileID归档；新Driver38421979 B／a5629118…，O/A09-CLOSED-DRIVER-REVIEW01.json7092 B／0916e20e…与A09-ROOT-COLD-PRELAUNCH01.json5188 B／c15941b0…绑定新sidecars和原SAVE。A09尚未启动。exact270dd40c的Official39389755890及Linear39389755891已实际成功；不授实机信用。
 
