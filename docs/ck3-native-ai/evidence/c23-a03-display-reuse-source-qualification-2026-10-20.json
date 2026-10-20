@@ -1,0 +1,107 @@
+{
+  "schema": "xar.C23-A03-display-reuse-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T02:26:48.510188+00:00",
+  "machine_source": "actual py -B -X utf8 tools/ck3_live_run_id.py machine in this subtask; exact source card matches",
+  "status": "SOURCE_QUALIFIED_RUNTIME_NOT_INSTALLED",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_a03_display_reuse_v1.py",
+      "bytes": 13917,
+      "sha256": "54d5f4cfbfb4ddb3e94297011f969e7bc9b9478faff6c0a50b9ea98f29c9771e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_a03_display_reuse_v1.py",
+      "bytes": 11448,
+      "sha256": "46cdc28bcef95b1ccbb6c501675e68c26d2f8f66532d3825bc2c0f7efd6d8ea3"
+    }
+  ],
+  "qualification": {
+    "command": "py -B -X utf8 tools/g2_saved_campaign/qualify_c23_a03_display_reuse_v1.py",
+    "result": "5 PASS 0.187s",
+    "cases": [
+      "actual exact original18-leaf graph and private unrun configuration read-only",
+      "adapter same owner and only generation/profile SPEC routing changes",
+      "original owner complete mocked publisher/capture/retained wait-close lifecycle and adapter child argv",
+      "exact full/live/review/profile/source/SPEC changed input rejection and expired review rejection",
+      "first-use collision or changed original graph rejection"
+    ],
+    "scratch_bytes": 0,
+    "real_process_OBS_Task_desktop_calls": 0
+  },
+  "reuse": {
+    "leaves": 18,
+    "bytes": 278733,
+    "source_manifest_sha256": "e24c6b7eef1f2c32bfd3bb802533275c3cd7a7bfbcf7e28e336c04a06e16b4b6",
+    "prior_profile_sha256": "de07011fb223941ade0527dfefaf81accf1f2b7ef72a79bcc5e96c2ecb584fcf",
+    "portable_config_pins": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\obs-portable\\config\\obs-studio\\basic\\profiles\\ManagedWindowCapture-cf9ccb6df4b446b2ac31d585932b7271\\basic.ini",
+        "bytes": 661,
+        "sha256": "98f64e7734c7daf96bec02b1d297551123561025c59d17c5caa6d4ee15af343f"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\obs-portable\\config\\obs-studio\\basic\\scenes\\ManagedWindowCapture-cf9ccb6df4b446b2ac31d585932b7271.json",
+        "bytes": 596,
+        "sha256": "2b375d07ab7c987072f5153bd913822377c9f90f025c0fc2c04e00e76a0117e5"
+      }
+    ],
+    "recording_jobs_examined": 15,
+    "jobs_referencing_prior_profile": 0,
+    "private_password_output": false,
+    "old_marker_writes": 0
+  },
+  "runtime_quote": {
+    "RAM_only": true,
+    "dummy_full_and_RootFinal_only": true,
+    "new_leaf_count": 4,
+    "bytes": 20746,
+    "hard_bytes": 32768,
+    "leaves": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-OBS-PROFILE-C23-A03.json",
+        "bytes": 2307
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-DISPLAY-SPEC-C23-A03.json",
+        "bytes": 11891
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\presentation-c23\\start_new_game_display_a03.py",
+        "bytes": 3126
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-DISPLAY-PREPARE-C23-A03.json",
+        "bytes": 3422
+      }
+    ],
+    "actual_full_not_yet_adopted": true,
+    "runtime_written_bytes": 0
+  },
+  "source_card": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/RESUME-A03-SOURCE-SCREEN-0630-ADMITTED01.json",
+    "bytes": 17083,
+    "sha256": "25322655a77b4da074a0b6f65026c9b4386b7886738df066f07e312559ff77f8"
+  },
+  "limits": {
+    "source_joint_hard_bytes": 32768,
+    "runtime_or_Task_admission_granted": false,
+    "new_Game_publisher_recording_identity": null,
+    "pixel_admitted": false
+  },
+  "actual_dependency_import_probe": {
+    "status": "ACTUAL_CHILD_ENV_IMPORT_PREFLIGHT_PASS",
+    "observed_at_utc": "2026-10-20T02:29:03.972597+00:00",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "source": "exact original owner child_import_preflight only; current tool output, no parent main or Task",
+    "interpreter": "C:/Users/xenoa/AppData/Local/Programs/Python/Python313/python.exe",
+    "actual_module_origins_count": 11,
+    "psutil_origin": "Z:/ck3_mod_rewrite/tools/.venv/Lib/site-packages/psutil/__init__.py",
+    "managed_helper_sha256": "2f40965ea2af7b010a25750fccaecebb0964d1381d975a8bf4403bdbbae3f493",
+    "bytecode_disabled": true,
+    "actual_OBS_or_Game_calls": 0,
+    "source_files_copied": 0,
+    "runtime_receipt_writes": 0,
+    "A03_new_profile_not_yet_created": true
+  }
+}

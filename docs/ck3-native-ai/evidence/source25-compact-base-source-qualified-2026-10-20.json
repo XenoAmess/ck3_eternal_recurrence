@@ -1,0 +1,41 @@
+{
+  "schema": "xar.source25.compact-base-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T02:22:51.941916+00:00",
+  "source": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source25_compact_base_v1.py",
+    "bytes": 11067,
+    "sha256": "cef3a22cedd37844bc09913148f0e2f49a351759fc7bdd9b162c8b793d23d15b"
+  },
+  "status": "RAM_SOURCE_QUALIFIED_NOT_EXPORTED_NOT_RUNTIME",
+  "tests": 9,
+  "passed": [
+    "RAM-only positive fixture derives all actual Source24 rows and preserves policy absence",
+    "actual Source24 anchor rejected",
+    "foreign machine rejected",
+    "twin rows mismatch rejected",
+    "canonical full rows mismatch rejected",
+    "old policy rejected",
+    "failed09 fact tamper rejected",
+    "original native binding exact Git blob verified without materializing",
+    "source-only admission rejected for native runtime metadata"
+  ],
+  "positive_fixture_only": true,
+  "Source25_actual_products_available": false,
+  "native_compiled_session_positive": "NOTRUN_PENDING_ACTUAL_RUNTIME_CAPACITY",
+  "outputs_created": 0,
+  "Game_Task_Native_calls": 0,
+  "admission": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/RESUME-A03-SOURCE-SCREEN-0630-ADMITTED01.json",
+    "bytes": 17083,
+    "sha256": "25322655a77b4da074a0b6f65026c9b4386b7886738df066f07e312559ff77f8"
+  },
+  "native_original": {
+    "commit": "adfeb53fd2dfa9b93e389002ba30ae3479add47c",
+    "path": "_runtime/prepare_c23_native_binding100.py",
+    "bytes": 7355,
+    "sha256": "5a1fbdbeeffe09cf916c3d299971357a267215eee64e649c05f98ea50633941e"
+  },
+  "recheck_by_utc": "2026-10-27T02:22:51Z"
+}
+

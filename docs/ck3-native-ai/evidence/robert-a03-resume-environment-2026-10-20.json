@@ -1,0 +1,32 @@
+{
+  "schema": "xar.robert-a03-resume-environment/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T02:22:17.844022+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine, tool ddeace",
+  "observation_source": "tools/.venv/Scripts/python.exe -B -X utf8 _runtime/resume_20261020/resume_reader.py environment; tool 81448e; exit 0",
+  "game_executable": {
+    "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "win32_file_version": "1.0.0.0",
+    "same_bytes_as_native30_1_20_0_4_binding": true
+  },
+  "steam_appmanifest": {
+    "path": "Z:/SteamLibrary/steamapps/appmanifest_1158310.acf",
+    "sha256": "7c16c003aeaa79334f1eb615f7218152ffa0757e73e06ca01c6c955cc77827d5",
+    "build_id": 25734779,
+    "StateFlags": 4
+  },
+  "active_ck3_check": {
+    "observed_at_utc": "2026-10-20T02:21:08.931297+00:00",
+    "source": "xar_autoplayer.windows_process.active_process_pids; zero-time kernel WaitForSingleObject; tool e5aa0a; exit 0",
+    "active_pids": [],
+    "signaled_dead_pids": [127028, 139512, 188168]
+  },
+  "untouched_existing_processes": {"personal_OBS_pid": 114680, "Steam_pid": 165096},
+  "steam_offline_pixels": "PENDING_CURRENT_ATTEMPT",
+  "Native30_loaded": false,
+  "gameplay_credit_added": 0,
+  "review_at_utc": "2026-10-27T02:22:17Z"
+}

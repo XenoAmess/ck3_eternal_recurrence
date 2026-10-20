@@ -1,0 +1,39 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T02:24:10.245862+00:00",
+  "status": "ACTUAL_SOURCE25_COMPOSER_RAM_EXPORT_QUOTE_NO_OUTPUTS",
+  "Source25_composer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source25_sdk_v1.py",
+    "bytes": 16578,
+    "sha256": "f97f52c66529011e9e132863cfaacb203f08b145c0fcadd11f7599c5b57f209b"
+  },
+  "base_C22_count": 1449,
+  "Source25_count": 1460,
+  "Source25_bytes": 59234989,
+  "Source25_rows_canonical": {
+    "bytes": 375121,
+    "sha256": "8ad5ba889feef72bf22cb18746894c44dd4d98cdc8d2904427efa3a474e0ac5a"
+  },
+  "Source25_three_package_outputs": 9,
+  "from_C22_changed_count": 22,
+  "from_C22_new_count": 11,
+  "dual_changed_data_4096": 8077312,
+  "old_C22_deletions": 0,
+  "metadata_reserve_including_filesystem": 4194304,
+  "filesystem_metadata_reserve_not_measured": 262144,
+  "compact_BASE_cap": 524288,
+  "native_session_cap": 16384,
+  "small_ref_and_completion_slack": 65536,
+  "complete_export_total_cap": 13631488,
+  "export_data_meta_BASE_native_refs_subtotal": 12877824,
+  "outputs_created": 0,
+  "Game_Task_Native_calls": 0,
+  "source_admission": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/RESUME-A03-SOURCE-SCREEN-0630-ADMITTED01.json",
+    "bytes": 17083,
+    "sha256": "25322655a77b4da074a0b6f65026c9b4386b7886738df066f07e312559ff77f8"
+  },
+  "actual_export_admission": "PENDING_ROOT_COORDINATED_FRESH_CARD",
+  "recheck_by_utc": "2026-10-20T06:30:00Z"
+}
+

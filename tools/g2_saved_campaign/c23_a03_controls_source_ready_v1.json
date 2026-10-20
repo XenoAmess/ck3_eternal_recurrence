@@ -1,0 +1,107 @@
+{
+  "schema": "xar.C23-A03-controls-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T02:30:31.921766+00:00",
+  "status": "SOURCE_AND_FOCUSED_QUALIFICATION_READY_RUNTIME_NOT_ADMITTED",
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/prepare_c23_a03_full_enabled_cold_controls_v1.py",
+      "bytes": 13780,
+      "sha256": "16d3ec41338d5aaca90461ef2b3c5e80ce7363fdf63a816b0806e6fe35b6c2aa"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_adopt_c23_a03_v1.py",
+      "bytes": 23744,
+      "sha256": "9616b6eaa8519d672bf9a6d272aec11b556f972a2a8d6100235608feddd8aff2"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_c23_a03_controls_v1.py",
+      "bytes": 16355,
+      "sha256": "1532089910bc57caf204cb66fb89a26e78fa2ae656a25299fcc05a1c6b92139e"
+    }
+  ],
+  "source_admission": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/RESUME-A03-SOURCE-SCREEN-0630-ADMITTED01.json",
+    "bytes": 17083,
+    "sha256": "25322655a77b4da074a0b6f65026c9b4386b7886738df066f07e312559ff77f8",
+    "source_cap_bytes": 98304,
+    "scratch_bytes": 0,
+    "review_at_utc": "2026-10-20T06:30:00+00:00"
+  },
+  "actual_source_logical_bytes": 53879,
+  "actual_source_4KiB_allocation_upper": 57344,
+  "qualification": [
+    {
+      "command": "py -B -X utf8 tools/g2_saved_campaign/qualify_c23_a03_controls_v1.py",
+      "result": "6 passed",
+      "elapsed_seconds": 8.891,
+      "scope": "Complete graph, original call/FULL AST and 313B WAL, real a01/a02 failed closure pins, independent nonce, memory-only M7 phase, Source25 anchor and saved-frontier invariance, original max8/16KiB, original SPEC RAM adapter."
+    },
+    {
+      "command": "py -B -X utf8 tools/g2_saved_campaign/qualify_c23_a03_controls_v1.py A03Controls.test_06_original_SPEC_RAM_adapter_preserves_owner_contract",
+      "result": "1 passed after exact existing dependency_root correction",
+      "elapsed_seconds": 8.794
+    },
+    {
+      "command": "py -B -X utf8 tools/g2_saved_campaign/qualify_c23_a03_controls_v1.py A03Controls.test_07_prepare_compose_real_A02_values_with_future_RAM_envelopes",
+      "result": "1 passed",
+      "elapsed_seconds": 8.733,
+      "scope": "Actual A02 metadata/complete44, new controls/feeder, original SPEC algorithm; future Source25/full/native inputs explicitly synthetic RAM only."
+    }
+  ],
+  "first_qualification_failure": {
+    "kind": "test_selector_error",
+    "message": "StopIteration: initial qualifier selected FunctionDef only for async Queue methods",
+    "resolution": "Qualifier selector accepts FunctionDef and AsyncFunctionDef; implementation unchanged; subsequent six passed."
+  },
+  "production_dependency_readback": {
+    "command": "py -B -X utf8 with actual policy dependency_root prepended to sys.path, then import psutil",
+    "dependency_root": "Z:/ck3_mod_rewrite/tools/.venv/Lib/site-packages",
+    "actual_psutil_file": "Z:/ck3_mod_rewrite/tools/.venv/Lib/site-packages/psutil/__init__.py",
+    "base_win32api_and_win32file_imports": "passed"
+  },
+  "source_graph": {
+    "controls_files": 18,
+    "controls_logical_bytes": 527002,
+    "actual_runtime_changed_files_including_feeder": 10,
+    "actual_runtime_changed_logical_bytes": 440134,
+    "actual_runtime_changed_4KiB_allocation_upper": 462848,
+    "finite_helper": {
+      "name": "root_c23_a03_source_abort_checkpoint_inputs.py",
+      "bytes": 15280,
+      "sha256": "30dc6b23c7e90e2ff8dce2b027f81e49ada8ca7744f0112844c68f403386e159"
+    },
+    "source25_parent": "6b55531b1d3a44ee73ab13ea40132556030f682e",
+    "canonical_complete_rows": 44,
+    "canonical_creation_subset": 6,
+    "entry_max8_and_transport_16KiB": "unchanged"
+  },
+  "runtime_prepare": {
+    "hard_peak_bytes": 2097152,
+    "actual_peak": "PENDING_REAL_SOURCE25_BASE_AND_CANONICAL_FULL_QUOTE",
+    "entry": "tools/g2_saved_campaign/prepare_adopt_c23_a03_v1.py",
+    "plan_schema": "xar.C23-A03-prepare-plan/v1",
+    "admission_schema": "xar.C23-A03-runtime-prepare-admission/v1",
+    "shared_storage_mutation": false,
+    "Task_register_or_run": false,
+    "old_A02_policy_and_freeze_preserved": true,
+    "source_replacement": "Exact old bytes/SHA/FileID CAS, same-volume same-ID archive, create-only new source.",
+    "final_freeze": "New policy-free compact BASE plus exactly one actual A03 policy reference.",
+    "display_OBS_profile_owner": "a03_display"
+  },
+  "boundaries": {
+    "source_only": true,
+    "outputs_materialized_in_runtime": false,
+    "Task_created": false,
+    "Game_created": false,
+    "Native30_loaded": false,
+    "H": "NOTRUN",
+    "SAVE_Driver_body_reads": 0,
+    "game_or_campaign_credit": 0
+  },
+  "retention": {
+    "review_at_utc": "2026-10-27T02:30:31Z",
+    "reason": "Current A03 source qualification needed until actual Source25/A03 cold adoption; no automatic renewal."
+  }
+}
+

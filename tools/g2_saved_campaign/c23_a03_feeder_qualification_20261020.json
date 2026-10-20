@@ -1,0 +1,73 @@
+{
+  "schema": "xar.C23-A03-thin-feeder-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T02:23:45.438049+00:00",
+  "status": "SOURCE_READY_NOT_INSTALLED",
+  "admission": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/RESUME-A03-SOURCE-SCREEN-0630-ADMITTED01.json",
+    "bytes": 17083,
+    "sha256": "25322655a77b4da074a0b6f65026c9b4386b7886738df066f07e312559ff77f8"
+  },
+  "review_deadline_utc": "2026-10-20T06:30:00+00:00",
+  "producer": {
+    "path": "tools/g2_saved_campaign/prepare_c23_a03_feeder_v1.py",
+    "bytes": 5967,
+    "sha256": "315c6c276c9bf7dddd67c5a749be7f139598b88c0239eed71b77e8f2372dffba"
+  },
+  "qualifier": {
+    "path": "tools/g2_saved_campaign/test_c23_a03_feeder_v1.py",
+    "bytes": 13938,
+    "sha256": "a17496409611a1355d5011052b7d576ab310989dbfd34e718a38305cd39a8992"
+  },
+  "qualification": {
+    "command": "python -B -X utf8 tools/g2_saved_campaign/test_c23_a03_feeder_v1.py --review-deadline-utc 2026-10-20T06:30:00+00:00",
+    "execution_chunk": "f50668",
+    "exit_code": 0,
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "duration_seconds": 1.1703251998405904,
+    "scope": "Exact A02 inverse; unchanged timing/HOLD AST; finite UTC review; exact Root first-batch binding; generated DTO-v2 through original selected MCP/Queue/feeder algorithms with real mcp.types serialization.",
+    "old_candidate_five_tests_repeated": false
+  },
+  "first_attempt": {
+    "observed_at_utc": "2026-10-20T02:23:28.855717+00:00",
+    "execution_chunk": "454f7f",
+    "exit_code": 1,
+    "tests": 4,
+    "failures": 0,
+    "errors": 1,
+    "cause": "Qualifier wrongly expected camelCase from default model_dump; actual mcp.types defaults to snake_case. Corrected qualifier checks default snake_case and explicit by_alias=True. Original Queue supports both. No production source fix was required."
+  },
+  "generated_RAM": {
+    "root_p37c23_same_game_loop_feeder100.py": {
+      "bytes": 41720,
+      "sha256": "ae81d55506dc0c262793ac642f93553017d94a55ddb79a84460ae086fddf011a"
+    },
+    "root_continuity_window_c23_100.py": {
+      "bytes": 34988,
+      "sha256": "6b0ece99075e425f84ad732e3112cf5ccdc883bbb09a884aa94e0df411e9ff6e"
+    },
+    "launch_c23_feeder100.py": {
+      "bytes": 2451,
+      "sha256": "e3105fec484e9f2f10e8f7e0b4e5f24db7f81142d86ee656553dab43a064add5"
+    }
+  },
+  "generated_RAM_bytes": 79159,
+  "runtime_single_materialization_cap": 98304,
+  "whole_byte_inverse_pass": true,
+  "thin_seams": 3,
+  "timing_transform_reapplied": false,
+  "old_FuncDef_extractor_called": false,
+  "DTO_v2_exact_candidate_pin": "6893/7645e52a2b221a5e9a813f0e243f9f8a2f6e59f9b08f998a15bc70500af16f0e",
+  "DTO_v2_MCP_Queue_errors_preserved": true,
+  "typed_cause_preserved": true,
+  "mixed_v1_v2_rejected": true,
+  "source_cap_bytes": 32768,
+  "source_and_qualifier_bytes_before_this_receipt": 19905,
+  "this_receipt_limit_bytes": 4096,
+  "scratch_bytes": 0,
+  "runtime_outputs_materialized": false,
+  "Task_Game_Native_OBS_desktop_transport_calls": 0,
+  "ordinary_cycle_or_speed_credit": 0
+}
