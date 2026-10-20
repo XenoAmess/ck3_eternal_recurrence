@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T16:19:44.239796+00:00",
+  "pid": 7464,
+  "argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/118723432377/logs",
+    "--allow-escape-sequences"
+  ],
+  "wait_returncode": 0,
+  "completed_at_utc": "2026-10-20T16:19:48.276965+00:00",
+  "stdout_complete": true,
+  "stdout_bytes_read": 501506,
+  "stdout_sha256": "1e3a9d301f771b07f3ebd4d713317cbb32019a8b91b44254c9df0f69e5deac65",
+  "stdout_hash_role": "full original job-log response",
+  "stderr": "",
+  "whole_log_written": false
+}

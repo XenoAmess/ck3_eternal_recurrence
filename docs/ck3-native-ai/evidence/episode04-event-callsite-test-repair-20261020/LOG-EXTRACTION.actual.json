@@ -1,0 +1,32 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:19:48.276965+00:00",
+  "head": "ec7649fca7e211a5b09423379935539e645158d9",
+  "run_id": 39450418160,
+  "job_id": 118723432377,
+  "step_number": 94,
+  "step_name": "Test shared CK3 acceptance without installed CK3",
+  "complete_response": {
+    "bytes": 501506,
+    "sha256": "1e3a9d301f771b07f3ebd4d713317cbb32019a8b91b44254c9df0f69e5deac65",
+    "retained": false
+  },
+  "target_range": {
+    "start_byte": 411007,
+    "end_byte_exclusive": 499340,
+    "bytes": 88333,
+    "sha256": "454d8b094f6b6e23f48c07f60e485c066e88f2108c3c40cc15148c1f68e4c502"
+  },
+  "segments": [
+    {
+      "file": "STEP94.original.log",
+      "start_byte": 411007,
+      "end_byte_exclusive": 499340,
+      "bytes": 88333,
+      "sha256": "454d8b094f6b6e23f48c07f60e485c066e88f2108c3c40cc15148c1f68e4c502"
+    }
+  ],
+  "read_count": 1,
+  "actual_job_conclusion": "failure",
+  "capacity_scope_ends_utc": "2026-10-20T17:15:00Z"
+}

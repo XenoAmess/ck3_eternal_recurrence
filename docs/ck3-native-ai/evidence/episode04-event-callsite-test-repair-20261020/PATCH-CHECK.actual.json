@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T16:26:03.468514+00:00",
+  "completed_at_utc": "2026-10-20T16:26:03.843055+00:00",
+  "argv": [
+    "git",
+    "-C",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "apply",
+    "--check",
+    "--whitespace=error",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\EVENT-CALLSITE-REAL-METHOD.candidate-a02.patch"
+  ],
+  "pid": 17264,
+  "wait_returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "mode": "read-only apply --check; no file application",
+  "D_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "D_status_before": "",
+  "D_status_after": "",
+  "original_test_blob_equal_in_bc_and_ec": "ff453d95e9b54366880de8510cba95da39df1443"
+}

@@ -1,0 +1,14 @@
+test_each_new_actual_instance_is_queried_and_unknown_next_event_is_observed (__main__.CommonEventBoundaryTests.test_each_new_actual_instance_is_queried_and_unknown_next_event_is_observed) ... ok
+test_event_free_observation_never_queries_event_context (__main__.CommonEventBoundaryTests.test_event_free_observation_never_queries_event_context) ... ok
+test_invalid_day_controls_fail_before_report_or_submission (__main__.CommonEventBoundaryTests.test_invalid_day_controls_fail_before_report_or_submission) ... ok
+test_missing_or_invalid_actual_event_instance_never_queries_or_reviews (__main__.CommonEventBoundaryTests.test_missing_or_invalid_actual_event_instance_never_queries_or_reviews) ... ok
+test_normal_day_default_is_unchanged_and_does_not_send_optins (__main__.CommonEventBoundaryTests.test_normal_day_default_is_unchanged_and_does_not_send_optins) ... ok
+test_normal_day_still_rejects_early_event_without_full_day_credit (__main__.CommonEventBoundaryTests.test_normal_day_still_rejects_early_event_without_full_day_credit) ... ok
+test_optin_is_sent_and_partial_event_row_is_preserved_without_credit (__main__.CommonEventBoundaryTests.test_optin_is_sent_and_partial_event_row_is_preserved_without_credit) ... ok
+test_same_unconsumed_event_is_not_acked_or_queried_again (__main__.CommonEventBoundaryTests.test_same_unconsumed_event_is_not_acked_or_queried_again) ... ok
+test_true_death_tail_optin_reaches_host_and_independent_frame_validation (__main__.CommonEventBoundaryTests.test_true_death_tail_optin_reaches_host_and_independent_frame_validation) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.059s
+
+OK

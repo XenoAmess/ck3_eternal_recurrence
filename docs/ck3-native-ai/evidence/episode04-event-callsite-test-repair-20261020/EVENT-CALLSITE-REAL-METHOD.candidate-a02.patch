@@ -1,0 +1,74 @@
+--- a/tools/test_ck3_mod_acceptance_event_callsite.py
++++ b/tools/test_ck3_mod_acceptance_event_callsite.py
+@@ -3,6 +3,8 @@
+ import ast
+ import copy
+ import unittest
++
++from ck3_mod_acceptance_client import CaseClient
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ 
+@@ -22,7 +24,7 @@
+ 
+ REQUIRE_NS = {}
+ require = public_function('tools/ck3_mod_acceptance_cases/_business.py', 'require', REQUIRE_NS)
+-advance_day = public_function('tools/ck3_mod_acceptance_client.py', 'advance_day', {'require': require})
++advance_day = CaseClient.advance_day
+ 
+ 
+ def day_row(event=False):
+@@ -44,8 +46,19 @@
+         self.row = row
+         self.submissions = []
+         self.validations = []
++        self.guard_reserves = []
++        self.execution_reserves = []
+ 
+-    def execute_plan(self, steps, name, timeout=None):
++    def guard(self, reserve=90):
++        if reserve != 90:
++            raise AssertionError('Original normal-close reserve changed')
++        self.guard_reserves.append(reserve)
++        return {'capabilities': {'action_steps': [], 'bridge_capabilities': []}}
++
++    def execute_plan(self, steps, name, timeout=None, reserve=90):
++        if reserve != 90:
++            raise AssertionError('Original execution reserve changed')
++        self.execution_reserves.append(reserve)
+         self.submissions.append((copy.deepcopy(steps), name, timeout))
+         return [self.row]
+ 
+@@ -88,10 +101,22 @@
+     def test_normal_day_default_is_unchanged_and_does_not_send_optins(self):
+         actual = day_row()
+         client = DayClient(actual)
+-        self.assertIs(advance_day(client), actual)
++        self.assertEqual(advance_day(client), actual)
+         step = client.submissions[0][0][0]
+         self.assertEqual(step, {'id': 'case-natural-day-0001', 'kind': 'advance_day', 'days': 1, 'timeout': 300})
++        self.assertEqual(client.guard_reserves, [90])
++        self.assertEqual(client.execution_reserves, [90])
+         self.assertEqual(len(client.submissions), 1)
++
++    def test_invalid_day_controls_fail_before_report_or_submission(self):
++        for kwargs in ({'days': True}, {'days': 2}, {'timeout': True}, {'timeout': 0},
++                       {'allow_event_boundary': 1}, {'allow_actor_change': 1}):
++            with self.subTest(kwargs=kwargs):
++                client = DayClient(day_row())
++                with self.assertRaises(ValueError):
++                    advance_day(client, **kwargs)
++                self.assertEqual(client.guard_reserves, [])
++                self.assertEqual(client.submissions, [])
+ 
+     def test_normal_day_still_rejects_early_event_without_full_day_credit(self):
+         client = DayClient(day_row(event=True))
+@@ -102,7 +127,7 @@
+     def test_optin_is_sent_and_partial_event_row_is_preserved_without_credit(self):
+         actual = day_row(event=True)
+         client = DayClient(actual)
+-        self.assertIs(advance_day(client, allow_event_boundary=True), actual)
++        self.assertEqual(advance_day(client, allow_event_boundary=True), actual)
+         self.assertIs(client.submissions[0][0][0]['allow_event_boundary'], True)
+         self.assertNotIn('allow_actor_change', client.submissions[0][0][0])
+         self.assertFalse(actual['result']['requested_interval_complete'])

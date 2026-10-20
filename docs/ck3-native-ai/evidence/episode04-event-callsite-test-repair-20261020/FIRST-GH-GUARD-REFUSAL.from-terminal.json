@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "role": "derived exact record from first exec assertion output; not a file written by that original process",
+  "source_tool_chunk": "cd7459",
+  "pid": 25708,
+  "started_at_utc": "2026-10-20T16:18:55.020702+00:00",
+  "completed_at_utc": "2026-10-20T16:18:58.865928+00:00",
+  "wait_returncode": 1,
+  "stdout_bytes_read": 0,
+  "stderr": "the response contains terminal escape sequences; pass --allow-escape-sequences to output it anyway\n",
+  "argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/118723432377/logs"
+  ],
+  "original_job_log_readable": false,
+  "reason": "gh terminal escape output guard before stdout; retry same exact read with documented output flag"
+}

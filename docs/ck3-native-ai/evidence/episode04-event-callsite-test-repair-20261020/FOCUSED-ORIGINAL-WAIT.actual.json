@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T16:23:18.763716+00:00",
+  "completed_at_utc": "2026-10-20T16:23:19.384273+00:00",
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\run_focused.py"
+  ],
+  "pid": 9272,
+  "wait_returncode": 1,
+  "stdout": {
+    "path": "focused-stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "focused-stderr.log",
+    "bytes": 4879,
+    "sha256": "2fd25828430b6d85cf44d4bcba71e56df3f7253ce19b8f8490337fd54c84871a"
+  },
+  "exact_source_head": "ec7649fca7e211a5b09423379935539e645158d9",
+  "source_loading": "full exact Git modules in child memory; no function-global stubs",
+  "native_or_game_actions": 0,
+  "old_matrix_reruns": 0
+}

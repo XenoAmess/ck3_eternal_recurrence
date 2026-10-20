@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-20T16:26:47.842147+00:00",
+  "status": "FINAL_TEST_ONLY_CANDIDATE_9_METHODS_PASS_NOT_FULL_CI",
+  "inherited_actuals_and_full_file_pins": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\DELIVERY.actual.json",
+    "bytes": 8981,
+    "sha256": "7678d134156f3ec44c9a26bc346c968c99fb463515cb6f3d7be1259f83c58957"
+  },
+  "report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\ROOTCAUSE.corrected-a02.md",
+    "bytes": 3626,
+    "sha256": "21753540ac41ab8621d091701913f020050310fab63908391f2aeb3a82a7a520"
+  },
+  "correction": "Initial ROOTCAUSE.md end16:28Z was a rounded future caption, not actual timestamp. Actual original seal16:26:03Z comes from DELIVERY. Corrected caption only; keep initial report and receipt unchanged.",
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\EVENT-CALLSITE-REAL-METHOD.candidate-a02.patch",
+    "bytes": 3259,
+    "sha256": "951930b8876c7e24e07fec205393d1d15cdd13c20917b8c1dcd1a17fc232b5d6"
+  },
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\FOCUSED-ORIGINAL-WAIT.actual-a02.json",
+    "bytes": 1076,
+    "sha256": "ff58bbab98791b67fee07578592de401d821ee436eadf39973b0b7927ced072e"
+  },
+  "patch_check": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\ci-shared-acceptance-a01\\PATCH-CHECK.actual.json",
+    "bytes": 755,
+    "sha256": "60a65137c87d2232e335baca612309e07cae5ef6fb3125a0bea8306556313685"
+  },
+  "D_or_W_source_changes": 0,
+  "scope_hard_stop_utc": "2026-10-20T17:15:00Z",
+  "budget_max_bytes": 196608
+}

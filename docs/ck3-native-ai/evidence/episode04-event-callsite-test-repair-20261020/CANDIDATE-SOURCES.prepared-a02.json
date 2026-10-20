@@ -1,0 +1,46 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-20T16:24:20.823952+00:00",
+  "head": "ec7649fca7e211a5b09423379935539e645158d9",
+  "scope": "test-only candidate; real complete production modules loaded from exact Git blobs in subprocess memory",
+  "sources": [
+    {
+      "repository_relative_path": "tools/test_ck3_mod_acceptance_event_callsite.py",
+      "git_blob": "ff453d95e9b54366880de8510cba95da39df1443",
+      "bytes": 7747,
+      "sha256": "416c748214d84508a8dedfc1ee3123cd7b1f3469b1b19652f2f4728694276a9b"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_client.py",
+      "git_blob": "0e830d99bb12c5b32bc9a830f5f906719b80ef5f",
+      "bytes": 66429,
+      "sha256": "7c63ead0dc553118485fd0dcaeb8e49537012c8175d8c980e3eb147487d889da"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_native_day.py",
+      "git_blob": "fbe535aef2f59755b4a85d43db4fcaa0e53f746d",
+      "bytes": 8325,
+      "sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/_business.py",
+      "git_blob": "b7090c5fb55628c4b4a2b075faec857fa9d793e9",
+      "bytes": 7108,
+      "sha256": "1f8fadc48ca90b916c4b77c163edfafe720e6c236d4754034fe49fad99f955b3"
+    }
+  ],
+  "candidate": {
+    "path": "fixture/tools/test_ck3_mod_acceptance_event_callsite_a02.py",
+    "bytes": 8886,
+    "sha256": "3bb02684ed3e70d7ae5ff9c581c9453879fbcbde35ef88b9d7adc8d69122ae14"
+  },
+  "patch": {
+    "path": "EVENT-CALLSITE-REAL-METHOD.candidate-a02.patch",
+    "bytes": 3259,
+    "sha256": "951930b8876c7e24e07fec205393d1d15cdd13c20917b8c1dcd1a17fc232b5d6"
+  },
+  "business_fixture_role": "exact source bytes, used solely by unchanged AST observe/require tests",
+  "production_changes": 0,
+  "previous_candidate": "CANDIDATE-SOURCES.prepared.json; originalwait1/two identity failures preserved",
+  "a02_reason": "Production obj() returns a complete JSON-object copy; compare all values instead of Python object identity. No assertion removed, no normalizer mocked."
+}
