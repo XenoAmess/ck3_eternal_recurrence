@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.integration-source-path-attribution-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T13:11:29.052317+00:00",
+  "role": "dated append-only correction of integration-derived attribution; Root original unchanged",
+  "original_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0217-r04-positive-review-a01\\MANIFEST.actual.json",
+    "bytes": 9737,
+    "sha256": "e701e9943841ce886bf950f932ec8805b138033ab2624e7eafe7aa903b6cabd2"
+  },
+  "supersedes_JSON_pointer": "/source_path_clarification/listed_path_readable_here",
+  "original_derived_value": false,
+  "corrected_value": true,
+  "Root_original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0217-r04-positive-review-a01\\ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json",
+    "bytes": 6102,
+    "sha256": "af7fff15c256023886f15253eb822e27018261ec6a957f3dfc9b3e52a9b54d88"
+  },
+  "Root_JSON_pointer": "/sources/original_sparse_samples/path",
+  "Root_literal": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+  "actual_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\SIX-RAW-FRAMES.actual.json",
+    "bytes": 2570,
+    "sha256": "0fe3b225dc2007dc91014aa77b42bbd8b0f40b9b0a5758290cc9c2bc34345ce9"
+  },
+  "Root_pointer_was_correct": true,
+  "Root_original_and_source_bytes_unchanged": true,
+  "cause": "Integrator initially constructed N/r0217-proof-chapter-a01 under r06-resume-a02 instead of reading the Root literal; that helper Import/FileNotFound path was incorrectly attributed to the Root receipt. Root literal is the parent shared root and is actually readable.",
+  "original_erroneous_manifest_and_published_commit_retained": true,
+  "business_formal_native_qualification_changed": false,
+  "formal_dynamic_themes": "3/11"
+}
