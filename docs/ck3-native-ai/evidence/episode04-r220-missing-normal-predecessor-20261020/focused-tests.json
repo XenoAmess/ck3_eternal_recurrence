@@ -1,0 +1,24 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:20:45.281373+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\candidate\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 147065,
+    "sha256": "9e0651cbd5d840000e24226631c4cef084c07b0f928eeda6fc6ce9c6af1c07bf"
+  },
+  "tests_run": 35,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "fixture_only": true,
+  "tests": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\candidate\\tools\\test_ck3_mod_acceptance_missing_normal_closure.py",
+    "bytes": 9922,
+    "sha256": "1f317d9530e9263795fafc015777a0d6540e552e28f36f7449b785228fa9042c"
+  },
+  "report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\FOCUSED-TESTS.actual.txt",
+    "bytes": 6601,
+    "sha256": "fbacd4edd87d82b7dcdb5bd76836f0443d26ac539164f35ab0443dbb44457598"
+  }
+}

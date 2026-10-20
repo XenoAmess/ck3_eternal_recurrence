@@ -1,0 +1,344 @@
+{
+  "schema": "xar.e04.a39-small-native-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:12:06.218572+00:00",
+  "status": "EXACT_SMALL_METADATA_READY_NO_REPOSITORY_MUTATION",
+  "repository_destination_root": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020",
+  "staged_root": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files",
+  "source_shared_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\C-MEDIA-SHARED-ADMISSION.actual.json",
+    "bytes": 3356,
+    "sha256": "a80c90350e94304384bb8764604ada427231e1ae8f9b18565ec4259d866a1540"
+  },
+  "metadata_ceiling_bytes": 2097152,
+  "total_copy_bytes": 1004743,
+  "file_count": 23,
+  "native_build_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "runtime_source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "rows": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+        "bytes": 25484,
+        "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+        "bytes": 25484,
+        "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-FINAL-INDEPENDENT-READBACK.actual-a03.json",
+        "bytes": 9792,
+        "sha256": "1bff06d5f7d2fd6cc8350a6b9229354499497d75e893e18f322c089c20bc5780"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FINAL-INDEPENDENT-READBACK.actual-a03.json",
+        "bytes": 9792,
+        "sha256": "1bff06d5f7d2fd6cc8350a6b9229354499497d75e893e18f322c089c20bc5780"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-FINAL-INDEPENDENT-READBACK.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-FIRST-FAILURE.actual-a01.json",
+        "bytes": 5219,
+        "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FIRST-FAILURE.actual-a01.json",
+        "bytes": 5219,
+        "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-FIRST-FAILURE.actual-a01.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-SECOND-FAILURE.actual-a02.json",
+        "bytes": 9337,
+        "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-SECOND-FAILURE.actual-a02.json",
+        "bytes": 9337,
+        "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-SECOND-FAILURE.actual-a02.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\FINITE-MAILBOX-DEPENDENCY-AUDIT.actual-a03.json",
+        "bytes": 16994,
+        "sha256": "0c99a1d527b9daf3737fb31ec14cb993a99e1c2112b235262da0bd67279c9d95"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\FINITE-MAILBOX-DEPENDENCY-AUDIT.actual-a03.json",
+        "bytes": 16994,
+        "sha256": "0c99a1d527b9daf3737fb31ec14cb993a99e1c2112b235262da0bd67279c9d95"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/FINITE-MAILBOX-DEPENDENCY-AUDIT.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-CORRECTED-PLAN.actual-a03.json",
+        "bytes": 39716,
+        "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+        "bytes": 39716,
+        "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-CORRECTED-PLAN.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-RESUME-PLAN.actual-a02.json",
+        "bytes": 38321,
+        "sha256": "df384316d6145bd4f7eba26c296f4480111795b724bd795d752266ba09e84e74"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-RESUME-PLAN.actual-a02.json",
+        "bytes": 38321,
+        "sha256": "df384316d6145bd4f7eba26c296f4480111795b724bd795d752266ba09e84e74"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-RESUME-PLAN.actual-a02.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-PLAN.actual-a01.json",
+        "bytes": 37068,
+        "sha256": "a2a99efed7401c56e2b7440258ad7fc1a24ee688e0004cb09f7e25e39f414f46"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-PLAN.actual-a01.json",
+        "bytes": 37068,
+        "sha256": "a2a99efed7401c56e2b7440258ad7fc1a24ee688e0004cb09f7e25e39f414f46"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-PLAN.actual-a01.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-INCREMENTAL-SOURCE-DIFF.actual-a02.json",
+        "bytes": 1881,
+        "sha256": "00e9ea3f764c492c15ceb4646456ac9de7400ffcd9c8bdcd8ba8b84a14586253"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-INCREMENTAL-SOURCE-DIFF.actual-a02.json",
+        "bytes": 1881,
+        "sha256": "00e9ea3f764c492c15ceb4646456ac9de7400ffcd9c8bdcd8ba8b84a14586253"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-INCREMENTAL-SOURCE-DIFF.actual-a02.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\NATIVE-DIFF.actual-a01.json",
+        "bytes": 16364,
+        "sha256": "fdc2f13bcc11a76b1b2d22b03680dd29f2c58ec353ae4e992163a0372dd1b740"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\NATIVE-DIFF.actual-a01.json",
+        "bytes": 16364,
+        "sha256": "fdc2f13bcc11a76b1b2d22b03680dd29f2c58ec353ae4e992163a0372dd1b740"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/NATIVE-DIFF.actual-a01.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+        "bytes": 5124,
+        "sha256": "f267218d1b192b072ea5b9f7070ee5392d2fe4bda1e6dd3f0a772f446badcd5f"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+        "bytes": 5124,
+        "sha256": "f267218d1b192b072ea5b9f7070ee5392d2fe4bda1e6dd3f0a772f446badcd5f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+        "bytes": 5785,
+        "sha256": "862a2faadb6bf543fdbe79baf05b55dc8df3911b0ca98657c2892e728c95f3d6"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+        "bytes": 5785,
+        "sha256": "862a2faadb6bf543fdbe79baf05b55dc8df3911b0ca98657c2892e728c95f3d6"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+        "bytes": 6364,
+        "sha256": "1064e34bccbb89216705f12850a21527a6c32565404fcb17ccea214309b0eaba"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+        "bytes": 6364,
+        "sha256": "1064e34bccbb89216705f12850a21527a6c32565404fcb17ccea214309b0eaba"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+        "bytes": 1023,
+        "sha256": "bb3c0fdfdedd28ecc6fc0b4c5f9ce7887ca1f8e26316ee44120651ce5e1e6fe3"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+        "bytes": 1023,
+        "sha256": "bb3c0fdfdedd28ecc6fc0b4c5f9ce7887ca1f8e26316ee44120651ce5e1e6fe3"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-NATIVE-CLOSED-SETTLEMENT.actual.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\A39-ACTUAL-FOOTPRINT-AND-SHARED-EDITORIAL.actual.json",
+        "bytes": 5382,
+        "sha256": "5611bb9bb7cf4fb32d6e8da2e7e1e0e94705d4f6c82c90140982a1dd020e6295"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-ACTUAL-FOOTPRINT-AND-SHARED-EDITORIAL.actual.json",
+        "bytes": 5382,
+        "sha256": "5611bb9bb7cf4fb32d6e8da2e7e1e0e94705d4f6c82c90140982a1dd020e6295"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/A39-ACTUAL-FOOTPRINT-AND-SHARED-EDITORIAL.actual.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\SYSTEM-EXE-RECEIPT.actual-a03.json",
+        "bytes": 710454,
+        "sha256": "3ab6152504f33d2632929ffd36ab765265b3ba0bc818956ca875fdbe717310c8"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\defender-exe-exclusions\\20261020T025318Z-83e88bce\\receipt.json",
+        "bytes": 710454,
+        "sha256": "3ab6152504f33d2632929ffd36ab765265b3ba0bc818956ca875fdbe717310c8"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/SYSTEM-EXE-RECEIPT.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\SYSTEM-EXE-MANIFEST.actual-a03.json",
+        "bytes": 9684,
+        "sha256": "d04d59cb346ec123c33ce6f70fad1ebe3f346f3d018a49e622a5757a3fef7fc4"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\defender-exe-exclusions\\20261020T025318Z-83e88bce\\manifest.json",
+        "bytes": 9684,
+        "sha256": "d04d59cb346ec123c33ce6f70fad1ebe3f346f3d018a49e622a5757a3fef7fc4"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/SYSTEM-EXE-MANIFEST.actual-a03.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\PHASE-01-FIRST-FAILURE.actual.json",
+        "bytes": 18216,
+        "sha256": "8ec1c925e7588f7e92de88d18949771c980de0cdd50ffe833c5060210881eac6"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\01-public-production-and-focused-target-build\\result.actual.json",
+        "bytes": 18216,
+        "sha256": "8ec1c925e7588f7e92de88d18949771c980de0cdd50ffe833c5060210881eac6"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/PHASE-01-FIRST-FAILURE.actual.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\PHASE-04-SELECTION-FAILURE.actual.json",
+        "bytes": 18307,
+        "sha256": "5c4ff11c3ef20dacd0c7e2f7eb79a24e5763a1330bee57da6d7249e6b26db758"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\04-public-producer-incremental-a02\\result.actual.json",
+        "bytes": 18307,
+        "sha256": "5c4ff11c3ef20dacd0c7e2f7eb79a24e5763a1330bee57da6d7249e6b26db758"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/PHASE-04-SELECTION-FAILURE.actual.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\PHASE-07-FINAL-BUILD.actual.json",
+        "bytes": 18279,
+        "sha256": "a6baf98a3a7a325b723aa0d752218b3795d5da07dcc68493f4937655f553474c"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\07-public-build-only-finite-correction-a03\\result.actual.json",
+        "bytes": 18279,
+        "sha256": "a6baf98a3a7a325b723aa0d752218b3795d5da07dcc68493f4937655f553474c"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/PHASE-07-FINAL-BUILD.actual.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\PHASE-08-SEVEN-COLD.actual.json",
+        "bytes": 1966,
+        "sha256": "396202614f30978ffbe82ceb6d630c387755dd31f907d30008ea1050004fdfe9"
+      },
+      "original_evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\08-first-focused-ctest-a03\\result.actual.json",
+        "bytes": 1966,
+        "sha256": "396202614f30978ffbe82ceb6d630c387755dd31f907d30008ea1050004fdfe9"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/PHASE-08-SEVEN-COLD.actual.json",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\SOURCE-EQUIVALENCE.actual-a02.json",
+        "bytes": 1200,
+        "sha256": "71a44dcb1e2f5469877068ef0a5ad85f4df30b6f68a5c6111db11f77d5a5cef8"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/SOURCE-EQUIVALENCE.actual.json",
+      "derived_metadata": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\files\\README.actual-a02.md",
+        "bytes": 2783,
+        "sha256": "86bf2991dd3fdd09a732c7138bd0ecd823f1ee688a042ef876b314d0ed61db7a"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a39-native-20261020/README.md",
+      "derived_metadata": true
+    }
+  ],
+  "repository_modified": false,
+  "original_pins_modified": false,
+  "binaries_or_large_logs_copied": false,
+  "build_cold_SYSTEM_reexecuted": false,
+  "CK3_or_screen_contacted": false,
+  "ready_for_Root_after_runtime_close": true,
+  "supersedes_unpublished_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-archive-a01\\COPYPLAN.actual.json",
+    "bytes": 16641,
+    "sha256": "5f354ec64ba3044cf3cc7a032fb6cc92f200d7b07b6e65d5d08eccc9379fcd8b"
+  }
+}

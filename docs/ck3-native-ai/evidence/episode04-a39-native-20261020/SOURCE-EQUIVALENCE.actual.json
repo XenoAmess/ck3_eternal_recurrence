@@ -1,0 +1,25 @@
+{
+  "schema": "xar.e04.a39-archive-source-equivalence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:11:27.838379+00:00",
+  "native_build_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "frozen_runtime_source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "runtime_native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "same_native_tree": true,
+  "evidence_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\R220-SCENE-SOURCE-BOUND.actual-a03.json",
+    "bytes": 13688,
+    "sha256": "ec9bfcbc573ea10583d34677dae1684cecd605a48e04a06c042b57389ce12e0a"
+  },
+  "qualification": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+    "bytes": 25484,
+    "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+  },
+  "CK3_contacted": false,
+  "build_cold_SYSTEM_reexecuted": false,
+  "live_qualification_carried_from_this_package": false,
+  "repository_modified_for_packaging": false,
+  "machine_identity_readonly_probe": "tools/ck3_live_run_id.py machine"
+}

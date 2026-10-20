@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.same-root-incremental-source-diff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:44:00.109577+00:00",
+  "from_native_build_source_head": "9870b72f80870af1e3a646d34e23e7972f327761",
+  "to_native_build_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "from_native_tree": "797ebc88524ed0012969eb358ffb489c0bc89434",
+  "to_native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "native_changed_paths": [
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt"
+  ],
+  "native_diff": "diff --git a/ck3_autonomous_player/native_bridge/CMakeLists.txt b/ck3_autonomous_player/native_bridge/CMakeLists.txt\nindex e10e5c9f1..581ca1d84 100644\n--- a/ck3_autonomous_player/native_bridge/CMakeLists.txt\n+++ b/ck3_autonomous_player/native_bridge/CMakeLists.txt\n@@ -9285,6 +9285,7 @@ if(BUILD_TESTING AND WIN32)\n     src/ck3_12003_war_cash_current_serializer.cpp\n     src/ck3_12003_war_cash_net_income_test.cpp)\n   target_include_directories(xar_ck3_12003_war_cash_net_income_test PRIVATE include)\n+  target_link_libraries(xar_ck3_12003_war_cash_net_income_test PRIVATE xar_ck3_12002_runtime)\n   target_compile_features(xar_ck3_12003_war_cash_net_income_test PRIVATE cxx_std_20)\n   target_compile_definitions(xar_ck3_12003_war_cash_net_income_test PRIVATE\n     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)",
+  "production_translation_units_unchanged": true,
+  "repair_commit": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "same_aggregate_root": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01",
+  "new_budget_or_duplicate_build_root": false,
+  "first_failure_evidence_immutable": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FIRST-FAILURE.actual-a01.json",
+    "bytes": 5219,
+    "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+  }
+}

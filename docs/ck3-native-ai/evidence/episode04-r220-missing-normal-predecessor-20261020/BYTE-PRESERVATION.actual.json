@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:32:34.209440+00:00",
+  "source": "Original pinned C receipts restored before public push; Git text normalization disabled in this evidence subtree",
+  "rows": [
+    {
+      "file": "native-cleanup-projection.json",
+      "original_sha256": "3ec11e3739bd165b3d2c4d0f958809b847d066cbb914f61ea114e52e731c0368",
+      "restored_original_line_endings": true
+    },
+    {
+      "file": "failed-live-resource-closure.json",
+      "original_sha256": "a511d15ec7fa3fb16ad5c9385ea95ec944a527d2482bc664ee96018dab272f78",
+      "restored_original_line_endings": true
+    },
+    {
+      "file": "actual-validation.json",
+      "original_sha256": "d78812a488f32dd07e8b2b406bc5b64e4b23d3cb298b1ead12715b8befbcd161",
+      "restored_original_line_endings": true
+    },
+    {
+      "file": "actual-inputs.json",
+      "original_sha256": "4cd5ac4b78c2785aec7a946a1df9e93d53bfc11606deec9f42d6ff4b19ebfe18",
+      "restored_original_line_endings": true
+    },
+    {
+      "file": "focused-tests.json",
+      "original_sha256": "c849da42765f901c9cbd9845d8a506f6b5f336162f24eb21e1a070450076cce4",
+      "restored_original_line_endings": true
+    },
+    {
+      "file": "focused-tests.txt",
+      "original_sha256": "fbacd4edd87d82b7dcdb5bd76836f0443d26ac539164f35ab0443dbb44457598",
+      "restored_original_line_endings": true
+    }
+  ]
+}

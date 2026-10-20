@@ -1,0 +1,160 @@
+{
+  "schema": "xar.e04.finite-mailbox-target-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:50:42.015200+00:00",
+  "source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "target": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+  "ctest": "xar_ck3_native_bridge_steward_develop_county_candidates_v1_mailbox",
+  "actual_file_api_target": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_steward_develop_county_candidates_v1_mailbox_test-Release-935200b63ff932e3ea25.json",
+    "bytes": 6060,
+    "sha256": "67e66aba55841147cbc2b1a63a6608aa230bac5769d1f3d9ee580136aa1ba384"
+  },
+  "actual_frozen_compile_database": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\04-public-producer-incremental-a02\\compile_commands.json.frozen-a02",
+    "bytes": 4532468,
+    "sha256": "d22e7cca0d3b8ac566e2edd6be372814a7adef9a45cbfaca50bd489d44edb279"
+  },
+  "actual_compile_rows": [
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\ck3_12003_steward_develop_county.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_steward_develop_county.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_steward_develop_county.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/ck3_12003_steward_develop_county.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\council_composition_steward_candidates_reader_v1.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\council_composition_steward_candidates_reader_v1.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/council_composition_steward_candidates_reader_v1.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/council_composition_steward_candidates_reader_v1.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\council_composition_candidates_public_v1.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\council_composition_candidates_public_v1.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/council_composition_candidates_public_v1.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/council_composition_candidates_public_v1.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\council_composition_candidates_public_v1_serializer.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\council_composition_candidates_public_v1_serializer.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/council_composition_candidates_public_v1_serializer.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/council_composition_candidates_public_v1_serializer.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\ck3_12002.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/ck3_12002.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\ck3_12002_council_candidates.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_council_candidates.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002_council_candidates.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/ck3_12002_council_candidates.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\ck3_12002_nonwar_mailbox.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_nonwar_mailbox.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_mailbox.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/ck3_12002_nonwar_mailbox.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\ck3_12002_thread_runtime.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_thread_runtime.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002_thread_runtime.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/ck3_12002_thread_runtime.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\main_thread_query_mailbox_v1.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/main_thread_query_mailbox_v1.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\steward_develop_county_candidates_v1_mailbox.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\steward_develop_county_candidates_v1_mailbox.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/steward_develop_county_candidates_v1_mailbox.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/steward_develop_county_candidates_v1_mailbox.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\steward_develop_county_candidates_v1_mailbox_test.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\steward_develop_county_candidates_v1_mailbox_test.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/steward_develop_county_candidates_v1_mailbox_test.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/steward_develop_county_candidates_v1_mailbox_test.cpp.obj"
+    },
+    {
+      "directory": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01",
+      "command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_UNICODE -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\src\\ck3_12004_steward_develop_county.cpp.obj /FdCMakeFiles\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir\\ /FS -c D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_steward_develop_county.cpp",
+      "file": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_steward_develop_county.cpp",
+      "output": "C:/ck3-war-episode04-research-20261004-a01/native-build-a39-a01/CMakeFiles/xar_ck3_steward_develop_county_candidates_v1_mailbox_test.dir/src/ck3_12004_steward_develop_county.cpp.obj"
+    }
+  ],
+  "source_count": 12,
+  "new_provider_definitions_absent_in_every_TU": true,
+  "production_new_providers_explicitly_OFF": {
+    "XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_HEIR_CANDIDATE_COMPONENT12004_V1": "OFF",
+    "XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1": "OFF",
+    "XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1": "OFF",
+    "XAR_CK3_BUILD_NATIVE_LAYOUT_REPORT_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_CAMERA_TRACKING_V1": "OFF"
+  },
+  "declared_link_fragments": [
+    {
+      "fragment": "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+      "role": "flags"
+    },
+    {
+      "fragment": "/machine:x64 /INCREMENTAL:NO",
+      "role": "flags"
+    },
+    {
+      "fragment": "/subsystem:console",
+      "role": "flags"
+    },
+    {
+      "backtrace": 2,
+      "fragment": "user32.lib",
+      "role": "libraries"
+    },
+    {
+      "backtrace": 5,
+      "fragment": "xar_ck3_12002_runtime.lib",
+      "role": "libraries"
+    },
+    {
+      "backtrace": 6,
+      "fragment": "bcrypt.lib",
+      "role": "libraries"
+    },
+    {
+      "fragment": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+      "role": "libraries"
+    }
+  ],
+  "cmake_target_dependencies": [
+    {
+      "backtrace": 5,
+      "id": "xar_ck3_12002_runtime::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "shared_production_sources_directly_compiled": [
+    "src/ck3_12002_nonwar_mailbox.cpp",
+    "src/main_thread_query_mailbox_v1.cpp",
+    "src/ck3_12002_thread_runtime.cpp"
+  ],
+  "assertions_are_explicit_bool_checks_and_exit": true,
+  "requires_allON_provider_library": false,
+  "changes_production_flags": false,
+  "scope": "Finite owned-memory actual shared registrar and mailbox lifecycle. Independent minimal existing target definitions; no claim of exact complete production feature profile, WarOverview callbacks, steward gameplay or live CK3.",
+  "replacement_of_inapplicable_B11": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-SECOND-FAILURE.actual-a02.json",
+    "bytes": 9337,
+    "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+  }
+}

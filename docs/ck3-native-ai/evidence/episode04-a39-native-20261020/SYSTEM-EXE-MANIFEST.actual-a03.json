@@ -1,0 +1,158 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01",
+  "configuration": "Release",
+  "requested_targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector",
+    "xar_ck3_bridge_host",
+    "xar_ck3_ingame_ui_navigation_v1_test",
+    "xar_ck3_ingame_decision_outcome_contract_v1_test",
+    "xar_ck3_12004_holy_site_adoption_detail_test",
+    "xar_ck3_camera_settle_diagnostics_v1_test",
+    "xar_ck3_realm_camera_subrealm_v1_test",
+    "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+    "xar_ck3_12003_war_cash_net_income_test"
+  ],
+  "external_candidate": null,
+  "cmake_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\index-2026-10-20T02-46-53-0825.json",
+    "sha256": "5be49068e1487e3feb9df844a578f7be38f1dfa0f639b8233b4d03872a09e532"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-07d00f6ea641c4132311.json",
+    "sha256": "b9aea3581da4bd03f0d7582ca178e58f6d484a780c3d9c3508caced0fadd49ef"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12003_war_cash_net_income_test-Release-60b6f3453158b4b4d570.json",
+      "sha256": "c52d5dfea864bc6d3e26a71a0f565f046d6c512c923d843963bb766fad8a8a40",
+      "target": "xar_ck3_12003_war_cash_net_income_test",
+      "target_id": "xar_ck3_12003_war_cash_net_income_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_steward_develop_county_candidates_v1_mailbox_test-Release-935200b63ff932e3ea25.json",
+      "sha256": "67e66aba55841147cbc2b1a63a6608aa230bac5769d1f3d9ee580136aa1ba384",
+      "target": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+      "target_id": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_subrealm_v1_test-Release-e51d67285128bcb37ddc.json",
+      "sha256": "88b516b3637f77a511b2d3ff9cbc0f73aca6548cf53ff570d2f1ce8a2f655d69",
+      "target": "xar_ck3_realm_camera_subrealm_v1_test",
+      "target_id": "xar_ck3_realm_camera_subrealm_v1_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_settle_diagnostics_v1_test-Release-be030ccc94d58235557b.json",
+      "sha256": "ca123153a4fd114f895a35ec5c1e328bd40ef72cba4be69f51ec71aee5981017",
+      "target": "xar_ck3_camera_settle_diagnostics_v1_test",
+      "target_id": "xar_ck3_camera_settle_diagnostics_v1_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12004_holy_site_adoption_detail_test-Release-35f1068d26d634571913.json",
+      "sha256": "77373d32dfb3a95d463294e6654f1f8b14012d502ac2d103451bbab8d875148a",
+      "target": "xar_ck3_12004_holy_site_adoption_detail_test",
+      "target_id": "xar_ck3_12004_holy_site_adoption_detail_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_decision_outcome_contract_v1_test-Release-a31e7c64db85be506ff9.json",
+      "sha256": "c0b22e45ed73bb9dd91d2e3ddbdde2a58c9375d1ddf8ca65655f72e4abc1ffcc",
+      "target": "xar_ck3_ingame_decision_outcome_contract_v1_test",
+      "target_id": "xar_ck3_ingame_decision_outcome_contract_v1_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be",
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "target_id": "xar_ck3_ingame_ui_navigation_v1_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb",
+      "target": "xar_ck3_bridge_host",
+      "target_id": "xar_ck3_bridge_host::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12003_war_cash_net_income_test.exe",
+      "size": 145920,
+      "sha256": "65069b704fe4437100c10a42c545f2ea0eb5785461a78fd25a45755e8d56f33d",
+      "target": "xar_ck3_12003_war_cash_net_income_test",
+      "target_id": "xar_ck3_12003_war_cash_net_income_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12004_holy_site_adoption_detail_test.exe",
+      "size": 196608,
+      "sha256": "0eb07ec06fc5a144cc1c16485bd3349da3a1c3db63af6c2f23a9dc4d11f53eb0",
+      "target": "xar_ck3_12004_holy_site_adoption_detail_test",
+      "target_id": "xar_ck3_12004_holy_site_adoption_detail_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_host.exe",
+      "size": 71680,
+      "sha256": "17429aa0b23e702dee4d8494a123154b48a638c738388d42510f9782afee6a21",
+      "target": "xar_ck3_bridge_host",
+      "target_id": "xar_ck3_bridge_host::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "57cfb15e6d56495bfc8c2578070e633f528267ea83c1855c43806fe19a2d83f1",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_camera_settle_diagnostics_v1_test.exe",
+      "size": 17408,
+      "sha256": "5b843093506878f643c822480700bdb020f0166cd0eee2ede40715614d70c19d",
+      "target": "xar_ck3_camera_settle_diagnostics_v1_test",
+      "target_id": "xar_ck3_camera_settle_diagnostics_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe",
+      "size": 129024,
+      "sha256": "28f09197eaf383acaf607e9af0e0e4d036ef1ebd09448c94d300e4b4463f0c18",
+      "target": "xar_ck3_ingame_decision_outcome_contract_v1_test",
+      "target_id": "xar_ck3_ingame_decision_outcome_contract_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "size": 658944,
+      "sha256": "732e77c56a1addb8535c1a6b58aa55c6aab367eae1a27ac88a5914b3d8e99b75",
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "target_id": "xar_ck3_ingame_ui_navigation_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_realm_camera_subrealm_v1_test.exe",
+      "size": 168960,
+      "sha256": "5b387bf3439f2995e5efcdeb34869c1a1d997c74911eccf2d1f9c99f8b0883ee",
+      "target": "xar_ck3_realm_camera_subrealm_v1_test",
+      "target_id": "xar_ck3_realm_camera_subrealm_v1_test::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.exe",
+      "size": 128000,
+      "sha256": "7b84d553941b9e187f591caeae98d9c1a992e062e3be63832eb6e5f7da8d5c32",
+      "target": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+      "target_id": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

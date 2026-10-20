@@ -1,0 +1,1450 @@
+{
+  "schema": "xar.e04.r0216-ui-owner-heartbeat-offline-attribution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:24:23.707999+00:00",
+  "source": "Read-only original R0216 case rows, <=4MiB tail per native/MCP wire, and source at exact runtime HEAD; no native SDK, screen, game, or input action",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+  "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "config": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\window-preparation\\r0216-take01\\take01-input.actual.json",
+    "bytes": 3313,
+    "sha256": "6c3ad3f5a88a2315c0115ee1435186cbe1d4b101383a606362c6686a0e1a5325"
+  },
+  "actual_ui_result_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output-window-ui-take01\\e04-camera-ui-r0216-take01-independent-army-window-1.actual-results.json",
+      "bytes": 140251,
+      "sha256": "4cffcc36bdc12d56f1c5609b4d8842e91b03f352f288fe2f486d9b610de2a6eb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output-window-ui-take01\\e04-camera-ui-r0216-take01-select-army-once.actual-results.json",
+      "bytes": 140364,
+      "sha256": "20ffd2116899fa9d9c118429f80973aa8e5acea285bea11ad0168a0e8a5c40e7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output-window-ui-take01\\e04-camera-ui-r0216-take01-snapshot-0001.actual-results.json",
+      "bytes": 108013,
+      "sha256": "fc1d213e552ad5e7d4bb3946146c71480819948869fb5abf570a972e427a912a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output-window-ui-take01\\e04-camera-ui-r0216-take01-snapshot-0002.actual-results.json",
+      "bytes": 108015,
+      "sha256": "4ac1ce61485cfd60ecaf22655208feb8e8cf556259d07af2c6a71f282f7ca0fb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output-window-ui-take01\\e04-camera-ui-r0216-take01-snapshot-0003.actual-results.json",
+      "bytes": 108015,
+      "sha256": "26cdb12a43f742612aff90c89c41af8fae93fe588602855dcd7b259afa40891c"
+    }
+  ],
+  "selected_native_results": [
+    {
+      "at": "2026-10-20T03:11:05.572387+00:00",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 19980036,
+        "bytes": 48720,
+        "sha256": "e93675749dccaaf716f8957b121b42a91614c5f7095e914c120be4c315c22d3b"
+      },
+      "ok": true,
+      "request_id": "step-7-3ab4c4e88bbc",
+      "result": {
+        "status": "acknowledged_verification_pending",
+        "accepted": true,
+        "available": true,
+        "window_kind": "army",
+        "window_exists": true,
+        "effective_visible": false,
+        "subject_id_available": false,
+        "current_subject_id": 0,
+        "owner_character_id": null,
+        "dispatch_invoked": true,
+        "verification_pending": true,
+        "date_raw": 53147376,
+        "paused": true,
+        "played_character_id": 33388,
+        "native_revision": 2,
+        "pump_epoch": 23461,
+        "thread_id": 11156,
+        "application_owner_thread_verified": true,
+        "gui_owner_binding_verified": true,
+        "gui_context_address": 2878085955296,
+        "gui_owner_address": 2878085955296,
+        "unavailable_reason": ""
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:12.580988+00:00",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 20189320,
+        "bytes": 48647,
+        "sha256": "d33b7147a66484baafefb03af5840e8bd6a6460d2187d955cff917813389afa9"
+      },
+      "ok": true,
+      "request_id": "step-8-57858d646d25",
+      "result": {
+        "status": "observed",
+        "accepted": true,
+        "available": true,
+        "window_kind": "army",
+        "window_exists": true,
+        "effective_visible": false,
+        "subject_id_available": true,
+        "current_subject_id": 0,
+        "owner_character_id": 33388,
+        "dispatch_invoked": false,
+        "verification_pending": false,
+        "date_raw": 53147376,
+        "paused": true,
+        "played_character_id": 33388,
+        "native_revision": 2,
+        "pump_epoch": 23761,
+        "thread_id": 11156,
+        "application_owner_thread_verified": true,
+        "gui_owner_binding_verified": true,
+        "gui_context_address": 2878085955296,
+        "gui_owner_address": 2878085955296,
+        "unavailable_reason": ""
+      }
+    }
+  ],
+  "selected_heartbeats": [
+    {
+      "at": "2026-10-20T03:11:12.480932+00:00",
+      "direction": "dll-to-python",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 20183324,
+        "bytes": 5724,
+        "sha256": "57d395aecf12845e8d3b1e3a375aa47b08b3150def4f8ef03dc082a79c6ac182"
+      },
+      "heartbeat": {
+        "type": "heartbeat",
+        "sequence": 1880,
+        "pid": 37004,
+        "monotonic_ms": 1688654640,
+        "main_thread_query_mailbox_v1": {
+          "candidate_id": "application_main_thread_war_entry_v1",
+          "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+          "installed": true,
+          "sdl_poll_event_hook_installed": false,
+          "observed_sdl_poll_event_target": 0,
+          "stop": false,
+          "failure": 0,
+          "executor_exception": {
+            "code": 0,
+            "image": "none",
+            "rva": null
+          },
+          "pump_epochs": 23756,
+          "owner_verified_pump_epochs": 23756,
+          "consecutive_verified": 10430,
+          "published_sequence": 6,
+          "completed_sequence": 6,
+          "executor_started_requests": 6,
+          "executor_started_sequence": 6,
+          "executor_started_pump_epoch": 23461,
+          "owner_tid": 11156,
+          "current_tid": 11156,
+          "rng_owner_tid": 0,
+          "tls_global": 1,
+          "tls_context": 2877804535504,
+          "tls_marker": 1,
+          "jomini_state": 2884397248544,
+          "game_state": 2884334330864,
+          "date_raw": 53147376,
+          "paused": true,
+          "stamp_read_success": true,
+          "executed_requests": 6,
+          "executor_submission_enabled": true,
+          "application_main_observed": true,
+          "paused_main_thread_observed": true,
+          "ready": true
+        },
+        "snapshot_observer_12002": {
+          "started_ms": 1688654468,
+          "completed_ms": 1688654468,
+          "last_read_ms": 0,
+          "read_in_progress": false,
+          "last_read_available": true,
+          "snapshot_cached": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:19.733935+00:00",
+      "direction": "dll-to-python",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 20398259,
+        "bytes": 5724,
+        "sha256": "86ce7da05f6df9a671dc061b1d2207224df5761dc95774ea840b04ca84a4e9e0"
+      },
+      "heartbeat": {
+        "type": "heartbeat",
+        "sequence": 1909,
+        "pid": 37004,
+        "monotonic_ms": 1688661890,
+        "main_thread_query_mailbox_v1": {
+          "candidate_id": "application_main_thread_war_entry_v1",
+          "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+          "installed": true,
+          "sdl_poll_event_hook_installed": false,
+          "observed_sdl_poll_event_target": 0,
+          "stop": false,
+          "failure": 0,
+          "executor_exception": {
+            "code": 0,
+            "image": "none",
+            "rva": null
+          },
+          "pump_epochs": 24066,
+          "owner_verified_pump_epochs": 24066,
+          "consecutive_verified": 10740,
+          "published_sequence": 7,
+          "completed_sequence": 7,
+          "executor_started_requests": 7,
+          "executor_started_sequence": 7,
+          "executor_started_pump_epoch": 23761,
+          "owner_tid": 11156,
+          "current_tid": 11156,
+          "rng_owner_tid": 0,
+          "tls_global": 1,
+          "tls_context": 2877804535504,
+          "tls_marker": 1,
+          "jomini_state": 2884397248544,
+          "game_state": 2884334330864,
+          "date_raw": 53147376,
+          "paused": true,
+          "stamp_read_success": true,
+          "executed_requests": 7,
+          "executor_submission_enabled": true,
+          "application_main_observed": true,
+          "paused_main_thread_observed": true,
+          "ready": true
+        },
+        "snapshot_observer_12002": {
+          "started_ms": 1688661859,
+          "completed_ms": 1688661859,
+          "last_read_ms": 0,
+          "read_in_progress": false,
+          "last_read_available": true,
+          "snapshot_cached": true
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:19.979979+00:00",
+      "direction": "dll-to-python",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 20403983,
+        "bytes": 5724,
+        "sha256": "881448913ca77b9b4c7eb2e2bc03e7e20788bc1b02f3cdd44d570f8d0ac188d3"
+      },
+      "heartbeat": {
+        "type": "heartbeat",
+        "sequence": 1910,
+        "pid": 37004,
+        "monotonic_ms": 1688662140,
+        "main_thread_query_mailbox_v1": {
+          "candidate_id": "application_main_thread_war_entry_v1",
+          "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+          "installed": true,
+          "sdl_poll_event_hook_installed": false,
+          "observed_sdl_poll_event_target": 0,
+          "stop": false,
+          "failure": 0,
+          "executor_exception": {
+            "code": 0,
+            "image": "none",
+            "rva": null
+          },
+          "pump_epochs": 24077,
+          "owner_verified_pump_epochs": 24076,
+          "consecutive_verified": 10750,
+          "published_sequence": 7,
+          "completed_sequence": 7,
+          "executor_started_requests": 7,
+          "executor_started_sequence": 7,
+          "executor_started_pump_epoch": 23761,
+          "owner_tid": 11156,
+          "current_tid": 11156,
+          "rng_owner_tid": 0,
+          "tls_global": 1,
+          "tls_context": 2877804535504,
+          "tls_marker": 1,
+          "jomini_state": 2884397248544,
+          "game_state": 2884334330864,
+          "date_raw": 53147376,
+          "paused": true,
+          "stamp_read_success": true,
+          "executed_requests": 7,
+          "executor_submission_enabled": true,
+          "application_main_observed": true,
+          "paused_main_thread_observed": true,
+          "ready": true
+        },
+        "snapshot_observer_12002": {
+          "started_ms": 1688662125,
+          "completed_ms": 1688661859,
+          "last_read_ms": 0,
+          "read_in_progress": true,
+          "last_read_available": true,
+          "snapshot_cached": false
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:20.242477+00:00",
+      "direction": "dll-to-python",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 20409707,
+        "bytes": 5725,
+        "sha256": "ccfbaef173ff949bf8a05969084d492b46ed5d674ddc752584ca2a6fba0e7333"
+      },
+      "heartbeat": {
+        "type": "heartbeat",
+        "sequence": 1911,
+        "pid": 37004,
+        "monotonic_ms": 1688662390,
+        "main_thread_query_mailbox_v1": {
+          "candidate_id": "application_main_thread_war_entry_v1",
+          "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+          "installed": true,
+          "sdl_poll_event_hook_installed": false,
+          "observed_sdl_poll_event_target": 0,
+          "stop": false,
+          "failure": 0,
+          "executor_exception": {
+            "code": 0,
+            "image": "none",
+            "rva": null
+          },
+          "pump_epochs": 24089,
+          "owner_verified_pump_epochs": 24088,
+          "consecutive_verified": 10762,
+          "published_sequence": 7,
+          "completed_sequence": 7,
+          "executor_started_requests": 7,
+          "executor_started_sequence": 7,
+          "executor_started_pump_epoch": 23761,
+          "owner_tid": 11156,
+          "current_tid": 11156,
+          "rng_owner_tid": 0,
+          "tls_global": 1,
+          "tls_context": 2877804535504,
+          "tls_marker": 1,
+          "jomini_state": 2884397248544,
+          "game_state": 2884334330864,
+          "date_raw": 53147376,
+          "paused": true,
+          "stamp_read_success": true,
+          "executed_requests": 7,
+          "executor_submission_enabled": true,
+          "application_main_observed": true,
+          "paused_main_thread_observed": true,
+          "ready": true
+        },
+        "snapshot_observer_12002": {
+          "started_ms": 1688662390,
+          "completed_ms": 1688662140,
+          "last_read_ms": 15,
+          "read_in_progress": true,
+          "last_read_available": true,
+          "snapshot_cached": false
+        }
+      }
+    }
+  ],
+  "preceding_and_posterror_public_snapshots": [
+    {
+      "at": "2026-10-20T03:11:09.229707+00:00",
+      "direction": "response",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+        "offset": 55378109,
+        "bytes": 113671,
+        "sha256": "d92f88c4d64a270877e2c904b152907f7e8e7bd907f8150e9144344b2232b6b0"
+      },
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "snapshot_id": "native:2",
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53147376,
+        "paused": true,
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "local_player_id": 1,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "event_trait_membership": {
+            "schema": "xar.ck3.player-event-trait-membership/v1",
+            "game_version": "1.20.0.4",
+            "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "status": "available",
+            "snapshot_revision": 2,
+            "date_raw": 53147376,
+            "played_character_id": 33388,
+            "traits": {
+              "lifestyle_poet": false,
+              "journaller": false
+            },
+            "unavailable_reason": null
+          },
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "managed_campaign_run_binding": {
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\state-a02",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+          "frozen_argv_sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+        },
+        "bridge_pid": 37004,
+        "generation": 1,
+        "heartbeat": {
+          "type": "heartbeat",
+          "sequence": 1866,
+          "pid": 37004,
+          "monotonic_ms": 1688651140,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": false,
+            "observed_sdl_poll_event_target": 0,
+            "stop": false,
+            "failure": 0,
+            "executor_exception": {
+              "code": 0,
+              "image": "none",
+              "rva": null
+            },
+            "pump_epochs": 23605,
+            "owner_verified_pump_epochs": 23604,
+            "consecutive_verified": 10278,
+            "published_sequence": 6,
+            "completed_sequence": 6,
+            "executor_started_requests": 6,
+            "executor_started_sequence": 6,
+            "executor_started_pump_epoch": 23461,
+            "owner_tid": 11156,
+            "current_tid": 11156,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2877804535504,
+            "tls_marker": 1,
+            "jomini_state": 2884397248544,
+            "game_state": 2884334330864,
+            "date_raw": 53147376,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 6,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "snapshot_observer_12002": {
+            "started_ms": 1688651140,
+            "completed_ms": 1688650859,
+            "last_read_ms": 16,
+            "read_in_progress": true,
+            "last_read_available": true,
+            "snapshot_cached": false
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:09.241095+00:00",
+      "direction": "response",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+        "offset": 55491957,
+        "bytes": 113632,
+        "sha256": "3b16c8bf38bb90b8de1258efe6b48f3007eb251566776d615f09542c216191c2"
+      },
+      "tool": "ck3_take_snapshot",
+      "arguments": {},
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "snapshot_id": "native:2",
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53147376,
+        "paused": true,
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "local_player_id": 1,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "event_trait_membership": {
+            "schema": "xar.ck3.player-event-trait-membership/v1",
+            "game_version": "1.20.0.4",
+            "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "status": "available",
+            "snapshot_revision": 2,
+            "date_raw": 53147376,
+            "played_character_id": 33388,
+            "traits": {
+              "lifestyle_poet": false,
+              "journaller": false
+            },
+            "unavailable_reason": null
+          },
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "managed_campaign_run_binding": {
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\state-a02",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+          "frozen_argv_sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+        },
+        "bridge_pid": 37004,
+        "generation": 1,
+        "heartbeat": {
+          "type": "heartbeat",
+          "sequence": 1866,
+          "pid": 37004,
+          "monotonic_ms": 1688651140,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": false,
+            "observed_sdl_poll_event_target": 0,
+            "stop": false,
+            "failure": 0,
+            "executor_exception": {
+              "code": 0,
+              "image": "none",
+              "rva": null
+            },
+            "pump_epochs": 23605,
+            "owner_verified_pump_epochs": 23604,
+            "consecutive_verified": 10278,
+            "published_sequence": 6,
+            "completed_sequence": 6,
+            "executor_started_requests": 6,
+            "executor_started_sequence": 6,
+            "executor_started_pump_epoch": 23461,
+            "owner_tid": 11156,
+            "current_tid": 11156,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2877804535504,
+            "tls_marker": 1,
+            "jomini_state": 2884397248544,
+            "game_state": 2884334330864,
+            "date_raw": 53147376,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 6,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "snapshot_observer_12002": {
+            "started_ms": 1688651140,
+            "completed_ms": 1688650859,
+            "last_read_ms": 16,
+            "read_in_progress": true,
+            "last_read_available": true,
+            "snapshot_cached": false
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:16.505359+00:00",
+      "direction": "response",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+        "offset": 55896001,
+        "bytes": 113671,
+        "sha256": "184dd18c436327d2d663bd58acd19a9f401a8ea25d2eb625913e1f91bdaf0634"
+      },
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "snapshot_id": "native:2",
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53147376,
+        "paused": true,
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "local_player_id": 1,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "event_trait_membership": {
+            "schema": "xar.ck3.player-event-trait-membership/v1",
+            "game_version": "1.20.0.4",
+            "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "status": "available",
+            "snapshot_revision": 2,
+            "date_raw": 53147376,
+            "played_character_id": 33388,
+            "traits": {
+              "lifestyle_poet": false,
+              "journaller": false
+            },
+            "unavailable_reason": null
+          },
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "managed_campaign_run_binding": {
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\state-a02",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+          "frozen_argv_sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+        },
+        "bridge_pid": 37004,
+        "generation": 1,
+        "heartbeat": {
+          "type": "heartbeat",
+          "sequence": 1896,
+          "pid": 37004,
+          "monotonic_ms": 1688658640,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": false,
+            "observed_sdl_poll_event_target": 0,
+            "stop": false,
+            "failure": 0,
+            "executor_exception": {
+              "code": 0,
+              "image": "none",
+              "rva": null
+            },
+            "pump_epochs": 23926,
+            "owner_verified_pump_epochs": 23926,
+            "consecutive_verified": 10600,
+            "published_sequence": 7,
+            "completed_sequence": 7,
+            "executor_started_requests": 7,
+            "executor_started_sequence": 7,
+            "executor_started_pump_epoch": 23761,
+            "owner_tid": 11156,
+            "current_tid": 11156,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2877804535504,
+            "tls_marker": 1,
+            "jomini_state": 2884397248544,
+            "game_state": 2884334330864,
+            "date_raw": 53147376,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 7,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "snapshot_observer_12002": {
+            "started_ms": 1688658546,
+            "completed_ms": 1688658562,
+            "last_read_ms": 16,
+            "read_in_progress": false,
+            "last_read_available": true,
+            "snapshot_cached": true
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:16.518706+00:00",
+      "direction": "response",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+        "offset": 56009849,
+        "bytes": 113632,
+        "sha256": "e8195fa4958847c0173e0237511e6f6ada8ccb7c5c028d885c783e242a415663"
+      },
+      "tool": "ck3_take_snapshot",
+      "arguments": {},
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "snapshot_id": "native:2",
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53147376,
+        "paused": true,
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "local_player_id": 1,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "event_trait_membership": {
+            "schema": "xar.ck3.player-event-trait-membership/v1",
+            "game_version": "1.20.0.4",
+            "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "status": "available",
+            "snapshot_revision": 2,
+            "date_raw": 53147376,
+            "played_character_id": 33388,
+            "traits": {
+              "lifestyle_poet": false,
+              "journaller": false
+            },
+            "unavailable_reason": null
+          },
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "managed_campaign_run_binding": {
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\state-a02",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+          "frozen_argv_sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+        },
+        "bridge_pid": 37004,
+        "generation": 1,
+        "heartbeat": {
+          "type": "heartbeat",
+          "sequence": 1896,
+          "pid": 37004,
+          "monotonic_ms": 1688658640,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": false,
+            "observed_sdl_poll_event_target": 0,
+            "stop": false,
+            "failure": 0,
+            "executor_exception": {
+              "code": 0,
+              "image": "none",
+              "rva": null
+            },
+            "pump_epochs": 23926,
+            "owner_verified_pump_epochs": 23926,
+            "consecutive_verified": 10600,
+            "published_sequence": 7,
+            "completed_sequence": 7,
+            "executor_started_requests": 7,
+            "executor_started_sequence": 7,
+            "executor_started_pump_epoch": 23761,
+            "owner_tid": 11156,
+            "current_tid": 11156,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2877804535504,
+            "tls_marker": 1,
+            "jomini_state": 2884397248544,
+            "game_state": 2884334330864,
+            "date_raw": 53147376,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 7,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "snapshot_observer_12002": {
+            "started_ms": 1688658546,
+            "completed_ms": 1688658562,
+            "last_read_ms": 16,
+            "read_in_progress": false,
+            "last_read_available": true,
+            "snapshot_cached": true
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:20.352263+00:00",
+      "direction": "response",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+        "offset": 56124775,
+        "bytes": 113632,
+        "sha256": "2182d0e076d850dd9dbf8f8239e275f8aed1c6eb3882b5154bf95d1bb0882545"
+      },
+      "tool": "ck3_take_snapshot",
+      "arguments": {},
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "snapshot_id": "native:2",
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53147376,
+        "paused": true,
+        "map_ready": true,
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "local_player_id": 1,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "event_trait_membership": {
+            "schema": "xar.ck3.player-event-trait-membership/v1",
+            "game_version": "1.20.0.4",
+            "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "status": "available",
+            "snapshot_revision": 2,
+            "date_raw": 53147376,
+            "played_character_id": 33388,
+            "traits": {
+              "lifestyle_poet": false,
+              "journaller": false
+            },
+            "unavailable_reason": null
+          },
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "managed_campaign_run_binding": {
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\state-a02",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0216",
+          "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+          "frozen_argv_sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+        },
+        "bridge_pid": 37004,
+        "generation": 1,
+        "heartbeat": {
+          "type": "heartbeat",
+          "sequence": 1911,
+          "pid": 37004,
+          "monotonic_ms": 1688662390,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": false,
+            "observed_sdl_poll_event_target": 0,
+            "stop": false,
+            "failure": 0,
+            "executor_exception": {
+              "code": 0,
+              "image": "none",
+              "rva": null
+            },
+            "pump_epochs": 24089,
+            "owner_verified_pump_epochs": 24088,
+            "consecutive_verified": 10762,
+            "published_sequence": 7,
+            "completed_sequence": 7,
+            "executor_started_requests": 7,
+            "executor_started_sequence": 7,
+            "executor_started_pump_epoch": 23761,
+            "owner_tid": 11156,
+            "current_tid": 11156,
+            "rng_owner_tid": 0,
+            "tls_global": 1,
+            "tls_context": 2877804535504,
+            "tls_marker": 1,
+            "jomini_state": 2884397248544,
+            "game_state": 2884334330864,
+            "date_raw": 53147376,
+            "paused": true,
+            "stamp_read_success": true,
+            "executed_requests": 7,
+            "executor_submission_enabled": true,
+            "application_main_observed": true,
+            "paused_main_thread_observed": true,
+            "ready": true
+          },
+          "snapshot_observer_12002": {
+            "started_ms": 1688662390,
+            "completed_ms": 1688662140,
+            "last_read_ms": 15,
+            "read_in_progress": true,
+            "last_read_available": true,
+            "snapshot_cached": false
+          }
+        }
+      }
+    }
+  ],
+  "failed_mcp_query": {
+    "at": "2026-10-20T03:11:20.156863+00:00",
+    "direction": "response",
+    "pin": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+      "offset": 56123715,
+      "bytes": 883,
+      "sha256": "917aab3369aaf8ebb6244679a0d587bb13fff73f33517b0a434e8ecd86aea6f2"
+    },
+    "tool": "ck3_query_ingame_ui_window_v1",
+    "arguments": {
+      "window_kind": "army",
+      "expected_revision": 3
+    },
+    "ok": false,
+    "error": "RuntimeError: MCP tool ck3_query_ingame_ui_window_v1 returned an error: Error executing tool ck3_query_ingame_ui_window_v1: title-map native campaign lacks its current verified application owner"
+  },
+  "bounded_wire_reads": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-calls.jsonl",
+      "file_bytes": 56277560,
+      "tail_start": 52083256,
+      "tail_bytes": 4194304,
+      "tail_sha256": "f6b8141317268b4edf31827cffcf19745d2f74ff77c56ed4ec35ac37e945fda3",
+      "complete_rows": 80,
+      "bad_json_rows": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.mcp-wire.jsonl",
+      "file_bytes": 39853540,
+      "tail_start": 35659236,
+      "tail_bytes": 4194304,
+      "tail_sha256": "8645e8c534baceb70a5d1a81ed3554a5e9c5b3efcb8164235125406a0beb37df",
+      "complete_rows": 108,
+      "bad_json_rows": 0
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+      "file_bytes": 20415432,
+      "tail_start": 16221128,
+      "tail_bytes": 4194304,
+      "tail_sha256": "481769395dd3217a52f5896bf9abd070bcdf15a56463d706a77b45db6fce61b4",
+      "complete_rows": 532,
+      "bad_json_rows": 0
+    }
+  ],
+  "execute_steps_in_selected_native_time_window": [
+    {
+      "at": "2026-10-20T03:11:05.539217+00:00",
+      "direction": "python-to-dll",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 19979740,
+        "bytes": 296,
+        "sha256": "c4cdca4cfbeb077c3b3f42aeded492d033fa21eda56fe849ba0e36fdd7439d2a"
+      },
+      "type": "execute_step",
+      "keys": [
+        "type",
+        "protocol_version",
+        "request_id",
+        "step",
+        "expected_revision",
+        "window_kind",
+        "subject_id",
+        "operation"
+      ],
+      "message": {
+        "type": "execute_step",
+        "protocol_version": 1,
+        "request_id": "step-7-3ab4c4e88bbc",
+        "step": "navigate-ingame-ui-v1",
+        "expected_revision": 2,
+        "window_kind": "army",
+        "subject_id": 0,
+        "operation": "select_army"
+      }
+    },
+    {
+      "at": "2026-10-20T03:11:12.559096+00:00",
+      "direction": "python-to-dll",
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-report.native-wire.jsonl",
+        "offset": 20189048,
+        "bytes": 272,
+        "sha256": "feab44bba3c24c18ffef91f3cf6c4e07f488586a7d954fefe02dc20701a3f867"
+      },
+      "type": "execute_step",
+      "keys": [
+        "type",
+        "protocol_version",
+        "request_id",
+        "step",
+        "expected_revision",
+        "window_kind",
+        "subject_id"
+      ],
+      "message": {
+        "type": "execute_step",
+        "protocol_version": 1,
+        "request_id": "step-8-57858d646d25",
+        "step": "query-ingame-ui-window-v1",
+        "expected_revision": 2,
+        "window_kind": "army",
+        "subject_id": 0
+      }
+    }
+  ],
+  "known": [
+    "Select dispatched once, but remained acknowledged_verification_pending and effective_visible=false.",
+    "First independent query executed once and observed the requested army/actor with owner/GUI binding verified; effective_visible=false.",
+    "Second independent query failed before any native execute_step in the complete selected 03:10:58..03:11:21 native wire window.",
+    "Latest pre-error heartbeat 1910 at 03:11:19.979979Z has pump24077 != owner_verified24076, observer read_in_progress=true and completed1688661859 < started1688662125; owner/current tid11156, TLS, date and PID unchanged.",
+    "The same transient tuple already appeared in public snapshot at03:11:09.229707Z and recovered before query1; this excludes a permanent monotonic expiry explanation for that earlier instance.",
+    "At03:11:20.352263Z the post-error public snapshot still has stable frame identity and heartbeat1911 with another in-progress observer and pump proof one behind.",
+    "The Python owner guard has no wall-clock TTL; the native producer uses at least2 consecutive verified owner/pause pump epochs and a250ms snapshot sampling cadence.",
+    "Native pump increments before observer callback; owner_verified advances after callback. Independent heartbeat atomic reads can publish a normal intermediate observer/pump state. Python caches the latest heartbeat wholesale.",
+    "Entry owner validation precedes native submission and command-error logging. Existing bounded readonly retry covers ending snapshot only."
+  ],
+  "inference": [
+    "The entry guard most likely consumed heartbeat1910: it was the newest wire heartbeat before MCP call03:11:20.133087Z, no later heartbeat arrived until after its error, and latest-heartbeat caching is explicit source behavior.",
+    "The root of this guard refusal is incomplete heartbeat publication/consumption during a normal native snapshot read, rather than evidence of lost owner identity or a7s TTL. A full exact starting snapshot was not persisted at that early exception site."
+  ],
+  "unknown": [
+    "The second query starting snapshot itself was not exported, so its full contents cannot be directly pinned.",
+    "No second native UI result exists. The final visible UI state and cause of effective_visible=false after select/query1 remain unknown.",
+    "No claim is made that a retry would have succeeded in this run; no retry or patch was executed."
+  ],
+  "future_head_recommendations": [
+    "Preserve strict owner checks and one native submission. Consider bounded readonly resampling before submission only when no execute_step has been sent, waiting for a completed fresh heartbeat while fencing same machine/run/PID/generation/actor/build/date/public/native revision and owner tid. Do not spin on the same cached heartbeat.",
+    "Report the failed owner predicate and compact exact starting heartbeat tuple at the entry exception, distinguishing observer-in-progress from owner drift.",
+    "Consider coherent native publication of completed owner/snapshot diagnostics as a separate future change; never replace current proof with arbitrary stale last-good data or remove the guard.",
+    "Keep this issue independent of the next map-context oneMove/onefilm/normalclose path; no additional UI admission gate is introduced."
+  ],
+  "source_locations": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/title_map_navigation_contract.py",
+      "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+      "git_blob": "8b5e74edab3b036aedaf64ccda5ad750361d8c6c",
+      "working_file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\title_map_navigation_contract.py",
+        "bytes": 22336,
+        "sha256": "e556fc2347c5fff4acbf4aedd2a09821a9f68a84ad0ac9adf2a1994cea6151d6"
+      },
+      "line_ranges": [
+        [
+          261,
+          276
+        ]
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+      "git_blob": "5c0e1af40905a8d0ade055fcd47f2306c01d9dd7",
+      "working_file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1650162,
+        "sha256": "d5b11b8ebb25e465813eb36c302b2e915621cae6b22c83a039e2f55b789335b7"
+      },
+      "line_ranges": [
+        [
+          1152,
+          1160
+        ],
+        [
+          1397,
+          1399
+        ],
+        [
+          6576,
+          6577
+        ],
+        [
+          6611,
+          6644
+        ]
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+      "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+      "git_blob": "3332eaf04b3154d9d149c1dec4593b7ec7ec6a84",
+      "working_file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\main_thread_query_mailbox_v1.cpp",
+        "bytes": 116412,
+        "sha256": "2fc9fc6d5b46a5ec0d80d65e2475e160b023a55225bc9c6de8ea78bd83bf9eed"
+      },
+      "line_ranges": [
+        [
+          404,
+          498
+        ],
+        [
+          1852,
+          1921
+        ],
+        [
+          1954,
+          1975
+        ],
+        [
+          2096,
+          2109
+        ],
+        [
+          2122,
+          2196
+        ]
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+      "git_blob": "d673c26a3107966ed89710bba1cc0ba6b730db76",
+      "working_file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_semantic_adapter.cpp",
+        "bytes": 44661,
+        "sha256": "ba2265b777fe6b52089a23aa5912b9f4cb47e7bfc388245084116852d6b434ba"
+      },
+      "line_ranges": [
+        [
+          119,
+          129
+        ],
+        [
+          217,
+          249
+        ],
+        [
+          255,
+          305
+        ]
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+      "git_blob": "518fca02ba4276fa6ba48f90ed142afa5acb0d5a",
+      "working_file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1611814,
+        "sha256": "eca626cfe3bcbdd67e93b28f60a5279865ac30db9531f6cb6e33c25cba469e83"
+      },
+      "line_ranges": [
+        [
+          2642,
+          2708
+        ],
+        [
+          2733,
+          2748
+        ]
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp",
+      "source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+      "git_blob": "675a4100872ae354b0a65a17217fe94e950fd050",
+      "working_file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp",
+        "bytes": 46323,
+        "sha256": "67e0dc586ea62caa16bc2bc14a62ab4137493791e0d985efd8551f9362fbf4ff"
+      },
+      "line_ranges": [
+        [
+          72,
+          76
+        ]
+      ]
+    }
+  ],
+  "changes_executed": {
+    "repository": false,
+    "sealed_helpers": false,
+    "runtime_or_game": false,
+    "SDK": false,
+    "screen_or_input": false
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "category": "record",
+    "created_at_utc": "2026-10-20T03:24:23.707999+00:00",
+    "review_and_consolidate_at_utc": "2027-04-18T03:24:23.707999+00:00",
+    "raw_source_references": "Existing R0216 originals remain at their actual paths; no copy or protection extension applied by this task. Root should retain one representative unresolved-issue set under common policy, and re-evaluate within168h; metadata does not prove originals remain readable after reclamation."
+  }
+}

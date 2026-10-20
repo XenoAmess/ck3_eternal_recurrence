@@ -1,0 +1,99 @@
+{
+  "schema": "ck3-mod-acceptance-failed-live-resource-closure-v1",
+  "closure_kind": "failed-host-without-normal-close-result",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:20:09.993043+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0216",
+  "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\keeper-a01",
+  "normal_close_qualified": false,
+  "typed_normal_exit_proven": false,
+  "business_pass": false,
+  "release_pass": false,
+  "original_evidence": {
+    "frozen_argv": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\frozen-argv.json",
+      "bytes": 36524,
+      "sha256": "aff62240af3e7bcef51b591ab8bbb5ccf6532eb980b01a510abec65f4eca44f8"
+    },
+    "ready_context": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\ready-context.json",
+      "bytes": 4020,
+      "sha256": "b16636f0f6ad594de9d7dd716a464a1e0203bb6497104fe2a5ccc5909b472298"
+    },
+    "prepared_case": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\prepared-a02\\prepared-case.json",
+      "bytes": 9794,
+      "sha256": "5084e3c52845d9d6efc81f855ca7fac532cc2d2c0c4ae1eb6aa59eff45e643e7"
+    },
+    "host_started": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-started.json",
+      "bytes": 3822,
+      "sha256": "f8be5fefb9815e6a8ef3659435baef9ed8c6d5d7c22cc7fc1f49ea5416563997"
+    },
+    "host_exit": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "28b48e07b2fa107e2f0ade43ff9535e2ff188eb990cc0a1cbde10335b1fcddd8"
+    },
+    "host_supervisor": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\host-supervisor-started.json",
+      "bytes": 972,
+      "sha256": "e34fdd918dfadafed9f31b06bcec2c3afd12a360f80d1edd16ac4c915c430d9e"
+    },
+    "native_cleanup_projection": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\native-cleanup-projection.actual.json",
+      "bytes": 3373,
+      "sha256": "3ec11e3739bd165b3d2c4d0f958809b847d066cbb914f61ea114e52e731c0368"
+    },
+    "entry_result": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\entry-run-result.json",
+      "bytes": 9069,
+      "sha256": "9379dd37df716c2ec98820d0507883acf45036b0622ea71656514c796323434b"
+    },
+    "normal_close_error": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\normal-close-error-preserved.json",
+      "bytes": 118,
+      "sha256": "ebb4232a95d845a41f6ab5f9fd56d11051e41e4609d841e78dc024130874203f"
+    },
+    "retained_identity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\case-output\\retained-current-process-identity.json",
+      "bytes": 110,
+      "sha256": "27e5b2443063a9c019b4a336ec371298cb7ed6d0492712a52c67959f21debbe4"
+    },
+    "public_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\PUBLIC-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 913,
+      "sha256": "39705e21054e365b28a8f02d86c310331c9ea91c600747af5817410a2fafc4f7"
+    },
+    "public_run_context": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\R220-REVIEWED-CONTEXT.actual-a01.json",
+      "bytes": 4426,
+      "sha256": "5dc466fc98ac52cb04660990b8081818d078e5f8bc7e6905694cd5366674a28f"
+    },
+    "allocator_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\scene-preparation\\allocate-original-a03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1677,
+      "sha256": "f2aa8f90d71cba64a0a6558c33696409d1864214b4a19d0ceed7fc681c8dd66b"
+    },
+    "keeper_report": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\keeper-a01\\report.json",
+      "bytes": 436,
+      "sha256": "a804e7ac32f972499267d23cd62d9b5b55d1231f68394d568f0b08cf81174db4"
+    },
+    "keeper_exit": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\keeper-actual-parent-exit.json",
+      "bytes": 599,
+      "sha256": "a51a6126c826a97af75a24bcb21ccb4e413d8c0df3f9e1bb58fad4c4bfb2ab59"
+    },
+    "keeper_process": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0216\\keeper-process.json",
+      "bytes": 716,
+      "sha256": "0714fa646ef95bbc85d32c57158ea54dc3ed6cdea31ba4bdc7b893696aa003f3"
+    },
+    "release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r220-scene-a01\\SCREEN-RELEASE.actual-a02.json",
+      "bytes": 1293,
+      "sha256": "92a58b5d3031923d4a50de68f0c9b4a5bb9ab86a8e81328410b564779e6b0873"
+    }
+  }
+}

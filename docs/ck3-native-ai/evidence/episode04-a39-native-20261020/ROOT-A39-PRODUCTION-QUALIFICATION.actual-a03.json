@@ -1,0 +1,433 @@
+{
+  "schema": "xar.e04.a39-production-focused-qualification.v1",
+  "status": "QUALIFIED_PRODUCTION_AND_CHANGED_SOURCE_SYNTHETIC_COLD",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:54:09.255832+00:00",
+  "source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "native_build_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "runtime_source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+    "bytes": 39716,
+    "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+    "bytes": 6364,
+    "sha256": "1064e34bccbb89216705f12850a21527a6c32565404fcb17ccea214309b0eaba"
+  },
+  "previous_source_recipe_failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FIRST-FAILURE.actual-a01.json",
+    "bytes": 5219,
+    "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+  },
+  "previous_cold_selection_failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-SECOND-FAILURE.actual-a02.json",
+    "bytes": 9337,
+    "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+  },
+  "public_CMake_source_recipe_repair_succeeded": true,
+  "B11_selection_RED_not_qualified": true,
+  "finite_mailbox_dependency_audit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\FINITE-MAILBOX-DEPENDENCY-AUDIT.actual-a03.json",
+    "bytes": 16994,
+    "sha256": "0c99a1d527b9daf3737fb31ec14cb993a99e1c2112b235262da0bd67279c9d95"
+  },
+  "production_outputs_reused_unchanged": true,
+  "outputs": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "f52db5e8a1be4c55416155536d7b5cee519e1ee69c99123aa6edd1f42a63c9a2",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-d271ed7272b2f19c984b.json",
+        "bytes": 58673,
+        "sha256": "6c2f5164a2549f9405c8e856453d8d9eee5d0396e456650a64ae642483e059e3"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "57cfb15e6d56495bfc8c2578070e633f528267ea83c1855c43806fe19a2d83f1",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "17429aa0b23e702dee4d8494a123154b48a638c738388d42510f9782afee6a21",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "bytes": 658944,
+      "sha256": "732e77c56a1addb8535c1a6b58aa55c6aab367eae1a27ac88a5914b3d8e99b75",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_decision_outcome_contract_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe",
+      "bytes": 129024,
+      "sha256": "28f09197eaf383acaf607e9af0e0e4d036ef1ebd09448c94d300e4b4463f0c18",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_decision_outcome_contract_v1_test-Release-a31e7c64db85be506ff9.json",
+        "bytes": 3260,
+        "sha256": "c0b22e45ed73bb9dd91d2e3ddbdde2a58c9375d1ddf8ca65655f72e4abc1ffcc"
+      }
+    },
+    {
+      "target": "xar_ck3_12004_holy_site_adoption_detail_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12004_holy_site_adoption_detail_test.exe",
+      "bytes": 196608,
+      "sha256": "0eb07ec06fc5a144cc1c16485bd3349da3a1c3db63af6c2f23a9dc4d11f53eb0",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12004_holy_site_adoption_detail_test-Release-35f1068d26d634571913.json",
+        "bytes": 3772,
+        "sha256": "77373d32dfb3a95d463294e6654f1f8b14012d502ac2d103451bbab8d875148a"
+      }
+    },
+    {
+      "target": "xar_ck3_camera_settle_diagnostics_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_camera_settle_diagnostics_v1_test.exe",
+      "bytes": 17408,
+      "sha256": "5b843093506878f643c822480700bdb020f0166cd0eee2ede40715614d70c19d",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_settle_diagnostics_v1_test-Release-be030ccc94d58235557b.json",
+        "bytes": 3639,
+        "sha256": "ca123153a4fd114f895a35ec5c1e328bd40ef72cba4be69f51ec71aee5981017"
+      }
+    },
+    {
+      "target": "xar_ck3_realm_camera_subrealm_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_realm_camera_subrealm_v1_test.exe",
+      "bytes": 168960,
+      "sha256": "5b387bf3439f2995e5efcdeb34869c1a1d997c74911eccf2d1f9c99f8b0883ee",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_subrealm_v1_test-Release-e51d67285128bcb37ddc.json",
+        "bytes": 4440,
+        "sha256": "88b516b3637f77a511b2d3ff9cbc0f73aca6548cf53ff570d2f1ce8a2f655d69"
+      }
+    },
+    {
+      "target": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.exe",
+      "bytes": 128000,
+      "sha256": "7b84d553941b9e187f591caeae98d9c1a992e062e3be63832eb6e5f7da8d5c32",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_steward_develop_county_candidates_v1_mailbox_test-Release-935200b63ff932e3ea25.json",
+        "bytes": 6060,
+        "sha256": "67e66aba55841147cbc2b1a63a6608aa230bac5769d1f3d9ee580136aa1ba384"
+      }
+    },
+    {
+      "target": "xar_ck3_12003_war_cash_net_income_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12003_war_cash_net_income_test.exe",
+      "bytes": 145920,
+      "sha256": "65069b704fe4437100c10a42c545f2ea0eb5785461a78fd25a45755e8d56f33d",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12003_war_cash_net_income_test-Release-60b6f3453158b4b4d570.json",
+        "bytes": 6222,
+        "sha256": "c52d5dfea864bc6d3e26a71a0f565f046d6c512c923d843963bb766fad8a8a40"
+      }
+    }
+  ],
+  "all_feature_flags": {
+    "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE": "ON",
+    "XAR_CK3_BUILD_H2743_STOCK_PREDICATE_FIXTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1": "ON",
+    "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1": "ON",
+    "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "ON",
+    "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+    "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+    "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF",
+    "XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1": "ON",
+    "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": "ON",
+    "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": "ON",
+    "XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004": "ON",
+    "XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004": "ON",
+    "XAR_ENABLE_COUNTY_PREVIEW_RELATION_INPUTS_12004": "ON",
+    "XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004": "ON",
+    "XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004": "ON",
+    "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1": "OFF",
+    "XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1": "OFF",
+    "XAR_ENABLE_PREWAR_FORCE_COALITION_V2": "OFF",
+    "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004": "ON",
+    "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": "ON",
+    "XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004": "ON",
+    "XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_ENABLE_HOLY_SITE_CREATION_UI12004": "OFF",
+    "XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004": "OFF",
+    "XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004": "OFF",
+    "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004": "OFF",
+    "XAR_ENABLE_RELIGION_UI12004_PRESENTATION": "OFF",
+    "XAR_ENABLE_RITE_CREATION_ACTIONS12004": "OFF",
+    "XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004": "ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_HEIR_CANDIDATE_COMPONENT12004_V1": "OFF",
+    "XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1": "OFF",
+    "XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1": "OFF",
+    "XAR_CK3_BUILD_NATIVE_LAYOUT_REPORT_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_CAMERA_TRACKING_V1": "OFF"
+  },
+  "production_steps": [
+    {
+      "build_step": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\07-public-build-only-finite-correction-a03\\result.actual.json",
+        "bytes": 18279,
+        "sha256": "a6baf98a3a7a325b723aa0d752218b3795d5da07dcc68493f4937655f553474c"
+      },
+      "verification": {
+        "producer": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\producer-evidence-a03\\native-msvc-result.json",
+          "bytes": 2097,
+          "sha256": "84297eeea1f0639513936be982910bd07b76b59bd9c3a7cc083d0b2e93d66e2e"
+        },
+        "SYSTEM_receipt": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\defender-exe-exclusions\\20261020T025318Z-83e88bce\\receipt.json",
+          "bytes": 710454,
+          "sha256": "3ab6152504f33d2632929ffd36ab765265b3ba0bc818956ca875fdbe717310c8"
+        },
+        "Defender_manifest": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\defender-exe-exclusions\\20261020T025318Z-83e88bce\\manifest.json",
+          "bytes": 9684,
+          "sha256": "d04d59cb346ec123c33ce6f70fad1ebe3f346f3d018a49e622a5757a3fef7fc4"
+        },
+        "executables": [
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12003_war_cash_net_income_test.exe",
+            "bytes": 145920,
+            "sha256": "65069b704fe4437100c10a42c545f2ea0eb5785461a78fd25a45755e8d56f33d"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12004_holy_site_adoption_detail_test.exe",
+            "bytes": 196608,
+            "sha256": "0eb07ec06fc5a144cc1c16485bd3349da3a1c3db63af6c2f23a9dc4d11f53eb0"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_host.exe",
+            "bytes": 71680,
+            "sha256": "17429aa0b23e702dee4d8494a123154b48a638c738388d42510f9782afee6a21"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_injector.exe",
+            "bytes": 39936,
+            "sha256": "57cfb15e6d56495bfc8c2578070e633f528267ea83c1855c43806fe19a2d83f1"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_camera_settle_diagnostics_v1_test.exe",
+            "bytes": 17408,
+            "sha256": "5b843093506878f643c822480700bdb020f0166cd0eee2ede40715614d70c19d"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe",
+            "bytes": 129024,
+            "sha256": "28f09197eaf383acaf607e9af0e0e4d036ef1ebd09448c94d300e4b4463f0c18"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+            "bytes": 658944,
+            "sha256": "732e77c56a1addb8535c1a6b58aa55c6aab367eae1a27ac88a5914b3d8e99b75"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_realm_camera_subrealm_v1_test.exe",
+            "bytes": 168960,
+            "sha256": "5b387bf3439f2995e5efcdeb34869c1a1d997c74911eccf2d1f9c99f8b0883ee"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.exe",
+            "bytes": 128000,
+            "sha256": "7b84d553941b9e187f591caeae98d9c1a992e062e3be63832eb6e5f7da8d5c32"
+          }
+        ]
+      }
+    }
+  ],
+  "focused_cold": {
+    "targets": [
+      "xar_ck3_ingame_ui_navigation_v1_test",
+      "xar_ck3_ingame_decision_outcome_contract_v1_test",
+      "xar_ck3_12004_holy_site_adoption_detail_test",
+      "xar_ck3_camera_settle_diagnostics_v1_test",
+      "xar_ck3_realm_camera_subrealm_v1_test",
+      "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+      "xar_ck3_12003_war_cash_net_income_test"
+    ],
+    "ctest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\08-first-focused-ctest-a03\\result.actual.json",
+      "bytes": 1966,
+      "sha256": "396202614f30978ffbe82ceb6d630c387755dd31f907d30008ea1050004fdfe9"
+    },
+    "mailbox_scope": "Finite owned-memory actual shared registrar and mailbox lifecycle. Independent minimal existing target definitions; no claim of exact complete production feature profile, WarOverview callbacks, steward gameplay or live CK3."
+  },
+  "aggregate_actual_bytes": 435755981,
+  "aggregate_peak_bytes": 435755981,
+  "production_bytes_qualified": true,
+  "focused_cold_qualified": true,
+  "live_CK3_qualified": false,
+  "gameplay_qualified": false,
+  "R04_closed": false,
+  "external_DR_admitted": false
+}

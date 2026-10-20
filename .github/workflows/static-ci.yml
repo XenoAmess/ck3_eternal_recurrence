@@ -86,7 +86,15 @@ jobs:
       - name: Test managed normal-exit profile and terminal host execution without CK3
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_normal_exit_profile.py
       - name: Test failed-attempt resource closure without normal-exit credit
-        run: python -B -X utf8 tools/test_ck3_mod_acceptance_failed_resource_closure.py
+        run: |
+          python -B -X utf8 tools/test_ck3_mod_acceptance_failed_resource_closure.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_expired_keeper.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_missing_normal_closure.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test public county observation and before-Move frame binding
+        run: python -B -X utf8 tools/test_r04_county_entry.py
       - name: Test isolated native army route producer without CK3
         run: python -X utf8 tools/check_native_army_routes_ci.py --build-dir "%RUNNER_TEMP%\native-army-route-ci"
       - name: Test keyed query completion diagnostics without CK3

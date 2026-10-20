@@ -1,0 +1,104 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T03:21:47.792991+00:00",
+  "source": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\apply_candidate.py",
+  "head_at_apply": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "baseline": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 134820,
+    "sha256": "c69937b6595d6b63a63626e2e31dff2189cdd18a1b2ad5bf76047d09d74c9cd5"
+  },
+  "applied_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+    "bytes": 147065,
+    "sha256": "9e0651cbd5d840000e24226631c4cef084c07b0f928eeda6fc6ce9c6af1c07bf"
+  },
+  "applied_tests": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_missing_normal_closure.py",
+    "bytes": 9922,
+    "sha256": "1f317d9530e9263795fafc015777a0d6540e552e28f36f7449b785228fa9042c"
+  },
+  "exact_validated_bytes": true,
+  "copied_evidence": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\native-cleanup-projection.candidate.json",
+        "bytes": 3373,
+        "sha256": "3ec11e3739bd165b3d2c4d0f958809b847d066cbb914f61ea114e52e731c0368"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r220-missing-normal-predecessor-20261020\\native-cleanup-projection.json",
+        "bytes": 3373,
+        "sha256": "3ec11e3739bd165b3d2c4d0f958809b847d066cbb914f61ea114e52e731c0368"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\R220-FAILED-LIVE-RESOURCE-CLOSURE.actual.json",
+        "bytes": 5207,
+        "sha256": "a511d15ec7fa3fb16ad5c9385ea95ec944a527d2482bc664ee96018dab272f78"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r220-missing-normal-predecessor-20261020\\failed-live-resource-closure.json",
+        "bytes": 5207,
+        "sha256": "a511d15ec7fa3fb16ad5c9385ea95ec944a527d2482bc664ee96018dab272f78"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\ACTUAL-VALIDATION.actual.json",
+        "bytes": 8930,
+        "sha256": "d78812a488f32dd07e8b2b406bc5b64e4b23d3cb298b1ead12715b8befbcd161"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r220-missing-normal-predecessor-20261020\\actual-validation.json",
+        "bytes": 8930,
+        "sha256": "d78812a488f32dd07e8b2b406bc5b64e4b23d3cb298b1ead12715b8befbcd161"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\ACTUAL-INPUTS.actual.json",
+        "bytes": 1444,
+        "sha256": "4cd5ac4b78c2785aec7a946a1df9e93d53bfc11606deec9f42d6ff4b19ebfe18"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r220-missing-normal-predecessor-20261020\\actual-inputs.json",
+        "bytes": 1444,
+        "sha256": "4cd5ac4b78c2785aec7a946a1df9e93d53bfc11606deec9f42d6ff4b19ebfe18"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\FOCUSED-TESTS.actual.json",
+        "bytes": 937,
+        "sha256": "c849da42765f901c9cbd9845d8a506f6b5f336162f24eb21e1a070450076cce4"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r220-missing-normal-predecessor-20261020\\focused-tests.json",
+        "bytes": 937,
+        "sha256": "c849da42765f901c9cbd9845d8a506f6b5f336162f24eb21e1a070450076cce4"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r220-predecessor-a01\\FOCUSED-TESTS.actual.txt",
+        "bytes": 6601,
+        "sha256": "fbacd4edd87d82b7dcdb5bd76836f0443d26ac539164f35ab0443dbb44457598"
+      },
+      "repository_copy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r220-missing-normal-predecessor-20261020\\focused-tests.txt",
+        "bytes": 6601,
+        "sha256": "fbacd4edd87d82b7dcdb5bd76836f0443d26ac539164f35ab0443dbb44457598"
+      }
+    }
+  ],
+  "changed_source_files": [
+    "tools/ck3_mod_acceptance_allocate.py",
+    "tools\\test_ck3_mod_acceptance_missing_normal_closure.py"
+  ],
+  "native_tree_changed": false,
+  "game_or_screen_actions": 0,
+  "normal_close_qualified": false,
+  "business_pass": false
+}

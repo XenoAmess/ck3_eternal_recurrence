@@ -1276,3 +1276,7 @@ docs/ck3-native-ai/evidence/episode04-r08-b-next-20261020/** -text whitespace=cr
 promo/ck3_native_war_ai/episode-04-march-logistics/review02/observations-130s-a01/** -text whitespace=cr-at-eol
 
 docs/ck3-native-ai/evidence/episode04-r219-abnormal-predecessor-20261020/** -text whitespace=cr-at-eol
+
+# Exact E04 UI owner snapshot-intermediate evidence.
+docs/ck3-native-ai/episode04-r0216-ui-owner-heartbeat-20261020.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0216-ui-owner-heartbeat-20261020.json -text whitespace=cr-at-eol

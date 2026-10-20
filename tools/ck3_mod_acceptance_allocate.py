@@ -1055,6 +1055,151 @@ def previous_expired_keeper_resource_closure(previous, freeze, bundle, close_pat
                 'administrative_resource_admission_only':True}}
 
 
+def previous_missing_normal_resource_closure(previous, freeze, bundle, close_path, keeper_root,
+                                             release_path, bus_packet):
+    """Close a proved failed host's resources while retaining missing exit receipts."""
+    import psutil
+    machine = freeze.get('identity_allocation', {}).get('machine_id')
+    require(bundle.get('machine_id') == machine and bundle.get('observed_at_utc') and
+            bundle.get('closure_kind') == 'failed-host-without-normal-close-result',
+            'Missing-normal failure closure machine/kind/time differs')
+    refs, evidence = bundle.get('original_evidence'), {}
+    require(isinstance(refs, dict), 'Missing-normal failure evidence pins required')
+    def original(key, expected=None):
+        row = refs[key]; path = Path(row['path']).resolve()
+        require((expected is None or path == Path(expected).resolve()) and
+                type(row.get('bytes')) is int and 0 <= row['bytes'] <= 1048576,
+                'Missing-normal original path/bound differs: ' + key)
+        check_pin(path, row); evidence[key] = row
+        return read_json(path)
+    original('frozen_argv', previous/'frozen-argv.json')
+    ready = original('ready_context', previous/'ready-context.json')
+    require(ready.get('run_id') == freeze['run_id'] and Path(ready.get('run_dir', '')).resolve() == previous and
+            Path(ready.get('keeper_root', '')).resolve() == keeper_root and ready.get('frozen_argv') == refs['frozen_argv'],
+            'Missing-normal READY crossed frozen run/keeper')
+    prepared = original('prepared_case', ready['prepared_case']['path'])
+    require(ready['prepared_case'] == refs['prepared_case'] and
+            Path(prepared['startup']['state_dir']).resolve() == Path(freeze['state_dir']).resolve() and
+            prepared['runtime_manifest'] == freeze['runtime_manifest'], 'Missing-normal preparation crossed runtime/state')
+    host = original('host_started', previous/'host-started.json')
+    exited = original('host_exit', previous/'host-original-process-exit.json')
+    supervisor = original('host_supervisor', previous/'host-supervisor-started.json')
+    require(host.get('run_id') == exited.get('run_id') == freeze['run_id'] and
+            host.get('actual_popen_retained') is True and host.get('argv') == freeze['argv'] and
+            exited.get('pid') == host.get('pid') and exited.get('actual_original_popen_wait') is True and
+            type(exited.get('returncode')) is int and exited['returncode'] != 0 and
+            exited.get('normal_ck3_exit_inferred') is False, 'Missing-normal original failed host wait differs')
+    def argument(argv, flag):
+        require(isinstance(argv, list) and argv.count(flag) == 1 and argv.index(flag) + 1 < len(argv),
+                'Missing-normal original argument missing: ' + flag)
+        return argv[argv.index(flag) + 1]
+    require('--supervise' in supervisor.get('argv', []) and
+            Path(argument(supervisor['argv'], '--run-root')).resolve() == previous and
+            Path(argument(supervisor['argv'], '--keeper-root')).resolve() == keeper_root,
+            'Missing-normal original supervisor crossed run/keeper')
+    projection = original('native_cleanup_projection', previous/'native-cleanup-projection.actual.json')
+    require(projection.get('machine_id') == machine and projection.get('observed_at_utc'),
+            'Missing-normal native projection machine/time missing')
+    report, native_ref, projection_ref = previous_native_cleanup(previous, freeze)
+    require(native_ref is not None and report.get('status') == 'RED' and report.get('error') and
+            report.get('managed_session_done') is True and closed_session(report) and native_cleanup_closed(report) and
+            Path(report.get('state_dir', '')).resolve() == Path(freeze['state_dir']).resolve() and
+            Path(report.get('agent_source_root', '')).resolve() == Path(freeze['source_root']).resolve() and
+            report.get('pipe') == argument(freeze['argv'], '--bridge-pipe'),
+            'Missing-normal original native failure/Job cleanup is incomplete')
+    native = report['session']['report']; shutdown = native['shutdown']
+    require(report['session'].get('error') is None and native.get('pid') == shutdown.get('ck3_pid') and
+            type(shutdown.get('ck3_exit_code')) is int and shutdown['ck3_exit_code'] != 0,
+            'Missing-normal native failed-process identity/exit differs')
+    entry = original('entry_result', previous/'case-output/entry-run-result.json')
+    close_error = original('normal_close_error', previous/'case-output/normal-close-error-preserved.json')
+    require(entry.get('run_id') == freeze['run_id'] and entry.get('host_argv') == freeze['argv'] and
+            entry.get('case_error') and entry.get('normal_close_error') == close_error.get('error') and
+            isinstance(close_error.get('error'), str) and bool(close_error['error']) and
+            close_error.get('business_pass') is False,
+            'Missing-normal original case/close error is absent or crossed run')
+    missing = {name:not (previous/'case-output'/name).exists()
+               for name in ('normal-close-result.json', 'actual-retained-handle-os-exit.json')}
+    require(all(missing.values()), 'Missing-normal branch cannot replace existing close/retained-exit evidence')
+    game = original('retained_identity', previous/'case-output/retained-current-process-identity.json')
+    require(game.get('retained_synchronize_query_handle_acquired') is True and game.get('pid') == native['pid'],
+            'Missing-normal retained original CK3 identity differs')
+    public = original('public_wait')
+    allocator = original('allocator_wait')
+    for mode, value, code in (('run', public, 2), ('allocate', allocator, 0)):
+        argv = value.get('argv', [])
+        command = next((i for i, arg in enumerate(argv) if Path(arg).name == 'ck3_mod_acceptance.py'), -1)
+        require(value.get('machine_id') == machine and value.get('observed_at_utc') and
+                value.get('actual_original_popen_wait') is True and value.get('returncode') == code and
+                command >= 0 and argv[command+1] == mode and argument(argv, '--case') == freeze['cell'] and
+                Path(argument(argv, '--prepared-case')).resolve() == Path(refs['prepared_case']['path']).resolve(),
+                'Missing-normal actual public completion differs: ' + mode)
+        if mode == 'run':
+            context = original('public_run_context', argument(argv, '--run-context'))
+            require(context.get('run_id') == freeze['run_id'] and Path(context.get('run_dir', '')).resolve() == previous,
+                    'Missing-normal public run context differs')
+        else:
+            require(Path(argument(argv, '--keeper-output')).resolve() == keeper_root,
+                    'Missing-normal allocator keeper differs')
+    require(Path(argument(public['argv'], '--runtime')).resolve() == Path(argument(allocator['argv'], '--runtime')).resolve(),
+            'Missing-normal original public runtimes differ')
+    keeper = original('keeper_report', keeper_root/'report.json')
+    parent = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
+    require(parent.get('run_id') == freeze['run_id'] and parent.get('keeper_actual_exit_code') == 0 and
+            parent.get('keeper_report') == keeper and keeper.get('failure') is None and keeper.get('entry_error') is None,
+            'Missing-normal original keeper wait/thread differs')
+    original('release', release_path); release = read_failed_runtime_release(release_path)
+    task, event = release['task'], release.get('event', {})
+    require(closed_lease(keeper, release, freeze['screen_task']) and task.get('state') == 'done' and
+            event.get('task_id') == freeze['screen_task'] and event.get('sequence') == task['last_sequence'] and
+            event.get('state') == 'done' and event.get('resources') == [], 'Missing-normal actual CAS release differs')
+    tasks = bus_packet.get('tasks'); matching = [row for row in tasks or [] if row.get('task_id') == freeze['screen_task']]
+    require(isinstance(tasks, list) and not any('ck3-screen:acquired' in row.get('resources', []) for row in tasks) and
+            len(matching) == 1 and matching[0].get('state') == 'done' and matching[0].get('resources') == [] and
+            matching[0].get('last_sequence') == task['last_sequence'], 'Missing-normal current screen task is not closed')
+    keeper_process = original('keeper_process', previous/'keeper-process.json')
+    require(Path(argument(keeper_process.get('argv'), '--root')).resolve() == keeper_root and
+            argument(keeper_process['argv'], '--task') == freeze['screen_task'], 'Missing-normal keeper identity crossed task/root')
+    for label, identity in (('host', host), ('CK3', game), ('keeper', keeper_process)):
+        require(type(identity.get('pid')) is int and identity['pid'] > 0 and
+                type(identity.get('create_time')) in (int, float), 'Missing-normal original identity absent: ' + label)
+        try: present = psutil.Process(identity['pid']).create_time() == identity['create_time']
+        except psutil.NoSuchProcess: present = False
+        require(not present, 'Missing-normal original process still present: ' + label)
+    require(all(type(pid) is int and pid > 0 and not psutil.pid_exists(pid)
+                for pid in (supervisor.get('pid'), host.get('supervisor_pid'), public.get('pid'), allocator.get('pid'))),
+            'Missing-normal original public/supervisor process still present or identity missing')
+    inventory = runtime_process_inventory(psutil, os.getpid())
+    require(not inventory['blockers'], 'Missing-normal CK3/runtime/controller still running')
+    owned_recorders = []
+    scene_token = str(keeper_root.parent).replace('/', '\\').casefold()
+    for process in psutil.process_iter(['pid', 'name']):
+        name = (process.info.get('name') or '').lower()
+        if name == 'ffmpeg.exe' or name.startswith(('python', 'pypy')):
+            try: argv = process.cmdline()
+            except psutil.NoSuchProcess: continue
+            if scene_token in ' '.join(argv).replace('/', '\\').casefold() and (
+                    name == 'ffmpeg.exe' or any(Path(arg).name in
+                    ('window_take_actor.py', 'ck3_mod_acceptance_recorder.py') for arg in argv)):
+                owned_recorders.append({'pid':process.pid, 'name':name})
+    require(not owned_recorders, 'Missing-normal owned recorder still running')
+    state = Path(freeze['state_dir']).resolve()
+    absent = {name:not (state/'control'/name).exists() for name in ('ck3.json', 'unsafe-cleanup.json')}
+    absent['watchdog-*.ready.json'] = not list((state/'control').glob('watchdog-*.ready.json'))
+    require(all(absent.values()), 'Missing-normal PID/unsafe/watchdog controls remain')
+    inventory.update(machine_id=machine, source=pin(Path(__file__)), owned_recorders=owned_recorders)
+    return {'mode':'previous-shared-failed-host-missing-normal-resource-closed', 'actual_process_inventory':inventory,
+            'failure_cleanup':{'close':pin(close_path), 'original_evidence':evidence, 'native_report':native_ref,
+                'native_cleanup_projection':projection_ref, 'original_host_exit_code':exited['returncode'],
+                'original_host_wait_proven':True, 'original_keeper_wait_proven':True,
+                'original_ck3_exit_code':None, 'native_reported_ck3_exit_code':shutdown['ck3_exit_code'],
+                'retained_os_exit_receipt':None, 'normal_close_result':None, 'missing_original_receipts':missing,
+                'native_job_cleanup_observed':True, 'native_cleanup_qualified':None,
+                'normal_close_qualified':False, 'typed_normal_exit_proven':False,
+                'actual_retained_os0':False, 'business_pass':False, 'release_pass':False,
+                'control_files_absent':absent, 'administrative_resource_admission_only':True}}
+
+
 def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_root, release_path, bus_packet):
     """Admit an ended failed live attempt's resources; never grant normal-exit credit."""
     import psutil
@@ -1069,6 +1214,9 @@ def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_r
             all(bundle.get(key) is False for key in ('normal_close_qualified', 'typed_normal_exit_proven',
                                                     'business_pass', 'release_pass')),
             'Failed-live closure identity or negative qualification differs')
+    if bundle.get('closure_kind') == 'failed-host-without-normal-close-result':
+        return previous_missing_normal_resource_closure(previous, freeze, bundle, close_path,
+                                                       keeper_root, release_path, bus_packet)
     if bundle.get('closure_kind') == 'expired-keeper-missing-final-report':
         return previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path,
                                                        keeper_root, release_path, bus_packet)

@@ -1,0 +1,173 @@
+{
+  "schema": "xar.e04.full-review-navigation-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:54:48.211396+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\E04-METHOD69-PLUS-INDEPENDENT-EVIDENCE-34m37s-REVIEW-a01.mp4",
+    "bytes": 101671823,
+    "sha256": "473ea068e33026de746954880e4388c88ac2b6731daa34a8a19c4d53446054d7"
+  },
+  "movie_container_seconds": 2076.940104,
+  "chapters": [
+    {
+      "section": "历史方法版",
+      "timecode": "00:00.000",
+      "id": "C01",
+      "title": "行军前先看哪些数",
+      "start_seconds": 0.0,
+      "start_video_frame": 0,
+      "source": "69 encoded segment frame counts; existing first-frame PTS0.021354; navigation only"
+    },
+    {
+      "section": "历史方法版",
+      "timecode": "03:34.421",
+      "id": "C02",
+      "title": "库存、容量与当地供给",
+      "start_seconds": 214.421354,
+      "start_video_frame": 6432,
+      "source": "69 encoded segment frame counts; existing first-frame PTS0.021354; navigation only"
+    },
+    {
+      "section": "历史方法版",
+      "timecode": "09:31.988",
+      "id": "C03",
+      "title": "补员和兵员损耗",
+      "start_seconds": 571.9880206666667,
+      "start_video_frame": 17159,
+      "source": "69 encoded segment frame counts; existing first-frame PTS0.021354; navigation only"
+    },
+    {
+      "section": "历史方法版",
+      "timecode": "15:18.088",
+      "id": "C04",
+      "title": "路线、更新与到达",
+      "start_seconds": 918.0880206666667,
+      "start_video_frame": 27542,
+      "source": "69 encoded segment frame counts; existing first-frame PTS0.021354; navigation only"
+    },
+    {
+      "section": "历史方法版",
+      "timecode": "20:48.421",
+      "id": "C05",
+      "title": "三种安排的实际观察",
+      "start_seconds": 1248.421354,
+      "start_video_frame": 37452,
+      "source": "69 encoded segment frame counts; existing first-frame PTS0.021354; navigation only"
+    },
+    {
+      "section": "历史方法版",
+      "timecode": "27:33.955",
+      "id": "C06",
+      "title": "把检查带回自己的军队",
+      "start_seconds": 1653.9546873333334,
+      "start_video_frame": 49618,
+      "source": "69 encoded segment frame counts; existing first-frame PTS0.021354; navigation only"
+    },
+    {
+      "section": "后续独立实录补充",
+      "timecode": "32:26.888",
+      "id": "r194-r196",
+      "title": "实录补充／分兵合军与登船（独立回放）",
+      "start_seconds": 1946.888021,
+      "end_seconds": 2001.8760419999999,
+      "source": "actual full-review ffmetadata/storyboard; no new video QA"
+    },
+    {
+      "section": "后续独立实录补充",
+      "timecode": "33:21.876",
+      "id": "r211",
+      "title": "实录补充／受控零库存（供给337另67）",
+      "start_seconds": 2001.8760419999999,
+      "end_seconds": 2028.897396,
+      "source": "actual full-review ffmetadata/storyboard; no new video QA"
+    },
+    {
+      "section": "后续独立实录补充",
+      "timecode": "33:48.897",
+      "id": "r215",
+      "title": "实录补充／月界净增10（闭包未完）",
+      "start_seconds": 2028.897396,
+      "end_seconds": 2049.91875,
+      "source": "actual full-review ffmetadata/storyboard; no new video QA"
+    },
+    {
+      "section": "后续独立实录补充",
+      "timecode": "34:09.919",
+      "id": "r217",
+      "title": "实录补充／县边净减236（归因待验）",
+      "start_seconds": 2049.91875,
+      "end_seconds": 2076.940104,
+      "source": "actual full-review ffmetadata/storyboard; no new video QA"
+    }
+  ],
+  "exact_MP4_chapter_navigation": [
+    {
+      "id": "historical-method69",
+      "start_seconds": 0.0,
+      "end_seconds": 1946.888021,
+      "title": "第一部分／原方法审阅版（历史状态）"
+    },
+    {
+      "id": "r194-r196",
+      "start_seconds": 1946.888021,
+      "end_seconds": 2001.8760419999999,
+      "title": "实录补充／分兵合军与登船（独立回放）"
+    },
+    {
+      "id": "r211",
+      "start_seconds": 2001.8760419999999,
+      "end_seconds": 2028.897396,
+      "title": "实录补充／受控零库存（供给337另67）"
+    },
+    {
+      "id": "r215",
+      "start_seconds": 2028.897396,
+      "end_seconds": 2049.91875,
+      "title": "实录补充／月界净增10（闭包未完）"
+    },
+    {
+      "id": "r217",
+      "start_seconds": 2049.91875,
+      "end_seconds": 2076.940104,
+      "title": "实录补充／县边净减236（归因待验）"
+    }
+  ],
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\DELIVERY.actual.json",
+      "bytes": 6960,
+      "sha256": "d54151d6e50194b1e5edc133c615bfd157c66807bd430d642516bfc429851e01"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\storyboard.actual.json",
+      "bytes": 1288,
+      "sha256": "cc6db5afe828ebfde592652a24a27ff5a153c36f9603e16ae7f18bad12e737e0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\full69-method-preview-a02\\encoded-segment-map.json",
+      "bytes": 37031,
+      "sha256": "2928073c90920ce7ce8eaa75ad6f5d15167a8262ff4dde699838723be0bd628a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\run-manifest.json",
+      "bytes": 197888,
+      "sha256": "91289ed9517fde5cbc840a6c4f4998d73ff35bcdf6c89e0dbbbd61f8b2336cc1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\project-config\\sha256\\6C\\6CDC1E349826D607A9C2FE1FA17E3B50D770A3A246BD207EA323002487D48140.json",
+      "bytes": 86060,
+      "sha256": "6cdc1e349826d607a9c2fe1fa17e3b50d770a3a246bd207ea323002487d48140"
+    }
+  ],
+  "metadata_only": true,
+  "new_media_processes": 0,
+  "new_video_QA": false,
+  "human_signoff": false,
+  "protection_review_at_utc": "2026-10-22T02:54:13.618570+00:00",
+  "title_source_correction": "Chapter titles matched through their cue prefix; the a01 plain C01..C06 labels remain retained.",
+  "earlier_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\editorial-index-a01\\CHAPTER-INDEX.actual.json",
+    "bytes": 5999,
+    "sha256": "a0c731388118d55f0f5329a8f1dd4c5943e98ca95c9dce3c92e870d19d8050dc"
+  }
+}

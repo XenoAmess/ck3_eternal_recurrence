@@ -1,0 +1,114 @@
+{
+  "schema": "xar.e04.a39-final-footprint-and-finite-runtime-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:57:02.550968+00:00",
+  "actual_native_qualification": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+    "bytes": 25484,
+    "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+  },
+  "independent_exact_readback": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FINAL-INDEPENDENT-READBACK.actual-a03.json",
+    "bytes": 9792,
+    "sha256": "1bff06d5f7d2fd6cc8350a6b9229354499497d75e893e18f322c089c20bc5780"
+  },
+  "native_build_closed_actual_logical_bytes": 435781465,
+  "native_remaining_future_bytes": 0,
+  "native_output_payload_hashes_not_repeated": true,
+  "source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "build_group": {
+    "asset_id": "e04.native-build-a39.a03",
+    "replica_id": "desktop-3fevhd2-1c74096080:native-a39",
+    "owner_task": "/root/native_prepare",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "war-research",
+    "relative_path": "native-build-a39-a01",
+    "category": "build",
+    "state": "closed-qualified-with-two-historical-failures",
+    "logical_bytes": 435781465,
+    "allocated_bytes_or_null": null,
+    "closed_at_utc_or_null": "2026-10-20T02:54:09.255832+00:00",
+    "last_used_at_utc": "2026-10-20T02:54:09.255832+00:00",
+    "expires_at_utc": "2026-11-03T02:54:09.255832+00:00",
+    "active_references": [
+      "Current R220 runtime consumes only the three separately protected production outputs; remaining objects are rebuildable closed build artifacts"
+    ],
+    "protected_until_utc_or_null": null,
+    "protection_reason_or_null": null,
+    "source_pins_or_recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+      "bytes": 39716,
+      "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+    },
+    "availability": "actual-independently-read-back",
+    "default_TTL_is_review_eligibility_not_unconditional_delete": true
+  },
+  "minimum_active_runtime_protection": {
+    "owner": "/root",
+    "protected_until_utc": "2026-10-22T08:00:00Z",
+    "reason": "Actual next R220 public runtime binds these exact three production binaries; no parent-directory blanket protection",
+    "next_use": "One fresh R220 seven-day county scene with normal closure",
+    "exact_runtime_outputs": [
+      {
+        "target": "xar_ck3_bridge",
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge.dll",
+        "bytes": 14397440,
+        "sha256": "f52db5e8a1be4c55416155536d7b5cee519e1ee69c99123aa6edd1f42a63c9a2"
+      },
+      {
+        "target": "xar_ck3_bridge_injector",
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "57cfb15e6d56495bfc8c2578070e633f528267ea83c1855c43806fe19a2d83f1"
+      },
+      {
+        "target": "xar_ck3_bridge_host",
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "17429aa0b23e702dee4d8494a123154b48a638c738388d42510f9782afee6a21"
+      }
+    ],
+    "exact_qualification_and_recipe": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+        "bytes": 25484,
+        "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+        "bytes": 39716,
+        "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FINAL-INDEPENDENT-READBACK.actual-a03.json",
+        "bytes": 9792,
+        "sha256": "1bff06d5f7d2fd6cc8350a6b9229354499497d75e893e18f322c089c20bc5780"
+      }
+    ],
+    "historical_failure_receipts": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FIRST-FAILURE.actual-a01.json",
+        "bytes": 5219,
+        "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-SECOND-FAILURE.actual-a02.json",
+        "bytes": 9337,
+        "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+      }
+    ],
+    "automatic_renewal": false
+  },
+  "shared_editorial_index": {
+    "root": "C:\\ck3-e04-resume-20261020-a01\\editorial-index-a01",
+    "reported_actual_logical_bytes": 25146,
+    "basis": "Media lane actual closed metadata-only report; no separate media reservation",
+    "within_same_all_agents_shared128MiB_pool": true,
+    "aggregate_complete_usage_not_claimed": true,
+    "active_use": "Root integration and user viewing navigation",
+    "review_at_utc": "2026-10-22T08:00:00Z",
+    "heavy_future_write_bytes": 0,
+    "excluded_from_shared_pool": false
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "schema": "xar.e04.a39-final-independent-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:54:56.930922+00:00",
+  "qualification": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ROOT-A39-PRODUCTION-QUALIFICATION.actual-a03.json",
+    "bytes": 25484,
+    "sha256": "f20e6d7c1a8430b190c7f90a90815da5e86d28d5e7a8ef694d309befee6ae036"
+  },
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+    "bytes": 39716,
+    "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+    "bytes": 6364,
+    "sha256": "1064e34bccbb89216705f12850a21527a6c32565404fcb17ccea214309b0eaba"
+  },
+  "source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "runtime_source_head": "76dcbf7fe4526117fc25f0c892593b570f0a8b68",
+  "actual_CMakeCache": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\CMakeCache.txt",
+    "bytes": 47724,
+    "sha256": "b05177d23e02c0587453621f981d319715770d0900999cad066e132d710d7d4b"
+  },
+  "actual_profile_matched": true,
+  "feature_BOOL_count": 183,
+  "ON_count": 33,
+  "OFF_count": 150,
+  "BUILD_TESTING": "ON",
+  "SYSTEM_status": "verified",
+  "SYSTEM_admin_token": true,
+  "SYSTEM_token_sid": "S-1-5-18",
+  "SYSTEM_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\defender-exe-exclusions\\20261020T025318Z-83e88bce\\receipt.json",
+    "bytes": 710454,
+    "sha256": "3ab6152504f33d2632929ffd36ab765265b3ba0bc818956ca875fdbe717310c8"
+  },
+  "SYSTEM_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\defender-exe-exclusions\\20261020T025318Z-83e88bce\\manifest.json",
+    "bytes": 9684,
+    "sha256": "d04d59cb346ec123c33ce6f70fad1ebe3f346f3d018a49e622a5757a3fef7fc4"
+  },
+  "exact_new_EXEs": 9,
+  "production_and_cold_artifact_count": 10,
+  "cold_tests_passed": 7,
+  "cold_tests_failed": 0,
+  "cold_phase": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\08-first-focused-ctest-a03\\result.actual.json",
+    "bytes": 1966,
+    "sha256": "396202614f30978ffbe82ceb6d630c387755dd31f907d30008ea1050004fdfe9"
+  },
+  "cold_stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\08-first-focused-ctest-a03\\stdout.txt",
+    "bytes": 1309,
+    "sha256": "2a1844b34a44c6a0a697ca7db9322bc183a6cdb1225f0e112047828f3126fe14"
+  },
+  "outputs": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "f52db5e8a1be4c55416155536d7b5cee519e1ee69c99123aa6edd1f42a63c9a2",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-d271ed7272b2f19c984b.json",
+        "bytes": 58673,
+        "sha256": "6c2f5164a2549f9405c8e856453d8d9eee5d0396e456650a64ae642483e059e3"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "57cfb15e6d56495bfc8c2578070e633f528267ea83c1855c43806fe19a2d83f1",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "17429aa0b23e702dee4d8494a123154b48a638c738388d42510f9782afee6a21",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "bytes": 658944,
+      "sha256": "732e77c56a1addb8535c1a6b58aa55c6aab367eae1a27ac88a5914b3d8e99b75",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_decision_outcome_contract_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_ingame_decision_outcome_contract_v1_test.exe",
+      "bytes": 129024,
+      "sha256": "28f09197eaf383acaf607e9af0e0e4d036ef1ebd09448c94d300e4b4463f0c18",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_decision_outcome_contract_v1_test-Release-a31e7c64db85be506ff9.json",
+        "bytes": 3260,
+        "sha256": "c0b22e45ed73bb9dd91d2e3ddbdde2a58c9375d1ddf8ca65655f72e4abc1ffcc"
+      }
+    },
+    {
+      "target": "xar_ck3_12004_holy_site_adoption_detail_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12004_holy_site_adoption_detail_test.exe",
+      "bytes": 196608,
+      "sha256": "0eb07ec06fc5a144cc1c16485bd3349da3a1c3db63af6c2f23a9dc4d11f53eb0",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12004_holy_site_adoption_detail_test-Release-35f1068d26d634571913.json",
+        "bytes": 3772,
+        "sha256": "77373d32dfb3a95d463294e6654f1f8b14012d502ac2d103451bbab8d875148a"
+      }
+    },
+    {
+      "target": "xar_ck3_camera_settle_diagnostics_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_camera_settle_diagnostics_v1_test.exe",
+      "bytes": 17408,
+      "sha256": "5b843093506878f643c822480700bdb020f0166cd0eee2ede40715614d70c19d",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_settle_diagnostics_v1_test-Release-be030ccc94d58235557b.json",
+        "bytes": 3639,
+        "sha256": "ca123153a4fd114f895a35ec5c1e328bd40ef72cba4be69f51ec71aee5981017"
+      }
+    },
+    {
+      "target": "xar_ck3_realm_camera_subrealm_v1_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_realm_camera_subrealm_v1_test.exe",
+      "bytes": 168960,
+      "sha256": "5b387bf3439f2995e5efcdeb34869c1a1d997c74911eccf2d1f9c99f8b0883ee",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_subrealm_v1_test-Release-e51d67285128bcb37ddc.json",
+        "bytes": 4440,
+        "sha256": "88b516b3637f77a511b2d3ff9cbc0f73aca6548cf53ff570d2f1ce8a2f655d69"
+      }
+    },
+    {
+      "target": "xar_ck3_steward_develop_county_candidates_v1_mailbox_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_steward_develop_county_candidates_v1_mailbox_test.exe",
+      "bytes": 128000,
+      "sha256": "7b84d553941b9e187f591caeae98d9c1a992e062e3be63832eb6e5f7da8d5c32",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_steward_develop_county_candidates_v1_mailbox_test-Release-935200b63ff932e3ea25.json",
+        "bytes": 6060,
+        "sha256": "67e66aba55841147cbc2b1a63a6608aa230bac5769d1f3d9ee580136aa1ba384"
+      }
+    },
+    {
+      "target": "xar_ck3_12003_war_cash_net_income_test",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\xar_ck3_12003_war_cash_net_income_test.exe",
+      "bytes": 145920,
+      "sha256": "65069b704fe4437100c10a42c545f2ea0eb5785461a78fd25a45755e8d56f33d",
+      "file_api_target": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12003_war_cash_net_income_test-Release-60b6f3453158b4b4d570.json",
+        "bytes": 6222,
+        "sha256": "c52d5dfea864bc6d3e26a71a0f565f046d6c512c923d843963bb766fad8a8a40"
+      }
+    }
+  ],
+  "previous_source_recipe_failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-FIRST-FAILURE.actual-a01.json",
+    "bytes": 5219,
+    "sha256": "59bc1d6fce7e86d1559b5f5dd0efea7890b56a322f89f5370ed25be065e26340"
+  },
+  "previous_selection_failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-SECOND-FAILURE.actual-a02.json",
+    "bytes": 9337,
+    "sha256": "2c5ab517703b3409df79a80b3008532f9ee0338d711f95ae91ffac85e7fe5d42"
+  },
+  "owned_EXEs_alive": [],
+  "process_census_error": null,
+  "aggregate_actual_bytes": 435781465,
+  "aggregate_peak_bytes": 435781465,
+  "remaining_heavy_write_bytes": 0,
+  "new_CK3_or_screen_contact": false,
+  "live_CK3_qualified": false,
+  "R04_closed": false
+}

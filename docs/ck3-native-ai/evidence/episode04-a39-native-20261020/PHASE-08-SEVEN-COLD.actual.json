@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T02:54:06.435671+00:00",
+  "source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+    "bytes": 39716,
+    "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\capacity\\A39-C-NATIVE-SOURCE-BOUND.actual-a04.json",
+    "bytes": 6364,
+    "sha256": "1064e34bccbb89216705f12850a21527a6c32565404fcb17ccea214309b0eaba"
+  },
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+    "--test-dir",
+    "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01",
+    "-C",
+    "Release",
+    "--output-on-failure",
+    "--no-tests=error",
+    "-R",
+    "^(xar_ck3_ingame_ui_navigation_v1_test|xar_ck3_ingame_decision_outcome_contract_v1|xar_ck3_12004_holy_site_adoption_detail_test|xar_ck3_camera_settle_diagnostics_v1|xar_ck3_realm_camera_subrealm_v1|xar_ck3_12003_war_cash_net_income|xar_ck3_native_bridge_steward_develop_county_candidates_v1_mailbox)$"
+  ],
+  "finished_at_utc": "2026-10-20T02:54:08.354698+00:00",
+  "exit_code": 0,
+  "failure": null,
+  "stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\08-first-focused-ctest-a03\\stdout.txt",
+    "bytes": 1309,
+    "sha256": "2a1844b34a44c6a0a697ca7db9322bc183a6cdb1225f0e112047828f3126fe14"
+  },
+  "stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\qualification-phases\\08-first-focused-ctest-a03\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "aggregate_peak_bytes": 435754015
+}
