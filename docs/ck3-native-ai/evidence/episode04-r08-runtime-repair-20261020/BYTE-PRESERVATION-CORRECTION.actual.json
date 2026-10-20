@@ -1,0 +1,355 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:35:08.774100+00:00",
+  "previous_published_commit": "fe7711cfce559fbac25062b415d854c850141b51",
+  "scope": "Exact archive copies restored from retained originals, not recreated results; narrow -text attributes prevent future Git normalization",
+  "files_checked": 69,
+  "changed": [
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/index.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\index.json",
+      "original_bytes": 10947,
+      "original_sha256": "aa701a1599f992afc0904e03324bfd32dbc399ead92d1e10989177980de7e23a",
+      "previous_git_bytes": 10702,
+      "previous_git_sha256": "e741b79d0836154edb9e4faff1df86e8a46de0e2d07afacf84b1a2503cdcac60",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/SOURCE-PINS.partial.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\SOURCE-PINS.partial.actual.json",
+      "original_bytes": 6601,
+      "original_sha256": "2f0e601c9811d8118c59bb30425f754a11b419d3dc8314234cc8a46bfd464bb0",
+      "previous_git_bytes": 6441,
+      "previous_git_sha256": "966048f54a04e78532f3ef19e9dbec328d9a0049c525eca0aab0c680aeacb7d6",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/SUPPLEMENT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\SUPPLEMENT.actual.json",
+      "original_bytes": 2012,
+      "original_sha256": "97f2cd0b131a03923fdbfbda63f70e28687169b0cb04532b0be84eed9a64f172",
+      "previous_git_bytes": 1967,
+      "previous_git_sha256": "40d864cbd4816f14d8cd2c6f97e22c24713262ba99da1aa16cdd596bca7f2bc8",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/projections/ADMIN-SIX-ROWS.derived.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\projections\\ADMIN-SIX-ROWS.derived.json",
+      "original_bytes": 55420,
+      "original_sha256": "ed721fa45b1910c06fc5e19e9f07f6fd83513b35408466fdcc2d76bd63bb85ed",
+      "previous_git_bytes": 54043,
+      "previous_git_sha256": "40ad8558bfc261dc2af2c16af6215e9a9395047a8d47ab7d1016bdba3a1926b6",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/projections/NATIVE-TERMINAL.derived.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\projections\\NATIVE-TERMINAL.derived.json",
+      "original_bytes": 8888,
+      "original_sha256": "a51f06bed81809153b42ded0784dbc25ec1a9262613ec44cd5125604694acf8b",
+      "previous_git_bytes": 8659,
+      "previous_git_sha256": "6e073f5df8a4fb2328aa0cc69784de73d754330032b5420012de3b110bee10e9",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/closure/ADMIN-ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\closure\\ADMIN-ORIGINAL-WAIT.actual.json",
+      "original_bytes": 815,
+      "original_sha256": "aafe9327ac2c7d7b6907e03b16670ac9dde47c5fd853b36c727a561829e6b841",
+      "previous_git_bytes": 796,
+      "previous_git_sha256": "76d725e097c8b5a3b4b3e909fca5797f3e963b63124a9f2412158a82e42c47fc",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/closure/ALLOCATE-ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\closure\\ALLOCATE-ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1540,
+      "original_sha256": "93de27be940ffeade176b07faf5867a460bd859eba7ab03e9c69ed359b0c25d5",
+      "previous_git_bytes": 1501,
+      "previous_git_sha256": "6255e09548211f4d86e983a15eba6b96d96007a45608533dae9bf388f11eb35a",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/closure/PUBLIC-ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\closure\\PUBLIC-ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1190,
+      "original_sha256": "f1035e8978a4a773187936885d6ebd3c633848336f025a18a343224cad32db9a",
+      "previous_git_bytes": 1159,
+      "previous_git_sha256": "2527235395883d45bac567d664ac091dde9645768c72794554f0659ba3906bb0",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/closure/SCREEN-RELEASE.actual-a01.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\closure\\SCREEN-RELEASE.actual-a01.json",
+      "original_bytes": 1233,
+      "original_sha256": "f2f77f1321df2797d58721217d6fdc7ae0a40c4062f85f87f3152163c71d0ad8",
+      "previous_git_bytes": 1191,
+      "previous_git_sha256": "3a4cc1b034b4a2be585674cfcdd208bb543b8ac8389e3644f34449bb5d869ad7",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/support/ADMIN-QUIT-HELPER-ADAPTATION.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\support\\ADMIN-QUIT-HELPER-ADAPTATION.actual.json",
+      "original_bytes": 1151,
+      "original_sha256": "3a9758d4219279c2d2712c66352db99678710df4e722d8a99505463acf9c0e8c",
+      "previous_git_bytes": 1121,
+      "previous_git_sha256": "2b197551c255aa764167b29a8fa541d610371dd984fae2ced82ba8ce5cfc69c0",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/support/ESC-ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\support\\ESC-ORIGINAL-WAIT.actual.json",
+      "original_bytes": 2585,
+      "original_sha256": "1fb485cdc780c332f20b915fd417458551afe0659ec11e72b944a7156330a914",
+      "previous_git_bytes": 2562,
+      "previous_git_sha256": "807579936559088c4b44a11255b20304b58a96e4e73a00d6b6759a0d7eae9e60",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/support/MANUAL-REVIEW-PATH-ADAPTATION.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\support\\MANUAL-REVIEW-PATH-ADAPTATION.actual.json",
+      "original_bytes": 886,
+      "original_sha256": "4863924458b949435308c42d2fb31d1a879fc55b0b19dfea88c397806d547ed0",
+      "previous_git_bytes": 870,
+      "previous_git_sha256": "45a25782540e01f9da863231be0f8bf1c9c14cf72fea1f78a31e7bc6118b20f9",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0222-20261020/evidence/support/menu-scancode-admin.png.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-evidence-a01\\evidence\\support\\menu-scancode-admin.png.json",
+      "original_bytes": 621,
+      "original_sha256": "db0e61384dbad24f0d63bae1e6de2d07e7a51343675dc460c8128d2df964c3dd",
+      "previous_git_bytes": 601,
+      "previous_git_sha256": "84d91fb877a0f59b00b82e6f35347f9ca936fd6a58acdabb07f04bd11e499eae",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/SUMMARY.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\SUMMARY.actual.json",
+      "original_bytes": 4789,
+      "original_sha256": "6b7e78d83cfe56154aab300db4384406ee1237b3da9d3b1aac50c7e4c5336a1d",
+      "previous_git_bytes": 4690,
+      "previous_git_sha256": "b27b9b8a9e9ac3c3012dec594a8953b73c8bd85e7c980bd5a264222d666cef4a",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/integration-and-save-gate/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\integration-test-a01\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1723,
+      "original_sha256": "5d1cfb776a38cde1f90776558a7b60694f8fea518a08bf6093ab7c4e2908682d",
+      "previous_git_bytes": 1682,
+      "previous_git_sha256": "7d353a50d40cc112413f0313deebe72db3e92c165e9ccc300284fd32a8cd7b8c",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/integration-and-save-gate/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\integration-test-a01\\stderr.log",
+      "original_bytes": 521,
+      "original_sha256": "4ee06022dc8a339817dd6af8d1b676b84f07a99e25d4097676293618dff69519",
+      "previous_git_bytes": 514,
+      "previous_git_sha256": "ae02f1521e3455161fa4d866f90122fe6a2bd7a2c3d4fe2a8ec2237d778542a0",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/DELIVERY.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\DELIVERY.actual.json",
+      "original_bytes": 2224,
+      "original_sha256": "430adcbd3e4b5ffba8839badd472d5f987a36911daf1b207389786db5f8ababb",
+      "previous_git_bytes": 2174,
+      "previous_git_sha256": "da5ffbdf1925e69ddbcc7bbc5e711eb8a7dd139ba4e5b96b7023876286d6ee98",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/SOURCE-INDEX.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\SOURCE-INDEX.actual.json",
+      "original_bytes": 8158,
+      "original_sha256": "15d998ef811cbeaf30106c0d0e6e20f5a24beb953d2f877f9041289e4ba9e152",
+      "previous_git_bytes": 7988,
+      "previous_git_sha256": "b34cf21e3a896915ac89d54e0aa040d75ee009b7f7119239fe24a1a4de0adf15",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/baseline-d39/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-d39\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1694,
+      "original_sha256": "652a1239f38fb8a07a0e583165c152079bfd59b14b12d9684f561bf790947054",
+      "previous_git_bytes": 1655,
+      "previous_git_sha256": "6146073ee9daabae189d3be1686359aa5167bc15db1c96461d908da93cf857ba",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/baseline-d39/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-d39\\stderr.log",
+      "original_bytes": 1534,
+      "original_sha256": "624a8388fb73108316128392cbbe1c722d23635489487c72c4c48b1ae3ac3ce1",
+      "previous_git_bytes": 1516,
+      "previous_git_sha256": "6227e10da49e1374725e591ce6a79cbdb9463175a41db863f0227ac605633bad",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/baseline-parent-d39/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-parent-d39\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1620,
+      "original_sha256": "78e0490b66e37014c9d5f567239cd315ae6dc526f13308f75b959c4e204c96e7",
+      "previous_git_bytes": 1582,
+      "previous_git_sha256": "7ab6450c1904448e68f7c46c06a13fc1fa73332b111638256f9285d463f36676",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/baseline-parent-d39/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\baseline-parent-d39\\stderr.log",
+      "original_bytes": 1327,
+      "original_sha256": "9a72908b9042edeaef6f79166189fdd6739ae7edce609b38c4b190a960d2e7a4",
+      "previous_git_bytes": 1311,
+      "previous_git_sha256": "ee27140719a438007736d2c26e5a9a0c9d7b6bc969c11304986cd66857525ad0",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/candidate-payment-a03/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\candidate-payment-a03\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1989,
+      "original_sha256": "6aa25b3ca471b587cec26c16dea795d49b9cce7396c5d68b253ab29ad1421e8c",
+      "previous_git_bytes": 1946,
+      "previous_git_sha256": "72978bd3ab2568d85caebf088f08e92a4415b4d080992025d180004f7cf41073",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/candidate-payment-a03/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\candidate-payment-a03\\stderr.log",
+      "original_bytes": 834,
+      "original_sha256": "de2a1a003e074e8b97ebbf2dfe9a197b4c877861955ba5d2e425780192417d9c",
+      "previous_git_bytes": 825,
+      "previous_git_sha256": "84f00c0247ab39edebe1fd8866a8ec31260fccf056f7b83584ea3f5df09dcf9c",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/helper-candidate-a02/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\helper-candidate-a02\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 1617,
+      "original_sha256": "36f2ae52771a4ef895335d03c629e5f2e3f33b85f3625aba18c3b33fef0f24a9",
+      "previous_git_bytes": 1580,
+      "previous_git_sha256": "c77e8b5aaaf1d8bf0de7e691679a5d78c4279b43352b6a9df93f7fd0763b4c93",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/regression/helper-candidate-a02/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\helper-candidate-a02\\stderr.log",
+      "original_bytes": 1177,
+      "original_sha256": "9b51ec0ea6b25e1eb5529a2f4af8a324f5c480b20d6feccdf1144676e86fc1f3",
+      "previous_git_bytes": 1166,
+      "previous_git_sha256": "b097b071fcaa512ae82453f6c6f3fdd17af7d78dfe17c727e8a30e50e274dcee",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/parent-after-fixture-materialization/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-parent-smoke-materialized-a01\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 809,
+      "original_sha256": "4a03dff443632ec46d6541e13d3dfac19280fc4ae241cd8acc8c943a32e3c029",
+      "previous_git_bytes": 791,
+      "previous_git_sha256": "4c7236b817b2dc87264d9c8a7d0f7c8fbdb15fd4225b63082be6eae4b0622a80",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/parent-after-fixture-materialization/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-parent-smoke-materialized-a01\\stderr.log",
+      "original_bytes": 103,
+      "original_sha256": "2145af6dd4abe2b13b86dcf367617e891c55be1c0aecbaba71a60a6d65740cc5",
+      "previous_git_bytes": 98,
+      "previous_git_sha256": "9e2b4726ef135cb259be65e9593fd12b8db4be70ba682a794e883ba114bcb261",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_cleanup_and_sampling/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_cleanup_and_sampling\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 844,
+      "original_sha256": "3170f67442c27e90bfd0b7b8e366d3d6cf05325485d7283605163334fa350666",
+      "previous_git_bytes": 826,
+      "previous_git_sha256": "2ca6f2847f8552e58c4c8ac4f1f0d4cf059c9d9c18cbc40ba13844642f17a1fa",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_cleanup_and_sampling/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_cleanup_and_sampling\\stderr.log",
+      "original_bytes": 109,
+      "original_sha256": "41b83878dd0c0b4ec1f16e4c1390c0c3e73ecfd8d6cb6d359812aa3433f0bf30",
+      "previous_git_bytes": 104,
+      "previous_git_sha256": "62cfbeb2911bb226088bfb0918eb4b05008ea70b20bce854ee2ca8a564bd37a5",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_runtime_entry_smoke/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_runtime_entry_smoke\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 842,
+      "original_sha256": "0507592de448cb9ac0c0cef877054b0fe99a3296f30f43b518172def60cfe026",
+      "previous_git_bytes": 824,
+      "previous_git_sha256": "479e82b40381419ddcaab608420adea078d3d5b523c8282628751df4331bef30",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_runtime_entry_smoke/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_runtime_entry_smoke\\stderr.log",
+      "original_bytes": 1829,
+      "original_sha256": "6457894524efc8e60b8829b9e00da3cf68b250635c7947aca22df2b479d9be46",
+      "previous_git_bytes": 1804,
+      "previous_git_sha256": "65e6f2433b0369eb5a3b308e9d5d6a886bfc6d366def4b74d989a779e46816ce",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_writer_cleanup_integration/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_writer_cleanup_integration\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 850,
+      "original_sha256": "557099fe98711adc777ae87f956707e319a0bee54cd849c6288349b6ee656970",
+      "previous_git_bytes": 832,
+      "previous_git_sha256": "64b32a37d8ee7abb639f3115d2d8d9f89e473d452cabedc5857add4bca6df3f0",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_writer_cleanup_integration/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_writer_cleanup_integration\\stderr.log",
+      "original_bytes": 103,
+      "original_sha256": "c47bef39d4a3621b15b0fbed611bd20df2834eacbe2cd0d248a29bc98c9b33e4",
+      "previous_git_bytes": 98,
+      "previous_git_sha256": "fb7db4f7849ff8ba9e8500299391256a5432c5873a52c83bc79adea6139056ba",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_writer_one_day/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_writer_one_day\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 838,
+      "original_sha256": "28c7fc5473d5b664ea04d55829d50e2c46f152db245ad2898e6c6db51422f493",
+      "previous_git_bytes": 820,
+      "previous_git_sha256": "c6179615a0a7dbea5e66b5b035cc9048e7156b9d32a9d765dd4f17055541923a",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_writer_one_day/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_writer_one_day\\stderr.log",
+      "original_bytes": 108,
+      "original_sha256": "d662ae89cc66fb58af1d630ee8f946698e10de259fbc2d091e4e70bb4ac8366a",
+      "previous_git_bytes": 103,
+      "previous_git_sha256": "11247e70ab3212544e3f45de083a02d717c13fd1ee7d36f2b59a5b15bfda32ee",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_writer_save_gate/ORIGINAL-WAIT.actual.json",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_writer_save_gate\\ORIGINAL-WAIT.actual.json",
+      "original_bytes": 838,
+      "original_sha256": "7317cbb848c0e4a76d8e764d4ffbc764b66b9d15ab11908f319040218bfbe301",
+      "previous_git_bytes": 820,
+      "previous_git_sha256": "9d861bd06be73a63d839b460e99700d5c467e6af6fe0709c6d0c5b08bfdf9470",
+      "change": "Restore retained original bytes, CRLF only"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/final-worktree-tests/test_r08_writer_save_gate/stderr.log",
+      "original_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0222-final-worktree-tests-a01\\test_r08_writer_save_gate\\stderr.log",
+      "original_bytes": 103,
+      "original_sha256": "223e06d17dfb6c32bd67ca7c62b915cb03e0a1189bad193f723662e346b75b55",
+      "previous_git_bytes": 98,
+      "previous_git_sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad",
+      "change": "Restore retained original bytes, CRLF only"
+    }
+  ],
+  "original_sources_retained": true,
+  "prior_revision_preserved_in_git": true,
+  "game_SDK_native_build_actions": 0,
+  "business_pass": false
+}
