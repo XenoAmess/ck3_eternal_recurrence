@@ -89,10 +89,16 @@ def _validate_a05_attempt(args,config):
     require((removed_ref.get('bytes'),removed_ref.get('sha256'))==(1192,'4aab372211f2b71a67911f90aea54db19a99e5dfa3a11419fd323ae1d768b0b4'),'actual A04 unregister pin required')
     removed=_a03_checked(removed_ref)
     if 'stdout' in removed:
-        require(removed.get('returncode')==0 and len(removed['stdout'])<=16384,'A04 unregister wrapper failed')
+        require(removed.get('returncode')==0 and isinstance(removed['stdout'],str)
+            and len(removed['stdout'])<=16384,'A04 unregister wrapper failed')
         removed=json.loads(removed['stdout'])
-    actual=removed.get('actual') or (removed.get('unregister') or {}).get('actual') or {}
-    require(actual.get('absent_after') is True,'actual A04 supervisor Task absence required')
+    wrapper=removed.get('actual')
+    require(removed.get('machine_id')==MACHINE and isinstance(wrapper,dict)
+        and wrapper.get('machine_id')==MACHINE and wrapper.get('operation')=='unregister',
+        'actual A04 unregister operation wrapper required')
+    actual=wrapper.get('actual')
+    require(isinstance(actual,dict) and actual.get('absent_after') is True
+        and actual.get('instances')==0,'actual A04 supervisor Task absence required')
     require(args.attempt_nonce not in {closed.get('attempt_nonce'),closed.get('task_nonce')}
         and args.task_nonce not in {closed.get('attempt_nonce'),closed.get('task_nonce')},'independent A05 nonces required')
     return value
@@ -126,6 +132,8 @@ def build_sources():
     helper=swap(helper,'xar.source25.canonical-git-anchor/v1','xar.source26.canonical-git-anchor/v1')
     helper=swap(helper,'6b55531b1d3a44ee73ab13ea40132556030f682e',SOURCE26_PARENT)
     helper=helper.replace(b'Source25',b'Source26').replace(b'Source24 parent',b'Source25 parent')
+    import prepare_c23_a05_anchor_contract_v1 as anchor_contract
+    helper,anchor_review=anchor_contract.build_source(helper_raw=helper)
     values[HELPER]=helper
     queue=values['root_p37c23_sdk_queue.py']
     values['root_p37c23_sdk_queue.py']=swap(queue,'admission_getter=lambda queue: None',
@@ -141,6 +149,7 @@ def build_sources():
         'source_count':len(values),'private_creator_count':3,'predecessors':previous,'feeder':feed_review,
         'per_startup_wait_seconds':120,'startup_max':300,'steady_recv_seconds':10,
         'control_probe':{'control_sequence':CONTROL_SEQUENCE,'cycle_budget':30,'mismatch_skips_probe':True},
+        'actual_Source26_anchor_contract':anchor_review,
         'Source26_anchor_schema':'xar.source26.canonical-git-anchor/v1','Source26_parent':SOURCE26_PARENT}
 
 
@@ -185,24 +194,31 @@ def _module(path,name):
     spec.loader.exec_module(module);return module
 
 
-def compose(plan,*,display_values,display_review):
+def compose(plan,*,display_values,display_review,companion_values=None):
     """Return exact unified files and quote. Inputs are actual pinned Root refs.
 
     display_values is the full reviewed eighteen-leaf RAM graph projected by
     the display producer, including its static provider and closure amendment.
+    companion_values holds its exact three private profile/config outputs;
+    their bytes and final paths are part of this same create-only union quote.
     compact_base_ref must be the actual policy-free Source26 export, not a
     guessed commit or future digest. Source and display plans merge once.
     """
     require(plan.get('schema')=='xar.C23-A05-union-prepare-input/v1' and plan.get('machine_id')==MACHINE
         and plan.get('execution_owner')=='Root' and plan.get('root_direct_execution_release') is True,
         'explicit Root actual plan')
-    at=plan['observed_at_utc'];deadline=datetime.fromisoformat('2026-10-20T06:30:00+00:00')
+    at=plan['observed_at_utc'];observed=datetime.fromisoformat(at.replace('Z','+00:00'))
+    require(observed.tzinfo is not None and observed.utcoffset().total_seconds()==0
+        and -10<=(datetime.now(timezone.utc)-observed).total_seconds()<=600,'fresh explicit UTC plan observation')
+    deadline=datetime.fromisoformat('2026-10-20T06:30:00+00:00')
     require(datetime.now(timezone.utc)<deadline,'storage review deadline')
     require(not T5.exists(),'new exact A05 runtime root must be absent')
     for key in ('attempt_nonce','task_nonce'):
         require(re.fullmatch('[0-9a-f]{32}',str(plan.get(key))) is not None,'independent explicit nonce')
     require(plan['attempt_nonce']!=plan['task_nonce'],'attempt and Task nonce differ')
     source,source_review=build_sources();state=state_guard()
+    source_review['feeder']['observed_at_utc']=at
+    source_review['feeder']['observed_at_utc_semantics']='Root plan snapshot time; actual source pins and state are reread on every composition; not invocation wall time'
     full=checked(plan['full_storage_ref'],32768);live=checked(plan['live_storage_ref'],32768)
     require(full==live and full['machine_id']==MACHINE and full['status']=='ADMITTED'
         and plan['full_storage_ref']['sha256']==plan['live_storage_ref']['sha256']
@@ -223,8 +239,27 @@ def compose(plan,*,display_values,display_review):
     overlaps.append(merge_into(outputs,{T5/name:data for name,data in source.items()},'runtime-source'))
     overlaps.append(merge_into(outputs,{T5/name:data for name,data in display_values.items()},'complete-display'))
     require(len(display_values)==18 and (T5/'ROOT-DECISION-TEXT-PROVIDER-C23.json') in outputs,'complete display/static provider required')
+    require(isinstance(companion_values,dict) and len(companion_values)==3,
+        'three complete private profile companions required')
+    companions={Path(path).resolve():data for path,data in companion_values.items()}
+    profile_path=T5/'ROOT-OBS-PROFILE-C23.json'
+    require(profile_path in companions,'private A05 profile required')
+    profile=json.loads(companions[profile_path]);name=display_review['profile_name']
+    require(re.fullmatch('ManagedWindowCapture-[0-9a-f]{32}',name) is not None
+        and profile.get('machine_id')==MACHINE and profile.get('profile_name')==profile.get('collection_name')==name
+        and Path(profile['recording_root']).resolve()==T5/'recordings',
+        'independent private A05 profile/collection identity required')
+    config_root=Path(profile['config_root']).resolve()
+    expected_companions={profile_path,config_root/'basic/profiles'/name/'basic.ini',
+        config_root/'basic/scenes'/(name+'.json')}
+    require(set(companions)==expected_companions,'only exact new private profile/config companions required')
+    companion_refs=[original.target_ref(path,data) for path,data in companions.items()]
+    require(sorted(companion_refs,key=lambda row:row['path'])==sorted(display_review['companion_files'],key=lambda row:row['path']),
+        'reviewed exact private profile companion bytes differ')
+    overlaps.append(merge_into(outputs,companions,'private-profile-companions'))
     def put(name,value):
         data=enc(value);path=T5/name
+        require(len(data)<=524288,'bounded finite metadata output required')
         merge_into(outputs,{path:data},'metadata');return original.target_ref(path,data)
     oldfreeze=checked(ref(T4/'ROOT-FINAL-SDK-FREEZE-P37C23-A04.json'),524288)
     policy=checked(oldfreeze['canonical_preload_policy'],32768)
@@ -289,6 +324,8 @@ def compose(plan,*,display_values,display_review):
     # No namespace is installed until all paths have been unified and priced.
     rows=[];fresh_allocation=0;links=0
     for path,data in sorted(outputs.items()):
+        require(any(path==Path(root).resolve() or path.is_relative_to(Path(root).resolve())
+            for root in full['approved_output_roots']),'union output outside actual canonical approved roots')
         require(not path.exists(),'create-only output already exists: '+str(path))
         previous=None
         if path.is_relative_to(T5):
@@ -306,6 +343,7 @@ def compose(plan,*,display_values,display_review):
         'max_atomic_copy':atomic,'future_owner_metadata_upper':future_owner,'control_probe_atomic_peak':probe_peak,
         'intent_receipt_and_FS_upper':fs,'prepare_peak_upper':fresh_allocation+atomic+future_owner+probe_peak+fs,
         'full_storage_ref':plan['full_storage_ref'],'review_at_utc':full['review_at_utc'],
+        'private_profile_companions':companion_refs,
         'canonical_entry_source_pins':six,'all_entry_rows':44,
         'prerequisite_directories':[str(T5/'recordings')],
         'state_junction':{'path':str(T5/'state'),'exact_target':str(T0/'state'),'must_verify_same_FileID':True},

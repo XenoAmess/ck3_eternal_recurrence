@@ -156,7 +156,7 @@ R219 前台冲突只做了 Win32 聚焦及一次最小化，没有关闭或 susp
 
 此前五个 Workshop 大模组 **52.53 GiB 本机清理＋禁回装已完成**，没有退订。规则只属于本机：`2291024373 / 2993056101 / 2962333032 / 3192256710 / 2224124758`。15 个 0 B 普通文件是屏障，不是重新下载的载荷；不能清理它们，也不能删除唯一原 DACL 恢复副本。详见[机器偏好](../maintenance/machine-preferences/desktop-3fevhd2-1c74096080.steam-workshop.json)及[实做专题](../maintenance/steam-five-local-control-2026-10-19-desktop-3fevhd2-1c74096080.md)。本轮没有重做权限测试或联网验证。
 
-项目构建 EXE 的永久 Defender 排除已有用户授权；只限精确项目构建路径，新增路径仍须真实 SYSTEM 回执。不能扩成全盘／扩展名排除，也不能把旧 a38 路径资格外推到新构建路径。禁止 PowerShell。
+项目构建 EXE 的永久 Defender 排除已有用户授权；只限精确项目构建路径，新增路径仍须真实 SYSTEM 回执。不能扩成全盘／扩展名排除，也不能把旧 a38 路径资格外推到新构建路径。Windows 自动化仅使用 Python。
 
 ## 接手执行方式
 
