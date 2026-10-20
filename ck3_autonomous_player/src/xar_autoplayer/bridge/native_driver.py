@@ -2208,6 +2208,12 @@ class NativeHeadlessGameplayDriver:
     def _mark_bridge_disconnected_v1(self) -> None:
         try:
             self.state.mark_disconnected()
+            progress = getattr(self, "_exact_clock_wait_progress_v1", None)
+            if progress is not None:
+                try:
+                    progress.boundary()
+                except Exception:
+                    pass
         finally:
             self._invalidate_player_heir_provider_v1("native_disconnect")
 
@@ -2224,6 +2230,20 @@ class NativeHeadlessGameplayDriver:
 
     def _ingest(self, frame: dict[str, object]) -> None:
         frame_type = self.state.ingest(frame)
+        progress = getattr(self, "_exact_clock_wait_progress_v1", None)
+        if progress is not None and frame_type in {"heartbeat", "hello"}:
+            try:
+                # ingest() returned outside its Condition. Copy only this token;
+                # never hold the transport Condition while taking collector.lock.
+                with self.state._condition:
+                    token = (self.state._connected, self.state._connection_generation,
+                             (self.state._hello or {}).get("pid"))
+                progress.received(frame_type, frame, token)
+            except Exception:
+                try:
+                    progress.note_callback_error()
+                except Exception:
+                    pass
         if frame_type == "hello":
             bridge_pid = frame.get("pid")
             if isinstance(bridge_pid, int) and not isinstance(bridge_pid, bool):
@@ -25769,6 +25789,14 @@ class NativeHeadlessGameplayDriver:
             from .clock_observation_timing_v1 import (
                 start_clock_observation_v1, finish_clock_observation_v1,
             )
+            wait_progress = wait_progress_summary = None
+            try:
+                from .exact_clock_wait_progress_v1 import (
+                    start_wait_progress_v1, finish_wait_progress_v1,
+                )
+                wait_progress = start_wait_progress_v1(self, current, arm_status["generation"])
+            except Exception:
+                pass
             clock_observation = start_clock_observation_v1(self, current)
             clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")
             try:
@@ -25785,6 +25813,10 @@ class NativeHeadlessGameplayDriver:
                         timeout_seconds=self.life_advance_timeout_seconds,
                     )
             finally:
+                try:
+                    wait_progress_summary = finish_wait_progress_v1(self, wait_progress, current) if wait_progress is not None else None
+                except Exception:
+                    pass
                 finish_clock_observation_v1(self, clock_observation, current)
                 finish_army_timing(clock_wait_timing, step="life-advance",
                     date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
@@ -25918,6 +25950,7 @@ class NativeHeadlessGameplayDriver:
                         starting=starting, last_frame=current, cleanup_before_frame=cleanup_frame,
                         actions=actions, action_start=diagnostic_action_start,
                         cleanup_start=diagnostic_cleanup_start,
+                        wait_progress=wait_progress_summary,
                     )
                 except Exception:
                     raise original_error
@@ -26289,6 +26322,15 @@ class NativeHeadlessGameplayDriver:
             if self.state.snapshot_supported():
                 self.state.wait_for_public_change(after_revision, timeout)
             changed = self.take_internal_semantic_snapshot()
+            progress = getattr(self, "_exact_clock_wait_progress_v1", None)
+            if progress is not None:
+                try:
+                    progress.observe_candidate(changed)
+                except Exception:
+                    try:
+                        progress.note_callback_error()
+                    except Exception:
+                        pass
             if getattr(self, "_exact_clock_observation_v1", None) is not None:
                 from .clock_observation_timing_v1 import observe_clock_snapshot_v1
                 observe_clock_snapshot_v1(self, changed)

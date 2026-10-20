@@ -5,8 +5,9 @@ No I/O, Native query, state change, retry decision or success credit.
 from __future__ import annotations
 
 import json
+from .exact_clock_wait_progress_v1 import project_wait_progress_v1
 
-SCHEMA = "xar.exact-day-clock-failure.v1"
+SCHEMA = "xar.exact-day-clock-failure.v2"
 MESSAGE = "exact-day native clock did not stop the map"
 MAX_BYTES = 8192
 _FRAME = ("date_raw", "native_revision", "revision", "snapshot_id", "speed",
@@ -22,7 +23,7 @@ _DIAGNOSTIC = ("schema", "is_error", "credit", "never_replay", "original_error_t
     "original_error", "starting_date_raw", "target_date_raw", "requested_speed",
     "normal_status_query_attempted", "stop_validation_attempted", "stopped_status",
     "stop_credit", "armed_reply", "starting_frame", "last_wait_frame",
-    "cleanup_before_pause_frame", "before_cleanup_actions", "cleanup_actions", "truncated")
+    "cleanup_before_pause_frame", "before_cleanup_actions", "cleanup_actions", "truncated", "wait_progress")
 
 
 def _map(value):
@@ -76,7 +77,7 @@ def _actions(actions, start, end):
 
 def build_exact_clock_failure_v1(*, original_error, starting_date_raw, target_date_raw,
         speed, arm_status, starting, last_frame, cleanup_before_frame,
-        actions, action_start, cleanup_start):
+        actions, action_start, cleanup_start, wait_progress=None):
     """Only called for the local pre-status-query map-not-paused error.
 
     Arm fields describe the earlier Arm reply, never a later stop observation.
@@ -95,7 +96,7 @@ def build_exact_clock_failure_v1(*, original_error, starting_date_raw, target_da
         "cleanup_before_pause_frame": _frame(cleanup_before_frame),
         "before_cleanup_actions": _actions(actions, action_start, cleanup_start),
         "cleanup_actions": _actions(actions, cleanup_start, len(actions)),
-        "truncated": False,
+        "truncated": False, "wait_progress": project_wait_progress_v1(wait_progress),
     }
     # A fixed allowlist and small integer/string caps bound allocation. If the
     # optional frames/actions exceed 8KiB, retain the core failure and Arm only.
@@ -133,7 +134,9 @@ def exact_clock_failure_diagnostic_v1(error):
             or value.get("original_error") != MESSAGE or str(error) != MESSAGE):
         return None
     try:
-        encoded = _encode({key: value[key] for key in _DIAGNOSTIC})
+        result = {key: value[key] for key in _DIAGNOSTIC}
+        result["wait_progress"] = project_wait_progress_v1(value["wait_progress"])
+        encoded = _encode(result)
         if len(encoded) > MAX_BYTES:
             return None
         return json.loads(encoded)
