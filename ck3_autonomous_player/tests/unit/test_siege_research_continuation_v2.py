@@ -7,6 +7,8 @@ actual259/261 replies, native identities and strength amounts are unchanged.
 import copy
 import importlib.util
 import json
+import sys
+from types import ModuleType
 from pathlib import Path
 import unittest
 from unittest import mock
@@ -20,6 +22,27 @@ from xar_autoplayer.war_mercenary_consumer_v1 import annotate_war_decision_reaso
 from test_native_bridge_driver import FakeEndpoint, _hello, _snapshot, _army, _war, _tactical_sentinel_status
 
 FIXTURE = Path(__file__).parents[1] / "fixtures/p55_actual265_route_projection.json"
+
+
+def _decision_projection_modules(root: Path) -> tuple[ModuleType, ModuleType]:
+    """Load real display dependencies without leaking an import path or module."""
+    directory = root / "tools/g2_saved_campaign"
+
+    def load(filename: str, module_name: str) -> ModuleType:
+        path = directory / (filename + ".py")
+        spec = importlib.util.spec_from_file_location(module_name, path)
+        if spec is None or spec.loader is None:
+            raise ImportError("Cannot load actual decision projection: " + str(path))
+        module = importlib.util.module_from_spec(spec)
+        # Dataclasses resolve their module while the real contract is executed.
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
+        return module
+
+    with mock.patch.dict(sys.modules):
+        load("decision_display_contract_v1", "decision_display_contract_v1")
+        return (load("decision_observation_feed", "war_reason_test_decision_observation_feed"),
+                load("live_decision_overlay", "war_reason_test_live_decision_overlay"))
 
 
 def material():
@@ -130,7 +153,7 @@ class SiegeResearchContinuationTests(unittest.TestCase):
         finally:
             driver.close()
 
-    def test_actual_r3_reason_separates_cash_priority_555_from_shared_hostile_4783(self):
+    def test_actual_r3_reason_separates_cash_priority_555_from_shared_hostile_4783(self) -> None:
         packet = json.loads(FIXTURE.read_text(encoding="utf-8"))
         original = packet["actual_r3_finance_reason_example"]["actual_plan"]
         result = annotate_war_decision_reason_v1(original)
@@ -138,13 +161,7 @@ class SiegeResearchContinuationTests(unittest.TestCase):
         self.assertEqual(result["reason"], original["reason"])  # Machine contract is unchanged.
         # Exercise the actual compact feed and display formatter. Neither
         # import invokes a desktop, process, SDK, or live overlay operation.
-        root = Path(__file__).parents[3]
-        modules = []
-        for name in ("decision_observation_feed", "live_decision_overlay"):
-            path = root / "tools/g2_saved_campaign" / (name + ".py")
-            spec = importlib.util.spec_from_file_location("war_reason_test_" + name, path)
-            module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
-            modules.append(module)
+        modules = _decision_projection_modules(Path(__file__).parents[3])
         compact = modules[0].compact_plan(result)
         self.assertEqual(compact["reason"], original["reason"])
         rendered = modules[1].reason_text(compact)

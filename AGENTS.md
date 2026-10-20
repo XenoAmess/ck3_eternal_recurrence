@@ -109,10 +109,10 @@
 - 用户于2026-10-05明确永久允许当前 `C:/workspace/ck3_eternal_recurrence` 所在机器实机使用CK3，后续直接沿用，无需重复询问。确切原话与机器范围见 [当前机器永久授权](docs/handover/2026-10-05-ck3-lyd-local-permanent-runtime-authorization.md)；Z机器的历史用户占用限制不由此自动解除，以下离线、账号及现场规则继续适用。
 
 - 除非任务确实必须联网（例如上传或更新 Steam Workshop mod），禁止把 Steam 从离线模式切换为在线模式；普通开发、构建、静态检查和 CK3 实机验收默认保持 Steam 离线。
-- 受管 CK3 实机前必须取得当次新鲜的 Steam 离线画面证据。若桌面画面冻结、变黑或远程重连后不能确认实时性，执行者应先领取任务总线独占 `ck3-screen:acquired`，使用 `tools/desktop_steam_offline_recovery.py inspect` 与新的外置 attempt 运行 `recover`，自动尝试恢复本机桌面采集和 ToDesk 服务；只有窗口位移取证确证 stale、且确认没有 CK3/录制/其他屏幕占用时，才使用其显式 ToDesk 重启重试选项。每次必须审阅新截图中的“离线模式”，并按 `docs/ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md` 保存回执；旧截图、窗口响应或服务运行状态不能代替离线确认。
+- **2026-10-21 用户追加：Steam 在线/离线状态确认在后台完成，不占用屏幕，不激活或移动窗口、不抢焦点、不截图。** 此指令覆盖旧的启动前离线截图和为此恢复桌面的前置要求。受管 CK3 启动前运行 `tools/steam_offline_state_probe.py --receipt <new-path>`，保存当前机器、观察时间、Steam PID/出生时间、版本及实际来源绑定；只有新鲜回执的 `status=offline` 且 `offline_mode=true` 才能作为离线准入。未知版本、来源或身份漂移、冲突及缺少资格必须返回 `unavailable`，不能用缓存、配置、`BLoggedOn=false` 或调用 ACK 冒充当前离线；当前原生 provider 仅资格化离线正例，零值不等于在线。不能因查询不可用而自动切换到截图或抢焦点；修复后台查询时继续独立工作，未确认离线前不启动受管 Steam 游戏。在线状态及跨机器占用继续遵守下条。
 - 因必要任务临时切换到在线模式后，该联网任务完成或终止时必须第一时间把 Steam 恢复为离线模式，不得让客户端无故保持在线。
 - Steam 处于在线模式时，每次启动 CK3 或其他 Steam 游戏前必须先检查当前账号是否已显示“正在游戏中”或存在其他机器的游戏会话。若账号正在游戏中，视为别的机器正在使用：禁止强行启动、接管或挤下线，以免顶号；停止启动流程并向用户报告。
-- 受管实机若以桌面截图证明 Steam 离线，不能仅凭截图文件时间或新收据时间判断画面新鲜度；同一画面哈希复现、画面时钟停滞时，必须取得可核验的当前窗口变化及新桌面像素，再直接审阅新图。`tools/steam_offline_fresh_frame.py` 只生成窗口位移与截图新鲜度证据，不自动判定离线；边界与历史 RED 见 `docs/ck3-native-ai/steam-offline-frame-freshness.md`。
+- 旧截图、窗口位移和 ToDesk 恢复文档保留为历史诊断资料，不再构成 Steam 状态确认或启动的截图前置；新任务不得自动沿用其屏幕操作步骤。后台查询的实现及边界见 `tools/steam_offline_state_probe.py` 与 `tools/steam_offline_native_provider_v1.py`。
 
 ## Windows Defender 项目构建 EXE 排除（2026-10-05 用户指令）
 

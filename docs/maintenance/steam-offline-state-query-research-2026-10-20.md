@@ -56,3 +56,9 @@ Python 消费者用共享 TypedDict 的判别联合：`status: Literal["observed
 资格步骤：先只读核对已有 CDP 的监听所有者、执行上下文和固定 getter；通过 [CDP Runtime.evaluate](https://chromedevtools.github.io/devtools-protocol/tot/Runtime/#method-evaluate) 返回 JSON，限定超时，允许时设置 throwOnSideEffect；响应不完整、换进程、上下文消失或未确认原生状态来源时返回 unavailable。首次资格在获准维护窗口中与当前规定的离线画面交叉核对，并覆盖在线模式但断网、好友离线、未登录、过渡期、错误类型与 JSON 往返等负例。需要启用 CEF 调试时属于后续客户端启动配置工作；本轮没有启用、安装框架或重启。另行保存实际接口版本与失败语义，不能只因源码存在就声称探针已通过。
 
 现行 AGENTS.md 仍要求实机前的新鲜离线画面。本研究没有替换该门禁；当前可交付状态是**接口已定位、版本源码已核、UIA 当前不可用、CDP 运行时读回待资格**。
+
+## 2026-10-21 实施及指令补记
+
+上述结尾是研究当时的历史状态。`machine_id: xenoamess-full-tower-eb9d2c1186`，2026-10-20T16:58:24.704724Z 已用原生只读 provider 再次实测 `offline=true`，完整 CLI 约0.53秒，无截图、焦点或窗口操作。入口为 `tools/steam_offline_state_probe.py`，23项测试及5源严格类型检查已通过；原生路径只确认离线正例，零值或未知版本返回 unavailable，不能误报在线。
+
+最新用户要求后台确认并覆盖旧截图前置，已更新 AGENTS.md；后续启动接入新鲜、来源绑定的后台回执。实际回执为外置 PREP13/ROOT-STEAM-OFFLINE-NATIVE01.json，观察时间如上，不冒充未来状态。
