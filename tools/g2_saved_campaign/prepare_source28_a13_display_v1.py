@@ -4,7 +4,7 @@ import sys, json, hashlib, types
 from pathlib import Path
 
 from typing import Callable, Protocol, TypedDict, cast
-import re
+import re,ast
 type JSONValue = None | bool | int | float | str | list[JSONValue] | dict[str,JSONValue]
 type JSONObject = dict[str,JSONValue]
 type Outputs = dict[Path,bytes]
@@ -28,7 +28,7 @@ class Recording02Plan(TypedDict):
  task_nonce: str
  full_storage_ref: ExactRef
 
-def _recording02_plan(value: object) -> Recording02Plan:
+def _recording02_plan(value: object, *, expected_schema: str = 'xar.A13-recording02-compose-input/v1') -> Recording02Plan:
  if type(value) is not dict:
   raise ValueError('record02 plan must be an exact object')
  obj=cast(dict[object,object],value)
@@ -52,7 +52,7 @@ def _recording02_plan(value: object) -> Recording02Plan:
   raise ValueError('record02 full reference needs exact path/int bytes/lowercase SHA')
  if not Path(path).is_absolute():
   raise ValueError('record02 full reference must be absolute')
- if strings['schema']!='xar.A13-recording02-compose-input/v1' or strings['machine_id']!=MACHINE:
+ if strings['schema']!=expected_schema or strings['machine_id']!=MACHINE:
   raise ValueError('record02 schema or actual machine differs')
  for key in ('display_nonce','task_nonce'):
   if re.fullmatch('[0-9a-f]{32}',strings[key]) is None:
@@ -178,7 +178,15 @@ def build_task_spec(display_values,display_review,*,task_nonce,game_launch_ref,p
 # Same-Game recording02 remains independent of the frozen A13 capture.
 BASE_NATIVE=NATIVE
 RECORD02_GAME=(245096,134369913993181155)
-HOOK_HELPERS="""class _NativeHookPendingV1(RuntimeError):
+HOOK_HELPERS="""def _native_obs_dimension_v1(value: object) -> int:
+    if type(value) is int:
+        return value
+    if type(value) is float and math.isfinite(value) and value.is_integer():
+        return int(value)
+    raise RuntimeError("OBS source dimension must be a finite integral Number; actual=" + repr(value))
+
+
+class _NativeHookPendingV1(RuntimeError):
     pass
 
 
@@ -203,13 +211,15 @@ def hook_ready_capture(raw: bytes) -> bytes:
  ('import argparse\n','import argparse\nfrom typing import Callable\n'),
  ('def _require_game_client_2560_v1(client_rect):',HOOK_HELPERS+'def _require_game_client_2560_v1(client_rect):'),
  ('    if require_native_source and (actual.get("sourceWidth"), actual.get("sourceHeight")) != (2560, 1440):\n        raise RuntimeError("owned Game source is not native 2560x1440; upscaling forbidden")',
-  '    dimensions = (actual.get("sourceWidth"), actual.get("sourceHeight"))\n    if require_native_source and dimensions == (0, 0) and all(type(v) is int for v in dimensions):\n        raise _NativeHookPendingV1("owned Game hook not ready; actual source=0x0")\n    if require_native_source and (dimensions != (2560, 1440) or any(type(v) is not int for v in dimensions)):\n        raise RuntimeError("owned Game source must be native 2560x1440; actual=" + repr(dimensions) + "; upscaling forbidden")'),
+  '    dimensions = (_native_obs_dimension_v1(actual.get("sourceWidth")), _native_obs_dimension_v1(actual.get("sourceHeight")))\n    if require_native_source and dimensions == (0, 0):\n        raise _NativeHookPendingV1("owned Game hook not ready; actual source=0x0")\n    if require_native_source and dimensions != (2560, 1440):\n        raise RuntimeError("owned Game source must be native 2560x1440; actual=" + repr(dimensions) + "; upscaling forbidden")'),
+ ('    return dict({key: actual[key] for key in expected}, sourceWidth=actual.get("sourceWidth"), sourceHeight=actual.get("sourceHeight"))',
+  '    return dict({key: actual[key] for key in expected}, sourceWidth=dimensions[0], sourceHeight=dimensions[1])'),
  ('            time.sleep(2)\n            ready_frame = screenshots("before-recording")',
   '            def native_hook_check() -> None:\n                guard()\n                _output_binding(engine)\n                source_binding()\n            _wait_native_hook_v1(native_hook_check)\n            ready_frame = screenshots("before-recording")')]
  for a,z in pairs:text=_ops.swap(text,a,z)
  inverse=text
  for a,z in reversed(pairs):inverse=_ops.swap(inverse,z,a)
- require(inverse.encode()==raw,'hook changed beyond four exact seams')
+ require(inverse.encode()==raw,'hook changed beyond five exact seams')
  out=text.encode();compile(out,'A13-hook-ready','exec');return out
 
 def _recording01_closure() -> list[ExactRef]:
@@ -267,4 +277,74 @@ def compose_recording02(raw_plan: JSONObject) -> tuple[Outputs,JSONObject]:
  review['new_capture']=_recording02_json_ref(_recording02_ref(target,outputs[target]))
  return outputs,review
 
-HOOK_NATIVE=(78036,'38fa678095f45e982630303f7f307db960b761c051749a5214ffa1ae36e7de8d')
+HOOK_NATIVE=(78278,'458a747c4f1909ab8e8cf67b98d2ff2d8c6d67b1a724f170f2fb83eed3aaa1ce')
+
+def _recording02_closure(binding_ref: ExactRef) -> list[ExactRef]:
+ q=U13/'recording02-fef7eb51f5af499b94775a5ee2d6beb6'
+ path=q/'publisher-binding.json'
+ if (type(binding_ref) is not dict or set(binding_ref)!={'path','bytes','sha256'}
+     or type(binding_ref['path']) is not str or type(binding_ref['bytes']) is not int
+     or type(binding_ref['sha256']) is not str
+     or binding_ref!=ExactRef(path=str(path),bytes=1029,sha256='c2c043bba29749110b81a0fed3a6fbf45f3bd1b8808e1ca56209051b974db8e2')):
+  raise ValueError('explicit exact recording02 binding required')
+ raw=_ops.exact(path,(1029,binding_ref['sha256']));binding=json.loads(raw)
+ root=U13/'recordings/155f0795-d2c8-4027-8445-5daed7cdb6d8'
+ failed=_ops.exact(root/'failed.json',(208,'1e3f9b19b94516b39442b5ca9bd028e08dff80b306ddab466053a051ab38dc28'))
+ close=_ops.exact(root/'cleanup.json',(651,'612c7ff53bee8559a48899090599e3736cdd9c5dc013756ed616f0296e44a699'))
+ x=json.loads(close);c=x['engine_close']
+ require(x['inputs_unbound'] is True and c['normal_exit_proven'] is True and c['actual_exit_code']==0
+  and c['forced_process_calls']==0,'recording02 owned OBS normal0')
+ refs=_recording01_closure()+[_recording02_ref(path,raw),_recording02_ref(root/'failed.json',failed),_recording02_ref(root/'cleanup.json',close)]
+ for p,e in [(q/'ROOT-NORMAL-PUBLISHER-CLOSE01.json',(1174,'7373fcd085f75ed4f37a8d4a27c66af0333e39ac388ea3fcb88d85788625c6cf')),
+  (O/'tasks/spec-display-a13-recording02/CLOSED.json',(745,'3d00a9c1e8dfbcbcc897eb332cb7aa7eef8a6f9732818bf36125d7c8b1130187')),
+  (U13/'ROOT-A13-FAILED-DISPLAY02-UNREGISTER01.json',(2030,'c576fceab24ae5cce469287e599b68ba5b2c3e696d8a403773288d91dc0d1972'))]:
+  data=_ops.exact(p,e);refs.append(_recording02_ref(p,data))
+ started_ref=binding['publisher_started'];started=json.loads(_ops.exact(Path(started_ref['path']),(started_ref['bytes'],started_ref['sha256'])))
+ owner=q/'publisher/OWNER-CLOSED.json';data=finite(owner);proof=json.loads(data)
+ require(all(type(v) is int for v in (started['game']['pid'],started['game']['creation_filetime'],
+  started['publisher']['pid'],started['publisher']['creation_filetime'])),'strict Game/publisher identities')
+ require(binding['machine_id']==proof['machine_id']==MACHINE
+  and proof['publisher']==started['publisher'] and started['game']['pid']==245096
+  and started['game']['creation_filetime']==RECORD02_GAME[1]
+  and proof['kernel_exit_observed'] is True and proof['exit_code']==0
+  and proof['forced_process_calls']==0,'recording02 actual publisher normal0')
+ refs.append(_recording02_ref(owner,data))
+ return refs
+
+def compose_recording03(raw_plan: JSONObject, *, binding_ref: ExactRef) -> tuple[Outputs,JSONObject]:
+ """Independent record03; consume actual record02 failure and exact binding."""
+ plan=_recording02_plan(raw_plan,expected_schema='xar.A13-recording03-compose-input/v1')
+ last=json.loads(finite(O/'tasks/spec-display-a13-recording02/SPEC.json'))
+ require(all(value not in ('fef7eb51f5af499b94775a5ee2d6beb6',last['nonce'])
+  for value in (plan['display_nonce'],plan['task_nonce'])),'fresh record03 nonces')
+ tree=ast.parse(finite(__file__))
+ node=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='compose_recording02')
+ text=ast.get_source_segment(finite(__file__).decode(),node)
+ if text is None:raise ValueError('record02 source function absent')
+ pairs=[
+  ('def compose_recording02(','def _recording03_recipe('),
+  ('plan=_recording02_plan(raw_plan)',"plan=_recording02_plan(raw_plan,expected_schema='xar.A13-recording03-compose-input/v1')"),
+  (" ns: dict[str,object]=",''' original=text
+ count=text.count('recording02');text=text.replace('recording02','recording03')
+ require(text.replace('recording03','recording02',count)==original,'exact record03 namespace')
+ original=text
+ count=text.count('RECORDING02');text=text.replace('RECORDING02','RECORDING03')
+ require(text.replace('RECORDING03','RECORDING02',count)==original,'exact record03 generation')
+ ns: dict[str,object]='''),
+  ('spec-display-a13-recording02','spec-display-a13-recording03'),
+  ('ck3_obs_capture_hook240_recording02_a13.py','ck3_obs_capture_hook240_recording03_a13.py'),
+  ('start_new_game_display_recording02_a13.py','start_new_game_display_recording03_a13.py'),
+  ('SOURCE-PINS-A13-RECORDING02.json','SOURCE-PINS-A13-RECORDING03.json'),
+  ('old_failed_recording="edccd0af-a9f9-42fa-91e1-53fa06b1f4be"','old_failed_recording="155f0795-d2c8-4027-8445-5daed7cdb6d8"')]
+ for before,after in pairs:text=_ops.swap(text,before,after)
+ inverse=text
+ for before,after in reversed(pairs):inverse=_ops.swap(inverse,after,before)
+ original=ast.get_source_segment(finite(__file__).decode(),node)
+ require(inverse==original,'record03 function changed outside exact seams')
+ def closure() -> list[ExactRef]:
+  return _recording02_closure(binding_ref)
+ scope: dict[str,object]=dict(globals());scope['_recording01_closure']=closure
+ exec(compile(text,'A13-record03-RAM-recipe','exec'),scope)
+ fn=scope['_recording03_recipe']
+ if not callable(fn):raise ValueError('record03 recipe not callable')
+ return cast(Callable[[JSONObject],tuple[Outputs,JSONObject]],fn)(raw_plan)
