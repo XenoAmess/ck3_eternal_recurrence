@@ -1,0 +1,69 @@
+{
+  "schema": "xar.m7.root-projection-core-house-corrective/v1",
+  "status": "PASS_SOURCE_ONLY",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-20T03:59:28.499460+00:00",
+  "observed_at_utc": "2026-10-20T03:59:31.055267+00:00",
+  "budget": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-M7-SOURCE-EXTRA16KiB0630-ADMITTED01.json",
+    "bytes": 2978,
+    "sha256": "2e18a9ee68c4bd2faa8a0dd9907fcb771e2f2698bd8455107f9a816a5f0e0979"
+  },
+  "old_helper_exact_backup": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-PARALLEL-QUALIFICATION0630-01\\m7\\HELPER-before-core-house-source-ready.py",
+    "bytes": 6058,
+    "sha256": "c1d1d5170d7ce116e99a0516d62ff8a49b10d34b2d3f8bf06f04f62daa46323c"
+  },
+  "new_helper": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\player_heir_projection_service_contract_v1.py",
+    "bytes": 6225,
+    "sha256": "7a4c8c737bbc942dec396b9f60aa7eb50f8301d8a2782231de730a568d1b3454"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\qualify_core_house_v1.py",
+    "bytes": 8158,
+    "sha256": "5b62fe655ed69aadbd96057b8707e190ef90b9fefbd5fbf35daf44d4d74f16b3"
+  },
+  "prior_Service_MCP_qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\SOURCE-READY.json",
+    "bytes": 3554,
+    "sha256": "d0a25ab7298d7b8c37dc578ce36bd4399aa485153a6259f04bf5728094dc5726"
+  },
+  "previous_three_leaf_recipe": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\SOURCE-CLOSURE-REVIEW.json",
+    "bytes": 4789,
+    "sha256": "db27fb599cbef654965741f9f1ab6313e9fb6a4a40a7cb0b1c695427616b79b2"
+  },
+  "recipe_override": "New helper pin only; Service transform and epoch append unchanged",
+  "checks": {
+    "valid_positive_and_unknown": true,
+    "new_rejects": [
+      "paused",
+      "map_ready",
+      "has_played_character",
+      "played_character_alive",
+      "house_id"
+    ],
+    "old_acceptance_RAM_tool": "d909e0",
+    "Service_MCP_tests_repeated": 0
+  },
+  "actual_H": "NOTRUN",
+  "M7": "in_progress",
+  "G2": "6/8",
+  "runtime_adoption": false,
+  "actions": {
+    "Game_Native_Task_desktop_MCP_calls": 0,
+    "SDK_frozen_source_writes": 0
+  },
+  "allocation_correction": "Old logical-as-allocated figures invalid. Actual prior FileStandardInfo=69632 incl dir, over65536 by4096; explicit16KiB supplement.",
+  "allocation_before_proof": {
+    "Z": 77824,
+    "D": 12288
+  },
+  "allocation_method": "GetFileInformationByHandleEx FileStandardInfo",
+  "retention": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2026-10-27T06:30:00Z",
+    "reason": "Current candidate and earlier bytes until integration"
+  }
+}

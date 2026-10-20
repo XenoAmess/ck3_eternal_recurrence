@@ -1,0 +1,82 @@
+{
+  "schema": "xar.m7.root-projection-Service-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:42:55.187321+00:00",
+  "started_at_utc": "2026-10-20T03:42:50.080462+00:00",
+  "status": "PASS",
+  "tests_run": 1,
+  "failures": 0,
+  "errors": 0,
+  "elapsed_seconds": 0.8491238998249173,
+  "output": "test_original_Service_and_registered_MCP_optional_projection (__main__.main.<locals>.Focused.test_original_Service_and_registered_MCP_optional_projection) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.849s\n\nOK\n",
+  "original_failure_reproduced": "campaign-root backend returned a malformed result",
+  "synthetic_cases": {
+    "registered_MCP": 2,
+    "legacy_facade": 1,
+    "malformed_rejections": 9
+  },
+  "budget": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-PARALLEL-SOURCE-QUALIFICATION1MiB0630-ADMITTED01.json",
+    "bytes": 4539,
+    "sha256": "0d279e0bcc91159536b4e2c86a8079f24db195df9456a5c819d7a773ecdae1d4"
+  },
+  "capacity_at_start": {
+    "D": {
+      "total": 14000483987456,
+      "used": 13126945906688,
+      "free": 873538080768
+    },
+    "Z": {
+      "total": 4096787476480,
+      "used": 3918623723520,
+      "free": 178163752960
+    }
+  },
+  "source_Service": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src20\\xar_autoplayer\\bridge\\service.py",
+    "bytes": 879315,
+    "sha256": "aa9fdddecfb10487c30f998f0ecd6990b3b79a87e8e721e9c20a82e58c27e663"
+  },
+  "method_before_sha256": "fc523f7e7fb2bbd7f5fa9822826404e297eeff6d27bb9f2be56d85e3d21164d2",
+  "method_after_sha256": "4f62dc9363e7f941047d0d6bfcb98756592b9303d402e24a60a690248ea74c30",
+  "transformed_Service_sha256": "d532887e030750ba9ef52d6a580a255e9f21f11758dd87eded113bad9a4e3aa4",
+  "production_helper_target": "xar_autoplayer/bridge/player_heir_projection_service_contract_v1.py",
+  "boundaries": {
+    "all_Game_Native_provider_frames": "synthetic",
+    "actual_H": "NOTRUN",
+    "M7": "in_progress",
+    "G2": "6/8",
+    "runtime_adoption": false,
+    "Game_Native_MCP_external_desktop_Task_actions": 0,
+    "SDK_or_SAVE_writes": 0
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2026-10-27T06:30:00Z",
+    "reason": "Current unadopted source candidate; consolidate after Root integration."
+  },
+  "source_files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\player_heir_projection_service_contract_v1.py",
+      "bytes": 6058,
+      "sha256": "c1d1d5170d7ce116e99a0516d62ff8a49b10d34b2d3f8bf06f04f62daa46323c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\qualify_v1.py",
+      "bytes": 14390,
+      "sha256": "5fff62e88ee2f40903f16a6baae6e8fb6fb970d58b2943f8e98440b80827d066"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\service.diff",
+      "bytes": 1281,
+      "sha256": "bd13ca7cabb934005c0b4a9c1ab740a3cf251f3dffd241792a1ef771c7dd838b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\transform_service_v1.py",
+      "bytes": 2062,
+      "sha256": "59bd644957c49289e20e2e56810e287b6c279dbeb0839cbb79f8729c0bb62aa5"
+    }
+  ],
+  "source_allocation_before_proof": 27887,
+  "artifact_allocation_before_proof": 8192
+}

@@ -1,0 +1,158 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py
+@@ -10,6 +10,8 @@
+ from __future__ import annotations
+ 
+ from collections.abc import Mapping
++
++from .reused_sway_opportunity_v1 import reused_sway_observation_gap_v1
+ 
+ RAW_PER_DAY = 24
+ MONTH_RAW = 30 * RAW_PER_DAY
+@@ -89,7 +91,11 @@
+         terminal = resolved.get("terminal_intervention")
+         terminal_observed = (isinstance(terminal, Mapping)
+                              and terminal.get("instance_terminal_outcome_observed") is True)
+-        if not terminal_observed:
++        # Reuse records an observation gap, never an observed end. A fresh
++        # ordinary target query still owns empty-slot/legal admission.
++        reused_gap = reused_sway_observation_gap_v1(
++            resolved, actor_character_id=actor, date_raw=date)
++        if not terminal_observed and reused_gap is None:
+             target = resolved.get("target_character_id")
+             if not _id(target):
+                 return {"job": None, "reason": "resolved_identity_unavailable", "state": current}
+@@ -102,8 +108,9 @@
+                 "reason": "new_identity_or_monthly_observation", "state": current,
+             }
+         if active_observation_only is True:
+-            return {"job": None, "reason": "original_terminal_already_observed", "state": current}
+-        if current.get("last_terminal_action_id") != resolved.get("action_id"):
++            return {"job": None, "reason": ("original_storage_reused_terminal_unknown"
++                    if reused_gap is not None else "original_terminal_already_observed"), "state": current}
++        if terminal_observed and current.get("last_terminal_action_id") != resolved.get("action_id"):
+             # This is an existing observed terminal fact, not a new signal API.
+             current.update(last_terminal_action_id=resolved.get("action_id"),
+                            no_operation_count=0, next_check_date_raw=None)
+--- a/ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py
+@@ -15,6 +15,7 @@
+ from .bridge.active_scheme_sway_formal_private_transport import RECEIPT_SOURCE_KEY
+ from .bridge.version_identity import CK3_12004
+ from .environment import write_json_atomic
++from .reused_sway_opportunity_v1 import fresh_empty_sway_slot_after_reuse_v1
+ 
+ 
+ LEDGER_FILE = "active-scheme-sway-formal-private-v1.json"
+@@ -382,6 +383,14 @@
+     if readback["matching_sway_active"] is True:
+         return {**followup, "decision": "retain_existing_sway"}
+     terminal = resolved.get("terminal_intervention")
++    reused_gap = fresh_empty_sway_slot_after_reuse_v1(resolved, readback)
++    if reused_gap is not None:
++        # Keep the lost old end UNKNOWN; the new UUID gets no old gain.
++        # consume_sway_private_once already joined this fresh read to its
++        # current frame and still calls unchanged should_submit_sway.
++        return {**followup, "decision": "repeat_selected_target",
++                "previous_instance_observation_gap": reused_gap,
++                "previous_instance_terminal_observed": False}
+     if (not isinstance(terminal, Mapping)
+             or terminal.get("instance_terminal_outcome_observed") is not True):
+         return {**followup, "decision": "observe_tracked_instance_end"}
+--- a/ck3_autonomous_player/src/xar_autoplayer/reused_sway_opportunity_v1.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/reused_sway_opportunity_v1.py
+@@ -0,0 +1,94 @@
++"""Release opportunity selection after an independently observed storage reuse.
++
++This is historical observation loss, never a terminal outcome. The caller still
++needs the existing fresh target query and complete native empty-slot/legal checks
++before a new UUID can enter the original once-only consumer.
++"""
++from collections.abc import Mapping
++
++from .bridge.version_identity import CK3_12004, require_exact_native_build
++
++
++def reused_sway_observation_gap_v1(resolved, *, actor_character_id, date_raw):
++    from .sway_formal_consumer import _resolved_instance_identity
++
++    if (not isinstance(resolved, Mapping) or resolved.get("status") != "applied"
++            or resolved.get("postcondition_verified") is not True
++            or type(actor_character_id) is not int
++            or resolved.get("actor_character_id") != actor_character_id
++            or type(date_raw) is not int):
++        return None
++    terminal = resolved.get("terminal_intervention")
++    if (isinstance(terminal, Mapping)
++            and terminal.get("instance_terminal_outcome_observed") is True):
++        return None
++    identity = _resolved_instance_identity(resolved)
++    observation = resolved.get("latest_instance_observation")
++    if not isinstance(identity, Mapping) or not isinstance(observation, Mapping):
++        return None
++    original = {key: resolved.get(key) for key in (
++        "action_id", "actor_character_id", "target_character_id")}
++    original.update({key: identity.get(key) for key in (
++        "scheme_instance_id", "scheme_instance_generation")})
++    if (not isinstance(original["action_id"], str) or not original["action_id"]
++            or any(type(original[key]) is not int or not 0 < original[key] < 0xFFFFFFFF
++                   for key in ("actor_character_id", "target_character_id", "scheme_instance_id"))
++            or original["actor_character_id"] == original["target_character_id"]
++            or type(original["scheme_instance_generation"]) is not int
++            or original["scheme_instance_generation"] != original["scheme_instance_id"] >> 24
++            or any(observation.get(key) != value for key, value in original.items())
++            or observation.get("tracked_instance_active") is not False
++            or observation.get("instance_terminal_outcome_observed") is not False
++            or type(observation.get("source_native_revision")) is not int
++            or observation["source_native_revision"] <= 0
++            or type(observation.get("source_date_raw")) is not int
++            or observation["source_date_raw"] > date_raw):
++        return None
++    native = observation.get("native_observation")
++    if (not isinstance(native, Mapping) or native.get("schema") != "xar.ck3.sway_completion.v1"
++            or native.get("available") is not True
++            or any(native.get(key) != original[key] for key in (
++                "actor_character_id", "target_character_id", "scheme_instance_id", "scheme_instance_generation"))
++            or native.get("snapshot_revision") != observation["source_native_revision"]
++            or native.get("date_raw") != observation["source_date_raw"]
++            or any(native.get(key) is not value for key, value in {
++                "instance_source_observed": True, "instance_present": False,
++                "storage_slot_reused": True, "exact_instance_join_ready": False,
++                "native_status_observed": False, "native_terminal_state_observed": False,
++            }.items())
++            or native.get("native_status_raw") is not None):
++        return None
++    try:
++        if (require_exact_native_build(native.get("exact_ck3_build"), native.get("exe_sha256")) != CK3_12004
++                or require_exact_native_build(observation.get("exact_ck3_build"), observation.get("exe_sha256")) != CK3_12004):
++            return None
++    except ValueError:
++        return None
++    return {**original, "source_native_revision": observation["source_native_revision"],
++            "source_date_raw": observation["source_date_raw"],
++            "storage_slot_reused": True, "instance_terminal_outcome_observed": False,
++            "terminal_cause": "unknown"}
++
++
++def fresh_empty_sway_slot_after_reuse_v1(resolved, readback):
++    """Called only after the formal consumer's unchanged current-frame join."""
++    if not isinstance(readback, Mapping):
++        return None
++    gap = reused_sway_observation_gap_v1(resolved,
++        actor_character_id=readback.get("actor_character_id"), date_raw=readback.get("date_raw"))
++    if (gap is None or readback.get("schema") != "active-scheme-sway-private-read-v1"
++            or readback.get("target_character_id") != gap["target_character_id"]
++            or type(readback.get("active_scheme_count")) is not int
++            or readback["active_scheme_count"] != 0
++            or not isinstance(readback.get("active_sway_instances"), list)
++            or readback["active_sway_instances"] != []
++            or readback.get("matching_sway_active") is not False
++            or readback.get("native_complete_can_send") is not True
++            or readback.get("native_legal_now") is not True):
++        return None
++    try:
++        if require_exact_native_build(readback.get("exact_ck3_build"), readback.get("exe_sha256")) != CK3_12004:
++            return None
++    except ValueError:
++        return None
++    return gap

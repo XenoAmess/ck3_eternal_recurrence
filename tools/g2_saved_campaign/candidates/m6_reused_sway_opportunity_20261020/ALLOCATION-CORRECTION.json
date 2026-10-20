@@ -1,0 +1,35 @@
+{
+  "schema": "xar.m6.reused-sway-allocation-correction/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:44:31.818403+00:00",
+  "review_at_utc": "2026-10-20T06:30:00+00:00",
+  "original_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-PARALLEL-QUALIFICATION0630-01\\m6\\RESULT.json",
+    "bytes": 7406,
+    "sha256": "614c9d478799c360f7a7a6485c275e61d42bef0bfa74eef6fe8932511bcf4888"
+  },
+  "correction": "Original GetCompressedFileSizeW read returned logical length for plain files. File allocation here is actual FileStandardInfo.AllocationSize; directories retain 4096 B conservative overhead each.",
+  "production_source_unchanged": true,
+  "tests_rerun": 0,
+  "source_usage_before_correction": {
+    "files": 5,
+    "logical_bytes": 46322,
+    "file_allocated_bytes": 57344,
+    "directory_overhead_conservative_bytes": 4096,
+    "conservative_total_bytes": 61440
+  },
+  "artifact_usage_before_correction": {
+    "files": 3,
+    "logical_bytes": 59275,
+    "file_allocated_bytes": 65536,
+    "directory_overhead_conservative_bytes": 12288,
+    "conservative_total_bytes": 77824
+  },
+  "source_after_correction_cap": 65536,
+  "artifact_after_correction_and_atomic_temp_cap": 131072,
+  "qualifier_current": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m6_reused_sway_opportunity_20261020\\qualify.py",
+    "bytes": 20757,
+    "sha256": "49710c80f621126cc966fe01b62538b55a478edf4ffd44c4d8c552bcf8a3f578"
+  }
+}

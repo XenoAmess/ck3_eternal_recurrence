@@ -1,0 +1,49 @@
+{
+  "schema": "xar.nonleading-procurement-package-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T04:03:29Z",
+  "machine_source": "same assigned lane; retained initial qualification tools/ck3_live_run_id.py machine",
+  "status": "SOURCE_FOLLOWUP_QUALIFIED_NOT_DEPLOYED",
+  "amends": "SOURCE-READY.json procurement stage requires this additional package-scope closure; guard remains independent. Original seven-test evidence is preserved unchanged.",
+  "source": {"path": "package_scope_followup.py", "bytes": 10894, "sha256": "f81aafd2c8933581482080285bdd915d2b3dc4a104c92ab19f427122160ae36e"},
+  "interface": "transform_package(raw_bytes, inverse=False)",
+  "relative": "xar_autoplayer/war_strategic_reserve_v1.py",
+  "preimage": {"bytes": 33268, "sha256": "9c86a5f0fc82e292fc3baa553d128978b8b53f74ac7dae067bf86d8344b7a703"},
+  "RAM_output": {"bytes": 36301, "sha256": "c9f65308fd29fa57c960a3e942255158c9f3eac2bdfcfce9d4d8b1268b5e98d6"},
+  "net_bytes": 3033,
+  "composition": "Original transform.py stage=procurement changes tradeoff/construction. This independent transform changes strategic reserve. Three distinct existing leaves, total net +4330 B, zero new production leaves. Reuse strict nonleading helper unchanged; include all four dependency names in Source26 epoch/freeze. No Strategy or Driver patch in this package.",
+  "qualification": {
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 tools/g2_saved_campaign/candidates/nonleading_realm_defence_cash_20261020/package_scope_followup.py",
+    "unique_tool_chunk": "36b38c",
+    "subcases": 4,
+    "failures": 0,
+    "whole_command_seconds": 1.8602874,
+    "result": {"path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/G2-PARALLEL-QUALIFICATION0630-01/decision/package-followup01/RESULT.json", "bytes": 4823, "sha256": "14fb37cc43955bb3057201e3487cceb75b7a6f1917b4d3ce9d6313384c6c7235"},
+    "patch": {"bytes": 4491, "sha256": "356ac4a149cbd2086e308a6c0d7b1e2d306557c26d1c737ab0947f5ee8ea664f"},
+    "cases": [
+      "Both A/B currently strictly qualified: switching procurement focus keeps A's 15000000 raw committed contract, 5000000 remaining, and rejects the next 15000000 contract.",
+      "A's siege scope disappears but the same native defender War stays active: verified historical contract remains in the shared budget with the same rejection.",
+      "A ends and no linked war remains: genuinely disjoint B may open a new package.",
+      "A remains active but historical qualified scope is unknown: budget unavailable, never fresh and never promoted to current procurement authority."
+    ]
+  },
+  "limits": "Source/synthetic qualification only. Current connections require the unchanged strict helper. Historical native frame/date and same actor/episode can restrict budget; native revisions are not ordered across reloads. No Game/native/MCP/Task/desktop operation, runtime adoption, actual hire/payment/arrival, land-retention or performance credit. Source25 and frozen runtime untouched.",
+  "storage": {
+    "review_at_utc": "2026-10-20T06:30:00+00:00",
+    "FileStandardInfo_class": 1,
+    "source_actual_allocation_before_this_proof": 53248,
+    "source_directory_floor": 4096,
+    "source_proof_reserved": 4096,
+    "source_hard_bytes": 65536,
+    "final_source_actual_allocation_including_this_proof": 57344,
+    "final_artifact_actual_allocation": 65536,
+    "final_artifact_directory_floor": 8192,
+    "final_allocation_readback_tool_chunk": "9c0f13",
+    "artifact_actual_allocation_peak_before_result": 57344,
+    "artifact_directory_floor": 16384,
+    "artifact_result_and_filesystem_reserved": 32768,
+    "artifact_hard_bytes": 196608,
+    "owned_synthetic_fixture_cleaned": true,
+    "no_cleanup_credit_claimed": true
+  }
+}

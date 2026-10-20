@@ -1,0 +1,88 @@
+{
+  "schema": "xar.nonleading-realm-defence-cash-policy-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:44:25Z",
+  "machine_source": "qualification invokes tools/ck3_live_run_id.py machine and checks assigned storage-card identity",
+  "status": "SOURCE_CANDIDATE_QUALIFIED_NOT_DEPLOYED",
+  "parent_business_commit": "9b791aae9bb1314162aa5cab923e6cca2892e6d8",
+  "scope": "Future source-only exact reversible transform, two small production leaves compiled in RAM. Frozen Source25 and runtime-a04 unchanged.",
+  "source": {
+    "transform.py": {"bytes": 5095, "sha256": "c0caaacc4f9d2e161faef178b430a1626ab5ccf814f198abc2a80448a5a6ef48"},
+    "qualify.py": {"bytes": 23518, "sha256": "379da598606996f33a250e55f8d26ea44abe997acc56cd232059ae17206cdf1d"}
+  },
+  "preimages": {
+    "xar_autoplayer/war_reinforcement_tradeoff_v1.py": "4e22f96567f30b1b6101ea29e33ec485b417cea8f23ba0c2851070bbc91a767a",
+    "xar_autoplayer/construction_formal_consumer.py": "3bd067119b9d98eea6f1f57416fc5d42560dfde57183f67ff56926d314b62431",
+    "xar_autoplayer/nonleading_player_realm_siege_v1.py": "3f5103e42c8d7d785aa7680d19be592407a55b8e3d6bb4fb55159817fbe925e6"
+  },
+  "stages": {
+    "guard": {
+      "behavior": "For the existing strict current nonleading defensive stationary hostile siege in the player realm, defer optional construction before the ample-cash check, including when ample-cash would permit an outlay. Retain the selected ordinary war/clock action. Existing procurement scope stays unchanged.",
+      "patch_bytes": 3485,
+      "patch_sha256": "36aa8300431252cb4f7778d26863ec4c78795d0d07bf7497a118ecd628422183",
+      "RAM_outputs": {
+        "xar_autoplayer/war_reinforcement_tradeoff_v1.py": {"bytes": 20947, "sha256": "140c48bfa44184ca2d5c48e36d29aa0c3763d531e7648d13d58cf7ed509adc95"},
+        "xar_autoplayer/construction_formal_consumer.py": {"bytes": 40508, "sha256": "90ff70251640abd243bea7a0194f057ab80b719899569e4ca3feaf53c29b9e3e"}
+      }
+    },
+    "procurement": {
+      "behavior": "Explicit additional gameplay policy: add that same qualified nonleading war to protect_cash_reasons, permitting existing procurement focus and assessor to consider it. Not a read-only repair and no performance benefit claimed.",
+      "patch_basis": "guard to procurement",
+      "patch_bytes": 1247,
+      "patch_sha256": "8538d3a5b764c2c8609f1e0fe8894a1b7703bd846042a6d044abcba53c887c4c",
+      "RAM_outputs": {
+        "xar_autoplayer/war_reinforcement_tradeoff_v1.py": {"bytes": 21099, "sha256": "d9f32c208fa47a0b2007f4a5194462a9929fac2f636c8e58ba25a8cffb1a089c"},
+        "xar_autoplayer/construction_formal_consumer.py": {"bytes": 40508, "sha256": "90ff70251640abd243bea7a0194f057ab80b719899569e4ca3feaf53c29b9e3e"}
+      }
+    }
+  },
+  "qualification": {
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 tools/g2_saved_campaign/candidates/nonleading_realm_defence_cash_20261020/qualify.py",
+    "unique_run_tool_chunk": "8168eb",
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "unittest_seconds": 0.035,
+    "whole_command_seconds": 2.6383944,
+    "log_bytes": 1134,
+    "log_sha256": "b4d0ddd45a3b195af6cba4a0251e6fc44a3d444b79af7a3dd6e466d23f666c59",
+    "result": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/G2-PARALLEL-QUALIFICATION0630-01/decision/RESULT.json",
+      "bytes": 30644,
+      "sha256": "dd01019bc0512c71b19e6f3fd2fb3b1e82b96ac777c64e404ff61604ad3f5e16"
+    },
+    "checks": [
+      "exact inverse and drift refusal; unchanged actual primary-priority semantics after removing additive explanation fields",
+      "otherwise ample cash permits an outlay; guard actually defers it through the ordinary construction consumer with original life-advance and zero native requests",
+      "ten source/realm/movement/side/terminal/event/identity counterfactual cases and no input mutation",
+      "guard retains prior procurement scope; only explicit procurement stage selects the original native mercenary query step",
+      "real strategic assessor can select company zero; native affordability, missing maintenance, insufficient treasury and hostile spawn still reject",
+      "lost hire ACK remains pending and duplicate submit is refused; concrete move/event/termination selected steps preserved",
+      "same-purpose committed contract quote remains in original cumulative procurement package and blocks another over-budget contract"
+    ],
+    "fixture_boundary": "Only unmodified portable695 primary snapshot is actual, historical machine_id unknown. Nonleading/stationary/realm and actionable WarDriver cases are synthetic. No current campaign benefit or native submission was observed."
+  },
+  "limits": [
+    "Strict preexisting helper requires same current objects, native identity, paused map with no blocking event, nonleading defender score strictly between -100 and 100, stationary hostile siege and explicit player-subrealm True. No broad nonleading-war permission.",
+    "No new borrowing/refund/cash, native legality, military reserve, cumulative-package, unknown-pending, movement, peace or surrender behavior is supplied or loosened.",
+    "Original assessor may consider a contract; company employment, attributable payment, actual troops, timely arrival, siege relief and title retention require independent actual results.",
+    "No Game, native, MCP, Task, desktop, Steam or OBS operations. No runtime adoption, native loading, performance, war victory or land-retention credit."
+  ],
+  "storage": {
+    "budget_card": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/G2-PARALLEL-SOURCE-QUALIFICATION1MiB0630-ADMITTED01.json",
+    "budget_card_bytes": 4539,
+    "budget_card_sha256": "0d279e0bcc91159536b4e2c86a8079f24db195df9456a5c819d7a773ecdae1d4",
+    "source_lane_hard_bytes": 65536,
+    "artifact_lane_hard_bytes": 196608,
+    "review_at_utc": "2026-10-20T06:30:00+00:00",
+    "temporary_fixture_logical_peak_bytes": 9671,
+    "temporary_owned_fixture_cleaned": true,
+    "large_source_copies": 0,
+    "large_save_driver_media_reads_or_hashes": 0,
+    "GetCompressedFileSizeW_values_in_external_result_are_reported_API_values": true,
+    "conservative_4096_cluster_ceiling_after_this_proof_source_bytes": 49152,
+    "conservative_4096_cluster_ceiling_artifact_highwater_bytes": 53248,
+    "additional_artifact_filesystem_overhead_reserved_bytes": 32768,
+    "no_physical_cleanup_credit_claimed": true
+  }
+}

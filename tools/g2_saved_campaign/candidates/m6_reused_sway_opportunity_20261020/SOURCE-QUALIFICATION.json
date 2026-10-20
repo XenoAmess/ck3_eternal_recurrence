@@ -1,0 +1,240 @@
+{
+  "schema": "xar.m6.reused-sway-opportunity-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:43:35.650228+00:00",
+  "started_at_utc": "2026-10-20T03:43:33.823723+00:00",
+  "review_at_utc": "2026-10-20T06:30:00+00:00",
+  "status": "SOURCE_AND_SYNTHETIC_QUALIFICATION_PASS_RUNTIME_ADOPTION_PENDING",
+  "base_commit": "9b791aae9bb1314162aa5cab923e6cca2892e6d8",
+  "source_inputs": {
+    "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py": {
+      "bytes": 9667,
+      "sha256": "7962d271184b2ff35a614ca784b6070f708b3de78a65aec6a9494fa1fa38004e"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py": {
+      "bytes": 34660,
+      "sha256": "02ff455d7ae350ba10b4c2cbcd042350499a04d5bd69b3ec3525af408c959ec7"
+    }
+  },
+  "production_outputs": {
+    "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py": {
+      "bytes": 10142,
+      "sha256": "f61d179fccbcb1b656ebafa9b68a04ed9045c0b0b3e1a61fe11ca39361ad3cd4"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py": {
+      "bytes": 35251,
+      "sha256": "99ea0b435442d9b842ebc40cc19601ea03c92a112cb2a8f257550de8ec2d9ad8"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/reused_sway_opportunity_v1.py": {
+      "bytes": 5313,
+      "sha256": "1aaf008844ded420670a14d1bd7657a6b55ab062c9ee8285591ed6ec66cfe125"
+    }
+  },
+  "diff": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m6_reused_sway_opportunity_20261020\\exact-source25.diff",
+    "bytes": 8994,
+    "sha256": "45a9650191a2eec4a83c74a4764bb0fb66269ed3fa2efa70d8eb69936e76a979"
+  },
+  "storage_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-PARALLEL-SOURCE-QUALIFICATION1MiB0630-ADMITTED01.json",
+    "bytes": 4539,
+    "sha256": "0d279e0bcc91159536b4e2c86a8079f24db195df9456a5c819d7a773ecdae1d4"
+  },
+  "historical_shape_basis": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\m6-sway-closed-ledger-2026-10-20.json",
+    "bytes": 21864,
+    "sha256": "edfd6027bf508bda9ea9183c8820a18014192d20789f6ae929b4e0c503c63580",
+    "synthetic_endpoint_only": true,
+    "new_live_credit": 0
+  },
+  "tests": [
+    {
+      "name": "existing_typed_native_input_has_complete_empty_inventory",
+      "status": "PASS",
+      "seconds": 9.499955922365189e-06
+    },
+    {
+      "name": "actual_closed_reuse_shape_recognized_without_terminal_credit",
+      "status": "PASS",
+      "seconds": 5.819997750222683e-05
+    },
+    {
+      "name": "round_robin_reaches_new_target_after_reuse",
+      "status": "PASS",
+      "seconds": 6.669992581009865e-05
+    },
+    {
+      "name": "same_target_fresh_legal_empty_read_can_enter_new_uuid",
+      "status": "PASS",
+      "seconds": 2.310005947947502e-05
+    },
+    {
+      "name": "quiet_observer_does_not_repeat_purged_instance_rpc",
+      "status": "PASS",
+      "seconds": 2.6899855583906174e-05
+    },
+    {
+      "name": "war_priority_preserved",
+      "status": "PASS",
+      "seconds": 2.700136974453926e-06
+    },
+    {
+      "name": "same_frame_root_required",
+      "status": "PASS",
+      "seconds": 1.7999904230237007e-05
+    },
+    {
+      "name": "existing_month_cadence_retained",
+      "status": "PASS",
+      "seconds": 1.8399907276034355e-05
+    },
+    {
+      "name": "pending_is_never_rotated_or_replayed",
+      "status": "PASS",
+      "seconds": 5.699926987290382e-06
+    },
+    {
+      "name": "reuse_proof_rejects_plain_absence",
+      "status": "PASS",
+      "seconds": 1.1699972674250603e-05
+    },
+    {
+      "name": "reuse_proof_rejects_unread_source",
+      "status": "PASS",
+      "seconds": 6.8999361246824265e-06
+    },
+    {
+      "name": "reuse_proof_rejects_present_instance",
+      "status": "PASS",
+      "seconds": 1.2899981811642647e-05
+    },
+    {
+      "name": "reuse_proof_rejects_wrong_generation",
+      "status": "PASS",
+      "seconds": 9.799841791391373e-06
+    },
+    {
+      "name": "reuse_proof_rejects_wrong_build",
+      "status": "PASS",
+      "seconds": 2.640020102262497e-05
+    },
+    {
+      "name": "reuse_proof_rejects_status_zero",
+      "status": "PASS",
+      "seconds": 1.009996049106121e-05
+    },
+    {
+      "name": "reuse_proof_rejects_other_original_action",
+      "status": "PASS",
+      "seconds": 5.699926987290382e-06
+    },
+    {
+      "name": "reuse_proof_rejects_future_observation",
+      "status": "PASS",
+      "seconds": 4.400033503770828e-06
+    },
+    {
+      "name": "observed_terminal_keeps_original_lifecycle_policy",
+      "status": "PASS",
+      "seconds": 1.400010660290718e-06
+    },
+    {
+      "name": "generation_zero_valid_reuse_supported",
+      "status": "PASS",
+      "seconds": 1.100008375942707e-05
+    },
+    {
+      "name": "fresh_read_rejects_occupied",
+      "status": "PASS",
+      "seconds": 1.1400086805224419e-05
+    },
+    {
+      "name": "fresh_read_rejects_boolean_count",
+      "status": "PASS",
+      "seconds": 7.4999406933784485e-06
+    },
+    {
+      "name": "fresh_read_rejects_unknown_count",
+      "status": "PASS",
+      "seconds": 6.299931555986404e-06
+    },
+    {
+      "name": "fresh_read_rejects_missing_inventory",
+      "status": "PASS",
+      "seconds": 6.400048732757568e-06
+    },
+    {
+      "name": "fresh_read_rejects_nonempty_inventory",
+      "status": "PASS",
+      "seconds": 7.4999406933784485e-06
+    },
+    {
+      "name": "fresh_read_rejects_still_matching",
+      "status": "PASS",
+      "seconds": 6.200047209858894e-06
+    },
+    {
+      "name": "fresh_read_rejects_illegal",
+      "status": "PASS",
+      "seconds": 6.100162863731384e-06
+    },
+    {
+      "name": "fresh_read_rejects_incomplete_cansend",
+      "status": "PASS",
+      "seconds": 6.200047209858894e-06
+    },
+    {
+      "name": "fresh_read_rejects_wrong_current_build",
+      "status": "PASS",
+      "seconds": 7.400056347250938e-06
+    },
+    {
+      "name": "fresh_read_rejects_old_current_date",
+      "status": "PASS",
+      "seconds": 4.09991480410099e-06
+    },
+    {
+      "name": "same_target_full_formal_once_archive_and_following",
+      "status": "PASS",
+      "seconds": 0.03145430004224181
+    },
+    {
+      "name": "different_target_full_formal_once_archive_and_following",
+      "status": "PASS",
+      "seconds": 0.024468899937346578
+    },
+    {
+      "name": "read_only_scheduler_and_helper_never_mutate_historical_ledger",
+      "status": "PASS",
+      "seconds": 0.00012689991854131222
+    }
+  ],
+  "passed": 32,
+  "failed": 0,
+  "wall_seconds": 1.8267799001187086,
+  "runtime_adopted": false,
+  "G2_M6_complete": false,
+  "G2_credit": "6/8 unchanged",
+  "Game_Native_MCP_Task_desktop_actions": 0,
+  "source_usage_before_report": {
+    "files": 4,
+    "logical_bytes": 36063,
+    "file_allocated_bytes": 36063,
+    "directory_overhead_conservative_bytes": 4096,
+    "conservative_total_bytes": 40159
+  },
+  "artifact_usage_before_report": {
+    "files": 2,
+    "logical_bytes": 51869,
+    "file_allocated_bytes": 51869,
+    "directory_overhead_conservative_bytes": 12288,
+    "conservative_total_bytes": 64157
+  },
+  "artifact_atomic_temporary_peak_extra_cap": 49152,
+  "retention": {
+    "category": "derived",
+    "manual_review_at_utc": "2026-10-20T06:30:00+00:00",
+    "policy_version": "1.0.0",
+    "continue_retention_reason": "Source qualification and unresolved runtime-adoption review"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "xar.m7.root-projection-three-leaf-source-closure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:53:58.867472+00:00",
+  "started_at_utc": "2026-10-20T03:53:58.351445+00:00",
+  "status": "SOURCE_CLOSURE_READY_NOT_ADOPTED",
+  "budget": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\G2-PARALLEL-SOURCE-QUALIFICATION1MiB0630-ADMITTED01.json",
+    "bytes": 4539,
+    "sha256": "0d279e0bcc91159536b4e2c86a8079f24db195df9456a5c819d7a773ecdae1d4"
+  },
+  "prior_Service_MCP_qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\SOURCE-READY.json",
+    "bytes": 3554,
+    "sha256": "d0a25ab7298d7b8c37dc578ce36bd4399aa485153a6259f04bf5728094dc5726"
+  },
+  "test_scope": "Original epoch function with synthetic in-memory source bodies; no Service/MCP test repeated",
+  "checks": {
+    "original_Service_result_reproduced_in_RAM": true,
+    "all_original_epoch_leaves_exist": true,
+    "original_epoch_order_preserved": true,
+    "only_new_validator_appended": true,
+    "new_helper_byte_changes_epoch": true,
+    "original_checked_AST_unchanged": true,
+    "complete_sources_compile": true
+  },
+  "original_epoch_leaf_count": 23,
+  "result_epoch_leaf_count": 24,
+  "changes": [
+    {
+      "target": "xar_autoplayer/bridge/service.py",
+      "kind": "modify_original_method",
+      "input": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src20\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 879315,
+        "sha256": "aa9fdddecfb10487c30f998f0ecd6990b3b79a87e8e721e9c20a82e58c27e663"
+      },
+      "output_bytes": 879793,
+      "output_sha256": "d532887e030750ba9ef52d6a580a255e9f21f11758dd87eded113bad9a4e3aa4",
+      "transform": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\transform_service_v1.py",
+        "bytes": 2062,
+        "sha256": "59bd644957c49289e20e2e56810e287b6c279dbeb0839cbb79f8729c0bb62aa5"
+      },
+      "diff": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\service.diff",
+        "bytes": 1281,
+        "sha256": "bd13ca7cabb934005c0b4a9c1ab740a3cf251f3dffd241792a1ef771c7dd838b"
+      }
+    },
+    {
+      "target": "xar_autoplayer/bridge/player_heir_projection_service_contract_v1.py",
+      "kind": "new_exact_leaf",
+      "input": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\player_heir_projection_service_contract_v1.py",
+        "bytes": 6058,
+        "sha256": "c1d1d5170d7ce116e99a0516d62ff8a49b10d34b2d3f8bf06f04f62daa46323c"
+      },
+      "output_bytes": 6058,
+      "output_sha256": "c1d1d5170d7ce116e99a0516d62ff8a49b10d34b2d3f8bf06f04f62daa46323c"
+    },
+    {
+      "target": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "kind": "append_one_epoch_leaf",
+      "input": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src20\\xar_autoplayer\\successor_ui_pending_ledger_v1.py",
+        "bytes": 21950,
+        "sha256": "fb074d0d5393544803e05ccb3dcc0d97bff9ee334052943a6aaeeb63acf8f313"
+      },
+      "output_bytes": 22019,
+      "output_sha256": "f971a36405a2cb1649436e75c8d9c9c641b3cb30d27bb05876e24f5f76a36193",
+      "transform": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\transform_owner_epoch_v1.py",
+        "bytes": 1351,
+        "sha256": "1a1e9cfe5a2388b2fda83bbc27788fae346889d3a4445bf54cf05a5762f78c23"
+      },
+      "diff": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\owner_epoch.diff",
+        "bytes": 891,
+        "sha256": "a54bdd5037ef770e72a542f7711f335aeef643b8ccff3c59bd4dc39e2cabd7be"
+      }
+    }
+  ],
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\m7_root_projection_contract_20261020\\qualify_closure_v1.py",
+    "bytes": 8239,
+    "sha256": "7062eaa267c68755d385c9ae72e4a3368db6a07a9574c105a7ef0f3440dd18a6"
+  },
+  "capacity_at_start_free_bytes": {
+    "D": 873535197184,
+    "Z": 178161254400
+  },
+  "actions": {
+    "Game_Native_MCP_Task_desktop": 0,
+    "frozen_source_runtime_and_SDK_writes": 0
+  },
+  "adoption": {
+    "source26_assembly": false,
+    "actual_H": "NOTRUN",
+    "M7": "in_progress",
+    "G2": "6/8"
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2026-10-27T06:30:00Z",
+    "reason": "Current exact three-leaf integration recipe until Root source26 assembly"
+  }
+}
