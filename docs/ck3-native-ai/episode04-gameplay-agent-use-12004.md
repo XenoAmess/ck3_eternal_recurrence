@@ -19,7 +19,7 @@
 | 移动已锁定时还能怎样 Halt 或改道？ | [原生判据和接口](episode04-locked-halt-reroute-12004.md)、[R12 已锁定 Halt 实证](episode04-r12-locked-halt-r0175-12004.md)、[R13 已锁定改道实证](episode04-r13-locked-reroute-r0176-12004.md) | 用同帧实际 progress 与 loaded cutoff 的严格比较，实际路线和后来到达分别判断；不能假设 Halt 立即原地停止。早期机制页的待实测说明以其当时日期解释，后继实证从当前执行图进入。 |
 | 拆合军后怎样估算库存、容量和统帅影响？ | [库存权重与取整顺序](episode04-split-merge-stock-weight-order-12004.md)、[S端 flags0 权重](episode04-merge-source-weight-flags0-12004.md) | 分别读合前 D/S 权重与库存、合后实际统帅和容量；按已证分阶段整数运算比较。人数简单平均、候选统帅容量或相等边界不能替代实际 clamp。 |
 | 能否把补员开关或人数增长当实际补兵 ADD？ | [实际应用合同](episode04-refill-application-12004.md)、[R0221 同次 Core 离线恢复](episode04-r0221-target-add-offline-recovery-12004.md)、[公共单日入口](episode04-r06-public-one-day-and-a40-boundary-20261020.md) | R0221 已证明选定 Regi2602/slot1 的指令 ADD 为 68→69；画面整军 +10 另记。原 live consumer 的大小限制失败保留，完整 Core NET、开关效果及全 R06 仍未闭合。公共研究入口尚未成为普通 planner 策略。 |
-| 当前维护费向量能否视为实际付款？ | [十槽向量与分量保留](episode04-r08-current-vector-component-retention-12004.md)、[R08 公共研究入口](r08-writer-common-public-entry.md)、[R0222 失败与行政闭场](episode04-r0222-failed-writer-and-administrative-close-20261020.md) | 资源槽、当前费率、实际扣款、付款方和周期分别判断。R0222 0 日、无 writer，独立 payment OFF 读回未知；后续退出或源码修复不能补成付款归因。 |
+| 当前维护费向量能否视为实际付款？ | [十槽向量与分量保留](episode04-r08-current-vector-component-retention-12004.md)、[R08 公共研究入口](r08-writer-common-public-entry.md)、[R0222 失败与行政闭场](episode04-r0222-failed-writer-and-administrative-close-20261020.md)、[R0223 实际一日与未闭付款归因](episode04-r0223-one-day-no-cd-and-normal-close-20261020.md) | 资源槽、当前费率、实际扣款、付款方和周期分别判断。R0222 0 日、无 writer，独立 payment OFF 读回未知；后续退出或源码修复不能补成付款归因。 |
 | 休整点是否真的恢复携带补给？ | [被动库存证据合同](episode04-b-stock-passive-evidence-12004.md)、[实际机会与 journal 边界](episode04-r10-stock-growth-opportunity-12004.md) | 用同 Army、同地点与自然日期的真实库存正差分及实际 callback 判断；eligible/gain 分量、兵员补员或同值端点都不能替代库存增长。当前合格 B 点仍为 0/2。 |
 
 ## 可用性与运行时边界
@@ -35,3 +35,9 @@
 2026-10-20 补注：R0221 与 R0222 的上述实机记录来源为 `machine_id: desktop-3fevhd2-1c74096080`，观察及精确原件分别在两场专题。表中旧“没有新 R06 实机 ADD”已按后继独立证据更新；不把这次更新外推为其他机器通过或 planner 已自动读取研究。
 
 R08 后继运行源码与已编译组件的关系见[bc638 来源选择](evidence/episode04-r08-runtime-repair-20261020/bc638-runtime-source-selection/CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json)：运行 Native 树6b91与历史编译树fee分层；master远端新增的d622不能据此追认已编译。该记录授源码选择与原组件复用边界，不授新场实机或整套R08资格。
+
+## 2026-10-20 R0223后可直接用于战争预算的规则
+
+当前维护费率为正时，可以作为预算输入，不能称为已经实付。Army自然parent阶段已发生，也不能据此认定Character维护结算被选择。targetcache或paidjournal为空不授权“军费0”；保持付款unknown，继续使用本场来源明确的原生费率、钱包与已有承诺做战争预算，保留雇佣应急资金，输入不足时延后可选建设。
+
+来源机器 `machine_id: desktop-3fevhd2-1c74096080`；[R0223原件、结果和研究边界](episode04-r0223-one-day-no-cd-and-normal-close-20261020.md)分别记录真实一日、两次Army parent、C/D未取得和正常闭场。研究文档可供规划代理阅读，尚未实现的候选不会自动成为普通planner策略。正式动态镜头当前4/11（R04/R06/R09/R12）；完整R08、B0/2与ABC0/3均未新增资格。

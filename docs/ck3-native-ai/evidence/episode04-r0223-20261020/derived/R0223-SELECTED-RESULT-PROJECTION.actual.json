@@ -1,0 +1,346 @@
+{
+  "schema": "xar.e04.r0223-selected-result-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "observed_at_utc": "2026-10-20T15:53:31.182346+00:00",
+  "role": "CLEARLY_DERIVED_NO_REPLAY_NO_NEW_QUALIFICATION",
+  "unpackaged_R08_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\R08-WRITER-RESULT.json",
+    "bytes": 59655,
+    "sha256": null,
+    "body_read_count": 1,
+    "reason": "First preparation stopped before retaining its hash; not reread and not a projection parent"
+  },
+  "original_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\R08-WRITER-TERMINAL.json",
+    "bytes": 345,
+    "sha256": "1a67f7e011f2ff252ec0099dec424152304261b9aa464e75eca39d06d0cff04d"
+  },
+  "status": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+    "status": "NATURAL_OPPORTUNITY_CONSUMED",
+    "actual_days": 1,
+    "exact_day_verified": true,
+    "OFFclear": true,
+    "Save": true,
+    "native_restore_verified": true,
+    "full_R08_qualified": false,
+    "business_pass": false,
+    "errors": []
+  },
+  "exact_day_contract": {
+    "exact_day": true,
+    "starting_date_raw": 53149056,
+    "ending_date_raw": 53149080,
+    "elapsed_days": 1,
+    "actual_timeline_policy": "exact_one_day_unavoidable_contact",
+    "evidence_scope": "composite_postcondition_plus_independent_snapshot",
+    "first_take_historical_RED_relabelled": false
+  },
+  "observer_terminal": {
+    "kind": "terminal",
+    "reason": "timeout",
+    "restored": true,
+    "detached": true,
+    "pending_event": false,
+    "cleanup_complete": true,
+    "hit_count": 2,
+    "data_event_count": 2,
+    "writer_thread_count": 1,
+    "created_thread_events": 107,
+    "restore_readback_rows": 107,
+    "process_exited": false,
+    "observation_thread_admission_complete": true,
+    "full_window_all_writes_covered": false,
+    "CK3_observed": true,
+    "known_producer": false,
+    "military_attribution": "unclosed"
+  },
+  "observer_status": "NO_QUALIFIED_C_D_TRAP_RETAINED",
+  "observer_returncode": 1,
+  "original_cash_sources": {
+    "before": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-cash-before.common-view.json",
+      "bytes": 12193,
+      "sha256": "47ee403b07f692e02f73fe20f3570cddd93ecf5e5aa1795dfe5deca75103bb46"
+    },
+    "after": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-cash-after.common-view.json",
+      "bytes": 13954,
+      "sha256": "44f5d72babedfb78e1acae63dade0ecc11e880c4067062fe6ce8ab4f57ea7e7a"
+    }
+  },
+  "A_B_values": {
+    "before_a": 0,
+    "after_a": 0,
+    "before_b": 0,
+    "after_b": 0
+  },
+  "all_four_current_context_values": {
+    "before": {
+      "context_identity_before": 2176345091488,
+      "context_identity_after": 2176345091488,
+      "value_2c0": 0,
+      "value_2c8": 0,
+      "value_28": 0,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    },
+    "after": {
+      "context_identity_before": 2176345091488,
+      "context_identity_after": 2176345091488,
+      "value_2c0": 0,
+      "value_2c8": 0,
+      "value_28": 0,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    }
+  },
+  "paid_maintenance_raw": null,
+  "maintenance_attribution": "unclosed",
+  "qualified_c_d_obtained": false,
+  "typed_c_d_selection_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\C-D-WRITERS.actual.json",
+    "bytes": 4581,
+    "sha256": "f6c1cf99033da0df2816c4e08446d90c892d08a9c2ca0d2efe3401abbd5cee17"
+  },
+  "payment_independent_OFF_sampling": {
+    "available": true,
+    "capture_enabled": false,
+    "busy": false,
+    "clear_completed": true,
+    "epoch": 2,
+    "active_captures": 0,
+    "retained_records": 0,
+    "qualified_records": 0
+  },
+  "payment_OFF_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-common-packets\\r08-1615-a01-18-payment-independent-off.common-view.json",
+    "bytes": 13954,
+    "sha256": "a3702a38994005a1a89df725eead44f5ab23ab812bc2ca5afc4bb8646cd8b396"
+  },
+  "nine_families_independent_OFF": {
+    "natural_phase": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 2,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "regular_core": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "daily_assault_preparation": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "assault_placement": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "assault_consumer": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "assault_group_release": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "gathering": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "cleanup": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "pre_date_prefix": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    }
+  },
+  "nine_families_OFF_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-common-packets\\r08-1615-a01-22-army-families-independent-off.common-view.json",
+    "bytes": 4441,
+    "sha256": "aa4d6d197a4c0dd919e0fc03ebf1d39cdad10bb337c71524c0dbecdb123fb626"
+  },
+  "ordinary_Save_checkpoint": {
+    "status": "saved",
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 74141604,
+    "sha256": "9ff896c873eab77b1f46f3c5ed6459221ca5de0eefa9f11c7c0e2dd9d2aeb05a",
+    "date_raw": 53149080,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 13,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "ordinary_Save_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-common-packets\\r08-1615-a01-24-Save-once.common-view.json",
+    "bytes": 3898,
+    "sha256": "2e2ebfdc1b1d98a207c5da77ee657fd0c1a4221818be7fa22827c5a4f32f2195"
+  },
+  "driver_state_replace_receipt": {
+    "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+    "status": "unconfirmed",
+    "write_replace_returned": true,
+    "save_binding_verified": false,
+    "reason": "save_binding_mismatch",
+    "attempt_binding": {
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0223",
+      "bridge_pid": 32336,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "rogue_one_life",
+        "xar_enabled": "xar_on",
+        "pact_contract": "terminal_settlement_required",
+        "source": "legacy-driver-default",
+        "environment_sha256": null
+      },
+      "campaign_goal": null
+    },
+    "binding_contract": "one_life_episode_identity_v1",
+    "checkpoint_episode_projection": "native_campaign",
+    "missing_checkpoint_binding_fields": [
+      "episode_character_id",
+      "episode_run_id"
+    ],
+    "recorded_session_binding": {
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0223",
+      "bridge_pid": 32336,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "save_history_index": 13,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 74141604,
+      "sha256": "9ff896c873eab77b1f46f3c5ed6459221ca5de0eefa9f11c7c0e2dd9d2aeb05a",
+      "date_raw": 53149080,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 13,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "encoded_history_rows": 13,
+    "driver_state_path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\native-session\\driver-state.json"
+  },
+  "one_life_save_qualified": false,
+  "independent_after": {
+    "date_raw": 53149080,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": null,
+    "episode_run_id_field_present": false,
+    "episode_projection": "native_campaign",
+    "played_character_id": 33388,
+    "bridge_pid": 32336,
+    "connection_generation": 1
+  },
+  "independent_after_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-common-packets\\r08-1615-a01-25-Save-independent-after.common-view.json",
+    "bytes": 46620,
+    "sha256": "8cd5d0b8f1814c086236030512506b48ca68c6f5b176e46be5e7b22b20166228"
+  },
+  "full_R08_qualified": false,
+  "B_progress_credit": 0,
+  "ABC_progress_credit": 0,
+  "formal_topics_completed": 3,
+  "formal3_unchanged": true,
+  "business_pass": false
+}

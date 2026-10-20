@@ -1,0 +1,201 @@
+{
+  "schema": "xar.e04.r08-1615-exact-prepare-capacity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:19:13.875346+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-r08-1615-20261020-a01",
+  "Root_explicit_new_finite_purpose": "One unfilmed R08 March31 toApr1 c/d attempt from immutable normal S0; exact bc638 source/current A41+A08 component selection; later fresh Root Steam/anti-debug/ownerPID/DR grant and preflight required.",
+  "financial_reservation_only": false,
+  "metadata_execution_admitted": true,
+  "profile_prepare_execution_admitted": true,
+  "game_execution_admitted": false,
+  "build_execution_admitted": false,
+  "camera_or_film_execution_admitted": false,
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+  "scene_root_observed_absent": true,
+  "run_id": null,
+  "actual_driver_root": null,
+  "driver_parent_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs",
+  "component_roots": {
+    "profile": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01",
+    "driver": null,
+    "other": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+    "raw": null
+  },
+  "component_additional_roots": {
+    "profile": [
+      "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\userdirs"
+    ]
+  },
+  "component_ceiling_bytes": {
+    "profile": 536870912,
+    "driver": 469762048,
+    "raw": 0,
+    "other": 67108864
+  },
+  "aggregate_scene_ceiling_bytes": 1073741824,
+  "raw_ceiling_bytes": 0,
+  "new_shared_metadata_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01",
+  "shared_metadata_ceiling_bytes": 16777216,
+  "old_metadata_root_readonly_inputs": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+  "new_shared_root_separate_from_old_C2MiB_growth_and_scene": true,
+  "no_new128MiB_pool_grant": true,
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "runtime_native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+  "compiled_native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "source_current_component_selection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-bc638-component-selection-a01\\CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json",
+    "bytes": 24958,
+    "sha256": "484912dda476351982302a9e2350d39d45f0e7325e70ec4446b45c862fa809ef"
+  },
+  "original_A41_production_qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "original_A08_standalone_qualification": {
+    "path": "C:\\w\\e04r08a08\\R08-A08-STANDALONE-QUALIFICATION.actual-a01.json",
+    "bytes": 8913,
+    "sha256": "6e956a2b2d70f4c18e69426b76753e59cc5e14c4440e68a56e29875c53bd3f5c"
+  },
+  "source_selection_qualified": true,
+  "ordinary_native_memory_path_qualified": false,
+  "full_R08_business_qualified": false,
+  "source_tree_equality_or_capacity_does_not_grant_new_DR_live_or_recompiled_qualification": true,
+  "profile_reallocation_basis": {
+    "prior_R221_sampled_peak_logical_bytes": 457725749,
+    "prior_R221_sampled_peak_allocated_bytes": 466621248,
+    "R222_closed_profile_logical_bytes": 453171945,
+    "R222_closed_profile_allocated_bytes": 461912184,
+    "sampled_peak_is_not_continuous_worst_case_proof": true,
+    "observed_profile_over512MiB": false,
+    "512MiB_logical_margin_vs_R221_sample": 79145163,
+    "512MiB_allocated_margin_vs_R221_sample": 70249664,
+    "Root_chose_448MiB_driver_for_additional_structured_after_and_observer": true
+  },
+  "prior640_320_limits_remain_immutable_history_not_modified": true,
+  "latest_game_launch_at_utc": "2026-10-20T15:20:00Z",
+  "run_hard_deadline_utc": "2026-10-20T16:15:00Z",
+  "quota_review_at_utc": "2026-10-20T16:15:00Z",
+  "normal_close_seconds": 900,
+  "cleanup_Save_seconds": 120,
+  "one_day_action_seconds": 70,
+  "MapReady_minimum_remaining_seconds": 1090,
+  "one_natural_day_only": true,
+  "old_offline_reservations_not_cancelled_or_transferred": false,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:19:13.853174+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78645297152,
+      "available_to_caller_bytes": 78645297152,
+      "total_free_bytes": 78645297152,
+      "entire_volume_used_allocation_upper_bound_bytes": 432488648704,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:19:13.853174+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646798848,
+      "available_to_caller_bytes": 21646798848,
+      "total_free_bytes": 21646798848,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443208704,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "active_balances_including_both_purposes": {
+    "known_future": {
+      "C:/": 1090519040,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r08-1615-20261020-a01",
+        "known_future": {
+          "C:/": 1090519040,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "budget": {
+    "C_known_future_bytes": 1090519040,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26902455494,
+    "C_floor_margin_bytes": 51742841658,
+    "C_projected_whole_volume_upper_bound_bytes": 437916267718,
+    "C_quota_margin_bytes": 170396474,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 37744640
+  },
+  "C_project_quota_bytes": 438086664192,
+  "C_system_growth_reserve_bytes": 4294967296,
+  "safety_free_bytes": 21474836480,
+  "legacy_C_carry_bytes": 42132678,
+  "D_new_heavy_bytes": 0,
+  "new_native_compile_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false,
+  "actual_runtime_CASE_pins_required_before_prepare": false,
+  "actual_allocate_REQUIRED_before_run_or_driver_leaf_binding": true,
+  "old_R222_Steam_PID_DR_grants_may_not_be_reused": true,
+  "heavy_write_execution_admitted": true,
+  "scene_prepare_execution_admitted": true,
+  "public_runtime": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\public-plan-a01\\runtime-a01\\runtime.local.json",
+    "bytes": 2613,
+    "sha256": "2a60f474e394d79712e95ee4036ee83d20f12fbf1e4a9808d41cabf93e40168b"
+  },
+  "runtime_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\public-plan-a01\\runtime-a01\\runtime.local.json",
+    "bytes": 2613,
+    "sha256": "2a60f474e394d79712e95ee4036ee83d20f12fbf1e4a9808d41cabf93e40168b"
+  },
+  "runtime_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\public-plan-a01\\runtime-a01\\RUNTIME-DELIVERY.actual.json",
+    "bytes": 3245,
+    "sha256": "74e0ed9932eb606ffcc9ab534d94307e33ab868a6f115f2d60cee87d7f7c545d"
+  },
+  "case_inputs": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\public-plan-a01\\CASE-INPUTS.actual-a01.json",
+    "bytes": 4151,
+    "sha256": "3265bfe487018a4b3cd924d73d659907acfbc7e5568f3c665eebc49a3bf40854"
+  },
+  "fourth_cache_retirement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\INDEPENDENT-ABSENCE-ORIGINAL-WAIT-FRESH-BUDGET.actual-a01.json",
+    "bytes": 3073,
+    "sha256": "d32994771da4d8bf822093b7fa9c573cad15b71622b7a717195d1e2660f1fa7b"
+  },
+  "old_offline1515_C2MiB_D24MiB_now_closed": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\OLD-1515-C2M-D24-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 2278,
+    "sha256": "3cef7d0da4cd69ce26f59769a636ba49314672e7900e246bf7815854872740b3"
+  },
+  "same_existing_scene_and_metadata_future_no_new_pool": true,
+  "allocation_execution_admitted": false
+}

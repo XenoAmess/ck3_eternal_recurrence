@@ -1,0 +1,115 @@
+{
+  "schema": "xar.e04.dispatch-source-candidate-small-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:07:10.076781+00:00",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\final-a02\\FINAL-CANDIDATE.actual-a01.json",
+        "bytes": 2674,
+        "sha256": "c525382cbb7c2e1efd7825c278c90d5700966f35482d8fd10f12bbb555f0ab3e"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/FINAL-CANDIDATE.actual-a01.json",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\final-a02\\DISPATCH-MODE.candidate.patch",
+        "bytes": 35880,
+        "sha256": "75d98b28425e54672fd5aa69dc9325410c5e982982284f8be994dc62667e253f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/DISPATCH-MODE.candidate.patch",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\final-a02\\dispatch_execution_once.inc",
+        "bytes": 21101,
+        "sha256": "334287c46abdad6a43d7fbe545a7730760840f6bec8c6f5f8309bef720136d83"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/source/dispatch_execution_once.inc",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\dispatch_contract.py",
+        "bytes": 6874,
+        "sha256": "054a194e72dde816528803cc1533c0d156f254c0960d3e5b850896ae5e8c59a1"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/source/dispatch_contract.py",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\test_dispatch_contract.py",
+        "bytes": 5168,
+        "sha256": "c551ff7cf4baaa95925b10ecd4623c1f64db5711f2114d43aa6dfb203252e62d"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/source/test_dispatch_contract.py",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\SOURCE-CONTRACT.prepared-a01.json",
+        "bytes": 4398,
+        "sha256": "664b063dcc36d66ee165fb228dfbdee185f5b718ec30aa73c8654b6d917dd1ed"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/SOURCE-CONTRACT.prepared-a01.json",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\held-worker-source253.bin",
+        "bytes": 253,
+        "sha256": "426e7b7c3e47980c4975bff0745518c9539d7bd06ae6f7f44d973789a7f3c11e"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/held-worker-source253.bin",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\README.md",
+        "bytes": 1625,
+        "sha256": "4c015e8bd08a07a78ff041ab447603887c4e7c0e416e545dc9bc4c38940b2d9c"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/README.md",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\PURE-CHECKS-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1464,
+        "sha256": "531f7e186b84625834517baf7c5291963f081cb174d81d56dc00cac642672d5d"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/checks/PURE-CHECKS-ORIGINAL-WAIT.actual-a01.json",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\pure-checks.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/checks/stdout.log",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\pure-checks.stderr.log",
+        "bytes": 1448,
+        "sha256": "c40cb87ec265ea18c3dcf0ecdd99e5f4ef3a2be6ed27d7a4450bc8de39d09e60"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/checks/stderr.log",
+      "role": "source-only research candidate or original pure-offline check, never production/live qualification"
+    }
+  ],
+  "files_count": 11,
+  "payload_bytes": 80885,
+  "copy_byte_exact": true,
+  "scope": "Archive only; do not apply candidate patch to production native sources. Current A41/A08/R0223 qualification does not cover this new mode.",
+  "binary_payloads": "Only253 retained research bytes, no EXE/DLL/obj/PDB/raw-watch/large-log copies",
+  "copyplan_destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/COPYPLAN.prepared-a01.json",
+  "full_R08_business_qualified": false,
+  "remaining_heavy_write_bytes": 0,
+  "deadline_utc": "2026-10-20T16:15:00Z"
+}

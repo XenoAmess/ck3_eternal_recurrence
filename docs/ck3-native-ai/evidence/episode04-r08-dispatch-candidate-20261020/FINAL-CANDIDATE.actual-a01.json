@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.dispatch-final-source-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:07:10.029613+00:00",
+  "state": "SOURCE_ONLY_NOT_COMPILED_NO_LIVE_OR_COLD_QUALIFICATION",
+  "final_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\final-a02\\DISPATCH-MODE.candidate.patch",
+    "bytes": 35880,
+    "sha256": "75d98b28425e54672fd5aa69dc9325410c5e982982284f8be994dc62667e253f"
+  },
+  "final_native_include": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\final-a02\\dispatch_execution_once.inc",
+    "bytes": 21101,
+    "sha256": "334287c46abdad6a43d7fbe545a7730760840f6bec8c6f5f8309bef720136d83"
+  },
+  "unchanged_candidate_cpp": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\candidate\\cold_observer.cpp",
+    "bytes": 29713,
+    "sha256": "ec2fd5e265caf163c0463a8a8d4fc01e033981422344175d2522a8133e021d7f"
+  },
+  "source_contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\SOURCE-CONTRACT.prepared-a01.json",
+    "bytes": 4398,
+    "sha256": "664b063dcc36d66ee165fb228dfbdee185f5b718ec30aa73c8654b6d917dd1ed"
+  },
+  "pure_python_checks": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\PURE-CHECKS-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1464,
+    "sha256": "531f7e186b84625834517baf7c5291963f081cb174d81d56dc00cac642672d5d"
+  },
+  "final_native_changes_after_pure_tests": "Only cleanup ownership logging: unarmed threads born after capture closes do not produce a fictitious armed generation exit. Python consumer/tests unchanged; native is still unbuilt.",
+  "static_checks": {
+    "writer_Probe_and_original_data_helpers_unchanged": true,
+    "owned_late_execution_fault_not_propagated": true,
+    "pre_call_continuation_requires_restored_DR": true,
+    "unknown_cleanup_retains_Popen_without_new_capture": true,
+    "no_RIP_rewind_no_TF_or_CALL_emulation": true,
+    "unarmed_cleanup_thread_not_armed_generation_evidence": true
+  },
+  "remaining_work": [
+    "Dedicated same-client Root admission/controller/raw CLI binding",
+    "Independent frozen source/producer build and exact SYSTEM exclusion for the changed executable",
+    "Real synthetic execution-call/resume-once/timeout/occupiedDR+TF/TID-reuse/late-owned-trap/restore+continue-failure cold qualification"
+  ],
+  "pure_checks_not_execution_cold": true,
+  "SDK_DR_game_UI_actions": 0,
+  "EXE_reads_or_builds": 0,
+  "remaining_heavy_write_bytes": 0,
+  "deadline_utc": "2026-10-20T16:15:00Z"
+}

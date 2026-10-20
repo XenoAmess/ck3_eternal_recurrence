@@ -1,0 +1,77 @@
+{
+  "schema": "xar.e04.dispatch-call-source-contract.prepared.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:02:15.281518+00:00",
+  "state": "OFFLINE_SOURCE_CANDIDATE_NOT_BUILT_NOT_COLD_QUALIFIED_NOT_LIVE",
+  "runtime_source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "original_observer": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\cold_observer.cpp",
+    "bytes": 29565,
+    "sha256": "e2471b3cb32403e903d1c8a71166da32f0dcde131288c0b8859f3f03bc2e413c"
+  },
+  "held_source_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0174-maintenance-source\\SOURCE-SPANS.actual.json",
+    "bytes": 27108,
+    "sha256": "7edca9f87e438aaefa9ffc468fe68b0911e37d9f4171f19b94645f69a2ff89c3"
+  },
+  "held_source_asm": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0174-maintenance-source\\upstream-job.complete.asm",
+    "bytes": 4119,
+    "sha256": "1fe3b696b32325091ab09fa309d8b992917d55f227cf5e95082427e11b1cb2ff"
+  },
+  "held_facts": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0174-maintenance-source\\FACTS.actual.json",
+    "bytes": 2688,
+    "sha256": "ac6138248d36cadbc3afd12cc00ba9125602c88bf39df7d1af6cd69e4a29bd87"
+  },
+  "exact_source": {
+    "EXE_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "begin_rva": 66652656,
+    "end_rva_exclusive": 66652909,
+    "bytes": 253,
+    "sha256": "426e7b7c3e47980c4975bff0745518c9539d7bd06ae6f7f44d973789a7f3c11e",
+    "callsite_rva": 66652783,
+    "call_bytes": "ff5010"
+  },
+  "correction": "290DC00 task+0 is an atomic cursor. At3F90A6F job is RBX; dispatch=*(job+0x38)=RCX; RAX=[RCX]; dynamic target=[RAX+0x10]. No prefilled callee/thunk.",
+  "mode": {
+    "flag": "--enable-ck3-12004-dispatch-call-once",
+    "separate_gate": "--explicit-execution-breakpoint-v1",
+    "native_admission_schema": "xar.maintenance.dispatch_call.admission.v1",
+    "Root_scope_required": "independent-unfilmed-dispatch-call-window",
+    "independent_of_writer_mode": true,
+    "ordinary_null_owner_required": true,
+    "maximum_records": 1,
+    "maximum_capture_ms": 30000,
+    "sole_breakpoint": "DR0=module_base+3F90A6F; local execute/RW00/LEN00; no other DR/TF ownership stolen"
+  },
+  "raw_capture": [
+    "actual jobRBX",
+    "actual RCXdispatch",
+    "actual RAXvptr",
+    "double actual [job+38]/[RCX]/[RAX+10] reads",
+    "RDX/R8/R9/RSP",
+    "same-image target mapping or explicit unknown/foreign",
+    "thread generation and QPC",
+    "native GameState identity/date/absolute-day double reads",
+    "admission owner process/window/epoch/sourcecash binding"
+  ],
+  "cleanup": "Clear and independently read back original owned debug vectors while original pre-CALL event is pending, then Continue at unchanged RIP. Never TF/rewind/emulate CALL. Unknown OS restoration/continuation retains original Popen/debug ownership in explicit no-more-capture cleanup hold; not successful cleanup. Late owned exec trap during cleanup is not propagated as a foreign exception.",
+  "limitations": [
+    "Existing A08 SYSTEM/cold qualification does not qualify the changed observer/mode.",
+    "New source has not been compiled or exercised against a Windows debug target.",
+    "Dedicated public same-client admission publisher/controller and source-pinned raw CLI binding are still required before any new live use. Existing writer admission cannot be repurposed merely by changing a flag.",
+    "A dedicated synthetic execution-call fixture and resume-once/timeout/DR-occupied/restore-failure/TID-reuse cold qualification are required; pure Python checks below are not those cold tests.",
+    "Generic first job may be unrelated to33388 or military accounting. Unknown callee ABI, no payer/calendar/NET/cadence association. For actor-selection question, the separate28F7840 actor-bound proposal is more directly discriminating."
+  ],
+  "payer": null,
+  "calendar_producer": null,
+  "cadence": null,
+  "paid_maintenance_raw": null,
+  "new_binary_or_live_qualification": false,
+  "source_probe_or_EXE_reads": 0,
+  "SDK_DR_game_UI_actions": 0,
+  "deadline_utc": "2026-10-20T16:15:00Z"
+}

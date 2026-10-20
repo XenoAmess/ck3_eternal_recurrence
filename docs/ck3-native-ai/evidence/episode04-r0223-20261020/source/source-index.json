@@ -1,0 +1,407 @@
+{
+  "schema": "xar.common-git-source-bound-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:11:59.515333+00:00",
+  "source_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+  "files": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_card.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\build_card.py",
+      "bytes": 6422,
+      "sha256": "ac80fb438b049b1929d039e86a904bbcfcb260b949eb8fc976c4c65c6eee4371"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_fixture.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\build_fixture.py",
+      "bytes": 1710,
+      "sha256": "62b03497bab67d952099eddf5555c284a4baafdda5d7acac635ee7f5d0b82ed1"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_actual.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\consume_writer_actual.py",
+      "bytes": 24580,
+      "sha256": "bbb1e688991732ccf0f676e3ab44648a82909240332fdff65a132fe422d4df9d"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_cold.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\consume_writer_cold.py",
+      "bytes": 11790,
+      "sha256": "cf11f90702a3a1a2e5752b4b73bdf5ab3a151d7e49f02c612104c8fa248c25e3"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/owner_binding.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\owner_binding.py",
+      "bytes": 6251,
+      "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/prepare_writer_admission.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\prepare_writer_admission.py",
+      "bytes": 15350,
+      "sha256": "079c08341b637e86b2f7bfbcd536186f9c318edf1cdb18a7b29cd53c9621a36c"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/run_cold_fixture.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\run_cold_fixture.py",
+      "bytes": 21033,
+      "sha256": "40ce68187f30774364756478cf9c425b9c36e1fe7356158327bb776a751dc316"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/run_targeted_review_fixes.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\run_targeted_review_fixes.py",
+      "bytes": 28643,
+      "sha256": "81b192520784fec02fec9aa6386093d1485b28d7f1d03b5bef3e658a703f6490"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/select_cd_writers.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\select_cd_writers.py",
+      "bytes": 6328,
+      "sha256": "5e6f7440ef1c5589f9659ace7c6e9e7521059241e2c21ba4328f9080a93842b1"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_known_copy_caller.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_known_copy_caller.py",
+      "bytes": 5294,
+      "sha256": "f1ecd2965b9738edbdbd8176f28652a12ef16395e1e4836f1dd8872e95b81d85"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_owner_binding.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_owner_binding.py",
+      "bytes": 15878,
+      "sha256": "efbc415b8242bbddb2c3c761ac9b98e453a472589f115035849c258e2c9094ce"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_run_cold_fixture_selection.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_run_cold_fixture_selection.py",
+      "bytes": 9780,
+      "sha256": "7b9a2cc7e4fb0fc777b39163f1039506e01aed05a42948a4f948d9f00a3b5371"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_select_cd_writers.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_select_cd_writers.py",
+      "bytes": 3111,
+      "sha256": "360b757cdf3adb087590b5d1f657e1a5bfc23abca302745a0c551bb057775d24"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_writer_actual.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\test_writer_actual.py",
+      "bytes": 11715,
+      "sha256": "76e6b9cbc5ca5eefbecce9d33836b463ca7d643f2742dbb3c915c48c04f70abd"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 319238,
+      "sha256": "05ecc000814b8fac9d8281dfa91fdda51ce0578ba4b9f7578549517861655c17"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_ready_t0_12004.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\episode04_ready_t0_12004.py",
+      "bytes": 19457,
+      "sha256": "9c4a860a1ccf5fea3603ddf1d6b80555830fefaf0e0f22748be601473fff4017"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_one_day_postcondition.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\exact_one_day_postcondition.py",
+      "bytes": 3545,
+      "sha256": "c1bff9b7f9183e202c58122b064da968ef72a1bf4c73b21bbb994222d91271c8"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 280396,
+      "sha256": "8d197c312691f5320f8a99b1f28231fb838e420aa5a7ace24c73faffdb7ef1d7"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1652126,
+      "sha256": "df9e04917befccd508a593fb70f4a8845a27d9be3b6d644983d3a3da8d425c3a"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\runtime_input_contract_v1.py",
+      "bytes": 4307,
+      "sha256": "27cfeeccb49de76729d4235fbb8db0c025dd978f3018715a88b16b72d3673857"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_current_raw_context_v1.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_current_raw_context_v1.py",
+      "bytes": 3202,
+      "sha256": "6233cc942ce265a9a774284a7d5aaa72efc56b1be4fce832e2a67ec6234d30e5"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+      "bytes": 25750,
+      "sha256": "b4a49efbb6e409001050aaf9ff8208bc73e9c0608f7161f2840fdf70c786c11b"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\native_session.py",
+      "bytes": 76215,
+      "sha256": "e33be8fed7f6450c691aed044130ddd4cfc8304199a40e8bc564c3b9fc6a2261"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\runtime.py",
+      "bytes": 170719,
+      "sha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61674,
+      "sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_allocate.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 147469,
+      "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_appointment.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_appointment.py",
+      "bytes": 16471,
+      "sha256": "0e4707db2ededc144d566cfc9be64ca4dac3f957adcd4c79622f20c6f7ee949b"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_archive_relocations.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_archive_relocations.py",
+      "bytes": 9979,
+      "sha256": "a39105c6447c176225177d6e50d21646c2dfcf4c9de529d470cac43684d9ccba"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_army_wire.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_army_wire.py",
+      "bytes": 4705,
+      "sha256": "da0f79ebad1be9e8f2abfd3b343a1a833dd247304f6cb6ac710523d36a027351"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_build_runtime.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+      "bytes": 73754,
+      "sha256": "d60b71a232eb61439f594aa10326a6a13fe891ac273aadd469435f9a0d82d4a1"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_camera.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/__init__.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_controller.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r08_writer_controller.py",
+      "bytes": 22070,
+      "sha256": "b4b3778cf780251ad7d965524191c15cb071cb402f5b9585a7ed3c0558bfafb9"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2124,
+      "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 15813,
+      "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 64343,
+      "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_freeze_sources.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_freeze_sources.py",
+      "bytes": 6635,
+      "sha256": "5aeec0f5a63a607b96df1ecb114bfed5fcb0ee2845a2717878d0ee62db291c15"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_full_army.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_full_army.py",
+      "bytes": 10364,
+      "sha256": "d162e80d965076005c9cf3fce60d7ab1856f25670f24b7f6184e80cd2a812511"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_gui.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_gui.py",
+      "bytes": 33925,
+      "sha256": "002b764e24980528e3aa16850c6c25a4d841b95f150183841eb67628e6c6eed0"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_gui_template.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_gui_template.py",
+      "bytes": 3037,
+      "sha256": "9e22cd2922f83684d1f8c3dfc55dc647a198d4dcc61083638d80b854686c83e7"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_host_preflight.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_host_preflight.py",
+      "bytes": 6298,
+      "sha256": "8fe9cee5f2cc88b8e1ea127a76a428114bf0ce1a7360b89d25443748f172763e"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_keeper.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_launcher.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 17792,
+      "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_legacy_managed_bootstrap.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_legacy_managed_bootstrap.py",
+      "bytes": 6213,
+      "sha256": "1f3fd4f406d08503f2a32ffff2ca2a3595d8305e75d7862992c3b0247b5f86a3"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_manual_quit_review.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_manual_quit_review.py",
+      "bytes": 6253,
+      "sha256": "16691b3358e9e23c95d9a1cfafca3bbe3034a3e04dc4dcf0b2125a968102fbaf"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_metadata_race.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_metadata_race.py",
+      "bytes": 3558,
+      "sha256": "8fde802290a9c580114f890cd58e7a813d7732017a2ad551c31e912b5b8e1bf2"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_native_source_binding.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_source_binding.py",
+      "bytes": 9813,
+      "sha256": "06e5d3019512a5bc571bf8ddb9302dfc878f8f8c3673d67764edfeeda1988094"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_normal_exit_profile.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_normal_exit_profile.py",
+      "bytes": 6978,
+      "sha256": "440479fbb254117e2bdb656de89b0a5af0afa2bd52671f119fc565d699f6e218"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_normal_quit.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_normal_quit.py",
+      "bytes": 20910,
+      "sha256": "b69536f84b6f7f1b71f74056fdd900a4ae8bee23847d610cc78c39d1f30d3b71"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_prepare.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_queue.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 17072,
+      "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_queue_control.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue_control.py",
+      "bytes": 3724,
+      "sha256": "8c532a1428185a8ec75981606d342b88cdd1ed99db391651e670ec15caa46a7d"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_r10_products.json",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+      "bytes": 2077,
+      "sha256": "bb5910bf787a950199c83b38c07055376979c95310475e63bfec262368f86b5a"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_recorder.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_recorder.py",
+      "bytes": 36097,
+      "sha256": "3c22605777bbf63f714a862240af52dc9d1e06040777b9604d7155ed1dca1083"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_recorder_request.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_recorder_request.py",
+      "bytes": 3954,
+      "sha256": "1e2ab0e18bca285e363cfb552f780f2808a7b99885657403ffa4f8fedb072bf8"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_runtime_inputs.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "bytes": 1062,
+      "sha256": "c9051d277e77421301de8b964d51daf8277c3b55d80572c01f846f39f42145c9"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_shared_python_host_delta.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_shared_python_host_delta.py",
+      "bytes": 11143,
+      "sha256": "d4fdf7cc67e797b6b0cc154c965d9043bb600ef96348ae4e42450a42ef6fcd12"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_supervisor_refusal.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_template_click.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_template_click.py",
+      "bytes": 12827,
+      "sha256": "04644c5660e5e912a0d4063c520d76363a2afca1a064bc997894d6de9376b6bc"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_ui_mailbox.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_ui_mailbox.py",
+      "bytes": 12182,
+      "sha256": "6aadaa0e92b9d2912c42403a9bdfc93a9bf9d6c0858260b03b8d037da24d6527"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_unrun.py",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_unrun.py",
+      "bytes": 17502,
+      "sha256": "3bb07f505822128999ff2f608c7dfd1bb66b0c65b6a2008436a5537edfa16897"
+    }
+  ],
+  "scope": "Current complete public R08/common Python paths; exact source hashes, no source export"
+}

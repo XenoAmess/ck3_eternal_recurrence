@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:52:46.997123+00:00",
+  "retired_derived": {
+    "path": "TIMING-CASH-READBACK.actual.json",
+    "bytes": 73276,
+    "sha256": "0b4efbf4da7273475eeecee45d16f87cee6c48db942dd5465ace8c4c37df1ddd"
+  },
+  "replacement": {
+    "path": "TIMING-CASH-READBACK.compact-a02.actual.json",
+    "bytes": 11695,
+    "sha256": "203788e20893842f5f2999064e84bc91ac98c6d252411b70c97501605e624ce6"
+  },
+  "reason": "Remove redundant full after_snapshot/active_wars copied into own derived projection; retain exact source pins and small timing/clock/cash facts. No source actual evidence changed.",
+  "size_rule": "All serialized bytes measured before write; both transient and final root <=131072."
+}

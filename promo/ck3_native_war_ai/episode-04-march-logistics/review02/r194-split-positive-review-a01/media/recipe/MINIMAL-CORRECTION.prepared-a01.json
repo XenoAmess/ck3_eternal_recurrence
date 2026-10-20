@@ -1,0 +1,84 @@
+{
+  "schema": "xar.R09.geometry-minimal-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:36:03.139761+00:00",
+  "status": "SYNTHETIC_GEOMETRY_OBSERVED_ONLY_NOT_REAL_SOURCE_QUALIFIED",
+  "synthetic_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r09-geometry-review-a01\\SYNTHETIC-ORIGINAL-WAIT.actual.json",
+    "bytes": 2173,
+    "sha256": "1d0f48955b7a7f5d047a55c059b977b8b148cdbbf1523d96066c91e6ec06b418"
+  },
+  "old_expected_sheet_dimensions": [
+    960,
+    612
+  ],
+  "actual_synthetic_encoded_MJPEG_dimensions": [
+    960,
+    608
+  ],
+  "mismatch_confirmed": true,
+  "minimal_correction": {
+    "keep_original_real_source_FFmpeg_argv": true,
+    "exact_future_real_source_argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "-nostdin",
+      "-hide_banner",
+      "-nostats",
+      "-loglevel",
+      "info",
+      "-threads",
+      "1",
+      "-filter_threads",
+      "1",
+      "-filter_complex_threads",
+      "1",
+      "-t",
+      "38.134",
+      "-i",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+      "-an",
+      "-sn",
+      "-dn",
+      "-vf",
+      "trim=start_frame=0:end_frame=1144,showinfo@source=checksum=0,scale=240:135:flags=area,pad=240:153:0:0:color=black,drawtext=fontfile=consola.ttf:text='f%{n} PTS=%{pts}':fontcolor=white:fontsize=10:x=3:y=137,tile=4x4:nb_frames=16:color=black",
+      "-c:v",
+      "mjpeg",
+      "-q:v",
+      "18",
+      "-threads:v",
+      "1",
+      "-fps_mode",
+      "vfr",
+      "-frames:v",
+      "72",
+      "-f",
+      "image2pipe",
+      "pipe:1"
+    ],
+    "correct_expected_sheet_dimensions": [
+      960,
+      608
+    ],
+    "metadata_effective_label_band_pixels": 17,
+    "expected_cell_source_dimensions": [
+      240,
+      135
+    ],
+    "tile_rows_columns": [
+      4,
+      4
+    ],
+    "runner_change": "After opening/loading each complete JPEG, capture actual width/height and expected width/height in a bounded diagnostic before any reject assertion. Use the synthetically observed expected sheet dimensions; still inspect the real first image when separately authorized.",
+    "do_not_change_scope_quality_or_source_frames": true
+  },
+  "diagnosis_boundary": "Same yuv420p synthetic input, exact old scale/pad/drawtext/tile and MJPEG encoder expose a definite expected-dimension mismatch if mismatch_confirmed. The original generic AssertionError did not retain its assertion site or actual JPEG dimensions, so this does not prove which assertion fired in that old instance.",
+  "real_R194_raw_opened": false,
+  "ffprobe_calls": 0,
+  "real_source_decodes": 0,
+  "real_source_frames_extracted": 0,
+  "future_source_extraction_authorized_here": false,
+  "requires_fresh_Root_source_bound_capacity_and_once_grant": true,
+  "continuous_clean": false,
+  "formal_dynamic_credit_added": 0,
+  "remaining_heavy": 0
+}

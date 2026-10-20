@@ -1,0 +1,67 @@
+{
+  "schema": "xar.e04.r08-new-stage-launch1530-accounting.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:21:39.375172+00:00",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "original_financial_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-1615-NEW-1G-SHARED16M-FINANCIAL-RESERVATION.actual-a01.json",
+    "bytes": 7033,
+    "sha256": "04a17733f04b0dce13a11af19fba2f0b8809225d1a337693c665c628386e4b76"
+  },
+  "original_exact_prepare_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-1615-EXACT-PREPARE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 8159,
+    "sha256": "7684000a7361bd94a25698b07986cb2b8f0576d9143ae8263f7b07eeec8a05b1"
+  },
+  "original_latest_game_launch_at_utc": "2026-10-20T15:20:00Z",
+  "original_latest_missed_no_game_at15_20": true,
+  "Root_explicit_finite_stage_authority": "Root explicitly sets one new latestlaunch15:30Z, hard16:15 unchanged, no rolling renewal. Same component hardcap minus paired complete minimum logical/uniqueallocated; shrink replenishes, unknown restores full1GiB+RED; fullshared16MiB/legacy42132678/system4GiB retained. Actual launch still requires fresh Root Steam/review/preflight and separate authority.",
+  "latest_game_launch_at_utc": "2026-10-20T15:30:00Z",
+  "run_hard_deadline_utc": "2026-10-20T16:15:00Z",
+  "quota_review_at_utc": "2026-10-20T16:15:00Z",
+  "actual_plus_unspent_accounting_authorized": true,
+  "component_ceiling_bytes": {
+    "profile": 536870912,
+    "driver": 469762048,
+    "raw": 0,
+    "other": 67108864
+  },
+  "new_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "game_execution_admitted": false,
+  "automatic_renewal": false,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:21:39.374911+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78645100544,
+      "available_to_caller_bytes": 78645100544,
+      "total_free_bytes": 78645100544,
+      "entire_volume_used_allocation_upper_bound_bytes": 432488845312,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:21:39.374911+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646794752,
+      "available_to_caller_bytes": 21646794752,
+      "total_free_bytes": 21646794752,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443212800,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget": {
+    "C_known_future_bytes": 1090519040,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26902455494,
+    "C_floor_margin_bytes": 51742645050,
+    "C_projected_whole_volume_upper_bound_bytes": 437916464326,
+    "C_quota_margin_bytes": 170199866,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 37740544
+  },
+  "native_build_execution_admitted": false,
+  "camera_or_film_execution_admitted": false
+}

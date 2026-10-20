@@ -1,0 +1,92 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:19:13.853426+00:00",
+  "final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-FOURTH-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json",
+    "bytes": 4558,
+    "sha256": "b22e4483cabbb62bc7db99230caba57569fc4d68a383584d8647ecb31dc7d3e6"
+  },
+  "original_tool_session": 45823,
+  "original_tool_wait_exit_code": 0,
+  "first_prepare_binder_readonly_failure": "a01 incorrectly queried HEAD:native; actual canonical tree ck3_autonomous_player/native_bridge. Failed before any receipt or ledger mutation; corrected a02 only.",
+  "original_wait_observed_by_parent_executor": true,
+  "independently_missing_original_paths": 3856,
+  "all4_result_metadata_pins_and_single_pass_SHA_rows_verified": true,
+  "current_cache_file_count": 0,
+  "retained_original_settings": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\pdx_settings.txt",
+    "bytes": 7133,
+    "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:19:13.853174+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78645297152,
+      "available_to_caller_bytes": 78645297152,
+      "total_free_bytes": 78645297152,
+      "entire_volume_used_allocation_upper_bound_bytes": 432488648704,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:19:13.853174+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646798848,
+      "available_to_caller_bytes": 21646798848,
+      "total_free_bytes": 21646798848,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443208704,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "active_balances": {
+    "known_future": {
+      "C:/": 1090519040,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r08-1615-20261020-a01",
+        "known_future": {
+          "C:/": 1090519040,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "budget": {
+    "C_known_future_bytes": 1090519040,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26902455494,
+    "C_floor_margin_bytes": 51742841658,
+    "C_projected_whole_volume_upper_bound_bytes": 437916267718,
+    "C_quota_margin_bytes": 170396474,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 37744640
+  },
+  "new_shared16M_logical_bytes": 315352,
+  "original_payload_unavailable_no_substitute": true,
+  "physical_or_unused_credit_bytes": 0
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "xar.e04.fourth-shadercache-exact-retirement-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:18:15.518247+00:00",
+  "proposal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-FOURTH-SHADERCACHE-READONLY-PROPOSAL.prepared-a01.json",
+    "bytes": 5943,
+    "sha256": "a96c5535dc489bb722ae16c1bafe002a40ba9499fe2a5a4bee0e0a0e0c38602d"
+  },
+  "Root_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\ROOT-EXACT-R0219-FOURTH-SHADERCACHE-EXECUTION-APPROVAL.actual-a01.json",
+    "bytes": 3628,
+    "sha256": "1e473cf5a762c8ae352b55769beb79953947afa405e6cec5a0ab3c05f9df469f"
+  },
+  "batches": [
+    {
+      "batch_id": "R0219-1",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-1-RESULT.actual-a01.json.gz",
+        "bytes": 41992,
+        "sha256": "41d6a21fb7d4fbe16c73beb62e4ef3792609f9939972509e15bb25910cc30436"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 57043864,
+      "deleted_allocated_bytes": 59268112,
+      "observed_C_free_delta_bytes": 59355136,
+      "receipt_uncompressed_bytes": 117637,
+      "failure": null
+    },
+    {
+      "batch_id": "R0219-2",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-2-RESULT.actual-a01.json.gz",
+        "bytes": 41912,
+        "sha256": "b51595519cc7bfc8a489eb04708a01dae81bc0b8534f719647441b72c108e109"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 55889283,
+      "deleted_allocated_bytes": 58096928,
+      "observed_C_free_delta_bytes": 58245120,
+      "receipt_uncompressed_bytes": 117583,
+      "failure": null
+    },
+    {
+      "batch_id": "R0219-3",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-3-RESULT.actual-a01.json.gz",
+        "bytes": 32570,
+        "sha256": "256f5e0f817371d907124107746a4af8b2e235911cbe82ad8b931954fb4f75a8"
+      },
+      "candidate_count": 1000,
+      "deleted_count": 1000,
+      "deleted_logical_bytes": 23002317,
+      "deleted_allocated_bytes": 25318432,
+      "observed_C_free_delta_bytes": 25313280,
+      "receipt_uncompressed_bytes": 117029,
+      "failure": null
+    },
+    {
+      "batch_id": "R0219-4",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-4-RESULT.actual-a01.json.gz",
+        "bytes": 28539,
+        "sha256": "a7b3e3c413c9c56246d51499db20b4252dd639a2d879ee58ca52a1b5456bdab4"
+      },
+      "candidate_count": 856,
+      "deleted_count": 856,
+      "deleted_logical_bytes": 19416887,
+      "deleted_allocated_bytes": 21378608,
+      "observed_C_free_delta_bytes": 22118400,
+      "receipt_uncompressed_bytes": 100559,
+      "failure": null
+    }
+  ],
+  "failure": null,
+  "all_planned_batches": 4,
+  "executed_batches": 4,
+  "deleted_files": 3856,
+  "deleted_logical_bytes": 155352351,
+  "deleted_allocated_unique_bytes": 164062080,
+  "single_pass_payload_bytes_read": 155352351,
+  "protected_non_shader_profile_files_before_and_after_identical": true,
+  "protected_non_shader_file_count": 32,
+  "fresh_volumes_after": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:18:15.525157+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78645690368,
+      "available_to_caller_bytes": 78645690368,
+      "total_free_bytes": 78645690368,
+      "entire_volume_used_allocation_upper_bound_bytes": 432488255488,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:18:15.525157+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646798848,
+      "available_to_caller_bytes": 21646798848,
+      "total_free_bytes": 21646798848,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443208704,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "original_deleted_payload_unavailable": true,
+  "new_game_native_build_SDK_screen_media_actions": 0,
+  "owned_deletion_writer_exits_after_receipt": true,
+  "remaining_heavy_write_bytes": 0,
+  "metadata_hard_ceiling_bytes": 1048576,
+  "metadata_bytes_before_final_receipt": 175364,
+  "purpose_review_at_utc": "2026-10-22T15:00:00Z"
+}

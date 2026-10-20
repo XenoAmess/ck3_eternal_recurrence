@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.clock-Git-C4-D16-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:46:26.236900+00:00",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\CLOCK-TEST-PATCH-C4M-D16M-GIT-STAGE-ADMISSION.actual-a01.json",
+    "bytes": 4556,
+    "sha256": "12d87211717176cf59b2598403d7407e455bc0393a621ac5482067d59af4c2db"
+  },
+  "actual_published_original_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-publish-a01\\REBASED-COMMIT-PUSH.actual.json",
+    "bytes": 45845,
+    "sha256": "79035628c8b4bcbed11bf9a4ceba054ccce4cfe9cc9cbbbc1702e27d1be0126a"
+  },
+  "publisher_explicit_closure_report": "All Git original Popen ended; Git writers0 and further Git writes0. W68134337->68148766; only CI read-only metadata continues in M16MiB. Root separately authorized exact one-commit replay of already-localac008 with exact candidate conflict resolution; nofetch.",
+  "published_HEAD": "ec7649fca7e211a5b09423379935539e645158d9",
+  "independent_current_W_head": "ec7649fca7e211a5b09423379935539e645158d9",
+  "W_clean": true,
+  "W_baseline_logical_bytes": 68134337,
+  "W_current_logical_bytes": 68148766,
+  "W_actual_net_growth_bytes": 14429,
+  "D_index_lock_absent": true,
+  "current_owned_Git_census": [],
+  "process_read_errors": [],
+  "global_Git_absence_not_claimed": true,
+  "D_runtime_head_unchanged_bc": true,
+  "original_nonzero_rebase_conflict_and_stage_diagnostics_preserved": true,
+  "continuous_D_temporary_peak_not_claimed_from_final_measurement": true,
+  "previous_future_bytes_by_volume": {
+    "C:/": 4194304,
+    "D:/": 16777216
+  },
+  "remaining_future_bytes_by_volume": {
+    "C:/": 0,
+    "D:/": 0
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "actual_assets_remain_whole_volume_occupied": true,
+  "CI_metadata_still_within_original_M16MiB_until_utc": "2026-10-20T16:15:00Z",
+  "business_qualification_not_granted": true
+}

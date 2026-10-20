@@ -1,0 +1,1011 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:45:19.487098+00:00",
+  "read_only": true,
+  "packet_projections": [
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\C-D-WRITERS.actual.json",
+        "bytes": 4581,
+        "sha256": "f6c1cf99033da0df2816c4e08446d90c892d08a9c2ca0d2efe3401abbd5cee17"
+      },
+      "body_keys": [
+        "schema",
+        "status",
+        "evidence_machine_id",
+        "Root_binding",
+        "original_input_pins",
+        "original_consumer_status",
+        "original_qualified_slot_count",
+        "original_unknown_slot_count",
+        "selected_c_d_writers",
+        "unresolved_c_d_traps",
+        "same_image_post_pc_count",
+        "cleanup_proved",
+        "finite_window_clean",
+        "finite_window_reason",
+        "source_decode_candidate_available",
+        "actual_writer_game_date",
+        "known_producer",
+        "maintenance_attribution",
+        "paid_maintenance_raw",
+        "same_net_invocation_proved",
+        "payer_cadence_proved",
+        "zero_hit_meaning",
+        "a_b_records",
+        "actual_consumer_result"
+      ]
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\ROOT-WINDOW-RESULT.actual.json",
+        "bytes": 4596,
+        "sha256": "9cb052dcbb3e1f1f958fae6c4103b5a5d4a60f84c02f006ada7e71fdf7e6f4c0"
+      },
+      "body_keys": [
+        "at_utc",
+        "config",
+        "primary_error",
+        "day",
+        "observer",
+        "single_process_handle_retained",
+        "safe_to_begin_normal_close",
+        "sampling_state",
+        "known_producer",
+        "maintenance_attribution",
+        "paid_maintenance_raw"
+      ]
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\ACTUAL-WRITERS.json",
+        "bytes": 7681,
+        "sha256": "a2a0619e1ca5b22f0f76d45ae90e7d49c1f1d916964f3a7e61b3f3d2fc7e9d24"
+      },
+      "body_keys": [
+        "status",
+        "origin",
+        "evidence_machine_id",
+        "Root_binding",
+        "qualified_writers",
+        "unknown_traps",
+        "slot_trap_count",
+        "qualified_slot_count",
+        "unknown_slot_count",
+        "recorded_data_event_count",
+        "same_value_write_count",
+        "native_initial_values",
+        "current_cache_values_at_admission",
+        "initial_values_equal_admission_values",
+        "initial_value_difference_is_not_rejection",
+        "terminal",
+        "cleanup_proved",
+        "missing_or_unproved_live_restores",
+        "issues",
+        "retired_thread_lifecycles",
+        "finite_window_reason",
+        "actual_writer_game_date",
+        "full_window_all_writes_covered",
+        "zero_hit_meaning",
+        "known_producer",
+        "maintenance_attribution",
+        "recorded_utc",
+        "read_only",
+        "input_pins",
+        "existing_format",
+        "runtime_actions_performed"
+      ]
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-initial-inputs\\r08-1615-a01-initial-before.common-view.json",
+        "bytes": 46220,
+        "sha256": "8b7ad0cbee5c0251549903b30c50bd8c9e883a10883e3c87a39b762f7a7724c6"
+      },
+      "body_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "date_raw": 53149056,
+        "revision": 3,
+        "native_revision": 2,
+        "episode_projection": "native_campaign",
+        "local_player_id": 1,
+        "player_armies": [
+          {
+            "army_id": 0,
+            "owner_character_id": 33388,
+            "soldiers": null,
+            "current_province_id": 2170,
+            "move_target_province_id": null,
+            "move_target_observable": false,
+            "controllable": true,
+            "source": "native",
+            "route_province_ids": [],
+            "route_read_status": "complete_empty",
+            "route_source_count": 0,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "regular",
+            "army_state_code": 1,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "army_strengths": [],
+        "army_strengths_status": null,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true
+        },
+        "active_wars": [
+          {
+            "war_id": 1,
+            "player_side": "attacker",
+            "player_is_primary_war_leader": true
+          }
+        ]
+      }
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-initial-inputs\\r08-1615-a01-initial-cash.common-view.json",
+        "bytes": 12194,
+        "sha256": "eceaa32bd817ef4340c221282802ee269e08fe48ca89b15550c3d7f5af2a61df"
+      },
+      "body_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "status",
+        "read_only",
+        "advertised",
+        "formal_action_ready",
+        "played_character_id",
+        "snapshot_revision",
+        "date_raw",
+        "active_war_ids",
+        "player_army_ids",
+        "current_raw_context_v1",
+        "holy_order_loan_observation_v1",
+        "current_treasury",
+        "player_monthly_gross_income",
+        "player_monthly_total_expenses",
+        "player_monthly_net_income",
+        "monthly_income_semantics",
+        "monthly_gross_income_unavailable_reason",
+        "monthly_total_expenses_unavailable_reason",
+        "current_treasury_unavailable_reason",
+        "monthly_net_income_unavailable_reason",
+        "military_expenses",
+        "readiness",
+        "unobserved_future_inputs",
+        "unavailable_reason",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "war_payment_observations_v1",
+        "war_payment_control_v1"
+      ],
+      "cash": {
+        "date_raw": 53149056,
+        "played_character_id": 33388,
+        "player_army_ids": [
+          0
+        ],
+        "current_raw_context_v1": {
+          "schema_version": 1,
+          "observation_kind": "paused_current_raw_context",
+          "attribution_scope": "current_raw_context_only",
+          "maintenance_attribution": "unclosed",
+          "character": 2176289642448,
+          "character_full_id": 33388,
+          "snapshot_revision": 2,
+          "date_raw": 53149056,
+          "actor_identity_stable": true,
+          "same_frame_ready": true,
+          "values": {
+            "context_identity_before": 2176345091488,
+            "context_identity_after": 2176345091488,
+            "value_2c0": 0,
+            "value_2c8": 0,
+            "value_28": 0,
+            "value_30": 0,
+            "capture_complete": true,
+            "context_stable": true,
+            "failed_reads": 0
+          },
+          "admission_ready": true,
+          "unavailable_reason": null
+        },
+        "military_expenses": {
+          "current": {
+            "status": "available",
+            "resource_kind": "actor_military_current_maintenance",
+            "resource_id": "33388",
+            "owner_character_id": 33388,
+            "war_ids": [
+              1
+            ],
+            "time_basis": "month",
+            "raw_scale": 100000,
+            "source_scope": "actor_owned_military_once_across_all_wars",
+            "source": "native_character_current_military_expenses",
+            "resource_raw_native": [
+              386622,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "gold_raw": 386622,
+            "treasury_raw": 0,
+            "future_war_cost_upper_ready": false,
+            "unavailable_reason": null
+          },
+          "all_raised": {
+            "status": "available",
+            "resource_kind": "actor_military_all_raised_maintenance",
+            "resource_id": "33388",
+            "owner_character_id": 33388,
+            "war_ids": [
+              1
+            ],
+            "time_basis": "month",
+            "raw_scale": 100000,
+            "source_scope": "actor_owned_military_once_across_all_wars",
+            "source": "native_character_all_raised_military_expenses",
+            "resource_raw_native": [
+              484950,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "gold_raw": 484950,
+            "treasury_raw": 0,
+            "future_war_cost_upper_ready": false,
+            "unavailable_reason": null
+          }
+        },
+        "current_treasury": {
+          "raw": 63760699,
+          "scale": 100000
+        },
+        "player_monthly_total_expenses": {
+          "raw": 437400,
+          "scale": 100000
+        },
+        "war_payment_observations_v1": {
+          "installed": true,
+          "install_failure_flags": 0,
+          "controlled_window_admitted": true,
+          "current_session": {
+            "pid": 32336,
+            "process_create_time_100ns": 134369836483832557,
+            "connection_generation": 1,
+            "loaded_game_epoch": null,
+            "controlled_window_id": 1,
+            "same_owned_process_no_load_window": true,
+            "game_state_identity_witness": 2175668561792,
+            "player_character_full_id": 33388,
+            "snapshot_revision": 2,
+            "native_date_raw": 300336128075693440,
+            "absolute_day_raw": 389544
+          },
+          "sampling": {
+            "available": true,
+            "capture_enabled": true,
+            "busy": false,
+            "clear_completed": false,
+            "epoch": 1,
+            "active_captures": 0,
+            "retained_records": 0,
+            "qualified_records": 0
+          },
+          "read_complete": true,
+          "latest_sequence": 0,
+          "natural_journal_status": {
+            "read_complete": true,
+            "retained_records": 0,
+            "overwritten_records": 0,
+            "failed_appends": 0
+          },
+          "records": [],
+          "natural_parent_returns": []
+        }
+      }
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-before.common-view.json",
+        "bytes": 46206,
+        "sha256": "2e01b734b3b6a1c4ec1397fc3a0497a894dab542c2285a1af636559f42559952"
+      },
+      "body_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "date_raw": 53149056,
+        "revision": 3,
+        "native_revision": 2,
+        "episode_projection": "native_campaign",
+        "local_player_id": 1,
+        "player_armies": [
+          {
+            "army_id": 0,
+            "owner_character_id": 33388,
+            "soldiers": null,
+            "current_province_id": 2170,
+            "move_target_province_id": null,
+            "move_target_observable": false,
+            "controllable": true,
+            "source": "native",
+            "route_province_ids": [],
+            "route_read_status": "complete_empty",
+            "route_source_count": 0,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "regular",
+            "army_state_code": 1,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "army_strengths": [],
+        "army_strengths_status": null,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true
+        },
+        "active_wars": [
+          {
+            "war_id": 1,
+            "player_side": "attacker",
+            "player_is_primary_war_leader": true
+          }
+        ]
+      }
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-day-once.common-view.json",
+        "bytes": 16263,
+        "sha256": "75dbb06277ea65d76d06fd972132b5c406b31d7c533856f1071056889660c754"
+      },
+      "body_keys": [
+        "step",
+        "backend_id",
+        "source",
+        "starting_date",
+        "ending_date",
+        "starting_date_raw",
+        "ending_date_raw",
+        "elapsed_days",
+        "requested_horizon_days",
+        "timeline_speed",
+        "timeline_policy",
+        "progress_status",
+        "war_progress_before",
+        "war_progress_after",
+        "ordinary_events",
+        "event_resolution",
+        "actions",
+        "paused",
+        "active_event",
+        "pending_character_interaction",
+        "final_screen",
+        "snapshot_id",
+        "revision",
+        "exact_day_native_clock"
+      ],
+      "step": {
+        "body_keys": [
+          "step",
+          "backend_id",
+          "source",
+          "starting_date",
+          "ending_date",
+          "starting_date_raw",
+          "ending_date_raw",
+          "elapsed_days",
+          "requested_horizon_days",
+          "timeline_speed",
+          "timeline_policy",
+          "progress_status",
+          "war_progress_before",
+          "war_progress_after",
+          "ordinary_events",
+          "event_resolution",
+          "actions",
+          "paused",
+          "active_event",
+          "pending_character_interaction",
+          "final_screen",
+          "snapshot_id",
+          "revision",
+          "exact_day_native_clock"
+        ]
+      }
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-independent-after.common-view.json",
+        "bytes": 46476,
+        "sha256": "40c5e2f590e81a3f5ebfc47164b2c4ea90d4ffee3badc47789f0cf017ca976b3"
+      },
+      "body_keys": [
+        "date_raw",
+        "speed",
+        "paused",
+        "local_player_id",
+        "map_ready",
+        "played_character",
+        "played_character_gold",
+        "played_character_prestige",
+        "played_character_piety",
+        "one_life_settlement",
+        "active_event",
+        "pending_character_interaction",
+        "active_wars",
+        "player_armies",
+        "last_checkpoint_submission",
+        "history",
+        "format_version",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "backend_id",
+        "source",
+        "diagnostics",
+        "episode_projection",
+        "army_strengths",
+        "army_strengths_status",
+        "army_strengths_query_sequence",
+        "army_strengths_queried_snapshot_id",
+        "army_strengths_queried_revision",
+        "army_strengths_profile",
+        "army_observed_phase_coverage",
+        "prewar_force_coalition_coverage_v2_query",
+        "war_declared_overview_v1_observation",
+        "war_declared_overview_v1_query_attempt",
+        "war_declared_overview_v1_close_pending",
+        "war_results_window_v1_observation",
+        "war_results_window_v1_query_attempt",
+        "war_results_window_v1_close_pending",
+        "war_results_window_v1_check_due",
+        "war_results_window_v1_next_check_date_raw",
+        "managed_campaign_run_binding",
+        "war_declaration_continuity_v1",
+        "native_command_history",
+        "native_rollback_war_failure",
+        "native_rollback_war_failures",
+        "native_command_history_export"
+      ],
+      "frame": {
+        "date_raw": 53149080,
+        "revision": 6,
+        "native_revision": 5,
+        "episode_projection": "native_campaign",
+        "local_player_id": 1,
+        "player_armies": [
+          {
+            "army_id": 0,
+            "owner_character_id": 33388,
+            "soldiers": null,
+            "current_province_id": 2170,
+            "move_target_province_id": null,
+            "move_target_observable": false,
+            "controllable": true,
+            "source": "native",
+            "route_province_ids": [],
+            "route_read_status": "complete_empty",
+            "route_source_count": 0,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "regular",
+            "army_state_code": 1,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "army_strengths": [],
+        "army_strengths_status": null,
+        "played_character": {
+          "character_id": 33388,
+          "alive": true
+        },
+        "active_wars": [
+          {
+            "war_id": 1,
+            "player_side": "attacker",
+            "player_is_primary_war_leader": true
+          }
+        ]
+      }
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-cash-before.common-view.json",
+        "bytes": 12193,
+        "sha256": "47ee403b07f692e02f73fe20f3570cddd93ecf5e5aa1795dfe5deca75103bb46"
+      },
+      "body_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "status",
+        "read_only",
+        "advertised",
+        "formal_action_ready",
+        "played_character_id",
+        "snapshot_revision",
+        "date_raw",
+        "active_war_ids",
+        "player_army_ids",
+        "current_raw_context_v1",
+        "holy_order_loan_observation_v1",
+        "current_treasury",
+        "player_monthly_gross_income",
+        "player_monthly_total_expenses",
+        "player_monthly_net_income",
+        "monthly_income_semantics",
+        "monthly_gross_income_unavailable_reason",
+        "monthly_total_expenses_unavailable_reason",
+        "current_treasury_unavailable_reason",
+        "monthly_net_income_unavailable_reason",
+        "military_expenses",
+        "readiness",
+        "unobserved_future_inputs",
+        "unavailable_reason",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "war_payment_observations_v1",
+        "war_payment_control_v1"
+      ],
+      "frame": {
+        "date_raw": 53149056,
+        "player_army_ids": [
+          0
+        ]
+      }
+    },
+    {
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-cash-after.common-view.json",
+        "bytes": 13954,
+        "sha256": "44f5d72babedfb78e1acae63dade0ecc11e880c4067062fe6ce8ab4f57ea7e7a"
+      },
+      "body_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "status",
+        "read_only",
+        "advertised",
+        "formal_action_ready",
+        "played_character_id",
+        "snapshot_revision",
+        "date_raw",
+        "active_war_ids",
+        "player_army_ids",
+        "current_raw_context_v1",
+        "holy_order_loan_observation_v1",
+        "current_treasury",
+        "player_monthly_gross_income",
+        "player_monthly_total_expenses",
+        "player_monthly_net_income",
+        "monthly_income_semantics",
+        "monthly_gross_income_unavailable_reason",
+        "monthly_total_expenses_unavailable_reason",
+        "current_treasury_unavailable_reason",
+        "monthly_net_income_unavailable_reason",
+        "military_expenses",
+        "readiness",
+        "unobserved_future_inputs",
+        "unavailable_reason",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "war_payment_observations_v1",
+        "war_payment_control_v1"
+      ],
+      "cash": {
+        "date_raw": 53149080,
+        "played_character_id": 33388,
+        "player_army_ids": [
+          0
+        ],
+        "current_raw_context_v1": {
+          "schema_version": 1,
+          "observation_kind": "paused_current_raw_context",
+          "attribution_scope": "current_raw_context_only",
+          "maintenance_attribution": "unclosed",
+          "character": 2176289642448,
+          "character_full_id": 33388,
+          "snapshot_revision": 5,
+          "date_raw": 53149080,
+          "actor_identity_stable": true,
+          "same_frame_ready": true,
+          "values": {
+            "context_identity_before": 2176345091488,
+            "context_identity_after": 2176345091488,
+            "value_2c0": 0,
+            "value_2c8": 0,
+            "value_28": 0,
+            "value_30": 0,
+            "capture_complete": true,
+            "context_stable": true,
+            "failed_reads": 0
+          },
+          "admission_ready": true,
+          "unavailable_reason": null
+        },
+        "military_expenses": {
+          "current": {
+            "status": "available",
+            "resource_kind": "actor_military_current_maintenance",
+            "resource_id": "33388",
+            "owner_character_id": 33388,
+            "war_ids": [
+              1
+            ],
+            "time_basis": "month",
+            "raw_scale": 100000,
+            "source_scope": "actor_owned_military_once_across_all_wars",
+            "source": "native_character_current_military_expenses",
+            "resource_raw_native": [
+              310621,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "gold_raw": 310621,
+            "treasury_raw": 0,
+            "future_war_cost_upper_ready": false,
+            "unavailable_reason": null
+          },
+          "all_raised": {
+            "status": "available",
+            "resource_kind": "actor_military_all_raised_maintenance",
+            "resource_id": "33388",
+            "owner_character_id": 33388,
+            "war_ids": [
+              1
+            ],
+            "time_basis": "month",
+            "raw_scale": 100000,
+            "source_scope": "actor_owned_military_once_across_all_wars",
+            "source": "native_character_all_raised_military_expenses",
+            "resource_raw_native": [
+              484950,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "gold_raw": 484950,
+            "treasury_raw": 0,
+            "future_war_cost_upper_ready": false,
+            "unavailable_reason": null
+          }
+        },
+        "current_treasury": {
+          "raw": 63760699,
+          "scale": 100000
+        },
+        "player_monthly_total_expenses": {
+          "raw": 361399,
+          "scale": 100000
+        },
+        "war_payment_observations_v1": {
+          "installed": true,
+          "install_failure_flags": 0,
+          "controlled_window_admitted": true,
+          "current_session": {
+            "pid": 32336,
+            "process_create_time_100ns": 134369836483832557,
+            "connection_generation": 1,
+            "loaded_game_epoch": null,
+            "controlled_window_id": 1,
+            "same_owned_process_no_load_window": true,
+            "game_state_identity_witness": 2175668561792,
+            "player_character_full_id": 33388,
+            "snapshot_revision": 5,
+            "native_date_raw": 300337098738302360,
+            "absolute_day_raw": 389545
+          },
+          "sampling": {
+            "available": true,
+            "capture_enabled": true,
+            "busy": false,
+            "clear_completed": false,
+            "epoch": 1,
+            "active_captures": 0,
+            "retained_records": 0,
+            "qualified_records": 0
+          },
+          "read_complete": true,
+          "latest_sequence": 0,
+          "natural_journal_status": {
+            "read_complete": true,
+            "retained_records": 2,
+            "overwritten_records": 0,
+            "failed_appends": 0
+          },
+          "records": [],
+          "natural_parent_returns": [
+            {
+              "metadata": {
+                "observed": true,
+                "phase": 1,
+                "actual_entry_rva": 44670368,
+                "primary_manager": 2174371190144,
+                "game_state": 2175668561792,
+                "session_identity": null,
+                "entry_event": {
+                  "clock_identity": 140715122734968,
+                  "sequence": 5127651,
+                  "thread_id": 36552
+                },
+                "date_raw": 300336128075693440,
+                "absolute_day_raw": 389544
+              },
+              "original_called": true,
+              "original_returned": true,
+              "raw_return_bits": 0,
+              "returned_event": {
+                "clock_identity": 140715122734968,
+                "sequence": 5128973,
+                "thread_id": 36552
+              },
+              "returned_date_raw": 300336128075693440,
+              "returned_absolute_day_raw": 389544
+            },
+            {
+              "metadata": {
+                "observed": true,
+                "phase": 2,
+                "actual_entry_rva": 44672368,
+                "primary_manager": 2174371190144,
+                "game_state": 2175668561792,
+                "session_identity": null,
+                "entry_event": {
+                  "clock_identity": 140715122734968,
+                  "sequence": 5171835,
+                  "thread_id": 15464
+                },
+                "date_raw": 300337098738302360,
+                "absolute_day_raw": 389545
+              },
+              "original_called": true,
+              "original_returned": true,
+              "raw_return_bits": 0,
+              "returned_event": {
+                "clock_identity": 140715122734968,
+                "sequence": 5171841,
+                "thread_id": 15464
+              },
+              "returned_date_raw": 300337098738302360,
+              "returned_absolute_day_raw": 389545
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\writer.raw.ndjson",
+    "bytes": 35583,
+    "sha256": "74d2178739b262fbd0eb5ff2d81097777b8a5137ee9497cf2fa94ccc354775d0"
+  },
+  "raw_kind_counts": {
+    "start": 1,
+    "arm": 108,
+    "thread_exited": 1,
+    "raw_field_write_trap": 2,
+    "restore": 107,
+    "terminal": 1
+  },
+  "selected_raw_rows": [
+    {
+      "kind": "start",
+      "schema": "xar.maintenance.writer_pc.cold.v2",
+      "synthetic": false,
+      "CK3_observed": true,
+      "maintenance_attribution": "unclosed",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "pid": 32336,
+      "created": 134369836483832557,
+      "full_id": 33388,
+      "character": 2176289642448,
+      "context": 2176345091488,
+      "admission_window_id": 1,
+      "admission_payment_epoch": 1,
+      "admission_generation": 1,
+      "admission_native_revision": 2,
+      "admission_date_raw": 53149056,
+      "actual_writer_game_date": null,
+      "admission_episode": null,
+      "owner_binding": {
+        "schema": "xar.maintenance.writer_pc.owner-binding.v2",
+        "mode": "native_campaign_owned_no_load_v2",
+        "episode_projection": "native_campaign",
+        "episode_run_id": null,
+        "original_episode_key_present": false,
+        "pid": 32336,
+        "process_create_time_100ns": 134369836483832557,
+        "connection_generation": 1,
+        "player_character_full_id": 33388,
+        "local_player_id": 1,
+        "game_state_identity_witness": 2175668561792,
+        "character": 2176289642448,
+        "context": 2176345091488,
+        "controlled_window_id": 1,
+        "payment_epoch": 1,
+        "native_revision": 2,
+        "date_raw": 53149056,
+        "absolute_day_raw": 389544,
+        "callsite_anchor_rva": 42956864
+      },
+      "native_owner_memory_verified": true,
+      "admission_cash_packet_sha256": "eceaa32bd817ef4340c221282802ee269e08fe48ca89b15550c3d7f5af2a61df",
+      "module_base": 140699715174400,
+      "module_size": 102518784,
+      "DR7_write_len8_mask": 2576941141,
+      "field_offsets": [
+        704,
+        712,
+        40,
+        48
+      ],
+      "initial_values": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "thread_exited",
+      "thread_id": 6112
+    },
+    {
+      "kind": "terminal",
+      "reason": "timeout",
+      "restored": true,
+      "detached": true,
+      "pending_event": false,
+      "cleanup_complete": true,
+      "hit_count": 2,
+      "data_event_count": 2,
+      "writer_thread_count": 1,
+      "created_thread_events": 107,
+      "restore_readback_rows": 107,
+      "process_exited": false,
+      "observation_thread_admission_complete": true,
+      "full_window_all_writes_covered": false,
+      "CK3_observed": true,
+      "known_producer": false,
+      "military_attribution": "unclosed"
+    }
+  ],
+  "SDK_query_game_DR_actions": 0,
+  "consumer_selector_executions": 0,
+  "derived_projection_correction": "Broad active-war province arrays removed; original packet pins and sources unchanged."
+}

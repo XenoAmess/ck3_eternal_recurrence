@@ -1,0 +1,459 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r08-1615-a01-cash-after",
+    "tool": "ck3_query_war_cash_current_resources_private_v1",
+    "arguments": {
+      "expected_revision": 6,
+      "payment_sampling": "query"
+    }
+  },
+  "is_error": false,
+  "body": {
+    "schema": "xar.ck3.war-cash-current-resources.v1",
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "status": "available",
+    "read_only": true,
+    "advertised": false,
+    "formal_action_ready": false,
+    "played_character_id": 33388,
+    "snapshot_revision": 5,
+    "date_raw": 53149080,
+    "active_war_ids": [
+      1
+    ],
+    "player_army_ids": [
+      0
+    ],
+    "current_raw_context_v1": {
+      "schema_version": 1,
+      "observation_kind": "paused_current_raw_context",
+      "attribution_scope": "current_raw_context_only",
+      "maintenance_attribution": "unclosed",
+      "character": 2176289642448,
+      "character_full_id": 33388,
+      "snapshot_revision": 5,
+      "date_raw": 53149080,
+      "actor_identity_stable": true,
+      "same_frame_ready": true,
+      "values": {
+        "context_identity_before": 2176345091488,
+        "context_identity_after": 2176345091488,
+        "value_2c0": 0,
+        "value_2c8": 0,
+        "value_28": 0,
+        "value_30": 0,
+        "capture_complete": true,
+        "context_stable": true,
+        "failed_reads": 0
+      },
+      "admission_ready": true,
+      "unavailable_reason": null
+    },
+    "holy_order_loan_observation_v1": {
+      "schema": "xar.ck3.holy-order-loan-war-cash.v1",
+      "status": "available",
+      "read_only": true,
+      "advertised": false,
+      "formal_action_ready": false,
+      "source_frame": {
+        "snapshot_revision": 5,
+        "ticket_sequence": 11,
+        "local_player_id": 1,
+        "played_character_id": 33388,
+        "date_raw": 53149080,
+        "full_snapshot_owner_retained": true,
+        "same_frame_ready": true,
+        "execution_stamp": {
+          "pump_epoch": 31415,
+          "thread_id": 21768,
+          "rng_wrapper": 0,
+          "rng_state": 0,
+          "rng_owner_thread_id": 0,
+          "tls_initialized_flag_address": 140699812423359,
+          "tls_initialized": 1,
+          "tls_context": 2169462550496,
+          "tls_main_thread_marker": 1,
+          "jomini_state": 2173731966704,
+          "game_state": 2175668561792,
+          "date_raw": 53149080,
+          "paused": true
+        }
+      },
+      "decision_costs": {
+        "schema": "ck3_12004_holy_order_loan_decision_costs_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "read_only": true,
+        "scope": "decision_gates_and_costs_only",
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 31415,
+        "date_raw": 53149080,
+        "played_character_id": 33388,
+        "raw_scale": 100000,
+        "resource_slot_count": 10,
+        "complete_loan_terms": false,
+        "principal_quote_raw": null,
+        "typed_debt": null,
+        "funding_credit_raw": 0,
+        "submit_planned": false,
+        "borrow_decision": {
+          "decision_id": "borrow_from_holy_order_decision",
+          "is_shown": false,
+          "can_take": false,
+          "affordable": false,
+          "costs_raw_by_native_index": [
+            0,
+            0,
+            5000000,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "repay_decision": {
+          "decision_id": "repay_loan_decision",
+          "is_shown": false,
+          "can_take": true,
+          "affordable": true,
+          "costs_raw_by_native_index": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "decision_observation": {
+        "schema": "xar.holy-order-loan-decision-observation.v1",
+        "available": true,
+        "unavailable_reason": null,
+        "source": {
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "played_character_id": 33388,
+          "date_raw": 53149080,
+          "capture_epoch": 31415
+        },
+        "raw_scale": 100000,
+        "resource_slot_count": 10,
+        "borrow_decision": {
+          "decision_id": "borrow_from_holy_order_decision",
+          "is_shown": false,
+          "can_take": false,
+          "affordable": false,
+          "native_gates_allow_decision": false,
+          "declared_costs_raw_by_native_index": [
+            0,
+            0,
+            5000000,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "repay_decision": {
+          "decision_id": "repay_loan_decision",
+          "is_shown": false,
+          "can_take": true,
+          "affordable": true,
+          "native_gates_allow_decision": false,
+          "declared_costs_raw_by_native_index": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "principal_quote_raw": null,
+        "existing_debt_principal_raw": null,
+        "repayment_total_outlay_raw": null,
+        "complete_loan_terms": false,
+        "submission_qualified": false,
+        "received_funds_verified": false,
+        "funding_credit_raw": 0,
+        "selected_action": null
+      },
+      "decision_costs_unavailable_reason": null,
+      "principal": {
+        "status": "available",
+        "value_key": "holy_order_gold_value",
+        "raw_scale": 100000,
+        "prospective_principal_raw": 30000000,
+        "owned_temporaries_released": true,
+        "unavailable_reason": null
+      },
+      "principal_quote_raw": 30000000,
+      "principal_unavailable_reason": null,
+      "borrow_eligible": false,
+      "complete_loan_terms": false,
+      "existing_debt_principal_raw": null,
+      "received_funds_verified": false,
+      "funding_credit_raw": 0,
+      "submit_planned": false
+    },
+    "current_treasury": {
+      "raw": 63760699,
+      "scale": 100000
+    },
+    "player_monthly_gross_income": {
+      "raw": 469940,
+      "scale": 100000
+    },
+    "player_monthly_total_expenses": {
+      "raw": 361399,
+      "scale": 100000
+    },
+    "player_monthly_net_income": {
+      "raw": 108541,
+      "scale": 100000
+    },
+    "monthly_income_semantics": {
+      "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+      "time_basis": "month",
+      "source_scope": "played_character_personal_gold",
+      "income_source": "native_character_monthly_gold_income",
+      "expense_source": "native_character_monthly_total_gold_expenses",
+      "military_expenses_included": true
+    },
+    "monthly_gross_income_unavailable_reason": null,
+    "monthly_total_expenses_unavailable_reason": null,
+    "current_treasury_unavailable_reason": null,
+    "monthly_net_income_unavailable_reason": null,
+    "military_expenses": {
+      "current": {
+        "status": "available",
+        "resource_kind": "actor_military_current_maintenance",
+        "resource_id": "33388",
+        "owner_character_id": 33388,
+        "war_ids": [
+          1
+        ],
+        "time_basis": "month",
+        "raw_scale": 100000,
+        "source_scope": "actor_owned_military_once_across_all_wars",
+        "source": "native_character_current_military_expenses",
+        "resource_raw_native": [
+          310621,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gold_raw": 310621,
+        "treasury_raw": 0,
+        "future_war_cost_upper_ready": false,
+        "unavailable_reason": null
+      },
+      "all_raised": {
+        "status": "available",
+        "resource_kind": "actor_military_all_raised_maintenance",
+        "resource_id": "33388",
+        "owner_character_id": 33388,
+        "war_ids": [
+          1
+        ],
+        "time_basis": "month",
+        "raw_scale": 100000,
+        "source_scope": "actor_owned_military_once_across_all_wars",
+        "source": "native_character_all_raised_military_expenses",
+        "resource_raw_native": [
+          484950,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gold_raw": 484950,
+        "treasury_raw": 0,
+        "future_war_cost_upper_ready": false,
+        "unavailable_reason": null
+      }
+    },
+    "readiness": {
+      "current_treasury_ready": true,
+      "monthly_gross_income_ready": true,
+      "monthly_total_expenses_ready": true,
+      "monthly_net_income_ready": true,
+      "current_military_expenses_ready": true,
+      "all_raised_military_expenses_ready": true,
+      "same_frame_ready": true
+    },
+    "unobserved_future_inputs": [
+      "pending_war_cash_raw",
+      "future_war_cost_upper_raw",
+      "future_risk_budget_raw",
+      "policy_minimum_gold_reserve_raw",
+      "horizon_days",
+      "future_bound_assumptions"
+    ],
+    "unavailable_reason": null,
+    "queried_snapshot_id": "native:5",
+    "queried_revision": 6,
+    "queried_native_revision": 5,
+    "war_payment_observations_v1": {
+      "schema_version": 1,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "game_version": "1.20.0.4",
+      "steam_build_id": 25734779,
+      "installed": true,
+      "install_failure_flags": 0,
+      "controlled_window_admitted": true,
+      "session_basis": "same_owned_process_no_load_window",
+      "balance_boundary": "whole_original_callback_entry_return",
+      "maintenance_attribution": "unclosed",
+      "current_session": {
+        "pid": 32336,
+        "process_create_time_100ns": 134369836483832557,
+        "connection_generation": 1,
+        "loaded_game_epoch": null,
+        "controlled_window_id": 1,
+        "same_owned_process_no_load_window": true,
+        "game_state_identity_witness": 2175668561792,
+        "player_character_full_id": 33388,
+        "snapshot_revision": 5,
+        "native_date_raw": 300337098738302360,
+        "absolute_day_raw": 389545
+      },
+      "sampling": {
+        "available": true,
+        "capture_enabled": true,
+        "busy": false,
+        "clear_completed": false,
+        "epoch": 1,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0
+      },
+      "read_complete": true,
+      "latest_sequence": 0,
+      "oldest_sequence": 0,
+      "overwritten": 0,
+      "publication_failures": 0,
+      "natural_journal_status": {
+        "read_complete": true,
+        "retained_records": 2,
+        "overwritten_records": 0,
+        "failed_appends": 0
+      },
+      "records": [],
+      "natural_parent_returns": [
+        {
+          "metadata": {
+            "observed": true,
+            "phase": 1,
+            "actual_entry_rva": 44670368,
+            "primary_manager": 2174371190144,
+            "game_state": 2175668561792,
+            "session_identity": null,
+            "entry_event": {
+              "clock_identity": 140715122734968,
+              "sequence": 5127651,
+              "thread_id": 36552
+            },
+            "date_raw": 300336128075693440,
+            "absolute_day_raw": 389544
+          },
+          "original_called": true,
+          "original_returned": true,
+          "raw_return_bits": 0,
+          "returned_event": {
+            "clock_identity": 140715122734968,
+            "sequence": 5128973,
+            "thread_id": 36552
+          },
+          "returned_date_raw": 300336128075693440,
+          "returned_absolute_day_raw": 389544
+        },
+        {
+          "metadata": {
+            "observed": true,
+            "phase": 2,
+            "actual_entry_rva": 44672368,
+            "primary_manager": 2174371190144,
+            "game_state": 2175668561792,
+            "session_identity": null,
+            "entry_event": {
+              "clock_identity": 140715122734968,
+              "sequence": 5171835,
+              "thread_id": 15464
+            },
+            "date_raw": 300337098738302360,
+            "absolute_day_raw": 389545
+          },
+          "original_called": true,
+          "original_returned": true,
+          "raw_return_bits": 0,
+          "returned_event": {
+            "clock_identity": 140715122734968,
+            "sequence": 5171841,
+            "thread_id": 15464
+          },
+          "returned_date_raw": 300337098738302360,
+          "returned_absolute_day_raw": 389545
+        }
+      ],
+      "qualified_boarding_debits": [],
+      "raw_resource4_getter_v1": {
+        "schema_version": 1,
+        "source_entry_rva": 42701968,
+        "capture_origin": "native_entry_detour",
+        "resource_name": "unknown",
+        "payment_attribution": "unclosed",
+        "read_complete": true,
+        "latest_sequence": 0,
+        "oldest_sequence": 0,
+        "overwritten": 0,
+        "publication_failures": 0,
+        "records": []
+      }
+    },
+    "war_payment_control_v1": {
+      "requested": "query",
+      "accepted": true,
+      "reason": "enabled_controlled_no_load_window"
+    }
+  },
+  "transport_origin": "derived_common_case_control_row_not_original_SDK_transport",
+  "common_original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-1615-a01-cash-after.actual-results.json",
+    "bytes": 66493,
+    "sha256": "3bb9df70e51614710748359db6e03945e9d0f70be3bffcfc941e81f3724d3d76",
+    "pointer": "/rows/0/result"
+  },
+  "common_row_ok": true,
+  "common_row_error": null
+}

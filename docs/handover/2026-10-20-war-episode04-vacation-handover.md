@@ -1,5 +1,15 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-20 16:10 UTC：R0194限定Split签出；R0223一日未取得C/D
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root新签R0194原M Split **[0,15)秒/450actual帧**，正式动态最新 **4/11（36.36%，R04+R06+R09+R12）**；旧3/11及更早快照保留。GUI250→75的保守变化区间(0,6.3]秒；175不是同时GUI可读，以同场独立F1/native75+175=250证明实际Split，ACK仅submitted。只授Split源镜头，Merge GUI251/physical250分列，完整R09套、human1×/最终影片/OneDrive均未授。
+
+R0223 sourcebc638/Native6b91与历史编译fee分层；真实精确1日53149056→53149080，无Move/R06/影片。观察器30秒超时exit1、Army自然parent两次、a/b0→0，C/D未取得；当前费率不等于付款，空journal不授权军费0。独立payment/九族OFFclear后普通Save，同日paused，one-life仍unconfirmed；OS/native/host/public/keeper/allocator原wait全0、CAS7598。Root亲读launch容量行75.679729秒旧与后台6.922146秒行分开，后者不追认前者。研究10/14、业务7/11、B0/2、ABC0/3和fullR08false保持。
+
+[R0223专题与原件](../ck3-native-ai/episode04-r0223-one-day-no-cd-and-normal-close-20261020.md)；[Root Split原决定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-split-positive-review-a01/ROOT-R194-SPLIT-SHOT-ACCEPTANCE.actual.json)；[唯一动态账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)。
+
+R08 parent机会与dispatch候选仅离线研究归档；dispatch主patch之后须带restore有界补注，native build/cold/live均0，未应用生产Native。Clock ec7649已精确push；Linear成功、Official失败于step94“Test shared CK3 acceptance without installed CK3”，不是全CIgreen。新归档不等待其后继CI终态，不将源码存在当实机结果。
+
 ## 2026-10-20 12:55 UTC：Root签出R0217限定R04阳性源镜头，正式动态3/11
 
 `machine_id: desktop-3fevhd2-1c74096080`；[Root实际裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-r04-positive-review-a01/ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json)（6102B，SHA`af7fff15c256023886f15253eb822e27018261ec6a957f3dfc9b3e52a9b54d88`）接受原片 **[0,30)秒/900actual帧**，[11主题账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)现 **3/11（27.27%，R04+R06+R12）**。17个direct-v2个别物理扣兵阳性小计236；画面地图6746→6510与unique physical6741→6505分开陈述，完整county total=null/fullR04false，5空DATA调用仍excluded，未补完整县域NET。复用已入Git的68199B/70b206…原生独立证据，无新consumer/游戏/日步。

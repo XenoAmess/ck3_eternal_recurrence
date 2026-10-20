@@ -1,0 +1,185 @@
+{
+  "schema": "xar.e04.R09-a02-exact5MiB-once-source-bound.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:53:50.275264+00:00",
+  "task_id": "e04-capacity-r09-source-visual5-a02-20261020",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "Root_explicit_new_purpose_authority": "Root explicitly authorizes one new independent corrected R194 raw[0,1144) extraction after scene/Git realclosures, exact geometrycorrection3133/aaa9d9..., 5MiB all-inclusive output at new a02 root, hard16:15. Preserve original a01 failure and late23sec metadata truth; this does not retroactively renew the old permit. No retry.",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r09-geometry-review-a01\\R09-A02-RECIPE.prepared-a01.json",
+    "bytes": 4973,
+    "sha256": "63d3d9e9a97fe84a86f544c80058122fc5ac90e22bb4d5bc29d2d2bb6520ea4a"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r09-geometry-review-a01\\r09_a02_runner.py",
+    "bytes": 10118,
+    "sha256": "5477e8cc450764e01a673301ace6ca1ba42f83dc72f82d1bdfd37772aeda7560"
+  },
+  "geometry_correction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r09-geometry-review-a01\\MINIMAL-CORRECTION.prepared-a01.json",
+    "bytes": 3133,
+    "sha256": "aaa9d9b16261ca405a0e68805673dfbfc1baacdb51b679876d002d9b0bd392c4"
+  },
+  "source_raw_retained_pin": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+    "bytes": 71202833,
+    "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4"
+  },
+  "source_current_fresh_stat": {
+    "bytes": 71202833,
+    "mtime_ns": 1792195497700620400,
+    "st_dev": 7220568048185129294,
+    "st_ino": 844424932777670
+  },
+  "source_stat_observed_at_utc": "2026-10-20T15:53:50.328058+00:00",
+  "source_payload_rehashed_or_opened_by_capacity": false,
+  "existing_fullraw_QA": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\portable-media-facts.actual-a05.json",
+    "bytes": 20521,
+    "sha256": "ad36f161835d6c45fa03177d6f8fca41f3cd46927156187bd2a2c417c2d6f2b7"
+  },
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r09-source-visual5-a02",
+  "output_root": "C:\\ck3-e04-resume-20261020-a01\\r09-source-visual5-a02",
+  "output_observed_absent": true,
+  "all_inclusive_hard_ceiling_bytes": 5242880,
+  "aggregate_ceiling_bytes": 5242880,
+  "component_ceiling_bytes": {
+    "contacts": 4194304,
+    "metadata": 262144,
+    "conditional_fullres": 262144,
+    "spare": 524288
+  },
+  "conditional_new_fullres_execution_admitted": false,
+  "maximum_FFmpeg_Popen_count": 1,
+  "maximum_concurrent_FFmpeg": 1,
+  "priority": "BELOW_NORMAL_PRIORITY_CLASS",
+  "threads": 1,
+  "source_frames_half_open": [
+    0,
+    1144
+  ],
+  "maximum_sheets": 72,
+  "expected_sheet_geometry": [
+    960,
+    608
+  ],
+  "source_demux_time_ceiling_seconds": "38.134",
+  "media_extraction_execution_admitted": true,
+  "heavy_write_execution_admitted": true,
+  "game_native_build_SDK_camera_film_video_render_TTS_probe_rawhash_rawcopy_execution_admitted": false,
+  "metadata_and_scripts_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r09-geometry-review-a01",
+  "metadata_and_scripts_ceiling_bytes": 131072,
+  "metadata_and_scripts_inside_existing_M16MiB_not_extra_grant": true,
+  "run_hard_deadline_utc": "2026-10-20T16:15:00Z",
+  "child_deadline_utc": "2026-10-20T16:15:00Z",
+  "quota_review_at_utc": "2026-10-20T16:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:53:50.251298+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77950345216,
+      "available_to_caller_bytes": 77950345216,
+      "total_free_bytes": 77950345216,
+      "entire_volume_used_allocation_upper_bound_bytes": 433183600640,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:53:50.251298+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21645750272,
+      "available_to_caller_bytes": 21645750272,
+      "total_free_bytes": 21645750272,
+      "entire_volume_used_allocation_upper_bound_bytes": 478444257280,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "all_active_balances": {
+    "known_future": {
+      "C:/": 22020096,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r08-1615-20261020-a01",
+        "known_future": {
+          "C:/": 16777216,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-r09-source-visual5-a02-20261020",
+        "known_future": {
+          "C:/": 5242880,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "budget": {
+    "C_known_future_bytes": 22020096,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25833956550,
+    "C_floor_margin_bytes": 52116388666,
+    "C_projected_whole_volume_upper_bound_bytes": 437542720710,
+    "C_quota_margin_bytes": 543943482,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 36696064
+  },
+  "current_M16MiB_actual": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T15:53:50.275234+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01",
+    "excludes": [],
+    "logical_bytes": 1570840,
+    "files": 212,
+    "ceiling_bytes": 16777216,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "named_CK3_FFmpeg_ffprobe_census": [],
+  "closed_R0223_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-NORMAL-CLOSED-ONE-DAY-CD-NOT-QUALIFIED-SETTLEMENT.actual-a01.json",
+    "bytes": 9043,
+    "sha256": "39de3d9206fffbe82dbb62c215577a72d208a93443d061fb558ef670e7dd41c6"
+  },
+  "closed_Git_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\CLOCK-GIT-C4-D16-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 1954,
+    "sha256": "5e559d3c0b20512b3e650615afe0fb35b45ba58a6431d7fed92feeb8899df6db"
+  },
+  "previous_scene_unspent_not_a_physical_or_unused_credit": true,
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false,
+  "formal_visual_human_or_business_credit_granted": false,
+  "source_protection_not_indefinitely_renewed_by_this_child": true
+}

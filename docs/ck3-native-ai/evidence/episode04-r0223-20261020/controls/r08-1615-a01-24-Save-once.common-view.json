@@ -1,0 +1,104 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r08-1615-a01-24-Save-once",
+    "tool": "ck3_save_checkpoint",
+    "arguments": {
+      "expected_revision": 7
+    }
+  },
+  "is_error": false,
+  "body": {
+    "step": "save-checkpoint",
+    "accepted": true,
+    "status": "submitted",
+    "submission": {
+      "sequence": 1,
+      "requested_save_name": "xar_checkpoint",
+      "date_raw": 53149080
+    },
+    "backend_id": "native-headless",
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 74141604,
+      "sha256": "9ff896c873eab77b1f46f3c5ed6459221ca5de0eefa9f11c7c0e2dd9d2aeb05a",
+      "date_raw": 53149080,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 13,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "episode_seed": null,
+    "materialization": {
+      "available": true,
+      "save_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\save games",
+      "mtime_ns": 1792510635232181100
+    },
+    "driver_state_replace_receipt": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "unconfirmed",
+      "write_replace_returned": true,
+      "save_binding_verified": false,
+      "reason": "save_binding_mismatch",
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0223",
+        "bridge_pid": 32336,
+        "episode_character_id": null,
+        "episode_run_id": null,
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "rogue_one_life",
+          "xar_enabled": "xar_on",
+          "pact_contract": "terminal_settlement_required",
+          "source": "legacy-driver-default",
+          "environment_sha256": null
+        },
+        "campaign_goal": null
+      },
+      "binding_contract": "one_life_episode_identity_v1",
+      "checkpoint_episode_projection": "native_campaign",
+      "missing_checkpoint_binding_fields": [
+        "episode_character_id",
+        "episode_run_id"
+      ],
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0223",
+        "bridge_pid": 32336,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "save_history_index": 13,
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 74141604,
+        "sha256": "9ff896c873eab77b1f46f3c5ed6459221ca5de0eefa9f11c7c0e2dd9d2aeb05a",
+        "date_raw": 53149080,
+        "overwrite_confirmed": false,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 13,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "encoded_history_rows": 13,
+      "driver_state_path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\native-session\\driver-state.json"
+    }
+  },
+  "transport_origin": "derived_common_case_control_row_not_original_SDK_transport",
+  "common_original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-1615-a01-24-Save-once.actual-results.json",
+    "bytes": 55165,
+    "sha256": "ceadb698af9e7615e67829ba57c99ffabc66f090f344a372697a4c21d251b19f",
+    "pointer": "/rows/0/result"
+  },
+  "common_row_ok": true,
+  "common_row_error": null
+}

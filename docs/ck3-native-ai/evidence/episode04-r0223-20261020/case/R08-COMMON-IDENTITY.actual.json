@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "retained": {
+    "pid": 32336,
+    "create_time": 1792510048.3832555,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "expected": {
+    "pid": 32336,
+    "created": 134369836483832557,
+    "generation": 1,
+    "window": 1,
+    "epoch": 1,
+    "character_id": 33388,
+    "revision": 3,
+    "native_revision": 2,
+    "date": 53149056,
+    "episode": null,
+    "machine": "desktop-3fevhd2-1c74096080",
+    "game_state_identity_witness": 2175668561792,
+    "local_player_id": 1
+  }
+}

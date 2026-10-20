@@ -1,0 +1,166 @@
+{
+  "schema": "xar.e04.r0223-cd-source-finite-gap.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:39:23.798577+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "original_refs": {
+    "selector": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\C-D-WRITERS.actual.json",
+      "bytes": 4581,
+      "sha256": "f6c1cf99033da0df2816c4e08446d90c892d08a9c2ca0d2efe3401abbd5cee17"
+    },
+    "consumer": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\ACTUAL-WRITERS.json",
+      "bytes": 7681,
+      "sha256": "a2a0619e1ca5b22f0f76d45ae90e7d49c1f1d916964f3a7e61b3f3d2fc7e9d24"
+    },
+    "observer_final": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\OBSERVER-FINAL.actual.json",
+      "bytes": 1327,
+      "sha256": "cb6a2d6a8dff59b07abd772b72c029d8db88b3a3875cd610807000eb0def77d1"
+    },
+    "day": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\DAY-RESULT.actual.json",
+      "bytes": 2443,
+      "sha256": "2443bb5f95d1efd45806cf348c54adb66246e9e6d742f2e148bdca58026d9134"
+    },
+    "window": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\ROOT-WINDOW-RESULT.actual.json",
+      "bytes": 4596,
+      "sha256": "9cb052dcbb3e1f1f958fae6c4103b5a5d4a60f84c02f006ada7e71fdf7e6f4c0"
+    }
+  },
+  "status": "NO_CURRENT_C_D_POST_PC_SOURCE_INPUT_IN_SINGLE_FINITE_WATCH",
+  "qualified_c_d_records": 0,
+  "unresolved_c_d_records": 0,
+  "qualified_a_b_records": 2,
+  "unknown_records": 0,
+  "observed_a_b_rows": [
+    {
+      "raw_line": 111,
+      "slot": 0,
+      "offset": 704,
+      "address": 2176345092192,
+      "thread_id": 36552,
+      "thread_generation": 1,
+      "RIP_after": 140699757798491,
+      "RIP_after_rva": 42624091,
+      "before_raw": 0,
+      "after_raw": 0,
+      "same_value_write": true,
+      "physical_write_qualified": true,
+      "actual_writer_game_date": null,
+      "known_producer": false,
+      "maintenance_attribution": "unclosed"
+    },
+    {
+      "raw_line": 112,
+      "slot": 1,
+      "offset": 712,
+      "address": 2176345092200,
+      "thread_id": 36552,
+      "thread_generation": 1,
+      "RIP_after": 140699757798502,
+      "RIP_after_rva": 42624102,
+      "before_raw": 0,
+      "after_raw": 0,
+      "same_value_write": true,
+      "physical_write_qualified": true,
+      "actual_writer_game_date": null,
+      "known_producer": false,
+      "maintenance_attribution": "unclosed"
+    }
+  ],
+  "ordinary_owner_binding_mode": "native_campaign_owned_no_load_v2",
+  "ordinary_owned_a_b_physical_write_records_observed": true,
+  "cleanup": {
+    "restore": true,
+    "detach": true,
+    "pending_event": false,
+    "proved": true
+  },
+  "finite_window": {
+    "reason": "timeout",
+    "aggregate_hits": 2,
+    "hit_capacity_exhausted": false,
+    "thread_readback_rows": 107,
+    "full_window_all_writes_covered": false
+  },
+  "day_result": {
+    "before": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-before.common-view.json",
+      "bytes": 46206,
+      "sha256": "2e01b734b3b6a1c4ec1397fc3a0497a894dab542c2285a1af636559f42559952"
+    },
+    "cash_before": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-cash-before.common-view.json",
+      "bytes": 12193,
+      "sha256": "47ee403b07f692e02f73fe20f3570cddd93ecf5e5aa1795dfe5deca75103bb46"
+    },
+    "step": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-day-once.common-view.json",
+      "bytes": 16263,
+      "sha256": "75dbb06277ea65d76d06fd972132b5c406b31d7c533856f1071056889660c754"
+    },
+    "after": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-independent-after.common-view.json",
+      "bytes": 46476,
+      "sha256": "40c5e2f590e81a3f5ebfc47164b2c4ea90d4ffee3badc47789f0cf017ca976b3"
+    },
+    "cash_after": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-observer-packets\\r08-1615-a01-cash-after.common-view.json",
+      "bytes": 13954,
+      "sha256": "44f5d72babedfb78e1acae63dade0ecc11e880c4067062fe6ce8ab4f57ea7e7a"
+    },
+    "before_window": {
+      "window_id": 1,
+      "epoch": 1,
+      "retained_records": 0,
+      "latest_sequence": 0,
+      "oldest_sequence": 0,
+      "overwritten": 0,
+      "publication_failures": 0
+    },
+    "after_window": {
+      "window_id": 1,
+      "epoch": 1,
+      "retained_records": 0,
+      "latest_sequence": 0,
+      "oldest_sequence": 0,
+      "overwritten": 0,
+      "publication_failures": 0
+    },
+    "original_step_error": null,
+    "composite_and_independent_contract": {
+      "exact_day": true,
+      "starting_date_raw": 53149056,
+      "ending_date_raw": 53149080,
+      "elapsed_days": 1,
+      "actual_timeline_policy": "exact_one_day_unavoidable_contact",
+      "evidence_scope": "composite_postcondition_plus_independent_snapshot",
+      "first_take_historical_RED_relabelled": false
+    },
+    "exact_day_qualified": true,
+    "no_enable_clear_or_additional_Arm_Resume": true
+  },
+  "window_safe_to_begin_normal_close": true,
+  "source_EXE_bytes_read": 0,
+  "pdata_metadata_bytes_read": 0,
+  "source_code_bytes_read": 0,
+  "source_read_calls": 0,
+  "watch_raw_bytes_read": 0,
+  "consumer_or_selector_reexecuted": false,
+  "actual_writer_game_date": null,
+  "known_c_d_producer": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "same_NET_invocation_proved": false,
+  "full_R08_business_qualified": false,
+  "no_hit_interpretation": "No retained c/d post-PC in this one finite interval. No inference of absent writer, absent mechanism, zero military spending, or cadence; no extra query/day/attach.",
+  "old_R202_R205_instruction_data_used_as_current_live_evidence": false,
+  "native_SDK_UI_DR_observer_game_actions_performed": 0,
+  "new_compilation": false,
+  "remaining_heavy_write_bytes": 0,
+  "retention_review_utc": "2026-10-20T16:15:00Z"
+}

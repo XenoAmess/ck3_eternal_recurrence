@@ -1,0 +1,226 @@
+{
+  "schema": "ck3-mod-acceptance-prepared-case-v1",
+  "product": "war-episode04-r10",
+  "case": "r10-common-preparation",
+  "runtime_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\public-plan-a01\\runtime-a01\\manifest.json",
+    "bytes": 3166,
+    "sha256": "93995c4105c45a7de6a9ad5fbad04fcd433668e1951929d0b378ebfc6bd30c7d"
+  },
+  "case_inputs": {
+    "normal_checkpoint_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r215-mar31-normal-source-a01\\R214-MAR31-NORMAL-S0-PROMOTION.actual-a01.json",
+      "bytes": 9210,
+      "sha256": "5890702bcafc5f3c21418c59797ba4bca7a01bedd339d304b10dfd37941d5337"
+    },
+    "normal_checkpoint_build_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\prepared-a01\\profile-preparation.json",
+      "bytes": 3680,
+      "sha256": "fb313e35699e3b7867eaccc8e116a5b285a078c5674a94bb2272f3d20e43bd7a"
+    },
+    "plain_configuration": {
+      "pdx_settings.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "tutorial.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      },
+      "presets.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      }
+    },
+    "phase": "readiness",
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "war_id": 1,
+    "goal_province_id": 1527,
+    "staging_province_id": 2170,
+    "agreed_commander_id": null,
+    "director_scope_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "budgets": {
+      "command_timeout": 120,
+      "readiness_timeout": 1800,
+      "timeout": 5400,
+      "hold_seconds": 3600,
+      "poll_interval": 0.25
+    },
+    "r08_writer_one_day": {
+      "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+      "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+      "build_dir": "C:\\w\\e04r08a08\\build-a01",
+      "machine_execution_gate": {
+        "path": "C:\\w\\e04r08a08\\cold-focused-a01\\EXECUTION-GATE.actual.json",
+        "bytes": 1340,
+        "sha256": "3b001849798b11f91cddae590dd96c17df2efad85edecc9a8802133cebf3bee5"
+      },
+      "actor_id": 33388,
+      "expected_start_date_raw": 53149056,
+      "expected_source_save_sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+      "profile_limit_bytes": 536870912,
+      "driver_limit_bytes": 469762048,
+      "deadline_utc": "2026-10-20T16:15:00Z",
+      "prefix": "r08-1615-a01",
+      "payment_enable_once_authorized": true,
+      "admission_timeout_seconds": 600,
+      "normal_close_reserve": 900,
+      "cleanup_save_reserve": 120,
+      "poll_seconds": 0.25,
+      "natural_phase_enable_once_authorized": true
+    }
+  },
+  "startup": {
+    "mode": "saved_campaign",
+    "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01",
+    "saved_campaign": {
+      "save": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+      "bytes": 74273410,
+      "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+      "player_id": 33388,
+      "date_raw": 53149056,
+      "product_inventory": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\prepared-a01\\saved-product-inventory.json"
+    }
+  },
+  "initial_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\prepared-a01\\initial-plan.json",
+    "bytes": 18,
+    "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+  },
+  "adapter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+    "bytes": 15813,
+    "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+  },
+  "contract": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+    "bytes": 2124,
+    "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+  },
+  "preparation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "startup": {
+      "mode": "saved_campaign",
+      "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01",
+      "saved_campaign": {
+        "save": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+        "bytes": 74273410,
+        "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+        "player_id": 33388,
+        "date_raw": 53149056,
+        "product_inventory": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\prepared-a01\\saved-product-inventory.json"
+      }
+    },
+    "initial_plan": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\prepared-a01\\initial-plan.json",
+      "bytes": 18,
+      "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+    },
+    "profile_preparation": {
+      "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01",
+      "profile": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile",
+      "product_inventory": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\prepared-a01\\saved-product-inventory.json",
+        "bytes": 189,
+        "sha256": "60f1004bef8ace9c22caad4e55133cc49c8fc5c592d99b8e1f42211de087dea0"
+      },
+      "files": {
+        "dlc_load.json": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\dlc_load.json",
+          "bytes": 48,
+          "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+        },
+        "pdx_settings.txt": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\pdx_settings.txt",
+          "bytes": 7133,
+          "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+        },
+        "player/game_rules/presets.txt": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\player\\game_rules\\presets.txt",
+          "bytes": 2785,
+          "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+        },
+        "presets.txt": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\presets.txt",
+          "bytes": 2785,
+          "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+        },
+        "tutorial.txt": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\tutorial.txt",
+          "bytes": 61,
+          "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+        }
+      },
+      "product_file_count": 0,
+      "runtime_status": "NOT_RUN",
+      "fixture_mounted": false,
+      "vanilla_profile": true,
+      "preparation": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\prepared-a01\\profile-preparation.json",
+        "bytes": 3437,
+        "sha256": "de68997f0b040da7b20a49ebee204ef0442ecebd7a5d0b25754223b51d21cd16"
+      }
+    },
+    "files": {
+      "dlc_load.json": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\dlc_load.json",
+        "bytes": 48,
+        "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+      },
+      "pdx_settings.txt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "presets.txt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "tutorial.txt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      }
+    },
+    "fixture_mounted": false,
+    "runtime_status": "NOT_RUN",
+    "formal_ABC_arm": false,
+    "business_contract_applicable": false,
+    "business_pass": false
+  },
+  "effective_budgets": {
+    "command_timeout": 120,
+    "readiness_timeout": 1800,
+    "timeout": 5400,
+    "hold_seconds": 3600,
+    "poll_interval": 0.25
+  },
+  "readiness_policy": {
+    "schema": "ck3-mod-acceptance-readiness-policy-v1",
+    "policy_id": "future-readiness-minimum-2026-10-15",
+    "source": "explicit-user-instruction-2026-10-15",
+    "minimum_seconds": 1800,
+    "requested_seconds": 1800,
+    "effective_seconds": 1800,
+    "floor_applied": false,
+    "historical_receipts_reclassified": false
+  },
+  "runtime_status": "NOT_RUN",
+  "business_acceptance": "NOT_ASSESSED"
+}

@@ -1,0 +1,165 @@
+{
+  "schema": "xar.e04.root-r194-split-source-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:10:17.060873+00:00",
+  "reviewer": "/root",
+  "decision": "ACCEPT_BOUNDED_R09_POSITIVE_SPLIT_SOURCE_SHOT",
+  "original_run": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+  "definition": "Existing R03..R13 theme unit: at least one accepted original-M positive source shot per theme; full suite and final film remain separate.",
+  "source_raw": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/raw-r09-forward-a01/raw.mkv",
+    "bytes": 71202833,
+    "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+    "body_rehashed_this_review": false
+  },
+  "accepted_span_seconds_half_open": [
+    0,
+    15
+  ],
+  "accepted_frames_half_open": [
+    0,
+    450
+  ],
+  "fps": 30,
+  "visual_observations": {
+    "initial_selected_counter": 250,
+    "selected_counter_at_6_3_seconds": 75,
+    "actual_first_change_PTS": null,
+    "conservative_readable_change_interval_seconds": [
+      0,
+      6.3
+    ],
+    "child175_simultaneously_GUI_readable": false,
+    "guaranteed_poststate_seconds_after_readable_sample": 8.7
+  },
+  "independently_verified_native": {
+    "source_public_native": [
+      93,
+      85
+    ],
+    "child_public_native": [
+      16777378,
+      16777371
+    ],
+    "source_and_child_physical_soldiers": [
+      75,
+      175
+    ],
+    "before_after_unique_physical_total": [
+      250,
+      250
+    ],
+    "submission_ACK_is_application_proof": false,
+    "application_basis": "Independent F1 endpoint/production analysis and pre-existing Root research/business decision, not split_submitted ACK",
+    "source_actual_commander": 34232,
+    "child_actual_commander": 36445
+  },
+  "Root_direct_review": {
+    "contact_sheets": [
+      "000",
+      "006",
+      "008",
+      "011",
+      "018",
+      "025",
+      "028",
+      "060",
+      "071"
+    ],
+    "existing_full_resolution_samples": [
+      "sample-00.png",
+      "sample-01.png",
+      "sample-02.png",
+      "sample-03.png"
+    ],
+    "direct_original_dimensions": [
+      1280,
+      720
+    ],
+    "direct_contact_dimensions": [
+      960,
+      608
+    ],
+    "accepted_prefix_clean_layout": true,
+    "AI_review_all_72_sheets_1144_cells": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-visual5-a02\\AI-ALL72-REVIEW.actual-a01.json",
+      "bytes": 14001,
+      "sha256": "3bfaae637eff618d57358989e1c5bfa63fa3117427f56b54aee2e01132543649"
+    },
+    "tiny_contact_cell_text_not_individually_certified": true
+  },
+  "technical": {
+    "extraction": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-visual5-a02\\EXTRACTION.actual.json",
+      "bytes": 25161,
+      "sha256": "28497641132d445580938822fa0527ee328c62465a0accaeeb8e20a6fcaf450d"
+    },
+    "new_decode_scope_frames": [
+      0,
+      1144
+    ],
+    "full_raw_EOF_repeated": false,
+    "actual_PTS_csv": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-visual5-a02\\source-frame-PTS.actual.csv",
+      "bytes": 19179,
+      "sha256": "b81c196bd67fe61f6989ed7494addeff24cbe75b8e4cff0e4f7f948c81bb6c84"
+    },
+    "actual_image_dimensions": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-visual5-a02\\image-dimensions.actual.jsonl",
+      "bytes": 13094,
+      "sha256": "4eadf26073c39fa6054b3e2349c386154d7bfdf17e09446930481d9717242d3b"
+    },
+    "last_sheet_has_8_padding_cells_not_source_frames": true
+  },
+  "native_provenance": {
+    "existing_Root_research_decision": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r194-forward-split-merge-12004\\root-research-decision.json",
+      "bytes": 2635,
+      "sha256": "e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c"
+    },
+    "independent_numeric_analysis": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r09-forward-analysis-a01\\NUMERIC-ANALYSIS.actual-a01.json",
+      "bytes": 37255,
+      "sha256": "ee47ee31685800bf78f111c2c9dd8f2baad08220c29b0ded0ccc12dbfd01f45c"
+    },
+    "existing_source_index": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r194-forward-split-merge-12004\\source-index.json",
+      "bytes": 13102,
+      "sha256": "baa7f9fadf4cf0f5c37f707ab3e79686ec33cb6bdb8c9a924ce5b34fbe1bcda6"
+    }
+  },
+  "explicit_limits": [
+    "Only this positive Split source shot; no full R09 suite/entire split-merge/boarding/fee film qualification.",
+    "Merge GUI251 is outside the accepted span; native physical250 and added empty Character-role cache are separate. No birth or +1 physical refill attribution.",
+    "No exact native callback PTS or split first-frame claim; no runtime timestamp converted into encoded PTS.",
+    "No new day, SDK, observer, raw copy or whole-raw hash; old failed a01 zero-JPEG extraction remains failed.",
+    "No human1x/human signoff/final film/OneDrive delivery; suggested longer complete demonstration remains separate."
+  ],
+  "formal_dynamic": {
+    "previous": 3,
+    "current": 4,
+    "total": 11,
+    "percent": 36.36363636363637,
+    "accepted_themes": [
+      "R04",
+      "R06",
+      "R09",
+      "R12"
+    ]
+  },
+  "unchanged": {
+    "research": "10/14",
+    "business": "7/11",
+    "B_stock_sites": "0/2",
+    "ABC": "0/3"
+  },
+  "full_R09_variant_film_qualified": false,
+  "human_1x": false,
+  "human_signoff": false,
+  "final_film_approved": false,
+  "retention": {
+    "purpose": "E04 final edit accepted bounded Split source; exact original/raw and small proof remain active",
+    "review_at_utc": "2026-10-21T10:00:00Z",
+    "automatic_renewal": false
+  }
+}

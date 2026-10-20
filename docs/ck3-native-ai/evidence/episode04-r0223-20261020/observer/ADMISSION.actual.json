@@ -1,0 +1,109 @@
+{
+  "schema": "xar.maintenance.writer_pc.future-admission.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_utc": "2026-10-20T15:35:59.910676+00:00",
+  "prepare_only": true,
+  "scope": "Current raw query plus original same-frame journal/Root identity only; not a wallet callback or military attribution",
+  "expected_root_identity": {
+    "pid": 32336,
+    "process_create_time_100ns": 134369836483832557,
+    "connection_generation": 1,
+    "controlled_window_id": 1,
+    "player_character_full_id": 33388
+  },
+  "expected_payment_epoch": 1,
+  "expected_episode": null,
+  "raw_leaf": {
+    "schema_version": 1,
+    "observation_kind": "paused_current_raw_context",
+    "attribution_scope": "current_raw_context_only",
+    "maintenance_attribution": "unclosed",
+    "character": 2176289642448,
+    "character_full_id": 33388,
+    "snapshot_revision": 2,
+    "date_raw": 53149056,
+    "actor_identity_stable": true,
+    "same_frame_ready": true,
+    "values": {
+      "context_identity_before": 2176345091488,
+      "context_identity_after": 2176345091488,
+      "value_2c0": 0,
+      "value_2c8": 0,
+      "value_28": 0,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    },
+    "admission_ready": true,
+    "unavailable_reason": null
+  },
+  "source_packet_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-initial-inputs\\r08-1615-a01-initial-cash.common-view.json",
+      "bytes": 12194,
+      "sha256": "eceaa32bd817ef4340c221282802ee269e08fe48ca89b15550c3d7f5af2a61df"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-initial-inputs\\r08-1615-a01-initial-before.common-view.json",
+      "bytes": 46220,
+      "sha256": "8b7ad0cbee5c0251549903b30c50bd8c9e883a10883e3c87a39b762f7a7724c6"
+    }
+  ],
+  "SYSTEM_receipt_pin": {
+    "path": "C:\\w\\e04r08a08\\build-a01\\defender-exe-exclusions\\20261020T124556Z-ffd1bc67\\receipt.json",
+    "sha256": "d3751c69f0f998c7dbe912080c0a8789dff38099b99b0edbf94a31623662f5ff"
+  },
+  "machine_execution_gate_pin": {
+    "path": "C:\\w\\e04r08a08\\cold-focused-a01\\EXECUTION-GATE.actual.json",
+    "sha256": "3b001849798b11f91cddae590dd96c17df2efad85edecc9a8802133cebf3bee5"
+  },
+  "argv": [
+    "C:\\w\\e04r08a08\\build-a01\\maintenance_writer_cold_observer.exe",
+    "--enable-ck3-12004-data-watch",
+    "--fixture-meta",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\CURRENT-RAW-ADMISSION.meta.txt",
+    "--timeout-ms",
+    "30000",
+    "--raw",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\writer.raw.ndjson",
+    "--ready",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\writer.ready.json",
+    "--expected-hits",
+    "128",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080",
+    "--ordinary-null-owner-binding"
+  ],
+  "native_revalidation_required": [
+    "Exact actual4 Root-qualified SHA/build plus process create/name, mapped image size and known16B parent anchor",
+    "Character ID/magic and context pointer stable twice before watch and after each read",
+    "All observed threads watch before continuing, reserved slots never stolen"
+  ],
+  "old_packet_freshness_not_inferred_from_mtime": true,
+  "Root_responsibility": "These independently supplied current-window expectations must come from the fresh paused owned frame; this adapter never manufactures a new query, advances time, or grants observation permission from archived packet timestamps.",
+  "maintenance_attribution": "unclosed",
+  "known_producer": false,
+  "owner_binding": {
+    "schema": "xar.maintenance.writer_pc.owner-binding.v2",
+    "mode": "native_campaign_owned_no_load_v2",
+    "episode_projection": "native_campaign",
+    "episode_run_id": null,
+    "original_episode_key_present": false,
+    "pid": 32336,
+    "process_create_time_100ns": 134369836483832557,
+    "connection_generation": 1,
+    "player_character_full_id": 33388,
+    "local_player_id": 1,
+    "game_state_identity_witness": 2175668561792,
+    "character": 2176289642448,
+    "context": 2176345091488,
+    "controlled_window_id": 1,
+    "payment_epoch": 1,
+    "native_revision": 2,
+    "date_raw": 53149056,
+    "absolute_day_raw": 389544,
+    "callsite_anchor_rva": 42956864
+  },
+  "native_required_contract": "xar.maintenance.writer_pc.owner-binding.v2; a07 is incompatible"
+}

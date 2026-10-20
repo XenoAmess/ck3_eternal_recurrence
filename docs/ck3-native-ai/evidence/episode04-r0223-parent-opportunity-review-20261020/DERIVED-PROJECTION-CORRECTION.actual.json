@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:46:02.689162+00:00",
+  "retired_own_derived": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\PACKETS-PROJECTION.actual.json",
+    "bytes": 150779,
+    "sha256": "0244cbd31ddc578e37e10a38451779ba7bf5dfff2e56eaab536bf57b2efeb70a"
+  },
+  "replacement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\PACKETS-PROJECTION.compact-a02.actual.json",
+    "bytes": 32733,
+    "sha256": "263d8975b5438e78b0bbfba584449fa2f53c959314a6cca6516c5f362e0f5bfa"
+  },
+  "reason": "Overbroad new derived projection accidentally repeated full active-war province arrays; no source original or proof deleted",
+  "original_source_evidence_modified": false
+}

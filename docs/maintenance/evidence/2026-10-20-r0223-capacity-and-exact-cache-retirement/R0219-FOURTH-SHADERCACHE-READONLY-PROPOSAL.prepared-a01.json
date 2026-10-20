@@ -1,0 +1,114 @@
+{
+  "schema": "xar.e04.R0219-fourth-closed-shadercache-readonly-proposal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:11:32.942366+00:00",
+  "execution_admitted": false,
+  "deletion_performed": false,
+  "candidate_sets": [
+    {
+      "run": "R0219",
+      "cache_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\shadercache",
+      "files": 3856,
+      "logical_bytes": 155352351,
+      "allocated_unique_bytes": 164062080,
+      "batch_count": 4,
+      "settings": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "scene_settlement": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-NORMAL-CLOSED-BUSINESS-REFUSED-SETTLEMENT.actual-a01.json",
+        "bytes": 9116,
+        "sha256": "1b07563f9e476e670f8c5e754ad12666018b9872a8325b6cbf75c051376b516a"
+      },
+      "inventory_uncompressed_bytes": 359670,
+      "inventory_uncompressed_metadata_sha256": "009d319ca9b4386457de17d568135c6694a1079fc25241f4f9e35b72562bdf57",
+      "inventory": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+        "bytes": 70773,
+        "sha256": "e46736d4d631f01f54ab24aa21f8dc2060dc3a448e3f3e1388fc4be9187be52d"
+      }
+    }
+  ],
+  "candidate_logical_bytes": 155352351,
+  "candidate_unique_allocated_bytes": 164062080,
+  "policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+    "bytes": 17121,
+    "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "parameters": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_asset_registry": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "matching_current_machine_permanent_assets": 0,
+  "source_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\shadercache",
+  "original_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "original_normal_close_qualified": true,
+  "original_case_business_pass": false,
+  "original_failure": "R06 MapReady lacked original2100s room; zero observer/day/worker/camera, Root administrative OFF/Save then normal GUI close. Not a diagnosed shader/rendering fault.",
+  "current_use": "Run is actually closed; immutable normal Mar31 S0 and typed failure/normal-close proofs remain outside shadercache. New r08-scene-a02 profile is separate and has no reference to this cache. Retain exact settings and installed game shader/assets to rebuild new derived shaders later.",
+  "source_rebuild_recipe": {
+    "game_dir": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+    "render_configuration": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\pdx_settings.txt",
+      "bytes": 7133,
+      "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+    },
+    "runtime_manifest_reference": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\runtime-a01\\manifest.json",
+      "bytes": 3168,
+      "sha256": "0e5dbd2508526e0f81359d206fdcbe5cfb37e73ca55a927c4424c3d5cb514f8e"
+    },
+    "method": "A separately admitted future stock CK3 launch recompiles DX11 shadercache from preserved game inputs/settings. No regeneration here; new cache is not a substitute old original."
+  },
+  "existing_finite_protection_requires_Root_explicit_early_expiry_and_precise_cache_only_shrink": true,
+  "outside_candidates": "All directories, Save/S0, configuration, logs, screen/raw/media, linked images/Q, unique recovery/ACL and workshop barriers remain excluded.",
+  "payload_SHA_unknown_preserved": true,
+  "no_body_read_or_hash": true,
+  "exclusive_handles_not_yet_acquired": true,
+  "mature_execution_requirements": "Root reviews this exact proposal/pin first; only then fresh reference/permanent/no-writer checks, exact metadata/resolved-root/exclusive handle, one content SHA read before disposition; changed/locked/unknown skip, no force/ACL/tree delete. <=1000 batch; actual free after each.",
+  "candidate_review_at_utc": "2026-10-20T16:00:00Z",
+  "physical_or_unused_credit_bytes": 0,
+  "no_promised_physical_free_bytes": true,
+  "current_budget_with_new1GiB16MiB_and_oldC2_D24_futures": {
+    "C_known_future_bytes": 1092616192,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26904552646,
+    "C_floor_margin_bytes": 51582262074,
+    "C_projected_whole_volume_upper_bound_bytes": 438076847302,
+    "C_quota_margin_bytes": 9816890,
+    "D_required_free_bytes": 21634220032,
+    "D_floor_margin_bytes": 12582912
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:11:32.942124+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78486814720,
+      "available_to_caller_bytes": 78486814720,
+      "total_free_bytes": 78486814720,
+      "entire_volume_used_allocation_upper_bound_bytes": 432647131136,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:11:32.942124+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646802944,
+      "available_to_caller_bytes": 21646802944,
+      "total_free_bytes": 21646802944,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443204608,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "new_scene_or_profile_write_admitted_by_this_proposal": false
+}

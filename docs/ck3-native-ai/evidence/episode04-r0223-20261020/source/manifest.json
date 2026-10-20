@@ -1,0 +1,95 @@
+{
+  "schema": "ck3-mod-acceptance-shared-runtime-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:11:59.515333+00:00",
+  "source_root": {
+    "path_key": "source_root"
+  },
+  "host": {
+    "path_key": "host",
+    "bytes": 319238,
+    "sha256": "05ecc000814b8fac9d8281dfa91fdda51ce0578ba4b9f7578549517861655c17"
+  },
+  "source_index": {
+    "path_key": "source_index",
+    "bytes": 21558,
+    "sha256": "983c6b3445acfc0ec56d3d91cf23ca12a52362892bb416cf4dba4416465228ff"
+  },
+  "native_source_index": {
+    "path_key": "native_source_index",
+    "bytes": 40115,
+    "sha256": "7b68f5999662500329a275c6a304f2c3786f4426cbf15ac98ec4ba751613a01a"
+  },
+  "native": {
+    "dll": {
+      "path_key": "dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+    },
+    "injector": {
+      "path_key": "injector",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+    }
+  },
+  "game": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "capabilities": {
+    "ck3_execute_step": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_get_capabilities": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_commander_candidates_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_army_strengths": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_query_war_cash_current_resources_private_v1": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_save_checkpoint": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    },
+    "ck3_take_snapshot": {
+      "source_build_ready": true,
+      "actual_live_qualified": false
+    }
+  },
+  "host_features": {
+    "saved_campaign_inject_after_load": false,
+    "war_cash_queries": true
+  },
+  "qualification": {
+    "actual_producer": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-bc638-component-selection-a01\\CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json",
+      "bytes": 24958,
+      "sha256": "484912dda476351982302a9e2350d39d45f0e7325e70ec4446b45c862fa809ef"
+    },
+    "original_carrier_producer": {
+      "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+      "bytes": 26157,
+      "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+    },
+    "standalone_writer_producer": {
+      "path": "C:\\w\\e04r08a08\\R08-A08-STANDALONE-QUALIFICATION.actual-a01.json",
+      "bytes": 8913,
+      "sha256": "6e956a2b2d70f4c18e69426b76753e59cc5e14c4440e68a56e29875c53bd3f5c"
+    },
+    "runtime_source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "runtime_native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+    "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "compiled_native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "actual_live_qualified": false
+  }
+}

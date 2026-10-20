@@ -1,0 +1,111 @@
+{
+  "schema": "xar.r08.cd-writer-selection.v1",
+  "status": "NO_QUALIFIED_C_D_TRAP_RETAINED",
+  "evidence_machine_id": "desktop-3fevhd2-1c74096080",
+  "Root_binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "pid": 32336,
+    "created": 134369836483832557,
+    "full_id": 33388,
+    "character": 2176289642448,
+    "context": 2176345091488,
+    "admission_window_id": 1,
+    "admission_payment_epoch": 1,
+    "admission_generation": 1,
+    "admission_native_revision": 2,
+    "admission_date_raw": 53149056,
+    "admission_episode": null,
+    "admission_cash_packet_sha256": "eceaa32bd817ef4340c221282802ee269e08fe48ca89b15550c3d7f5af2a61df",
+    "current_raw_cache": {
+      "schema_version": 1,
+      "observation_kind": "paused_current_raw_context",
+      "attribution_scope": "current_raw_context_only",
+      "maintenance_attribution": "unclosed",
+      "character": 2176289642448,
+      "character_full_id": 33388,
+      "snapshot_revision": 2,
+      "date_raw": 53149056,
+      "actor_identity_stable": true,
+      "same_frame_ready": true,
+      "values": {
+        "context_identity_before": 2176345091488,
+        "context_identity_after": 2176345091488,
+        "value_2c0": 0,
+        "value_2c8": 0,
+        "value_28": 0,
+        "value_30": 0,
+        "capture_complete": true,
+        "context_stable": true,
+        "failed_reads": 0
+      },
+      "admission_ready": true,
+      "unavailable_reason": null
+    },
+    "admission_owner_binding": {
+      "schema": "xar.maintenance.writer_pc.owner-binding.v2",
+      "mode": "native_campaign_owned_no_load_v2",
+      "episode_projection": "native_campaign",
+      "episode_run_id": null,
+      "original_episode_key_present": false,
+      "pid": 32336,
+      "process_create_time_100ns": 134369836483832557,
+      "connection_generation": 1,
+      "player_character_full_id": 33388,
+      "local_player_id": 1,
+      "game_state_identity_witness": 2175668561792,
+      "character": 2176289642448,
+      "context": 2176345091488,
+      "controlled_window_id": 1,
+      "payment_epoch": 1,
+      "native_revision": 2,
+      "date_raw": 53149056,
+      "absolute_day_raw": 389544,
+      "callsite_anchor_rva": 42956864
+    }
+  },
+  "original_input_pins": {
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\writer.raw.ndjson",
+      "bytes": 35583,
+      "sha256": "74d2178739b262fbd0eb5ff2d81097777b8a5137ee9497cf2fa94ccc354775d0"
+    },
+    "admission": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\ADMISSION.actual.json",
+      "bytes": 4766,
+      "sha256": "0f442d65fd587101b2cc070add82f23921c71d95ddbad293755cafad5eee1f81"
+    },
+    "cash": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-initial-inputs\\r08-1615-a01-initial-cash.common-view.json",
+      "bytes": 12194,
+      "sha256": "eceaa32bd817ef4340c221282802ee269e08fe48ca89b15550c3d7f5af2a61df"
+    },
+    "before": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-initial-inputs\\r08-1615-a01-initial-before.common-view.json",
+      "bytes": 46220,
+      "sha256": "8b7ad0cbee5c0251549903b30c50bd8c9e883a10883e3c87a39b762f7a7724c6"
+    }
+  },
+  "original_consumer_status": "ACTUAL_WRITERS_SOURCE_UNKNOWN",
+  "original_qualified_slot_count": 2,
+  "original_unknown_slot_count": 0,
+  "selected_c_d_writers": [],
+  "unresolved_c_d_traps": [],
+  "same_image_post_pc_count": 0,
+  "cleanup_proved": true,
+  "finite_window_clean": true,
+  "finite_window_reason": "timeout",
+  "source_decode_candidate_available": false,
+  "actual_writer_game_date": null,
+  "known_producer": false,
+  "maintenance_attribution": "unclosed",
+  "paid_maintenance_raw": null,
+  "same_net_invocation_proved": false,
+  "payer_cadence_proved": false,
+  "zero_hit_meaning": "No retained qualified c/d trap; no producer or fee absence inferred.",
+  "a_b_records": "Retained unmodified in the pinned original actual-consumer result.",
+  "actual_consumer_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\ACTUAL-WRITERS.json",
+    "bytes": 7681,
+    "sha256": "a2a0619e1ca5b22f0f76d45ae90e7d49c1f1d916964f3a7e61b3f3d2fc7e9d24"
+  }
+}

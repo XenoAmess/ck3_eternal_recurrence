@@ -1,0 +1,196 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "observed_at_utc": "2026-10-20T15:45:54.712828+00:00",
+  "kind": "OFFLINE_DERIVED_FRESHNESS_GAP_NOT_A_REPLACEMENT_GRANT",
+  "original_grant": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-root-observer-admission.json",
+    "bytes": 2555,
+    "sha256": "ebbde6b45757cd9cbedd7a4d9d94ed5f6dbb79e9aafc0ecf14d780498009683a"
+  },
+  "original_grant_at_utc": "2026-10-20T15:35:50.382922+00:00",
+  "Root_reviewed_owner_packet": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\public-live-review-a01\\ROOT-OWNER-REVIEW.actual-a02.json",
+    "bytes": 6103,
+    "sha256": "1d4bd229bba345734ce93283c9e50a83b9713980b3ac1c1a04e16fe14c6a6b5f"
+  },
+  "owner_packet_observed_at_utc": "2026-10-20T15:34:36.578879+00:00",
+  "owner_packet_age_at_grant_seconds": 73.804043,
+  "Root_reviewed_capacity_line": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUAL-UNSPENT-GUARD.actual-part0001.jsonl",
+    "byte_offset": 134691,
+    "bytes": 3639,
+    "sha256": "dc240689b346805916af22dc4f7c7e5f95947603bad367bbfa962dd5f9bfd513",
+    "observed_at_utc": "2026-10-20T15:34:34.703193+00:00",
+    "age_seconds": 1.874545,
+    "measurement_coverage_complete": true,
+    "budget_status": "GREEN",
+    "alarms": [],
+    "base_scene_capacity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 16416,
+      "sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336"
+    },
+    "margins": {
+      "C_floor_margin_bytes": 51727256328,
+      "C_quota_margin_bytes": 154811144,
+      "D_floor_margin_bytes": 20369408
+    },
+    "components": {
+      "profile": {
+        "hardcap_bytes": 536870912,
+        "complete_logical_bytes": [
+          230392479,
+          230392479
+        ],
+        "complete_allocated_unique_bytes": [
+          239221376,
+          239221376
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 230392479,
+        "unspent_future_bytes": 306478433
+      },
+      "driver": {
+        "hardcap_bytes": 469762048,
+        "complete_logical_bytes": [
+          162484803,
+          162507704
+        ],
+        "complete_allocated_unique_bytes": [
+          162761488,
+          162786064
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 162484803,
+        "unspent_future_bytes": 307277245
+      },
+      "raw": {
+        "hardcap_bytes": 0,
+        "complete_logical_bytes": [
+          0,
+          0
+        ],
+        "complete_allocated_unique_bytes": [
+          0,
+          0
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 0,
+        "unspent_future_bytes": 0
+      },
+      "other": {
+        "hardcap_bytes": 67108864,
+        "complete_logical_bytes": [
+          7912172,
+          7912172
+        ],
+        "complete_allocated_unique_bytes": [
+          7972584,
+          7972584
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 7912172,
+        "unspent_future_bytes": 59196692
+      }
+    },
+    "snapshot_atomic": false
+  },
+  "Root_reviewed_capacity_age_at_grant_seconds": 75.679729,
+  "freshness_requirement_seconds": 30,
+  "Root_direct_reviewed_freshness_within30_at_grant_proven": false,
+  "Root_acknowledgement_source": "Root explicitly reported reading the15:34:36 owner package and15:34:34 capacity, then writing grant at15:35:50; no fresh pre-write reread was claimed.",
+  "historical_latest_guard_line_by_observation_time": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUAL-UNSPENT-GUARD.actual-part0001.jsonl",
+    "byte_offset": 149247,
+    "bytes": 3639,
+    "sha256": "3aac4f1cdd031518c05d56344a5534fbe51e2c428e4a0cba57cd996a6d00357f",
+    "observed_at_utc": "2026-10-20T15:35:43.460776+00:00",
+    "age_seconds_at_grant": 6.922146,
+    "newline_complete_when_read": true,
+    "measurement_coverage_complete": true,
+    "budget_status": "GREEN",
+    "alarms": [],
+    "base_scene_capacity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 16416,
+      "sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336"
+    },
+    "components": {
+      "profile": {
+        "hardcap_bytes": 536870912,
+        "complete_logical_bytes": [
+          230392479,
+          230392479
+        ],
+        "complete_allocated_unique_bytes": [
+          239221376,
+          239221376
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 230392479,
+        "unspent_future_bytes": 306478433
+      },
+      "driver": {
+        "hardcap_bytes": 469762048,
+        "complete_logical_bytes": [
+          164053568,
+          164076468
+        ],
+        "complete_allocated_unique_bytes": [
+          164330256,
+          164354832
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 164053568,
+        "unspent_future_bytes": 305708480
+      },
+      "raw": {
+        "hardcap_bytes": 0,
+        "complete_logical_bytes": [
+          0,
+          0
+        ],
+        "complete_allocated_unique_bytes": [
+          0,
+          0
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 0,
+        "unspent_future_bytes": 0
+      },
+      "other": {
+        "hardcap_bytes": 67108864,
+        "complete_logical_bytes": [
+          7912172,
+          7912172
+        ],
+        "complete_allocated_unique_bytes": [
+          7972584,
+          7972584
+        ],
+        "confirmed_occupancy_lower_bound_bytes": 7912172,
+        "unspent_future_bytes": 59196692
+      }
+    },
+    "budget": {
+      "C_known_future_bytes": 692355125,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26504291579,
+      "C_floor_margin_bytes": 51724552965,
+      "C_projected_whole_volume_upper_bound_bytes": 437934556411,
+      "C_quota_margin_bytes": 152107781,
+      "D_required_free_bytes": 21625831424,
+      "D_floor_margin_bytes": 20004864
+    }
+  },
+  "following_line_observed_at_utc": "2026-10-20T15:36:00.571349+00:00",
+  "background_guard_fresh_GREEN_at_grant_by_observation_time": true,
+  "background_GREEN_does_not_retroactively_replace_Root_review": true,
+  "source_time_limit": "Journal observed_at is produced after both scans and ledger commit, then the newline is flushed. No independent per-line write-completion timestamp or atomic review+grant transaction exists.",
+  "signal_helper_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\make_root_admission.py",
+    "bytes": 6733,
+    "sha256": "1740889a9ba9c73f026591e92f7fa1b641201bac0c62a575a1d17589215c6abc"
+  },
+  "helper_current_gap": "build() checks static cap GREEN and exact retained metadata pins, but does not reread current OS PID/creation/debugger/window, current lease, or live combined guard before create-only signal write.",
+  "at_grant_fresh_OS_debugger_and_lease_recheck_proven": false,
+  "original_grant_unchanged": true,
+  "game_or_SDK_or_UI_or_observer_executed_by_this_offline_task": false,
+  "business_pass": false,
+  "full_R08_qualified": false,
+  "qualification_repaired": false
+}

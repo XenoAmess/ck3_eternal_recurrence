@@ -1,0 +1,178 @@
+{
+  "schema": "xar.e04.r0223.next-opportunity-readonly-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-20T16:03:17.423577+00:00",
+  "status": "OFFLINE_FINDINGS_AND_ONE_UNIMPLEMENTED_FINITE_EXPERIMENT",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "source_tracked_status": "",
+  "source_pins_unchanged": true,
+  "read_only_source_and_actuals": true,
+  "main_report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\MECHANISM-FINDINGS.md",
+    "bytes": 12753,
+    "sha256": "a2ab251519c84e259e2ac8e06d480314c46d59617026441afa7bb3d607913f9e"
+  },
+  "source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\SOURCE-AND-SMALL-FACTS.actual.json",
+    "bytes": 33819,
+    "sha256": "93bc120daf1f95a40fa51f4e7fbf642abb54b9d2fb5e6bbb7722e749a41c2852"
+  },
+  "additional_repository_sources": [
+    {
+      "repository_relative_path": "docs/ck3-native-ai/episode04-r08-task-dispatch-source-gap-12004.md",
+      "pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r08-task-dispatch-source-gap-12004.md",
+        "bytes": 1683,
+        "sha256": "41bc62b4c6ec8d48c7b94b8710b6883af4d926d0020b2bdf3f09f660ba7e2bf1"
+      }
+    },
+    {
+      "repository_relative_path": "docs/ck3-native-ai/episode04-r08-b-next-20261020.md",
+      "pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r08-b-next-20261020.md",
+        "bytes": 14907,
+        "sha256": "dc61625d0857764ee2e9c5c6215ee6eec787b2b337ab3367d08998bfba835ef7"
+      }
+    }
+  ],
+  "actual_conclusions": {
+    "c_d_qualified_traps": 0,
+    "a_b_same_value_traps": 2,
+    "current_rate_before_raw": 386622,
+    "current_rate_after_raw": 310621,
+    "current_raw_four_fields_before_after": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "payment_records_after": 0,
+    "army_natural_parent_returns_after": 2,
+    "character_settlement_parent_observed": "unknown; no such installed hook or DTO",
+    "producer_absence_proved": false,
+    "paid_payer_cadence": "unknown",
+    "full_R08": false
+  },
+  "installed_hook_families": {
+    "transition": "24E8DB0",
+    "gateway": "28B9950",
+    "personal_add": "285EE40",
+    "personal_sub": "285EED0",
+    "land_sub": "285EFF0",
+    "conditional_raw4_getter": "28B9490",
+    "character_settlement_28F7840": false
+  },
+  "next_experiment": {
+    "selected": "target Character opportunity at original entry28F7840",
+    "low_cost_implementation": "new default-OFF execute-DR mode; not implemented or qualified",
+    "finite_candidate_budget": {
+      "watch_ms": 30000,
+      "exact_days": 1,
+      "aggregate_exec_stops": 128,
+      "target_detail_records": 8
+    },
+    "negative_limit": "foreign hits may exhaust128 before target; preserve incomplete and do not repeat sameS0",
+    "higher_cost_alternative": "replace with qualified target-filtered entry counter if fuller daily negative coverage required; never run both",
+    "not_selected_for_next_scene": [
+      "known a/b copy caller capture",
+      "generic dispatch3F90A6F"
+    ],
+    "Root_decision_and_fresh_budget_still_required": true
+  },
+  "collaboration_cross_check": {
+    "sender": "/root/native_prepare",
+    "role": "candidate-author capability report, not runtime evidence",
+    "dispatch_scope": "job+38 dispatch/vptr+10 target and raw args; generic first job; no Character/payer/calendar join",
+    "parent_opportunity_more_direct": true
+  },
+  "prohibited_actions": {
+    "game": 0,
+    "SDK": 0,
+    "DR": 0,
+    "native_queries": 0,
+    "builds": 0,
+    "new_EXE_reads": 0,
+    "consumer_or_selector_replays": 0,
+    "D_or_W_writes": 0,
+    "full_native_report_or_active_wars_copies_retained": 0
+  },
+  "own_derived_correction_receipts": [
+    "DERIVED-PROJECTION-CORRECTION.actual.json",
+    "TIMING-DERIVED-COMPACTION.actual.json"
+  ],
+  "local_links_checked": [
+    "SOURCE-AND-SMALL-FACTS.actual.json",
+    "PACKETS-PROJECTION.compact-a02.actual.json",
+    "TIMING-CASH-READBACK.compact-a02.actual.json"
+  ],
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\DERIVED-PROJECTION-CORRECTION.actual.json",
+      "bytes": 814,
+      "sha256": "7bf80456a2317e755e8b8fa4b0cc48f59edecf8f891ab2e3b2f1def04e9bca77"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\finalize_projection.py",
+      "bytes": 1754,
+      "sha256": "086498c3a225411dc1cccb2d2b32cd1396b4d9b723e3dd0a2cbfb1d10f8b709c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\MECHANISM-FINDINGS.md",
+      "bytes": 12753,
+      "sha256": "a2ab251519c84e259e2ac8e06d480314c46d59617026441afa7bb3d607913f9e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\PACKETS-PROJECTION.compact-a02.actual.json",
+      "bytes": 32733,
+      "sha256": "263d8975b5438e78b0bbfba584449fa2f53c959314a6cca6516c5f362e0f5bfa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\read_packets.py",
+      "bytes": 2711,
+      "sha256": "eb013588a2de62930ec5d0f70264f1d315d32253a0447a6c24d2f9d766d5f861"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\read_timing.py",
+      "bytes": 2336,
+      "sha256": "ded7e625a29e2734fab9e165cef4b4efbe20f0911618de765475ced056eeca0c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\seal_delivery.py",
+      "bytes": 4490,
+      "sha256": "6a2530b46a887ac7e3595ec50b3c4911b9a4cac463feb705aff1005795a64d10"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\slim_projection.py",
+      "bytes": 2231,
+      "sha256": "5029ca299c59c40a8dd2fccae406903bcf500600d99532214338c84664ca02fb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\SOURCE-AND-SMALL-FACTS.actual.json",
+      "bytes": 33819,
+      "sha256": "93bc120daf1f95a40fa51f4e7fbf642abb54b9d2fb5e6bbb7722e749a41c2852"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\source_readback.py",
+      "bytes": 5222,
+      "sha256": "609e3849f76585e91ce886f2c269bd7ea32f197ef168070dc2e6432d76666482"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\TIMING-CASH-READBACK.compact-a02.actual.json",
+      "bytes": 11695,
+      "sha256": "203788e20893842f5f2999064e84bc91ac98c6d252411b70c97501605e624ce6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\TIMING-DERIVED-COMPACTION.actual.json",
+      "bytes": 765,
+      "sha256": "6a90e564923ec408a367eed2cca4171afb0e72e35fcb989f928fc3645cf14fa6"
+    }
+  ],
+  "budget": {
+    "root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01",
+    "maximum_bytes": 131072,
+    "scope_hard_stop_utc": "2026-10-20T16:15:00Z",
+    "json_serialized_and_size_checked_before_write": true,
+    "bytes_before_receipt": 111323,
+    "final_bytes_upper_bound": 123323
+  }
+}

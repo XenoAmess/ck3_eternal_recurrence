@@ -1,0 +1,27 @@
+--- a/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/dispatch_execution_once.inc
++++ b/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/dispatch_execution_once.inc
+@@ -78,7 +78,23 @@
+   unsigned captures=0;bool capture_qualified=false,admission_complete=true;
+   SetConsoleCtrlHandler(OnConsoleControl,TRUE);
+   if(attached){kill_off=DebugSetProcessKillOnExit(FALSE)!=FALSE;if(!kill_off)reason="kill_on_exit_disable_failed";}
+-  auto restore_all=[&](){bool ok=ClearAll(threads,armed);for(DWORD tid:armed){auto it=threads.find(tid);if(it==threads.end())continue;CONTEXT c{};const bool got=GetContext(it->second,c);output<<"{\"kind\":\"restore\",\"thread_id\":"<<tid<<",\"thread_generation\":"<<generations[tid]<<",\"readback\":"<<(got?"true":"false")<<",\"debug\":";DrJson(output,c);output<<"}\n";}output.flush();return ok;};
++  bool restore_proof_written=false;
++  auto restore_all=[&](){
++    bool ok=ClearAll(threads,armed);std::ostringstream proof;
++    for(DWORD tid:armed){
++      auto it=threads.find(tid);auto saved=g_saved_debug.find(tid);CONTEXT c{};
++      const bool got=it!=threads.end()&&saved!=g_saved_debug.end()&&GetContext(it->second,c);
++      const std::array<DWORD64,6> actual{c.Dr0,c.Dr1,c.Dr2,c.Dr3,c.Dr6,c.Dr7};
++      const bool exact=got&&actual==saved->second;ok=exact&&ok;
++      if(exact){proof<<"{\"kind\":\"restore\",\"thread_id\":"<<tid<<",\"thread_generation\":"<<generations[tid]<<",\"readback\":true,\"debug\":[";
++        for(unsigned i=0;i<6;++i){if(i)proof<<',';proof<<actual[i];}proof<<"]}\n";}
++    }
++    // Failure retries do not append raw rows. Retain at most ONE complete
++    // exact readback batch after observation closes, so cleanup hold has
++    // bounded journal growth even if Windows restoration stays unavailable.
++    if(ok&&!restore_proof_written){output<<proof.str();output.flush();restore_proof_written=true;}
++    return ok;
++  };
+   auto arm=[&](DWORD tid,HANDLE borrowed){
+     if(!Identity(process,x)||threads.size()>=256||!BeginThreadOwnership(tid,threads,armed))return false;
+     HANDLE thread=nullptr;if(!DuplicateHandle(GetCurrentProcess(),borrowed,GetCurrentProcess(),&thread,0,FALSE,DUPLICATE_SAME_ACCESS))return false;

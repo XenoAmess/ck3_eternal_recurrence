@@ -1,0 +1,72 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:17:43.170794+00:00",
+  "proposal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-FOURTH-SHADERCACHE-READONLY-PROPOSAL.prepared-a01.json",
+    "bytes": 5943,
+    "sha256": "a96c5535dc489bb722ae16c1bafe002a40ba9499fe2a5a4bee0e0a0e0c38602d"
+  },
+  "parent_shared16M_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-1615-NEW-1G-SHARED16M-FINANCIAL-RESERVATION.actual-a01.json",
+    "bytes": 7033,
+    "sha256": "04a17733f04b0dce13a11af19fba2f0b8809225d1a337693c665c628386e4b76"
+  },
+  "Root_explicit_authority": "Root read exact5943B/a96c5535 proposal and explicitly approved early expiry only for R0219 state-a02 manifest3856 .scache/.bin files. New M2 outputs/shared16MiB and deadline16:15; old1515 closed, no oldN writes. Preserve all other inputs. Exclusive OS identity, one leased content SHA pass, <=1000 files per batch, skip changed/locked/unknown, no force/ACL/tree delete, fresh actual free each batch.",
+  "Root_authority_received_as_collaboration_instruction_no_exact_message_timestamp_exposed": true,
+  "execution_deadline_utc": "2026-10-20T16:15:00+00:00",
+  "new_batch_cutoff_utc": "2026-10-20T16:14:00+00:00",
+  "metadata_all_inclusive_hard_ceiling_bytes": 1048576,
+  "new_shared_all_inclusive_ceiling_bytes": 16777216,
+  "new_global_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "owned_executor_pid": 27980,
+  "owned_executor_create_time": 1792509462.498204,
+  "implementation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\retire_r0219_fourth_shadercache_a01.py",
+    "bytes": 13332,
+    "sha256": "806934e7317b817e5cd1edd27e4abbb1cd9d04665ab1bb29d67767c5d5acbb02"
+  },
+  "mature_reclaimer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\retire_exact_build_intermediates.py",
+    "bytes": 15334,
+    "sha256": "ef7accf81b966ebbe13ad76bdb1871faa095975cbaa8d4404a2b74874483ac8d"
+  },
+  "Win32_library": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\win32_exact_retire_lib.py",
+    "bytes": 3823,
+    "sha256": "06cd73e436d645dd2c6d5fdf652b94049f6b07cf93e68e70d259a0c2187fe320"
+  },
+  "fresh_checks": {
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 347485,
+      "sha256": "345574bd033975fb4d59d3a3f13cef079537fa220b1a76a5ca943e0e46884831"
+    },
+    "shared": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T15:17:42.731599+00:00",
+      "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01",
+      "logical_bytes": 139739,
+      "files": 23,
+      "metadata_scan_complete": true,
+      "payload_body_bytes_read": 0
+    },
+    "budget": {
+      "C_known_future_bytes": 1090519040,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26902455494,
+      "C_floor_margin_bytes": 51578825530,
+      "C_projected_whole_volume_upper_bound_bytes": 438080283846,
+      "C_quota_margin_bytes": 6380346,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 37744640
+    },
+    "writer_census": {
+      "observed_at_utc": "2026-10-20T15:17:43.170319+00:00",
+      "blocking_named_or_root_bound_processes": [],
+      "read_errors": [],
+      "scope": "Names of build tools, CK3 and media writers; ordinary Python command lines referencing approved build roots. Typed original close proves owned session closure separately.",
+      "global_process_absence_claimed": false
+    }
+  }
+}

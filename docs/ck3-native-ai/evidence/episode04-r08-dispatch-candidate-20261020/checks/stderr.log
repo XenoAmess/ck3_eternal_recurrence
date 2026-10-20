@@ -1,0 +1,15 @@
+test_clock_or_owner_relabel_refused (test_dispatch_contract.ContractChecks.test_clock_or_owner_relabel_refused) ... ok
+test_foreign_target_not_made_thunk (test_dispatch_contract.ContractChecks.test_foreign_target_not_made_thunk) ... ok
+test_full_model_only_source_input_no_business_credit (test_dispatch_contract.ContractChecks.test_full_model_only_source_input_no_business_credit) ... ok
+test_missing_restore_and_pending_hold_withhold_source_ready (test_dispatch_contract.ContractChecks.test_missing_restore_and_pending_hold_withhold_source_ready) ... ok
+test_old_tid_generation_rejected (test_dispatch_contract.ContractChecks.test_old_tid_generation_rejected) ... ok
+test_second_capture_and_business_relabel_refused (test_dispatch_contract.ContractChecks.test_second_capture_and_business_relabel_refused) ... ok
+test_task_cursor_is_not_dispatch_object (test_dispatch_contract.ContractChecks.test_task_cursor_is_not_dispatch_object) ... ok
+test_tid_reuse_uses_new_saved_state (test_dispatch_contract.ContractChecks.test_tid_reuse_uses_new_saved_state) ... ok
+test_unknown_target_retained_without_candidate (test_dispatch_contract.ContractChecks.test_unknown_target_retained_without_candidate) ... ok
+test_wrong_instruction_or_data_DR_rejected (test_dispatch_contract.ContractChecks.test_wrong_instruction_or_data_DR_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK

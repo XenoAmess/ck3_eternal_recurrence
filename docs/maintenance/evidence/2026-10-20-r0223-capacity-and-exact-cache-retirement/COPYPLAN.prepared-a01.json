@@ -1,0 +1,238 @@
+{
+  "schema": "xar.e04.r0223-capacity-cache-compact-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:58:07.914402+00:00",
+  "state": "PREPARED_ONLY_NO_GIT_COPY_OR_STAGE",
+  "selected_files": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\OLD-1515-C2M-D24-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 2278,
+        "sha256": "3cef7d0da4cd69ce26f59769a636ba49314672e7900e246bf7815854872740b3"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/OLD-1515-C2M-D24-CLOSED-SETTLEMENT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-1615-NEW-1G-SHARED16M-FINANCIAL-RESERVATION.actual-a01.json",
+        "bytes": 7033,
+        "sha256": "04a17733f04b0dce13a11af19fba2f0b8809225d1a337693c665c628386e4b76"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R08-1615-NEW-1G-SHARED16M-FINANCIAL-RESERVATION.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\ROOT-LATEST-LAUNCH-1530-AND-ACTUAL-UNSPENT-AMENDMENT.actual-a01.json",
+        "bytes": 2980,
+        "sha256": "b966840795215beece6389e9478288ff7653d52f0a483d9af1e19dc4eb8e5f6f"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/ROOT-LATEST-LAUNCH-1530-AND-ACTUAL-UNSPENT-AMENDMENT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-1615-EXACT-PREPARE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 8159,
+        "sha256": "7684000a7361bd94a25698b07986cb2b8f0576d9143ae8263f7b07eeec8a05b1"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R08-1615-EXACT-PREPARE-SOURCE-BOUND.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-1615-ALLOCATE-ONLY-STAGE.actual-a01.json",
+        "bytes": 9360,
+        "sha256": "b75ff3f774adef8726f05b03615d9ffaa7543d63421078ebd0241b3c93a295f9"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R08-1615-ALLOCATE-ONLY-STAGE.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 16416,
+        "sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\ROOT-R0223-ONCE-LAUNCH-AUTHORITY-STAGE.actual-a01.json",
+        "bytes": 9049,
+        "sha256": "41981204e10be9f67f4b21caf427ced419ec8925b53f01ae8310adca9cbeb741"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/ROOT-R0223-ONCE-LAUNCH-AUTHORITY-STAGE.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-ACTUAL-PUBLIC-HOST-CLIENT-LAUNCH-FACT.actual-a01.json",
+        "bytes": 4221,
+        "sha256": "d93a4f53c6de00b35fc9199646b0c30c95f107334e3126e20d2ee0141beb41cc"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R0223-ACTUAL-PUBLIC-HOST-CLIENT-LAUNCH-FACT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-COMBINED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 868,
+        "sha256": "32847715a64c08009208e44bf0a7d4ade9a93ad28f72add12ddb839ed0ed4783"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R0223-COMBINED-GUARD-ORIGINAL-WAIT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-NORMAL-CLOSED-ONE-DAY-CD-NOT-QUALIFIED-SETTLEMENT.actual-a01.json",
+        "bytes": 9043,
+        "sha256": "39de3d9206fffbe82dbb62c215577a72d208a93443d061fb558ef670e7dd41c6"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R0223-NORMAL-CLOSED-ONE-DAY-CD-NOT-QUALIFIED-SETTLEMENT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+        "bytes": 3366,
+        "sha256": "d89fcd60d822306d1f99ea4e37230f6ce33a27c3834bcd30729b52eba9eb9936"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R0223-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\CLOCK-TEST-PATCH-C4M-D16M-GIT-STAGE-ADMISSION.actual-a01.json",
+        "bytes": 4556,
+        "sha256": "12d87211717176cf59b2598403d7407e455bc0393a621ac5482067d59af4c2db"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/CLOCK-TEST-PATCH-C4M-D16M-GIT-STAGE-ADMISSION.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\CLOCK-GIT-C4-D16-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 1954,
+        "sha256": "5e559d3c0b20512b3e650615afe0fb35b45ba58a6431d7fed92feeb8899df6db"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/CLOCK-GIT-C4-D16-CLOSED-SETTLEMENT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R09-A02-EXACT-5M-SOURCE-BOUND-ONCE-ADMISSION.actual-a01.json",
+        "bytes": 6883,
+        "sha256": "1922e5ff19cd8417607dafe96b4236a1481fcd9931b09fd2b0c677508d1e5717"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R09-A02-EXACT-5M-SOURCE-BOUND-ONCE-ADMISSION.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\POST-SCENE-GIT-NEW-R09-ALL-ACTIVE-CHECKPOINT.actual-a01.json",
+        "bytes": 3487,
+        "sha256": "edb88cb58e4490b97e3a27e2890598d7ea5f7db1399a1f2c23350aeae9d24316"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/POST-SCENE-GIT-NEW-R09-ALL-ACTIVE-CHECKPOINT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\packet_1615_common.py",
+        "bytes": 1320,
+        "sha256": "a9505b4fd40ebdf8e1444acc566cc8a9d63fa9fa45c476f65dfe7bda127d8f8c"
+      },
+      "role": "source",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/packet_1615_common.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\scene_r08_measure.py",
+        "bytes": 2778,
+        "sha256": "b4af3272d581983ce9fc123e3f84633b3968137bc5d17b822f6c5c111d86d640"
+      },
+      "role": "source",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/scene_r08_measure.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\monitor_scene_actual_unspent.py",
+        "bytes": 8279,
+        "sha256": "f0119bcc62277d7047145371dc7b5ba01d4c1d2dcc656f7feeef91150496bd0a"
+      },
+      "role": "source",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/monitor_scene_actual_unspent.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\ROOT-EXACT-R0219-FOURTH-SHADERCACHE-EXECUTION-APPROVAL.actual-a01.json",
+        "bytes": 3628,
+        "sha256": "1e473cf5a762c8ae352b55769beb79953947afa405e6cec5a0ab3c05f9df469f"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/ROOT-EXACT-R0219-FOURTH-SHADERCACHE-EXECUTION-APPROVAL.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-FOURTH-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json",
+        "bytes": 4558,
+        "sha256": "b22e4483cabbb62bc7db99230caba57569fc4d68a383584d8647ecb31dc7d3e6"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R0219-FOURTH-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\INDEPENDENT-ABSENCE-ORIGINAL-WAIT-FRESH-BUDGET.actual-a01.json",
+        "bytes": 3073,
+        "sha256": "d32994771da4d8bf822093b7fa9c573cad15b71622b7a717195d1e2660f1fa7b"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/INDEPENDENT-ABSENCE-ORIGINAL-WAIT-FRESH-BUDGET.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\LOCAL-DETAILED-LEDGER-720H-AND-SMALL-COPYPLAN.actual-a01.json",
+        "bytes": 4912,
+        "sha256": "f19e216be99b52c2274ec8177e1a1d6ced93188161cc6f7c5965daabf55d7075"
+      },
+      "role": "original",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/LOCAL-DETAILED-LEDGER-720H-AND-SMALL-COPYPLAN.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-FOURTH-SHADERCACHE-READONLY-PROPOSAL.prepared-a01.json",
+        "bytes": 5943,
+        "sha256": "a96c5535dc489bb722ae16c1bafe002a40ba9499fe2a5a4bee0e0a0e0c38602d"
+      },
+      "role": "original-input-proposal",
+      "proposed_repo_relative_destination": "docs/maintenance/evidence/2026-10-20-r0223-capacity-and-exact-cache-retirement/R0219-FOURTH-SHADERCACHE-READONLY-PROPOSAL.prepared-a01.json"
+    }
+  ],
+  "file_count": 23,
+  "total_source_bytes": 124144,
+  "all_selected_exact_small_originals_or_explicit_source": true,
+  "proposed_paths_are_suggestions_Root_may_choose_one_unified_archive": true,
+  "preserve_original_bytes_with_local_Git_attributes_no_text_conversion": true,
+  "do_not_copy_large_payloads": [
+    "Save",
+    "S0",
+    "raw",
+    "PNG/JPEG",
+    "nativeSDKwire/report",
+    "monitorJSONL",
+    "fullgzmanifest/batchrows"
+  ],
+  "detailed_cache_ledger_refs_retained_local720hours": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\LOCAL-DETAILED-LEDGER-720H-AND-SMALL-COPYPLAN.actual-a01.json",
+    "bytes": 4912,
+    "sha256": "f19e216be99b52c2274ec8177e1a1d6ced93188161cc6f7c5965daabf55d7075"
+  },
+  "R09_extraction_or_review_closure_not_yet_in_this_prepared_plan": true,
+  "all_Git_writes_require_a_new_fresh_authorized_Git_scope_after_old_stage_closed": true,
+  "new_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0
+}

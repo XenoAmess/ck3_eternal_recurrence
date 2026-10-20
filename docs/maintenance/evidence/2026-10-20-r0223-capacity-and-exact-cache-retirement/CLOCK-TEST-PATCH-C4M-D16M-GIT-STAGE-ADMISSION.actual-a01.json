@@ -1,0 +1,123 @@
+{
+  "schema": "xar.e04.clock-test-patch-finite-Git-stage.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:29:18.694939+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-clock-git-1615-20261020-a01",
+  "Root_explicit_authority": "Root approves C/W4MiB growth + Dactualgitcommon/index/objects/refs16MiB serial Git peak until16:15; one exact reviewedclock test patch and necessary small docs/evidence commit/push only. Root runtimeD stays frozenbc; no largefetch/rebase or matrix rerun. OldD24 not renewed.",
+  "executor": "/root/predecessor_admission",
+  "worktree": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "worktree_source_head": "4b9d164b6b30820852bb38654976db7f20db722d",
+  "worktree_observed_clean": true,
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-source-review-a01\\CLOCK-PROFILE-HOOK-ANCHORS.candidate.patch",
+    "bytes": 2475,
+    "sha256": "96e73ca035162109ebe637edbdac12f90bf4f061e7a1da15204ce8f892fb951c"
+  },
+  "W_baseline_logical_bytes": 68134337,
+  "C_W_additional_ceiling_bytes": 4194304,
+  "D_Git_temporary_peak_ceiling_bytes": 16777216,
+  "Git_common_root": "D:\\workspace\\ck3_eternal_recurrence\\.git",
+  "Git_worktree_metadata_root": "D:\\workspace\\ck3_eternal_recurrence\\.git\\worktrees\\integration-worktree",
+  "Git_index": "D:\\workspace\\ck3_eternal_recurrence\\.git\\worktrees\\integration-worktree\\index",
+  "Git_index_original_bytes": 10165029,
+  "actual_volume_mapping": {
+    "W": "C:/",
+    "Git_common_index_objects_refs": "D:/"
+  },
+  "current_shared16M_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01",
+  "current_shared16M_ceiling_bytes": 16777216,
+  "publisher_receipt_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\clock-ci-publish-a01",
+  "publisher_receipt_ceiling_bytes": 131072,
+  "publisher_receipts_inside_existing16M_not_extra_future": true,
+  "disable_opportunistic_Git_auto_gc_and_auto_maintenance_for_bounded_commands": true,
+  "source_repo_D": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_repo_D_frozen_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "D_checkout_execution_admitted": false,
+  "game_native_build_FFmpeg_SDK_install_download_execution_admitted": false,
+  "quota_review_at_utc": "2026-10-20T16:15:00Z",
+  "hard_deadline_utc": "2026-10-20T16:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:29:18.694710+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78489518080,
+      "available_to_caller_bytes": 78489518080,
+      "total_free_bytes": 78489518080,
+      "entire_volume_used_allocation_upper_bound_bytes": 432644427776,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:29:18.694710+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646262272,
+      "available_to_caller_bytes": 21646262272,
+      "total_free_bytes": 21646262272,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443745280,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "all_active_balances": {
+    "known_future": {
+      "C:/": 950341520,
+      "D:/": 16777216
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r08-1615-20261020-a01",
+        "known_future": {
+          "C:/": 946147216,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-clock-git-1615-20261020-a01",
+        "known_future": {
+          "C:/": 4194304,
+          "D:/": 16777216
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "budget": {
+    "C_known_future_bytes": 950341520,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26762277974,
+    "C_floor_margin_bytes": 51727240106,
+    "C_projected_whole_volume_upper_bound_bytes": 437931869270,
+    "C_quota_margin_bytes": 154794922,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 20430848
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false
+}

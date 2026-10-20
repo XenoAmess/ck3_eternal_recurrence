@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.r206-cd-writer-explicit-root-admission.v1",
+  "status": "ROOT_ADOPTED_R206_INDEPENDENT_CD_WRITER_WINDOW",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:35:50.382922+00:00",
+  "admitted": true,
+  "external_debugger_allowed": true,
+  "scope": "independent-unfilmed-cd-writer-window",
+  "r06_probe_concurrent": false,
+  "scene_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 16416,
+    "sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336"
+  },
+  "runtime_identity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\R08-COMMON-IDENTITY.actual.json",
+    "bytes": 664,
+    "sha256": "d6c33510c36b77d6a8197dd8b1f428e7f663e5c776a5abd8cbe74e4ac96a7c85"
+  },
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "runtime_source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+  "watch_output_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch",
+  "expected_root_identity": {
+    "pid": 32336,
+    "process_create_time_100ns": 134369836483832557,
+    "connection_generation": 1,
+    "episode_run_id": null,
+    "player_character_full_id": 33388,
+    "controlled_window_id": 1,
+    "payment_epoch": 1,
+    "date_raw": 53149056
+  },
+  "overrides_observer_policy_of_sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336",
+  "quota_review_at_utc": "2026-10-20T16:15:00+00:00",
+  "maximum_watch_ms": 30000,
+  "maximum_aggregate_slot_hits": 128,
+  "payment_window_policy": "preserve_existing_owned_window_no_enable_clear",
+  "original_awaiting": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-before-observer-awaiting.json",
+    "bytes": 1378,
+    "sha256": "76ffa7381b229c4faf81bf830cebd1deef64281af3b080146d06b5f95cd023c3"
+  },
+  "Root_declarations": {
+    "current_owned_window_metadata_directly_reviewed": true,
+    "external_debugger_for_this_single_window_explicitly_adopted": true,
+    "no_concurrent_R06": true
+  },
+  "business_pass": false,
+  "full_R08_qualified": false
+}

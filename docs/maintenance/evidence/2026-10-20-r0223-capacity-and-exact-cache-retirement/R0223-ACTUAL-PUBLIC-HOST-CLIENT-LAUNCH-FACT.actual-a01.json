@@ -1,0 +1,100 @@
+{
+  "schema": "xar.e04.r0223-actual-launch-new-fact.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:32:08.055278+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "Root_reported_original_public_Popen": {
+    "pid": 8436,
+    "started_at_utc": "2026-10-20T15:27:09Z",
+    "tool_session": 26294,
+    "original_wait_still_pending": true,
+    "source": "Root explicit retained original Popen report; not inferred from capacity growth"
+  },
+  "actual_host_started": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\host-started.json",
+    "bytes": 3775,
+    "sha256": "621a252a4da9f705572c4117b14a23661ff5819c79844438686d326b72edc977"
+  },
+  "actual_host_started_at_utc": "2026-10-20T15:27:15.330684+00:00",
+  "host_original_Popen_retained": true,
+  "independently_current_OS_process_identities": [
+    {
+      "pid": 8436,
+      "create_time": 1792510029.0671237,
+      "exe": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "observed_at_utc": "2026-10-20T15:32:08.055064+00:00"
+    },
+    {
+      "pid": 35508,
+      "create_time": 1792510035.3099737,
+      "exe": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "observed_at_utc": "2026-10-20T15:32:08.055121+00:00"
+    },
+    {
+      "pid": 35400,
+      "create_time": 1792510032.752741,
+      "exe": "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+      "observed_at_utc": "2026-10-20T15:32:08.055180+00:00"
+    },
+    {
+      "pid": 32336,
+      "create_time": 1792510048.3832555,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "observed_at_utc": "2026-10-20T15:32:08.055251+00:00"
+    }
+  ],
+  "native_session_log_exact_first_line": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\native-report.session.log",
+    "offset": 0,
+    "bytes": 839,
+    "sha256": "8c9ffac9cc562cecd71ebc11ad137f6e5caa5bd3b1ec043bf66ca157be015e8a",
+    "projection": {
+      "type": "native_session_ready",
+      "pid": 32336,
+      "mode": "native-headless",
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0223",
+      "lifecycle_queue": {
+        "protocol_version": 1,
+        "bridge_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\native-session\\bridge",
+        "inbox_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\native-session\\bridge\\inbox",
+        "outbox_dir": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\state-a01\\native-session\\bridge\\outbox",
+        "supported_commands": [
+          "status",
+          "stop",
+          "restore-checkpoint",
+          "start-next-episode"
+        ],
+        "action_steps": [
+          "restore-checkpoint",
+          "start-next-episode"
+        ],
+        "request_shape": {
+          "request_id": "<filename stem>",
+          "command": "status | stop | step | <development step>",
+          "step": "required when command=step"
+        }
+      },
+      "cold_start_checkpoint": null
+    }
+  },
+  "native_session_log_not_claimed_immutable_whole_file": true,
+  "latest_game_launch_at_utc": "2026-10-20T15:30:00Z",
+  "actual_launch_before_latest": true,
+  "run_hard_deadline_utc": "2026-10-20T16:15:00Z",
+  "Root_launch_authority_stage": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\ROOT-R0223-ONCE-LAUNCH-AUTHORITY-STAGE.actual-a01.json",
+    "bytes": 9049,
+    "sha256": "41981204e10be9f67f4b21caf427ced419ec8925b53f01ae8310adca9cbeb741"
+  },
+  "base_capacity_retained_unchanged": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 16416,
+    "sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336"
+  },
+  "case_business_or_observer_or_day_PASS_not_proven_by_launch": true,
+  "future_still_active": true,
+  "new_future_delta_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "SDK_memory_or_screen_actions": 0
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "xar.e04.dispatch-candidate-copyplan-supplement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:09:48.845872+00:00",
+  "base_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\FINAL-COPYPLAN.prepared-a01.json",
+    "bytes": 6419,
+    "sha256": "b99684a65d593999d6b895dd2d591c8b382ed3b112759a111ff1a53edd712418"
+  },
+  "files": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\RESTORE-PROOF-BOUND.candidate.patch",
+        "bytes": 2244,
+        "sha256": "2f3a1c2045b49c3395eb5b03fdd8d10359ff8b67351c49e4205182253317c15d"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/RESTORE-PROOF-BOUND.candidate.patch"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-dispatch-mode-candidate-a01\\RESTORE-PROOF-BOUND.prepared-a01.json",
+        "bytes": 2008,
+        "sha256": "14afeb6c735e828241f574cd61504267aab7eaa64d29867523e0c97681c3b827"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/RESTORE-PROOF-BOUND.prepared-a01.json"
+    }
+  ],
+  "copy_byte_exact": true,
+  "archive_research_only_do_not_apply_production": true,
+  "this_copyplan_destination": "docs/ck3-native-ai/evidence/episode04-r08-dispatch-candidate-20261020/COPYPLAN-SUPPLEMENT.prepared-a01.json"
+}

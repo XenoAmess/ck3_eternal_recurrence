@@ -1,0 +1,91 @@
+{
+  "schema": "xar.e04.r0219-cache-retirement-local-retention-small-publish.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:25:39.116505+00:00",
+  "retirement_final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-FOURTH-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json",
+    "bytes": 4558,
+    "sha256": "b22e4483cabbb62bc7db99230caba57569fc4d68a383584d8647ecb31dc7d3e6"
+  },
+  "detailed_local_metadata_refs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-FOURTH-SHADERCACHE-READONLY-PROPOSAL.prepared-a01.json",
+      "bytes": 5943,
+      "sha256": "a96c5535dc489bb722ae16c1bafe002a40ba9499fe2a5a4bee0e0a0e0c38602d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-EXACT-SHADERCACHE-CANDIDATES.prepared-a01.json.gz",
+      "bytes": 70773,
+      "sha256": "e46736d4d631f01f54ab24aa21f8dc2060dc3a448e3f3e1388fc4be9187be52d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\ROOT-EXACT-R0219-FOURTH-SHADERCACHE-EXECUTION-APPROVAL.actual-a01.json",
+      "bytes": 3628,
+      "sha256": "1e473cf5a762c8ae352b55769beb79953947afa405e6cec5a0ab3c05f9df469f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-FOURTH-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json",
+      "bytes": 4558,
+      "sha256": "b22e4483cabbb62bc7db99230caba57569fc4d68a383584d8647ecb31dc7d3e6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\INDEPENDENT-ABSENCE-ORIGINAL-WAIT-FRESH-BUDGET.actual-a01.json",
+      "bytes": 3073,
+      "sha256": "d32994771da4d8bf822093b7fa9c573cad15b71622b7a717195d1e2660f1fa7b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-1-RESULT.actual-a01.json.gz",
+      "bytes": 41992,
+      "sha256": "41d6a21fb7d4fbe16c73beb62e4ef3792609f9939972509e15bb25910cc30436"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-2-RESULT.actual-a01.json.gz",
+      "bytes": 41912,
+      "sha256": "b51595519cc7bfc8a489eb04708a01dae81bc0b8534f719647441b72c108e109"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-3-RESULT.actual-a01.json.gz",
+      "bytes": 32570,
+      "sha256": "256f5e0f817371d907124107746a4af8b2e235911cbe82ad8b931954fb4f75a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-4-RESULT.actual-a01.json.gz",
+      "bytes": 28539,
+      "sha256": "a7b3e3c413c9c56246d51499db20b4252dd639a2d879ee58ca52a1b5456bdab4"
+    }
+  ],
+  "detailed_ledger_retention_hours": 720,
+  "detailed_ledger_protection_until_utc": "2026-11-19T15:18:15.518247+00:00",
+  "purpose_review_at_utc": "2026-10-22T15:00:00Z",
+  "review_is_not_early_deletion_authority": true,
+  "source_payload_deleted_unreadable": true,
+  "source_payload_SHA_captured_exactly_once_under_exclusive_OS_handle_before_deletion": true,
+  "do_not_make_named_substitute_evidence": true,
+  "Root_earlier_small_summary_publication_preference": "Keep compressed detailed original inventories/results local; publish only necessary compact summaries and exact source hashes/expiry. No duplicated gz immutable inputs.",
+  "suggested_small_summary_originals": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\R0219-FOURTH-SHADERCACHE-READONLY-PROPOSAL.prepared-a01.json",
+      "bytes": 5943,
+      "sha256": "a96c5535dc489bb722ae16c1bafe002a40ba9499fe2a5a4bee0e0a0e0c38602d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\ROOT-EXACT-R0219-FOURTH-SHADERCACHE-EXECUTION-APPROVAL.actual-a01.json",
+      "bytes": 3628,
+      "sha256": "1e473cf5a762c8ae352b55769beb79953947afa405e6cec5a0ab3c05f9df469f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\R0219-FOURTH-SHADERCACHE-EXACT-RETIREMENT-CLOSED.actual-a01.json",
+      "bytes": 4558,
+      "sha256": "b22e4483cabbb62bc7db99230caba57569fc4d68a383584d8647ecb31dc7d3e6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\r0219-cache-retirement-a01\\INDEPENDENT-ABSENCE-ORIGINAL-WAIT-FRESH-BUDGET.actual-a01.json",
+      "bytes": 3073,
+      "sha256": "d32994771da4d8bf822093b7fa9c573cad15b71622b7a717195d1e2660f1fa7b"
+    }
+  ],
+  "small_summary_total_bytes": 17202,
+  "actual_Git_copy_commit_push_by_capacity": false,
+  "physical_or_unused_credit_bytes": 0,
+  "new_live_build_media_authority": false
+}

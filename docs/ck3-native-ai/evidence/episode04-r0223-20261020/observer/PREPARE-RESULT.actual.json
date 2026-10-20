@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-10-20T15:35:59.987614+00:00",
+  "config": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\R08-DRIVER-INPUT.actual.json",
+    "bytes": 3028,
+    "sha256": "14362d9baae59af016119497f1c68f9f8aa1246bfc2436bc2531148b5f5d5811"
+  },
+  "claim": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\prepare.once.json",
+    "bytes": 2139,
+    "sha256": "a0df957092ac33b9f2be0f5491dae0cd7cfc029876ad1eef3b2b383c66001759"
+  },
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\prepare.stdout",
+    "bytes": 240,
+    "sha256": "c3928fec5fe373ed8cffcbff313bda5352a6aef66af8fed0bdf8d694b47122db"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\prepare.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "observer_started": false,
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\r08-writer-control\\watch\\ADMISSION.actual.json",
+    "bytes": 4766,
+    "sha256": "0f442d65fd587101b2cc070add82f23921c71d95ddbad293755cafad5eee1f81"
+  }
+}

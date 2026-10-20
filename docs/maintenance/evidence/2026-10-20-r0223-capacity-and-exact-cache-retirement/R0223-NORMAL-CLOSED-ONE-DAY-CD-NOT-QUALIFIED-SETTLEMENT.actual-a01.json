@@ -1,0 +1,234 @@
+{
+  "schema": "xar.e04.r0223-normal-closed-one-day-no-fullR08-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:45:02.146124+00:00",
+  "machine_CLI_output": "desktop-3fevhd2-1c74096080",
+  "a01_readonly_precheck_failure": "machine CLI is plain stableID text, not JSON; a01 failed before receipt/ledger writes; a02 uses exact string equality",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+  "base_scene_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 16416,
+    "sha256": "2305d3270e2cd27ee7a265dcdc6f0eeff0f52a9b77ca9e57dd24eb283a062336"
+  },
+  "typed_originals": {
+    "actual_normal_close": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\normal-close-result.json",
+      "bytes": 9620,
+      "sha256": "8ccb482e5a89f3386f86fee55a0c38e58bae289addc91ba37943112bd320248f"
+    },
+    "host_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "2441e0a8f129e545d23b80f0cf2d27bd907696f53048621ad86b560913312433"
+    },
+    "keeper_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\keeper-actual-parent-exit.json",
+      "bytes": 598,
+      "sha256": "8bd5f1fbdd57a99ea9a24355908821b215691d4197037870e384d8f3748a0825"
+    },
+    "public_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\run-exec-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1181,
+      "sha256": "271f00887073ae8384f21d7d43f77b008e801c5d84b23d79d38d07ca652b0e85"
+    },
+    "allocator_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\allocate-exec-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1532,
+      "sha256": "5334a42afe36187c9d7733bcc8345f83d28138fe368ecebbc6fa6231735c247a"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\SCREEN-RELEASE.actual-a01.json",
+      "bytes": 1183,
+      "sha256": "b43887dafa232a2090c694a6e9416e366df3a02e145f846006a5eef76c06a25e"
+    },
+    "original_R08_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\case-output\\R08-WRITER-TERMINAL.json",
+      "bytes": 345,
+      "sha256": "1a67f7e011f2ff252ec0099dec424152304261b9aa464e75eca39d06d0cff04d"
+    },
+    "combined_guard_owner": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUAL-UNSPENT-GUARD-OWNED.actual-a01.json",
+      "bytes": 1662,
+      "sha256": "1b54fa4feec5e049dc260b21d9b8513dd827e3c92278c3867a00789c46ab6b3c"
+    },
+    "combined_guard_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-COMBINED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 868,
+      "sha256": "32847715a64c08009208e44bf0a7d4ade9a93ad28f72add12ddb839ed0ed4783"
+    },
+    "actual_launch_fact": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R0223-ACTUAL-PUBLIC-HOST-CLIENT-LAUNCH-FACT.actual-a01.json",
+      "bytes": 4221,
+      "sha256": "d93a4f53c6de00b35fc9199646b0c30c95f107334e3126e20d2ee0141beb41cc"
+    },
+    "keeper_identity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0223\\keeper-process.json",
+      "bytes": 716,
+      "sha256": "06c0fd4bf25f7e194eb0d40758ddfe193624b9544024bc4f2af37216e2203819"
+    }
+  },
+  "normal_close_qualified": true,
+  "actual_days": 1,
+  "exact_day_verified": true,
+  "OFFclear": true,
+  "Save": true,
+  "native_restore_verified": true,
+  "full_R08_qualified": false,
+  "business_pass": false,
+  "public_host_keeper_allocator_original_wait0": true,
+  "screen_release_sequence": 7598,
+  "complete_closed_component_observations": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T15:45:01.220182+00:00",
+      "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+      "components": {
+        "profile": {
+          "logical_bytes": 452857239,
+          "allocated_unique_bytes": 461601056,
+          "files": 3897,
+          "ceiling_bytes": 536870912
+        },
+        "driver": {
+          "logical_bytes": 178333012,
+          "allocated_unique_bytes": 178888896,
+          "files": 510,
+          "ceiling_bytes": 469762048
+        },
+        "raw": {
+          "logical_bytes": 0,
+          "allocated_unique_bytes": 0,
+          "files": 0,
+          "ceiling_bytes": 0
+        },
+        "other": {
+          "logical_bytes": 16232705,
+          "allocated_unique_bytes": 16337256,
+          "files": 111,
+          "ceiling_bytes": 67108864
+        }
+      },
+      "metadata_coverage_complete": true,
+      "errors": [],
+      "errors_count": 0,
+      "elapsed_seconds": 0.904,
+      "logical_total_bytes": 647422956,
+      "allocated_unique_total_bytes": 656827208,
+      "live_measurement_not_atomic_snapshot": true,
+      "payload_body_bytes_read": 0,
+      "SDK_game_screen_actions": 0
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T15:45:02.120773+00:00",
+      "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a02",
+      "components": {
+        "profile": {
+          "logical_bytes": 452857239,
+          "allocated_unique_bytes": 461601056,
+          "files": 3897,
+          "ceiling_bytes": 536870912
+        },
+        "driver": {
+          "logical_bytes": 178333012,
+          "allocated_unique_bytes": 178888896,
+          "files": 510,
+          "ceiling_bytes": 469762048
+        },
+        "raw": {
+          "logical_bytes": 0,
+          "allocated_unique_bytes": 0,
+          "files": 0,
+          "ceiling_bytes": 0
+        },
+        "other": {
+          "logical_bytes": 16232705,
+          "allocated_unique_bytes": 16337256,
+          "files": 111,
+          "ceiling_bytes": 67108864
+        }
+      },
+      "metadata_coverage_complete": true,
+      "errors": [],
+      "errors_count": 0,
+      "elapsed_seconds": 0.899,
+      "logical_total_bytes": 647422956,
+      "allocated_unique_total_bytes": 656827208,
+      "live_measurement_not_atomic_snapshot": true,
+      "payload_body_bytes_read": 0,
+      "SDK_game_screen_actions": 0
+    }
+  ],
+  "current_exact_owned_process_census": [
+    {
+      "pid": 8436,
+      "expected_create_time": 1792510029.0671237,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 35508,
+      "expected_create_time": 1792510035.3099737,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 35400,
+      "expected_create_time": 1792510032.752741,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 32336,
+      "expected_create_time": 1792510048.3832555,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 15704,
+      "expected_create_time": 1792509825.509774,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 11576,
+      "expected_create_time": 1792509863.6674993,
+      "owned_identity_absent": true
+    }
+  ],
+  "named_CK3_FFmpeg_ffprobe_census": [],
+  "process_read_errors": [],
+  "global_process_absence_claimed": false,
+  "original_allocator_creation_time_not_pre_captured_by_capacity": true,
+  "original_allocator_wait0_retained_in_primary_receipt": true,
+  "component_sampled_peaks": {
+    "profile": {
+      "sampled_logical_peak_bytes": 452857239,
+      "sampled_allocated_peak_bytes": 461667392
+    },
+    "driver": {
+      "sampled_logical_peak_bytes": 188787293,
+      "sampled_allocated_peak_bytes": 178888896
+    },
+    "raw": {
+      "sampled_logical_peak_bytes": 0,
+      "sampled_allocated_peak_bytes": 0
+    },
+    "other": {
+      "sampled_logical_peak_bytes": 16232705,
+      "sampled_allocated_peak_bytes": 16337256
+    }
+  },
+  "journal_paths_not_copied_or_hashed": [
+    "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\capacity\\R08-ACTUAL-UNSPENT-GUARD.actual-part0001.jsonl"
+  ],
+  "combined_complete_records": 68,
+  "RED_or_partial_records": [],
+  "sampled_complete_scans_are_not_atomic_or_continuous_peak_proof": true,
+  "claim_of_automatic_game_pause": false,
+  "scene_unspent_before_bytes": 426318868,
+  "scene_unspent_after_bytes": 0,
+  "actual_bytes_still_whole_volume_occupied": true,
+  "physical_or_unused_credit_bytes": 0,
+  "shared16M_still_open_until_utc": "2026-10-20T16:15:00Z",
+  "independent_Git_C4_D16_claim_not_closed_by_scene_settlement": true,
+  "retention_reason": "Bounded true one naturalday, clean a/b but c/d gap and unqualified fullR08, OFF/Save/restore and actual normal close with original waits/release; no blanket permanent profile protection.",
+  "purpose_review_at_utc": "2026-10-22T15:43:00Z",
+  "no_new_live_reservation": true
+}

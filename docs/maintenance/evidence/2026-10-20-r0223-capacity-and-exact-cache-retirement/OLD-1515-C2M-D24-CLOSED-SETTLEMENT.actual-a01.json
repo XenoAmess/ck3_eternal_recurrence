@@ -1,0 +1,60 @@
+{
+  "schema": "xar.e04.offline1515-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T15:17:42.086011+00:00",
+  "Root_actual_closure_authority": "Root confirms W published4b9d164b6b30820852bb38654976db7f20db722d, Wclean, Dbc, no remaining Root writes; all old agents closed. New retirement outputs only M2, not oldN.",
+  "old_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\offline-1515-a01\\OFFLINE-1515-C2M-D24-GIT-ADMISSION.actual-a01.json",
+    "bytes": 4881,
+    "sha256": "26816c35109848d2ab756f446042bff25f9b4503b877810b4162b962fae0aebe"
+  },
+  "actual_old_shared": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T15:17:42.085971+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 129799281,
+    "files": 4614,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "growth_from_original_baseline_bytes": 948021,
+  "former_reserved_future_bytes_by_volume": {
+    "C:/": 2097152,
+    "D:/": 25165824
+  },
+  "remaining_future_bytes_by_volume": {
+    "C:/": 0,
+    "D:/": 0
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "old_scope_not_renewed": true,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T15:17:42.086021+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78481301504,
+      "available_to_caller_bytes": 78481301504,
+      "total_free_bytes": 78481301504,
+      "entire_volume_used_allocation_upper_bound_bytes": 432652644352,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T15:17:42.086021+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21646798848,
+      "available_to_caller_bytes": 21646798848,
+      "total_free_bytes": 21646798848,
+      "entire_volume_used_allocation_upper_bound_bytes": 478443208704,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 347174,
+    "sha256": "229090f7c367f35e82fd2ff35417685074cf06e949406c754bdecbe0f1eb2052"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.metadata-lane-boundary-gap.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:07:41.074544+00:00",
+  "source_correction_original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01\\DERIVED-PROJECTION-CORRECTION.actual.json",
+    "bytes": 814,
+    "sha256": "7bf80456a2317e755e8b8fa4b0cc48f59edecf8f891ab2e3b2f1def04e9bca77"
+  },
+  "source_lane": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r08-next-opportunity-review-a01",
+  "lane_hard_ceiling_bytes": 131072,
+  "reported_first_derived_file": {
+    "name": "PACKETS-PROJECTION.actual.json",
+    "bytes": 150779,
+    "sha256": "0244cbd31ddc578e37e10a38451779ba7bf5dfff2e56eaab536bf57b2efeb70a"
+  },
+  "single_derived_file_exceeded_lane_by_bytes": 19707,
+  "actual_lane_overrun": true,
+  "source_author_report": "Research owner read existing correction only: replacement32733B was written before deleting reviewed150779B derived file; old source originals unchanged; no complete aggregate peak stat retained. No new reconstruction or metadata write in closed lane.",
+  "source_correction_at_utc": "2026-10-20T15:46:02.689162Z",
+  "global_M16MiB_at_that_time_status": "UNKNOWN_NO_COMPLETE_PEAK_MEASUREMENT",
+  "do_not_infer_past_global_compliance_from_small_final_current_usage": true,
+  "do_not_claim_global_overrun_without_evidence": true,
+  "no_retroactive_cap_or_extra_budget_authorized": true,
+  "scope_final_owner_report_logical_bytes": 118687,
+  "current_complete_M_measurement": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T16:07:41.105938+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01",
+    "excludes": [],
+    "logical_bytes": 1921008,
+    "files": 252,
+    "ceiling_bytes": 16777216,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "capacity_actions_raw_body_read_or_payload_reconstruction": 0,
+  "physical_or_unused_credit_bytes": 0
+}
