@@ -1922,6 +1922,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_player_artifact_personal_use_query: bool = False,
         allow_private_player_ghw_permissions_query: bool = False,
         allow_private_character_skill_effects_query: bool = False,
+        allow_private_character_knight_effectiveness_query: bool = False,
         allow_private_player_inventory_window_open: bool = False,
         allow_private_player_inventory_window_close: bool = False,
         allow_private_player_artifact_personal_use_actions: bool = False,
@@ -2067,6 +2068,7 @@ class NativeHeadlessGameplayDriver:
                                   ("allow_private_player_ghw_permissions_query", allow_private_player_ghw_permissions_query),
                                   ("allow_private_player_artifact_personal_use_actions", allow_private_player_artifact_personal_use_actions),
                                   ("allow_private_character_skill_effects_query", allow_private_character_skill_effects_query),
+                                  ("allow_private_character_knight_effectiveness_query", allow_private_character_knight_effectiveness_query),
                                   ("allow_private_player_inventory_window_open", allow_private_player_inventory_window_open),
                                   ("allow_private_player_inventory_window_close", allow_private_player_inventory_window_close)):
             if type(value) is not bool:
@@ -3687,6 +3689,10 @@ class NativeHeadlessGameplayDriver:
     def query_player_inventory_window_close_post_private_v1(self, *, expected_revision: int, expected_intent_sequence: int) -> dict[str, object]:
         from .player_inventory_window_close_private_transport_v1 import query_player_inventory_window_close_post_private_v1
         return query_player_inventory_window_close_post_private_v1(self, expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
+
+    def query_character_knight_effectiveness_private_v1(self, *, expected_revision: int, character_id: int) -> dict[str, object]:
+        from .character_knight_effectiveness_private_transport_v1 import query_character_knight_effectiveness_private_v1
+        return query_character_knight_effectiveness_private_v1(self, expected_revision=expected_revision, character_id=character_id)
 
     def query_character_skill_effects_private_v1(self, *, expected_revision: int, character_id: int, skill: str = "diplomacy") -> dict[str, object]:
         from .character_skill_effects_private_transport_v1 import query_character_skill_effects_private_v1

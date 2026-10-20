@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
+#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
 #include <array>
 
 namespace xar::ck3_12004::character_skill_effects {
@@ -52,3 +52,5 @@ std::string Serialize(const Query &q){
   Quote(out,core::kExeSha);out+='}';return out;
 }
 } // namespace xar::ck3_12004::character_skill_effects
+
+#include "character_knight_effectiveness12004_json.inc"

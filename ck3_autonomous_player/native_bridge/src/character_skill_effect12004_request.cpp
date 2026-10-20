@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
+#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
 #include "xar_bridge/protocol.hpp"
 #include <windows.h>
 #include <array>
@@ -26,3 +26,5 @@ bool ParseRequest(std::string_view payload,const game::Snapshot &current,
   target=static_cast<std::uint32_t>(id);skill=static_cast<std::int32_t>(index);return true;
 }
 }
+
+#include "character_knight_effectiveness12004_request.inc"

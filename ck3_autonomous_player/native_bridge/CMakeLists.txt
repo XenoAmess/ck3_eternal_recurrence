@@ -10099,3 +10099,9 @@ include(cmake/player_inventory_window12004.cmake)
 
 # Finite B11 composition consumers; no production behavior change.
 include(cmake/b11_minimal_consumers.cmake)
+
+# Retained exact original reader and source-immutable finite link support.
+if(BUILD_TESTING)
+  include(cmake/pilgrimage_full10_baseline_host_fixture.cmake)
+endif()
+include(cmake/finite_production_object_link_support.cmake)

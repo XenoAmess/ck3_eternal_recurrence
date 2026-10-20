@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/character_skill_effect12004.hpp"
+#include "xar_bridge/character_skill_effect12004.hpp"
 #include <limits>
 
 namespace xar::bridge::character_skill_effect12004 {
@@ -96,3 +96,5 @@ bool Read(const Environment &e, const Request &r, Result &out) noexcept {
   } catch (...) { return fail("owned_copy_exception"); }
 }
 } // namespace xar::bridge::character_skill_effect12004
+
+#include "character_knight_effectiveness12004_core.inc"

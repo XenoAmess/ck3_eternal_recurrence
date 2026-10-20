@@ -1,4 +1,4 @@
-﻿# Reusable exact4 one-actor skill/devotion/original-text READ observer only.
+# Reusable exact4 one-actor skill/devotion/original-text READ observer only.
 option(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1
   "Compile exact4 character skill effect readonly observer (unqualified default OFF)" OFF)
 if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
@@ -34,4 +34,30 @@ if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
       endif()
     endforeach()
   endif()
+endif()
+
+# Fixed actual-Character knight total/original-text observer. Reuses the five
+# existing production TUs, the same default-OFF actor compile flag and the same
+# typed owner executor. The new SDK capability remains independently opt-in.
+if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1 AND BUILD_TESTING)
+  add_executable(xar_ck3_character_knight_effectiveness12004_owned_fixture EXCLUDE_FROM_ALL
+    tests/character_knight_effectiveness12004_owned_fixture.cpp
+    src/character_skill_effect12004.cpp
+    src/character_skill_effect12004_json.cpp
+    src/character_skill_effect12004_request.cpp)
+  target_link_libraries(xar_ck3_character_knight_effectiveness12004_owned_fixture PRIVATE xar_bridge_protocol)
+  add_executable(xar_ck3_character_knight_effectiveness12004_factory_fixture EXCLUDE_FROM_ALL
+    tests/character_knight_effectiveness12004_factory_fixture.cpp
+    src/character_skill_effect12004_native.cpp)
+  target_compile_definitions(xar_ck3_character_knight_effectiveness12004_factory_fixture PRIVATE
+    XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1=1)
+  foreach(_knight_target IN ITEMS xar_ck3_character_knight_effectiveness12004_owned_fixture
+      xar_ck3_character_knight_effectiveness12004_factory_fixture)
+    target_compile_features(${_knight_target} PRIVATE cxx_std_20)
+    target_include_directories(${_knight_target} PRIVATE include src research)
+    target_compile_definitions(${_knight_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(${_knight_target} PRIVATE /UNDEBUG /Od /GL- /W4 /permissive- /EHsc /utf-8)
+    endif()
+  endforeach()
 endif()

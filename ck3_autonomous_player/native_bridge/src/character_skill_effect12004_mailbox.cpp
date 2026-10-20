@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
+#include "xar_bridge/character_skill_effect12004_mailbox.hpp"
 #include "xar_bridge/character_skill_effect12004_native.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -30,13 +30,15 @@ void Quote(std::string &out,std::string_view text){
 }
 [[maybe_unused]] std::string Envelope(const Query &q,std::string_view request_id,std::string_view domain){
   std::string out="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";Quote(out,request_id);
-  out+=",\"ok\":true,\"result\":{\"step\":";Quote(out,kStep);
-  out+=",\"accepted\":true,\"status\":";Quote(out,q.observation.available?"available":"unavailable");
+  out+=",\"ok\":true,\"result\":{\"step\":";Quote(out,q.knight_query?kKnightStep:kStep);
+  out+=",\"accepted\":true,\"status\":";
+  Quote(out,(q.knight_query?q.knight_observation.available:q.observation.available)?"available":"unavailable");
   out+=",\"private_build\":true,\"advertised\":false,\"read_only\":true,\"snapshot_revision\":"+std::to_string(q.expected_revision);
   out+=",\"date_raw\":"+std::to_string(q.expected_snapshot.date_raw)+",\"game_pid\":"+std::to_string(q.game_pid);
   out+=",\"connection_generation\":"+std::to_string(q.connection_generation)+",\"game_version\":\"1.20.0.4\",\"executable_sha256\":";
-  Quote(out,core::kExeSha);out+=",\"domain_key\":";Quote(out,kDomain);
-  out+=",\"character_skill_effects_v1\":";out+=domain;out+=",\"backend_id\":\"native-headless\"}}";return out;
+  Quote(out,core::kExeSha);out+=",\"domain_key\":";Quote(out,q.knight_query?kKnightDomain:kDomain);
+  out+=q.knight_query?",\"character_knight_effectiveness_v1\":":",\"character_skill_effects_v1\":";
+  out+=domain;out+=",\"backend_id\":\"native-headless\"}}";return out;
 }
 } // namespace
 bool Execute(void *opaque,const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -59,9 +61,22 @@ bool Execute(void *opaque,const ck3_11906::MainThreadExecutionStampV1 &stamp) no
       core::NativeContext native{};native.enabled=q->enabled;native.module_base=q->module_base;
       native.executable_sha256=q->executable_sha256;native.owner_thread_id=stamp.thread_id;native.expected=frame;
       native.requested_character_id=q->character_id;native.snapshot_context=&context;native.snapshot_frame=&CurrentFrame;
-      const auto env=core::BindNative(native);
-      (void)core::Read(env,core::Request{frame,q->character_id,q->skill},q->observation);
-      if(!q->observation.available&&native.failure!=nullptr&&*native.failure!='\0')q->observation.unavailable_reason=native.failure;
+      if(q->knight_query){
+        const auto env=core::BindKnightNative(native);
+        (void)core::ReadKnightEffectiveness(env,core::KnightRequest{frame,q->character_id},q->knight_observation);
+        if(q->knight_observation.available&&
+            (native.breakdown_calls!=2||native.string_destroy_calls!=2)){
+          q->knight_observation={};q->knight_observation.frame=frame;
+          q->knight_observation.character_id=q->character_id;
+          q->knight_observation.unavailable_reason="native_knight_cleanup_count_unverified";
+        }
+        if(!q->knight_observation.available&&native.failure!=nullptr&&*native.failure!='\0')
+          q->knight_observation.unavailable_reason=native.failure;
+      }else{
+        const auto env=core::BindNative(native);
+        (void)core::Read(env,core::Request{frame,q->character_id,q->skill},q->observation);
+        if(!q->observation.available&&native.failure!=nullptr&&*native.failure!='\0')q->observation.unavailable_reason=native.failure;
+      }
       core::Frame after{};if(!CurrentFrame(&context,after)||after!=frame){q->frame_changed=true;q->failure="actor_effects_post_frame_changed";}
     }
     q->completed=true;return true;
@@ -78,19 +93,25 @@ bool Handle(const game::GameAdapter &adapter,ck3_11906::MainThreadQueryMailboxV1
   using namespace ck3_11906;
   try{
     game::Snapshot current{};std::uint32_t target=0xFFFFFFFFU;std::int32_t skill=-1;
+    std::string requested_step;
+    if(!bridge::JsonStringField(payload,"step",requested_step,128)||!IsStep(requested_step)){
+      failure="character_effects_fixed_step_invalid";return false;
+    }
+    const bool knight=requested_step==kKnightStep;
     if(!adapter.enabled()||!game::IsCk3_12004Descriptor(adapter.descriptor())||revision==0||generation==0||
         published==nullptr||!adapter.read_snapshot(current)||current!=*published||!current.paused||!current.map_ready||
         !current.has_played_character||!current.played_character_alive||current.played_character_id<=0||
-        !ParseRequest(payload,current,revision,generation,target,skill)){failure="character_skill_effects_request_or_binding_invalid";return false;}
+        !(knight?ParseKnightRequest(payload,current,revision,generation,target):
+                  ParseRequest(payload,current,revision,generation,target,skill))){failure="character_effects_request_or_binding_invalid";return false;}
     Query q{};q.mailbox=&mailbox;q.enabled=true;q.module_base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     q.executable_sha256=adapter.descriptor().executable_sha256;q.native_context=const_cast<game::GameAdapter *>(&adapter);q.read_snapshot=&Snapshot;
-    q.expected_snapshot=current;q.expected_revision=revision;q.connection_generation=generation;q.game_pid=GetCurrentProcessId();q.character_id=target;q.skill=skill;
+    q.expected_snapshot=current;q.expected_revision=revision;q.connection_generation=generation;q.game_pid=GetCurrentProcessId();q.character_id=target;q.skill=skill;q.knight_query=knight;
     if(TrySubmitMainThreadQueryV1(mailbox,&Execute,&q,q.ticket)!=MainThreadQuerySubmitResultV1::submitted){failure="character_skill_effects_owner_executor_unavailable";return false;}
     auto wait=WaitForMainThreadQueryV1(mailbox,q.ticket,8000);
     while(wait==MainThreadQueryWaitResultV1::timeout_executor_already_running)wait=WaitForMainThreadQueryV1(mailbox,q.ticket,2000);
     if(wait!=MainThreadQueryWaitResultV1::completed||!q.completed){(void)ReclaimMainThreadQueryV1(mailbox,q.ticket);failure="character_skill_effects_owner_executor_incomplete";return false;}
     game::Snapshot after{};const bool stable=!q.frame_changed&&adapter.read_snapshot(after)&&after==current;
-    const auto domain=stable?Serialize(q):std::string{};
+    const auto domain=stable?(q.knight_query?SerializeKnight(q):Serialize(q)):std::string{};
     const bool reclaimed=ReclaimMainThreadQueryV1(mailbox,q.ticket)==MainThreadQueryReclaimResultV1::reclaimed;
     if(!stable||domain.empty()||!reclaimed){failure=q.failure.empty()?"character_skill_effects_frame_serialize_or_reclaim_failed":q.failure;return false;}
     wire=Envelope(q,request_id,domain);return true;

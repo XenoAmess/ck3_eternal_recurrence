@@ -15751,7 +15751,7 @@ void RunConnectedSession(
         } else
 #endif
 #if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
-        if (step == xar::ck3_12004::character_skill_effects::kStep) {
+        if (xar::ck3_12004::character_skill_effects::IsStep(step)) {
           std::string response, failure;
           xar::ck3_12004::character_skill_effects::Handle(
               game, g_main_thread_query_mailbox_v1,

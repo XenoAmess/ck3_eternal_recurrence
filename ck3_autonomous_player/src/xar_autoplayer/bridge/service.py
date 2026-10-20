@@ -1266,6 +1266,12 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend cannot perform this typed inventory-close operation")
         return operation(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
 
+    def query_character_knight_effectiveness_v1(self, *, expected_revision: int, character_id: int) -> dict[str, object]:
+        operation = getattr(self.driver, "query_character_knight_effectiveness_private_v1", None)
+        if not callable(operation):
+            raise UnsupportedStepError("selected backend cannot observe actual actor-backed KnightEffectiveness")
+        return operation(expected_revision=expected_revision, character_id=character_id)
+
     def query_character_skill_effects_v1(self, *, expected_revision: int, character_id: int, skill: str = "diplomacy") -> dict[str, object]:
         query = getattr(self.driver, "query_character_skill_effects_private_v1", None)
         if not callable(query):

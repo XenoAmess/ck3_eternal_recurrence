@@ -2201,6 +2201,16 @@ def create_server(
             return service.query_player_inventory_window_close_post_v1(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
         _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_inventory_window_close_post_v1")
 
+    if getattr(driver, "allow_private_character_knight_effectiveness_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_character_knight_effectiveness_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            character_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+        ) -> dict[str, object]:
+            """Read one full-ID actor's actual backed native effectiveness and original text; no site attribution or shared default fallback."""
+            return service.query_character_knight_effectiveness_v1(expected_revision=expected_revision, character_id=character_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_character_knight_effectiveness_v1")
+
     if getattr(driver, "allow_private_character_skill_effects_query", False) is True:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
         def ck3_query_character_skill_effects_v1(
@@ -5517,6 +5527,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--private-player-artifact-personal-use-query", action="store_true",
                         help="enable exact4 owned personal-item read only; no equip action")
     result.add_argument("--private-character-skill-effects-query", action="store_true", help="enable finite exact4 native actor skills read only; no site attribution")
+    result.add_argument("--private-character-knight-effectiveness-query", action="store_true", help="enable one actual actor-backed native KnightEffectiveness query only, default off")
     result.add_argument("--private-player-inventory-window-open", action="store_true", help="enable source-bound normal HUD inventory open and exact independent post, default off")
     result.add_argument("--private-player-inventory-window-close", action="store_true", help="enable typed current-player inventory Close query/once/post independently, default off")
     result.add_argument("--private-player-ghw-permissions-query", action="store_true",
@@ -5897,6 +5908,7 @@ def main(argv: list[str] | None = None) -> int:
     driver.allow_private_player_artifact_personal_use_query = args.private_player_artifact_personal_use_query
     driver.allow_private_player_ghw_permissions_query = args.private_player_ghw_permissions_query
     driver.allow_private_character_skill_effects_query = args.private_character_skill_effects_query
+    driver.allow_private_character_knight_effectiveness_query = getattr(args, "private_character_knight_effectiveness_query", False)
     driver.allow_private_player_inventory_window_open = args.private_player_inventory_window_open
     driver.allow_private_player_inventory_window_close = args.private_player_inventory_window_close
     driver.allow_private_player_artifact_personal_use_actions = args.private_player_artifact_personal_use_actions

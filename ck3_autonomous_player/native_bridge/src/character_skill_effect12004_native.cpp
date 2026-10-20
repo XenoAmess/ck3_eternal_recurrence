@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/character_skill_effect12004_native.hpp"
+#include "xar_bridge/character_skill_effect12004_native.hpp"
 #include "xar_bridge/character_skill_effect12004_pins.hpp"
 #include <windows.h>
 #include <array>
@@ -137,3 +137,5 @@ Environment BindNative(NativeContext &c) noexcept {
   return e;
 }
 } // namespace xar::bridge::character_skill_effect12004
+
+#include "character_knight_effectiveness12004_native.inc"

@@ -67,6 +67,7 @@ CASE_READ_ONLY_MCP_TOOLS = frozenset({
     "ck3_query_player_artifact_personal_use_v1",
     "ck3_query_player_ghw_permissions_v1",
     "ck3_query_character_skill_effects_v1",
+    "ck3_query_character_knight_effectiveness_v1",
     "ck3_query_player_holy_site_relic_permissions_v1",
     "ck3_query_player_holy_site_relic_context_v1",
     "ck3_query_player_holy_site_v1",

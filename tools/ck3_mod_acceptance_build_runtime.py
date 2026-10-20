@@ -43,6 +43,7 @@ EXTRA_CAPABILITIES = {
     "ck3_query_player_artifact_personal_use_action_post_v1": ["XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1"],
     "ck3_query_player_ghw_permissions_v1": ["XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1"],
     "ck3_query_character_skill_effects_v1": ["XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1"],
+    "ck3_query_character_knight_effectiveness_v1": ["XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1"],
     "ck3_open_player_inventory_window_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
     "ck3_query_player_inventory_window_open_post_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
     "ck3_query_player_inventory_window_close_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
@@ -72,6 +73,7 @@ REGISTRATION_READ_ONLY_FLAGS = {
     "ck3_query_player_artifact_personal_use_v1": "allow_private_player_artifact_personal_use_query",
     "ck3_query_player_ghw_permissions_v1": "allow_private_player_ghw_permissions_query",
     "ck3_query_character_skill_effects_v1": "allow_private_character_skill_effects_query",
+    "ck3_query_character_knight_effectiveness_v1": "allow_private_character_knight_effectiveness_query",
 }
 REGISTRATION_ACTION_FLAGS = {
     "opt_in_player_pilgrimage_execution": "allow_private_player_pilgrimage_execution",

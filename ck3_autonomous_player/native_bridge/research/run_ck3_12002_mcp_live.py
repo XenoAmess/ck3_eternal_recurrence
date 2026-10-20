@@ -1093,6 +1093,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_player_artifact_personal_use_query = "ck3_query_player_artifact_personal_use_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_ghw_permissions_query = "ck3_query_player_ghw_permissions_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_character_skill_effects_query = "ck3_query_character_skill_effects_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_character_knight_effectiveness_query = "ck3_query_character_knight_effectiveness_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_permissions_query = "ck3_query_player_holy_site_relic_permissions_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_context_query = "ck3_query_player_holy_site_relic_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_query = "ck3_query_player_holy_site_v1" in driver.case_declared_read_only_mcp_tools
@@ -4569,6 +4570,7 @@ def parser() -> argparse.ArgumentParser:
         "ck3_query_player_artifact_personal_use_v1",
         "ck3_query_player_ghw_permissions_v1",
         "ck3_query_character_skill_effects_v1",
+        "ck3_query_character_knight_effectiveness_v1",
         "ck3_query_player_holy_site_relic_permissions_v1",
         "ck3_query_player_holy_site_relic_context_v1",
         "ck3_query_player_holy_site_v1",

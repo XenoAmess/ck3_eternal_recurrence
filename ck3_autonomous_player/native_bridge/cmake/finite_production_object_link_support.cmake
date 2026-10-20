@@ -1,0 +1,56 @@
+# Optional finite-only linkage to this cold build's actual production objects.
+# The public source-bound S receipt and File API checks remain authoritative.
+set(XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_FILE "" CACHE FILEPATH
+  "Pinned finite-only CMake include below the current build directory")
+set(XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_SHA256 "" CACHE STRING
+  "Exact SHA256 of the finite-only include; required when a file is selected")
+if(NOT "${XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_FILE}" STREQUAL "")
+  if(NOT BUILD_TESTING)
+    message(FATAL_ERROR "Finite production-object link support requires BUILD_TESTING")
+  endif()
+  if(NOT IS_ABSOLUTE "${XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_FILE}" OR
+      NOT EXISTS "${XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_FILE}")
+    message(FATAL_ERROR "Finite support must be one existing absolute file")
+  endif()
+  get_filename_component(_finite_support_file
+    "${XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_FILE}" REALPATH)
+  get_filename_component(_finite_build_root "${CMAKE_BINARY_DIR}" REALPATH)
+  file(RELATIVE_PATH _finite_support_relative "${_finite_build_root}" "${_finite_support_file}")
+  if(IS_ABSOLUTE "${_finite_support_relative}" OR
+      _finite_support_relative MATCHES "^\\.\\.(/|$)")
+    message(FATAL_ERROR "Finite support include must stay inside this build directory")
+  endif()
+  string(LENGTH "${XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_SHA256}" _finite_hash_length)
+  if(NOT _finite_hash_length EQUAL 64 OR
+      NOT XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_SHA256 MATCHES "^[0-9a-f]+$")
+    message(FATAL_ERROR "Finite support requires the exact lowercase SHA256")
+  endif()
+  file(SHA256 "${_finite_support_file}" _finite_actual_sha256)
+  if(NOT "${_finite_actual_sha256}" STREQUAL "${XAR_FINITE_PRODUCTION_OBJECT_LINK_SUPPORT_SHA256}")
+    message(FATAL_ERROR "Finite support include bytes changed")
+  endif()
+  set(_finite_production_targets xar_ck3_bridge xar_ck3_12002_runtime xar_bridge_protocol)
+  set(_finite_protected_properties SOURCES COMPILE_DEFINITIONS COMPILE_OPTIONS
+    INCLUDE_DIRECTORIES LINK_LIBRARIES LINK_OPTIONS)
+  foreach(_finite_target IN LISTS _finite_production_targets)
+    foreach(_finite_property IN LISTS _finite_protected_properties)
+      get_target_property(_finite_before_${_finite_target}_${_finite_property}
+        ${_finite_target} ${_finite_property})
+      if("${_finite_before_${_finite_target}_${_finite_property}}" MATCHES "-NOTFOUND$")
+        set(_finite_before_${_finite_target}_${_finite_property} "__XAR_UNSET_PROPERTY__")
+      endif()
+    endforeach()
+  endforeach()
+  include("${_finite_support_file}")
+  foreach(_finite_target IN LISTS _finite_production_targets)
+    foreach(_finite_property IN LISTS _finite_protected_properties)
+      get_target_property(_finite_after ${_finite_target} ${_finite_property})
+      if("${_finite_after}" MATCHES "-NOTFOUND$")
+        set(_finite_after "__XAR_UNSET_PROPERTY__")
+      endif()
+      if(NOT "${_finite_after}" STREQUAL "${_finite_before_${_finite_target}_${_finite_property}}")
+        message(FATAL_ERROR "Finite support changed a protected production target property")
+      endif()
+    endforeach()
+  endforeach()
+endif()
