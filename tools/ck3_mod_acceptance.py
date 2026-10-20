@@ -653,9 +653,83 @@ class Selection:
         finally:
             sys.path.remove(str(self.adapter_path.parent.parent))
 
+    def r06_post_allocate_inputs(self, inputs):
+        """Bind only the explicit R06 capacity hole from immutable allocation pins.
+
+        Allocation owns the run ID. Prepared inputs and host argv remain unchanged;
+        the reviewed context may add one separately pinned capacity scope afterward.
+        """
+        scope_ref=self.context.get('r06_post_allocate_scope')
+        r06=inputs.get('r06_refill_one_day')
+        if not self.context:
+            return inputs,None
+        if r06 is None:
+            if scope_ref is not None:raise ValueError('R06 post-allocate scope cannot override another case')
+            return inputs,None
+        if (self.product_key!='war-episode04-r10' or self.case['id']!='r10-common-preparation'
+                or inputs.get('r04_county_entry') is not None or not self.prepared_path):
+            raise ValueError('R06 post-allocate scope requires its exclusive prepared public case')
+        if r06.get('capacity_admission','absent') is not None:
+            raise ValueError('Prepare R06 with an explicit null capacity; never predict an allocated run')
+        def exact(ref,maximum=262144):
+            if (not isinstance(ref,dict) or set(ref)!={'path','bytes','sha256'}
+                    or type(ref['bytes']) is not int or not 0<ref['bytes']<=maximum):
+                raise ValueError('Exact bounded R06 post-allocate pin required')
+            path=Path(ref['path']).resolve()
+            if not path.is_file() or path.stat().st_size!=ref['bytes']:
+                raise ValueError('Exact bounded R06 post-allocate file changed')
+            check_pin(path,ref)
+            return read_json(path)
+        scope=exact(scope_ref)
+        fields={'schema','machine_id','run_id','run_dir','state_dir','prepared_case',
+                'runtime_manifest','allocated_context','frozen_argv','capacity_admission'}
+        if set(scope)!=fields or scope['schema']!='ck3-mod-acceptance-r06-post-allocate-scope-v1':
+            raise ValueError('Unsupported R06 post-allocate scope')
+        prepared_pin=pin(self.prepared_path);manifest_pin=pin(self.manifest_path)
+        if (scope['prepared_case']!=prepared_pin or self.context.get('prepared_case')!=prepared_pin
+                or scope['runtime_manifest']!=manifest_pin or self.prepared.get('runtime_manifest')!=manifest_pin):
+            raise ValueError('R06 scope crossed immutable prepared case/runtime')
+        if (scope['run_id']!=self.values['run_id'] or Path(scope['run_dir']).resolve()!=self.run_dir.resolve()
+                or Path(scope['state_dir']).resolve()!=self.state_dir.resolve()):
+            raise ValueError('R06 scope crossed actual allocation roots/run')
+        if (Path(scope['allocated_context']['path']).resolve()!=self.run_dir/'allocated-context.json'
+                or Path(scope['frozen_argv']['path']).resolve()!=self.run_dir/'frozen-argv.json'
+                or self.context.get('frozen_argv')!=scope['frozen_argv']):
+            raise ValueError('R06 scope requires the original allocated context/frozen argv')
+        allocated=exact(scope['allocated_context']);frozen=exact(scope['frozen_argv'],4*1024*1024)
+        if (allocated.get('schema')!=CONTEXT_SCHEMA or allocated.get('run_id')!=scope['run_id']
+                or Path(allocated['run_dir']).resolve()!=self.run_dir.resolve()
+                or allocated.get('prepared_case')!=prepared_pin
+                or allocated.get('case_inputs')!=self.prepared['case_inputs']
+                or self.context.get('case_inputs')!=allocated['case_inputs']
+                or frozen.get('run_id')!=scope['run_id'] or frozen.get('runtime_manifest')!=manifest_pin
+                or Path(frozen['state_dir']).resolve()!=self.state_dir.resolve() or frozen.get('argv')!=self.argv):
+            raise ValueError('R06 scope changed original allocation/prepared inputs or host argv')
+        machine=frozen.get('identity_allocation',{}).get('machine_id')
+        cap=exact(scope['capacity_admission'])
+        if (not machine or scope['machine_id']!=machine or self.manifest.get('machine_id')!=machine
+                or cap.get('machine_id')!=machine or cap.get('run_id')!=scope['run_id']
+                or cap.get('admitted') is not True or cap.get('budget_status')!='GREEN'
+                or Path(cap['scene_root']).resolve()!=Path(r06['scene_root']).resolve()
+                or Path(cap['component_roots']['profile']).resolve()!=self.state_dir.resolve()
+                or Path(cap['component_roots']['driver']).resolve()!=self.run_dir.resolve()
+                or cap['component_ceiling_bytes']['profile']!=r06['profile_limit_bytes']
+                or cap['component_ceiling_bytes']['driver']!=r06['driver_limit_bytes']):
+            raise ValueError('R06 capacity does not bind actual machine/run/roots/limits')
+        from datetime import datetime,timezone
+        expiry=datetime.fromisoformat(cap['quota_review_at_utc'].replace('Z','+00:00'))
+        requested=datetime.fromisoformat(r06['deadline_utc'].replace('Z','+00:00'))
+        hard=datetime.fromisoformat(cap['run_hard_deadline_utc'].replace('Z','+00:00'))
+        if expiry.tzinfo is None or requested.tzinfo is None or hard.tzinfo is None or datetime.now(timezone.utc)>=expiry or requested>hard:
+            raise ValueError('R06 post-allocate capacity expired or deadline exceeded')
+        derived=json.loads(json.dumps(inputs))
+        derived['r06_refill_one_day']['capacity_admission']=scope['capacity_admission']
+        return derived,scope_ref
+
     def adapter_context(self, output=None, inputs=None):
         case_inputs = inputs if inputs is not None else self.prepared.get('case_inputs',{}) if self.prepared else self.context.get('case_inputs',{})
-        return {'repo_root':str(self.locations['repo_root']),'run_dir':str(self.run_dir),
+        case_inputs,r06_scope=self.r06_post_allocate_inputs(case_inputs)
+        result={'repo_root':str(self.locations['repo_root']),'run_dir':str(self.run_dir),
             'state_dir':str(self.state_dir),'output':str(output or self.run_dir/'case-output'),
             'run_id':self.context.get('run_id'),'game_dir':str(self.locations['game_dir']),
             'product':self.product_key,'case':self.case['id'],'case_spec':self.case,
@@ -669,6 +743,8 @@ class Selection:
             'opt_in_player_inventory_window_close':self.opt_in_player_inventory_window_close,
             'opt_in_player_artifact_personal_use_actions':self.opt_in_player_artifact_personal_use_actions,
             'opt_in_player_pilgrimage_execution':self.opt_in_player_pilgrimage_execution}
+        if r06_scope is not None:result['r06_post_allocate_scope']=r06_scope
+        return result
 
     def prepare(self, inputs_path, output):
         if self.context:

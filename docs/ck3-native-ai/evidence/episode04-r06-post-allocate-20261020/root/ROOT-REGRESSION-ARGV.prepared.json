@@ -1,0 +1,4 @@
+{
+  "r06": ["D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe", "-B", "-X", "utf8", "D:/workspace/ck3_eternal_recurrence/tools/test_r06_refill_one_day.py"],
+  "adapters": ["D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe", "-B", "-X", "utf8", "D:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_adapters.py"]
+}

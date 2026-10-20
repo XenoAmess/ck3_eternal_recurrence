@@ -1,0 +1,6 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "r06": ["D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe", "-B", "-X", "utf8", "D:/workspace/ck3_eternal_recurrence/tools/test_r06_refill_one_day.py"],
+  "adapters": ["D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe", "-B", "-X", "utf8", "D:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_adapters.py"],
+  "correction": "Previous a01 wrapper waited for both children but failed to serialize its receipt because Root omitted machine_id. Preserve original logs; child OS return codes were not retained. This a02 obtains actual complete wait receipts."
+}

@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:31:57.073794+00:00",
+  "source": "Root observed exec wrapper traceback at 08:28:44 UTC and original preserved argv/logs; a02 ORIGINAL-WAIT receipts independently retain original Popen return codes",
+  "first_wrapper_status": "KeyError machine_id after child wait; child OS return codes not retained",
+  "first_failures_retained": true,
+  "correction": "Added missing machine_id in new argv document and ran a02 with complete original wait receipts; original a01 untouched",
+  "r06_a02_returncode": 0,
+  "adapters_a02_returncode": 0,
+  "new_game": false,
+  "new_qualification": false
+}

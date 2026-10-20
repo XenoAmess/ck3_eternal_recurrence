@@ -91,6 +91,10 @@ def validate_contract(context):
         need(seed.get('sha256') == a.expected_source_save_sha256 and
              seed.get('date_raw') == a.expected_start_date_raw and seed.get('player_id') == a.actor_id,
              'R06 selected normal save/date/actor differs')
+    if context.get('run_id') is None:
+        need(a.capacity_admission is None,'Prepare R06 with explicit null capacity; allocation supplies the real run ID')
+    else:
+        need(a.capacity_admission is not None,'Actual R06 requires its post-allocate capacity binding')
     return a
 
 
@@ -406,6 +410,8 @@ def run_case(context, client):
     binding = common.actual_binding(client.selection, Path(a.scene_root), retained, report, cap,
                                     machine_id=machine, source_head=head, a=a)
     binding['process_creation_filetime'] = retained_creation_filetime(client)
+    if context.get('r06_post_allocate_scope') is not None:
+        binding['post_allocate_scope']=context['r06_post_allocate_scope']
     binding['saved_campaign_source'] = common.bound_saved_campaign_source(report, client.frozen, client.selection.prepared, binding,
         sha=a.expected_source_save_sha256, date_raw=a.expected_start_date_raw, actor=a.actor_id, state_dir=client.selection.state_dir)
     deadline = datetime.fromtimestamp(min(datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00')).timestamp(), binding['hold']), timezone.utc)

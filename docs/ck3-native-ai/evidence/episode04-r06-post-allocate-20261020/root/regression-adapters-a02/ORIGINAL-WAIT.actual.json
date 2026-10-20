@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:30:13.516726+00:00",
+  "started_at_utc": "2026-10-20T08:30:09.315217+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_adapters.py"
+  ],
+  "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-REGRESSION-ARGV.prepared-a02.json",
+  "key": "adapters",
+  "pid": 25324,
+  "actual_original_popen_wait": true,
+  "returncode": 0
+}
