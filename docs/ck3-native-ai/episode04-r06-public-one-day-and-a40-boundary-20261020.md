@@ -1,5 +1,15 @@
 # E04 R06 公共单日入口与 A40 未完成资格（2026-10-20）
 
+## 08:31 UTC：真实分配后绑定容量
+
+`machine_id: desktop-3fevhd2-1c74096080`。用户继续后，实际接线发现循环：prepare冻结case inputs，而场次容量必须绑定allocate之后才生成的真实run ID。旧R0217是在分配前预填R0217、后来与真实分配相同；[原件审查](evidence/episode04-r06-post-allocate-20261020/integration/R0217-CAPACITY-ROUTE.actual.json)保留该事实，不能把它视为已有合法的后置覆盖入口，也不倒改旧业务观测。
+
+公共入口现在要求R06在prepare时显式 `capacity_admission: null`。真实allocate后创建新容量原件及单独 `r06_post_allocate_scope`，再从真实reviewed-context派生新context。scope绑定机器、实际run/roots、原prepared/runtime/allocated-context/frozen-argv与新容量pin；Selection仅派生R06容量叶子，原三个文件及case inputs不改。非R06、跨run/来源、原cap非null或到期均拒绝。默认/R04路径保留，不改allocator、host或native。
+
+[源码与实际离线验证](evidence/episode04-r06-post-allocate-20261020/SOURCE-INDEX.actual.json)：新4项测试含11种拒绝变体，正例实际经过隔离计数器的真实分配、公共preflight/run及同一CaseClient；屏幕、profile和业务边界使用替身，没有游戏。受改动影响的原18项R06专项、25项通用适配器回归均取得实际原Popen wait0。Root首轮记录脚本漏machine_id而在子进程wait后写回执失败，原日志保留；更正后的a02取得完整wait回执，不编造首轮child exit code。
+
+本轮新有限窗口止于10:30 UTC，仅native768MiB及shared128MiB先行登记；scene尚未分配。A41的原生登记/冷测与新R06实机结果仍须以后继实际回执为准，下方A40与08:00窗口为原始历史。
+
 `machine_id: desktop-3fevhd2-1c74096080`。记录时间2026-10-20 07:54 UTC；机器事实来源为下列精确原件索引。本轮延续[交接](../handover/2026-10-20-war-episode04-vacation-handover.md)与[R0217实际结果](episode04-r0217-direct-debits-and-normal-close-20261020.md)。
 
 研究仍为10/14（71.4%），业务7/11（63.6%），正式动态0/11，ABC0/3，B库存点0/2。本轮新增代码和失败诊断均不增加业务或影片验收信用。

@@ -97,6 +97,8 @@ jobs:
         run: python -B -X utf8 tools/test_r04_county_entry.py
       - name: Test public single-day refill admission and observer launch guards
         run: python -B -X utf8 tools/test_r06_refill_one_day.py
+      - name: Test public post-allocation refill capacity scope
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_r06_scope.py
       - name: Test isolated native army route producer without CK3
         run: python -X utf8 tools/check_native_army_routes_ci.py --build-dir "%RUNNER_TEMP%\native-army-route-ci"
       - name: Test keyed query completion diagnostics without CK3

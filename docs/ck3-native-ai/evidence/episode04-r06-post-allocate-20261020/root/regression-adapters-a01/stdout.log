@@ -1,0 +1,17 @@
+{
+  "status": "ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN",
+  "live": "C:\\Users\\1\\AppData\\Local\\Temp\\tmp2tpfsq6w\\live\\synthetic-R0001",
+  "task": "test-a999",
+  "sequence": 10,
+  "keeper_ready": {
+    "sequence": 11
+  },
+  "keeper_pid": 1234,
+  "keeper_root": "C:\\Users\\1\\AppData\\Local\\Temp\\tmp2tpfsq6w\\keeper-output",
+  "register_to_keeper_ready_seconds": 0.02437710016965866,
+  "context": "C:\\Users\\1\\AppData\\Local\\Temp\\tmp2tpfsq6w\\live\\synthetic-R0001\\ready-context.json",
+  "prepared_case": "C:\\Users\\1\\AppData\\Local\\Temp\\tmp2tpfsq6w\\prepared.json",
+  "actual_host_argv": "C:\\Users\\1\\AppData\\Local\\Temp\\tmp2tpfsq6w\\live\\synthetic-R0001\\frozen-argv.json",
+  "game_started": false,
+  "business_pass": false
+}

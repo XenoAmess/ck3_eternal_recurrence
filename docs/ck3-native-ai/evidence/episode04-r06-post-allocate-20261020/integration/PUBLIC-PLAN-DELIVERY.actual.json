@@ -1,0 +1,163 @@
+{
+  "schema": "xar.e04.r06.public_plan.delivery.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:29:35.123387+00:00",
+  "source_HEAD": "1ec22203947d56397e30275f31dd4634cf87529a",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "observations_source": [
+    "tools/ck3_live_run_id.py machine",
+    "Exact public source diff and tools/test_ck3_mod_acceptance_r06_scope.py lines196-232,234-267,269-300",
+    "Original R0217 pins in R0217-CAPACITY-ROUTE.actual.json",
+    "Existing Root root_os_admission.py and actual current typed UI contracts",
+    "Exact gh run view 39391052819"
+  ],
+  "integration_review": {
+    "result": "CONSUMABLE_BY_CURRENT_PUBLIC_ROUTE_NO_DEFINITE_TRIGGERABLE_INTEGRATION_BUG_FOUND",
+    "test_execution_by_this_review": false,
+    "source_author_receipt": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/r06-plan/PUBLIC-SCOPE-SOURCE-ONLY.actual.json",
+      "bytes": 3666,
+      "sha256": "44234ac519305936c2b479f4b30420b5013db0dbb6dff9e1cfa003d8e543a29f"
+    },
+    "source_author_reported_tests": {
+      "test_methods": 4,
+      "negative_scope_variants": 11,
+      "exit_code": 0,
+      "live_game_qualification": false
+    },
+    "immutable_originals": [
+      "prepared-case.json",
+      "allocated-context.json",
+      "frozen-argv.json",
+      "reviewed_context.case_inputs"
+    ],
+    "derived_only": "Top-level r06_post_allocate_scope pin; Selection derives only R06 capacity_admission for adapter context",
+    "binding_sequence": [
+      "New Root scope adopted and A41 actual delivery; freeze committed runtime",
+      "Prepare with explicit null R06 capacity; plan",
+      "Allocate exactly once; use actual READY run ID/Driver",
+      "New actual run-bound capacity and independently genuine Steam reviewed-context",
+      "Write NEW scope and NEW derived reviewed-context",
+      "preflight/run with --run-context pointing to derived file; original host argv/prepared stay immutable"
+    ],
+    "pending_actual_bindings": [
+      "Root approved new capacity/deadline/ceilings and outer budgets",
+      "Actual A41 Q/build/SYSTEM/cold/observer/carrier pins",
+      "Final committed Python source and new shared runtime",
+      "Actual allocation run_id/Driver roots",
+      "New actual Steam recovery/challenge/offline review/nonce",
+      "Actual Root 3+1 thread census, N and positive reserve",
+      "Canonical R06 TakeSpec and actual one camera Start"
+    ],
+    "ui_phases": [
+      "At r06-before-observer-awaiting inspect actual current tool metadata and capabilities; at most one select plus one independent army-window query; hidden/unavailable/unknown retained, continue map-context",
+      "Complete presentation/original-image review before Root 3-sample census and fresh fourth-sample positive-reserve admission; worker 30-second window not consumed"
+    ],
+    "no_old_ready_or_Q_or_Steam_image_reuse": true,
+    "bounded_read_query_note": "One rg read returned exit2 because command parsing split a spaced pattern; source/test content was returned and reviewed. No tests were run by that query."
+  },
+  "official_CI": {
+    "argv": [
+      "gh",
+      "run",
+      "view",
+      "39391052819",
+      "--json",
+      "databaseId,name,workflowName,headSha,status,conclusion,url,updatedAt"
+    ],
+    "returncode": 0,
+    "proxy_removed_for_query": false,
+    "global_network_settings_changed": false,
+    "result": {
+      "conclusion": "success",
+      "databaseId": 39391052819,
+      "headSha": "1ec22203947d56397e30275f31dd4634cf87529a",
+      "name": "Official Runner CI",
+      "status": "completed",
+      "updatedAt": "2026-10-20T08:26:08Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39391052819",
+      "workflowName": "Official Runner CI"
+    },
+    "scope": "Exact 1ec source only, not future pending scope commit"
+  },
+  "pins": [
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/README.md",
+      "bytes": 10655,
+      "sha256": "90b0f2c7757ef1d1b0f41a4c3133131e8de9dc54fc7d03474a953b0c27c89c46"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/CASE-INPUTS.binding-template.json",
+      "bytes": 4338,
+      "sha256": "db9abd00da7c2e50c203420187c8f0f88add0515e97c3f26a0f24830cfb73ea2"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/PUBLIC-ARGV.binding-template.json",
+      "bytes": 9274,
+      "sha256": "1ca4e4c9b6e6b1ade0323723443e0b5397129244b4f16528c49c5277b97cd0cb"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/FIELD-SOURCES.actual.json",
+      "bytes": 5918,
+      "sha256": "c5172fbe03c49741494baf044c95d9bb59fcc5b838d6d85a8036780e279cd1f6"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/bind_post_allocate_scope.py",
+      "bytes": 4725,
+      "sha256": "18fbca127e2aafbd72545e46f15557a78f8b9c9ded55f069859b16791805fd24"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/UI-CAPABILITIES-ONLY.plan.template.json",
+      "bytes": 142,
+      "sha256": "5b8ff27d4d09f2538dccd3074ce26103e9a0d50e9f622003f72a3cd872182d91"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/public-plan/OPTIONAL-ARMY-PANE.plan.template.json",
+      "bytes": 425,
+      "sha256": "e2a2346290a4ec23682f72b0d48ffcf17786e7dec690beab4d7a51e14adab364"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/root_os_admission.py",
+      "bytes": 5254,
+      "sha256": "b071c3cb2b6ca8b890d3cd1a0749c02be4dace386c1c350aecd2f869ba224731"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance.py",
+      "bytes": 61674,
+      "sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "bytes": 43609,
+      "sha256": "cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 19716,
+      "sha256": "79046d91ca51c66028bd28465cfab3be87be09da5fc0d3141d4e53679192f4fc"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/.github/workflows/static-ci.yml",
+      "bytes": 64954,
+      "sha256": "c0ae5d07d4adb8982e76ceaec1ff236458ab8dcd2c71b89e4f5028dd8efe1257"
+    }
+  ],
+  "writes": {
+    "repository_files_modified": 0,
+    "external_metadata_only": true,
+    "profile_or_save_copy": false,
+    "run_allocation": false,
+    "SDK_calls": 0,
+    "game_launches": 0,
+    "camera_starts": 0,
+    "screen_or_input_calls": 0
+  },
+  "taskbus": {
+    "task": "e04-r06-resume-a02-public-plan-20261020",
+    "registered_polled_listed": true,
+    "final_status": "done",
+    "actual_status_observed_at_utc": "2026-10-20T08:30:22.672637+00:00",
+    "actual_sequence": 7315,
+    "resources": []
+  }
+}

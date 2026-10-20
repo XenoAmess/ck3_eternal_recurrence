@@ -1,0 +1,117 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:31:57.073794+00:00",
+  "source_HEAD": "1ec22203947d56397e30275f31dd4634cf87529a",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "copy_method": "exact original small file bytes",
+  "copies": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan\\PUBLIC-SCOPE-SOURCE-ONLY.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/source/PUBLIC-SCOPE-SOURCE-ONLY.actual.json",
+      "bytes": 3666,
+      "sha256": "44234ac519305936c2b479f4b30420b5013db0dbb6dff9e1cfa003d8e543a29f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan\\PUBLIC-SCOPE-FOCUSED.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/source/PUBLIC-SCOPE-FOCUSED.log",
+      "bytes": 107,
+      "sha256": "195c664fa25f31e63985ee5bbf9aeb65634d3cba7a76cea2fa82d004042178c4"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan\\PLAN-DELIVERY.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/source/PLAN-DELIVERY.actual.json",
+      "bytes": 6182,
+      "sha256": "50c4fa226c45c84923a93f02096621d5c2c207b1ebb26e95194320970d3b9a2b"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan\\R06-SAME-CLIENT-ORDER.md",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/source/R06-SAME-CLIENT-ORDER.md",
+      "bytes": 5823,
+      "sha256": "5a2397e6eca1eddb3e25183d38f3e174ff72878e29f1eb2ef628b2cfd368419d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\R0217-CAPACITY-ROUTE.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/integration/R0217-CAPACITY-ROUTE.actual.json",
+      "bytes": 16648,
+      "sha256": "d7411140426b3a95acc9c4a94656bd51f3736b8f46538817f6137bb28938fd68"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\PUBLIC-PLAN-DELIVERY.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/integration/PUBLIC-PLAN-DELIVERY.actual.json",
+      "bytes": 7024,
+      "sha256": "ca64fb3863167e61e6b4adad494903722a1e18c036d165f136416e69ce4d2d86"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-REGRESSION-ARGV.prepared.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/ROOT-REGRESSION-ARGV.prepared.json",
+      "bytes": 363,
+      "sha256": "a6200f2cff030f7c2b7fe0296bf748fb8535d7127de6db8dcdcaec92524eda21"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-REGRESSION-ARGV.prepared-a02.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/ROOT-REGRESSION-ARGV.prepared-a02.json",
+      "bytes": 656,
+      "sha256": "c058ea0811d1fb4081726d3ce8113ec97d43906faa97803a8520fe226054c59f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-r06-a01\\stderr.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-r06-a01/stderr.log",
+      "bytes": 122,
+      "sha256": "a1dc86c6f3c8c96769afe773cb7fe27dcd263352c3687e0128bfc5b5ad077afa"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-r06-a01\\stdout.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-r06-a01/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-adapters-a01\\stderr.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-adapters-a01/stderr.log",
+      "bytes": 129,
+      "sha256": "83e6190d533f99484a110624e908feaf6b93bec9a05c6bb7be963ed136e19baa"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-adapters-a01\\stdout.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-adapters-a01/stdout.log",
+      "bytes": 763,
+      "sha256": "a8d5bb1b879a3cfc2c8aeb4efc2f9aca076fb45213629d9959add1c2b91d4ed3"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-r06-a02\\ORIGINAL-WAIT.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-r06-a02/ORIGINAL-WAIT.actual.json",
+      "bytes": 567,
+      "sha256": "d7b4d4b9c448caee17986254c5c4f6def4321d987fa3ecaa159fe789f60bf20d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-r06-a02\\stderr.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-r06-a02/stderr.log",
+      "bytes": 122,
+      "sha256": "53e473195e6fcae7f4985dc7afea752790c6b5107527d8b5af8126731c2bd67d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-r06-a02\\stdout.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-r06-a02/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-adapters-a02\\ORIGINAL-WAIT.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-adapters-a02/ORIGINAL-WAIT.actual.json",
+      "bytes": 581,
+      "sha256": "cbeb7554c72739f855bfd6b4409d9ba703de96427a118b8ba771ca0c6c08e233"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-adapters-a02\\stderr.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-adapters-a02/stderr.log",
+      "bytes": 129,
+      "sha256": "c4ab3bd2d95dbdbfe1570b30fd263da36ceb0d5af6460d821fd76a6b8277f265"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\regression-adapters-a02\\stdout.log",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-post-allocate-20261020/root/regression-adapters-a02/stdout.log",
+      "bytes": 764,
+      "sha256": "80fa271747ee951e0ac87fc2d0004029fb00249f85a4c93a38cdce8977457c71"
+    }
+  ]
+}

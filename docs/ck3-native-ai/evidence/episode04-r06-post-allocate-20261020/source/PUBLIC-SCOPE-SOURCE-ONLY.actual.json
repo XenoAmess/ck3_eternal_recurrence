@@ -1,0 +1,88 @@
+{
+  "schema": "xar.e04.r06.post_allocate_scope.source_only.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:27:45.139189+00:00",
+  "source_HEAD": "1ec22203947d56397e30275f31dd4634cf87529a",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "committed": false,
+  "tracked_writes_sealed_after_this_receipt": true,
+  "source_files": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61674,
+      "sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r06_refill_one_day.py",
+      "bytes": 43609,
+      "sha256": "cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 19716,
+      "sha256": "79046d91ca51c66028bd28465cfab3be87be09da5fc0d3141d4e53679192f4fc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 64954,
+      "sha256": "c0ae5d07d4adb8982e76ceaec1ff236458ab8dcd2c71b89e4f5028dd8efe1257"
+    }
+  ],
+  "focused_tests": {
+    "command": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/test_ck3_mod_acceptance_r06_scope.py",
+      "--scratch-root",
+      "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan"
+    ],
+    "exit_code": 0,
+    "log": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan\\PUBLIC-SCOPE-FOCUSED.log",
+      "bytes": 107,
+      "sha256": "195c664fa25f31e63985ee5bbf9aeb65634d3cba7a76cea2fa82d004042178c4"
+    },
+    "test_methods": 4,
+    "negative_scope_variants": 11,
+    "public_route": "native_dispatch prepare -> allocate_and_keep with real isolated allocator counter -> post-scope preflight -> run -> R10 -> same CaseClient",
+    "real_allocator_namespace": "temporary scope-test-machine/vanilla only; no target-machine R sequence consumed",
+    "substituted": [
+      "machine binding/predecessor screen closure",
+      "bus subprocess and keeper process boundary",
+      "profile materialization",
+      "business observations"
+    ],
+    "immutable_original_bytes_verified": [
+      "prepared-case.json",
+      "allocated-context.json",
+      "frozen-argv.json"
+    ],
+    "default_and_R04_routes_preserved": true
+  },
+  "diff_check": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "review_diff": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r06-plan\\PUBLIC-SCOPE-REVIEW.diff",
+    "bytes": 9787,
+    "sha256": "0d9f00e0db452cd1454c852894e2d3729613ae403a7fa762a842ca5dd3eff0fb"
+  },
+  "prior_R0217_route_evidence": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\R0217-CAPACITY-ROUTE.actual.json",
+    "bytes": 16648,
+    "sha256": "d7411140426b3a95acc9c4a94656bd51f3736b8f46538817f6137bb28938fd68"
+  },
+  "prior_R0217_correction": "Original capacity was filled with R0217 before actual allocation; old success is retained, but does not establish a legal post-allocate override. This new explicit scope is required for R06 and leaves old originals unchanged.",
+  "old_18_plus_1_tests_repeated_here": false,
+  "SDK_calls": 0,
+  "game_launches": 0,
+  "screen_calls": 0,
+  "probe_launches": 0,
+  "actual_ADD_observed": false,
+  "live_qualification_granted": false,
+  "own_metadata_ceiling_bytes": 262144,
+  "metadata_bytes": 19566
+}
