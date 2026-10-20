@@ -1,0 +1,1519 @@
+{
+  "schema": "xar.e04.machine-bound-vacation-handover.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T01:57:10.442199+00:00",
+  "identity_probe": "tools/ck3_live_run_id.py machine -> desktop-3fevhd2-1c74096080",
+  "local_runtime_source": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "local_runtime_native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+  "observed_origin_master": "befd887f06b562da057024ff1acaa8b6cb898217",
+  "origin_native_tree": "797ebc88524ed0012969eb358ffb489c0bc89434",
+  "progress": {
+    "research": [
+      10,
+      14
+    ],
+    "business": [
+      7,
+      11
+    ],
+    "formal_dynamic": [
+      0,
+      11
+    ],
+    "ABC": [
+      0,
+      3
+    ],
+    "B_positive_sites": [
+      0,
+      2
+    ]
+  },
+  "current_relevant_processes": [],
+  "steam_current_status": "NOT_OBSERVED_THIS_HANDOVER",
+  "storage": {
+    "policy_version": "1.0.0",
+    "old_20261019_0700Z_heavy_scope": "EXPIRED_NOT_RENEWED",
+    "new_work": "metadata_only",
+    "volumes": {
+      "C:/": {
+        "total": 511133945856,
+        "used": 426569596928,
+        "free": 84564348928
+      },
+      "D:/": {
+        "total": 500090007552,
+        "used": 478521860096,
+        "free": 21568147456
+      }
+    },
+    "old_reservation_ledger": "retained expired pending reconciliation; no unused credit granted; no payload deleted"
+  },
+  "binding_warning": "embedded decoded_json retains values; source_sha256 pins original source bytes, not reserialized JSON",
+  "leaves": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-01.json",
+      "exists": true,
+      "bytes": 1760,
+      "mtime_utc": "2026-10-19T06:12:51.318714+00:00",
+      "source_sha256": "56c9a60a7aa0bdbcf6fa0382cacd36abc171e68cd005394cb809b4d89025a4fc",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "day": 1,
+        "date_raw": 53147400,
+        "province": 1506,
+        "route": [
+          1513
+        ],
+        "move_target_province_id": 1513,
+        "paused": true,
+        "in_combat": false,
+        "retreating": false,
+        "arrived": false,
+        "arrival_independent_full_verified": false,
+        "status": "EXACT_DAY_SNAPSHOT_ONLY",
+        "clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 1,
+            "starting_date_raw": 53147376,
+            "target_date_raw": 53147400,
+            "last_observed_date_raw": 53147376,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 1,
+            "starting_date_raw": 53147376,
+            "target_date_raw": 53147400,
+            "last_observed_date_raw": 53147400,
+            "trigger_date_raw": 53147400,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "exact_day_verified": true,
+          "modal_actions": 0,
+          "Arm_reissued": false
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-02.json",
+      "exists": true,
+      "bytes": 1760,
+      "mtime_utc": "2026-10-19T06:13:09.787114+00:00",
+      "source_sha256": "99cc5a95dc299f083dee1821d39a82d5f8d7b0fb6b825cd3a5430226571eb6c8",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "day": 2,
+        "date_raw": 53147424,
+        "province": 1506,
+        "route": [
+          1513
+        ],
+        "move_target_province_id": 1513,
+        "paused": true,
+        "in_combat": false,
+        "retreating": false,
+        "arrived": false,
+        "arrival_independent_full_verified": false,
+        "status": "EXACT_DAY_SNAPSHOT_ONLY",
+        "clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 2,
+            "starting_date_raw": 53147400,
+            "target_date_raw": 53147424,
+            "last_observed_date_raw": 53147400,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 2,
+            "starting_date_raw": 53147400,
+            "target_date_raw": 53147424,
+            "last_observed_date_raw": 53147424,
+            "trigger_date_raw": 53147424,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "exact_day_verified": true,
+          "modal_actions": 0,
+          "Arm_reissued": false
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-03.json",
+      "exists": true,
+      "bytes": 1760,
+      "mtime_utc": "2026-10-19T06:13:33.782691+00:00",
+      "source_sha256": "34d5f21f7cb7fff8b1a2585915e162a5cb3e51bb7ca9d1945efd87a53a55aaa2",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "day": 3,
+        "date_raw": 53147448,
+        "province": 1506,
+        "route": [
+          1513
+        ],
+        "move_target_province_id": 1513,
+        "paused": true,
+        "in_combat": false,
+        "retreating": false,
+        "arrived": false,
+        "arrival_independent_full_verified": false,
+        "status": "EXACT_DAY_SNAPSHOT_ONLY",
+        "clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 3,
+            "starting_date_raw": 53147424,
+            "target_date_raw": 53147448,
+            "last_observed_date_raw": 53147424,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 3,
+            "starting_date_raw": 53147424,
+            "target_date_raw": 53147448,
+            "last_observed_date_raw": 53147448,
+            "trigger_date_raw": 53147448,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "exact_day_verified": true,
+          "modal_actions": 0,
+          "Arm_reissued": false
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-04.json",
+      "exists": true,
+      "bytes": 1760,
+      "mtime_utc": "2026-10-19T06:14:02.827237+00:00",
+      "source_sha256": "44beeecbb55a38425e42104fa857c21c7d71ff1c0976355ed2525bb9946a8556",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "day": 4,
+        "date_raw": 53147472,
+        "province": 1506,
+        "route": [
+          1513
+        ],
+        "move_target_province_id": 1513,
+        "paused": true,
+        "in_combat": false,
+        "retreating": false,
+        "arrived": false,
+        "arrival_independent_full_verified": false,
+        "status": "EXACT_DAY_SNAPSHOT_ONLY",
+        "clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 4,
+            "starting_date_raw": 53147448,
+            "target_date_raw": 53147472,
+            "last_observed_date_raw": 53147448,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 4,
+            "starting_date_raw": 53147448,
+            "target_date_raw": 53147472,
+            "last_observed_date_raw": 53147472,
+            "trigger_date_raw": 53147472,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "exact_day_verified": true,
+          "modal_actions": 0,
+          "Arm_reissued": false
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-05.json",
+      "exists": true,
+      "bytes": 1760,
+      "mtime_utc": "2026-10-19T06:14:24.003520+00:00",
+      "source_sha256": "2b1fbf3e57f097e15b7b7bb63227543f501c190357e37bfa92968b00b77a4579",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "day": 5,
+        "date_raw": 53147496,
+        "province": 1506,
+        "route": [
+          1513
+        ],
+        "move_target_province_id": 1513,
+        "paused": true,
+        "in_combat": false,
+        "retreating": false,
+        "arrived": false,
+        "arrival_independent_full_verified": false,
+        "status": "EXACT_DAY_SNAPSHOT_ONLY",
+        "clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 5,
+            "starting_date_raw": 53147472,
+            "target_date_raw": 53147496,
+            "last_observed_date_raw": 53147472,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 5,
+            "starting_date_raw": 53147472,
+            "target_date_raw": 53147496,
+            "last_observed_date_raw": 53147496,
+            "trigger_date_raw": 53147496,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "exact_day_verified": true,
+          "modal_actions": 0,
+          "Arm_reissued": false
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-STATUS-DAY-06.json",
+      "exists": true,
+      "bytes": 1760,
+      "mtime_utc": "2026-10-19T06:14:55.406783+00:00",
+      "source_sha256": "3d5638a644ccb69695692df57c1e835ae4003ef6e19aaadf553567b5a342508f",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "day": 6,
+        "date_raw": 53147520,
+        "province": 1506,
+        "route": [
+          1513
+        ],
+        "move_target_province_id": 1513,
+        "paused": true,
+        "in_combat": false,
+        "retreating": false,
+        "arrived": false,
+        "arrival_independent_full_verified": false,
+        "status": "EXACT_DAY_SNAPSHOT_ONLY",
+        "clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 6,
+            "starting_date_raw": 53147496,
+            "target_date_raw": 53147520,
+            "last_observed_date_raw": 53147496,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 6,
+            "starting_date_raw": 53147496,
+            "target_date_raw": 53147520,
+            "last_observed_date_raw": 53147520,
+            "trigger_date_raw": 53147520,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "exact_day_verified": true,
+          "modal_actions": 0,
+          "Arm_reissued": false
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-BAYEUX-TERMINAL.json",
+      "exists": true,
+      "bytes": 467,
+      "mtime_utc": "2026-10-19T06:31:13.081850+00:00",
+      "source_sha256": "e3f725d1d6eef4173d2b29c464fc50f0e09b1ad141cb4da4603e42052f016721",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+        "arrived": false,
+        "actual_days": 0,
+        "Move_attempts": 1,
+        "OFFclear": true,
+        "Save": true,
+        "errors": [],
+        "full_result_path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-BAYEUX-RESULT.json",
+        "finaldate": 53147520,
+        "finalprovince": 1506
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-V2-QUALIFICATION.json",
+      "exists": true,
+      "bytes": 1650,
+      "mtime_utc": "2026-10-19T06:31:13.117863+00:00",
+      "source_sha256": "72205df3063366180cb632a8ebce241b35b0f06b760369a47ac3e0b15e303022",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "schema": "xar.r219.direct-v2-live-qualification.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-19T06:31:13.103630+00:00",
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0215",
+        "retained": {
+          "pid": 3664,
+          "create_time": 1792389420.5631664,
+          "retained_synchronize_query_handle_acquired": true
+        },
+        "handoff": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r219-public-prepare-a01\\bound-a01\\PUBLIC-HANDOFF.actual.json",
+          "bytes": 9722,
+          "sha256": "45739df4314eb6b377590ec0f6e085ede65a3e6f39a6a12d4013e6385ec93486"
+        },
+        "native_qualification": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+          "bytes": 20576,
+          "sha256": "d2cd74ebc706d78d052016a286a2908f7d41832e20fcd6c864dd3f93acebd194"
+        },
+        "actor_exit": 2,
+        "actual_days": 0,
+        "actual_arrival": false,
+        "finaldate": 53147520,
+        "finalprovince": 1506,
+        "OFFclear": true,
+        "Save": true,
+        "cleanup_errors": [],
+        "window_evidence": null,
+        "window_positive_sequences": [],
+        "qualified_positive_individual_calls": 0,
+        "individual_direct_owner_observed": false,
+        "global_window_continuous": null,
+        "owner_status": null,
+        "retained_individual_debit_sum": null,
+        "county_total_debit": null,
+        "whole_Army_NET_cause": false,
+        "returned_phase_parent_claimed": false,
+        "strict_v1_reclassified": false,
+        "R04_entire_card_closed": false,
+        "camera_phase": "day7_only",
+        "Move_unfilmed": true,
+        "preparatory_days_unfilmed": 6,
+        "status": "NO_PLANNED_ARRIVAL_DIRECT_V2_POSITIVE_QUALIFIED"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\before-action-camera-awaiting.json",
+      "exists": true,
+      "bytes": 1280,
+      "mtime_utc": "2026-10-19T06:15:45.440610+00:00",
+      "source_sha256": "c8659498b025e2c9fd2f17fbb74a53fc1b565930f4ee1365213b1b54f8ce9fd0",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0215",
+        "bridge_pid": 3664,
+        "date_raw": 53147520,
+        "observed_at_utc": "2026-10-19T06:15:45.427561+00:00",
+        "signal_path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\before-action-camera-started.json",
+        "coordination_only": true,
+        "action_kind": "exact-day",
+        "army_id": 0,
+        "target_province_id": 1513,
+        "pre_action_baseline": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-ENTRY-WINDOW-BASELINE.json",
+          "bytes": 60768,
+          "sha256": "9bebdb9604eccd944bbb1441343fd0a74a4c58bfd1b7b584480eb1e5b378869e"
+        },
+        "terminal_result_path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-BAYEUX-TERMINAL.json",
+        "maximum_wait_seconds": 900,
+        "Move_already_submitted_once": true,
+        "clock_action_submitted": false,
+        "preparatory_days_unfilmed": 6,
+        "planned_observation_day": 7,
+        "actual_arrival_observed": false
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\case-output\\normal-close-result.json",
+      "exists": true,
+      "bytes": 710,
+      "mtime_utc": "2026-10-19T08:03:33.262735+00:00",
+      "source_sha256": "dec9588cd74764f1d27a5890c79b0196410954f21349fc245e8127fd782783b1",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "root_normal_gui_review": null,
+        "operator_normal_gui_review": null,
+        "normal_quit_automation": null,
+        "normal_quit_automation_failure_preserved": null,
+        "retained_handle": {
+          "signaled": false,
+          "exit_code": null,
+          "actual_retained_os0": false,
+          "pid": 3664,
+          "create_time": 1792389420.5631664,
+          "retained_synchronize_query_handle_acquired": true
+        },
+        "native_zero_proof": null,
+        "finish_hold_rows": null,
+        "host_finished_at": null,
+        "managed_thread_finished": false,
+        "cleanup_ok": null,
+        "host_error": null,
+        "failure_shutdown_proof": null,
+        "failure_preserved": false,
+        "failure_lifecycle_completed": false,
+        "business_pass": false,
+        "normal_close_qualified": false
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\host-original-process-exit.json",
+      "exists": true,
+      "bytes": 244,
+      "mtime_utc": "2026-10-19T08:03:37.620434+00:00",
+      "source_sha256": "9126cc481f4fc3c6e13856d190efa356e7b776909fc88eae810e69f701dfb5a0",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "at_utc": "2026-10-19T08:03:37.600595+00:00",
+        "pid": 3180,
+        "returncode": 0,
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0215",
+        "actual_original_popen_wait": true,
+        "normal_ck3_exit_inferred": false,
+        "business_pass": false
+      }
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\COUNTY-ACTOR-a02-ORIGINAL-WAIT.actual-a01.json",
+      "exists": true,
+      "bytes": 582,
+      "mtime_utc": "2026-10-19T06:31:13.418491+00:00",
+      "source_sha256": "ce91c8430d98bd550f4c38049f28c1531b75d372533f1f21eaa2ebf2ef98a805",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "pid": 26700,
+        "exit_code": 2,
+        "at_utc": "2026-10-19T06:31:13.418396+00:00",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\ck3-e04-resume-20261015-a01\\r219-split-binding-a03\\root_county_v2_a03.py",
+          "--handoff",
+          "C:/ck3-e04-resume-20261015-a01/r219-public-prepare-a01/bound-a01/PUBLIC-HANDOFF.actual.json",
+          "--handoff-sha256",
+          "45739df4314eb6b377590ec0f6e085ede65a3e6f39a6a12d4013e6385ec93486",
+          "--prefix",
+          "r219-county-v2-a02",
+          "--output-name",
+          "county-actor-a02",
+          "--deadline",
+          "2026-10-19T07:00:00Z",
+          "--execute"
+        ]
+      }
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\PUBLIC-ORIGINAL-WAIT.actual-a01.json",
+      "exists": true,
+      "bytes": 820,
+      "mtime_utc": "2026-10-19T08:03:33.575605+00:00",
+      "source_sha256": "5f16fa59d731f5475bf5d8d8e3562a5ad7325450bb4f630c16d872b6be5cd769",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "pid": 36944,
+        "actual_exit_code": 2,
+        "at_utc": "2026-10-19T08:03:33.574607+00:00",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "run",
+          "--runtime",
+          "C:\\ck3-e04-resume-20261015-a01\\r219-public-prepare-a01\\runtime-a01\\runtime.local.json",
+          "--products",
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+          "--product",
+          "war-episode04-r10",
+          "--case",
+          "r10-common-preparation",
+          "--prepared-case",
+          "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\prepared-a01\\prepared-case.json",
+          "--run-context",
+          "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r219-county-direct-owner-v2-a01\\R219-REVIEWED-CONTEXT.actual-a01.json"
+        ]
+      }
+    },
+    {
+      "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-common-12004-a220.json",
+      "exists": true,
+      "bytes": 602,
+      "mtime_utc": "2026-10-20T01:50:29.904535+00:00",
+      "source_sha256": "b65d71496dd308f126eb9640093acfc2fe85ddc02d9573c088dfd12a765742ea",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "git": {
+          "branch": "research/e04-next-runtime-3e7d337",
+          "dirty_entries": 0,
+          "head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9"
+        },
+        "last_sequence": 7127,
+        "next_step": "Fresh offline/nonce review then one shared host launch",
+        "pid": 15940,
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "waiting",
+        "summary": "R219_no_live_game_recorder_keeper_observed_stale_lease_retired_business_unresolved_RED",
+        "task_id": "e04-common-12004-a220",
+        "updated_at_utc": "2026-10-20T01:50:29.865686+00:00"
+      }
+    },
+    {
+      "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-per-volume-upper-bound-capacity-a01.json",
+      "exists": true,
+      "bytes": 557,
+      "mtime_utc": "2026-10-20T01:50:31.123039+00:00",
+      "source_sha256": "e8ad5ddf8f4dc9a0ae9da2fff14b59cb8b88b9558ccd03c266e250509d1d9468",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "git": {
+          "branch": "research/e04-next-runtime-3e7d337",
+          "dirty_entries": 0,
+          "head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9"
+        },
+        "last_sequence": 7128,
+        "next_step": "",
+        "pid": 21196,
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "done",
+        "summary": "Capacity_owner_closed_expired_20261019_scope_no_new_heavy_write_or_unused_credit",
+        "task_id": "e04-per-volume-upper-bound-capacity-a01",
+        "updated_at_utc": "2026-10-20T01:50:31.075594+00:00"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+      "exists": true,
+      "bytes": 20576,
+      "mtime_utc": "2026-10-19T05:43:42.575387+00:00",
+      "source_sha256": "d2cd74ebc706d78d052016a286a2908f7d41832e20fcd6c864dd3f93acebd194",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "schema": "xar.e04.a38-production-focused-qualification.v1",
+        "status": "QUALIFIED_PRODUCTION_AND_FOCUSED_SYNTHETIC_COLD",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-19T05:43:42.561639+00:00",
+        "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+        "runtime_source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+        "native_build_source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+        "native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+        "producer_plan": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\a38-exact-source-qualification-prep-a01\\A38-PLAN.actual-a01.json",
+          "bytes": 35780,
+          "sha256": "428ce50e4c9c2c835c4c763fac52f7c30c13e46e83ed5a269297fe20c69dc43c"
+        },
+        "capacity": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-per-volume-upper-bound-prep-a01\\A38-C-NATIVE-SOURCE-BOUND.actual-root-a02.json",
+          "bytes": 8506,
+          "sha256": "5d0908100a58880c270551e20b98876e5024d1e23367ff74ff375bb7f82150eb"
+        },
+        "build_completion": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-BUILD-COMPLETION.actual.json",
+          "bytes": 3752,
+          "sha256": "4c035499f89aed2678178d2116b94e6781d825bd314c13a9fbe7ddae543fc449"
+        },
+        "outputs": [
+          {
+            "target": "xar_ck3_bridge",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge.dll",
+            "bytes": 14236160,
+            "sha256": "28dda54669e4f84e6eaabbcb086471007094e7121cb45d88c0f1d88fce211356",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-e89b33ead99f540a97fe.json",
+              "bytes": 58672,
+              "sha256": "96818ea1a528227b01942783319c4e123c97ae80d98bf4f92b14e0661f561e8f"
+            }
+          },
+          {
+            "target": "xar_ck3_bridge_injector",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_injector.exe",
+            "bytes": 39936,
+            "sha256": "28510650ca6b380bee834fb0edeca73961eb2f49ca6dde7edf3deee6fc8c18f3",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-9610bbb81f5ab066d01d.json",
+              "bytes": 3209,
+              "sha256": "00c90f126c45819353a7d02a6a8634d70100fffff98172731cead66790a036d4"
+            }
+          },
+          {
+            "target": "xar_ck3_bridge_host",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_host.exe",
+            "bytes": 71680,
+            "sha256": "0517fff0ef4ef641cd4d874b4290efdee778fe967f88f36f95cecda9ba5c256e",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-ba53732fe3409b8c2be6.json",
+              "bytes": 3180,
+              "sha256": "5032e7d3eb5c8fb1aa6c823875bff676fd3dee0949ead00d676b998ac8492b20"
+            }
+          },
+          {
+            "target": "xar_test_county_primary_direct_owner_v2_12004",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_direct_owner_v2_12004.exe",
+            "bytes": 445440,
+            "sha256": "e639c34df6e79d60bbe669caf40282c6095cd1b570012d1939374c00e94529c3",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_test_county_primary_direct_owner_v2_12004-Release-2efeba53aff73803a8bb.json",
+              "bytes": 8093,
+              "sha256": "99d9c6ec040522b9baa70cee558b11b99d419e7ac491b732662ee18b2e7132f5"
+            }
+          },
+          {
+            "target": "xar_test_county_primary_owner_12004",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_owner_12004.exe",
+            "bytes": 387584,
+            "sha256": "c7677fec979b9c723709087b124ff3c8838397bd5a51597ec232af333bb13e93",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_test_county_primary_owner_12004-Release-3b523dd0e95e41671031.json",
+              "bytes": 8032,
+              "sha256": "f8d8de7de26fe9dacd7a55958229fab1e57695fba78b01eb2926e952c37ee6db"
+            }
+          },
+          {
+            "target": "xar_ck3_12002_declarations_test",
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_12002_declarations_test.exe",
+            "bytes": 173568,
+            "sha256": "ed8381f1ade1a9a5068e4ee233ba432a9b5733736d428d7a10876973b1f58ae8",
+            "file_api_target": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_declarations_test-Release-79da098b7daf619ab75c.json",
+              "bytes": 5419,
+              "sha256": "cc1b52ac89ad0540cfc066a3fa0a9ffa0e68457313e64b4dbf457bf1746c6025"
+            }
+          }
+        ],
+        "all_feature_flags": {
+          "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE": "ON",
+          "XAR_CK3_BUILD_H2743_STOCK_PREDICATE_FIXTURE_V1": "OFF",
+          "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+          "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+          "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+          "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1": "ON",
+          "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1": "ON",
+          "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "ON",
+          "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+          "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+          "XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+          "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+          "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "ON",
+          "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "ON",
+          "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "ON",
+          "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": "ON",
+          "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+          "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+          "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+          "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+          "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+          "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+          "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF",
+          "XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1": "ON",
+          "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": "ON",
+          "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": "ON",
+          "XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004": "ON",
+          "XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004": "ON",
+          "XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004": "ON",
+          "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004": "ON",
+          "XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004": "ON",
+          "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004": "ON",
+          "XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004": "ON",
+          "XAR_ENABLE_COUNTY_PREVIEW_RELATION_INPUTS_12004": "ON",
+          "XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004": "ON",
+          "XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004": "ON",
+          "XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004": "ON",
+          "XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004": "ON",
+          "XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004": "ON",
+          "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1": "OFF",
+          "XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1": "OFF",
+          "XAR_ENABLE_PREWAR_FORCE_COALITION_V2": "OFF",
+          "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1": "ON",
+          "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": "ON",
+          "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": "ON",
+          "XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004": "ON",
+          "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": "ON",
+          "XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004": "ON",
+          "XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1": "OFF",
+          "XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+          "XAR_ENABLE_HOLY_SITE_CREATION_UI12004": "OFF",
+          "XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004": "OFF",
+          "XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004": "OFF",
+          "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004": "OFF",
+          "XAR_ENABLE_RELIGION_UI12004_PRESENTATION": "OFF",
+          "XAR_ENABLE_RITE_CREATION_ACTIONS12004": "OFF",
+          "XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004": "ON"
+        },
+        "production_steps": [
+          {
+            "build_step": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\01-build\\result.actual.json",
+              "bytes": 601,
+              "sha256": "400e2308cac57353b7957319edbb5361efc79c190b8d3d8b9f675b67ffaf98af"
+            },
+            "verification": {
+              "producer": {
+                "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\native-msvc-result.json",
+                "bytes": 1920,
+                "sha256": "f5edb87859a01da6cce0ffc3bd9663fba2213f69d14c64608d9e681eadd93580"
+              },
+              "SYSTEM_receipt": {
+                "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\defender-exe-exclusions\\20261019T054251Z-f0fd4c1d\\receipt.json",
+                "bytes": 479292,
+                "sha256": "59c47e1973f9ab43a6cd567412350101d10be18e2069a62d2b46cb96ba102e19"
+              },
+              "Defender_manifest": {
+                "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\defender-exe-exclusions\\20261019T054251Z-f0fd4c1d\\manifest.json",
+                "bytes": 5543,
+                "sha256": "d4ff2dd3d774cf2eab23ebd33f617da1bba34960d0355add1aed4470dae95935"
+              },
+              "executables": [
+                {
+                  "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_12002_declarations_test.exe",
+                  "bytes": 173568,
+                  "sha256": "ed8381f1ade1a9a5068e4ee233ba432a9b5733736d428d7a10876973b1f58ae8"
+                },
+                {
+                  "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_host.exe",
+                  "bytes": 71680,
+                  "sha256": "0517fff0ef4ef641cd4d874b4290efdee778fe967f88f36f95cecda9ba5c256e"
+                },
+                {
+                  "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_injector.exe",
+                  "bytes": 39936,
+                  "sha256": "28510650ca6b380bee834fb0edeca73961eb2f49ca6dde7edf3deee6fc8c18f3"
+                },
+                {
+                  "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_direct_owner_v2_12004.exe",
+                  "bytes": 445440,
+                  "sha256": "e639c34df6e79d60bbe669caf40282c6095cd1b570012d1939374c00e94529c3"
+                },
+                {
+                  "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_owner_12004.exe",
+                  "bytes": 387584,
+                  "sha256": "c7677fec979b9c723709087b124ff3c8838397bd5a51597ec232af333bb13e93"
+                }
+              ]
+            }
+          }
+        ],
+        "focused_cold": {
+          "targets": [
+            "xar_test_county_primary_direct_owner_v2_12004",
+            "xar_test_county_primary_owner_12004",
+            "xar_ck3_12002_declarations_test"
+          ],
+          "ctest": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\02-focused-cold\\result.actual.json",
+            "bytes": 613,
+            "sha256": "33f3dce083d01562ca540af220230bc358150ad011b7e5c0ca3f61cd89bb3c50"
+          },
+          "native_wire": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\wire\\county-primary-direct-owner-v2\\NATIVE-WIRE.json",
+            "bytes": 43611,
+            "sha256": "32e26ad7245933af07e4cc2c2a8ea3e9e849f5b17570da24f5351f64f861fa5a"
+          },
+          "consumer": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\COUNTY-V2-WIRE-CONSUMED.actual.json",
+            "bytes": 2712,
+            "sha256": "06abb99e768e1d727de10bd78f61064614fdf69497eaa9c2709df3cb88b312cb"
+          },
+          "consumer_step": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\03-wire-consumer\\result.actual.json",
+            "bytes": 614,
+            "sha256": "13aa8177d7aff29b421c78dd6dbdfe74620cfe56512df1b23012a53ada36f525"
+          }
+        },
+        "production_bytes_qualified": true,
+        "focused_cold_qualified": true,
+        "live_CK3_qualified": false,
+        "gameplay_qualified": false,
+        "R04_closed": false,
+        "external_DR_admitted": false
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\ROOT-DELIVERY.a02.actual.json",
+      "exists": true,
+      "bytes": 7450,
+      "mtime_utc": "2026-10-19T06:18:47.013790+00:00",
+      "source_sha256": "da01e7d0598dc203e6e8cb5ddfec1e28c24274f2bf016659991c13986176333d",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "schema": "xar.e04.r194-r196-review-draft-a02-delivery.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-19T06:18:46.976757+00:00",
+        "source_commit": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+        "status": "NEW_DRAFT_RENDERED_TECHNICAL_QA_PASSED_PENDING_HUMAN_1X_AND_SIGNOFF",
+        "movie": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\R194-R196-SPLIT-MERGE-BOARDING-55s-REVIEW-DRAFT-a02.mp4",
+          "bytes": 7168415,
+          "sha256": "9323a8ace8adf7ea104d5f2fa29b9908baf7bdaa536b3621097273a37714e136"
+        },
+        "video_duration_seconds": 54.966667,
+        "container_duration_seconds": 54.988021,
+        "video_frames": 1649,
+        "geometry": [
+          1920,
+          1080
+        ],
+        "fps": "30/1",
+        "audio": {
+          "codec": "aac",
+          "sample_rate": 48000,
+          "channels": 2
+        },
+        "qa": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\CHAPTER-QA.actual.json",
+          "bytes": 3833,
+          "sha256": "a1b7c68e4b866a854d2101a0280320c176eb9a754dfc132d636d383b52554658"
+        },
+        "input_and_source_pins": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\INPUT-GUARD.actual.json",
+          "bytes": 5564,
+          "sha256": "f6af57c15d41eeb251866765a804bc0a3bf731f00789f5d63d578469cb3b11d5"
+        },
+        "encode_receipt": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\ENCODE.actual.json",
+          "bytes": 1242,
+          "sha256": "7190ec69d8ad2e7c1d4800d007a569467fc85bea5087cb82462872d8d72fb538"
+        },
+        "changes": [
+          "Rebuilt C05-06 and C04-10 from the same original raw windows and exact SHA-checked existing TTS.",
+          "Existing Chinese and English narrative ASS bytes remain unchanged apart from the single review-overlay dialogue line.",
+          "Replaced the whole-width implementation audit banner with small corner text 审阅草稿.",
+          "The 89-frame postmerge insert retains the factual UI 251 / physical troops 250 annotation and uses the same short draft corner label."
+        ],
+        "source_frame_windows_half_open": {
+          "R194_selected": [
+            0,
+            857
+          ],
+          "R194_postmerge": [
+            1055,
+            1144
+          ],
+          "R196_boarding": [
+            1080,
+            1783
+          ]
+        },
+        "ordering_is_editorial_not_one_continuous_game_run": true,
+        "sparse_visual_observation": {
+          "reviewer_type": "AI-agent",
+          "reviewed_at_utc": "2026-10-19T06:18:46.976757+00:00",
+          "frames": [
+            {
+              "name": "opening250",
+              "seconds": 0.5,
+              "image": {
+                "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\opening250.jpg",
+                "bytes": 205714,
+                "sha256": "9be906934bc693d7154406b694c81a7430fb85b96bed3db29032f0f53783e95d"
+              }
+            },
+            {
+              "name": "selected75",
+              "seconds": 6.3,
+              "image": {
+                "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\selected75.jpg",
+                "bytes": 208080,
+                "sha256": "6a59740ed8a938f751835286068616a6dbe881c0eb943cf4914b6caee80ae322"
+              }
+            },
+            {
+              "name": "survivor251",
+              "seconds": 29.2,
+              "image": {
+                "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\survivor251.jpg",
+                "bytes": 258689,
+                "sha256": "812e4c6a200663476d13f14ea3a0ceed2a0aae157381be72609d63ec87299ad3"
+              }
+            },
+            {
+              "name": "ship-panel",
+              "seconds": 36.533,
+              "image": {
+                "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\ship-panel.jpg",
+                "bytes": 209936,
+                "sha256": "b1bd80fd37b715e3d50fa642b83ffb78cad4918d6ff85fdcaeb95516063d9805"
+              }
+            }
+          ],
+          "observed": [
+            "opening selected panel 250",
+            "later selected panel 75",
+            "postmerge selected panel 251 with explicit physical troops 250 annotation",
+            "R196 selected army ship/embarkation panel",
+            "small draft corner label; no former whole-width audit banner"
+          ],
+          "does_not_establish_full_continuous_review": true
+        },
+        "remaining_limits": [
+          "No full continuous visual 1x review or continuous-clean qualification.",
+          "No final human signoff or formal dynamic cue credit.",
+          "Exact split/merge/boarding/payment event PTS is not newly established by this draft.",
+          "R194 selected panel samples alone do not establish the separate child 175 count.",
+          "The postmerge insert shows the resulting state rather than the merge-button moment.",
+          "R194 and R196 are separate runs edited into a chapter sequence.",
+          "The 3-gold boarding payment claim remains tied to its original separate native transaction proof.",
+          "Raw source SHA identities are reused from the exact pinned EDL; original raw QA was not rerun."
+        ],
+        "continuous_clean": false,
+        "human_full_1x": false,
+        "human_signoff": false,
+        "formal_dynamic_qualified_cues_added": 0,
+        "execution": {
+          "toolchain": "xar-promo-toolchain 0.3.0",
+          "wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+          "actual_mode": "existing capture planner plus installed render/process library APIs; bounded chapter assembly",
+          "full_native_run_created": false,
+          "maximum_concurrent_ffmpeg_jobs": 1,
+          "ffmpeg_threads": 1,
+          "owned_ffmpeg_jobs_at_close": [],
+          "old_raw_or_old_movie_QA_repeated": false,
+          "D_writes_bytes": 0,
+          "desktop_SDK_CK3_or_GUI_actions": 0,
+          "old_assets_modified_or_deleted": false,
+          "external_upload_performed": false
+        },
+        "storage": {
+          "policy_version": "1.0.0",
+          "whole_root_bytes_before_delivery_receipt": 32588423,
+          "whole_root_maximum_bytes": 67108864,
+          "whole_root_soft_stop_bytes": 50331648,
+          "C_volume_observed_at_utc": "2026-10-19T06:18:46.976757+00:00",
+          "C_volume": {
+            "total": 511133945856,
+            "used": 438302146560,
+            "free": 72831799296
+          },
+          "admission": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\ROOT-CHAPTER-SCOPE.actual.json",
+            "bytes": 1413,
+            "sha256": "a1f027be1c5d42b9f552915ea79f68532502a03088627e0782e9949a162ccd34"
+          },
+          "scope_closed_no_remaining_heavy_write": true,
+          "asset_group": {
+            "asset_id": "e04.r194-r196.chapter.a02",
+            "replica_id": "desktop-3fevhd2-1c74096080:chapter-a02",
+            "owner_task": "/root/e04_recovered_chapter_finish",
+            "machine_id": "desktop-3fevhd2-1c74096080",
+            "root_id": "r194-r196-chapter-assemble-a01",
+            "relative_path": "work-a02",
+            "category": "derived",
+            "state": "pending-human-review",
+            "logical_bytes": 15358975,
+            "allocated_bytes_or_null": null,
+            "closed_at_utc_or_null": "2026-10-19T06:18:46.976757+00:00",
+            "last_used_at_utc": "2026-10-19T06:18:46.976757+00:00",
+            "expires_at_utc": "2026-10-21T07:00:00Z",
+            "active_references": [
+              "parent root review of new 55s draft"
+            ],
+            "protected_until_utc_or_null": "2026-10-21T07:00:00Z",
+            "protection_reason_or_null": "concrete replacement draft and its QA are awaiting parent review",
+            "source_pins_or_recipe": {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\INPUT-GUARD.actual.json",
+              "bytes": 5564,
+              "sha256": "f6af57c15d41eeb251866765a804bc0a3bf731f00789f5d63d578469cb3b11d5"
+            },
+            "availability": "local_verified"
+          }
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\CHAPTER-QA.actual.json",
+      "exists": true,
+      "bytes": 3833,
+      "mtime_utc": "2026-10-19T06:17:40.318368+00:00",
+      "source_sha256": "a1b7c68e4b866a854d2101a0280320c176eb9a754dfc132d636d383b52554658",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "decoded_json": {
+        "schema": "xar.e04.chapter-a02-technical-qa.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-19T06:17:40.279077+00:00",
+        "source_commit": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+        "movie": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\R194-R196-SPLIT-MERGE-BOARDING-55s-REVIEW-DRAFT-a02.mp4",
+          "bytes": 7168415,
+          "sha256": "9323a8ace8adf7ea104d5f2fa29b9908baf7bdaa536b3621097273a37714e136"
+        },
+        "media_info": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "30/1",
+              "time_base": "1/15360",
+              "duration": "54.966667",
+              "nb_frames": "1649"
+            },
+            {
+              "index": 1,
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "48000",
+              "channels": 2,
+              "r_frame_rate": "0/0",
+              "time_base": "1/48000",
+              "duration": "54.988000",
+              "nb_frames": "2582"
+            }
+          ],
+          "format": {
+            "duration": "54.988021",
+            "size": "7168415"
+          }
+        },
+        "video_frames": 1649,
+        "first_video_pts": 0.021354,
+        "last_video_pts": 54.954687,
+        "video_pts_regressions": 0,
+        "maximum_video_pts_gap": 0.03333400000000353,
+        "audio_packet_count": 2582,
+        "audio_pts_regressions": 0,
+        "maximum_audio_pts_gap": 0.021334000000003073,
+        "strict_full_AV_decode_exit_code": 0,
+        "strict_full_AV_decode_stderr": "",
+        "sample_frames": [
+          {
+            "name": "opening250",
+            "seconds": 0.5,
+            "image": {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\opening250.jpg",
+              "bytes": 205714,
+              "sha256": "9be906934bc693d7154406b694c81a7430fb85b96bed3db29032f0f53783e95d"
+            }
+          },
+          {
+            "name": "selected75",
+            "seconds": 6.3,
+            "image": {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\selected75.jpg",
+              "bytes": 208080,
+              "sha256": "6a59740ed8a938f751835286068616a6dbe881c0eb943cf4914b6caee80ae322"
+            }
+          },
+          {
+            "name": "survivor251",
+            "seconds": 29.2,
+            "image": {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\survivor251.jpg",
+              "bytes": 258689,
+              "sha256": "812e4c6a200663476d13f14ea3a0ceed2a0aae157381be72609d63ec87299ad3"
+            }
+          },
+          {
+            "name": "ship-panel",
+            "seconds": 36.533,
+            "image": {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\qa-a02\\ship-panel.jpg",
+              "bytes": 209936,
+              "sha256": "b1bd80fd37b715e3d50fa642b83ffb78cad4918d6ff85fdcaeb95516063d9805"
+            }
+          }
+        ],
+        "technical_status": "GREEN_AUTOMATED_ONLY",
+        "continuous_clean": false,
+        "full_human_1x": false,
+        "human_signoff": false,
+        "formal_dynamic_credit_added": 0,
+        "old_raw_or_old_movie_tests_repeated": false,
+        "D_writes_bytes": 0,
+        "input_guard": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\INPUT-GUARD.actual.json",
+          "bytes": 5564,
+          "sha256": "f6af57c15d41eeb251866765a804bc0a3bf731f00789f5d63d578469cb3b11d5"
+        },
+        "encode": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\ENCODE.actual.json",
+          "bytes": 1242,
+          "sha256": "7190ec69d8ad2e7c1d4800d007a569467fc85bea5087cb82462872d8d72fb538"
+        },
+        "storage": {
+          "policy_version": "1.0.0",
+          "whole_root_bytes_before_receipt": 32578376,
+          "whole_root_cap_bytes": 67108864,
+          "C_volume": {
+            "total": 511133945856,
+            "used": 438275686400,
+            "free": 72858259456
+          },
+          "review_at_utc": "2026-10-21T07:00:00Z"
+        }
+      }
+    }
+  ],
+  "source_snapshots": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r219-split-binding-a03\\root_county_v2_a03.py",
+      "bytes": 2655,
+      "source_sha256": "3bd5f6eee3397b380183398af1dfe430b170511764d9dec2663fb97161818b55",
+      "utf8_source_text": "\"\"\"Root-only split-volume binding supplement; all original binding checks retained.\"\"\"\nfrom pathlib import Path\nimport argparse,ast,hashlib,importlib.util,json,sys\nsys.dont_write_bytecode=True\nBASE=Path('C:/ck3-e04-resume-20261015-a01/r219-profile-meter-a02/root_county_v2_a02.py')\nBASE_SHA='ba8282b42749225c397c2af98796d758718f64e066f509415926cea127e1b608'\ndef need(ok,why):\n if not ok:raise ValueError(why)\ndef load():\n b=BASE.read_bytes();need(hashlib.sha256(b).hexdigest()==BASE_SHA,'sealed meter supplement changed')\n s=importlib.util.spec_from_file_location('r219_actual_split_supplement',BASE);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m\ndef install_binding(module,cap):\n scene=Path(cap['scene_root']).resolve();profile=Path(cap['component_roots']['profile']).resolve();driver=Path(cap['component_roots']['driver']).resolve()\n need(cap['machine_id']=='desktop-3fevhd2-1c74096080','actual cap machine differs')\n def allowed(selection,actual_scene,control_path):\n  return (actual_scene==scene and selection.state_dir.resolve()==profile and selection.run_dir.resolve()==driver and control_path==(profile/'control/ck3.json').resolve(strict=True))\n tree=ast.parse(Path(module.__file__).read_text(encoding='utf-8'));fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='actual_binding')\n matches=[n for n in ast.walk(fn) if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='need' and len(n.args)==2 and isinstance(n.args[1],ast.Constant) and n.args[1].value=='selected state/control is outside the explicit scene']\n need(len(matches)==1 and ast.unparse(matches[0].args[0])=='control_path.is_relative_to(scene)','original single scope guard changed')\n matches[0].args[0]=ast.parse('_r219_exact_cap_scope(selection,scene,control_path)',mode='eval').body\n compiled=ast.fix_missing_locations(ast.Module(body=[fn],type_ignores=[]));module.__dict__['_r219_exact_cap_scope']=allowed\n exec(compile(compiled,'<exact-Root-cap-split-binding>','exec'),module.__dict__)\n return module\ndef main(argv=None):\n argv=sys.argv[1:] if argv is None else argv\n p=argparse.ArgumentParser(add_help=False);p.add_argument('--handoff',required=True);p.add_argument('--handoff-sha256',required=True);v,_=p.parse_known_args(argv)\n base=load();b=base.raw(v.handoff);need(hashlib.sha256(b).hexdigest()==v.handoff_sha256,'actual handoff changed');h=json.loads(b);cap=base.exact(h['capacity_admission'])\n prior=base.install\n def install(module,actual_cap,meter):\n  prior(module,actual_cap,meter);install_binding(module,cap)\n base.install=install\n return base.main(argv)\nif __name__=='__main__':raise SystemExit(main())\n",
+      "deployment_status": "historical_machine_bound_source_for_analysis_not_a_portable_public_API"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r219-profile-meter-a02\\root_county_v2_a02.py",
+      "bytes": 3100,
+      "source_sha256": "ba8282b42749225c397c2af98796d758718f64e066f509415926cea127e1b608",
+      "utf8_source_text": "\"\"\"Root supplement: same sealed R219 actor, include admitted profile userdirs once.\"\"\"\nfrom pathlib import Path\nimport argparse,hashlib,importlib.util,json,sys\nsys.dont_write_bytecode=True\nOLD=Path('C:/ck3-e04-resume-20261015-a01/r219-county-v2-public-prep-a01/root_county_v2.py')\nOLD_SHA='cd3af12fbb194f8ce4b274f2e06acb9edb34cea012674ce1289f754456ecfbca'\nMETER_SHA='da8b51459c9c907b7975e4db341b3dd6c56640223f306ef8cc22009da1c8304c'\ndef need(ok,why):\n if not ok:raise ValueError(why)\ndef raw(p):\n p=Path(p);need(0<p.stat().st_size<=262144,'bounded admitted metadata');return p.read_bytes()\ndef exact(ref):\n b=raw(ref['path']);need(len(b)==ref['bytes'] and hashlib.sha256(b).hexdigest()==ref['sha256'],'actual metadata pin changed');return json.loads(b)\ndef unique_roots(roots):\n roots=set(Path(p).resolve() for p in roots)\n return sorted((p for p in roots if not any(p!=q and p.is_relative_to(q) for q in roots)),key=str)\ndef install(module,cap,meter):\n previous=module.runtime_bytes\n def measure(selection,limit,reserve,extra_roots=()):\n  value=previous(selection,limit,reserve,extra_roots)\n  need(selection.state_dir.resolve()==Path(cap['component_roots']['profile']).resolve(),'actual profile root differs from admission')\n  need(selection.run_dir.resolve()==Path(cap['component_roots']['driver']).resolve(),'actual Driver root differs from admission')\n  roots=unique_roots([selection.state_dir,*cap.get('component_additional_roots',{}).get('profile',[])])\n  need(all(not p.is_relative_to(selection.run_dir.resolve()) and not selection.run_dir.resolve().is_relative_to(p) for p in roots),'admitted profile/Driver overlap')\n  rows=[meter.count(p) for p in roots];total=sum(r['bytes'] for r in rows)\n  need(total<=805306368,'actual admitted state+userdirs exceeds profile768MiB')\n  value['profile']=dict(roots=rows,bytes=total,limit_bytes=805306368,each_file_counted_once=True)\n  return value\n module.runtime_bytes=measure\ndef main(argv=None):\n argv=sys.argv[1:] if argv is None else argv\n p=argparse.ArgumentParser(add_help=False);p.add_argument('--handoff',required=True);p.add_argument('--handoff-sha256',required=True);v,_=p.parse_known_args(argv)\n b=raw(OLD);need(hashlib.sha256(b).hexdigest()==OLD_SHA,'sealed entry changed')\n meter_path=OLD.with_name('split_meter.py');need(hashlib.sha256(raw(meter_path)).hexdigest()==METER_SHA,'sealed split meter changed')\n hb=raw(v.handoff);need(hashlib.sha256(hb).hexdigest()==v.handoff_sha256,'actual Root handoff changed');h=json.loads(hb)\n cap=exact(h['capacity_admission'])\n need(cap['machine_id']=='desktop-3fevhd2-1c74096080' and cap['component_ceiling_bytes']['profile']==805306368,'actual profile admission differs')\n spec=importlib.util.spec_from_file_location('r219_sealed_entry_supplement',OLD);entry=importlib.util.module_from_spec(spec);spec.loader.exec_module(entry)\n factory=entry.actor\n def actor(profile_limit_bytes=805306368):\n  result=factory(profile_limit_bytes);meter=sys.modules['r219_split_meter'];install(result,cap,meter);return result\n entry.actor=actor\n return entry.main(argv)\nif __name__=='__main__':raise SystemExit(main())\n",
+      "deployment_status": "historical_machine_bound_source_for_analysis_not_a_portable_public_API"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r219-window-live-prep-a01\\r219_bind_window_take_a02.py",
+      "bytes": 14310,
+      "source_sha256": "bd4e65d9d44e596926caa146d16bae69c096e112686bca974130222fc7be432b",
+      "utf8_source_text": "\"\"\"Bind one R219 day-seven owned CK3 client-window take from actual READY.\n\nMetadata only. Root runs this after allocation, Steam review, and fresh owned\nwindow inspection. The actor moves and observes six days before its bounded\nday-seven awaiting marker; only then may Root review and Start this take.\n\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nfrom datetime import datetime, timezone\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport sys\n\nMACHINE = \"desktop-3fevhd2-1c74096080\"\nSCENE = Path(\"D:/workspace/ck3_native_war_ai_promo_work/e04-r219-county-direct-owner-v2-a01\")\nACTOR = \"county-actor-a02\"\nRAW_BYTES = 268435456\nLATE_CAMERA = Path(\"C:/ck3-e04-resume-20261015-a01/r219-county-v2-public-prep-a01/late_camera.py\")\n\n\ndef need(value, reason):\n    if not value:\n        raise RuntimeError(reason)\n\n\ndef read(path):\n    return json.loads(Path(path).read_text(encoding=\"utf-8-sig\"))\n\n\ndef pin(path):\n    path = Path(path).resolve(strict=True)\n    need(path.is_file() and not path.is_symlink(), \"regular file required: \" + str(path))\n    digest = hashlib.sha256()\n    with path.open(\"rb\") as stream:\n        for chunk in iter(lambda: stream.read(1024 * 1024), b\"\"):\n            digest.update(chunk)\n    return {\"path\": str(path), \"bytes\": path.stat().st_size, \"sha256\": digest.hexdigest()}\n\n\ndef exact(ref):\n    actual = pin(ref[\"path\"])\n    need(actual == ref, \"exact source pin changed: \" + str(ref[\"path\"]))\n    return actual\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    for name in (\"handoff\", \"capacity\", \"ready\", \"context\", \"offline-review\", \"products\", \"ffmpeg\", \"client-inspect\"):\n        parser.add_argument(\"--\" + name, type=Path, required=True)\n    parser.add_argument(\"--content-kind\", choices=(\"map-context\", \"army-supply\"), default=\"map-context\")\n    parser.add_argument(\"--execute\", action=\"store_true\")\n    a = parser.parse_args()\n\n    capacity = pin(a.capacity)\n    cap = read(a.capacity)\n    runtime = exact(cap[\"public_runtime\"])\n    rt = read(runtime[\"path\"])\n    handoff_ref = pin(a.handoff)\n    handoff = read(a.handoff)\n    allocation_argv = handoff[\"allocate_after_new_Root_capacity\"]\n    need(allocation_argv.count(\"--runtime\") == 1,\n         \"public allocation must bind one actual runtime\")\n    actual_runtime = Path(allocation_argv[allocation_argv.index(\"--runtime\") + 1]).resolve(strict=True)\n    need(actual_runtime == Path(runtime[\"path\"]).resolve(strict=True),\n         \"Root-adopted capacity and allocation runtime differ\")\n    runtime_manifest = exact(rt[\"manifest\"])\n    for index_kind in (\"source_index\", \"native_source_index\"):\n        need(Path(rt[\"paths\"][index_kind]).resolve(strict=True).is_file(),\n             \"adopted a37 runtime source index absent: \" + index_kind)\n    repo = Path(rt[\"repo_root\"]).resolve(strict=True)\n    sys.path.insert(0, str(repo / \"tools\"))\n    from ck3_live_run_id import current_machine_id\n    machine = current_machine_id()\n    head = subprocess.check_output([\"git\", \"-C\", str(repo), \"rev-parse\", \"HEAD\"], text=True).strip()\n    need(machine == MACHINE and cap[\"machine_id\"] == machine and\n         cap[\"source_head\"] == head and handoff.get(\"machine_id\") == machine and\n         handoff.get(\"source_head\") == head and\n         Path(handoff[\"scene_root\"]).resolve() == SCENE,\n         \"actual machine/source/handoff differs\")\n\n    ready_path = a.ready.resolve(strict=True)\n    live = ready_path.parent\n    run_tag = live.name.rsplit(\"--\", 1)[-1]\n    need(run_tag.startswith(\"R\") and run_tag[1:].isdigit(), \"actual allocated public run tag required\")\n    label = \"R219-WINDOW-\" + run_tag + \"-TAKE01\"\n    query_prefix = \"r219-camera-\" + run_tag.lower() + \"-take01\"\n    ui_query_prefix = \"r219-camera-ui-\" + run_tag.lower() + \"-take01\"\n    task = \"e04-common-12004-\" + cap[\"expected_public_attempt\"]\n    ready = read(ready_path)\n    need(ready_path.name == \"ready-context.json\" and\n         ready.get(\"schema\") == \"ck3-mod-acceptance-run-context-v1\" and\n         ready.get(\"run_id\") == live.name and Path(ready[\"run_dir\"]).resolve() == live and\n         ready.get(\"product\") == \"war-episode04-r10\" and\n         ready.get(\"case\") == \"r10-common-preparation\" and\n         live.parent == Path(rt[\"artifacts_root\"]).resolve(strict=True),\n         \"actual public READY/product differs\")\n    need(cap.get(\"admitted\") is True and cap.get(\"budget_status\") == \"GREEN\" and\n         cap[\"run_id\"] == live.name and cap[\"product_key\"] == ready[\"product\"] and\n         cap[\"case_id\"] == ready[\"case\"] and\n         Path(cap[\"scene_root\"]).resolve() == SCENE and\n         Path(cap[\"raw_workdir\"]).resolve().parent == SCENE and\n         cap[\"component_ceiling_bytes\"][\"raw\"] == RAW_BYTES,\n         \"Root-adopted R219 scene/raw/capacity differs\")\n    bounds = cap[\"capture_bounds\"]\n    need(bounds.get(\"client_only\") is True and bounds.get(\"client_window_only\") is True and\n         bounds[\"max_recording_seconds\"] == 180 and\n         bounds[\"recording_hard_stop_seconds\"] == 185 and\n         bounds[\"normal_close_reserve_seconds\"] == 900 and\n         bounds[\"cleanup_save_reserve_seconds\"] == 120 and\n         bounds[\"absolute_phase_deadline_utc\"] == cap[\"run_hard_deadline_utc\"] and\n         cap[\"recording_session_max_count\"] == 1,\n         \"canonical client-only R219 capture bounds differ\")\n    need(datetime.now(timezone.utc) < datetime.fromisoformat(cap[\"quota_review_at_utc\"].replace(\"Z\", \"+00:00\")),\n         \"R219 source/capacity quota expired\")\n    for volume, row in cap[\"fresh_volumes\"].items():\n        need(shutil.disk_usage(volume).free >= row[\"required_free_bytes\"],\n             \"fresh storage floor failed: \" + volume)\n\n    prepared = exact(ready[\"prepared_case\"])\n    frozen = read(exact(ready[\"frozen_argv\"])[\"path\"])\n    need(frozen.get(\"run_id\") == live.name and\n         frozen.get(\"identity_allocation\", {}).get(\"machine_id\") == machine and\n         frozen.get(\"screen_task\") == task and\n         frozen.get(\"runtime_manifest\") == runtime_manifest and\n         frozen.get(\"runtime_environment\") ==\n             {k: os.pathsep.join(v) if k == \"PYTHONPATH\" and isinstance(v, list) else v\n              for k, v in rt[\"runtime_environment\"].items()} and\n         frozen.get(\"files\", {}).get(str(actual_runtime)) ==\n             {\"bytes\": runtime[\"bytes\"], \"sha256\": runtime[\"sha256\"]} and\n         all(frozen.get(\"files\", {}).get(rt[\"paths\"][kind]) ==\n             {k: pin(rt[\"paths\"][kind])[k] for k in (\"bytes\", \"sha256\")}\n             for kind in (\"source_index\", \"native_source_index\", \"dll\", \"injector\")) and\n         Path(ready[\"keeper_root\"]).resolve(strict=True).is_dir() and\n         Path(frozen[\"state_dir\"]).resolve(strict=True) == Path(cap[\"profile_workdir\"]).resolve(),\n         \"actual frozen owner/task/state differs\")\n    context_path = a.context.resolve(strict=True)\n    context = read(context_path)\n    need(context_path.parent == SCENE and context.get(\"run_id\") == live.name and\n         Path(context[\"run_dir\"]).resolve() == live and\n         Path(handoff[\"future_reviewed_context\"]).resolve() == context_path,\n         \"Root-reviewed context/READY differs\")\n    offline = pin(a.offline_review)\n    review = read(a.offline_review)\n    need(review.get(\"machine_id\") == machine and review.get(\"run_id\") == live.name and\n         review.get(\"steam_offline_confirmed\") is True and\n         review.get(\"direct_image_review\") is True,\n         \"fresh same-run Steam offline original review missing\")\n    inspect = pin(a.client_inspect)\n    view = read(a.client_inspect)\n    client = view[\"client\"]\n    size = client[\"output_size\"]\n    need(view.get(\"machine_id\") == machine and view.get(\"run_id\") == live.name and\n         view.get(\"operation\") == \"inspect\" and view.get(\"pid\") == client[\"owned_ck3_pid\"] and\n         view.get(\"create_time\") == client[\"owned_ck3_create_time\"] and\n         view.get(\"hwnd\") == client[\"hwnd\"] == client[\"foreground_hwnd\"] and\n         client[\"kind\"] == \"gdigrab-desktop-client-region\" and\n         client[\"occluding_windows\"] == [] and\n         len(size) == 2 and all(type(v) is int and v >= 360 and v % 2 == 0 for v in size) and\n         0 <= (datetime.now(timezone.utc) - datetime.fromisoformat(view[\"observed_at_utc\"])).total_seconds() <= 300,\n         \"fresh owned client region/foreground/identity inspection missing\")\n    products = pin(a.products)\n    ffmpeg = pin(a.ffmpeg)\n    output_dir = SCENE / \"recorder-control\"\n    output = output_dir / (label + \".actual.json\")\n    controls_path = output_dir / (label + \"-CONTROL.actual.json\")\n    raw = Path(cap[\"raw_workdir\"]).resolve()\n    need(SCENE.is_dir() and not output.exists() and not controls_path.exists() and\n         not (raw / \"take01\").exists() and\n         not (live / \"case-output-window-take01\").exists() and\n         not (live / \"case-output-window-ui-take01\").exists(),\n         \"R219 take01 config or recorder/control namespace already consumed\")\n    config = {\"schema\": \"xar.e04.owned-window-take-input.v1\", \"machine_id\": machine,\n              \"source_head\": head, \"repo_root\": str(repo), \"scene_root\": str(SCENE),\n              \"run_dir\": str(live), \"keeper_root\": str(Path(ready[\"keeper_root\"]).resolve()),\n              \"screen_task\": task, \"capacity\": capacity, \"steam_offline_review\": offline,\n              \"ffmpeg\": ffmpeg, \"runtime\": str(actual_runtime), \"products\": products[\"path\"],\n              \"product_key\": ready[\"product\"], \"case_key\": ready[\"case\"],\n              \"context\": str(context_path), \"prepared\": prepared[\"path\"],\n              \"state_dir\": str(Path(frozen[\"state_dir\"]).resolve()),\n              \"raw_root\": str(raw), \"take_id\": \"take01\",\n              \"case_output\": str(live / \"case-output-window-take01\"),\n              \"ui_case_output\": str(live / \"case-output-window-ui-take01\"),\n              \"query_prefix\": query_prefix, \"ui_query_prefix\": ui_query_prefix,\n              \"army_id\": 0, \"content_kind\": a.content_kind,\n              \"expected_client_size\": size, \"recording_seconds\": 180,\n              \"hard_terminal_seconds\": 185, \"minimum_recording_seconds\": 30,\n              \"raw_budget_bytes\": RAW_BYTES, \"normal_close_reserve_seconds\": 900,\n              \"cleanup_reserve_seconds\": 120, \"receipt_label\": label,\n              \"camera_output_name\": ACTOR,\n              \"camera_awaiting\": str(live / ACTOR / \"before-action-camera-awaiting.json\"),\n              \"camera_signal\": str(live / ACTOR / \"before-action-camera-started.json\"),\n              \"observer_result\": str(live / ACTOR / \"R04-BAYEUX-TERMINAL.json\")}\n    late_source = pin(LATE_CAMERA)\n    late_text = LATE_CAMERA.read_text(encoding=\"utf-8\")\n    need(\"before-action-camera-awaiting.json\" in late_text and\n         \"before-action-camera-started.json\" in late_text and\n         \"action_kind='exact-day'\" in late_text and\n         \"Move_already_submitted_once=True\" in late_text,\n         \"sealed actor late-day camera contract differs\")\n    if not a.execute:\n        print(json.dumps({\"status\": \"ADMISSION_ONLY_NO_CONFIG\", \"machine_id\": machine,\n                          \"run_id\": live.name, \"handoff\": handoff_ref,\n                          \"capacity\": capacity, \"client_inspect\": inspect,\n                          \"content_kind\": a.content_kind, \"output\": str(output),\n                          \"control_output\": str(controls_path)}, ensure_ascii=False))\n        return 0\n    output_dir.mkdir(exist_ok=True)\n    need(output_dir.parent == SCENE, \"control output outside actual scene\")\n    with output.open(\"x\", encoding=\"utf-8\", newline=\"\\n\") as stream:\n        json.dump(config, stream, ensure_ascii=False, indent=2)\n        stream.write(\"\\n\")\n        stream.flush()\n        os.fsync(stream.fileno())\n    actor = repo / \"promo/ck3_native_war_ai/episode-04-march-logistics/tools/window_take_actor.py\"\n    actor_pin = pin(actor)\n    python = str(Path(rt[\"python\"]).resolve(strict=True))\n    base = [python, \"-B\", \"-X\", \"utf8\", actor_pin[\"path\"]]\n    frame_dir = SCENE / (\"window-prep-\" + run_tag.lower() + \"-take01-a01\")\n    frame = frame_dir / \"capture.actual.json\"\n    reviewed = frame_dir / \"ROOT-REVIEW.actual.json\"\n    commands = {\"schema\": \"xar.e04.r219-window-control.v1\", \"machine_id\": machine,\n                \"observed_at_utc\": datetime.now(timezone.utc).isoformat(),\n                \"run_id\": live.name, \"config\": pin(output), \"canonical_actor\": actor_pin,\n                \"late_day_actor_source\": late_source,\n                \"actor_day7_camera_marker_must_exist_before_film\": config[\"camera_awaiting\"],\n                \"actor_move_and_preparatory_six_days_are_unfilmed\": True,\n                \"awaiting_action_kind_exact_day_not_before_move\": True,\n                \"day7_date_and_pid_are_fresh_actor_and_recorder_checks_not_config_values\": True,\n                \"Root_must_directly_review_original_client_and_no_hover_before_review_command\": True,\n                \"prepare_frame_argv\": base + [\"prepare-frame\", \"--config\", str(output),\n                                              \"--output\", str(frame_dir), \"--execute\"],\n                \"review_after_direct_human_original_view_argv\": base + [\"review\", \"--config\", str(output),\n                    \"--capture\", str(frame), \"--root-reviewed-no-hover\", \"--execute\"],\n                \"film_argv\": base + [\"film\", \"--config\", str(output),\n                                     \"--reviewed-frame\", str(reviewed), \"--execute\"],\n                \"fresh_frame_max_seconds_at_film\": 180,\n                \"fresh_Root_review_max_seconds_at_film\": 120,\n                \"no_game_or_recorder_calls_by_this_generator\": True}\n    with controls_path.open(\"x\", encoding=\"utf-8\", newline=\"\\n\") as stream:\n        json.dump(commands, stream, ensure_ascii=False, indent=2)\n        stream.write(\"\\n\")\n        stream.flush()\n        os.fsync(stream.fileno())\n    print(json.dumps({\"status\": \"R219_CONFIG_WRITTEN_NO_SDK\", \"machine_id\": machine,\n                      \"observed_at_utc\": datetime.now(timezone.utc).isoformat(),\n                      \"run_id\": live.name, \"config\": pin(output), \"capacity\": capacity,\n                      \"handoff\": handoff_ref, \"runtime_public\": pin(actual_runtime),\n                      \"client_inspect\": inspect, \"film_control\": pin(controls_path)}, ensure_ascii=False))\n    return 0\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n",
+      "deployment_status": "historical_machine_bound_source_for_analysis_not_a_portable_public_API"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r219-county-v2-public-prep-a01\\late_camera.py",
+      "bytes": 5519,
+      "source_sha256": "214b264b98da94cd857e8a045d27afff021c1e8c475644b513e8acc1e39f7041",
+      "utf8_source_text": "\"\"\"Move and six preparatory days unfilmed; one existing Start handshake before day7.\"\"\"\nfrom pathlib import Path\nfrom datetime import datetime,timezone\nimport time\ndef need(ok,why):\n if not ok:raise ValueError(why)\ndef held_day_frame(actor,before,after,*,army_id,actor_id):\n need(after.get('paused') is True and before['date_raw']==after['date_raw'],'date/paused changed during late camera wait; no day')\n need(before.get('episode_run_id')==after.get('episode_run_id'),'held consumer episode changed')\n for k in ('bridge_pid','connection_generation'):\n  need(before['diagnostics'][k]==after['diagnostics'][k],'held native identity changed')\n need(before['played_character']['character_id']==after['played_character']['character_id']==actor_id and after['played_character'].get('alive') is True,'held player changed')\n old,new=actor.selected_unit(before,army_id),actor.selected_unit(after,army_id)\n fields=('army_id','owner_character_id','current_province_id','route_province_ids','move_target_province_id','in_combat','retreating')\n need(all(old.get(k)==new.get(k) for k in fields) and new['owner_character_id']==actor_id and new['in_combat'] is False and new['retreating'] is False,'Army source/stored route changed during late camera wait; no Move replay')\n return after\ndef await_day_start(actor,state,frame,*,maximum_wait=900):\n io=state['io'];client=io.client\n awaiting=client.output/'before-action-camera-awaiting.json';signal=client.output/'before-action-camera-started.json'\n need(not awaiting.exists() and not signal.exists(),'unique late camera coordination already consumed')\n baseline=client.output/'R04-ENTRY-WINDOW-BASELINE.json'\n need(baseline.is_file() and state['result']['Move_attempts']==1,'actual late baseline and one committed Move required')\n expected=dict(machine_id='desktop-3fevhd2-1c74096080',run_id=client.selection.run_dir.name,bridge_pid=frame['diagnostics']['bridge_pid'],date_raw=frame['date_raw'])\n payload=dict(**expected,observed_at_utc=datetime.now(timezone.utc).isoformat(),signal_path=str(signal.resolve()),coordination_only=True,action_kind='exact-day',army_id=0,target_province_id=1513,pre_action_baseline=actor.camera_file_pin(baseline),terminal_result_path=str((client.output/'R04-BAYEUX-TERMINAL.json').resolve()),maximum_wait_seconds=maximum_wait,Move_already_submitted_once=True,clock_action_submitted=False,preparatory_days_unfilmed=6,planned_observation_day=7,actual_arrival_observed=False)\n client.checkpoint('before-action-camera-awaiting',payload)\n limit=time.monotonic()+maximum_wait\n reserve=io.settings['normal_close_reserve_seconds']+io.settings['cleanup_save_reserve_seconds']+io.settings['one_day_timeout_seconds']\n while time.monotonic()<limit:\n  client.guard(reserve=reserve)\n  need(time.time()+reserve<io.settings['deadline_unix_seconds'],'Root deadline reached before late camera Start')\n  if signal.is_file():\n   row=actor.read(signal)\n   need(all(row.get(k)==x for k,x in expected.items()) and row.get('camera_started') is True,'actual late Start signal identity/status differs')\n   ref=row.get('start_receipt');need(type(ref) is dict and actor.camera_file_pin(ref['path'])==ref,'actual late Start receipt pin differs')\n   started=actor.read(ref['path'])\n   need(started.get('machine_id')==expected['machine_id'] and started.get('run_id')==expected['run_id'] and started.get('one_ffmpeg_job') is True,'actual one-job late Start differs')\n   ready=started.get('canonical_process_ready');need(type(ready) is dict and actor.camera_file_pin(ready['path'])==ready,'late Start process-ready pin differs')\n   proof=dict(status='ACTUAL_CAMERA_STARTED_FOR_DAY7',awaiting=actor.camera_file_pin(awaiting),signal=actor.camera_file_pin(signal),start_receipt=ref,canonical_process_ready=ready,Move_was_unfilmed=True,preparatory_days_unfilmed=6,business_or_video_approved=False)\n   client.checkpoint('before-action-camera-Start-consumed',proof)\n   state['result']['camera_start']=proof\n   return proof\n  time.sleep(.25)\n raise TimeoutError('late camera Start absent after bounded900s; no day7/Move replay')\ndef install(actor):\n state={}\n def unfilmed_move(io,preview_frame,wait_start,fresh_snapshot,after_snapshot,*,army_id,actor: int,target,origin,preview,result):\n  # The old sole preview/fresh guards and actual typed Move are unchanged.\n  fresh=state['module'].after_camera_frame(preview_frame,fresh_snapshot(),army_id=army_id,actor=actor,origin=origin)\n  result.update(camera_start=None,Move_attempts=1,recording_placement='day7_only; Move_and_first6days_unfilmed')\n  post,proof=state['module'].unique_move(io,fresh,after_snapshot,army_id=army_id,target=target,origin=origin,preview=preview)\n  state.update(io=io,result=result,Move_postcondition=proof)\n  return post,proof\n state['module']=actor;actor.camera_move_once=unfilmed_move\n previous=actor.snapshot_only_to_target\n def late_transit(io,snap,*,army_id,actor: int,target,max_days,before_day,on_day):\n  def before(day,current):\n   prepared=before_day(day,current)\n   if day==7 and prepared is not None:\n    need(state.get('Move_postcondition') is not None and state['io'] is io,'sole Move and same clock owner required')\n    await_day_start(state['module'],state,prepared)\n    after=snap('entry-window-after-camera')\n    held_day_frame(state['module'],prepared,after,army_id=army_id,actor_id=actor)\n    return after\n   return prepared\n  return previous(io,snap,army_id=army_id,actor=actor,target=target,max_days=max_days,before_day=before,on_day=on_day)\n actor.snapshot_only_to_target=late_transit\n return state\n",
+      "deployment_status": "historical_machine_bound_source_for_analysis_not_a_portable_public_API"
+    }
+  ],
+  "r219_result_excerpt": {
+    "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+    "Move_attempts": 1,
+    "actual_days": 0,
+    "arrived": false,
+    "camera_start": null,
+    "error": {
+      "type": "TimeoutError",
+      "message": "late camera Start absent after bounded900s; no day7/Move replay"
+    }
+  },
+  "r219_result_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\county-actor-a02\\R04-BAYEUX-RESULT.json",
+    "bytes": 130463,
+    "sha256": "72f501716bd14d9de1aaf79b12016f5ca85ceb9dfcd687f87646ff04d86002d8"
+  },
+  "native_report_availability": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r219-county-direct-owner-v2-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0215\\native-report.json",
+    "exists": true,
+    "bytes": 20309574,
+    "mtime_utc": "2026-10-19T08:03:36.785016+00:00"
+  },
+  "movie_current_availability": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r196-chapter-assemble-a01\\work-a02\\R194-R196-SPLIT-MERGE-BOARDING-55s-REVIEW-DRAFT-a02.mp4",
+    "exists": true,
+    "bytes": 7168415,
+    "mtime_utc": "2026-10-19T06:16:42.360208+00:00"
+  },
+  "camera_started_signal_exists": false,
+  "keeper_final_report_exists": false,
+  "normal_close_qualified": false,
+  "entire_episode_complete": false,
+  "snapshot_review_at_utc": "2027-04-18T01:50:00Z",
+  "source_snapshot_limit": "retention record review only; local process assets keep independent expiries"
+}
