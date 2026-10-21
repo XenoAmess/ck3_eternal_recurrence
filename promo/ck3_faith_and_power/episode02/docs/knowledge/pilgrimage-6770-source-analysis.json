@@ -1,0 +1,605 @@
+{
+  "schema": "faith-e02-r31-extra-pilgrimage-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:47:12.709783+00:00",
+  "event_definition_key": "pilgrimage.6770",
+  "title": "圣物商贩（源码概括；题键 pilgrimage.6770.t）",
+  "game_version_scope": "1.20.0.4",
+  "source_status": "source_analyzed",
+  "analysis_kind": "source_only_with_historical_R31_readback",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "relevant_lines": [
+        [
+          12589,
+          12877
+        ],
+        [
+          12566,
+          12575
+        ],
+        [
+          12577,
+          12585
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        [
+          1225,
+          1239
+        ],
+        [
+          1242,
+          1250
+        ],
+        [
+          1253,
+          1256
+        ]
+      ]
+    }
+  ],
+  "definition": {
+    "line_start": 12589,
+    "line_end": 12877,
+    "text": "pilgrimage.6770 = {\r\n\ttype = activity_event\r\n\ttitle = pilgrimage.6770.t\r\n\tdesc = {\r\n\t\tdesc = pilgrimage.6770.desc.intro\r\n\t\tfirst_valid = {\r\n\t\t\ttriggered_desc = {\r\n\t\t\t\ttrigger = {\r\n\t\t\t\t\treligion = religion:christianity_religion\r\n\t\t\t\t}\r\n\t\t\t\tdesc = pilgrimage.6770.desc.christian\r\n\t\t\t}\r\n\t\t\ttriggered_desc = {\r\n\t\t\t\ttrigger = {\r\n\t\t\t\t\treligion = religion:islam_religion\r\n\t\t\t\t}\r\n\t\t\t\tdesc = pilgrimage.6770.desc.islam\r\n\t\t\t}\r\n\t\t\ttriggered_desc = {\r\n\t\t\t\ttrigger = {\r\n\t\t\t\t\treligion = religion:buddhism_religion\r\n\t\t\t\t}\r\n\t\t\t\tdesc = pilgrimage.6770.desc.buddhist\r\n\t\t\t}\r\n\t\t\ttriggered_desc = {\r\n\t\t\t\ttrigger = {\r\n\t\t\t\t\treligion = religion:judaism_religion\r\n\t\t\t\t}\r\n\t\t\t\tdesc = pilgrimage.6770.desc.judaism\r\n\t\t\t}\r\n\t\t\tdesc = pilgrimage.6770.desc.fallback\r\n\t\t}\r\n\t\tdesc = pilgrimage.6770.desc.outro\r\n\t}\r\n\ttheme = pilgrimage_destination\r\n\toverride_background = { reference = market }\r\n\tcenter_portrait = {\r\n\t\tcharacter = root\r\n\t\tanimation = interested\r\n\t}\r\n\tright_portrait = {\r\n\t\tcharacter = scope:relic_merchant\r\n\t\tanimation = debating\r\n\t}\r\n\tartifact = {\r\n\t\ttarget = scope:merchant_relic\r\n\t\tposition = lower_center_portrait\r\n\t}\r\n\tcooldown = { years = 1 }\r\n\timmediate = {\r\n\t\tlocation = { save_scope_as = relic_location }\r\n\t\tif = {\r\n\t\t\tlimit = {\r\n\t\t\t\tany_pool_character = {\r\n\t\t\t\t\tprovince = root.location\r\n\t\t\t\t\tpilgrimage_6770_trigger = yes\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\trandom_pool_character = {\r\n\t\t\t\tprovince = root.location\r\n\t\t\t\tlimit = { pilgrimage_6770_trigger = yes }\r\n\t\t\t\tsave_scope_as = relic_merchant\r\n\t\t\t}\r\n\t\t}\r\n\t\telse = {\r\n\t\t\tcreate_character = {\r\n\t\t\t\ttemplate = merchant_template\r\n\t\t\t\tdynasty = none\r\n\t\t\t\tlocation = root.location\r\n\t\t\t\tculture = root.location.culture\r\n\t\t\t\tfaith = root.faith #We are interested in relics we can use\r\n\t\t\t\trite = root.rite\r\n\t\t\t\tsave_scope_as = relic_merchant\r\n\t\t\t}\r\n\t\t\tset_variable = created_random_merchant_var\r\n\t\t}\r\n\t\thidden_effect_new_object = {\r\n\t\t\tif = {\r\n\t\t\t\tlimit = { religion = religion:christianity_religion }\r\n\t\t\t\tcreate_artifact_pedestal_reliquary_christian_effect = { OWNER = scope:relic_merchant }\r\n\t\t\t}\r\n\t\t\telse_if = {\r\n\t\t\t\tlimit = { religion = religion:islam_religion }\r\n\t\t\t\tcreate_artifact_pedestal_reliquary_islam_effect = { OWNER = scope:relic_merchant }\r\n\t\t\t}\r\n\t\t\telse_if = {\r\n\t\t\t\tlimit = { religion = religion:buddhism_religion }\r\n\t\t\t\tcreate_artifact_pedestal_reliquary_buddhism_effect = { OWNER = scope:relic_merchant }\r\n\t\t\t}\r\n\t\t\telse_if = {\r\n\t\t\t\tlimit = { religion = religion:judaism_religion }\r\n\t\t\t\tcreate_artifact_pedestal_reliquary_judaism_effect = { OWNER = scope:relic_merchant }\r\n\t\t\t}\r\n\t\t\telse = {\r\n\t\t\t\tcreate_artifact_sculpture_religious_effect = { OWNER = scope:relic_merchant CREATOR = scope:relic_merchant }\r\n\t\t\t}\r\n\t\t\tscope:newly_created_artifact = {\r\n\t\t\t\tsave_scope_as = merchant_relic\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tNOT = {\r\n\t\t\t\t\t\t\troot = { has_royal_court = yes }\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treforge_artifact = { type = miscellaneous }\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tweight_multiplier = {\r\n\t\tbase = 1\r\n\t}\r\n\t#Buy\r\n\toption = {\r\n\t\tname = pilgrimage.6770.a\r\n\t\tbonus_to_all_types_effect = yes\r\n\t\tinvolved_activity ?= {\r\n\t\t\tadd_activity_log_entry = {\r\n\t\t\t\tkey = pilgrimage_acquired_relic_log\r\n\t\t\t\ttags = { relic }\r\n\t\t\t\tscore = 50\r\n\t\t\t\tcharacter = root\r\n\t\t\t\tartifact = scope:newly_created_artifact\r\n\t\t\t\tlocation = scope:relic_location\r\n\t\t\t\tshow_in_conclusion = yes\r\n\t\t\t\t# Effects\r\n\t\t\t\troot = { pilgrimage_6770_relic_effect = yes }\r\n\t\t\t\tscope:merchant_relic = { set_owner = root }\r\n\t\t\t}\r\n\t\t}\r\n\t\tpay_short_term_gold = {\r\n\t\t\ttarget = scope:relic_merchant\r\n\t\t\tgold = {\r\n\t\t\t\tvalue = minor_gold_value\r\n\t\t\t\tmax = 10\r\n\t\t\t}\r\n\t\t}\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tgreedy = minor_stress_impact_gain\r\n\t\t\tavaricious = minor_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\tshort_term_gold <= minor_gold_value\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\tOR = {\r\n\t\t\t\t\thas_trait = greedy\r\n\t\t\t\t\thas_trait = avaricious\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t#Barter\r\n\toption = {\r\n\t\tname = pilgrimage.6770.b\r\n\t\tworldly_type_option_effect = yes\r\n\t\tduel = {\r\n\t\t\tskills = { diplomacy stewardship }\r\n\t\t\ttarget = scope:relic_merchant\r\n\t\t\t50 = {\r\n\t\t\t\tdesc = pilgrimage.6770.b.success\r\n\t\t\t\tcompare_modifier = {\r\n\t\t\t\t\tvalue = scope:duel_value\r\n\t\t\t\t\tmultiplier = 3.5\r\n\t\t\t\t}\r\n\t\t\t\tsend_interface_toast = {\r\n\t\t\t\t\ttitle = pilgrimage.6770.b.success\r\n\t\t\t\t\tleft_icon = root\r\n\t\t\t\t\tinvolved_activity ?= {\r\n\t\t\t\t\t\tadd_activity_log_entry = {\r\n\t\t\t\t\t\t\tkey = pilgrimage_acquired_relic_log\r\n\t\t\t\t\t\t\ttags = { relic }\r\n\t\t\t\t\t\t\tscore = 50\r\n\t\t\t\t\t\t\tcharacter = root\r\n\t\t\t\t\t\t\tartifact = scope:newly_created_artifact\r\n\t\t\t\t\t\t\tlocation = scope:relic_location\r\n\t\t\t\t\t\t\tshow_in_conclusion = yes\r\n\t\t\t\t\t\t\t# Effects\r\n\t\t\t\t\t\t\troot = { pilgrimage_6770_relic_effect = yes }\r\n\t\t\t\t\t\t\tscope:merchant_relic = { set_owner = root }\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tpay_short_term_gold = {\r\n\t\t\t\t\t\ttarget = scope:relic_merchant\r\n\t\t\t\t\t\tgold = {\r\n\t\t\t\t\t\t\tvalue = minor_gold_value\r\n\t\t\t\t\t\t\tmax = 5\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\t50 = {\r\n\t\t\t\tdesc = pilgrimage.6770.b.failure\r\n\t\t\t\tcompare_modifier = {\r\n\t\t\t\t\tvalue = scope:duel_value\r\n\t\t\t\t\tmultiplier = -3.5\r\n\t\t\t\t}\r\n\t\t\t\tsend_interface_toast = {\r\n\t\t\t\t\ttitle = pilgrimage.6770.b.failure\r\n\t\t\t\t\tleft_icon = root\r\n\t\t\t\t\tscope:relic_merchant = {\r\n\t\t\t\t\t\tadd_opinion = {\r\n\t\t\t\t\t\t\ttarget = root\r\n\t\t\t\t\t\t\tmodifier = insulted_opinion\r\n\t\t\t\t\t\t\topinion = -10\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tlazy = minor_stress_impact_gain\r\n\t\t\tgregarious = minor_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\tshort_term_gold <= minor_gold_value\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\tOR = {\r\n\t\t\t\t\thas_trait = lazy\r\n\t\t\t\t\thas_trait = gregarious\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t#Nah\r\n\toption = {\r\n\t\tname = pilgrimage.6770.c\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tzealous = minor_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\thas_trait = zealous\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t#Is this... a real piece?\r\n\toption = {\r\n\t\tname = pilgrimage.6770.d\r\n\t\ttrigger = { learning >= high_skill_rating }\r\n\t\tbonus_to_all_types_effect = yes\r\n\t\tif = {\r\n\t\t\tlimit = { has_lifestyle = learning_lifestyle }\r\n\t\t\tadd_learning_lifestyle_xp = major_lifestyle_experience\r\n\t\t}\r\n\t\telse = {\r\n\t\t\tadd_character_modifier = keen_eye_modifier\r\n\t\t}\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tbase = major_stress_impact_loss\r\n\t\t\tzealous = medium_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\thas_trait = zealous\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tafter = {\r\n\t\tif = {\r\n\t\t\tlimit = {\r\n\t\t\t\tis_ai = yes\r\n\t\t\t\thas_variable = created_random_merchant_var #we only kill them if we created them, not if they came from the pool\r\n\t\t\t}\r\n\t\t\tscope:relic_merchant = {\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\troot = { is_ai = yes }\r\n\t\t\t\t\t}\r\n\t\t\t\t\tsilent_disappearance_effect = yes\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tremove_variable = created_random_merchant_var\r\n\t\t}\r\n\t}\r\n}",
+    "excerpt_utf8_sha256": "34b099d17c8444bf7cbb12b6a79b6855e8e4ee5202a013b40f5fe949ae48c23d"
+  },
+  "local_helpers": [
+    {
+      "line_start": 12566,
+      "line_end": 12575,
+      "text": "scripted_effect pilgrimage_6770_relic_effect = {\r\n\tif = {\r\n\t\tlimit = { has_trait = trusting }\r\n\t\tadd_piety = medium_piety_gain\r\n\t\tadd_prestige = medium_prestige_gain\r\n\t}\r\n\telse = {\r\n\t\tadd_piety = minor_piety_gain\r\n\t}\r\n}",
+      "excerpt_utf8_sha256": "bd4b8550701a1c18909a364d41500162523c896089dbcadd53f8b99733067d84"
+    },
+    {
+      "line_start": 12577,
+      "line_end": 12585,
+      "text": "scripted_trigger pilgrimage_6770_trigger = {\r\n\tage = { 20 60 }\r\n\tis_lowborn = yes\r\n\thas_faith = root.faith #We are looking for a relic merchant who sells relics we have an interest in and can use.\r\n\tstewardship = {\r\n\t\tmin_template_decent_skill\r\n\t\tmax_template_decent_skill\r\n\t}\r\n}",
+      "excerpt_utf8_sha256": "cdb6753d613c1ac1bd7033d4fa137585c6e25bde82edecd28ba232b5e2017839"
+    }
+  ],
+  "common_helpers": [
+    {
+      "line_start": 1225,
+      "line_end": 1239,
+      "text": "pious_type_option_effect = {\r\n\tinvolved_activity ?= {\r\n\t\tif = {\r\n\t\t\tlimit = { \r\n\t\t\t\tOR = {\r\n\t\t\t\t\tactivity_has_pious_pilgrimage_type_trigger = yes\r\n\t\t\t\t\t#Hajj should also be considered a pious pilgrimage\r\n\t\t\t\t\tactivity_has_hajj_pilgrimage_type_trigger = yes\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tcustom_tooltip = pilgrimage_pious_type_tt_positive\r\n\t\t\tactivity_special_type_progression_major= yes\r\n\t\t}\r\n\t}\r\n}",
+      "excerpt_utf8_sha256": "606811ae688bc04ba2a3006814ff504c9780251e5be93c2ba626c653cee1dc71"
+    },
+    {
+      "line_start": 1242,
+      "line_end": 1250,
+      "text": "worldly_type_option_effect = {\r\n\tinvolved_activity ?= {\r\n\t\tif = {\r\n\t\t\tlimit = { activity_has_worldly_pilgrimage_type_trigger = yes }\r\n\t\t\tcustom_tooltip = pilgrimage_worldly_type_tt_positive\r\n\t\t\tactivity_special_type_progression_major = yes\r\n\t\t}\r\n\t}\r\n}",
+      "excerpt_utf8_sha256": "bbb065ab9c41cc3b14c60c198d966c41e4bc9a824000f8b03142d434c45f9085"
+    },
+    {
+      "line_start": 1253,
+      "line_end": 1256,
+      "text": "bonus_to_all_types_effect = {\r\n\tpious_type_option_effect = yes\r\n\tworldly_type_option_effect = yes\r\n}",
+      "excerpt_utf8_sha256": "437e3fd9c9476cb5f20c547c4a25dc8876540171c93d34345ae69d49622491ba"
+    }
+  ],
+  "conditions": [
+    "activity_event; cooldown years=1; weight base1; event-level definition has no additional trigger block.",
+    "Merchant search requires age20..60, lowborn, same faith as root and decent-template stewardship; otherwise create merchant_template with root faith/rite.",
+    "Immediate creates religion-specific reliquary or religious sculpture; generic artifact scope alone does not disclose actual artifact ID/properties."
+  ],
+  "source_options": [
+    {
+      "source_key": "pilgrimage.6770.a",
+      "source_order_index": 0,
+      "historical_native_index": 0,
+      "actual_label": "它\u0015EMP 必须\u0015!是我的。",
+      "actual_rendered_index": 0,
+      "visibility": "无显式option trigger；AI权重不是玩家按钮许可",
+      "effects": [
+        "bonus_to_all_types_effect invokes conditional pious/worldly progression helpers.",
+        "In involved_activity optional log-entry branch, set merchant_relic owner=root and apply pilgrimage_6770_relic_effect (trusting: medium piety+medium prestige; else minor piety).",
+        "pay_short_term_gold to merchant uses minor_gold_value with max10; greedy/avaricious stress modifiers are symbolic."
+      ],
+      "selected_R31": true,
+      "future_current_window_permission": false
+    },
+    {
+      "source_key": "pilgrimage.6770.b",
+      "source_order_index": 1,
+      "historical_native_index": 1,
+      "actual_label": "“我敢肯定你不会想以贪婪的价格出售一件圣物……”",
+      "actual_rendered_index": 1,
+      "visibility": "无显式option trigger；外交/管理duel分支",
+      "effects": [
+        "worldly_type_option_effect; success can transfer relic and pay minor_gold_value capped5; failure can apply insulted opinion -10 from merchant to root.",
+        "Two base weights50 carry opposing duel_value compare modifiers3.5/-3.5; not a fixed50/50 probability.",
+        "lazy/gregarious stress modifiers may apply."
+      ],
+      "selected_R31": false,
+      "future_current_window_permission": false
+    },
+    {
+      "source_key": "pilgrimage.6770.c",
+      "source_order_index": 2,
+      "historical_native_index": 2,
+      "actual_label": "“我要把钱花在更有意义的事情上。”",
+      "actual_rendered_index": 2,
+      "visibility": "无显式option trigger",
+      "effects": [
+        "Refuse purchase; zealous symbolic minor stress gain; no explicit gold transfer in this option."
+      ],
+      "selected_R31": false,
+      "future_current_window_permission": false
+    },
+    {
+      "source_key": "pilgrimage.6770.d",
+      "source_order_index": 3,
+      "historical_native_index": null,
+      "actual_label": null,
+      "actual_rendered_index": null,
+      "visibility": "learning >= high_skill_rating",
+      "effects": [
+        "bonus_to_all_types_effect; learning lifestyle gives major_lifestyle_experience, otherwise keen_eye_modifier.",
+        "Base major stress loss with zealous medium stress gain; actual value depends on game traits/modifiers."
+      ],
+      "selected_R31": false,
+      "future_current_window_permission": false
+    }
+  ],
+  "actual_R31": {
+    "machine_id": "4-8e1c2f1861",
+    "run_id": "4-8e1c2f1861--faith-engine--R0031",
+    "event_definition_key": "pilgrimage.6770",
+    "event_instance_id": 9,
+    "observed_at_utc": "2026-10-21T18:07:22.097082+00:00",
+    "offline_analysis_input": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-9-offline-analysis-input.json",
+      "bytes": 47855,
+      "sha256": "39577c3a1bf663ad063214ee86713235ff297712d1a3a29efc919c639b9eee9e"
+    },
+    "selection_intent": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-9-selection-intent.json",
+      "bytes": 51045,
+      "sha256": "77767d53c4bb19da8496ea222ab9f04feab16dbe0f99697bd2f218c048d873fc"
+    },
+    "selection_observed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-9-selection-observed.json",
+      "bytes": 20329,
+      "sha256": "5b53e092c10f04e8194a9a121dd2e50eeafa8a605c7fd50450831c43c6f83e8f"
+    },
+    "original_query": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0040-event-query.actual-results.json",
+      "bytes": 43264,
+      "sha256": "2ac23bd9f92ace6a79b2822f9fa1a86204c795ff5050cd6ccdcbe60027cbd6d9"
+    },
+    "original_ACK": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0041-event-select-once.actual-results.json",
+      "bytes": 24054,
+      "sha256": "3b939cda4c10c3879b0e5676868cd3bdbdc37310456394ee2723f7c12585243e"
+    },
+    "actor_character_id": 31254,
+    "displayed_options_in_actual_order": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "它\u0015EMP 必须\u0015!是我的。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "increase",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“我敢肯定你不会想以贪婪的价格出售一件圣物……”",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“我要把钱花在更有意义的事情上。”",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "snapshot_option_count": 4,
+    "rendered_option_count": 3,
+    "saved_scopes": [
+      {
+        "name": "activity",
+        "name_identifier": 2,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 6,
+          "type_key": "activity",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "host",
+        "name_identifier": 62,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "province",
+        "name_identifier": 37,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "relic_location",
+        "name_identifier": 17936,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "relic_merchant",
+        "name_identifier": 17933,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 42021
+          }
+        }
+      },
+      {
+        "name": "owner",
+        "name_identifier": 5,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 42021
+          }
+        }
+      },
+      {
+        "name": "christian_relic_name",
+        "name_identifier": 6705,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 3,
+          "type_key": "flag",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "random_quality_bonus",
+        "name_identifier": 45357,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 1,
+          "type_key": "value",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          },
+          "numeric_value": {
+            "raw_fixed_point": "2000000",
+            "scale": 100000,
+            "decimal_value": "20",
+            "integer_value": "20"
+          }
+        }
+      },
+      {
+        "name": "quality",
+        "name_identifier": 205,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 1,
+          "type_key": "value",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          },
+          "numeric_value": {
+            "raw_fixed_point": "2000000",
+            "scale": 100000,
+            "decimal_value": "20",
+            "integer_value": "20"
+          }
+        }
+      },
+      {
+        "name": "wealth",
+        "name_identifier": 206,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 1,
+          "type_key": "value",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          },
+          "numeric_value": {
+            "raw_fixed_point": "500000",
+            "scale": 100000,
+            "decimal_value": "5",
+            "integer_value": "5"
+          }
+        }
+      },
+      {
+        "name": "newly_created_artifact",
+        "name_identifier": 6992,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "merchant_relic",
+        "name_identifier": 17934,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "historical_selected_native_index": 0,
+    "historical_selected_option_number": 1,
+    "ack_accepted": true,
+    "independent_old_window_gone": true,
+    "before": {
+      "date_raw": 53146320,
+      "revision": 265,
+      "native_revision": 264,
+      "actor_character_id": 31254,
+      "stress_points": 64,
+      "gold": {
+        "raw": 16059214,
+        "scale": 100000
+      },
+      "prestige": {
+        "raw": 220643100,
+        "scale": 100000
+      },
+      "piety": {
+        "raw": 2028103250,
+        "scale": 100000
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 9,
+        "option_count": 4,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 3,
+            "option_number": 4,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "after": {
+      "date_raw": 53146320,
+      "revision": 266,
+      "native_revision": 265,
+      "actor_character_id": 31254,
+      "stress_points": 81,
+      "gold": {
+        "raw": 15059214,
+        "scale": 100000
+      },
+      "prestige": {
+        "raw": 220643100,
+        "scale": 100000
+      },
+      "piety": {
+        "raw": 2033103250,
+        "scale": 100000
+      },
+      "active_event": null
+    },
+    "observed_bound_snapshot_delta": {
+      "stress_points": 17,
+      "gold": {
+        "raw_delta": -1000000,
+        "scale": 100000,
+        "display_delta": "-10"
+      },
+      "prestige": {
+        "raw_delta": 0,
+        "scale": 100000,
+        "display_delta": "0"
+      },
+      "piety": {
+        "raw_delta": 5000000,
+        "scale": 100000,
+        "display_delta": "50"
+      }
+    },
+    "effect_delta_causality": "Differences between bound original snapshots, not a new isolated-effect experiment.",
+    "historical_policy": {
+      "policy": "native_first_displayed_v1",
+      "registry_decision": null,
+      "registry_knowledge_status": null,
+      "registry_analysis_available": false,
+      "source_sha256": null,
+      "policy_sources": null,
+      "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+    },
+    "specialized_contract_used": false,
+    "effect_preview_complete": false,
+    "semantic_decision_ready": false,
+    "original_EXE_binding": {
+      "schema": "xar.ck3.player-event-trait-membership/v1",
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "status": "available",
+      "snapshot_revision": 264,
+      "date_raw": 53146320,
+      "played_character_id": 31254,
+      "traits": {
+        "lifestyle_poet": false,
+        "journaller": false
+      },
+      "unavailable_reason": null
+    }
+  },
+  "limits": [
+    "R31 rendered only a/b/c despite core snapshot option_count4. d was not rendered; do not infer actor learning or treat core enabled flags as displayed order.",
+    "R31 paid10 and piety+50, prestige0, stress+17. No independent inventory/ownership artifact identity was queried; do not claim a particular relic acquired.",
+    "Script definitions are current installed disk reads; loaded-script byte identity was not newly queried.",
+    "Symbolic costs, XP, stress values and indirect artifact generators are not fully expanded; no complete Native effect preview/quote exists.",
+    "R31 used native_first_displayed fallback because source_compatibility_1_20_0_4.json was missing; source analysis cannot retroactively credit a registered dedicated strategy."
+  ],
+  "action_ready": false,
+  "ordinary_auto_consumption_proven": false,
+  "dedicated_native_contract_proven": false,
+  "R31_reclassified_as_registered_policy": false,
+  "registry_code_modified": false,
+  "source_qualification_or_live_recovery_granted": false
+}

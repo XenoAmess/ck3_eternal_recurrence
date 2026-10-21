@@ -1,0 +1,246 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:16:25.733875+00:00",
+  "ck3_build": "1.20.0.4",
+  "source_analysis_completed": true,
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "historical_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0031-events-001-003-occurrence.json",
+  "historical_run_id": "4-8e1c2f1861--faith-engine--R0031",
+  "source_analysis_is_live_registry_consumption": false,
+  "current_native_legality": null,
+  "action_ready": false,
+  "historical_evidence_is_current_state": false,
+  "ordinary_auto_consumes": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "event_definition_key": "pilgrimage_intent.1060",
+  "static_definition_id": "pilgrimage_intent.1060",
+  "live_native_definition_id": "pilgrimage_intent.1060",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_intent_events.txt",
+      "bytes": 57928,
+      "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878",
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_intent_events.txt",
+      "relevant_lines": [
+        [
+          1516,
+          1778
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "game_relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+      "relevant_lines": [
+        [
+          32,
+          78
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_intent_events_l_simp_chinese.yml",
+      "bytes": 18043,
+      "sha256": "7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a",
+      "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          98,
+          110
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+      "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "relevant_lines": [
+        [
+          248,
+          258
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_travel_effects.txt",
+      "bytes": 1867,
+      "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+      "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+      "relevant_lines": [
+        [
+          9,
+          31
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        [
+          1225,
+          1249
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "game_relative_path": "common/script_values/00_basic_values.txt",
+      "relevant_lines": [
+        [
+          475,
+          475
+        ],
+        [
+          1132,
+          1133
+        ],
+        [
+          1165,
+          1166
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+      "game_relative_path": "common/script_values/00_stress_values.txt",
+      "relevant_lines": [
+        [
+          14,
+          14
+        ],
+        [
+          27,
+          33
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    1516,
+    1778
+  ],
+  "title": "昔日的帝国",
+  "caller": {
+    "pool": "pilgrimage_travel_events",
+    "source_line": 77,
+    "candidate_weight": 50,
+    "probability_claimed": false
+  },
+  "trigger": {
+    "AND": [
+      "reflection_intent",
+      "land location",
+      "neither imperial_contemplation_modifier nor contemplated_ancient_gods_modifier"
+    ],
+    "cooldown_years": 2
+  },
+  "immediate_and_after": "mp_delay_travel_plan90 and mp_resume_travel_plan are gated by has_multiple_players; do not infer a singleplayer90day delay. Options A/B separately declare10day delay.",
+  "source_options": [
+    {
+      "source_key": "pilgrimage_intent.1060.a",
+      "historical_native_index": 0,
+      "label": "我应当默想古帝国。",
+      "lines": [
+        1609,
+        1665
+      ],
+      "effects": [
+        "worldly_type_option_effect only when worldly type; not automatically pious progress",
+        "delay_travel_plan10days",
+        "minor_piety_gain50",
+        "learning duel versus decent_skill_rating12: two base weights50 with opposite duel_value*0.5 compare modifiers; not a constant50percent coin",
+        "success: stress-20 and15year imperial_contemplation_modifier(stewardship+1,title_creation_cost_mult-0.2); failure: toast only",
+        "stress_and_fulfillment_impact base-15,lazy+20,impatient+20 before character/system modifiers"
+      ],
+      "selected_R31": true
+    },
+    {
+      "source_key": "pilgrimage_intent.1060.b",
+      "historical_native_index": 1,
+      "label": "我应当默想古信仰。",
+      "lines": [
+        1666,
+        1740
+      ],
+      "effects": [
+        "conditional pious progress",
+        "10daydelay",
+        "same learning duel weight structure",
+        "success:15year contemplated_ancient_gods_modifier(learning+1,monthly_piety_gain_mult+0.2),open_minded_perk if missing,piety100,conditional mystic traitXP",
+        "failure:toast only",
+        "base stress-15 plus lazy/impatient/cynical/arrogant+20 inputs before modifiers"
+      ],
+      "selected_R31": false
+    },
+    {
+      "source_key": "pilgrimage_intent.1060.c",
+      "historical_native_index": 2,
+      "label": "胡扯，阿普利亚将永世长存！",
+      "lines": [
+        1741,
+        1757
+      ],
+      "visibility": "not landless adventurer",
+      "effects": [
+        "zealous/patient medium stress-impact gain; no option piety/progress/10daydelay block"
+      ],
+      "selected_R31": false
+    },
+    {
+      "source_key": "pilgrimage_intent.1001.b",
+      "historical_native_index": null,
+      "lines": [
+        1758,
+        1774
+      ],
+      "visibility": "landless_adventurer_government",
+      "R31_shown": false,
+      "effects": [
+        "same zealous/patient stress inputs"
+      ],
+      "source_order_index": 3,
+      "native_index_observed": false
+    }
+  ],
+  "actual_R31": {
+    "instance": 2,
+    "day": 22,
+    "selected_native_index": 0,
+    "ack_accepted": true,
+    "independent_old_window_gone": true,
+    "piety_delta_raw": 5000000,
+    "scale": 100000,
+    "gold_prestige_delta_raw": [
+      0,
+      0
+    ],
+    "stress_before_after": [
+      0,
+      0
+    ],
+    "duel_modifier_outcome_or_ETA_or_XP_observed": false
+  },
+  "agent_reference": "Recognize this source as analyzed; identify exact namespace, fresh scope/options and current legality. Ancient-empires A is not ancient-faith B and does not automatically advance this pious activity. Do not claim duel success from ACK or floor-zero stress.",
+  "unshown_index_correction": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-21T18:49:18.022483+00:00",
+    "old_candidate": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\root\\r31-event-analysis-a01\\candidate\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-intent-1060-source-analysis.json",
+      "bytes": 8095,
+      "sha256": "e6dac5facd7376733e90641344bd93f69d7ed83cb4aa76a437f767dc883fa483"
+    },
+    "reason": "The fourth authored source branch was not shown; its native index is unknown, not source ordinal3."
+  }
+}

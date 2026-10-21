@@ -1,0 +1,1005 @@
+{
+  "schema": "faith-e02-r31-actual-event-batch-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:48:34.949968+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0031",
+  "ck3_build": "1.20.0.4",
+  "actual_event_input_count": 13,
+  "actual_selection_count": 12,
+  "newly_source_analyzed_this_batch": [
+    "pilgrimage_intent.1060",
+    "travel_danger_events.1012",
+    "pilgrimage.6770",
+    "pilgrimage.6830",
+    "pilgrimage.6820"
+  ],
+  "ordinary_auto_consumes": false,
+  "current_native_legality": null,
+  "cutoff": "7000 actual window queried, capture gate declined, no event13 intent/select/post; no9001 or return credit in this batch",
+  "events": [
+    {
+      "event_instance_id": 1,
+      "event_definition_key": "travel_start_event.1060",
+      "date_raw": 53144352,
+      "elapsed_days": 1,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "我等不及了！",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-1-offline-analysis-input.json",
+        "bytes": 41291,
+        "sha256": "9bc7585d4f9c3b649017492ce0a61ad2b7b69cc4787d12037b087790b1a0497b"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0002-event-query.actual-results.json",
+        "bytes": 29957,
+        "sha256": "fcebb00100eaf292c42a7e498a44a6f4de7cd59001b1e866ae72a73addb5982c"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-1-selection-intent.json",
+        "bytes": 42701,
+        "sha256": "b9ec198d00b7d029d12354164d3b0b5318dbfb2c664e1e20ab459f787c0f121f"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-1-selection-observed.json",
+        "bytes": 20315,
+        "sha256": "ce602f411a29a86802768c86f7bd5b771f49d2a7b14a8ba25806eac1378c1769"
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0003-event-select-once.actual-results.json",
+        "bytes": 24011,
+        "sha256": "38c86f55cea07cb7078132dbc37ac157f0d31b77af2edac2d50ba47e6ba46e39"
+      }
+    },
+    {
+      "event_instance_id": 2,
+      "event_definition_key": "pilgrimage_intent.1060",
+      "date_raw": 53144856,
+      "elapsed_days": 22,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1060-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "我应当默想古帝国。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "我应当默想古信仰。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "胡扯，阿普利亚将永世长存！",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-2-offline-analysis-input.json",
+        "bytes": 43363,
+        "sha256": "50f1c42bc91a9903d39c110d8a29184525742130bf3515c218c7188b09c4dc7d"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 5000000,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0007-event-query.actual-results.json",
+        "bytes": 32652,
+        "sha256": "3a7a1260cc42ac9739cf0332ec2a719835c1bda9ac182fdc0f2aff9b8136a4f3"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-2-selection-intent.json",
+        "bytes": 46736,
+        "sha256": "3f51b683fc41be401e30b198db6116e1413a6b99b5b338e1eeec2d6218c777e7"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-2-selection-observed.json",
+        "bytes": 20323,
+        "sha256": "a6b31bca2e9ea3d365179b6c7017b29a21bf4252c45f0657c6509e53a2bd48e4"
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0008-event-select-once.actual-results.json",
+        "bytes": 24030,
+        "sha256": "58fad7c3e5d70a8cb621a35be85c0fac8d09de0c9a358f95152daa1b2fb8a33c"
+      }
+    },
+    {
+      "event_instance_id": 3,
+      "event_definition_key": "travel_danger_events.1012",
+      "date_raw": 53144880,
+      "elapsed_days": 23,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-danger-1012-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "“等等，万一有毒呢？！”",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "让潘多尔夫尝尝看。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "“只有我能先尝！”",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+        "bytes": 43394,
+        "sha256": "ecec214b89eb5a2aa298e11ed5144e72120698562eaae8826656e29eb9f79dcb"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0010-event-query.actual-results.json",
+        "bytes": 33436,
+        "sha256": "279e95139f153ae10fc482a8f0bcddeb22ff12f559e833d5a5565c386099967b"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-3-selection-intent.json",
+        "bytes": 46768,
+        "sha256": "507080aa931c8488487487bfa9ca891065253df8baff2eecf24164c4a03454dc"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+        "bytes": 20326,
+        "sha256": "63a98327089c539e95e2da6562bd76d1c715d91258598f36df024b1eba008046"
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0011-event-select-once.actual-results.json",
+        "bytes": 24030,
+        "sha256": "4307a80ef5d9271ddf862c1f545f79a41f74c9f7259ba33b9861e3f33f5dbb30"
+      }
+    },
+    {
+      "event_instance_id": 4,
+      "event_definition_key": "pilgrimage_intent.1040",
+      "date_raw": 53145192,
+      "elapsed_days": 36,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1040-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "那只雄赤鹿是神的使者！跟上他！",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "我们不能分心。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-4-offline-analysis-input.json",
+        "bytes": 42383,
+        "sha256": "2af01531defae90e9a9d20f22c71690632a962f6b6d52ee625e1a71e55c60bee"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 5000000,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0014-event-query.actual-results.json",
+        "bytes": 31756,
+        "sha256": "dc02fca2df8de3c9484d1af947ee230a5226c9d0f9281baf5b4a20e7ab2ac4af"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-4-selection-intent.json",
+        "bytes": 44785,
+        "sha256": "82f8335bae24c8cfffee159f4655a1f892076ebcb4013b66adccd63cb285fc7f"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+        "bytes": 20331,
+        "sha256": "47aa720444ee722c211e93c0299d37c25e31ecf1636e99e06bdb4c124c5d56c6"
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0015-event-select-once.actual-results.json",
+        "bytes": 24046,
+        "sha256": "68db5b3670d271d389b1ae030ebb73a3d31623611b774d88be4a5edf6ebcd1c6"
+      }
+    },
+    {
+      "event_instance_id": 5,
+      "event_definition_key": "pilgrimage_intent.1100",
+      "date_raw": 53145864,
+      "elapsed_days": 64,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1100-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "这当然是我的神圣义务！",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "我真正想要的是享受和体验其他文化。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "我所做的只是我所处的地位所要求的。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-5-offline-analysis-input.json",
+        "bytes": 42794,
+        "sha256": "5042eba5d118c71805cbf7cddf9af2183bdb4a71d5ac9da87b85d175dbdf37f6"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0023-event-query.actual-results.json",
+        "bytes": 31970,
+        "sha256": "6c40d901d178f8b2f59cbad4974322d9c1c2d3e6c38a1d9f04f09bd6b6fa91e4"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-5-selection-intent.json",
+        "bytes": 45959,
+        "sha256": "d99b6c1a8bf42d86a9063da6753388f4b69bd30efe5bb6ab16237c4f3fa566e3"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-5-selection-observed.json",
+        "bytes": 20333,
+        "sha256": "8967fc8c4cfae4959a9b397fd6cb3b9f6421edd834081b3e442dd2602d6d200f"
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0024-event-select-once.actual-results.json",
+        "bytes": 24048,
+        "sha256": "8b759b21e849ae12b154c03c24e7553e458d0c03a63676e1a72315a127eb52e5"
+      }
+    },
+    {
+      "event_instance_id": 6,
+      "event_definition_key": "travel_events_cities.1020",
+      "date_raw": 53145888,
+      "elapsed_days": 65,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-cities-1020-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 2,
+          "resolved_name": "思考生命有多么脆弱是有价值的。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 7,
+          "resolved_name": "我不会再这里浪费任何时间。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-6-offline-analysis-input.json",
+        "bytes": 45199,
+        "sha256": "ff8d8d75bdf726a4a981c6388dafc812c777126a48e7587b685758e9da3c387e"
+      },
+      "selected_native_option_index": 2,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0026-event-query.actual-results.json",
+        "bytes": 34174,
+        "sha256": "a6a78510a89ad9c601b855106c7ee98cb58d94459bc3efca47cbb59290e9990e"
+      },
+      "selected_option_number": 3,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-6-selection-intent.json",
+        "bytes": 47867,
+        "sha256": "490b541582f0d3bfcc81393bab602ae2f98427c2e7e4d98cff90a591787cdb81"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-6-selection-observed.json",
+        "bytes": 46563,
+        "sha256": "3fbb748ac2ba6ccc72fb42c57f2a445be874a8bbc686b6a4a723ec1d7c08256d"
+      },
+      "stress_before_after": [
+        0,
+        75
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0028-event-select-once.actual-results.json",
+        "bytes": 24052,
+        "sha256": "7f458393016711750b4e8a89715f9072b824c5466855896744642305c353abc2"
+      }
+    },
+    {
+      "event_instance_id": 7,
+      "event_definition_key": "pilgrimage.5001",
+      "date_raw": 53146080,
+      "elapsed_days": 73,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-5001-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "我走过了神圣的道路。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-7-offline-analysis-input.json",
+        "bytes": 41444,
+        "sha256": "edf41e1fe7d249de65e47bef1f4920cf1516ceed05ac6eeaa122be3429a67cb9"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0031-event-query.actual-results.json",
+        "bytes": 30271,
+        "sha256": "80452db5e54ca5b4ff2dba0a900fe8bc2033acd9df4f5957b0e1662fe2ed5be6"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-7-selection-intent.json",
+        "bytes": 43339,
+        "sha256": "64b93fd557728a4354cf37088ae7dd2e9f463a9e6583ab6ac5113b6d39212b18"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-7-selection-observed.json",
+        "bytes": 44609,
+        "sha256": "23547844787da239ddfb55cb98ba5f6559a617f6a082258debd431c56c34bf5b"
+      },
+      "stress_before_after": [
+        75,
+        64
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0033-event-select-once.actual-results.json",
+        "bytes": 24053,
+        "sha256": "118f82debfa887bda79482218aed6b4fbe7e32f7049218caa7cdbb9d50c2b1e6"
+      }
+    },
+    {
+      "event_instance_id": 8,
+      "event_definition_key": "pilgrimage.4100",
+      "date_raw": 53146104,
+      "elapsed_days": 74,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-4100-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "“请给我一个徽章！”",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "我的金钱有更好的用途。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-8-offline-analysis-input.json",
+        "bytes": 46511,
+        "sha256": "d86449de018aa6f3f59aadce126a3d7625b47933a8f86ce8faf803dfb206cff6"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": -3125000,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0035-event-query.actual-results.json",
+        "bytes": 41558,
+        "sha256": "d8eb4b9695d40be0d510c35704990b88bd47c5a99ee53a4716581782be1d7b39"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-8-selection-intent.json",
+        "bytes": 48909,
+        "sha256": "8cf322168b8ea70a398e743d3b10820be0bb6e48aa2027622dfcebb0f13e3a91"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-8-selection-observed.json",
+        "bytes": 45328,
+        "sha256": "40d010a451d211fb55a6959f2e5c01549db1f826981721a8d9fa50550b967f73"
+      },
+      "stress_before_after": [
+        64,
+        64
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0037-event-select-once.actual-results.json",
+        "bytes": 24054,
+        "sha256": "d104b617968ac72c65139f883124faa59851caf6d60c0c9c4b575e3b073a5a75"
+      }
+    },
+    {
+      "event_instance_id": 9,
+      "event_definition_key": "pilgrimage.6770",
+      "date_raw": 53146320,
+      "elapsed_days": 83,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6770-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "它\u0015EMP 必须\u0015!是我的。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "“我敢肯定你不会想以贪婪的价格出售一件圣物……”",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "“我要把钱花在更有意义的事情上。”",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-9-offline-analysis-input.json",
+        "bytes": 47855,
+        "sha256": "39577c3a1bf663ad063214ee86713235ff297712d1a3a29efc919c639b9eee9e"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": -1000000,
+        "piety": 5000000,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0040-event-query.actual-results.json",
+        "bytes": 43264,
+        "sha256": "2ac23bd9f92ace6a79b2822f9fa1a86204c795ff5050cd6ccdcbe60027cbd6d9"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-9-selection-intent.json",
+        "bytes": 51045,
+        "sha256": "77767d53c4bb19da8496ea222ab9f04feab16dbe0f99697bd2f218c048d873fc"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-9-selection-observed.json",
+        "bytes": 20329,
+        "sha256": "5b53e092c10f04e8194a9a121dd2e50eeafa8a605c7fd50450831c43c6f83e8f"
+      },
+      "stress_before_after": [
+        64,
+        81
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0041-event-select-once.actual-results.json",
+        "bytes": 24054,
+        "sha256": "3b939cda4c10c3879b0e5676868cd3bdbdc37310456394ee2723f7c12585243e"
+      }
+    },
+    {
+      "event_instance_id": 10,
+      "event_definition_key": "pilgrimage.6830",
+      "date_raw": 53147040,
+      "elapsed_days": 113,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6830-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "祈祷的时间到了。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "看看那些拱门……真漂亮。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "我应该进行奉献。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-10-offline-analysis-input.json",
+        "bytes": 44399,
+        "sha256": "227a2af78ce14adb9ce4abb453f32b57fed6fde87d29bd6874f4dd12765f30e9"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 2500000,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0049-event-query.actual-results.json",
+        "bytes": 35799,
+        "sha256": "5f31e4f10ac37912d8068356cb055488354b6d01df914d265c888ff57a66c647"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-10-selection-intent.json",
+        "bytes": 48012,
+        "sha256": "8549c862ffbfe06a87582949427919b50ec5407f736b8ccbd26a23baa73c2c12"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-10-selection-observed.json",
+        "bytes": 20332,
+        "sha256": "447abb58c18f8fc54cd2e6e1fdfeb808594edc81c7bad2228d89ba4c47ab1673"
+      },
+      "stress_before_after": [
+        64,
+        31
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0050-event-select-once.actual-results.json",
+        "bytes": 24056,
+        "sha256": "01c65af7070c2fa445e20148bd5c12b7134c66c33941b5f9a48c9e3f4d8893e1"
+      }
+    },
+    {
+      "event_instance_id": 11,
+      "event_definition_key": "bookmark.1070",
+      "date_raw": 53147088,
+      "elapsed_days": 115,
+      "actor_character_id": 31254,
+      "source_document": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_norman_sicily1070_12003.py",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "所有这些，甚至还有更多，都会是我的！",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "也许我应该远离帝国。",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "教宗和皇帝都可以保留他们的土地……",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-11-offline-analysis-input.json",
+        "bytes": 45908,
+        "sha256": "58d631a7d55df8e45426771d854518b65b38664852fe6c7c9e51f7425fc82d8d"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": 0,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0052-event-query.actual-results.json",
+        "bytes": 39437,
+        "sha256": "9df050a78fe0f6dbcf4dd5c1fb42b635aac212bca275a319b7fe640746c4e6b7"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-11-selection-intent.json",
+        "bytes": 48823,
+        "sha256": "408f99d5e8ada363b3306e01f1e2cb5eecb2bbf179bcf1652537a900d850f34e"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-11-selection-observed.json",
+        "bytes": 20330,
+        "sha256": "b7defe6a5b1971625bd83920523a8f2845071cbc2a76597006975de67344917a"
+      },
+      "stress_before_after": [
+        31,
+        31
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0053-event-select-once.actual-results.json",
+        "bytes": 24056,
+        "sha256": "21f2b3f2ae29eddd3edd4a5ce44c95a6ff7bf58470117ef42e5879976b1de7a7"
+      }
+    },
+    {
+      "event_instance_id": 12,
+      "event_definition_key": "pilgrimage.6820",
+      "date_raw": 53147760,
+      "elapsed_days": 143,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6820-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "“我来一本！”",
+          "enabled": true,
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "“让我看看——啊！如果你在这里转弯……”",
+          "enabled": false,
+          "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,learning 学识\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,learning_i \u0016skill_learning_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,diplomacy 外交\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,diplomacy_i \u0016skill_diplomacy_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!"
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "神会引导我。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-offline-analysis-input.json",
+        "bytes": 44776,
+        "sha256": "db234d75e41c29342419c6fb9903a42ad5209ba550b1a7056573a0de0e2bb24c"
+      },
+      "selected_native_option_index": 0,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_deltas_raw": {
+        "gold": -500000,
+        "piety": 0,
+        "prestige": 0
+      },
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0058-event-query.actual-results.json",
+        "bytes": 36509,
+        "sha256": "37a0ff0281b8ff8598445a521413801ad645b2cf0fb9d9677503fff84408a485"
+      },
+      "selected_option_number": 1,
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "selection_intent": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-selection-intent.json",
+        "bytes": 48432,
+        "sha256": "876885465f18c0ca855ebcd3642056371217afad89bc10f5ee01ae991aab62bf"
+      },
+      "selection_observed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-selection-observed.json",
+        "bytes": 20332,
+        "sha256": "d52720ea913540ddc7ec154f96ae67c32fb03eddf8877f547100d98981388a8c"
+      },
+      "stress_before_after": [
+        31,
+        48
+      ],
+      "selection_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json",
+        "bytes": 24056,
+        "sha256": "cc05109dfbee02c59b643a1f3662859c68547a22b256c77dc8c1a4a33b97056a"
+      }
+    },
+    {
+      "event_instance_id": 13,
+      "event_definition_key": "pilgrimage.7000",
+      "date_raw": 53148240,
+      "elapsed_days": 163,
+      "actor_character_id": 31254,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-7000-source-analysis.json",
+      "source_analysis_completed": true,
+      "source_reuse_not_current_permission": true,
+      "native_legality": null,
+      "ordinary_auto_consumes": false,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "来到罗马是一种荣幸。",
+          "enabled": true,
+          "unavailable_reason": ""
+        }
+      ],
+      "sealed_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-13-offline-analysis-input.json",
+        "bytes": 41579,
+        "sha256": "4c36d15ec117a535098c72f5593cd8d2380af2a6e5b58af077ac777bd6d7ff09"
+      },
+      "selected_native_option_index": null,
+      "submission_attempted": false,
+      "ack_accepted": null,
+      "old_instance_gone_in_independent_snapshot": null,
+      "wallet_deltas_raw": null,
+      "query_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0063-event-query.actual-results.json",
+        "bytes": 29865,
+        "sha256": "54115edcf6166e9c1f81cff2f6983bdfcf013f6d7d3d62ce2e223ddbd9958b21"
+      },
+      "selection_status": "not_submitted_capture_checkpoint_declined"
+    }
+  ]
+}

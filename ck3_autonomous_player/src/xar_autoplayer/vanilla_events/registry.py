@@ -346,6 +346,19 @@ def query_vanilla_event_knowledge_v1(
         from .records_vanilla_shards import VANILLA_HISTORICAL_CHARACTER_12004_CONTRACT
         from .records_analysis_vanilla_shards import VANILLA_HISTORICAL_CHARACTER_12004_ANALYSIS
 
+        from .records_pilgrimage_travel_source_only_12004 import (
+            PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004,
+        )
+
+        source_only = PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.get(event_definition_key)
+        if source_only is not None:
+            return _knowledge_response(
+                status="unavailable", event_definition_key=event_definition_key,
+                ck3_build=ck3_build, contract=None,
+                analysis=source_only["analysis"], observations=source_only["observations"],
+                unavailable_reason="source_analyzed_no_occurrence_contract",
+            )
+
         current_records = {
             EVENT_KEY: FAITH_CREATION1021_12004_RECORD,
             HOF_EVENT_KEY: HEAD_OF_FAITH0100_12004_RECORD,

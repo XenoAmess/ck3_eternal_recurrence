@@ -1,0 +1,453 @@
+{
+  "schema": "faith-e02-r31-extra-pilgrimage-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:47:12.709783+00:00",
+  "event_definition_key": "pilgrimage.6830",
+  "title": "圣地沉思（源码概括；题键 pilgrimage.6830.t）",
+  "game_version_scope": "1.20.0.4",
+  "source_status": "source_analyzed",
+  "analysis_kind": "source_only_with_historical_R31_readback",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "relevant_lines": [
+        [
+          14149,
+          14325
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        [
+          1225,
+          1239
+        ],
+        [
+          1242,
+          1250
+        ],
+        [
+          1253,
+          1256
+        ]
+      ]
+    }
+  ],
+  "definition": {
+    "line_start": 14149,
+    "line_end": 14325,
+    "text": "pilgrimage.6830 = {\r\n\ttype = activity_event\r\n\ttitle = pilgrimage.6830.t\r\n\tdesc = pilgrimage.6830.desc\r\n\ttheme = pilgrimage_destination\r\n\toverride_background = { reference = temple }\r\n\tleft_portrait = {\r\n\t\tcharacter = root\r\n\t\ttriggered_animation = {\r\n\t\t\ttrigger = {\r\n\t\t\t\tOR = {\r\n\t\t\t\t\thas_trait = cynical\r\n\t\t\t\t\thas_trait = lifestyle_reveler\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tanimation = boredom\r\n\t\t}\r\n\t\tanimation = personality_zealous\r\n\t}\r\n\tartifact = {\r\n\t\ttrigger = { exists = scope:votive_artifact }\r\n\t\ttarget = scope:votive_artifact\r\n\t\tposition = lower_center_portrait\r\n\t}\r\n\tcooldown = { years = 1 }\r\n\ttrigger = {\r\n\t\thas_activity_intent = reflection_intent\r\n\t\tNOT = { religion = religion:tengrism_religion }\r\n\t}\r\n\timmediate = {\r\n\t\trandom_character_artifact = {\r\n\t\t\tlimit = {\r\n\t\t\t\tis_important_artifact_trigger = no\r\n\t\t\t\tNOR = { \r\n\t\t\t\t\trarity = illustrious\r\n\t\t\t\t\trarity = famed\r\n\t\t\t\t}\r\n\t\t\t\tartifact_durability < 50\r\n\t\t\t\tis_equipped = no\r\n\t\t\t}\r\n\t\t\talternative_limit = {\r\n\t\t\t\tis_important_artifact_trigger = no\r\n\t\t\t\tNOR = { \r\n\t\t\t\t\trarity = illustrious\r\n\t\t\t\t\trarity = famed\r\n\t\t\t\t}\r\n\t\t\t\tis_equipped = no\r\n\t\t\t}\r\n\t\t\talternative_limit = {\r\n\t\t\t\tis_important_artifact_trigger = no\r\n\t\t\t\tis_equipped = no\r\n\t\t\t}\r\n\t\t\talternative_limit = {\r\n\t\t\t\tis_important_artifact_trigger = no\r\n\t\t\t}\r\n\t\t\tsave_scope_as = votive_artifact\r\n\t\t}\r\n\t}\r\n\tweight_multiplier = {\r\n\t\tbase = 1\r\n\t\tmodifier = {\r\n\t\t\tfactor = 2\r\n\t\t\tOR = { #you're in a reflection journey\r\n\t\t\t\thas_activity_intent = reflection_intent\r\n\t\t\t\tscope:activity = {\r\n\t\t\t\t\thas_activity_option = {\r\n\t\t\t\t\t\tcategory = special_type\r\n\t\t\t\t\t\toption = pilgrimage_type_pious\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t#Pray\r\n\toption = {\r\n\t\tname = pilgrimage.6830.a\r\n\t\tpious_type_option_effect = yes\r\n\t\tadd_piety = miniscule_piety_gain\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tbase = medium_stress_impact_loss\r\n\t\t\tzealous = medium_stress_impact_loss\r\n\t\t\tarrogant = minor_stress_impact_gain\r\n\t\t\tcynical = medium_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\thas_trait = arrogant\r\n\t\t\t\thas_trait = cynical\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t#Admire the architecture\r\n\toption = {\r\n\t\tname = pilgrimage.6830.b\r\n\t\tworldly_type_option_effect = yes\r\n\t\tif = {\r\n\t\t\tlimit = { has_lifestyle = learning_lifestyle }\r\n\t\t\tadd_learning_lifestyle_xp = minor_lifestyle_experience\r\n\t\t}\r\n\t\trandom_list = {\r\n\t\t\t80 = {\r\n\t\t\t\tadd_character_modifier = {\r\n\t\t\t\t\tmodifier = architectural_interest_modifier\r\n\t\t\t\t\tyears = 10\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\t20 = {\r\n\t\t\t\tadd_learning_skill = 1\r\n\t\t\t}\r\n\t\t}\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tbase = medium_stress_impact_loss\r\n\t\t\tzealous = medium_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\thas_trait = zealous\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t#Make a donation\r\n\toption = {\r\n\t\tname = pilgrimage.6830.c\r\n\t\ttrigger = {\r\n\t\t\texists = scope:votive_artifact\r\n\t\t\thas_trait = pilgrim #Only pilgrim since you can't level up the hajj trait\r\n\t\t\thas_trait_xp = {\r\n\t\t\t\ttrait = pilgrim\r\n\t\t\t\tvalue < 100\r\n\t\t\t}\r\n\t\t}\r\n\t\tcustom_tooltip = pilgrimage.6830.c.tt\r\n\t\tpious_type_option_effect = yes\r\n\t\tadd_piety = miniscule_piety_gain\r\n\t\tadd_trait_xp = {\r\n\t\t\ttrait = pilgrim\r\n\t\t\tvalue = 20\r\n\t\t}\r\n\t\thidden_effect = { destroy_artifact = scope:votive_artifact }\r\n\t\tstress_and_fulfillment_impact = {\r\n\t\t\tbase = medium_stress_impact_loss\r\n\t\t\tgreedy = minor_stress_impact_gain\r\n\t\t\tavaricious = minor_stress_impact_gain\r\n\t\t\tcynical = medium_stress_impact_gain\r\n\t\t}\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\tOR = {\r\n\t\t\t\t\thas_trait = greedy\r\n\t\t\t\t\thas_trait = avaricious\r\n\t\t\t\t\thas_trait = cynical\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0\r\n\t\t\t\tOR = {\r\n\t\t\t\t\tscope:votive_artifact = {\r\n\t\t\t\t\t\trarity = illustrious\r\n\t\t\t\t\t}\r\n\t\t\t\t\tscope:votive_artifact = {\r\n\t\t\t\t\t\trarity = famed\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 2\r\n\t\t\t\thas_trait = zealous\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}",
+    "excerpt_utf8_sha256": "898c41498c50b69d1ee0ad53eaacff59895aeb5811e936b63d0c9dff0696857a"
+  },
+  "local_helpers": [],
+  "common_helpers": [
+    {
+      "line_start": 1225,
+      "line_end": 1239,
+      "text": "pious_type_option_effect = {\r\n\tinvolved_activity ?= {\r\n\t\tif = {\r\n\t\t\tlimit = { \r\n\t\t\t\tOR = {\r\n\t\t\t\t\tactivity_has_pious_pilgrimage_type_trigger = yes\r\n\t\t\t\t\t#Hajj should also be considered a pious pilgrimage\r\n\t\t\t\t\tactivity_has_hajj_pilgrimage_type_trigger = yes\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tcustom_tooltip = pilgrimage_pious_type_tt_positive\r\n\t\t\tactivity_special_type_progression_major= yes\r\n\t\t}\r\n\t}\r\n}",
+      "excerpt_utf8_sha256": "606811ae688bc04ba2a3006814ff504c9780251e5be93c2ba626c653cee1dc71"
+    },
+    {
+      "line_start": 1242,
+      "line_end": 1250,
+      "text": "worldly_type_option_effect = {\r\n\tinvolved_activity ?= {\r\n\t\tif = {\r\n\t\t\tlimit = { activity_has_worldly_pilgrimage_type_trigger = yes }\r\n\t\t\tcustom_tooltip = pilgrimage_worldly_type_tt_positive\r\n\t\t\tactivity_special_type_progression_major = yes\r\n\t\t}\r\n\t}\r\n}",
+      "excerpt_utf8_sha256": "bbb065ab9c41cc3b14c60c198d966c41e4bc9a824000f8b03142d434c45f9085"
+    },
+    {
+      "line_start": 1253,
+      "line_end": 1256,
+      "text": "bonus_to_all_types_effect = {\r\n\tpious_type_option_effect = yes\r\n\tworldly_type_option_effect = yes\r\n}",
+      "excerpt_utf8_sha256": "437e3fd9c9476cb5f20c547c4a25dc8876540171c93d34345ae69d49622491ba"
+    }
+  ],
+  "conditions": [
+    "activity_event; cooldown years=1; trigger has_activity_intent=reflection_intent and religion is not tengrism_religion.",
+    "Immediate selects votive_artifact through priority alternative limits: initially unimportant, non-famed/illustrious, durability<50, unequipped; fallbacks progressively loosen these restrictions.",
+    "Weight base1, factor2 for reflection intent or pious special_type; this weighting is not a player choice constraint."
+  ],
+  "source_options": [
+    {
+      "source_key": "pilgrimage.6830.a",
+      "source_order_index": 0,
+      "historical_native_index": 0,
+      "actual_label": "祈祷的时间到了。",
+      "actual_rendered_index": 0,
+      "visibility": "无显式option trigger",
+      "effects": [
+        "pious_type_option_effect and add_piety=miniscule_piety_gain.",
+        "Base medium stress loss, zealous additional loss; arrogant/cynical can add stress. Actual net is not a constant prediction."
+      ],
+      "selected_R31": true,
+      "future_current_window_permission": false
+    },
+    {
+      "source_key": "pilgrimage.6830.b",
+      "source_order_index": 1,
+      "historical_native_index": 1,
+      "actual_label": "看看那些拱门……真漂亮。",
+      "actual_rendered_index": 1,
+      "visibility": "无显式option trigger",
+      "effects": [
+        "worldly_type_option_effect; learning lifestyle may receive minor_lifestyle_experience.",
+        "random_list80 gives architectural_interest_modifier for10years; weight20 gives learning skill+1. R31 did not select this branch.",
+        "Base medium stress loss with zealous medium stress gain."
+      ],
+      "selected_R31": false,
+      "future_current_window_permission": false
+    },
+    {
+      "source_key": "pilgrimage.6830.c",
+      "source_order_index": 2,
+      "historical_native_index": 2,
+      "actual_label": "我应该进行奉献。",
+      "actual_rendered_index": 2,
+      "visibility": "votive_artifact exists; pilgrim trait; pilgrim trait XP<100",
+      "effects": [
+        "pious_type_option_effect; miniscule piety gain; pilgrim trait XP+20.",
+        "Hidden effect destroys scope:votive_artifact: this donation spends an artifact, not an explicit gold amount.",
+        "Base medium stress loss with greedy/avaricious/cynical stress modifiers."
+      ],
+      "selected_R31": false,
+      "future_current_window_permission": false
+    }
+  ],
+  "actual_R31": {
+    "machine_id": "4-8e1c2f1861",
+    "run_id": "4-8e1c2f1861--faith-engine--R0031",
+    "event_definition_key": "pilgrimage.6830",
+    "event_instance_id": 10,
+    "observed_at_utc": "2026-10-21T18:12:53.400607+00:00",
+    "offline_analysis_input": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-10-offline-analysis-input.json",
+      "bytes": 44399,
+      "sha256": "227a2af78ce14adb9ce4abb453f32b57fed6fde87d29bd6874f4dd12765f30e9"
+    },
+    "selection_intent": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-10-selection-intent.json",
+      "bytes": 48012,
+      "sha256": "8549c862ffbfe06a87582949427919b50ec5407f736b8ccbd26a23baa73c2c12"
+    },
+    "selection_observed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-10-selection-observed.json",
+      "bytes": 20332,
+      "sha256": "447abb58c18f8fc54cd2e6e1fdfeb808594edc81c7bad2228d89ba4c47ab1673"
+    },
+    "original_query": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0049-event-query.actual-results.json",
+      "bytes": 35799,
+      "sha256": "5f31e4f10ac37912d8068356cb055488354b6d01df914d265c888ff57a66c647"
+    },
+    "original_ACK": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0050-event-select-once.actual-results.json",
+      "bytes": 24056,
+      "sha256": "01c65af7070c2fa445e20148bd5c12b7134c66c33941b5f9a48c9e3f4d8893e1"
+    },
+    "actor_character_id": 31254,
+    "displayed_options_in_actual_order": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "祈祷的时间到了。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "看看那些拱门……真漂亮。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我应该进行奉献。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "snapshot_option_count": 3,
+    "rendered_option_count": 3,
+    "saved_scopes": [
+      {
+        "name": "activity",
+        "name_identifier": 2,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 6,
+          "type_key": "activity",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "host",
+        "name_identifier": 62,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "province",
+        "name_identifier": 37,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "votive_artifact",
+        "name_identifier": 18053,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "historical_selected_native_index": 0,
+    "historical_selected_option_number": 1,
+    "ack_accepted": true,
+    "independent_old_window_gone": true,
+    "before": {
+      "date_raw": 53147040,
+      "revision": 358,
+      "native_revision": 357,
+      "actor_character_id": 31254,
+      "stress_points": 64,
+      "gold": {
+        "raw": 15734999,
+        "scale": 100000
+      },
+      "prestige": {
+        "raw": 220858920,
+        "scale": 100000
+      },
+      "piety": {
+        "raw": 2035896500,
+        "scale": 100000
+      },
+      "active_event": {
+        "source": "native",
+        "instance_id": 10,
+        "option_count": 3,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 2,
+            "option_number": 3,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "after": {
+      "date_raw": 53147040,
+      "revision": 359,
+      "native_revision": 358,
+      "actor_character_id": 31254,
+      "stress_points": 31,
+      "gold": {
+        "raw": 15734999,
+        "scale": 100000
+      },
+      "prestige": {
+        "raw": 220858920,
+        "scale": 100000
+      },
+      "piety": {
+        "raw": 2038396500,
+        "scale": 100000
+      },
+      "active_event": null
+    },
+    "observed_bound_snapshot_delta": {
+      "stress_points": -33,
+      "gold": {
+        "raw_delta": 0,
+        "scale": 100000,
+        "display_delta": "0"
+      },
+      "prestige": {
+        "raw_delta": 0,
+        "scale": 100000,
+        "display_delta": "0"
+      },
+      "piety": {
+        "raw_delta": 2500000,
+        "scale": 100000,
+        "display_delta": "25"
+      }
+    },
+    "effect_delta_causality": "Differences between bound original snapshots, not a new isolated-effect experiment.",
+    "historical_policy": {
+      "policy": "native_first_displayed_v1",
+      "registry_decision": null,
+      "registry_knowledge_status": null,
+      "registry_analysis_available": false,
+      "source_sha256": null,
+      "policy_sources": null,
+      "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+    },
+    "specialized_contract_used": false,
+    "effect_preview_complete": false,
+    "semantic_decision_ready": false,
+    "original_EXE_binding": {
+      "schema": "xar.ck3.player-event-trait-membership/v1",
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "status": "available",
+      "snapshot_revision": 357,
+      "date_raw": 53147040,
+      "played_character_id": 31254,
+      "traits": {
+        "lifestyle_poet": false,
+        "journaller": false
+      },
+      "unavailable_reason": null
+    }
+  },
+  "limits": [
+    "R31 selected prayer a, not donation c; no artifact consumption may be attributed to R31 from c's unchosen source branch.",
+    "R31 piety+25 and stress-33, gold/prestige unchanged. No new trait/XP/artifact/material outcome experiment was performed.",
+    "Script definitions are current installed disk reads; loaded-script byte identity was not newly queried.",
+    "Symbolic costs, XP, stress values and indirect artifact generators are not fully expanded; no complete Native effect preview/quote exists.",
+    "R31 used native_first_displayed fallback because source_compatibility_1_20_0_4.json was missing; source analysis cannot retroactively credit a registered dedicated strategy."
+  ],
+  "action_ready": false,
+  "ordinary_auto_consumption_proven": false,
+  "dedicated_native_contract_proven": false,
+  "R31_reclassified_as_registered_policy": false,
+  "registry_code_modified": false,
+  "source_qualification_or_live_recovery_granted": false
+}

@@ -1,0 +1,729 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:44:58.716696+00:00",
+  "ck3_build": "1.20.0.4",
+  "source_analysis_completed": true,
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "canonical_target": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6820-source-analysis.json",
+  "historical_run_id": "4-8e1c2f1861--faith-engine--R0031",
+  "historical_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6820-source-analysis.json",
+  "historical_occurrence_pointer": "/actual_R31",
+  "source_analysis_is_live_registry_consumption": false,
+  "current_native_legality": null,
+  "action_ready": false,
+  "historical_evidence_is_current_state": false,
+  "ordinary_auto_consumes": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "event_definition_key": "pilgrimage.6820",
+  "static_definition_id": "pilgrimage.6820",
+  "live_native_definition_id": "pilgrimage.6820",
+  "title": "朝圣者指南",
+  "definition_lines": [
+    13936,
+    14136
+  ],
+  "caller": {
+    "pool": "pilgrimage_destination_events",
+    "source_lines": [
+      379,
+      406
+    ],
+    "candidate_line": 399,
+    "candidate_weight": 120,
+    "pool_trigger": "location = scope:activity.activity_location",
+    "probability_claimed": false
+  },
+  "trigger": {
+    "event_trigger": "Empty trigger; on_action supplies the destination-event selection context",
+    "cooldown_years": 1,
+    "merchant_filter_not_player_eligibility": "pilgrimage_6820_trigger at13925-13932 filters a20-60yearold lowborn merchant with a decent stewardship template; it is not a player age or lowborn requirement"
+  },
+  "immediate_and_after": {
+    "merchant": "Reuse a qualifying local pool character, otherwise create merchant_template at root.location with local culture/Faith/Rite and save guide_merchant",
+    "artifact_creation": {
+      "source_lines": [
+        13984,
+        14010
+      ],
+      "source_only": true,
+      "name_key": "pilgrim_guide_artifact",
+      "localized_name": "《朝圣者指南》",
+      "type": "journal",
+      "visuals": "indian_book when artifacts_use_indian_books_trigger, otherwise book",
+      "modifiers": [
+        {
+          "key": "artifact_monthly_piety_2_modifier",
+          "definition": {
+            "monthly_piety": 0.2
+          }
+        },
+        {
+          "key": "artifact_diplomacy_1_modifier",
+          "definition": {
+            "diplomacy": 1
+          }
+        }
+      ],
+      "initial_script_owner": "scope:guide_merchant",
+      "saved_scope": "guide_scope",
+      "actual_full_artifact_id": null,
+      "actual_player_owner_equipment_and_net_effect_verified": false
+    },
+    "after": "Merchant disappearance cleanup is conditional on AI and the creation variable; do not assert it happened for this human-player occurrence"
+  },
+  "source_options": [
+    {
+      "source_key": "pilgrimage.6820.a",
+      "historical_native_index": 0,
+      "label": "“我来一本！”",
+      "lines": [
+        14029,
+        14073
+      ],
+      "selected_R31": true,
+      "R31_shown": true,
+      "R31_enabled": true,
+      "effects": [
+        "worldly_type_option_effect: progression only if the involved activity has worldly pilgrimage type; not automatic pious progression",
+        "pay_short_term_gold to guide_merchant with gold value=min(minor_gold_value,5); this is a capped script quote, not whole-journey cost",
+        "set guide_scope owner to root with purchased history",
+        "if current_travel_plan exists, add pilgrim_guide_modifier whose definition is travel_safety_mult=0.3; this is a modifier value, not guaranteed30percentagepoints or zero travel danger",
+        "stress_and_fulfillment_impact receives greedy,avaricious,arrogant each=minor_stress_impact_gain20 before character/system handling; actual current trait cause and fulfillment response were not independently read"
+      ],
+      "not_observed_from_script_alone": [
+        "artifact fullID and player ownership",
+        "equipped state",
+        "actual diplomacy+1",
+        "monthly piety+0.2 accruing",
+        "travel safety total/danger change",
+        "activity progression delta",
+        "fulfillment delta"
+      ]
+    },
+    {
+      "source_key": "pilgrimage.6820.b",
+      "historical_native_index": 1,
+      "label": "“让我看看——啊！如果你在这里转弯……”",
+      "lines": [
+        14075,
+        14111
+      ],
+      "selected_R31": false,
+      "R31_shown": true,
+      "R31_enabled": false,
+      "legality": {
+        "trigger_AND": [
+          "learning>=decent_skill_rating12",
+          "diplomacy>=decent_skill_rating12"
+        ],
+        "show_as_unavailable_AND": [
+          "learning<decent_skill_rating12",
+          "diplomacy<decent_skill_rating12"
+        ],
+        "actual_disabled_reason": "Preserved verbatim in actual_R31.actual_shown_options/1/unavailable_reason; no independent six-skill query was performed by this analyst"
+      },
+      "effects": [
+        "bonus_to_all_types_effect invokes pious_type_option_effect and worldly_type_option_effect; actual helper bodies remain type-gated, with pious helper also covering Hajj",
+        "local_expert_modifier for10years; definition monthly_piety=0.2",
+        "random_list weights80 empty /20 add_diplomacy_skill1; no actual random outcome exists because this option was not selected",
+        "add pilgrim_guide_modifier to current_travel_plan; no book purchase or payment block",
+        "humble=medium_stress_impact_gain40 input to stress_and_fulfillment_impact",
+        "destroy the unsold guide_scope artifact"
+      ]
+    },
+    {
+      "source_key": "pilgrimage.6820.c",
+      "historical_native_index": 2,
+      "label_template": "[ROOT.Char.GetFaith.HighGodName]会引导我。",
+      "R31_resolved_label": "神会引导我。",
+      "lines": [
+        14113,
+        14118
+      ],
+      "selected_R31": false,
+      "R31_shown": true,
+      "R31_enabled": true,
+      "effects": [
+        "pious_type_option_effect: only pious/Hajj activity types receive the helper progression",
+        "add_piety=miniscule_piety_gain=miniscule_piety_value25",
+        "destroy the unsold guide_scope artifact; no option payment block"
+      ],
+      "actual_effects_claimed": false,
+      "actual_label": "神会引导我。"
+    }
+  ],
+  "actual_R31": {
+    "observed_at_utc": "2026-10-21T18:18:35.170329+00:00",
+    "machine_id": "4-8e1c2f1861",
+    "instance": 12,
+    "actor_full_id": 31254,
+    "guide_merchant_full_id": 42021,
+    "date_before_after": [
+      53147760,
+      53147760
+    ],
+    "native_revision_before_after": [
+      449,
+      450
+    ],
+    "bridge_pid": 18136,
+    "connection_generation": 1,
+    "actual_shown_options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“我来一本！”",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "increase",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": false,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“让我看看——啊！如果你在这里转弯……”",
+        "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,learning 学识\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,learning_i \u0016skill_learning_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,diplomacy 外交\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,diplomacy_i \u0016skill_diplomacy_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "神会引导我。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "selected_native_index": 0,
+    "selected_option_number": 1,
+    "selected_literal": "“我来一本！”",
+    "ack_accepted": true,
+    "independent_old_window_gone": true,
+    "wallet_piety_prestige_readback": {
+      "played_character_gold": {
+        "before_raw": 16410784,
+        "after_raw": 15910784,
+        "delta_raw": -500000,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "before_raw": 2038689750,
+        "after_raw": 2038689750,
+        "delta_raw": 0,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "before_raw": 221074740,
+        "after_raw": 221074740,
+        "delta_raw": 0,
+        "scale": 100000
+      }
+    },
+    "stress_before_after": [
+      31,
+      48
+    ],
+    "material_effects_beyond_wallet_and_stress_observed": false,
+    "artifact_owner_equipment_full_id": null,
+    "activity_progression_delta": null,
+    "fulfillment_delta": null,
+    "original_policy": {
+      "policy": "native_first_displayed_v1",
+      "registry_decision": null,
+      "registry_knowledge_status": null,
+      "registry_analysis_available": false,
+      "source_sha256": null,
+      "policy_sources": null,
+      "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+    },
+    "source_bindings": {
+      "query": {
+        "file": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0058-event-query.actual-results.json",
+          "bytes": 36509,
+          "sha256": "37a0ff0281b8ff8598445a521413801ad645b2cf0fb9d9677503fff84408a485"
+        },
+        "json_pointer": "/rows/0/result/current_event_window_context"
+      },
+      "ack": {
+        "file": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json",
+          "bytes": 24056,
+          "sha256": "cc05109dfbee02c59b643a1f3662859c68547a22b256c77dc8c1a4a33b97056a"
+        },
+        "json_pointer": "/rows/0/result/event_selection"
+      },
+      "independent_post": {
+        "file": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-selection-observed.json",
+          "bytes": 20332,
+          "sha256": "d52720ea913540ddc7ec154f96ae67c32fb03eddf8877f547100d98981388a8c"
+        },
+        "json_pointer": "/independent_after_snapshot"
+      },
+      "before": {
+        "file": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-offline-analysis-input.json",
+          "bytes": 44776,
+          "sha256": "db234d75e41c29342419c6fb9903a42ad5209ba550b1a7056573a0de0e2bb24c"
+        },
+        "json_pointer": "/query_after_frame"
+      }
+    }
+  },
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "relevant_lines": [
+        [
+          13925,
+          14136
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          915,
+          922
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "game_relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+      "relevant_lines": [
+        [
+          379,
+          406
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        [
+          1225,
+          1256
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_artifact_modifiers.txt",
+      "bytes": 79092,
+      "sha256": "06495c2f0b39634895f9587a4f3fb26725183d913851d4ea1ec6f4d3b8efe059",
+      "game_relative_path": "common/modifiers/00_artifact_modifiers.txt",
+      "relevant_lines": [
+        [
+          504,
+          504
+        ],
+        [
+          772,
+          772
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+      "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "relevant_lines": [
+        [
+          169,
+          172
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_ep2_travel_modifiers.txt",
+      "bytes": 3548,
+      "sha256": "61b162720efbe2e445b5556f423a6bc8c39c804b5ec6895decfe927fae1e11d3",
+      "game_relative_path": "common/modifiers/00_ep2_travel_modifiers.txt",
+      "relevant_lines": [
+        [
+          181,
+          184
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "game_relative_path": "common/script_values/00_basic_values.txt",
+      "relevant_lines": [
+        [
+          49,
+          51
+        ],
+        [
+          452,
+          452
+        ],
+        [
+          475,
+          475
+        ],
+        [
+          1131,
+          1131
+        ],
+        [
+          1164,
+          1164
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "game_relative_path": "common/script_values/01_dynamic_values.txt",
+      "relevant_lines": [
+        [
+          53,
+          71
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+      "game_relative_path": "common/script_values/00_stress_values.txt",
+      "relevant_lines": [
+        [
+          27,
+          28
+        ]
+      ]
+    }
+  ],
+  "sealed_input_pins": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-offline-analysis-input.json",
+      "bytes": 44776,
+      "sha256": "db234d75e41c29342419c6fb9903a42ad5209ba550b1a7056573a0de0e2bb24c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-selection-intent.json",
+      "bytes": 48432,
+      "sha256": "876885465f18c0ca855ebcd3642056371217afad89bc10f5ee01ae991aab62bf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-12-selection-observed.json",
+      "bytes": 20332,
+      "sha256": "d52720ea913540ddc7ec154f96ae67c32fb03eddf8877f547100d98981388a8c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0058-event-query.actual-results.json",
+      "bytes": 36509,
+      "sha256": "37a0ff0281b8ff8598445a521413801ad645b2cf0fb9d9677503fff84408a485"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json",
+      "bytes": 24056,
+      "sha256": "cc05109dfbee02c59b643a1f3662859c68547a22b256c77dc8c1a4a33b97056a"
+    }
+  ],
+  "agent_reference": "Recognize the exact source as analyzed, but reacquire the caller's current exact definition, instance, root/saved scopes, rendered order, enabled state and native revision before any action. A disabled expert response cannot be selected merely because its source benefit is attractive. Preserve ACK and independent disappearance separately. Empty/incomplete effect indicators cannot prove free cost, no trait effect or no artifact transfer. Existing native-first-displayed policy is recorded as historical behavior, not replaced by this document. Unknown action outcomes must not be resubmitted.",
+  "known_unknowns": [
+    "The native saved guide_scope is artifact-typed but has no closed payload identity; no full artifact ID is available here.",
+    "No post inventory/equipment/stat/active-travel-plan query independently verifies the source-defined book ownership or modifiers.",
+    "The actual +17 stress is observed, but the current trait/fulfillment/modifier contribution is not attributed.",
+    "Source-worldly progression is conditional; no historical performance or fulfillment delta was queried for this choice.",
+    "This candidate is not yet a registered occurrence contract or an automatically consumed action policy."
+  ],
+  "historical_native_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 449,
+    "date_raw": 53147760,
+    "current_event_instance_id": 12,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "pilgrimage.6820",
+    "calculated_event_id": 1766820,
+    "runtime_stats_ordinal": 1751,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "activity",
+        "name_identifier": 2,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 6,
+          "type_key": "activity",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "host",
+        "name_identifier": 62,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "province",
+        "name_identifier": 37,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "guide_merchant",
+        "name_identifier": 18029,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 42021
+          }
+        }
+      },
+      {
+        "name": "guide_scope",
+        "name_identifier": 18031,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 31,
+          "type_key": "artifact",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“我来一本！”",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "increase",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": true,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": false,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "“让我看看——啊！如果你在这里转弯……”",
+        "unavailable_reason": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,learning 学识\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,learning_i \u0016skill_learning_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,diplomacy 外交\u0015!\u0015!小于\u0015TOOLTIP:GAME_CONCEPT,diplomacy_i \u0016skill_diplomacy_icon!\u0015!\u0015V; 12\u0015!\u0015!\u0015!",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "神会引导我。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "analysis_scope": "One exact1.20.0.4 vanilla event, source-only persistent candidate plus pinned historicalR31 occurrence; no executable/Native/game calls",
+  "source_binding_checks": {
+    "source_files_present_and_spans_in_range": true,
+    "three_sealed_inputs_and_embedded_query_ack_raw_pins_match": true,
+    "same_date_actor_pid_generation_before_after": true,
+    "query_available_exact_definition": true,
+    "json_round_trip": true,
+    "not_a_new_runtime_or_consumer_test": true
+  }
+}

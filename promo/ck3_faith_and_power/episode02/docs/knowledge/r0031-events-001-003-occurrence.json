@@ -1,0 +1,769 @@
+{
+  "schema": "faith-e02-pilgrimage-native-events-occurrence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:16:25.733875+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0031",
+  "ck3_build": "1.20.0.4",
+  "event_count": 3,
+  "events": [
+    {
+      "event_instance_id": 1,
+      "event_definition_key": "travel_start_event.1060",
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--faith-engine--R0031",
+      "observed_at_utc": "2026-10-21T17:41:27.258884+00:00",
+      "actor_character_id": 31254,
+      "bridge_pid": 18136,
+      "connection_generation": 1,
+      "date_raw": 53144352,
+      "elapsed_game_days_from_start": 1,
+      "native_context": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 7,
+        "date_raw": 53144352,
+        "current_event_instance_id": 1,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_start_event.1060",
+        "calculated_event_id": 1311060,
+        "runtime_stats_ordinal": 746,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "pilgrim_net",
+            "name_identifier": 13002,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 5,
+              "type_key": "landed_title",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "landed_title",
+                "title_id": 2231
+              }
+            }
+          },
+          {
+            "name": "province_temp",
+            "name_identifier": 5303,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "char_temp",
+            "name_identifier": 7378,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 36310
+              }
+            }
+          }
+        ],
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我等不及了！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "selected_native_option_index": 0,
+      "public_option_number": 1,
+      "ack_accepted": true,
+      "independent_old_window_gone": true,
+      "wallets": {
+        "gold": {
+          "before_raw": 17300000,
+          "after_raw": 17300000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "piety": {
+          "before_raw": 2000000000,
+          "after_raw": 2000000000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "prestige": {
+          "before_raw": 220000000,
+          "after_raw": 220000000,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "source_analysis_is_live_registry_consumption": false,
+      "modifier_membership_or_health_or_XP_or_travel_ETA_independently_observed": false,
+      "modifier_membership": null,
+      "health_delta": null,
+      "trait_XP": null,
+      "learning_lifestyle_XP": null,
+      "spiritual_fulfillment_delta": null,
+      "travel_ETA_delta": null,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-1-offline-analysis-input.json",
+          "bytes": 41291,
+          "sha256": "9bc7585d4f9c3b649017492ce0a61ad2b7b69cc4787d12037b087790b1a0497b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-1-selection-intent.json",
+          "bytes": 42701,
+          "sha256": "b9ec198d00b7d029d12354164d3b0b5318dbfb2c664e1e20ab459f787c0f121f"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-1-selection-observed.json",
+          "bytes": 20315,
+          "sha256": "ce602f411a29a86802768c86f7bd5b771f49d2a7b14a8ba25806eac1378c1769"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0002-event-query.actual-results.json",
+          "bytes": 29957,
+          "sha256": "fcebb00100eaf292c42a7e498a44a6f4de7cd59001b1e866ae72a73addb5982c"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0003-event-select-once.actual-results.json",
+          "bytes": 24011,
+          "sha256": "38c86f55cea07cb7078132dbc37ac157f0d31b77af2edac2d50ba47e6ba46e39"
+        }
+      ]
+    },
+    {
+      "event_instance_id": 2,
+      "event_definition_key": "pilgrimage_intent.1060",
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--faith-engine--R0031",
+      "observed_at_utc": "2026-10-21T17:44:28.953118+00:00",
+      "actor_character_id": 31254,
+      "bridge_pid": 18136,
+      "connection_generation": 1,
+      "date_raw": 53144856,
+      "elapsed_game_days_from_start": 22,
+      "native_context": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 71,
+        "date_raw": 53144856,
+        "current_event_instance_id": 2,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage_intent.1060",
+        "calculated_event_id": 1781060,
+        "runtime_stats_ordinal": 1785,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我应当默想古帝国。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我应当默想古信仰。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "胡扯，阿普利亚将永世长存！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "selected_native_option_index": 0,
+      "public_option_number": 1,
+      "ack_accepted": true,
+      "independent_old_window_gone": true,
+      "wallets": {
+        "gold": {
+          "before_raw": 17887351,
+          "after_raw": 17887351,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "piety": {
+          "before_raw": 2005155000,
+          "after_raw": 2010155000,
+          "delta_raw": 5000000,
+          "scale": 100000
+        },
+        "prestige": {
+          "before_raw": 220213640,
+          "after_raw": 220213640,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "source_analysis_is_live_registry_consumption": false,
+      "modifier_membership_or_health_or_XP_or_travel_ETA_independently_observed": false,
+      "modifier_membership": null,
+      "health_delta": null,
+      "trait_XP": null,
+      "learning_lifestyle_XP": null,
+      "spiritual_fulfillment_delta": null,
+      "travel_ETA_delta": null,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-2-offline-analysis-input.json",
+          "bytes": 43363,
+          "sha256": "50f1c42bc91a9903d39c110d8a29184525742130bf3515c218c7188b09c4dc7d"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-2-selection-intent.json",
+          "bytes": 46736,
+          "sha256": "3f51b683fc41be401e30b198db6116e1413a6b99b5b338e1eeec2d6218c777e7"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-2-selection-observed.json",
+          "bytes": 20323,
+          "sha256": "a6b31bca2e9ea3d365179b6c7017b29a21bf4252c45f0657c6509e53a2bd48e4"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0007-event-query.actual-results.json",
+          "bytes": 32652,
+          "sha256": "3a7a1260cc42ac9739cf0332ec2a719835c1bda9ac182fdc0f2aff9b8136a4f3"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0008-event-select-once.actual-results.json",
+          "bytes": 24030,
+          "sha256": "58fad7c3e5d70a8cb621a35be85c0fac8d09de0c9a358f95152daa1b2fb8a33c"
+        }
+      ]
+    },
+    {
+      "event_instance_id": 3,
+      "event_definition_key": "travel_danger_events.1012",
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--faith-engine--R0031",
+      "observed_at_utc": "2026-10-21T17:44:50.356456+00:00",
+      "actor_character_id": 31254,
+      "bridge_pid": 18136,
+      "connection_generation": 1,
+      "date_raw": 53144880,
+      "elapsed_game_days_from_start": 23,
+      "native_context": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 75,
+        "date_raw": 53144880,
+        "current_event_instance_id": 3,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.1012",
+        "calculated_event_id": 1161012,
+        "runtime_stats_ordinal": 368,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "poisonous_plant_eater",
+            "name_identifier": 34265,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 36310
+              }
+            }
+          }
+        ],
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "“等等，万一有毒呢？！”",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "fulfillment",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "让潘多尔夫尝尝看。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "“只有我能先尝！”",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": true,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "selected_native_option_index": 0,
+      "public_option_number": 1,
+      "ack_accepted": true,
+      "independent_old_window_gone": true,
+      "wallets": {
+        "gold": {
+          "before_raw": 17887351,
+          "after_raw": 17887351,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "piety": {
+          "before_raw": 2010155000,
+          "after_raw": 2010155000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "prestige": {
+          "before_raw": 220213640,
+          "after_raw": 220213640,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_before_after": [
+        0,
+        0
+      ],
+      "actual_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision": null,
+        "registry_knowledge_status": null,
+        "registry_analysis_available": false,
+        "source_sha256": null,
+        "policy_sources": null,
+        "gap": "registry_reader_or_consumer_unavailable: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\wv3c16\\\\ck3_autonomous_player\\\\src\\\\xar_autoplayer\\\\vanilla_events\\\\data\\\\source_compatibility_1_20_0_4.json'"
+      },
+      "source_analysis_is_live_registry_consumption": false,
+      "modifier_membership_or_health_or_XP_or_travel_ETA_independently_observed": false,
+      "modifier_membership": null,
+      "health_delta": null,
+      "trait_XP": null,
+      "learning_lifestyle_XP": null,
+      "spiritual_fulfillment_delta": null,
+      "travel_ETA_delta": null,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+          "bytes": 43394,
+          "sha256": "ecec214b89eb5a2aa298e11ed5144e72120698562eaae8826656e29eb9f79dcb"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-3-selection-intent.json",
+          "bytes": 46768,
+          "sha256": "507080aa931c8488487487bfa9ca891065253df8baff2eecf24164c4a03454dc"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+          "bytes": 20326,
+          "sha256": "63a98327089c539e95e2da6562bd76d1c715d91258598f36df024b1eba008046"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0010-event-query.actual-results.json",
+          "bytes": 33436,
+          "sha256": "279e95139f153ae10fc482a8f0bcddeb22ff12f559e833d5a5565c386099967b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v3-pilgrimage-production-20261021-a01\\filming\\field-session-a01\\live\\4-8e1c2f1861--faith-engine--R0031\\case-output\\faith-e02-journey-001-0011-event-select-once.actual-results.json",
+          "bytes": 24030,
+          "sha256": "4307a80ef5d9271ddf862c1f545f79a41f74c9f7259ba33b9861e3f33f5dbb30"
+        }
+      ]
+    }
+  ],
+  "source_analysis_complete_for_actual_batch": true,
+  "travel_start_source_reuse": {
+    "document": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-start-1060-source-analysis.json",
+      "bytes": 9927,
+      "sha256": "50d844aa0fbf036b974fb0cd22fc7a340c374d8264f9ad6c1506ef9ef3066540"
+    },
+    "installed_sources_rechecked": [
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_start_events.txt",
+        "bytes": 95408,
+        "sha256": "4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_start_events_l_simp_chinese.yml",
+        "bytes": 33689,
+        "sha256": "7c6146fc235866430d1fa2667afe2610b703830ef74d181cfae4a952b1372e78"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+        "bytes": 136481,
+        "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+        "bytes": 71526,
+        "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\50_pilgrimage_values.txt",
+        "bytes": 11353,
+        "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+        "bytes": 116295,
+        "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38"
+      }
+    ],
+    "same_definition_and_native_option0_label": true,
+    "namespace_caveat": "travel_start_event.1060 and pilgrimage_intent.1060 are different definitions, not shared-occurrence evidence."
+  },
+  "new_source_documents": [
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1060-source-analysis.json",
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-danger-1012-source-analysis.json"
+  ],
+  "live_registry_gap": "All3actual choices used native_first_displayed; dedicated registry reader failed to locate frozen checkout source_compatibility_1_20_0_4.json. A later repair never retroactively turns these choices into dedicated-policy consumption.",
+  "permanent_source_analysis_todo": [],
+  "historical_evidence_is_current_state": false,
+  "current_native_legality": null,
+  "action_ready": false,
+  "ordinary_auto_consumes": false,
+  "game_actions_by_analyst": 0,
+  "native_builds_or_tests": 0,
+  "Root_modified": false
+}

@@ -114,3 +114,11 @@ R29的H2／H3从独立Parent de0f冷恢复，不能剪成R25续局，也没有�
 同一JSON的`artifact_pair`由既有`topics.artifacts.artifact_pair_reference`引用：同母档物品267的R27个人装备／R28供奉两臂，两人raw104000／129000（scale100000）均未变；R28两人原生麦加说明+4%→+8%、site缓存rarity4→8，独立物主／site26／slot1／库存[60,267]后态已证。刷新时间、world effects实际应用和单地点净贡献仍未知；不能重算raw或说立即净增。钱包不变不证明总供奉无成本，`total_payment_observed=false`与原businessfalse保留；不升级当前许可或auto消费。
 
 2026-10-21后续整合补注（`machine_id: 4-8e1c2f1861`，06:57Z）：上述最终知识已纳入本次源码整合，注册MCP消费者验证与候选strict检查已通过；冻结C16影片来源不因此改变。R29的[05:14:24Z闭场回执](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b39-h2-h3-a01/SCENE-CLOSURE.actual.json)及[后续行政闭场交付](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b39-h2-h3-a01/full-custody-a01/ADMINISTRATIVE-FAILURE-CLOSURE-DELIVERY.actual.json)现已独立提供：normal_close=false、OS0未证、保留退出码null，public run2／host0／allocator0，CAS13129空资源。现场已释放；研究JSON保留原采样时闭场未知，不追认正常退出或整体业务通过。
+
+## R0031 新增的已分析旅行来源
+
+`ck3_query_vanilla_event_knowledge_v1(event_definition_key, ck3_build="1.20.0.4")` 可按 `pilgrimage_intent.1060`、`travel_danger_events.1012` 返回原版选项效果、来源 SHA 和 R0031 历史后验，详见 [R0031 来源参考](r0031-pilgrimage-event-reference-12004.md)。前者是“昔日的帝国”，不等于同尾号的 `travel_start_event.1060`；后者是“诱人的水果”，必须分清玩家与尝水果同行者的受影响 scope。
+
+这两条的 `analysis.source_analysis_completed=true` 只表示来源已审；响应仍为 `status=unavailable`、`unavailable_reason=source_analyzed_no_occurrence_contract`、`contract=null`。它们没有新的完整实例执行合同，`current_native_legality=null`、`action_ready=false`、`ordinary_auto_consumes=false`。当前原生窗口的显示顺序、scope 与合法性仍须重新读取；本次历史首项选择的 ACK 和独立旧窗消失，不代表专用策略已执行。
+
+R0031 also source-reviewed `pilgrimage.6770`, `pilgrimage.6830` and `pilgrimage.6820`. The same exact-build source-only query returns their effects and canonical source documents, while contract/action-ready remain null/false. The [13-input batch index](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0031-events-001-013-index.json) preserves12 accepted selections plus independent old-window disappearance; event13 (7000) was queried but not selected after a declined capture checkpoint. These observations do not establish return or whole-journey completion.

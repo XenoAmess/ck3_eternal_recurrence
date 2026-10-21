@@ -1,0 +1,242 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T18:16:25.733875+00:00",
+  "ck3_build": "1.20.0.4",
+  "source_analysis_completed": true,
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "historical_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0031-events-001-003-occurrence.json",
+  "historical_run_id": "4-8e1c2f1861--faith-engine--R0031",
+  "source_analysis_is_live_registry_consumption": false,
+  "current_native_legality": null,
+  "action_ready": false,
+  "historical_evidence_is_current_state": false,
+  "ordinary_auto_consumes": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "event_definition_key": "travel_danger_events.1012",
+  "static_definition_id": "travel_danger_events.1012",
+  "live_native_definition_id": "travel_danger_events.1012",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_danger_events_arky.txt",
+      "bytes": 43727,
+      "sha256": "1659b120131de258f1546c9f6a86b898662d7e2eef5ca949c69d93546a35ca47",
+      "game_relative_path": "events/travel_events/travel_danger_events_arky.txt",
+      "relevant_lines": [
+        [
+          784,
+          914
+        ],
+        [
+          915,
+          1144
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+      "game_relative_path": "common/on_action/travel_on_actions.txt",
+      "relevant_lines": [
+        [
+          599,
+          686
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_danger_events_l_simp_chinese.yml",
+      "bytes": 24128,
+      "sha256": "88958e34e416161acddf2ef091002782e2239725dbd54c94c83ae52b150717c1",
+      "game_relative_path": "localization/simp_chinese/event_localization/travel_events/travel_danger_events_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          127,
+          141
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_travel_modifiers.txt",
+      "bytes": 8782,
+      "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+      "game_relative_path": "common/modifiers/00_travel_modifiers.txt",
+      "relevant_lines": [
+        [
+          281,
+          297
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_travel_effects.txt",
+      "bytes": 1867,
+      "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+      "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+      "relevant_lines": [
+        [
+          9,
+          31
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\04_dlc_ep2_tour_effects.txt",
+      "bytes": 17935,
+      "sha256": "180a9e666317ba7e58525d11848544bca1bf2b6e6062b0fe1110f555abdf328e",
+      "game_relative_path": "common/scripted_effects/04_dlc_ep2_tour_effects.txt",
+      "relevant_lines": [
+        [
+          330,
+          367
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_lifestyle_values.txt",
+      "bytes": 22192,
+      "sha256": "4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0",
+      "game_relative_path": "common/script_values/00_lifestyle_values.txt",
+      "relevant_lines": [
+        [
+          7,
+          8
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+      "game_relative_path": "common/script_values/00_stress_values.txt",
+      "relevant_lines": [
+        [
+          14,
+          14
+        ],
+        [
+          27,
+          33
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    915,
+    1144
+  ],
+  "local_helper_lines": [
+    784,
+    914
+  ],
+  "title": "诱人的水果",
+  "caller": {
+    "pool": "travel_danger_events_on_action",
+    "source_line": 686,
+    "base_weight": 100,
+    "probability_claimed": false
+  },
+  "trigger": {
+    "cooldown_years": 5,
+    "AND": [
+      "static_group_filter match0.25",
+      "available travelling adult",
+      "land travel-event location; not desert/desert_mountains danger terrain",
+      "eligible entourage member"
+    ],
+    "eligible_NPC": [
+      "not root or food_taster",
+      "not flagged twice",
+      "available travelling AI age>=12",
+      "not gardener/herbalist",
+      "learning<=4"
+    ]
+  },
+  "immediate": "Select eligible entourage member by low learning with previous-once priority; optional available employed food_taster scope. Multiplayer90day delay is gated, not a singleplayer claim.",
+  "source_options": [
+    {
+      "source_key": "travel_danger_events.1012.a",
+      "historical_native_index": 0,
+      "actual_label": "“等等，万一有毒呢？！”",
+      "repeat_name_key": "travel_danger_events.1012.a_again",
+      "lines": [
+        1037,
+        1068
+      ],
+      "effects": [
+        "touched_poisonous_plant_effect",
+        "weight50:root AND poisonous_plant_eater each receive5year touched modifier(health-0.05,attraction_opinion-10)",
+        "other weight50+NPClearning plus100 if root or NPC knows plants or food_taster exists:root learning lifestyleXP100",
+        "not fixed50percent; extra paranoid/compassionate/cynical stress-and-fulfillment inputs"
+      ],
+      "selected_R31": true
+    },
+    {
+      "source_key": "travel_danger_events.1012.b",
+      "historical_native_index": 1,
+      "actual_label": "让潘多尔夫尝尝看。",
+      "lines": [
+        1070,
+        1088
+      ],
+      "effects": [
+        "ate_poisonous_plant_effect with PLANT_EATER=NPC36310",
+        "weighted poison:5year eater modifier health-0.25/prowess-4; regular:root learning lifestyleXP100; good:5year eater prowess+2/stress_loss_mult+0.25",
+        "weights50 poison,50+eaterLearning regular,1+200 if eater knows plants good; not fixed percentages",
+        "root traveler dangerXP3..6 only if has lifestyle_traveler,or5..8 with journey_perk",
+        "cynical/paranoid stress inputs"
+      ],
+      "selected_R31": false
+    },
+    {
+      "source_key": "travel_danger_events.1012.c",
+      "historical_native_index": 2,
+      "actual_label": "“只有我能先尝！”",
+      "lines": [
+        1090,
+        1127
+      ],
+      "visibility": "comfort_eater OR arbitrary OR gluttonous",
+      "effects": [
+        "same eating helper with PLANT_EATER=root; target-specific modifiers now affect player",
+        "same conditional traveler dangerXP helper",
+        "comfort_eater/arbitrary/gluttonous loss and paranoid/content gain stress inputs"
+      ],
+      "selected_R31": false
+    }
+  ],
+  "after": {
+    "lines": [
+      1129,
+      1144
+    ],
+    "effects": [
+      "multiplayer resume helper",
+      "NPC had_once becomes had_twice,otherwise sethad_once; twice excludes NPC from future selection"
+    ],
+    "actual_flags_observed": false
+  },
+  "actual_R31": {
+    "instance": 3,
+    "day": 23,
+    "player_actor": 31254,
+    "NPC_plant_eater": 36310,
+    "food_taster_scope_present": false,
+    "selected_native_index": 0,
+    "ack_accepted": true,
+    "independent_old_window_gone": true,
+    "three_wallet_delta_raw": [
+      0,
+      0,
+      0
+    ],
+    "stress_before_after": [
+      0,
+      0
+    ],
+    "actual_modifier_or_health_or_XP_or_fulfillment_branch_observed": false
+  },
+  "agent_reference": "Stopping the eater is not a guarantee of no health consequence. Keep NPC and root effects separate. The actual first option has no authored traveler-dangerXP helper; do not award it the unchosen eating options'XP. Current snapshot zero wallet/stress changes do not close hidden modifiers/XP."
+}
