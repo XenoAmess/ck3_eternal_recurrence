@@ -1,5 +1,7 @@
 # 战争四期研究：游玩智能体参考入口
 
+文件阅读型智能体：先确认本页、[当前执行图](episode04-current-execution-map-12004.md)、[玩家parent机会合同](episode04-r08-player-parent-opportunity-input-contract-12004.md)、[canonical正文绑定](evidence/episode04-r08-player-parent-opportunity-20261021/canonical-binding.json)及其[20项知识输入清单](evidence/episode04-r08-player-parent-opportunity-20261021/knowledge-closure20.json)在当前工作树实际可读。稀疏检出缺件时，由已获准执行者按绑定提交和精确清单物化并逐项核验；Git对象存在不代表文件已落盘。按这些来源显式参考输入、缺口与保守决策规则；普通`plan/auto`不会自动加载Markdown，文档可读不增加native、SDK、Game或付款资格。
+
 ## 2026-10-21：R13限定三态使正式8/11；postload采用限于源码归档
 
 `machine_id: desktop-3fevhd2-1c74096080`。来源为Root于2026-10-21T02:23:09Z签出的[R13限定正式裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json)，以及02:31:55Z的[postload源码归档采用](evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json)。正式动态按R03–R13每主题至少一段已验原M源镜头计，现为 **8/11（72.73%，R03/R04/R06/R07/R09/R11/R12/R13）**；余R05/R08/R10。研究10/14、业务7/11、B0/2、ABC0/3不变，R05 R211受控补充仍不授原M正式镜头信用。

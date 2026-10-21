@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.r08.canonical-document-binding.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T04:19:01.819797+00:00",
+  "input_HEAD": "c7e2b286b3de8c708d11b8da5eee98e3df59a1ef",
+  "canonical_document": {
+    "path": "docs/ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md",
+    "bytes": 11435,
+    "sha256": "3783f822841e295a957c5215967ebea36f151ff83fe5008f084379c746b7f2ca",
+    "git_blob_oid": "f5ce263334775d922a2674760ad4d6fcdf55de49",
+    "last_changed_commit": "58d6058d9aa202f91f1046753bb5d0df23e55c77"
+  },
+  "entry_same_tree_candidate": {
+    "path": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+    "bytes": 20072,
+    "sha256": "8ee307eb422acba7849abe475977785cdabeec6aba3fff94e7dfa22d892079f8",
+    "git_blob_oid": "9531e436394c455c9ee9b2350a66c1a14c58f464"
+  },
+  "closure_manifest": {
+    "path": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/knowledge-closure20.json",
+    "bytes": 10543,
+    "sha256": "29f29eefeb080732fc64c06dab67a606368978e622dd2ba11596d3121dacf055",
+    "git_blob_oid": "987d215c90537308a41eed67b0ed86d6b987149c"
+  },
+  "historical_index_unchanged": {
+    "path": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/source-index.json",
+    "bytes": 3880,
+    "sha256": "075f6a76db60c4d6ef4eb11d7a061dd2622ea1db9097dbc7ee7618b8d959f1ff",
+    "git_blob_oid": "bd3635eaa012eabdcfd84f5223d339aee6aca6ee"
+  },
+  "historical_markdown_candidate": {
+    "source_path": "research-a01/PROPOSED-SHARED-KNOWLEDGE.a02.md",
+    "bytes": 11071,
+    "sha256": "ea8a38ef723908b6cd0559015377ec3df8ba02760bc0629dfea24c280b5711ba",
+    "relationship": "exact first 11071 bytes of canonical_document; not the hash of its full current content",
+    "appended_publication_note_bytes": 364,
+    "prefix_relationship_actually_verified": true
+  },
+  "publication_provenance": "R225 originals first published at 992ca426939c19dcb62375344fc4a230e86a38f1; canonical document and dated note at 58d6058d9aa202f91f1046753bb5d0df23e55c77. See ROOT-RESEARCH-DOCUMENT-ADOPTION.actual-a01.json in this directory.",
+  "reader_contract": {
+    "knowledge_inputs": 20,
+    "knowledge_inputs_plus_this_binding": 21,
+    "closure_manifest_is_separate_control_metadata": true,
+    "initial_missing_existing_Git_files": 14,
+    "initial_missing_existing_Git_bytes": 220610,
+    "materialization_completed_by_this_record": false,
+    "file_reading_agent_must_verify_actual_files": true,
+    "explicit_reference_required": true,
+    "ordinary_planner_autoload": false,
+    "source_document_does_not_grant_native_SDK_Game_or_payment_qualification": true
+  },
+  "historical_index_markdown_pin_role": "immutable original candidate pin; use canonical_document for the current full document"
+}

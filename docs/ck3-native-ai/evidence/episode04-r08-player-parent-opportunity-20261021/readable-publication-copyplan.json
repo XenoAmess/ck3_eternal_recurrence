@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.production-publication.exact-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T04:25:06.899591+00:00",
+  "W": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "expected_W_and_remote": "c7e2b286b3de8c708d11b8da5eee98e3df59a1ef",
+  "D_readonly_expected_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "hard_deadline_utc": "2026-10-21T04:45:00Z",
+  "summary": {
+    "formal": "8/11",
+    "tracked_items_including_plan": 4,
+    "knowledge_inputs": 20,
+    "plus_binding": 21,
+    "post_publication_create_only_files": 14,
+    "post_publication_file_bytes": 220610,
+    "original_body_and_historical_index_unchanged": true,
+    "ordinary_planner_autoload": false
+  },
+  "items": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r12-research-readable-0445-a01\\research-a01\\PROPOSED-episode04-gameplay-agent-use-12004.md",
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "bytes": 20072,
+      "sha256": "8ee307eb422acba7849abe475977785cdabeec6aba3fff94e7dfa22d892079f8",
+      "git_blob": "9531e436394c455c9ee9b2350a66c1a14c58f464",
+      "old": {
+        "bytes": 19305,
+        "sha256": "9856bb2dc7de6af4ede99dcfd27c5bb2574af3463dc35d9491d7a1766fadfe2b",
+        "git_blob": "467d8e8b1cb574258136883f710dbead9a584ca4"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r12-research-readable-0445-a01\\research-a01\\PROPOSED-knowledge-closure20.a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/knowledge-closure20.json",
+      "bytes": 10543,
+      "sha256": "29f29eefeb080732fc64c06dab67a606368978e622dd2ba11596d3121dacf055",
+      "git_blob": "987d215c90537308a41eed67b0ed86d6b987149c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r12-research-readable-0445-a01\\research-a01\\PROPOSED-canonical-binding.a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/canonical-binding.json",
+      "bytes": 2825,
+      "sha256": "397a784687308749bf7e4a988fac7d5ad8bdbd44228a980d8842e7df5fc4b79d",
+      "git_blob": "bebad779f71184821a70752d8024df832f7ad4c2",
+      "old": null
+    }
+  ],
+  "raw_whitespace_exceptions": [],
+  "plan_self_target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/readable-publication-copyplan.json"
+}
