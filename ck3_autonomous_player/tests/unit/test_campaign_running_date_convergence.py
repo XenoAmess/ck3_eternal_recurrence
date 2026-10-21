@@ -3,12 +3,15 @@ import ast
 import asyncio
 import copy
 import importlib.util
+import json
 import os
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
 
 PACKAGE = Path(os.environ.get('XAR_PAUSE_TEST_PACKAGE', str(Path(__file__).resolve().parents[2])))
+sys.path.insert(0, str(PACKAGE / 'src'))
 HOST = Path(os.environ.get('XAR_PAUSE_TEST_HOST', str(PACKAGE / 'native_bridge/research/run_ck3_12002_mcp_live.py')))
 spec = importlib.util.spec_from_file_location('pause_base', PACKAGE / 'tests/unit/test_campaign_pause_ready_convergence.py')
 base = importlib.util.module_from_spec(spec)
@@ -32,17 +35,17 @@ def load_host():
     nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in names]
     client = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == 'PlanClient')
     methods = [node for node in client.body if isinstance(node, ast.AsyncFunctionDef)
-               and node.name in {'pause_campaign_after_advance', 'wait_campaign_running_successor', 'advance_campaign_event_boundary'}]
-    if {node.name for node in nodes} != names or len(methods) != 3:
+               and node.name in {'pause_campaign_after_advance', 'wait_campaign_running_successor', 'advance_campaign_event_boundary', 'advance'}]
+    if {node.name for node in nodes} != names or len(methods) != 4:
         raise ValueError('Candidate host seams missing')
     nodes.append(ast.ClassDef(name='PlanClient', bases=[], keywords=[], body=methods, decorator_list=[]))
-    space = {'copy': copy, 'now': lambda: 'synthetic-time'}
+    space = {'copy': copy, 'json': json, 'now': lambda: 'synthetic-time'}
     exec(compile(ast.fix_missing_locations(ast.Module(body=nodes, type_ignores=[])), str(HOST), 'exec'), space)
     return space
 
 
 class Harness:
-    def __init__(self, observations, *, timeout=2.0):
+    def __init__(self, observations, *, timeout=2.0, plain=False):
         self.space, self.clock = load_host(), 100.0
         self.observations, self.reads, self.actions = list(observations), 0, []
         self.client = self.space['PlanClient']()
@@ -60,7 +63,7 @@ class Harness:
         async def fresh():
             self.reads += 1
             self.clock += 0.05
-            if self.reads == 1:
+            if self.reads == 1 and not plain:
                 return actual_frame(10, paused=True)
             value = self.observations.pop(0) if len(self.observations) > 1 else self.observations[0]
             return copy.deepcopy(value)
@@ -83,6 +86,9 @@ class Harness:
 
     async def run(self):
         return await self.client.advance_campaign_event_boundary({'allow_event_boundary': True, 'days': 1})
+
+    async def run_plain(self) -> dict[str, object]:
+        return await self.client.advance({'days': 1})
 
 
 class RunningDateConvergenceTests(unittest.IsolatedAsyncioTestCase):
@@ -186,6 +192,73 @@ class RunningDateConvergenceTests(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(RuntimeError): await h.run()
                 self.assertEqual(h.reads, 3)
                 self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map'])
+
+    async def test_plain_queue_day_waits_for_actual_snapshot_ahead_shape(self) -> None:
+        gap = actual_frame(46, date=START + 24, mailbox_date=START)
+        original = copy.deepcopy(gap)
+        h = Harness([gap, *self.success_tail()], plain=True)
+        result = await h.run_plain()
+        self.assertEqual(gap, original)
+        self.assertEqual(h.reads, 3)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map', 'pause-map'])
+        self.assertEqual(result['elapsed_hours'], 24)
+        self.assertTrue(result['after']['paused'])
+        self.assertEqual(h.client.report['campaign_running_date_readbacks'][0]['status'],
+                         'COMPLETE_ORIGINAL_GUARDS_OBSERVED')
+
+    async def test_plain_queue_day_supports_original_direction_and_no_gap(self) -> None:
+        for frames, reads in (([self.gap(), *self.success_tail()], 3), (self.success_tail(), 2)):
+            with self.subTest(reads=reads):
+                h = Harness(frames, plain=True)
+                result = await h.run_plain()
+                self.assertEqual(h.reads, reads)
+                self.assertEqual(result['elapsed_hours'], 24)
+                self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map', 'pause-map'])
+
+    async def test_plain_never_converged_owner_is_not_paused_or_replayed(self) -> None:
+        gap = actual_frame(46, date=START + 24, mailbox_date=START)
+        h = Harness([gap], plain=True, timeout=.3)
+        with self.assertRaisesRegex(TimeoutError, 'original command deadline'):
+            await h.run_plain()
+        self.assertLessEqual(h.clock, 100.35)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map'])
+
+    async def test_plain_wrong_owner_remains_hard_rejection(self) -> None:
+        gap = actual_frame(46, date=START + 24, mailbox_date=START)
+        gap['diagnostics']['last_heartbeat']['main_thread_query_mailbox_v1']['current_tid'] += 1
+        h = Harness([gap, *self.success_tail()], plain=True)
+        with self.assertRaisesRegex(RuntimeError, 'complete same-owner frame'):
+            await h.run_plain()
+        self.assertEqual(h.reads, 1)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map'])
+
+    async def test_plain_pause_convergence_uses_remaining_original_deadline(self) -> None:
+        pending = actual_frame(48, date=START + 24, paused=True)
+        mailbox = pending['diagnostics']['last_heartbeat']['main_thread_query_mailbox_v1']
+        mailbox.update(ready=False, consecutive_verified=1, paused_main_thread_observed=False)
+        h = Harness([self.gap(), actual_frame(47, date=START + 24), pending], plain=True, timeout=.3)
+        with self.assertRaisesRegex(TimeoutError, 'original command deadline'):
+            await h.run_plain()
+        self.assertLessEqual(h.clock, 100.35)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map', 'pause-map'])
+
+    async def test_plain_coherent_event_is_preserved_without_another_world_action(self) -> None:
+        event = actual_frame(47, date=START + 24, paused=True)
+        event['active_event'] = {'instance_id': 101, 'event_id': 'synthetic.event'}
+        original = copy.deepcopy(event)
+        h = Harness([event], plain=True)
+        with self.assertRaisesRegex(RuntimeError, 'synthetic.event'):
+            await h.run_plain()
+        self.assertEqual(event, original)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map'])
+
+    async def test_plain_invalid_count_and_deadline_reject_before_action(self) -> None:
+        for row in ({'days': True}, {'days': 1.0}, {'timeout': True}, {'timeout': float('inf')}):
+            with self.subTest(row=row):
+                h = Harness(self.success_tail(), plain=True)
+                with self.assertRaises(ValueError):
+                    await h.client.advance(row)
+                self.assertEqual(h.actions, [])
 
 
 if __name__ == '__main__':

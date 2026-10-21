@@ -467,6 +467,10 @@ jobs:
         run: python tools/test_ck3_live_run_id.py
       - name: Test Living Artifacts contracts without installed CK3
         run: python -B -X utf8 -m unittest discover -s mod_living_artifacts/tools -p test_*.py
+      - name: Check strict Living Artifacts types without installed CK3
+        env:
+          MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\mod_living_artifacts\tools
+        run: python -B -X utf8 -m mypy --strict --follow-imports=silent mod_living_artifacts/tools
       - name: Test first-machine acceptance without CK3 or Steam
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_fresh_machine_bootstrap.py
       - name: Test pre-identity failure retirement without CK3 or Steam
@@ -575,6 +579,10 @@ jobs:
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_running_date_convergence.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_running_date_publication_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_running_date_publication_v1.py ck3_autonomous_player/tests/unit/test_campaign_running_date_publication_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_timeline_snapshot_publication_12004.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

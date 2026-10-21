@@ -34,10 +34,10 @@ class NormalDayResultTests(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls):
         tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
         cls.definitions = [node for node in tree.body if isinstance(node, ast.FunctionDef)
-                           and node.name in {"_campaign_pause_pending_ready_successor", "_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor"}]
+                           and node.name in {"_campaign_pause_pending_ready_successor", "_campaign_pause_frame_rejection_detail", "campaign_pause_frame_binding", "require_campaign_pause_successor", "campaign_event_instance", "_campaign_pending_running_date"}]
         client = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "PlanClient")
         cls.definitions.extend(node for node in client.body if isinstance(node, ast.AsyncFunctionDef)
-                               and node.name in {"advance", "pause_campaign_after_advance"})
+                               and node.name in {"advance", "pause_campaign_after_advance", "wait_campaign_running_successor"})
         spec = importlib.util.spec_from_file_location("day_result_actual_client", CLIENT)
         cls.client_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(cls.client_module)
@@ -92,11 +92,12 @@ class NormalDayResultTests(unittest.IsolatedAsyncioTestCase):
                 return next(self.frames)
 
         value = FakeIO()
-        namespace = {"asyncio": asyncio, "json": json,
+        namespace = {"asyncio": asyncio, "json": json, "copy": copy, "now": lambda: 'synthetic-test-time',
                      "time": SimpleNamespace(monotonic=lambda: value.clock)}
         module = ast.fix_missing_locations(ast.Module(body=self.definitions, type_ignores=[]))
         exec(compile(module, str(HOST), "exec"), namespace)
-        value.pause_campaign_after_advance = lambda starting: namespace["pause_campaign_after_advance"](value, starting)
+        value.pause_campaign_after_advance = lambda starting, **kwargs: namespace["pause_campaign_after_advance"](value, starting, **kwargs)
+        value.wait_campaign_running_successor = lambda source, bounded, remaining, **kwargs: namespace["wait_campaign_running_successor"](value, source, bounded, remaining, **kwargs)
         value.advance = lambda row: namespace["advance"](value, row)
         return value
 

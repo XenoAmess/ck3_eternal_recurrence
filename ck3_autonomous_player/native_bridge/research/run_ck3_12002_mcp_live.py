@@ -1672,37 +1672,9 @@ def _campaign_pause_pending_ready_successor(source: dict[str, object], snapshot:
 
 def _campaign_pending_running_date(source: dict[str, object], snapshot: dict[str, object],
                                    error: RuntimeError) -> dict[str, object]:
-    """Keep the exact one-day running publication gap unqualified, never repair its fields."""
-    detail = getattr(error, "ck3_campaign_pause_frame_diagnostic", None)
-    conditions = detail.get("conditions") if isinstance(detail, dict) else None
-    if (str(error) != "campaign pause readback lost the complete same-owner frame"
-            or not isinstance(detail, dict)
-            or detail.get("schema") != "ck3-campaign-pause-same-owner-frame-diagnostic-v1"
-            or not isinstance(conditions, list) or len(conditions) != 32
-            or any(not isinstance(row, dict) or row.get("index") != index
-                   or type(row.get("failed")) is not bool
-                   for index, row in enumerate(conditions))
-            or [row["index"] for row in conditions if row["failed"]] != [31]
-            or conditions[31].get("source") != 'mailbox["date_raw"] != snapshot["date_raw"]'):
-        raise error
-    diagnostics = snapshot["diagnostics"]
-    mailbox = diagnostics["last_heartbeat"]["main_thread_query_mailbox_v1"]
-    if (snapshot["paused"] is not False or snapshot.get("active_event") is not None
-            or mailbox.get("ready") is not False or mailbox.get("paused") is not False
-            or mailbox.get("date_raw") != snapshot["date_raw"] + 24
-            or not 1 <= mailbox["date_raw"] <= 2**31 - 1):
-        raise error
-    current = {"identity": (diagnostics["bridge_pid"], diagnostics["connection_generation"],
-                            snapshot["played_character"]["character_id"], snapshot["local_player_id"], snapshot["speed"],
-                            diagnostics["pipe_name"], mailbox["owner_tid"], snapshot.get("pending_character_interaction")),
-               "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
-               "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"],
-               "pause_transition": False, "pending_mailbox_date": mailbox["date_raw"]}
-    if (current["identity"] != source["identity"] or current["rejections"] != source["rejections"]
-            or any(current[key] < source[key] for key in ("date", "revision", "native_revision", "pump"))
-            or current["pending_mailbox_date"] < source.get("pending_mailbox_date", source["date"])):
-        raise error
-    return current
+    """Observe either exact publication direction; neither pending frame earns admission."""
+    from xar_autoplayer.bridge.campaign_running_date_publication_v1 import pending_running_date_v1
+    return pending_running_date_v1(source, snapshot, error).to_host_binding()
 
 
 class PlanClient:
@@ -1991,21 +1963,54 @@ class PlanClient:
 
 
     async def advance(self, row: dict[str, object]) -> dict[str, object]:
+        from collections.abc import Awaitable, Callable
+        days = row.get("days", 1)
+        budget = row.get("timeout", self.args.command_timeout)
+        if type(days) is not int or days < 1:
+            raise ValueError("advance requires a strict positive integer day count")
+        if type(budget) not in (int, float) or not 0 < budget <= self.args.command_timeout:
+            raise ValueError("advance timeout exceeds the original command budget")
         await self.invoke("ck3_execute_step", {"step": "pause-map"})
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         await self.set_campaign_speed_one_presubmission_once(before)
-        await self.wait_snapshot({"speed": 1}, self.args.command_timeout)
+        before_resume = await self.wait_snapshot({"speed": 1}, self.args.command_timeout)
         wait_for_actor_change = row.get("wait_for_played_character_change") is True
         if wait_for_actor_change and before.get("episode_projection") != "native_campaign":
             raise ValueError("player transition wait requires a native campaign")
         start = int(before["date_raw"])
-        target = start + 24 * int(row.get("days", 1))
+        target = start + 24 * days
+        diagnostics = before_resume.get("diagnostics")
+        hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+        campaign_readback = (before_resume.get("episode_projection") == "native_campaign"
+            and isinstance(hello, dict) and hello.get("expected_ck3_version") == "1.20.0.4")
+        running_binding = campaign_pause_frame_binding(before_resume) if campaign_readback else None
+        if running_binding is not None and running_binding["date"] != start:
+            raise RuntimeError("campaign advance changed the original paused date before resume")
         await self.invoke("ck3_execute_step", {"step": "resume-map"})
-        deadline = time.monotonic() + float(row.get("timeout", self.args.command_timeout))
+        deadline = time.monotonic() + budget
+
+        def remaining() -> float:
+            managed_done = getattr(self, "managed_done", None)
+            if managed_done is not None and managed_done.is_set():
+                raise RuntimeError("managed session finished during original campaign advance")
+            seconds = deadline - time.monotonic()
+            if seconds <= 0:
+                raise TimeoutError("campaign advance exhausted the original command deadline")
+            return seconds
+
+        async def bounded(factory: Callable[[], Awaitable[dict[str, object]]]) -> dict[str, object]:
+            value = await asyncio.wait_for(factory(), timeout=remaining())
+            remaining()
+            return value
+
         reached: dict[str, object] | None = None
         try:
             while time.monotonic() < deadline:
-                current = await self.fresh()
+                if running_binding is not None:
+                    current, _, running_binding = await self.wait_campaign_running_successor(running_binding, bounded, remaining,
+                        allow_actor_change=wait_for_actor_change)
+                else:
+                    current = await self.fresh()
                 if current.get("active_event") is not None:
                     raise RuntimeError(
                         "an active event interrupted date advancement: "
@@ -2042,20 +2047,17 @@ class PlanClient:
             if reached is None:
                 raise TimeoutError("running map did not reach the requested date")
         finally:
-            campaign_diagnostics = reached.get("diagnostics") if reached is not None else None
-            campaign_hello = campaign_diagnostics.get("hello") if isinstance(campaign_diagnostics, dict) else None
-            use_campaign_pause_readback = (reached is not None and reached.get("episode_projection") == "native_campaign"
-                and isinstance(campaign_hello, dict) and campaign_hello.get("expected_ck3_version") == "1.20.0.4")
-            if use_campaign_pause_readback:
-                after = await self.pause_campaign_after_advance(reached)
-            else:
+            use_campaign_pause_readback = campaign_readback
+            if use_campaign_pause_readback and reached is not None:
+                after = await self.pause_campaign_after_advance(reached, command_deadline=deadline)
+            elif not use_campaign_pause_readback:
                 await self.invoke("ck3_execute_step", {"step": "pause-map"})
         if not use_campaign_pause_readback:
             after = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         if int(after["date_raw"]) < target:
             raise RuntimeError("pause readback preceded the requested date")
         result = {"before": before, "running_successor": reached, "after": after,
-                  "requested_days": row.get("days", 1), "elapsed_hours": int(after["date_raw"]) - start}
+                  "requested_days": days, "elapsed_hours": int(after["date_raw"]) - start}
         if use_campaign_pause_readback:
             result.update(requested_interval_complete=True, event_boundary=None)
         return result
