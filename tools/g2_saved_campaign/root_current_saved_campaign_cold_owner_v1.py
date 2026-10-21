@@ -781,7 +781,7 @@ def validate_current_saved_runtime_source_v1(
    and base.get("business_source_commit")==frozen.get("business_source_commit")
    and _same_json(base.get(f"source{generation}_canonical_anchor"),anchor_ref.to_wire()),
    'current SDK manifest/anc')
-def verify_current_saved_supervisor_attempt_v1(
+def validate_current_saved_supervisor_business_v1(
  args:object,config:object,*,runtime_root:Path,expected_machine_id:str,
 )->JsonObject:
  arg=record(args);cfg=record(record(config).get("cold_attempt"))
@@ -800,11 +800,28 @@ def verify_current_saved_supervisor_attempt_v1(
  score=parse_campaign_score_junction_v1(cfg.get("campaign_score_junction"))
  validate_campaign_score_junction_source_v1(score,inputs.basis,runtime_root=runtime_root,reader=LocalBasisReaderV1())
  validate_campaign_score_junction_physical_v1(score,runtime_root=runtime_root,reader=LocalBasisReaderV1())
- return {"schema":"xar.current-saved-supervisor-attempt/v1","machine_id":expected_machine_id,
+ return {"schema":"xar.current-saved-supervisor-business/v1","machine_id":expected_machine_id,
   "basis_ref":inputs.basis_ref.to_wire(),"validation_ref":inputs.validation_ref.to_wire(),
   "closure_ref":inputs.basis.refs.closure.to_wire(),
   "next_sequence":inputs.basis.next_sequence,"ordinary_cycle_credit":0,
   "game_day_credit":0,"original_actions_replayed":False}
+
+
+def verify_current_saved_supervisor_attempt_v1(
+ args:object,config:object,*,runtime_root:Path,expected_machine_id:str,
+)->JsonObject:
+ business=validate_current_saved_supervisor_business_v1(args,config,runtime_root=runtime_root,expected_machine_id=expected_machine_id)
+ from tools.g2_saved_campaign import current_saved_campaign_preflight_v1 as _current_saved_preflight_v1
+ arguments=record(args)
+ prepared=_current_saved_preflight_v1.verify_current_saved_prepared_v1(
+  runtime_root=runtime_root,expected_machine_id=expected_machine_id,
+  expected_attempt_nonce=text(arguments.get("attempt_nonce")),
+  expected_task_nonce=text(arguments.get("task_nonce")),reader=LocalBasisReaderV1())
+ need(prepared.basis_ref==parse_ref(business["basis_ref"])
+  and prepared.validation_ref==parse_ref(business["validation_ref"]),"Prepared belongs to current shared business inputs")
+ return {**business,"schema":"xar.current-saved-supervisor-attempt/v2",
+  "preflight_ref":prepared.preflight_ref.to_wire(),"prepared_stage":"OFFLINE_CONTRACT_PREPARED",
+  "fresh_native_qualification":False,"full_loop_permitted":False}
 
 def validate_current_saved_cold_owner_v1(plan_ref:ExactRefV1,quote_ref:ExactRefV1,*,reader:BasisReaderV1,expected_machine_id:str,metadata_overlay:dict[str,bytes]|None=None)->JsonObject:
  from tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1 import parse_plan_v1,parse_quote_v1,compose_v1
@@ -814,8 +831,17 @@ def validate_current_saved_cold_owner_v1(plan_ref:ExactRefV1,quote_ref:ExactRefV
  quote=parse_quote_v1(quote_wire)
  need(plan_wire.get("machine_id")==expected_machine_id==quote_wire.get("machine_id"),"owner machine")
  producer_ref=parse_ref(plan_wire.get("producer_ref"))
- need(Path(compose_v1.__code__.co_filename).resolve()==Path(producer_ref.path).resolve(),"current producer origin")
- exact_read(reader,producer_ref,65536)
+ producer_rows=[item for item in plan.source_rows if item.relative_path=="tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py"]
+ need(len(producer_rows)==1 and producer_rows[0].source_ref==producer_ref,"single current producer mapping")
+ deployed_rows=[item for item in quote.files if item.relative_path==producer_rows[0].relative_path]
+ need(len(deployed_rows)==1 and (deployed_rows[0].bytes,deployed_rows[0].sha256)==(producer_ref.bytes,producer_ref.sha256),"exact deployed producer copy mapping")
+ actual_producer=Path(compose_v1.__code__.co_filename).resolve()
+ deployed_producer=Path(deployed_rows[0].path).resolve()
+ need(actual_producer in (Path(producer_ref.path).resolve(),deployed_producer),"current producer actual source or exact frozen copy origin")
+ need(deployed_producer==Path(plan.runtime_root).joinpath(*producer_rows[0].relative_path.split("/")).resolve(),"confined deployed producer origin")
+ exact_read(reader,producer_ref,131072)
+ if actual_producer==deployed_producer:
+  exact_read(reader,ExactRefV1(str(actual_producer),producer_ref.bytes,producer_ref.sha256),131072)
  recomposed=compose_v1(plan,plan_ref=plan_ref,metadata_overlay=metadata_overlay)
  need(_same_json(recomposed.quote.to_wire(),quote.to_wire()),'whole graph recompositio')
  for item in rows(quote_wire.get("files")):

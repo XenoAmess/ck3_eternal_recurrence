@@ -31,12 +31,7 @@ CANONICAL_NAMES = frozenset((
  "root_checkpoint_bootstrap_c23.py", "root_native30_supervisor_c23.py",
  "root_p37c23_mcp_entry.py", "root_p37c23_sdk_queue.py",
 ))
-GENERIC_SOURCE_NAMES = frozenset((
- "current_saved_basis_v1.py", "file_stat_identity_v1.py",
- "root_current_saved_campaign_cold_owner_v1.py",
- "current_saved_campaign_feeder_v1.py",
- "prepare_current_saved_campaign_cold_v1.py", "root_saved_campaign_preflight.py",
-))
+GENERIC_SOURCE_PATHS = frozenset(('tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/ck3_live_run_id.py'))
 def sha256_v1(raw: bytes) -> str:
  need(type(raw) is bytes, "exact source bytes")
  return hashlib.sha256(raw).hexdigest()
@@ -165,12 +160,10 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
  need(len(result.canonical_entry_paths) == 8 and set(result.canonical_entry_paths) == CANONICAL_NAMES
    and set(result.canonical_entry_paths) <= set(result.closure_entry_paths)
    and len(result.closure_entry_paths) <= 64, "canonical max8 and complete bounded closure")
- need(len(result.source_rows) == len(GENERIC_SOURCE_NAMES)
-   and {ntpath.basename(item.relative_path) for item in result.source_rows} == GENERIC_SOURCE_NAMES
+ need(len(result.source_rows) == len(GENERIC_SOURCE_PATHS)
+   and {item.relative_path for item in result.source_rows} == GENERIC_SOURCE_PATHS
    and len({item.relative_path for item in result.source_rows}) == len(result.source_rows)
-         and {item.relative_path for item in result.source_rows} <= set(result.closure_entry_paths)
-         and all(item.relative_path == "tools/g2_saved_campaign/" + ntpath.basename(item.relative_path)
-                 for item in result.source_rows),
+         and {item.relative_path for item in result.source_rows} <= set(result.closure_entry_paths),
    "all generic shared dependencies explicitly belong to complete closure")
  need(any(item.source_ref == result.producer_ref for item in result.source_rows),
    "actual producer source participates in closure")
@@ -527,7 +520,50 @@ def emit_cold_resume_v1(material: bytes, *, machine_id: str) -> bytes:
     "historical_saved_basis_view", "validate_post_sem_driver", "migration_checkpoint")),
    "current cold queue no longer routes through saved10480 authorities")
  compile(source, "<independent current saved queue binding>", "exec")
- return source.encode("utf-8")
+ return emit_current_saved_request_guards_v1(source.encode("utf-8"),kind="cold")
+
+def emit_current_saved_request_guards_v1(material:bytes,*,kind:Literal["cold","queue"])->bytes:
+ """Bind the shared halt-first request gate into the original cold and dispatch paths."""
+ source=material.decode("utf-8")
+ tree=ast.parse(source)
+ need("_current_saved_gate_v1" not in source,"request gate is installed exactly once")
+ lines=source.splitlines(keepends=True)
+ imports=[node for node in tree.body if isinstance(node,ast.ImportFrom) and node.module=="__future__"]
+ offset=max((node.end_lineno or node.lineno for node in imports),default=0)
+ edits:list[tuple[int,int,str]]=[]
+ shared="from tools.g2_saved_campaign import current_saved_campaign_preflight_v1 as _current_saved_gate_v1\n"
+ if kind=="cold":
+  factories=[node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="make_normal_checkpoint_cold_queue_v1"]
+  need(len(factories)==1,"one actual cold queue factory")
+  returns=[node for node in factories[0].body if isinstance(node,ast.Return) and isinstance(node.value,ast.Name) and node.value.id=="NormalCheckpointColdQueue"]
+  need(len(returns)==1 and returns[0].end_lineno is not None,"one actual cold queue class return")
+  cold_return=returns[0]
+  if cold_return.end_lineno is None: raise ValueError("cold factory return extent")
+  body=" "*cold_return.col_offset+"return _current_saved_gate_v1.install_current_saved_queue_guard_v1(NormalCheckpointColdQueue,runtime_root=env['N'])\n"
+  edits.append((cold_return.lineno-1,cold_return.end_lineno,body))
+ else:
+  need(kind=="queue","known request guard source kind")
+  loops=[node for node in tree.body if isinstance(node,ast.AsyncFunctionDef) and node.name=="run_request_loop"]
+  need(len(loops)==1,"one actual request dispatch")
+  assignments=[node for node in ast.walk(loops[0]) if isinstance(node,ast.Assign) and any(isinstance(target,ast.Name) and target.id=="command" for target in node.targets) and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Attribute) and isinstance(node.value.func.value,ast.Name) and node.value.func.value.id=="request" and node.value.func.attr=="get"]
+  need(len(assignments)==1,"one dispatch command seam")
+  dispatch_assignment=assignments[0]
+  indent=" "*dispatch_assignment.col_offset
+  guard=indent+'if "tool" in request or request.get("command")=="full_loop":\n'+indent+'    _current_saved_gate_v1.validate_current_saved_dispatch_v1(queue,request,runtime_root=N)\n'
+  edits.append((dispatch_assignment.lineno-1,dispatch_assignment.lineno-1,guard))
+  waits=[node for node in ast.walk(tree) if isinstance(node,ast.Expr) and isinstance(node.value,ast.Await) and isinstance(node.value.value,ast.Call) and isinstance(node.value.value.func,ast.Name) and node.value.value.func.id=="wait_for_sdk_pair_pin"]
+  need(len(waits)==1 and waits[0].end_lineno is not None,"one actual pinned SDK pair before tools")
+  wait_expression=waits[0]
+  if wait_expression.end_lineno is None: raise ValueError("SDK wait extent")
+  hook=" "*wait_expression.col_offset+'_current_saved_gate_v1.bind_current_saved_request_epoch_v1(queue,runtime_root=N,expected_machine_id=_current_saved_gate_v1.current_execution_machine_id_v1())\n'
+  edits.append((wait_expression.end_lineno,wait_expression.end_lineno,hook))
+ edits.append((offset,offset,shared))
+ for start,end,text in sorted(edits,reverse=True):
+  lines[start:end]=[text]
+ result="".join(lines)
+ compile(result,"<current saved shared request guards>","exec")
+ return result.encode("utf-8")
+
 def emit_source32_factory_v1(material:bytes,sdk_mcp:bytes,*,mcp_ref:ExactRefV1)->bytes:
  source=material.decode("utf-8")
  nodes=[node for node in ast.parse(sdk_mcp).body if isinstance(node,ast.FunctionDef) and node.name=="load_driver"]
@@ -706,6 +742,7 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  put("root_checkpoint_bootstrap_c23.py",emit_bootstrap_v1(get("root_checkpoint_bootstrap_c23.py"),machine_id=p.machine_id))
  put("root_native30_supervisor_c23.py",emit_supervisor_v1(get("root_native30_supervisor_c23.py"),machine_id=p.machine_id))
  put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py")))
+ put("root_p37c23_sdk_queue.py",emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue"))
  cold = emit_cold_resume_v1(get("root_p37c23_cold_resume.py"),machine_id=p.machine_id).decode("utf-8")
  cold += (
         "\ndef load_current_saved_feeder_inputs_v1() -> WarmCurrentSavedFeederInputsV1:\n"
@@ -911,4 +948,370 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   p.runtime_root,tuple(result_rows),score_binding,p.canonical_entry_paths,p.closure_entry_paths,p.import_roots,
   8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072)
  return ColdComposeV1(output,parse_quote_v1(quote.to_wire()))
+
+def run_current_saved_startup_consumer_probe_v1(
+ plan_ref:ExactRefV1,quote_ref:ExactRefV1,*,expected_machine_id:str,
+) -> JsonObject:
+ """Execute frozen, read-only original consumers before publishing Prepared.
+
+ This function requires a fresh process importing this module from the quoted
+ runtime. It does not call supervisor.main, receive_entry or a Native constructor.
+ """
+ import importlib
+ import sys
+ from types import FunctionType, ModuleType
+ from datetime import timezone
+ from tools.g2_saved_campaign import current_saved_campaign_preflight_v1 as gate
+ plan=parse_plan_v1(parse_json(read_ref_v1(plan_ref)))
+ quote=parse_quote_v1(parse_json(read_ref_v1(quote_ref)))
+ need(plan.machine_id==expected_machine_id==gate.current_execution_machine_id_v1(),
+      "consumer probe uses the actual execution machine")
+ need(quote.plan_ref==plan_ref and quote.runtime_root==plan.runtime_root,
+      "consumer probe exact Plan and Quote")
+ root=Path(plan.runtime_root).resolve(strict=True)
+ need(Path(__file__).resolve(strict=True)==root/"tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py",
+      "consumer probe must run from the frozen runtime, not an ambient checkout")
+ need(Path(sys.path[0]).resolve()==root,"fresh probe first import root is this runtime")
+ for name,module in tuple(sys.modules.items()):
+  if name=="tools" or name.startswith("tools.g2_saved_campaign") or name=="tools.ck3_live_run_id":
+   filename:object=getattr(module,"__file__",None)
+   need(isinstance(filename,str) and Path(filename).resolve().is_relative_to(root),
+        "consumer probe rejects ambient shared module caches")
+ output={row.relative_path:row for row in quote.files if row.relative_path is not None}
+ def source(relative:str)->tuple[ExactRefV1,bytes]:
+  row=output.get(relative)
+  need(row is not None,"quoted consumer source: "+relative)
+  if row is None: raise ValueError("missing consumer source")
+  reference=ExactRefV1(row.path,row.bytes,row.sha256)
+  return reference,read_ref_v1(reference)
+ def module_at(name:str,relative:str)->tuple[ModuleType,ExactRefV1,bytes]:
+  reference,payload=source(relative)
+  cached=sys.modules.get(name)
+  if cached is not None:
+   need(isinstance(cached.__file__,str) and Path(cached.__file__).resolve()==Path(reference.path).resolve(),
+        "actual consumer module origin")
+   return cached,reference,payload
+  module=ModuleType(name);module.__file__=reference.path
+  sys.modules[name]=module
+  try: exec(compile(payload,reference.path,"exec"),vars(module))
+  except BaseException:
+   del sys.modules[name]
+   raise
+  return module,reference,payload
+ def function(module:ModuleType,name:str)->FunctionType:
+  value:object=vars(module).get(name)
+  if not isinstance(value,FunctionType): raise ValueError("actual consumer function: "+name)
+  return value
+ def ast_function(payload:bytes,qualname:str)->ast.AST:
+  current:list[ast.AST]=list(ast.parse(payload).body)
+  result:ast.AST|None=None
+  for part in qualname.split("."):
+   found=[node for node in current if isinstance(node,(ast.ClassDef,ast.FunctionDef,ast.AsyncFunctionDef)) and node.name==part]
+   need(len(found)==1,"one original consumer callable "+qualname)
+   result=found[0]
+   current=list(result.body) if isinstance(result,(ast.ClassDef,ast.FunctionDef,ast.AsyncFunctionDef)) else []
+  if result is None: raise ValueError("empty consumer callable")
+  return result
+ calls:list[gate.CurrentSavedConsumerProbeCallV1]=[]
+ def evidence(operation:str,reference:ExactRefV1,payload:bytes,qualname:str,
+              observed:JsonObject,projection:list[ast.stmt]|None=None)->None:
+  parent=ast_function(payload,qualname)
+  projected=ast.Module(body=projection,type_ignores=[]) if projection is not None else None
+  calls.append(gate.CurrentSavedConsumerProbeCallV1(operation,
+   "original_function" if projected is None else "original_ast_projection",reference,qualname,
+   sha256_v1(ast.dump(parent,include_attributes=False).encode()),
+   None if projected is None else sha256_v1(ast.dump(projected,include_attributes=False).encode()),
+   None if projected is None else ast.unparse(projected),1,observed))
+ config_ref,config_raw=source("ROOT-LAUNCH-CONFIG-C23-A15.json")
+ config=json_object(parse_json(config_raw))
+ _,policy_raw=source("ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")
+ policy=json_object(parse_json(policy_raw))
+ dependency_root=Path(text(policy["dependency_root"])).resolve(strict=True)
+ import_paths:list[str]=[]
+ for relative in plan.import_roots:
+  path=(root/relative).resolve(strict=True)
+  need(path.is_relative_to(root),"frozen deployment import root")
+  if path!=root: import_paths.append(str(path))
+ import_paths.append(str(dependency_root))
+ for relative in ("win32","win32/lib"):
+  path=dependency_root/relative
+  if path.is_dir(): import_paths.append(str(path))
+ sys.path[1:1]=import_paths
+ dll_handles:list[object]=[]
+ if hasattr(__import__("os"),"add_dll_directory"):
+  import os
+  for path in (dependency_root/"pywin32_system32",Path(sys.executable).parent/"Lib/site-packages/pywin32_system32"):
+   if path.is_dir(): dll_handles.append(os.add_dll_directory(str(path)))
+ spec_raw=read_ref_v1(next(ExactRefV1(row.path,row.bytes,row.sha256) for row in quote.files
+                         if row.path==plan.supervisor_spec_path))
+ spec=json_object(parse_json(spec_raw))
+ bootstrap=Path(text(spec["bootstrap"]))
+ need(bootstrap.parent.resolve()==root,"Task bootstrap is in this frozen runtime")
+ task,task_ref,task_raw=module_at("_current_saved_probe_task_owner_v1",bootstrap.name)
+ checked:object=function(task,"checked_spec")(Path(plan.supervisor_spec_path),sha256_v1(spec_raw))
+ need(json_object(checked)==spec,"original Task spec validation preserves exact document")
+ evidence("task_spec_validation",task_ref,task_raw,"checked_spec",
+          {"spec_path":plan.supervisor_spec_path,"spec_sha256":sha256_v1(spec_raw),
+           "task_nonce":plan.task_nonce,"stage":text(spec["stage"])})
+ outer,outer_ref,outer_raw=module_at("root_c23_canonical_outer","root_c23_canonical_outer.py")
+ canonical:object=function(outer,"prepare_supervisor")(root,enabled=True)
+ need(canonical is not None,"actual canonical constructor returned a binding")
+ evidence("canonical_outer_constructor",outer_ref,outer_raw,"OuterBindingV1.__init__",
+          {"runtime_root":str(root),"canonical_entry_count":len(plan.canonical_entry_paths)})
+ boot,_,_=module_at("root_checkpoint_bootstrap_c23","root_checkpoint_bootstrap_c23.py")
+ api_result:object=function(boot,"api")()
+ need(isinstance(api_result,tuple) and len(api_result)==3,"original bootstrap API result")
+ if not isinstance(api_result,tuple) or len(api_result)!=3: raise ValueError("bootstrap API")
+ environment:object=api_result[0];runtime:object=api_result[2]
+ need(isinstance(environment,ModuleType) and isinstance(runtime,ModuleType),"actual SDK modules")
+ owner_module=importlib.import_module("tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1")
+ owner_ref,owner_raw=source("tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py")
+ args:JsonObject={"machine_id":expected_machine_id,"attempt_nonce":plan.attempt_nonce,
+                  "task_nonce":plan.task_nonce,"runtime_root":str(root)}
+ business:object=function(owner_module,"validate_current_saved_supervisor_business_v1")(
+  args,config,runtime_root=root,expected_machine_id=expected_machine_id)
+ business_row=json_object(business)
+ evidence("supervisor_prepared_business",owner_ref,owner_raw,
+          "validate_current_saved_supervisor_business_v1",
+          {"config_ref":config_ref.to_wire(),"basis_ref":plan.basis_ref.to_wire(),
+           "validation_ref":plan.validation_ref.to_wire(),"business_schema":text(business_row["schema"])})
+ supervisor,super_ref,super_raw=module_at("_current_saved_probe_supervisor_v1","root_native30_supervisor_c23.py")
+ main=ast_function(super_raw,"main")
+ need(isinstance(main,ast.FunctionDef),"actual supervisor main definition")
+ if not isinstance(main,ast.FunctionDef): raise ValueError("supervisor main")
+ tries=[node for node in main.body if isinstance(node,ast.Try) and any(
+  isinstance(item,ast.Expr) and isinstance(item.value,ast.Call) and
+  isinstance(item.value.func,ast.Attribute) and item.value.func.attr=="start" and
+  isinstance(item.value.func.value,ast.Name) and item.value.func.value.id=="keeper" for item in node.body)]
+ need(len(tries)==1,"one original pre-CreateProcess consumer block")
+ nodes=tries[0].body
+ imports=[node for node in nodes if isinstance(node,ast.ImportFrom) and node.module=="root_checkpoint_bootstrap_c23"
+          and any(item.name=="verify_cold_profile" for item in node.names)]
+ make=[node for node in nodes if isinstance(node,ast.Assign) and isinstance(node.value,ast.Call)
+       and isinstance(node.value.func,ast.Attribute) and node.value.func.attr=="make_spec"
+       and isinstance(node.value.func.value,ast.Name) and node.value.func.value.id=="environment"]
+ verify=[node for node in nodes if isinstance(node,ast.Assign) and isinstance(node.value,ast.Call)
+         and isinstance(node.value.func,ast.Name) and node.value.func.id=="verify_cold_profile"]
+ need(len(imports)==len(make)==len(verify)==1 and nodes.index(verify[0])==nodes.index(make[0])+1,
+      "unique adjacent original make_spec and verify_cold_profile statements")
+ projection:list[ast.stmt]=[imports[0],make[0],verify[0]]
+ scope:dict[str,object]=dict(vars(supervisor))
+ scope.update(environment=environment,runtime=runtime,config=config,game_dir=Path(text(config["game_dir"])).resolve())
+ exec(compile(ast.Module(body=projection,type_ignores=[]),super_ref.path,"exec"),scope)
+ checked_spec=scope["spec"];manifest=json_object(scope["manifest"])
+ state_dir:object=getattr(checked_spec,"state_dir",None)
+ manifest_path:object=getattr(checked_spec,"manifest_path",None)
+ need(isinstance(state_dir,Path) and isinstance(manifest_path,Path),"actual environment spec paths")
+ observed:JsonObject={"state_dir":str(state_dir),"manifest_path":str(manifest_path),
+                     "environment_sha256":text(manifest["environment_sha256"]),"config_ref":config_ref.to_wire()}
+ evidence("supervisor_make_spec",super_ref,super_raw,"main",observed,projection)
+ evidence("supervisor_verify_cold_profile",super_ref,super_raw,"main",observed,projection)
+ mcp_observed,mcp_ref,mcp_raw=probe_current_saved_mcp_factory_v1(plan,quote)
+ evidence("frozen_mcp_safe_boundary",mcp_ref,mcp_raw,"load_driver",mcp_observed)
+ result=gate.CurrentSavedConsumerProbeV1(expected_machine_id,datetime.now(timezone.utc).isoformat(),
+  str(root),plan.attempt_nonce,plan.task_nonce,plan_ref,quote_ref,plan.producer_ref,tuple(calls))
+ return gate.parse_current_saved_consumer_probe_v1(result.to_wire()).to_wire()
+
+def probe_current_saved_mcp_factory_v1(
+ plan:ColdPlanV1,quote:ColdQuoteV1,
+)->tuple[JsonObject,ExactRefV1,bytes]:
+ """Execute the generated wrapper and real SDK factory with one constructor seam."""
+ import argparse
+ import importlib
+ import inspect
+ import types
+ import sys
+ from dataclasses import dataclass
+ need(plan.runtime_root==quote.runtime_root and plan.machine_id==quote.machine_id
+      and plan.business_source_generation==32,"one current Source32 probe")
+ def function(value:object)->types.FunctionType:
+  if not isinstance(value,types.FunctionType): raise ValueError("actual Python factory function required")
+  return value
+ def quoted(name:str)->tuple[ExactRefV1,bytes]:
+  found=[row for row in quote.files if row.relative_path==name]
+  need(len(found)==1,"one quoted G4 input: "+name)
+  row=found[0];reference=ExactRefV1(row.path,row.bytes,row.sha256)
+  return reference,read_ref_v1(reference)
+ entry_ref,entry_raw=quoted("root_p37c23_mcp_entry.py")
+ _,freeze_raw=quoted("ROOT-FINAL-SDK-FREEZE-P37C23-A15.json")
+ frozen=record(parse_json(freeze_raw))
+ source_root=Path(absolute_v1(frozen["source_root"])).resolve(strict=True)
+ policy=record(parse_json(read_ref_v1(parse_ref(frozen["canonical_preload_policy"]))))
+ dependency=Path(absolute_v1(policy["dependency_root"])).resolve(strict=True)
+ base=record(parse_json(read_ref_v1(plan.sdk_base_ref)))
+ def sdk_ref(name:str)->ExactRefV1:
+  found=[record(item) for item in rows(base["files"]) if record(item).get("relative")==name]
+  need(len(found)==1,"one actual SDK source: "+name)
+  row=found[0]
+  return ExactRefV1(str(source_root/name),integer(row["bytes"],1),digest(row["sha256"]))
+ sdk_mcp_ref=sdk_ref("xar_autoplayer/bridge/mcp_server.py")
+ sdk_mcp_raw=read_ref_v1(sdk_mcp_ref)
+ sys.path[1:1]=[str(source_root),str(dependency)]
+ mcp=importlib.import_module("xar_autoplayer.bridge.mcp_server")
+ original=function(vars(mcp).get("load_driver"))
+ need(Path(original.__code__.co_filename).resolve()==Path(sdk_mcp_ref.path).resolve(),
+      "actual SDK factory origin")
+ tree=ast.parse(entry_raw)
+ wrappers=[node for node in tree.body if isinstance(node,ast.FunctionDef)
+           and node.name=="_current_source32_load_driver_v1"]
+ need(len(wrappers)==1,"one frozen generated wrapper")
+ wrapper_node=wrappers[0]
+ previous=[node.end_lineno for node in tree.body if isinstance(node,ast.FunctionDef)
+           and node.lineno<wrapper_node.lineno and node.end_lineno is not None]
+ need(bool(previous),"bounded generated wrapper prelude")
+ start=max(previous)
+ selected=[node for node in tree.body if node.lineno>start and node.lineno<=wrapper_node.lineno]
+ need(4<=len(selected)<=8 and selected[-1] is wrapper_node,"finite actual import/origin/wrapper span")
+ need(all(isinstance(node,(ast.ImportFrom,ast.Assign,ast.If,ast.FunctionDef)) for node in selected),
+      "no unreviewed generated execution")
+ namespace:dict[str,object]={"__name__":"current_saved_G4_frozen_wrapper", "Path":Path,
+                             "os":__import__("os"),"mcp_server":mcp}
+ exec(compile(ast.Module(body=selected,type_ignores=[]),entry_ref.path,"exec"),namespace)
+ wrapper=function(namespace.get("_current_source32_load_driver_v1"))
+ need(namespace.get("_source32_load_driver_v1") is original,"real factory import")
+ native_type:object=vars(mcp).get("NativeHeadlessGameplayDriver")
+ if not isinstance(native_type,type): raise ValueError("actual Native driver class")
+ native_signature=inspect.signature(native_type)
+ @dataclass
+ class ProbeDriverV1:
+  route_window_clock_v1:object
+  route_contact_timeline_speed:int
+  allow_route_contact_high_speed_ab:bool
+  require_initial_lifestyle_focus_before_date_advance:bool=False
+  initial_lifestyle_focus_gate_stage:str=""
+ calls:list[inspect.BoundArguments]=[]
+ def constructor_seam(*args:object,**kwargs:object)->ProbeDriverV1:
+  bound=native_signature.bind(*args,**kwargs);calls.append(bound)
+  clock:object=bound.arguments["route_window_clock_v1"]
+  speed=integer(bound.arguments["route_contact_timeline_speed"],3,3)
+  permission:object=bound.arguments["allow_route_contact_high_speed_ab"]
+  need(permission is False,"original global A/B remains false")
+  return ProbeDriverV1(clock,speed,False)
+ factory_scope:dict[str,object]={key:value for key,value in original.__globals__.items()}
+ factory_scope["NativeHeadlessGameplayDriver"]=constructor_seam
+ factory=types.FunctionType(original.__code__,factory_scope,original.__name__,
+                            original.__defaults__,original.__closure__)
+ factory.__kwdefaults__=original.__kwdefaults__
+ namespace["_source32_load_driver_v1"]=factory
+ basis=parse_current_saved_basis_v1(parse_json(read_ref_v1(plan.basis_ref,65536)),expected_machine_id=plan.machine_id)
+ paths=derive_current_saved_state_paths_v1(basis)
+ result:object=wrapper("native-headless",state_dir=paths.state_root,
+                       pipe_name=r"\\.\pipe\G4-NEVER-OPENED",route_contact_timeline_speed=3,
+                       allow_route_contact_high_speed_ab=False)
+ need(isinstance(result,ProbeDriverV1) and len(calls)==1,"generated wrapper reached one software constructor")
+ if not isinstance(result,ProbeDriverV1): raise ValueError("probe driver model")
+ need(getattr(result.route_window_clock_v1,"timeline_speed",None)==4
+      and getattr(result.route_window_clock_v1,"research_high_speed_ab",None) is True
+      and result.route_contact_timeline_speed==3 and result.allow_route_contact_high_speed_ab is False,
+      "actual scoped4/true plus global3/false")
+ negative_cases:tuple[tuple[str,object,bool],...]=(("vision-report",3,False),
+  ("native-headless",True,False),("native-headless",3.0,False),("native-headless",4,False),("native-headless",3,True))
+ rejected=0
+ for name,speed_value,permission_value in negative_cases:
+  try: wrapper(name,route_contact_timeline_speed=speed_value,allow_route_contact_high_speed_ab=permission_value)
+  except ValueError: rejected+=1
+  else: raise ValueError("generated wrapper accepted forbidden mode")
+ need(rejected==5 and len(calls)==1,"negative cases never reach constructor")
+ parser:object=function(vars(mcp).get("parser"))()
+ if not isinstance(parser,argparse.ArgumentParser): raise ValueError("actual SDK parser")
+ queue_ref,queue_raw=quoted("root_p37c23_sdk_queue.py")
+ queue_tree=ast.parse(queue_raw)
+ argv_nodes=[node for node in ast.walk(queue_tree) if isinstance(node,ast.Assign)
+             and any(isinstance(target,ast.Name) and target.id=="argv" for target in node.targets)]
+ constant_nodes=[node for node in queue_tree.body if isinstance(node,ast.FunctionDef) and node.name=="source_constant"]
+ flags_nodes=[node for node in queue_tree.body if isinstance(node,ast.Assign)
+              and any(isinstance(target,ast.Name) and target.id=="FLAGS_SOURCE" for target in node.targets)]
+ need(len(argv_nodes)==len(constant_nodes)==len(flags_nodes)==1,"unique original MCP argv and flag consumer")
+ _,config_raw=quoted("ROOT-LAUNCH-CONFIG-C23-A15.json");config=json_object(parse_json(config_raw))
+ argv_scope:dict[str,object]={"ast":ast,"Path":Path,"N":Path(plan.runtime_root),"STATE_DIR":Path(paths.state_root),
+  "base_executable":text(record(policy["direct_python"])["path"])}
+ exec(compile(ast.Module(body=[constant_nodes[0],flags_nodes[0]],type_ignores=[]),queue_ref.path,"exec"),argv_scope)
+ flags_value:object=function(argv_scope.get("source_constant"))(argv_scope["FLAGS_SOURCE"],"PRIVATE_FLAGS")
+ if type(flags_value) not in (tuple,list): raise ValueError("original source flags sequence")
+ if not isinstance(flags_value,(tuple,list)): raise ValueError("unreachable source flags")
+ flags=[text(item) for item in flags_value]
+ argv_scope.update(queue=types.SimpleNamespace(launch={"pipe":text(config["pipe_name"])},flags=flags),
+                   args=types.SimpleNamespace(environment_manifest=Path(paths.environment_manifest)))
+ exec(compile(ast.Module(body=[argv_nodes[0]],type_ignores=[]),queue_ref.path,"exec"),argv_scope)
+ argv=[text(item) for item in rows(argv_scope["argv"])]
+ need(len(argv)>6 and Path(argv[5]).resolve()==Path(entry_ref.path).resolve(),"original final SDK entry argv")
+ parsed=parser.parse_args(argv[6:])
+ need(parsed.driver=="native-headless" and Path(parsed.state_dir).resolve()==Path(paths.state_root).resolve(),
+      "real SDK parser accepted original generated queue argv")
+ for key in ("war31_one_shot_authorization_receipt","war31_one_shot_source_checkpoint",
+             "war31_one_shot_source_driver","war31_one_shot_submission_fence"):
+  need(key in vars(parsed) and vars(parsed)[key] is None,
+       "software-only G4 refuses one-shot gates that could read Driver or SAVE")
+ sdk_tree=ast.parse(sdk_mcp_raw)
+ mains=[node for node in sdk_tree.body if isinstance(node,ast.FunctionDef) and node.name=="main"]
+ need(len(mains)==1,"one actual SDK main")
+ driver_assignments=[node for node in mains[0].body if isinstance(node,ast.Assign)
+  and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name)
+  and node.value.func.id=="load_driver" and any(isinstance(target,ast.Name)
+  and target.id=="driver" for target in node.targets)]
+ need(len(driver_assignments)==1,"one actual SDK main factory call")
+ driver_assignment=driver_assignments[0]
+ driver_call=driver_assignment.value
+ need(isinstance(driver_call,ast.Call),"SDK driver assignment remains a call")
+ if not isinstance(driver_call,ast.Call): raise ValueError("unreachable SDK factory call")
+ need(len(driver_call.args)+len(driver_call.keywords)==14,"complete actual SDK main factory argument contract")
+ prerequisites=[node for node in mains[0].body if isinstance(node,ast.Assign)
+  and any(isinstance(target,ast.Name) and target.id in {"war31_paths","war31_gate","selected_state_dir"}
+          for target in node.targets)]
+ need(len(prerequisites)==3,"original pure CLI-derived factory prerequisites")
+ main_projection=ast.Module(body=[*prerequisites,driver_assignment],type_ignores=[])
+ lifecycle_forwarding_marker:JsonObject={
+  "schema":"xar.current-saved-preflight-unqualified-lifecycle-forwarding-marker/v1",
+  "source_manifest_path":paths.environment_manifest,"fresh_native_qualification":False,
+  "ordinary_cycle_credit":0,"game_day_credit":0}
+ main_scope:dict[str,object]={key:value for key,value in original.__globals__.items()}
+ main_scope.update(args=parsed,load_driver=wrapper,succession_lifecycle_binding=lifecycle_forwarding_marker)
+ before_main=len(calls)
+ exec(compile(main_projection,sdk_mcp_ref.path,"exec"),main_scope)
+ need(len(calls)==before_main+1 and isinstance(main_scope.get("driver"),ProbeDriverV1),
+      "original SDK main projection reaches the same single constructor seam")
+ need(calls[-1].arguments.get("succession_lifecycle_binding") is lifecycle_forwarding_marker,
+      "original main and factory preserve the exact unqualified lifecycle forwarding fixture")
+ main_driver=main_scope["driver"]
+ if not isinstance(main_driver,ProbeDriverV1): raise ValueError("SDK main software driver")
+ need(getattr(main_driver.route_window_clock_v1,"timeline_speed",None)==4
+  and getattr(main_driver.route_window_clock_v1,"research_high_speed_ab",None) is True
+  and main_driver.route_contact_timeline_speed==3 and main_driver.allow_route_contact_high_speed_ab is False,
+  "complete SDK main argument forwarding preserves scoped4 and global3")
+ constructor_arguments:JsonObject={}
+ for key,value in calls[-1].arguments.items():
+  if key=="route_window_clock_v1":
+   constructor_arguments[key]={"timeline_speed":4,"research_high_speed_ab":True}
+  else:
+   constructor_arguments[key]=str(value) if isinstance(value,Path) else json_value(value)
+ runtime=importlib.import_module("xar_autoplayer.runtime")
+ runtime_ref=sdk_ref("xar_autoplayer/runtime.py");runtime_raw=read_ref_v1(runtime_ref)
+ actual_runtime=Path(str(vars(runtime).get("__file__"))).resolve(strict=True)
+ host_root=Path(text(frozen["runtime_source_repo"]))/"ck3_autonomous_player/src"
+ need(actual_runtime in {Path(runtime_ref.path).resolve(),(host_root/"xar_autoplayer/runtime.py").resolve()}
+      and actual_runtime.read_bytes()==runtime_raw,"qualified SDK or same-byte Host runtime DTO origin")
+ config_type:object=vars(runtime).get("NativeBridgeLaunchConfig")
+ if not isinstance(config_type,type): raise ValueError("runtime owns NativeBridgeLaunchConfig")
+ native_config:object=config_type("native-headless",r"\\.\pipe\G4-NEVER-OPENED",
+                                  Path("G4-NO-DLL-LOAD"),Path("G4-NO-INJECTOR-RUN"))
+ need(getattr(native_config,"mode",None)=="native-headless","actual native launch parameter DTO")
+ return json_object({"machine_id":plan.machine_id,"runtime_root":plan.runtime_root,
+  "entry_source_ref":entry_ref.to_wire(),"sdk_factory_source_ref":sdk_mcp_ref.to_wire(),
+  "runtime_DTO_source_ref":runtime_ref.to_wire(),"actual_runtime_module_path":str(actual_runtime),
+  "queue_source_ref":queue_ref.to_wire(),"queue_argv_AST_sha256":sha256_v1(ast.dump(argv_nodes[0],include_attributes=False).encode()),
+  "actual_imports_executed":True,"actual_factory_code_executed":True,"factory_positive_calls":len(calls),
+  "wrapper_negative_rejections":rejected,"actual_parser_executed":True,
+  "actual_SDK_main_factory_projection_executed":True,"main_factory_positive_calls":len(calls)-before_main,
+  "main_factory_argument_count":len(driver_call.args)+len(driver_call.keywords),
+  "main_factory_AST_sha256":sha256_v1(ast.dump(driver_call,include_attributes=False).encode()),
+  "main_factory_projection_AST_sha256":sha256_v1(ast.dump(main_projection,include_attributes=False).encode()),
+  "actual_constructor_arguments":constructor_arguments,
+  "lifecycle_binding_scope":"unqualified_software_forwarding_marker",
+  "live_lifecycle_binding_qualified":False,
+  "parser_argument_scope":"original_queue_argv_projection","parser_argv_sha256":sha256_v1(encode_v1(argv)),
+  "actual_native_launch_DTO_constructed":True,"software_only":True,"native_constructor_replaced":True,
+  "route_window_clock":{"timeline_speed":4,"research_high_speed_ab":True},
+  "global_timeline_speed":result.route_contact_timeline_speed,"global_high_speed_ab":False,
+  "Native_driver_or_endpoint_constructed":False,"Game_RPC_Native_pipe_process_launch_calls":0,
+  "Driver_SAVE_body_reads":0}),sdk_mcp_ref,sdk_mcp_raw
 

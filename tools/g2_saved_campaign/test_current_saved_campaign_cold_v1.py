@@ -18,7 +18,7 @@ from typing import Callable, Protocol, runtime_checkable
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, SavedFrameV1,
     encode_current_saved_basis_v1, exact_read,
-    parse_json, record, json_object, json_value, qualify_current_saved_basis_v1,
+    parse_json, parse_ref, record, json_object, json_value, integer, text, qualify_current_saved_basis_v1,
 )
 from tools.g2_saved_campaign import test_current_saved_basis_v1 as basis_fixture
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
@@ -57,8 +57,8 @@ def score_junction() -> owner.CampaignScoreJunctionV1:
 
 def plan() -> producer.ColdPlanV1:
     names = tuple(sorted(producer.CANONICAL_NAMES))
-    source_rows = tuple(producer.SourceRowV1(ref(name),
-        "tools/g2_saved_campaign/" + name) for name in sorted(producer.GENERIC_SOURCE_NAMES))
+    source_rows = tuple(producer.SourceRowV1(ref(relative.replace("/", "\\")), relative)
+        for relative in sorted(producer.GENERIC_SOURCE_PATHS))
     source = next(row.source_ref for row in source_rows
         if row.relative_path.endswith("/prepare_current_saved_campaign_cold_v1.py"))
     return producer.ColdPlanV1(
@@ -168,6 +168,17 @@ def main(args):
         self.assertEqual(parsed, item)
         self.assertIsInstance(parsed.source_rows, tuple)
         self.assertEqual(len(parsed.canonical_entry_paths), 8)
+        self.assertIn("tools/ck3_live_run_id.py", {row.relative_path for row in parsed.source_rows})
+        self.assertIn("tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py",
+            {row.relative_path for row in parsed.source_rows})
+        bad = parsed.to_wire()
+        source_rows = [row.to_wire() for row in parsed.source_rows]
+        identity = next(row for row in source_rows if row["relative_path"] == "tools/ck3_live_run_id.py")
+        identity["relative_path"] = "tools/g2_saved_campaign/ck3_live_run_id.py"
+        bad["source_rows"] = [json_value(row) for row in source_rows]
+        with self.assertRaises(ValueError):
+            producer.parse_plan_v1(wire(bad))
+
 
     def test_plan_rejects_missing_null_alias_and_wrong_types(self) -> None:
         item = plan().to_wire()
@@ -341,9 +352,21 @@ def save_raw(fixture: type[basis_fixture.CurrentSavedBasisTests],
 
 class CurrentSavedSdkPersistenceTests(unittest.TestCase):
     fixture: type[basis_fixture.CurrentSavedBasisTests]
+    previous_fixture_machine: tuple[str, str]
 
     @classmethod
     def setUpClass(cls) -> None:
+        global MACHINE
+        cls.previous_fixture_machine = (MACHINE, basis_fixture.MACHINE)
+        if "XAR_CURRENT_SAVED_BASIS_TEST_ROOT" in os.environ:
+            from tools.ck3_live_run_id import current_machine_id
+            execution_machine = current_machine_id()
+            if os.environ.get("XAR_CURRENT_SAVED_BASIS_MACHINE_ID") != execution_machine:
+                raise ValueError("explicit owned SDK fixture uses its actual execution machine")
+            # Parameterize synthetic fixture records, never the production
+            # current-machine provider or its environment override.
+            MACHINE = execution_machine
+            basis_fixture.MACHINE = execution_machine
         def ordinary(value: object) -> JsonValue:
             if isinstance(value, dict):
                 return {key: PIPE if key == "pipe_name" else dict(LIFECYCLE)
@@ -362,11 +385,19 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
                     converted["succession_lifecycle"] = json_value(checkpoint["succession_lifecycle"])
                 return super().write(name, converted)
         cls.fixture = OwnedFixture
-        cls.fixture.setUpClass()
+        try:
+            cls.fixture.setUpClass()
+        except BaseException:
+            MACHINE, basis_fixture.MACHINE = cls.previous_fixture_machine
+            raise
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.fixture.tearDownClass()
+        global MACHINE
+        try:
+            cls.fixture.tearDownClass()
+        finally:
+            MACHINE, basis_fixture.MACHINE = cls.previous_fixture_machine
 
     def test_campaign_score_junction_build_prepare_and_owner(self) -> None:
         fixture = self.fixture
@@ -707,7 +738,172 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
         driver._persist_driver_state(persistence_reason="fixture_restore_checkpoint")
         self.assertEqual(owner.validate_warm_binding_v1(inputs, sources=sources,
             reader=reader, runtime_root=root).phase, "warm_bound")
-        fixture.measure()
+        self._exercise_live_checkpoint_continuation(driver, reader, warm, fixture_closed_epoch)
+
+    def _exercise_live_checkpoint_continuation(self, driver: OwnedDriver,
+            reader: WarmFixtureReader, warm: owner.WarmCurrentSavedFeederInputsV1,
+            closed_epoch: Callable[[CurrentSavedBasisV1, BasisReaderV1], owner.ClosedEpochV1]) -> None:
+        """Real SDK persistence and original cumulative SAVE producers, no native transport."""
+        import base64
+        import copy
+        from contextlib import nullcontext
+        from types import FunctionType, MethodType, ModuleType
+        import zlib
+        from tools.g2_saved_campaign import current_saved_campaign_preflight_v1 as gate
+        root = self.fixture.root
+        archive = record(parse_json((Path(__file__).parent / "test_data" /
+            "current_saved_sem11373_postcheck_v1.json").read_bytes()))
+        def original(name: str) -> bytes:
+            item = record(record(archive["payloads"])[name])
+            reference = parse_ref(item["source_ref"])
+            encoded = item["encoded"]
+            if type(encoded) is not str or not 0 < len(encoded) <= 131072:
+                raise ValueError("bounded compressed original source")
+            compressed = base64.b64decode(encoded, validate=True)
+            decoder = zlib.decompressobj()
+            raw = decoder.decompress(compressed, 1048577)
+            if (len(raw) != reference.bytes or len(raw) > 1048576 or not decoder.eof
+                    or decoder.unconsumed_tail or decoder.unused_data
+                    or hashlib.sha256(raw).hexdigest() != reference.sha256):
+                raise ValueError("exact original archived producer source")
+            return raw
+        def atomic_fixture(path: Path, value: object, *, replace: bool = False,
+                limit: int = 65536) -> None:
+            if not path.resolve().is_relative_to(root) or path.is_symlink():
+                raise ValueError("contained original-producer fixture IO")
+            raw = json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            if len(raw) > limit:
+                raise ValueError("bounded original-producer fixture IO")
+            if path.exists() and not replace:
+                raise FileExistsError(path)
+            with path.open("r+b" if path.exists() else "xb") as stream:
+                stream.seek(0); stream.write(raw); stream.truncate(); stream.flush(); os.fsync(stream.fileno())
+            self.fixture.measure()
+        cadence = ModuleType("_owned_original_checkpoint_cadence")
+        cadence_tree = ast.parse(original("checkpoint_cadence"))
+        cadence_nodes: list[ast.stmt] = [node for node in cadence_tree.body if
+            isinstance(node, ast.FunctionDef) and node.name in {"checkpoint_saved", "_scope"}
+            or isinstance(node, ast.Assign) and any(isinstance(target, ast.Name)
+                and target.id == "STATE_KEY" for target in node.targets)]
+        self.assertEqual(len(cadence_nodes), 3)
+        exec(compile(ast.Module(body=cadence_nodes, type_ignores=[]),
+            "<original checkpoint_saved and direct dependencies>", "exec"), vars(cadence))
+        queue_tree = ast.parse(original("queue"))
+        fresh = next(node for node in queue_tree.body if isinstance(node, ast.ClassDef) and node.name == "FreshQueue")
+        selected: list[ast.stmt] = [node for node in fresh.body if isinstance(node, ast.FunctionDef)
+            and node.name in {"checkpoint_lifecycle_matches", "finish_cumulative_checkpoint", "persist_loop_state"}]
+        self.assertEqual(len(selected), 3)
+        namespace: dict[str, object] = {"copy": copy, "Q": root / "p37-queue",
+            "atomic": atomic_fixture, "checkpoint_saved": vars(cadence)["checkpoint_saved"],
+            "_control_span_v1": lambda name: nullcontext()}
+        exec(compile(ast.Module(body=selected, type_ignores=[]), "<original cumulative SAVE producers>", "exec"), namespace)
+        class QueueFixture:
+            halted: int | None = None
+            next_sequence = warm.inputs.basis.next_sequence + 2
+            launch = json_object(parse_json(reader.read(warm.warm_proof.sources.actual_game_ref, 65536)))
+            _normal_cold: JsonObject = {"phase": "semantic", "admission": {"new_Game": launch}}
+            full_loop_state = json_object(copy.deepcopy(warm.inputs.seed))
+            governance_result_state: JsonValue = copy.deepcopy(warm.inputs.seed.get("governance_result_state"))
+            lifestyle_pending_focus: JsonValue = None
+            result_classifier_pin: JsonValue = None
+            expected_lifecycle_binding = warm.inputs.checkpoint["succession_lifecycle"]
+        queue = QueueFixture()
+        for name, value in namespace.items():
+            if name in {"checkpoint_lifecycle_matches", "finish_cumulative_checkpoint", "persist_loop_state"}:
+                if not isinstance(value, FunctionType):
+                    raise ValueError("original Queue producer must remain a Python function")
+                setattr(queue, name, MethodType(value, queue))
+        def invoke(name: str, *args: object) -> None:
+            value: object = getattr(queue, name)
+            if not isinstance(value, MethodType):
+                raise ValueError("original bound Queue producer")
+            result: object = value(*args)
+            self.assertIsNone(result)
+        self.fixture.write("ROOT-LAUNCH-CONFIG-C23-A15.json", {"cold_attempt": {
+            "machine_id": MACHINE, "runtime_root": str(root), "attempt_nonce": "1" * 32,
+            "task_nonce": "2" * 32}})
+        pair = parse_json(reader.read(warm.warm_proof.sources.sdk_pair_ref, 65536))
+        self.fixture.write("ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C23.json", pair)
+        save_raw(self.fixture, "startup_readiness_v1.py", original("startup_readiness"))
+        queue.full_loop_state["before"] = warm.warm_proof.opening.to_wire()
+        calls = 0
+        actual_loader = owner.load_current_saved_warm_inputs_v1
+        def initial_loader(*, runtime_root: Path, expected_machine_id: str) -> owner.WarmCurrentSavedFeederInputsV1:
+            nonlocal calls
+            calls += 1
+            return actual_loader(runtime_root=runtime_root, expected_machine_id=expected_machine_id)
+        with patch.object(owner, "LocalBasisReaderV1", return_value=reader), \
+                patch.object(owner, "_closed_epoch", new=closed_epoch), \
+                patch.object(gate, "LocalBasisReaderV1", return_value=reader), \
+                patch.object(gate, "load_current_saved_warm_inputs_v1", new=initial_loader):
+            gate.bind_current_saved_request_epoch_v1(queue, runtime_root=root, expected_machine_id=MACHINE)
+            queue._normal_cold["phase"] = "ready"
+            first = gate.validate_current_saved_live_readiness_v1(queue=queue,
+                runtime_root=root, expected_machine_id=MACHINE)
+            self.assertEqual(first.phase, "initial_warm")
+            invoke("persist_loop_state")
+            unchanged = gate.validate_current_saved_live_readiness_v1(queue=queue,
+                runtime_root=root, expected_machine_id=MACHINE)
+            self.assertEqual(unchanged.phase, "same_epoch_continuation")
+            saved_before = reader.stat(warm.inputs.basis.refs.save.path)
+            new_bytes = b"owned synthetic SAVE materialization after five settled cycles"
+            save_path = Path(warm.inputs.basis.refs.save.path)
+            with save_path.open("wb") as stream:
+                stream.write(new_bytes); stream.flush(); os.fsync(stream.fileno())
+            saved_cp = {**warm.inputs.checkpoint, "status": "saved", "date_raw": warm.inputs.basis.frame.date_raw + 120,
+                "size": len(new_bytes), "sha256": hashlib.sha256(new_bytes).hexdigest(), "history_index": 2}
+            save_frame = {**warm.warm_proof.opening.to_wire(), "date_raw": saved_cp["date_raw"],
+                "snapshot_id": "native:50", "revision": 51, "native_revision": 50}
+            queue.full_loop_state.update(before=save_frame, completed_cycles=25,
+                pending_checkpoint={"global_turn": 25, "semantic_response": str(root / "p37-responses/0110-1-result.json")})
+            semantic = {"date_raw": saved_cp["date_raw"], "episode_character_id": saved_cp["episode_character_id"],
+                "episode_run_id": saved_cp["episode_run_id"], "played_character": {"character_id": saved_cp["episode_character_id"]},
+                "revision": 51, "succession_lifecycle": saved_cp["succession_lifecycle"]}
+            self.fixture.write("p37-responses/0110-1-result.json", {"request": {"sequence": 110,
+                "tool": "ck3_take_semantic_snapshot_private_v1", "arguments": {}},
+                "result": {"is_error": False, "result_type": "complete", "structured_content": semantic}})
+            save_response = self.fixture.write("p37-responses/0111-1-result.json", {"request": {"sequence": 111,
+                "tool": "ck3_save_checkpoint", "arguments": {"expected_revision": 51}},
+                "result": {"is_error": False, "result_type": "complete", "structured_content": {"checkpoint": saved_cp}}})
+            queue.next_sequence = 112
+            invoke("finish_cumulative_checkpoint", {"checkpoint": saved_cp}, Path(save_response.path))
+            driver._last_checkpoint = record(saved_cp)
+            driver._persist_driver_state(persistence_reason="fixture_actual_continuation_checkpoint")
+            self.assertIsNone(driver._driver_state_error)
+            self.assertNotEqual(reader.stat(str(save_path)), saved_before)
+            second = gate.validate_current_saved_live_readiness_v1(queue=queue,
+                runtime_root=root, expected_machine_id=MACHINE)
+            self.assertEqual(second.phase, "same_epoch_continuation")
+            self.assertEqual(second.checkpoint["sha256"], saved_cp["sha256"])
+            self.assertEqual(calls, 1)
+            with self.assertRaises(ValueError):
+                owner.validate_current_saved_warm_inputs_v1(warm.inputs.basis,
+                    basis_ref=warm.inputs.basis_ref, validation_ref=warm.inputs.validation_ref,
+                    sources=warm.warm_proof.sources, reader=reader, runtime_root=root)
+            current = {**save_frame, "date_raw": integer(saved_cp["date_raw"]) + 72,
+                "actor_character_id": 3, "episode_run_id": "episode-3"}
+            queue.full_loop_state.update(before=current, completed_cycles=28)
+            driver._episode_character_id = 3; driver._episode_run_id = "episode-3"
+            driver._persist_driver_state(persistence_reason="fixture_validated_successor_current_frame")
+            invoke("persist_loop_state")
+            self.assertEqual(gate.validate_current_saved_live_readiness_v1(queue=queue,
+                runtime_root=root, expected_machine_id=MACHINE).phase, "same_epoch_continuation")
+            original_identity = reader.identities[999]
+            reader.identities[999] = {**original_identity, "creation_filetime": "134370000009999999"}
+            with self.assertRaises(ValueError):
+                gate.validate_current_saved_live_readiness_v1(queue=queue, runtime_root=root, expected_machine_id=MACHINE)
+            reader.identities[999] = original_identity
+            saved_row = parse_json(Path(save_response.path).read_bytes())
+            atomic_fixture(Path(save_response.path), {"request": {"sequence": 111}, "client_error": "outcome unknown"}, replace=True)
+            with self.assertRaises((ValueError, RuntimeError)):
+                gate.validate_current_saved_live_readiness_v1(queue=queue, runtime_root=root, expected_machine_id=MACHINE)
+            atomic_fixture(Path(save_response.path), saved_row, replace=True)
+            driver._last_checkpoint = {**saved_cp, "sha256": "0" * 64}
+            driver._persist_driver_state(persistence_reason="fixture_wrong_current_checkpoint")
+            with self.assertRaises(ValueError):
+                gate.validate_current_saved_live_readiness_v1(queue=queue, runtime_root=root, expected_machine_id=MACHINE)
+            self.assertEqual(calls, 1)
+        self.fixture.measure()
 
 
 if __name__ == "__main__":
