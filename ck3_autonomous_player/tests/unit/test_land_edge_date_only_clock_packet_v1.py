@@ -9,6 +9,24 @@ import pytest
 
 from xar_autoplayer.bridge import native_driver as nd
 from xar_autoplayer.bridge import clock_observation_timing_v1 as timing
+from xar_autoplayer.bridge.cached_native_clock_summary_v1 import CachedDiagnosticStateV1
+
+
+class FixtureClockState:
+    """Expose the retained fixture diagnostics through the production state seam."""
+
+    def __init__(self, diagnostics: object) -> None:
+        if not isinstance(diagnostics, dict):
+            raise ValueError("retained fixture diagnostics object required")
+        self._diagnostics: dict[str, object] = {}
+        for key, value in diagnostics.items():
+            if not isinstance(key, str):
+                raise ValueError("retained fixture diagnostic keys must be strings")
+            self._diagnostics[key] = copy.deepcopy(value)
+
+    def diagnostics(self) -> dict[str, object]:
+        return copy.deepcopy(self._diagnostics)
+
 
 
 def run_clock(*, wrong_stop_generation=False):
@@ -39,8 +57,10 @@ def run_clock(*, wrong_stop_generation=False):
         _advance_exact_day_with_sentinel = nd.NativeHeadlessGameplayDriver._advance_exact_day_with_sentinel
         command_timeout_seconds = life_advance_timeout_seconds = 1
 
-        def __init__(self):
-            self.current, self.commands = copy.deepcopy(start), []
+        def __init__(self) -> None:
+            self.current = copy.deepcopy(start)
+            self.commands: list[str] = []
+            self.state: CachedDiagnosticStateV1 = FixtureClockState(self.current["diagnostics"])
 
         def take_internal_semantic_snapshot(self):
             return copy.deepcopy(self.current)

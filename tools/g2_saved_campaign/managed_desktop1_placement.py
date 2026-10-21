@@ -18,6 +18,146 @@ import sys
 import time
 import uuid
 
+from typing import Literal, NotRequired, Protocol, TypedDict
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import ck3_live_run_id
+
+
+class PlacementArguments(Protocol):
+    launch_receipt: Path
+    ui_dependencies: Path
+    receipt: Path
+    desktop_id: str
+    expected_current_desktop_id: str | None
+    deadline_utc: str
+    wait_seconds: float
+
+
+class LaunchReceipt(TypedDict):
+    command: list[str]
+    creation_date: str
+    pid: int
+
+
+class SourcePin(TypedDict):
+    path: str
+    sha256: str
+
+
+class PlacementSource(TypedDict):
+    producer: SourcePin
+    machine_identity_provider: SourcePin
+    machine_identity_api: Literal["ck3_live_run_id.current_machine_id"]
+
+
+class DesktopObservation(TypedDict):
+    window_hwnd: int
+    on_current_virtual_desktop: bool
+    desktop_id: str
+    dwm_cloaked_flags: int
+
+
+class UIDependencies(TypedDict):
+    root: str
+    versions: dict[str, str]
+    module_origins: dict[str, str]
+    entry_sha256: dict[str, str]
+
+
+class PlacementReceipt(TypedDict):
+    schema: Literal["xar.g2.managed-desktop1-placement/v1"]
+    status: Literal["RED", "GREEN"]
+    machine_id: str
+    at_utc: str
+    source: PlacementSource
+    launch_receipt: str
+    gameplay_input_sent: Literal[False]
+    desktop_switches: Literal[0]
+    process_launch_or_stop_calls: Literal[0]
+    runtime_rendering_qualified: Literal[False]
+    pid: NotRequired[int]
+    target_desktop_id: NotRequired[str]
+    current_desktop_id: NotRequired[str]
+    foreground_before: NotRequired[int]
+    sta_hresult: NotRequired[int]
+    hwnd: NotRequired[int]
+    window_class: NotRequired[str]
+    # Existing Python consumers require this exact integer; no JavaScript boundary.
+    creation_filetime: NotRequired[int]
+    before: NotRequired[DesktopObservation]
+    dependencies: NotRequired[UIDependencies]
+    after: NotRequired[DesktopObservation]
+    window_rect: NotRequired[list[int]]
+    client_rect: NotRequired[list[int]]
+    foreground_after: NotRequired[int]
+    current_desktop_after: NotRequired[str]
+    topmost: NotRequired[bool]
+    minimized: NotRequired[bool]
+    current_desktop_unchanged: NotRequired[Literal[True]]
+    foreground_unchanged: NotRequired[Literal[True]]
+    background_assignment_verified: NotRequired[bool]
+    error: NotRequired[str]
+
+
+def _positive_integer(value: object, label: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+        raise ValueError(label + " must be an exact positive integer")
+    return value
+
+
+def parse_launch_receipt(value: object) -> LaunchReceipt:
+    """Validate the file boundary before constructing the shared launch contract."""
+    if not isinstance(value, dict):
+        raise ValueError("launch receipt must be a JSON object")
+    command: object = value.get("command")
+    creation_date: object = value.get("creation_date")
+    if (not isinstance(command, list) or not command
+            or not all(isinstance(item, str) and item for item in command)
+            or not isinstance(creation_date, str) or not creation_date):
+        raise ValueError("use the exact Root Game launch receipt with command and creation_date")
+    arguments: list[str] = []
+    for item in command:
+        if not isinstance(item, str):
+            raise ValueError("launch command arguments must be strings")
+        arguments.append(item)
+    return {"command": arguments, "creation_date": creation_date,
+            "pid": _positive_integer(value.get("pid"), "launch pid")}
+
+
+def _source_pin(path: Path) -> SourcePin:
+    actual = path.resolve(strict=True)
+    return {"path": str(actual), "sha256": hashlib.sha256(actual.read_bytes()).hexdigest()}
+
+
+def _new_receipt(launch_receipt: Path) -> PlacementReceipt:
+    identity_source = ck3_live_run_id.__file__
+    if identity_source is None:
+        raise RuntimeError("machine identity provider has no source path")
+    machine_id = ck3_live_run_id.current_machine_id()
+    if not isinstance(machine_id, str) or not ck3_live_run_id.SLUG_RE.fullmatch(machine_id):
+        raise ValueError("machine identity provider returned an invalid machine ID")
+    return {"schema": "xar.g2.managed-desktop1-placement/v1", "status": "RED",
+            "machine_id": machine_id, "at_utc": datetime.now(timezone.utc).isoformat(),
+            "source": {"producer": _source_pin(Path(__file__)),
+                       "machine_identity_provider": _source_pin(Path(identity_source)),
+                       "machine_identity_api": "ck3_live_run_id.current_machine_id"},
+            "launch_receipt": str(launch_receipt.resolve()), "gameplay_input_sent": False,
+            "desktop_switches": 0, "process_launch_or_stop_calls": 0,
+            "runtime_rendering_qualified": False}
+
+
+def _desktop_observation(value: dict[str, object]) -> DesktopObservation:
+    current = value.get("on_current_virtual_desktop")
+    desktop = value.get("desktop_id")
+    cloaked = value.get("dwm_cloaked_flags")
+    if (not isinstance(current, bool) or not isinstance(desktop, str)
+            or not isinstance(cloaked, int) or isinstance(cloaked, bool) or cloaked < 0):
+        raise ValueError("native desktop observation is malformed")
+    return {"window_hwnd": _positive_integer(value.get("window_hwnd"), "window HWND"),
+            "on_current_virtual_desktop": current, "desktop_id": str(uuid.UUID(desktop)),
+            "dwm_cloaked_flags": cloaked}
+
 
 def deadline_check(value: str) -> None:
     end = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -86,14 +226,12 @@ class ProcessGeneration:
         self.close()
 
 
-def game_generation(launch: dict) -> ProcessGeneration:
-    command = launch.get("command")
-    if not isinstance(command, list) or not command or not isinstance(launch.get("creation_date"), str):
-        raise ValueError("use the exact Root Game launch receipt with command and creation_date")
-    executable = Path(command[0]).resolve()
+def game_generation(launch: object) -> ProcessGeneration:
+    validated = parse_launch_receipt(launch)
+    executable = Path(validated["command"][0]).resolve()
     if executable.name.casefold() != "ck3.exe":
         raise ValueError("launch receipt is not the CK3 executable")
-    return ProcessGeneration(launch.get("pid"), executable, creation_date=launch["creation_date"])
+    return ProcessGeneration(validated["pid"], executable, creation_date=validated["creation_date"])
 
 
 def check_game_window(generation, hwnd, classname=None):
@@ -173,27 +311,25 @@ def explicit_pyvda(root):
                                    for name, path in origins.items()}}
 
 
-def place(args):
-    data = {"schema": "xar.g2.managed-desktop1-placement/v1", "status": "RED",
-            "launch_receipt": str(args.launch_receipt.resolve()), "gameplay_input_sent": False,
-            "desktop_switches": 0, "process_launch_or_stop_calls": 0,
-            "runtime_rendering_qualified": False}
-    primary = None
+def place(args: PlacementArguments) -> PlacementReceipt:
+    data = _new_receipt(args.launch_receipt)
+    primary: Exception | None = None
     ole = None
     initialized = False
     try:
+        deadline_check(args.deadline_utc)
+        launch = parse_launch_receipt(json.loads(args.launch_receipt.read_text(encoding="utf-8-sig")))
+        data["pid"] = launch["pid"]
         import win32api
         import win32con
         import win32gui
-        deadline_check(args.deadline_utc)
-        launch = json.loads(args.launch_receipt.read_text(encoding="utf-8-sig"))
-        data["pid"] = launch.get("pid")
         sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "ck3_autonomous_player/src"))
         from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop
         ids, current = desktop_inventory()
         target_id = str(uuid.UUID(args.desktop_id))
         foreground = win32gui.GetForegroundWindow()
-        data.update(target_desktop_id=target_id, current_desktop_id=current, foreground_before=foreground)
+        data.update({"target_desktop_id": target_id, "current_desktop_id": current,
+                     "foreground_before": foreground})
         if target_id != ids[0]:
             raise RuntimeError("explicit target is not the current Shell Desktop1")
         if args.expected_current_desktop_id and current != str(uuid.UUID(args.expected_current_desktop_id)):
@@ -211,8 +347,9 @@ def place(args):
         with game_generation(launch) as generation:
             hwnd = wait_game_window(generation, args.wait_seconds, args.deadline_utc)
             classname = win32gui.GetClassName(hwnd)
-            data.update(hwnd=hwnd, window_class=classname, creation_filetime=generation.creation_filetime,
-                        before=window_virtual_desktop(hwnd))
+            data.update({"hwnd": hwnd, "window_class": classname,
+                         "creation_filetime": generation.creation_filetime,
+                         "before": _desktop_observation(window_virtual_desktop(hwnd))})
             pyvda, dependencies = explicit_pyvda(args.ui_dependencies)
             data["dependencies"] = dependencies
             desktops = pyvda.get_virtual_desktops()
@@ -221,7 +358,7 @@ def place(args):
             target = pyvda.VirtualDesktop(1)
             if str(uuid.UUID(str(target.id).strip("{}"))) != target_id:
                 raise RuntimeError("pyvda Desktop1 identity changed")
-            def guard():
+            def guard() -> None:
                 deadline_check(args.deadline_utc)
                 check_game_window(generation, hwnd, classname)
                 if desktop_inventory() != (ids, current) or win32gui.GetForegroundWindow() != foreground:
@@ -247,7 +384,7 @@ def place(args):
             win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, left, top, right - left, bottom - top,
                 win32con.SWP_NOACTIVATE | win32con.SWP_FRAMECHANGED | win32con.SWP_SHOWWINDOW)
             guard()
-            final = window_virtual_desktop(hwnd)
+            final = _desktop_observation(window_virtual_desktop(hwnd))
             client = win32gui.GetClientRect(hwnd)
             actual_rect = win32gui.GetWindowRect(hwnd)
             actual_topmost = bool(win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) & win32con.WS_EX_TOPMOST)
@@ -255,10 +392,10 @@ def place(args):
             observed_foreground = win32gui.GetForegroundWindow()
             observed_ids, observed_current = desktop_inventory()
             generation.check()
-            data.update(after=final, window_rect=list(actual_rect),
-                        client_rect=list(client), foreground_after=observed_foreground,
-                        current_desktop_after=observed_current,
-                        topmost=actual_topmost, minimized=actual_minimized)
+            data.update({"after": final, "window_rect": list(actual_rect),
+                         "client_rect": list(client), "foreground_after": observed_foreground,
+                         "current_desktop_after": observed_current,
+                         "topmost": actual_topmost, "minimized": actual_minimized})
             if (final["desktop_id"] != target_id or actual_minimized
                     or not actual_topmost or actual_rect != monitor
                     or client != (0, 0, right - left, bottom - top)
@@ -268,13 +405,14 @@ def place(args):
                 raise RuntimeError("final Desktop1 geometry/topmost/nonmin qualification failed")
             deadline_check(args.deadline_utc)
             check_game_window(generation, hwnd, classname)
-            data.update(status="GREEN", current_desktop_unchanged=True,
-                        foreground_unchanged=True, background_assignment_verified=current != target_id)
+            data.update({"status": "GREEN", "current_desktop_unchanged": True,
+                         "foreground_unchanged": True,
+                         "background_assignment_verified": current != target_id})
     except Exception as error:
         data["error"] = str(error)
         primary = error
     finally:
-        if initialized:
+        if initialized and ole is not None:
             ole.CoUninitialize()
         data["at_utc"] = datetime.now(timezone.utc).isoformat()
         try:

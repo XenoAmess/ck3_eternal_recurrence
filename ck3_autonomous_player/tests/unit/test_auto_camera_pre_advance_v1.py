@@ -3,6 +3,7 @@ from copy import deepcopy
 from contextlib import contextmanager
 import threading
 import time
+from uuid import UUID
 
 import pytest
 
@@ -169,6 +170,8 @@ def test_sdk_resume_hold_after_valid_arm_cannot_queue_pre_or_resume(monkeypatch)
 
 
 def test_presentation_exception_preserves_original_business_primitives_and_result(monkeypatch):
+    # Equal UUID input keeps the real request sequence and full result comparable.
+    monkeypatch.setattr("xar_autoplayer.bridge.native_driver.uuid.uuid4", lambda: UUID(int=1))
     with tactical(monkeypatch) as (service, driver, planned, order, initial):
         baseline = driver.execute_step(planned["plan"]["selected_step"], expected_revision=planned["revision"])
         baseline_steps = list(order)
