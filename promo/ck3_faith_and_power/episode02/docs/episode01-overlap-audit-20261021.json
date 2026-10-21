@@ -1,0 +1,851 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "basis": "Final conservative editorial whole-cue primary-purpose classification. D=old teaching; M=new material chiefly answers old question; F=framing; N=chiefly new content. Not a sentence duplication rate, frame duplication rate, or deletion fraction.",
+  "fps": 30,
+  "frame_count": 52272,
+  "totals_frames": {
+    "F": 6224,
+    "D": 9104,
+    "M": 3904,
+    "N": 33040
+  },
+  "cues": [
+    {
+      "ordinal": 1,
+      "id": "E02-C1-P01",
+      "chapter": 1,
+      "start_frame": 0,
+      "end_frame_exclusive": 608,
+      "frames": 608,
+      "classification": "F"
+    },
+    {
+      "ordinal": 2,
+      "id": "E02-C1-P02",
+      "chapter": 1,
+      "start_frame": 608,
+      "end_frame_exclusive": 1472,
+      "frames": 864,
+      "classification": "F"
+    },
+    {
+      "ordinal": 3,
+      "id": "E02-C1-P03",
+      "chapter": 1,
+      "start_frame": 1472,
+      "end_frame_exclusive": 1856,
+      "frames": 384,
+      "classification": "F"
+    },
+    {
+      "ordinal": 4,
+      "id": "E02-C1-P04",
+      "chapter": 1,
+      "start_frame": 1856,
+      "end_frame_exclusive": 2592,
+      "frames": 736,
+      "classification": "F"
+    },
+    {
+      "ordinal": 5,
+      "id": "E02-C1-P05",
+      "chapter": 1,
+      "start_frame": 2592,
+      "end_frame_exclusive": 3088,
+      "frames": 496,
+      "classification": "F"
+    },
+    {
+      "ordinal": 6,
+      "id": "E02-C2-P01",
+      "chapter": 2,
+      "start_frame": 3088,
+      "end_frame_exclusive": 3600,
+      "frames": 512,
+      "classification": "D"
+    },
+    {
+      "ordinal": 7,
+      "id": "E02-C2-P02",
+      "chapter": 2,
+      "start_frame": 3600,
+      "end_frame_exclusive": 4112,
+      "frames": 512,
+      "classification": "D"
+    },
+    {
+      "ordinal": 8,
+      "id": "E02-C2-P03",
+      "chapter": 2,
+      "start_frame": 4112,
+      "end_frame_exclusive": 4656,
+      "frames": 544,
+      "classification": "D"
+    },
+    {
+      "ordinal": 9,
+      "id": "E02-C2-P04",
+      "chapter": 2,
+      "start_frame": 4656,
+      "end_frame_exclusive": 5232,
+      "frames": 576,
+      "classification": "D"
+    },
+    {
+      "ordinal": 10,
+      "id": "E02-C2-P05",
+      "chapter": 2,
+      "start_frame": 5232,
+      "end_frame_exclusive": 5840,
+      "frames": 608,
+      "classification": "D"
+    },
+    {
+      "ordinal": 11,
+      "id": "E02-C2-P06",
+      "chapter": 2,
+      "start_frame": 5840,
+      "end_frame_exclusive": 6384,
+      "frames": 544,
+      "classification": "D"
+    },
+    {
+      "ordinal": 12,
+      "id": "E02-FINAL-A1-KNIGHT-01",
+      "chapter": 2,
+      "start_frame": 6384,
+      "end_frame_exclusive": 6608,
+      "frames": 224,
+      "classification": "M"
+    },
+    {
+      "ordinal": 13,
+      "id": "E02-FINAL-A1-KNIGHT-02",
+      "chapter": 2,
+      "start_frame": 6608,
+      "end_frame_exclusive": 6992,
+      "frames": 384,
+      "classification": "M"
+    },
+    {
+      "ordinal": 14,
+      "id": "E02-FINAL-A1-KNIGHT-03",
+      "chapter": 2,
+      "start_frame": 6992,
+      "end_frame_exclusive": 7456,
+      "frames": 464,
+      "classification": "M"
+    },
+    {
+      "ordinal": 15,
+      "id": "E02-C2-P07",
+      "chapter": 2,
+      "start_frame": 7456,
+      "end_frame_exclusive": 8096,
+      "frames": 640,
+      "classification": "D"
+    },
+    {
+      "ordinal": 16,
+      "id": "E02-C3-P01",
+      "chapter": 3,
+      "start_frame": 8096,
+      "end_frame_exclusive": 8656,
+      "frames": 560,
+      "classification": "F"
+    },
+    {
+      "ordinal": 17,
+      "id": "E02-C3-P02",
+      "chapter": 3,
+      "start_frame": 8656,
+      "end_frame_exclusive": 9088,
+      "frames": 432,
+      "classification": "N"
+    },
+    {
+      "ordinal": 18,
+      "id": "E02-C3-P03",
+      "chapter": 3,
+      "start_frame": 9088,
+      "end_frame_exclusive": 9728,
+      "frames": 640,
+      "classification": "N"
+    },
+    {
+      "ordinal": 19,
+      "id": "E02-C3-P04",
+      "chapter": 3,
+      "start_frame": 9728,
+      "end_frame_exclusive": 10304,
+      "frames": 576,
+      "classification": "N"
+    },
+    {
+      "ordinal": 20,
+      "id": "E02-C3-P05",
+      "chapter": 3,
+      "start_frame": 10304,
+      "end_frame_exclusive": 10944,
+      "frames": 640,
+      "classification": "N"
+    },
+    {
+      "ordinal": 21,
+      "id": "E02-C3-P06",
+      "chapter": 3,
+      "start_frame": 10944,
+      "end_frame_exclusive": 11504,
+      "frames": 560,
+      "classification": "N"
+    },
+    {
+      "ordinal": 22,
+      "id": "E02-C3-P07",
+      "chapter": 3,
+      "start_frame": 11504,
+      "end_frame_exclusive": 11952,
+      "frames": 448,
+      "classification": "N"
+    },
+    {
+      "ordinal": 23,
+      "id": "E02-C3-P08",
+      "chapter": 3,
+      "start_frame": 11952,
+      "end_frame_exclusive": 12608,
+      "frames": 656,
+      "classification": "N"
+    },
+    {
+      "ordinal": 24,
+      "id": "E02-C3-P09",
+      "chapter": 3,
+      "start_frame": 12608,
+      "end_frame_exclusive": 13248,
+      "frames": 640,
+      "classification": "N"
+    },
+    {
+      "ordinal": 25,
+      "id": "E02-C3-P10",
+      "chapter": 3,
+      "start_frame": 13248,
+      "end_frame_exclusive": 13920,
+      "frames": 672,
+      "classification": "N"
+    },
+    {
+      "ordinal": 26,
+      "id": "E02-FINAL-A2-LOCATION-01",
+      "chapter": 3,
+      "start_frame": 13920,
+      "end_frame_exclusive": 14240,
+      "frames": 320,
+      "classification": "M"
+    },
+    {
+      "ordinal": 27,
+      "id": "E02-C3-P11",
+      "chapter": 3,
+      "start_frame": 14240,
+      "end_frame_exclusive": 14736,
+      "frames": 496,
+      "classification": "D"
+    },
+    {
+      "ordinal": 28,
+      "id": "E02-C4-P01",
+      "chapter": 4,
+      "start_frame": 14736,
+      "end_frame_exclusive": 15312,
+      "frames": 576,
+      "classification": "D"
+    },
+    {
+      "ordinal": 29,
+      "id": "E02-CASE-B1-EQUIP-B12-01",
+      "chapter": 4,
+      "start_frame": 15312,
+      "end_frame_exclusive": 15744,
+      "frames": 432,
+      "classification": "M"
+    },
+    {
+      "ordinal": 30,
+      "id": "E02-C4-P02",
+      "chapter": 4,
+      "start_frame": 15744,
+      "end_frame_exclusive": 16464,
+      "frames": 720,
+      "classification": "D"
+    },
+    {
+      "ordinal": 31,
+      "id": "E02-C4-P03",
+      "chapter": 4,
+      "start_frame": 16464,
+      "end_frame_exclusive": 16992,
+      "frames": 528,
+      "classification": "D"
+    },
+    {
+      "ordinal": 32,
+      "id": "E02-FINAL-B1-ARMS-01",
+      "chapter": 4,
+      "start_frame": 16992,
+      "end_frame_exclusive": 17424,
+      "frames": 432,
+      "classification": "M"
+    },
+    {
+      "ordinal": 33,
+      "id": "E02-FINAL-B1-ARMS-02",
+      "chapter": 4,
+      "start_frame": 17424,
+      "end_frame_exclusive": 17920,
+      "frames": 496,
+      "classification": "M"
+    },
+    {
+      "ordinal": 34,
+      "id": "E02-FINAL-B1-ARMS-03",
+      "chapter": 4,
+      "start_frame": 17920,
+      "end_frame_exclusive": 18432,
+      "frames": 512,
+      "classification": "M"
+    },
+    {
+      "ordinal": 35,
+      "id": "E02-FINAL-B1-ARMS-04",
+      "chapter": 4,
+      "start_frame": 18432,
+      "end_frame_exclusive": 19072,
+      "frames": 640,
+      "classification": "M"
+    },
+    {
+      "ordinal": 36,
+      "id": "E02-C4-P04",
+      "chapter": 4,
+      "start_frame": 19072,
+      "end_frame_exclusive": 19680,
+      "frames": 608,
+      "classification": "D"
+    },
+    {
+      "ordinal": 37,
+      "id": "E02-C4-P05",
+      "chapter": 4,
+      "start_frame": 19680,
+      "end_frame_exclusive": 20240,
+      "frames": 560,
+      "classification": "D"
+    },
+    {
+      "ordinal": 38,
+      "id": "E02-C4-P06",
+      "chapter": 4,
+      "start_frame": 20240,
+      "end_frame_exclusive": 20880,
+      "frames": 640,
+      "classification": "F"
+    },
+    {
+      "ordinal": 39,
+      "id": "E02-C5-P01",
+      "chapter": 5,
+      "start_frame": 20880,
+      "end_frame_exclusive": 21376,
+      "frames": 496,
+      "classification": "N"
+    },
+    {
+      "ordinal": 40,
+      "id": "E02-C5-P02",
+      "chapter": 5,
+      "start_frame": 21376,
+      "end_frame_exclusive": 22096,
+      "frames": 720,
+      "classification": "N"
+    },
+    {
+      "ordinal": 41,
+      "id": "E02-C5-P03",
+      "chapter": 5,
+      "start_frame": 22096,
+      "end_frame_exclusive": 22784,
+      "frames": 688,
+      "classification": "N"
+    },
+    {
+      "ordinal": 42,
+      "id": "E02-C5-P04",
+      "chapter": 5,
+      "start_frame": 22784,
+      "end_frame_exclusive": 23728,
+      "frames": 944,
+      "classification": "N"
+    },
+    {
+      "ordinal": 43,
+      "id": "E02-C5-P05",
+      "chapter": 5,
+      "start_frame": 23728,
+      "end_frame_exclusive": 24544,
+      "frames": 816,
+      "classification": "N"
+    },
+    {
+      "ordinal": 44,
+      "id": "E02-C5-P06",
+      "chapter": 5,
+      "start_frame": 24544,
+      "end_frame_exclusive": 25152,
+      "frames": 608,
+      "classification": "N"
+    },
+    {
+      "ordinal": 45,
+      "id": "E02-FINAL-P12-PLAN-01",
+      "chapter": 5,
+      "start_frame": 25152,
+      "end_frame_exclusive": 25504,
+      "frames": 352,
+      "classification": "N"
+    },
+    {
+      "ordinal": 46,
+      "id": "E02-FINAL-P12-PLAN-02",
+      "chapter": 5,
+      "start_frame": 25504,
+      "end_frame_exclusive": 25888,
+      "frames": 384,
+      "classification": "N"
+    },
+    {
+      "ordinal": 47,
+      "id": "E02-C5-P07",
+      "chapter": 5,
+      "start_frame": 25888,
+      "end_frame_exclusive": 26528,
+      "frames": 640,
+      "classification": "N"
+    },
+    {
+      "ordinal": 48,
+      "id": "E02-C5-P08",
+      "chapter": 5,
+      "start_frame": 26528,
+      "end_frame_exclusive": 27184,
+      "frames": 656,
+      "classification": "N"
+    },
+    {
+      "ordinal": 49,
+      "id": "E02-C5-P09",
+      "chapter": 5,
+      "start_frame": 27184,
+      "end_frame_exclusive": 27920,
+      "frames": 736,
+      "classification": "N"
+    },
+    {
+      "ordinal": 50,
+      "id": "E02-C5-P10",
+      "chapter": 5,
+      "start_frame": 27920,
+      "end_frame_exclusive": 28576,
+      "frames": 656,
+      "classification": "N"
+    },
+    {
+      "ordinal": 51,
+      "id": "E02-C5-P11",
+      "chapter": 5,
+      "start_frame": 28576,
+      "end_frame_exclusive": 29408,
+      "frames": 832,
+      "classification": "N"
+    },
+    {
+      "ordinal": 52,
+      "id": "E02-C5-P12",
+      "chapter": 5,
+      "start_frame": 29408,
+      "end_frame_exclusive": 30160,
+      "frames": 752,
+      "classification": "N"
+    },
+    {
+      "ordinal": 53,
+      "id": "E02-C5-P13",
+      "chapter": 5,
+      "start_frame": 30160,
+      "end_frame_exclusive": 30976,
+      "frames": 816,
+      "classification": "N"
+    },
+    {
+      "ordinal": 54,
+      "id": "E02-FINAL-P3-JOURNEY-01",
+      "chapter": 5,
+      "start_frame": 30976,
+      "end_frame_exclusive": 31456,
+      "frames": 480,
+      "classification": "N"
+    },
+    {
+      "ordinal": 55,
+      "id": "E02-FINAL-P3-JOURNEY-02",
+      "chapter": 5,
+      "start_frame": 31456,
+      "end_frame_exclusive": 31920,
+      "frames": 464,
+      "classification": "N"
+    },
+    {
+      "ordinal": 56,
+      "id": "E02-FINAL-P3-JOURNEY-03",
+      "chapter": 5,
+      "start_frame": 31920,
+      "end_frame_exclusive": 32368,
+      "frames": 448,
+      "classification": "N"
+    },
+    {
+      "ordinal": 57,
+      "id": "E02-FINAL-P3-JOURNEY-04",
+      "chapter": 5,
+      "start_frame": 32368,
+      "end_frame_exclusive": 32784,
+      "frames": 416,
+      "classification": "N"
+    },
+    {
+      "ordinal": 58,
+      "id": "E02-FINAL-P3-JOURNEY-05",
+      "chapter": 5,
+      "start_frame": 32784,
+      "end_frame_exclusive": 33312,
+      "frames": 528,
+      "classification": "N"
+    },
+    {
+      "ordinal": 59,
+      "id": "E02-FINAL-P3-JOURNEY-06",
+      "chapter": 5,
+      "start_frame": 33312,
+      "end_frame_exclusive": 33776,
+      "frames": 464,
+      "classification": "N"
+    },
+    {
+      "ordinal": 60,
+      "id": "E02-C5-P14",
+      "chapter": 5,
+      "start_frame": 33776,
+      "end_frame_exclusive": 34656,
+      "frames": 880,
+      "classification": "N"
+    },
+    {
+      "ordinal": 61,
+      "id": "E02-C5-P15",
+      "chapter": 5,
+      "start_frame": 34656,
+      "end_frame_exclusive": 35104,
+      "frames": 448,
+      "classification": "F"
+    },
+    {
+      "ordinal": 62,
+      "id": "E02-C6-P01",
+      "chapter": 6,
+      "start_frame": 35104,
+      "end_frame_exclusive": 35488,
+      "frames": 384,
+      "classification": "N"
+    },
+    {
+      "ordinal": 63,
+      "id": "E02-C6-P02",
+      "chapter": 6,
+      "start_frame": 35488,
+      "end_frame_exclusive": 36304,
+      "frames": 816,
+      "classification": "N"
+    },
+    {
+      "ordinal": 64,
+      "id": "E02-C6-P03",
+      "chapter": 6,
+      "start_frame": 36304,
+      "end_frame_exclusive": 36992,
+      "frames": 688,
+      "classification": "N"
+    },
+    {
+      "ordinal": 65,
+      "id": "E02-C6-P04",
+      "chapter": 6,
+      "start_frame": 36992,
+      "end_frame_exclusive": 37696,
+      "frames": 704,
+      "classification": "N"
+    },
+    {
+      "ordinal": 66,
+      "id": "E02-C6-P05",
+      "chapter": 6,
+      "start_frame": 37696,
+      "end_frame_exclusive": 38304,
+      "frames": 608,
+      "classification": "N"
+    },
+    {
+      "ordinal": 67,
+      "id": "E02-C6-P06",
+      "chapter": 6,
+      "start_frame": 38304,
+      "end_frame_exclusive": 39008,
+      "frames": 704,
+      "classification": "N"
+    },
+    {
+      "ordinal": 68,
+      "id": "E02-C6-P07",
+      "chapter": 6,
+      "start_frame": 39008,
+      "end_frame_exclusive": 39712,
+      "frames": 704,
+      "classification": "N"
+    },
+    {
+      "ordinal": 69,
+      "id": "E02-C6-P08",
+      "chapter": 6,
+      "start_frame": 39712,
+      "end_frame_exclusive": 40400,
+      "frames": 688,
+      "classification": "N"
+    },
+    {
+      "ordinal": 70,
+      "id": "E02-FINAL-H1-QUOTE-01",
+      "chapter": 6,
+      "start_frame": 40400,
+      "end_frame_exclusive": 40768,
+      "frames": 368,
+      "classification": "N"
+    },
+    {
+      "ordinal": 71,
+      "id": "E02-FINAL-H1-QUOTE-02",
+      "chapter": 6,
+      "start_frame": 40768,
+      "end_frame_exclusive": 41232,
+      "frames": 464,
+      "classification": "N"
+    },
+    {
+      "ordinal": 72,
+      "id": "E02-C6-P09",
+      "chapter": 6,
+      "start_frame": 41232,
+      "end_frame_exclusive": 41920,
+      "frames": 688,
+      "classification": "N"
+    },
+    {
+      "ordinal": 73,
+      "id": "E02-C6-P10",
+      "chapter": 6,
+      "start_frame": 41920,
+      "end_frame_exclusive": 42640,
+      "frames": 720,
+      "classification": "N"
+    },
+    {
+      "ordinal": 74,
+      "id": "E02-C6-P11",
+      "chapter": 6,
+      "start_frame": 42640,
+      "end_frame_exclusive": 43312,
+      "frames": 672,
+      "classification": "N"
+    },
+    {
+      "ordinal": 75,
+      "id": "E02-FINAL-H2-CREATE-01",
+      "chapter": 6,
+      "start_frame": 43312,
+      "end_frame_exclusive": 43792,
+      "frames": 480,
+      "classification": "N"
+    },
+    {
+      "ordinal": 76,
+      "id": "E02-FINAL-H2-CREATE-02",
+      "chapter": 6,
+      "start_frame": 43792,
+      "end_frame_exclusive": 44128,
+      "frames": 336,
+      "classification": "N"
+    },
+    {
+      "ordinal": 77,
+      "id": "E02-FINAL-H2-CREATE-03",
+      "chapter": 6,
+      "start_frame": 44128,
+      "end_frame_exclusive": 44448,
+      "frames": 320,
+      "classification": "N"
+    },
+    {
+      "ordinal": 78,
+      "id": "E02-C6-P12",
+      "chapter": 6,
+      "start_frame": 44448,
+      "end_frame_exclusive": 45104,
+      "frames": 656,
+      "classification": "N"
+    },
+    {
+      "ordinal": 79,
+      "id": "E02-C6-P13",
+      "chapter": 6,
+      "start_frame": 45104,
+      "end_frame_exclusive": 46096,
+      "frames": 992,
+      "classification": "N"
+    },
+    {
+      "ordinal": 80,
+      "id": "E02-C6-P14",
+      "chapter": 6,
+      "start_frame": 46096,
+      "end_frame_exclusive": 47184,
+      "frames": 1088,
+      "classification": "N"
+    },
+    {
+      "ordinal": 81,
+      "id": "E02-C6-P15",
+      "chapter": 6,
+      "start_frame": 47184,
+      "end_frame_exclusive": 47984,
+      "frames": 800,
+      "classification": "N"
+    },
+    {
+      "ordinal": 82,
+      "id": "E02-C6-P16",
+      "chapter": 6,
+      "start_frame": 47984,
+      "end_frame_exclusive": 48608,
+      "frames": 624,
+      "classification": "N"
+    },
+    {
+      "ordinal": 83,
+      "id": "E02-FINAL-H3-STATE-01",
+      "chapter": 6,
+      "start_frame": 48608,
+      "end_frame_exclusive": 49104,
+      "frames": 496,
+      "classification": "N"
+    },
+    {
+      "ordinal": 84,
+      "id": "E02-C6-P17",
+      "chapter": 6,
+      "start_frame": 49104,
+      "end_frame_exclusive": 49920,
+      "frames": 816,
+      "classification": "F"
+    },
+    {
+      "ordinal": 85,
+      "id": "E02-C7-P01",
+      "chapter": 7,
+      "start_frame": 49920,
+      "end_frame_exclusive": 50592,
+      "frames": 672,
+      "classification": "D"
+    },
+    {
+      "ordinal": 86,
+      "id": "E02-C7-P02",
+      "chapter": 7,
+      "start_frame": 50592,
+      "end_frame_exclusive": 51120,
+      "frames": 528,
+      "classification": "D"
+    },
+    {
+      "ordinal": 87,
+      "id": "E02-C7-P03",
+      "chapter": 7,
+      "start_frame": 51120,
+      "end_frame_exclusive": 51792,
+      "frames": 672,
+      "classification": "F"
+    },
+    {
+      "ordinal": 88,
+      "id": "E02-C7-P04",
+      "chapter": 7,
+      "start_frame": 51792,
+      "end_frame_exclusive": 52272,
+      "frames": 480,
+      "classification": "D"
+    }
+  ],
+  "observed_at_utc": "2026-10-21T13:03:58.508961+00:00",
+  "independent_review_adjustment": "Ordinal25 D to N (new selection-reset detail);16 D to F (transition). Earlier text-heavy derived drafts deleted per COMPACTION-PLAN; their original bytes/SHA retained there, not replaced under same filename.",
+  "source_full_narration_retained_at": "C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/input-bindings-a01/formal-input.full-render.actual.json",
+  "audit_status": "EDITORIAL_REVIEW_FAIL_RESTRUCTURE_REQUIRED",
+  "audit_repo_head": "b887921f6b026f79b95a76a18dcd69f258c8e2b2",
+  "reviewed_episode02_render_source_commit": "5b477b42b0f90aad8a4cda96ee5916eff0656cc5",
+  "episode02_render_sha256_from_existing_delivery": "a3ffe10bbea6578bc706072cadadec6dce4df05cddf612585f5149fab5308c53",
+  "timeline_zero": "Authored program start. Actual first video PTS0.021354; report display times rounded to whole seconds.",
+  "sources": [
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v7-20261019/production-plan/visual-repair-build-a03/formal-input.final-a04.json",
+      "bytes": 1808670,
+      "sha256": "66af0549a1344e4604a4e447947c45f1898af5accfe968c5115516353d02550f"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/input-bindings-a01/formal-input.full-render.actual.json",
+      "bytes": 2112195,
+      "sha256": "b4caa6eb93b7fabf22d6fd0abedc7cca4e7d82892d8496d19bed02bfa5b63a7a"
+    }
+  ],
+  "visual_provenance": {
+    "whole_visual_part_frames_with_at_least_one_source_also_selected_in_actual_episode01": 21448,
+    "total_frames": 52272,
+    "matched_parts": 95,
+    "total_parts": 229,
+    "method": "Compare declared image/raw binary source SHA in actual two authoring inputs, no body hashing or frame comparison. Whole visual part counted if at least one layer uses source also selected in actual E01. Does not prove identical rendered frames, crops, labels or semantic duplication.",
+    "not_pixel_duplication_rate": true,
+    "not_additive_with_editorial_categories": true
+  },
+  "exact_zh_matches": [
+    {
+      "episode02": "E02-C1-P02",
+      "episode01": "V7-DISCLAIMER-01",
+      "duration_frames": 864,
+      "treatment": "Necessary repeated disclosure, category F, excluded from D/M"
+    },
+    {
+      "episode02": "E02-C7-P04",
+      "episode01": "V5-C14-04",
+      "duration_frames": 480,
+      "treatment": "Repeated closing conclusion, category D"
+    }
+  ],
+  "research_credibility_unchanged_by_editorial_failure": true,
+  "new_video_or_voice_created": false
+}

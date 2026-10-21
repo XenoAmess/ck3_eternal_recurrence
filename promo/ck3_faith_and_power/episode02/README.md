@@ -1,5 +1,7 @@
 # CK3:信仰引擎 第二期
 
+- **当前内容审计未通过，需要结构性重剪。** [与一期重合审计及综合评价](docs/episode01-overlap-audit-20261021.md)核对实际88段：约5:03重讲旧规则，另2:10新材料主要仍回答旧问题；二期当前成片保留为审阅版。技术交付通过不代表去重通过。
+
 - 本机视频交付：`machine_id: 4-8e1c2f1861` 的当前及后续视频按[机器交付偏好](../../../docs/maintenance/machine-preferences/4-8e1c2f1861.video-delivery.json)本地交付；最终提供选定MP4的实际本地路径。
 - 当前完整审阅版：[29分02.400秒、1440p MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)。88段实际成片，技术检查和6帧画面抽查已通过；尚未完成人工整片听审。
 - [本地交付记录与研究剩余缺口](docs/local-review-delivery-20261021.md)：文件校验、字幕、脚本、原件及验收边界；[智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)已接入最终历史研究，普通auto自动消费仍未接通。
