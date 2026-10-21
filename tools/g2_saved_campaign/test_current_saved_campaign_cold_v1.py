@@ -778,6 +778,10 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
                     converted = json_object(converted)
                     checkpoint = record(converted["last_checkpoint"])
                     converted["succession_lifecycle"] = json_value(checkpoint["succession_lifecycle"])
+                if name == "governance.json":
+                    converted = json_object(converted)
+                    converted["governance_result_state"] = None
+                    converted["pending_focus"] = None
                 return super().write(name, converted)
         cls.fixture = OwnedFixture
         try:
@@ -990,7 +994,8 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
         closed = owner.ClosedEpochV1(basis.refs.closure, old_game, basis.next_sequence, (),
             basis.observed_at_utc, PIPE)
         inputs = owner.CurrentSavedColdInputsV1(basis, json_object(saved_seed),
-            {"completed_cycles": 20, "pending_cycle": None}, json_object(driver._last_checkpoint),
+            json_object(parse_json(fixture.reader.read(basis.refs.governance, 65536))),
+            json_object(driver._last_checkpoint),
             {"machine_id": MACHINE, "last_settled_cycles": 18}, closed, basis_ref, validation_ref)
         pre = owner.build_current_saved_prelaunch_v1(basis, basis_ref=basis_ref,
             validation_ref=validation_ref, environment_sha256="b" * 64, pipe_name=PIPE)
