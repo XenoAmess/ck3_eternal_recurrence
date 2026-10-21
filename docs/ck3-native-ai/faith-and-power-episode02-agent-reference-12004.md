@@ -53,7 +53,13 @@
 
 R0014 批次（来源机器 `4-8e1c2f1861`，2026-10-20）：[3001 原版来源分析](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3001-source-analysis.json)、[3001 实际选择与独立后态](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3001-r0014-occurrence.json)、[1020 新显示变体](../../promo/ck3_faith_and_power/episode02/docs/knowledge/travel-cities-1020-r0014-display-variant.json)、[五事件完整批次清单](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0014-event-batch-summary.json)现由同一知识 MCP 的 `episode02_research.topics.pilgrimage.documents` 显式返回。3001 第一显示项已分别确认 ACK、旧窗口消失和同人物同日期虔诚增加 100；条件疾病、pilgrim／learning XP 未独立读取，这不是全程最终结算。1020 新变体只涉及未选学习项的实际显示名称，原版同一选项块存在两个 name 声明，不能凭历史名称／序号推断本次许可。五个实际事件为 1060／3001／1020／5001／4100；该场未观察到 7000／9001、全程结束或人物在家位置，仍是未完成旅程。新增链接不把来源知识升级成完整实例 registry、当前世界状态、原生许可或普通 auto 策略。
 
-这些文件提供版本／来源绑定的已分析知识，尚未自动加载进 `ck3_query_vanilla_event_knowledge_v1` 的完整实例合同。遇到新事件仍须先保存原生 definition／instance、双方角色和实际显示顺序，再按现有原生第一显示项策略继续；仅有画面时不得猜 native ID 或选择成功。完整接线状态和反例在 JSON 中明确标注。
+R0018 新类已分析资料：[2070 迷信旅伴](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-2070-source-analysis.json)、[1100 个人反思](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1100-source-analysis.json)、[1040 野兽预兆](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1040-source-analysis.json)，以及[前三件实际实例](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0018-events-001-003-occurrence.json)、[第四件与全场截止](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0018-event004-and-scene-cutoff.json)。均为来源机器 `4-8e1c2f1861` 的历史 R0018 证据；1060 直接复用已有来源，实际全场共4事件、56天／57次推进请求，未抵达／结算／归返，game／host／public-run 退出1／1／2且 normalclose=false。
+
+游玩智能体可调用既有 `ck3_query_holy_site_planning_knowledge_v1`（例如 `{"action":"demote"}`，这是只读知识输入，不执行降级），在 `knowledge.episode02_research.topics.pilgrimage.source_analyzed_events[当前原生definition]` 检索上述三类。`source_analysis_completed=true` 表示其定义／选项／来源SHA与历史原生实例已分析；每条直接返回效果摘要、来源与实际后态文档及未观察项目。`native_legality=null`、`action_ready=false`、`state_observed=false`、`full_occurrence_contract_registered=false`、`ordinary_auto_consumes=false` 始终保留：查得到已分析知识，不等于当前许可、完整事件registry或普通auto已经主动消费。
+
+2070 的 pious 分支是有条件的活动表现提升，不与 ELSE 的直接50虔诚同时发放。1100 声明10年 `monthly_piety_gain_mult=0.1` 修正及条件XP，不代表最终月总收益一定×1.1，更不是按钮立得10虔诚；本次修正成员与XP未独立读到。1040 本次只有2个显示项，选择跟随狍子后同人物同日期虔诚独立增加50；另有源码10天绕行及隐藏预兆后续，实际ETA／后续／XP仍为null。其90天辅助延迟只在多人条件下生效，不能当成本次确定延迟。活动ID0有效；起点已有非零completion stamp不能判终态。前三件已封资料与追加第四件的截止分别保留，不把部分旅程重写为全程。
+
+这些文件提供版本／来源绑定的已分析知识，尚未自动加载进 `ck3_query_vanilla_event_knowledge_v1` 的完整实例合同。已有专用策略仍优先；其余事件先保存原生 definition／instance、双方角色和实际显示顺序，再按当前原生合法第一显示项规则续行，不因缺少完整registry暂停旅程。相同来源与scope／选项形状复用已分析资料，新变体按批离线补齐；仅有画面时不得猜 native ID 或选择成功。完整接线状态和反例在 JSON 中明确标注。
 
 开发入口：[知识摘要模块](../../ck3_autonomous_player/src/xar_autoplayer/holy_site_episode02_research.py)、[既有知识查询](../../ck3_autonomous_player/src/xar_autoplayer/holy_site_planning_knowledge.py)、[MCP 注册](../../ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py)。研究进展与业务、策略接入分别记账；后续接入普通规划器时必须补实际消费证据。
 
@@ -62,3 +68,29 @@ R0014 批次（来源机器 `4-8e1c2f1861`，2026-10-20）：[3001 原版来源�
 `machine_id: 4-8e1c2f1861`。2026-10-20 首轮新增5项检查实际通过，其中4项通过生产 `create_server` 注册的 MCP／`ClientSession.call_tool` 调用11次，另1项验证纯知识构造不读取文件。覆盖原七个action均可查六专题、外版本拒绝、只读注解、返回隔离和历史不冒当前状态；不需要启动游戏。随后独立审计收窄朝圣费用措辞、增加两条 source-only 事件引用，只对这次数据修订另执行1项新MCP检查／1次调用并通过，未重跑原5项。两轮来源和原始等待分别保留，不合称同一次运行或游戏验收。
 
 Root另逐一核对摘要13个仓库引用与9项实际原版文件SHA，未发现缺失或不匹配；两名独立审阅者核对共享链接、来源、费用、事件与策略边界。证据封装位于上述来源机器 `E/capture-b17-a01/episode02-knowledge-integration-source-a01/DELIVERY.actual.json`；其中区分当时tool输出与后续归档文件。此验证证明知识能被现有MCP查询参考，不能证明普通auto已主动查询或产生游戏收益。
+
+## 升格前先核完整主要名单与宗教上限
+
+[R0021 升格上限来源与真实拒绝](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0021-promotion-cap-source-analysis.json)现由既有 `ck3_query_holy_site_planning_knowledge_v1({"action":"promote"})` 的 `knowledge.episode02_research.topics.site_effects_and_cache.documents` 返回；没有新增 action、执行工具或普通 auto 策略。
+
+规划时先 fresh 读当前玩家、Faith／Rite／Religion 和完整 Faith site major membership，再求全局 major count 与该 Religion 实际上限。原版默认主要 max3／min1，可以被 Religion 覆盖；不把3写成通用上限。当前 typed limit 缺失时，保留实际原生要求文本与精确 source／override 证据并标明未知，不能编造 typed 读数。再核当前 selected actor／site／decision、normal CanConfirm、native CanConfirm、bypass0、cooldown、完整十槽费用／可负担与储备；免费行动和零报价均不豁免合法性。
+
+历史 R0021（machine_id `4-8e1c2f1861`，2026-10-20T21:35:19Z）Faith103 的完整 site 列表为0／1／3／2／4／32，major 为0／1／3共3，selected32仍 ordinary。normal／native CanConfirm 均false，bypass0；唯一 active failed 条件为count<3。十槽报价均0、可负担、cooldown absent，原生文本显示余2次免费行动，仍不能提交。12次公共调用、零Confirm，按正常关场释放CAS12952；未观察到本场升格、H2或GHW结果。原图仅作旁证，数值取原生读回；这些记录不代表新局面或其他机器的当前许可。
+
+合法降级释放容量→独立后态→正常保存共同实验母档→ordinary／major 两臂，只是未执行候选。每步仍需 fresh 原价／许可／once与独立后态，不改档或补金，不预写成功。HoF 的无主要圣地费用乘数检查整个 Faith 是否存在“root控制且县主同Faith”的主要县，不能由selected site等级判断；释放一处容量后，其他合资格主要县可能让两臂报价相同。该区别用于设计对照，不自动授权任何下一世界动作。
+
+
+## R0022：完整普通朝圣的事件与结尾证据
+
+现有 `ck3_query_holy_site_planning_knowledge_v1` 的 `episode02_research.topics.pilgrimage.r0022_source_analyzed_events` 按原生定义 ID 索引本轮新增来源；`r0022_complete_event_index_document` 列出全部 15 事件及 1 婚约通知。旧 R18 三事件索引、六 topic、七 action 与 R21 上限资料保持原合同。此项是可检索研究资料，`ordinary_auto_consumes=false`，不授当前事件许可或新增自动执行策略。
+
+- [全场来源和实际选择索引](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-all-event-source-index.json)：每条保留实际 scope、显示 native indices、专用策略/首项策略、ACK 和独立窗口消失。1060、5001、4100、bookmark、教宗诏书及婚约复用已研究来源。1020 当前展示变体单列，不套旧标签。
+- [结尾四事实](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-pilgrimage-ending-observed.json)：同一活动 `id=0` 的 `completed=true/invalidated=false`、7000/9001 实际消费、独立当前人物提示原文“位于阿普利亚”。201 实际游戏日对应 204 单日请求，不能互换。原始 `native_business_pass=false` 保留，不据资料页改验收结果。
+- [7000 奖励时点](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-7000-source-analysis.json)：正常 on_end 结算先于回顾按钮。本场最后结算前到首次结算后 24 小时观察到虔诚 +125；按钮前后三钱包不变不等于奖励为零，也不把跨日全部变化归于一个 effect。历史 milestone 的宗教 query 因 optional episode 字段守卫失败，未采集的满足度/奉献经验留空。
+- [9001 返程来源](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-9001-source-analysis.json)：允许失效分支，脚本完成旅行也能触发；按钮或活动消失单独不证明成功/坐标到家。当前返程窄读满足度 `3500000/100000=35`、奉献累计 `12153148750/100000`、有效等级/上限 `5/5`，仅是返程当前值，不回填历史奖励差；可花虔诚另列，XP 未知仍为 null。
+
+新增来源还包括 3004、intent1030、6840、6750、配偶2601、6800。6840 本次扣15金/得25虔诚；6750 得100虔诚并有压力代价；6800 修道效果作用于同行 NPC，不是玩家。事件日志 score50 不是虔诚。特质、器物拥有者/属性、ETA 或隐藏后续未独立读取就保留未知。
+
+[1701 实际变体](../../promo/ck3_faith_and_power/episode02/docs/knowledge/stress-threshold-1701-r0022-display-variant.json)：五份原版来源 SHA 相同，但当前两个 saved scopes、三个显示项 native `3/6/8` 不符合旧专用合同。现场先调用旧专用路由，真实拒绝形状后依用户首显策略选 native3，本次扣105金；这是动态报价的一次后验，不是未来固定价格，也不是新 registry 已注册。下次智能体可先查研究，再以 fresh native scopes/options/合法性决定，不能把“来源已分析”当“当前可执行”。
+
+Start 配置费本次70金；途中31.25、15、105金分开记录。全程钱包净差混有自然收入和其他事件，不称纯旅费或总报价。每批陌生事件照原生显示与合法策略继续，离线来源分析并行；隐藏后续不得预先认定发生。

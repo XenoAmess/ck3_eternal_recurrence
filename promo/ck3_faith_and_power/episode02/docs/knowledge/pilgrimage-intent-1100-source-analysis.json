@@ -1,0 +1,176 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "pilgrimage_intent.1100",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T20:15:27.251266+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_pins": [
+    {
+      "game_relative_path": "common/on_action/travel_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+    },
+    {
+      "game_relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/00_pilgrimage_triggers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_pilgrimage_triggers.txt",
+      "bytes": 2851,
+      "sha256": "5d9058814175bcf018c659be2565f6f6edd3fa06bc2104d474f109cb12ec740a"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38"
+    },
+    {
+      "game_relative_path": "common/script_values/00_stress_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4"
+    },
+    {
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_intent_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_intent_events.txt",
+      "bytes": 57928,
+      "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878"
+    },
+    {
+      "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580"
+    },
+    {
+      "game_relative_path": "common/script_values/00_lifestyle_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_lifestyle_values.txt",
+      "bytes": 22192,
+      "sha256": "4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0"
+    },
+    {
+      "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_intent_events_l_simp_chinese.yml",
+      "bytes": 18043,
+      "sha256": "7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a"
+    }
+  ],
+  "definition_lines": [
+    1782,
+    1878
+  ],
+  "title_key": "pilgrimage_intent.1100.t",
+  "description_key": "pilgrimage_intent.1100.desc",
+  "localization_lines": [
+    123,
+    127
+  ],
+  "candidate_producer_and_caller": [
+    "travel_on_actions.txt:2-12 on_travel_plan_movement -> travel_event_tombola:1053-1086 -> pilgrimage_journey_events(weight2).",
+    "pilgrimage_on_actions.txt:4-17 pilgrimage eligibility and no-chain/invalidation variables -> pilgrimage_travel_events:32-37/78, entry pilgrimage_intent.1100 weight100. Own trigger/cooldown and outer random/no-event choices still apply; the event is not guaranteed.",
+    "00_pilgrimage_triggers.txt:2-19 restricts the outward pilgrimage pool through involved activity/capital/next destination checks."
+  ],
+  "trigger": "has_activity_intent = reflection_intent (1793-1795).",
+  "cooldown_years": 2,
+  "immediate_effect_block_present": false,
+  "source_options": [
+    {
+      "name_key": "pilgrimage_intent.1100.a",
+      "source_lines": [
+        1797,
+        1839
+      ],
+      "actual_rendered_index": 0,
+      "actual_native_option_index": 0,
+      "actual_resolved_name": "这当然是我的神圣义务！",
+      "effects": [
+        "pious_type_option_effect requires involved activity pious OR hajj. activity_special_type_progression_major adds10 if its activity variable exists; this is performance, not10 piety.",
+        "Add dedicated_to_pilgrimage_modifier for10 years. Modifier definition declares monthly_piety_gain_mult=0.1 (+10 percent), not an immediate10 piety or guaranteed observed net monthly change.",
+        "IF pilgrim trait AND pilgrim XP<100: add5 pilgrim trait XP. No pilgrim trait is added by this branch.",
+        "Independent IF lifestyle_mystic trait: add lifestyle_mystic_xp_gain_minor_value, script random range {3 5}. This is a separate trait XP branch; current membership/XP are not independently observed.",
+        "stress_and_fulfillment_impact has cynical=minor_stress_impact_gain (20); current condition/net effect must be observed, not assumed from the title."
+      ],
+      "executed_this_occurrence": true
+    },
+    {
+      "name_key": "pilgrimage_intent.1100.b",
+      "source_lines": [
+        1841,
+        1856
+      ],
+      "actual_rendered_index": 1,
+      "actual_native_option_index": 1,
+      "actual_resolved_name": "我真正想要的是享受和体验其他文化。",
+      "effects": [
+        "worldly_type_option_effect only progresses a worldly pilgrimage; it does not change the selected activity type.",
+        "add_stress=medium_stress_loss, base -20 before live floor/modifiers.",
+        "Add pilgrimage_worldly_modifier for10 years; definition owned_personal_scheme_success_chance_add=15. This is not a blanket success chance for every scheme."
+      ],
+      "executed_this_occurrence": false
+    },
+    {
+      "name_key": "pilgrimage_intent.1100.c",
+      "source_lines": [
+        1858,
+        1877
+      ],
+      "actual_rendered_index": 2,
+      "actual_native_option_index": 2,
+      "actual_resolved_name": "我所做的只是我所处的地位所要求的。",
+      "effects": [
+        "Add showy_about_pilgrimage_modifier for10 years; definition zealot_opinion=5 and clergy_opinion=10.",
+        "stress_and_fulfillment_impact has zealous=minor_stress_impact_gain (20)."
+      ],
+      "executed_this_occurrence": false
+    }
+  ],
+  "helper_lines": {
+    "pious_and_worldly_option_effects": [
+      1225,
+      1250
+    ],
+    "activity_special_type_progression_major": [
+      4357,
+      4365
+    ],
+    "three_character_modifier_definitions": [
+      57,
+      71
+    ],
+    "lifestyle_mystic_xp_gain_minor_value": [
+      889,
+      891
+    ],
+    "medium_stress_loss": [
+      14,
+      14
+    ],
+    "minor_stress_impact_gain": [
+      27,
+      27
+    ]
+  },
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0018-events-001-003-occurrence.json",
+  "actual_effect_boundary": "R0018 first native0/public1 ACK and independent old-window disappearance are separately observed. Same actor/date gold, piety, prestige and stress are unchanged across this button. Dedicated modifier membership, pious performance, monthly piety attribution, fulfillment and pilgrim/mystic trait XP remain unobserved. Later natural-day piety growth must not be attributed solely to this modifier without independent evidence.",
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "decision_tradeoff": "A follows reflection/pious performance and a conditional long-lived piety multiplier/XP path; B favors stress relief and a worldly/personalscheme modifier; C declares zealot/clergy opinion modifiers. Use current actor/type/traits and actual legal displayed rows; source effects are not a qualified current decision.",
+    "submission_rule": "Existing dedicated strategies remain prior; otherwise capture current typed definition/root/saved scopes/shown enabled rows, submit actual first displayed once, and independently read the original window and actor. Unknown ACK is not replayed.",
+    "ordinary_auto_new_policy_enabled": false,
+    "full_registry_qualified": false,
+    "registered_in_shared_knowledge_mcp_by_this_external_package": false
+  }
+}

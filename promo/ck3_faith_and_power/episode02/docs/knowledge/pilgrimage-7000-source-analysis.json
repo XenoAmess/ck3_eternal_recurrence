@@ -1,0 +1,234 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:14:55.486369+00:00",
+  "ck3_build": "1.20.0.4",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "relevant_lines": [
+        [
+          13303,
+          13678
+        ],
+        [
+          14725,
+          15147
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          899,
+          907
+        ],
+        [
+          973,
+          977
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "relevant_lines": [
+        [
+          2544,
+          2579
+        ],
+        [
+          2906,
+          2907
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "relevant_lines": [
+        [
+          55,
+          91
+        ],
+        [
+          516,
+          627
+        ],
+        [
+          1028,
+          1120
+        ],
+        [
+          1136,
+          1169
+        ],
+        [
+          1301,
+          1335
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          379,
+          401
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "relevant_lines": [
+        [
+          1131,
+          1136
+        ],
+        [
+          1164,
+          1169
+        ]
+      ]
+    }
+  ],
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-012-013-settlement-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "event_definition_key": "pilgrimage.7000",
+  "static_definition_id": "pilgrimage.7000",
+  "live_native_definition_id": "pilgrimage.7000",
+  "definition_lines": [
+    14725,
+    15147
+  ],
+  "existing_reward_timing_research_reused": {
+    "source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\research-pilgrimage.md",
+      "bytes": 21289,
+      "sha256": "c318d6310e32a152fd64334e9f56bd9d1df588dc2b3ba65e8b24cf40952e9088"
+    },
+    "lines": [
+      57,
+      70
+    ],
+    "installed_type_effects_SHA_rechecked": true
+  },
+  "producer_caller_consumer": [
+    "pilgrimage phase on_end2544-2579 checks this=host",
+    "resolve_pilgrimage_type_reward_effect2575",
+    "trigger_event pilgrimage.7000 at2577",
+    "pilgrimage_completed_log_entry_effect at2579",
+    "normal completed log effects55-91 calls give_pilgrimage_reward_effect at85",
+    "reward1136+ uses distance/type/other conditional helpers; actual scalar cannot be reverse-inferred from one wallet delta"
+  ],
+  "immediate_effects": {
+    "lines": [
+      14996,
+      15037
+    ],
+    "effects": [
+      "christian_saint_bone_creation_effect conditional on royal court plus eligible Christian faith/rite; random chance depends distance/pious flags; possible artifact creation/logscore75/owner assignment, not observed here",
+      "conditional first-pilgrimage memory scopes for localization",
+      "conditional old-host-to-bury scope",
+      "increment repent_oath_pilgrimage_counter only if it exists"
+    ],
+    "bone_helper_lines": [
+      1028,
+      1120
+    ],
+    "artifact_or_memory_or_counter_post_observed": false
+  },
+  "source_options": [
+    {
+      "native_index": 0,
+      "lines": [
+        15039,
+        15094
+      ],
+      "source_name_variants": [
+        "pilgrimage.7000.a_hajj_cynical",
+        "pilgrimage.7000.a_hajj",
+        "pilgrimage.7000.a_cynical",
+        "pilgrimage.7000.a"
+      ],
+      "effect": "custom tooltip plus show_as_tooltip pilgrimage_completed_log_entry_effect; this is not a second execution of main rewards",
+      "selected": true
+    },
+    {
+      "native_index": 1,
+      "lines": [
+        15096,
+        15137
+      ],
+      "visibility": "EP3 + gallowsbait withXP + pious OR hajj",
+      "effect": "conditionally remove gallowsbait if pilgrimXP>=50 or high/perfect pious flag; ELSE lower gallowsbaitXP25; then completed-reward tooltip only",
+      "R22_shown": false
+    }
+  ],
+  "after_effect": {
+    "lines": [
+      15139,
+      15146
+    ],
+    "effects": [
+      "clean pious/worldly reward flags",
+      "remove added_new_holy_site, should_get_trait_piety, pilgrimage_counter_obligatory"
+    ]
+  },
+  "actual_settlement_interval": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\SETTLEMENT-INTERVAL.actual.json",
+      "bytes": 6069,
+      "sha256": "0efa98ce4bfd64c4269ce3a3c2017a4fc4c9576aead5ed45c8fee62afe20bc05"
+    },
+    "last_pre_step": "case-snapshot-0392",
+    "first_post_step": "case-natural-day-0393",
+    "dates": [
+      53148000,
+      53148024
+    ],
+    "piety_raw": [
+      2055113250,
+      2067613250
+    ],
+    "delta_raw": 12500000,
+    "scale": 100000,
+    "observed_delta": 125,
+    "button_delta_raw": {
+      "piety": 0,
+      "gold": 0,
+      "prestige": 0
+    },
+    "boundary": "One natural24h interval, not an attribution of every delta to a single reward. It proves observed gain preceded the button; button0 does not mean reward0."
+  },
+  "milestone_metric_boundary": "Existing 7000 window/consumed/terminal religion metric attempts failed the optional episode-key guard before query submission. No historical devotion_total, fulfillment or XP is recovered or substituted from future endpoint reads.",
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "policy": "known policy first; otherwise actual current first shown. Do not replay conclusion to obtain a second payout.",
+    "required_separate_evidence": [
+      "wallet interval before natural phase-end and first after",
+      "actual on_end versus tooltip timing",
+      "same-activity native terminal flag",
+      "return event chain and independently current position"
+    ],
+    "return_or_full_completion_proven_here": false
+  }
+}

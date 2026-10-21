@@ -1,0 +1,271 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:39:00.854172+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "event_definition_key": "pilgrimage.3004",
+  "static_definition_id": "pilgrimage.3004",
+  "live_native_definition_id": "pilgrimage.3004",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "relevant_lines": [
+        [
+          7188,
+          7280
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          566,
+          571
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "relevant_lines": [
+        [
+          1225,
+          1249
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "relevant_lines": [
+        [
+          4357,
+          4365
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "relevant_lines": [
+        [
+          476,
+          476
+        ],
+        [
+          1001,
+          1001
+        ],
+        [
+          1131,
+          1136
+        ],
+        [
+          1164,
+          1166
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+      "relevant_lines": [
+        [
+          12,
+          17
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          32,
+          37
+        ],
+        [
+          74,
+          74
+        ],
+        [
+          88,
+          88
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    7188,
+    7280
+  ],
+  "title_key": "pilgrimage.3004.t",
+  "description_key": "pilgrimage.3004.desc",
+  "static_title_template": "$pilgrimage_header$末日将临",
+  "native_resolved_title_observed": false,
+  "candidate_producer_and_caller": {
+    "source": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          32,
+          37
+        ],
+        [
+          74,
+          74
+        ],
+        [
+          88,
+          88
+        ]
+      ]
+    },
+    "weighted_candidate_line": 88,
+    "weight": 100,
+    "chance_of_no_event_base": 65,
+    "zero_event_weight": 100,
+    "occurrence_guaranteed": false
+  },
+  "trigger_and_target_selection": {
+    "cooldown_years": 15,
+    "AND": [
+      "religion = christianity_religion",
+      "is_location_valid_for_travel_event_on_land = yes"
+    ],
+    "lines": [
+      7200,
+      7204
+    ]
+  },
+  "immediate_effects": {
+    "lines": [
+      7205,
+      7218
+    ],
+    "effects": [
+      "wayfarer_storyteller_fame_effect with roaming_reward_fame_small (perk/eligibility helper; not independently observed here)",
+      "random_dummy_gender_clergy_effect",
+      "create age40 lowborn devoted character with current root location/faith/rite/culture; save as doomsayer"
+    ],
+    "scope_boundary": "R22 root remains31254. doomsayer65878 is the created event character; dummy_clergy_gender character1 is the native saved scope, not a claimed player or courtier change."
+  },
+  "source_options": [
+    {
+      "key": "pilgrimage.3004.a",
+      "native_option_index": 0,
+      "lines": [
+        7221,
+        7250
+      ],
+      "visibility": "learning >= high_skill_rating (15)",
+      "R22_displayed": false,
+      "effects": [
+        "pious_type_option_effect: conditional pious OR hajj activity performance",
+        "IF pilgrim AND pilgrimXP<100 add10 pilgrimXP",
+        "independent IF lifestyle_mystic add lifestyle_mystic_xp_gain_minor_value",
+        "add_piety medium_piety_gain (base100)",
+        "add_prestige minor_prestige_value (base75)"
+      ],
+      "not_observed": [
+        "current learning",
+        "counterfactual rewards",
+        "trait XP"
+      ]
+    },
+    {
+      "key": "pilgrimage.3004.b",
+      "native_option_index": 1,
+      "R22_rendered_index": 0,
+      "lines": [
+        7252,
+        7256
+      ],
+      "effects": [
+        "worldly_type_option_effect only when involved activity is worldly; does not change the selected pilgrimage type",
+        "add_stress medium_stress_loss (-20 base)"
+      ],
+      "R22_selected": true
+    },
+    {
+      "key": "pilgrimage.3004.c",
+      "native_option_index": 2,
+      "R22_rendered_index": 1,
+      "lines": [
+        7258,
+        7262
+      ],
+      "effects": [
+        "pious_type_option_effect, conditional on involved activity type",
+        "add_piety medium_piety_value (base100)"
+      ],
+      "R22_selected": false
+    }
+  ],
+  "after_effect": {
+    "lines": [
+      7263,
+      7279
+    ],
+    "condition": "hidden cleanup is nested under root is_ai=yes (and repeated root is_ai=yes)",
+    "effect": "doomsayer silent_disappearance_effect",
+    "actual_cleanup_observed": false
+  },
+  "actual_effect_boundary": {
+    "event_instance": 2,
+    "option": "b",
+    "native_option_index": 1,
+    "public_option_number": 2,
+    "gold_piety_prestige_delta_raw": [
+      0,
+      0,
+      0
+    ],
+    "stress_points": [
+      0,
+      0
+    ],
+    "stress_interpretation": "Observed0 to0 does not disprove the source -20 because stress was already at its lower bound; no extra reduction is invented.",
+    "native_core_count": 3,
+    "actual_rendered_count": 2,
+    "legality_source": "actual typed options; first shown native1 correctly maps to public option2"
+  },
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "recognize_by": [
+      "exact build/executable/source SHA",
+      "actual definition3004",
+      "actual saved scope names/types and native shown option mapping"
+    ],
+    "submission_rule": "existing qualified dedicated policy first; otherwise collect native actual options and legally submit first shown, never native index0 by assumption",
+    "current_native_legality": null,
+    "unobserved": [
+      "trait XP",
+      "current performance",
+      "post-event NPC cleanup",
+      "current learning"
+    ]
+  }
+}

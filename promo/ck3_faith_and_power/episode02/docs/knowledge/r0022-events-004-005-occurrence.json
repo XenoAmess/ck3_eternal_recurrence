@@ -1,0 +1,1027 @@
+{
+  "schema": "faith-e02-pilgrimage-native-events-occurrence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:46:33.497214+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "event_count": 2,
+  "events": [
+    {
+      "event_instance_id": 4,
+      "event_definition_key": "travel_events_cities.1020",
+      "actor_character_id": 31254,
+      "date_raw": 53145672,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 174,
+      "native_revision_at_independent_post": 175,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "scope_shape": [
+        {
+          "name": "province",
+          "type_key": "province",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "city_province",
+          "type_key": "province",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "city_sight",
+          "type_key": "flag",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "city_ancient_insight",
+          "type_key": "flag",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "思考生命有多么脆弱是有价值的。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": true,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 7,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我不会再这里浪费任何时间。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": true,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "selected_native_option_index": 2,
+      "selected_option_number": 3,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 18522395,
+          "after_raw": 18522395,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2010310000,
+          "after_raw": 2010310000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220427280,
+          "after_raw": 220427280,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        75
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_status": "not_registered",
+      "source_reuse_or_variant_comparison": {
+        "source_document": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-cities-1020-source-analysis.json",
+          "bytes": 9786,
+          "sha256": "cae8c5617e14cf438fb1340d77f4a81eb45e82c079424eb9f66842ffa86449bc"
+        },
+        "R14_variant": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-cities-1020-r0014-display-variant.json",
+          "bytes": 10858,
+          "sha256": "672e34f4f17243206af5ad1050f6396898fca2953c8325b2073395eef977eb26"
+        },
+        "display_variant_matches_R14": false,
+        "new_variant": "native2/7 with additional city_ancient_insight flag; prior R14 native4/6/7 souvenir branch is not reused as this choice",
+        "scope_flags_decoded": false
+      },
+      "root_capture_checkpoint": null,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-4-offline-analysis-input.json",
+          "bytes": 44961,
+          "sha256": "507824d2688f080e595c1110393f05aea3521e3366800918b9c5115e9e65fedf"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-4-selection-intent.json",
+          "bytes": 49308,
+          "sha256": "0d3979905bcb07e8800be5cc55c6ffbf441df255d38c8abdd3739f52ba8d2dfb"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+          "bytes": 21780,
+          "sha256": "45d71427c7a6b30f3908d25090759e14d53f06bfb07cdf8af84006294a06e75a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0017-event-query.actual-results.json",
+          "bytes": 34080,
+          "sha256": "d06248827921a461628a09b314bb236529166088f0024acf0fb1ffafcd8fb9e6"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0018-event-select-once.actual-results.json",
+          "bytes": 23956,
+          "sha256": "6697139f63e83453a2bf6bf693c90c5dc4c9389025a1bed8f4bd9cfd96b4020c"
+        }
+      ],
+      "trait_membership_independently_observed": false,
+      "trait_membership": null,
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "modifier_perk_or_skill_delta_observed": false,
+      "modifier_perk_or_skill_delta": null,
+      "actual_travel_ETA_observed": false,
+      "actual_travel_ETA": null
+    },
+    {
+      "event_instance_id": 5,
+      "event_definition_key": "pilgrimage.5001",
+      "actor_character_id": 31254,
+      "date_raw": 53145864,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 201,
+      "native_revision_at_independent_post": 202,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "scope_shape": [
+        {
+          "name": "activity",
+          "type_key": "activity",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "host",
+          "type_key": "character",
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        {
+          "name": "province",
+          "type_key": "province",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我走过了神圣的道路。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "trait",
+                "operation": "add",
+                "trait": {
+                  "status": "available",
+                  "native_id": 181,
+                  "key": "pilgrim"
+                }
+              },
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 18522395,
+          "after_raw": 18522395,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2022810000,
+          "after_raw": 2022810000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220427280,
+          "after_raw": 220427280,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        75,
+        64
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_status": "not_registered",
+      "source_reuse_or_variant_comparison": {
+        "source_document": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-5001-source-analysis.json",
+          "bytes": 2697,
+          "sha256": "5440c05b2c51f4a141905e99971eb65f92169771153f89635b19d9659fba3008"
+        },
+        "prior_occurrence": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-5001-r0012-occurrence-analysis.json",
+          "bytes": 8081,
+          "sha256": "16f1c0ff181df4dfb533812338087fae37546b2069f637521f84bd5d19c0d6cc"
+        },
+        "three_scope_shapes_and_typed_identity_match": true,
+        "full_actual_option_projection_matches_R12": true,
+        "source_SHA_match": true
+      },
+      "root_capture_checkpoint": {
+        "checkpoint_name": "faith-e02-journey-001-key-window-pilgrimage-5001-5",
+        "request": {
+          "run_id": "4-8e1c2f1861--faith-engine--R0022",
+          "machine_id": "4-8e1c2f1861",
+          "case": "faith-engine-e02-d1-ordinary-pilgrimage-v1",
+          "binding": {
+            "run_id": "4-8e1c2f1861--faith-engine--R0022",
+            "machine_id": "4-8e1c2f1861",
+            "actor_character_id": 31254,
+            "bridge_pid": 21144,
+            "connection_generation": 1,
+            "episode_run_id": null
+          },
+          "event_definition_key": "pilgrimage.5001",
+          "event_instance_id": 5,
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          },
+          "actual_displayed_options": [
+            {
+              "rendered_index": 0,
+              "native_option_index": 0,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "我走过了神圣的道路。",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+                "complete_effect_set": false,
+                "rows": [
+                  {
+                    "kind": "trait",
+                    "operation": "add",
+                    "trait": {
+                      "status": "available",
+                      "native_id": 181,
+                      "key": "pilgrim"
+                    }
+                  },
+                  {
+                    "kind": "stress",
+                    "direction": "decrease",
+                    "magnitude": {
+                      "status": "unavailable"
+                    },
+                    "affected_by_trait": false,
+                    "critical": false
+                  }
+                ]
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            }
+          ],
+          "frame": {
+            "date_raw": 53145864,
+            "speed": 1,
+            "paused": true,
+            "local_player_id": 1,
+            "map_ready": true,
+            "played_character": {
+              "character_id": 31254,
+              "alive": true,
+              "source": "native",
+              "stress_points": 75,
+              "event_trait_membership": {
+                "schema": "xar.ck3.player-event-trait-membership/v1",
+                "game_version": "1.20.0.4",
+                "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+                "status": "available",
+                "snapshot_revision": 201,
+                "date_raw": 53145864,
+                "played_character_id": 31254,
+                "traits": {
+                  "lifestyle_poet": false,
+                  "journaller": false
+                },
+                "unavailable_reason": null
+              },
+              "betrothed_id": null,
+              "primary_spouse_id": 36311,
+              "spouse_ids": [
+                36311
+              ]
+            },
+            "played_character_gold": {
+              "raw": 18522395,
+              "scale": 100000
+            },
+            "played_character_prestige": {
+              "raw": 220427280,
+              "scale": 100000
+            },
+            "played_character_piety": {
+              "raw": 2022810000,
+              "scale": 100000
+            },
+            "one_life_settlement": null,
+            "active_event": {
+              "source": "native",
+              "instance_id": 5,
+              "option_count": 1,
+              "title": null,
+              "options": [
+                {
+                  "index": 0,
+                  "option_number": 1,
+                  "label": null,
+                  "enabled": true
+                }
+              ]
+            },
+            "pending_character_interaction": null,
+            "active_wars": [],
+            "player_armies": [],
+            "last_checkpoint_submission": null,
+            "history": [],
+            "format_version": 1,
+            "snapshot_id": "native:201",
+            "revision": 202,
+            "native_revision": 201,
+            "backend_id": "native-headless",
+            "source": "injected-dll-named-pipe",
+            "diagnostics": {
+              "protocol_version": 1,
+              "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-engine--R0022",
+              "connected": true,
+              "connection_generation": 1,
+              "bridge_pid": 21144,
+              "bridge_version": "0.1.0",
+              "hello": {
+                "type": "hello",
+                "protocol_version": 1,
+                "bridge_version": "0.1.0",
+                "pid": 21144,
+                "session_generation": 0,
+                "connection_generation": 1,
+                "architecture": "x86_64-windows-msvc",
+                "expected_ck3_version": "1.20.0.4",
+                "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+                "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
+                "game_adapter_status": "ready",
+                "ck3_build_match": true,
+                "capabilities": [
+                  "bridge.identity",
+                  "bridge.heartbeat",
+                  "bridge.ping",
+                  "game.query.core-frame.v1",
+                  "game.state.snapshot",
+                  "game.state.xar-one-life-settlement",
+                  "game.state.map-ready",
+                  "game.state.played-character",
+                  "game.state.active-event",
+                  "game.state.pending-character-interaction",
+                  "game.state.active-wars",
+                  "game.state.war-primary-opponent",
+                  "game.state.war-objectives",
+                  "game.state.war-objective-occupation",
+                  "game.state.war-objective-fort-level",
+                  "game.state.war-objective-garrison",
+                  "game.state.war-objective-siege-progress",
+                  "game.state.war-objective-assault",
+                  "game.state.player-armies",
+                  "game.state.army-routes",
+                  "game.command.query-army-strengths-v1",
+                  "game.command.query-army-strengths-private-auto-scalar-v1",
+                  "game.command.query-army-strengths-scoped-v1",
+                  "game.command.query-title-holder-v1-N",
+                  "game.command.query-player-claims-v1-IDS",
+                  "game.command.query-title-own-laws-v1-ID",
+                  "game.command.query-raiktor-actual-truce-expiry-v1-N",
+                  "game.command.query-pending-character-interaction-context-v1",
+                  "game.command.query-current-event-window-context-v1",
+                  "normal-exit-map-v1",
+                  "game.command.activate-ingame-decisions-v1",
+                  "game.command.query-ingame-decision-item-v1",
+                  "game.command.select-ingame-decision-item-v1",
+                  "game.command.confirm-ingame-decision-item-v1",
+                  "game.command.confirm-ingame-decision-outcome-v1",
+                  "game.command.center-map-on-landed-title-v1",
+                  "game.presentation.realm-camera-mailbox.v1",
+                  "game.command.query-steward-develop-county-candidates-v1",
+                  "game.command.select-event-option-N",
+                  "game.command.accept-pending-character-interaction",
+                  "game.command.reject-pending-character-interaction",
+                  "game.command.acknowledge-pending-character-interaction",
+                  "game.command.navigate-ingame-ui-v1",
+                  "game.command.query-ingame-ui-window-v1",
+                  "game.command.query-current-title-appointment-v1",
+                  "game.command.query-frontend-gui-route-v1",
+                  "game.command.inspect-frontend-gui-tree-v1",
+                  "game.command.inspect-gui-window-tree-v1",
+                  "game.command.activate-frontend-new-game-v1",
+                  "game.command.probe-frontend-bookmark-model-v1",
+                  "game.command.activate-frontend-select-supported-1066-character-v1",
+                  "game.command.activate-frontend-start-selected-bookmark-v1",
+                  "game.command.query-frontend-game-rule-selections-v1",
+                  "game.command.activate-frontend-game-rules-v1",
+                  "game.command.query-frontend-game-rules-window-v1",
+                  "game.command.select-frontend-game-rule-v1",
+                  "game.command.apply-and-hide-frontend-game-rules-v1",
+                  "game.command.hide-frontend-game-rules-v1",
+                  "game.command.query-frontend-applied-game-rules-v1",
+                  "game.command.query-route-contact-horizon-v1-N",
+                  "game.command.query-actual-contact-scope-v1-N",
+                  "game.command.query-projected-contact-scope-v1-N",
+                  "game.command.query-army-commander-candidates-v1-for-army-N",
+                  "game.command.query-army-commander-candidates-v1-for-army-N-at-province-P",
+                  "game.command.assign-army-commander-v1-army-N-to-character-N",
+                  "game.command.query-player-mercenary-context-v1",
+                  "game.command.hire-mercenary-v1",
+                  "game.command.hire-holy-order-v1",
+                  "game.command.query-loaded-feature-manifest-v1",
+                  "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                  "game.command.research-query-tactical-daily-sentinel-v1",
+                  "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+                  "game.command.query-campaign-root-context-v1",
+                  "game.command.query-combat-simulation-inputs-v2-N",
+                  "game.command.query-player-default-raise-v1",
+                  "game.command.raise-troops-default",
+                  "game.command.preview-move-army-N-to-N",
+                  "game.command.move-army-N-to-N",
+                  "game.command.halt-army-N",
+                  "game.command.disband-army-N",
+                  "game.command.split-army-half-N",
+                  "game.command.merge-armies-N-with-N",
+                  "game.command.start-assault-N",
+                  "game.command.stop-assault-N",
+                  "game.command.query-battle-control-snapshot-v1-N",
+                  "game.command.query-battle-transition-v1-N",
+                  "game.command.query-battle-terminal-transition-v1",
+                  "game.command.query-battle-reinforcement-assignment-v1-N",
+                  "game.command.query-war-entry-assessments-v1-N",
+                  "game.command.query-declarable-wars",
+                  "game.command.declare-war-N",
+                  "game.command.enforce-demands-N",
+                  "game.command.query-arrange-marriage-choices",
+                  "game.command.arrange-marriage-N",
+                  "game.command.query-war-occupation-targets-v1-N",
+                  "game.command.query-war-termination-options-N",
+                  "game.command.query-war-termination-terms-v1-N",
+                  "game.command.surrender-war-N",
+                  "game.command.offer-white-peace-N",
+                  "game.adapter.exact-build",
+                  "game.adapter.minimized-headless",
+                  "game.command.pause-map",
+                  "game.command.resume-map",
+                  "game.command.set-speed-1",
+                  "game.command.set-speed-2",
+                  "game.command.set-speed-3",
+                  "game.command.set-speed-4",
+                  "game.command.set-speed-5",
+                  "game.command.save-checkpoint",
+                  "player_rite_creation_action_v1",
+                  "game.command.query-prewar-force-coalition-coverage-v2-N"
+                ]
+              },
+              "last_heartbeat": {
+                "type": "heartbeat",
+                "protocol_version": 1,
+                "sequence": 6661,
+                "pid": 21144,
+                "monotonic_ms": 100363875,
+                "command_entry_trace_v1": {
+                  "timeline": {
+                    "request_id": "",
+                    "frame_type": "",
+                    "parsed_step": "",
+                    "adapter_id": "",
+                    "typed_query_kind": -1,
+                    "stage": "not_received",
+                    "parse_kind": "not_parsed",
+                    "dispatch_route": "not_reached",
+                    "monotonic_ms": 0,
+                    "type_parsed": false,
+                    "request_id_parsed": false,
+                    "step_parsed": false,
+                    "handler_entered": false,
+                    "submit_result": -1,
+                    "call_result": -1,
+                    "reply_request_id": "",
+                    "reply_type": "",
+                    "reply_write_success": false
+                  },
+                  "war_termination_options": {
+                    "request_id": "",
+                    "frame_type": "",
+                    "parsed_step": "",
+                    "adapter_id": "",
+                    "typed_query_kind": -1,
+                    "stage": "not_received",
+                    "parse_kind": "not_parsed",
+                    "dispatch_route": "not_reached",
+                    "monotonic_ms": 0,
+                    "type_parsed": false,
+                    "request_id_parsed": false,
+                    "step_parsed": false,
+                    "handler_entered": false,
+                    "submit_result": -1,
+                    "call_result": -1,
+                    "reply_request_id": "",
+                    "reply_type": "",
+                    "reply_write_success": false
+                  },
+                  "war_termination_terms": {
+                    "request_id": "",
+                    "frame_type": "",
+                    "parsed_step": "",
+                    "adapter_id": "",
+                    "typed_query_kind": -1,
+                    "stage": "not_received",
+                    "parse_kind": "not_parsed",
+                    "dispatch_route": "not_reached",
+                    "monotonic_ms": 0,
+                    "type_parsed": false,
+                    "request_id_parsed": false,
+                    "step_parsed": false,
+                    "handler_entered": false,
+                    "submit_result": -1,
+                    "call_result": -1,
+                    "reply_request_id": "",
+                    "reply_type": "",
+                    "reply_write_success": false
+                  },
+                  "faction_gift_query": {
+                    "request_id": "",
+                    "frame_type": "",
+                    "parsed_step": "",
+                    "adapter_id": "",
+                    "typed_query_kind": -1,
+                    "stage": "not_received",
+                    "parse_kind": "not_parsed",
+                    "dispatch_route": "not_reached",
+                    "monotonic_ms": 0,
+                    "type_parsed": false,
+                    "request_id_parsed": false,
+                    "step_parsed": false,
+                    "handler_entered": false,
+                    "submit_result": -1,
+                    "call_result": -1,
+                    "reply_request_id": "",
+                    "reply_type": "",
+                    "reply_write_success": false
+                  }
+                },
+                "army_strength_result_write_v1": null,
+                "startup_failure_containment_enabled": false,
+                "startup_particle2_stage_recorder_enabled": false,
+                "startup_widget_null_flag_call_guard_enabled": false,
+                "startup_rbx_null_call_guard_enabled": false,
+                "cold_map_vfs_observer_enabled": false,
+                "named_path_583_root_observer_enabled": false,
+                "pdx_paths_583_producer_observer_enabled": false,
+                "vfs_mount_lifecycle_observer_enabled": false,
+                "physfs_mounted_data_observer_enabled": false,
+                "g2_truce_preview_entry_observer_enabled": true,
+                "zhongguo_scoreboard_production_candidate_enabled": false,
+                "zhongguo_scoreboard_production_capability_advertised": false,
+                "main_thread_query_mailbox_v1": {
+                  "candidate_id": "application_main_thread_war_entry_v1",
+                  "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+                  "installed": true,
+                  "sdl_poll_event_hook_installed": false,
+                  "observed_sdl_poll_event_target": 0,
+                  "stop": false,
+                  "failure": 0,
+                  "executor_exception": {
+                    "code": 0,
+                    "image": "none",
+                    "rva": null
+                  },
+                  "pump_epochs": 123407,
+                  "owner_verified_pump_epochs": 123407,
+                  "consecutive_verified": 0,
+                  "published_sequence": 41,
+                  "completed_sequence": 41,
+                  "executor_started_requests": 41,
+                  "executor_started_sequence": 41,
+                  "executor_started_pump_epoch": 118806,
+                  "owner_tid": 10500,
+                  "current_tid": 10500,
+                  "rng_owner_tid": 0,
+                  "tls_global": 1,
+                  "tls_context": 1716552102432,
+                  "tls_marker": 1,
+                  "jomini_state": 1722469011696,
+                  "game_state": 1721643770896,
+                  "date_raw": 53145840,
+                  "paused": false,
+                  "stamp_read_success": true,
+                  "executed_requests": 41,
+                  "executor_submission_enabled": true,
+                  "application_main_observed": true,
+                  "paused_main_thread_observed": false,
+                  "ready": false
+                },
+                "coat_of_arms_designer_probe_v1": {
+                  "installed": false,
+                  "failure": 1,
+                  "observed_calls": 0,
+                  "executed_requests": 0
+                },
+                "direct_control_owner_wake_v1": {
+                  "attempts": 128,
+                  "posted": 128,
+                  "guard_rejections": 0,
+                  "owner_drift": 0,
+                  "owner_before": 10500,
+                  "owner_after": 10500,
+                  "last_error": 0
+                },
+                "snapshot_observer_12002": {
+                  "started_ms": 100363625,
+                  "completed_ms": 100363625,
+                  "last_read_ms": 0,
+                  "read_in_progress": false,
+                  "last_read_available": true,
+                  "snapshot_cached": true
+                },
+                "startup_particle2_null_guard_v1": {
+                  "installed": false,
+                  "failure": 0,
+                  "suppressed_count": 0,
+                  "suppressed_index_mask": 0,
+                  "last_suppressed_index": 4294967295
+                },
+                "startup_particle2_consumer_null_guard_v1": {
+                  "installed": false,
+                  "failure": 0,
+                  "suppressed_count": 0,
+                  "missing_slot_mask": 0
+                },
+                "startup_particle2_stage_recorder_v1": {
+                  "installed": false,
+                  "patch_mask": 0,
+                  "failure": 0,
+                  "source_lookup_null_count": 0,
+                  "variant_lookup_null_count": 0,
+                  "backend_creation_null_count": 0
+                },
+                "startup_dx11_render_context_draw_guard_v1": {
+                  "installed": false,
+                  "failure": 0,
+                  "suppressed_count": 0
+                },
+                "startup_localize_current_root_guard_v1": {
+                  "installed": false,
+                  "failure": 0,
+                  "native_miss_count": 0
+                },
+                "startup_widget_null_flag_call_guard_v1": {
+                  "installed": false,
+                  "failure": 0,
+                  "suppressed_count": 0
+                },
+                "startup_rbx_null_call_guard_v1": {
+                  "installed": false,
+                  "failure": 0,
+                  "suppressed_count": 0
+                }
+              },
+              "private_observers": {},
+              "last_pong": {
+                "type": "pong",
+                "protocol_version": 1,
+                "request_id": "python-1-52076c8162ae",
+                "pid": 21144
+              },
+              "last_error": null,
+              "top_exclusive_modal_choice_hint_observation": null,
+              "semantic_state_available": true,
+              "rejected_state_snapshot_count": 0,
+              "last_rejected_state_snapshot": null,
+              "snapshot_publish_diagnostic_count": 256,
+              "last_snapshot_publish_diagnostic": {
+                "type": "snapshot_publish_diagnostic",
+                "protocol_version": 1,
+                "request_id": "step-269-1f9b084a8a47",
+                "phase": "end",
+                "status": "deduplicated",
+                "revision": 198,
+                "payload_bytes": 0
+              }
+            },
+            "episode_projection": "native_campaign",
+            "army_strengths": [],
+            "army_strengths_status": null,
+            "army_strengths_query_sequence": null,
+            "army_strengths_queried_snapshot_id": null,
+            "army_strengths_queried_revision": null,
+            "army_strengths_profile": null,
+            "army_observed_phase_coverage": null,
+            "prewar_force_coalition_coverage_v2_query": null,
+            "war_declared_overview_v1_observation": null,
+            "war_declared_overview_v1_query_attempt": null,
+            "war_declared_overview_v1_close_pending": null,
+            "war_results_window_v1_observation": null,
+            "war_results_window_v1_query_attempt": null,
+            "war_results_window_v1_close_pending": null,
+            "war_results_window_v1_check_due": true,
+            "war_results_window_v1_next_check_date_raw": 53145864,
+            "managed_campaign_run_binding": {
+              "run_id": "4-8e1c2f1861--faith-engine--R0022",
+              "state_dir": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\prepared-a01\\state",
+              "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-engine--R0022",
+              "host_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\runtime-a01\\shared-host.py",
+              "frozen_argv_sha256": "2719aaeffce492c3860705f2138242152fed3aff358bedf058e02d82652a797b"
+            },
+            "war_declaration_continuity_v1": null,
+            "native_command_history": [],
+            "native_rollback_war_failure": null,
+            "native_rollback_war_failures": [],
+            "native_command_history_export": {
+              "mode": "omitted",
+              "total_count": 77,
+              "included_count": 0
+            }
+          },
+          "prepare_original_image": true,
+          "requested_action": "Root records take and captures original image",
+          "game_option_selection_requested_from_root": false,
+          "after_complete_policy": "same current first displayed native option; no alternate content selected"
+        },
+        "response": {
+          "machine_id": "4-8e1c2f1861",
+          "observed_at_utc": "2026-10-20T22:39:21.749595+00:00",
+          "run_id": "4-8e1c2f1861--faith-engine--R0022",
+          "reviewer": "major_field_operator",
+          "status": "complete",
+          "original_image_directly_reviewed": true,
+          "original_image": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\screenshots\\p3-arrival-5001-5-a01.png",
+            "bytes": 5129560,
+            "sha256": "5bb068e9a4e1198246aeab1ea95648d7269f8a3ff6225b10da0a4726df3fc554"
+          }
+        },
+        "evidence": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-faith-e02-journey-001-key-window-pilgrimage-5001-5-capture-response.json",
+          "bytes": 22410,
+          "sha256": "70aed14878a64302f6002c8c4d06132e2264ad186aeea6a2041fce26aaf0c1f9"
+        }
+      },
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-5-offline-analysis-input.json",
+          "bytes": 41209,
+          "sha256": "c59ef57728cd474da71784a630a6952a167f589ca13d4dfa3594d4045e4c1940"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-5-selection-intent.json",
+          "bytes": 44773,
+          "sha256": "710d5899772698cc18578540574521b58c6a7d13b4cff02b99c87b0d4e840f44"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-5-selection-observed.json",
+          "bytes": 45814,
+          "sha256": "499f65bb73f77152996b6f9ccf32465ee4bd3bf9d4e71b491a1b1c1d1007f9a9"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0023-event-query.actual-results.json",
+          "bytes": 30177,
+          "sha256": "ff186237e019ec95f438dcca5091c925698caf8c3f650054c12f9da5e95c8fda"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0025-event-select-once.actual-results.json",
+          "bytes": 23959,
+          "sha256": "c9f85fc43358b636f841ff116a0a38494ed16ac6d04db345f97abf1001b69ce8"
+        }
+      ],
+      "trait_membership_independently_observed": false,
+      "trait_membership": null,
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "modifier_perk_or_skill_delta_observed": false,
+      "modifier_perk_or_skill_delta": null,
+      "actual_travel_ETA_observed": false,
+      "actual_travel_ETA": null
+    }
+  ],
+  "source_analysis_complete_for_actual_batch": true,
+  "unresolved_definition_analysis_todo": [],
+  "reused_knowledge": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-cities-1020-source-analysis.json",
+      "bytes": 9786,
+      "sha256": "cae8c5617e14cf438fb1340d77f4a81eb45e82c079424eb9f66842ffa86449bc"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-cities-1020-r0014-display-variant.json",
+      "bytes": 10858,
+      "sha256": "672e34f4f17243206af5ad1050f6396898fca2953c8325b2073395eef977eb26"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-5001-source-analysis.json",
+      "bytes": 2697,
+      "sha256": "5440c05b2c51f4a141905e99971eb65f92169771153f89635b19d9659fba3008"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-5001-r0012-occurrence-analysis.json",
+      "bytes": 8081,
+      "sha256": "16f1c0ff181df4dfb533812338087fae37546b2069f637521f84bd5d19c0d6cc"
+    }
+  ],
+  "current_source_pins_checked": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_events_cities.txt",
+      "bytes": 83546,
+      "sha256": "e8090780726e31671cf28605341b0ca5e515dfcc66d994f18ee66be5070c94d5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_events_cities_l_simp_chinese.yml",
+      "bytes": 11198,
+      "sha256": "b653990f01e6fc3eca6104179e65e6f34a69ad9b1b6b9646f6f3090f9ae78d15"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    }
+  ],
+  "boundary": "Only stable events4-5. Arrival5001 is not whole-activity settlement, terminal state or return. Source effects/indicators do not independently prove trait membership or XP.",
+  "full_registry_qualified": false,
+  "ordinary_auto_new_policy_enabled": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "game_actions_by_analyst": 0,
+  "tests_run_by_analyst": 0
+}

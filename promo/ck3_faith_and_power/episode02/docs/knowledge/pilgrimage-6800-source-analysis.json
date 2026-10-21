@@ -1,0 +1,265 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:14:55.486369+00:00",
+  "ck3_build": "1.20.0.4",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "relevant_lines": [
+        [
+          13303,
+          13678
+        ],
+        [
+          14725,
+          15147
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          899,
+          907
+        ],
+        [
+          973,
+          977
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "relevant_lines": [
+        [
+          2544,
+          2579
+        ],
+        [
+          2906,
+          2907
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "relevant_lines": [
+        [
+          55,
+          91
+        ],
+        [
+          516,
+          627
+        ],
+        [
+          1028,
+          1120
+        ],
+        [
+          1136,
+          1169
+        ],
+        [
+          1301,
+          1335
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          379,
+          401
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "relevant_lines": [
+        [
+          1131,
+          1136
+        ],
+        [
+          1164,
+          1169
+        ]
+      ]
+    }
+  ],
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-012-013-settlement-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "event_definition_key": "pilgrimage.6800",
+  "static_definition_id": "pilgrimage.6800",
+  "live_native_definition_id": "pilgrimage.6800",
+  "definition_lines": [
+    13405,
+    13678
+  ],
+  "helper_lines": [
+    13303,
+    13401
+  ],
+  "title_key": "pilgrimage.6800.t",
+  "static_title": "圣召",
+  "native_title_observed": false,
+  "candidate_producer_and_caller": {
+    "pool": "pilgrimage_destination_events",
+    "candidate_line": 397,
+    "base_weight": 100,
+    "occurrence_guaranteed": false
+  },
+  "trigger_and_target_selection": {
+    "cooldown_years": 1,
+    "AND": [
+      "location county holder is not root",
+      "holder court chaplain exists",
+      "current travel plan has valid entourage member"
+    ],
+    "member_required": [
+      "unlanded/nonruler physically able AI adult",
+      "root faith",
+      "NOT root, root heir/spouse, cynical/celibate/devoted, or already new-owner courtier",
+      "married member rejected if rite/culture disallows divorce"
+    ],
+    "selection_weights": "base1; close/extended family+5, zealous+5, learning lifestyle+2, fickle+1, married-5",
+    "actual_member": 36310,
+    "actual_new_court_owner": 30490,
+    "actual_bishop": 30737
+  },
+  "source_options": [
+    {
+      "key": "pilgrimage.6800.a",
+      "native_index": 0,
+      "lines": [
+        13497,
+        13537
+      ],
+      "effects": [
+        "conditional pious activity performance",
+        "called_member pilgrimage_6800_monk_effect",
+        "pilgrimage_the_calling_log score50 plus root medium_piety_gain(base100)",
+        "personality-conditioned stress/fulfillment inputs"
+      ],
+      "selected": true
+    },
+    {
+      "key": "pilgrimage.6800.b",
+      "native_index": 1,
+      "lines": [
+        13539,
+        13562
+      ],
+      "effects": [
+        "root minor_piety_gain(base50)",
+        "called_member celibate + medium_piety_gain + priest outfit flag + divorces spouses",
+        "personality stress inputs"
+      ],
+      "selected": false
+    },
+    {
+      "key": "pilgrimage.6800.c",
+      "native_index": 2,
+      "lines": [
+        13564,
+        13586
+      ],
+      "effects": [
+        "conditional worldly performance",
+        "called_member rival-progress or angry opinion-50 toward root",
+        "personality stress inputs"
+      ],
+      "selected": false
+    },
+    {
+      "key": "pilgrimage.6800.d",
+      "native_index": 3,
+      "lines": [
+        13588,
+        13607
+      ],
+      "visibility": "paranoid",
+      "effects": [
+        "same rival helper",
+        "base medium stress loss plus zealous medium gain"
+      ],
+      "R22_shown": false
+    },
+    {
+      "key": "pilgrimage.6800.e",
+      "native_index": 4,
+      "lines": [
+        13609,
+        13677
+      ],
+      "visibility": "zealous",
+      "effects": [
+        "conditional pious performance",
+        "IF pilgrimXP<100 add20XP and medium piety; ELSE major piety",
+        "same member-monk helper",
+        "friend/opinion helper and bishop/holy-site-owner friendship/opinion branches",
+        "greedy/avaricious major stress inputs"
+      ],
+      "R22_shown": false
+    }
+  ],
+  "monk_helper_scope_effects": {
+    "lines": [
+      13372,
+      13401
+    ],
+    "scope": "called_member, not player root",
+    "effects": [
+      "add devoted",
+      "medium_piety_gain to called_member",
+      "need_priest_outfit flag",
+      "divorce spouses and remove concubines",
+      "remove called_member from travel plan",
+      "IF still nonruler and not already new-owner courtier, add as courtier to holy_site_owner; human owner receives toast wrapper"
+    ],
+    "actual_NPC_membership_court_spouse_post_not_observed": true
+  },
+  "actual_effect_boundary": {
+    "event_instance": 12,
+    "player_actor_preserved": 31254,
+    "player_piety_delta_raw": 10000000,
+    "scale": 100000,
+    "gold_prestige_delta_raw": [
+      0,
+      0
+    ],
+    "player_stress": [
+      147,
+      147
+    ],
+    "boundary": "Observed player+100piety is distinct from logscore50 and from NPC-directed monk effects; no live NPC trait/court/entourage proof or final-reward credit is fabricated."
+  },
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "recognize": "source SHA/exact key plus actual holy_site_owner/bishop_pilgrim/called_member roles",
+    "policy": "existing qualified policy first; otherwise actual native shown first. Do not apply called_member effects to player."
+  }
+}

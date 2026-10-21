@@ -1,0 +1,248 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "pilgrimage_intent.1040",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T20:38:22.857525+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_pins": [
+    {
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_intent_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_intent_events.txt",
+      "bytes": 57928,
+      "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878"
+    },
+    {
+      "game_relative_path": "common/on_action/travel_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+    },
+    {
+      "game_relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    },
+    {
+      "game_relative_path": "common/scripted_triggers/00_pilgrimage_triggers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_pilgrimage_triggers.txt",
+      "bytes": 2851,
+      "sha256": "5d9058814175bcf018c659be2565f6f6edd3fa06bc2104d474f109cb12ec740a"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38"
+    },
+    {
+      "game_relative_path": "common/script_values/00_basic_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    {
+      "game_relative_path": "common/script_values/00_stress_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_travel_effects.txt",
+      "bytes": 1867,
+      "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_hunt_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_hunt_effects.txt",
+      "bytes": 106375,
+      "sha256": "36ed8e4ea72db2c6ed96a8395f80fb22e25063396be9a8dff156fc3a00fd3c5e"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_wanderer_lifestyle_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_wanderer_lifestyle_effects.txt",
+      "bytes": 26480,
+      "sha256": "57fda8a1dd7e20f561a0583ae8a18a0fc07390d84217fefd16324271ed56a9ba"
+    },
+    {
+      "game_relative_path": "common/script_values/00_activity_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_activity_values.txt",
+      "bytes": 78895,
+      "sha256": "0b5c2da145cf0d2311aba8525c7decfc865d0539b81acdf3974ed74a68b37c92"
+    },
+    {
+      "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580"
+    },
+    {
+      "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_intent_events_l_simp_chinese.yml",
+      "bytes": 18043,
+      "sha256": "7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a"
+    }
+  ],
+  "definition_lines": [
+    879,
+    1020
+  ],
+  "title_key": "pilgrimage_intent.1040.t",
+  "description_keys": [
+    "pilgrimage_intent.1040.desc.intro",
+    "pilgrimage_intent.1040.desc.mid.pred",
+    "pilgrimage_intent.1040.desc.mid.prey",
+    "pilgrimage_intent.1040.desc.outro"
+  ],
+  "localization_lines": [
+    53,
+    61
+  ],
+  "actual_shown_option_count": 2,
+  "candidate_producer_and_caller": "on_travel_plan_movement -> travel_event_tombola(weight2 pilgrimage_journey_events) -> pilgrimage_travel_events random pool, pilgrimage_intent.1040 weight50 at pilgrimage_on_actions.txt:75. The same source-bound outward-pilgrimage pool chain is already closed in the 2070/1100 analyses; weights and no-event choices are not guarantees.",
+  "trigger": "reflection_intent AND land location AND none of the six combat/hostile/failure/watchful/horny/family omen modifiers (906-917).",
+  "cooldown_years": 2,
+  "immediate_effects": [
+    "wayfarer_storyteller_fame_effect{VALUE=roaming_reward_fame_small}: only with roaming_perk, add prestige EXPERIENCE using base40 multiplied by roaming reward/fame values. This occurs before the displayed choice; it is not necessarily current spendable prestige and was not independently observed.",
+    "mp_delay_travel_plan{DAYS=90}: helper00_travel_effects:20-31 is conditional on has_multiple_players=yes. Do not call this an unconditional90-day delay for this run.",
+    "Hidden random_list has predator_omen versus prey_omen entries of weight50; each stores a1-year variable and calls select_local_animal_effect with TYPE=dangerous or harmless.",
+    "00_hunt_effects:26-28 saves the current root as TYPE_local_game and root.location as animal_location, then selects an animal_type localization variable. Native harmless_local_game character31254 is the scope holder, not proof the player became a separate animal NPC. Live animal_location's province payload remains unavailable."
+  ],
+  "source_options": [
+    {
+      "name_key": "pilgrimage_intent.1040.a",
+      "source_lines": [
+        941,
+        1001
+      ],
+      "actual_rendered_index": 0,
+      "actual_native_option_index": 0,
+      "actual_resolved_name": "那只狍子是神的使者！跟上他！",
+      "executed_this_occurrence": true,
+      "effects": [
+        "pious_type_option_effect: conditional pious OR hajj activity performance +10 only if its activity variable exists; not10 piety.",
+        "current_travel_plan.delay_travel_plan{days=10}. This ten-day declaration belongs to the chosen option, separately from the multiplayer-only90-day immediate helper. No live ETA before/after was obtained.",
+        "add_piety=minor_piety_gain, source base50. Same actor/date independent post confirms +50piety for this choice.",
+        "Hidden random_list can trigger1041/1042/1043/1044 or only send a lost-animal toast; the exact trigger guards are listed below, without inferring which outcome occurred from the toast or absence of another window.",
+        "stress_and_fulfillment_impact authored inputs: base and zealous minor loss(-15); lazy/impatient/craven/paranoid minor gain(20). Actual stress0->0 does not establish no effect or which traits applied."
+      ]
+    },
+    {
+      "name_key": "pilgrimage_intent.1040.b",
+      "source_lines": [
+        1002,
+        1016
+      ],
+      "actual_rendered_index": 1,
+      "actual_native_option_index": 1,
+      "actual_resolved_name": "我们不能分心。",
+      "executed_this_occurrence": false,
+      "effects": [
+        "No option-level10-day detour, direct piety or pious-progress effect is declared in this block.",
+        "stress_and_fulfillment_impact authored inputs: zealous/patient/lifestyle_hunter medium gain(40). Immediate effects already run before either choice."
+      ]
+    }
+  ],
+  "after_effect": "mp_resume_travel_plan; helper00_travel_effects:9-18 only resumes when has_multiple_players=yes.",
+  "hidden_random_entries": [
+    {
+      "weight": 50,
+      "guard": "exists var:predator_omen",
+      "trigger_event": "pilgrimage_intent.1041",
+      "lines": [
+        951,
+        956
+      ]
+    },
+    {
+      "weight": 50,
+      "guard": "exists var:predator_omen",
+      "trigger_event": "pilgrimage_intent.1042",
+      "lines": [
+        957,
+        962
+      ]
+    },
+    {
+      "weight": 50,
+      "guard": "exists var:prey_omen",
+      "trigger_event": "pilgrimage_intent.1043",
+      "lines": [
+        963,
+        968
+      ]
+    },
+    {
+      "weight": 50,
+      "guard": "exists var:predator_omen",
+      "trigger_event": "pilgrimage_intent.1044",
+      "lines": [
+        969,
+        974
+      ],
+      "source_note": "The source comment says negative prey, but the actual guard is predator_omen. Preserve the installed bytes; do not silently correct the guard."
+    },
+    {
+      "weight": 50,
+      "guard": "no additional guard declared",
+      "toast_title_key": "pilgrimage.you_lose_the_animal.t",
+      "toast_description_key": "pilgrimage.you_lose_the_animal.desc",
+      "lines": [
+        975,
+        982
+      ]
+    }
+  ],
+  "possible_followup_effects_not_live_observed": [
+    {
+      "event": "pilgrimage_intent.1041",
+      "lines": [
+        1024,
+        1092
+      ],
+      "effects": "Immediate pilgrim+10XP if trait exists, else base25piety; good_predator_omen_memory. Its choices declare20-year combat modifier (+1martial, monthly martial XP mult0.3) or hostile modifier (+1intrigue and named scheme-duration bonus), plus conditional stress/fulfillment."
+    },
+    {
+      "event": "pilgrimage_intent.1042",
+      "lines": [
+        1096,
+        1147
+      ],
+      "effects": "ChoiceA10-year failure modifier(stress_gain_mult0.2)+bad_predator memory; mystic-only B20-year watchful modifier(+1intrigue/enemy scheme secrecy-20/named hostile duration malus)+good_predator memory. Each has its own conditional stress inputs."
+    },
+    {
+      "event": "pilgrimage_intent.1043",
+      "lines": [
+        1151,
+        1245
+      ],
+      "effects": "Immediate pilgrim+10XP only with existing trait and XP<100, plus good_prey memory. Options: fertility>=0.1 grants20-year fertility+0.3 modifier; if a rival exists remove a random rivalry; or20-year family modifier(house opinion10/close relatives15/monthly dynasty prestige0.1). Conditional stress/fulfillment is separate."
+    },
+    {
+      "event": "pilgrimage_intent.1044",
+      "lines": [
+        1249,
+        1303
+      ],
+      "effects": "ChoiceA20-year failure modifier(stress_gain_mult0.2)+bad_prey memory; mystic-only B20-year hostile modifier+bad_but_good_prey memory. Conditional stress/fulfillment is separate."
+    }
+  ],
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0018-event004-and-scene-cutoff.json",
+  "actual_effect_boundary": "R0018 instance4 native0/public1 ACK=true and independent old-window disappearance=true. Same date53145336/actor31254 piety2005155000->2010155000 (scale100000), gold/prestige/stress unchanged. No actual followup definition, modifier membership, activity-performance value, fulfillment, trait XP, live ETA or animal province ID was independently read. No XP is inferred from a toast or these possible source branches. This is a journey event, not arrival or final pilgrimage settlement.",
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "decision_tradeoff": "Following the animal trades a declared ten-day detour for direct piety and conditional performance/omen effects; declining avoids this option's detour but has trait-conditional stress. Rebind current animal label, actor, scope shape and legal shown order; no fixed historical row/index is current permission.",
+    "ordinary_auto_new_policy_enabled": false,
+    "full_registry_qualified": false,
+    "registered_in_shared_knowledge_mcp_by_this_external_package": false
+  }
+}

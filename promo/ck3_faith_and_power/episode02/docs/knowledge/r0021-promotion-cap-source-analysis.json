@@ -1,0 +1,249 @@
+{
+  "schema": "xar.ck3.holy-site-promotion-cap-knowledge.v1",
+  "analysis_status": "source_bound_r0021_historical_rejection",
+  "ck3_build": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "machine_id": "4-8e1c2f1861",
+  "analysis_observed_at_utc": "2026-10-20T22:22:52.088042+00:00",
+  "read_only": true,
+  "requires_ck3": false,
+  "state_observed": false,
+  "native_legality": null,
+  "action_ready": false,
+  "ordinary_auto_consumes": false,
+  "historical_evidence_is_current_state": false,
+  "source_pins": [
+    {
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "line_ranges": [
+        [
+          25,
+          72
+        ],
+        [
+          191,
+          224
+        ]
+      ]
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "line_ranges": [
+        [
+          919,
+          926
+        ]
+      ]
+    },
+    {
+      "path": "common/religion/religion_types/00_christianity.txt",
+      "bytes": 29656,
+      "sha256": "d3f521850ab6aa7643bbb4e5c644ac5a70b8e5a8d1184a20aee7f9a509a9ae02",
+      "line_ranges": [
+        [
+          1,
+          336
+        ]
+      ]
+    },
+    {
+      "path": "common/religion/religion_types/_religion_types.info",
+      "bytes": 5101,
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "line_ranges": [
+        [
+          15,
+          18
+        ]
+      ]
+    },
+    {
+      "path": "common/script_values/02_religion_values.txt",
+      "bytes": 118720,
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "line_ranges": [
+        [
+          4097,
+          4098
+        ],
+        [
+          4127,
+          4153
+        ],
+        [
+          4161,
+          4184
+        ]
+      ]
+    }
+  ],
+  "source_rules": {
+    "promotion_and_conditions": [
+      "Normal management permission AND selected site is a Faith site AND not already eminent.",
+      "Faith-wide list_size:eminent_holy_site < current Faith Religion eminent_holy_sites_max.",
+      "Actor is Faith religious head OR selected barony holder is actor or below actor; selected county holder Faith equals actor Faith.",
+      "The free-action trigger changes the piety cost branch only; it does not skip is_valid or the cap."
+    ],
+    "major_limit_scope": "Each Faith major membership/count; max/min come from its current Religion, not selected-site type or one Rite.",
+    "default_limits": {
+      "eminent_max": 3,
+      "eminent_min": 1,
+      "total_sites_max": 9,
+      "total_sites_min": 1
+    },
+    "religion_override": "Read current Religion override; if absent use exact loaded/default source. Never treat3 as universal.",
+    "christianity_source_scope": {
+      "key": "christianity_religion",
+      "eminent_max_override_present": false,
+      "eminent_min_override_present": false,
+      "source_resolved_max": 3,
+      "source_resolved_min": 1,
+      "source_fallback_is_current_native_permission": false
+    },
+    "demotion_gate": "Normal management AND selected site already eminent AND Faith major count > current Religion eminent_holy_sites_min; quote/cooldown and final native legality still required.",
+    "hof_cost_scope": "The no-eminent-site multiplier checks NOT any_eminent_holy_site whose county is controlled by root AND holder.faith=root.faith across the Faith; selected-site ordinary/major alone does not decide it.",
+    "hof_resource_separation": "The spiritual piety branch additionally tests non-main Rite; gold uses its own dynamic base. Do not assign either quote from the selected-site grade."
+  },
+  "fresh_preflight": [
+    "Bind current actual build/loaded source, player fullID, Faith/Rite/Religion fullID and date/native frame.",
+    "Read the complete current Faith site list and each own-Faith major membership; reject incomplete/unavailable/duplicate identity as unknown, not zero. Site ID0 is valid.",
+    "Resolve that current Religion actual max/min and source/default/override provenance; where no typed max reader exists, preserve native rendered requirement text plus source and keep typed field unknown.",
+    "Read selected decision detail with exact actor/site/decision key and parameter-selection match; final normal CanConfirm, native CanConfirm and bypass0 must be current.",
+    "Read native cooldown, complete10-resource quote, affordability and actual wallets/reserves. Zero cost or free-action text does not grant permission.",
+    "Only after all actual gates pass, bind original durable once intent, requery fresh quote/legality, submit once and independently read membership, wallet, cooldown/free-action state. Unknown submission is observe-only; never rekey or replay."
+  ],
+  "existing_read_tools": [
+    "ck3_query_player_religion_context_v1",
+    "ck3_query_player_rite_governance_v1",
+    "ck3_query_player_holy_site_v1",
+    "ck3_query_player_holy_site_decision_detail_v1"
+  ],
+  "current_religion_typed_max_reader_claimed": false,
+  "historical_r0021": {
+    "machine_id": "4-8e1c2f1861",
+    "run_id": "4-8e1c2f1861--faith-engine--R0021",
+    "observed_at_utc": "2026-10-20T21:35:19.059818+00:00",
+    "actor_character_id": 31254,
+    "faith_id": 103,
+    "rite_id": 150,
+    "religion_id": 8,
+    "religion_key": "christianity_religion",
+    "date_raw": 53144328,
+    "faith_site_ids": [
+      0,
+      1,
+      3,
+      2,
+      4,
+      32
+    ],
+    "faith_major_site_ids": [
+      0,
+      1,
+      3
+    ],
+    "faith_major_count": 3,
+    "selected_holy_site_id": 32,
+    "selected_site_major": false,
+    "native_rendered_max": 3,
+    "typed_religion_max_observed": false,
+    "detail_available": true,
+    "identity_and_parameter_selection_match": true,
+    "normal_requirements_can_confirm": false,
+    "native_can_confirm": false,
+    "bypass_requirements_raw": 0,
+    "sole_active_failed_requirement": "Faith major count <3",
+    "inactive_alternative_failure_is_not_additional_active_blocker": true,
+    "free_actions_remaining_native_text": 2,
+    "typed_free_action_counter_observed": false,
+    "raw_scale": 100000,
+    "resource_vector_raw": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "native_affordable": true,
+    "decision_cooldown": {
+      "decision_key": "elevate_holy_site_decision",
+      "present": false,
+      "expiry_raw": null,
+      "current_counter_raw": 53144328,
+      "active": false,
+      "counter_unit": "native_decision_clock_counter",
+      "calendar_conversion_observed": false
+    },
+    "faith_religious_head_title_id": null,
+    "actor_rite_head_character_id": 31254,
+    "public_calls": 12,
+    "confirm_submissions": 0,
+    "normal_close_contract_pass": true,
+    "screen_release_sequence": 12952,
+    "promotion_success_observed": false,
+    "h2_result": null,
+    "ghw_result": null,
+    "evidence_root": "source-machine episode02 retained external evidence root; relative paths below are references, not runtime dependencies",
+    "evidence": [
+      {
+        "path": "capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-promote-001.actual-results.json",
+        "bytes": 49288,
+        "sha256": "ad6640db7a057be683510dbe78ee5198e0e0c214c4455f961edf9f381e24b5f8"
+      },
+      {
+        "path": "capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-promote-002.actual-results.json",
+        "bytes": 23122,
+        "sha256": "882686dbe1bbe5b4921460f351ee6d647c7cc0a80ea43bcafeb9a29e66bb766a"
+      },
+      {
+        "path": "capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-promote-003.actual-results.json",
+        "bytes": 87375,
+        "sha256": "bd727aaeb8cef54e1dc6f4279c25bbb244dd258009beb7ba738e831b51a085ac"
+      },
+      {
+        "path": "capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-promote-008.actual-results.json",
+        "bytes": 27101,
+        "sha256": "fa39dd844610531832b8e1042e2ef595cc6f115c985e6553bc581c917a853ee6"
+      },
+      {
+        "path": "capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-h2-ghw-composite-result.json",
+        "bytes": 627,
+        "sha256": "aa850178d320acd9afb09d493326e1ba1c3215e04b2c8089ea177f6333db40cf"
+      },
+      {
+        "path": "capture-b34-h-major-retry-a01/SCENE-CLOSURE.a03.actual.json",
+        "bytes": 4619,
+        "sha256": "15ab5cd7a9c187148c1c018aae0bafe1a5364b5f098c24efce8e06ccb428bd2e"
+      },
+      {
+        "path": "capture-b34-h-major-retry-a01/screenshots/r21-promote-blocked-a01.png",
+        "bytes": 4992069,
+        "sha256": "e7a6c54509daf8155241c0e7f6b3fa9e9ffaf2f134cf685ce949a2adab9ec808"
+      }
+    ]
+  },
+  "candidate_controlled_comparison": {
+    "status": "CANDIDATE_NOT_LIVE",
+    "performed": false,
+    "success_claimed": false,
+    "steps": [
+      "Freshly evaluate a legal demotion of an existing major member, with real min/count/quote/cooldown/once checks; no direct save or gold edit.",
+      "Independently confirm actual demotion/payment, drain real interruptions and re-read complete membership. Only then create a shared ordinary experiment mother by a normal save.",
+      "Two separately declared experimental arms may start from that same pinned mother: target32 ordinary control versus one freshly legal promotion of target32. Rebind actor/date/once and observe each independently.",
+      "If testing HoF no-eminent cost, first evaluate the whole Faith controlled same-Faith major-county predicate. Remaining qualifying major counties can make both arms use the same price; one demotion for cap space does not guarantee a cost contrast.",
+      "If any normal gate is false or an outcome unknown, retain the real rejection/diagnostics and close normally; do not promise either arm success."
+    ],
+    "future_actual_mother_pin": null,
+    "future_quote": null,
+    "future_permission": null
+  }
+}

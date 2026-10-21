@@ -1,0 +1,238 @@
+{
+  "schema": "faith-e02-r0018-final-event-and-scene-cutoff-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T20:39:37.159649+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0018",
+  "ck3_build": "1.20.0.4",
+  "event4": {
+    "event_instance_id": 4,
+    "event_definition_key": "pilgrimage_intent.1040",
+    "date_raw": 53145336,
+    "native_query_revision": 129,
+    "native_independent_post_revision": 130,
+    "actual_shown_options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "resolved_name": "那只狍子是神的使者！跟上他！",
+        "shown": true,
+        "enabled": true
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "resolved_name": "我们不能分心。",
+        "shown": true,
+        "enabled": true
+      }
+    ],
+    "saved_scope_shape": [
+      {
+        "name": "travel_plan",
+        "type_key": "travel_plan",
+        "typed_identity": {
+          "status": "unavailable",
+          "reason": "generic_scope_payload_identity_not_closed"
+        }
+      },
+      {
+        "name": "harmless_local_game",
+        "type_key": "character",
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      {
+        "name": "animal_location",
+        "type_key": "province",
+        "typed_identity": {
+          "status": "unavailable",
+          "reason": "generic_scope_payload_identity_not_closed"
+        }
+      }
+    ],
+    "selected_native_option_index": 0,
+    "selected_option_number": 1,
+    "ack_accepted": true,
+    "old_instance_gone_in_independent_snapshot": true,
+    "wallet_piety_prestige_readback": {
+      "played_character_gold": {
+        "before_raw": 17887351,
+        "after_raw": 17887351,
+        "delta_raw": 0,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "before_raw": 2005155000,
+        "after_raw": 2010155000,
+        "delta_raw": 5000000,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "before_raw": 220213640,
+        "after_raw": 220213640,
+        "delta_raw": 0,
+        "scale": 100000
+      }
+    },
+    "stress_points_before_after": [
+      0,
+      0
+    ],
+    "registry_decision_status": "not_registered",
+    "followup_definition_observed": false,
+    "followup_definition_id": null,
+    "trait_xp_observed": false,
+    "trait_xp": null,
+    "actual_eta_observed": false,
+    "actual_eta": null,
+    "actual_modifier_membership_observed": false
+  },
+  "binding": {
+    "run_id": "4-8e1c2f1861--faith-engine--R0018",
+    "machine_id": "4-8e1c2f1861",
+    "actor_character_id": 31254,
+    "bridge_pid": 13116,
+    "connection_generation": 1,
+    "episode_run_id": null
+  },
+  "scene_cutoff": {
+    "status": "PARTIAL_ORIGINAL_FAILURE_PRESERVED",
+    "reason": "ValueError: Actual case step failed: faith-e02-journey-001-0019-identity",
+    "observed_days": 56.0,
+    "elapsed_hours": 1344,
+    "day_requests": 57,
+    "public_requests_used": 190,
+    "public_requests_cap": 1024,
+    "arrival_observed": false,
+    "terminal_observed": false,
+    "return_observed": false,
+    "return_event_chain_complete": false,
+    "coordinate_home_observed": false,
+    "payment_or_travel_total_known": false,
+    "new_save_performed": false,
+    "actual_event_count": 4,
+    "observed_event_definitions": [
+      "travel_start_event.1060",
+      "pilgrimage.2070",
+      "pilgrimage_intent.1100",
+      "pilgrimage_intent.1040"
+    ],
+    "last_observed_date_raw": 53145672,
+    "last_observed_resources": {
+      "played_character_gold": {
+        "raw": 18522395,
+        "scale": 100000
+      },
+      "played_character_piety": {
+        "raw": 2010325500,
+        "scale": 100000
+      },
+      "played_character_prestige": {
+        "raw": 220427280,
+        "scale": 100000
+      }
+    },
+    "scene_closed": true,
+    "actual_retained_game_exit_code": 1,
+    "original_host_returncode": 1,
+    "original_public_run_returncode": 2,
+    "normal_close_contract_pass": false,
+    "failure_lifecycle_completed": false,
+    "actual_retained_os0": false,
+    "start_ledger_only": {
+      "scope": "Original Start reconciliation, not successful journey recovery or scene lifecycle",
+      "native_ledger_state_reconciled": true,
+      "needs_recovery": false,
+      "activity_id": 0,
+      "host_character_id": 31254
+    }
+  },
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-4-offline-analysis-input.json",
+      "bytes": 42138,
+      "sha256": "14e0d93108a645162a4768ee02be8a1c84f085425e0bc060a58792fbf9badea3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-4-selection-intent.json",
+      "bytes": 46213,
+      "sha256": "54827cf18263b47ec7d2c4b43df00f80d4079af8025a1d06774ab74429e458f3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+      "bytes": 21769,
+      "sha256": "a0ace0b9b7473b677546ed64f9ff2c258a5a58084b7b7478a9546722ecf86ac2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0015-event-query.actual-results.json",
+      "bytes": 31653,
+      "sha256": "5d5aa6a02ed1355ccc57fa6c9ca2bfe037f5791dbb88ac958ef6f5b911349dd9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0016-event-select-once.actual-results.json",
+      "bytes": 23949,
+      "sha256": "98cac5926cf61d06e64aadc694149446630113961fe5ad5723b0e67351211407"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-result.json",
+      "bytes": 144264,
+      "sha256": "a87b5ef989710f1a92246914e4d58bfb0cc217ceb9dbaaa2bceed68c713738d0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\ordinary-pilgrimage-result.json",
+      "bytes": 156400,
+      "sha256": "3f54f1c0424832e3edfb7ab08f190b88cbf5c3e20de2d626ff1bc0dfee867afa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\SCENE-CLOSURE.actual.json",
+      "bytes": 4692,
+      "sha256": "462223536c30b38f5b9f0ea753cdef32a32d7c36352e225eb42f21033b29eec1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\POSITION-START.actual.json",
+      "bytes": 1991,
+      "sha256": "dd9d73fc7069e9958c52dc89d9b24b7bed548c0262a68d90c4ddfbe492b312d0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\ordinary-pilgrimage-post-start-wallet-observation.json",
+      "bytes": 835,
+      "sha256": "a79de382eb1e055ab3df4bd458784e82fda591994fb9a26a8af0c89adc658d22"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0019-identity.queue-result.json",
+      "bytes": 770,
+      "sha256": "c4f0f7285390c6e20c38850143f4b2ab8f4c3675133331244b8eda9fe3522ece"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\p3-r0014-event-knowledge-a01\\r0018-batch01-a01\\DELIVERY.actual.json",
+      "bytes": 2465,
+      "sha256": "8a365023b7d7c477db02e2106cbd98af45a7c469ccffa4b6f09cb952dab805ad"
+    }
+  ],
+  "source_analysis_documents": [
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1040-source-analysis.json"
+  ],
+  "prior_batch_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0018-events-001-003-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_registry_qualified": false,
+  "ordinary_auto_new_policy_enabled": false,
+  "source_analysis_complete_for_all_four_actual_events": true,
+  "unresolved_definition_analysis_todo": [],
+  "material_boundaries": [
+    "The first three sealed occurrence/source documents retain their original three-event cutoff; this new document completes the fourth event and states the scene total4.",
+    "1040 has2 actually displayed choices, not3. +50piety is an independently observed journey-event change, not the main on_end reward.",
+    "Ten days is the selected option source declaration; immediate90day helper is multiplayer-conditional. Actual before/after ETA, hidden followup outcome, trait XP and modifiers remain unknown/null.",
+    "Initial same-character location was independently read as Apulia; no current return-position observation exists. It is not a typed province-ID or inferred capital.",
+    "Start activity_id0 is valid and its native ledger was reconciled. Nonzero raw completion stamp at creation never established completion.",
+    "Last-frame wallet/piety totals include natural-time changes. This56-day partial interval is not a whole-journey price or final pilgrimage reward.",
+    "Queue subprocess exit0 only proves queue emission; the actual identity step failed as recorded in the journey reason. No successful typed response is invented.",
+    "Game1/host1/publicrun2 and normal_close_contract_pass=false are preserved; CAS empty/process absence are not normal Quit or retained OS0."
+  ],
+  "game_actions_by_analyst": 0,
+  "tests_run_by_analyst": 0
+}

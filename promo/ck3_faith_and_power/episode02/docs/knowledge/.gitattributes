@@ -1,0 +1,24 @@
+# Preserve exact source-bound research originals and their SHA-256 pins.
+councillor-spouse-learning-2601-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-2070-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-3004-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-6750-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-6800-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-6840-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-7000-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-9001-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-intent-1030-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-intent-1040-source-analysis.json -text whitespace=cr-at-eol
+pilgrimage-intent-1100-source-analysis.json -text whitespace=cr-at-eol
+r0018-event004-and-scene-cutoff.json -text whitespace=cr-at-eol
+r0018-events-001-003-occurrence.json -text whitespace=cr-at-eol
+r0022-all-event-source-index.json -text whitespace=cr-at-eol
+r0022-event011-occurrence.json -text whitespace=cr-at-eol
+r0022-events-001-003-occurrence.json -text whitespace=cr-at-eol
+r0022-events-004-005-occurrence.json -text whitespace=cr-at-eol
+r0022-events-006-010-and-marriage-occurrence.json -text whitespace=cr-at-eol
+r0022-events-012-013-settlement-occurrence.json -text whitespace=cr-at-eol
+r0022-events-014-015-return-occurrence.json -text whitespace=cr-at-eol
+r0022-pilgrimage-ending-observed.json -text whitespace=cr-at-eol
+stress-threshold-1701-r0022-display-variant.json -text whitespace=cr-at-eol
+travel-cities-1020-r0022-display-variant.json -text whitespace=cr-at-eol

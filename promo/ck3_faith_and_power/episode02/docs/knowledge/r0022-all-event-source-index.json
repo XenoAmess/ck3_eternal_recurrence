@@ -1,0 +1,647 @@
+{
+  "schema": "faith-e02-r0022-complete-event-source-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:29:00.680251+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "ck3_build": "1.20.0.4",
+  "actual_event_count": 15,
+  "actual_interaction_count": 1,
+  "events": [
+    {
+      "event_instance_id": 1,
+      "event_definition_key": "travel_start_event.1060",
+      "date_raw": 53144352,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json",
+      "actual_shown_native_indices": [
+        0
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "travel_plan",
+          "type": "travel_plan"
+        },
+        {
+          "name": "pilgrim_net",
+          "type": "landed_title"
+        },
+        {
+          "name": "province_temp",
+          "type": "province"
+        },
+        {
+          "name": "char_temp",
+          "type": "character"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 2,
+      "event_definition_key": "pilgrimage.3004",
+      "date_raw": 53144496,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3004-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json",
+      "actual_shown_native_indices": [
+        1,
+        2
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "travel_plan",
+          "type": "travel_plan"
+        },
+        {
+          "name": "dummy_clergy_gender",
+          "type": "character"
+        },
+        {
+          "name": "doomsayer",
+          "type": "character"
+        }
+      ],
+      "selected_native_option_index": 1,
+      "selected_option_number": 2,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 3,
+      "event_definition_key": "pilgrimage_intent.1030",
+      "date_raw": 53144616,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1030-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        1
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "travel_plan",
+          "type": "travel_plan"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 4,
+      "event_definition_key": "travel_events_cities.1020",
+      "date_raw": 53145672,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-cities-1020-r0022-display-variant.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-004-005-occurrence.json",
+      "actual_shown_native_indices": [
+        2,
+        7
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "province",
+          "type": "province"
+        },
+        {
+          "name": "city_province",
+          "type": "province"
+        },
+        {
+          "name": "city_sight",
+          "type": "flag"
+        },
+        {
+          "name": "city_ancient_insight",
+          "type": "flag"
+        }
+      ],
+      "selected_native_option_index": 2,
+      "selected_option_number": 3,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 5,
+      "event_definition_key": "pilgrimage.5001",
+      "date_raw": 53145864,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-5001-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-004-005-occurrence.json",
+      "actual_shown_native_indices": [
+        0
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "activity",
+          "type": "activity"
+        },
+        {
+          "name": "host",
+          "type": "character"
+        },
+        {
+          "name": "province",
+          "type": "province"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 6,
+      "event_definition_key": "pilgrimage.4100",
+      "date_raw": 53145888,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-4100-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        1
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "activity",
+          "type": "activity"
+        },
+        {
+          "name": "host",
+          "type": "character"
+        },
+        {
+          "name": "province",
+          "type": "province"
+        },
+        {
+          "name": "pilgrim_bystander",
+          "type": "character"
+        },
+        {
+          "name": "pilgrim_vendor",
+          "type": "character"
+        },
+        {
+          "name": "receiving_char",
+          "type": "character"
+        },
+        {
+          "name": "badge_location",
+          "type": "province"
+        },
+        {
+          "name": "badge_acquirer",
+          "type": "character"
+        },
+        {
+          "name": "quality",
+          "type": "value"
+        },
+        {
+          "name": "wealth",
+          "type": "value"
+        },
+        {
+          "name": "newly_created_artifact",
+          "type": "artifact"
+        },
+        {
+          "name": "created_pilgrim_badge",
+          "type": "artifact"
+        },
+        {
+          "name": "badge_to_buy",
+          "type": "artifact"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 7,
+      "event_definition_key": "pilgrimage.6840",
+      "date_raw": 53146320,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6840-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        1,
+        2
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "activity",
+          "type": "activity"
+        },
+        {
+          "name": "host",
+          "type": "character"
+        },
+        {
+          "name": "province",
+          "type": "province"
+        },
+        {
+          "name": "holy_site_scope",
+          "type": "province"
+        },
+        {
+          "name": "blessed_bishop",
+          "type": "character"
+        },
+        {
+          "name": "blessed_artifact",
+          "type": "artifact"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 8,
+      "event_definition_key": "stress_threshold.1701",
+      "date_raw": 53146920,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/stress-threshold-1701-r0022-display-variant.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+      "actual_shown_native_indices": [
+        3,
+        6,
+        8
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "stress_character",
+          "type": "character"
+        },
+        {
+          "name": "capital_province",
+          "type": "province"
+        }
+      ],
+      "selected_native_option_index": 3,
+      "selected_option_number": 4,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 9,
+      "event_definition_key": "pilgrimage.6750",
+      "date_raw": 53147040,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6750-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        1
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "activity",
+          "type": "activity"
+        },
+        {
+          "name": "host",
+          "type": "character"
+        },
+        {
+          "name": "province",
+          "type": "province"
+        },
+        {
+          "name": "repent_location",
+          "type": "province"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 10,
+      "event_definition_key": "bookmark.1070",
+      "date_raw": 53147088,
+      "source_document": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/bookmark1070_material.py",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        1,
+        2
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "governor",
+          "type": "character"
+        },
+        {
+          "name": "holder",
+          "type": "character"
+        },
+        {
+          "name": "new_nomad_title",
+          "type": "landed_title"
+        },
+        {
+          "name": "astrologer_character",
+          "type": "character"
+        },
+        {
+          "name": "new_councillor",
+          "type": "character"
+        },
+        {
+          "name": "pool_province",
+          "type": "province"
+        },
+        {
+          "name": "disciple",
+          "type": "character"
+        },
+        {
+          "name": "elder",
+          "type": "character"
+        },
+        {
+          "name": "emperor",
+          "type": "character"
+        },
+        {
+          "name": "pope",
+          "type": "character"
+        }
+      ],
+      "selected_native_option_index": 2,
+      "selected_option_number": 3,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "existing_registered_vanilla_event_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 11,
+      "event_definition_key": "councillor_spouse_learning.2601",
+      "date_raw": 53147616,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/councillor-spouse-learning-2601-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-event011-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        3
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "councillor",
+          "type": "character"
+        },
+        {
+          "name": "councillor_liege",
+          "type": "character"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 12,
+      "event_definition_key": "pilgrimage.6800",
+      "date_raw": 53147760,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6800-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-012-013-settlement-occurrence.json",
+      "actual_shown_native_indices": [
+        0,
+        1,
+        2
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "activity",
+          "type": "activity"
+        },
+        {
+          "name": "host",
+          "type": "character"
+        },
+        {
+          "name": "province",
+          "type": "province"
+        },
+        {
+          "name": "holy_site_owner",
+          "type": "character"
+        },
+        {
+          "name": "bishop_pilgrim",
+          "type": "character"
+        },
+        {
+          "name": "called_member",
+          "type": "character"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 13,
+      "event_definition_key": "pilgrimage.7000",
+      "date_raw": 53148024,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-7000-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-012-013-settlement-occurrence.json",
+      "actual_shown_native_indices": [
+        0
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "activity",
+          "type": "activity"
+        },
+        {
+          "name": "host",
+          "type": "character"
+        },
+        {
+          "name": "province",
+          "type": "province"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 14,
+      "event_definition_key": "pam_bull_events.0004",
+      "date_raw": 53148792,
+      "source_document": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_pam_bull0004_12004.py",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-014-015-return-occurrence.json",
+      "actual_shown_native_indices": [
+        0
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "puppeteer",
+          "type": "character"
+        },
+        {
+          "name": "actor",
+          "type": "character"
+        },
+        {
+          "name": "selected_item",
+          "type": "tenet"
+        },
+        {
+          "name": "bull_issuer",
+          "type": "character"
+        },
+        {
+          "name": "pam_tenet_stance_issuer",
+          "type": "character"
+        },
+        {
+          "name": "pam_tenet_stance_permit",
+          "type": "character"
+        },
+        {
+          "name": "pam_tenet_stance_tenet",
+          "type": "tenet"
+        },
+        {
+          "name": "tenet_scope",
+          "type": "tenet"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "existing_registered_vanilla_event_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    },
+    {
+      "event_instance_id": 15,
+      "event_definition_key": "pilgrimage.9001",
+      "date_raw": 53149152,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-9001-source-analysis.json",
+      "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-014-015-return-occurrence.json",
+      "actual_shown_native_indices": [
+        0
+      ],
+      "saved_scope_names_and_types": [
+        {
+          "name": "travel_plan",
+          "type": "travel_plan"
+        },
+        {
+          "name": "travel_owner",
+          "type": "character"
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "policy": "native_first_displayed_v1",
+      "analysis_completed": true,
+      "current_native_legality": null
+    }
+  ],
+  "interaction": {
+    "instance_id": 33554572,
+    "definition": "arrange_marriage_interaction",
+    "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+    "decline_submitted_once": true,
+    "independent_old_window_gone": true
+  },
+  "ending_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-pilgrimage-ending-observed.json",
+  "batch_deliveries": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\b35-event-knowledge-a01\\batch01-events001-003-a01\\DELIVERY.actual.json",
+      "bytes": 11256,
+      "sha256": "762a3cb48f9cd8437943a5c1c497b1e5d27da27436c10857e99bfc200cf52a8e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\b35-event-knowledge-a01\\batch02-events004-005-a01\\DELIVERY.actual.json",
+      "bytes": 5013,
+      "sha256": "490c5d1ff7da0853eb195cee6e847dc7b9af2f339875308a186fc17550c0b020"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\b35-event-knowledge-a01\\batch03-events006-010-marriage-a01\\DELIVERY.actual.json",
+      "bytes": 12589,
+      "sha256": "a5eaf5cb4045de319074c4fd694dabca7cff5a506afde4aeadb4df583ed01f39"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\b35-event-knowledge-a01\\batch04-event011-a01\\DELIVERY.actual.json",
+      "bytes": 3305,
+      "sha256": "19786b8c4094b2a91ca7dd3980c6c294098b8f8ad540ef7d30f2faa41ffc136c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\b35-event-knowledge-a01\\batch05-events012-013-settlement-a01\\DELIVERY.actual.json",
+      "bytes": 7045,
+      "sha256": "0a442e6d5d432a043f2ccbeb53d74b07891cc63817ace6a91bbedbfcc2040484"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\b35-event-knowledge-a01\\batch06-events014-015-return-a01\\DELIVERY.actual.json",
+      "bytes": 8698,
+      "sha256": "65f3b25dbbcfb44a4d9a4789cad0d2c525cff0e4d3daac1010da7b9285fb59d4"
+    }
+  ],
+  "final_report": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\native-report.json",
+    "bytes": 30109292,
+    "sha256": "c27b1bd276b6c0b6c858735b3844ffd8465eb0b70730c3705840ca4c00df0ea2",
+    "pin_source": "major_field_operator explicit post-closure message; analyst did not re-read/hash the report"
+  },
+  "ending_boundary": "Completed same activity0 plus consumed7000/9001 and independent current tooltip text at Apulia;201 elapsed days,204day requests. Historical milestone religion metrics failed before query; current postreturn read does not repair them. TraitXP and pure whole-trip cost remain unknown; original business_pass=false retained.",
+  "source_analysis_complete": true,
+  "permanent_analysis_todo": [],
+  "ordinary_auto_consumes": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false
+}

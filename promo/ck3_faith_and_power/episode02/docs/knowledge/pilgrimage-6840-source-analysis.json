@@ -1,0 +1,229 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:56:19.020128+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "event_definition_key": "pilgrimage.6840",
+  "static_definition_id": "pilgrimage.6840",
+  "live_native_definition_id": "pilgrimage.6840",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "relevant_lines": [
+        [
+          12091,
+          12297
+        ],
+        [
+          14329,
+          14545
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          840,
+          854
+        ],
+        [
+          931,
+          937
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "relevant_lines": [
+        [
+          1225,
+          1249
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          379,
+          403
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "relevant_lines": [
+        [
+          1131,
+          1133
+        ],
+        [
+          1164,
+          1166
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "relevant_lines": [
+        [
+          93,
+          111
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_artifact_modifiers.txt",
+      "bytes": 79092,
+      "sha256": "06495c2f0b39634895f9587a4f3fb26725183d913851d4ea1ec6f4d3b8efe059",
+      "relevant_lines": [
+        [
+          220,
+          220
+        ],
+        [
+          528,
+          528
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    14329,
+    14545
+  ],
+  "title_key": "pilgrimage.6840.t",
+  "static_title": "降福物品",
+  "native_title_observed": false,
+  "candidate_producer_and_caller": {
+    "pool": "pilgrimage_destination_events",
+    "pool_lines": [
+      379,
+      403
+    ],
+    "candidate_line": 401,
+    "base_weight": 100,
+    "pool_trigger": "location = activity.activity_location",
+    "occurrence_guaranteed": false
+  },
+  "trigger_and_weight": {
+    "cooldown_years": 1,
+    "trigger": "any_character_artifact category=inventory",
+    "weight_multiplier": "base1; factor2 IF zealot_intent OR activity special_type=pious"
+  },
+  "immediate_effects": {
+    "lines": [
+      14364,
+      14414
+    ],
+    "effects": [
+      "save root location as holy_site_scope",
+      "use local county holder court chaplain if it exists AND has root faith; ELSE create priest_character_template at root location/culture with root faith/rite and mark created_blessed_bishop_var",
+      "choose blessed_artifact: equipped illustrious first, ELSE any equipped, ELSE random character artifact"
+    ],
+    "actual_scope_boundary": "Native bishop30737 is observed. Blessed artifact payload/fullID is not decoded; the shown name Saint Peter's key does not independently prove owner/fullID/stats."
+  },
+  "source_options": [
+    {
+      "key": "pilgrimage.6840.a",
+      "native_index": 0,
+      "lines": [
+        14431,
+        14473
+      ],
+      "effects": [
+        "pious_type_option_effect conditional on involved activity pious OR hajj",
+        "pay_short_term_gold to blessed_bishop; min(medium_gold_value,15)",
+        "add_piety miniscule_piety_gain (base25)",
+        "blessed_artifact durability+10; artifact_monthly_piety_gain_mult_1_modifier; set blessed_artifact_desc",
+        "stress/fulfillment inputs: greedy/avaricious/humble/cynical minor gain, zealous minor loss"
+      ],
+      "modifier_code": {
+        "monthly_piety_gain_mult": 0.02
+      },
+      "actual_modifier_membership_observed": false,
+      "selected": true
+    },
+    {
+      "key": "pilgrimage.6840.b",
+      "native_index": 1,
+      "lines": [
+        14475,
+        14516
+      ],
+      "effects": [
+        "worldly_type_option_effect conditional on worldly activity",
+        "same capped gold transfer and base25 piety",
+        "artifact durability+10; artifact_monthly_prestige_5_modifier; set blessed_artifact_desc",
+        "greedy/avaricious/humble/zealous minor stress inputs"
+      ],
+      "modifier_code": {
+        "monthly_prestige": 0.2
+      },
+      "localization_tooltip": "+0.5% monthly prestige",
+      "source_localization_difference": "Record actual modifier code and localized tooltip separately; do not reinterpret flat monthly_prestige0.2 as the localized percentage or as an observed reward.",
+      "selected": false
+    },
+    {
+      "key": "pilgrimage.6840.c",
+      "native_index": 2,
+      "lines": [
+        14518,
+        14527
+      ],
+      "effects": [
+        "no selected-option effect block apart from authored ai_chance; no blessing or payment authored here"
+      ],
+      "selected": false
+    }
+  ],
+  "after_effect": {
+    "lines": [
+      14528,
+      14544
+    ],
+    "condition": "root is_ai AND created_blessed_bishop_var",
+    "effect": "conditional created-priest disappearance plus variable removal; not an unconditional human cleanup"
+  },
+  "actual_effect_boundary": {
+    "event_instance": 7,
+    "gold_delta_raw": -1500000,
+    "piety_delta_raw": 2500000,
+    "scale": 100000,
+    "prestige_delta_raw": 0,
+    "stress_points_before_after": [
+      81,
+      98
+    ],
+    "artifact_owner_durability_modifier_after": null,
+    "boundary": "Actual same-date wallet transfer15gold and piety25; artifact effects remain source-only, not on_end reward."
+  },
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "recognize": "exact definition/source SHA plus native0/1/2 and observed bishop/artifact scopes",
+    "policy": "existing dedicated policy first; otherwise actual legal first displayed; no fixed artifactID or inferred affordability"
+  }
+}

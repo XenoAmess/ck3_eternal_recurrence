@@ -1,0 +1,253 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:39:00.854172+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "event_definition_key": "pilgrimage_intent.1030",
+  "static_definition_id": "pilgrimage_intent.1030",
+  "live_native_definition_id": "pilgrimage_intent.1030",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_intent_events.txt",
+      "bytes": 57928,
+      "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878",
+      "relevant_lines": [
+        [
+          781,
+          875
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_intent_events_l_simp_chinese.yml",
+      "bytes": 18043,
+      "sha256": "7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a",
+      "relevant_lines": [
+        [
+          47,
+          51
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "relevant_lines": [
+        [
+          1225,
+          1249
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "relevant_lines": [
+        [
+          4357,
+          4365
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_travel_effects.txt",
+      "bytes": 1867,
+      "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+      "relevant_lines": [
+        [
+          9,
+          31
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "relevant_lines": [
+        [
+          476,
+          476
+        ],
+        [
+          1001,
+          1001
+        ],
+        [
+          1131,
+          1136
+        ],
+        [
+          1164,
+          1166
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          32,
+          37
+        ],
+        [
+          74,
+          74
+        ],
+        [
+          88,
+          88
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    781,
+    875
+  ],
+  "title_key": "pilgrimage_intent.1030.t",
+  "description_keys": [
+    "pilgrimage_intent.1030.desc_sea",
+    "pilgrimage_intent.1030.desc"
+  ],
+  "static_title_template": "$reflections_intent_header$宁静的空地",
+  "native_resolved_title_observed": false,
+  "description_branch": "first_valid: sea description IF location.is_sea_province=yes; otherwise land description. Native province identity/branch not independently observed.",
+  "candidate_producer_and_caller": {
+    "source": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "relevant_lines": [
+        [
+          32,
+          37
+        ],
+        [
+          74,
+          74
+        ],
+        [
+          88,
+          88
+        ]
+      ]
+    },
+    "weighted_candidate_line": 74,
+    "weight": 50,
+    "chance_of_no_event_base": 65,
+    "zero_event_weight": 100,
+    "occurrence_guaranteed": false
+  },
+  "trigger_and_target_selection": {
+    "cooldown_years": 2,
+    "required": "has_activity_intent = reflection_intent",
+    "lines": [
+      800,
+      803
+    ]
+  },
+  "immediate_effects": {
+    "line": 805,
+    "call": "mp_delay_travel_plan DAYS90",
+    "helper_lines": [
+      20,
+      31
+    ],
+    "condition": "helper only applies if has_multiple_players=yes",
+    "boundary": "No claim that this single observed event added90 actual days; multiplayer flag and travel ETA not independently read."
+  },
+  "source_options": [
+    {
+      "key": "pilgrimage_intent.1030.a",
+      "native_option_index": 0,
+      "lines": [
+        807,
+        857
+      ],
+      "effects": [
+        "pious_type_option_effect: conditional pious OR hajj activity performance",
+        "current_travel_plan delay_travel_plan days10",
+        "exclusive piety/XP chain: NOT pilgrim -> add minor_piety_gain(base50); ELSE IF pilgrim AND XP<100 -> add10 pilgrimXP; ELSE add medium_piety_gain(base100)",
+        "independent IF lifestyle_mystic -> add lifestyle_mystic_xp_gain_minor_value",
+        "stress_and_fulfillment_impact inputs: base minor loss, zealous minor loss, impatient minor gain, cynical minor gain"
+      ],
+      "R22_selected": true
+    },
+    {
+      "key": "pilgrimage_intent.1030.b",
+      "native_option_index": 1,
+      "lines": [
+        858,
+        871
+      ],
+      "effects": [
+        "stress_and_fulfillment_impact inputs: lazy minor gain, zealous medium gain, patient medium gain",
+        "no option-specific ten-day delay or piety/XP reward in this branch"
+      ],
+      "R22_selected": false
+    }
+  ],
+  "after_effect": {
+    "lines": [
+      872,
+      874
+    ],
+    "call": "mp_resume_travel_plan",
+    "helper_lines": [
+      9,
+      18
+    ],
+    "condition": "helper only resumes if has_multiple_players=yes"
+  },
+  "actual_effect_boundary": {
+    "event_instance": 3,
+    "option": "a",
+    "same_actor_same_date": true,
+    "piety_before_raw": 2002500000,
+    "piety_after_raw": 2007500000,
+    "piety_delta_raw": 5000000,
+    "scale": 100000,
+    "piety_delta": 50,
+    "gold_delta_raw": 0,
+    "prestige_delta_raw": 0,
+    "stress_points": [
+      0,
+      0
+    ],
+    "boundary": "Direct same-day before/after piety observation, not final on_end reward. Value is consistent with minor-piety branch but trait membership and XP were not directly queried, so branch/XP are not asserted from the delta."
+  },
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "recognize_by": [
+      "exact build/executable/source SHA",
+      "actual definition1030",
+      "travel_plan scope and actual two shown native0/1 options"
+    ],
+    "decision_tradeoff": "Source optionA has a ten-day plan delay and conditional piety/XP/performance effects; optionB avoids that option-specific delay but can impose personality-conditioned stress. Actual remaining days and modifiers remain unobserved.",
+    "submission_rule": "existing qualified dedicated policy first; otherwise collect actual native options then legally choose first shown; no guessed follow-up or XP",
+    "current_native_legality": null,
+    "unobserved": [
+      "pilgrim membership",
+      "pilgrim/mystic XP",
+      "activity performance",
+      "fulfillment",
+      "actual ETA/delay",
+      "multiplayer helper condition"
+    ]
+  }
+}
