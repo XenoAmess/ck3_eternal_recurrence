@@ -1,9 +1,11 @@
 # CK3:信仰引擎 第二期
 
-- **当前内容审计未通过，需要结构性重剪。** [与一期重合审计及综合评价](docs/episode01-overlap-audit-20261021.md)核对实际88段：约5:03重讲旧规则，另2:10新材料主要仍回答旧问题；二期当前成片保留为审阅版。技术交付通过不代表去重通过。
+- **当前为重剪V2：[18分16.533秒本地MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/recut-v2-20261021-a01/render/episode02-recut-review.mp4)。** 比原版缩短10:45.867，删除人物收益、圣物用途独立章节及重复结尾，改以朝圣账单与教首实际归属为主线。[新版导演路线、字幕和交付检查](docs/recut-v2-delivery-20261021.md)。内容／字幕核对与九帧抽查已通过其范围，完整人工听审尚未完成。
+
+- [原29:02.4版重合审计](docs/episode01-overlap-audit-20261021.md)及原去重PASS撤回结论保留；新版已移除全部原D/M分类段，仍有必要规则引用，不宣称逐句零重复。
 
 - 本机视频交付：`machine_id: 4-8e1c2f1861` 的当前及后续视频按[机器交付偏好](../../../docs/maintenance/machine-preferences/4-8e1c2f1861.video-delivery.json)本地交付；最终提供选定MP4的实际本地路径。
-- 当前完整审阅版：[29分02.400秒、1440p MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)。88段实际成片，技术检查和6帧画面抽查已通过；尚未完成人工整片听审。
+- 历史完整首版：[29分02.400秒、1440p MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)。88段实际成片，原技术检查和6帧抽查事实保留；内容审计未通过，已由V2替代当前审阅入口。
 - [本地交付记录与研究剩余缺口](docs/local-review-delivery-20261021.md)：文件校验、字幕、脚本、原件及验收边界；[智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)已接入最终历史研究，普通auto自动消费仍未接通。
 
 ## 制作过程资料（保留各自记录时点）
@@ -14,7 +16,7 @@
 - [新增三句后的73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)：实测时间轴24:59.733，尚未重新渲染；按配方先执行来源投影，不能直接套旧装配器。
 - [Q21与本轮朝圣实拍](docs/production-b21-and-p3-20261020.md)：已录普通出发和罗马抵达，完整归返待补；原失败退出和预算超额保持，新增四个历史事件知识可供智能体查询。
 
-第二期融合旧二、三期尚有新增价值的内容，以“已有圣地，下一笔资源投在哪里”为主线，连接圣物用途、类型选择、朝圣和宗教权力。当前完整首版目标约27—30分钟，实际时长待案例补入后测定，不为片长重复一期。
+初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；用户指出重复过多后已结构性重剪。当前路线与实际18:16.533时长以[V2交付](docs/recut-v2-delivery-20261021.md)为准，下列七章案和过程数字保留各自历史时点。
 
 - [导演案](docs/director-plan.md)：章节、讲解路线、镜头和研究依赖。
 - [研究缺口与执行计划](docs/research-and-production-plan.md)：工作量、并发分工、拍摄批次、相对节点和风险。

@@ -1,0 +1,1647 @@
+{
+  "schema": "faith-e02-recut-delivery-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T14:05:25.573646+00:00",
+  "final": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\render\\episode02-recut-review.mp4",
+    "bytes": 60964582,
+    "sha256": "c01b130caba763d6849dc8dc341ad9d5fe54db89b8a8a053009ed52af30901ce"
+  },
+  "source_edit_plan": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\authoring\\edit-plan.actual.json",
+    "bytes": 76739,
+    "sha256": "588fc54159595fe82eda37c4b4a41c5cd1206ead6bfcf572a09d6d2a9263f236"
+  },
+  "source_original_input": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\input-bindings-a01\\formal-input.full-render.actual.json",
+    "bytes": 2112195,
+    "sha256": "b4caa6eb93b7fabf22d6fd0abedc7cca4e7d82892d8496d19bed02bfa5b63a7a"
+  },
+  "source_actual_map": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\render\\raw-to-final-map.json",
+  "source_new_recipe": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\recipe.json",
+    "bytes": 54363,
+    "sha256": "66ab4d715aba769b072155d34baf55d9904ff56987abcc80c6c6a5affc3240a3"
+  },
+  "source_new_text_freeze": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\authoring\\new-text-freeze.json",
+    "bytes": 2936,
+    "sha256": "5340ff35310c682bf86f5200da752e3139a87101cadc0643f9dd1d46678f4607"
+  },
+  "source_measured_narration": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\voices\\measured-narration.json",
+    "bytes": 7439,
+    "sha256": "3ec32d39fcb44e3ec423f436bdcd2e72f4fb3aba47d36722fd5102a5c8516304"
+  },
+  "frames": 32896,
+  "fps": 30,
+  "duration_seconds": 1096.5333333333333,
+  "original_duration_seconds": 1742.4,
+  "shortened_seconds": 645.8666666666668,
+  "chapters": [
+    {
+      "chapter": 1,
+      "title_zh": "70金币之外：先看实际账单",
+      "title_en": "Beyond 70 gold: the actual bill",
+      "start_frame": 0,
+      "end_frame_exclusive": 2912,
+      "start_seconds": 0.0,
+      "end_seconds": 97.06666666666666
+    },
+    {
+      "chapter": 2,
+      "title_zh": "回看出发前：资格、目的地和配置",
+      "title_en": "Before departure: eligibility, destination and settings",
+      "start_frame": 2912,
+      "end_frame_exclusive": 8720,
+      "start_seconds": 97.06666666666666,
+      "end_seconds": 290.6666666666667
+    },
+    {
+      "chapter": 3,
+      "title_zh": "抵达、结算与201天行程",
+      "title_en": "Arrival, settlement and the 201-day journey",
+      "start_frame": 8720,
+      "end_frame_exclusive": 14880,
+      "start_seconds": 290.6666666666667,
+      "end_seconds": 496.0
+    },
+    {
+      "chapter": 4,
+      "title_zh": "建制结果：出钱的人为什么不是教首",
+      "title_en": "Establishment: why the payer did not become head",
+      "start_frame": 14880,
+      "end_frame_exclusive": 18416,
+      "start_seconds": 496.0,
+      "end_seconds": 613.8666666666667
+    },
+    {
+      "chapter": 5,
+      "title_zh": "回看付款前：资格与报价",
+      "title_en": "Before payment: eligibility and the quote",
+      "start_frame": 18416,
+      "end_frame_exclusive": 24160,
+      "start_seconds": 613.8666666666667,
+      "end_seconds": 805.3333333333334
+    },
+    {
+      "chapter": 6,
+      "title_zh": "建立教首之后：大圣战仍有权限门槛",
+      "title_en": "After establishment: Great Holy War permissions remain",
+      "start_frame": 24160,
+      "end_frame_exclusive": 27824,
+      "start_seconds": 805.3333333333334,
+      "end_seconds": 927.4666666666667
+    },
+    {
+      "chapter": 7,
+      "title_zh": "补充：殉道与奇迹的新差别",
+      "title_en": "Supplement: Martyrdom and Miracles",
+      "start_frame": 27824,
+      "end_frame_exclusive": 32224,
+      "start_seconds": 927.4666666666667,
+      "end_seconds": 1074.1333333333334
+    },
+    {
+      "chapter": 8,
+      "title_zh": "收束：行程预算与职位归属",
+      "title_en": "Closing: journey budget and office ownership",
+      "start_frame": 32224,
+      "end_frame_exclusive": 32896,
+      "start_seconds": 1074.1333333333334,
+      "end_seconds": 1096.5333333333333
+    }
+  ],
+  "selected": [
+    {
+      "id": "E02-RECUT-OPEN-01",
+      "chapter": 1,
+      "header_zh": "70金币之外：先看实际账单",
+      "header_en": "Beyond 70 gold: the actual bill",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\E02-RECUT-OPEN-01.mp4",
+        "bytes": 1774091,
+        "sha256": "b41a3b0bfc7346ac21c964e9bda8887bb8cfee8944363c8f51175a8e8f78081e"
+      },
+      "frames": 720,
+      "new_frame_interval_exclusive": [
+        0,
+        720
+      ],
+      "source_input_cue_id": null,
+      "new_recipe_cue_pointer": "/cues/0",
+      "new_recipe": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\recipe.json",
+        "bytes": 54363,
+        "sha256": "66ab4d715aba769b072155d34baf55d9904ff56987abcc80c6c6a5affc3240a3"
+      },
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C1-P02",
+      "chapter": 1,
+      "header_zh": "70金币之外：先看实际账单",
+      "header_en": "Beyond 70 gold: the actual bill",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C1-P02.mp4",
+        "bytes": 1330179,
+        "sha256": "7c211d6e35ba2ff7d7ea7280434dffdf1d05155604ed6cbdcf33edc6d3e4adb2"
+      },
+      "frames": 864,
+      "new_frame_interval_exclusive": [
+        720,
+        1584
+      ],
+      "source_input_cue_id": "E02-C1-P02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C1-P03",
+      "chapter": 1,
+      "header_zh": "70金币之外：先看实际账单",
+      "header_en": "Beyond 70 gold: the actual bill",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C1-P03.mp4",
+        "bytes": 630062,
+        "sha256": "82f6798b4dbefe82d33857ebb47356cd94faba3261811dcabd7ac5dc76045faa"
+      },
+      "frames": 384,
+      "new_frame_interval_exclusive": [
+        1584,
+        1968
+      ],
+      "source_input_cue_id": "E02-C1-P03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P3-JOURNEY-01",
+      "chapter": 1,
+      "header_zh": "70金币之外：先看实际账单",
+      "header_en": "Beyond 70 gold: the actual bill",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P3-JOURNEY-01.mp4",
+        "bytes": 1034269,
+        "sha256": "5abe1478e917fa12d3aae484d2bc69d3b11a6640b5daefa35b7ec06b5adadd56"
+      },
+      "frames": 480,
+      "new_frame_interval_exclusive": [
+        1968,
+        2448
+      ],
+      "source_input_cue_id": "E02-FINAL-P3-JOURNEY-01",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P3-JOURNEY-02",
+      "chapter": 1,
+      "header_zh": "70金币之外：先看实际账单",
+      "header_en": "Beyond 70 gold: the actual bill",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P3-JOURNEY-02.mp4",
+        "bytes": 1005029,
+        "sha256": "fca8eeb35fc8150a39a6caa407c17e9666e543f6b47d80ef967b425c58a72d8d"
+      },
+      "frames": 464,
+      "new_frame_interval_exclusive": [
+        2448,
+        2912
+      ],
+      "source_input_cue_id": "E02-FINAL-P3-JOURNEY-02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P02",
+      "chapter": 2,
+      "header_zh": "回看出发前的规划",
+      "header_en": "Return to planning before departure",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P02.mp4",
+        "bytes": 1201524,
+        "sha256": "b91a23ffeb75f57e0f13e09af5fd4ff789a80c815a130204b3d574d856259a53"
+      },
+      "frames": 720,
+      "new_frame_interval_exclusive": [
+        2912,
+        3632
+      ],
+      "source_input_cue_id": "E02-C5-P02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P12-PLAN-01",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P12-PLAN-01.mp4",
+        "bytes": 732878,
+        "sha256": "e6054b8175b518e992a797f435bf32e9bf48cc7a04f1a80df6e78c93cefc3fdf"
+      },
+      "frames": 352,
+      "new_frame_interval_exclusive": [
+        3632,
+        3984
+      ],
+      "source_input_cue_id": "E02-FINAL-P12-PLAN-01",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P03",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P03.mp4",
+        "bytes": 1101959,
+        "sha256": "a4d41f511b06c383d204c275f9c1b237c32a136e26c720a610669128644d160c"
+      },
+      "frames": 688,
+      "new_frame_interval_exclusive": [
+        3984,
+        4672
+      ],
+      "source_input_cue_id": "E02-C5-P03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P04",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P04.mp4",
+        "bytes": 1516214,
+        "sha256": "4b3b5bd9a5d9b84de28a729738a50643219b3fc571fcc52ab1a3be136d435aa7"
+      },
+      "frames": 944,
+      "new_frame_interval_exclusive": [
+        4672,
+        5616
+      ],
+      "source_input_cue_id": "E02-C5-P04",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P05",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P05.mp4",
+        "bytes": 1225978,
+        "sha256": "b1da58bb946972a446e922562c657633927e00b5e6d0db9e8b70d3031af05c53"
+      },
+      "frames": 816,
+      "new_frame_interval_exclusive": [
+        5616,
+        6432
+      ],
+      "source_input_cue_id": "E02-C5-P05",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P06",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P06.mp4",
+        "bytes": 939276,
+        "sha256": "7be4b274e3efc693d68f18ead840da1cffb1e2c65c8f9821feb229847f11ce98"
+      },
+      "frames": 608,
+      "new_frame_interval_exclusive": [
+        6432,
+        7040
+      ],
+      "source_input_cue_id": "E02-C5-P06",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P07",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P07.mp4",
+        "bytes": 977360,
+        "sha256": "7fd37cbbc0fa55fd2236455a04261d542431839a187fdff1f4a3b002bf8f65a9"
+      },
+      "frames": 640,
+      "new_frame_interval_exclusive": [
+        7040,
+        7680
+      ],
+      "source_input_cue_id": "E02-C5-P07",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P12-PLAN-02",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P12-PLAN-02.mp4",
+        "bytes": 874844,
+        "sha256": "d58dd06ceafa35a62b9ea8ad446c60a1b950461394d835bb180986e6b8305ad7"
+      },
+      "frames": 384,
+      "new_frame_interval_exclusive": [
+        7680,
+        8064
+      ],
+      "source_input_cue_id": "E02-FINAL-P12-PLAN-02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P08",
+      "chapter": 2,
+      "header_zh": "回看出发前：资格、目的地和配置",
+      "header_en": "Before departure: eligibility, destination and settings",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P08.mp4",
+        "bytes": 938863,
+        "sha256": "510cd74dceeeb29d2c0659cd383a83234892bf6c3e495fbcbd1470426ee34127"
+      },
+      "frames": 656,
+      "new_frame_interval_exclusive": [
+        8064,
+        8720
+      ],
+      "source_input_cue_id": "E02-C5-P08",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P09",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P09.mp4",
+        "bytes": 1075902,
+        "sha256": "c4c5cce9f891e4374e99dc0c924583ec8eb1eaab0d0ffc4b4974560b259e76f2"
+      },
+      "frames": 736,
+      "new_frame_interval_exclusive": [
+        8720,
+        9456
+      ],
+      "source_input_cue_id": "E02-C5-P09",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P10",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P10.mp4",
+        "bytes": 1004107,
+        "sha256": "2f79f5b46d0e8ecbd5eac49e07041f3b7c66dbf7a0b6ff8b9194826245aa5d62"
+      },
+      "frames": 656,
+      "new_frame_interval_exclusive": [
+        9456,
+        10112
+      ],
+      "source_input_cue_id": "E02-C5-P10",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P3-JOURNEY-03",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P3-JOURNEY-03.mp4",
+        "bytes": 950820,
+        "sha256": "15b28382f55f25ef520356fdd01ce97d2a74c1870bf617996c3e04aba0c4eab4"
+      },
+      "frames": 448,
+      "new_frame_interval_exclusive": [
+        10112,
+        10560
+      ],
+      "source_input_cue_id": "E02-FINAL-P3-JOURNEY-03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P11",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P11.mp4",
+        "bytes": 1290104,
+        "sha256": "425e85e1527440efc28d38f2d6e9114dda8491db0063b433091851f536179159"
+      },
+      "frames": 832,
+      "new_frame_interval_exclusive": [
+        10560,
+        11392
+      ],
+      "source_input_cue_id": "E02-C5-P11",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P3-JOURNEY-04",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P3-JOURNEY-04.mp4",
+        "bytes": 942157,
+        "sha256": "876452e2a790a76428f4a8a386b0f4a3c67b65f55309d476261777989b266a46"
+      },
+      "frames": 416,
+      "new_frame_interval_exclusive": [
+        11392,
+        11808
+      ],
+      "source_input_cue_id": "E02-FINAL-P3-JOURNEY-04",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P12",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P12.mp4",
+        "bytes": 1262068,
+        "sha256": "4d460ee1415309042cbb25d6f4b1c8aa8bc3479641bca22da3d7f4eb04082f2f"
+      },
+      "frames": 752,
+      "new_frame_interval_exclusive": [
+        11808,
+        12560
+      ],
+      "source_input_cue_id": "E02-C5-P12",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P3-JOURNEY-05",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P3-JOURNEY-05.mp4",
+        "bytes": 1353957,
+        "sha256": "ac86a4f92d3c869f8519659f09b9c746595dad7358153fb10f1bdc786bdf64a8"
+      },
+      "frames": 528,
+      "new_frame_interval_exclusive": [
+        12560,
+        13088
+      ],
+      "source_input_cue_id": "E02-FINAL-P3-JOURNEY-05",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-P3-JOURNEY-06",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-P3-JOURNEY-06.mp4",
+        "bytes": 913462,
+        "sha256": "9c2f2bed27aef618333b87ec74e974a10a4db17b115d30d6f5722424e22b602a"
+      },
+      "frames": 464,
+      "new_frame_interval_exclusive": [
+        13088,
+        13552
+      ],
+      "source_input_cue_id": "E02-FINAL-P3-JOURNEY-06",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P14",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P14.mp4",
+        "bytes": 1403391,
+        "sha256": "34ab2fdc1186df1e3c4ece6e609bf56bb894fd6d21656c2eab0479e0f1309be0"
+      },
+      "frames": 880,
+      "new_frame_interval_exclusive": [
+        13552,
+        14432
+      ],
+      "source_input_cue_id": "E02-C5-P14",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C5-P15",
+      "chapter": 3,
+      "header_zh": "抵达、结算与201天行程",
+      "header_en": "Arrival, settlement and the 201-day journey",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C5-P15.mp4",
+        "bytes": 689190,
+        "sha256": "3d30bc8dc8b834c113df1c73a651736745ea84673e53eab5614eba19a9967b6f"
+      },
+      "frames": 448,
+      "new_frame_interval_exclusive": [
+        14432,
+        14880
+      ],
+      "source_input_cue_id": "E02-C5-P15",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-H2-CREATE-01",
+      "chapter": 4,
+      "header_zh": "独立存档｜建制案例",
+      "header_en": "Separate save | establishment case",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-H2-CREATE-01.mp4",
+        "bytes": 1005236,
+        "sha256": "b43b4c2c536a4c82d98b96692fbfec2fa21df7672f304f100f901b03e60c6b95"
+      },
+      "frames": 480,
+      "new_frame_interval_exclusive": [
+        14880,
+        15360
+      ],
+      "source_input_cue_id": "E02-FINAL-H2-CREATE-01",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-H2-CREATE-02",
+      "chapter": 4,
+      "header_zh": "建制结果：出钱的人为什么不是教首",
+      "header_en": "Establishment: why the payer did not become head",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-H2-CREATE-02.mp4",
+        "bytes": 752936,
+        "sha256": "1ed7dd30a6eb71cb5c3e769906923ff8d4d9399fbb7daaf608ead82f0e60f3bb"
+      },
+      "frames": 336,
+      "new_frame_interval_exclusive": [
+        15360,
+        15696
+      ],
+      "source_input_cue_id": "E02-FINAL-H2-CREATE-02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-H2-CREATE-03",
+      "chapter": 4,
+      "header_zh": "建制结果：出钱的人为什么不是教首",
+      "header_en": "Establishment: why the payer did not become head",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-H2-CREATE-03.mp4",
+        "bytes": 727125,
+        "sha256": "d15f9de8460c4205ca14ec9611a4c696dd4d60de5c5a1cdfcdcd270d5c577137"
+      },
+      "frames": 320,
+      "new_frame_interval_exclusive": [
+        15696,
+        16016
+      ],
+      "source_input_cue_id": "E02-FINAL-H2-CREATE-03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-RECUT-H2-REWIND-01",
+      "chapter": 4,
+      "header_zh": "回看确认前｜授予顺序与资格",
+      "header_en": "Before confirmation | recipients and eligibility",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\E02-RECUT-H2-REWIND-01.mp4",
+        "bytes": 697613,
+        "sha256": "c8a67d3a364bab296caf4349124ad5f4845eaeb7942ce06d42faf3d9ef83a2a0"
+      },
+      "frames": 320,
+      "new_frame_interval_exclusive": [
+        16016,
+        16336
+      ],
+      "source_input_cue_id": null,
+      "new_recipe_cue_pointer": "/cues/1",
+      "new_recipe": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\recipe.json",
+        "bytes": 54363,
+        "sha256": "66ab4d715aba769b072155d34baf55d9904ff56987abcc80c6c6a5affc3240a3"
+      },
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P09",
+      "chapter": 4,
+      "header_zh": "建制结果：出钱的人为什么不是教首",
+      "header_en": "Establishment: why the payer did not become head",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P09.mp4",
+        "bytes": 1156891,
+        "sha256": "e4ac5cea421f2bddd23787492a418bd6d83b8cc379f669a0fb95d76fa50304f9"
+      },
+      "frames": 688,
+      "new_frame_interval_exclusive": [
+        16336,
+        17024
+      ],
+      "source_input_cue_id": "E02-C6-P09",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P10",
+      "chapter": 4,
+      "header_zh": "建制结果：出钱的人为什么不是教首",
+      "header_en": "Establishment: why the payer did not become head",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P10.mp4",
+        "bytes": 1203417,
+        "sha256": "406465778c2a4b4ec0e3b4a9a46c610407fa784e546e249cf979c3927349209a"
+      },
+      "frames": 720,
+      "new_frame_interval_exclusive": [
+        17024,
+        17744
+      ],
+      "source_input_cue_id": "E02-C6-P10",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P11",
+      "chapter": 4,
+      "header_zh": "建制结果：出钱的人为什么不是教首",
+      "header_en": "Establishment: why the payer did not become head",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P11.mp4",
+        "bytes": 1083782,
+        "sha256": "c4d4ebd97b9ebf86613833a409d1dd0639d0dda694231143dadefba5abbe185e"
+      },
+      "frames": 672,
+      "new_frame_interval_exclusive": [
+        17744,
+        18416
+      ],
+      "source_input_cue_id": "E02-C6-P11",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P02",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P02.mp4",
+        "bytes": 1465968,
+        "sha256": "aaa9df4fe1f9823f38aaac40b272b466107dc1a3543131193a1171be341f42df"
+      },
+      "frames": 816,
+      "new_frame_interval_exclusive": [
+        18416,
+        19232
+      ],
+      "source_input_cue_id": "E02-C6-P02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P03",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P03.mp4",
+        "bytes": 975739,
+        "sha256": "e9e2d3f894afc69ebddde0a4bfeb0aeeeb4f7b02b4b86d8c85c5eb3926f51351"
+      },
+      "frames": 688,
+      "new_frame_interval_exclusive": [
+        19232,
+        19920
+      ],
+      "source_input_cue_id": "E02-C6-P03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P04",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P04.mp4",
+        "bytes": 1097581,
+        "sha256": "84eeded91551385763a8fe673a3a3969c2e71919f5dee9d1b78f0158ab20be91"
+      },
+      "frames": 704,
+      "new_frame_interval_exclusive": [
+        19920,
+        20624
+      ],
+      "source_input_cue_id": "E02-C6-P04",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P05",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P05.mp4",
+        "bytes": 837008,
+        "sha256": "a34200aaf6d1c1f6ed722692dee5b6497063ebf44dea6af1fadef39f3969bf95"
+      },
+      "frames": 608,
+      "new_frame_interval_exclusive": [
+        20624,
+        21232
+      ],
+      "source_input_cue_id": "E02-C6-P05",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P06",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P06.mp4",
+        "bytes": 1126214,
+        "sha256": "24cd959a7ae7b980a7b2308a1867056f025c5ec2b49cfecf9bd9d5f6b757a543"
+      },
+      "frames": 704,
+      "new_frame_interval_exclusive": [
+        21232,
+        21936
+      ],
+      "source_input_cue_id": "E02-C6-P06",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P07",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P07.mp4",
+        "bytes": 1134698,
+        "sha256": "736e7317ab2471404ecbd2c02e87cde52cbb56ec62c5173f20a301e4c3a77ec9"
+      },
+      "frames": 704,
+      "new_frame_interval_exclusive": [
+        21936,
+        22640
+      ],
+      "source_input_cue_id": "E02-C6-P07",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-H1-QUOTE-01",
+      "chapter": 5,
+      "header_zh": "独立恢复对照｜报价比较，未建教首",
+      "header_en": "Separate restores | quote comparison; no establishment",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-H1-QUOTE-01.mp4",
+        "bytes": 839605,
+        "sha256": "fcb073865a20c2d5443114d84e7af785e6ad0b69358bebb9620cd793cc29414f"
+      },
+      "frames": 368,
+      "new_frame_interval_exclusive": [
+        22640,
+        23008
+      ],
+      "source_input_cue_id": "E02-FINAL-H1-QUOTE-01",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-H1-QUOTE-02",
+      "chapter": 5,
+      "header_zh": "显示差额≠已实现节省｜升格臂完整报价与资格未核实",
+      "header_en": "Displayed difference is not realized savings | promoted arm incomplete",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-H1-QUOTE-02.mp4",
+        "bytes": 900524,
+        "sha256": "bf45f64c5a866c5d0536b0d5530c45da698fff15d894b2fe6f020758b47e2822"
+      },
+      "frames": 464,
+      "new_frame_interval_exclusive": [
+        23008,
+        23472
+      ],
+      "source_input_cue_id": "E02-FINAL-H1-QUOTE-02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P08",
+      "chapter": 5,
+      "header_zh": "回看付款前：资格与报价",
+      "header_en": "Before payment: eligibility and the quote",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P08.mp4",
+        "bytes": 913710,
+        "sha256": "21b291d6de8b0fd1e87babcf0911d909d02526fc485b702bdc7ee5e1e2fee247"
+      },
+      "frames": 688,
+      "new_frame_interval_exclusive": [
+        23472,
+        24160
+      ],
+      "source_input_cue_id": "E02-C6-P08",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P12",
+      "chapter": 6,
+      "header_zh": "建立教首之后：大圣战仍有权限门槛",
+      "header_en": "After establishment: Great Holy War permissions remain",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P12.mp4",
+        "bytes": 1101767,
+        "sha256": "27e9d970b129a35b75bdc7090d3d92a443921ec698146b5cc4846299cd1eeb4a"
+      },
+      "frames": 656,
+      "new_frame_interval_exclusive": [
+        24160,
+        24816
+      ],
+      "source_input_cue_id": "E02-C6-P12",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P14",
+      "chapter": 6,
+      "header_zh": "建立教首之后：大圣战仍有权限门槛",
+      "header_en": "After establishment: Great Holy War permissions remain",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P14.mp4",
+        "bytes": 1836845,
+        "sha256": "65e92408da5456fb8565c5de2c0c134a1727b9f520188f36e574f6eada56ed0b"
+      },
+      "frames": 1088,
+      "new_frame_interval_exclusive": [
+        24816,
+        25904
+      ],
+      "source_input_cue_id": "E02-C6-P14",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P15",
+      "chapter": 6,
+      "header_zh": "建立教首之后：大圣战仍有权限门槛",
+      "header_en": "After establishment: Great Holy War permissions remain",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P15.mp4",
+        "bytes": 1388203,
+        "sha256": "a5b5ed9bf050550cd6d7d665630a07bab24efb8447f6eb45ad2e82df1081d22f"
+      },
+      "frames": 800,
+      "new_frame_interval_exclusive": [
+        25904,
+        26704
+      ],
+      "source_input_cue_id": "E02-C6-P15",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C6-P16",
+      "chapter": 6,
+      "header_zh": "建立教首之后：大圣战仍有权限门槛",
+      "header_en": "After establishment: Great Holy War permissions remain",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C6-P16.mp4",
+        "bytes": 1052385,
+        "sha256": "ecd974c4291a1ae9daf8cb8ae590ef77e672a27dfb51aa5ad243786160ef5562"
+      },
+      "frames": 624,
+      "new_frame_interval_exclusive": [
+        26704,
+        27328
+      ],
+      "source_input_cue_id": "E02-C6-P16",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-FINAL-H3-STATE-01",
+      "chapter": 6,
+      "header_zh": "完整发动许可未知｜本场没有发动或宣战",
+      "header_en": "Full launch permission unknown | no launch or declaration",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-FINAL-H3-STATE-01.mp4",
+        "bytes": 948011,
+        "sha256": "a4e3644c6c4f0e9b12d4ddf0c9628c202acbedae3bc14b0c3845359357a69269"
+      },
+      "frames": 496,
+      "new_frame_interval_exclusive": [
+        27328,
+        27824
+      ],
+      "source_input_cue_id": "E02-FINAL-H3-STATE-01",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-RECUT-TYPE-BRIDGE-01",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\E02-RECUT-TYPE-BRIDGE-01.mp4",
+        "bytes": 639742,
+        "sha256": "647e98bba7eb997999272217ce509c3815c7f44572a5590ce5b9595643829b6a"
+      },
+      "frames": 448,
+      "new_frame_interval_exclusive": [
+        27824,
+        28272
+      ],
+      "source_input_cue_id": null,
+      "new_recipe_cue_pointer": "/cues/2",
+      "new_recipe": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\new-segments\\recipe.json",
+        "bytes": 54363,
+        "sha256": "66ab4d715aba769b072155d34baf55d9904ff56987abcc80c6c6a5affc3240a3"
+      },
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P02",
+      "chapter": 7,
+      "header_zh": "创建预览｜未确认新建",
+      "header_en": "Creation preview | not confirmed",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P02.mp4",
+        "bytes": 766404,
+        "sha256": "c6e7733d8ac9e921d06bd12839ff971a63dce87456caf726cdbbd06a9f46e3d4"
+      },
+      "frames": 432,
+      "new_frame_interval_exclusive": [
+        28272,
+        28704
+      ],
+      "source_input_cue_id": "E02-C3-P02",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P03",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P03.mp4",
+        "bytes": 896380,
+        "sha256": "87701c5b7ba3d8528b109eb1054b1f64e70b37b10ec381416efc87afdcff47c4"
+      },
+      "frames": 640,
+      "new_frame_interval_exclusive": [
+        28704,
+        29344
+      ],
+      "source_input_cue_id": "E02-C3-P03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P04",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P04.mp4",
+        "bytes": 836046,
+        "sha256": "85dbb6995810beb17db7152819cb01eb1f56a18e199140bb23495f68e1b5bf24"
+      },
+      "frames": 576,
+      "new_frame_interval_exclusive": [
+        29344,
+        29920
+      ],
+      "source_input_cue_id": "E02-C3-P04",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P05",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P05.mp4",
+        "bytes": 1020305,
+        "sha256": "5d11e4158ece762f906f11057aed80f8edbe5469ab669e4c949fcd04ed5c1cc9"
+      },
+      "frames": 640,
+      "new_frame_interval_exclusive": [
+        29920,
+        30560
+      ],
+      "source_input_cue_id": "E02-C3-P05",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P06",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P06.mp4",
+        "bytes": 841493,
+        "sha256": "2b897a1fbdf3b8d8ecb7ca604b8a3345bd98d021ba1e0e59e5109c1382e54d7f"
+      },
+      "frames": 560,
+      "new_frame_interval_exclusive": [
+        30560,
+        31120
+      ],
+      "source_input_cue_id": "E02-C3-P06",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P07",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P07.mp4",
+        "bytes": 597315,
+        "sha256": "4dbee3f78d5066b72e801f097e955d19d82555134b3cea2aeb78aaae247c2598"
+      },
+      "frames": 448,
+      "new_frame_interval_exclusive": [
+        31120,
+        31568
+      ],
+      "source_input_cue_id": "E02-C3-P07",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C3-P08",
+      "chapter": 7,
+      "header_zh": "补充：殉道与奇迹的新差别",
+      "header_en": "Supplement: Martyrdom and Miracles",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C3-P08.mp4",
+        "bytes": 1033643,
+        "sha256": "72b905622724a4ec7def5dd1828538885b0b2f686c416b14bd4fd0a75984dab7"
+      },
+      "frames": 656,
+      "new_frame_interval_exclusive": [
+        31568,
+        32224
+      ],
+      "source_input_cue_id": "E02-C3-P08",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    },
+    {
+      "id": "E02-C7-P03",
+      "chapter": 8,
+      "header_zh": "收束：行程预算与职位归属",
+      "header_en": "Closing: journey budget and office ownership",
+      "source_segment": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\final-render-b27-a01\\sample\\full-88-a01\\native-run\\derived\\direct\\E02-C7-P03.mp4",
+        "bytes": 1090261,
+        "sha256": "7e9866e2f3af527087d48229f206be0abb1c939ded1872e6fce86fbf71e64cb3"
+      },
+      "frames": 672,
+      "new_frame_interval_exclusive": [
+        32224,
+        32896
+      ],
+      "source_input_cue_id": "E02-C7-P03",
+      "new_recipe_cue_pointer": null,
+      "new_recipe": null,
+      "old_business_qualification_unchanged": true
+    }
+  ],
+  "deleted_old_cues": [
+    {
+      "id": "E02-C1-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/0",
+      "original_ordinal": 1,
+      "frames": 608,
+      "duration_seconds": 20.266666666666666,
+      "old_overlap_classification": "F",
+      "reason": "Old investment frame replaced by the two-case hook."
+    },
+    {
+      "id": "E02-C1-P04",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/3",
+      "original_ordinal": 4,
+      "frames": 736,
+      "duration_seconds": 24.533333333333335,
+      "old_overlap_classification": "F",
+      "reason": "Generic beneficiary/investment setup removed."
+    },
+    {
+      "id": "E02-C1-P05",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/4",
+      "original_ordinal": 5,
+      "frames": 496,
+      "duration_seconds": 16.533333333333335,
+      "old_overlap_classification": "F",
+      "reason": "Promises the deleted beneficiary and relic chapters."
+    },
+    {
+      "id": "E02-C2-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/5",
+      "original_ordinal": 6,
+      "frames": 512,
+      "duration_seconds": 17.066666666666666,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C2-P02",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/6",
+      "original_ordinal": 7,
+      "frames": 512,
+      "duration_seconds": 17.066666666666666,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C2-P03",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/7",
+      "original_ordinal": 8,
+      "frames": 544,
+      "duration_seconds": 18.133333333333333,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C2-P04",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/8",
+      "original_ordinal": 9,
+      "frames": 576,
+      "duration_seconds": 19.2,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C2-P05",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/9",
+      "original_ordinal": 10,
+      "frames": 608,
+      "duration_seconds": 20.266666666666666,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C2-P06",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/10",
+      "original_ordinal": 11,
+      "frames": 544,
+      "duration_seconds": 18.133333333333333,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-FINAL-A1-KNIGHT-01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/11",
+      "original_ordinal": 12,
+      "frames": 224,
+      "duration_seconds": 7.466666666666667,
+      "old_overlap_classification": "M",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-FINAL-A1-KNIGHT-02",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/12",
+      "original_ordinal": 13,
+      "frames": 384,
+      "duration_seconds": 12.8,
+      "old_overlap_classification": "M",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-FINAL-A1-KNIGHT-03",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/13",
+      "original_ordinal": 14,
+      "frames": 464,
+      "duration_seconds": 15.466666666666667,
+      "old_overlap_classification": "M",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C2-P07",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/14",
+      "original_ordinal": 15,
+      "frames": 640,
+      "duration_seconds": 21.333333333333332,
+      "old_overlap_classification": "D",
+      "reason": "Beneficiary-scope teaching and unresolved net-benefit experiment removed with the recap chapter."
+    },
+    {
+      "id": "E02-C3-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/15",
+      "original_ordinal": 16,
+      "frames": 560,
+      "duration_seconds": 18.666666666666668,
+      "old_overlap_classification": "F",
+      "reason": "Presupposes the deleted beneficiary chapter; replaced by new type bridge."
+    },
+    {
+      "id": "E02-C3-P09",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/23",
+      "original_ordinal": 24,
+      "frames": 640,
+      "duration_seconds": 21.333333333333332,
+      "old_overlap_classification": "N",
+      "reason": "Type-selection summary repeats adjacent differences."
+    },
+    {
+      "id": "E02-C3-P10",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/24",
+      "original_ordinal": 25,
+      "frames": 672,
+      "duration_seconds": 22.4,
+      "old_overlap_classification": "N",
+      "reason": "Location-reset detail is outside the two primary cases."
+    },
+    {
+      "id": "E02-FINAL-A2-LOCATION-01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/25",
+      "original_ordinal": 26,
+      "frames": 320,
+      "duration_seconds": 10.666666666666666,
+      "old_overlap_classification": "M",
+      "reason": "New creation-location observation answers the previous topic."
+    },
+    {
+      "id": "E02-C3-P11",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/26",
+      "original_ordinal": 27,
+      "frames": 496,
+      "duration_seconds": 16.533333333333335,
+      "old_overlap_classification": "D",
+      "reason": "Returns to old relic opportunity-cost lesson."
+    },
+    {
+      "id": "E02-C4-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/27",
+      "original_ordinal": 28,
+      "frames": 576,
+      "duration_seconds": 19.2,
+      "old_overlap_classification": "D",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-CASE-B1-EQUIP-B12-01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/28",
+      "original_ordinal": 29,
+      "frames": 432,
+      "duration_seconds": 14.4,
+      "old_overlap_classification": "M",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-C4-P02",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/29",
+      "original_ordinal": 30,
+      "frames": 720,
+      "duration_seconds": 24.0,
+      "old_overlap_classification": "D",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-C4-P03",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/30",
+      "original_ordinal": 31,
+      "frames": 528,
+      "duration_seconds": 17.6,
+      "old_overlap_classification": "D",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-FINAL-B1-ARMS-01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/31",
+      "original_ordinal": 32,
+      "frames": 432,
+      "duration_seconds": 14.4,
+      "old_overlap_classification": "M",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-FINAL-B1-ARMS-02",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/32",
+      "original_ordinal": 33,
+      "frames": 496,
+      "duration_seconds": 16.533333333333335,
+      "old_overlap_classification": "M",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-FINAL-B1-ARMS-03",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/33",
+      "original_ordinal": 34,
+      "frames": 512,
+      "duration_seconds": 17.066666666666666,
+      "old_overlap_classification": "M",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-FINAL-B1-ARMS-04",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/34",
+      "original_ordinal": 35,
+      "frames": 640,
+      "duration_seconds": 21.333333333333332,
+      "old_overlap_classification": "M",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-C4-P04",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/35",
+      "original_ordinal": 36,
+      "frames": 608,
+      "duration_seconds": 20.266666666666666,
+      "old_overlap_classification": "D",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-C4-P05",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/36",
+      "original_ordinal": 37,
+      "frames": 560,
+      "duration_seconds": 18.666666666666668,
+      "old_overlap_classification": "D",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-C4-P06",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/37",
+      "original_ordinal": 38,
+      "frames": 640,
+      "duration_seconds": 21.333333333333332,
+      "old_overlap_classification": "F",
+      "reason": "Relic use, control and unresolved comparison removed; knowledge remains available as supplementary research."
+    },
+    {
+      "id": "E02-C5-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/38",
+      "original_ordinal": 39,
+      "frames": 496,
+      "duration_seconds": 16.533333333333335,
+      "old_overlap_classification": "N",
+      "reason": "Generic outline replaced by the hook and actual bill."
+    },
+    {
+      "id": "E02-C5-P13",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/52",
+      "original_ordinal": 53,
+      "frames": 816,
+      "duration_seconds": 27.2,
+      "old_overlap_classification": "N",
+      "reason": "Repeated settlement, return and wallet explanation; retained P08/P11 and journey cues preserve the limits."
+    },
+    {
+      "id": "E02-C6-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/61",
+      "original_ordinal": 62,
+      "frames": 384,
+      "duration_seconds": 12.8,
+      "old_overlap_classification": "N",
+      "reason": "Generic opening replaced by observed H2 result."
+    },
+    {
+      "id": "E02-C6-P13",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/78",
+      "original_ordinal": 79,
+      "frames": 992,
+      "duration_seconds": 33.06666666666667,
+      "old_overlap_classification": "N",
+      "reason": "Detailed unlock formula is outside the payer/recipient main thread; existing source knowledge remains."
+    },
+    {
+      "id": "E02-C6-P17",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/83",
+      "original_ordinal": 84,
+      "frames": 816,
+      "duration_seconds": 27.2,
+      "old_overlap_classification": "F",
+      "reason": "Broad summary returns to the former holy-site/relic investment framework."
+    },
+    {
+      "id": "E02-C7-P01",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/84",
+      "original_ordinal": 85,
+      "frames": 672,
+      "duration_seconds": 22.4,
+      "old_overlap_classification": "D",
+      "reason": "Old investment framework repeats episode one."
+    },
+    {
+      "id": "E02-C7-P02",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/85",
+      "original_ordinal": 86,
+      "frames": 528,
+      "duration_seconds": 17.6,
+      "old_overlap_classification": "D",
+      "reason": "Ordinary/Eminent and relic advice repeat episode one."
+    },
+    {
+      "id": "E02-C7-P04",
+      "binding_key": "source_input",
+      "cue_pointer": "/cues/87",
+      "original_ordinal": 88,
+      "frames": 480,
+      "duration_seconds": 16.0,
+      "old_overlap_classification": "D",
+      "reason": "Verbatim episode-one ending removed."
+    }
+  ],
+  "new_text": {
+    "schema": "faith-e02-recut-text-freeze-v1",
+    "machine_id": "4-8e1c2f1861",
+    "editorial_status": "ROOT_TEXT_REVIEW_ACCEPTED",
+    "source_input": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/input-bindings-a01/formal-input.full-render.actual.json",
+      "bytes": 2112195,
+      "sha256": "b4caa6eb93b7fabf22d6fd0abedc7cca4e7d82892d8496d19bed02bfa5b63a7a"
+    },
+    "voice": {
+      "provider": "EdgeTTS",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-5%",
+      "automatic_retry": false
+    },
+    "new_native_or_game_claims": false,
+    "cues": [
+      {
+        "id": "E02-RECUT-OPEN-01",
+        "zh": "七十金币，只是这趟罗马朝圣的出发价。路上还会花钱；而另一笔建立教首的费用，付钱的人也没有拿到教首头衔。这期就看这两笔投入：出发价之外还有哪些开支，建成的职位又归了谁。先看朝圣的实际账单，再回到出发前。",
+        "en": "Seventy gold was only the departure cost of this pilgrimage to Rome. There were further expenses along the way. In a separate case, the ruler who paid to establish a head of faith did not receive the title. We follow these two investments: what was spent beyond departure, and who received the office. First, the pilgrimage bill; then we return to the planning stage.",
+        "source_cue_ids": [
+          "E02-FINAL-P3-JOURNEY-01",
+          "E02-FINAL-P3-JOURNEY-02",
+          "E02-FINAL-H2-CREATE-01",
+          "E02-FINAL-H2-CREATE-02"
+        ],
+        "visual_basis": "Use source-bound P3/H2 stills as result illustration; no new footage or continuous-world claim."
+      },
+      {
+        "id": "E02-RECUT-H2-REWIND-01",
+        "zh": "要提前判断谁会任职，得回到确认之前。先看头衔的授予顺序，再看建立者的资格和费用。",
+        "en": "To judge who will hold the office beforehand, go back to before confirmation. First, examine the title's order of recipients; then check the founder's eligibility and costs.",
+        "source_cue_ids": [
+          "E02-C6-P09",
+          "E02-C6-P10",
+          "E02-C6-P02"
+        ],
+        "visual_basis": "Use existing source-bound decision preview or H2 still; label return to pre-confirmation analysis."
+      },
+      {
+        "id": "E02-RECUT-TYPE-BRIDGE-01",
+        "zh": "这次出行和建制看过了，再补一个长期选择：圣地的类型。如果你还打算长期养兵或积累虔诚，殉道与奇迹提供了不同的奖励，也各有条件。",
+        "en": "After this journey and establishment, consider one longer-term choice: the type of holy site. For maintaining troops or accumulating Piety over time, Martyrdom and Miracles offer different rewards, each with its own conditions.",
+        "source_cue_ids": [
+          "E02-C3-P02",
+          "E02-C3-P04",
+          "E02-C3-P06",
+          "E02-C3-P07"
+        ],
+        "visual_basis": "Use existing source-bound type preview; no creation claimed."
+      }
+    ]
+  },
+  "original_producer_wait_exit_code": 1,
+  "single_encode_wait_exit_code": 0,
+  "music_reference_resolution": "Four original windows pass; same tail window passes direct last-cue reference without fitted shift or threshold changes; original random-concat failure retained",
+  "human_full_playback_performed": false,
+  "human_listening_performed": false,
+  "ordinary_auto_consumes": false,
+  "native_business_qualification_changed": false,
+  "source_joined_delivery": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\recut-v2-20261021-a01\\render\\JOINED-DELIVERY.actual.json",
+    "bytes": 6606,
+    "sha256": "72c71cc5d07cc79e92dc4e2a57d6d87e6bb953f70d5ab7166f6a8b11b60170df"
+  }
+}
