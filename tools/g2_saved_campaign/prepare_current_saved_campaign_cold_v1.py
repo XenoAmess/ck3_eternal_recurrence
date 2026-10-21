@@ -491,12 +491,20 @@ def emit_supervisor_v1(material: bytes, *, machine_id: str) -> bytes:
    parts.append("".join(lines[node.lineno - 1:node.end_lineno]))
  need(sum(isinstance(node, ast.FunctionDef) and node.name == "main" for node in tree.body) == 1,
    "one retained canonical supervisor main")
- result = "\n".join(parts).replace("_validate_a15_attempt(args, config)",
-        "from root_checkpoint_bootstrap_c23 import api as _current_saved_canonical_api_v1\n"
-        "    _current_saved_canonical_api_v1()\n"
-        "    verify_current_saved_supervisor_attempt_v1("
+ result = "\n".join(parts)
+ early = "    _validate_a15_attempt(args, config)\n"
+ need(result.count(early)==1,"one original early retired attempt validator")
+ result = result.replace(early,"",1)
+ guarded = """    if (Path(environment.__file__).resolve() != creator_source / "xar_autoplayer/environment.py"
+            or Path(runtime.__file__).resolve() != creator_source / "xar_autoplayer/runtime.py"):
+        raise ValueError("public prepare/launch imported a different project source")
+    abort = threading.Event()"""
+ authority = "    verify_current_saved_supervisor_attempt_v1(" + (
   "{'machine_id':MACHINE,'attempt_nonce':args.attempt_nonce,'task_nonce':args.task_nonce,"
-  "'runtime_root':str(N)},config,runtime_root=N,expected_machine_id=MACHINE)")
+  "'runtime_root':str(N)},config,runtime_root=N,expected_machine_id=MACHINE)\n")
+ need(result.count(guarded)==1,"one original guarded SDK import before keeper admission")
+ result = result.replace(guarded,guarded.replace("    abort = threading.Event()",
+  authority+"    abort = threading.Event()"),1)
  need(result.count(_LAUNCH_FOREGROUND_BLOCK_V1) == 1, "one original launch foreground authority block")
  result = result.replace(_LAUNCH_FOREGROUND_BLOCK_V1, _LAUNCH_FOREGROUND_REPLACEMENT_V1, 1)
  placement_path = 'repo / "tools/g2_saved_campaign/managed_desktop1_placement.py"'

@@ -385,6 +385,16 @@ def digest(path):
 def read(path):
     return Path(path).read_bytes()
 def main(args):
+    config = {}
+    _validate_a15_attempt(args, config)
+    if any(name == "xar_autoplayer" or name.startswith("xar_autoplayer.") for name in sys.modules):
+        raise ValueError("ambient project imports cannot select a different checkout")
+    sys.path.insert(0, str(creator_source))
+    from xar_autoplayer import environment, runtime
+    if (Path(environment.__file__).resolve() != creator_source / "xar_autoplayer/environment.py"
+            or Path(runtime.__file__).resolve() != creator_source / "xar_autoplayer/runtime.py"):
+        raise ValueError("public prepare/launch imported a different project source")
+    abort = threading.Event()
     placement = load_file("root_owned_generation", repo / "tools/g2_saved_campaign/managed_desktop1_placement.py", PLACEMENT_SHA)
     if True:
         _, desktop_after = placement.desktop_inventory()
@@ -1305,6 +1315,52 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
                 gate.validate_current_saved_live_readiness_v1(queue=queue, runtime_root=root, expected_machine_id=MACHINE)
             self.assertEqual(calls, 1)
         self.fixture.measure()
+
+
+
+class SupervisorSdkGuardOrderingTests(unittest.TestCase):
+    def test_emitted_main_preserves_ambient_and_origin_guards_before_authority(self)->None:
+        import subprocess
+        material=foreground_supervisor_material_v1()
+        generated=producer.emit_supervisor_v1(material,machine_id=MACHINE).decode()
+        child=r'''
+import sys,json,types,importlib.util
+from pathlib import Path
+from importlib.abc import MetaPathFinder,Loader
+class SDK(MetaPathFinder,Loader):
+ def find_spec(self,fullname,path=None,target=None):
+  if fullname in ('xar_autoplayer','xar_autoplayer.environment','xar_autoplayer.runtime','root_checkpoint_bootstrap_c23'):
+   return importlib.util.spec_from_loader(fullname,self,is_package=fullname=='xar_autoplayer')
+ def create_module(self,spec):return None
+ def exec_module(self,module):
+  if module.__name__=='root_checkpoint_bootstrap_c23':
+   module.api=lambda:__import__('xar_autoplayer',fromlist=['environment','runtime'])
+  elif module.__name__=='xar_autoplayer':module.__path__=[]
+  else:module.__file__=str(Path('/guarded/xar_autoplayer')/(module.__name__.split('.')[-1]+'.py'))
+assert not any(n=='xar_autoplayer' or n.startswith('xar_autoplayer.') for n in sys.modules)
+sys.meta_path.insert(0,SDK())
+scope={'__name__':'_software_guard_fixture','__file__':'/fixture/supervisor.py'}
+exec(compile(sys.stdin.read(),'<actual emitted fixture>','exec'),scope)
+calls=[]
+class StopBeforeKeeper(Exception):pass
+def checked(*args,**kwargs):
+ assert 'xar_autoplayer.environment' in sys.modules and 'xar_autoplayer.runtime' in sys.modules
+ calls.append('checked')
+def event():
+ calls.append('stop');raise StopBeforeKeeper()
+scope.update(creator_source=Path('/guarded').resolve(),N=Path('/fixture'),config={},sys=sys,
+ threading=types.SimpleNamespace(Event=event),verify_current_saved_supervisor_attempt_v1=checked)
+try:scope['main'](types.SimpleNamespace(attempt_nonce='a'*32,task_nonce='b'*32))
+except StopBeforeKeeper:pass
+assert calls==['checked','stop'],calls
+print('ACTUAL_EMITTED_MAIN_GUARDS_THEN_AUTHORITY_PASS')
+'''
+        base:object=getattr(sys,"_base_executable",None)
+        if not isinstance(base,str) or not Path(base).is_file():raise ValueError("actual base interpreter")
+        result=subprocess.run([base,"-B","-c",child],input=generated,capture_output=True,text=True,
+            cwd=Path(producer.__file__).resolve().parents[2],check=False)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertIn("ACTUAL_EMITTED_MAIN_GUARDS_THEN_AUTHORITY_PASS",result.stdout)
 
 
 if __name__ == "__main__":
