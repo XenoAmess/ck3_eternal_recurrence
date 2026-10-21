@@ -11,13 +11,14 @@ import json
 from pathlib import Path
 import sys
 import tempfile
-from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
 REPO = Path(__file__).resolve().parents[1]
 TOOLS = REPO / 'tools'
+sys.path.insert(0, str(TOOLS))
+from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
 CLIENT = TOOLS / 'ck3_mod_acceptance_client.py'
 ENTRY = TOOLS / 'ck3_mod_acceptance.py'
 HOST = REPO / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
