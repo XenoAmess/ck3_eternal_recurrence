@@ -337,6 +337,27 @@ def literal_assignment_v1(raw: bytes, name: str) -> JsonObject:
      and any(isinstance(target, ast.Name) and target.id == name for target in node.targets)]
  need(len(matches) == 1, "one source-bound literal")
  return json_object(ast.literal_eval(matches[0].value))
+StateSourceNameV1 = Literal["root_native30_supervisor_c23.py", "launch_sdk_p37c23_owner.py",
+ "root_p37c23_sdk_queue.py", "root_p37c23_mcp_entry.py"]
+STATE_SOURCES_V1: tuple[StateSourceNameV1,...] = ("root_native30_supervisor_c23.py",
+ "launch_sdk_p37c23_owner.py", "root_p37c23_sdk_queue.py", "root_p37c23_mcp_entry.py")
+def bind_current_saved_state_source_v1(name:StateSourceNameV1,material:bytes,basis:CurrentSavedBasisV1)->bytes:
+ from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import derive_current_saved_state_paths_v1
+ paths=derive_current_saved_state_paths_v1(basis)
+ state="Path("+repr(paths.state_root)+")"
+ seams:dict[StateSourceNameV1,tuple[str,str]]={
+  "root_native30_supervisor_c23.py":('environment.make_spec(state_dir=N / "state", game_dir=game_dir)',
+   'environment.make_spec(state_dir='+state+', game_dir=game_dir)'),
+  "launch_sdk_p37c23_owner.py":("str(N/'state/profile/xar-autoplayer-environment.json')",
+   repr(paths.environment_manifest)),
+  "root_p37c23_sdk_queue.py":('STATE_DIR = N / "state"','STATE_DIR = '+state),
+  "root_p37c23_mcp_entry.py":('STATE_DIR=N/"state"','STATE_DIR='+state),
+ }
+ before,after=seams[name];source=material.decode("utf-8")
+ need(source.count(before)==1,"one active shared state binding: "+name)
+ result=source.replace(before,after,1)
+ compile(result,"<shared current saved state "+name+">","exec")
+ return result.encode("utf-8")
 def emit_bootstrap_v1(material: bytes, *, machine_id: str) -> bytes:
  keep = {"require", "sha", "read", "checked", "pin", "api"}
  source = selected_source_v1(material, names=keep, prefix_end=19)
@@ -346,6 +367,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import JsonObject, JsonValue
 from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
  load_current_saved_inputs_v1, build_current_saved_prelaunch_v1,
  validate_current_saved_runtime_source_v1,
+ validate_current_saved_state_manifest_v1,
 )
 class CurrentSavedProfileV1(Protocol):
  manifest_path: Path
@@ -365,6 +387,11 @@ def verify_cold_profile(spec: CurrentSavedProfileV1) -> JsonObject:
  if not isinstance(environment,CurrentSavedEnvironmentV1): raise ValueError("source-bound environment API")
  inputs = load_current_saved_inputs_v1(runtime_root=N, expected_machine_id=MACHINE)
  manifest = record(read(spec.manifest_path))
+ paths = validate_current_saved_state_manifest_v1(inputs.basis,manifest)
+ need(spec.state_dir.resolve()==Path(paths.state_root).resolve()
+  and spec.profile_dir.resolve()==Path(paths.profile_dir).resolve()
+  and spec.manifest_path.resolve()==Path(paths.environment_manifest).resolve(),
+  "actual shared state/profile/environment paths")
  pre = record(read(N / PRELAUNCH))
  load = record(manifest["load_profile"])
  need(pre == build_current_saved_prelaunch_v1(inputs.basis,
@@ -710,6 +737,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   row=candidates[0]
   mcpref=ExactRefV1(child_v1(sdkroot,text(row["relative"])),integer(row["bytes"],1,MAX_FILE),digest(row["sha256"]))
   put("root_p37c23_mcp_entry.py",emit_source32_factory_v1(get("root_p37c23_mcp_entry.py"),load(mcpref),mcp_ref=mcpref))
+ for state_name in STATE_SOURCES_V1:
+  put(state_name,bind_current_saved_state_source_v1(state_name,get(state_name),basis))
  freeze.update(planned_saved_opening_date_raw=basis.frame.date_raw,
   continuation_basis={"basis_ref":p.basis_ref.to_wire(),"completed_cycles":basis.completed_cycles,
        "date_raw":basis.frame.date_raw,"ordinary_cycle_credit":0,"game_day_credit":0},
@@ -755,7 +784,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  for iteration in range(8):
   pins = {path:ref_for_bytes_v1(path,raw) for path,raw in output.items()}
   for path,value in list(documents.items()):
-   documents[path] = json_object(rewrite_json_v1(value,p,old_nonce,pins))
+    # The fresh basis packet cites the original closed epoch, not copied material.
+    documents[path] = pre if path==child_v1(p.runtime_root,"ROOT-C23-COLD-PRELAUNCH.json") else json_object(rewrite_json_v1(value,p,old_nonce,pins))
   policy = doc("ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")
   policy["canonical_entry_source_pins"] = [[child_v1(p.runtime_root,name),pins[child_v1(p.runtime_root,name)].sha256]
             for name in p.canonical_entry_paths]

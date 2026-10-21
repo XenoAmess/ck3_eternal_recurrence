@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import copy
+import ast
+from dataclasses import replace
 from datetime import datetime, timezone
 import hashlib
 import os
@@ -23,6 +25,7 @@ from tools.g2_saved_campaign import prepare_current_saved_campaign_cold_v1 as pr
 from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
 from tools.g2_saved_campaign import current_saved_campaign_feeder_v1 as feeder
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer import environment
 
 PIPE = r"\\.\pipe\synthetic-current-saved"
 ROOT = "D:\\synthetic-current-saved\\new"
@@ -91,6 +94,11 @@ class FileDigestV1(Protocol):
 class ScreenParserV1(Protocol):
     def __call__(self, value: object, *, machine_id: str, repo: Path,
             git_head: str, at_utc: datetime) -> JsonObject: ...
+
+
+@runtime_checkable
+class ColdProfileVerifierV1(Protocol):
+    def __call__(self, spec: environment.EnvironmentSpec) -> JsonObject: ...
 
 
 class TypedColdContractTests(unittest.TestCase):
@@ -331,6 +339,101 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         cls.fixture.tearDownClass()
+
+    def test_shared_state_generated_make_spec_and_real_profile_consumer(self) -> None:
+        fixture = self.fixture
+        if not fixture.fixture_enabled:
+            self.skipTest("explicit owned fixture, machine and finite review required")
+        state = fixture.root / "shared-state"
+        profile = state / "profile"
+        profile.mkdir(parents=True)
+        attempt = fixture.root / "new-attempt"
+        attempt.mkdir()
+        dlc = fixture.write("shared-state/profile/dlc_load.json", {"enabled_mods": [], "disabled_dlcs": []})
+        manifest: JsonObject = {"machine_id": MACHINE, "state_dir": str(state), "profile_dir": str(profile),
+            "load_profile": {"enabled_mods": [], "dlc_load_sha256": dlc.sha256},
+            "mod": {"enabled": False, "mounted_mods": []}, "rules": {"profile": []}}
+        env_sha = environment._contract_digest(dict(manifest))
+        manifest["environment_sha256"] = env_sha
+        fixture.write("shared-state/profile/xar-autoplayer-environment.json", manifest)
+        driver_path = str(state / "native-session/driver-state.json")
+        save_path = str(profile / "save games/xar_checkpoint.ck3")
+        basis = replace(fixture.basis, refs=replace(fixture.basis.refs,
+            driver=replace(fixture.basis.refs.driver, path=driver_path),
+            save=replace(fixture.basis.refs.save, path=save_path)),
+            checkpoint={**fixture.basis.checkpoint, "path": save_path,
+                "succession_lifecycle": {**LIFECYCLE, "environment_sha256": env_sha}})
+        paths = owner.derive_current_saved_state_paths_v1(basis)
+        self.assertEqual(Path(paths.state_root), state)
+        for bad in (replace(basis, refs=replace(basis.refs,
+                driver=replace(basis.refs.driver, path=str(attempt / "native-session/driver-state.json")))),
+                replace(basis, refs=replace(basis.refs, save=replace(basis.refs.save,
+                    path=str(attempt / "wrong.ck3"))),
+                    checkpoint={**basis.checkpoint, "path": str(attempt / "wrong.ck3")})):
+            with self.assertRaises(ValueError):
+                owner.derive_current_saved_state_paths_v1(bad)
+        material_path = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_MATERIAL")
+        materials = {
+            "root_native30_supervisor_c23.py": b'def main(args):\n    spec = environment.make_spec(state_dir=N / "state", game_dir=game_dir)\n',
+            "launch_sdk_p37c23_owner.py": b"args=['--environment-manifest',str(N/'state/profile/xar-autoplayer-environment.json')]\n",
+            "root_p37c23_sdk_queue.py": b'STATE_DIR = N / "state"\n',
+            "root_p37c23_mcp_entry.py": b'STATE_DIR=N/"state"\n',
+        }
+        if material_path is not None:
+            materials = {name: (Path(material_path).parent / name).read_bytes()
+                for name in producer.STATE_SOURCES_V1}
+        materials["root_native30_supervisor_c23.py"] = producer.emit_supervisor_v1(
+            materials["root_native30_supervisor_c23.py"], machine_id=MACHINE)
+        generated = {name: producer.bind_current_saved_state_source_v1(name, materials[name], basis)
+            for name in producer.STATE_SOURCES_V1}
+        for name in ("root_p37c23_sdk_queue.py", "root_p37c23_mcp_entry.py"):
+            state_nodes: list[ast.stmt] = [node for node in ast.parse(generated[name]).body
+                if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name)
+                    and target.id == "STATE_DIR" for target in node.targets)]
+            self.assertEqual(len(state_nodes), 1)
+            state_scope: dict[str, object] = {"Path": Path, "N": attempt}
+            exec(compile(ast.fix_missing_locations(ast.Module(body=state_nodes, type_ignores=[])), "<actual SDK state binding>", "exec"), state_scope)
+            self.assertEqual(state_scope["STATE_DIR"], state)
+        lists = [node for node in ast.walk(ast.parse(generated["launch_sdk_p37c23_owner.py"]))
+            if isinstance(node, ast.List) and any(isinstance(item, ast.Constant)
+                and item.value == "--environment-manifest" for item in node.elts)]
+        self.assertEqual(len(lists), 1)
+        index = next(i for i, node in enumerate(lists[0].elts)
+            if isinstance(node, ast.Constant) and node.value == "--environment-manifest")
+        self.assertEqual(ast.literal_eval(lists[0].elts[index+1]), paths.environment_manifest)
+        tree = ast.parse(generated["root_native30_supervisor_c23.py"])
+        calls: list[ast.stmt] = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)
+            and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute)
+            and node.value.func.attr == "make_spec"]
+        self.assertEqual(len(calls), 1)
+        scope: dict[str, object] = {"Path": Path, "environment": environment, "game_dir": fixture.root}
+        exec(compile(ast.fix_missing_locations(ast.Module(body=calls, type_ignores=[])), "<actual late make_spec>", "exec"), scope)
+        spec = scope["spec"]
+        if not isinstance(spec, environment.EnvironmentSpec):
+            raise TypeError("real environment.make_spec result required")
+        self.assertEqual(spec.manifest_path, Path(paths.environment_manifest))
+        pre = owner.build_current_saved_prelaunch_v1(basis, basis_ref=ref("basis.json"),
+            validation_ref=ref("qualification.json"), environment_sha256=env_sha, pipe_name=PIPE)
+        fixture.write("new-attempt/ROOT-C23-COLD-PRELAUNCH.json", pre)
+        bootstrap = (Path(material_path).with_name("root_checkpoint_bootstrap_c23.py").read_bytes()
+            if material_path is not None else b'import hashlib,json\nfrom pathlib import Path\nN=Path(__file__).parent\nPRELAUNCH="ROOT-C23-COLD-PRELAUNCH.json"\nMACHINE="synthetic-current-saved-basis"\n'+b'\n'*20+b'def require(ok,why):\n assert ok,why\ndef sha(path):\n return hashlib.sha256(Path(path).read_bytes()).hexdigest()\ndef read(path):\n return json.loads(Path(path).read_bytes())\ndef checked(ref):\n return read(ref["path"])\ndef pin(path):\n return {}\ndef api():\n raise RuntimeError()\n')
+        ns: dict[str, object] = {"__name__": "shared_state_bootstrap_fixture", "__file__": str(attempt / "bootstrap.py")}
+        exec(compile(producer.emit_bootstrap_v1(bootstrap, machine_id=MACHINE), "<actual profile consumer>", "exec"), ns)
+        ns["api"] = lambda: (environment, None, None)
+        inputs = owner.CurrentSavedColdInputsV1(basis, {}, {}, {}, {},
+            owner.ClosedEpochV1(basis.refs.closure, owner.CurrentGameIdentityV1(1,"1","fixture"),
+                basis.next_sequence, (), basis.observed_at_utc, PIPE), ref("basis.json"), ref("qualification.json"))
+        ns["load_current_saved_inputs_v1"] = lambda **kwargs: inputs
+        verifier = ns["verify_cold_profile"]
+        if not isinstance(verifier, ColdProfileVerifierV1):
+            raise TypeError("generated actual profile consumer required")
+        self.assertEqual(verifier(spec), manifest)
+        wrong = environment.make_spec(state_dir=attempt / "state", game_dir=fixture.root)
+        with self.assertRaises(FileNotFoundError):
+            verifier(wrong)
+        self.assertEqual(pre["closure_ref"], basis.refs.closure.to_wire())
+        self.assertEqual(pre["driver_close_ref"], basis.refs.driver_close.to_wire())
+        fixture.measure()
 
     def test_sdk_persist_closed_rejection_warm_binding_and_wrong_generations(self) -> None:
         fixture = self.fixture

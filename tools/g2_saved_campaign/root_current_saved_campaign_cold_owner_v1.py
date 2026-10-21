@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime,timezone
 import hashlib
 import json
+import ntpath
 import os
 from pathlib import Path
 import re
@@ -432,6 +433,42 @@ def load_current_saved_inputs_v1(
   expected_machine_id=expected_machine_id)
  return validate_current_saved_cold_inputs_v1(basis,basis_ref=basis_ref,
   validation_ref=validation_ref,reader=reader)
+@dataclass(frozen=True, slots=True)
+class CurrentSavedStatePathsV1:
+ state_root:str
+ profile_dir:str
+ environment_manifest:str
+ driver_state_path:str
+ checkpoint_path:str
+ def to_wire(self)->JsonObject:
+  return {"state_root":self.state_root,"profile_dir":self.profile_dir,
+   "environment_manifest":self.environment_manifest,
+   "driver_state_path":self.driver_state_path,"checkpoint_path":self.checkpoint_path}
+
+def derive_current_saved_state_paths_v1(basis:CurrentSavedBasisV1)->CurrentSavedStatePathsV1:
+ """Derive the shared state from both qualified files, never from a new attempt."""
+ driver=ntpath.normpath(text(basis.refs.driver.path))
+ saved=ntpath.normpath(text(basis.refs.save.path))
+ checkpoint=ntpath.normpath(text(basis.checkpoint.get("path")))
+ need(all(ntpath.isabs(path) for path in (driver,saved,checkpoint)),"absolute shared state inputs")
+ state=ntpath.dirname(ntpath.dirname(driver));profile=ntpath.join(state,"profile")
+ need(ntpath.normcase(driver)==ntpath.normcase(ntpath.join(state,"native-session","driver-state.json"))
+  and ntpath.normcase(saved)==ntpath.normcase(checkpoint)
+  and ntpath.normcase(ntpath.dirname(checkpoint))==ntpath.normcase(ntpath.join(profile,"save games")),
+  "Driver and checkpoint must share one existing state root")
+ return CurrentSavedStatePathsV1(state,profile,ntpath.join(profile,"xar-autoplayer-environment.json"),driver,checkpoint)
+
+def validate_current_saved_state_manifest_v1(basis:CurrentSavedBasisV1,manifest:object)->CurrentSavedStatePathsV1:
+ paths=derive_current_saved_state_paths_v1(basis);row=record(manifest)
+ need(row.get("machine_id")==basis.machine_id,"shared state manifest machine")
+ for name,expected in (("state_dir",paths.state_root),("profile_dir",paths.profile_dir)):
+  need(ntpath.normcase(ntpath.normpath(text(row.get(name))))==ntpath.normcase(expected),
+   "shared state manifest path: "+name)
+ lifecycle=record(basis.checkpoint.get("succession_lifecycle"))
+ need(digest(row.get("environment_sha256"))==digest(lifecycle.get("environment_sha256")),
+  "shared state manifest checkpoint environment")
+ return paths
+
 def build_current_saved_prelaunch_v1(
  basis:CurrentSavedBasisV1,*,basis_ref:ExactRefV1,validation_ref:ExactRefV1,
  environment_sha256:str,pipe_name:str,
