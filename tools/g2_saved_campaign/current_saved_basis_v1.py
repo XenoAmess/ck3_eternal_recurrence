@@ -2422,8 +2422,8 @@ def _readonly_prefix_v1(
         and Path(semref.path).resolve()==(root/"p37-responses"/f"{old.next_sequence:04d}-1-result.json").resolve()
         and Path(capref.path).resolve()==(root/"p37-responses"/f"{old.next_sequence+1:04d}-1-result.json").resolve(),
         "original first read-only SEM/CAP slots")
-    sem=completed_body(evidence(reader,semref,536936448),"ck3_take_semantic_snapshot_private_v1")
-    cap=completed_body(evidence(reader,capref,536936448),"ck3_get_capabilities")
+    sem=completed_body(evidence(reader,semref,1048576),"ck3_take_semantic_snapshot_private_v1")
+    cap=completed_body(evidence(reader,capref,1048576),"ck3_get_capabilities")
     need(integer(sem.get("date_raw"))==frame.date_raw and sem.get("paused") is True
         and sem.get("map_ready") is True and sem.get("episode_run_id")==frame.episode_run_id
         and integer(sem.get("episode_character_id"),1)==frame.actor_character_id
@@ -2449,7 +2449,7 @@ def _readonly_prefix_v1(
         item=record(value,{"event","auto","metrics","auto_plan","auto_after","metrics_after","ordinary_credit","readonly_save_skip"})
         event_ref=parse_ref(item["event"]);event=evidence(reader,event_ref,32768)
         ar=parse_ref(item["auto"]);mr=parse_ref(item["metrics"])
-        auto=evidence(reader,ar,536936448);metrics=evidence(reader,mr,536936448)
+        auto=evidence(reader,ar,1048576);metrics=evidence(reader,mr,1048576)
         auto_request=record(auto.get("request"));metric_request=record(metrics.get("request"))
         seq=integer(auto_request.get("sequence"),1)
         need(seq>previous_sequence and auto_request.get("tool")=="ck3_auto_turn"

@@ -20,3 +20,4 @@ N34（R0021）在 1082-02-09 停止。累计 5622/10950 游戏日；原始墙钟
 - current-saved-a35-runtime-prep01/ROOT-A35-CLOSED-SIDECAR-OBSERVATIONS01.json 及 ROOT-A35-SIDECAR-OBSERVATION-METHOD-CORRECTION01.json：快照及取证方法勘误；实际为路径 stat 前后夹读，不声称持有同一文件句柄。
 - current-saved-a35-runtime-prep01/：本轮 epoch、basis、qualification 和启动前检查回执；其软件资格不等于 Native 或完整 FULL 实机通过。
 
+2026-10-22 续行补记（实际观察 2026-10-21T18:55Z）：完整 compose 发现新分支申请 512 MiB 读取上限，超过生产者的 1 MiB 合同；实际 SEM 只有 56142 B。已修正 SEM/CAP/AUTO/MET 四处，并让原 20 项回归使用实际 producer.MAX_FILE 的 bounded reader。旧版真实 RED，修后通过；完整生产者 compose/RAM postguard 也已通过，160 文件、准备峰值上界 2392388 B。四个 owner 入口的独立测试不能代替整图验收。

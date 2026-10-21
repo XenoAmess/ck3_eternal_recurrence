@@ -1319,11 +1319,18 @@ class CapPostresponseFailureTests(unittest.TestCase):
 
 
 
+class ComposeBoundedEpochMemoryReader(EpochMemoryReader):
+    def read(self,reference:ExactRefV1,limit:int)->bytes:
+        from tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1 import MAX_FILE
+        epoch_api.need(reference.bytes<=limit<=MAX_FILE,"actual producer metadata read limit")
+        return super().read(reference,limit)
+
 class ReadonlyPrefixUnknownFixture:
     """Synthetic receipts exercise real builders/owner; actual classifier sources are separately qualified."""
     def __init__(self,*,sidecar_payload:bytes|None=None)->None:
         import base64,zlib
-        p=CapPostresponseFailureFixture();self.reader=r=p.reader
+        p=CapPostresponseFailureFixture();self.reader=r=ComposeBoundedEpochMemoryReader()
+        r.raw=p.reader.raw;r.identities=p.reader.identities
         prior=p.validated();pr=r.put("prefix-prior-epoch.json",p.epoch.to_wire())
         old_sidecars:tuple[ExactRefV1,...]=() if sidecar_payload is None else (r.put("previous-sidecar.json",{"pending":None}),)
         old=epoch_api.build_cap_postresponse_failure_basis_v3(prior,epoch_ref=pr,
