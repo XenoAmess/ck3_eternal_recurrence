@@ -1,0 +1,118 @@
+{
+  "schema": "xalw-documentation-session-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T18:36:40.301567+00:00",
+  "task_id": "ck3-living-artifacts-design-20261022",
+  "scope": "research_and_design_documents_only",
+  "base_commit": "4df238693715d519e0ce7e12e30cc52e21b54901",
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "root_id": "repository",
+    "resolved_root": "D:\\workspace\\ck3_eternal_recurrence",
+    "volume": "D:\\",
+    "task_start": {
+      "recorded_at_utc": "2026-10-21T18:28:52.363215+00:00",
+      "source": "exec_command python shutil.disk_usage('.') and subsequent UTC binding",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471466700800,
+      "preexisting_task_assets": "none_new_work_package",
+      "other_task_asset_reclamation": "not_performed",
+      "reusable_local_storage_ledger": "not_found_in_bounded_named_path_search"
+    },
+    "task_close": {
+      "observed_at_utc": "2026-10-21T18:36:40.301567+00:00",
+      "source": "python shutil.disk_usage(resolved_repository_root)",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471466606592
+    },
+    "document_output_ceiling_bytes": 1048576,
+    "document_content_bytes_excluding_receipt": 56910,
+    "heavy_write": "not_requested",
+    "atomic_capacity_reservation": "not_claimed",
+    "other_unspent_reservations_bytes": null,
+    "system_growth_reserve_bytes": null,
+    "current_project_allocated_bytes": null,
+    "effective_project_quota_bytes": null,
+    "heavy_write_admission": "BLOCKED_UNTIL_UNKNOWN_INPUTS_ARE_BOUND",
+    "deletion_count": 0,
+    "new_raw_game_or_web_copies": 0,
+    "active_protection": null,
+    "review_at_utc": "2027-04-19T18:36:40.301567+00:00",
+    "review_action": "review_and_consolidate_record_without_automatic_document_deletion"
+  },
+  "source_observation": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "first_observed_at_utc": "2026-10-21T18:30:20Z",
+    "rehashed_at_utc": "2026-10-21T18:36:40.301567+00:00",
+    "game_root": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+    "manifest_build_id_claim": "25734779",
+    "manifest_claim_is_runtime_qualification": false,
+    "exe_sha256": null,
+    "live_loading_evidence": null,
+    "qualification": "static_files_only",
+    "files": [
+      {
+        "relative_path": "common/on_action/inventory_on_actions.txt",
+        "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67"
+      },
+      {
+        "relative_path": "common/on_action/yearly_on_actions.txt",
+        "sha256": "14c97f3845138d74a2c2552c5dd3c95de1da035014a5cdf31c92540aae3390fe"
+      },
+      {
+        "relative_path": "common/artifacts/slots/00_default.txt",
+        "sha256": "dc2a21281fd9275ef9de2d271ff835b181e46d1dac6f6d953e092cfc13914a69"
+      },
+      {
+        "relative_path": "common/artifacts/types/00_types.txt",
+        "sha256": "302f44a67d81185787135170904fad8022f4a23c0e3986573153ec57bcd4b83a"
+      },
+      {
+        "relative_path": "common/scripted_effects/pam_effects.txt",
+        "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f"
+      },
+      {
+        "relative_path": "common/court_positions/tasks/00_antiquarian_tasks.txt",
+        "sha256": "d7455912737f0c0ac2c5c335dddde269bbccaa73a8ab42a0b48415517b3a822b"
+      },
+      {
+        "relative_path": "events/artifacts/artifact_events.txt",
+        "sha256": "aab135e64c2586b7315f0ab2e7ab14bb35801ffbbb6368649305a8d5379bfbb5"
+      }
+    ]
+  },
+  "documents": [
+    {
+      "relative_path": "docs/design.md",
+      "bytes": 24840,
+      "sha256": "6625f67905ff407b2e42f3c3514c472d537a03468739d2d3da65eaeb1838ce52"
+    },
+    {
+      "relative_path": "docs/elona-living-weapons-research.md",
+      "bytes": 10449,
+      "sha256": "5993a45416c24658a0f9a1a78e4750d6ded511c1b8f4ff720192bd18944957b8"
+    },
+    {
+      "relative_path": "docs/implementation-plan.md",
+      "bytes": 19946,
+      "sha256": "d26baa810f9654cdc57a9e29d8aa950fef724e270691288e5958058bd6092c7f"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 1675,
+      "sha256": "373536918e414997fa36c2a062c71502acc164518874e5e924fdd473bbadfef5"
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "method": "UTF-8 readback, local Markdown target existence, level/probability arithmetic, git diff --check",
+    "runtime_tests": "not_applicable_no_runtime_implementation",
+    "static_type_check": "not_applicable_no_production_code_changes"
+  },
+  "steam_state_observed": false,
+  "steam_state_changed": false,
+  "ck3_started": false,
+  "workshop_written": false,
+  "runtime_implementation_created": false
+}
