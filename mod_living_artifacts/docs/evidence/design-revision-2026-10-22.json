@@ -1,0 +1,150 @@
+{
+  "schema": "xalw-documentation-revision-session-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T19:02:22.713019+00:00",
+  "task_id": "ck3-living-artifacts-design-revision-20261022",
+  "design_revision": "0.2",
+  "scope": "documentation_only",
+  "base_commit": "f23453ca0a1417a7ff128652b590349c6425099f",
+  "user_requirements": {
+    "ai_and_npc_full_participation": true,
+    "automatic_growth_while_equipped": true,
+    "unequipped_stops_growth_and_active_bonuses": true,
+    "equipped_growth_suppression_requires_timed_payment": true,
+    "feeding_native_rarity_tiers": [
+      "common",
+      "masterwork",
+      "famed",
+      "illustrious"
+    ],
+    "feeding_cooldown": "none",
+    "automatic_level_11_without_permission": true,
+    "fixed_six_stat_routes_removed": true
+  },
+  "content_counts": {
+    "affix": 36,
+    "curse": 8,
+    "combo": 10
+  },
+  "core_affixes": 12,
+  "source_observation": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "first_observed_at_utc": "2026-10-21T18:50:02Z",
+    "rehashed_at_utc": "2026-10-21T19:02:22.713019+00:00",
+    "game_root": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+    "qualification": "static_files_only_no_exe_or_runtime_binding",
+    "files": [
+      {
+        "relative_path": "common/defines/00_defines.txt",
+        "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+      },
+      {
+        "relative_path": "localization/simp_chinese/inventory/inventory_l_simp_chinese.yml",
+        "sha256": "6cfd4ac58df1200177248f602c2206da7f9fb04e6e768544fa0e86149d2dc5ef"
+      },
+      {
+        "relative_path": "common/script_values/00_artifact_values.txt",
+        "sha256": "63f8372fc8892e9f00a823642926a2518b4caf036d65c67b91f553623a44c7ff"
+      },
+      {
+        "relative_path": "common/artifacts/templates/_templates.info",
+        "sha256": "6cdaf0ac1518c57a9343ae82ef2f05d7a7edf1a59823aa9ee62fbc8139407c0d"
+      },
+      {
+        "relative_path": "common/character_interactions/00_artifact_interactions.txt",
+        "sha256": "6272e3df8fcdfbeda14a83f3d4410251db5176496e0647f0833e252653aa8e7a"
+      },
+      {
+        "relative_path": "common/on_action/_on_actions.info",
+        "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f"
+      },
+      {
+        "relative_path": "common/on_action/inventory_on_actions.txt",
+        "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67"
+      },
+      {
+        "relative_path": "common/artifacts/slots/00_default.txt",
+        "sha256": "dc2a21281fd9275ef9de2d271ff835b181e46d1dac6f6d953e092cfc13914a69"
+      }
+    ]
+  },
+  "documents": [
+    {
+      "relative_path": "docs/affix-catalog.md",
+      "bytes": 31560,
+      "sha256": "8140f31b9a09f69d53cd1bff6aefad5441e9c8bfcae331c5e936c633e991f19e"
+    },
+    {
+      "relative_path": "docs/design.md",
+      "bytes": 18444,
+      "sha256": "fe6e502cb3d3165ed568371aeee2a5e793cd68cb50b5b7d9e516368d63a9caf9"
+    },
+    {
+      "relative_path": "docs/elona-living-weapons-research.md",
+      "bytes": 10686,
+      "sha256": "5b62b147d8046ff481737009243ab1f7605dedf24a934da5ea48ae68d33fdb5e"
+    },
+    {
+      "relative_path": "docs/implementation-plan.md",
+      "bytes": 16985,
+      "sha256": "de70ef40f7b9fa75dfec2ca6ac5c3230ad0b12c5ca6aaaf492dbd68591a9b5e3"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 2000,
+      "sha256": "b780cf67989440d6a918a171de74f35e19d11cb48613de53b332bf2a150af898"
+    }
+  ],
+  "agents_instruction_sha256": "558a7afc438dd237e2938cf164180a9fe6b6db6940977751afe4bb2f93e94b19",
+  "validation": {
+    "status": "passed_document_and_git_diff_checks",
+    "checks": [
+      "UTF-8 readback",
+      "local links",
+      "unique affix/curse/combo counts",
+      "12 core affixes",
+      "level and four rarity table arithmetic",
+      "automatic multi-level example",
+      "superseded rule scan"
+    ],
+    "static_type_check": "not_applicable_no_production_code_changes",
+    "runtime_acceptance": "not_run_design_only"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "root_id": "repository",
+    "resolved_root": "D:\\workspace\\ck3_eternal_recurrence",
+    "volume": "D:\\",
+    "task_start": {
+      "recorded_at_utc": "2026-10-21T18:49:18.557742+00:00",
+      "source": "exec_command shutil.disk_usage and subsequent UTC binding",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471466536960
+    },
+    "task_close": {
+      "observed_at_utc": "2026-10-21T19:02:22.713019+00:00",
+      "source": "shutil.disk_usage(resolved_root)",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471466151936
+    },
+    "existing_assets": "v0.1 tracked records retained as historical sources; no raw assets created",
+    "expired_assets_assigned_for_reclamation": [],
+    "document_content_bytes_excluding_receipts": 79675,
+    "document_output_ceiling_bytes": 262144,
+    "heavy_write": "not_requested",
+    "other_unspent_reservations_bytes": null,
+    "system_growth_reserve_bytes": null,
+    "current_project_allocated_bytes": null,
+    "effective_project_quota_bytes": null,
+    "heavy_write_admission": "not_qualified_unknown_inputs",
+    "atomic_reservation_claimed": false,
+    "deletions": 0,
+    "record_review_at_utc": "2027-04-19T19:02:22.713019+00:00",
+    "review_action": "review_and_consolidate_no_automatic_deletion_of_delivery"
+  },
+  "steam_state_observed": false,
+  "steam_state_changed": false,
+  "ck3_started": false,
+  "workshop_written": false
+}

@@ -569,6 +569,7 @@ tools/.venv/Scripts/python.exe -B -X utf8 tools/ck3_mod_acceptance.py plan --run
 - 第二个已授权例外是独立 `mod_zhongguo_style/`：有地、在世、天朝制公爵及以上 AI 管理者可静默运行 361 后台考核；
   伯爵和男爵只能被考核，不能建立 cohort、分配配额或校准别人。该例外只覆盖此 mod，不能外推到主 mod、白绮版或其他政府。
 - 用户于 2026-10-04 明确授权独立 `mod_superman_qiang/` 对每个合格角色记录性经验：年满 18 岁、在世的 AI 与玩家使用相同计数及属性转移规则；查看交互由玩家发起。此例外只覆盖本产品两个原版性行为效果接入点，不外推到其他产品。
+- 用户于 2026-10-22 明确授权独立 `mod_living_artifacts/` 的 AI/NPC 正常获取、装备、培养活武器，与玩家使用同一觉醒、自动成长、喂养、压制及反噬规则；包括原版允许持有装备的无地 NPC，不能在 NPC 手中休眠。卸下可免费停止成长，同时失去活武器加成；继续装备时仅可付费暂时压制。喂养按原版四档稀有度且无 CD，不提供手动升级许可、免费锁级或六路线加点。此例外仅覆盖本独立产品，当前仍为设计阶段；详见 `mod_living_artifacts/docs/design.md`。
 - 所有脚本文件 **UTF-8 BOM**；yml 缺 BOM 直接不加载
 - script values 目录是 `common/script_values`（**不是** scripted_values）
 - `is_tutorial_lesson_completed` 是 interface trigger，只能用于 customizable_localization / GUI，游戏状态脚本禁用
