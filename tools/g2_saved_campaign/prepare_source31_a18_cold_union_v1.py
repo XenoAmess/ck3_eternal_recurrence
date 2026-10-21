@@ -579,6 +579,12 @@ def _native32_v1(p: PlanV1) -> tuple[Doc, Doc, dict[str, int]]:
     return values, {"native_build_label": NATIVE32_LABEL, "dll": dll, "qualification": production}, exports
 
 
+def constant_source_v1(constants: Doc) -> str:
+    """Render only the canonical JSON domain; process hash order never enters bytes."""
+    canonical=record(json.loads(enc(constants)))
+    return "\n".join(name+"="+repr(value) for name,value in canonical.items())+"\n"
+
+
 def _source31_runtime_v1(p: PlanV1) -> str:
     current = sys.modules[__name__]
     writer=importlib.import_module("write_source27_canonical_ref_v1")
@@ -598,14 +604,14 @@ def _source31_runtime_v1(p: PlanV1) -> str:
     for name in ("record", "text", "need", "uint", "sequence", "sha"):
         fragment = re.sub(r"\b" + name + r"\b", "_a17_" + name, fragment)
     fragment = fragment.replace("source31_metadata_v1", "_a18_source31_metadata_v1")
-    constants: Doc = {"SOURCE30_COMMIT": SOURCE30_COMMIT, "SDK31_CHANGED": SDK31_CHANGED,
+    constants: Doc = {"SOURCE30_COMMIT": SOURCE30_COMMIT, "SDK31_CHANGED": sorted(SDK31_CHANGED),
         "A18_BASE": p["sdk_base_ref"], "A18_ANCHOR": p["canonical_anchor_ref"],
         "A18_PARENT_BASE": SOURCE30_BASE_REF,
         "A18_PARENT_ANCHOR": checked(SOURCE30_BASE_REF, 524288)["source30_canonical_anchor"],
         "A18_HISTORY_BASE": _old_plan_v1()["sdk_base_ref"],
         "A18_HISTORY_ANCHOR": _old_plan_v1()["canonical_anchor_ref"],
         "A18_HISTORY_FREEZE": ref(PREVIOUS / "ROOT-FINAL-SDK-FREEZE-P37C23-A15.json")}
-    fragment = "\n".join(key + "=" + repr(value) for key, value in constants.items()) + "\n" + fragment
+    fragment = constant_source_v1(constants) + "SDK31_CHANGED=set(SDK31_CHANGED)\n" + fragment
     return fragment + '''
 from types import FunctionType as _A18FunctionType
 _A18_PRIOR_ANCHOR=_A18FunctionType(validate_source28_business_anchor.__code__,dict(globals()))
@@ -635,7 +641,7 @@ def _bridge_v1(p: PlanV1, pre: Doc) -> str:
         "A18_REVIEW_REF": p["current_driver_review_ref"],
         "A18_HISTORICAL_PRE": ref(PREVIOUS / "ROOT-C23-COLD-PRELAUNCH.json"),
         "A18_CURRENT_PRE": pre}
-    return "\n".join(k + "=" + repr(v) for k, v in constants.items()) + "\n" + '''
+    return constant_source_v1(constants) + '''
 from typing import Callable as _A18Callable
 def validate_actual_A17_index_v1(reference:object,checked:_A18Callable[[object,int],dict[str,object]])->dict[str,object]:
     require(reference==A18_CLOSURE_REF,'actual A17 closed authority')

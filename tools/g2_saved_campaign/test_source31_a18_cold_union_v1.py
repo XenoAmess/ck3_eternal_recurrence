@@ -528,5 +528,70 @@ class OwnerTests(unittest.TestCase):
                 owner.project_legacy_owner_v1(changed)
 
 
+def literal_worker_v1(source: str, reverse: bool) -> str:
+    """Run real rendering AST, excluding file/ref I/O."""
+    function = ast.parse(source).body[0]
+    if not isinstance(function, ast.FunctionDef):
+        raise AssertionError("actual producer function")
+    declaration = next(node for node in function.body
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name)
+        and node.target.id == "constants")
+    fields = [("path", "model-ref"), ("bytes", 1), ("sha256", "a" * 64)]
+    nested: Doc = dict(reversed(fields) if reverse else fields)
+    constants: Doc = {"A18_CURRENT_PRE": {
+        key: dict(nested) for key in {"driver_state", "sidecars", "actual_A17_closure"}}}
+    scope: Doc = {"constants": constants, "fragment": "",
+                  "constant_source_v1": main.constant_source_v1}
+    if function.name == "_source31_runtime_v1":
+        if not isinstance(declaration.value, ast.Dict):
+            raise AssertionError("SDK declaration")
+        expression = next(value for key, value in
+            zip(declaration.value.keys, declaration.value.values)
+            if isinstance(key, ast.Constant) and key.value == "SDK31_CHANGED")
+        constants["SDK31_CHANGED"] = eval(compile(ast.Expression(expression),
+            "<actual SDK constant value>", "eval"), {"SDK31_CHANGED": set(SDK)})
+        statement = function.body[function.body.index(declaration) + 1]
+        exec(compile(ast.Module(body=[statement], type_ignores=[]),
+            "<runtime literal producer>", "exec"), scope)
+        result = main.text(scope["fragment"])
+        restored: Doc = {}
+        exec(compile(result, "<runtime constants>", "exec"), restored)
+        if restored["SDK31_CHANGED"] != set(SDK) \
+                or type(restored["SDK31_CHANGED"]) is not set:
+            raise AssertionError("SDK set semantics")
+    else:
+        returned = function.body[-1]
+        if not isinstance(returned, ast.Return) or returned.value is None:
+            raise AssertionError("actual bridge return")
+        result = main.text(eval(compile(ast.Expression(returned.value),
+            "<bridge literal producer>", "eval"), scope))
+    compile(result, "<literal source>", "exec")
+    return hashlib.sha256(result.encode()).hexdigest()
+
+
+class LiteralDeterminismTests(unittest.TestCase):
+    def test_rendering_is_stable_across_hash_seeds_and_json_order(self) -> None:
+        # Repository Python/AST children only; no cold graph execution.
+        import os
+        import subprocess
+        command = ("import json,sys;from tools.g2_saved_campaign."
+                   "test_source31_a18_cold_union_v1 import literal_worker_v1;"
+                   "v=json.loads(sys.stdin.read());"
+                   "print(literal_worker_v1(v['source'],v['reverse']))")
+        for function in (main._source31_runtime_v1, main._bridge_v1):
+            results: list[str] = []
+            for seed in ("1", "2", "31337"):
+                for reverse in (False, True):
+                    payload = {"source": inspect.getsource(function), "reverse": reverse}
+                    run = subprocess.run([sys.executable, "-B", "-c", command],
+                        input=json.dumps(payload), text=True, capture_output=True,
+                        check=True, timeout=30, cwd=HERE.parents[1],
+                        env={**os.environ, "PYTHONHASHSEED": seed,
+                             "PYTHONDONTWRITEBYTECODE": "1"})
+                    results.append(run.stdout.strip())
+            with self.subTest(producer=function.__name__):
+                self.assertEqual(len(set(results)), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
