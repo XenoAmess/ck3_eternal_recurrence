@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:46:38.554506+00:00",
+  "origin_machine_id": "unknown",
+  "exact_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+    "bytes": 2454,
+    "sha256": "58456bc6470a66480ec9f2b4b203877f722ed5d6e018a10868153fb9065bf2f8"
+  },
+  "card": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-EXACT3-RETIREMENT-ACTUAL.actual-a06.json",
+    "bytes": 4245,
+    "sha256": "07f5c9c576279872f78f276a697d2a1658d8569e3119852bd8c49d960056cfc9"
+  },
+  "Root_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-EXACT3-RETIREMENT-APPROVAL.actual-a01.json",
+    "bytes": 3006,
+    "sha256": "17350a58af1c10f10666137fa53a3e3024dd05a0341ffd19f0393d38533787ce"
+  },
+  "keepers_held": 2954,
+  "complete_target_bytes_hashed": 781668767,
+  "physical_credit_bytes": 0
+}

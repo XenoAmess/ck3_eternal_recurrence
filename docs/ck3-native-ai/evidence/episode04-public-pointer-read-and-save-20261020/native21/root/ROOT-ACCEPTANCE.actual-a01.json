@@ -1,0 +1,181 @@
+{
+  "schema": "xar.maintenance.parent_pointer_read.Root-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:37:44Z",
+  "mode": "player-parent-pointer-read-once-v1",
+  "accepted": true,
+  "status": "ACCEPTED_SELECTED_SYNTHETIC_POINTER_READ_ONLY",
+  "observer_sha256": "d0beda84eb549f6b0b773e99f773f36224d64be366dbd9a66d8cd3188a8500c9",
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\CMakeLists.txt",
+      "bytes": 2087,
+      "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_observer.cpp",
+      "bytes": 29917,
+      "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_cold_call.asm",
+      "bytes": 889,
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_capture.inc",
+      "bytes": 3412,
+      "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_cold_call.asm",
+      "bytes": 1458,
+      "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_cold_target.cpp",
+      "bytes": 15348,
+      "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_once.inc",
+      "bytes": 32581,
+      "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_decimal64.hpp",
+      "bytes": 696,
+      "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_runner_models.py",
+      "bytes": 7648,
+      "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\consume_parent_pointer_read_actual.py",
+      "bytes": 1675,
+      "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_contract.py",
+      "bytes": 14350,
+      "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_admission_models.py",
+      "bytes": 5796,
+      "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_models.py",
+      "bytes": 5310,
+      "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_owner_binding.py",
+      "bytes": 7195,
+      "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_wire.py",
+      "bytes": 5008,
+      "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\prepare_parent_pointer_read_admission.py",
+      "bytes": 11349,
+      "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\run_parent_pointer_read_cold.py",
+      "bytes": 37027,
+      "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80"
+    }
+  ],
+  "cold_suite_sha256": "0cc1044aa13ab3f946d0c0fd1ca98a08477353a1aa313cdd6b22e7b7f15eb717",
+  "accepted_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "null-context",
+    "other-player-read",
+    "other-player-write",
+    "null-admission",
+    "cancel_late"
+  ],
+  "source_candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\ROOT-ACCEPTANCE.candidate-a01.json",
+    "bytes": 32967,
+    "sha256": "9c7dd4ccc040b0b754b5ad53035bb6974cbb2d35cd374870358dde5abd041a3c"
+  },
+  "root_actual_review": [
+    "Read complete 14998-byte typed verifier and exact source/native/SYSTEM provenance",
+    "Directly read suite, target/foreign/null/cancel evidence and full six-register independent audit",
+    "Independently ran verify_closed_cold.py --verify-only: exit0, all21 raw normalized results, all21 audits and42 original PID/birth/argv/waits reverified; no outputs/native reexecution",
+    "Fresh machine CLI returned the bound machine ID"
+  ],
+  "verifier": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-public-pointer-read-v2-source-2300-a01/Root/cold-adjudication-a01/verify_closed_cold.py",
+    "bytes": 14998,
+    "sha256": "ed50af2b53b246f6ac2adbfb3ab35f10f683d673041037787dd7f99e6cf679a5"
+  },
+  "independent_tool_evidence": {
+    "verification_chunk": "33fd81",
+    "verification_exit_code": 0,
+    "machine_chunk": "c2f32a",
+    "native_reexecutions": 0
+  },
+  "specific_findings": [
+    "257 calls from other characters do not trigger the player field watch; the admitted player captures once",
+    "257 other accesses on the same character continue legally with unchanged original arithmetic/return behavior",
+    "Null loaded context remains an observed zero, distinct from missing observation",
+    "Cancel/foreign-limit/refusal/fault-seam outcomes retain their actual nonzero observer exits;42 waits are complete, not all-zero claims",
+    "Full six debug register vectors are retained and independently compared; occupied prior TF is preserved"
+  ],
+  "scope": "Exact compiled component,21-source closure,machine and selected standalone synthetic cases only",
+  "limits": [
+    "No CK3 call, actual game pointer observation, parent return, payment,payer,cadence or fullR08 qualification",
+    "New public route still needs its independent source/runtime qualification",
+    "No Steam or CK3 launch authorization is issued by this record",
+    "Fault injection demonstrates the named API seams, not spontaneous OS failures"
+  ],
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "review_by_utc": "2026-10-22T22:30:00Z"
+}

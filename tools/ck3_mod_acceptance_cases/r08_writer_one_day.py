@@ -4,6 +4,7 @@ The existing prepare/observer/consumer controller owns the four-slot watch.
 The shared entry owns normal closure; this actor withholds it until restore and
 payment OFF/clear are independently proved. No load, host or SDK is constructed.
 """
+from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -17,6 +18,8 @@ import time
 from .r10_prepare_adapter import need, pin, small_json
 from . import r04_county_entry as common
 from . import r08_writer_common_adapter as bridge
+from .ordinary_save_contract import (Call, Snapshot, Payment, JsonObject,
+    begin_save, verify_save, retained_client, unconfirmed, cleanup_result)
 
 MODE = 'native_campaign_owned_no_load_v2'
 RESEARCH = Path('ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004')
@@ -64,15 +67,18 @@ def validate_contract(context):
 
 class CloseGate:
     """Guard only this instance's original shared close; retain errors as errors."""
-    def __init__(self, client):
+    def __init__(self, client: object) -> None:
+        self.client = client
         self.restored = True
         self.off_clear = False
         self.save_verified = False
-        original = client.normal_close
-        def guarded(disposition):
+        original = getattr(client, 'normal_close', None)
+        if not callable(original):
+            raise ValueError('Original shared normal_close unavailable')
+        def guarded(disposition: str) -> object:
             need(self.restored and self.off_clear and self.save_verified, 'R08 restore/OFF-clear/Save unproved; normal Quit withheld')
             return original(disposition)
-        client.normal_close = guarded
+        setattr(client, 'normal_close', guarded)
 
 
 def load_controller():
@@ -203,7 +209,7 @@ def prepare_natural_phase(call, snapshot, *, enable_once_authorized):
     return state
 
 
-def cleanup_writer_window(call, snapshot, payment, gate, *, observer_claimed, expected_start_date_raw):
+def _cleanup_writer_window_impl(call, snapshot, payment, gate, *, observer_claimed, expected_start_date_raw):
     """Converge independent OFFs even after an error; never replay an unknown action."""
     cleanup=dict(OFFclear=False,Save=False,native_restore_verified=gate.restored,
         payment_OFFclear=False,army_families_OFFclear=False,clock_quiescent=False)
@@ -241,18 +247,33 @@ def cleanup_writer_window(call, snapshot, payment, gate, *, observer_claimed, ex
     if gate.off_clear:
         def save_once():
             nonlocal actual_days
-            before=snapshot('Save-before')
-            saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
-            after=snapshot('Save-independent-after')
-            ck=saved.get('checkpoint') or {}
-            cleanup.update(Save_result=saved,independent_after=after,
-                Save=ck.get('status')=='saved' and ck.get('date_raw')==before['date_raw']==after['date_raw'])
-            need(cleanup['Save'],'Ordinary Save/independent date unproved')
-            gate.save_verified=True
-            delta=after['date_raw']-expected_start_date_raw
-            if delta in (0,24):actual_days=delta//24
+            gate.save_verified=False
+            try:
+                before=snapshot('Save-before')
+                start=begin_save(before,retained_client(gate.client))
+                saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
+                # Preserve the actual response before a later request can fail.
+                cleanup['Save_result']=saved
+                after=snapshot('Save-independent-after')
+                cleanup['independent_after']=after
+                proof=verify_save(start,saved,after,retained_client(gate.client))
+                cleanup.update(ordinary_save_proof=proof,Save=True)
+                gate.save_verified=True
+                delta=after['date_raw']-expected_start_date_raw
+                if delta in (0,24):actual_days=delta//24
+            except BaseException as error:
+                cleanup['ordinary_save_proof']=unconfirmed(error)
+                raise
         attempt('Save-once',save_once)
     return cleanup,errors,actual_days
+
+
+def cleanup_writer_window(call: Call, snapshot: Snapshot, payment: Payment,
+        gate: CloseGate, *, observer_claimed: bool,
+        expected_start_date_raw: int) -> tuple[JsonObject,list[str],int|None]:
+    """Return finite evidence; Save uses one producer call and native bracketing."""
+    return cleanup_result(_cleanup_writer_window_impl(call,snapshot,payment,gate,
+        observer_claimed=observer_claimed,expected_start_date_raw=expected_start_date_raw))
 
 
 def run_case(context, client):

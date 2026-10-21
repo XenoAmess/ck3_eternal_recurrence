@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:50:04.597585+00:00",
+  "kind": "derived attribution; no fresh GitHub log download",
+  "source": "Root task message: c710 Official39506485224/job118916581588 step19",
+  "run_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39506485224",
+  "job_id": 118916581588,
+  "step": 19,
+  "step_name": "Test public post-allocation refill capacity scope",
+  "test": "test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client",
+  "error": "ValueError: Existing reviewed launcher context missing: steam_offline_receipt",
+  "independent_local_reproduction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\baseline-a04-focused.stderr.log",
+    "bytes": 2217,
+    "sha256": "8a66b7df388a2b0dcebe324a6a6a5737e8d27882991fbe5c26d7738b6d63bf33"
+  }
+}

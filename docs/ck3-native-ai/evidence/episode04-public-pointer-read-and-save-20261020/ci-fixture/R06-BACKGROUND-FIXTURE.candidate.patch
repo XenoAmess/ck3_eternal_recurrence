@@ -1,0 +1,47 @@
+--- a/tools/test_ck3_mod_acceptance_r06_scope.py
++++ b/tools/test_ck3_mod_acceptance_r06_scope.py
+@@ -183,7 +183,13 @@
+             'frozen_argv': entry.pin(self.live / 'frozen-argv.json'), 'capacity_admission': entry.pin(self.cap_path)}
+         self.scope_path = self.root / 'scope.json'
+         self.write(self.scope_path, value)
++        # This suite substitutes the reviewed launcher; this bounded receipt is
++        # synthetic routing input, never a current-machine Steam observation.
++        self.offline_path = self.root / 'synthetic-background-receipt.json'
++        self.write(self.offline_path, {'schema': 'scope-test-background-receipt-v1',
++            'machine_id': self.machine, 'test_only': True, 'background_only': True})
+         self.reviewed = copy.deepcopy(self.ready)
++        self.reviewed['steam_offline_receipt'] = str(self.offline_path)
+         self.reviewed.update(r06_post_allocate_scope=entry.pin(self.scope_path),
+             proof='test-proof.json', challenge='test-challenge.json', observed_nonce='test', reviewer='test')
+         self.reviewed_path = self.root / 'reviewed-context.json'
+@@ -225,11 +231,30 @@
+         self.assertIs(actor.call_args.args[1], client)
+         self.assertEqual(actor.call_args.args[0]['case_inputs'], derived['case_inputs'])
+         launcher.assert_called_once()
++        self.assertEqual(launcher.call_args.args[0][-2:],
++            ['--steam-offline-receipt', str(self.offline_path)])
++        self.assertTrue(entry.read_json(self.offline_path)['test_only'])
+         client.normal_close.assert_called_once()
+         client.close_handle.assert_called_once()
+         for path, original in originals.items():
+             self.assertEqual(path.read_bytes(), original, str(path))
+         self.assertEqual(entry.read_json(self.reviewed_path)['case_inputs'], selected.prepared['case_inputs'])
++
++    def test_run_requires_background_receipt_before_launcher(self) -> None:
++        self.prepare()
++        self.allocate()
++        self.scope()
++        del self.reviewed['steam_offline_receipt']
++        self.write(self.reviewed_path, self.reviewed)
++        with patch.object(entry.subprocess, 'run') as launcher, \
++             patch('ck3_mod_acceptance_client.CaseClient') as public_client, \
++             patch.object(r06, 'run_case') as actor:
++            with self.assertRaisesRegex(ValueError,
++                    'Existing reviewed launcher context missing: steam_offline_receipt'):
++                entry.native_dispatch(self.args('run', self.reviewed_path))
++        launcher.assert_not_called()
++        public_client.assert_not_called()
++        actor.assert_not_called()
+ 
+     def test_prepare_refuses_prefilled_capacity_without_allocating(self):
+         self.inputs['r06_refill_one_day']['capacity_admission'] = {'run_id': 'guessed'}

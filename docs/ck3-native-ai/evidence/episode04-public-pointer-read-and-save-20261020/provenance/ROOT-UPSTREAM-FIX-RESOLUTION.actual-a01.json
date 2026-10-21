@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.root-upstream-fixture-integration-resolution.v1",
+  "owner": "Root",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:54:12Z",
+  "source_resolution_approved": true,
+  "old_base": "63af2d71ac5aaf88d7153a2f20885d1bc3e67191",
+  "new_existing_upstream": "c145b473ce846279f47ba63b699313cacc44c445",
+  "upstream_direct_descendant_reported_by_publisher": true,
+  "actual_root_review": {
+    "paths_diff": "dd2126",
+    "complete_test_delta": "ffe2c2",
+    "upstream_blob_readback": "6a7f4f"
+  },
+  "upstream_fixture": {
+    "target": "tools/test_ck3_mod_acceptance_r06_scope.py",
+    "git_blob": "0960f0357606f40b3417305918d52204569eeaa5",
+    "reported_bytes": 21626,
+    "decision": "ADOPT_UPSTREAM",
+    "reason": "Typed ProbeResult/ProbeWire/parse_result synthetic unavailable receipt; exact forwarded argv, legacy proof/challenge absence, missing/null/empty rejections before launcher. Covers the same c710 CI cause more completely than the local21167B candidate."
+  },
+  "omitted_candidate_target": "tools/test_ck3_mod_acceptance_r06_scope.py",
+  "candidate_evidence_preserved": true,
+  "original_213_stage_snapshot_unchanged": true,
+  "effective_delivery": "Original213 source item set minus local canonical CI test, plus this exact resolution artifact. All remaining212 source/index/body pins unchanged, except exact planned reconciliation of owned test before FF. The original planning-only4aeb proposal and stopped stage proof remain historical snapshots.",
+  "resolution_repository_target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/ROOT-UPSTREAM-FIX-RESOLUTION.actual-a01.json",
+  "canonical_mappings_from_local_candidate": 8,
+  "CI_fixture_from_upstream": true,
+  "exact_reconciliation_permitted": [
+    "Restore only the owned candidate test from currentHEAD to index and workingtree; preserve its frozen external source/evidence",
+    "FF-only to the existing c145 object after all other currentstaged212 pins and upstream intersections rechecked",
+    "Stage only the exact new resolution artifact, with original fullcopy/fullstage phases not replayed",
+    "Reverify all effective213 staged/source/workingtree byte/OID/SHA pins, ledger, exact two-archive whitespace scope, machine/D/remote and original owners",
+    "Commit once and push once under a separately fresh sourcebound reconciliation+finish card"
+  ],
+  "hard_deadline_utc": "2026-10-21T00:15:00Z",
+  "old_FF_or_finish_cards_reused": false,
+  "unknown_action_replay_permitted": false,
+  "no_force_or_fetch": true,
+  "actual_reconciliation_or_publication_granted_by_this_record": false,
+  "historical_document_correction": "Earlier23:00 source integration descriptions selected the local CI fixture candidate; this later actual upstream resolution supersedes its canonical application. Its source-only tests and historical failures stay valid at their recorded scope. Newhead CI is still pending actual readback; no Game/paid/R08 qualification added."
+}

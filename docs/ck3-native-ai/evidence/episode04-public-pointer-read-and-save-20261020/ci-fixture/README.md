@@ -1,0 +1,19 @@
+# R06 public-scope synthetic launcher-context fixture
+
+Machine: `desktop-3fevhd2-1c74096080`. Observed 2026-10-20 22:38–22:49 UTC.
+Base source: `c71045efb0e9ce46c2172ac260f142ed7a868072`.
+
+Only `tools/test_ck3_mod_acceptance_r06_scope.py` is proposed for integration. Its old positive integration fixture omitted `steam_offline_receipt`; real `Selection.run()` rejects this before the launcher. Official CI run `39506485224`, job `118916581588`, step 19, “Test public post-allocation refill capacity scope”, reported this error. The CI identity/error is attributed to Root's actual CI read; no full job log was downloaded here. The local baseline independently reproduces the same exception at line 827.
+
+The candidate creates a bounded, explicitly `test_only` synthetic receipt, binds its actual path in the reviewed test context, and asserts the exact launcher argv. The existing launcher remains mocked. The receipt is routing input for this test boundary, never an actual Steam observation or valid production offline admission. A new negative test removes the field and confirms that the real public dispatch rejects before launcher, CaseClient, or actor calls. Production guards and all 28 original unittest assertion calls are unchanged; the candidate has 34 assertion calls. No other required context/capacity fields needed alteration: all four old methods, including their existing scope variants, pass with this change.
+
+The external test module is imported normally from its real candidate filename. The harness then binds its existing `REPO` global to the actual read-only sparse W tree and its scratch option to this lane. W is exact c710; the 13 imported W modules were independently compared against immutable c710 Git blobs. W lacks four required small files: one product catalog and three frozen pin peers. They are retained here as exact Git bytes. The same baseline/candidate harness redirects only that catalog's JSON read and the three exact pin reads to these actual files, using the original JSON parser and pin implementation. The test instance's product-catalog path is bound to the actual external catalog for pinning. No validator or Steam/capacity result is replaced with success. Runtime `repo_root` remains W. This proves the scoped production path with explicit external fixture I/O seams, not a complete checkout or deployment of those missing peers into W.
+
+Final comparison uses `focused_runner_a04.py`, run by `run_focused_a04.py`, under `tools/.venv/Scripts/python.exe -B -X utf8`:
+
+- Baseline: four methods, one error matching the CI failure. Original Popen 7416, creation FILETIME 134370100610504481, actual wait 1.
+- Candidate: five methods pass. Original Popen 34200, creation FILETIME 134370100637634952, actual wait 0.
+- Mypy 1.20.1: baseline and candidate both exit 0 with `--no-incremental --cache-dir nul --follow-imports=skip --check-untyped-defs --show-error-codes --no-error-summary`. This checks the modified test file; imported production modules are outside this type-check scope. No suppression was added.
+- Actual module/dependency equivalence: 17 paths, 548521 source bytes, all exact c710 Git blob/SHA matches. No driver/FakeEndpoint copy was needed.
+
+Earlier failures remain intact: a pre-launch command length rejection, baseline sparse-catalog failure, baseline missing pin-peer failure, and an outer census race while TemporaryDirectory removed a file. The race attempt retained its child in `finally` until wait but failed before persisting a PID/wait receipt; its original OS result is therefore not claimed from a local receipt. The final a04 comparison fixes that census race and supplies complete original-Popen receipts. None of those attempts started a game, SDK, real launcher, or keeper. No W/D/Git mutation occurred. No formal, game, Steam, payment, or full-R08 qualification is granted.

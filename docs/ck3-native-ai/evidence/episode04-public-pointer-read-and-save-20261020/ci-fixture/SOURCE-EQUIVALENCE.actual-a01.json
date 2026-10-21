@@ -1,0 +1,137 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:48:28.808161+00:00",
+  "source_commit": "c71045efb0e9ce46c2172ac260f142ed7a868072",
+  "actual_git_original_popen": {
+    "pid": 35436,
+    "actual_original_popen_wait": true,
+    "returncode": 0
+  },
+  "source_rows": [
+    {
+      "path": "tools/ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f",
+      "Git_oid": "a1967e829e4f2648066e52114668897983b38a25",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23",
+      "Git_oid": "1af160da352bda0432873a115ea175a015a49f5e",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f",
+      "Git_oid": "e00eee3d05b6793dffadfda7f3cf5cad9741f3ad",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e",
+      "Git_oid": "df37df45360925bde6d302e14657140a18e15e86",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32",
+      "Git_oid": "eeb22646664402309bc6efb9e14ecd0a8056b470",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4",
+      "Git_oid": "2dff0d4e430e2a6a4ad047ac14af43a8cc5680fb",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128",
+      "Git_oid": "faa2bed33f3eacd6598557778c5b385e9a2b3181",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "bytes": 43609,
+      "sha256": "cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf",
+      "Git_oid": "00bcd7102f9eccfc90b9cb58e4e511bd7ec3b91a",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21",
+      "Git_oid": "1c7040b17065e03a74cfb19c42858517bebf5ba0",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e",
+      "Git_oid": "ff9128d36886cc7396d0f8fc94dd721a703c6107",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_client.py",
+      "bytes": 66429,
+      "sha256": "7c63ead0dc553118485fd0dcaeb8e49537012c8175d8c980e3eb147487d889da",
+      "Git_oid": "0e830d99bb12c5b32bc9a830f5f906719b80ef5f",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36",
+      "Git_oid": "446e66727ecf0cdd7a44647106dbc69fbb8bfc2e",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_native_day.py",
+      "bytes": 8325,
+      "sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace",
+      "Git_oid": "fbe535aef2f59755b4a85d43db4fcaa0e53f746d",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b",
+      "Git_oid": "9a7f3803150d1aa4b39e0b34772375f9ad402d23",
+      "matches": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_r10_products.json",
+      "bytes": 2077,
+      "sha256": "bb5910bf787a950199c83b38c07055376979c95310475e63bfec262368f86b5a",
+      "Git_oid": "750c771dfd74200f2aa5d8b7eb6ce31a6ff2bab0",
+      "matches": true
+    },
+    {
+      "path": "tools/steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b",
+      "Git_oid": "8c4a3fe8bd9d3365d81cc8a1fc92996908b01607",
+      "matches": true
+    },
+    {
+      "path": "tools/steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da",
+      "Git_oid": "a8e07ee43014086adcf55342e60da74ed7c42c6d",
+      "matches": true
+    }
+  ],
+  "baseline_and_candidate_same_13_imported_W_modules": true,
+  "exact_dependencies": 4,
+  "original_unittest_assertion_calls": 28,
+  "candidate_unittest_assertion_calls": 34,
+  "all_original_assertion_calls_preserved": true,
+  "scope": "actual W imported modules plus four exact missing Git inputs; not a full checkout or whole suite proof"
+}

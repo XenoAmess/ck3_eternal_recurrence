@@ -1,0 +1,163 @@
+{
+  "schema": "xar.ordinary-save-independent-delta-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:02:26.332449+00:00",
+  "reviewer": "/root/public_preflight",
+  "status": "PASS_SOURCE_ONLY",
+  "blocking_findings": [],
+  "scope": "producer_materialization_and_native_bracketing",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\ORDINARY-SAVE-SOURCE2-2215-ADMISSION.actual-a01.json",
+    "bytes": 5019,
+    "sha256": "b0d653d43fffe27c73e086137b4d650e81aa3e8f346194bcf2addbfe13523f82"
+  },
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+    "bytes": 3353,
+    "sha256": "91cead83b43b289bb60cd0100dfd8e83f4dedc16b465aa00ee5e25a648f845b0"
+  },
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\DELIVERY.actual-a03.json",
+    "bytes": 6337,
+    "sha256": "ca7909f9ec14ae6186052b757d9eb769fb78207435d9edc3704d219e95afd286"
+  },
+  "source_head": "7ac6cebe92c67a3dd5295ae5fe07d944a38480c6",
+  "production_mapping": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "repo_path": "tools/test_ck3_ordinary_save_contract.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\tools\\test_ck3_ordinary_save_contract.py",
+      "bytes": 17620,
+      "sha256": "99be6c809ca0666a8464aebe35920ecc221069a98a161d40ef25f49d5d31173e"
+    }
+  ],
+  "full_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\ORDINARY-SAVE.candidate-a03.patch",
+    "bytes": 35564,
+    "sha256": "5c1badc3cd4d4d4a2612af01f591be54094c84ec68b9ff36baaf5e31d715f78a"
+  },
+  "a02_to_a03_delta": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\ORDINARY-SAVE.a02-to-a03.delta.patch",
+    "bytes": 2113,
+    "sha256": "c1c66ac2b4a0388ca383cae0e6a0ee26f5f2dc839b14ba3917742e4b4b71ea29"
+  },
+  "prior_review_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\review-a01\\INDEPENDENT-ORDINARY-SAVE-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 12874,
+    "sha256": "32e580da9c16dba4b2e5ecb4ad2bdb20471a0bbd7e0a295e39e9c8adda461e5f"
+  },
+  "resolved_findings": [
+    "Checkpoint succession_lifecycle/episode_run_id/episode_character_id require presence and literal null.",
+    "Native campaign snapshots may omit episode identity fields. Proof records missing versus explicit_null independently before/after; non-null rejects. Actual driver missing shape passes without invented fields.",
+    "New proof integers are positive safe53; actor/local-player/PID are u32. Legacy large mtime_ns stays untouched in raw result, outside proof and admission.",
+    "a02 parents[2] picked the wrong canonical test root. a03 only fixes canonical checkout/tmp or explicit owned test-root; helper/shared cleanup unchanged."
+  ],
+  "source_review": [
+    "Read final helper/test and harness; verified three sources and freeze/delivery/patch/delta plus original test-source pins. Harness selects a03 test/a02 helper/unchanged actor; no Save or normalizer patch.",
+    "Shared cleanup preserves received Save before fallible independent-after; CloseGate needs restoration, observable OFFclear and verified Save. Unknown Save is not replayed.",
+    "Existing CommonPackets/validate_frame, actual before/after actor/local-player/PID/generation/pipe/date/paused, same CaseClient/handle bind ownership. Managed-run metadata is consistency only."
+  ],
+  "checks_read_not_rerun": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2793,
+        "sha256": "225bbc64833212bcacd7ee497d960b3fb31e915e0ae1570cf364c6aa8cf31488"
+      },
+      "pid": 14676,
+      "creation": 134370069751767022,
+      "started": "2026-10-20T21:56:15.174621+00:00",
+      "completed": "2026-10-20T21:56:17.421758+00:00",
+      "original_wait": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\stdout.log",
+        "bytes": 3222,
+        "sha256": "2085d8f044f0e011d703c5cf97bf0b89ba87837527494a971f34cafe87cccfa6"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\stderr.log",
+        "bytes": 1033,
+        "sha256": "e098d71d681ce4b1cac44c12a17bb1daf216a34544e0efd86f8e0b1cfe5eba13"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2516,
+        "sha256": "bda4674e863934f7daf09be2ac604607d58009de7df704ff0b4567fb1b5b3b8b"
+      },
+      "pid": 28620,
+      "creation": 134370069777423666,
+      "started": "2026-10-20T21:56:17.740508+00:00",
+      "completed": "2026-10-20T21:56:28.793168+00:00",
+      "original_wait": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\stdout.log",
+        "bytes": 44,
+        "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "counts": {
+    "final_methods": 6,
+    "final_mypy_files": 4,
+    "final_mypy_errors": 0,
+    "reviewer_test_runs": 0,
+    "whole_repository_clean": false
+  },
+  "fake_endpoint_projection": {
+    "file": {
+      "bytes": 30,
+      "date_raw": 53149080,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\tmp\\tmp2a1c6_ed\\profile\\save games\\xar_checkpoint.ck3",
+      "sha256": "79851994865c53e126ffc1c419f1609ef7fb900d9b4451243ab343ca41106e74"
+    },
+    "before_episode": {
+      "episode_character_id": "missing",
+      "episode_run_id": "missing"
+    },
+    "after_episode": {
+      "episode_character_id": "missing",
+      "episode_run_id": "missing"
+    },
+    "before_native_revision": 6,
+    "after_native_revision": 7,
+    "same_retained_case_client": true,
+    "one_life_identity_proven": false,
+    "raw_driver_status": "unconfirmed",
+    "real_game_save": false
+  },
+  "limits": [
+    "Source/FakeEndpoint only. Actual R223 Save/one-life unconfirmed and old review unchanged.",
+    "Producer size/SHA/date are not second consumer I/O; later mutation is not detected.",
+    "No atomic Save-time owner/file-internal actor/native FILETIME is proven. Independent same sample is explicitly allowed without new-frame claim.",
+    "Deploy these three mappings; include new helper and changed actor in actual source-index/external immutable closure. Old bundle pins cannot be reused.",
+    "Selected four-file mypy is not whole legacy clean."
+  ],
+  "no_game_sdk_steam_probe_native_exe_build_system_git_mutation": true,
+  "old_roots_unchanged": true,
+  "writer0_after_receipt": true,
+  "budget": {
+    "parent_limit": 2097152,
+    "review_limit": 262144,
+    "parent_actual_before": 1113496,
+    "review_actual_before": 12874,
+    "deadline_utc": "2026-10-20T22:15:00Z"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "schema": "xar.old-sdk-three-aggregate.independent-retire-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "historical_game_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:41:27.539685+00:00",
+  "reviewer": "readwatch_review",
+  "status": "SOURCE_ACCEPTED_SEPARATE_EXACT_DELETE_ADMISSION_REQUIRED",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 4946,
+    "sha256": "27355205dc1eb8a651722004128c5faf6978ef0c73017a509fba998634f7ef4a"
+  },
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\retire_sdk_exact.py",
+    "bytes": 23756,
+    "sha256": "8d4d66c1a969924db5d4818fbd18ece594133b4513b5f4892014470e506af815"
+  },
+  "exact_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+    "bytes": 2454,
+    "sha256": "58456bc6470a66480ec9f2b4b203877f722ed5d6e018a10868153fb9065bf2f8"
+  },
+  "source_carve": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-RETIRE-SOURCE512-PARTITION.actual-a03.json",
+    "bytes": 2239,
+    "sha256": "6f028af4b974660aa40cd979933128a2c8c988e0bb64cfab7a25e70bd0d5d31b"
+  },
+  "full_three_proof_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-EXACT3-PROOF-REVIEW.actual-a02.json",
+    "bytes": 5039,
+    "sha256": "4094c9c014fb76e51f9ed601dec9b38027a2ea53b21b02e443826a59559372ae"
+  },
+  "purpose_release": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-THREE-AGGREGATE-PURPOSE-RELEASE.actual-a01.json",
+    "bytes": 3226,
+    "sha256": "016c0a606596767bcc10880c481321531ae46158793c616753bdc42b41c151df"
+  },
+  "actual_author_checks": [
+    {
+      "kind": "FOCUSED-a04",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a04.ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "2cf9279366ffdbb201c2c8981eb5a5c3565634ca02af08ab07c378865d53c069"
+      },
+      "original_pid": 5124,
+      "creation_filetime_decimal": "134370095156191428",
+      "original_wait": 0
+    },
+    {
+      "kind": "METADATA-a03",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a03.ORIGINAL-WAIT.actual.json",
+        "bytes": 1242,
+        "sha256": "5efc6b90076bebeb69e07dee0292a2ee3c2f7fac4cbb320e02a0eb317ddb25a3"
+      },
+      "original_pid": 36432,
+      "creation_filetime_decimal": "134370094801613028",
+      "original_wait": 0
+    },
+    {
+      "kind": "MYPY-a05",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a05.ORIGINAL-WAIT.actual.json",
+        "bytes": 1450,
+        "sha256": "49a9e10859038f22202ac7b8c3726fd560d62a9802046448ab449e12552ca654"
+      },
+      "original_pid": 4208,
+      "creation_filetime_decimal": "134370095164463610",
+      "original_wait": 0
+    }
+  ],
+  "independent_static": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\SDK-RETIRE-INDEPENDENT-STATIC.actual-a01.json",
+    "bytes": 2657,
+    "sha256": "14b604cbdd1257d888ac5059451350a41b153c95246d9fb442efb323ec967a1f"
+  },
+  "independent_static_original_pid": 20224,
+  "independent_static_source_before_after_current_exact": 3,
+  "actual_validation_summary": {
+    "strict_mypy_sources": 3,
+    "focused_methods": 8,
+    "default_metadata_result": "DELETE_FALSE",
+    "metadata_plan_groups": 3,
+    "retained_request_response_references": 2954,
+    "small_proof_closure_pins": 32
+  },
+  "reviewed_contract": [
+    "Only three fixed aggregate paths and complete1477-line/781668767-byte proofs can enter plan; all result/index/identity/Popenwait pins join fixed full delivery",
+    "Root exact purpose-release binds three inputs and existing independent fullproof; policy and permanent registry checked",
+    "2954 keeper current identities locked; full aggregate SHA must be computed through same DELETE-held handles before any disposition",
+    "Reviewed immutable Windows APIs retain exact generation/path, one link and denial of writes/deletes; helper never substitutes arbitrary paths",
+    "Freshness30s applies at entry; same immutable card/Root/source binds transaction until explicit deadline capped23:00; immediately before disposition after traversal+fsynced WAL rechecks card/deadline",
+    "Exclusive new execution directory prevents mutation replay; INTENT states before/desired state, RESULT requires disposition+close+actual absence",
+    "Frozen small proof/source/check/wait/index/session chain is retained and locked; physical cleanup credit stays0 pending actual outcome"
+  ],
+  "findings_resolved": [
+    "Entry freshness versus transaction deadline and placement after slow keeper traversal",
+    "Complete group/proof/owner joins and retained small-proof closure",
+    "INTENT versus verified RESULT state separation",
+    "JSON parses same SHA-checked bytes"
+  ],
+  "limits": [
+    "Source review and small fixtures do not execute target hashing or deletion",
+    "Separate Root exact helper/plan approval and fresh financial execution card still required",
+    "Actual WAL/disposition/absence/partial outcomes must be read back before reporting retirement",
+    "No full-body replay, large rebuilt file, SDK/Game/Steam/VM/SYSTEM/Git operation or physical credit here"
+  ],
+  "original_aggregate_bytes_read_by_reviewer": 0,
+  "response_body_bytes_read_by_reviewer": 0,
+  "delete_calls_by_reviewer": 0,
+  "review_writers_after_close": 0,
+  "review_owned_Popen_after_close": []
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "xar.old-sdk-replay.parent-custody.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:21:54.395701+00:00",
+  "group": "r165",
+  "parent_pid": 6208,
+  "child_pid": 14132,
+  "child_creation_filetime": "134370084615826674",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\replay_sdk_a02.py",
+    "--group",
+    "r165"
+  ],
+  "original_popen_custody": true,
+  "retire_admitted": false,
+  "fresh_capacity_sha256": "1da606323214be3471317b1d68e8a67381436ae9ba3c21d61c9aadefc1df60d5",
+  "active_finite_exception_sha256": "76e3ed5a706d09098f668ecbd68a5ffa23bf2e8d8a856087c08f763a1cd1e055",
+  "actual_original_popen_wait_returncode": 0,
+  "owned_running_after_wait": false,
+  "timed_out_unknown_result": false,
+  "output": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-PARENT-stdout-stderr.actual.log",
+    "bytes": 376,
+    "sha256": "3e2664fbfe502c7c00479d01721c03bf2d0201f32082c5320dea0213741349e9"
+  },
+  "result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-RESULT.actual.json",
+    "bytes": 2720,
+    "sha256": "8ba06e995b170fcb062f4614bc8e43c52b661a4d8c8274dfa6cc148cf93e3bef"
+  }
+}

@@ -1,0 +1,18 @@
+test_APP_embedded_EOI_is_not_frame_boundary (test_r03_pipeline.GuardTests.test_APP_embedded_EOI_is_not_frame_boundary) ... ok
+test_JPEG_memory_bound (test_r03_pipeline.GuardTests.test_JPEG_memory_bound) ... ok
+test_JPEG_stream_chunk_boundaries_and_EOF (test_r03_pipeline.GuardTests.test_JPEG_stream_chunk_boundaries_and_EOF) ... ok
+test_PTS_missing_duplicate_gap_and_text_mismatch (test_r03_pipeline.GuardTests.test_PTS_missing_duplicate_gap_and_text_mismatch) ... ok
+test_actual_geometry_is_checked_before_resize (test_r03_pipeline.GuardTests.test_actual_geometry_is_checked_before_resize) ... ok
+test_all1200_actual_PTS_and_terminal (test_r03_pipeline.GuardTests.test_all1200_actual_PTS_and_terminal) ... ok
+test_header_fill_bytes_are_preserved_exactly (test_r03_pipeline.GuardTests.test_header_fill_bytes_are_preserved_exactly) ... ok
+test_independent_partition_and_total_limits (test_r03_pipeline.GuardTests.test_independent_partition_and_total_limits) ... ok
+test_original_wait_custody_and_kill_fallback (test_r03_pipeline.GuardTests.test_original_wait_custody_and_kill_fallback) ... ok
+test_truncation_and_bad_markers_refuse (test_r03_pipeline.GuardTests.test_truncation_and_bad_markers_refuse) ... ok
+test_uint64_decimal_string_and_roundtrip_domain (test_r03_pipeline.GuardTests.test_uint64_decimal_string_and_roundtrip_domain) ... ok
+test_unknown_timebase_refuses (test_r03_pipeline.GuardTests.test_unknown_timebase_refuses) ... ok
+test_worker_start_failure_keeps_original_wait (test_r03_pipeline.GuardTests.test_worker_start_failure_keeps_original_wait) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.352s
+
+OK

@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:44:20.638330+00:00",
+  "kind": "append_only_aggregate_metadata_correction",
+  "source_overlay": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-OVERLAY.prepared-a02.json",
+    "bytes": 9368,
+    "sha256": "c54cacdb811a315b8b56b2768ab7ccfe5f726bdcb71d223e2231ea5d2ef37f33"
+  },
+  "incorrect_inherited_source_bytes": 230299,
+  "correct_sum_of_21_exact_item_pins": 231824,
+  "difference": 1525,
+  "cause": "Author refreshed every source pin after QPC but omitted aggregate recomputation; original overlay preserved.",
+  "all_individual_pins_unchanged": true,
+  "code_or_qualification_changed": false,
+  "required_action": "Future snapshot/budget uses exact item sum 231824, not obsolete aggregate 230299.",
+  "current_author_and_aggregate_sizes_previously_measured_independently_not_derived_from_this_field": true,
+  "author_writer_after_this_receipt": 0
+}

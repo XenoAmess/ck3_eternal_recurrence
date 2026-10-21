@@ -1,0 +1,75 @@
+{
+  "QPC": "signed64 string; no assertion of observed negative QPC",
+  "RED_pauses_preserved": [
+    "21:03:15",
+    "21:15:41"
+  ],
+  "Root_hard_end_UTC": "2026-10-20T21:45:00Z",
+  "SDK_Steam_VM_DR_Game_SYSTEM_calls": 0,
+  "actual_legacy_SYSTEM_parser_regression": {
+    "bytes": 2617,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\decimal64-legacy-SYSTEM-load-a01\\ORIGINAL-WAIT.actual.json",
+    "sha256": "f5dfd066a3027802048cde2de13699ce03a9ed2e54530a14d7abcd0fcf4b53b8"
+  },
+  "all_Popen_closed": true,
+  "all_code_writers": 0,
+  "code_frozen": true,
+  "cold_recipe": {
+    "bytes": 3147,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\NEXT-COLD.prepared-a02.json",
+    "sha256": "a6849881470de2b8c465f7bdcdd648985293c1f2e86f1e2d66e844abf022ed23"
+  },
+  "deadline_history": [
+    "21:15",
+    "explicit 21:30",
+    "explicit 21:45"
+  ],
+  "focused_actual": {
+    "bytes": 7331,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\decimal64-focused-final-a03\\ORIGINAL-WAIT.actual.json",
+    "sha256": "07fad7ece66788b8bdc315ed8a9042c9ef8fffd497f2697c43f6687be55c750b"
+  },
+  "focused_methods": 12,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "native_builds": 0,
+  "native_executions": 0,
+  "observed_at_utc": "2026-10-20T21:41:24.861798+00:00",
+  "old_a01_a02_sources_unchanged": true,
+  "old_execution_baseline_unchanged": true,
+  "overlay": {
+    "bytes": 9368,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-OVERLAY.prepared-a02.json",
+    "sha256": "c54cacdb811a315b8b56b2768ab7ccfe5f726bdcb71d223e2231ea5d2ef37f33"
+  },
+  "owner_schema": "xar.maintenance.parent_pointer_read.owner-binding.v2",
+  "pre_QPC_overlay_index_and_recipe_superseded_not_usable": true,
+  "prior_a01": {
+    "bytes": 25286,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a01.json",
+    "sha256": "336f5d264d54122c6576d6d40589e70cebcaede1d7071f8577d2fd214c7c245f"
+  },
+  "public_diagnostics": {
+    "bytes": 3608,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\public-static-a02\\stdout.log",
+    "sha256": "b36bc6b6dcba21f849fcdaa2491caf2becc022849e02a779158efb857ab16cd9"
+  },
+  "public_raw_v2_adaptation_pending": true,
+  "public_type_errors": 29,
+  "qualification_issued": false,
+  "raw_schema": "xar.maintenance.parent_pointer_read.raw.v2",
+  "required_actual_cold_cases": 21,
+  "schema": "xar.maintenance.parent_pointer_read.source-freeze.v2",
+  "source_index": {
+    "bytes": 5280,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-INDEX.actual-a02.json",
+    "sha256": "89defc5ddd4d4950f53800878a4d89ced0b92735daba4eb8cfc15d3064b09f83"
+  },
+  "static_actual": {
+    "bytes": 7813,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\decimal64-static-final-a03\\ORIGINAL-WAIT.actual.json",
+    "sha256": "10e36a1b726d189856da6aea9c6989fa1b0ece3911dee40f9041b823b03c4c0d"
+  },
+  "static_source_count": 9,
+  "status": "SOURCE_ONLY_WIRE_TYPED_PASS_NATIVE_COLD_AND_PUBLIC_PENDING",
+  "u64": "canonical unsigned decimal strings"
+}

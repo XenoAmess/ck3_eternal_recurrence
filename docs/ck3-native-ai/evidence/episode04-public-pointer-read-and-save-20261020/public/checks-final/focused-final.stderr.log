@@ -1,0 +1,14 @@
+test_actual_cleanup_predicate_rejects_exit_sources_and_missing_null (test_public_pointer_v2.PublicPointerTests.test_actual_cleanup_predicate_rejects_exit_sources_and_missing_null) ... ok
+test_original_wait_survives_reporting_error (test_public_pointer_v2.PublicPointerTests.test_original_wait_survives_reporting_error) ... ok
+test_raw_v2_full_six_and_retired_generation (test_public_pointer_v2.PublicPointerTests.test_raw_v2_full_six_and_retired_generation) ... ok
+test_real_common_producer_integer_to_new_wire (test_public_pointer_v2.PublicPointerTests.test_real_common_producer_integer_to_new_wire) ... ok
+test_real_controller_readonly_child_receipt_error_retains_wait (test_public_pointer_v2.PublicPointerTests.test_real_controller_readonly_child_receipt_error_retains_wait) ... ok
+test_real_public_selection_external_route_rejects_before_sdk (test_public_pointer_v2.PublicPointerTests.test_real_public_selection_external_route_rejects_before_sdk) ... ok
+test_settings_budget_and_owner_freshness_refuse (test_public_pointer_v2.PublicPointerTests.test_settings_budget_and_owner_freshness_refuse) ... ok
+test_sidecar_before_raw_ready_waits_same_owner (test_public_pointer_v2.PublicPointerTests.test_sidecar_before_raw_ready_waits_same_owner) ... ok
+test_wire_schema_identity_vectors_and_nullable_presence_refuse (test_public_pointer_v2.PublicPointerTests.test_wire_schema_identity_vectors_and_nullable_presence_refuse) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 5.809s
+
+OK

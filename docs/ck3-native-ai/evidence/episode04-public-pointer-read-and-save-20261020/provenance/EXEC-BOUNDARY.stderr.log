@@ -1,0 +1,67 @@
+test_actual_guard_allows_exact_new_limit_before_stage (__main__.GrowthTests.test_actual_guard_allows_exact_new_limit_before_stage) ... ERROR
+test_actual_guard_rejects_one_byte_over_before_stage (__main__.GrowthTests.test_actual_guard_rejects_one_byte_over_before_stage) ... ERROR
+test_prospective_guard_allows_over_old_limit_through_exact_new_limit (__main__.GrowthTests.test_prospective_guard_allows_over_old_limit_through_exact_new_limit) ... 
+  test_prospective_guard_allows_over_old_limit_through_exact_new_limit (__main__.GrowthTests.test_prospective_guard_allows_over_old_limit_through_exact_new_limit) (bytes=1048577) ... ERROR
+  test_prospective_guard_allows_over_old_limit_through_exact_new_limit (__main__.GrowthTests.test_prospective_guard_allows_over_old_limit_through_exact_new_limit) (bytes=2097152) ... ERROR
+test_prospective_guard_rejects_one_byte_over_before_copy_claim (__main__.GrowthTests.test_prospective_guard_rejects_one_byte_over_before_copy_claim) ... ok
+
+======================================================================
+ERROR: test_actual_guard_allows_exact_new_limit_before_stage (__main__.GrowthTests.test_actual_guard_allows_exact_new_limit_before_stage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\source-checks\test_executor_w_growth.py", line 92, in test_actual_guard_allows_exact_new_limit_before_stage
+    probe.run()
+    ~~~~~~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\execution\publish_exact_once_2m_a01.py", line 440, in run
+    'admission_sha256': self.cap.pin.sha256, 'items': len(self.plan.items), 'W_before_bytes': initial,
+                        ^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\mock.py", line 697, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'pin'
+
+======================================================================
+ERROR: test_actual_guard_rejects_one_byte_over_before_stage (__main__.GrowthTests.test_actual_guard_rejects_one_byte_over_before_stage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\source-checks\test_executor_w_growth.py", line 100, in test_actual_guard_rejects_one_byte_over_before_stage
+    probe.run()
+    ~~~~~~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\execution\publish_exact_once_2m_a01.py", line 440, in run
+    'admission_sha256': self.cap.pin.sha256, 'items': len(self.plan.items), 'W_before_bytes': initial,
+                        ^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\mock.py", line 697, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'pin'
+
+======================================================================
+ERROR: test_prospective_guard_allows_over_old_limit_through_exact_new_limit (__main__.GrowthTests.test_prospective_guard_allows_over_old_limit_through_exact_new_limit) (bytes=1048577)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\source-checks\test_executor_w_growth.py", line 76, in test_prospective_guard_allows_over_old_limit_through_exact_new_limit
+    probe.run()
+    ~~~~~~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\execution\publish_exact_once_2m_a01.py", line 440, in run
+    'admission_sha256': self.cap.pin.sha256, 'items': len(self.plan.items), 'W_before_bytes': initial,
+                        ^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\mock.py", line 697, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'pin'
+
+======================================================================
+ERROR: test_prospective_guard_allows_over_old_limit_through_exact_new_limit (__main__.GrowthTests.test_prospective_guard_allows_over_old_limit_through_exact_new_limit) (bytes=2097152)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\source-checks\test_executor_w_growth.py", line 76, in test_prospective_guard_allows_over_old_limit_through_exact_new_limit
+    probe.run()
+    ~~~~~~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-publication-2330-a01\execution\publish_exact_once_2m_a01.py", line 440, in run
+    'admission_sha256': self.cap.pin.sha256, 'items': len(self.plan.items), 'W_before_bytes': initial,
+                        ^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\mock.py", line 697, in __getattr__
+    raise AttributeError("Mock object has no attribute %r" % name)
+AttributeError: Mock object has no attribute 'pin'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.045s
+
+FAILED (errors=4)

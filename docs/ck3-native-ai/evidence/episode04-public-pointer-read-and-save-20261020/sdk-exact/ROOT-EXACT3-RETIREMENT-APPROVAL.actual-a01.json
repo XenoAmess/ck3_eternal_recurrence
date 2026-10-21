@@ -1,0 +1,53 @@
+{
+  "owner": "Root",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:42:53Z",
+  "approved_for_execution": true,
+  "purpose_release": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-THREE-AGGREGATE-PURPOSE-RELEASE.actual-a01.json",
+    "bytes": 3226,
+    "sha256": "016c0a606596767bcc10880c481321531ae46158793c616753bdc42b41c151df"
+  },
+  "new_retirement_purpose": "Retire only the three exact redundant SDK aggregate replicas after complete replay qualification; keep all original request/response packets and ordered indices available.",
+  "exact_plan": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-old-sdk-exact-replay-2245-a01/retire-source-a01/RETIRE-PLAN.prepared-a01.json",
+    "bytes": 2454,
+    "sha256": "58456bc6470a66480ec9f2b4b203877f722ed5d6e018a10868153fb9065bf2f8"
+  },
+  "helper": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-old-sdk-exact-replay-2245-a01/retire-source-a01/retire_sdk_exact.py",
+    "bytes": 23756,
+    "sha256": "8d4d66c1a969924db5d4818fbd18ece594133b4513b5f4892014470e506af815"
+  },
+  "replay_bundle": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\EXACT3-REPLAY-DELIVERY.actual-a01.json",
+    "bytes": 9848,
+    "sha256": "fb36d56334b837d98a84e29c9d6c0ddd58b0f7306044a4c85c07e36d90f3ee3e"
+  },
+  "released_aggregate_paths": [
+    "C:/ck3-war-episode04-research-20261004-a01/native-live-day15-r0165-a01/mcp-calls.jsonl",
+    "C:/ck3-war-episode04-research-20261004-a01/native-live-r0175-a02/mcp-calls.jsonl",
+    "C:/ck3-war-episode04-research-20261004-a01/native-live-r0177-a01/mcp-calls.jsonl"
+  ],
+  "independent_source_review": {
+    "bytes": 5874,
+    "sha256": "48c452dcb3643065dd158c29e48297ad21ba17b3a51625e7b6e043dda9bc8c7e"
+  },
+  "source_freeze": {
+    "bytes": 4946,
+    "sha256": "27355205dc1eb8a651722004128c5faf6978ef0c73017a509fba998634f7ef4a"
+  },
+  "root_actual_read": [
+    "Complete final23756-byte helper read, exact3paths/hash/identity and three complete replay results",
+    "Index/dependency postcheck read; independent full3 proof and source review accepted",
+    "Same delete-held handles hash all781668767bytes;2954 keepers and immutable proof chain remain locked",
+    "Entry card age≤30s, same immutable card through bounded transaction; deadline rechecked after keeper traversal and durable intent immediately before each disposition",
+    "Only actual disposition+close+absence writes original_readable=false; partial/unknown not replayed"
+  ],
+  "fresh_card_required": true,
+  "sole_execution_owner": "native_prepare",
+  "hard_deadline_utc": "2026-10-20T23:00:00Z",
+  "new_game_or_Steam_authorized": false,
+  "candidate_space_credit_bytes": 0,
+  "execution_instruction": "Coordinator issues fresh source-bound actual retirement card; sole owner invokes final frozen helper once. Preserve original Popen custody/wait and every WAL/result. No automatic replay on any partial or unknown result."
+}

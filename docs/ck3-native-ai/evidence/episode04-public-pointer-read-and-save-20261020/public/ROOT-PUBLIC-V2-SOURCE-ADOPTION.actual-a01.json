@@ -1,0 +1,52 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:59:42Z",
+  "status": "ADOPTED_PUBLIC_SOURCE_AND_ISOLATED_PREFLIGHT_ONLY",
+  "source_package": "C:/ck3-e04-resume-20261020-a01/r08-public-pointer-read-v2-source-2300-a01/source-candidate-a01",
+  "freeze": {
+    "bytes": 23831,
+    "sha256": "e9f10c5048bde5fa222bf3bb37fdd0e83f0f9d54123cddd73363c6bbbbbbff04"
+  },
+  "source_index": {
+    "bytes": 13173,
+    "sha256": "a23a20033f69244596727e4b0eb00b14909a018f7d744cf5611f791a48279962"
+  },
+  "delivery": {
+    "bytes": 1861,
+    "sha256": "db7a461174ea94e47b078eeb374b3bb1e8178c99e44f24a0530ac65c1357dd42"
+  },
+  "independent_review": {
+    "bytes": 4770,
+    "sha256": "657600e0d8b629d5413d8008b1f6c426dc497d22b85a8b0503891f912f65528e"
+  },
+  "root_actual_review": [
+    "Complete final README/delivery and r10 three-function delta read",
+    "Independent full source review,36freeze/37index/21original pairs, before-after-current pins, final15 actualmypy0 and9 focused methods0 accepted",
+    "R10 pointer-only wrappers and loader bind actual external peers in dependency order; legacy implementations unchanged",
+    "Actual Common producer integer FILETIME is validated then represented as decimal string in new wire; no rewriting legacy raw evidence",
+    "Same retained CaseClient, complete generation census/sixDR vectors, READY four-field join and original Popen wait precede independent after snapshot",
+    "Ordinary Save uses adopted helper4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb and changed actor1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14; new immutable closure must include them"
+  ],
+  "qualification": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-public-pointer-read-v2-source-2300-a01/Root/cold-adjudication-a01/POINTER-READ-QUALIFICATION.actual-a01.json",
+    "bytes": 6633,
+    "sha256": "70dd8b0e5b97e404018f821a1f01ef88caa538b04ee1fd43a9a95eef6504e5c1"
+  },
+  "scope": "Five public production mappings plus their explicit immutable dependencies. External focused test/harness stay as bound evidence until canonical dependency paths are separately adapted.",
+  "limits": [
+    "No public live game-day, observation, paid amount,payer,cadence,parent return or fullR08 qualification",
+    "The prepared template contains invalid placeholders and is not runnable; a fresh separately admitted managed scene is necessary",
+    "One target/30s/foreign4096-or-timeout is a finite research question, not assurance of a hit; no blind sameS0 retry",
+    "New public source must be integrated with Save3 and source21/Q; old bundle pins cannot stand for new files"
+  ],
+  "CI_fixture_adoption": "The separate21167-byte scope test candidate and2825-byte patch are accepted on final baseline error/candidate5PASS, paired modifiedtest mypy0 and independent peer. It updates synthetic launcher context only; newhead fullCI remains to be observed.",
+  "formal_dynamic": "7/11",
+  "research": "10/14",
+  "basic_business": "7/11",
+  "B": "0/2",
+  "ABC": "0/3",
+  "public_live_qualified": false,
+  "full_R08": false,
+  "Game_SDK_EXE_execution_authorized_by_this_record": false,
+  "old_public_root_write_required": false
+}

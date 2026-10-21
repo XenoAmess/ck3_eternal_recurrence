@@ -1,0 +1,90 @@
+{
+  "schema": "xar.capacity.source-only-independent-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:46:02.364136+00:00",
+  "closed_root": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01",
+  "original_deadline_history_utc": [
+    "2026-10-20T21:15:00Z",
+    "2026-10-20T21:30:00Z",
+    "2026-10-20T21:45:00Z"
+  ],
+  "actuals": {
+    "author": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\DELIVERY.actual-a01.json",
+      "bytes": 3243,
+      "sha256": "77fee1a2a5cf0ffdcc3d98888a018a3ec4be03cff335100843812284ea7b7aec"
+    },
+    "correction": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\OVERLAY-SOURCE-BYTES-CORRECTION.actual-a01.json",
+      "bytes": 1026,
+      "sha256": "5ab81693d05dcbfe3c911a1b0efadbc95d5e86ec599daddd45d0e5dd56bba287"
+    },
+    "review": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\review-a01\\INDEPENDENT-DECIMAL64-RUNNER-SOURCE-REVIEW.actual-a03.json",
+      "bytes": 4663,
+      "sha256": "a819ed242fa4622d22311e97ba22f12014dfd96e1caed091cfe6e4c8b3d83fbf"
+    },
+    "Root": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\ROOT-SOURCE-ADOPTION.actual-a03.json",
+      "bytes": 2659,
+      "sha256": "53e9eca963c61143ad29eaac26277a852008aed9db2748ce812f380aa09e64df"
+    }
+  },
+  "Root_late_administrative_write": {
+    "Root_reported_actual_observed_utc": "2026-10-20T21:45:08Z",
+    "exact_file_mtime_utc": "2026-10-20T21:45:08.965880+00:00",
+    "mtime_ns_decimal": "1792532708965880500",
+    "after_original_deadline": true,
+    "not_retroactively_admitted": true,
+    "no_native_or_game_execution_granted": true
+  },
+  "stable_measurements": [
+    {
+      "at": "2026-10-20T21:46:02.320233+00:00",
+      "logical_bytes": 929382,
+      "files": 152,
+      "metadata_sha256": "10daa7b13d9472fb99a5f05ade216d3f44bac26b8fba10660c0428a5798aff5e",
+      "complete": true,
+      "body_bytes_read": 0
+    },
+    {
+      "at": "2026-10-20T21:46:02.353577+00:00",
+      "logical_bytes": 929382,
+      "files": 152,
+      "metadata_sha256": "10daa7b13d9472fb99a5f05ade216d3f44bac26b8fba10660c0428a5798aff5e",
+      "complete": true,
+      "body_bytes_read": 0
+    }
+  ],
+  "all_scope_writers_zero_evidence": "author21:41final+correction/review before21:45; Root explicitmessage finalwriter0 afterlateadministrativeadoption; no active owned Popen reported",
+  "qualification": "source-only; 9source mypy/12focusedtests and existing329297B SYSTEMreceipt model; nativecases/build/EXE/SYSTEM/DR/game0; laterpurpose must independently sourcebind",
+  "historical_RED_and_pause_facts_preserved": true,
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 422582,
+    "sha256": "26f7c4dfd12db6df91c17671db0b8d1f14d2d88ea398f0a39f00186be6b0b254"
+  },
+  "budget_before": {
+    "C_known_future_bytes": 8388608,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25778192384,
+    "C_floor_margin_bytes": 51736309760,
+    "C_projected_whole_volume_upper_bound_bytes": 437922799616,
+    "C_quota_margin_bytes": 163864576,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 17829888
+  },
+  "budget_after_future_cancel_same_volume": {
+    "C_known_future_bytes": 6291456,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25776095232,
+    "C_floor_margin_bytes": 51738406912,
+    "C_projected_whole_volume_upper_bound_bytes": 437920702464,
+    "C_quota_margin_bytes": 165961728,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 17829888
+  },
+  "physical_credit_bytes": 0,
+  "future_cancel_bytes": 2097152,
+  "old_root_now_readonly": true
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "xar.old-sdk-exact-replay.contract-diagnostic.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:08:47.935393+00:00",
+  "failed_attempt_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-RESULT.actual.json",
+    "bytes": 2711,
+    "sha256": "228e26b3b752b1f0056bae53432764e9d6df3c7b10627660bfc23bedc1339b0f"
+  },
+  "diagnostic_scope": "Only failed actual line33 and exact2122B response; no full-log retry",
+  "line_number": 33,
+  "line_offset": 8153490,
+  "request_id": "r0165-recording-start-a01",
+  "tool": "gameplay_recorder",
+  "source_response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\responses\\r0165-recording-start-a01.json",
+    "bytes": 2122,
+    "sha256": "0805bff276d767f194e0b2016ebbebf6daf249543a10b278d22a94310cb04440",
+    "identity": {
+      "volume_serial": "13886423844274364792",
+      "file_id": "281474978781928",
+      "bytes": 2122,
+      "mtime_ns": "1791161774842087300",
+      "fstat_ctime_ns": "1791161774842087300"
+    }
+  },
+  "actual_source_keys": [
+    "at",
+    "request",
+    "request_identity",
+    "is_error",
+    "body"
+  ],
+  "incorrectly_required_by_a01": [
+    "sdk_result",
+    "content"
+  ],
+  "original_line_bytes": 1792,
+  "original_line_sha256": "4ffb619523616396eb8de92a81c8ebba2a73798cfcf7e379cfa0cad74c254f1f",
+  "same_source_reserialized_line_bytes": 1792,
+  "same_source_reserialized_line_sha256": "4ffb619523616396eb8de92a81c8ebba2a73798cfcf7e379cfa0cad74c254f1f",
+  "single_line_bytes_actually_equal": true,
+  "no_fields_added_or_synthesized": true,
+  "conclusion": "Verifier a01 over-requires SDK-only fields for gameplay_recorder local packet. Full-log result remains failed/partial; no complete replay or retirement claim.",
+  "requires_create_only_a02_and_new_Root_run_authorization": true,
+  "raw_mutations": 0
+}

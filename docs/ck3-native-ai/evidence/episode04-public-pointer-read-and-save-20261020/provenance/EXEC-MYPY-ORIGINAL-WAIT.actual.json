@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:07:21.525379+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "--follow-imports=skip",
+    "--explicit-package-bases",
+    "--check-untyped-defs",
+    "--disallow-untyped-defs",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\execution\\publish_exact_once_2m_a01.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\test_executor_w_growth.py"
+  ],
+  "original_popen_pid": 13672,
+  "creation_filetime": "134370112314794961",
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "stdout_bytes": 44,
+  "stdout_sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

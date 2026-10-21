@@ -1,0 +1,11 @@
+test_canonical_fixture_root_and_explicit_external_root (__main__.OrdinarySaveTests.test_canonical_fixture_root_and_explicit_external_root) ... ok
+test_checkpoint_nullable_fields_missing_rejected (__main__.OrdinarySaveTests.test_checkpoint_nullable_fields_missing_rejected) ... ok
+test_snapshot_missing_and_null_distinguished_without_new_producer_fields (__main__.OrdinarySaveTests.test_snapshot_missing_and_null_distinguished_without_new_producer_fields) ... ok
+test_new_proof_numbers_reject_unsafe_integer_and_u32_overflow (__main__.OrdinarySaveTests.test_new_proof_numbers_reject_unsafe_integer_and_u32_overflow) ... ok
+test_legacy_large_mtime_not_migrated_into_new_proof (__main__.OrdinarySaveTests.test_legacy_large_mtime_not_migrated_into_new_proof) ... ok
+test_real_existing_driver_materializes_small_file_and_brackets (__main__.OrdinarySaveTests.test_real_existing_driver_materializes_small_file_and_brackets) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.682s
+
+OK

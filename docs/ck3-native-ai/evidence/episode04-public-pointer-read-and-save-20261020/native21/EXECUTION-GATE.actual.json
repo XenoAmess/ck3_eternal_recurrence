@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.pointer-read.exact-SYSTEM-gate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:08:08.444572+00:00",
+  "producer": {
+    "path": "C:\\w\\e04parentread03\\build-a01\\native-msvc-result.json",
+    "bytes": 1640,
+    "sha256": "0839b8f01a047e7c39e49f8d99499bd7d6be26068ba38818c3299475fa32b098"
+  },
+  "original_build": {
+    "path": "C:\\w\\e04parentread03\\MACHINE-BUILD.actual.json",
+    "bytes": 6637,
+    "sha256": "dcacdd38ec15471f3ada8bf61bbb71897d6fbe984f775ee31529762b8b4905e9"
+  },
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\SOURCE-MANIFEST.actual.json",
+    "bytes": 5755,
+    "sha256": "23758688b3ecf62b3168436e26489fbe6d6a7f9837c37aed7a1b48f9585c72cd"
+  },
+  "SYSTEM_receipt": {
+    "path": "C:\\w\\e04parentread03\\build-a01\\defender-exe-exclusions\\20261020T220725Z-bd623c0b\\receipt.json",
+    "bytes": 330399,
+    "sha256": "52d6bfc19f6687afd4268ff873052513c05ceba09c6bba8bc904e53058ccc997"
+  },
+  "SYSTEM_manifest": {
+    "path": "C:\\w\\e04parentread03\\build-a01\\defender-exe-exclusions\\20261020T220725Z-bd623c0b\\manifest.json",
+    "bytes": 2735,
+    "sha256": "b68f8c17992768891daa6fc5b4d89bf47b847793b3b1b67dce74458876b750f5"
+  },
+  "files": [
+    {
+      "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_cold_target.exe",
+      "size": 64512,
+      "sha256": "451bf1953e2636fd047053a6edc13c41ae12d6fe9891872f96eab2931faba581",
+      "target": "maintenance_parent_pointer_read_cold_target",
+      "target_id": "maintenance_parent_pointer_read_cold_target::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_observer.exe",
+      "size": 137216,
+      "sha256": "d0beda84eb549f6b0b773e99f773f36224d64be366dbd9a66d8cd3188a8500c9",
+      "target": "maintenance_parent_pointer_read_observer",
+      "target_id": "maintenance_parent_pointer_read_observer::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "new_project_EXE_executions": 0,
+  "native_qualification": false
+}

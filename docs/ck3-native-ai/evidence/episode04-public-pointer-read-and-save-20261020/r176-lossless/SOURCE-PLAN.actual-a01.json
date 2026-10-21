@@ -1,0 +1,92 @@
+{
+  "schema": "xar.r176-keeper.exact-two-source-plan.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:38:22.665053+00:00",
+  "sources": [
+    {
+      "kind": "before",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-before.json",
+      "identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1125899907708075",
+        "bytes": 193474721,
+        "mtime_ns": "1791245191768030400",
+        "fstat_ctime_ns": "1791245191768030400"
+      },
+      "sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+      "carrier": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\before.json.gz",
+      "gzip_level6_bytes": 8562240,
+      "gzip_level6_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67"
+    },
+    {
+      "kind": "after",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-after.json",
+      "identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "844424930997500",
+        "bytes": 193481991,
+        "mtime_ns": "1791245222909094600",
+        "fstat_ctime_ns": "1791245222909094600"
+      },
+      "sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+      "carrier": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\after.json.gz",
+      "gzip_level6_bytes": 8563211,
+      "gzip_level6_sha256": "87d7f2bbd533e9ee61dd54c2d9573a2ed0eab7e07ebb55418fcb97a75af91b4d"
+    }
+  ],
+  "source_financial_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\capacity\\R176-KEEPER-LOSSLESS20-FINANCIAL-SOURCE.actual-a01.json",
+    "bytes": 2891,
+    "sha256": "12334c049c52c93571548063304113d2c343199d4486c6a94d03fef1cee62b48"
+  },
+  "R208_keeper_contract": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-r208-response-copies-readonly-a01\\TWO-RESPONSE-COPIES.plan.readonly.json",
+    "bytes": 3486,
+    "sha256": "caf154cb8565f22e0a59b921a6cba19f6f4d206c74dad430425ddcd2a6e2d298"
+  },
+  "keeper_protection_deadline_utc": "2026-10-25T06:59:39.751702Z",
+  "raw_retirement_admitted": false,
+  "source_current_metadata_verified": true,
+  "current_full_body_read_performed": false,
+  "full_source_sha_basis": "Prior 2026-10-20T21:36:35.850651Z actual samehandle RAM fullSHA/gzip-count; fresh source metadata checked now; actual produce will rehash full original and compare exact pinned SHA",
+  "prior_RAM_count_evidence": {
+    "kind": "original tool output preserved in conversation, no file rewritten",
+    "observed_at_utc": "2026-10-20T21:36:35.850651Z",
+    "execution_machine_id": "desktop-3fevhd2-1c74096080",
+    "raw_total_bytes": 386956712,
+    "gzip_level6_total_bytes": 17125451,
+    "method": "zlib gzip wbits31/level6,256KiB source chunks,output counted+SHA then discarded; source handles deniedwrites/deletes",
+    "roundtrip_claimed_for_that_RAM_measurement": false
+  },
+  "original_paths_available": true,
+  "new_gzip_available": false,
+  "payload_limit_bytes": 18874368,
+  "source_metadata_limit_bytes": 2097152,
+  "original_R208_paths_and_deadline_unchanged": true,
+  "produce_card_contract": {
+    "schema": "xar.capacity.r176-keeper.lossless20.produce.v1",
+    "phase": "produce_two",
+    "pin_fields": [
+      "source_helper",
+      "source_plan",
+      "source_frozen",
+      "source_financial_admission"
+    ],
+    "produce_true_delete_false": true,
+    "quota_exception_nullable": true,
+    "null_exception_requires_base_budget_C_quota_margin_bytes_nonnegative": true
+  },
+  "support": {
+    "byte_verifier": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r223-lossless-replacement-2200-a01\\lossless_exact5.py",
+      "bytes": 26538,
+      "sha256": "863849c61bae97e6d4a28ce6e7608d36ef06e8fcc453a625f70acb4a709808dd"
+    },
+    "identity_helper": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r223-exact-retention-2100-a01\\retire_exact_duplicates.py",
+      "bytes": 24956,
+      "sha256": "de1bb3c810fa361cf5f6cd63a9ba25aa5e89c614e6df1b1afc9373cf3af7a249"
+    }
+  }
+}

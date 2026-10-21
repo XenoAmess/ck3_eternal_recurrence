@@ -1,0 +1,20 @@
+--- original/publish_exact_once_a02.py
++++ candidate/publish_exact_once_2m_a01.py
+@@ -435,7 +435,7 @@
+         self.check_d()
+         initial = census(self.cap.worktree)
+         growth = sum(max(0, item.source.size - ((self.cap.worktree / item.target).stat().st_size if (self.cap.worktree / item.target).is_file() else 0)) for item in self.plan.items)
+-        need(growth <= 1048576, 'prospective W growth')
++        need(growth <= 2097152, 'prospective W growth')
+         self.records.put('CLAIM.actual.json', {'phase': 'approved_once', 'plan_sha256': self.plan.pin.sha256,
+             'admission_sha256': self.cap.pin.sha256, 'items': len(self.plan.items), 'W_before_bytes': initial,
+             'prospective_W_positive_upper_bytes': growth, 'maximum_each_mutation': 1})
+@@ -453,7 +453,7 @@
+             with target.open('wb' if target.exists() else 'xb') as stream:
+                 need(stream.write(payload) == len(payload), 'short copy')
+             need(target.read_bytes() == payload, 'copy readback')
+-        need(max(0, census(self.cap.worktree) - initial) <= 1048576, 'actual W growth')
++        need(max(0, census(self.cap.worktree) - initial) <= 2097152, 'actual W growth')
+         paths = self.root / 'approved-paths.nul'
+         data = b''.join(item.target.encode() + b'\0' for item in self.plan.items)
+         need(census(self.root) + len(data) <= LANE_LIMIT, 'pathspec lane cap')

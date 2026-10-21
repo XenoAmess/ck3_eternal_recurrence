@@ -1,0 +1,44 @@
+{
+  "schema": "xar.r176.lossless2.original-popen-custody.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "started_at_utc": "2026-10-20T22:47:23.571379+00:00",
+  "pid": 37092,
+  "creation_filetime": "134370100435573155",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\keeper_lossless2.py",
+    "--produce-cap",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\capacity\\R176-EXACT2-PRODUCE-ONCE.actual-a02.json"
+  ],
+  "source_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\keeper_lossless2.py",
+    "bytes": 19465,
+    "sha256": "1b616f20d05b074687160b01fe7517799f48f58d29a17a49889c52ff65a703c5"
+  },
+  "produce_cap": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\capacity\\R176-EXACT2-PRODUCE-ONCE.actual-a02.json",
+    "bytes": 4294,
+    "sha256": "78c88a051b1c85391682a739d77bb096d0d4e5e0f0a1ed07dd4213403a4d639f"
+  },
+  "actual_original_popen_custody": true,
+  "finished_at_utc": "2026-10-20T22:47:43.562681+00:00",
+  "actual_original_popen_wait_returncode": 0,
+  "owned_running_after_wait": false,
+  "timed_out_unknown_result": false,
+  "stdout_stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PARENT-stdout-stderr.actual.log",
+    "bytes": 411,
+    "sha256": "255a694e3e279a182b3aa8a2f341a4f8f70154e7e2fb5f2294630c32a5e6119c"
+  },
+  "raw_originals_delete_authorized": false,
+  "automatic_retry_authorized": false,
+  "production_final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PRODUCE-FINAL.actual.json",
+    "bytes": 6133,
+    "sha256": "eeb7927fd2d4cb05ee1ff82ca225a689c6045622ea1854d38df17bf264a9b855"
+  }
+}

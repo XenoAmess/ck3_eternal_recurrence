@@ -1,0 +1,26 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T22:26:10.132068+00:00",
+  "finished_at_utc": "2026-10-20T22:26:19.121375+00:00",
+  "pid": 28292,
+  "created": "134370087701337694",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parentread03\\control-metadata-a01\\cold_phase_a02.py",
+    "--plan",
+    "C:\\w\\e04parentread03\\control-metadata-a01\\READWATCH-COLD-PHASE.prepared-a02.json",
+    "--plan-sha256",
+    "913e855ec38fd6736b6c6eb7fef16da33d95a7959f4c2998c75654cd518a8cc4",
+    "--cap",
+    "C:/w/e04parentread03/capacity/READWATCH-COLD21-FINITE-EXCEPTION-ACTUAL.actual-a04.json",
+    "--cap-sha256",
+    "86d951a84df3e066884f5d4c11b823b044aa5aef8289d983437ee797176df007"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "monitor_diagnostic": null
+}

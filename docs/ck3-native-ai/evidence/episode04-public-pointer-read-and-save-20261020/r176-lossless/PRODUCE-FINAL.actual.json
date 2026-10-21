@@ -1,0 +1,145 @@
+{
+  "schema": "xar.r176-keeper.lossless-produce-final.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:47:43.518486+00:00",
+  "status": "BOTH_CARRIERS_COMPLETE_AND_VERIFIED",
+  "records": [
+    {
+      "kind": "before",
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-before.json",
+      "original_bytes": 193474721,
+      "original_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+      "original_second_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1125899907708075",
+        "bytes": 193474721,
+        "mtime_ns": "1791245191768030400",
+        "fstat_ctime_ns": "1791245191768030400"
+      },
+      "original_after_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1125899907708075",
+        "bytes": 193474721,
+        "mtime_ns": "1791245191768030400",
+        "fstat_ctime_ns": "1791245191768030400"
+      },
+      "gzip_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\before.json.gz",
+      "gzip_bytes": 8562240,
+      "gzip_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67",
+      "gzip_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1688849862180337",
+        "bytes": 8562240,
+        "mtime_ns": "1792536452340650600",
+        "fstat_ctime_ns": "1792536452340650600"
+      },
+      "gzip_allocation_bytes": 8564736,
+      "readback": {
+        "compressed_bytes": 8562240,
+        "compressed_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67",
+        "decompressed_bytes": 193474721,
+        "decompressed_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+        "plain_crc32": "6d1f2b28",
+        "gzip_crc_and_isize_verified": true,
+        "whole_single_member_verified": true
+      },
+      "original_still_available": true,
+      "gzip_available_and_verified": true,
+      "raw_retired": false
+    },
+    {
+      "kind": "after",
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-after.json",
+      "original_bytes": 193481991,
+      "original_sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+      "original_second_sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "844424930997500",
+        "bytes": 193481991,
+        "mtime_ns": "1791245222909094600",
+        "fstat_ctime_ns": "1791245222909094600"
+      },
+      "original_after_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "844424930997500",
+        "bytes": 193481991,
+        "mtime_ns": "1791245222909094600",
+        "fstat_ctime_ns": "1791245222909094600"
+      },
+      "gzip_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\after.json.gz",
+      "gzip_bytes": 8563211,
+      "gzip_sha256": "87d7f2bbd533e9ee61dd54c2d9573a2ed0eab7e07ebb55418fcb97a75af91b4d",
+      "gzip_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1688849862180351",
+        "bytes": 8563211,
+        "mtime_ns": "1792536462095132000",
+        "fstat_ctime_ns": "1792536462095132000"
+      },
+      "gzip_allocation_bytes": 8564736,
+      "readback": {
+        "compressed_bytes": 8563211,
+        "compressed_sha256": "87d7f2bbd533e9ee61dd54c2d9573a2ed0eab7e07ebb55418fcb97a75af91b4d",
+        "decompressed_bytes": 193481991,
+        "decompressed_sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+        "plain_crc32": "bd4ad7fe",
+        "gzip_crc_and_isize_verified": true,
+        "whole_single_member_verified": true
+      },
+      "original_still_available": true,
+      "gzip_available_and_verified": true,
+      "raw_retired": false
+    }
+  ],
+  "error": null,
+  "source_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\SOURCE-PLAN.actual-a01.json",
+    "bytes": 4283,
+    "sha256": "7f4061adf0f4d966ea7ff3a049932d068366f2e877deda7dac7ee8d642de0402"
+  },
+  "source_frozen": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\SOURCE-FROZEN.actual-a01.json",
+    "bytes": 1957,
+    "sha256": "8c445eabcfdedf70f42e5d9f9adb4bbd55d841919d5260d4e538f4b2e68821f1"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\capacity\\R176-EXACT2-PRODUCE-ONCE.actual-a02.json",
+    "bytes": 4294,
+    "sha256": "78c88a051b1c85391682a739d77bb096d0d4e5e0f0a1ed07dd4213403a4d639f"
+  },
+  "source_original_total_bytes": 386956712,
+  "verified_gzip_total_bytes": 17125451,
+  "raw_protection_deadline_utc": "2026-10-25T06:59:39.751702Z",
+  "R208_contract_unchanged": true,
+  "all_originals_still_available": true,
+  "source_handles_closed": true,
+  "carrier_handles_closed": true,
+  "large_uncompressed_copy_files": 0,
+  "raw_mutations_or_deletions": 0,
+  "physical_cleanup_credit_bytes": 0,
+  "raw_retirement_admitted": false,
+  "free_before": {
+    "observed_at_utc": "2026-10-20T22:47:24.274729+00:00",
+    "available_to_caller_bytes": 77976391680,
+    "total_free_bytes": 77976391680,
+    "total_volume_bytes": 511133945856
+  },
+  "free_after": {
+    "observed_at_utc": "2026-10-20T22:47:43.518465+00:00",
+    "available_to_caller_bytes": 77957251072,
+    "total_free_bytes": 77957251072,
+    "total_volume_bytes": 511133945856
+  },
+  "whole_volume_free_delta_not_exclusive_attribution": true,
+  "actual_payload_and_metadata_bytes": [
+    17125451,
+    40716
+  ],
+  "source_chunk_max_bytes": 262144,
+  "decoded_verification_chunk_max_bytes": 1048576,
+  "prior_RAM_method_matched": "zlib gzip wbits31 level6; no filename or timestamp",
+  "future_payload_writers_after_this_final": 0
+}

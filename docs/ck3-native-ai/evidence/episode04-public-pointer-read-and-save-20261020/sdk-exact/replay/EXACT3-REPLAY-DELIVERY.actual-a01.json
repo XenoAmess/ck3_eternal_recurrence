@@ -1,0 +1,194 @@
+{
+  "schema": "xar.old-sdk-exact-replay.exact-three-delivery.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:26:57.705817+00:00",
+  "status": "ALL_THREE_COMPLETE_EXACT_REPLAY_PASS",
+  "groups": [
+    {
+      "group": "r165",
+      "source_log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\mcp-calls.jsonl",
+      "original_bytes": 303227579,
+      "original_sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+      "replayed_sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+      "actual_line_count": 149,
+      "actual_max_line_bytes": 11121476,
+      "actual_max_response_bytes": 14404830,
+      "observed_kernel_peak_wset_bytes": 81977344,
+      "actual_seconds": 51.8181093998719,
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "281474978776885",
+        "bytes": 303227579,
+        "mtime_ns": "1791163961495910000",
+        "fstat_ctime_ns": "1791163961495910000"
+      },
+      "ordered_index": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-ordered-index.actual.jsonl.gz",
+        "bytes": 33344,
+        "sha256": "bd1d1d857810aade7c43db88925940da5d6f896d703c0ea3b3ac8b247f318a79"
+      },
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-RESULT.actual.json",
+        "bytes": 2720,
+        "sha256": "8ba06e995b170fcb062f4614bc8e43c52b661a4d8c8274dfa6cc148cf93e3bef"
+      },
+      "original_parent_wait": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-PARENT-WAIT.actual.json",
+        "bytes": 1477,
+        "sha256": "26b91ea43699746145667dcbab948e6f9367a84fa176c0f4cab0a582696716d9"
+      },
+      "child_pid": 14132,
+      "child_creation_filetime": "134370084615826674",
+      "actual_original_wait_returncode": 0,
+      "owned_running_after_wait": false
+    },
+    {
+      "group": "r175",
+      "source_log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\mcp-calls.jsonl",
+      "original_bytes": 191399668,
+      "original_sha256": "ab74a3b1bbb286d5a560883677933229b3bed7a00f679b2d10e42c05c34f10e2",
+      "replayed_sha256": "ab74a3b1bbb286d5a560883677933229b3bed7a00f679b2d10e42c05c34f10e2",
+      "actual_line_count": 573,
+      "actual_max_line_bytes": 823954,
+      "actual_max_response_bytes": 1013496,
+      "observed_kernel_peak_wset_bytes": 34496512,
+      "actual_seconds": 44.6559223998338,
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "281474979252586",
+        "bytes": 191399668,
+        "mtime_ns": "1791230723943651800",
+        "fstat_ctime_ns": "1791230723943651800"
+      },
+      "ordered_index": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-ordered-index.actual.jsonl.gz",
+        "bytes": 124237,
+        "sha256": "554e6d13778684c2b87ce70c3f7b0295b4004e0c0cfc0fd78feb6c4542b5fbf0"
+      },
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-RESULT.actual.json",
+        "bytes": 2706,
+        "sha256": "5275b582f25fb4a67b7fb8c32cdd24e21c26ce30665c4c8d6f2e0d2106a8bbba"
+      },
+      "original_parent_wait": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-PARENT-WAIT.actual.json",
+        "bytes": 1476,
+        "sha256": "326b6b9eaead5a6840e11725c14618177a017c5c1e8896eac72afb98e1717c1c"
+      },
+      "child_pid": 800,
+      "child_creation_filetime": "134370085361651663",
+      "actual_original_wait_returncode": 0,
+      "owned_running_after_wait": false
+    },
+    {
+      "group": "r177",
+      "source_log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\mcp-calls.jsonl",
+      "original_bytes": 287041520,
+      "original_sha256": "637219dd8a64d3330a71934a5404822c987b90dac624835b9ec4df4d05caed93",
+      "replayed_sha256": "637219dd8a64d3330a71934a5404822c987b90dac624835b9ec4df4d05caed93",
+      "actual_line_count": 755,
+      "actual_max_line_bytes": 813994,
+      "actual_max_response_bytes": 1002128,
+      "observed_kernel_peak_wset_bytes": 34705408,
+      "actual_seconds": 62.60940880002454,
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "281474979213274",
+        "bytes": 287041520,
+        "mtime_ns": "1791220991103649800",
+        "fstat_ctime_ns": "1791220991103649800"
+      },
+      "ordered_index": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-ordered-index.actual.jsonl.gz",
+        "bytes": 158254,
+        "sha256": "28b5645ac937eebfb98660b2d58ccc60ad83064b552d1e06ac823dab87aeaa4c"
+      },
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-RESULT.actual.json",
+        "bytes": 2707,
+        "sha256": "b4c8a3fdab88e8106f69113c3a8d7aaa0634a3c7c691f1646b85b4865aa93202"
+      },
+      "original_parent_wait": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-PARENT-WAIT.actual.json",
+        "bytes": 1477,
+        "sha256": "c412626b9a6137539b19612fcbfd844d1e5f4127e12c0937f9ecafc570b3dd03"
+      },
+      "child_pid": 8168,
+      "child_creation_filetime": "134370086067371198",
+      "actual_original_wait_returncode": 0,
+      "owned_running_after_wait": false
+    }
+  ],
+  "original_total_bytes": 781668767,
+  "actual_total_line_count": 1477,
+  "ordered_indexes_total_bytes": 315835,
+  "retained_response_count": 1477,
+  "retained_response_bytes": 979431285,
+  "retained_request_count": 1477,
+  "retained_request_bytes": 265916,
+  "source_frozen": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\SOURCE-FROZEN.actual-a02.json",
+    "bytes": 2636,
+    "sha256": "b0509c3f9eaac1ce57fe3fe4df8c271bc58e1dbc243fcd19eda7e490c145ad0e"
+  },
+  "source_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\SOURCE-PLAN.actual-a01.json",
+    "bytes": 6858,
+    "sha256": "349d15a9a8c5e80387993c6aa74d38ec046d47bebda07c85bed5784c28e88498"
+  },
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\replay_sdk_a02.py",
+    "bytes": 28212,
+    "sha256": "4db8795a086d5e4ff17d3b68dc63e0a7a64102bf81932ae1d42189b26b0aa922"
+  },
+  "index_crc_identity_domain_and_current_dependency_metadata_check": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\INDEX-ROUNDTRIP-AND-DEPENDENCIES.actual-a01.json",
+    "bytes": 2778,
+    "sha256": "f1e45b93a176aa6d78885320ce127b44726ebf6e167e6ac819363032c9879bd1"
+  },
+  "a01_failed_attempt_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-RESULT.actual.json",
+    "bytes": 2711,
+    "sha256": "228e26b3b752b1f0056bae53432764e9d6df3c7b10627660bfc23bedc1339b0f"
+  },
+  "a01_failed_parent_wait_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-PARENT-WAIT.actual.json",
+    "bytes": 1266,
+    "sha256": "e3eed81a19386585a406b5d64789e8721773e166869886731320aab41a0c0e3d"
+  },
+  "a01_contract_diagnostic_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\R165-CONTRACT-DIAGNOSTIC.actual-a01.json",
+    "bytes": 1982,
+    "sha256": "0818afb1ba7d7d1da636704ab3d3e711760b9d6832045dc1a134c5b026eb5fff"
+  },
+  "source_independent_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-A02-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 6498,
+    "sha256": "6c04482713eb54b089c47fe22967f22e6cb448c466df5f25122b5a25971a1889"
+  },
+  "actual_quota_exception": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\ROOT-FINITE-QUOTA-EXCEPTION-512M-2300.actual-a01.json",
+    "bytes": 4691,
+    "sha256": "76e3ed5a706d09098f668ecbd68a5ffa23bf2e8d8a856087c08f763a1cd1e055"
+  },
+  "actual_phase_fresh": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-A02-EXPLICIT-ONCE-EXCEPTION-FRESH.actual-a02.json",
+    "bytes": 2319,
+    "sha256": "1da606323214be3471317b1d68e8a67381436ae9ba3c21d61c9aadefc1df60d5"
+  },
+  "all_originals_requests_responses_session_sources_preserved": true,
+  "all_actual_popen_waits_observed": true,
+  "all_owned_running_after_wait": false,
+  "all_source_handles_closed": true,
+  "author_future_writers_after_this_delivery": 0,
+  "full_body_readers_after_this_delivery": 0,
+  "large_rebuilt_log_files_written": 0,
+  "original_mutations_or_deletions": 0,
+  "physical_cleanup_credit_bytes": 0,
+  "retirement_or_delete_admitted": false,
+  "historical_business_or_current_game_qualification_claimed": false,
+  "availability_now": "All three original mcp-calls.jsonl remain locally readable. Replayed output was never materialized. Ordered indexes and retained original responses enable future reconstruction to a new derived path only.",
+  "future_retirement_requires": "Root exact purpose/current-reference release, independent final proof review, keeper/source generation checks and separate actual execution capacity/approval. Never replace original filenames.",
+  "author_bytes_before_delivery": 431690
+}

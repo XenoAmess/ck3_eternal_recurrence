@@ -1,0 +1,33 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:41:47.888078+00:00",
+  "source": "c71045efb0e9ce46c2172ac260f142ed7a868072:tools/test_ck3_mod_acceptance_r06_scope.py",
+  "source_git_original_popen": {
+    "pid": 3044,
+    "wait": 0
+  },
+  "cap": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\capacity\\PUBLIC2-AUTHOR-CI-PARTITION.actual-a02.json",
+    "bytes": 2404,
+    "sha256": "d520b565b92660a6992aff59c60fa031c23a305791505a360ace7ef2f26014c9"
+  },
+  "files": [
+    {
+      "relative_path": "baseline/tools/test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 19716,
+      "sha256": "79046d91ca51c66028bd28465cfab3be87be09da5fc0d3141d4e53679192f4fc"
+    },
+    {
+      "relative_path": "candidate/tools/test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 21167,
+      "sha256": "f905971a3620b35a92b9009060ea952368f526d59dd2975d3cd4a5a07866b2e6"
+    },
+    {
+      "relative_path": "R06-BACKGROUND-FIXTURE.candidate.patch",
+      "bytes": 2825,
+      "sha256": "5f73b498da1d351be076135ce3c1357b344601f6bca0539a85a50d75bf6d571e"
+    }
+  ],
+  "scope": "single fixture only; source/test not runtime qualification; no production guard changed",
+  "prior_prelaunch_failure": "First hex command exceeded cmd limit; Python never started, no filesystem mutation."
+}

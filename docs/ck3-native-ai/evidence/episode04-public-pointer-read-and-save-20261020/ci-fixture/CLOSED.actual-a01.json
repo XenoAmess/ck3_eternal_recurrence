@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:51:13.812280+00:00",
+  "status": "CANDIDATE_FROZEN_WRITER_ZERO_NOT_INTEGRATED",
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\DELIVERY.actual-a01.json",
+    "bytes": 6856,
+    "sha256": "6c21f15b6114efae7175caeec952db3dd98b7c6aec876fec0c5c1163c3add95f"
+  },
+  "candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+    "bytes": 21167,
+    "sha256": "f905971a3620b35a92b9009060ea952368f526d59dd2975d3cd4a5a07866b2e6"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\R06-BACKGROUND-FIXTURE.candidate.patch",
+    "bytes": 2825,
+    "sha256": "5f73b498da1d351be076135ce3c1357b344601f6bca0539a85a50d75bf6d571e"
+  },
+  "readonly_endpoints": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\READONLY-ENDPOINTS.actual-a01.json",
+    "bytes": 2621,
+    "sha256": "2ea4b1b5ab9857bde527a8c399035aef1cae30ac620cdff727341d02522e3725"
+  },
+  "actual_aggregate_bytes": 197882,
+  "actual_file_count": 45,
+  "ceiling_bytes": 262144,
+  "sampled_runtime_peak_bytes": 223935,
+  "sampling_interval_seconds": 0.02,
+  "continuous_peak_proven": false,
+  "remaining_writer_count": 0,
+  "remaining_owned_processes": [],
+  "remaining_heavy": 0,
+  "remaining_new_execution": 0,
+  "business_credit": 0,
+  "formal_theme_credit_change": 0,
+  "current_formal_theme_count": 6,
+  "Game_Steam_payment_fullR08_credit": false,
+  "Git_W_D_mutation": false,
+  "closed_roots_touched": false,
+  "cap_parent": "PUBLIC2-AUTHOR-CI-PARTITION.actual-a02.json",
+  "later_capacity_observation": "capacity rev564 BASE GREEN finite exception revoked; this 256KiB/23:00 source-only child unchanged",
+  "historical_census_wait_receipt_gap": "Explicitly disclosed in HARNESS-FAILURES.derivative-a01.json; no invented original PID/exit receipt",
+  "future_action": "Root/readwatch_review source adoption and separately admitted integration; no current Git scope"
+}

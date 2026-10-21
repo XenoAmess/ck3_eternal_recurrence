@@ -1,0 +1,187 @@
+{
+  "schema": "xar.episode04.R03.bounded-formal-source-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:51:43Z",
+  "status": "ACCEPTED_BOUNDED_R03_FORMAL_SOURCE_SHOT",
+  "owner": "Root",
+  "source": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0191",
+    "historical_PID": 32028,
+    "historical_process_birth_filetime": "134366591050798809",
+    "episode": "native-31254-03602e8dc25a",
+    "raw_sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872",
+    "raw_bytes": 66574010
+  },
+  "original_M": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-experiment-cards-a01/EXPERIMENT-CARDS.md",
+    "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab",
+    "lines": "67–75",
+    "requirement": "Siege readings → natural settlement → same army actual count, bounded positive"
+  },
+  "extraction": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r03-r191-continuous-review-2245-a01/EXTRACTION.actual.json",
+    "bytes": 19166,
+    "sha256": "990a7e18e2d1a64be910f36942b83fee2aac3e4a0d29f50fa6c58d341a8b9e02",
+    "frames": 1200,
+    "frame_range": [
+      0,
+      1199
+    ],
+    "PTS_ms": [
+      0,
+      39967
+    ],
+    "time_base": "1/1000",
+    "selected_source_seconds": "[0,40)",
+    "contacts": 75,
+    "padding": 0,
+    "original_wait": 0
+  },
+  "existing_full_QA": {
+    "bytes": 19453,
+    "sha256": "52ca8dc34420a5912235f28c714fd5a6540d9362f710542556a2218583849dfb",
+    "decoded_frames": 3359,
+    "decode_exit": 0,
+    "PTS_regressions": 0,
+    "max_gap_ms": 34,
+    "repeated": false
+  },
+  "visual_reviews": {
+    "AI": {
+      "reviewer": "/root/media_chapter",
+      "all75_contacts_actually_viewed": true,
+      "valid_cells": 1200,
+      "review": {
+        "bytes": 2300,
+        "sha256": "50c3162ecb17ba1cbf4841664b868cb9a8da3f9ab1dc2ab97a5ccffc47b9dbbe"
+      },
+      "completed_at_utc": "2026-10-20T22:43:11Z"
+    },
+    "Root": {
+      "full_resolution_frames": [
+        0,
+        1199
+      ],
+      "full_resolution_review_at_utc": "2026-10-20T22:44:16Z",
+      "contact_sheets": [
+        0,
+        15,
+        37,
+        74
+      ],
+      "contacts_review_at_utc": "2026-10-20T22:46:46Z",
+      "all75_contacts_claimed": false,
+      "human_1x": false
+    },
+    "selected_army_cached_count": [
+      1184,
+      1173
+    ],
+    "selected_army_supply": [
+      300,
+      300
+    ],
+    "selected_army_UI_attrition": "1%",
+    "dates": [
+      "1067-02-21",
+      "1067-02-23"
+    ],
+    "no_necessary_area_obscuration": true,
+    "top_right_1185_to1174_not_used_as_selected_army_count": true
+  },
+  "native_binding": {
+    "facts_path": "C:/ck3-e04-resume-20261015-a01/r191-portable-candidate-a01/reader-derived-a03/STRICT-SOURCE-FACTS.actual.json",
+    "facts_bytes": 9964,
+    "facts_sha256": "f3ade075421681ce83031ed49bb49a27ff328dc4233908ad1c6b6ad580f5ff98",
+    "Army": 18,
+    "callback_sequence": 8,
+    "positive_writer_sequences": [
+      478,
+      479,
+      480,
+      492,
+      494,
+      495,
+      497
+    ],
+    "actual_physical_debits": [
+      1,
+      1,
+      3,
+      1,
+      2,
+      1,
+      2
+    ],
+    "actual_physical_debit_sum": 11,
+    "source_supply_budget": 0,
+    "source_raid_budget": 0,
+    "source_siege_budget": 11,
+    "physical_count": [
+      1174,
+      1163
+    ],
+    "physical_and_cached_counts_separate": true,
+    "claim": "These source-qualified siege-only positive events; no allworld or wholeinterval total"
+  },
+  "time_limits": {
+    "exact_native_event_PTS": null,
+    "exact_count_transition_frame": null,
+    "conservative_visible_change_seconds": "(0,39.967]",
+    "exact_poststable_start": null,
+    "UTC_to_PTS_interpolation": false
+  },
+  "administrative_boundary": {
+    "FFmpeg_complete_at_utc": "2026-10-20T22:41:19.333006Z",
+    "original_execution_deadline_utc": "2026-10-20T22:45:00Z",
+    "Root_prospectively_authorized_metadata_phase_before_old_deadline": true,
+    "three_small_AI_records_created_at_utc": "2026-10-20T22:45:42Z",
+    "coordinator_new_metadata_card_issued_at_utc": "2026-10-20T22:46:07Z",
+    "metadata_card_issuance_lag_seconds": 25,
+    "claim": "Heavy extraction and AI viewing completed before original deadline. Metadata issuance lag preserved; no retrospective assertion that the old card covered later writes. Final Root adjudication uses the actual new metadata phase until23:00."
+  },
+  "formal_count": {
+    "before": 6,
+    "after": 7,
+    "total": 11,
+    "percentage": 63.63636363636363,
+    "accepted_themes": [
+      "R03",
+      "R04",
+      "R06",
+      "R07",
+      "R09",
+      "R11",
+      "R12"
+    ],
+    "remaining_themes": [
+      "R05",
+      "R08",
+      "R10",
+      "R13"
+    ]
+  },
+  "unchanged": {
+    "research": "10/14",
+    "basic_business": "7/11",
+    "B": "0/2",
+    "ABC": "0/3",
+    "whole_R03_card": false,
+    "new_game_execution": false,
+    "full_R08": false,
+    "final_film_delivered": false,
+    "human_1x": false,
+    "OneDrive_delivered": false
+  },
+  "availability": {
+    "raw_and_contacts_and_endpoints": "External actual readable sources, images not copied to Git by this verdict",
+    "owner": "Root",
+    "review_at_utc": "2026-10-22T22:45:00Z",
+    "source_frame_trace": {
+      "path": "source-frame-PTS.actual.csv",
+      "bytes": 119982,
+      "sha256": "09910690289fe2769271e4f8fc0ef03862f12dbed4a614f553c5cadf17a875f9"
+    }
+  },
+  "no_historical_pending_or_failure_overwrite": true
+}

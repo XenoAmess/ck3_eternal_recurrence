@@ -1,0 +1,22 @@
+test_default_and_r04_keep_original_context_and_public_route (r06_scope_baseline.PublicR06ScopeTests.test_default_and_r04_keep_original_context_and_public_route) ... ok
+test_prepare_refuses_prefilled_capacity_without_allocating (r06_scope_baseline.PublicR06ScopeTests.test_prepare_refuses_prefilled_capacity_without_allocating) ... ok
+test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client (r06_scope_baseline.PublicR06ScopeTests.test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client) ... ERROR
+test_scope_rejects_crossed_or_expired_inputs_before_public_launcher (r06_scope_baseline.PublicR06ScopeTests.test_scope_rejects_crossed_or_expired_inputs_before_public_launcher) ... ok
+
+======================================================================
+ERROR: test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client (r06_scope_baseline.PublicR06ScopeTests.test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-public-pointer-read-v2-source-2300-a01\ci-scope-fix-a01\baseline\tools\test_ck3_mod_acceptance_r06_scope.py", line 222, in test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client
+    result = entry.native_dispatch(self.args('run', self.reviewed_path))
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\integration-worktree\tools\ck3_mod_acceptance.py", line 921, in native_dispatch
+    else:result=selection.describe() if args.mode=='plan' else selection.preflight() if args.mode=='preflight' else selection.run()
+                                                                                                                    ~~~~~~~~~~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\integration-worktree\tools\ck3_mod_acceptance.py", line 827, in run
+    raise ValueError(f"Existing reviewed launcher context missing: {key}")
+ValueError: Existing reviewed launcher context missing: steam_offline_receipt
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.036s
+
+FAILED (errors=1)

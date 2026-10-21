@@ -1,0 +1,144 @@
+{
+  "schema": "xar.maintenance.parent_pointer_read.cold.suite.v1",
+  "mode": "player-parent-pointer-read-once-v1",
+  "status": "SELECTED_CASES_COMPLETED_NOT_QUALIFICATION",
+  "data_readwatch_qualified": false,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:26:18.736665+00:00",
+  "selected_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "null-context",
+    "other-player-read",
+    "other-player-write",
+    "null-admission",
+    "cancel_late"
+  ],
+  "cases": [
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\foreign257_then_target\\CASE.actual.json",
+      "bytes": 1868,
+      "sha256": "048cb8dad4e9a6584300f385abde5bdde684f5d82086a697b552d068f92dfc0e"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\created_thread\\CASE.actual.json",
+      "bytes": 1842,
+      "sha256": "01964bf496845e5108ef30f9aabb9782b328e291abdc715b7bf3b906225d6f9d"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\foreign4096_limit\\CASE.actual.json",
+      "bytes": 1856,
+      "sha256": "0d1bd90cbfc55990e530633d88369844679bf0087828e306efad112bfce4b958"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\timeout\\CASE.actual.json",
+      "bytes": 1800,
+      "sha256": "4cc4f2be9400f5d656d96a5d105fabb1a5b85895daac08c07458aca1787aee60"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\restore-fault\\CASE.actual.json",
+      "bytes": 1839,
+      "sha256": "cc915bb0d0e2ff7128a8be9941e857eeff8ecd34e4ca85f647195b008b2f4ba7"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\readback-fault\\CASE.actual.json",
+      "bytes": 1843,
+      "sha256": "6c2f14879bae13e1959329b64e95777ed795af472782f6133f0877ff2e1b6a32"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\continue-fault\\CASE.actual.json",
+      "bytes": 1842,
+      "sha256": "d7d639d323238e2a0ef0850df8db983b765f08f72c6ca3a8e972fc0b88230adb"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\default-off\\CASE.actual.json",
+      "bytes": 1200,
+      "sha256": "ca0d628813630ed50d1834189fc031b3a4637bd1a7964ca6a0112dec3bf24dbd"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\missing-ack\\CASE.actual.json",
+      "bytes": 1201,
+      "sha256": "97063c5c6396dcc96cdc8b9cadff98eb6aeebd36e0e4dabdfc95d3d56806e7da"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\bad-schema\\CASE.actual.json",
+      "bytes": 1199,
+      "sha256": "afedd2d8bec38663573eca6a14c84e4d58d30908aa7d0df4693367302886e345"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-dr\\CASE.actual.json",
+      "bytes": 1384,
+      "sha256": "7138267df2a6468e75392155ff6d7eee4c136e5d99f9c894fd8901c9e90ba65f"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-tf\\CASE.actual.json",
+      "bytes": 1383,
+      "sha256": "24be62d286be0aae48c072a2435636e819b3caf7496d32d1973d54c99f0bdbe9"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\context-drift\\CASE.actual.json",
+      "bytes": 1838,
+      "sha256": "c8bd6513ba01389ae5ba03ec994d7466d8c59a266c828230f4841e051d26a9be"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\fullid-drift\\CASE.actual.json",
+      "bytes": 1841,
+      "sha256": "a6e1e4df25db5d61e0f2f032e411c09713fdf90d586e97d7fa8edf9bc2e75ebb"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\magic-drift\\CASE.actual.json",
+      "bytes": 1839,
+      "sha256": "00bb9bd0d40ac11262cda8a545cfe99e94d14dae69cec3635fe70ee0a3ee08d0"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\session-drift\\CASE.actual.json",
+      "bytes": 1845,
+      "sha256": "8c564949da3a324eb36943255ffa0bb4946176cf02b73b8a5a96968f8799711b"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\null-context\\CASE.actual.json",
+      "bytes": 1821,
+      "sha256": "5ca4e74fdac658f454b5d91d0464d4851c72b0774b74b07adae173beafa3c2ea"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-read\\CASE.actual.json",
+      "bytes": 1852,
+      "sha256": "35cba0b8c17f1bcd787e822bbb84c2132ae477ca647ecc3f9664ad71a8c88e8e"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-write\\CASE.actual.json",
+      "bytes": 1856,
+      "sha256": "811c929c82f3ee94b47869f363f3218ee7c09743f9c473b648802466f59379d5"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\null-admission\\CASE.actual.json",
+      "bytes": 1825,
+      "sha256": "061a5cf0d898c0534c377678bee84a72e6455bd114a141637bc750a287a3e2db"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\cancel_late\\CASE.actual.json",
+      "bytes": 1829,
+      "sha256": "06e20bc3242e9008b17ebd9859ebd0c528eabe31018b53123173983f8ac3a35c"
+    }
+  ],
+  "Root_required_cases_qualification_not_self_issued": true,
+  "real_CK3": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false
+}

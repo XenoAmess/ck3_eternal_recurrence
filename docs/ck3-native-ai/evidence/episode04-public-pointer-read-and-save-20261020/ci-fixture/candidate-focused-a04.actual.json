@@ -1,0 +1,118 @@
+{
+  "variant": "candidate",
+  "test_source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+  "test_source_sha256": "f905971a3620b35a92b9009060ea952368f526d59dd2975d3cd4a5a07866b2e6",
+  "repo_override": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "scratch_override": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\scratch-candidate-a04",
+  "pin_read_redirects": [
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_native_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_contract.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_probe.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_native_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_contract.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_probe.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_native_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_contract.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_probe.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_native_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_contract.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_probe.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_native_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_contract.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\steam_offline_state_probe.py"
+  ],
+  "catalog_read_redirects": [
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_r10_products.json"
+  ],
+  "catalog_pin_path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\dependencies\\ck3_mod_acceptance_r10_products.json",
+  "tests_run": 5,
+  "errors": 0,
+  "failures": 0,
+  "loaded_source": [
+    {
+      "module": "ck3_live_run_id",
+      "path": "tools/ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "module": "ck3_mod_acceptance",
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "module": "ck3_mod_acceptance_allocate",
+      "path": "tools/ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f"
+    },
+    {
+      "module": "ck3_mod_acceptance_background_types",
+      "path": "tools/ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e"
+    },
+    {
+      "module": "ck3_mod_acceptance_camera",
+      "path": "tools/ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "module": "ck3_mod_acceptance_cases.r04_county_entry",
+      "path": "tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "module": "ck3_mod_acceptance_cases.r04_county_entry_window",
+      "path": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "module": "ck3_mod_acceptance_cases.r06_refill_one_day",
+      "path": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "bytes": 43609,
+      "sha256": "cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf"
+    },
+    {
+      "module": "ck3_mod_acceptance_cases.r08_writer_common_adapter",
+      "path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "module": "ck3_mod_acceptance_cases.r10_prepare_adapter",
+      "path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e"
+    },
+    {
+      "module": "ck3_mod_acceptance_client",
+      "path": "tools/ck3_mod_acceptance_client.py",
+      "bytes": 66429,
+      "sha256": "7c63ead0dc553118485fd0dcaeb8e49537012c8175d8c980e3eb147487d889da"
+    },
+    {
+      "module": "ck3_mod_acceptance_graphics_cache",
+      "path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "module": "ck3_mod_acceptance_prepare",
+      "path": "tools/ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    }
+  ],
+  "remaining_scratch_files": []
+}

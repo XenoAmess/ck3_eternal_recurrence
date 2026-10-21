@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T22:46:07.361898+00:00",
+  "ended_at_utc": "2026-10-20T22:46:17.472227+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "--follow-imports=skip",
+    "--check-untyped-defs",
+    "--show-error-codes",
+    "--no-error-summary",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py"
+  ],
+  "env_selected": {
+    "PYTHONPATH": "C:\\ck3-e04-resume-20261020-a01\\r08-mypy1201-tools-2115-a01\\Lib;C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools;C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\src",
+    "MYPYPATH": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools;C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\src",
+    "TMP": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\mypy-tmp",
+    "TEMP": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\mypy-tmp",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "original_popen_pid": 25724,
+  "creation_filetime": "134370099673631318",
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "stdout_bytes": 0,
+  "stderr_bytes": 0
+}

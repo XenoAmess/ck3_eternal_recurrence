@@ -1,0 +1,141 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:50:04.702147+00:00",
+  "source_commit": "c71045efb0e9ce46c2172ac260f142ed7a868072",
+  "status": "CANDIDATE_FOCUSED_VALIDATED_NOT_INTEGRATED",
+  "canonical_mapping": {
+    "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+    "target": "tools/test_ck3_mod_acceptance_r06_scope.py"
+  },
+  "baseline": {
+    "methods": 4,
+    "expected_error_count": 1,
+    "returncode": 1
+  },
+  "candidate": {
+    "methods": 5,
+    "errors": 0,
+    "failures": 0,
+    "returncode": 0
+  },
+  "modified_test_mypy": {
+    "baseline": 0,
+    "candidate": 0,
+    "follow_imports": "skip",
+    "check_untyped_defs": true,
+    "suppressions_added": false
+  },
+  "source_byte_and_Git_blob_equivalence_count": 17,
+  "original_assertions_preserved": 28,
+  "current_assertions": 34,
+  "proposed_small_archive": [
+    {
+      "relative_path": "candidate/tools/test_ck3_mod_acceptance_r06_scope.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 21167,
+      "sha256": "f905971a3620b35a92b9009060ea952368f526d59dd2975d3cd4a5a07866b2e6"
+    },
+    {
+      "relative_path": "R06-BACKGROUND-FIXTURE.candidate.patch",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\R06-BACKGROUND-FIXTURE.candidate.patch",
+      "bytes": 2825,
+      "sha256": "5f73b498da1d351be076135ce3c1357b344601f6bca0539a85a50d75bf6d571e"
+    },
+    {
+      "relative_path": "README.md",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\README.md",
+      "bytes": 3863,
+      "sha256": "41ada822734970830b879b17bbae73a8d5a091f3d8e9467f7b4ec22f4c06acd4"
+    },
+    {
+      "relative_path": "SOURCE.actual-a01.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\SOURCE.actual-a01.json",
+      "bytes": 1379,
+      "sha256": "f28d54f9d998affd1aa5e47db2fa8b9723fde93d051579bfc677d5f239e4f43e"
+    },
+    {
+      "relative_path": "SOURCE-EQUIVALENCE.actual-a01.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\SOURCE-EQUIVALENCE.actual-a01.json",
+      "bytes": 5220,
+      "sha256": "126cfd41c7f708f959decc58ac0c01ee5f887d4519ff3696cf1f3a869715b3d6"
+    },
+    {
+      "relative_path": "BASELINE-A04-ORIGINAL-WAIT.actual.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\BASELINE-A04-ORIGINAL-WAIT.actual.json",
+      "bytes": 649,
+      "sha256": "957faac7a4941f29f54ad1f28ef1b18315a0fda89f4f018cdd4de0b61fbf08d9"
+    },
+    {
+      "relative_path": "CANDIDATE-A04-ORIGINAL-WAIT.actual.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CANDIDATE-A04-ORIGINAL-WAIT.actual.json",
+      "bytes": 651,
+      "sha256": "d9f4e5c3eacd8a49cc6036fe9d16e18b31398198c395f56f832a8a9adbc08942"
+    },
+    {
+      "relative_path": "baseline-a04-focused.stderr.log",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\baseline-a04-focused.stderr.log",
+      "bytes": 2217,
+      "sha256": "8a66b7df388a2b0dcebe324a6a6a5737e8d27882991fbe5c26d7738b6d63bf33"
+    },
+    {
+      "relative_path": "candidate-a04-focused.stderr.log",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate-a04-focused.stderr.log",
+      "bytes": 983,
+      "sha256": "d0308fd2aca3bd204733f27dbf66a0bce14ea4ac04437d0173b3460c6ea23ba2"
+    },
+    {
+      "relative_path": "baseline-focused-a04.actual.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\baseline-focused-a04.actual.json",
+      "bytes": 6109,
+      "sha256": "caabfc84d81761309781523034ef223d63a4b93706943e11926c3c7b6c11583b"
+    },
+    {
+      "relative_path": "candidate-focused-a04.actual.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate-focused-a04.actual.json",
+      "bytes": 6587,
+      "sha256": "d408cc2bdff27c6f29be0b5dcbadd0a0e6096d2493ff5427b066efa5c61ad13f"
+    },
+    {
+      "relative_path": "BASELINE-MYPY-ORIGINAL-WAIT.actual.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\BASELINE-MYPY-ORIGINAL-WAIT.actual.json",
+      "bytes": 1584,
+      "sha256": "8bfea058d69642708450d8bd8ff7f2c7ae863aa41d9f95e32a585d6064e384f1"
+    },
+    {
+      "relative_path": "CANDIDATE-MYPY-ORIGINAL-WAIT.actual.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CANDIDATE-MYPY-ORIGINAL-WAIT.actual.json",
+      "bytes": 1585,
+      "sha256": "3565e35d12db31500b9e3d72ab357b81f26d03f83cb42996d4386c64ea917998"
+    },
+    {
+      "relative_path": "CI-FAILURE.derivative-a01.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CI-FAILURE.derivative-a01.json",
+      "bytes": 934,
+      "sha256": "a3459ee347f6380209411efbc83393b3e67cca7d55467938973b85e4588ffb07"
+    },
+    {
+      "relative_path": "HARNESS-FAILURES.derivative-a01.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\HARNESS-FAILURES.derivative-a01.json",
+      "bytes": 1325,
+      "sha256": "74c524ee8147e8af451676540ec80b0904c7fc673d9bf8979690e89cfb0371de"
+    },
+    {
+      "relative_path": "focused_runner_a04.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\focused_runner_a04.py",
+      "bytes": 4447,
+      "sha256": "ffb55dd31a004a80c7473088183ef050fb70cc3bb9bb6c41959866d6c642c847"
+    },
+    {
+      "relative_path": "run_focused_a04.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\run_focused_a04.py",
+      "bytes": 3673,
+      "sha256": "c6d7c54df270e5f27828bc232c9952c5fbbe53ae5f2bb1cebc48ba076db9deb0"
+    }
+  ],
+  "selected_bytes": 65198,
+  "other_lane_files": "preserved local dependencies and failure attempts, refs-only unless independently selected",
+  "W_D_Git_mutation": false,
+  "game_SDK_screen_real_launcher": false,
+  "business_credit": 0,
+  "remaining_owned_processes": []
+}

@@ -1,0 +1,422 @@
+{
+  "schema": "xar.old-sdk-three-aggregate.retire-source-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:42:05.112010+00:00",
+  "status": "SOURCE_REVIEWED_METADATA_VALID_DELETE_NOT_AUTHORIZED",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 4946,
+    "sha256": "27355205dc1eb8a651722004128c5faf6978ef0c73017a509fba998634f7ef4a"
+  },
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-RETIRE-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 5874,
+    "sha256": "48c452dcb3643065dd158c29e48297ad21ba17b3a51625e7b6e043dda9bc8c7e"
+  },
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\retire_sdk_exact.py",
+    "bytes": 23756,
+    "sha256": "8d4d66c1a969924db5d4818fbd18ece594133b4513b5f4892014470e506af815"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+    "bytes": 2454,
+    "sha256": "58456bc6470a66480ec9f2b4b203877f722ed5d6e018a10868153fb9065bf2f8"
+  },
+  "source_only_cap": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-RETIRE-SOURCE512-PARTITION.actual-a03.json",
+    "bytes": 2239,
+    "sha256": "6f028af4b974660aa40cd979933128a2c8c988e0bb64cfab7a25e70bd0d5d31b"
+  },
+  "separate_retirement_phase_cap": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-RETIREMENT-PHASE-2300.actual-a04.json",
+    "bytes": 2379,
+    "sha256": "8dc1594b8843a76ba2dc056ff7f8fd9b304b71fce8f3156befa649f0eade8c24"
+  },
+  "future_argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\retire_sdk_exact.py",
+    "--plan",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+    "--execute",
+    "--execution-admission",
+    "NEW_FRESH_EXACT_RETIREMENT_CARD_REQUIRED"
+  ],
+  "proof_chain_retained": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\EXACT3-REPLAY-DELIVERY.actual-a01.json",
+    "bytes": 9848,
+    "sha256": "fb36d56334b837d98a84e29c9d6c0ddd58b0f7306044a4c85c07e36d90f3ee3e"
+  },
+  "aggregate_original_bytes": 781668767,
+  "retained_requests_responses": 2954,
+  "historical_source_machine_id": "unknown",
+  "current_machine_identity_source": "tools/ck3_live_run_id.py machine actual 2026-10-20T22:39Z",
+  "all_original_checks": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a01.ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "d1428f129ef25418908e42b153c1a1343952ddf07ac8a884e1aa5a528ce220cd"
+      },
+      "pid": 30684,
+      "created": "134370093772808215",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a02.ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "b800c0e29f9923f2c86b4ac94683905a0be0e2c134679e1664581040ae48ab36"
+      },
+      "pid": 24480,
+      "created": "134370094358523379",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a03.ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "60638c4fd8755cf2b04b00e1db269283884a0759de97fd796636be18cf218af5"
+      },
+      "pid": 25892,
+      "created": "134370094810973980",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a04.ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "2cf9279366ffdbb201c2c8981eb5a5c3565634ca02af08ab07c378865d53c069"
+      },
+      "pid": 5124,
+      "created": "134370095156191428",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a01.ORIGINAL-WAIT.actual.json",
+        "bytes": 1242,
+        "sha256": "5e9b5071cf4a594726853da3eb666ede281369a9c13ff9650f0557d0952e7f4d"
+      },
+      "pid": 23268,
+      "created": "134370093772972625",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a02.ORIGINAL-WAIT.actual.json",
+        "bytes": 1242,
+        "sha256": "0f49804ae6eae09b83fe6e6948a6d422a101b093697c3be884a0f01f4904491e"
+      },
+      "pid": 34632,
+      "created": "134370094366827091",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a03.ORIGINAL-WAIT.actual.json",
+        "bytes": 1242,
+        "sha256": "5efc6b90076bebeb69e07dee0292a2ee3c2f7fac4cbb320e02a0eb317ddb25a3"
+      },
+      "pid": 36432,
+      "created": "134370094801613028",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a01.ORIGINAL-WAIT.actual.json",
+        "bytes": 1452,
+        "sha256": "ec56debfa9f181452e0a366a462f156700916de45c4f1afe1c8f7bb11228a7c0"
+      },
+      "pid": 7272,
+      "created": "134370093773205406",
+      "actual_wait": 1,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a02.ORIGINAL-WAIT.actual.json",
+        "bytes": 1451,
+        "sha256": "40f539fd13aebbf90a0e1c807a0ed1d897d9da8a0caf42f5c53ef2c259b7702a"
+      },
+      "pid": 8848,
+      "created": "134370094134195701",
+      "actual_wait": 1,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a03.ORIGINAL-WAIT.actual.json",
+        "bytes": 1451,
+        "sha256": "bc463b9d7bae8c37b2bce93ddc260e58f60228499186597a3a5690db3200d156"
+      },
+      "pid": 30864,
+      "created": "134370094376800043",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a04.ORIGINAL-WAIT.actual.json",
+        "bytes": 1451,
+        "sha256": "bb0bb8febe90d04e95d3f8212e9f473713a3d546ad4b44de5c1193455dba9099"
+      },
+      "pid": 13160,
+      "created": "134370094819199036",
+      "actual_wait": 0,
+      "running": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a05.ORIGINAL-WAIT.actual.json",
+        "bytes": 1450,
+        "sha256": "49a9e10859038f22202ac7b8c3726fd560d62a9802046448ab449e12552ca654"
+      },
+      "pid": 4208,
+      "created": "134370095164463610",
+      "actual_wait": 0,
+      "running": false
+    }
+  ],
+  "final_check_names": [
+    "FOCUSED-a04:8 methods wait0",
+    "METADATA-a03:DELETE_FALSE wait0",
+    "MYPY-a05:strict3sources wait0"
+  ],
+  "all_payload_before_delivery": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a01.ORIGINAL-WAIT.actual.json",
+      "bytes": 1054,
+      "sha256": "d1428f129ef25418908e42b153c1a1343952ddf07ac8a884e1aa5a528ce220cd"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a01.stderr.log",
+      "bytes": 933,
+      "sha256": "458ae3799d1a9feeb814811238f5b8f882fa62bf8b5f5d39616adfe34e682e96"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a01.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a02.ORIGINAL-WAIT.actual.json",
+      "bytes": 1054,
+      "sha256": "b800c0e29f9923f2c86b4ac94683905a0be0e2c134679e1664581040ae48ab36"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a02.stderr.log",
+      "bytes": 933,
+      "sha256": "2d999711d7dd58d504aac38598bfc0bd11cdec8a7c20e5ce276b1f428ac847c0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a02.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a03.ORIGINAL-WAIT.actual.json",
+      "bytes": 1054,
+      "sha256": "60638c4fd8755cf2b04b00e1db269283884a0759de97fd796636be18cf218af5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a03.stderr.log",
+      "bytes": 933,
+      "sha256": "23c37cdfaa98b9ff7f3924fbe329e55b4e6a47ba2c2c740194fa0ada74726f1b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a03.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a04.ORIGINAL-WAIT.actual.json",
+      "bytes": 1054,
+      "sha256": "2cf9279366ffdbb201c2c8981eb5a5c3565634ca02af08ab07c378865d53c069"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a04.stderr.log",
+      "bytes": 1075,
+      "sha256": "f814dc3126142b6d1c41a0efeff71ebe160baf1097b2a26c9bab8ef10545dc0e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\FOCUSED-a04.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a01.ORIGINAL-WAIT.actual.json",
+      "bytes": 1242,
+      "sha256": "5e9b5071cf4a594726853da3eb666ede281369a9c13ff9650f0557d0952e7f4d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a01.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a01.stdout.log",
+      "bytes": 204,
+      "sha256": "f51acc3573c18acfbdd63cedd9311462faaddb7a760444d1eb2869fb508b232b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a02.ORIGINAL-WAIT.actual.json",
+      "bytes": 1242,
+      "sha256": "0f49804ae6eae09b83fe6e6948a6d422a101b093697c3be884a0f01f4904491e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a02.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a02.stdout.log",
+      "bytes": 204,
+      "sha256": "f51acc3573c18acfbdd63cedd9311462faaddb7a760444d1eb2869fb508b232b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a03.ORIGINAL-WAIT.actual.json",
+      "bytes": 1242,
+      "sha256": "5efc6b90076bebeb69e07dee0292a2ee3c2f7fac4cbb320e02a0eb317ddb25a3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a03.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\METADATA-a03.stdout.log",
+      "bytes": 204,
+      "sha256": "f51acc3573c18acfbdd63cedd9311462faaddb7a760444d1eb2869fb508b232b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a01.ORIGINAL-WAIT.actual.json",
+      "bytes": 1452,
+      "sha256": "ec56debfa9f181452e0a366a462f156700916de45c4f1afe1c8f7bb11228a7c0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a01.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a01.stdout.log",
+      "bytes": 9198,
+      "sha256": "239e533d32457e56ac9a5273ae2f8faa94e8e1a2b0a4f333b4a155546bc7086b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a02.ORIGINAL-WAIT.actual.json",
+      "bytes": 1451,
+      "sha256": "40f539fd13aebbf90a0e1c807a0ed1d897d9da8a0caf42f5c53ef2c259b7702a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a02.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a02.stdout.log",
+      "bytes": 186,
+      "sha256": "23b2411bcb87becb6c10db9347e30c36500df2b7a46745c761b8b2b8581d9f18"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a03.ORIGINAL-WAIT.actual.json",
+      "bytes": 1451,
+      "sha256": "bc463b9d7bae8c37b2bce93ddc260e58f60228499186597a3a5690db3200d156"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a03.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a03.stdout.log",
+      "bytes": 44,
+      "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a04.ORIGINAL-WAIT.actual.json",
+      "bytes": 1451,
+      "sha256": "bb0bb8febe90d04e95d3f8212e9f473713a3d546ad4b44de5c1193455dba9099"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a04.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a04.stdout.log",
+      "bytes": 44,
+      "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a05.ORIGINAL-WAIT.actual.json",
+      "bytes": 1450,
+      "sha256": "49a9e10859038f22202ac7b8c3726fd560d62a9802046448ab449e12552ca654"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a05.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\MYPY-a05.stdout.log",
+      "bytes": 44,
+      "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\README.md",
+      "bytes": 4122,
+      "sha256": "b5e5a36174b8783af150b2b029bdb956de84e92b8977776c6ab768caa2d6fe7e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+      "bytes": 2454,
+      "sha256": "58456bc6470a66480ec9f2b4b203877f722ed5d6e018a10868153fb9065bf2f8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\retire_sdk_exact.py",
+      "bytes": 23756,
+      "sha256": "8d4d66c1a969924db5d4818fbd18ece594133b4513b5f4892014470e506af815"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\run_source_checks.py",
+      "bytes": 3506,
+      "sha256": "7173314e9aaee48301695ae6587e1dda393f58e78eac9a362f50f9e6dc3ff4b2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 4946,
+      "sha256": "27355205dc1eb8a651722004128c5faf6978ef0c73017a509fba998634f7ef4a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\test_retire_sdk_exact.py",
+      "bytes": 7184,
+      "sha256": "bbfba0fa53734411fd8178b011a388194bab7d2e9c2e11738a1b798ace5b2a80"
+    }
+  ],
+  "source_authoring_complete": true,
+  "remaining_heavy_write_bytes": 0,
+  "owned_processes_running": 0,
+  "remaining_author_writers_after_this_receipt": 0,
+  "temporary_files": 0,
+  "delete_execution_admitted": false,
+  "original_aggregate_body_bytes_read": 0,
+  "response_body_bytes_read": 0,
+  "originals_deleted": 0,
+  "physical_free_credit_bytes": 0,
+  "retention_review": "2026-10-27T22:26:00Z; keep original aggregates until independently authorized exact retirement; always retain 2954 packets/index/proof sources",
+  "source_deadline": "2026-10-20T22:45:00Z",
+  "new_retirement_phase_hard_deadline": "2026-10-20T23:00:00Z",
+  "initial_checker_failures_preserved": "Mypy import search path / one loop variable type; initial concurrent temp-cleanup exception occurred after actual child wait persisted, no original log actions"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "xar.r176-keeper.lossless-produce-once.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:47:24.246591+00:00",
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\capacity\\R176-EXACT2-PRODUCE-ONCE.actual-a02.json",
+    "bytes": 4294,
+    "sha256": "78c88a051b1c85391682a739d77bb096d0d4e5e0f0a1ed07dd4213403a4d639f"
+  },
+  "raw_retirement_admitted": false,
+  "source_count": 2
+}

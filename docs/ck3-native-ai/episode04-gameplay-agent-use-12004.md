@@ -1,5 +1,13 @@
 # 战争四期研究：游玩智能体参考入口
 
+> 2026-10-20 23:00 UTC后继；machine_id: `desktop-3fevhd2-1c74096080`；来源Root普通Save/public源码采用、独立T3 cold及R03正式裁定。
+
+普通Save的shared cleanup消费者现选定接入producer物化与前后同native owner核验；host原有native_campaign/自然继承正确，不生成oneLife episode。未知Save不重提，旧oneLife unconfirmed独立保留，atomic Save时刻owner/文件内部actor仍未知。本批是源码集成，D冻结运行树未更新，不能据此声称新游戏Save通过。public pointer-read的有限21 synthetic cold和15源mypy/9fixture只授其本来范围，显式外置adapter/index与新鲜场景准入仍必需，文档不会自动成为planner策略。无target、loaded-null、空paid journal都不能推军费0；parent phase不等于付款writer被选中，正当前费率只作预算输入。继续用当前原生费率、钱包、已有承诺和雇佣应急金处理战争，资金不足延后可选建设，不停止合法战争处理。
+
+R03限定原M正例已Root签授，正式动态 **7/11**；研究10/14、业务7/11、B0/2、ABC0/3不变。镜头只支持具名siege事件/限定源，实际支付、payer/cadence、fullR08及最终影片仍未完成。[本批实际来源与边界](episode04-public-pointer-read-save-and-r03-20261020.md)。
+
+
+
 > 2026-10-20 21:30 UTC后继；machine_id: `desktop-3fevhd2-1c74096080`；Root生产源码采用21:11:38Z、R11正式裁定21:27:19Z及本次有限canonical回执。
 
 公共生产源码选定接入typed后台拒绝、11.12来源profile与default-OFF parent路由；这不更新D盘冻结运行树，也不证明当前Steam离线或hook已在CK3执行。此前“managed-host未绑定”的归因有误：host原本已选native_campaign，跟随实际玩家及自然继承，不生成oneLife episode，并与显式episode/game-rule lifecycle保持互斥。真实缺口在shared cleanup尚未核Save前后同native actor/owner；旧oneLife driver持久化消费者对无episode给unconfirmed，应独立保留，既不改true也不据此判普通Save失败。ordinarySave2正在修该consumer，未入本批15路径，普通Save验收边界尚未完成。paid/payer/cadence未知；继续以当前原生费率、钱包、承诺及雇佣应急金预算，正费率不当实付，空journal不推0费，战争可选建设规则继续。R11 Halt限定源现已Root签授，正式6/11；研究10/14、业务7/11、B0/2、ABC0/3不变，影片未完成。[源码消费者、有限验证和当前边界](episode04-production-runtime-integration-20261020.md)。

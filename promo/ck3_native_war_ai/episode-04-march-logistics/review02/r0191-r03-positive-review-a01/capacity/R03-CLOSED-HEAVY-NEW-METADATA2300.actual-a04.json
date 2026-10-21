@@ -1,0 +1,69 @@
+{
+  "schema": "xar.capacity.r03.closed-heavy-new-metadata-phase.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:46:07.406750+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01",
+  "historical_aggregate_ceiling_bytes": 14680064,
+  "future_additional_metadata_ceiling_bytes": 1048576,
+  "metadata_absolute_ceiling_bytes": 786432,
+  "hard_deadline_utc": "2026-10-20T23:00:00Z",
+  "original_extraction_hard_deadline_utc": "2026-10-20T22:45:00Z",
+  "original_once_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\R03-A02-SOURCE-BOUND-ONCE.actual-a03.json",
+    "bytes": 4543,
+    "sha256": "48180d3f86a2c02719c74dbd8e4a799a00a39fdf82a9ed29ad8ddc1fb80994f0"
+  },
+  "actual_extraction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\EXTRACTION.actual.json",
+    "bytes": 19166,
+    "sha256": "990a7e18e2d1a64be910f36942b83fee2aac3e4a0d29f50fa6c58d341a8b9e02"
+  },
+  "actual_original_owner_observation": {
+    "pid": 11148,
+    "actual_original_wait_returncode": 0,
+    "current_pid_exists": false,
+    "generation_not_inferred_from_PID_only": true
+  },
+  "two_complete_immutable_component_scans_equal": true,
+  "immutable_component_bytes": {
+    "contacts": 11049629,
+    "source-endpoints": 245334,
+    "source": 174916
+  },
+  "immutable_component_file_count": 117,
+  "FFmpeg_execution_admitted": false,
+  "new_images_or_endpoints_or_source_writes_admitted": false,
+  "Root_AI_review_metadata_execution_admitted": true,
+  "source_contacts_endpoints_now_readonly": true,
+  "old_recipe_original_deadline_unchanged": true,
+  "historical_hardcap_not_reissued": true,
+  "Root_authority": "Root explicitly grants new metadata-only phase23:00 after actualproducerwait0, Cfullfuture14MiB->conservative1MiB; no newimages/FFmpeg, no olddeadline retroapproval",
+  "previous_fullfuture_bytes": 14680064,
+  "new_conservative_fullfuture_bytes": 1048576,
+  "actual_not_subtracted_from_newfuture": true,
+  "physical_credit_bytes": 0,
+  "unused_credit_bytes": 0,
+  "quota_exception": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\ROOT-FINITE-QUOTA-EXCEPTION-512M-2300.actual-a01.json",
+    "bytes": 4691,
+    "sha256": "76e3ed5a706d09098f668ecbd68a5ffa23bf2e8d8a856087c08f763a1cd1e055"
+  },
+  "base_budget": {
+    "C_known_future_bytes": 28311552,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25798115328,
+    "C_floor_margin_bytes": 51406573568,
+    "C_projected_whole_volume_upper_bound_bytes": 438252535808,
+    "C_quota_margin_bytes": -165871616,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 33234944
+  },
+  "effective_C_quota_margin_bytes": 370999296,
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 433128,
+    "sha256": "de7e846f25337ccbdedc7f007a18a860d2b65de3016153983ffde75b2e7e303c"
+  }
+}

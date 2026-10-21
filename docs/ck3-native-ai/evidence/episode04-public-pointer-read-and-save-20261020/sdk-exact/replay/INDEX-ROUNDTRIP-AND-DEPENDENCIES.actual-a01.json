@@ -1,0 +1,63 @@
+{
+  "schema": "xar.old-sdk-exact-replay.stored-index-check.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:26:22.869080+00:00",
+  "groups": [
+    {
+      "group": "r165",
+      "ordered_index": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-ordered-index.actual.jsonl.gz",
+        "bytes": 33344,
+        "sha256": "bd1d1d857810aade7c43db88925940da5d6f896d703c0ea3b3ac8b247f318a79"
+      },
+      "gzip_single_member_crc_eof_verified": true,
+      "json_type_domain_roundtrip_verified": true,
+      "canonical_u64_identity_strings_verified": true,
+      "actual_rows": 149,
+      "actual_line_bytes_sum": 303227579,
+      "retained_response_bytes": 391332125,
+      "retained_request_bytes": 21290,
+      "retained_dependency_current_metadata_verified_count": 298,
+      "full_body_SHA_basis": "actual samehandle per-group proof; postcheck does not rehash original payloads"
+    },
+    {
+      "group": "r175",
+      "ordered_index": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-ordered-index.actual.jsonl.gz",
+        "bytes": 124237,
+        "sha256": "554e6d13778684c2b87ce70c3f7b0295b4004e0c0cfc0fd78feb6c4542b5fbf0"
+      },
+      "gzip_single_member_crc_eof_verified": true,
+      "json_type_domain_roundtrip_verified": true,
+      "canonical_u64_identity_strings_verified": true,
+      "actual_rows": 573,
+      "actual_line_bytes_sum": 191399668,
+      "retained_response_bytes": 235279236,
+      "retained_request_bytes": 109176,
+      "retained_dependency_current_metadata_verified_count": 1146,
+      "full_body_SHA_basis": "actual samehandle per-group proof; postcheck does not rehash original payloads"
+    },
+    {
+      "group": "r177",
+      "ordered_index": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-ordered-index.actual.jsonl.gz",
+        "bytes": 158254,
+        "sha256": "28b5645ac937eebfb98660b2d58ccc60ad83064b552d1e06ac823dab87aeaa4c"
+      },
+      "gzip_single_member_crc_eof_verified": true,
+      "json_type_domain_roundtrip_verified": true,
+      "canonical_u64_identity_strings_verified": true,
+      "actual_rows": 755,
+      "actual_line_bytes_sum": 287041520,
+      "retained_response_bytes": 352819924,
+      "retained_request_bytes": 135450,
+      "retained_dependency_current_metadata_verified_count": 1510,
+      "full_body_SHA_basis": "actual samehandle per-group proof; postcheck does not rehash original payloads"
+    }
+  ],
+  "all_three_passed": true,
+  "large_body_rehashes": 0,
+  "source_mutations": 0,
+  "retire_admitted": false
+}

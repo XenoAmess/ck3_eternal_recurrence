@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:50:04.607301+00:00",
+  "kind": "derived tool-transcript disclosure",
+  "prelaunch_cmd_length_rejections": [
+    {
+      "tool_chunk": "48f65d",
+      "Python_started": false,
+      "filesystem_mutation": false
+    },
+    {
+      "tool_chunk": "3655c7",
+      "Python_started": false,
+      "filesystem_mutation": false
+    }
+  ],
+  "census_race": {
+    "tool_chunk": "474de8",
+    "error": "FileNotFoundError while temporary test file removed during census",
+    "same_original_Popen_wait_in_finally": true,
+    "original_pid": null,
+    "actual_wait_exit_code": null,
+    "standalone_wait_receipt_available": false,
+    "child_counts_source": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\baseline-focused-a03.actual.json",
+      "bytes": 6109,
+      "sha256": "7130e9f96a8d07615246207a8e2bde848a4275683222bb060976dd92436693c4"
+    },
+    "no_actual_OS_exit_inferred_from_child_counts": true
+  },
+  "preserved_sparse_attempts": [
+    "BASELINE-ORIGINAL-WAIT.actual.json",
+    "BASELINE-A02-ORIGINAL-WAIT.actual.json"
+  ],
+  "corrected_comparison": "baseline/candidate a04 original-Popen receipts",
+  "source_change_after_fault": false
+}

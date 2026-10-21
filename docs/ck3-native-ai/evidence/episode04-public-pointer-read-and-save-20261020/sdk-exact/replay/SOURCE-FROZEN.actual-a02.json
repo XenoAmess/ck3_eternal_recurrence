@@ -1,0 +1,52 @@
+{
+  "schema": "xar.old-sdk-exact-replay.source-frozen.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:11:59.590646+00:00",
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\replay_sdk_a02.py",
+    "bytes": 28212,
+    "sha256": "4db8795a086d5e4ff17d3b68dc63e0a7a64102bf81932ae1d42189b26b0aa922"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\SOURCE-PLAN.actual-a01.json",
+    "bytes": 6858,
+    "sha256": "349d15a9a8c5e80387993c6aa74d38ec046d47bebda07c85bed5784c28e88498"
+  },
+  "fixtures_passed": true,
+  "fixtures": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\FIXTURES-a04.stdout-stderr.log",
+    "bytes": 498,
+    "sha256": "ce05ef99c28cd41725d85c995f0ed63e6e975e48cc318c29411d9c8ae4b31d78"
+  },
+  "fixtures_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\FIXTURES-a04.WAIT.actual.json",
+    "bytes": 1102,
+    "sha256": "0d42a292b790a7ca7decb34a56235b4962cf51296969dc46378880907c786436"
+  },
+  "actual_mypy_returncode": 0,
+  "mypy_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\MYPY-a04.WAIT.actual.json",
+    "bytes": 1652,
+    "sha256": "d4b17cc837e11518f48fd4f35399f458c44ef980d6c299b475111272fecf83ba"
+  },
+  "mypy_output": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\MYPY-a04.stdout-stderr.log",
+    "bytes": 44,
+    "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+  },
+  "source_ast_assert_count": 0,
+  "typecheck_source_count": 3,
+  "prior_attempt_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-RESULT.actual.json",
+    "bytes": 2711,
+    "sha256": "228e26b3b752b1f0056bae53432764e9d6df3c7b10627660bfc23bedc1339b0f"
+  },
+  "actual_packet_diagnostic": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\R165-CONTRACT-DIAGNOSTIC.actual-a01.json",
+    "bytes": 1982,
+    "sha256": "0818afb1ba7d7d1da636704ab3d3e711760b9d6832045dc1a134c5b026eb5fff"
+  },
+  "Root_a02_authorization": "2026-10-20 current team message: create-only a02 + actualmypy + Native/Local/absent/null fixtures then newonce R165->175->177 in original4MiB/22:45; preserve originals and a01 failure",
+  "retire_admitted": false
+}

@@ -1,0 +1,26 @@
+{
+  "machine_id":"desktop-3fevhd2-1c74096080",
+  "observed_at_utc":"2026-10-20T22:26:00Z",
+  "status":"PURPOSE_RELEASE_FOR_EXACT_DERIVED_AGGREGATE_RETIREMENT_ONLY",
+  "historical_game_machine_id":"unknown",
+  "root_actual_reads":["replay_sdk_a02.py complete stream/comparison/main result implementation","All three actual group results, exact source identities/full original and replay SHA/counts and index pins","Independent SDK source review findings including real SDK-error and local-recorder packets; no source synthesis"],
+  "inputs":[
+    {"path":"C:/ck3-war-episode04-research-20261004-a01/native-live-day15-r0165-a01/mcp-calls.jsonl","bytes":303227579,"sha256":"b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8","file_id":"281474978776885","lines":149},
+    {"path":"C:/ck3-war-episode04-research-20261004-a01/native-live-r0175-a02/mcp-calls.jsonl","bytes":191399668,"sha256":"ab74a3b1bbb286d5a560883677933229b3bed7a00f679b2d10e42c05c34f10e2","file_id":"281474979252586","lines":573},
+    {"path":"C:/ck3-war-episode04-research-20261004-a01/native-live-r0177-a01/mcp-calls.jsonl","bytes":287041520,"sha256":"637219dd8a64d3330a71934a5404822c987b90dac624835b9ec4df4d05caed93","file_id":"281474979213274","lines":755}
+  ],
+  "total_logical_bytes":781668767,
+  "total_lines":1477,
+  "purpose_decision":"These closed October5 aggregate ledgers are exact derived serializations of retained individual responses. Actual complete replay proved every line/order/bytes and total SHA. Their unique original requests/responses, native results, sessions, recordings and small records remain. Root releases only these three redundant aggregate replicas after the replay author is closed; closed evidence is not reclassified as a successful business session.",
+  "availability_requirements":[
+    "Preserve all 1477 requests and 1477 responses, ordered gzip indices and source SHA/identity metadata with finite October27 review. Check current exact identities under deny-write/delete handles at retirement.",
+    "Historical raw aggregate paths become explicitly deleted only after actual deletion. Preserve historical references; publish a small availability/regeneration map. A later reconstruction must use a new derived path and must not impersonate original physical evidence.",
+    "Current allocator cleanup depends on current R223 native-report, not these three October5 aggregates; that report and all protected save/media inputs remain outside this plan.",
+    "Formal R12 and other historical source evidence may use retained original response packets and exact ordered indices. This decision changes no prior acceptance or failure result."
+  ],
+  "remaining_gates":["Final index CRC/count/metadata proof and independent review","Typed retirement source actual mypy/meaningful negative guards and independent review","Fresh finite coordinator retirement card, policy and user-permanent-assets index actual read","Same held aggregate handle complete SHA, per-file durable WAL, exact handle delete and path absence"],
+  "retirement_execution_admitted_by_this_record":false,
+  "no_candidate_space_credit":true,
+  "no_request_response_or_other_asset_deletion":true,
+  "review_at_utc":"2026-10-27T22:26:00Z"
+}

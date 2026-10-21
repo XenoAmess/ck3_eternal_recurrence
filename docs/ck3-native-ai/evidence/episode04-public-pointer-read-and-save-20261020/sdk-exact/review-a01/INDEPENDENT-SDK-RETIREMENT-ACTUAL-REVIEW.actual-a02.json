@@ -1,0 +1,91 @@
+{
+  "schema": "xar.sdk.exact-three-retirement.independent-actual-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "historical_game_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:48:52.110147+00:00",
+  "reviewer": "readwatch_review",
+  "status": "ACTUAL_THREE_AGGREGATES_RETIRED_KEEPERS_RETAINED_PHYSICAL_CREDIT_UNASSESSED",
+  "owner_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-ORIGINAL-WAIT.actual.json",
+    "bytes": 2252,
+    "sha256": "584ece6585314bd7b01b233a86b55772d9b131630aeed2ff7c23d197af9187c2"
+  },
+  "original_popen_pid": 23944,
+  "creation_filetime_decimal": "134370099901760332",
+  "original_wait": 0,
+  "entry_card_age_seconds": 13.27709,
+  "actual_start": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\RETIREMENT-START.actual.json",
+    "bytes": 1006,
+    "sha256": "6bd77569cf5fac64e343acdb15a0e8104427d7732660f59cc23eca1d8e72c3ef"
+  },
+  "actual_final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\RETIREMENT-FINAL.actual.json",
+    "bytes": 2799,
+    "sha256": "f5b460c03c05e3e64b21d7b23c9af0cfc47e643d699f6678f373e5b82e648a56"
+  },
+  "targets": [
+    {
+      "group": "r165",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\mcp-calls.jsonl",
+      "logical_bytes": 303227579,
+      "original_absent_now": true,
+      "intent": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\01-INTENT.actual.json",
+        "bytes": 683,
+        "sha256": "31849211d4ec55d62ac5923bf5742be2ce799e08e7632a9fbb0bd18c4a2293c4"
+      },
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\01-RESULT.actual.json",
+        "bytes": 745,
+        "sha256": "3ad77834a499490f9f4aca735ffedfbdda8c990c81989e5010139da2da296484"
+      }
+    },
+    {
+      "group": "r175",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\mcp-calls.jsonl",
+      "logical_bytes": 191399668,
+      "original_absent_now": true,
+      "intent": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\02-INTENT.actual.json",
+        "bytes": 677,
+        "sha256": "7253f1478737ea4ab4ee7d831fc971138120b239c52214af1755e7da840b3f3c"
+      },
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\02-RESULT.actual.json",
+        "bytes": 739,
+        "sha256": "3672b2952721a8146fafc6ada83b833a0e1006a6cb750e970088b1f941e95e1b"
+      }
+    },
+    {
+      "group": "r177",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\mcp-calls.jsonl",
+      "logical_bytes": 287041520,
+      "original_absent_now": true,
+      "intent": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\03-INTENT.actual.json",
+        "bytes": 677,
+        "sha256": "5006ebb795dd422f17882d41c83849a510b2a1e7322b0f84bd8f185f393e4215"
+      },
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\03-RESULT.actual.json",
+        "bytes": 739,
+        "sha256": "3cb7a636dd02f571e474b9a3313e3e27cb2986f2195740d2f3c671f53848dcb7"
+      }
+    }
+  ],
+  "retired_logical_bytes": 781668767,
+  "retained_keeper_current_metadata_verified": 2954,
+  "retained_small_proof_closure_pins_verified": 32,
+  "reconstruction": "Retained responses plus ordered indexes can reconstruct only to a new derived path. Retired original log files are no longer readable; no same-name substitute exists.",
+  "independent_operations": {
+    "original_payload_reads": 0,
+    "keeper_payload_rehashes": 0,
+    "new_fullstream_replays": 0,
+    "delete_calls": 0,
+    "physical_cleanup_credit_claimed_bytes": 0,
+    "all_read_handles_closed": true
+  },
+  "review_writers_after_close": 0,
+  "review_Popen_after_close": 0
+}

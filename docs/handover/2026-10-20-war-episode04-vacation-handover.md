@@ -1,5 +1,17 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-20 23:00 UTC：普通Save/public v2源码集成，R03限定正例使正式7/11
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root已采用普通Save3/public pointer-read v2五源与c710 CI夹具修正；本批以各原件精确pins集成，实际commit/push及后继head CI须看新发布回执。SAVE helper4c8eb1/writer1329f4/test99be6c同闭包；host原本已正确跟随native_campaign实际玩家/自然继承，本次补shared cleanup对producer物化及Save前后同native owner的消费，不生成oneLife episode。source-only六focused/四源mypy通过不等于游戏Save；旧oneLife unconfirmed、atomic Save时刻owner/文件内部actor/native FILETIME边界仍保留。SAVE手写时间戳转录勘误与RD旧采用真实晚8.965880秒分开，不追认及时。
+
+T3新21项standalone synthetic pointer-read cold由Root独立实际签出，完整raw.v2/六DR/42原case waits与旧execution Q分列；public最终15源mypy0/9focused0和独审只授源码/零SDK入口。代码仍需显式外置adapter/index绑定新Save/public peers；模板占位无效，文档不自动接入planner。D冻结树未更新，CK3/public live、parent return、C/D实付/payer/cadence/fullR08均未授；无target、null或空journal不推0军费。c710 Official step19原RED保真，候选仅synthetic receipt/argv及拒绝负例，局部五项通过不冒新head CI绿色。
+
+Root22:51:43Z接受R0191 R03原M`[0,40)`秒/1200实际帧：cached1184→1173与physical1174→1163分列，Army18七条source-qualified siege-only直接扣兵合11，source supply/raid0、siege11；非全世界/全区间总额，wholeR03false，exact PTS null。AI全75/Root两端点+4sheets分别记，25秒metadata卡gap保真。正式 **7/11（63.64%，R03/R04/R06/R07/R09/R11/R12）**，余R05/R08/R10/R13；研究10/14、业务7/11、B0/2、ABC0/3不变，整片/人工1×/OneDrive未完成。
+
+SDK三个旧聚合路径现已实际删除，315835B ordered indices入Git，原packet仍外置按Oct27复核、仅在新派生路径重建；不回改旧readable快照。R176只可逆gzip produce，原件保留/Oct25保护，payload不复制、无删除credit。详见[本批专题](../ck3-native-ai/episode04-public-pointer-read-save-and-r03-20261020.md)；[R03 Root裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/ROOT-R03-FORMAL-ADJUDICATION.actual-a01.json)；[唯一正式账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)。
+
+
+
 ## 2026-10-20 21:30 UTC：公共生产源码采用，R11限定正例使正式6/11
 
 `machine_id: desktop-3fevhd2-1c74096080`。Root21:11:38Z采用15条公共生产源码路径；actor取revision-a02，本批另明确test临时目录与JSON纯换行两overlay。真实canonical8项通过，测试更强mypy原/新同7项旧诊断，原生产范围15遗留诊断不称全clean。标准CLI/harmless原Popen与mock Steam/OS/SDK分列；此前“managed-host未绑定”的归因有误：host原本已选native_campaign，跟随实际玩家及自然继承，不生成oneLife episode，并与显式episode/game-rule lifecycle保持互斥。真实缺口在shared cleanup尚未核Save前后同native actor/owner；旧oneLife driver持久化消费者对无episode给unconfirmed，应独立保留，既不改true也不据此判普通Save失败。ordinarySave2正在修该consumer，未入本批15路径，普通Save验收边界尚未完成。未授当前Steam离线、D冻结树部署、CK3/public live或paid/payer/cadence/fullR08。精确7ac6两CI已SUCCESS，后继head另核；原失败保留。

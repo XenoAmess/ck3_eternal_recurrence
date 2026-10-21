@@ -1,0 +1,52 @@
+{
+  "schema": "xar.source-check.original-popen-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_utc": "2026-10-20T21:56:15.174621+00:00",
+  "completed_utc": "2026-10-20T21:56:17.421758+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\tools\\test_ck3_ordinary_save_contract.py",
+    "OrdinarySaveTests.test_canonical_fixture_root_and_explicit_external_root",
+    "OrdinarySaveTests.test_checkpoint_nullable_fields_missing_rejected",
+    "OrdinarySaveTests.test_snapshot_missing_and_null_distinguished_without_new_producer_fields",
+    "OrdinarySaveTests.test_new_proof_numbers_reject_unsafe_integer_and_u32_overflow",
+    "OrdinarySaveTests.test_legacy_large_mtime_not_migrated_into_new_proof",
+    "OrdinarySaveTests.test_real_existing_driver_materializes_small_file_and_brackets"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03",
+  "pid": 14676,
+  "process_create_time_100ns": 134370069751767022,
+  "identity_error": null,
+  "original_popen_wait_returncode": 0,
+  "source_pins_before_original_popen": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\tools\\test_ck3_ordinary_save_contract.py",
+      "bytes": 17620,
+      "sha256": "99be6c809ca0666a8464aebe35920ecc221069a98a161d40ef25f49d5d31173e"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\stdout.log",
+    "bytes": 3222,
+    "sha256": "2085d8f044f0e011d703c5cf97bf0b89ba87837527494a971f34cafe87cccfa6"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\stderr.log",
+    "bytes": 1033,
+    "sha256": "e098d71d681ce4b1cac44c12a17bb1daf216a34544e0efd86f8e0b1cfe5eba13"
+  },
+  "no_game_sdk_or_native_execution": true
+}

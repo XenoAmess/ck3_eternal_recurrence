@@ -1,0 +1,58 @@
+{
+  "schema": "xar.old-sdk-exact-replay.group-result.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:21:54.318470+00:00",
+  "group": "r165",
+  "status": "EXACT_REPLAY_PASS",
+  "source_log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\mcp-calls.jsonl",
+  "source_identity": {
+    "volume_serial": "13886423844274364792",
+    "file_id": "281474978776885",
+    "bytes": 303227579,
+    "mtime_ns": "1791163961495910000",
+    "fstat_ctime_ns": "1791163961495910000"
+  },
+  "source_bytes_read": 303227579,
+  "original_sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+  "replayed_sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+  "actual_line_count": 149,
+  "actual_max_line_bytes": 11121476,
+  "actual_max_response_bytes": 14404830,
+  "actual_response_records_verified": 149,
+  "actual_request_records_verified": 149,
+  "unique_response_count": 149,
+  "ordered_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-ordered-index.actual.jsonl.gz",
+    "bytes": 33344,
+    "sha256": "bd1d1d857810aade7c43db88925940da5d6f896d703c0ea3b3ac8b247f318a79"
+  },
+  "session_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\session-result.json",
+    "bytes": 12479,
+    "sha256": "a668366bf2f47a436e3e06c7a692b5217407ef058bd62558ebe281bb73411f53",
+    "origin_machine_id": "unknown",
+    "finished_at": "2026-10-05T01:32:43.863106+00:00",
+    "shutdown_original_exit_code": 1,
+    "normal_business_exit_claimed": false
+  },
+  "error": null,
+  "seconds": 51.8181093998719,
+  "source_read_chunk_max_bytes": 262144,
+  "single_response_limit_bytes": 16777216,
+  "line_limit_bytes": 67108864,
+  "observed_kernel_peak_wset_bytes": 81977344,
+  "RAM_claim": "Source byte limits are not RSS limits; JSON objects inflate. Kernel peak sampled;768MiB guard.",
+  "all_source_handles_closed": true,
+  "source_mutations": 0,
+  "large_rebuilt_output_files": 0,
+  "retire_admitted": false,
+  "retired_bytes": 0,
+  "regeneration_contract": {
+    "ordered_index": "gzip JSONL in original order; canonical decimal-string file identities",
+    "serializer": "(json.dumps(json.loads(response_bytes),ensure_ascii=False)+newline).encode(utf8)",
+    "required": "Verify every response SHA and metadata, replay ordered rows, verify original aggregate SHA/bytes",
+    "future_output": "Derived new path only; never impersonate original physical evidence"
+  },
+  "future_retirement_gate": "Separate Root purpose/reference release and exact capacity/delete approval required"
+}

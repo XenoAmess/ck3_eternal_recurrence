@@ -1,0 +1,106 @@
+{
+  "schema": "xar.capacity.r03.source-bound-once.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:40:10.459795+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "source_bound_single_extraction_execution_admitted": true,
+  "FFmpeg_execution_admitted": true,
+  "retirement_or_delete_execution_admitted": false,
+  "Game_SDK_Steam_screen_execution_admitted": false,
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01",
+  "aggregate_ceiling_bytes": 14680064,
+  "all_inclusive_aggregate_ceiling_bytes": 14680064,
+  "component_ceiling_bytes": {
+    "contacts": 12582912,
+    "two_fullres_endpoints": 524288,
+    "source_and_checks": 524288,
+    "metadata": 786432,
+    "spare": 262144
+  },
+  "hard_deadline_utc": "2026-10-20T22:45:00Z",
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\R03-RECIPE.prepared-a02.json",
+    "bytes": 6454,
+    "sha256": "e5f2d54ebe2385dd68f9aa272ac79b1f096ae5c5cfe39113d5d30a788bd309e2"
+  },
+  "Root_once_source_adoption": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\ROOT-SOURCE-AND-ONCE-ADOPTION.actual-a01.json",
+    "bytes": 1789,
+    "sha256": "a7eff9ccd88de5eaa130d06f95a1ef1d017aaa023ddfeeac9c97d7b08619067f"
+  },
+  "independent_source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\review-a01\\INDEPENDENT-R03-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 12826,
+    "sha256": "fff54068826f9d016c20b9f5d3d31bfee0ebc1b24c8931caeee759b402eebee8"
+  },
+  "financial_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\R03-FINANCIAL14-PROSPECTIVE.actual-a02.json",
+    "bytes": 2430,
+    "sha256": "c5ed5881cd51ce725f45681c7eb7b8ca3b05420d7ad5ad72e476fa5f839b58cf"
+  },
+  "source_stat_fresh": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 66574010,
+    "mtime_ns": "1792186745751031500",
+    "st_dev": "7220568048185129294",
+    "st_ino": "562949956071195",
+    "raw_body_rehash": false,
+    "retained_sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872"
+  },
+  "approved_entry": [
+    "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_once_a02.py",
+    "--execute-once",
+    "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\R03-RECIPE.prepared-a02.json"
+  ],
+  "single_once_no_retry": true,
+  "all_FFmpeg_argv_and_1200frame_75contact_geometry_sourcepins_in_exact_recipe": true,
+  "quota_exception": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\ROOT-FINITE-QUOTA-EXCEPTION-512M-2300.actual-a01.json",
+    "bytes": 4691,
+    "sha256": "76e3ed5a706d09098f668ecbd68a5ffa23bf2e8d8a856087c08f763a1cd1e055"
+  },
+  "base_project_quota_bytes": 438086664192,
+  "effective_project_quota_bytes": 438623535104,
+  "base_budget": {
+    "C_known_future_bytes": 41943040,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25811746816,
+    "C_floor_margin_bytes": 51437162496,
+    "C_projected_whole_volume_upper_bound_bytes": 438221946880,
+    "C_quota_margin_bytes": -135282688,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 33234944
+  },
+  "effective_C_quota_margin_bytes": 401588224,
+  "physical_source": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T22:40:10.459808+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77248909312,
+      "available_to_caller_bytes": 77248909312,
+      "total_free_bytes": 77248909312,
+      "entire_volume_used_allocation_upper_bound_bytes": 433885036544,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T22:40:10.459808+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21642289152,
+      "available_to_caller_bytes": 21642289152,
+      "total_free_bytes": 21642289152,
+      "entire_volume_used_allocation_upper_bound_bytes": 478447718400,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 432254,
+    "sha256": "d3169d28a9f5601ca1f898801f3c2ef1fc24b5545dccd3820d4652d46da524fc"
+  },
+  "physical_credit_bytes": 0,
+  "formal_credit": 0,
+  "Root_authority": "Root actualsourceadopt+once22:39:38; no furtherconfirmation required"
+}

@@ -1,0 +1,147 @@
+{
+  "schema": "xar.old-sdk-exact-replay.source-plan.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:02:46.640910+00:00",
+  "retire_admitted": false,
+  "purpose": "Exact ordered reconstruction comparison only; preserve all source logs/requests/responses/session inputs. Successful proof is not retirement permission.",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\OLD-SDK-EXACT-REPLAY-SOURCE4-2245-ADMISSION.actual-a01.json",
+    "bytes": 6528,
+    "sha256": "b3c17b9654de131cc84993d981b59f551dd5e5c1c20dcfa4ad690ae25fd1e872"
+  },
+  "read_chunk_max_bytes": 262144,
+  "single_response_max_bytes": 16777216,
+  "line_max_bytes": 67108864,
+  "observed_rss_guard_bytes": 805306368,
+  "index_type": "gzip JSONL with canonical decimal-string u64 identity fields",
+  "large_rebuilt_file_output": false,
+  "groups": [
+    {
+      "group": "r165",
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01",
+      "log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\mcp-calls.jsonl",
+      "bytes": 303227579,
+      "file_id": "281474978776885",
+      "volume_serial": "13886423844274364792",
+      "mtime_ns": "1791163961495910000",
+      "original_sha256": null,
+      "actual_line_count": null,
+      "responses_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\responses",
+      "requests_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\requests",
+      "small_sources": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\session-result.json",
+          "bytes": 12479,
+          "sha256": "a668366bf2f47a436e3e06c7a692b5217407ef058bd62558ebe281bb73411f53"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\session.jsonl",
+          "bytes": 5533,
+          "sha256": "7cc1e2e18061989005949e0679b79fde1f4042de94ef2e002762f9a484ca131c"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\bootstrap-result.json",
+          "bytes": 13843,
+          "sha256": "a647854fe68eb58eea0a272dc055cfb57beeea84ec47409ddb288edf027a1152"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\sdk-ready.json",
+          "bytes": 35976,
+          "sha256": "fe376a00f6f9ca40054de35d1785c497b6cee147fc9da787267cee97cf69f261"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\sdk-tools.json",
+          "bytes": 174282,
+          "sha256": "4cd8069aad05deb7ee0a4cd768948e8a1396327091d19e82cad33749e3bbc20f"
+        }
+      ]
+    },
+    {
+      "group": "r175",
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02",
+      "log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\mcp-calls.jsonl",
+      "bytes": 191399668,
+      "file_id": "281474979252586",
+      "volume_serial": "13886423844274364792",
+      "mtime_ns": "1791230723943651800",
+      "original_sha256": null,
+      "actual_line_count": null,
+      "responses_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\responses",
+      "requests_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\requests",
+      "small_sources": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\session-result.json",
+          "bytes": 12425,
+          "sha256": "9305a4086632013f65cc876ffc91a24ea493aadc23492f430bfac8cfc2e5f750"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\session.jsonl",
+          "bytes": 5462,
+          "sha256": "df856921a6c2aa8fc74df0320580067447e47775ab685e923eed99d1e5b00cd2"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\bootstrap-result.json",
+          "bytes": 13779,
+          "sha256": "35265177f6db71e62ee047002ffc623eab849178d4146ddfca145156cce33993"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\sdk-ready.json",
+          "bytes": 40072,
+          "sha256": "87e4b7040da023b9d3885e1d80d5ea7eb7f1d248a1583fe9b777675fa388746d"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\sdk-tools.json",
+          "bytes": 184731,
+          "sha256": "5ad05577b95a9c73cbb4eb49cdaa2296922f8596aeb635b7102389634d039e8c"
+        }
+      ]
+    },
+    {
+      "group": "r177",
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01",
+      "log": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\mcp-calls.jsonl",
+      "bytes": 287041520,
+      "file_id": "281474979213274",
+      "volume_serial": "13886423844274364792",
+      "mtime_ns": "1791220991103649800",
+      "original_sha256": null,
+      "actual_line_count": null,
+      "responses_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses",
+      "requests_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\requests",
+      "small_sources": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\session-result.json",
+          "bytes": 12427,
+          "sha256": "9f56040c2554cd7285be7b4d7c12042993bd15662d8346bdb319857fb20f8e9a"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\session.jsonl",
+          "bytes": 5467,
+          "sha256": "109922e52a25f30cc8f5cad458ec8e3d40bcdedc6a39022488aed2954241f0cc"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\bootstrap-result.json",
+          "bytes": 13783,
+          "sha256": "4c88f04bb2af1ed5adaa8063d54985986b62a06c5f2f8836a19bd9935bee2a15"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\sdk-ready.json",
+          "bytes": 40072,
+          "sha256": "d5036ecab02066148bd2e282167e61499325770ade5e3364166bc746a1d30660"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\sdk-tools.json",
+          "bytes": 184731,
+          "sha256": "5ad05577b95a9c73cbb4eb49cdaa2296922f8596aeb635b7102389634d039e8c"
+        }
+      ]
+    }
+  ],
+  "protected_inputs": [
+    "Current film raw sources",
+    "Canonical D Mar31 S0",
+    "R0176 exact2 original keepers/old Oct25 purpose mapping",
+    "All original requests/responses/session/bootstrap/SDK metadata"
+  ]
+}

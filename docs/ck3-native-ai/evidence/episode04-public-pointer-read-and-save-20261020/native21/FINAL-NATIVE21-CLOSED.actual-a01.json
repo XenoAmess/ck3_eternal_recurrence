@@ -1,0 +1,854 @@
+{
+  "schema": "xar.e04.pointer-read.native21.closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:27:23.225009+00:00",
+  "status": "ACTUAL_21_CASES_PASS_ROOT_QUALIFICATION_PENDING",
+  "selected_suite": {
+    "path": "C:\\w\\e04parentread03\\cold-a01\\SELECTED-COLD.actual.json",
+    "bytes": 5175,
+    "sha256": "0cc1044aa13ab3f946d0c0fd1ca98a08477353a1aa313cdd6b22e7b7f15eb717"
+  },
+  "cases": [
+    {
+      "case": "foreign257_then_target",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\foreign257_then_target\\CASE.actual.json",
+        "bytes": 1868,
+        "sha256": "048cb8dad4e9a6584300f385abde5bdde684f5d82086a697b552d068f92dfc0e"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\foreign257_then_target\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "d34a50975360c3c20d33caf5a8f2703a667a2a533d4c8b68c7a9297cd64e37c1"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "created_thread",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\created_thread\\CASE.actual.json",
+        "bytes": 1842,
+        "sha256": "01964bf496845e5108ef30f9aabb9782b328e291abdc715b7bf3b906225d6f9d"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\created_thread\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3338,
+        "sha256": "8a62b49c24e98586162f44305b0551850dbbfa08382041e912f7ebe285c60b49"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "foreign4096_limit",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\foreign4096_limit\\CASE.actual.json",
+        "bytes": 1856,
+        "sha256": "0d1bd90cbfc55990e530633d88369844679bf0087828e306efad112bfce4b958"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\foreign4096_limit\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3020,
+        "sha256": "b4d8ecadedb7b2f53fbfebd2e86cd836dd46d1baa0c86ad31e9878bad0977890"
+      },
+      "native_consumer": {
+        "target_post_read_retained": false,
+        "target_post_read_qualified": false,
+        "admitted_context_unchanged": false,
+        "foreign_count": 4096,
+        "cleanup_complete": true,
+        "reason": "foreign_limit",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "timeout",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\timeout\\CASE.actual.json",
+        "bytes": 1800,
+        "sha256": "4cc4f2be9400f5d656d96a5d105fabb1a5b85895daac08c07458aca1787aee60"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\timeout\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "6041fcf4b299cfa7abda0e3b16c1321c3a8d1b75d46b0ec72f382de1537aa4c4"
+      },
+      "native_consumer": {
+        "target_post_read_retained": false,
+        "target_post_read_qualified": false,
+        "admitted_context_unchanged": false,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "timeout",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "restore-fault",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\restore-fault\\CASE.actual.json",
+        "bytes": 1839,
+        "sha256": "cc915bb0d0e2ff7128a8be9941e857eeff8ecd34e4ca85f647195b008b2f4ba7"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\restore-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "99e587810de14b9f6a5bc0b9fad5de246955b01e0160913984fe14caf236f3d6"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "readback-fault",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\readback-fault\\CASE.actual.json",
+        "bytes": 1843,
+        "sha256": "6c2f14879bae13e1959329b64e95777ed795af472782f6133f0877ff2e1b6a32"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\readback-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3014,
+        "sha256": "a6dd292bc5267bf05d31e346230db2cf39f2054faa31a5cecd287fb3e496e0c9"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "continue-fault",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\continue-fault\\CASE.actual.json",
+        "bytes": 1842,
+        "sha256": "d7d639d323238e2a0ef0850df8db983b765f08f72c6ca3a8e972fc0b88230adb"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\continue-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3012,
+        "sha256": "6a4415d4f25b85fddaac4d0265cb59c686c90c365a5127f90af72ca3d0a4ec0a"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "default-off",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\default-off\\CASE.actual.json",
+        "bytes": 1200,
+        "sha256": "ca0d628813630ed50d1834189fc031b3a4637bd1a7964ca6a0112dec3bf24dbd"
+      },
+      "target_exit": 0,
+      "observer_exit": 2,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\default-off\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2445,
+        "sha256": "5df36eae0a09d1434701fd165c9e5d0e23f6a50f6e7b9ec69ffd95f0b6c2afcd"
+      },
+      "native_consumer": null
+    },
+    {
+      "case": "missing-ack",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\missing-ack\\CASE.actual.json",
+        "bytes": 1201,
+        "sha256": "97063c5c6396dcc96cdc8b9cadff98eb6aeebd36e0e4dabdfc95d3d56806e7da"
+      },
+      "target_exit": 0,
+      "observer_exit": 2,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\missing-ack\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2445,
+        "sha256": "c11d79da1c4392f4321ea64f3a293e098d0acd6155da9f65d62955be143bb37f"
+      },
+      "native_consumer": null
+    },
+    {
+      "case": "bad-schema",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\bad-schema\\CASE.actual.json",
+        "bytes": 1199,
+        "sha256": "afedd2d8bec38663573eca6a14c84e4d58d30908aa7d0df4693367302886e345"
+      },
+      "target_exit": 0,
+      "observer_exit": 2,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\bad-schema\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2447,
+        "sha256": "7b636e00c9c19ff06c74e64c3f960e05a56318b5bce503f1f48b09d078a3513e"
+      },
+      "native_consumer": null
+    },
+    {
+      "case": "occupied-dr",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-dr\\CASE.actual.json",
+        "bytes": 1384,
+        "sha256": "7138267df2a6468e75392155ff6d7eee4c136e5d99f9c894fd8901c9e90ba65f"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-dr\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2487,
+        "sha256": "03cdafd2d4917efc86cc2131ed8e3f43fa15ab573d9b824380c045c3225be95f"
+      },
+      "native_consumer": null
+    },
+    {
+      "case": "occupied-tf",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-tf\\CASE.actual.json",
+        "bytes": 1383,
+        "sha256": "24be62d286be0aae48c072a2435636e819b3caf7496d32d1973d54c99f0bdbe9"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-tf\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2299,
+        "sha256": "136c97e014aaaa2d3cc6a17c8c11ee90ba40439c27a08c91d3a6d6d325f876e0"
+      },
+      "native_consumer": null
+    },
+    {
+      "case": "context-drift",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\context-drift\\CASE.actual.json",
+        "bytes": 1838,
+        "sha256": "c8bd6513ba01389ae5ba03ec994d7466d8c59a266c828230f4841e051d26a9be"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\context-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3020,
+        "sha256": "fed1d6763431634dcb72c456424af87a22c335f1e86b1745e5eebc4bd5086de4"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": false,
+        "foreign_count": 1,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "fullid-drift",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\fullid-drift\\CASE.actual.json",
+        "bytes": 1841,
+        "sha256": "a6e1e4df25db5d61e0f2f032e411c09713fdf90d586e97d7fa8edf9bc2e75ebb"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\fullid-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3014,
+        "sha256": "d87a43bb7baa4db3565564a59ed210eda1eef3ec682015d52e438033308b0757"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": false,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_read_incomplete",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "magic-drift",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\magic-drift\\CASE.actual.json",
+        "bytes": 1839,
+        "sha256": "00bb9bd0d40ac11262cda8a545cfe99e94d14dae69cec3635fe70ee0a3ee08d0"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\magic-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3011,
+        "sha256": "62c5df1d4f0dd401ab6c9a6e98887ac8a2afa9cb2742e5ef3ff45695b1755845"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": false,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_read_incomplete",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "session-drift",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\session-drift\\CASE.actual.json",
+        "bytes": 1845,
+        "sha256": "8c564949da3a324eb36943255ffa0bb4946176cf02b73b8a5a96968f8799711b"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\session-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "77775fb19bcb994dd32695714143a4df38f1c9839c7f1746066b8b19e3a6fab7"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": false,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_read_incomplete",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "null-context",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\null-context\\CASE.actual.json",
+        "bytes": 1821,
+        "sha256": "5ca4e74fdac658f454b5d91d0464d4851c72b0774b74b07adae173beafa3c2ea"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\null-context\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3020,
+        "sha256": "932bb54b070b593d17eda30ebee458d10994f4425ee366f4252fc96aa69462b8"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": false,
+        "foreign_count": 1,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "other-player-read",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-read\\CASE.actual.json",
+        "bytes": 1852,
+        "sha256": "35cba0b8c17f1bcd787e822bbb84c2132ae477ca647ecc3f9664ad71a8c88e8e"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-read\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3014,
+        "sha256": "14731d9428da0ed8f601b39678350ca1b14185cc7f9a2fdb44ff98fd092c974e"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 257,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "other-player-write",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-write\\CASE.actual.json",
+        "bytes": 1856,
+        "sha256": "811c929c82f3ee94b47869f363f3218ee7c09743f9c473b648802466f59379d5"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-write\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "0c4db4011b5f753e54116296326ba6b5c022696234bdde31d0c5f8d494e3d481"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 257,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "null-admission",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\null-admission\\CASE.actual.json",
+        "bytes": 1825,
+        "sha256": "061a5cf0d898c0534c377678bee84a72e6455bd114a141637bc750a287a3e2db"
+      },
+      "target_exit": 0,
+      "observer_exit": 0,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\null-admission\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "2c683dfc18dbdea76bf02658e8c28e3002afd278d1d44164e5397f86bd9dd0fd"
+      },
+      "native_consumer": {
+        "target_post_read_retained": true,
+        "target_post_read_qualified": true,
+        "admitted_context_unchanged": true,
+        "foreign_count": 0,
+        "cleanup_complete": true,
+        "reason": "target_captured",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    },
+    {
+      "case": "cancel_late",
+      "case_receipt": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\cancel_late\\CASE.actual.json",
+        "bytes": 1829,
+        "sha256": "06e20bc3242e9008b17ebd9859ebd0c528eabe31018b53123173983f8ac3a35c"
+      },
+      "target_exit": 0,
+      "observer_exit": 1,
+      "audit": {
+        "path": "C:\\w\\e04parentread03\\cold-a01\\cancel_late\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3017,
+        "sha256": "c3a1e38d63627adaa2f86b49ff61a5adc671c361fc0a4478bb1af30630957712"
+      },
+      "native_consumer": {
+        "target_post_read_retained": false,
+        "target_post_read_qualified": false,
+        "admitted_context_unchanged": false,
+        "foreign_count": 127,
+        "cleanup_complete": true,
+        "reason": "cancel",
+        "window_complete": false,
+        "full_R08": false,
+        "paid_maintenance_raw": null,
+        "payer": null,
+        "cadence": null,
+        "entryExact": false,
+        "observation_kind": "post_parent_pointer_read",
+        "synthetic": true
+      }
+    }
+  ],
+  "original_native_waits": [
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\foreign257_then_target\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "816b724d670dd9b4d8208ff1d0c4d2cdd44dbbd2ecccddbfd70f379a953608b6"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\foreign257_then_target\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "411ea0e493846386274aa627175c41b3d92706f09fa1b8ce8bbd90271c5f6ae0"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\created_thread\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "3c8e02608aa92066ea7cd033808448bec094bb574ca77cbb1d6595552720a2d9"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\created_thread\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "96bf2104b51fa176761f772635b211d93e0a321363df0aa2539ab8adb450a67b"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\foreign4096_limit\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "75b65bca731484c47a6e3f8456bf080743d4267da71fba576d12c2dd5a54ee5a"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\foreign4096_limit\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "78b38090b79dd86e69f93de87ba81591810d6f7fc266ca59ee254511cb96c217"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\timeout\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "abc490fcc5cd9525840334105628d10c4aa234f55af7bc17bb3d12d3b81250ae"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\timeout\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "70d0369bda3e0a28d6d5fe245fae9c8199bdcc03796474861cd9ce89f123c9cc"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\restore-fault\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "7d357610019215526e3fd6a326c3ffb2f126dab8c750cd9e20e66f0530a8a797"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\restore-fault\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "e52ae97f7cf587619057bf3bb4ce70a817138ea7cef0bb9f0802ce8d49bd9202"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\readback-fault\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "a53f322cc86fa5ef1490a3aefc7401f84cd1421516662b67a9b309d246d8f529"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\readback-fault\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "74c089a861b1f0a3e05516c17c3f01b3086724b93ddf3b43f473e8d8726d7f0b"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\continue-fault\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "a011e97479bc234b623b9b1a7a1eb1f7f6b0d49447c6d8dc6b37f4711ff6d1c1"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\continue-fault\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "929f2536a7cc86edbb0c3550d061e6321b09a6f331ce42d0c5dac05a336e2ab6"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\default-off\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "01f71a90445d855f0767b34c79280fb0f3a8ed782fed2c0253d74d0d2d8be54f"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\default-off\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "1498da8490e2467e813c7797c827fe57e6218bbfa463a896efccc40ca95e98a5"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\missing-ack\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "4e78a41bf76180f37d80667b08013eb3797dc6f1507ffc9a16ab7d3edf04d347"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\missing-ack\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "14a7e8f3cc4334afc897ae45816041c2b92609bebfafa965b67fac6df4fb208a"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\bad-schema\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "d43b5e9e201ab217010098e075f3c734964d18909317e0b3832b460a1b7872a2"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\bad-schema\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "c6781e287d8e2ff142b4f7e7e13c9a16a7e2b2992eb17ce80c633419c15e9345"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-dr\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "31de9e71c306283da52a5de8b5314619b5a8352cca44fcd7fb12f9e0ad80aa6a"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-dr\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "1827f79f1f085735a4aafb7902f460767999131d3de7bfea668832c3d93e4526"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-tf\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "4140d2561688fb75afd27cfd10600d227e60f733195b36c3cf7f5c6728775ea8"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\occupied-tf\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "00a8923e56705ef75b8b32e7eb8905144aba41cc463fc27de8fe4f4009051834"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\context-drift\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "ac712c14f9dbcdfbfa3f0ac223a0036e949082b4997045a87da65dd94f16ed73"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\context-drift\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "2c16f78211ecf9339e344cd0af4a09ba1267003fcdec8cf62156e0499fdd0762"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\fullid-drift\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "5ddaf5ac0ce48dc6d245ead5ad8464f2af7d9afcccf4c4ca30ecb3112565d173"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\fullid-drift\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "5640fe7b09cc0d95bf0899f0bf2bf8c6e5ef81de90225cfb3a221cedbe98ccac"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\magic-drift\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "226337ff5626163311e44617ff6334b9abd0ff46e9d04c996bf28552631e28b7"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\magic-drift\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "fd54faee4ee1e3f9bacd34dde4e2a22319d73aadee96836a7cc0ac87c8fb9b6b"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\session-drift\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "803f529cbb5f61a3a5708cd6ff56d448617e7832a37b230c4e64907dfacdf6fa"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\session-drift\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "80d9826d7b101dab7b36a7501b8cc723c97934fc2433c16138c8546efaad5da7"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\null-context\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "1dba6685d591fe78a67f30e5835af732c583f8d4c8cf9ece76da7395f9351800"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\null-context\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "9d79a23c4ce4f9248e0b2553fb6e5eaa4af5fa12b26b8b30315adba09ee2e9f2"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-read\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "a4ac3525adecace8c76cc447b8cd96e8613e38f8246048c752117454286123ac"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-read\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "d736f308e29f77d9e284f39efe1fb58abd3916f88dc119ac480944c8cdf3ef4f"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-write\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "9a9e8ad10f519d03298ccd5a26cb283e634575083a1676dfbebf85c51fd767ad"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\other-player-write\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "cdb2cedcccb070fc891db34a209c816231735eb10522b0c13c12358a38382141"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\null-admission\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "318d4dbfb9c3ad663314c3cf57a940d34cbd45a1184f432dd80762d8fa15d9ce"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\null-admission\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "6427dd4de5ed80f6d3c9e32fb4ff7a7f8149fba3baf97f4540e414c57ad1483f"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\cancel_late\\target.ORIGINAL-WAIT.actual.json",
+      "bytes": 225,
+      "sha256": "1f91ef812eba18e78998f2b268ce48990105af3e5e4b31ea6d994dc524ce68a8"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\cold-a01\\cancel_late\\observer.ORIGINAL-WAIT.actual.json",
+      "bytes": 226,
+      "sha256": "c1b70db68c532b04fc938c43c5434f9f637099ebbb716404773d6fc80ac81c26"
+    }
+  ],
+  "actual_cases": 21,
+  "actual_native_original_waits": 42,
+  "outer_runner_wait": {
+    "path": "C:\\w\\e04parentread03\\control-metadata-a01\\COLD.ORIGINAL-WAIT.actual.json",
+    "bytes": 1591,
+    "sha256": "39498606948147f73f738f527c023d08ea537426b2be4c2e5ee8780c09f0555e"
+  },
+  "outer_phase_wait": {
+    "path": "C:\\w\\e04parentread03\\control-metadata-a01\\STAGE-cold-selected-suite-a02.ORIGINAL-WAIT.actual.json",
+    "bytes": 909,
+    "sha256": "f7b0d6322197adc05b79ce53e8949541ba53f0939fabf1d2473341d23c1dd6e3"
+  },
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\SOURCE-MANIFEST.actual.json",
+    "bytes": 5755,
+    "sha256": "23758688b3ecf62b3168436e26489fbe6d6a7f9837c37aed7a1b48f9585c72cd"
+  },
+  "historical_producer_plan": {
+    "path": "C:\\w\\e04parentread03\\control-metadata-a01\\READWATCH-NATIVE-RECIPE.prepared-a01.json",
+    "bytes": 18589,
+    "sha256": "d7a012a13cfe4c7b4822420353217cd6413df5bd228cd5192c728b06c3a763f1"
+  },
+  "new_phase_plan": {
+    "path": "C:\\w\\e04parentread03\\control-metadata-a01\\READWATCH-COLD-PHASE.prepared-a02.json",
+    "bytes": 4040,
+    "sha256": "913e855ec38fd6736b6c6eb7fef16da33d95a7959f4c2998c75654cd518a8cc4"
+  },
+  "newcap": {
+    "path": "C:\\w\\e04parentread03\\capacity\\READWATCH-COLD21-FINITE-EXCEPTION-ACTUAL.actual-a04.json",
+    "bytes": 3173,
+    "sha256": "86d951a84df3e066884f5d4c11b823b044aa5aef8289d983437ee797176df007"
+  },
+  "Root_actual_SYSTEM_review": {
+    "path": "C:\\w\\e04parentread03\\ROOT-ACTUAL-SYSTEM-AND-COLD-ADOPTION.actual-a01.json",
+    "bytes": 1954,
+    "sha256": "5649ec2b49a9cc44238fbfbacae533566a474f3e4971a774449d896beb60111b"
+  },
+  "all_source21_current_pins_exact": true,
+  "full_six_DR_no_mask": true,
+  "all_owned_native_Popen_waits_retained": true,
+  "code_writers": 0,
+  "live_owned_processes": 0,
+  "live_owned_process_claim_basis": "Each original target/observer wait plus original runner/phase wait; no census substitution",
+  "no_game_SDK_Steam": true,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "qualification_issued": false,
+  "source_bytes": 237579,
+  "top_bytes": 3610475,
+  "protected_protocol32M_not_enumerated_or_zero_claimed": true,
+  "retention_review_by_utc": "2026-10-22T22:30:00Z"
+}

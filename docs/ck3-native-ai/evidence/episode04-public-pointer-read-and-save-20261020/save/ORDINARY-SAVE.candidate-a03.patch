@@ -1,0 +1,574 @@
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/ordinary_save_contract.py
+@@ -0,0 +1,220 @@
++"""Ordinary Save materialization and native bracketing, without episode claims.
++
++No SDK, file hashing or state mutation occurs here. File facts come from the
++existing native Save producer. The independently requested snapshots supply
++native owner evidence; host managed-run metadata supplies consistency only.
++"""
++from __future__ import annotations
++from collections.abc import Callable, Mapping
++from dataclasses import dataclass
++import math
++from pathlib import Path
++import re
++from typing import Literal, TypeAlias, TypedDict
++
++JsonValue: TypeAlias = None|bool|int|float|str|list['JsonValue']|dict[str,'JsonValue']
++JsonObject: TypeAlias = dict[str,JsonValue]
++Call: TypeAlias = Callable[[str,str,dict[str,object]],Mapping[str,object]]
++Snapshot: TypeAlias = Callable[[str],Mapping[str,object]]
++Payment: TypeAlias = Callable[[str,str],Mapping[str,object]]
++NullableRepresentation: TypeAlias = Literal['missing','explicit_null']
++SCOPE='producer_materialization_and_native_bracketing'
++MAX_SAFE_JSON_INTEGER=(1<<53)-1
++
++class SaveUnconfirmed(ValueError):
++    def __init__(self, code: str, detail: str) -> None:
++        super().__init__(detail);self.code=code;self.detail=detail
++
++def obj(value: object, label: str) -> Mapping[str,object]:
++    if not isinstance(value,dict) or not all(isinstance(k,str) for k in value):
++        raise SaveUnconfirmed('missing_or_malformed',label+' object unavailable')
++    return value
++
++def text(value: object, label: str) -> str:
++    if not isinstance(value,str) or not value:raise SaveUnconfirmed('missing_or_malformed',label+' string unavailable')
++    return value
++
++def integer(value: object, label: str, *, maximum: int=MAX_SAFE_JSON_INTEGER) -> int:
++    if type(value) is not int or not isinstance(value,int) or not 0<value<=maximum:
++        raise SaveUnconfirmed('missing_or_malformed',label+' positive integer unavailable')
++    return value
++
++def require(ok: bool, code: str, detail: str) -> None:
++    if not ok:raise SaveUnconfirmed(code,detail)
++
++def nullable_representation(row: Mapping[str,object], key: str) -> NullableRepresentation:
++    if key not in row:return 'missing'
++    require(row[key] is None,'projection','Ordinary snapshot has non-null '+key)
++    return 'explicit_null'
++
++class EpisodeRepresentation(TypedDict):
++    episode_run_id: NullableRepresentation
++    episode_character_id: NullableRepresentation
++
++@dataclass(frozen=True,slots=True)
++class ManagedRun:
++    run_id: str
++    state_dir: str
++    bridge_pipe: str
++    host_path: str
++    frozen_argv_sha256: str
++
++@dataclass(frozen=True,slots=True)
++class NativeOwner:
++    actor: int
++    local_player: int
++    pid: int
++    generation: int
++    pipe: str
++    date_raw: int
++    revision: int
++    native_revision: int
++    snapshot_id: str
++    run: ManagedRun
++    episode_run_id_representation: NullableRepresentation
++    episode_character_id_representation: NullableRepresentation
++
++@dataclass(frozen=True,slots=True)
++class RetainedClient:
++    client: object
++    handle: object
++    pid: int
++
++@dataclass(frozen=True,slots=True)
++class SaveStart:
++    owner: NativeOwner
++    retained: RetainedClient
++
++class FileFact(TypedDict):
++    path: str
++    bytes: int
++    sha256: str
++    date_raw: int
++
++class SaveProof(TypedDict):
++    status: Literal['verified']
++    scope: str
++    file: FileFact
++    actor: int
++    local_player: int
++    bridge_pid: int
++    connection_generation: int
++    pipe: str
++    managed_run_id: str
++    before_episode_identity_representation: EpisodeRepresentation
++    after_episode_identity_representation: EpisodeRepresentation
++    before_snapshot_id: str
++    after_snapshot_id: str
++    before_revision: int
++    after_revision: int
++    before_native_revision: int
++    after_native_revision: int
++    native_frame_advanced: bool
++    independent_after_request: bool
++    same_retained_case_client: bool
++    consumer_rehashed_file: bool
++    one_life_identity_proven: bool
++    limitations: list[str]
++
++def native_owner(value: object) -> NativeOwner:
++    row=obj(value,'snapshot');played=obj(row.get('played_character'),'played_character');diag=obj(row.get('diagnostics'),'diagnostics')
++    run_representation=nullable_representation(row,'episode_run_id')
++    character_representation=nullable_representation(row,'episode_character_id')
++    require(row.get('episode_projection')=='native_campaign','projection','Ordinary Save cannot acquire oneLife identity')
++    require(row.get('backend_id')=='native-headless' and row.get('source')=='injected-dll-named-pipe'
++        and row.get('map_ready') is True and row.get('paused') is True
++        and played.get('alive') is True and played.get('source')=='native'
++        and diag.get('connected') is True,'native_owner_unavailable','Current paused native player/transport unavailable')
++    run=obj(row.get('managed_campaign_run_binding'),'managed_campaign_run_binding')
++    digest=text(run.get('frozen_argv_sha256'),'frozen_argv_sha256')
++    require(re.fullmatch('[0-9a-f]{64}',digest) is not None,'run_binding','Allocated frozen SHA malformed')
++    binding=ManagedRun(text(run.get('run_id'),'managed.run_id'),text(run.get('state_dir'),'managed.state_dir'),
++        text(run.get('bridge_pipe'),'managed.bridge_pipe'),text(run.get('host_path'),'managed.host_path'),digest)
++    pipe=text(diag.get('pipe_name'),'diagnostics.pipe_name')
++    require(pipe==binding.bridge_pipe,'run_binding','Native transport crossed allocated pipe')
++    return NativeOwner(integer(played.get('character_id'),'character_id',maximum=(1<<32)-1),
++        integer(row.get('local_player_id'),'local_player_id',maximum=(1<<32)-1),
++        integer(diag.get('bridge_pid'),'bridge_pid',maximum=(1<<32)-1),
++        integer(diag.get('connection_generation'),'connection_generation'),pipe,
++        integer(row.get('date_raw'),'date_raw'),integer(row.get('revision'),'revision'),
++        integer(row.get('native_revision'),'native_revision'),text(row.get('snapshot_id'),'snapshot_id'),binding,
++        run_representation,character_representation)
++
++def retained_client(client: object) -> RetainedClient:
++    handle=getattr(client,'_handle',None);process=obj(getattr(client,'_process',None),'retained CaseClient process')
++    require(handle is not None,'retained_client','Original retained CaseClient handle unavailable')
++    return RetainedClient(client,handle,integer(process.get('pid'),'retained pid',maximum=(1<<32)-1))
++
++def begin_save(before: object, retained: RetainedClient) -> SaveStart:
++    owner=native_owner(before)
++    require(owner.pid==retained.pid,'retained_client','Retained OS/native PID differs')
++    return SaveStart(owner,retained)
++
++def verify_save(start: SaveStart, result: object, after: object, retained: RetainedClient) -> SaveProof:
++    old=start.owner;new=native_owner(after)
++    require(start.retained.client is retained.client and start.retained.handle is retained.handle
++        and retained.pid==start.retained.pid==new.pid,'retained_client','Original CaseClient/retained handle changed')
++    require((new.actor,new.local_player,new.pid,new.generation,new.pipe,new.date_raw,new.run)==
++        (old.actor,old.local_player,old.pid,old.generation,old.pipe,old.date_raw,old.run),
++        'owner_drift','Independent native actor/run/PID/generation/pipe/date differs')
++    require(new.revision>=old.revision and new.native_revision>=old.native_revision,
++        'snapshot_drift','Independent snapshot sequence regressed')
++    require((new.native_revision==old.native_revision)==(new.snapshot_id==old.snapshot_id),
++        'snapshot_drift','Native snapshot identity/sequence domain inconsistent')
++    saved=obj(result,'Save result');ck=obj(saved.get('checkpoint'),'checkpoint');mat=obj(saved.get('materialization'),'materialization');submission=obj(saved.get('submission'),'submission')
++    require(saved.get('step')=='save-checkpoint' and saved.get('accepted') is True
++        and saved.get('backend_id')=='native-headless' and ck.get('status')=='saved'
++        and mat.get('available') is True,'materialization','Actual native Save materialization unavailable')
++    require({'succession_lifecycle','episode_run_id','episode_character_id'} <= ck.keys(),'projection_fields_missing',
++        'Checkpoint nullable lifecycle/episode fields must be explicit')
++    require(ck.get('episode_projection')=='native_campaign' and ck.get('succession_lifecycle') is None
++        and ck.get('episode_character_id') is None and ck.get('episode_run_id') is None,
++        'projection','Save result must retain absent oneLife identities')
++    require(ck.get('strategy')=='native-autosave-command-v1','materialization','Unknown Save producer strategy')
++    date=integer(ck.get('date_raw'),'checkpoint.date_raw');submitted=integer(submission.get('date_raw'),'submission.date_raw')
++    integer(submission.get('sequence'),'submission.sequence')
++    # Legacy producer mtime_ns is not an owner or new proof field; retain it only in the untouched response.
++    require(date==submitted==old.date_raw,'save_date','Saved/submitted/native dates differ')
++    path=Path(text(ck.get('path'),'checkpoint.path'));directory=Path(text(mat.get('save_dir'),'materialization.save_dir'));name=text(ck.get('name'),'checkpoint.name')
++    require(path.is_absolute() and directory.is_absolute() and name=='xar_checkpoint.ck3'
++        and path.resolve()==(directory/name).resolve()
++        and directory.resolve()==(Path(old.run.state_dir)/'profile'/'save games').resolve(),
++        'save_path','Materialized Save crossed this managed profile')
++    size=integer(ck.get('size'),'checkpoint.size');digest=text(ck.get('sha256'),'checkpoint.sha256')
++    require(re.fullmatch('[0-9a-f]{64}',digest) is not None,'materialization','Save producer SHA256 malformed')
++    return SaveProof(status='verified',scope=SCOPE,file=FileFact(path=str(path),bytes=size,sha256=digest,date_raw=date),
++        actor=old.actor,local_player=old.local_player,bridge_pid=old.pid,connection_generation=old.generation,
++        pipe=old.pipe,managed_run_id=old.run.run_id,
++        before_episode_identity_representation=EpisodeRepresentation(episode_run_id=old.episode_run_id_representation,
++            episode_character_id=old.episode_character_id_representation),
++        after_episode_identity_representation=EpisodeRepresentation(episode_run_id=new.episode_run_id_representation,
++            episode_character_id=new.episode_character_id_representation),before_snapshot_id=old.snapshot_id,after_snapshot_id=new.snapshot_id,
++        before_revision=old.revision,after_revision=new.revision,before_native_revision=old.native_revision,
++        after_native_revision=new.native_revision,native_frame_advanced=new.native_revision>old.native_revision,
++        independent_after_request=True,same_retained_case_client=True,consumer_rehashed_file=False,
++        one_life_identity_proven=False,limitations=['File size/SHA are from the existing native Save producer, not a second consumer hash',
++          'Static managed-run metadata proves consistency, not native freshness',
++          'Save result has no atomic actor/generation frame; file-internal actor and native FILETIME are not proven',
++          'Equal native sequence means an independent snapshot request returned the same native sample; no new frame is claimed'])
++
++def unconfirmed(error: BaseException) -> JsonObject:
++    return {'status':'unconfirmed','scope':SCOPE,'reason_code':error.code if isinstance(error,SaveUnconfirmed) else type(error).__name__,
++            'detail':str(error),'one_life_identity_proven':False}
++
++def finite_json(value: object) -> JsonValue:
++    if value is None or isinstance(value,(str,bool,int)):return value
++    if isinstance(value,float) and math.isfinite(value):return value
++    if isinstance(value,list):return [finite_json(x) for x in value]
++    if isinstance(value,dict):return {text(k,'JSON key'):finite_json(v) for k,v in value.items()}
++    raise SaveUnconfirmed('malformed_cleanup','Cleanup result is not finite JSON')
++
++def cleanup_result(value: object) -> tuple[JsonObject,list[str],int|None]:
++    require(isinstance(value,tuple) and len(value)==3,'malformed_cleanup','Cleanup tuple required')
++    if not isinstance(value,tuple):raise SaveUnconfirmed('malformed_cleanup','Cleanup tuple required')
++    result,errors,days=value
++    parsed=finite_json(result)
++    if not isinstance(parsed,dict) or not isinstance(errors,list) or not all(isinstance(e,str) for e in errors):
++        raise SaveUnconfirmed('malformed_cleanup','Cleanup fields malformed')
++    if days is not None and (type(days) is not int or not isinstance(days,int) or days<0):raise SaveUnconfirmed('malformed_cleanup','Cleanup actual_days malformed')
++    strings=[text(e,'cleanup error') for e in errors]
++    return parsed,strings,days
+--- a/tools/ck3_mod_acceptance_cases/r08_writer_one_day.py
++++ b/tools/ck3_mod_acceptance_cases/r08_writer_one_day.py
+@@ -4,6 +4,7 @@
+ The shared entry owns normal closure; this actor withholds it until restore and
+ payment OFF/clear are independently proved. No load, host or SDK is constructed.
+ """
++from __future__ import annotations
+ from datetime import datetime, timezone
+ from pathlib import Path
+ from types import SimpleNamespace
+@@ -17,6 +18,8 @@
+ from .r10_prepare_adapter import need, pin, small_json
+ from . import r04_county_entry as common
+ from . import r08_writer_common_adapter as bridge
++from .ordinary_save_contract import (Call, Snapshot, Payment, JsonObject,
++    begin_save, verify_save, retained_client, unconfirmed, cleanup_result)
+ 
+ MODE = 'native_campaign_owned_no_load_v2'
+ RESEARCH = Path('ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004')
+@@ -64,15 +67,18 @@
+ 
+ class CloseGate:
+     """Guard only this instance's original shared close; retain errors as errors."""
+-    def __init__(self, client):
++    def __init__(self, client: object) -> None:
++        self.client = client
+         self.restored = True
+         self.off_clear = False
+         self.save_verified = False
+-        original = client.normal_close
+-        def guarded(disposition):
++        original = getattr(client, 'normal_close', None)
++        if not callable(original):
++            raise ValueError('Original shared normal_close unavailable')
++        def guarded(disposition: str) -> object:
+             need(self.restored and self.off_clear and self.save_verified, 'R08 restore/OFF-clear/Save unproved; normal Quit withheld')
+             return original(disposition)
+-        client.normal_close = guarded
++        setattr(client, 'normal_close', guarded)
+ 
+ 
+ def load_controller():
+@@ -203,7 +209,7 @@
+     return state
+ 
+ 
+-def cleanup_writer_window(call, snapshot, payment, gate, *, observer_claimed, expected_start_date_raw):
++def _cleanup_writer_window_impl(call, snapshot, payment, gate, *, observer_claimed, expected_start_date_raw):
+     """Converge independent OFFs even after an error; never replay an unknown action."""
+     cleanup=dict(OFFclear=False,Save=False,native_restore_verified=gate.restored,
+         payment_OFFclear=False,army_families_OFFclear=False,clock_quiescent=False)
+@@ -241,18 +247,33 @@
+     if gate.off_clear:
+         def save_once():
+             nonlocal actual_days
+-            before=snapshot('Save-before')
+-            saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
+-            after=snapshot('Save-independent-after')
+-            ck=saved.get('checkpoint') or {}
+-            cleanup.update(Save_result=saved,independent_after=after,
+-                Save=ck.get('status')=='saved' and ck.get('date_raw')==before['date_raw']==after['date_raw'])
+-            need(cleanup['Save'],'Ordinary Save/independent date unproved')
+-            gate.save_verified=True
+-            delta=after['date_raw']-expected_start_date_raw
+-            if delta in (0,24):actual_days=delta//24
++            gate.save_verified=False
++            try:
++                before=snapshot('Save-before')
++                start=begin_save(before,retained_client(gate.client))
++                saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
++                # Preserve the actual response before a later request can fail.
++                cleanup['Save_result']=saved
++                after=snapshot('Save-independent-after')
++                cleanup['independent_after']=after
++                proof=verify_save(start,saved,after,retained_client(gate.client))
++                cleanup.update(ordinary_save_proof=proof,Save=True)
++                gate.save_verified=True
++                delta=after['date_raw']-expected_start_date_raw
++                if delta in (0,24):actual_days=delta//24
++            except BaseException as error:
++                cleanup['ordinary_save_proof']=unconfirmed(error)
++                raise
+         attempt('Save-once',save_once)
+     return cleanup,errors,actual_days
++
++
++def cleanup_writer_window(call: Call, snapshot: Snapshot, payment: Payment,
++        gate: CloseGate, *, observer_claimed: bool,
++        expected_start_date_raw: int) -> tuple[JsonObject,list[str],int|None]:
++    """Return finite evidence; Save uses one producer call and native bracketing."""
++    return cleanup_result(_cleanup_writer_window_impl(call,snapshot,payment,gate,
++        observer_claimed=observer_claimed,expected_start_date_raw=expected_start_date_raw))
+ 
+ 
+ def run_case(context, client):
+--- /dev/null
++++ b/tools/test_ck3_ordinary_save_contract.py
+@@ -0,0 +1,253 @@
++"""No game: real native-driver FakeEndpoint file + shared cleanup regressions."""
++from __future__ import annotations
++import copy
++import hashlib
++import json
++import os
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++from collections.abc import Mapping
++
++from ck3_mod_acceptance_cases import r08_writer_one_day as actor
++from ck3_mod_acceptance_cases.ordinary_save_contract import (
++    SaveUnconfirmed, begin_save, verify_save, retained_client, obj)
++
++ROOT=Path(__file__).resolve().parents[1]
++
++def fixture_root(script: Path) -> Path:
++    explicit=os.environ.get('XAR_ORDINARY_SAVE_TEST_ROOT')
++    return Path(explicit).resolve() if explicit else script.resolve().parents[1]/'tmp'
++DATE=53149080
++
++class Client:
++    def __init__(self) -> None:
++        self._handle=object();self._process={'pid':4242};self.closed:list[str]=[]
++    def normal_close(self, disposition: str) -> str:
++        self.closed.append(disposition);return disposition
++
++def frame(state: Path, revision: int=6) -> dict[str,object]:
++    return dict(backend_id='native-headless',source='injected-dll-named-pipe',
++        episode_projection='native_campaign',episode_run_id=None,episode_character_id=None,
++        map_ready=True,paused=True,date_raw=DATE,local_player_id=1,
++        played_character=dict(character_id=33388,alive=True,source='native'),
++        diagnostics=dict(connected=True,bridge_pid=4242,connection_generation=1,pipe_name='fixture-pipe'),
++        revision=revision+1,native_revision=revision,snapshot_id='native:'+str(revision),
++        managed_campaign_run_binding=dict(run_id='synthetic-run',state_dir=str(state),bridge_pipe='fixture-pipe',
++            host_path='synthetic-managed-host.py',frozen_argv_sha256='a'*64))
++
++def result(state: Path) -> dict[str,object]:
++    return dict(step='save-checkpoint',accepted=True,backend_id='native-headless',
++        checkpoint=dict(status='saved',path=str(state/'profile'/'save games'/'xar_checkpoint.ck3'),
++            name='xar_checkpoint.ck3',size=23,sha256='b'*64,date_raw=DATE,
++            episode_projection='native_campaign',succession_lifecycle=None,episode_run_id=None,
++            episode_character_id=None,strategy='native-autosave-command-v1'),
++        submission=dict(sequence=1,date_raw=DATE),
++        materialization=dict(available=True,save_dir=str(state/'profile'/'save games'),mtime_ns=123),
++        driver_state_replace_receipt=dict(status='unconfirmed',reason='save_binding_mismatch'))
++
++def change(row: dict[str,object], section: str, key: str, value: object) -> None:
++    updated=dict(obj(row[section],section));updated[key]=value;row[section]=updated
++
++class Endpoint:
++    def __init__(self, state: Path) -> None:
++        self.state=state;self.client=Client();self.calls:list[str]=[]
++        self.before=frame(state);self.after=frame(state,7);self.saved=result(state)
++        self.raise_after=False;self.raise_save=False
++    def snapshot(self, label: str) -> Mapping[str,object]:
++        self.calls.append(label)
++        if label=='Save-independent-after' and self.raise_after:raise RuntimeError('independent after unavailable')
++        return self.before if label=='Save-before' else self.after
++    def call(self, label: str, tool: str, args: dict[str,object]) -> Mapping[str,object]:
++        self.calls.append(label)
++        if label=='Save-once':
++            if self.raise_save:raise TimeoutError('submission unknown')
++            return self.saved
++        return {}
++    def payment(self, label: str, mode: str) -> Mapping[str,object]:
++        self.calls.append(label)
++        return {'sampling':dict(available=True,capture_enabled=False,busy=False,clear_completed=True,
++            active_captures=0,retained_records=0)}
++    def cleanup(self, *, clock_error: bool=False) -> tuple[dict[str,object],list[str],int|None,actor.CloseGate]:
++        gate=actor.CloseGate(self.client)
++        def clock(*args: object, **kwargs: object) -> dict[str,object]:
++            if clock_error:raise ValueError('clock unknown')
++            return {'state':'idle'}
++        def sampling(*args: object, **kwargs: object) -> dict[str,object]:
++            return {str(i):dict(installed=True,available=True,capture_enabled=False,busy=False,
++                clear_completed=True,active_captures=0,retained_records=0) for i in range(9)}
++        with patch.object(actor,'cleanup_clock',clock),patch.object(actor,'sampling_control',sampling):
++            out,errors,days=actor.cleanup_writer_window(self.call,self.snapshot,self.payment,gate,
++                observer_claimed=False,expected_start_date_raw=DATE-24)
++        return dict(out),errors,days,gate
++
++class OrdinarySaveTests(unittest.TestCase):
++    def setUp(self) -> None:
++        root=fixture_root(Path(__file__));root.mkdir(parents=True,exist_ok=True)
++        self.temp=tempfile.TemporaryDirectory(dir=root);self.state=Path(self.temp.name)
++    def tearDown(self) -> None:self.temp.cleanup()
++    def test_success_opens_shared_close_and_preserves_one_life_diagnostic(self) -> None:
++        e=Endpoint(self.state);raw=copy.deepcopy(e.saved)
++        out,errors,days,gate=e.cleanup()
++        self.assertEqual(errors,[]);self.assertEqual(days,1);self.assertTrue(out['Save']);self.assertTrue(gate.save_verified)
++        self.assertEqual(e.saved,raw);self.assertEqual(out['Save_result'],raw)
++        proof=obj(out['ordinary_save_proof'],'proof');self.assertFalse(proof['one_life_identity_proven'])
++        self.assertFalse(proof['consumer_rehashed_file']);self.assertTrue(proof['native_frame_advanced'])
++        self.assertEqual(e.client.normal_close('normal'),'normal')
++        self.assertEqual(e.calls.count('Save-once'),1)
++    def test_independent_after_failure_preserves_received_save_before_error(self) -> None:
++        e=Endpoint(self.state);e.raise_after=True
++        out,errors,days,gate=e.cleanup()
++        self.assertEqual(out['Save_result'],e.saved);self.assertFalse(out['Save']);self.assertFalse(gate.save_verified)
++        self.assertTrue(errors);self.assertIsNone(days);self.assertEqual(e.calls.count('Save-once'),1)
++        with self.assertRaises(Exception):e.client.normal_close('normal')
++    def test_unknown_save_not_replayed_and_after_not_requested(self) -> None:
++        e=Endpoint(self.state);e.raise_save=True
++        out,errors,_,gate=e.cleanup()
++        self.assertFalse(out['Save']);self.assertFalse(gate.save_verified);self.assertTrue(errors)
++        self.assertNotIn('Save_result',out);self.assertNotIn('Save-independent-after',e.calls)
++        self.assertEqual(e.calls.count('Save-once'),1)
++    def test_before_native_missing_prevents_save_despite_managed_mapping(self) -> None:
++        e=Endpoint(self.state);e.before.pop('diagnostics')
++        out,errors,_,gate=e.cleanup()
++        self.assertFalse(out['Save']);self.assertFalse(gate.save_verified);self.assertTrue(errors)
++        self.assertNotIn('Save-once',e.calls)
++    def test_independent_owner_drift_blocks_close(self) -> None:
++        variants=[('actor',lambda x:change(x,'played_character','character_id',33389)),
++            ('pid',lambda x:change(x,'diagnostics','bridge_pid',4243)),
++            ('generation',lambda x:change(x,'diagnostics','connection_generation',2)),
++            ('pipe',lambda x:change(x,'diagnostics','pipe_name','other')),
++            ('date',lambda x:x.update(date_raw=DATE+24)),('paused',lambda x:x.update(paused=False)),
++            ('run',lambda x:change(x,'managed_campaign_run_binding','run_id','other'))]
++        for label,mutate in variants:
++            with self.subTest(label=label):
++                e=Endpoint(self.state);mutate(e.after);out,errors,_,gate=e.cleanup()
++                self.assertFalse(out['Save']);self.assertFalse(gate.save_verified);self.assertTrue(errors)
++                self.assertEqual(e.calls.count('Save-once'),1)
++    def test_strict_native_fields_reject_bool_float_and_missing(self) -> None:
++        for key,value in [('local_player_id',True),('native_revision',6.0),('date_raw',False)]:
++            with self.subTest(key=key):
++                before=frame(self.state);before[key]=value
++                with self.assertRaises(SaveUnconfirmed):begin_save(before,retained_client(Client()))
++    def test_materialization_failures_never_verify(self) -> None:
++        for key,value in [('status','submitted'),('size',0),('size',True),('sha256','bad'),
++                ('date_raw',DATE+24),('path',str(self.state/'outside.ck3')),('episode_run_id','fake')]:
++            with self.subTest(key=key,value=value):
++                e=Endpoint(self.state);checkpoint=dict(obj(e.saved['checkpoint'],'c'));checkpoint[key]=value;e.saved['checkpoint']=checkpoint
++                out,errors,_,gate=e.cleanup();self.assertFalse(out['Save']);self.assertFalse(gate.save_verified);self.assertTrue(errors)
++    def test_same_native_sample_allowed_without_claiming_new_frame(self) -> None:
++        e=Endpoint(self.state);e.after=copy.deepcopy(e.before)
++        out,errors,_,_=e.cleanup();self.assertEqual(errors,[])
++        proof=obj(out['ordinary_save_proof'],'proof');self.assertFalse(proof['native_frame_advanced'])
++        self.assertTrue(proof['independent_after_request'])
++    def test_retained_client_or_handle_change_rejected(self) -> None:
++        c=Client();start=begin_save(frame(self.state),retained_client(c));c._handle=object()
++        with self.assertRaises(SaveUnconfirmed):verify_save(start,result(self.state),frame(self.state,7),retained_client(c))
++        with self.assertRaises(SaveUnconfirmed):verify_save(start,result(self.state),frame(self.state,7),retained_client(Client()))
++    def test_clock_failure_keeps_independent_off_but_no_save(self) -> None:
++        e=Endpoint(self.state);out,errors,_,gate=e.cleanup(clock_error=True)
++        self.assertTrue(out['OFFclear']);self.assertTrue(errors);self.assertFalse(gate.off_clear)
++        self.assertIn('payment-independent-off',e.calls);self.assertNotIn('Save-once',e.calls)
++    def test_canonical_fixture_root_and_explicit_external_root(self) -> None:
++        with patch.dict(os.environ,{},clear=True):
++            self.assertEqual(fixture_root(Path('C:/checkout/tools/test_ck3_ordinary_save_contract.py')),
++                Path('C:/checkout/tmp'))
++        with patch.dict(os.environ,{'XAR_ORDINARY_SAVE_TEST_ROOT':str(self.state)},clear=True):
++            self.assertEqual(fixture_root(Path('C:/checkout/tools/test_ck3_ordinary_save_contract.py')),self.state.resolve())
++    def test_checkpoint_nullable_fields_missing_rejected(self) -> None:
++        for key in ('succession_lifecycle','episode_run_id','episode_character_id'):
++            with self.subTest(key=key):
++                e=Endpoint(self.state);checkpoint=dict(obj(e.saved['checkpoint'],'checkpoint'))
++                checkpoint.pop(key);e.saved['checkpoint']=checkpoint
++                out,errors,_,gate=e.cleanup()
++                self.assertFalse(out['Save']);self.assertFalse(gate.save_verified);self.assertTrue(errors)
++                self.assertEqual(obj(out['ordinary_save_proof'],'proof')['reason_code'],'projection_fields_missing')
++                self.assertEqual(e.calls.count('Save-once'),1)
++    def test_snapshot_missing_and_null_distinguished_without_new_producer_fields(self) -> None:
++        e=Endpoint(self.state);e.before.pop('episode_character_id');e.after.pop('episode_run_id')
++        out,errors,_,gate=e.cleanup();self.assertEqual(errors,[]);self.assertTrue(gate.save_verified)
++        proof=obj(out['ordinary_save_proof'],'proof')
++        self.assertEqual(proof['before_episode_identity_representation'],
++            {'episode_run_id':'explicit_null','episode_character_id':'missing'})
++        self.assertEqual(proof['after_episode_identity_representation'],
++            {'episode_run_id':'missing','episode_character_id':'explicit_null'})
++        for key in ('episode_run_id','episode_character_id'):
++            for value in (False,0,'one-life'):
++                with self.subTest(key=key,value=value):
++                    bad=frame(self.state);bad[key]=value
++                    with self.assertRaises(SaveUnconfirmed):begin_save(bad,retained_client(Client()))
++    def test_new_proof_numbers_reject_unsafe_integer_and_u32_overflow(self) -> None:
++        unsafe=1<<53
++        for key in ('date_raw','revision','native_revision'):
++            with self.subTest(key=key):
++                bad=frame(self.state);bad[key]=unsafe
++                with self.assertRaises(SaveUnconfirmed):begin_save(bad,retained_client(Client()))
++        for key,value in [('bridge_pid',1<<32),('connection_generation',unsafe)]:
++            with self.subTest(key=key):
++                bad=frame(self.state);change(bad,'diagnostics',key,value)
++                with self.assertRaises(SaveUnconfirmed):begin_save(bad,retained_client(Client()))
++        for section,key in [('checkpoint','size'),('checkpoint','date_raw'),('submission','sequence')]:
++            with self.subTest(section=section,key=key):
++                e=Endpoint(self.state);change(e.saved,section,key,unsafe)
++                out,errors,_,gate=e.cleanup();self.assertFalse(out['Save']);self.assertFalse(gate.save_verified);self.assertTrue(errors)
++        good=frame(self.state);good['revision']=(1<<53)-1
++        begin_save(good,retained_client(Client()))
++    def test_legacy_large_mtime_not_migrated_into_new_proof(self) -> None:
++        e=Endpoint(self.state);legacy=(1<<63)-1;change(e.saved,'materialization','mtime_ns',legacy)
++        out,errors,_,gate=e.cleanup();self.assertEqual(errors,[]);self.assertTrue(gate.save_verified)
++        self.assertEqual(obj(obj(out['Save_result'],'raw')['materialization'],'mat')['mtime_ns'],legacy)
++        self.assertNotIn('mtime_ns',json.dumps(out['ordinary_save_proof']))
++    def test_real_existing_driver_materializes_small_file_and_brackets(self) -> None:
++        # Import actual frozen driver/test transport; no monkeypatch of Save logic.
++        from test_native_bridge_driver import FakeEndpoint,_hello,_snapshot
++        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
++        save_dir=self.state/'profile'/'save games';save_dir.mkdir(parents=True)
++        file=save_dir/'xar_checkpoint.ck3';payload=b'ordinary synthetic checkpoint\n'
++        endpoint=FakeEndpoint();driver=NativeHeadlessGameplayDriver(endpoint.pipe_name,endpoint=endpoint,
++            episode_projection='native_campaign',state_dir=self.state,save_dir=save_dir,
++            checkpoint_timeout_seconds=1.0,checkpoint_poll_interval_seconds=.005)
++        endpoint.publish(_hello('game.state.snapshot','game.command.save-checkpoint'))
++        def publish(revision: int) -> None:
++            native=_snapshot(revision,date_raw=DATE,played_character={'character_id':33388,'alive':True})
++            native['state']['local_player_id']=1
++            endpoint.publish(native)
++        publish(6)
++        requests:list[str]=[]
++        def answer(request: dict[str,object]) -> None:
++            if request.get('type')!='execute_step':return
++            requests.append(str(request.get('step')));file.write_bytes(payload)
++            endpoint.publish(dict(type='command_result',protocol_version=1,request_id=request['request_id'],ok=True,
++                result=dict(step='save-checkpoint',accepted=True,status='submitted',submission=dict(
++                    sequence=1,requested_save_name='xar_checkpoint',date_raw=DATE))))
++        endpoint.send_hook=answer
++        def managed_snapshot() -> dict[str,object]:
++            snap=driver.take_snapshot()
++            # The existing managed host adds this static mapping, not native owner.
++            snap['managed_campaign_run_binding']=dict(run_id='synthetic-run',state_dir=str(self.state),
++                bridge_pipe=endpoint.pipe_name,host_path='synthetic-managed-host.py',frozen_argv_sha256='a'*64)
++            return snap
++        try:
++            class ActualEndpoint(Endpoint):
++                def snapshot(self, label: str) -> Mapping[str,object]:
++                    if label=='Save-independent-after':publish(7)
++                    return managed_snapshot()
++                def call(self, label: str, tool: str, args: dict[str,object]) -> Mapping[str,object]:
++                    self.calls.append(label)
++                    if label=='Save-once':return driver.execute_step('save-checkpoint',expected_revision=args['expected_revision'])
++                    return {}
++            e=ActualEndpoint(self.state)
++            cleanup,errors,days,gate=e.cleanup()
++            self.assertEqual(errors,[]);self.assertTrue(cleanup['Save']);self.assertTrue(gate.save_verified)
++            self.assertEqual(e.client.normal_close('normal'),'normal')
++            proof=obj(cleanup['ordinary_save_proof'],'proof');saved=obj(cleanup['Save_result'],'Save result')
++            before_repr=obj(proof['before_episode_identity_representation'],'before representation')
++            self.assertEqual(before_repr['episode_character_id'],'missing')
++            self.assertEqual(requests,['save-checkpoint']);self.assertEqual(file.read_bytes(),payload)
++            facts=obj(proof['file'],'file');self.assertEqual(facts['bytes'],len(payload));self.assertEqual(facts['sha256'],hashlib.sha256(payload).hexdigest())
++            self.assertEqual(obj(saved['driver_state_replace_receipt'],'receipt')['status'],'unconfirmed')
++            self.assertIsNone(obj(saved['checkpoint'],'checkpoint')['episode_run_id']);self.assertIsNone(obj(saved['checkpoint'],'checkpoint')['episode_character_id'])
++            print('ACTUAL_FAKE_ENDPOINT_FILE',json.dumps(dict(proof=proof,driver_state_replace_receipt=saved['driver_state_replace_receipt']),sort_keys=True))
++        finally:driver.close()
++
++if __name__=='__main__':unittest.main(verbosity=2)

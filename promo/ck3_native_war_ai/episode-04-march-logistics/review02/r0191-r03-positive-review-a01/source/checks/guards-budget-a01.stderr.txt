@@ -1,0 +1,7 @@
+test_amended_contact_bound_and_prior7M_are_distinct (test_r03_budget_a02.BudgetDelta.test_amended_contact_bound_and_prior7M_are_distinct) ... ok
+test_other_component_caps_stay_fixed (test_r03_budget_a02.BudgetDelta.test_other_component_caps_stay_fixed) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK

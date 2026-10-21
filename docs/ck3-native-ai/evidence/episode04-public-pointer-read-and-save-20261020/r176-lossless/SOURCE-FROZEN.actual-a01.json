@@ -1,0 +1,45 @@
+{
+  "schema": "xar.r176-keeper.lossless-source-frozen.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:40:44.872391+00:00",
+  "source_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\keeper_lossless2.py",
+    "bytes": 19465,
+    "sha256": "1b616f20d05b074687160b01fe7517799f48f58d29a17a49889c52ff65a703c5"
+  },
+  "source_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\SOURCE-PLAN.actual-a01.json",
+    "bytes": 4283,
+    "sha256": "7f4061adf0f4d966ea7ff3a049932d068366f2e877deda7dac7ee8d642de0402"
+  },
+  "fixtures_passed": true,
+  "fixture_count": 5,
+  "actual_mypy_returncode": 0,
+  "actual_mypy_source_count": 3,
+  "checks_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\CHECKS-WAIT.actual-a02.json",
+    "bytes": 2592,
+    "sha256": "0eac8e69673cc3c3d60dea347bfa2fa82d8e98c1d62f2790642cda5bd4d6875e"
+  },
+  "checks_output": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\fixtures-OUTPUT.actual-a02.log",
+    "bytes": 333,
+    "sha256": "e2b199460a176fb768a778a14bbb3bbfb4774bcab616842ff710c4adfab0219d"
+  },
+  "actual_mypy_output": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\mypy-OUTPUT.actual-a02.log",
+    "bytes": 44,
+    "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+  },
+  "prior_type_diagnostic_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\CHECKS-WAIT.actual-a01.json",
+    "bytes": 2550,
+    "sha256": "22434dcac91f374f5c23884469801f13a3f5212634fabd74f60691a79a3e2966"
+  },
+  "source_AST_assert_count": 0,
+  "source_body_reads_this_phase": 0,
+  "new_payloads_this_phase": 0,
+  "raw_retirement_admitted": false,
+  "keeper_protection_deadline_utc": "2026-10-25T06:59:39.751702Z"
+}

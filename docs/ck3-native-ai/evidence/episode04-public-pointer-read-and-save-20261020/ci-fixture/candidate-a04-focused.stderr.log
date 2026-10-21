@@ -1,0 +1,10 @@
+test_default_and_r04_keep_original_context_and_public_route (r06_scope_candidate.PublicR06ScopeTests.test_default_and_r04_keep_original_context_and_public_route) ... ok
+test_prepare_refuses_prefilled_capacity_without_allocating (r06_scope_candidate.PublicR06ScopeTests.test_prepare_refuses_prefilled_capacity_without_allocating) ... ok
+test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client (r06_scope_candidate.PublicR06ScopeTests.test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client) ... ok
+test_run_requires_background_receipt_before_launcher (r06_scope_candidate.PublicR06ScopeTests.test_run_requires_background_receipt_before_launcher) ... ok
+test_scope_rejects_crossed_or_expired_inputs_before_public_launcher (r06_scope_candidate.PublicR06ScopeTests.test_scope_rejects_crossed_or_expired_inputs_before_public_launcher) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.382s
+
+OK

@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:46:40.942835+00:00",
+  "origin_machine_id": "unknown",
+  "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\mcp-calls.jsonl",
+  "identity": {
+    "volume_serial": "13886423844274364792",
+    "file_id": "281474978776885",
+    "bytes": 303227579,
+    "mtime_ns": "1791163961495910000",
+    "fstat_ctime_ns": "1791163961495910000"
+  },
+  "sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+  "phase": "INTENT",
+  "original_readable_before": true,
+  "intended_absent_after": true,
+  "absence_verified": false,
+  "same_name_replacement": false
+}

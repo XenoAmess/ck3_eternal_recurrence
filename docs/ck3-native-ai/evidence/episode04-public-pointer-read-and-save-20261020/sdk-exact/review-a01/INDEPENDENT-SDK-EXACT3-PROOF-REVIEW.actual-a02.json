@@ -1,0 +1,108 @@
+{
+  "schema": "xar.old-sdk-exact-replay.independent-full-proof-review.v1",
+  "execution_machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_machine_id": "unknown",
+  "observed_at_utc": "2026-10-20T22:29:21.383189+00:00",
+  "reviewer": "readwatch_review",
+  "status": "EXACT_THREE_COMPLETE_REPLAY_PROOF_ACCEPTED_RETIREMENT_NOT_AUTHORIZED",
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-A02-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 6498,
+    "sha256": "6c04482713eb54b089c47fe22967f22e6cb448c466df5f25122b5a25971a1889"
+  },
+  "frozen_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\SOURCE-FROZEN.actual-a02.json",
+    "bytes": 2636,
+    "sha256": "b0509c3f9eaac1ce57fe3fe4df8c271bc58e1dbc243fcd19eda7e490c145ad0e"
+  },
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\EXACT3-REPLAY-DELIVERY.actual-a01.json",
+    "bytes": 9848,
+    "sha256": "fb36d56334b837d98a84e29c9d6c0ddd58b0f7306044a4c85c07e36d90f3ee3e"
+  },
+  "stored_index_check": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\INDEX-ROUNDTRIP-AND-DEPENDENCIES.actual-a01.json",
+    "bytes": 2778,
+    "sha256": "f1e45b93a176aa6d78885320ce127b44726ebf6e167e6ac819363032c9879bd1"
+  },
+  "independent_actual": {
+    "observed_at_utc": "2026-10-20T22:28:43.125651+00:00",
+    "execution_machine_id": "desktop-3fevhd2-1c74096080",
+    "origin_machine_id": "unknown",
+    "delivery": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\EXACT3-REPLAY-DELIVERY.actual-a01.json",
+      "bytes": 9848,
+      "sha256": "fb36d56334b837d98a84e29c9d6c0ddd58b0f7306044a4c85c07e36d90f3ee3e"
+    },
+    "groups": [
+      {
+        "group": "r165",
+        "bytes": 303227579,
+        "rows": 149,
+        "sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+        "original_child_pid": 14132,
+        "original_wait": 0,
+        "gzip_crc_single_member_EOF": true,
+        "current_log_held_generation_exact": true,
+        "current_keeper_metadata_checked": 298
+      },
+      {
+        "group": "r175",
+        "bytes": 191399668,
+        "rows": 573,
+        "sha256": "ab74a3b1bbb286d5a560883677933229b3bed7a00f679b2d10e42c05c34f10e2",
+        "original_child_pid": 800,
+        "original_wait": 0,
+        "gzip_crc_single_member_EOF": true,
+        "current_log_held_generation_exact": true,
+        "current_keeper_metadata_checked": 1146
+      },
+      {
+        "group": "r177",
+        "bytes": 287041520,
+        "rows": 755,
+        "sha256": "637219dd8a64d3330a71934a5404822c987b90dac624835b9ec4df4d05caed93",
+        "original_child_pid": 8168,
+        "original_wait": 0,
+        "gzip_crc_single_member_EOF": true,
+        "current_log_held_generation_exact": true,
+        "current_keeper_metadata_checked": 1510
+      }
+    ],
+    "bytes": 781668767,
+    "lines": 1477,
+    "unique_keeper_metadata_checked": 2954,
+    "full_payload_rehashes": 0,
+    "fullstream_reruns": 0,
+    "all_handles_closed": true,
+    "files_written": 0,
+    "deletions": 0,
+    "cleanup_credit_bytes": 0
+  },
+  "review_conclusion": [
+    "Audited frozen a02 producer completed three original-owned subprocesses and retained original wait0 plus exact results/index/output pins",
+    "All original and reconstructed bytes/SHA agree for R165149,R175573,R177755 ordered records",
+    "Independent index parsing checked single-member gzip CRC/EOF, sequential line numbers, per-line bytes/SHA equality, JSON type-domain roundtrip and canonical u64 identities",
+    "Each of2954 indexed request/response paths currently names its recorded generation; metadata inspected through read handles, without payload rehash",
+    "Three original aggregates currently match proof generation through held handles; their payload hashes were certified by original fullstream proof, not rehashed by reviewer"
+  ],
+  "future_gate": [
+    "Separate exact Root purpose/current-reference release and actual delete capacity/approval required",
+    "Retirement must lock current keepers, rehash each target through same held generation, fsync per-target WAL, perform exact same-handle disposition, close and verify absence",
+    "Keep2954 requests/responses, ordered indexes, source/check/provenance/session inputs and historical a01 failure",
+    "Derived reconstruction only at a new path; no same-name original substitution and no781MB reconstructed output for this review"
+  ],
+  "scope_limits": {
+    "new_payload_rehashes": 0,
+    "new_fullstream_replays": 0,
+    "source_mutations": 0,
+    "deletions": 0,
+    "physical_credit_bytes": 0,
+    "historical_game_business_qualification": false,
+    "delete_permission": false
+  },
+  "review_budget_bytes": 524288,
+  "review_report_ceiling_bytes": 8192,
+  "writers_after_close": 0,
+  "owned_Popen_after_close": []
+}

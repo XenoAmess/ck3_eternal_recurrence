@@ -291,11 +291,32 @@ def verify_case(context):
     return verified
 
 
+def _pointer_selected(context: Mapping[str,object]) -> bool:
+    inputs = json_object(context.get('case_inputs',{}))
+    selected = inputs.get('r08_parent_pointer_read_one_day') is not None
+    if selected:
+        keys = ('r04_county_entry','r06_refill_one_day','r08_writer_one_day','r08_parent_entry_one_day',
+                'r08_parent_pointer_read_one_day')
+        if sum(inputs.get(key) is not None for key in keys) > 1:
+            raise ValueError('R04, R06 and R08 modes are mutually exclusive')
+        if json_object(context.get('case_contract',{})).get('schema') != 'xar.e04.r10-common-preparation.v1':
+            raise ValueError('R10 common preparation contract differs')
+    return selected
+
+
 def validate_contract(context: Mapping[str,object]) -> None:
     """Keep the original product checks behind an explicit context interface."""
-    _validate_contract_impl(context)
+    if _pointer_selected(context):
+        from .pointer_read_bundle_loader import load
+        load(context).validate_contract(context)
+    else:
+        _validate_contract_impl(context)
 
 
 def run_case(context: Mapping[str,object], client: CaseClient) -> JsonObject:
     """Dispatch through the original managed client; validate returned JSON."""
+    if _pointer_selected(context):
+        validate_contract(context)
+        from .pointer_read_bundle_loader import load
+        return json_object(load(context).run_case(context,client))
     return json_object(_run_case_impl(context,client))

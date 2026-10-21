@@ -1,0 +1,38 @@
+--- a/tools/test_ck3_ordinary_save_contract.py
++++ b/tools/test_ck3_ordinary_save_contract.py
+@@ -14,7 +14,11 @@
+ from ck3_mod_acceptance_cases.ordinary_save_contract import (
+     SaveUnconfirmed, begin_save, verify_save, retained_client, obj)
+ 
+-ROOT=Path(__file__).resolve().parents[2]
++ROOT=Path(__file__).resolve().parents[1]
++
++def fixture_root(script: Path) -> Path:
++    explicit=os.environ.get('XAR_ORDINARY_SAVE_TEST_ROOT')
++    return Path(explicit).resolve() if explicit else script.resolve().parents[1]/'tmp'
+ DATE=53149080
+ 
+ class Client:
+@@ -80,7 +84,8 @@
+ 
+ class OrdinarySaveTests(unittest.TestCase):
+     def setUp(self) -> None:
+-        self.temp=tempfile.TemporaryDirectory(dir=ROOT/'tmp');self.state=Path(self.temp.name)
++        root=fixture_root(Path(__file__));root.mkdir(parents=True,exist_ok=True)
++        self.temp=tempfile.TemporaryDirectory(dir=root);self.state=Path(self.temp.name)
+     def tearDown(self) -> None:self.temp.cleanup()
+     def test_success_opens_shared_close_and_preserves_one_life_diagnostic(self) -> None:
+         e=Endpoint(self.state);raw=copy.deepcopy(e.saved)
+@@ -144,6 +149,12 @@
+         e=Endpoint(self.state);out,errors,_,gate=e.cleanup(clock_error=True)
+         self.assertTrue(out['OFFclear']);self.assertTrue(errors);self.assertFalse(gate.off_clear)
+         self.assertIn('payment-independent-off',e.calls);self.assertNotIn('Save-once',e.calls)
++    def test_canonical_fixture_root_and_explicit_external_root(self) -> None:
++        with patch.dict(os.environ,{},clear=True):
++            self.assertEqual(fixture_root(Path('C:/checkout/tools/test_ck3_ordinary_save_contract.py')),
++                Path('C:/checkout/tmp'))
++        with patch.dict(os.environ,{'XAR_ORDINARY_SAVE_TEST_ROOT':str(self.state)},clear=True):
++            self.assertEqual(fixture_root(Path('C:/checkout/tools/test_ck3_ordinary_save_contract.py')),self.state.resolve())
+     def test_checkpoint_nullable_fields_missing_rejected(self) -> None:
+         for key in ('succession_lifecycle','episode_run_id','episode_character_id'):
+             with self.subTest(key=key):

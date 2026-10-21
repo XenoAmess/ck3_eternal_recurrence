@@ -1,0 +1,101 @@
+{
+  "schema": "xar.pointer-read.independent-actual-SYSTEM-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:13:01.828499+00:00",
+  "status": "PASS_ACTUAL_COMPILED_AND_SYSTEM_ONLY",
+  "gate": {
+    "path": "C:\\w\\e04parentread03\\EXECUTION-GATE.actual.json",
+    "bytes": 2101,
+    "sha256": "be8cdcad90fc5c1dccba0bb4fc161a35615affd1fa53bfe85b02da7ebc8121da"
+  },
+  "SYSTEM_receipt": {
+    "path": "C:\\w\\e04parentread03\\build-a01\\defender-exe-exclusions\\20261020T220725Z-bd623c0b\\receipt.json",
+    "bytes": 330399,
+    "sha256": "52d6bfc19f6687afd4268ff873052513c05ceba09c6bba8bc904e53058ccc997"
+  },
+  "full_receipt_bytes_read": 330399,
+  "SYSTEM_manifest": {
+    "path": "C:\\w\\e04parentread03\\build-a01\\defender-exe-exclusions\\20261020T220725Z-bd623c0b\\manifest.json",
+    "bytes": 2735,
+    "sha256": "b68f8c17992768891daa6fc5b4d89bf47b847793b3b1b67dce74458876b750f5"
+  },
+  "producer": {
+    "path": "C:\\w\\e04parentread03\\build-a01\\native-msvc-result.json",
+    "bytes": 1640,
+    "sha256": "0839b8f01a047e7c39e49f8d99499bd7d6be26068ba38818c3299475fa32b098"
+  },
+  "original_build": {
+    "path": "C:\\w\\e04parentread03\\MACHINE-BUILD.actual.json",
+    "bytes": 6637,
+    "sha256": "dcacdd38ec15471f3ada8bf61bbb71897d6fbe984f775ee31529762b8b4905e9"
+  },
+  "original_build_wait": {
+    "path": "C:\\w\\e04parentread03\\control-metadata-a01\\BUILD.ORIGINAL-WAIT.actual.json",
+    "bytes": 1116,
+    "sha256": "56d98ef07d3ee6a642675fa9db7b12a0a2e004a36d8f4de743a6ca600622bb26"
+  },
+  "original_build_pid": 35608,
+  "original_build_created": "134370076308352659",
+  "original_build_wait_returncode": 0,
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\SOURCE-MANIFEST.actual.json",
+    "bytes": 5755,
+    "sha256": "23758688b3ecf62b3168436e26489fbe6d6a7f9837c37aed7a1b48f9585c72cd"
+  },
+  "actual_source_files_current_verified": 21,
+  "source_bytes": 231824,
+  "actual_EXE_current_verified": [
+    {
+      "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_cold_target.exe",
+      "bytes": 64512,
+      "sha256": "451bf1953e2636fd047053a6edc13c41ae12d6fe9891872f96eab2931faba581"
+    },
+    {
+      "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_observer.exe",
+      "bytes": 137216,
+      "sha256": "d0beda84eb549f6b0b773e99f773f36224d64be366dbd9a66d8cd3188a8500c9"
+    }
+  ],
+  "SYSTEM": {
+    "sid": "S-1-5-18",
+    "admin_token": true,
+    "missing_requested_paths": [],
+    "partial_mutation": false,
+    "verified_requested_paths": [
+      "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_cold_target.exe",
+      "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_observer.exe"
+    ],
+    "calls": [
+      {
+        "method": "Add",
+        "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_cold_target.exe",
+        "return_object_absent": true,
+        "return_value": null,
+        "return_value_available": false
+      },
+      {
+        "method": "Add",
+        "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_observer.exe",
+        "return_object_absent": true,
+        "return_value": null,
+        "return_value_available": false
+      }
+    ],
+    "call_null_return_not_treated_as_success": true,
+    "success_basis": "Actual fresh SYSTEM setting readback, not COM return object",
+    "before_path_count": 420,
+    "after_path_count": 422,
+    "extensions_unchanged": true,
+    "processes_unchanged": true,
+    "prior_settings_preserved": true,
+    "only_added_paths": [
+      "c:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_cold_target.exe",
+      "c:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_observer.exe"
+    ]
+  },
+  "reviewer_build_SYSTEM_or_EXE_execution_count": 0,
+  "cold_permission_not_issued": true,
+  "native_cold_qualified": false,
+  "full_R08": false,
+  "review_writer0_after_this_file": true
+}

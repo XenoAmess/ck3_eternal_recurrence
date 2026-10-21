@@ -1,0 +1,32 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:13:00Z",
+  "observation_note": "Read final helper, a02-to-a03 delta, delivery and independent review immediately before creation; filesystem creation timestamp is authoritative for deadline.",
+  "status": "ADOPTED_SOURCE_ONLY",
+  "scope": "producer_materialization_and_native_bracketing",
+  "freeze": {"bytes":3353,"sha256":"91cead83b43b289bb60cd0100dfd8e83f4dedc16b465aa00ee5e25a648f845b0"},
+  "delivery": {"bytes":6337,"sha256":"ca7909f9ec14ae6186052b757d9eb769fb78207435d9edc3704d219e95afd286"},
+  "independent_review": {"bytes":8464,"sha256":"fba8db88a9b69dc96728b28906f3ec9465e4b942187d0cb28e5c49bc02c34a84"},
+  "production_mapping": [
+    {"repo_path":"tools/ck3_mod_acceptance_cases/ordinary_save_contract.py","bytes":12638,"sha256":"4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"},
+    {"repo_path":"tools/ck3_mod_acceptance_cases/r08_writer_one_day.py","bytes":24161,"sha256":"1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"},
+    {"repo_path":"tools/test_ck3_ordinary_save_contract.py","bytes":17620,"sha256":"99be6c809ca0666a8464aebe35920ecc221069a98a161d40ef25f49d5d31173e"}
+  ],
+  "review": [
+    "Ordinary native_campaign follows the actual current player and natural succession. No oneLife identity is fabricated.",
+    "Snapshot episode identities preserve missing versus explicit_null; non-null rejects. Checkpoint lifecycle fields require explicit null.",
+    "Proof numbers are safe JSON integers; actor, local-player and PID are u32. Legacy producer mtime_ns remains diagnostic outside proof.",
+    "Save result is preserved before the independent after request. Unknown Save is not resubmitted; missing or drifting owner blocks CloseGate.",
+    "Final six focused methods and four-file actual mypy passed; independent reviewer read original waits and pins. No duplicate test run needed.",
+    "New helper and changed actor must enter the next immutable source-index closure. Do not reuse the old bundle pins or copy the old baseline actor over the final actor."
+  ],
+  "limits": [
+    "FakeEndpoint and source evidence only; no new CK3 save or oneLife qualification.",
+    "File size and SHA originate from existing producer; consumer does not hash the large file a second time.",
+    "No atomic Save-time actor, file-internal actor or native FILETIME proof; equal native sequence is allowed and no new native frame is claimed.",
+    "Not part of current 15-file production publication. Separate later integration is required."
+  ],
+  "root_writer0_after_creation": true,
+  "author_and_reviewer_writer0_reported": true,
+  "hard_deadline_utc": "2026-10-20T22:15:00Z"
+}

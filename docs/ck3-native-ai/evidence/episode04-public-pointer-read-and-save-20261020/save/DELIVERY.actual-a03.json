@@ -1,0 +1,120 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:56:58.113244+00:00",
+  "freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+    "bytes": 3353,
+    "sha256": "91cead83b43b289bb60cd0100dfd8e83f4dedc16b465aa00ee5e25a648f845b0"
+  },
+  "production_mapping": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "repo_path": "tools/test_ck3_ordinary_save_contract.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\tools\\test_ck3_ordinary_save_contract.py",
+      "bytes": 17620,
+      "sha256": "99be6c809ca0666a8464aebe35920ecc221069a98a161d40ef25f49d5d31173e"
+    }
+  ],
+  "full_candidate_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\ORDINARY-SAVE.candidate-a03.patch",
+    "bytes": 35564,
+    "sha256": "5c1badc3cd4d4d4a2612af01f591be54094c84ec68b9ff36baaf5e31d715f78a"
+  },
+  "a02_to_a03_delta": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\ORDINARY-SAVE.a02-to-a03.delta.patch",
+    "bytes": 2113,
+    "sha256": "c1c66ac2b4a0388ca383cae0e6a0ee26f5f2dc839b14ba3917742e4b4b71ea29"
+  },
+  "source_only": true,
+  "actual_checks": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2793,
+      "sha256": "225bbc64833212bcacd7ee497d960b3fb31e915e0ae1570cf364c6aa8cf31488"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2516,
+      "sha256": "bda4674e863934f7daf09be2ac604607d58009de7df704ff0b4567fb1b5b3b8b"
+    }
+  ],
+  "all_owned_original_wait_receipts": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\focused-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1280,
+      "sha256": "8f2ccdcc7e10d6e3a1c234682c5ec7b4ab0ff4c8ab2da58745ddd7125ffb1eff"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\focused-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2261,
+      "sha256": "c72d9a6763c578ed3b46304494388ed5aec0271a1657d361ca89977315e150c9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\focused-drift-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2248,
+      "sha256": "24d76030d65fb605fc93a7823ef493e8496d4534e5584879bf71df24da9682b7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\mypy-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1418,
+      "sha256": "ba53cac4ad05ce596f6ccb5799051a5dec26efff87e24043609ea19d76247302"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\mypy-author-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2230,
+      "sha256": "6162fe1fb3c0025105ab8306de99f192cefac1fe777ec4d0360e61da03f35e6d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\mypy-author-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2229,
+      "sha256": "df17f37be9effdf87fe03941198785ecfdc3a8b630489e0a989e059402a82700"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\mypy-final-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2394,
+      "sha256": "13ce3cc632d0bd180ef34fd57b2326949b1681acb96fd00705f5d6a5c64ea446"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\mypy-tests-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1376,
+      "sha256": "cf875bd6e6ac9954ced0f0a85b93dd1b85cccb27ac87161d22295df5a59c3e52"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2793,
+      "sha256": "225bbc64833212bcacd7ee497d960b3fb31e915e0ae1570cf364c6aa8cf31488"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2516,
+      "sha256": "bda4674e863934f7daf09be2ac604607d58009de7df704ff0b4567fb1b5b3b8b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\focused-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2711,
+      "sha256": "328ac18f14b0a75f5d41dc69328c740ed7c06bdedd4a9bbffc5e18cfadcce640"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\mypy-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2484,
+      "sha256": "0b662fcff1c4ffb3f3bbd495d32f4cf4459833ccaaaeb8baed55c5258e3830da"
+    }
+  ],
+  "author_limit_bytes": 1310720,
+  "author_actual_before_delivery": 1072293,
+  "temporary_remaining_files": 0,
+  "remaining_heavy_write_bytes": 0,
+  "author_writer0_after_delivery": true,
+  "helper_requires_current_source_index_external_immutable_closure": true
+}

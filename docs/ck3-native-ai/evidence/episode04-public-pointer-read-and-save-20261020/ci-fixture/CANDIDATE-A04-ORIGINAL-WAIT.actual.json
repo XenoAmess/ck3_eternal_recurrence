@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T22:47:43.762401+00:00",
+  "ended_at_utc": "2026-10-20T22:47:46.775796+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\focused_runner_a04.py",
+    "candidate"
+  ],
+  "original_popen_pid": 34200,
+  "creation_filetime": "134370100637634952",
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "sampled_peak_bytes": 223935,
+  "sampling_seconds": 0.02,
+  "errors": []
+}

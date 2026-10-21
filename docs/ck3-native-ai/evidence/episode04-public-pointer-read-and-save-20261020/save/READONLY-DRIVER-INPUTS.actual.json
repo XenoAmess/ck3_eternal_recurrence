@@ -1,0 +1,26 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:45:27.848433+00:00",
+  "actual_test_driver": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+    "bytes": 1652126,
+    "sha256": "df9e04917befccd508a593fb70f4a8845a27d9be3b6d644983d3a3da8d425c3a"
+  },
+  "actual_test_transport": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_native_bridge_driver.py",
+    "bytes": 701666,
+    "sha256": "5888fca8eaa03be4cd26add1770223ed9dcd017e135f8efe60f9d588ff83fc2b"
+  },
+  "master_source_head": "7ac6cebe92c67a3dd5295ae5fe07d944a38480c6",
+  "master_driver_bytes": 1655471,
+  "master_driver_sha256": "9d294a2a3e9e3734bca89461d9eaa205ed9b60945689a45f4cb1325c8ea258e9",
+  "whole_driver_equal": false,
+  "selected_save_methods_ast_equal": true,
+  "selected_method_ast_sha256": {
+    "_with_one_life_episode": "a7e8bc38eb2364c426084e988aedf921db3c56229af6da86c1a9f951d8efa768",
+    "_persist_driver_state": "4caeb30c9438d9c7c757cc26eefc4655e868848408c8209b54ecbd372c61060f",
+    "_execute_save_checkpoint": "0a9d6f64031ea0a805c3743c1bbdea2bbf9732d953669b2fb8d397bf2447e41a",
+    "_checkpoint_lifecycle_metadata": "bd6db642fd9b4cf53b06c50f1a475a729a498dc05f055c6351081e3accefa596"
+  },
+  "disclaimer": "Whole frozen driver differs from master. Only the four actual Save/lifecycle method ASTs were compared. No driver/host edits or game actions."
+}

@@ -1,0 +1,42 @@
+{
+  "role": "SOURCE_TEMPLATE_NOT_EXECUTION_ADMISSION",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "adapter": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py"
+  },
+  "case_contract": {
+    "schema": "xar.e04.r10-common-preparation.v1"
+  },
+  "case_inputs": {
+    "r08_parent_pointer_read_one_day": {
+      "bundle_index_pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\PUBLIC-SOURCE-INDEX.prepared-a01.json",
+        "bytes": 13173,
+        "sha256": "a23a20033f69244596727e4b0eb00b14909a018f7d744cf5611f791a48279962"
+      },
+      "qualification_pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\POINTER-READ-QUALIFICATION.actual-a01.json",
+        "bytes": 6633,
+        "sha256": "70dd8b0e5b97e404018f821a1f01ef88caa538b04ee1fd43a9a95eef6504e5c1"
+      },
+      "observer_pin": {
+        "path": "C:\\w\\e04parentread03\\build-a01\\maintenance_parent_pointer_read_observer.exe",
+        "bytes": 137216,
+        "sha256": "d0beda84eb549f6b0b773e99f773f36224d64be366dbd9a66d8cd3188a8500c9"
+      },
+      "root_scope_path": "REQUIRES_FRESH_ROOT_GRANT_AFTER_ACTUAL_OWNER_PAIR",
+      "actor_id": 33388,
+      "expected_start_date_raw": "REPLACE_WITH_ACTUAL_PREDECLARED_DATE_INTEGER",
+      "parent_tools": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools",
+      "prefix": "r08-pointer-a01",
+      "deadline_utc": "REQUIRES_NEW_FINITE_GAME_DEADLINE",
+      "payment_enable_once_authorized": false,
+      "natural_phase_enable_once_authorized": false
+    }
+  },
+  "remaining_actual_inputs": [
+    "Fresh public prepare/allocation/run-context and background Steam receipt",
+    "Fresh Root finite scene authorization and owner-pair source pins, then Root grant within30s",
+    "At least1050s remaining before actual observer Popen; canonical shared normal-close owner"
+  ]
+}

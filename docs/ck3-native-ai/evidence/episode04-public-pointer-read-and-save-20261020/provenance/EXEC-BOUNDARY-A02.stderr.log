@@ -1,0 +1,9 @@
+test_actual_guard_allows_exact_new_limit_before_stage (__main__.GrowthTests.test_actual_guard_allows_exact_new_limit_before_stage) ... ok
+test_actual_guard_rejects_one_byte_over_before_stage (__main__.GrowthTests.test_actual_guard_rejects_one_byte_over_before_stage) ... ok
+test_prospective_guard_allows_over_old_limit_through_exact_new_limit (__main__.GrowthTests.test_prospective_guard_allows_over_old_limit_through_exact_new_limit) ... ok
+test_prospective_guard_rejects_one_byte_over_before_copy_claim (__main__.GrowthTests.test_prospective_guard_rejects_one_byte_over_before_copy_claim) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.017s
+
+OK

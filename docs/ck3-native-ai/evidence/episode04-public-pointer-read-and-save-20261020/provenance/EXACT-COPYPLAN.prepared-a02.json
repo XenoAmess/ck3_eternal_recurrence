@@ -1,0 +1,1999 @@
+{
+  "D_readonly_expected_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "Git_mutation_execution_admitted": false,
+  "W": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "central_ledger_patch": {
+    "Root_decision": "R0191 R03 bounded [0,40)/1200 frames",
+    "accepted_count_after": 7,
+    "accepted_count_before": 6,
+    "previous_history_preserved": true
+  },
+  "execution": {
+    "after_separate_Root_and_fresh_sourcebound_admission_only": true,
+    "maximum_copy_stage_commit_push": 1,
+    "no_fetch_force_GC_D_checkout": true,
+    "original_Popen_create_and_wait_required": true,
+    "partial_or_remote_race_stop_no_replay": true,
+    "source_staged_committed_bytes_Git_oid_SHA256_each_exact": true
+  },
+  "expected_W_and_remote": "63af2d71ac5aaf88d7153a2f20885d1bc3e67191",
+  "hard_deadline_utc": "2026-10-20T23:30:00Z",
+  "items": [
+    {
+      "bytes": 12638,
+      "git_blob": "6de0a10b2b50974f30a8f3a12b207523b527c66b",
+      "old": null,
+      "role": "adopted ordinary Save source",
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "target": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py"
+    },
+    {
+      "bytes": 24161,
+      "git_blob": "8929a286b198db3464f5faf5ba45494f03e63cbb",
+      "old": {
+        "bytes": 23002,
+        "git_blob": "c31d018e9c47d944d33b8ddd734da5cb810ff17f",
+        "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+      },
+      "role": "adopted ordinary Save source",
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "target": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py"
+    },
+    {
+      "bytes": 17620,
+      "git_blob": "b965d3c80584bd0a3c0c6423ef52ae92337256d2",
+      "old": null,
+      "role": "adopted ordinary Save source",
+      "sha256": "99be6c809ca0666a8464aebe35920ecc221069a98a161d40ef25f49d5d31173e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\tools\\test_ck3_ordinary_save_contract.py",
+      "target": "tools/test_ck3_ordinary_save_contract.py"
+    },
+    {
+      "bytes": 3353,
+      "git_blob": "6ab804852fc03d68b835deec20ab506df711da31",
+      "old": null,
+      "role": "frozen Save evidence",
+      "sha256": "91cead83b43b289bb60cd0100dfd8e83f4dedc16b465aa00ee5e25a648f845b0",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/SOURCE-FREEZE.actual-a03.json"
+    },
+    {
+      "bytes": 6337,
+      "git_blob": "f8f31feb23b7cb4e7dee6544ff39276c948b39b4",
+      "old": null,
+      "role": "frozen Save evidence",
+      "sha256": "ca7909f9ec14ae6186052b757d9eb769fb78207435d9edc3704d219e95afd286",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\DELIVERY.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/DELIVERY.actual-a03.json"
+    },
+    {
+      "bytes": 35564,
+      "git_blob": "ccded70d53fda57abaab8b0cd9e0a1c22f5ab36c",
+      "old": null,
+      "role": "frozen Save evidence",
+      "sha256": "5c1badc3cd4d4d4a2612af01f591be54094c84ec68b9ff36baaf5e31d715f78a",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\ORDINARY-SAVE.candidate-a03.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/ORDINARY-SAVE.candidate-a03.patch"
+    },
+    {
+      "bytes": 2113,
+      "git_blob": "b67c6ce9549e7afc2db08bca9a2893b0de915242",
+      "old": null,
+      "role": "frozen Save evidence",
+      "sha256": "c1c66ac2b4a0388ca383cae0e6a0ee26f5f2dc839b14ba3917742e4b4b71ea29",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\ORDINARY-SAVE.a02-to-a03.delta.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/ORDINARY-SAVE.a02-to-a03.delta.patch"
+    },
+    {
+      "bytes": 2793,
+      "git_blob": "564212b7d7c2060e3522e1f1de5f16be210a1e69",
+      "old": null,
+      "role": "actual final Save checks",
+      "sha256": "225bbc64833212bcacd7ee497d960b3fb31e915e0ae1570cf364c6aa8cf31488",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/focused-delta-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 3222,
+      "git_blob": "d023a49b84bd7f5d68e069779e1b02df9a2a9e4c",
+      "old": null,
+      "role": "actual final Save checks",
+      "sha256": "2085d8f044f0e011d703c5cf97bf0b89ba87837527494a971f34cafe87cccfa6",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/focused-delta-a01/stdout.log"
+    },
+    {
+      "bytes": 1033,
+      "git_blob": "fd4e13d40bb254c4de775c8bdb2cf986f16398b4",
+      "old": null,
+      "role": "actual final Save checks",
+      "sha256": "e098d71d681ce4b1cac44c12a17bb1daf216a34544e0efd86f8e0b1cfe5eba13",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\focused-delta-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/focused-delta-a01/stderr.log"
+    },
+    {
+      "bytes": 2516,
+      "git_blob": "0b63c4c93861aab723a7e2ddddf8559cf8d9fdff",
+      "old": null,
+      "role": "actual final Save checks",
+      "sha256": "bda4674e863934f7daf09be2ac604607d58009de7df704ff0b4567fb1b5b3b8b",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/mypy-delta-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 44,
+      "git_blob": "49a1e82b673afb21ac31d8b4a25c43daabf4f4d3",
+      "old": null,
+      "role": "actual final Save checks",
+      "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/mypy-delta-a01/stdout.log"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "actual final Save checks",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\revision-a03\\mypy-delta-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/mypy-delta-a01/stderr.log"
+    },
+    {
+      "bytes": 2710,
+      "git_blob": "f621c7abcf8e547c6805df1669fb9f1b4e3936ae",
+      "old": null,
+      "role": "Save Root adoption and review",
+      "sha256": "91102fd624d77a06a0bb8e4710ced79c03af45036289af68223aac7761f0d243",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\ROOT-SOURCE-ADOPTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/ROOT-SOURCE-ADOPTION.actual-a01.json"
+    },
+    {
+      "bytes": 613,
+      "git_blob": "41425e08a20d1b518a0922fd4057f6f44cabc5f7",
+      "old": null,
+      "role": "Save Root adoption and review",
+      "sha256": "b2670182612eeecc490dcb65d5a12a8beb78a55ebb935c2a90b8814b470ca228",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\ROOT-SOURCE-ADOPTION-TIME-CORRECTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/ROOT-SOURCE-ADOPTION-TIME-CORRECTION.actual-a01.json"
+    },
+    {
+      "bytes": 8464,
+      "git_blob": "da2119011ad482295ed364d5aa27f4d15e152752",
+      "old": null,
+      "role": "Save Root adoption and review",
+      "sha256": "fba8db88a9b69dc96728b28906f3ec9465e4b942187d0cb28e5c49bc02c34a84",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\review-a01\\INDEPENDENT-ORDINARY-SAVE-DELTA-REVIEW.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/review-a01/INDEPENDENT-ORDINARY-SAVE-DELTA-REVIEW.actual-a03.json"
+    },
+    {
+      "bytes": 1488,
+      "git_blob": "2b184695c55e91c256076dc2dc4f32fc3c5b9332",
+      "old": null,
+      "role": "selected historical AST/fixture source proof; not whole driver equality",
+      "sha256": "dc7ce7876d8053c28e5de87180db8517bec2213762c038b122c0a28e84bae662",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\source-candidate-a01\\READONLY-DRIVER-INPUTS.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/save/READONLY-DRIVER-INPUTS.actual.json"
+    },
+    {
+      "bytes": 4758,
+      "git_blob": "9074c7897571bd689baa52e9d8d530877b3d8dd2",
+      "old": null,
+      "role": "Root-adopted public pointer v2 source",
+      "sha256": "1bbbbd613482a19db4dbda5939b33b9b90ab27d671f501ebe986f748baf6c0aa",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\pointer_read_bundle_loader.py",
+      "target": "tools/ck3_mod_acceptance_cases/pointer_read_bundle_loader.py"
+    },
+    {
+      "bytes": 11583,
+      "git_blob": "a5b2b31ff12c9baa15f87f27fe23f4dea5be1c56",
+      "old": null,
+      "role": "Root-adopted public pointer v2 source",
+      "sha256": "c70295cc9cf8057d28219dbfe57d21049f71ebb59a115587db55364aeb0fcfa8",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\pointer_read_public_models.py",
+      "target": "tools/ck3_mod_acceptance_cases/pointer_read_public_models.py"
+    },
+    {
+      "bytes": 20446,
+      "git_blob": "9da18e10e5699850de2b580e46cecc9117a2c1c2",
+      "old": null,
+      "role": "Root-adopted public pointer v2 source",
+      "sha256": "49a3d0d77845c48e64ea697f581417c93ceca24e7257341b90964743e3e5508a",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_pointer_read_controller.py",
+      "target": "tools/ck3_mod_acceptance_cases/r08_parent_pointer_read_controller.py"
+    },
+    {
+      "bytes": 10557,
+      "git_blob": "f683f0f84dc5ac561c4651d01b5fa7b85a80ab62",
+      "old": null,
+      "role": "Root-adopted public pointer v2 source",
+      "sha256": "adaaf188416c99db20c4f296b8852975ebd4d1ee258a0d8b35f570107b2cf76c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_pointer_read_one_day.py",
+      "target": "tools/ck3_mod_acceptance_cases/r08_parent_pointer_read_one_day.py"
+    },
+    {
+      "bytes": 18032,
+      "git_blob": "2e51b3399be37dfb4e77db36000d14ee9d442f3e",
+      "old": {
+        "bytes": 16981,
+        "git_blob": "ff9128d36886cc7396d0f8fc94dd721a703c6107",
+        "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e"
+      },
+      "role": "Root-adopted public pointer v2 source",
+      "sha256": "8f30c0e963a18046baede607d1b5a9b3fb1e5d823c51533f0c3700d81a41ab8c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "target": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py"
+    },
+    {
+      "bytes": 23831,
+      "git_blob": "aa81f617a57e36ad1aec573a53dc869096fd6360",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "e9f10c5048bde5fa222bf3bb37fdd0e83f0f9d54123cddd73363c6bbbbbbff04",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/SOURCE-FREEZE.actual-a01.json"
+    },
+    {
+      "bytes": 1861,
+      "git_blob": "657f0cc17dabb341b7beabd77a0acd3a043d9ba9",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "db7a461174ea94e47b078eeb374b3bb1e8178c99e44f24a0530ac65c1357dd42",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/DELIVERY.actual-a01.json"
+    },
+    {
+      "bytes": 13173,
+      "git_blob": "dee1999ab118e3df129e128c71963917e2bf1e86",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "a23a20033f69244596727e4b0eb00b14909a018f7d744cf5611f791a48279962",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\PUBLIC-SOURCE-INDEX.prepared-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/PUBLIC-SOURCE-INDEX.prepared-a01.json"
+    },
+    {
+      "bytes": 16605,
+      "git_blob": "902bfd0964f60d718d6e6ed59931a6ab94924bcf",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "f8d730f655ce36c0453f46cf10acb4c779361023c93afc09e3004cf581873d07",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\SOURCE-INPUTS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/SOURCE-INPUTS.actual-a01.json"
+    },
+    {
+      "bytes": 4883,
+      "git_blob": "4c41af5d734af99bb9f64871dabce91a986ac21e",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "fc552cc605bccba8dc28678593107886b815d9279a767482dff1c4bc4a5c170d",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\README.md",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/README.md"
+    },
+    {
+      "bytes": 2121,
+      "git_blob": "e95fa985d104d9e0e0246b4d53afbea9c6577212",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "2592ca507d886be0771c0c74d950a262ecd6fa01aefc872f74014d23f96afa79",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\CASE-INPUTS.binding-template.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/CASE-INPUTS.binding-template.json"
+    },
+    {
+      "bytes": 1679,
+      "git_blob": "c4fa529779b952661f8ce7cfde29e2a204d08425",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "b110a8691fa2a5225f5d331d2da83b64e7e40f39a049777d6b482a3dd0bdae28",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\r10-pointer-v2.candidate.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/r10-pointer-v2.candidate.patch"
+    },
+    {
+      "bytes": 19990,
+      "git_blob": "4122118ef9d1816c61b945e734fbc13341b928c6",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "73c5042d3cf5793d4300d51c06aeaa81b589110746e56df04bdb13154ee9e25c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\test_public_pointer_v2.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/test_public_pointer_v2.py"
+    },
+    {
+      "bytes": 4794,
+      "git_blob": "4ecead5fc6d13db13755dce92f3f75b3b5d68b25",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "3f808aa21b7760243cd1dc5699ce4027aa66f110c63f359de2c7f14e368d0403",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\run_checks.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/run_checks.py"
+    },
+    {
+      "bytes": 86,
+      "git_blob": "1fe70dbaeb26b2803f861ce0c29b914caeff62ee",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "93cc99b5a69bf0a9e3e414a246a93a56ada699b1b2561492489a8e4bddca6deb",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\mypy.ini",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/mypy.ini"
+    },
+    {
+      "bytes": 25166,
+      "git_blob": "7c398290d0470d05958927c52154c54bb552e4f6",
+      "old": null,
+      "role": "external source/check evidence; test not canonical CI",
+      "sha256": "f09b622fdede60ec9cabdc405c17e87bb1a663e9be43f33bff8e17fce3761cb2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\check_owner.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/check_owner.py"
+    },
+    {
+      "bytes": 4111,
+      "git_blob": "269b29784f7d46e84de3912b52d6eea29a93cdf2",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "8fe3094795571484ad36ebfc04a5a3a24c60b7cdc58543602fc7c2f2f32739c9",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\focused-final.CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/focused-final.CREATED.actual.json"
+    },
+    {
+      "bytes": 8524,
+      "git_blob": "36ff80203e67cc2994bb296ff32a25b64f9b5256",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "b091826bd169cec91ee26e4a81ea938c67d04c456af340aa2426ad35b222681a",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\focused-final.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/focused-final.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 8460,
+      "git_blob": "0d9ce430b794e1901ebd2b2c1ed32d4dafaa9ce3",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "f2e71c41bd50d25e9fbf85783602a4880639abc06911429248b7579b9ecd1a81",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\focused-final.SOURCE-PINS.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/focused-final.SOURCE-PINS.actual.json"
+    },
+    {
+      "bytes": 1539,
+      "git_blob": "26535b52fc9c97145bd96a81dc5144b05228adf4",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "261175c1766ede5e316e1be0cc8a91780a7440fad464e9602c0907e05ae46fa9",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\focused-final.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/focused-final.stderr.log"
+    },
+    {
+      "bytes": 5586,
+      "git_blob": "7351b47ce4824398107cd69e365a6a61ea3d728f",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "c719c57360108ff3d2eced2400b33dc32893ffd2b5ceb3c46d90923590e450b0",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\focused-final.stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/focused-final.stdout.log"
+    },
+    {
+      "bytes": 6709,
+      "git_blob": "42bedd41f8870e346f6212104c2f5a02e1ec1a42",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "dd7bcf01c35da1e33cb654b0b7b6fa284215d1e371a0ffab44702d2c44066322",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\static-final.CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/static-final.CREATED.actual.json"
+    },
+    {
+      "bytes": 11116,
+      "git_blob": "40a91e6f89c73de19e610faf2b1835566d1769da",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "cbdd0caa70492e4f86b7b4353c2bd7b61750186b46717ac638e57e8c42867db5",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\static-final.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/static-final.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 8460,
+      "git_blob": "61a0dc5741116d97b8b80db31cf930b506d14316",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "f5a8a2efbb8e3fb226d608ee53ca60289e43b1e65ddbffca69249ba3ef2b6b02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\static-final.SOURCE-PINS.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/static-final.SOURCE-PINS.actual.json"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\static-final.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/static-final.stderr.log"
+    },
+    {
+      "bytes": 45,
+      "git_blob": "8ddff7da5a4d8037455589079b0b9ba2018df897",
+      "old": null,
+      "role": "final 15-source/9-method checks",
+      "sha256": "61a62a318fa6bf09a97778c351a33c9175e14fc182f248ae957f3efef9249a7b",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\static-final.stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/checks-final/static-final.stdout.log"
+    },
+    {
+      "bytes": 4770,
+      "git_blob": "41c6eb9a7dd899177b4b3fbccc5769bb0d8e265e",
+      "old": null,
+      "role": "independent final source review",
+      "sha256": "657600e0d8b629d5413d8008b1f6c426dc497d22b85a8b0503891f912f65528e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\review-a01\\INDEPENDENT-PUBLIC-POINTER-V2-SOURCE-REVIEW.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/INDEPENDENT-PUBLIC-POINTER-V2-SOURCE-REVIEW.actual-a01.json"
+    },
+    {
+      "bytes": 3205,
+      "git_blob": "837d79ea4680c14388ffef3425458fa6e28f5c8e",
+      "old": null,
+      "role": "Root final source adoption",
+      "sha256": "17467b9d9d1fdfb40d18c62ee0c68958b6609a7339159f77dcebd3de81c65476",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\ROOT-PUBLIC-V2-SOURCE-ADOPTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/public/ROOT-PUBLIC-V2-SOURCE-ADOPTION.actual-a01.json"
+    },
+    {
+      "bytes": 21167,
+      "git_blob": "a46eb1c80368b41d2a5b80145db9be96ebce0bdd",
+      "old": {
+        "bytes": 19716,
+        "git_blob": "8ebfd679f0b3d55d7f7842bddfd9d4aed9e3c408",
+        "sha256": "79046d91ca51c66028bd28465cfab3be87be09da5fc0d3141d4e53679192f4fc"
+      },
+      "role": "CI test fixture correction",
+      "sha256": "f905971a3620b35a92b9009060ea952368f526d59dd2975d3cd4a5a07866b2e6",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+      "target": "tools/test_ck3_mod_acceptance_r06_scope.py"
+    },
+    {
+      "bytes": 2825,
+      "git_blob": "48e73c715244e8ce8b6ecf83865e495fd311b83b",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "5f73b498da1d351be076135ce3c1357b344601f6bca0539a85a50d75bf6d571e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\R06-BACKGROUND-FIXTURE.candidate.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/R06-BACKGROUND-FIXTURE.candidate.patch"
+    },
+    {
+      "bytes": 3863,
+      "git_blob": "9a320dd8cd5a68caca23a874f166e7533c2d4ec0",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "41ada822734970830b879b17bbae73a8d5a091f3d8e9467f7b4ec22f4c06acd4",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\README.md",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/README.md"
+    },
+    {
+      "bytes": 1379,
+      "git_blob": "ab4469b0a14aa90ce2660020b63b8e0608b94f1d",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "f28d54f9d998affd1aa5e47db2fa8b9723fde93d051579bfc677d5f239e4f43e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\SOURCE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/SOURCE.actual-a01.json"
+    },
+    {
+      "bytes": 5220,
+      "git_blob": "76a729b3e10135ab4e74265991e0c43680fc0bcc",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "126cfd41c7f708f959decc58ac0c01ee5f887d4519ff3696cf1f3a869715b3d6",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\SOURCE-EQUIVALENCE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/SOURCE-EQUIVALENCE.actual-a01.json"
+    },
+    {
+      "bytes": 649,
+      "git_blob": "85ee3a07c35379e3f9c6db517d4218735342df80",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "957faac7a4941f29f54ad1f28ef1b18315a0fda89f4f018cdd4de0b61fbf08d9",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\BASELINE-A04-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/BASELINE-A04-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 651,
+      "git_blob": "de8579e76cbdbb1321e0129e3eb52663e79c535a",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "d9f4e5c3eacd8a49cc6036fe9d16e18b31398198c395f56f832a8a9adbc08942",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CANDIDATE-A04-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/CANDIDATE-A04-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 2217,
+      "git_blob": "bec879502c3a12143632d7706ffde412be1ce07a",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "8a66b7df388a2b0dcebe324a6a6a5737e8d27882991fbe5c26d7738b6d63bf33",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\baseline-a04-focused.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/baseline-a04-focused.stderr.log"
+    },
+    {
+      "bytes": 983,
+      "git_blob": "76b60092994e0404c68f3fd5060e70ccdd760411",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "d0308fd2aca3bd204733f27dbf66a0bce14ea4ac04437d0173b3460c6ea23ba2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate-a04-focused.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/candidate-a04-focused.stderr.log"
+    },
+    {
+      "bytes": 6109,
+      "git_blob": "e77fbca36755419f4c417d85975651b19fd056b4",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "caabfc84d81761309781523034ef223d63a4b93706943e11926c3c7b6c11583b",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\baseline-focused-a04.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/baseline-focused-a04.actual.json"
+    },
+    {
+      "bytes": 6587,
+      "git_blob": "39dffdaa1b802499f9f7e4b98843ec61e4f1e675",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "d408cc2bdff27c6f29be0b5dcbadd0a0e6096d2493ff5427b066efa5c61ad13f",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\candidate-focused-a04.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/candidate-focused-a04.actual.json"
+    },
+    {
+      "bytes": 1584,
+      "git_blob": "68c7c5a4301693ebd9e54f9b4cf0ff973b06db9c",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "8bfea058d69642708450d8bd8ff7f2c7ae863aa41d9f95e32a585d6064e384f1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\BASELINE-MYPY-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/BASELINE-MYPY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 1585,
+      "git_blob": "3657ee114a3c97c7d3cc57cf7ad2cc7c780b5def",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "3565e35d12db31500b9e3d72ab357b81f26d03f83cb42996d4386c64ea917998",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CANDIDATE-MYPY-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/CANDIDATE-MYPY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 934,
+      "git_blob": "2c60dddfe3095003f502a981eb1e775b588f562a",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "a3459ee347f6380209411efbc83393b3e67cca7d55467938973b85e4588ffb07",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CI-FAILURE.derivative-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/CI-FAILURE.derivative-a01.json"
+    },
+    {
+      "bytes": 1325,
+      "git_blob": "021a9244456e040b1f0e4d88cc762093d2c60fe3",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "74c524ee8147e8af451676540ec80b0904c7fc673d9bf8979690e89cfb0371de",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\HARNESS-FAILURES.derivative-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/HARNESS-FAILURES.derivative-a01.json"
+    },
+    {
+      "bytes": 4447,
+      "git_blob": "e4dbb7d4c8e63a439939e78ebb436460f3b56ba0",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "ffb55dd31a004a80c7473088183ef050fb70cc3bb9bb6c41959866d6c642c847",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\focused_runner_a04.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/focused_runner_a04.py"
+    },
+    {
+      "bytes": 3673,
+      "git_blob": "8690b7f69dd2cbd65c2a1d19dff92513f317a770",
+      "old": null,
+      "role": "bounded same-seam CI fixture evidence",
+      "sha256": "c6d7c54df270e5f27828bc232c9952c5fbbe53ae5f2bb1cebc48ba076db9deb0",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\run_focused_a04.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/run_focused_a04.py"
+    },
+    {
+      "bytes": 6856,
+      "git_blob": "c2632a2a17c84989e044b3637a5ab4f16a340011",
+      "old": null,
+      "role": "final CI candidate closure",
+      "sha256": "6c21f15b6114efae7175caeec952db3dd98b7c6aec876fec0c5c1163c3add95f",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/DELIVERY.actual-a01.json"
+    },
+    {
+      "bytes": 2236,
+      "git_blob": "85c824de4c1be3890a0543e0edbe0dc523b2ba82",
+      "old": null,
+      "role": "final CI candidate closure",
+      "sha256": "cdcc361d47a21c187964e7921c190af63afaae04b6f697edf5212a94b98ab4f6",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\CLOSED.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/CLOSED.actual-a01.json"
+    },
+    {
+      "bytes": 2621,
+      "git_blob": "3161d228b3693d813e9c015c301d3a7d22bd4432",
+      "old": null,
+      "role": "final CI candidate closure",
+      "sha256": "2ea4b1b5ab9857bde527a8c399035aef1cae30ac620cdff727341d02522e3725",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\ci-scope-fix-a01\\READONLY-ENDPOINTS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/ci-fixture/READONLY-ENDPOINTS.actual-a01.json"
+    },
+    {
+      "bytes": 2087,
+      "git_blob": "872f8ce0fca9b924f21fa0dc9f94d0492e3bc836",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\CMakeLists.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/CMakeLists.txt"
+    },
+    {
+      "bytes": 29917,
+      "git_blob": "de13be38e5adbf1319c7ff45594a18b72abb2a3e",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_observer.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/cold_observer.cpp"
+    },
+    {
+      "bytes": 6298,
+      "git_blob": "91868691ef30543a36144583dfcf80df431b67a0",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/cold_target.cpp"
+    },
+    {
+      "bytes": 889,
+      "git_blob": "af4f2585c84ed4998ba2418e17b9a94fb9e9a8f0",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_cold_call.asm",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_entry_cold_call.asm"
+    },
+    {
+      "bytes": 13724,
+      "git_blob": "d505e587d84ff465aeb8ad092590d5f456f4dac9",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_entry_cold_target.cpp"
+    },
+    {
+      "bytes": 29838,
+      "git_blob": "db3999606e19fc351af58c2fca250ab63eca94ca",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_execution_once.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_entry_execution_once.inc"
+    },
+    {
+      "bytes": 3412,
+      "git_blob": "f5e3558161489b30624c18df2806e29b804e08e0",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_capture.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_pointer_read_capture.inc"
+    },
+    {
+      "bytes": 1458,
+      "git_blob": "55b4a04209416d7f915f55bef1661c3c95a2ec88",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_cold_call.asm",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_pointer_read_cold_call.asm"
+    },
+    {
+      "bytes": 15348,
+      "git_blob": "7b66146dc0bb8fb1dcd7c9b10bd86ac2554f1e64",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_pointer_read_cold_target.cpp"
+    },
+    {
+      "bytes": 32581,
+      "git_blob": "657ba6460f0c222128e1b28ffdff27bd811c2dab",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_once.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_pointer_read_once.inc"
+    },
+    {
+      "bytes": 696,
+      "git_blob": "9792aa4a39eae92bccb2bc11c3ca2abac7c7fd69",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_decimal64.hpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/pointer_read_decimal64.hpp"
+    },
+    {
+      "bytes": 218,
+      "git_blob": "07faeec2e9f841e7c727db8e5e5b59ca0c03c085",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\synthetic_write.asm",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/synthetic_write.asm"
+    },
+    {
+      "bytes": 7648,
+      "git_blob": "8ee5a7d90096a97d355e2610ffca232c5c2872ea",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_runner_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/cold_runner_models.py"
+    },
+    {
+      "bytes": 1675,
+      "git_blob": "43ac755faeef27b122363c8e91ac9aaf87ce8250",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\consume_parent_pointer_read_actual.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/consume_parent_pointer_read_actual.py"
+    },
+    {
+      "bytes": 14350,
+      "git_blob": "813f35bb058f5c5353fea7df752821ad9684d792",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_contract.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/parent_pointer_read_contract.py"
+    },
+    {
+      "bytes": 5796,
+      "git_blob": "a2aa9104fb8504136843988672b3dbddb0525adf",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_admission_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/pointer_read_admission_models.py"
+    },
+    {
+      "bytes": 5310,
+      "git_blob": "14aff3b762b28b745470517a573b4afd0f28e7e0",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/pointer_read_models.py"
+    },
+    {
+      "bytes": 7195,
+      "git_blob": "df7f849dc1a6f688b5375af481a91a5c03bb2af0",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_owner_binding.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/pointer_read_owner_binding.py"
+    },
+    {
+      "bytes": 5008,
+      "git_blob": "2b501ae50bb60760cf058f3e99412d5eccf28c12",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_wire.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/pointer_read_wire.py"
+    },
+    {
+      "bytes": 11349,
+      "git_blob": "7a06d5b0a417bcbe475edaf7c4df931032cd96c5",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\prepare_parent_pointer_read_admission.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/prepare_parent_pointer_read_admission.py"
+    },
+    {
+      "bytes": 37027,
+      "git_blob": "b5582d902f25f09c6e33a0f6b9b14f894e5e6cd9",
+      "old": null,
+      "role": "frozen standalone native/Python source; not global native/CMake integration",
+      "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\run_parent_pointer_read_cold.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/run_parent_pointer_read_cold.py"
+    },
+    {
+      "bytes": 5755,
+      "git_blob": "b092ec7cea889f65fadc20cd5852f6be2867a4b2",
+      "old": null,
+      "role": "original pre-build source snapshot remains unchanged",
+      "sha256": "23758688b3ecf62b3168436e26489fbe6d6a7f9837c37aed7a1b48f9585c72cd",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\SOURCE-MANIFEST.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/SOURCE-MANIFEST.actual.json"
+    },
+    {
+      "bytes": 2659,
+      "git_blob": "80248d2bd1438e677388e4564e0d5d3f66b91ae5",
+      "old": null,
+      "role": "source-only historical proof and explicit late administration",
+      "sha256": "53e9eca963c61143ad29eaac26277a852008aed9db2748ce812f380aa09e64df",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\ROOT-SOURCE-ADOPTION.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/history/ROOT-SOURCE-ADOPTION.actual-a03.json"
+    },
+    {
+      "bytes": 3513,
+      "git_blob": "6a3d6466cf65b62911c65539a28b216f003b0b42",
+      "old": null,
+      "role": "source-only historical proof and explicit late administration",
+      "sha256": "149c9c046b05eb9433719652f70013e2814c45a5db15928a6a76c839150036b6",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/history/source-candidate-a01/revision-a03/SOURCE-FREEZE.actual-a03.json"
+    },
+    {
+      "bytes": 5280,
+      "git_blob": "b228ccd4a5a5255438e165575e13c724034bb239",
+      "old": null,
+      "role": "source-only historical proof and explicit late administration",
+      "sha256": "89defc5ddd4d4950f53800878a4d89ced0b92735daba4eb8cfc15d3064b09f83",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-INDEX.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/history/source-candidate-a01/revision-a03/SOURCE-INDEX.actual-a02.json"
+    },
+    {
+      "bytes": 9368,
+      "git_blob": "bbe6361a330b3f03ae7425829bc0f91c1891c087",
+      "old": null,
+      "role": "source-only historical proof and explicit late administration",
+      "sha256": "c54cacdb811a315b8b56b2768ab7ccfe5f726bdcb71d223e2231ea5d2ef37f33",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-OVERLAY.prepared-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/history/source-candidate-a01/revision-a03/SOURCE-OVERLAY.prepared-a02.json"
+    },
+    {
+      "bytes": 1026,
+      "git_blob": "3038cd219699325d1b407fa22c71539c6b627e8a",
+      "old": null,
+      "role": "source-only historical proof and explicit late administration",
+      "sha256": "5ab81693d05dcbfe3c911a1b0efadbc95d5e86ec599daddd45d0e5dd56bba287",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\OVERLAY-SOURCE-BYTES-CORRECTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/history/source-candidate-a01/revision-a03/OVERLAY-SOURCE-BYTES-CORRECTION.actual-a01.json"
+    },
+    {
+      "bytes": 3912,
+      "git_blob": "3f7de8bc9f4143dffb74f5c93c86f4672c7d1a38",
+      "old": null,
+      "role": "8.965880-second late RD administration; no timely reinterpretation",
+      "sha256": "5ab93f7b55c4987a06485b38bfa0b2b8105c5c84409bc0868b304638a20b94b1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-ordinary-save-source-2215-a01\\capacity\\READWATCH-SOURCE2-CLOSED-WITH-ROOT-LATE-ADMIN.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/source21/history/READWATCH-SOURCE2-CLOSED-WITH-ROOT-LATE-ADMIN.actual-a01.json"
+    },
+    {
+      "bytes": 8377,
+      "git_blob": "6cb2c9e497adb74028d54895e60291ef2f66715b",
+      "old": null,
+      "role": "Root independent complete selected cold adjudication",
+      "sha256": "8d9428847c67be6767e1527b4960870d986516c559dc62cf41d7cd662d1c9933",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\ROOT-ACCEPTANCE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/root/ROOT-ACCEPTANCE.actual-a01.json"
+    },
+    {
+      "bytes": 6633,
+      "git_blob": "5fb149a3111c62c73248e59f2837941d367c11d4",
+      "old": null,
+      "role": "Root independent complete selected cold adjudication",
+      "sha256": "70dd8b0e5b97e404018f821a1f01ef88caa538b04ee1fd43a9a95eef6504e5c1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\POINTER-READ-QUALIFICATION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/root/POINTER-READ-QUALIFICATION.actual-a01.json"
+    },
+    {
+      "bytes": 14998,
+      "git_blob": "1f17e08be1a59efac6e3c37707d6c20c03252552",
+      "old": null,
+      "role": "Root independent complete selected cold adjudication",
+      "sha256": "ed50af2b53b246f6ac2adbfb3ab35f10f683d673041037787dd7f99e6cf679a5",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\verify_closed_cold.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/root/verify_closed_cold.py"
+    },
+    {
+      "bytes": 824,
+      "git_blob": "2ff6596583e5b702746eb7f580db0c339ccf49fd",
+      "old": null,
+      "role": "Root independent complete selected cold adjudication",
+      "sha256": "56f6a770d2da1a34a79d4ade5f17d5632048446027e382fd3e1a89e144ffbb6d",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\VERIFY-ALL21-a01.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/root/VERIFY-ALL21-a01.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 1124,
+      "git_blob": "224c5f3e001f7405ac098df34a0007f1c42c4c62",
+      "old": null,
+      "role": "Root independent complete selected cold adjudication",
+      "sha256": "44854e27f2557b663d5709f186b65f65e6fe5f315ad059464499e365261b9285",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\MYPY-a02.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/root/MYPY-a02.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 939,
+      "git_blob": "6ec9902b8b3ab096fd9c2bf304d61935808286b9",
+      "old": null,
+      "role": "Root independent complete selected cold adjudication",
+      "sha256": "4b4f21cb319bcebdab1e73e91c1bf68fa0107df422972b657a005815a0f5d55f",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\BAD-SUITE-PIN-a01.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/root/BAD-SUITE-PIN-a01.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 5175,
+      "git_blob": "2cc04e38011236577555c5c9e31f3c0b7f94cf61",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "0cc1044aa13ab3f946d0c0fd1ca98a08477353a1aa313cdd6b22e7b7f15eb717",
+      "source": "C:\\w\\e04parentread03\\cold-a01\\SELECTED-COLD.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/cold-a01/SELECTED-COLD.actual.json"
+    },
+    {
+      "bytes": 32080,
+      "git_blob": "718f45f018688c299032a8d2b42236bce2f1b899",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "ee9c882e68c4f40e695f71923b56a3925015eb6e1a98de72df8ef283e3b7f170",
+      "source": "C:\\w\\e04parentread03\\FINAL-NATIVE21-CLOSED.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/FINAL-NATIVE21-CLOSED.actual-a01.json"
+    },
+    {
+      "bytes": 2101,
+      "git_blob": "f8f68a252808faea38bc0b164502895846f43981",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "be8cdcad90fc5c1dccba0bb4fc161a35615affd1fa53bfe85b02da7ebc8121da",
+      "source": "C:\\w\\e04parentread03\\EXECUTION-GATE.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/EXECUTION-GATE.actual.json"
+    },
+    {
+      "bytes": 1954,
+      "git_blob": "7f58f4ed0dfda1e7d810e57248cdbf0f6baf03e7",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "5649ec2b49a9cc44238fbfbacae533566a474f3e4971a774449d896beb60111b",
+      "source": "C:\\w\\e04parentread03\\ROOT-ACTUAL-SYSTEM-AND-COLD-ADOPTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/ROOT-ACTUAL-SYSTEM-AND-COLD-ADOPTION.actual-a01.json"
+    },
+    {
+      "bytes": 4040,
+      "git_blob": "bfa96e52a878970dcb445d812d30fd34115fbf4c",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "85114d13cd725c5d6e87ea243bf2af430700277f29c534ea059b55118c93f0ff",
+      "source": "C:\\w\\e04parentread03\\control-metadata-a01\\INDEPENDENT-ACTUAL-SYSTEM-PROJECTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/control-metadata-a01/INDEPENDENT-ACTUAL-SYSTEM-PROJECTION.actual-a01.json"
+    },
+    {
+      "bytes": 1591,
+      "git_blob": "bc1a8e580fe1180f82c72c38f426a3118ce1b051",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "39498606948147f73f738f527c023d08ea537426b2be4c2e5ee8780c09f0555e",
+      "source": "C:\\w\\e04parentread03\\control-metadata-a01\\COLD.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/control-metadata-a01/COLD.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 909,
+      "git_blob": "085d677ed6aa9c26288e8bb86ba656f8ba14c4bf",
+      "old": null,
+      "role": "actual native21 small receipts; full raw bodies remain external",
+      "sha256": "f7b0d6322197adc05b79ce53e8949541ba53f0939fabf1d2473341d23c1dd6e3",
+      "source": "C:\\w\\e04parentread03\\control-metadata-a01\\STAGE-cold-selected-suite-a02.ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/native21/control-metadata-a01/STAGE-cold-selected-suite-a02.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 6454,
+      "git_blob": "0246dab6584d8e2818343ce1bbbb23e931aec08c",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "e5f2d54ebe2385dd68f9aa272ac79b1f096ae5c5cfe39113d5d30a788bd309e2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\R03-RECIPE.prepared-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/R03-RECIPE.prepared-a02.json"
+    },
+    {
+      "bytes": 2830,
+      "git_blob": "d9ff38d34d785ed24b8eec12f971e7fbdf046566",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "2c3d149478a2a375cbadf5a13df33dee795ff269f1dc07b4861c69d267b016b1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\SOURCE-FREEZE.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/SOURCE-FREEZE.actual-a01.json"
+    },
+    {
+      "bytes": 3002,
+      "git_blob": "ce3442745b2eede89d91aeb4b6702b6c85e11ff9",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "20afda4f1f7576245d90c949df6434202d472a0d77a10252f4b9ef8d3581f4a4",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\SOURCE-FREEZE.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/SOURCE-FREEZE.actual-a02.json"
+    },
+    {
+      "bytes": 750,
+      "git_blob": "ab27c821572e5a2ce1c204c729fa45e7721e6dba",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "a6c819ae40962c0eb4961487fb533a95ef1938a2404799827dfa62378c732be3",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\RAM-SIZE-CALIBRATION.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/RAM-SIZE-CALIBRATION.actual-a01.json"
+    },
+    {
+      "bytes": 19166,
+      "git_blob": "cf8922a6c50542906ede944c28067e2f026eac9c",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "990a7e18e2d1a64be910f36942b83fee2aac3e4a0d29f50fa6c58d341a8b9e02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\EXTRACTION.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/EXTRACTION.actual.json"
+    },
+    {
+      "bytes": 340,
+      "git_blob": "2e70767992ac8bee698ddef6e9c5becf60ff2905",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "b129ea4d77bcef0accc664511e9e036378f4b1a04f066da8c6e99542aa97305e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 2300,
+      "git_blob": "5da82537b55ab0848e0ebaf7cc7d6d0b5270348c",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "50c3162ecb17ba1cbf4841664b868cb9a8da3f9ab1dc2ab97a5ccffc47b9dbbe",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\AI-CONTINUOUS-REVIEW.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/AI-CONTINUOUS-REVIEW.actual-a01.json"
+    },
+    {
+      "bytes": 778,
+      "git_blob": "17246ad07c69de1493915d6d045d54823396a249",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "2fa63a58d84fd4cc3de964ac1dd98491f2b71f0d2e71444988d48cc89b0c2975",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\DELIVERY.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/DELIVERY.actual-a01.json"
+    },
+    {
+      "bytes": 26825,
+      "git_blob": "4895eb5966c45b7ec07832f6b39c7c5e0aa6a934",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "a6efa005246b08771c62679c496b9c475c42e5e5f4e7a2d1b35f44b273c533d4",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_pipeline_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/r03_pipeline_a02.py"
+    },
+    {
+      "bytes": 137,
+      "git_blob": "63c57bd8cc37b68a0d2858134a3458ffb6f3693f",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "280b9e719ad43e8dbe1623f43b925ec733f0487697a52ebb33c13b08660f7244",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_budget_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/r03_budget_a02.py"
+    },
+    {
+      "bytes": 447,
+      "git_blob": "c2747cffb4dfe5d1b12b55b5bdfc2f0afca3dbc7",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "23b83f24e23fb39999022ee9940d220a37ec2728a457bcb7009562f023fe9049",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_once_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/r03_once_a02.py"
+    },
+    {
+      "bytes": 6400,
+      "git_blob": "f40aca7bea48173629b8e3128d4e83434afac157",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "0b7dd4bec0086d87e1c9a86634df55caad23e8077dbd6a1d7bb806c004f2ba3d",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\prepare_r03_recipe_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/prepare_r03_recipe_a02.py"
+    },
+    {
+      "bytes": 1047,
+      "git_blob": "41ec0faf011673bbe5a6025cd823e7591290d029",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "72d46b35b134a8ff845a187b6e8ca178c16362dd006a91631cb770d3351ca7ae",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\test_r03_budget_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/test_r03_budget_a02.py"
+    },
+    {
+      "bytes": 2594,
+      "git_blob": "764043f1ee88d5aa87612ec81313c59284b1f27b",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "9b2f4458a5673d7aeb70740649edc821a82c3e6972f8377648eee59099a82547",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a03.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-a03.actual.json"
+    },
+    {
+      "bytes": 3920,
+      "git_blob": "803b6e5b0e0751793d2fe7e79e103651d4acb298",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "198b212cebe6adc450a7d7b04350bed915504c76a425cf18ea5f0fbbb71c19ed",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-budget-a01.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-budget-a01.actual.json"
+    },
+    {
+      "bytes": 1890,
+      "git_blob": "de424cf97cd7f4236cf9af1f49c1c82698144463",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "922ac1663cad8bde569f1154655372da3f9c13567b2d1959565b656889e96b70",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-a03.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/guards-a03.actual.json"
+    },
+    {
+      "bytes": 3100,
+      "git_blob": "798da5a3393be7f80c90e220384895ce3ab638aa",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "897afaba8ed8635fea3ab633d04c23ae2e31e24af9df035aec17ddfad5869018",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-budget-a01.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/guards-budget-a01.actual.json"
+    },
+    {
+      "bytes": 12826,
+      "git_blob": "2837d7de61dbdf0efc117e29727f65568f875ed4",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "fff54068826f9d016c20b9f5d3d31bfee0ebc1b24c8931caeee759b402eebee8",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\review-a01\\INDEPENDENT-R03-SOURCE-REVIEW.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/review-a01/INDEPENDENT-R03-SOURCE-REVIEW.actual-a01.json"
+    },
+    {
+      "bytes": 26763,
+      "git_blob": "7893a4cfd69feb87489aacb0414b5611a1e9cbc7",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "1483e3d8ff29dbf81f00c7afdce4dda47e6d930a3c4451b3cc6c953c35d38855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_pipeline.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/r03_pipeline.py"
+    },
+    {
+      "bytes": 443,
+      "git_blob": "0be1f732e33bfff5700a3dfdbbad08aaa1a52a06",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "6bc43d0a6ed68c127248596c8628254308954e8305550389e2e0cc91a5b6ec27",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_once.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/r03_once.py"
+    },
+    {
+      "bytes": 6692,
+      "git_blob": "1e7b597360da93712476b06474b5ed5700c97712",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "c2ef48e9a329c9606a841d6d1713f428fef45c221468b17ce4b3cb81e84fdab1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\prepare_r03_recipe.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/prepare_r03_recipe.py"
+    },
+    {
+      "bytes": 8209,
+      "git_blob": "d49323a590bfb13d5fc0833f389f3a54c88d38fa",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "562ba4b940fc82f6d63ba8cc764bd00357821413d3244ad5d49bb3432816d30d",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\test_r03_pipeline.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/test_r03_pipeline.py"
+    },
+    {
+      "bytes": 3111,
+      "git_blob": "123eb3e1f7be27fef04db950b968368f60199448",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "f2600f06de56bd7ae38629a014564511a1b8d16a27ce54ce2d63f9584c56d5c4",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\run_source_checks.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/run_source_checks.py"
+    },
+    {
+      "bytes": 3182,
+      "git_blob": "e07fe3a4b40412c1c10aaa8bd6325857673f14ee",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "d99103c12725e62878baa4f03fde7831700febe4c88e352a256d00363020d34b",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\run_budget_checks_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/run_budget_checks_a02.py"
+    },
+    {
+      "bytes": 44,
+      "git_blob": "7c966e0ceeaf5833f3449664690345e5826f212e",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "718df785efbbd4b57e63b5f64aff2c5b5592e433447681f759b307f97a3ec96a",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a03.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-a03.stdout.txt"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a03.stderr.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-a03.stderr.txt"
+    },
+    {
+      "bytes": 44,
+      "git_blob": "cbea12c9982e721bda945a17cd1952efeb7b2f65",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "90377c8fd97127580c93ac5740d596c9ebc9db94dafa6560ee11fe16b4460c62",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-budget-a01.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-budget-a01.stdout.txt"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-budget-a01.stderr.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-budget-a01.stderr.txt"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-a03.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/guards-a03.stdout.txt"
+    },
+    {
+      "bytes": 1687,
+      "git_blob": "00f16d91c584b436740a325cb250b760acfb754d",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "90afe4fe688fda730da05fc4f4b01019bf146a95e0b6110a38197b51e6849e4c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-a03.stderr.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/guards-a03.stderr.txt"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-budget-a01.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/guards-budget-a01.stdout.txt"
+    },
+    {
+      "bytes": 365,
+      "git_blob": "9d6e5acb245aac177ba2cefdf7e1802bcc839e6e",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "63421f66f0981a258b32b7519d44588e8eb811ce5e6034d88200e87046ed50bd",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-budget-a01.stderr.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/guards-budget-a01.stderr.txt"
+    },
+    {
+      "bytes": 2596,
+      "git_blob": "e932548195bc7ad678d5db85fc2b190a7bad1a91",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "b99f670dfe3bf29f9973a38ae513ca9cb2f78e94ffa650f20836e714abb043a7",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a02.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-a02.actual.json"
+    },
+    {
+      "bytes": 182,
+      "git_blob": "2b86650e28aee736f12256692901d23615334bd9",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "b7175ab46528cb28593dc6374bd5019117fef2773d34f6cd1146e6a43f1e851a",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a02.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-a02.stdout.txt"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a02.stderr.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/source/checks/mypy-a02.stderr.txt"
+    },
+    {
+      "bytes": 1789,
+      "git_blob": "7bd90a9f569c651a6a5b9c2b3f213dc2a7c72587",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "a7eff9ccd88de5eaa130d06f95a1ef1d017aaa023ddfeeac9c97d7b08619067f",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\ROOT-SOURCE-AND-ONCE-ADOPTION.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/ROOT-SOURCE-AND-ONCE-ADOPTION.actual-a01.json"
+    },
+    {
+      "bytes": 4543,
+      "git_blob": "6c63d62282a2c49f0c3e30d76cb7c01ec38cc026",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "48180d3f86a2c02719c74dbd8e4a799a00a39fdf82a9ed29ad8ddc1fb80994f0",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\R03-A02-SOURCE-BOUND-ONCE.actual-a03.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/capacity/R03-A02-SOURCE-BOUND-ONCE.actual-a03.json"
+    },
+    {
+      "bytes": 2430,
+      "git_blob": "610613588fce22cdf157dca141cf9954194df6d2",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "c5ed5881cd51ce725f45681c7eb7b8ca3b05420d7ad5ad72e476fa5f839b58cf",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\R03-FINANCIAL14-PROSPECTIVE.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/capacity/R03-FINANCIAL14-PROSPECTIVE.actual-a02.json"
+    },
+    {
+      "bytes": 3058,
+      "git_blob": "7c0fce3d8ea111d2038194266c0e6a8d0cb3ec54",
+      "old": null,
+      "role": "R03 small source/visual proof; no media payload",
+      "sha256": "52ec98382bf93916e83c525c04a4fd9580885b3c1e3e4a9a0842bfd5c7603d24",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\R03-CLOSED-HEAVY-NEW-METADATA2300.actual-a04.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/capacity/R03-CLOSED-HEAVY-NEW-METADATA2300.actual-a04.json"
+    },
+    {
+      "bytes": 6061,
+      "git_blob": "556196eb77effeffa9aa3f618f27e30547aa7dfb",
+      "old": null,
+      "role": "Root bounded R03 formal source acceptance",
+      "sha256": "bd3b4ed39c3f0f60bacc0d87eac01aec9cec27ed61dd81d35a9d831bdbfb5f9f",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\SMALLARCHIVE-COPYPLAN.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/SMALLARCHIVE-COPYPLAN.actual-a02.json"
+    },
+    {
+      "bytes": 5474,
+      "git_blob": "052a50160051b744c5c18f16dd0f9f14b84a5cdc",
+      "old": null,
+      "role": "Root bounded R03 formal source acceptance",
+      "sha256": "51fc740573c9e4f275d42475dcf368a95beebb38df9cf0ff12bf9518ae75ca95",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\ROOT-R03-FORMAL-ADJUDICATION.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/ROOT-R03-FORMAL-ADJUDICATION.actual-a01.json"
+    },
+    {
+      "bytes": 33344,
+      "git_blob": "9f4015b427da94c97a464284eb08cd18ab89b8ad",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "bd1d1d857810aade7c43db88925940da5d6f896d703c0ea3b3ac8b247f318a79",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-ordered-index.actual.jsonl.gz",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r165-a02-ordered-index.actual.jsonl.gz"
+    },
+    {
+      "bytes": 2720,
+      "git_blob": "9d92b9065c2f94d5490854c689823893f5d6b680",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "8ba06e995b170fcb062f4614bc8e43c52b661a4d8c8274dfa6cc148cf93e3bef",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r165-a02-RESULT.actual.json"
+    },
+    {
+      "bytes": 1477,
+      "git_blob": "d26367b4b32b0dc88c020f0611fd847126769d0c",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "26b91ea43699746145667dcbab948e6f9367a84fa176c0f4cab0a582696716d9",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-a02-PARENT-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r165-a02-PARENT-WAIT.actual.json"
+    },
+    {
+      "bytes": 124237,
+      "git_blob": "0ed5c817840532d3bce2a4ea22298e934d8339cc",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "554e6d13778684c2b87ce70c3f7b0295b4004e0c0cfc0fd78feb6c4542b5fbf0",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-ordered-index.actual.jsonl.gz",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r175-a02-ordered-index.actual.jsonl.gz"
+    },
+    {
+      "bytes": 2706,
+      "git_blob": "3c880db1dd681fa1179640d1c9950efec955ea49",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "5275b582f25fb4a67b7fb8c32cdd24e21c26ce30665c4c8d6f2e0d2106a8bbba",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r175-a02-RESULT.actual.json"
+    },
+    {
+      "bytes": 1476,
+      "git_blob": "22c2ed92986a960f5dfc52b53b87c13749b0e768",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "326b6b9eaead5a6840e11725c14618177a017c5c1e8896eac72afb98e1717c1c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r175-a02-PARENT-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r175-a02-PARENT-WAIT.actual.json"
+    },
+    {
+      "bytes": 158254,
+      "git_blob": "243d1d1b021d62eee4a7e213102039a8426453dd",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "28b5645ac937eebfb98660b2d58ccc60ad83064b552d1e06ac823dab87aeaa4c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-ordered-index.actual.jsonl.gz",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r177-a02-ordered-index.actual.jsonl.gz"
+    },
+    {
+      "bytes": 2707,
+      "git_blob": "b02d08f57d0fd39a261243eb1cb940d0e98929af",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "b4c8a3fdab88e8106f69113c3a8d7aaa0634a3c7c691f1646b85b4865aa93202",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r177-a02-RESULT.actual.json"
+    },
+    {
+      "bytes": 1477,
+      "git_blob": "e26c61fdce1e9f77b6c69d7594133fcb7c884d4d",
+      "old": null,
+      "role": "exact replay index/result/original wait; retained packet bodies external",
+      "sha256": "c412626b9a6137539b19612fcbfd844d1e5f4127e12c0937f9ecafc570b3dd03",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r177-a02-PARENT-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r177-a02-PARENT-WAIT.actual.json"
+    },
+    {
+      "bytes": 9848,
+      "git_blob": "535821deb0d8288a6f5f7f22d9e65b8b8abc67fb",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "fb36d56334b837d98a84e29c9d6c0ddd58b0f7306044a4c85c07e36d90f3ee3e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\EXACT3-REPLAY-DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/EXACT3-REPLAY-DELIVERY.actual-a01.json"
+    },
+    {
+      "bytes": 6858,
+      "git_blob": "a26face3ea08bdcf82ab65a212bd57f0065bcfef",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "349d15a9a8c5e80387993c6aa74d38ec046d47bebda07c85bed5784c28e88498",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\SOURCE-PLAN.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/SOURCE-PLAN.actual-a01.json"
+    },
+    {
+      "bytes": 2636,
+      "git_blob": "dc8c9e4fed7b3b43461197b69f0b4e431704271a",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "b0509c3f9eaac1ce57fe3fe4df8c271bc58e1dbc243fcd19eda7e490c145ad0e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\SOURCE-FROZEN.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/SOURCE-FROZEN.actual-a02.json"
+    },
+    {
+      "bytes": 28212,
+      "git_blob": "d86b32dd35c748d154e7a39865ef9ee30f25dad6",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "4db8795a086d5e4ff17d3b68dc63e0a7a64102bf81932ae1d42189b26b0aa922",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\replay_sdk_a02.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/replay_sdk_a02.py"
+    },
+    {
+      "bytes": 2778,
+      "git_blob": "3f8e9dc0faad1e37085e410667f24842ba790d7a",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "f1e45b93a176aa6d78885320ce127b44726ebf6e167e6ac819363032c9879bd1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\INDEX-ROUNDTRIP-AND-DEPENDENCIES.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/INDEX-ROUNDTRIP-AND-DEPENDENCIES.actual-a01.json"
+    },
+    {
+      "bytes": 2711,
+      "git_blob": "5a460af53d23fef1c81e239273592fb4bc33f463",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "228e26b3b752b1f0056bae53432764e9d6df3c7b10627660bfc23bedc1339b0f",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r165-RESULT.actual.json"
+    },
+    {
+      "bytes": 1266,
+      "git_blob": "e42bb74d4a14144c8f1027318c820ef3dc7fee1e",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "e3eed81a19386585a406b5d64789e8721773e166869886731320aab41a0c0e3d",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\r165-PARENT-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/r165-PARENT-WAIT.actual.json"
+    },
+    {
+      "bytes": 1982,
+      "git_blob": "76f617984a2d7c63a5842b5330ea3969ea7b0860",
+      "old": null,
+      "role": "replay source and actual proof; failed first attempt preserved",
+      "sha256": "0818afb1ba7d7d1da636704ab3d3e711760b9d6832045dc1a134c5b026eb5fff",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\R165-CONTRACT-DIAGNOSTIC.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/replay/R165-CONTRACT-DIAGNOSTIC.actual-a01.json"
+    },
+    {
+      "bytes": 3226,
+      "git_blob": "05ab5033a631e357e54e546a407d69067f5d63a0",
+      "old": null,
+      "role": "Root release and actual retirement review",
+      "sha256": "016c0a606596767bcc10880c481321531ae46158793c616753bdc42b41c151df",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-THREE-AGGREGATE-PURPOSE-RELEASE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/ROOT-THREE-AGGREGATE-PURPOSE-RELEASE.actual-a01.json"
+    },
+    {
+      "bytes": 3006,
+      "git_blob": "e342f9c253c5c31fb2b4942ec5b062f0f4ab99b4",
+      "old": null,
+      "role": "Root release and actual retirement review",
+      "sha256": "17350a58af1c10f10666137fa53a3e3024dd05a0341ffd19f0393d38533787ce",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-EXACT3-RETIREMENT-APPROVAL.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/ROOT-EXACT3-RETIREMENT-APPROVAL.actual-a01.json"
+    },
+    {
+      "bytes": 5039,
+      "git_blob": "3492e66e60791ee10a16dd763cb28637c521b7b4",
+      "old": null,
+      "role": "Root release and actual retirement review",
+      "sha256": "4094c9c014fb76e51f9ed601dec9b38027a2ea53b21b02e443826a59559372ae",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-EXACT3-PROOF-REVIEW.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/review-a01/INDEPENDENT-SDK-EXACT3-PROOF-REVIEW.actual-a02.json"
+    },
+    {
+      "bytes": 4262,
+      "git_blob": "1b6065ed34d8909cd2d55b77a1a2b3007042323e",
+      "old": null,
+      "role": "Root release and actual retirement review",
+      "sha256": "2d743167d235ec3a98c3225949e74cb3bd210edaa1efca9ed19fa47dce2464bb",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-RETIREMENT-ACTUAL-REVIEW.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/review-a01/INDEPENDENT-SDK-RETIREMENT-ACTUAL-REVIEW.actual-a02.json"
+    },
+    {
+      "bytes": 5874,
+      "git_blob": "a7fe41c21b6774f01f90ae040e55637ff212a3ad",
+      "old": null,
+      "role": "Root release and actual retirement review",
+      "sha256": "48c452dcb3643065dd158c29e48297ad21ba17b3a51625e7b6e043dda9bc8c7e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-RETIRE-SOURCE-REVIEW.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/review-a01/INDEPENDENT-SDK-RETIRE-SOURCE-REVIEW.actual-a01.json"
+    },
+    {
+      "bytes": 18946,
+      "git_blob": "8dc59599dc7594ad17be046b4e35c55412ddc48b",
+      "old": null,
+      "role": "Root release and actual retirement review",
+      "sha256": "37f2c034008cafbfd779b93f5b58d6a9e1423e71c75f2a0f0c22758c815104c2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retire-source-a01/DELIVERY.actual-a01.json"
+    },
+    {
+      "bytes": 8283,
+      "git_blob": "5e6cb467cd6fb04d6f023d407d0dea2f689b9246",
+      "old": null,
+      "role": "actual deleted availability replaces prior readable snapshot only",
+      "sha256": "afbf65ab15e2e9d5817520fecf0bdb3d5c575b39f974de245cd70fae0c45c5ff",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\CLOSURE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/CLOSURE.actual-a01.json"
+    },
+    {
+      "bytes": 683,
+      "git_blob": "117bd1620ff954e0f5e2070b2764e746de34ca4a",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "31849211d4ec55d62ac5923bf5742be2ce799e08e7632a9fbb0bd18c4a2293c4",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\01-INTENT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/01-INTENT.actual.json"
+    },
+    {
+      "bytes": 745,
+      "git_blob": "584050f7b99ddee6a4126d3b7d9b5117863305f2",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "3ad77834a499490f9f4aca735ffedfbdda8c990c81989e5010139da2da296484",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\01-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/01-RESULT.actual.json"
+    },
+    {
+      "bytes": 677,
+      "git_blob": "7c291643ee44bc6c15882ddabec686958836d441",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "7253f1478737ea4ab4ee7d831fc971138120b239c52214af1755e7da840b3f3c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\02-INTENT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/02-INTENT.actual.json"
+    },
+    {
+      "bytes": 739,
+      "git_blob": "6acffa1cd214aa133372d7fac2f5f46f4feac506",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "3672b2952721a8146fafc6ada83b833a0e1006a6cb750e970088b1f941e95e1b",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\02-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/02-RESULT.actual.json"
+    },
+    {
+      "bytes": 677,
+      "git_blob": "614dfa504544fd940da674f41dcfd7d57d6675b4",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "5006ebb795dd422f17882d41c83849a510b2a1e7322b0f84bd8f185f393e4215",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\03-INTENT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/03-INTENT.actual.json"
+    },
+    {
+      "bytes": 739,
+      "git_blob": "5abafa47c14355199998a6fcbd047628eeb06208",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "3cb7a636dd02f571e474b9a3313e3e27cb2986f2195740d2f3c671f53848dcb7",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\03-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/03-RESULT.actual.json"
+    },
+    {
+      "bytes": 2252,
+      "git_blob": "c36a74566a161c468c562f81bb858961f5e64434",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "584ece6585314bd7b01b233a86b55772d9b131630aeed2ff7c23d197af9187c2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/EXECUTION-OWNER-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/EXECUTION-OWNER.stderr.log"
+    },
+    {
+      "bytes": 0,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER.stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/EXECUTION-OWNER.stdout.log"
+    },
+    {
+      "bytes": 2799,
+      "git_blob": "4c56d6225e03970fffe95b61596f394416dec073",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "f5b460c03c05e3e64b21d7b23c9af0cfc47e643d699f6678f373e5b82e648a56",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\RETIREMENT-FINAL.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/RETIREMENT-FINAL.actual.json"
+    },
+    {
+      "bytes": 1006,
+      "git_blob": "dd0a9f32c4b2545f355bcf4560b314c3d461bfbd",
+      "old": null,
+      "role": "per-object retirement WAL and original owner wait",
+      "sha256": "6bd77569cf5fac64e343acdb15a0e8104427d7732660f59cc23eca1d8e72c3ef",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\RETIREMENT-START.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/sdk-exact/retirement/RETIREMENT-START.actual.json"
+    },
+    {
+      "bytes": 6133,
+      "git_blob": "ac382703a261d8db302e8b50c927bb84e2644379",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "eeb7927fd2d4cb05ee1ff82ca225a689c6045622ea1854d38df17bf264a9b855",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PRODUCE-FINAL.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/PRODUCE-FINAL.actual.json"
+    },
+    {
+      "bytes": 1891,
+      "git_blob": "ddd616e2b53d9f36f142e3254039894091ed2fff",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "51d39148f8f34b2f5ca8c367ef947da3be658c976e27696265ea43021e2dcf55",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PARENT-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/PARENT-WAIT.actual.json"
+    },
+    {
+      "bytes": 1153,
+      "git_blob": "4bae50dd759bfe7f8dd41626208c8a56d0acfd5f",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "63a425c1cb39995a6a91873bcda1f0ceedc53dbeb36450b68a7738d55b7f4582",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PARENT-START.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/PARENT-START.actual.json"
+    },
+    {
+      "bytes": 519,
+      "git_blob": "4736fbf41e940d48883338f54503c61563a7e13b",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "93bf3789db4eb23b4088b69491844ca3d30a98f15c4b053a2f29ea5aa4f666cf",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PRODUCE-ONCE.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/PRODUCE-ONCE.actual.json"
+    },
+    {
+      "bytes": 411,
+      "git_blob": "3bea9d47ccbbd96d02178047453a8fc77e9064d2",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "255a694e3e279a182b3aa8a2f341a4f8f70154e7e2fb5f2294630c32a5e6119c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\PARENT-stdout-stderr.actual.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/PARENT-stdout-stderr.actual.log"
+    },
+    {
+      "bytes": 4283,
+      "git_blob": "82ff6a82c40b54e77565eae570a46bd17ec49419",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "7f4061adf0f4d966ea7ff3a049932d068366f2e877deda7dac7ee8d642de0402",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\SOURCE-PLAN.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/SOURCE-PLAN.actual-a01.json"
+    },
+    {
+      "bytes": 1957,
+      "git_blob": "054a7ce6b5d061cd88d01cc407deff5f70dbef6e",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "8c445eabcfdedf70f42e5d9f9adb4bbd55d841919d5260d4e538f4b2e68821f1",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\SOURCE-FROZEN.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/SOURCE-FROZEN.actual-a01.json"
+    },
+    {
+      "bytes": 2592,
+      "git_blob": "5d305d6df1327e738a31c43577217f5b48f86b81",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "0eac8e69673cc3c3d60dea347bfa2fa82d8e98c1d62f2790642cda5bd4d6875e",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\CHECKS-WAIT.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/CHECKS-WAIT.actual-a02.json"
+    },
+    {
+      "bytes": 19465,
+      "git_blob": "8326f5c186c70c3e744f3067272e0a924ee62275",
+      "old": null,
+      "role": "R176 reversible produce only; originals protected and retained",
+      "sha256": "1b616f20d05b074687160b01fe7517799f48f58d29a17a49889c52ff65a703c5",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\keeper_lossless2.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/r176-lossless/keeper_lossless2.py"
+    },
+    {
+      "bytes": 57440,
+      "git_blob": "30ad76cad7ff2c983f19aba940113e56501dc744",
+      "old": {
+        "bytes": 54896,
+        "git_blob": "93eba084ef53cfe16d95eaf81762f3d0a49f54b3",
+        "sha256": "655a6b5ee9982f8799644c46b98dbc98996565e6e83ddad4784ef5e8775018ce"
+      },
+      "role": "latest source/runtime and formal7 section; old bytes retained",
+      "sha256": "20a5f14d99b596584766347a8bfb3d30a21c86934110a6abb57e9fba5054dd3c",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\docs\\ck3-native-ai\\episode04-current-execution-map-12004.md",
+      "target": "docs/ck3-native-ai/episode04-current-execution-map-12004.md"
+    },
+    {
+      "bytes": 44886,
+      "git_blob": "61ed64f260b89f4de45fc5b80ea70cc27711c668",
+      "old": {
+        "bytes": 42325,
+        "git_blob": "d07d722b6307ad2e5aaed5ede032d194f4b22ae9",
+        "sha256": "335103dabcbea63a39daec841ebe35f2325c35089e5eefe95ba2c3feb8f2d55a"
+      },
+      "role": "latest source/runtime and formal7 section; old bytes retained",
+      "sha256": "eb9f9dced8c196feddb6d2260842ae50c9ae38a168c1e95ff7c19a9085b87943",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "target": "docs/handover/2026-10-20-war-episode04-vacation-handover.md"
+    },
+    {
+      "bytes": 64720,
+      "git_blob": "8bc6d9f7bfdf5d8c25ffe276616cbf5624e79592",
+      "old": {
+        "bytes": 62150,
+        "git_blob": "4811c25de495970acd03e6413db6dd74c1f5dc72",
+        "sha256": "f1a8960984ea314459b2077806eb77132d53132fc91a2ef65de67c6392978c16"
+      },
+      "role": "latest source/runtime and formal7 section; old bytes retained",
+      "sha256": "7578a218714afd975df3e62a253457bbbabfb2d058256e4e3e300cfb78559578",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\docs\\autonomous-agent-progress\\daily\\2026-10-20.md",
+      "target": "docs/autonomous-agent-progress/daily/2026-10-20.md"
+    },
+    {
+      "bytes": 57639,
+      "git_blob": "59da3008e263be0850666368f3f2ee04ca247281",
+      "old": {
+        "bytes": 55069,
+        "git_blob": "b5a3dced6d361ea444e654be7b3bc7d9b7590c53",
+        "sha256": "57bb9b87a81f83d165bbedebe30713a2a07fb27fb1484fc9e56010697d4b2f26"
+      },
+      "role": "latest source/runtime and formal7 section; old bytes retained",
+      "sha256": "526319afa6885c98e44c7e52693fc4d246aaf0802559b1b81104b69eeb031e11",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\docs\\autonomous-agent-progress\\weekly\\2026-W43.md",
+      "target": "docs/autonomous-agent-progress/weekly/2026-W43.md"
+    },
+    {
+      "bytes": 15135,
+      "git_blob": "83556e87a1b39609a6b5fb27ad9cf3afcbe59e4c",
+      "old": {
+        "bytes": 13814,
+        "git_blob": "01c5f9eff5e70f804628b3ce1d98401399a04053",
+        "sha256": "aafd3073158f87b5cbe47be07b61b2b7a23f72e91bfae06658ac7ce299a679b9"
+      },
+      "role": "latest source/runtime and formal7 section; old bytes retained",
+      "sha256": "231c32c891c928c83a34843fbb675cdd5fa27c69ed053e5ceb14f90c944e45d5",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\docs\\ck3-native-ai\\episode04-gameplay-agent-use-12004.md",
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md"
+    },
+    {
+      "bytes": 17486,
+      "git_blob": "023f50742365b69bff2fbdcee618a35b88308d92",
+      "old": {
+        "bytes": 15193,
+        "git_blob": "c299ca007b690387d901fd313bfd9c5b5bfd7440",
+        "sha256": "5a906541a8c8a4cd1d5d57683a7a4b4d93c3483d4541b3c399476691cac1e39d"
+      },
+      "role": "formal ledger 6 to7; six historical events retained",
+      "sha256": "0e908aa7c3d03b760b261117477ec00755475e38030bee033664662b94f274fb",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0175-r12-positive-review-a01\\formal-dynamic-theme-ledger.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json"
+    },
+    {
+      "bytes": 132667,
+      "git_blob": "2f7e5b31e646e762182342b1f70777c4d0de760c",
+      "old": {
+        "bytes": 132408,
+        "git_blob": "45ae1bd812c09ef2311fc2efd59fb7288a8266f1",
+        "sha256": "5afcc0887ea9a41e2e104444df4e0f51813a646ad8604f65a08e509df61bc1cc"
+      },
+      "role": "narrow artifact -text; production Python/JSON text policy unchanged",
+      "sha256": "5ba793501cd65069bb54265b888468746e148e3a64caab9d34e85f8ceb277b2b",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\candidates\\.gitattributes",
+      "target": ".gitattributes"
+    },
+    {
+      "bytes": 7106,
+      "git_blob": "abd32df12f50e90fb63f9646a37e51e36ad9643f",
+      "old": null,
+      "role": "source/cold/game/film/availability boundary topic",
+      "sha256": "fd38cc3018f7acd4e7e328069c995e747001d3400db2c25ffdc4871b4ec2f4ec",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\TOPIC.md",
+      "target": "docs/ck3-native-ai/episode04-public-pointer-read-save-and-r03-20261020.md"
+    },
+    {
+      "bytes": 1209,
+      "git_blob": "66dca49e00e52cd1f1a674da2b875c253d198f2d",
+      "old": null,
+      "role": "Root final verdict corrects historical pending copyplan without rewriting it",
+      "sha256": "dd91e6a92ac8340546050965054486f272328888b63e1b1d39994b05aa8c7467",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\evidence-meta\\R03-README.md",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/README.md"
+    },
+    {
+      "bytes": 25166,
+      "git_blob": "80f40e4aa3ca82942e0098b017ffbbff6aa1d990",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "cd0fcd7116e5edfc3a3d807e930d90dcc16f5d58b2f52b0019d610c262f1c661",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\execution\\publish_exact_once_2m_a01.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/publish_exact_once_2m_a01.py"
+    },
+    {
+      "bytes": 1408,
+      "git_blob": "0ad0d1cfe2db8717501d886bb4bafcbc971af2f7",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "7aa71563dcc3404c250a25b7a1c1f8186f918cd0889e249507e798ebea561ddb",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXECUTOR-W2M.candidate.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXECUTOR-W2M.candidate.patch"
+    },
+    {
+      "bytes": 4170,
+      "git_blob": "b33a8b7bdb2c245ba0b53ca5cb8351bfcc2811c7",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "5b794114fce8ef600d6dfed95feff5e419e90dcf79a26bdc4fca3a3fcb56dab9",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\test_executor_w_growth_a02.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/test_executor_w_growth_a02.py"
+    },
+    {
+      "bytes": 4148,
+      "git_blob": "477d5f860a330a13c735b85b9108a6769925cb77",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "c7218f93f270b25aff0ab5f6a627a64aebe822bb557e41f9f4409b204b2d3048",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\test_executor_w_growth.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/test_executor_w_growth.py"
+    },
+    {
+      "bytes": 1016,
+      "git_blob": "c2bdda1aaf0efd6082a195752552a2ebd5eaadeb",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "99634255afeeb24058e74429e6cbaebe28f89c3339a0cdd6b40c5fce7dd957d4",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXEC-MYPY-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXEC-MYPY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 44,
+      "git_blob": "be039eab13f26906e9936ceb482063d5cade6436",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXEC-MYPY.stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXEC-MYPY.stdout.log"
+    },
+    {
+      "bytes": 706,
+      "git_blob": "6be2c3246b8fc409aaa5867d19c3bc6c7fc13c4a",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "d157c3806a319fedb4ee7f32e9cbaf10c1b2d8ba1dbd7aeb70ef327865a796b2",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXEC-BOUNDARY-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXEC-BOUNDARY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 5308,
+      "git_blob": "81029a03c11fb18d03d66e924b823d5f6b51be57",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "c10887b2b6a6e4318da39194239d06c3cacbddc5f47c767a514834623e30a238",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXEC-BOUNDARY.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXEC-BOUNDARY.stderr.log"
+    },
+    {
+      "bytes": 913,
+      "git_blob": "061afd795c9ea3c4770417bb180d97d1da38c5f4",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "cfb1a8f86a5ad7f54230342516847f90dbaf2a5f37d5f728e60b5177ae393490",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\BOUNDARY-A02-MYPY-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/BOUNDARY-A02-MYPY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 43,
+      "git_blob": "7df7328cfcc9aac186481be267e27a28345d2911",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\BOUNDARY-A02-MYPY.stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/BOUNDARY-A02-MYPY.stdout.log"
+    },
+    {
+      "bytes": 709,
+      "git_blob": "3f65f695f1057ab6e06d439c3547bb95144491ca",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "810f447c7d8ca599e64d9c5245ac865409fc8dd948bcbe2da2a37fa1919f49c5",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXEC-BOUNDARY-A02-ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXEC-BOUNDARY-A02-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "bytes": 705,
+      "git_blob": "8c03f9950fdb9192778714639611d1cba28fdc7a",
+      "old": null,
+      "role": "typed publisher exact two W-limit constants and bounded real guard checks; no Git dry matrix",
+      "sha256": "9f81de0646f2eb9f60cdd3e1598838e818c0fce1a5888cf0dd98e8594d04dc98",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\EXEC-BOUNDARY-A02.stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXEC-BOUNDARY-A02.stderr.log"
+    }
+  ],
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:15:07.099583+00:00",
+  "plan_self_target": "docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/provenance/EXACT-COPYPLAN.prepared-a02.json",
+  "planning_only": true,
+  "runtime_limits": [
+    "source/isolated fixture plus standalone selected native cold only",
+    "no current Game/public live/paid/payer/cadence/parent return/fullR08",
+    "D frozen unchanged; external adapter/index and fresh scene grant still needed",
+    "SDK old aggregate paths deleted; ordered indices included, response packets external until finite review",
+    "R176 produce only, raw originals and compressed payload external; no deletion credit",
+    "new head CI must be actually observed; preserve c710 Official step19 RED"
+  ],
+  "schema": "xar.e04.production-publication.exact-copyplan.v1",
+  "summary": {
+    "ABC": "0/3",
+    "B": "0/2",
+    "W_positive_cap": 2097152,
+    "business": "7/11",
+    "canonical_mappings": "Save3 plus public5 plus CI fixture1",
+    "executor_record_root_cap": 262144,
+    "formal": "7/11",
+    "including_plan_self": 213,
+    "new_native_CMake_driver_client_native_day_mutation": false,
+    "payload_bytes_without_plan_self": 1883901,
+    "payload_items": 212,
+    "prospective_W_positive_without_plan_self": 1448347,
+    "research": "10/14"
+  }
+}

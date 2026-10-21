@@ -1,0 +1,36 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-m",
+    "mypy",
+    "--config-file",
+    "C:\\w\\e04parentread03\\control-metadata-a01\\empty.ini",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "--follow-imports",
+    "skip",
+    "--check-untyped-defs",
+    "--disallow-untyped-defs",
+    "--python-version",
+    "3.14",
+    "--platform",
+    "win32",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\verify_closed_cold.py"
+  ],
+  "pid": 25632,
+  "created": "134370092605651208",
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "started_at_utc": "2026-10-20T22:34:20.564031+00:00",
+  "finished_at_utc": "2026-10-20T22:34:27.144467+00:00",
+  "diagnostic": null,
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\verify_closed_cold.py",
+    "bytes": 14998,
+    "sha256": "ed50af2b53b246f6ac2adbfb3ab35f10f683d673041037787dd7f99e6cf679a5"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:10:22.152133+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-publication-2330-a01\\source-checks\\test_executor_w_growth_a02.py"
+  ],
+  "original_popen_pid": 37056,
+  "creation_filetime": "134370114216900342",
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_bytes": 705,
+  "stderr_sha256": "9f81de0646f2eb9f60cdd3e1598838e818c0fce1a5888cf0dd98e8594d04dc98"
+}

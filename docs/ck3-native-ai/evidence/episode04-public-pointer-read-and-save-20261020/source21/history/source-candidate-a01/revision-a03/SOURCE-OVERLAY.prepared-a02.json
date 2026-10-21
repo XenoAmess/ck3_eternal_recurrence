@@ -1,0 +1,211 @@
+{
+  "QPC_encoding": "canonical signed64 decimal string",
+  "actual_snapshot_or_build_performed": false,
+  "all_other_wide_encoding": "canonical unsigned64 decimal string",
+  "change": "QPC signed64 and explicit nullable-presence completion",
+  "flat_snapshot_mapping": [
+    {
+      "destination": "CMakeLists.txt",
+      "role": "native_source",
+      "source": {
+        "bytes": 2087,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\CMakeLists.txt",
+        "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b"
+      }
+    },
+    {
+      "destination": "cold_observer.cpp",
+      "role": "native_source",
+      "source": {
+        "bytes": 29917,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\cold_observer.cpp",
+        "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600"
+      }
+    },
+    {
+      "destination": "cold_target.cpp",
+      "role": "native_source",
+      "source": {
+        "bytes": 6298,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\cold_target.cpp",
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      }
+    },
+    {
+      "destination": "parent_entry_cold_call.asm",
+      "role": "native_source",
+      "source": {
+        "bytes": 889,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\baseline-s02\\parent_entry_cold_call.asm",
+        "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+      }
+    },
+    {
+      "destination": "parent_entry_cold_target.cpp",
+      "role": "native_source",
+      "source": {
+        "bytes": 13724,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\baseline-s02\\parent_entry_cold_target.cpp",
+        "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+      }
+    },
+    {
+      "destination": "parent_entry_execution_once.inc",
+      "role": "native_source",
+      "source": {
+        "bytes": 29838,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\parent_entry_execution_once.inc",
+        "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+      }
+    },
+    {
+      "destination": "parent_pointer_read_capture.inc",
+      "role": "native_source",
+      "source": {
+        "bytes": 3412,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_capture.inc",
+        "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e"
+      }
+    },
+    {
+      "destination": "parent_pointer_read_cold_call.asm",
+      "role": "native_source",
+      "source": {
+        "bytes": 1458,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\parent_pointer_read_cold_call.asm",
+        "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef"
+      }
+    },
+    {
+      "destination": "parent_pointer_read_cold_target.cpp",
+      "role": "native_source",
+      "source": {
+        "bytes": 15348,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_cold_target.cpp",
+        "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1"
+      }
+    },
+    {
+      "destination": "parent_pointer_read_once.inc",
+      "role": "native_source",
+      "source": {
+        "bytes": 32581,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_once.inc",
+        "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264"
+      }
+    },
+    {
+      "destination": "pointer_read_decimal64.hpp",
+      "role": "native_source",
+      "source": {
+        "bytes": 696,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_decimal64.hpp",
+        "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06"
+      }
+    },
+    {
+      "destination": "synthetic_write.asm",
+      "role": "native_source",
+      "source": {
+        "bytes": 218,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\synthetic_write.asm",
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      }
+    },
+    {
+      "destination": "cold_runner_models.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 7648,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\cold_runner_models.py",
+        "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358"
+      }
+    },
+    {
+      "destination": "consume_parent_pointer_read_actual.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 1675,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\consume_parent_pointer_read_actual.py",
+        "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7"
+      }
+    },
+    {
+      "destination": "parent_pointer_read_contract.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 14350,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_contract.py",
+        "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c"
+      }
+    },
+    {
+      "destination": "pointer_read_admission_models.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 5796,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_admission_models.py",
+        "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a"
+      }
+    },
+    {
+      "destination": "pointer_read_models.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 5310,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_models.py",
+        "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445"
+      }
+    },
+    {
+      "destination": "pointer_read_owner_binding.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 7195,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_owner_binding.py",
+        "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76"
+      }
+    },
+    {
+      "destination": "pointer_read_wire.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 5008,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_wire.py",
+        "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf"
+      }
+    },
+    {
+      "destination": "prepare_parent_pointer_read_admission.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 11349,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\prepare_parent_pointer_read_admission.py",
+        "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5"
+      }
+    },
+    {
+      "destination": "run_parent_pointer_read_cold.py",
+      "role": "qualified_tool_source",
+      "source": {
+        "bytes": 37027,
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\run_parent_pointer_read_cold.py",
+        "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80"
+      }
+    }
+  ],
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "must_use_complete_same_directory_snapshot": true,
+  "observed_at_utc": "2026-10-20T21:41:24.569477+00:00",
+  "old_execution_inputs_modified": false,
+  "prepared_only": true,
+  "public_route_included": false,
+  "raw_schema": "xar.maintenance.parent_pointer_read.raw.v2",
+  "schema": "xar.maintenance.parent_pointer_read.source-overlay.prepared.v2",
+  "source_bytes": 230299,
+  "supersedes": {
+    "bytes": 8894,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-OVERLAY.prepared.json",
+    "sha256": "b640b2678dcd1de94350933e927cf30d4f24f4e0089337f5e508282e6e6972ce"
+  }
+}

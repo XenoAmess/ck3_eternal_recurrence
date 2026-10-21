@@ -1,0 +1,267 @@
+{
+  "schema": "xar.r03-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:38:27.406848+00:00",
+  "reviewer": "/root/public_preflight",
+  "status": "PASS_SOURCE_ONLY_EXECUTION_REQUIRES_SEPARATE_14M_ONCE_ADMISSION",
+  "blocking_source_findings": [],
+  "financial_source_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\FINITE-FINANCIAL-SOURCE-ADMISSION.actual-a01.json",
+    "bytes": 2452,
+    "sha256": "3654de572257d61e793c400334724ae195d77fc1675cecbe189875845ee41865"
+  },
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 3002,
+    "sha256": "20afda4f1f7576245d90c949df6434202d472a0d77a10252f4b9ef8d3581f4a4"
+  },
+  "prior_freeze_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 2830,
+    "sha256": "2c3d149478a2a375cbadf5a13df33dee795ff269f1dc07b4861c69d267b016b1"
+  },
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\R03-RECIPE.prepared-a02.json",
+    "bytes": 6454,
+    "sha256": "e5f2d54ebe2385dd68f9aa272ac79b1f096ae5c5cfe39113d5d30a788bd309e2"
+  },
+  "modified_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\prepare_r03_recipe_a02.py",
+      "bytes": 6400,
+      "sha256": "0b7dd4bec0086d87e1c9a86634df55caad23e8077dbd6a1d7bb806c004f2ba3d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_budget_a02.py",
+      "bytes": 137,
+      "sha256": "280b9e719ad43e8dbe1623f43b925ec733f0487697a52ebb33c13b08660f7244"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_once_a02.py",
+      "bytes": 447,
+      "sha256": "23b83f24e23fb39999022ee9940d220a37ec2728a457bcb7009562f023fe9049"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_pipeline_a02.py",
+      "bytes": 26825,
+      "sha256": "a6efa005246b08771c62679c496b9c475c42e5e5f4e7a2d1b35f44b273c533d4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\run_budget_checks_a02.py",
+      "bytes": 3182,
+      "sha256": "d99103c12725e62878baa4f03fde7831700febe4c88e352a256d00363020d34b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\test_r03_budget_a02.py",
+      "bytes": 1047,
+      "sha256": "72d46b35b134a8ff845a187b6e8ca178c16362dd006a91631cb770d3351ca7ae"
+    }
+  ],
+  "prior_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\prepare_r03_recipe.py",
+      "bytes": 6692,
+      "sha256": "c2ef48e9a329c9606a841d6d1713f428fef45c221468b17ce4b3cb81e84fdab1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_once.py",
+      "bytes": 443,
+      "sha256": "6bc43d0a6ed68c127248596c8628254308954e8305550389e2e0cc91a5b6ec27"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_pipeline.py",
+      "bytes": 26763,
+      "sha256": "1483e3d8ff29dbf81f00c7afdce4dda47e6d930a3c4451b3cc6c953c35d38855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\run_source_checks.py",
+      "bytes": 3111,
+      "sha256": "f2600f06de56bd7ae38629a014564511a1b8d16a27ce54ce2d63f9584c56d5c4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\test_r03_pipeline.py",
+      "bytes": 8209,
+      "sha256": "562ba4b940fc82f6d63ba8cc764bd00357821413d3244ad5d49bb3432816d30d"
+    }
+  ],
+  "small_inputs_verified": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-media-audit-bounded-a01\\audit.actual-a01.json",
+      "bytes": 19453,
+      "sha256": "52ca8dc34420a5912235f28c714fd5a6540d9362f710542556a2218583849dfb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r0191-20261017\\facts.derived-a01.json",
+      "bytes": 7487,
+      "sha256": "2790bec7b583f1f90b01ade1fde2e41b7cc6df5261284db6ecf1eed9de1f0b79"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 7920,
+      "sha256": "154c8f84c8211f57c4ba3baa6f7570ee2bc71fc9db2bcb4855e1ffc01f39950b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r191-portable-candidate-a01\\reader-derived-a03\\STRICT-SOURCE-FACTS.actual.json",
+      "bytes": 9964,
+      "sha256": "f3ade075421681ce83031ed49bb49a27ff328dc4233908ad1c6b6ad580f5ff98"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_pipeline_a02.py",
+      "bytes": 26825,
+      "sha256": "a6efa005246b08771c62679c496b9c475c42e5e5f4e7a2d1b35f44b273c533d4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_once_a02.py",
+      "bytes": 447,
+      "sha256": "23b83f24e23fb39999022ee9940d220a37ec2728a457bcb7009562f023fe9049"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\r03_budget_a02.py",
+      "bytes": 137,
+      "sha256": "280b9e719ad43e8dbe1623f43b925ec733f0487697a52ebb33c13b08660f7244"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\prepare_r03_recipe_a02.py",
+      "bytes": 6400,
+      "sha256": "0b7dd4bec0086d87e1c9a86634df55caad23e8077dbd6a1d7bb806c004f2ba3d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\test_r03_budget_a02.py",
+      "bytes": 1047,
+      "sha256": "72d46b35b134a8ff845a187b6e8ca178c16362dd006a91631cb770d3351ca7ae"
+    }
+  ],
+  "resolved_findings": [
+    "Legal repeated FF header fill was discarded: final parser retains every original byte and exact-byte guard covers chunk boundaries.",
+    "Thread.start escaped original Popen finally: final Custody covers start failure, original terminate/wait and joins only started workers.",
+    "Old7MiB contacts budget had a known RAM-size counterexample. Root prospectively selected12MiB contacts/14MiB aggregate; no silent quality or geometry fallback."
+  ],
+  "source_evidence": [
+    "Actual argv is one input/output: bounded trim0..1199 then showinfo, frames:v1200, passthrough. No fps/select/resampling or UTC-derived PTS.",
+    "Same original FFmpeg pipes join JPEG order to actual n/PTS/base. Completion requires1200 JPEG/PTS, n0..1199, base1/1000, start0/33or34ms/end39967, exact pts_time, EOF/noextra and originalwait0.",
+    "Marker/APP/entropy/chunk parser preserves JPEG bytes. Only f0/f1199 original1280x720 JPEG persist;75 contact sheets each16valid cells/0padding use320x180+18labels and Pillow60, no FFmpegq12 equivalence.",
+    "RAM bounds, partition checks, finite watchdog and no-retry WAL protect execution. Original wait precedes derived CSV/gzip CRC/extraction; failed output remains partial.",
+    "a02 changes only budget import and Usage limits. All other31 top-level classes/functions have identical ASTs. Helper and entry pins are bound."
+  ],
+  "actual_checks_read_not_rerun": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a03.actual.json",
+        "bytes": 2594,
+        "sha256": "9b2f4458a5673d7aeb70740649edc821a82c3e6972f8377648eee59099a82547"
+      },
+      "pid": 4216,
+      "original_wait": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a03.stdout.txt",
+        "bytes": 44,
+        "sha256": "718df785efbbd4b57e63b5f64aff2c5b5592e433447681f759b307f97a3ec96a"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-a03.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-a03.actual.json",
+        "bytes": 1890,
+        "sha256": "922ac1663cad8bde569f1154655372da3f9c13567b2d1959565b656889e96b70"
+      },
+      "pid": 37376,
+      "original_wait": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-a03.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-a03.stderr.txt",
+        "bytes": 1687,
+        "sha256": "90afe4fe688fda730da05fc4f4b01019bf146a95e0b6110a38197b51e6849e4c"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-budget-a01.actual.json",
+        "bytes": 3920,
+        "sha256": "198b212cebe6adc450a7d7b04350bed915504c76a425cf18ea5f0fbbb71c19ed"
+      },
+      "pid": 32120,
+      "original_wait": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-budget-a01.stdout.txt",
+        "bytes": 44,
+        "sha256": "90377c8fd97127580c93ac5740d596c9ebc9db94dafa6560ee11fe16b4460c62"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\mypy-budget-a01.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-budget-a01.actual.json",
+        "bytes": 3100,
+        "sha256": "897afaba8ed8635fea3ab633d04c23ae2e31e24af9df035aec17ddfad5869018"
+      },
+      "pid": 25696,
+      "original_wait": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-budget-a01.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\source\\checks\\guards-budget-a01.stderr.txt",
+        "bytes": 365,
+        "sha256": "63421f66f0981a258b32b7519d44588e8eb811ce5e6034d88200e87046ed50bd"
+      }
+    }
+  ],
+  "counts": {
+    "prior_final_guard_methods": 13,
+    "new_budget_delta_methods": 2,
+    "single_combined15suite": false,
+    "prior_mypy_files": 5,
+    "new_modified_mypy_files": 6,
+    "errors": 0,
+    "reviewer_runs": 0
+  },
+  "calibration": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\RAM-SIZE-CALIBRATION.actual-a01.json",
+    "bytes": 750,
+    "sha256": "a6c819ae40962c0eb4961487fb533a95ef1938a2404799827dfa62378c732be3"
+  },
+  "calibration_boundary": "Existing prefilm PNG repeated16cells in RAM,148817bytes/sample and11161275 estimate for75; tool exit0/PIDunknown. Not actual1200frames or guaranteed actual size.",
+  "execution_boundary": {
+    "financial_amendment_pending_at_author_freeze": true,
+    "old9M_does_not_authorize14M": true,
+    "Root_source_adoption_and_actual_source_bound_once_cap_required": true,
+    "reviewer_decoder_or_FFmpeg_runs": 0
+  },
+  "limitations": [
+    "Source/typed synthetic fixtures only, no actual extraction or visual acceptance.",
+    "Retained R1913359frame QA pin is reused, not rerun; raw and FFmpeg bodies not rehashed.",
+    "Actual count/date/settlement requires Root review of generated contacts/endpoints. Contact thumbnails do not prove all1200 original-resolution digits reviewed.",
+    "No exact eventPTS/allworld totals; review awards0formal/business/fullR08 credit."
+  ],
+  "no_game_SDK_UI_probe_EXE_build_Git_D_W_mutation": true,
+  "old_roots_unchanged": true,
+  "writer0_after_receipt": true,
+  "usage_before": {
+    "contacts": 0,
+    "endpoints": 0,
+    "sources": 174916,
+    "metadata": 22222
+  },
+  "review_limit_bytes": 131072,
+  "deadline_utc": "2026-10-20T22:45:00Z"
+}

@@ -1,0 +1,100 @@
+{
+  "default_off": true,
+  "files": [
+    {
+      "bytes": 7648,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\cold_runner_models.py",
+      "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358"
+    },
+    {
+      "bytes": 1675,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\consume_parent_pointer_read_actual.py",
+      "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7"
+    },
+    {
+      "bytes": 3412,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_capture.inc",
+      "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e"
+    },
+    {
+      "bytes": 15348,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_cold_target.cpp",
+      "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1"
+    },
+    {
+      "bytes": 14350,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_contract.py",
+      "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c"
+    },
+    {
+      "bytes": 32581,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\parent_pointer_read_once.inc",
+      "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264"
+    },
+    {
+      "bytes": 5796,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_admission_models.py",
+      "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a"
+    },
+    {
+      "bytes": 696,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_decimal64.hpp",
+      "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06"
+    },
+    {
+      "bytes": 5310,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_models.py",
+      "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445"
+    },
+    {
+      "bytes": 7195,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_owner_binding.py",
+      "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76"
+    },
+    {
+      "bytes": 5008,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\pointer_read_wire.py",
+      "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf"
+    },
+    {
+      "bytes": 11349,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\prepare_parent_pointer_read_admission.py",
+      "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5"
+    },
+    {
+      "bytes": 37027,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\run_parent_pointer_read_cold.py",
+      "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80"
+    },
+    {
+      "bytes": 2685,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\sample_pointer_read_rows.py",
+      "sha256": "d7b57837e6ae2b5b61d635853e3246f6e7867bdfefe6017145a8f47459a42711"
+    },
+    {
+      "bytes": 5414,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\test_cold_runner_typed.py",
+      "sha256": "b415d946a23c6ee50e92d83881317369307c5abe51493e3582b0017b1b78ec73"
+    },
+    {
+      "bytes": 5738,
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\test_pointer_read_decimal64.py",
+      "sha256": "833cfc030a2f839e847a86f4062136b2004c347bc2ebbcf659a5f82bc564787a"
+    }
+  ],
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "native_builds": 0,
+  "native_executions": 0,
+  "observed_at_utc": "2026-10-20T21:41:24.786804+00:00",
+  "schema": "xar.maintenance.parent_pointer_read.source-index.v2",
+  "source_overlay": {
+    "bytes": 9368,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-OVERLAY.prepared-a02.json",
+    "sha256": "c54cacdb811a315b8b56b2768ab7ccfe5f726bdcb71d223e2231ea5d2ef37f33"
+  },
+  "supersedes": {
+    "bytes": 4999,
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-player-parent-readwatch-source-2115-a01\\source-candidate-a01\\revision-a03\\SOURCE-INDEX.actual.json",
+    "sha256": "a9b233a9d4305f8bfa8db69eb59be800378eeb3294f5b445669314023a6d8498"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:39:38Z",
+  "status": "SOURCE_ADOPTED_FRESH_SOURCE_BOUND_14M_ONCE_CARD_REQUIRED",
+  "recipe": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r03-r191-continuous-review-2245-a01/R03-RECIPE.prepared-a02.json",
+    "bytes": 6454,
+    "sha256": "e5f2d54ebe2385dd68f9aa272ac79b1f096ae5c5cfe39113d5d30a788bd309e2"
+  },
+  "freeze_sha256": "20afda4f1f7576245d90c949df6434202d472a0d77a10252f4b9ef8d3581f4a4",
+  "independent_review": {
+    "bytes": 12826,
+    "sha256": "fff54068826f9d016c20b9f5d3d31bfee0ebc1b24c8931caeee759b402eebee8"
+  },
+  "financial14_sha256": "c5ed5881cd51ce725f45681c7eb7b8ca3b05420d7ad5ad72e476fa5f839b58cf",
+  "root_actual_review": [
+    "Complete final recipe and independent source review read",
+    "One input/one original FFmpeg pipes; bounded trim0..1199 before showinfo and passthrough; no repeated full3359 QA or raw-body hash",
+    "1200 exact JPEG/PTS,75 sheets,2 original JPEG endpoints, complete wait; original byte fill and Thread.start custody regressions resolved",
+    "Prior13 functional guards and final2 budget guards are distinct; actual modified6-source mypy0 read through peer",
+    "Known initial9MiB estimate failure preserved; explicit prospectively amended14MiB uses Pillow60 and12MiB contacts"
+  ],
+  "authorization": "After fresh coordinator source-bound actual14MiB GREEN card, media_chapter as sole owner executes adopted a02 once. Any budget,source,PTS,count,watchdog or decoder failure preserves partial evidence and stops; no automatic tail,quality change or replay.",
+  "hard_deadline_utc": "2026-10-20T22:45:00Z",
+  "aggregate_ceiling_bytes": 14680064,
+  "formal_credit_by_this_record": 0,
+  "real_game_or_SDK": false,
+  "visual_acceptance_pending": true
+}

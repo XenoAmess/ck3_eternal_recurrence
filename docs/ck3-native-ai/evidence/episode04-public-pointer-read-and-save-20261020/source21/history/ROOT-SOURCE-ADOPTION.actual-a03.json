@@ -1,0 +1,49 @@
+{
+  "schema": "xar.e04.pointer-read-root-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:45:08Z",
+  "status": "SOURCE_ONLY_ACCEPTED_NEW_NATIVE_AND_PUBLIC_PENDING",
+  "freeze": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-player-parent-readwatch-source-2115-a01/source-candidate-a01/revision-a03/SOURCE-FREEZE.actual-a03.json",
+    "bytes": 3513,
+    "sha256": "149c9c046b05eb9433719652f70013e2814c45a5db15928a6a76c839150036b6"
+  },
+  "overlay": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-player-parent-readwatch-source-2115-a01/source-candidate-a01/revision-a03/SOURCE-OVERLAY.prepared-a02.json",
+    "bytes": 9368,
+    "sha256": "c54cacdb811a315b8b56b2768ab7ccfe5f726bdcb71d223e2231ea5d2ef37f33"
+  },
+  "review": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-player-parent-readwatch-source-2115-a01/review-a01/INDEPENDENT-DECIMAL64-RUNNER-SOURCE-REVIEW.actual-a03.json",
+    "bytes": 4663,
+    "sha256": "a819ed242fa4622d22311e97ba22f12014dfd96e1caed091cfe6e4c8b3d83fbf"
+  },
+  "correction": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-player-parent-readwatch-source-2115-a01/source-candidate-a01/revision-a03/OVERLAY-SOURCE-BYTES-CORRECTION.actual-a01.json",
+    "bytes": 1026,
+    "sha256": "5ab81693d05dcbfe3c911a1b0efadbc95d5e86ec599daddd45d0e5dd56bba287"
+  },
+  "root_direct_read": "Final freeze, complete 21-source mapping and next-cold recipe, new u64/s64 C++ header, preceding native capture and source review. Original field protocol and source families remain preserved.",
+  "independent_exact_copy_checks": "Reviewer and cold_readwatch each independently hash 21/21 source pins; actual total231824, old summary230299 is preserved and corrected.",
+  "actual_checks": "Nine Python source mypy and twelve tests passed with original waits. Actual Node JSON roundtrip verified FILETIME/u64max and signedQPC limits; compiler/native behavior not yet tested.",
+  "actual_source_bytes": 231824,
+  "source_files": 21,
+  "native_files": 12,
+  "python_tool_files": 9,
+  "new_cold_cases_required": 21,
+  "cancel_late_actual_execution_order": "last",
+  "old_execution_17_qualification_reusable": false,
+  "public_29_type_diagnostics_pending": true,
+  "public_raw_v2_migration_pending": true,
+  "new_build_admitted": false,
+  "SYSTEM_admitted": false,
+  "new_cold_execution_admitted": false,
+  "Game_admitted": false,
+  "qualification_issued": false,
+  "formal_total_unchanged": [
+    6,
+    11
+  ],
+  "source_writers_after_this_record": 0,
+  "next_step": "Separate fresh bounded source-copy/build exact-two-EXE SYSTEM phase; Root reads actual result before any new cold execution."
+}

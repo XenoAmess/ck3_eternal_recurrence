@@ -1,0 +1,481 @@
+{
+  "schema": "xar.e04.public-pointer-v2.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:54:15.458891+00:00",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\pointer_read_bundle_loader.py",
+      "bytes": 4758,
+      "sha256": "1bbbbd613482a19db4dbda5939b33b9b90ab27d671f501ebe986f748baf6c0aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\pointer_read_public_models.py",
+      "bytes": 11583,
+      "sha256": "c70295cc9cf8057d28219dbfe57d21049f71ebb59a115587db55364aeb0fcfa8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_pointer_read_controller.py",
+      "bytes": 20446,
+      "sha256": "49a3d0d77845c48e64ea697f581417c93ceca24e7257341b90964743e3e5508a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_pointer_read_one_day.py",
+      "bytes": 10557,
+      "sha256": "adaaf188416c99db20c4f296b8852975ebd4d1ee258a0d8b35f570107b2cf76c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 18032,
+      "sha256": "8f30c0e963a18046baede607d1b5a9b3fb1e5d823c51533f0c3700d81a41ab8c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\CMakeLists.txt",
+      "bytes": 2087,
+      "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\cold_observer.cpp",
+      "bytes": 29917,
+      "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\cold_runner_models.py",
+      "bytes": 7648,
+      "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\consume_parent_pointer_read_actual.py",
+      "bytes": 1675,
+      "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_entry_cold_call.asm",
+      "bytes": 889,
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_capture.inc",
+      "bytes": 3412,
+      "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_cold_call.asm",
+      "bytes": 1458,
+      "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_cold_target.cpp",
+      "bytes": 15348,
+      "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_contract.py",
+      "bytes": 14350,
+      "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_once.inc",
+      "bytes": 32581,
+      "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_admission_models.py",
+      "bytes": 5796,
+      "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_decimal64.hpp",
+      "bytes": 696,
+      "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_models.py",
+      "bytes": 5310,
+      "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_owner_binding.py",
+      "bytes": 7195,
+      "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_wire.py",
+      "bytes": 5008,
+      "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\prepare_parent_pointer_read_admission.py",
+      "bytes": 11349,
+      "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\run_parent_pointer_read_cold.py",
+      "bytes": 37027,
+      "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\test_public_pointer_v2.py",
+      "bytes": 19990,
+      "sha256": "73c5042d3cf5793d4300d51c06aeaa81b589110746e56df04bdb13154ee9e25c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\run_checks.py",
+      "bytes": 4794,
+      "sha256": "3f808aa21b7760243cd1dc5699ce4027aa66f110c63f359de2c7f14e368d0403"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\mypy.ini",
+      "bytes": 86,
+      "sha256": "93cc99b5a69bf0a9e3e414a246a93a56ada699b1b2561492489a8e4bddca6deb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\seal_source.py",
+      "bytes": 13227,
+      "sha256": "1e143197feae62487346cf88e5c671c088e244024b3d7fa112d54a8ea2bee060"
+    }
+  ],
+  "immutable_core21": [
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\CMakeLists.txt",
+        "bytes": 2087,
+        "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\CMakeLists.txt",
+        "bytes": 2087,
+        "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\cold_observer.cpp",
+        "bytes": 29917,
+        "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_observer.cpp",
+        "bytes": 29917,
+        "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\cold_runner_models.py",
+        "bytes": 7648,
+        "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_runner_models.py",
+        "bytes": 7648,
+        "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\consume_parent_pointer_read_actual.py",
+        "bytes": 1675,
+        "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\consume_parent_pointer_read_actual.py",
+        "bytes": 1675,
+        "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_entry_cold_call.asm",
+        "bytes": 889,
+        "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_cold_call.asm",
+        "bytes": 889,
+        "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_entry_cold_target.cpp",
+        "bytes": 13724,
+        "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_cold_target.cpp",
+        "bytes": 13724,
+        "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_entry_execution_once.inc",
+        "bytes": 29838,
+        "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_entry_execution_once.inc",
+        "bytes": 29838,
+        "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_capture.inc",
+        "bytes": 3412,
+        "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_capture.inc",
+        "bytes": 3412,
+        "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_cold_call.asm",
+        "bytes": 1458,
+        "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_cold_call.asm",
+        "bytes": 1458,
+        "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_cold_target.cpp",
+        "bytes": 15348,
+        "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_cold_target.cpp",
+        "bytes": 15348,
+        "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_contract.py",
+        "bytes": 14350,
+        "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_contract.py",
+        "bytes": 14350,
+        "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\parent_pointer_read_once.inc",
+        "bytes": 32581,
+        "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\parent_pointer_read_once.inc",
+        "bytes": 32581,
+        "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_admission_models.py",
+        "bytes": 5796,
+        "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_admission_models.py",
+        "bytes": 5796,
+        "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_decimal64.hpp",
+        "bytes": 696,
+        "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_decimal64.hpp",
+        "bytes": 696,
+        "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_models.py",
+        "bytes": 5310,
+        "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_models.py",
+        "bytes": 5310,
+        "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_owner_binding.py",
+        "bytes": 7195,
+        "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_owner_binding.py",
+        "bytes": 7195,
+        "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\pointer_read_wire.py",
+        "bytes": 5008,
+        "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\pointer_read_wire.py",
+        "bytes": 5008,
+        "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\prepare_parent_pointer_read_admission.py",
+        "bytes": 11349,
+        "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\prepare_parent_pointer_read_admission.py",
+        "bytes": 11349,
+        "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\run_parent_pointer_read_cold.py",
+        "bytes": 37027,
+        "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\run_parent_pointer_read_cold.py",
+        "bytes": 37027,
+        "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80"
+      }
+    },
+    {
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\parent-tools\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      },
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-read-source-p03\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      }
+    }
+  ],
+  "source_index_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\PUBLIC-SOURCE-INDEX.prepared-a01.json",
+    "bytes": 13173,
+    "sha256": "a23a20033f69244596727e4b0eb00b14909a018f7d744cf5611f791a48279962"
+  },
+  "checks": {
+    "static-final": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\static-final.ORIGINAL-WAIT.actual.json",
+      "bytes": 11116,
+      "sha256": "cbdd0caa70492e4f86b7b4353c2bd7b61750186b46717ac638e57e8c42867db5"
+    },
+    "focused-final": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\source-candidate-a01\\checks-final\\focused-final.ORIGINAL-WAIT.actual.json",
+      "bytes": 8524,
+      "sha256": "b091826bd169cec91ee26e4a81ea938c67d04c456af340aa2426ad35b222681a"
+    }
+  },
+  "r10_scope": {
+    "changed_typed_functions": [
+      "_pointer_selected",
+      "validate_contract",
+      "run_case"
+    ],
+    "legacy_impl_AST_unchanged": true,
+    "legacy_module_only_allow_untyped_defs": true,
+    "all_other14_inputs_disallow_untyped_defs": true
+  },
+  "mypy_tool": {
+    "version": "1.20.1",
+    "Lib": "C:/ck3-e04-resume-20261020-a01/r08-mypy1201-tools-2115-a01/Lib"
+  },
+  "current_root_qualification": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-pointer-read-v2-source-2300-a01\\Root\\cold-adjudication-a01\\POINTER-READ-QUALIFICATION.actual-a01.json",
+    "bytes": 6633,
+    "sha256": "70dd8b0e5b97e404018f821a1f01ef88caa538b04ee1fd43a9a95eef6504e5c1"
+  },
+  "actual_public_live": false,
+  "full_R08_qualified": false,
+  "SDK_requests": 0,
+  "Game_EXE_System_Steam_Git": false
+}

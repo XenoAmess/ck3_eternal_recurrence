@@ -1,0 +1,2 @@
+r03_pipeline.py:522: error: Argument 3 to "finish" of "Custody" has incompatible type "IO[bytes]"; expected "BinaryIO"  [arg-type]
+Found 1 error in 1 file (checked 5 source files)

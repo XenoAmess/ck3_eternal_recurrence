@@ -1,0 +1,55 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:38:40.836893+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "quota_exception": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\ROOT-FINITE-QUOTA-EXCEPTION-512M-2300.actual-a01.json",
+    "bytes": 4691,
+    "sha256": "76e3ed5a706d09098f668ecbd68a5ffa23bf2e8d8a856087c08f763a1cd1e055"
+  },
+  "base_project_quota_bytes": 438086664192,
+  "effective_project_quota_bytes": 438623535104,
+  "base_budget": {
+    "C_known_future_bytes": 41943040,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25811746816,
+    "C_floor_margin_bytes": 51436650496,
+    "C_projected_whole_volume_upper_bound_bytes": 438222458880,
+    "C_quota_margin_bytes": -135794688,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 33239040
+  },
+  "effective_C_quota_margin_bytes": 401076224,
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 430977,
+    "sha256": "612c897ec8d50c5f6a4203ecf0116222c365a2b8631e5e6fc89d654e66485c7f"
+  },
+  "physical_credit_bytes": 0,
+  "retirement_or_delete_execution_admitted": false,
+  "schema": "xar.capacity.r03.prospective14.v1",
+  "previous_financial_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\capacity\\FINITE-FINANCIAL-SOURCE-ADMISSION.actual-a01.json",
+    "bytes": 2452,
+    "sha256": "3654de572257d61e793c400334724ae195d77fc1675cecbe189875845ee41865"
+  },
+  "previous_aggregate_ceiling_bytes": 9437184,
+  "additional_future_bytes": 5242880,
+  "all_inclusive_aggregate_ceiling_bytes": 14680064,
+  "component_ceiling_bytes": {
+    "contacts": 12582912,
+    "two_fullres_endpoints": 524288,
+    "source_and_checks": 524288,
+    "metadata": 786432,
+    "spare": 262144
+  },
+  "source_implementation_and_checks_execution_admitted": true,
+  "FFmpeg_execution_admitted": false,
+  "source_bound_single_extraction_execution_admitted": false,
+  "Root_authority": "Root prospective +5MiB preserving 320 geometry/q60, new a02 immutable recipe/modified typing/budget guards/peer before once; old9MiB original preserved",
+  "same_purpose_not_new_quota_or_deadline": true,
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01",
+  "aggregate_ceiling_bytes": 14680064,
+  "hard_deadline_utc": "2026-10-20T22:45:00Z"
+}

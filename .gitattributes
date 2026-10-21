@@ -1302,3 +1302,7 @@ docs/maintenance/evidence/2026-10-20-three-closed-shadercache-retirement/** -tex
 # Preserve exact E04 production-source and R11 small evidence bytes.
 docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Episode04 finite source/evidence publication; raw artifact bytes only
+/docs/ck3-native-ai/evidence/episode04-public-pointer-read-and-save-20261020/** -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/** -text
