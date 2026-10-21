@@ -1,13 +1,15 @@
 # CK3:信仰引擎 第二期
 
-**当前任务：重新编写导演稿，尚无内容合格的二期视频。** 用户明确否定18分钟重剪仍散乱、没有讲深透；其技术检查与段落核对不能当作内容认可。当前只审阅[完整导演稿V3《去一趟罗马》](docs/director-v3-pilgrimage.md)：一趟普通朝圣的代价与回报，顺时序走完同一行程。教首、类型和大圣战全部移出；本轮不配音、拍摄或重剪。
+**当前工作：[V4机制导演案《朝圣在奖励什么？》](docs/director-v4-mechanism.md)已可审阅，[内容自审](docs/director-v4-mechanism-self-audit.md)已完成。** 从两个即时同给25虔诚、却按活动类型区别计分的回应切入，拆解行为记录、表现门槛、分层结算与独立持续状态。本轮只改导演案，没有继续拍摄、配音或渲染。
+
+V3教学价值未通过（`REJECTED_TEACHING_VALUE`），用户指出其缺少机制拆解与新的观察视角、像行程实况。[V3本地MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/v3-pilgrimage-production-20261021-a01/render/episode02-v3-pilgrimage.mp4)仅保留为被否定的审看片；[技术事实与失败边界](docs/v3-pilgrimage-delivery-20261021.md)保留，不转作教学成功记录。本机后续视频仍仅本地交付。
 
 - **历史重剪V2：[18分16.533秒本地MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/recut-v2-20261021-a01/render/episode02-recut-review.mp4)。** 比原版缩短10:45.867，删除人物收益、圣物用途独立章节及重复结尾，但仍未建立统一主题。[该版路线、字幕和技术记录](docs/recut-v2-delivery-20261021.md)保留；不再作为当前内容合格的审阅入口。
 
 - [原29:02.4版重合审计](docs/episode01-overlap-audit-20261021.md)及原去重PASS撤回结论保留；新版已移除全部原D/M分类段，仍有必要规则引用，不宣称逐句零重复。
 
 - 本机视频交付：`machine_id: 4-8e1c2f1861` 的当前及后续视频按[机器交付偏好](../../../docs/maintenance/machine-preferences/4-8e1c2f1861.video-delivery.json)本地交付；最终提供选定MP4的实际本地路径。
-- 历史完整首版：[29分02.400秒、1440p MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)。88段实际成片，原技术检查和6帧抽查事实保留；内容审计未通过，已由V2替代当前审阅入口。
+- 历史完整首版：[29分02.400秒、1440p MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)。88段实际成片，原技术检查和6帧抽查事实保留；内容审计未通过，随后V2也被用户否定，二者均保留历史身份。
 - [本地交付记录与研究剩余缺口](docs/local-review-delivery-20261021.md)：文件校验、字幕、脚本、原件及验收边界；[智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)已接入最终历史研究，普通auto自动消费仍未接通。
 
 ## 制作过程资料（保留各自记录时点）
@@ -18,7 +20,7 @@
 - [新增三句后的73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)：实测时间轴24:59.733，尚未重新渲染；按配方先执行来源投影，不能直接套旧装配器。
 - [Q21与本轮朝圣实拍](docs/production-b21-and-p3-20261020.md)：已录普通出发和罗马抵达，完整归返待补；原失败退出和预算超额保持，新增四个历史事件知识可供智能体查询。
 
-初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；18:16.533重剪仍被用户否定。当前只审阅[V3完整导演稿](docs/director-v3-pilgrimage.md)，没有新成片时长。下列旧七章案、V2和过程数字保留各自历史时点。
+初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；18:16.533重剪仍被用户否定。当前V3已生成14:03.733画面时长的审看文件，但教学未通过；实际文件和本次否定见V3记录，新导演结构尚未完成。下列旧七章案、V2和过程数字保留各自历史时点。
 
 - [导演案](docs/director-plan.md)：章节、讲解路线、镜头和研究依赖。
 - [研究缺口与执行计划](docs/research-and-production-plan.md)：工作量、并发分工、拍摄批次、相对节点和风险。

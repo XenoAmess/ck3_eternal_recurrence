@@ -1,0 +1,358 @@
+{
+  "schema": "faith-e02-director-v4-pilgrimage-reward-chain-source-only-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T19:03:47.748788+00:00",
+  "classification": "offline installed-source research and reuse of explicitly pinned historical native semantic evidence; not live qualification",
+  "installed_game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "version_context": "Existing exact 1.20.0.4 / EXE9870 source context; no fresh EXE hash or game launch in this task",
+  "source_pins": [
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "game_relative_path": "common/script_values/00_basic_values.txt",
+      "relevant_lines": [
+        {
+          "start": 1131,
+          "end": 1133
+        },
+        {
+          "start": 1164,
+          "end": 1166
+        }
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/50_pilgrimage_values.txt",
+      "bytes": 11353,
+      "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9",
+      "game_relative_path": "common/script_values/50_pilgrimage_values.txt",
+      "relevant_lines": [
+        {
+          "start": 6,
+          "end": 59
+        },
+        {
+          "start": 103,
+          "end": 149
+        }
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "relevant_lines": [
+        {
+          "start": 4304,
+          "end": 4309
+        },
+        {
+          "start": 4357,
+          "end": 4384
+        }
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        {
+          "start": 55,
+          "end": 91
+        },
+        {
+          "start": 516,
+          "end": 670
+        },
+        {
+          "start": 880,
+          "end": 944
+        },
+        {
+          "start": 1136,
+          "end": 1189
+        },
+        {
+          "start": 1225,
+          "end": 1249
+        },
+        {
+          "start": 1301,
+          "end": 1369
+        },
+        {
+          "start": 1421,
+          "end": 1430
+        }
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/activity_types/pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "game_relative_path": "common/activities/activity_types/pilgrimage.txt",
+      "relevant_lines": [
+        {
+          "start": 2544,
+          "end": 2579
+        },
+        {
+          "start": 2696,
+          "end": 2707
+        },
+        {
+          "start": 2746,
+          "end": 2748
+        },
+        {
+          "start": 2906,
+          "end": 2907
+        }
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "relevant_lines": [
+        {
+          "start": 14430,
+          "end": 14449
+        },
+        {
+          "start": 14474,
+          "end": 14493
+        },
+        {
+          "start": 15091,
+          "end": 15094
+        },
+        {
+          "start": 15136,
+          "end": 15145
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "review": {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/source-provenance-review-2026-10-17.md",
+      "bytes": 9219,
+      "sha256": "6af76cc6c1d9e2095100314e349e9aa9ae114d92497c8686293972c85d230d78"
+    },
+    "source_lock": {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/source-lock.json",
+      "bytes": 37385,
+      "sha256": "4a937211aacb708200945cc178970c132956c94a224baa2e675f68b7186350ed"
+    },
+    "mirror_commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+    "review_origin_machine": "xenoamess-full-tower-eb9d2c1186",
+    "current_read_is_independent": true,
+    "PAM_or_BGA_names_are_not_evidence_of_local_modification": true,
+    "fresh_network_or_whole_install_verification": false
+  },
+  "counterintuitive_event": {
+    "event_definition_key": "pilgrimage.6840",
+    "A": {
+      "source_key": "pilgrimage.6840.a",
+      "immediate_add_piety_base": 25,
+      "progress_helper": "pious_type_option_effect",
+      "progress_if_type_pious_or_hajj": 10,
+      "progress_if_type_worldly": 0,
+      "artifact_modifier": "artifact_monthly_piety_gain_mult_1_modifier"
+    },
+    "B": {
+      "source_key": "pilgrimage.6840.b",
+      "immediate_add_piety_base": 25,
+      "progress_helper": "worldly_type_option_effect",
+      "progress_if_type_pious_or_hajj": 0,
+      "progress_if_type_worldly": 10,
+      "artifact_modifier": "artifact_monthly_prestige_5_modifier"
+    },
+    "both": {
+      "gold": "pay_short_term_gold to blessed_bishop: medium_gold_value capped at15, not unconditional15",
+      "artifact_durability_add": 10
+    },
+    "historical_boundary": "R22 actual A only per task steering; B comparison is source-only counterfactual, not a second measured worldline"
+  },
+  "progress": {
+    "scope": "involved activity",
+    "variable": "activity_special_type_progression",
+    "initialization": "activity on_start -> activity_setup_special_type_progression_effect -> set0",
+    "major_add": 10,
+    "massive_add": 40,
+    "only_when_variable_exists": true,
+    "cap100_in_these_helpers": false,
+    "single_shared_progress_variable": true,
+    "requested_old_literal": "progress_towards_pilgrimage_pious_intent_effect",
+    "old_literal_found_in_bounded_common_search": false,
+    "intent_and_special_type_must_not_be_conflated": true
+  },
+  "pious_tiers": [
+    {
+      "interval": "<25",
+      "flag": "low_pious_reward",
+      "multiplier": 1.1
+    },
+    {
+      "interval": "[25,50)",
+      "flag": "mid_pious_reward",
+      "multiplier": 1.25
+    },
+    {
+      "interval": "[50,75)",
+      "flag": "high_pious_reward",
+      "multiplier": 1.75
+    },
+    {
+      "interval": ">=75",
+      "flag": "perfect_pious_reward",
+      "multiplier": 2.5
+    }
+  ],
+  "distance": {
+    "measure": "capital_barony squared_distance to target holy site, not routed travel length or days",
+    "short": {
+      "range": "<=100000",
+      "base": 100
+    },
+    "medium": {
+      "range": "(100000,1000000]",
+      "base": 150
+    },
+    "long": {
+      "range": "(1000000,5000000]",
+      "base": 250
+    },
+    "very_long": {
+      "range": ">5000000",
+      "base": 350
+    }
+  },
+  "main_formula_script_input": "(distance_base * erudition_legacy4_factor * fidelity_factor * pious_reward_factor + should_get_trait_piety_add + pomp_add) * inner_journey_humble_factor * regular_holy_site_factor * confederation_factor",
+  "ordered_operations": [
+    {
+      "stage": "distance value",
+      "bases": [
+        100,
+        150,
+        250,
+        350
+      ],
+      "dynasty_erudition_legacy_4_multiply": 1.3
+    },
+    {
+      "stage": "fidelity multiply",
+      "obligatory": 0.5,
+      "standard": 1,
+      "contemplative": 1.25
+    },
+    {
+      "stage": "pious flags multiply",
+      "none": 1,
+      "low": 1.1,
+      "mid": 1.25,
+      "high": 1.75,
+      "perfect": 2.5
+    },
+    {
+      "stage": "add",
+      "should_get_trait_piety_flag": 50,
+      "pomp_humble_or_ceremonial": 50,
+      "pomp_throng": 100
+    },
+    {
+      "stage": "conditional tail multipliers",
+      "inner_journey_parameter_and_humble": 1.5,
+      "matching_non_eminent_holy_site": 0.5,
+      "confederation_cohesion_parameter": 1.1
+    }
+  ],
+  "payment": {
+    "caller": "activity destination phase on_end; host branch",
+    "order": [
+      "resolve_pilgrimage_type_reward_effect",
+      "trigger_event pilgrimage.7000",
+      "pilgrimage_completed_log_entry_effect",
+      "normal pilgrimage: give_pilgrimage_reward_effect; Hajj: give_hajj_trait_or_xp_effect then same reward"
+    ],
+    "conclusion_option_reward": "show_as_tooltip only, not another actual payment",
+    "flag_cleanup": "pilgrimage.7000 after removes reward flags",
+    "activity_progress_reset": "new activity on_start sets0; no claim it resets wallet or flag cleanup resets this variable"
+  },
+  "separate_rewards": [
+    "conditional Sacred Mountains add_piety=100 is another effect after main reward",
+    "pilgrim trait XP low5/mid10/high20/perfect40 only when already pilgrim and XP<100; not devotion XP",
+    "tenet modifiers, spiritual fulfillment and legitimacy are separate reward channels, not assumed in main scalar"
+  ],
+  "wallet_devotion_semantics": {
+    "historical_doc": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/holy-site-piety-experience-consumer12004.md",
+      "bytes": 4846,
+      "sha256": "6ca22677d8ad4022bd443da6158c0781d22e232c5619df2245f9f31be3b3896a"
+    },
+    "doc_lines": [
+      13,
+      25,
+      29
+    ],
+    "native_contract": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/holy-site-piety-experience-consumer12004/SOURCE-CONTRACT.piety-consumer-a01.json",
+      "bytes": 170653,
+      "sha256": "609ba43f90a374bd66652c1289ad17d06a8c7b63edf3bcb7dfbb21a40cc23f54"
+    },
+    "clarification": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/holy-site-piety-experience-consumer12004/planning-clarification.piety-consumer-a01.json",
+      "bytes": 2232,
+      "sha256": "9c76ef45ea54e5689e060a18fdb30f3d5989e9e09ad7983ffaaee65548546fb7"
+    },
+    "historical_observed_at_utc": "2026-10-18T02:47:56.371343+00:00",
+    "historical_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "same_machine": true,
+    "new_native_read_or_test": false,
+    "semantics": "ordinary positive add_piety first adjusts resource delta; wallet>=0 grants equal wallet and devotion XP; wallet<0 pays debt first, only surplus gives devotion XP",
+    "formula_for_adjusted_positive_delta": "devotion_gain=max(0,delta-max(0,-old_wallet)); wallet_gain=delta",
+    "negative_piety": "ordinary negative add_piety does not lower devotion XP; forced add_piety_and_experience differs"
+  },
+  "model": {
+    "classification": "hypothetical source arithmetic, not R22/R31 live observation",
+    "assumptions": [
+      "short distance base100",
+      "no dynasty modifier",
+      "standard fidelity",
+      "pious type",
+      "initial score65",
+      "no further score changes after6840",
+      "ceremonial pomp +50",
+      "no should_get_trait_piety flag",
+      "regular noneminent site factor0.5",
+      "no inner journey or confederation bonus",
+      "native resource adjustment factor1 and no extra effects"
+    ],
+    "immediate_A_and_B": 25,
+    "A_score": 75,
+    "B_score": 65,
+    "A_main_reward": 150,
+    "B_main_reward": 112.5,
+    "A_minus_B": 37.5,
+    "rounding_and_final_ui_net_not_claimed": true
+  },
+  "unknown_or_unexpanded": [
+    "No current live activity variable measurement or proof of R22 exact score/tier",
+    "No fresh full installed provenance comparison or whole EXE verification",
+    "No claim every independent tenet/PAM/on_action payout or fixed-point presentation is modeled",
+    "Requested old helper literal has no implementation located in bounded current common source search"
+  ],
+  "scope": {
+    "new_game_calls": 0,
+    "native_calls": 0,
+    "new_native_builds": 0,
+    "root_source_changes": 0,
+    "business_test_runs": 0
+  }
+}

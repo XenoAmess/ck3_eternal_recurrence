@@ -1,0 +1,435 @@
+{
+  "schema": "faith-e02-v4-fulfillment-state-chain-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T19:02:26.346046+00:00",
+  "source_build": "1.20.0.4",
+  "source_only_not_new_game_observation": true,
+  "authorization": "Root delegated one bounded offline mechanism chain, <=512KiB inside Root163MiB, no graphics reopening, game, Native, code or registry changes",
+  "hard_cap_bytes": 524288,
+  "global_additional_bytes": 0,
+  "sources": [
+    {
+      "id": "S1",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+        "bytes": 111931,
+        "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f"
+      },
+      "game_relative_path": "common/activities/activity_types/pilgrimage.txt",
+      "relevant_lines": [
+        [
+          865,
+          900
+        ],
+        [
+          1078,
+          1088
+        ],
+        [
+          1318,
+          1328
+        ],
+        [
+          1712,
+          1783
+        ],
+        [
+          2133,
+          2366
+        ],
+        [
+          2544,
+          2590
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S2",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+        "bytes": 40713,
+        "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+      },
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        [
+          55,
+          91
+        ],
+        [
+          516,
+          627
+        ],
+        [
+          1136,
+          1256
+        ],
+        [
+          1301,
+          1335
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S3",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+        "bytes": 116295,
+        "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38"
+      },
+      "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "relevant_lines": [
+        [
+          4305,
+          4384
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S4",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\pam_values.txt",
+        "bytes": 272209,
+        "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965"
+      },
+      "game_relative_path": "common/script_values/pam_values.txt",
+      "relevant_lines": [
+        [
+          2175,
+          2185
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S5",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\spiritual_fulfillment\\00_spiritual_fulfillment_types.txt",
+        "bytes": 4275,
+        "sha256": "0fcd8d191368560718b4950e3a2d2171125031d3fff7054f96f0f1d200ad31e1"
+      },
+      "game_relative_path": "common/spiritual_fulfillment/00_spiritual_fulfillment_types.txt",
+      "relevant_lines": [
+        [
+          1,
+          2
+        ],
+        [
+          56,
+          111
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S6",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\pam_values.txt",
+        "bytes": 272209,
+        "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965"
+      },
+      "game_relative_path": "common/script_values/pam_values.txt",
+      "relevant_lines": [
+        [
+          2160,
+          2172
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S7",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\modifiers\\pam_modifiers_l_simp_chinese.yml",
+        "bytes": 19479,
+        "sha256": "b37328592ba0c214a72c5898ebe3059b7325dacd52548e048ef109a8d04ac8d0"
+      },
+      "game_relative_path": "localization/simp_chinese/modifiers/pam_modifiers_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          2,
+          8
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S8",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\50_pilgrimage_values.txt",
+        "bytes": 11353,
+        "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9"
+      },
+      "game_relative_path": "common/script_values/50_pilgrimage_values.txt",
+      "relevant_lines": [
+        [
+          285,
+          481
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S9",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\pam\\pam_game_concepts_l_simp_chinese.yml",
+        "bytes": 43748,
+        "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b"
+      },
+      "game_relative_path": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          149,
+          156
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S10",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+        "bytes": 125400,
+        "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+      },
+      "game_relative_path": "common/defines/00_defines.txt",
+      "relevant_lines": [
+        [
+          888,
+          911
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "S11",
+      "file": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\pam_effects.txt",
+        "bytes": 369911,
+        "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f"
+      },
+      "game_relative_path": "common/scripted_effects/pam_effects.txt",
+      "relevant_lines": [
+        [
+          12211,
+          12238
+        ]
+      ],
+      "scope": "current_installed_source_only_not_new_runtime_qualification"
+    },
+    {
+      "id": "R1",
+      "file": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\religion-spiritual-growth-and-maintenance-native-ai-12003.md",
+        "bytes": 19080,
+        "sha256": "c28111a7ccafb44a9300484541e38a3ee544c5c5364315f948c84a4ba0b5b207"
+      },
+      "relevant_lines": [
+        [
+          24,
+          32
+        ]
+      ],
+      "scope": "old1.20.0.3 research only; missing monthly/calendar knowledge, not currentbuild qualification",
+      "machine_id": "unknown"
+    }
+  ],
+  "observations": {
+    "O1": {
+      "file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\ordinary-pilgrimage-0002.actual-results.json",
+        "bytes": 46434,
+        "sha256": "901308dd13394cc51ba7a93e3856f55caf0c4026ab5d71352e0b3263543945a3"
+      },
+      "json_pointer": "/rows/0/result",
+      "fulfillment_raw": 0,
+      "date_raw": 53144328,
+      "actor": 31254,
+      "rite_id": 0,
+      "faith_id": 13,
+      "religion_id": 8,
+      "type": {
+        "schema": "ck3_12004_spiritual_fulfillment_type_v1",
+        "read_only": true,
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 9694,
+        "date_raw": 53144328,
+        "played_character_id": 31254,
+        "spiritual_fulfillment_type_key": "christian_fulfillment",
+        "has_christian_fulfillment_type": true
+      },
+      "progress": {
+        "schema": "ck3_12004_spiritual_fulfillment_progress_v1",
+        "read_only": true,
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 9694,
+        "date_raw": 53144328,
+        "played_character_id": 31254,
+        "current_fulfillment_raw": 0,
+        "active_level_index": 3,
+        "level_count": 7,
+        "level_lower_bound_raw": -3000000,
+        "level_upper_bound_raw": 3000000,
+        "progress_percent_raw": 5000000,
+        "highest_level": false,
+        "runtime_minimum_raw": -10000000,
+        "runtime_maximum_raw": 10000000,
+        "raw_scale": 100000,
+        "progress_unit": "percent",
+        "is_monthly_change": false
+      }
+    },
+    "O2": {
+      "file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\RELIGION-CURRENT-POSTRETURN.actual.json",
+        "bytes": 48301,
+        "sha256": "3e06c517f37553875a9c8891eef411ea934309396baf27cd60ba69cb2eeab8ca"
+      },
+      "json_pointer": "/original_row/result",
+      "fulfillment_raw": 3500000,
+      "date_raw": 53149152,
+      "actor": 31254,
+      "rite_id": 0,
+      "faith_id": 13,
+      "religion_id": 8,
+      "type": {
+        "schema": "ck3_12004_spiritual_fulfillment_type_v1",
+        "read_only": true,
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 317958,
+        "date_raw": 53149152,
+        "played_character_id": 31254,
+        "spiritual_fulfillment_type_key": "christian_fulfillment",
+        "has_christian_fulfillment_type": true
+      },
+      "progress": {
+        "schema": "ck3_12004_spiritual_fulfillment_progress_v1",
+        "read_only": true,
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 317958,
+        "date_raw": 53149152,
+        "played_character_id": 31254,
+        "current_fulfillment_raw": 3500000,
+        "active_level_index": 4,
+        "level_count": 7,
+        "level_lower_bound_raw": 3000000,
+        "level_upper_bound_raw": 6500000,
+        "progress_percent_raw": 1428500,
+        "highest_level": false,
+        "runtime_minimum_raw": -10000000,
+        "runtime_maximum_raw": 10000000,
+        "raw_scale": 100000,
+        "progress_unit": "percent",
+        "is_monthly_change": false
+      }
+    },
+    "ending_summary": {
+      "file": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\r0022-pilgrimage-ending-observed.json",
+        "bytes": 5698,
+        "sha256": "d36c5a1ce8bd806ca8fd2fe3f23ab678af26ca5958efcffd3c2fd4e01100fd24"
+      },
+      "json_pointer": "/current_postreturn_religion_only"
+    }
+  },
+  "variable_split": {
+    "activity_performance": "Activity-scoped activity_special_type_progression, initialized0, type-gated helpers modify it; resolve_pilgrimage_type_reward_effect uses25/50/75 thresholds",
+    "spiritual_fulfillment": "Character spiritual state; pilgrimage_sp_reward_effect requests10 for currentRite mandatory/mandatory_hajj doctrine, otherwise5; no activity-performance read in this helper",
+    "spendable_piety": "Separate wallet; performance affects its reward calculation but this does not identify it with either of the above",
+    "same_variable": false,
+    "same_formula": false,
+    "fulfillment_actual_delta_guaranteed_equal_to_base_request": false
+  },
+  "settlement_sequence": [
+    "Destination phase on_end, host only: resolve type-performance flags",
+    "Trigger pilgrimage.7000 conclusion and execute pilgrimage_completed_log_entry_effect",
+    "Completion log executes give_pilgrimage_reward_effect (Hajj trait/XP route also calls reward)",
+    "Length/type-specific piety rewards plus independent pilgrimage_sp_reward_effect",
+    "Rite doctrine selects basefulfillment request10 or5; actual character value requires independent observation"
+  ],
+  "christian_levels": [
+    {
+      "threshold": 0,
+      "meaning": "Neutral",
+      "stress_loss_mult": null,
+      "pilgrimage_discount_flag": null
+    },
+    {
+      "threshold": 30,
+      "next_threshold": 65,
+      "stress_loss_mult": 0.1,
+      "pilgrimage_discount_flag": "sp_cheaper_pilgrimage",
+      "cost_multiplier": 0.75
+    },
+    {
+      "threshold": 65,
+      "next_threshold": 95,
+      "stress_loss_mult": 0.25,
+      "pilgrimage_discount_flag": "sp_cheaper_pilgrimage",
+      "cost_multiplier": 0.75
+    },
+    {
+      "threshold": 95,
+      "stress_loss_mult": 0.5,
+      "pilgrimage_discount_flag": "sp_cheaper_pilgrimage_major",
+      "cost_multiplier": 0.5
+    }
+  ],
+  "stress_modifier_boundary": "Adds a level-defined stress_loss_mult modifier to subsequent stress-loss handling; not immediate10stress, monthly10stress, or an independently measured R22 net benefit. Full current modifier stacking/net clamp not rederived here.",
+  "cost_connection": {
+    "parameter": "1 -0.25 =0.75 for ordinary cheaper-pilgrimage flag; major flag is checked first and yields0.5",
+    "actual_consumer": "50_pilgrimage_values.txt pilgrimage_activity_cost_value:373-384 multiplies the accumulated activity-body cost component; activity_types/pilgrimage.txt:865-900 selects gold/treasury use of that value",
+    "later_processing": "Other conditional multipliers/fixed reductions and minimum minor_gold_value remain after this multiplier",
+    "separate_cost_paths": [
+      "pomp option components",
+      "solo phase distance component",
+      "travel and event purchases/coping actions"
+    ],
+    "whole_journey_discount": false,
+    "next_actual_quote_or_payment_predicted": false,
+    "ui_estimate_not_payment": true
+  },
+  "retention_and_loss": {
+    "baseline": "Trait virtue/sin evaluation and current personal/core/permitted tenet weights contribute; not the activity-performance variable",
+    "example_event_loss": "Epidemic arrival can request20/10/5 loss by intensity; playable-character guard and Rite/personal-tenet exemptions apply",
+    "fixed_monthly_decay_proven": false,
+    "passive_change_proven_absent": false,
+    "monthly_rate": null,
+    "automatic_regression_rate": null,
+    "guaranteed_duration": null,
+    "retains_level_condition": "Current fulfillment type and current actual value still select that level; no fixed expiry is defined in the level block",
+    "loses_30_level_condition": "Current Christian value falls below30, or the type/rules change; re-evaluate actual level",
+    "no_new_native_or_time_test": true
+  },
+  "R22_attribution": {
+    "observed_start": 0,
+    "observed_postreturn": 35,
+    "observed_elapsed_game_days": 201,
+    "whole_interval_net_change": 35,
+    "single_completion_reward_observed": null,
+    "all35_attributed_to_completion": false,
+    "intermediate_choice_fulfillment_deltas_observed": false,
+    "next_cost_or_stress_net_benefit_measured": false
+  },
+  "causal_graph_text": "Activity choices -> type-gated performance ->25/50/75 reward tier -> piety reward branch. Separately: completion -> currentRite doctrine -> basefulfillment+5/+10; baseline/other events -> current character fulfillment -> currentReligion's level -> stress-loss modifier + pilgrimage cost flag -> activity-body cost multiplier. Unknown calendar evolution is not a proven arrow with a numeric rate.",
+  "editorial_boundary": "Mechanism can support a conditional future quote/stress feedback while the relevant current level remains. It does not prove compounding, optimal repetition, payback period, a permanent buff, whole-trip discount or fullR22 causal attribution.",
+  "historical_evidence_is_current_state": false,
+  "current_native_legality": null,
+  "action_ready": false,
+  "ordinary_auto_consumes": false,
+  "full_occurrence_contract_registered": false,
+  "source_binding_checks": {
+    "source_files_and_line_spans_present": true,
+    "original_post_raw_pin_equal_to_persistent_summary": true,
+    "independent_actual_start0_post35_same_actor": true,
+    "observed_game_days": 201,
+    "no_inferred_single_settlement_delta": true
+  }
+}
