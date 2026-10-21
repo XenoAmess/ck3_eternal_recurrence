@@ -1,0 +1,99 @@
+{
+  "schema": "xar.capacity.independent-finite-purpose-financial.v1",
+  "phase": "financial-source-planning-only",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:25:45.809230+00:00",
+  "admitted": true,
+  "financial_reservation_admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-native-cold-0230-20261021-a01",
+  "owner": "/root/native_prepare",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01",
+  "aggregate_ceiling_bytes": 33554432,
+  "all_inclusive_aggregate_ceiling_bytes": 33554432,
+  "reserved_future_bytes_by_volume": {
+    "C:/": 33554432,
+    "D:/": 4194304
+  },
+  "hard_deadline_utc": "2026-10-21T02:30:00Z",
+  "Root_authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\integration-a01\\ROOT-NEXT-PUBLICATION-AND-COLD-PURPOSE.actual-a01.json",
+    "bytes": 3591,
+    "sha256": "7104f69be92f3006e6f36aea605c1230cd73074e3626e319fb275b7792e03a3b"
+  },
+  "source_preparation_execution_admitted": true,
+  "bounded_source_checks_execution_admitted": true,
+  "Git_mutation_execution_admitted": false,
+  "copy_to_W_execution_admitted": false,
+  "stage_execution_admitted": false,
+  "commit_execution_admitted": false,
+  "push_execution_admitted": false,
+  "native_build_execution_admitted": false,
+  "SYSTEM_execution_admitted": false,
+  "Defender_execution_admitted": false,
+  "EXE_execution_admitted": false,
+  "cold_execution_admitted": false,
+  "SDK_execution_admitted": false,
+  "Game_execution_admitted": false,
+  "Steam_execution_admitted": false,
+  "UI_execution_admitted": false,
+  "recording_execution_admitted": false,
+  "rendering_execution_admitted": false,
+  "D_frozen_worktree_write_execution_admitted": false,
+  "scope": [
+    "New source copies and typed runner/admission plumbing for the independently named postload execution mode",
+    "Resolve independent source-review blockers before compilation",
+    "Build only declared project observer and synthetic cold target into new exact paths",
+    "Existing authorized Defender broker registration with exact SYSTEM readback for these two new project EXE paths",
+    "Finite synthetic cold qualification, retained original Popen and actual waits, exact six-register restoration and negative cases",
+    "Independent source and raw-evidence review; report remaining public adapter and Game qualification gaps"
+  ],
+  "execution_preconditions": [
+    "Actual financial GREEN admission",
+    "Frozen source inputs with known review blockers resolved",
+    "Root source/build execution admission"
+  ],
+  "full_future_consumption_policy": "Keep this entire future reservation until true owner/writer closure; no live materialized deductions, candidate credit or old qualification reuse.",
+  "quota_exception": null,
+  "active_source2C1D_preserved": true,
+  "all_claims_BASE_budget": {
+    "C_known_future_bytes": 44040192,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25813843968,
+    "C_floor_margin_bytes": 52191805440,
+    "C_projected_whole_volume_upper_bound_bytes": 437467303936,
+    "C_quota_margin_bytes": 619360256,
+    "D_required_free_bytes": 21622685696,
+    "D_floor_margin_bytes": 15896576
+  },
+  "physical_source": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-21T01:25:45.791712+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 78005649408,
+      "available_to_caller_bytes": 78005649408,
+      "total_free_bytes": 78005649408,
+      "entire_volume_used_allocation_upper_bound_bytes": 433128296448,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-21T01:25:45.791712+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21638582272,
+      "available_to_caller_bytes": 21638582272,
+      "total_free_bytes": 21638582272,
+      "entire_volume_used_allocation_upper_bound_bytes": 478451425280,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 460740,
+    "sha256": "adac40005a3ad6388277324903329a751fc9eec8c7cc724cac57b076f9d31842"
+  },
+  "expected_adopted_revision": 592,
+  "physical_credit_bytes": 0,
+  "C_aggregate_accounting": "All new declared source/build/control/SYSTEM/synthetic cold/evidence/temp roots share C32MiB; this planning card grants no build/SYSTEM/EXE. Exact closed producer plan and fresh later stage required."
+}

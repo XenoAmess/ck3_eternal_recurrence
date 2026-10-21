@@ -1,0 +1,458 @@
+{
+  "schema": "xar.e04.postload.public-source-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:15:12.159334+00:00",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 21316,
+    "sha256": "071879b9f7332dba83f85fe6839e355e36ba7319cee37b9c169b4494bcb415c2"
+  },
+  "files": [
+    {
+      "relative_path": "SOURCE-INPUTS.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\SOURCE-INPUTS.actual-a01.json",
+        "bytes": 8053,
+        "sha256": "5676968620a098d4a39692d5651df74cd45f25dcc4a028b78c8d3025cf4d71da"
+      }
+    },
+    {
+      "relative_path": "SOURCE-FREEZE.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\SOURCE-FREEZE.actual-a01.json",
+        "bytes": 21316,
+        "sha256": "071879b9f7332dba83f85fe6839e355e36ba7319cee37b9c169b4494bcb415c2"
+      }
+    },
+    {
+      "relative_path": "PUBLIC-SOURCE-CONTRACT.prepared-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\PUBLIC-SOURCE-CONTRACT.prepared-a01.json",
+        "bytes": 2443,
+        "sha256": "8f19bb296a93fa7eb15a0a27f1aed5a4aa899ded3ee33ca083cdf696f2c1f70e"
+      }
+    },
+    {
+      "relative_path": "PUBLIC-SOURCE-INDEX.prepared-a04.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\PUBLIC-SOURCE-INDEX.prepared-a04.json",
+        "bytes": 8752,
+        "sha256": "584d1f9b63352fc7459570d41557ae8145f146296803eb7411df2c35601b5e2d"
+      }
+    },
+    {
+      "relative_path": "CASE-INPUTS.source-only-template-a04.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\CASE-INPUTS.source-only-template-a04.json",
+        "bytes": 1232,
+        "sha256": "59a1519f5cbd49b1ab12d0c6f250c698c8166eb9b35009c766eb12ac223c5ae4"
+      }
+    },
+    {
+      "relative_path": "ROOT-AUTHORIZATION.source-template-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\ROOT-AUTHORIZATION.source-template-a01.json",
+        "bytes": 1373,
+        "sha256": "20cb6a2fca4a3ef6b79b93e29b6c93d8de8da9c24a14847622678e9ccdf5d3dd"
+      }
+    },
+    {
+      "relative_path": "EXTERNAL-PUBLIC-CASE.source-fragment-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\EXTERNAL-PUBLIC-CASE.source-fragment-a01.json",
+        "bytes": 487,
+        "sha256": "02e177c8c05e00ac12945a3f6c38199c688fa408efb80ffecd7f94fcf98fe8a7"
+      }
+    },
+    {
+      "relative_path": "README.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\README.md",
+        "bytes": 4663,
+        "sha256": "8cb67d3a2fa735dc2ed9e1d7f0fe48cb3cf86334b72b7db361867046ef14ff21"
+      }
+    },
+    {
+      "relative_path": "test_postload_public.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\test_postload_public.py",
+        "bytes": 18612,
+        "sha256": "599bb782148c0c2e748e31d7065da2cc84a35c43437a2dd3d1f0f336b6930437"
+      }
+    },
+    {
+      "relative_path": "assemble_source.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\assemble_source.py",
+        "bytes": 7524,
+        "sha256": "abac0fd5fd281673aa759ef3f7143e73464ed7c9bb763fd355e8cf1197f4f312"
+      }
+    },
+    {
+      "relative_path": "build_index.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\build_index.py",
+        "bytes": 3047,
+        "sha256": "f48ffbd9b4e4f060b1071663702fac0714360451a36b402852abebc9b617ba8c"
+      }
+    },
+    {
+      "relative_path": "run_checks.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\run_checks.py",
+        "bytes": 4085,
+        "sha256": "375c4339b47642fa66eb3529cd5ad4e0af9766f3149d2cc3c40573aa2ce52012"
+      }
+    },
+    {
+      "relative_path": "seal_source.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\seal_source.py",
+        "bytes": 14013,
+        "sha256": "250cdb2c5195cfa0cf82b2df475b0626687b0c701cb37328bfa6e2efae8426d6"
+      }
+    },
+    {
+      "relative_path": "deliver.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\deliver.py",
+        "bytes": 4776,
+        "sha256": "bffb88ac01141f88744f183a97ccee1345add88144276dc270b84e4c79429eb0"
+      }
+    },
+    {
+      "relative_path": "POSTLOAD-PUBLIC-SOURCE.candidate-a01.patch",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\POSTLOAD-PUBLIC-SOURCE.candidate-a01.patch",
+        "bytes": 92509,
+        "sha256": "f4fe44d4f18ca4569874baaafab6e148d82520c49f26327f06247d82304910f8"
+      }
+    },
+    {
+      "relative_path": "candidate/native-tools/postload_admission.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_admission.py",
+        "bytes": 12847,
+        "sha256": "8fccee9b35ead9b761d7763c5fa485a65e97decc33476efb970979dce7e4bcfd"
+      }
+    },
+    {
+      "relative_path": "candidate/native-tools/prepare_parent_postload_admission.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\prepare_parent_postload_admission.py",
+        "bytes": 4853,
+        "sha256": "03e714d3d04f713fd1c98d39f914e4c9f9aac438ceba08b06bb6e693868fedef"
+      }
+    },
+    {
+      "relative_path": "candidate/native-tools/consume_parent_postload_actual.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\consume_parent_postload_actual.py",
+        "bytes": 1829,
+        "sha256": "5799fc0606e1c94bbbe643d8ce40bf907992d87df5396424d92f2afcdbd12b94"
+      }
+    },
+    {
+      "relative_path": "candidate/native-tools/postload_root_scope.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_root_scope.py",
+        "bytes": 18380,
+        "sha256": "fd8c43258549b690302eb64a5ad692bdde580a63f22156376473586764f76160"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance_cases/postload_public_models.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+        "bytes": 11189,
+        "sha256": "92f989081828b0f0cefd5ac662b4f7d88d7e9f973cd3e3b95fe8c7e43e9cc40f"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance_cases/r08_parent_postload_controller.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+        "bytes": 20735,
+        "sha256": "a182f3779b68f405ef4d0f61669d9193c8e909dc95cda5eeb417843065c72d69"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance_cases/r08_parent_postload_one_day.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+        "bytes": 10207,
+        "sha256": "1c63bffa8a4790e7ca0bc5f7cc18eb849aaa4e4be335c10dc5dc10ca605325d3"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance_cases/postload_bundle_loader.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_bundle_loader.py",
+        "bytes": 4856,
+        "sha256": "f6e2e4170f382760b4e247f7c0f8e735ca0ae9a8bbd2ca9fdfc72e34f5af0359"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance_cases/r08_postload_adapter.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py",
+        "bytes": 3867,
+        "sha256": "d587bbea8860f2049949a4fd0dbed43beafd18049485e188f074790e9c14c36d"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance_cases/r08_postload.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload.json",
+        "bytes": 1005,
+        "sha256": "5f88e983a6a2e441f1ecca3ae5a0ef822b4b0cdd1b33616ac344e91135dd894f"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3902,
+        "sha256": "5c002998c8a5182f2cb696b0be7a93296908e4c22e1a2330004a35963f15a1f2"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a01\\stderr.log",
+        "bytes": 5250,
+        "sha256": "c60b46f1a8e9a6c9b681f04a0a07f3f7064b147cb94cf66ca46f7ecff682619c"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a02-finaldraft/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a02-finaldraft\\ORIGINAL-WAIT.actual.json",
+        "bytes": 4916,
+        "sha256": "76760cee16ffeffa148dda1c4cc513d88f03255efddfefeebf899a68b58ef83b"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a02-finaldraft/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a02-finaldraft\\stderr.log",
+        "bytes": 3513,
+        "sha256": "0cfa79ceb121d7cfb3cc3f19c48657bb527dfcd2b7859f5eddc63ab27c0e782a"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a02-finaldraft/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a02-finaldraft\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a03/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3903,
+        "sha256": "5c4fc2277d3b4b1cad705bea9ae60336d7fd1bb3aa44e43a56b0f592d7c2678a"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a03/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a03\\stderr.log",
+        "bytes": 1851,
+        "sha256": "91880a988f717f55f9644b9e201dede629e379d779241fac5313efd5072e6ec3"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a03/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a03\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a04/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3903,
+        "sha256": "0fa851a52508fcc1e2c9a45fe69fbffb75b850695bec244a1033dec7fedad232"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a04/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a04\\stderr.log",
+        "bytes": 1851,
+        "sha256": "4760940e83b351355a23195b1d7b3ba15941f43ff8e6ee60c0e991cef2278a08"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a04/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-a04\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-focused-final-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-final-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3915,
+        "sha256": "e268c714ae4c3f4fe01b5b5f2fbc2818b0f509ef5fa2a62eb808e2f4166a7396"
+      }
+    },
+    {
+      "relative_path": "checks-focused-final-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-final-a01\\stderr.log",
+        "bytes": 2585,
+        "sha256": "1cab4036a33988b0d20a30143f12e756b0e2cd54958e8d3648a8c1920de895b5"
+      }
+    },
+    {
+      "relative_path": "checks-focused-final-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-final-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 5281,
+        "sha256": "695c5ca1acf0182d1e623814c14ee5dae21dd58ce31f99be4bcefcbc5683783d"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a01\\stdout.log",
+        "bytes": 2723,
+        "sha256": "b1c2d1be00bbe53f6e47ec8d859ecadf50758d1f23b8a9832afafe295262f688"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a02/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 5279,
+        "sha256": "faad0e271e6bdf6ff11d9521f571a41fd66ad2b359d33677e5d0599edf1bb91a"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a02/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a02/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02\\stdout.log",
+        "bytes": 44,
+        "sha256": "f645b10e21546f038559fbaaffb91f957d61ada15bed410cfd1fd85e15524598"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a02-finaldraft/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02-finaldraft\\ORIGINAL-WAIT.actual.json",
+        "bytes": 6293,
+        "sha256": "6b58ff5864caf456ae00b86768a605973159eec3d12153dff4810f69105d9b70"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a02-finaldraft/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02-finaldraft\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a02-finaldraft/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02-finaldraft\\stdout.log",
+        "bytes": 44,
+        "sha256": "f645b10e21546f038559fbaaffb91f957d61ada15bed410cfd1fd85e15524598"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a04/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 5279,
+        "sha256": "cf0116f3b80d14a3fb24c338117ca1339ec668f231e27c048d0b472cc8703e7d"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a04/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-a04/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a04\\stdout.log",
+        "bytes": 44,
+        "sha256": "f645b10e21546f038559fbaaffb91f957d61ada15bed410cfd1fd85e15524598"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-final-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-final-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 5291,
+        "sha256": "b9cd56f5a594d03b3ac08185c7b6ecd41fc74932d8860e18ac4065d612fb5b72"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-final-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-final-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-final-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-final-a01\\stdout.log",
+        "bytes": 44,
+        "sha256": "f645b10e21546f038559fbaaffb91f957d61ada15bed410cfd1fd85e15524598"
+      }
+    }
+  ],
+  "payload_bytes": 348564,
+  "pin_only_support_policy": "Unchanged four native typed files and shared common/Save/R10 files are support refs, not overwrite inputs; exact source pins in freeze/index",
+  "public_source_only": true,
+  "actual_new_Q_exists": false,
+  "native_scope_closed": false,
+  "no_Git_D_W_or_native_execution": true
+}

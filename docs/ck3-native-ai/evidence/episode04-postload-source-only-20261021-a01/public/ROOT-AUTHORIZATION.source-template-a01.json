@@ -1,0 +1,36 @@
+{
+  "schema": "xar.e04.postload.conditional-authorization-template.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "not_an_actual_Root_scope_or_execution_grant": true,
+  "authorization": {
+    "schema": "xar.maintenance.parent_postload.conditional-root-authorization.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": null,
+    "execute_after_actual_awaiting": false,
+    "ready_context_pin": null,
+    "runtime_pin": null,
+    "prepared_pin": null,
+    "frozen_argv_pin": null,
+    "bundle_index_pin": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\PUBLIC-SOURCE-INDEX.prepared-a04.json",
+      "bytes": 8752,
+      "sha256": "584d1f9b63352fc7459570d41557ae8145f146296803eb7411df2c35601b5e2d"
+    },
+    "helper_pin": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_root_scope.py",
+      "bytes": 18380,
+      "sha256": "fd8c43258549b690302eb64a5ad692bdde580a63f22156376473586764f76160"
+    },
+    "qualification_pin": null,
+    "observer_pin": null,
+    "Game_capacity_pin": null,
+    "game_exe_path": null,
+    "root_scope_path": null,
+    "deadline_utc": null,
+    "declarations": {
+      "one_original_window_only": false,
+      "no_replay_unknown": false,
+      "postload_execution_reviewed": false
+    }
+  }
+}

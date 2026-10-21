@@ -1,0 +1,120 @@
+{
+  "schema": "xar.E04.R13.formal8.expected-preimage-candidates.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:48:49.094465+00:00",
+  "actual_base_commit": "992ca426939c19dcb62375344fc4a230e86a38f1",
+  "expected_preimage_after_firstbatch": false,
+  "all_five_actual_firstbatch_preimages_byte_equal": true,
+  "prior_fixed_Git_commit": "f7afb648f330d3a0d9d15861db0e68215b764f05",
+  "publisher_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\EXACT-PUBLICATION-COPYPLAN.prepared-a03.json",
+    "bytes": 73938,
+    "sha256": "47393081bbe0b3adb08076f8df7552baf32ee204daa00550172d382614e50a2f"
+  },
+  "expected_preimages": [
+    {
+      "target": "docs/ck3-native-ai/episode04-r13-locked-reroute-r0176-12004.md",
+      "source_kind": "exact_fixed_Git_object",
+      "git_commit": "f7afb648f330d3a0d9d15861db0e68215b764f05",
+      "bytes": 2289,
+      "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b"
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json",
+      "source_kind": "exact_fixed_Git_object",
+      "git_commit": "f7afb648f330d3a0d9d15861db0e68215b764f05",
+      "bytes": 17486,
+      "sha256": "0e908aa7c3d03b760b261117477ec00755475e38030bee033664662b94f274fb"
+    },
+    {
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "source_kind": "expected_firstbatch_source_row",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\resolved-candidates\\docs\\ck3-native-ai\\episode04-gameplay-agent-use-12004.md",
+      "publisher_plan_sha256": "47393081bbe0b3adb08076f8df7552baf32ee204daa00550172d382614e50a2f",
+      "bytes": 16881,
+      "sha256": "936f36272da6fd00b90081ac221cbf89aca281c0143aa2f3d894f8a0d49e86fe"
+    },
+    {
+      "target": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "source_kind": "expected_firstbatch_source_row",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\resolved-candidates\\docs\\ck3-native-ai\\episode04-current-execution-map-12004.md",
+      "publisher_plan_sha256": "47393081bbe0b3adb08076f8df7552baf32ee204daa00550172d382614e50a2f",
+      "bytes": 59186,
+      "sha256": "75ba016f5f48b519ecd188997509288b2063f0570867fb5648c5bfe663af2317"
+    },
+    {
+      "target": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "source_kind": "expected_firstbatch_source_row",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\resolved-candidates\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "publisher_plan_sha256": "47393081bbe0b3adb08076f8df7552baf32ee204daa00550172d382614e50a2f",
+      "bytes": 46649,
+      "sha256": "3199b5d908d56c32c9322b68007abc6529958b3690dcaea222487c24337b73b8"
+    }
+  ],
+  "candidates": [
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0175-r12-positive-review-a01\\formal-dynamic-theme-ledger.json",
+      "bytes": 21175,
+      "sha256": "6ec34b59306dfa77e6f7ec85082a6735bad9ac92573c25c04094d26e04457ff8"
+    },
+    {
+      "target": "docs/ck3-native-ai/episode04-r13-locked-reroute-r0176-12004.md",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\ck3-native-ai\\episode04-r13-locked-reroute-r0176-12004.md",
+      "bytes": 4596,
+      "sha256": "375e1919427a6d36e81fe75b422d49c7ecef040d9817b155a5843b7b11d3a982"
+    },
+    {
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\ck3-native-ai\\episode04-gameplay-agent-use-12004.md",
+      "bytes": 19305,
+      "sha256": "9856bb2dc7de6af4ede99dcfd27c5bb2574af3463dc35d9491d7a1766fadfe2b"
+    },
+    {
+      "target": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\ck3-native-ai\\episode04-current-execution-map-12004.md",
+      "bytes": 61610,
+      "sha256": "e83696ef433e72baa9e88ca720896b7d6a258fde53fcc62b0c6b607d41865f16"
+    },
+    {
+      "target": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "bytes": 49124,
+      "sha256": "fe9922db4e833cfed490424efe5db08b406ddfb0a9cbfdc78a94752f74fd3399"
+    }
+  ],
+  "Root_R13_decision": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+    "bytes": 4850,
+    "sha256": "cbfcdfdffb377a3aec38ee256ec88b0b122eb28a7e78c6203f6dc7630fcb9d03"
+  },
+  "Root_source_only_projection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json",
+    "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json",
+    "bytes": 5360,
+    "sha256": "5fad2634e14c9eccb505628449a93cd1223b42d2f85a19a6bfb728ba26441cb3"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\media-ledger.patch",
+    "bytes": 19952,
+    "sha256": "5110d545668c8d23d4a1f981d2ddc98a66b99eef387f63ca5c79632aef243bc9"
+  },
+  "apply_rule": "All five actual992ca preimages verified byte-exact. Publisher must preserve these preimages at apply; concurrent mismatch stops for adaptation, no upstream overwrite.",
+  "checks": {
+    "five_candidates": true,
+    "prior_snapshot_bytes_preserved": true,
+    "other_themes_and_counters_preserved": true,
+    "no_old_retention_renewal": true,
+    "accepted": 8,
+    "total": 11,
+    "pending": [
+      "R05",
+      "R08",
+      "R10"
+    ],
+    "Root_human1x": false
+  },
+  "Git_mutations": 0,
+  "raw_body_reads_or_new_media": 0,
+  "old_closed_roots_written": false
+}

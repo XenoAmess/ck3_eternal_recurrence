@@ -1,0 +1,178 @@
+{
+  "schema": "xar.capacity.independent-finite-purpose-financial.v1",
+  "phase": "source-bound-single-extraction",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:06:30.446115+00:00",
+  "admitted": true,
+  "financial_reservation_admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-r13-visual5-0230-20261021-a01",
+  "owner": "/root/media_chapter",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01",
+  "aggregate_ceiling_bytes": 5242880,
+  "all_inclusive_aggregate_ceiling_bytes": 5242880,
+  "reserved_future_bytes_by_volume": {
+    "C:/": 5242880,
+    "D:/": 0
+  },
+  "component_ceiling_bytes": {
+    "contacts": 4194304,
+    "metadata_and_source": 262144,
+    "spare_and_final_receipts": 786432
+  },
+  "hard_deadline_utc": "2026-10-21T02:30:00Z",
+  "Root_authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\ROOT-R13-CONTINUOUS-REVIEW-PURPOSE.actual-a01.json",
+    "bytes": 2717,
+    "sha256": "93dc1ec7ced703a8f8dd426b9f9e098054984e1d6c47bbe185e2596318a5baa3"
+  },
+  "source_preparation_execution_admitted": true,
+  "bounded_source_checks_execution_admitted": true,
+  "FFmpeg_execution_admitted": true,
+  "media_decode_execution_admitted": true,
+  "raw_body_read_execution_admitted": true,
+  "Game_execution_admitted": false,
+  "Steam_execution_admitted": false,
+  "native_build_execution_admitted": false,
+  "SYSTEM_execution_admitted": false,
+  "EXE_execution_admitted": false,
+  "SDK_execution_admitted": false,
+  "Git_mutation_execution_admitted": false,
+  "D_worktree_write_execution_admitted": false,
+  "recording_execution_admitted": false,
+  "final_film_rendering_execution_admitted": false,
+  "source_scope": "Exactly one frozen FFmpeg argv; original raw half-open0..30s/900frames/57contacts at fixedq18. No full raw rehash or repeated fullQA, no fallback/retry. Actual selected900PTS/cells before any review. Formal acceptance remains false.",
+  "raw_retained_reference": {
+    "path": "C:/ck3-e04-resume-20261015-a01/live12004-r13-normal-a01/raw-locked-reroute-a01/raw.mkv",
+    "bytes": 60656946,
+    "retained_sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535",
+    "retained_duration_seconds": 45,
+    "retained_frames": 1350,
+    "retained_dimensions": [
+      2560,
+      1440
+    ],
+    "fps": 30
+  },
+  "raw_fresh_full_SHA_proven_by_this_card": false,
+  "all_claims_BASE_budget": {
+    "C_known_future_bytes": 80740352,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25850544128,
+    "C_floor_margin_bytes": 52131405824,
+    "C_projected_whole_volume_upper_bound_bytes": 437527703552,
+    "C_quota_margin_bytes": 558960640,
+    "D_required_free_bytes": 21630025728,
+    "D_floor_margin_bytes": 12099584
+  },
+  "physical_source": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-21T02:06:30.445871+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77981949952,
+      "available_to_caller_bytes": 77981949952,
+      "total_free_bytes": 77981949952,
+      "entire_volume_used_allocation_upper_bound_bytes": 433151995904,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-21T02:06:30.445871+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21642125312,
+      "available_to_caller_bytes": 21642125312,
+      "total_free_bytes": 21642125312,
+      "entire_volume_used_allocation_upper_bound_bytes": 478447882240,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 467638,
+    "sha256": "4b49e9abf3e52f94572e2a72e6596bbb946a05d2c6bdcf4b8ec497df7eb4c079"
+  },
+  "expected_adopted_revision": 599,
+  "quota_exception": null,
+  "physical_credit_bytes": 0,
+  "full_future_consumption_policy": "Keep entire5MiB future until actual producer/Root writer closure; no live materialized subtraction or candidate credit.",
+  "formal_R13_acceptance_admitted": false,
+  "review_by_utc": "2026-10-22T02:30:00Z",
+  "financial_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\capacity\\FINANCIAL-SOURCE-PLANNING0230.actual-a01.json",
+    "bytes": 4144,
+    "sha256": "e339e1ca3713cbbf0fcc93c69455e1c69e437845adb707cf2a4a9ffe83fd364d"
+  },
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\R13-ONCE-CONTACT-RECIPE.prepared-a02.json",
+    "bytes": 5952,
+    "sha256": "f02d6c90ed449a540be3c3c6bcf282ff1041fdb33620d5ddc226f31d558db5e8"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\r13_once_contacts.py",
+    "bytes": 20674,
+    "sha256": "007aac49fd60c1c3c1366edd46906900e2c31e51bb1daade662d15928ef03f9a"
+  },
+  "source_checks": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\SOURCE-CHECKS.actual-a02.json",
+    "bytes": 1330,
+    "sha256": "4189989c0ae79ea7535bbb902440305481d418a78880ac11a10047d627d022c6"
+  },
+  "source_bound_single_extraction_execution_admitted": true,
+  "exact_producer_argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-nostdin",
+    "-hide_banner",
+    "-nostats",
+    "-loglevel",
+    "info",
+    "-threads",
+    "1",
+    "-filter_threads",
+    "1",
+    "-filter_complex_threads",
+    "1",
+    "-copyts",
+    "-t",
+    "30",
+    "-i",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\raw-locked-reroute-a01\\raw.mkv",
+    "-an",
+    "-sn",
+    "-dn",
+    "-vf",
+    "trim=start_frame=0:end_frame=900,showinfo@source=checksum=0,scale=320:180:flags=area,pad=320:198:0:0:color=black,drawtext=fontfile=consola.ttf:text='k%{n} PTS=%{pts}':fontcolor=white:fontsize=11:x=3:y=182,tile=4x4:nb_frames=16:color=black",
+    "-c:v",
+    "mjpeg",
+    "-q:v",
+    "18",
+    "-threads:v",
+    "1",
+    "-fps_mode",
+    "vfr",
+    "-frames:v",
+    "57",
+    "-f",
+    "image2pipe",
+    "pipe:1"
+  ],
+  "maximum_producer_invocations": 1,
+  "raw_stat_readback": {
+    "bytes": 60656946,
+    "mtime_ns": "1792089485622771700",
+    "st_dev": "13886423844274364792",
+    "st_ino": "562949955377337"
+  },
+  "pre_stage_metadata_bytes": 47754,
+  "strict_int_contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\r13_contract.py",
+    "bytes": 5756,
+    "sha256": "8a10358baafab6d87eabd4277a8560c308a2a29f9be05b77ebcdf49047e6122f"
+  },
+  "supersedes_withdrawn_stage": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\capacity\\SOURCE-BOUND-WITHHELD.actual-a03.json",
+    "bytes": 1367,
+    "sha256": "ba075ac6643e75bcd93d4b19573f3b64d3b5ccef94a1750e465d6ee28c948c33"
+  },
+  "previous_stage_use": "Original owner confirmed zero FFmpeg/ONCE-CLAIM absent; oldrev597 withdrawn unused. New source-a02 imports its same-named contract normally; no preload."
+}

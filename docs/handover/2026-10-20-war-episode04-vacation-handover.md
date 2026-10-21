@@ -1,5 +1,16 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-21：R13限定三态使正式8/11；postload采用限于源码归档
+
+`machine_id: desktop-3fevhd2-1c74096080`。来源为Root于2026-10-21T02:23:09Z签出的[R13限定正式裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json)，以及02:31:55Z的[postload源码归档采用](../ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json)。正式动态按R03–R13每主题至少一段已验原M源镜头计，现为 **8/11（72.73%，R03/R04/R06/R07/R09/R11/R12/R13）**；余R05/R08/R10。研究10/14、业务7/11、B0/2、ABC0/3不变，R05 R211受控补充仍不授原M正式镜头信用。
+
+R13仅授R0176原片`[0,30)`秒/900帧：旧路线→一次新命令后的后缀替换→首段完成后的新方向。AI代理实际看全57张联系表的900有效格；Root代理直接复核5张联系表/68有效格及0/4/10/20秒4张既有原分辨JPEG，未把末张12个padding格计入源帧。后缀变化只定位`(4,10]`秒，位置/方向变化只定位`(10,20]`秒，原生事件精确encoded PTS仍为null。原M163的原生最终到达与M165的镜头三态分列；alternate8645终点在45秒原片之外，未授终点镜头、整卡/全变体、人工1×、最终影片或OneDrive交付。[R13专题与实际边界](../ck3-native-ai/episode04-r13-locked-reroute-r0176-12004.md)。
+
+postload公共Python与固定依赖仅被采用作源码归档，10条候选未安装到production；原生分支因平台过滤中断，仍缺新Q、已冻结完整native successor与runtime资格，未授后继native build/cold或Game。旧entry17/pointer21资格不能转授此新模式。普通planner不会自动加载Markdown或新case；文件阅读代理和开发者可按来源显式参考。[玩家parent机会与输入合同](../ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md)明确：exact_day并非玩家结算机会，未命中不等于0军费；缺少付款实证时，使用当前原生费率、钱包、已有承诺与雇佣应急金作保守预算。本段不把source-only代码、35键投影或文档存在当作实际运行通过。
+
+下方01:17/7以及更早的7/11、旧pending和闭场记录按其实际时点保留；本次只追加新的有限镜头裁定，不追认R0176历史现场闭场，也不改写其他研究或运行结论。
+
+
 ## 2026-10-21 01:17 UTC：R0225实际一天与有限正常闭场，target研究未通过
 
 `machine_id: desktop-3fevhd2-1c74096080`。R0225日期53149056→53149080实际一天；observer因foreign_limit4096退出1，target0/window_complete=false，未取得目标post-read或实付。110个armed实例中109个存活完整六DR恢复等于original，另1个真实退出单列。Root有限验收确认payment/army OFFclear、clock quiescent、正常GUI/retained OS/native/host/keeper闭场和screen done7763；Root仅审委托GUI回执，未另作屏幕操作。ordinarySave的producer物化与前后同native owner bracketing通过，原consumer rehashfalse保留，作者postclose独立实hash另列；atomic owner/文件内部actor/oneLife仍未知。

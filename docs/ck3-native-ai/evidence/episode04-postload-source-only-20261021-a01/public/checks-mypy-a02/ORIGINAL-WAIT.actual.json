@@ -1,0 +1,92 @@
+{
+  "schema": "xar.e04.postload.public-source-check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-21T01:47:04.805661+00:00",
+  "observed_at_utc": "2026-10-21T01:47:13.526892+00:00",
+  "original_pid": 32632,
+  "creation_time_100ns": "134370208248075496",
+  "original_wait_returncode": 0,
+  "elapsed_seconds": 8.721236300189048,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "--follow-imports=skip",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_admission.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\prepare_parent_postload_admission.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\consume_parent_postload_actual.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_root_scope.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_bundle_loader.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01",
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_admission.py",
+      "bytes": 12741,
+      "sha256": "d1587902bc5a6dcda868a6277ed0e8f8457ae497a27bf8e63c7727233d457ef1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\prepare_parent_postload_admission.py",
+      "bytes": 4853,
+      "sha256": "03e714d3d04f713fd1c98d39f914e4c9f9aac438ceba08b06bb6e693868fedef"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\consume_parent_postload_actual.py",
+      "bytes": 1829,
+      "sha256": "5799fc0606e1c94bbbe643d8ce40bf907992d87df5396424d92f2afcdbd12b94"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_root_scope.py",
+      "bytes": 13582,
+      "sha256": "77d2e557f3275d338d176d646e70ee7d3c38ec8a53700366d38582e5550b8493"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+      "bytes": 11189,
+      "sha256": "92f989081828b0f0cefd5ac662b4f7d88d7e9f973cd3e3b95fe8c7e43e9cc40f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+      "bytes": 20625,
+      "sha256": "ecc1c8bb093f7a1b97761ce61c8540bfdb0fdfed52054b91186d5b33ebbab102"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+      "bytes": 10169,
+      "sha256": "934b2209d64113649660c3c7476d5ae6396c3c701546fb571f0c34ed800316f7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_bundle_loader.py",
+      "bytes": 4723,
+      "sha256": "bfb300d32d676242d365fd6469a4239b76e06430152dad76342e6be5d849c011"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py",
+      "bytes": 3883,
+      "sha256": "30ac97686aafd099d5ebc5e54e02bccd1eafab2aad5c633fb8862e4f403cc03d"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02\\stdout.log",
+    "bytes": 44,
+    "sha256": "f645b10e21546f038559fbaaffb91f957d61ada15bed410cfd1fd85e15524598"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-a02\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "tmp_remaining": [],
+  "native_Game_SDK_Steam_UI_EXE": false,
+  "source_only_not_qualification": true
+}

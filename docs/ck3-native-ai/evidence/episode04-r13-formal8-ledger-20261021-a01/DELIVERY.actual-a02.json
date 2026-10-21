@@ -1,0 +1,61 @@
+{
+  "schema": "xar.E04.formal8-doc-candidates-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:55:52.294600+00:00",
+  "status": "FIVE_CANDIDATES_READY_NOT_APPLIED",
+  "actual_base_commit": "992ca426939c19dcb62375344fc4a230e86a38f1",
+  "five_actual_preimages_byte_equal": true,
+  "manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\CANDIDATE-MANIFEST.actual-a01.json",
+    "bytes": 6452,
+    "sha256": "a5371e323a90f99194d62c41e86c5c608fe1823f4ef4d05265e28e66da81ea5a"
+  },
+  "publication_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\PUBLICATION-COPYPLAN.actual-a01.json",
+    "bytes": 24671,
+    "sha256": "b5c018c233ed447a6a4aeb9b042a7f0f7d292a656dbb6330b6818ebad7a7b8a5"
+  },
+  "typed_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\build_candidates.py",
+    "bytes": 12969,
+    "sha256": "dbe17621c1455069f2f205fecc940bc339b5160c6c929d5243393b7ebcb4c534"
+  },
+  "actual_mypy": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\MYPY.actual-a01.json",
+    "bytes": 846,
+    "sha256": "0c77948aa50eb2387db2146310a6c3eb73b0b47b2694d139dc49cf9d56fd3d89"
+  },
+  "actual_build_checks": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\BUILD-CHECKS.actual-a01.json",
+    "bytes": 628,
+    "sha256": "43c3f4b030888b11c554fe37a4f838480c3894d620619753be5a0ae93206d098"
+  },
+  "optional_source_only_timeline_delta": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\TIMELINE-DELTA.source-only.actual-a01.json",
+    "bytes": 2229,
+    "sha256": "a9c7feb44c78dccfe42d4fa882a7aa3a0c23980479de6337cc3f5bf81607e04f"
+  },
+  "five_candidate_bytes": 155810,
+  "Root_R13_count_already_accepted": 8,
+  "this_author_new_media_credit": 0,
+  "Git_mutations": 0,
+  "D_or_W_writes": 0,
+  "old_closed_root_writes": 0,
+  "new_media_or_raw_body_reads": 0,
+  "rendered": false,
+  "human1x": false,
+  "human_signoff": false,
+  "fullfilm_delivered": false,
+  "source_only_link_scope": "Root postload archive adoption plus same-batch parent-opportunity input rule; ordinary planner does not autoload Markdown; no newQ/native successor/runtime credit.",
+  "history_scope": "Three overview old tails preserved byte-exact including01:17/7; oldR0176 topic is an unchanged prefix. Ledger other themes, old history/counters/protection dates verified unchanged.",
+  "additional_archive_items": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\TIMELINE-DELTA.source-only.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/TIMELINE-DELTA.source-only.actual-a01.json",
+      "bytes": 2229,
+      "sha256": "a9c7feb44c78dccfe42d4fa882a7aa3a0c23980479de6337cc3f5bf81607e04f"
+    }
+  ],
+  "actual_publisher_apply_status": "not_observed_by_this_author",
+  "a01_field_correction": "a01 publisher-modified=false field was not independently observed; withdrawn by this a02. Five candidate bytes/pins are unchanged."
+}

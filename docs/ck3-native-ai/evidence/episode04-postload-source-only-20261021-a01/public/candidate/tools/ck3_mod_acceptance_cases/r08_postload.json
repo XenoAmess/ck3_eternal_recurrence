@@ -1,0 +1,23 @@
+{
+  "schema": "xar.e04.r10-common-preparation.v1",
+  "scope": "Explicit standalone postload execution observer through the existing CaseClient; no planner autoload",
+  "settings": "case_inputs.r08_parent_postload_one_day",
+  "maximum_actual_days": 1,
+  "maximum_observer_launches": 1,
+  "native_window_ms": 30000,
+  "foreign_limit": 4096,
+  "target_record_limit": 1,
+  "execution_rva_decimal": "42956890",
+  "raw_schema": "xar.maintenance.parent_postload.raw.v1",
+  "owner_schema": "xar.maintenance.parent_postload.owner-binding.v1",
+  "required_new_Q_schema": "xar.maintenance.parent_postload.qualification.v1",
+  "exact_day_does_not_guarantee_player_postload": true,
+  "entryExact": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08_qualified": false,
+  "normal_close_owner": "Original public entry/CaseClient after full-six restore, independent OFF/clear and ordinary Save proof",
+  "close_reserve_seconds": 1050,
+  "new_mode_requires_actual_qualification": true
+}

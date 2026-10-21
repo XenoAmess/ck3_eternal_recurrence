@@ -1,0 +1,1634 @@
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/postload_admission.py
+@@ -0,0 +1,210 @@
++"""New postload qualification and RootScope; no transport, process or SDK action."""
++from __future__ import annotations
++from collections.abc import Mapping
++from dataclasses import dataclass
++from datetime import datetime,timezone
++import hashlib,json
++from pathlib import Path
++import re
++from postload_models import Expected,FilePin,PostloadOwnerBinding
++from postload_wire import decode_fields,numeric32,safe_integer,wire_json
++import postload_owner_binding as owner
++
++MODE='player-parent-postload-execution-once-v1'
++Q_SCHEMA='xar.maintenance.parent_postload.qualification.v1'
++ROOT_SCHEMA='xar.maintenance.parent_postload.root-scope.v1'
++INDEX_SCHEMA='xar.e04.postload.public-source-bundle.v1'
++TYPED=('postload_models.py','postload_wire.py','postload_owner_binding.py','parent_postload_contract.py')
++REQUIRED=('foreign257_then_target','created_thread','foreign4096_limit','timeout','restore-fault',
++ 'readback-fault','continue-fault','default-off','missing-ack','bad-schema','occupied-dr','occupied-tf',
++ 'context-drift','fullid-drift','magic-drift','session-drift','null-context','other-player-read',
++ 'other-player-write','null-admission','cancel_late')
++Object=dict[str,object]
++
++def need(condition: bool,message: str) -> None:
++    if not condition:raise ValueError('postload admission: '+message)
++
++def obj(value: object,label: str='object') -> Object:
++    if not isinstance(value,dict) or type(value) is not dict:raise ValueError(label+' object required')
++    result: Object={}
++    for key,item in value.items():
++        if not isinstance(key,str) or type(key) is not str:raise ValueError(label+' string keys')
++        result[key]=item
++    return result
++
++def text(value: object,label: str) -> str:
++    if not isinstance(value,str) or type(value) is not str or not value:raise ValueError(label+' nonempty string')
++    return value
++
++def rows(value: object,label: str) -> list[Object]:
++    if not isinstance(value,list) or type(value) is not list:raise ValueError(label+' list required')
++    return [obj(item,label) for item in value]
++
++def strings(value: object,label: str) -> list[str]:
++    if not isinstance(value,list) or type(value) is not list:raise ValueError(label+' list required')
++    return [text(item,label) for item in value]
++
++def file_pin(value: object) -> FilePin:
++    row=obj(value,'pin');need(set(row)=={'path','bytes','sha256'},'exact pin fields')
++    digest=text(row['sha256'],'SHA');need(re.fullmatch('[0-9a-f]{64}',digest) is not None,'lowercase SHA')
++    return FilePin(path=text(row['path'],'pin path'),bytes=safe_integer(row['bytes'],'pin bytes'),sha256=digest)
++
++def pin(path: Path) -> FilePin:
++    data=path.read_bytes()
++    return FilePin(path=str(path.resolve()),bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
++
++def verify(value: object,maximum: int=5*1024*1024,*,allow_empty: bool=False) -> Path:
++    ref=file_pin(value);path=Path(ref['path']).resolve()
++    need((0<=ref['bytes'] if allow_empty else 0<ref['bytes'])
++        and ref['bytes']<=maximum and path.stat().st_size==ref['bytes'],'bounded pin size')
++    data=path.read_bytes()
++    need(len(data)==ref['bytes'] and hashlib.sha256(data).hexdigest()==ref['sha256'],'pin content changed')
++    return path
++
++def read(value: object,maximum: int=65536) -> Object:
++    return obj(json.loads(verify(value,maximum).read_bytes()),'pinned JSON')
++
++def utc(value: object) -> datetime:
++    result=datetime.fromisoformat(text(value,'UTC').replace('Z','+00:00'))
++    need(result.tzinfo is not None and result.utcoffset() is not None,'timezone required')
++    return result
++
++@dataclass(frozen=True)
++class Qualification:
++    machine: str
++    observer: FilePin
++    target: FilePin
++    sources: tuple[FilePin,...]
++
++def validate_qualification(value: object,*,observer: FilePin,typed_root: Path) -> Qualification:
++    q=obj(value,'qualification')
++    fields={'schema','status','mode','machine_id','observer_pin','target_pin','source_pins',
++        'SYSTEM_receipt_pin','cold_suite_pin','Root_acceptance_pin'}
++    need(set(q)==fields and q['schema']==Q_SCHEMA and q['mode']==MODE
++         and q['status']=='SELECTED_POSTLOAD_EXECUTION_COLD_PASS',
++         'new actual postload qualification required; entry17/pointer21/partial are ineligible')
++    machine=text(q['machine_id'],'Q machine')
++    observed=file_pin(q['observer_pin']);target=file_pin(q['target_pin'])
++    need(observed==observer,'observer/Q exact pin');verify(observed);verify(target)
++    source_list=tuple(file_pin(row) for row in rows(q['source_pins'],'Q sources'))
++    by_name: dict[str,FilePin]={}
++    for ref in source_list:
++        name=Path(ref['path']).name
++        need(name not in by_name,'ambiguous native source basename')
++        by_name[name]=ref;verify(ref,1024*1024)
++    need(set(TYPED)|{'cold_observer.cpp','parent_postload_execution_once.inc','parent_postload_capture.inc',
++        'parent_postload_cold_target.cpp','parent_postload_cold_call.asm'}<=set(by_name),'complete postload native source scope')
++    for name in TYPED:
++        actual=pin(typed_root/name);qualified=by_name[name]
++        need(actual['bytes']==qualified['bytes'] and actual['sha256']==qualified['sha256'],'typed peer differs from new native Q: '+name)
++    system=read(q['SYSTEM_receipt_pin'],5*1024*1024)
++    need(system.get('status')=='verified' and system.get('system_token_sid')=='S-1-5-18'
++        and system.get('admin_token') is True and system.get('missing_requested_paths')==[], 'actual SYSTEM readback')
++    verified=strings(system.get('verified_requested_paths'),'SYSTEM paths')
++    files=rows(system.get('files'),'SYSTEM files')
++    for ref in (observed,target):
++        path=Path(ref['path']).resolve()
++        need(any(Path(name).resolve()==path for name in verified),'SYSTEM exact requested path')
++        need(any(Path(text(row.get('path'),'SYSTEM path')).resolve()==path
++            and row.get('sha256')==ref['sha256'] for row in files),'SYSTEM exact executable SHA')
++    suite=read(q['cold_suite_pin'],1024*1024)
++    need(suite.get('schema')=='xar.maintenance.parent_postload.cold.suite.v1' and suite.get('mode')==MODE
++        and suite.get('machine_id')==machine and suite.get('status')=='SELECTED_CASES_COMPLETED_NOT_QUALIFICATION',
++        'new cold suite, not self qualification')
++    cases=strings(suite.get('selected_cases'),'selected cases')
++    need(cases==list(REQUIRED),'all 21 cases exactly, cancel_late last')
++    case_names=[]
++    for ref in rows(suite.get('cases'),'case pins'):
++        case=read(ref,1024*1024)
++        need(case.get('schema')=='xar.maintenance.parent_postload.cold.case.v1'
++            and case.get('status')=='PASS' and case.get('machine_id')==machine,'actual postload case proof')
++        case_names.append(text(case.get('case'),'case name'))
++    need(case_names==cases,'all exact ordered case pins')
++    acceptance=read(q['Root_acceptance_pin'],1024*1024)
++    need(set(acceptance)=={'schema','mode','accepted','machine_id','observer_sha256','target_sha256',
++        'source_pins','cold_suite_sha256','accepted_cases'},'exact Root acceptance')
++    need(acceptance['schema']=='xar.maintenance.parent_postload.root-cold-acceptance.v1'
++        and acceptance['mode']==MODE and acceptance['accepted'] is True and acceptance['machine_id']==machine,
++        'independent actual Root cold acceptance required')
++    need(acceptance['observer_sha256']==observed['sha256'] and acceptance['target_sha256']==target['sha256']
++        and acceptance['source_pins']==q['source_pins']
++        and acceptance['cold_suite_sha256']==file_pin(q['cold_suite_pin'])['sha256']
++        and strings(acceptance['accepted_cases'],'accepted cases')==cases,'Root source/EXE/suite binding')
++    return Qualification(machine,observed,target,source_list)
++
++@dataclass(frozen=True)
++class Scope:
++    raw: Object
++    machine: str
++    owner: PostloadOwnerBinding
++    module_base: int
++    module_size: int
++    cancel: str
++    snapshot: FilePin
++    cash: FilePin
++    bundle: FilePin
++
++def scope_value(value: object,*,now: datetime|None=None) -> Scope:
++    row=decode_fields(value)
++    fields={'schema','mode','machine_id','postload_execution_authorized','observed_at_utc','expires_at_utc',
++        'qualification_sha256','observer_sha256','common_output','snapshot_view_pin','cash_view_pin',
++        'owner_binding','module_base','module_size','foreign_limit','capture_ms','cancel_event','public_bundle_index_pin'}
++    need(set(row)==fields and row['schema']==ROOT_SCHEMA and row['mode']==MODE
++        and row['postload_execution_authorized'] is True,'explicit separate postload Root scope')
++    issued,expires=utc(row['observed_at_utc']),utc(row['expires_at_utc'])
++    current=now if now is not None else datetime.now(timezone.utc)
++    need(issued<=current<expires and 0<(expires-issued).total_seconds()<=30,'Root scope expired/invalid lifetime')
++    actual_owner=owner.validate(row['owner_binding'])
++    module=row['module_base'];size=row['module_size']
++    if not isinstance(module,int) or type(module) is not int:raise ValueError('decoded module integer')
++    if not isinstance(size,int) or type(size) is not int:raise ValueError('decoded module size integer')
++    need(0<module<=0x7ffffffff000 and size==102518784 and module+size<=0x7ffffffff000,'qualified game module span')
++    need(numeric32(row['foreign_limit'],'foreign limit')==4096 and numeric32(row['capture_ms'],'capture ms')==30000,
++        'fixed one-record 30s/4096 opportunity')
++    cancel=text(row['cancel_event'],'cancel event')
++    need(re.fullmatch(r'Local\\XAR_POSTLOAD_[A-Za-z0-9_]{1,100}',cancel) is not None,'run-bound cancel namespace')
++    return Scope(row,text(row['machine_id'],'scope machine'),actual_owner,module,size,cancel,
++        file_pin(row['snapshot_view_pin']),file_pin(row['cash_view_pin']),file_pin(row['public_bundle_index_pin']))
++
++def packet(ref: FilePin,*,tool: str,common: Path,machine: str) -> Object:
++    row=read(ref,3*1024*1024)
++    for key in ('is_error','common_row_ok','common_row_error','machine_id','body','common_original','request'):
++        need(key in row,'original common field missing: '+key)
++    need(row['machine_id']==machine and row['is_error'] is False and row['common_row_ok'] is True
++        and row['common_row_error'] is None,'actual common successful row')
++    request=obj(row['request'],'request');need(request.get('tool')==tool,'actual original tool')
++    arguments=obj(request.get('arguments'),'arguments')
++    if tool!='ck3_take_snapshot':need(arguments.get('payment_sampling')=='query','readonly paired cash only')
++    original=obj(row['common_original'],'original')
++    need(original.get('pointer')=='/rows/0/result','exact original row pointer')
++    reference=file_pin({key:original[key] for key in ('path','bytes','sha256')})
++    path=verify(reference,3*1024*1024)
++    need(path.is_relative_to(common.resolve()),'original common result outside same case output')
++    saved=read(reference,3*1024*1024);saved_rows=rows(saved.get('rows'),'actual rows')
++    need(len(saved_rows)==1 and saved_rows[0].get('id')==request.get('request_id')
++        and saved_rows[0].get('ok') is True and saved_rows[0].get('result')==row['body'],'actual original row/body')
++    return obj(row['body'],'body')
++
++def validate_index(ref: FilePin,*,self_path: Path) -> None:
++    index=read(ref)
++    need(set(index)=={'schema','files','modules'} and index['schema']==INDEX_SCHEMA,'postload immutable source index')
++    found=False;paths: set[Path]=set()
++    for row in rows(index['files'],'source index'):
++        source=file_pin(row);path=verify(source,1024*1024,allow_empty=True)
++        need(path not in paths,'duplicate source path');paths.add(path)
++        if path==self_path.resolve():found=True
++    need(found,'executed admission helper missing from immutable source index')
++
++def expected_from_scope(scope: Scope,snapshot: Object,cash: Object) -> Expected:
++    journal=obj(cash.get('war_payment_observations_v1'),'original payment journal')
++    leaf=obj(cash.get('current_raw_context_v1'),'original primary Character DTO')
++    actual=owner.qualify(owner.ORDINARY,None,snapshot,journal,leaf,
++        expected_game_state=scope.owner['game_state_identity_witness'],
++        expected_local_player_id=scope.owner['local_player_id'])
++    need(actual==scope.owner,'independent fresh owner join differs')
++    return Expected(machine_id=scope.machine,synthetic=False,pid=actual['pid'],created=actual['process_create_time_100ns'],
++        entry=scope.module_base+0x28f7840,post_pc=scope.module_base+0x28f785a,
++        subject_field_address=actual['character']+0x1c0,character=actual['character'],
++        full_id=actual['player_character_full_id'],context=actual['context'],local_player_id=actual['local_player_id'],
++        game_state=actual['game_state_identity_witness'],date_raw=actual['date_raw'],absolute_day=actual['absolute_day_raw'],
++        foreign_limit=4096,capture_ms=30000,admission_id='',owner_binding=actual)
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/prepare_parent_postload_admission.py
+@@ -0,0 +1,71 @@
++"""Create one distinct postload admission; default OFF, no observer or SDK calls."""
++from __future__ import annotations
++import argparse,hashlib,json,sys
++from pathlib import Path
++from postload_admission import (MODE,file_pin,read,verify,need,obj,text,scope_value,
++    validate_qualification,validate_index,packet,expected_from_scope,pin)
++from postload_wire import wire_json
++from postload_models import expected_value
++import postload_owner_binding as owner
++from parent_postload_contract import PREFIX_SHA,digest
++
++def main() -> int:
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--prepare-parent-postload',action='store_true')
++    for key in ('repo','snapshot','cash','root-scope','qualification','observer','bundle-index','output-root'):
++        parser.add_argument('--'+key,type=Path,required=True)
++    args=parser.parse_args()
++    need(args.prepare_parent_postload,'default OFF; explicit prepare required')
++    root=Path(__file__).resolve().parent
++    index_pin=pin(args.bundle_index)
++    validate_index(index_pin,self_path=Path(__file__))
++    scope_ref=pin(args.root_scope);q_ref=pin(args.qualification)
++    scope=scope_value(read(scope_ref))
++    q=validate_qualification(read(q_ref),observer=pin(args.observer),typed_root=root)
++    need(scope.bundle==index_pin and scope.machine==q.machine,'public source index/machine differs')
++    need(scope.raw['qualification_sha256']==q_ref['sha256']
++        and scope.raw['observer_sha256']==q.observer['sha256'],'Root scope/Q/executable binding')
++    repo=args.repo.resolve()
++    sys.path[:0]=[str(repo/'tools'),str(repo/'ck3_autonomous_player/src')]
++    from ck3_live_run_id import current_machine_id
++    need(current_machine_id()==scope.machine,'actual current machine differs')
++    common=Path(text(scope.raw['common_output'],'same case output'))
++    need(pin(args.snapshot)==scope.snapshot and pin(args.cash)==scope.cash,'Root exact owner pair pins')
++    snapshot=packet(scope.snapshot,tool='ck3_take_snapshot',common=common,machine=scope.machine)
++    cash=packet(scope.cash,tool='ck3_query_war_cash_current_resources_private_v1',common=common,machine=scope.machine)
++    from xar_autoplayer.bridge.nonwar_private_build import private_native_build_identity
++    from xar_autoplayer.bridge.version_identity import CK3_12004
++    need(private_native_build_identity(snapshot)==CK3_12004,'actual 1.20.0.4 native carrier required')
++    expected=expected_from_scope(scope,snapshot,cash)
++    expected['admission_id']=digest({'expected':expected,'root_scope_sha256':scope_ref['sha256'],
++        'snapshot_sha256':scope.snapshot['sha256'],'cash_sha256':scope.cash['sha256']})
++    expected_value(wire_json(expected))
++    metadata: dict[str,object]={
++        'parent_schema':'xar.maintenance.parent_postload.admission.v1','pid':expected['pid'],'tid':0,
++        'created':expected['created'],'character':expected['character'],'context':expected['context'],
++        'full_id':expected['full_id'],'post_pc':expected['post_pc'],
++        'subject_field_address':expected['subject_field_address'],'module_base':scope.module_base,
++        'module_size':scope.module_size,'postload_mode_qualified':1,'prefix_sha256':PREFIX_SHA,
++        'qualified_exe_sha256':'98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518',
++        'game_version':'1.20.0.4','steam_build_id':25734779,
++        'controlled_window_id':scope.owner['controlled_window_id'],'payment_epoch':scope.owner['payment_epoch'],
++        'connection_generation':scope.owner['connection_generation'],'native_revision':scope.owner['native_revision'],
++        'date_raw':expected['date_raw'],'source_cash_sha256':scope.cash['sha256'],
++        'admission_id':expected['admission_id'],'foreign_limit':4096,'cancel_event':scope.cancel}
++    metadata.update(owner.metadata(scope.owner))
++    meta=''.join(key+'='+str(value)+'\n' for key,value in metadata.items()).encode('ascii')
++    binding=(json.dumps(wire_json({'schema':'xar.maintenance.parent_postload.binding.v1',
++        'machine_id':scope.machine,'expected':expected,'root_scope_sha256':scope_ref['sha256'],
++        'qualification_sha256':q_ref['sha256'],'public_bundle_sha256':index_pin['sha256'],
++        'meta_sha256':hashlib.sha256(meta).hexdigest(),'prepared_only':True}),
++        sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode()
++    need(len(meta)+len(binding)<=32768 and not args.output_root.exists(),'bounded new admission; no replay')
++    args.output_root.mkdir(parents=True)
++    for name,payload in [('PARENT-POSTLOAD.meta.txt',meta),('BINDING.prepared.json',binding)]:
++        with (args.output_root/name).open('xb') as stream:stream.write(payload)
++    return 0
++
++if __name__=='__main__':
++    try:raise SystemExit(main())
++    except (ValueError,KeyError,TypeError,OSError) as error:
++        print(str(error),file=sys.stderr);raise SystemExit(2)
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_parent_postload_actual.py
+@@ -0,0 +1,34 @@
++"""Offline new-schema normalization; never launch, query, re-arm or grant payment."""
++from __future__ import annotations
++import argparse,json,sys
++from pathlib import Path
++from postload_admission import read,pin,need,obj
++from postload_models import expected_value
++from postload_wire import wire_json
++from parent_postload_contract import normalize_rows,MODE
++
++def main() -> int:
++    parser=argparse.ArgumentParser(description=__doc__)
++    for key in ('raw','binding','output'):parser.add_argument('--'+key,type=Path,required=True)
++    args=parser.parse_args()
++    need(0<args.raw.stat().st_size<=1048576,'bounded complete native stream')
++    raw=args.raw.read_bytes();need(raw.endswith(b'\n'),'complete newline-terminated stream')
++    lines=raw.splitlines();need(2<=len(lines)<=4096,'bounded native events')
++    rows: list[object]=[json.loads(line) for line in lines]
++    binding=read(pin(args.binding))
++    need(binding.get('schema')=='xar.maintenance.parent_postload.binding.v1'
++        and binding.get('prepared_only') is True,'new prepared role')
++    expected=expected_value(binding['expected'])
++    normalized=normalize_rows(rows,binding['expected'])
++    result: dict[str,object]={'schema':'xar.maintenance.parent_postload.result.v1',
++        'mode':MODE,'machine_id':expected['machine_id'],**normalized,
++        'raw_pin':pin(args.raw),'binding_pin':pin(args.binding)}
++    payload=(json.dumps(wire_json(result),sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode()
++    need(len(payload)<=65536 and not args.output.exists(),'bounded new derived result')
++    with args.output.open('xb') as stream:stream.write(payload)
++    return 0
++
++if __name__=='__main__':
++    try:raise SystemExit(main())
++    except (ValueError,KeyError,TypeError,OSError) as error:
++        print(str(error),file=sys.stderr);raise SystemExit(2)
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/postload_root_scope.py
+@@ -0,0 +1,262 @@
++"""Source-bound conditional Root grant after an actual fresh owner pair.
++
++This helper only reads files and the retained process identity/modules/debugger
++state. It never starts the observer, game, Steam, SDK or a desktop operation.
++"""
++from __future__ import annotations
++from collections.abc import Callable
++from datetime import datetime,timedelta,timezone
++import argparse,ctypes,json,math,os,time
++from ctypes import wintypes
++from pathlib import Path
++from postload_admission import (Object,MODE,ROOT_SCHEMA,file_pin,pin,read,verify,obj,text,need,
++    utc,scope_value,expected_from_scope,packet,validate_index,validate_qualification)
++from postload_wire import decimal64,numeric32,wire_json
++import postload_owner_binding as owner
++
++class ModuleInfo(ctypes.Structure):
++    _fields_=[('base',wintypes.LPVOID),('size',wintypes.DWORD),('entry',wintypes.LPVOID)]
++
++def current_machine() -> str:
++    from ck3_live_run_id import current_machine_id
++    value: object=current_machine_id()
++    return text(value,'actual current machine')
++
++def actual_hold(ready: Object,runtime: Object,*,allow_not_ready: bool=False) -> float|None:
++    """Read the original held host deadline, preserving its legacy time format."""
++    path=Path(text(ready.get('run_dir'),'actual run'))/'native-report.json'
++    before=path.stat()
++    need(0<before.st_size<=96*1024*1024,'bounded original host report')
++    report=obj(json.loads(path.read_bytes()),'actual host report')
++    after=path.stat()
++    if (before.st_size,before.st_mtime_ns)!=(after.st_size,after.st_mtime_ns):
++        raise PermissionError('Host report changed during hold observation')
++    need(not report.get('finished_at') and not report.get('hold_finished_by_control_plan')
++        and not report.get('error'),'actual original host alive without error')
++    # Standard ready-context does not contain state_dir. Its exact prepared
++    # source owns the startup state; never invent a ready-context extension.
++    prepared=read(ready.get('prepared_case'))
++    startup=obj(prepared.get('startup'),'actual prepared startup')
++    need(Path(text(report.get('state_dir'),'report state')).resolve()==Path(text(startup.get('state_dir'),'prepared state')).resolve()
++        and Path(text(report.get('agent_source_root'),'report source')).resolve()==Path(text(runtime.get('repo_root'),'runtime source')).resolve(),
++        'actual held source/state crossed allocation')
++    if report.get('phase')!='hold':
++        need(allow_not_ready,'actual original host hold required')
++        return None
++    value=report.get('hold_until_utc_estimated')
++    if not isinstance(value,(int,float)) or isinstance(value,bool) or not math.isfinite(value):
++        raise ValueError('original finite legacy hold time required')
++    return float(value)
++
++def inspect_process(pid: int,created: int,exe: Path) -> Object:
++    """Exact current process; no input, focus, suspend, context write or VM write."""
++    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
++    psapi=ctypes.WinDLL('psapi',use_last_error=True)
++    kernel.OpenProcess.argtypes=(wintypes.DWORD,wintypes.BOOL,wintypes.DWORD)
++    kernel.OpenProcess.restype=wintypes.HANDLE
++    handle=kernel.OpenProcess(0x0400|0x0010,False,pid)
++    if not handle:raise ctypes.WinError(ctypes.get_last_error())
++    kernel.CloseHandle.argtypes=(wintypes.HANDLE,)
++    kernel.CloseHandle.restype=wintypes.BOOL
++    try:
++        kernel.GetProcessTimes.argtypes=(wintypes.HANDLE,)+(ctypes.POINTER(wintypes.FILETIME),)*4
++        kernel.GetProcessTimes.restype=wintypes.BOOL
++        a,b,c,d=(wintypes.FILETIME() for _ in range(4))
++        need(bool(kernel.GetProcessTimes(handle,ctypes.byref(a),ctypes.byref(b),ctypes.byref(c),ctypes.byref(d))), 'GetProcessTimes')
++        birth=(int(a.dwHighDateTime)<<32)|int(a.dwLowDateTime)
++        need(birth==created,'current PID birth differs')
++        kernel.GetExitCodeProcess.argtypes=(wintypes.HANDLE,ctypes.POINTER(wintypes.DWORD))
++        kernel.GetExitCodeProcess.restype=wintypes.BOOL
++        exitcode=wintypes.DWORD()
++        need(bool(kernel.GetExitCodeProcess(handle,ctypes.byref(exitcode))) and exitcode.value==259,'current owner not alive')
++        kernel.CheckRemoteDebuggerPresent.argtypes=(wintypes.HANDLE,ctypes.POINTER(wintypes.BOOL))
++        kernel.CheckRemoteDebuggerPresent.restype=wintypes.BOOL
++        debug=wintypes.BOOL()
++        need(bool(kernel.CheckRemoteDebuggerPresent(handle,ctypes.byref(debug))) and not bool(debug.value),
++            'actual debugger present or unreadable')
++        modules=(wintypes.HMODULE*1024)();needed=wintypes.DWORD()
++        psapi.EnumProcessModulesEx.argtypes=(wintypes.HANDLE,ctypes.POINTER(wintypes.HMODULE),wintypes.DWORD,ctypes.POINTER(wintypes.DWORD),wintypes.DWORD)
++        psapi.EnumProcessModulesEx.restype=wintypes.BOOL
++        need(bool(psapi.EnumProcessModulesEx(handle,modules,ctypes.sizeof(modules),ctypes.byref(needed),3))
++            and needed.value<=ctypes.sizeof(modules),'bounded complete module list')
++        psapi.GetModuleFileNameExW.argtypes=(wintypes.HANDLE,wintypes.HMODULE,wintypes.LPWSTR,wintypes.DWORD)
++        psapi.GetModuleFileNameExW.restype=wintypes.DWORD
++        psapi.GetModuleInformation.argtypes=(wintypes.HANDLE,wintypes.HMODULE,ctypes.POINTER(ModuleInfo),wintypes.DWORD)
++        psapi.GetModuleInformation.restype=wintypes.BOOL
++        found: Object|None=None
++        for index in range(needed.value//ctypes.sizeof(wintypes.HMODULE)):
++            path=ctypes.create_unicode_buffer(32768)
++            size=int(psapi.GetModuleFileNameExW(handle,modules[index],path,len(path)))
++            need(0<size<len(path)-1,'module path unavailable/truncated')
++            if Path(path.value).resolve()==exe.resolve():
++                need(found is None,'ambiguous exact executable module')
++                info=ModuleInfo()
++                need(bool(psapi.GetModuleInformation(handle,modules[index],ctypes.byref(info),ctypes.sizeof(info))), 'module identity')
++                found={'pid':pid,'created':str(created),'module_base':str(int(info.base or 0)),
++                    'module_size':str(int(info.size)),'path':str(exe.resolve()),'debugger_present':False,
++                    'process_alive':True,'observed_at_utc':datetime.now(timezone.utc).isoformat()}
++        need(found is not None,'expected executable module absent')
++        if found is None:raise ValueError('module absent')
++        return found
++    finally:
++        need(bool(kernel.CloseHandle(handle)),'close owned readonly process handle')
++
++def build(authorization: Object,awaiting_pin: object,*,inspect: Callable[[int,int,Path],Object]=inspect_process,
++        machine_reader: Callable[[],str]=current_machine) -> Object:
++    fields={'schema','machine_id','run_id','execute_after_actual_awaiting','ready_context_pin','runtime_pin',
++        'prepared_pin','frozen_argv_pin','bundle_index_pin','helper_pin','qualification_pin','observer_pin',
++        'Game_capacity_pin','game_exe_path','root_scope_path','deadline_utc','declarations'}
++    need(set(authorization)==fields and authorization['schema']=='xar.maintenance.parent_postload.conditional-root-authorization.v1'
++        and authorization['execute_after_actual_awaiting'] is True,'explicit source-bound conditional Root authorization')
++    declarations=obj(authorization['declarations'],'Root declarations')
++    need(set(declarations)=={'one_original_window_only','no_replay_unknown','postload_execution_reviewed'}
++        and all(value is True for value in declarations.values()),
++        'Root declarations required, not inferred from qualification')
++    need(verify(authorization['helper_pin'])==Path(__file__).resolve(),'Root adopted helper differs')
++    ready=read(authorization['ready_context_pin'])
++    runtime=read(authorization['runtime_pin'],1024*1024)
++    machine=text(authorization['machine_id'],'machine');run=text(authorization['run_id'],'run')
++    need(machine_reader()==machine,'Root scope belongs to another current machine')
++    need(ready.get('run_id')==run,'actual allocated run differs')
++    live=Path(text(ready.get('run_dir'),'actual live')).resolve()
++    need(live.name==run and file_pin(ready.get('frozen_argv'))==file_pin(authorization['frozen_argv_pin'])
++        and file_pin(ready.get('prepared_case'))==file_pin(authorization['prepared_pin']),'actual allocation pins differ')
++    frozen=read(authorization['frozen_argv_pin'],2*1024*1024)
++    need(frozen.get('run_id')==run and obj(frozen.get('identity_allocation')).get('machine_id')==machine,'frozen run/machine')
++    files=obj(frozen.get('files'),'actual expanded frozen files')
++    index_ref=file_pin(authorization['bundle_index_pin'])
++    validate_index(index_ref,self_path=Path(__file__))
++    index=read(index_ref)
++    expanded=index['files']
++    need(isinstance(expanded,list),'expanded source index files')
++    if not isinstance(expanded,list):raise ValueError('index files')
++    for raw in [authorization['runtime_pin'],authorization['helper_pin'],index_ref,*expanded]:
++        ref=file_pin(raw);path=verify(ref,1024*1024,allow_empty=True)
++        declared=obj(files.get(str(path)),'actual frozen source')
++        need(declared.get('bytes')==ref['bytes'] and declared.get('sha256')==ref['sha256'],'source not frozen by allocator')
++    cap=read(authorization['Game_capacity_pin'])
++    need(cap.get('schema')=='xar.capacity.parent-postload.game-financial.v1'
++        and cap.get('financial_reservation_admitted') is True and cap.get('admitted') is True
++        and cap.get('budget_status')=='GREEN' and cap.get('machine_id')==machine,'actual separate Game financial scope')
++    need(file_pin(cap.get('runtime_pin'))==file_pin(authorization['runtime_pin'])
++        and cap.get('hard_deadline_utc')==authorization['deadline_utc'],'financial/runtime/deadline binding')
++    scene=Path(text(cap.get('scene_root'),'scene')).resolve()
++    need(scene==Path(text(cap.get('aggregate_root'),'aggregate')).resolve()
++        and live.is_relative_to(scene),'same independent scene root')
++    prepared=read(authorization['prepared_pin'])
++    contract_ref=file_pin(prepared.get('contract'));contract=read(contract_ref)
++    contract_path=Path(contract_ref['path']).resolve()
++    frozen_contract=obj(files.get(str(contract_path)),'actual frozen case contract')
++    need(frozen_contract.get('bytes')==contract_ref['bytes']
++        and frozen_contract.get('sha256')==contract_ref['sha256']
++        and contract.get('schema')=='xar.e04.r10-common-preparation.v1','actual prepared/frozen common contract')
++    settings=obj(obj(prepared.get('case_inputs'))['r08_parent_postload_one_day'],'settings')
++    for key in ('bundle_index_pin','qualification_pin','observer_pin'):
++        need(file_pin(settings.get(key))==file_pin(authorization[key]),'prepared source/admission pin differs')
++    need(Path(text(authorization['root_scope_path'],'scope')).resolve().is_relative_to(scene),'Root scope outside scene')
++    need(Path(text(settings.get('root_scope_path'),'prepared scope')).resolve()==Path(text(authorization['root_scope_path'],'scope')).resolve(),
++        'actual prepared Root scope path')
++    need(settings.get('deadline_utc')==authorization['deadline_utc'],'prepared deadline differs')
++    awaiting_ref=file_pin(awaiting_pin);path=verify(awaiting_ref)
++    need(path==live/'case-output/R08-POSTLOAD-AWAITING-ROOT.json','actual same-run awaiting marker')
++    awaiting=read(awaiting_ref)
++    need(awaiting.get('run_id')==run and awaiting.get('observer_started') is False,'actual pre-observer phase')
++    now=datetime.now(timezone.utc)
++    deadline=utc(authorization['deadline_utc'])
++    original_hold=actual_hold(ready,runtime)
++    if original_hold is None:raise ValueError('actual original host hold required')
++    need(min(deadline.timestamp(),original_hold)-now.timestamp()>=1050,'1050s original hold/scene close reserve')
++    common=Path(text(awaiting.get('common_output'),'actual common output')).resolve()
++    need(common==live/'case-output','same public CaseClient output')
++    snapshot_ref=file_pin(awaiting.get('snapshot_view_pin'));cash_ref=file_pin(awaiting.get('cash_view_pin'))
++    for ref in (awaiting_ref,snapshot_ref,cash_ref):
++        need(0<=now.timestamp()-Path(ref['path']).stat().st_mtime<=25,'fresh current owner pair required')
++    snapshot=packet(snapshot_ref,tool='ck3_take_snapshot',common=common,machine=machine)
++    cash=packet(cash_ref,tool='ck3_query_war_cash_current_resources_private_v1',common=common,machine=machine)
++    receipt=read(awaiting.get('common_inputs_receipt_pin'),3*1024*1024)
++    expected=obj(receipt.get('expected'),'retained original input')
++    need(expected.get('machine')==machine and receipt.get('observer_started') is False,'original same-client input role')
++    game_state=expected.get('game_state_identity_witness');player=expected.get('local_player_id')
++    if not isinstance(game_state,int) or type(game_state) is not int:raise ValueError('legacy native state integer')
++    local=numeric32(player,'local player')
++    actual_owner=owner.qualify(owner.ORDINARY,None,snapshot,obj(cash.get('war_payment_observations_v1')),
++        obj(cash.get('current_raw_context_v1')),expected_game_state=game_state,expected_local_player_id=local)
++    created=decimal64(awaiting.get('created'),'marker FILETIME')
++    need(type(expected.get('created')) is int and expected['created']==created==actual_owner['process_create_time_100ns']
++        and expected.get('pid')==actual_owner['pid'],'retained handle/native birth identity')
++    facts=inspect(actual_owner['pid'],created,Path(text(authorization['game_exe_path'],'game executable')))
++    need(facts.get('debugger_present') is False and facts.get('process_alive') is True
++        and facts.get('pid')==actual_owner['pid'] and decimal64(facts.get('created'),'current FILETIME')==created,
++        'actual fresh anti-debug/current owner')
++    qref=file_pin(authorization['qualification_pin']);observer_ref=file_pin(authorization['observer_pin'])
++    qualified=validate_qualification(read(qref),observer=observer_ref,typed_root=Path(__file__).parent)
++    need(qualified.machine==machine,'actual Q belongs to another machine')
++    need(0<=(datetime.now(timezone.utc)-utc(facts.get('observed_at_utc'))).total_seconds()<=5,'OS owner observation stale/future')
++    scope: Object={'schema':ROOT_SCHEMA,'mode':MODE,'machine_id':machine,'postload_execution_authorized':True,
++        'observed_at_utc':datetime.now(timezone.utc).isoformat(),
++        'expires_at_utc':(now+timedelta(seconds=30)).isoformat(),
++        'qualification_sha256':qref['sha256'],'observer_sha256':observer_ref['sha256'],
++        'common_output':str(common),'snapshot_view_pin':snapshot_ref,'cash_view_pin':cash_ref,
++        'owner_binding':actual_owner,'module_base':facts['module_base'],'module_size':facts['module_size'],
++        'foreign_limit':4096,'capture_ms':30000,'cancel_event':'Local\\XAR_POSTLOAD_'+run.replace('-','_'),
++        'public_bundle_index_pin':index_ref}
++    parsed=scope_value(wire_json(scope));expected_from_scope(parsed,snapshot,cash)
++    # Validation may take time. Neither stale files nor a completed process read
++    # are silently renewed by a newly written signal timestamp.
++    final=datetime.now(timezone.utc)
++    current_hold=actual_hold(ready,runtime)
++    if current_hold is None:raise ValueError('actual original host hold required')
++    need(current_hold==original_hold and min(deadline.timestamp(),current_hold)-final.timestamp()>=1050
++        and 0<=(final-utc(facts['observed_at_utc'])).total_seconds()<=5,
++        'owner/close reserve expired during source checks')
++    for ref in (awaiting_ref,snapshot_ref,cash_ref):
++        verify(ref,3*1024*1024);need(0<=final.timestamp()-Path(ref['path']).stat().st_mtime<=30,'pair expired during checks')
++    return obj(wire_json(scope),'Root scope wire')
++
++def wait_awaiting(path: Path,authorization: Object,*,
++        sleep: Callable[[float],None]=time.sleep) -> None:
++    """Pre-startable metadata wait, bounded by the real host/scene reserve."""
++    ready=read(authorization['ready_context_pin'])
++    runtime=read(authorization['runtime_pin'],1024*1024)
++    deadline=utc(authorization['deadline_utc']).timestamp()
++    cached: float|None=None
++    checked=0.0
++    while not path.exists():
++        current=time.time()
++        if time.monotonic()-checked>=1:
++            checked=time.monotonic()
++            try:
++                observed=actual_hold(ready,runtime,allow_not_ready=True)
++                if observed is not None:
++                    need(cached is None or cached==observed,'original host hold changed while waiting')
++                    cached=observed
++            except (FileNotFoundError,PermissionError,json.JSONDecodeError):
++                # No signal/action exists yet. Retain genuine startup/in-flight
++                # file absence, without swallowing host/source/identity errors.
++                pass
++        effective=deadline if cached is None else min(deadline,cached)
++        need(effective-current>=1050,'Root metadata wait close reserve exhausted; no signal')
++        sleep(.025)
++
++def main() -> int:
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--Root-authorization',type=Path,required=True)
++    parser.add_argument('--actual-awaiting',type=Path,required=True)
++    parser.add_argument('--execute-once-after-actual-awaiting',action='store_true')
++    args=parser.parse_args();need(args.execute_once_after_actual_awaiting,'default OFF')
++    authorization=read(pin(args.Root_authorization))
++    need(authorization.get('execute_after_actual_awaiting') is True,'Root conditional authorization required')
++    validate_qualification(read(authorization.get('qualification_pin')),
++        observer=file_pin(authorization.get('observer_pin')),typed_root=Path(__file__).parent)
++    wait_awaiting(args.actual_awaiting,authorization)
++    result=build(authorization,pin(args.actual_awaiting))
++    path=Path(text(authorization.get('root_scope_path'),'new Root signal'))
++    need(not path.exists(),'Root scope already exists; never overwrite/replay')
++    complete=path.with_name(path.name+'.complete')
++    payload=(json.dumps(result,sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode()
++    need(len(payload)<=65536,'bounded Root scope')
++    with complete.open('xb') as stream:stream.write(payload);stream.flush();os.fsync(stream.fileno())
++    os.link(complete,path)
++    return 0
++
++if __name__=='__main__':raise SystemExit(main())
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/postload_public_models.py
+@@ -0,0 +1,267 @@
++"""Validated public boundaries for one post-pointer-read window, not payment."""
++from __future__ import annotations
++from collections.abc import Callable, Mapping
++from dataclasses import dataclass
++from datetime import datetime, timezone
++from pathlib import Path
++import hashlib
++import json
++import re
++from typing import Protocol, runtime_checkable
++from postload_models import Expected, FilePin as FilePin, expected_value
++from postload_wire import decode_fields, wire_json
++
++MODE = 'player-parent-postload-execution-once-v1'
++SCHEMA = 'xar.maintenance.parent_postload.raw.v1'
++INDEX_SCHEMA = 'xar.e04.postload.public-source-bundle.v1'
++Object = dict[str, object]
++Call = Callable[[str, str, dict[str, object]], Mapping[str, object]]
++PinLookup = Callable[[str], FilePin]
++CORE_NAMES = frozenset({'postload_wire.py','postload_models.py','postload_owner_binding.py',
++ 'parent_postload_contract.py','postload_admission.py','prepare_parent_postload_admission.py',
++ 'consume_parent_postload_actual.py'})
++
++
++def need(ok: bool, message: str) -> None:
++    if not ok:
++        raise ValueError(message)
++
++
++def object_value(value: object, label: str = 'object') -> Object:
++    if not isinstance(value, dict) or type(value) is not dict:
++        raise ValueError(label + ': JSON object required')
++    result: Object = {}
++    for key, item in value.items():
++        if not isinstance(key, str) or type(key) is not str:
++            raise ValueError(label + ': string key required')
++        result[key] = item
++    return result
++
++
++def text(value: object, label: str) -> str:
++    if not isinstance(value, str) or type(value) is not str or not value:
++        raise ValueError(label + ': nonempty text required')
++    return value
++
++
++def number(value: object, label: str, maximum: int = 0xffffffff, minimum: int = 0) -> int:
++    if not isinstance(value, int) or type(value) is not int or not minimum <= value <= maximum:
++        raise ValueError(label + ': exact bounded integer required')
++    return value
++
++
++def flag(value: object, label: str) -> bool:
++    if type(value) is not bool:
++        raise ValueError(label + ': exact boolean required')
++    return value is True
++
++
++def digest(value: object, label: str) -> str:
++    result = text(value, label)
++    need(re.fullmatch('[0-9a-f]{64}', result) is not None, label + ': SHA256')
++    return result
++
++
++def file_pin(value: object) -> FilePin:
++    row = object_value(value, 'file pin')
++    need(set(row) == {'path','bytes','sha256'}, 'Exact file pin keys')
++    return FilePin(path=text(row.get('path'),'pin path'), bytes=number(row.get('bytes'),'pin bytes',(1<<53)-1),
++                   sha256=digest(row.get('sha256'),'pin SHA'))
++
++
++def pin(path: Path) -> FilePin:
++    data = path.read_bytes()
++    return FilePin(path=str(path.resolve()),bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
++
++
++def read_pin(value: FilePin, maximum: int = 65536) -> Object:
++    ref = file_pin(value)
++    path = Path(ref['path'])
++    need(0 < ref['bytes'] <= maximum and path.stat().st_size == ref['bytes'], 'Bounded exact pinned input')
++    data = path.read_bytes()
++    need(len(data) == ref['bytes'] and hashlib.sha256(data).hexdigest() == ref['sha256'], 'Pinned input changed')
++    decoded: object = json.loads(data)
++    return object_value(decoded, 'pinned JSON')
++
++
++def utc(value: object, label: str) -> datetime:
++    result = datetime.fromisoformat(text(value,label).replace('Z','+00:00'))
++    need(result.tzinfo is not None and result.utcoffset() is not None,label + ': timezone')
++    return result
++
++
++@dataclass(frozen=True)
++class Settings:
++    bundle_index_pin: FilePin
++    qualification_pin: FilePin
++    observer_pin: FilePin
++    root_scope_path: Path
++    actor_id: int
++    expected_start_date_raw: int
++    parent_tools: Path
++    prefix: str
++    deadline: datetime
++    payment_enable_once_authorized: bool
++    natural_phase_enable_once_authorized: bool
++
++    @staticmethod
++    def parse(context: Mapping[str, object]) -> Settings:
++        inputs = object_value(context.get('case_inputs'),'case inputs')
++        row = object_value(inputs.get('r08_parent_postload_one_day'),'pointer settings')
++        fields = {'bundle_index_pin','qualification_pin','observer_pin','root_scope_path','actor_id',
++            'expected_start_date_raw','parent_tools','prefix','deadline_utc',
++            'payment_enable_once_authorized','natural_phase_enable_once_authorized'}
++        need(set(row) == fields,'Exact pointer settings keys')
++        prefix = text(row['prefix'],'prefix')
++        need(re.fullmatch(r'r08-postload-[A-Za-z0-9_-]{1,31}',prefix) is not None,'Bounded request prefix')
++        return Settings(file_pin(row['bundle_index_pin']),file_pin(row['qualification_pin']),file_pin(row['observer_pin']),
++            Path(text(row['root_scope_path'],'scope path')),number(row['actor_id'],'actor',minimum=1),
++            number(row['expected_start_date_raw'],'date',0xffffffff-24,1),Path(text(row['parent_tools'],'tools')).resolve(),
++            prefix,utc(row['deadline_utc'],'deadline'),flag(row['payment_enable_once_authorized'],'payment authorization'),
++            flag(row['natural_phase_enable_once_authorized'],'natural phase authorization'))
++
++    def budget(self) -> None:
++        need((self.deadline-datetime.now(timezone.utc)).total_seconds() >= 1050,
++             '900s original close +120s cleanup +30s observation reserve required')
++
++
++@dataclass(frozen=True)
++class Bundle:
++    files: dict[Path, FilePin]
++    modules: dict[str, Path]
++
++    @staticmethod
++    def parse(ref: FilePin) -> Bundle:
++        value = read_pin(ref)
++        need(set(value) == {'schema','files','modules'} and value['schema'] == INDEX_SCHEMA,'Pointer bundle schema')
++        rows = value['files']
++        need(isinstance(rows,list) and bool(rows),'Explicit source pins required')
++        files: dict[Path,FilePin] = {}
++        if isinstance(rows,list):
++            for raw in rows:
++                item = file_pin(raw)
++                path = Path(item['path']).resolve()
++                need(path not in files,'Duplicate source path')
++                files[path] = item
++        modules = {name:Path(text(path,'module path')).resolve() for name,path in object_value(value['modules'],'modules').items()}
++        for name,path in modules.items():
++            need(path in files and path.name == name + '.py','Module lacks exact source pin')
++        return Bundle(files,modules)
++
++    def verify(self) -> None:
++        for path,ref in self.files.items():
++            need(path.is_file() and path.stat().st_size == ref['bytes'] <= 1048576,'Bounded source peer')
++            need(pin(path) == ref,'Source peer content changed: ' + str(path))
++
++    def tools(self, root: Path) -> None:
++        for name in CORE_NAMES:
++            path = (root/name).resolve()
++            need(path in self.files and pin(path) == self.files[path],'Executed tool not bound to index: '+name)
++
++
++@dataclass(frozen=True)
++class Binding:
++    raw: Object
++    expected: Expected
++    expected_wire: Object
++    root_scope_sha256: str
++
++    @staticmethod
++    def parse(value: object) -> Binding:
++        row = object_value(value,'binding')
++        need(row.get('schema') == 'xar.maintenance.parent_postload.binding.v1','Raw v2 binding required')
++        need(row.get('prepared_only') is True,'Prepared role required')
++        wire = object_value(row.get('expected'),'expected wire')
++        expected = expected_value(wire)
++        need(row.get('machine_id') == expected['machine_id'],'Binding machine differs')
++        return Binding(row,expected,wire,digest(row.get('root_scope_sha256'),'scope SHA'))
++
++
++@dataclass(frozen=True)
++class Ready:
++    raw: Object
++    count: int
++
++    @staticmethod
++    def parse(value: object) -> Ready:
++        row = object_value(value,'READY')
++        need(set(row) == {'ready','mode','armed_thread_count','census_complete'},'Actual native READY four-field schema')
++        need(row['ready'] is True and row['census_complete'] is True and row['mode'] == MODE,'Complete pointer READY required')
++        return Ready(row,number(row['armed_thread_count'],'armed threads',256,1))
++
++
++@dataclass(frozen=True)
++class Snapshot:
++    raw: Object
++    date: int
++    actor: int
++    pid: int
++    generation: int
++    episode_present: bool
++
++    @staticmethod
++    def parse(value: object, actor: int) -> Snapshot:
++        row = object_value(value,'snapshot')
++        played = object_value(row.get('played_character'),'played character')
++        diag = object_value(row.get('diagnostics'),'snapshot diagnostics')
++        need(row.get('episode_projection') == 'native_campaign' and row.get('episode_run_id') is None
++             and row.get('map_ready') is True and row.get('paused') is True,'Paused ordinary native map required')
++        actual = number(played.get('character_id'),'snapshot actor',minimum=1)
++        need(actual == actor,'Snapshot owner differs')
++        return Snapshot(row,number(row.get('date_raw'),'date',minimum=1),actual,
++            number(diag.get('bridge_pid'),'native PID',minimum=1),
++            number(diag.get('connection_generation'),'generation',(1<<53)-1,1),'episode_run_id' in row)
++
++
++@dataclass(frozen=True)
++class Collected:
++    raw: Object
++    before: FilePin
++    cash: FilePin
++    receipt: FilePin
++    actor: int
++    date: int
++    created: int
++
++    @staticmethod
++    def parse(value: object, machine: str) -> Collected:
++        row = object_value(value,'same-client collection')
++        expected = object_value(row.get('expected'),'collected expected')
++        need(expected.get('machine') == machine and row.get('observer_started') is False
++             and number(row.get('sampling_actions'),'sampling action count') == 0,'Original collection role/machine')
++        # The existing Common producer exposes a Python integer. Preserve its
++        # original receipt, validate that exact legacy value, then use wire_json
++        # when projecting it into this new mode's decimal-string boundary.
++        created = number(expected.get('created'),'legacy retained creation',(1<<64)-1,1)
++        return Collected(row,file_pin(row.get('before_response')),file_pin(row.get('cash_response')),
++            file_pin(row.get('receipt')),number(expected.get('character_id'),'collected actor',minimum=1),
++            number(expected.get('date'),'collected date',minimum=1),created)
++
++
++@runtime_checkable
++class SelectionLike(Protocol):
++    @property
++    def locations(self) -> Mapping[str, object]: ...
++
++
++@runtime_checkable
++class PublicClient(Protocol):
++    output: Path
++    selection: SelectionLike
++    def guard(self, reserve: float = 90) -> None: ...
++    def checkpoint(self, name: str, value: Mapping[str,object]) -> object: ...
++    def normal_close(self, disposition: str) -> object: ...
++
++
++def client_value(value: object) -> PublicClient:
++    if not isinstance(value,PublicClient) or not isinstance(value.output,Path) or not isinstance(value.selection,SelectionLike):
++        raise ValueError('Original public CaseClient interface unavailable')
++    return value
++
++
++def output_json(value: object) -> bytes:
++    return (json.dumps(wire_json(value),sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode()
++
++
++def decoded(value: object) -> Object:
++    return object_value(decode_fields(value),'decoded wire')
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/r08_parent_postload_controller.py
+@@ -0,0 +1,395 @@
++"""Own the original watcher; perform no SDK post-read before typed cleanup."""
++from __future__ import annotations
++from dataclasses import dataclass
++from datetime import datetime, timezone
++from pathlib import Path
++import ctypes
++from ctypes import wintypes
++import hashlib
++import json
++import subprocess
++import time
++from typing import BinaryIO, Callable, NoReturn
++from parent_postload_contract import PREFIX_SHA
++from .postload_public_models import (Binding, Call, Collected, FilePin, MODE, Object, PinLookup, Ready,
++    SCHEMA, Snapshot, decoded, file_pin, need, number, object_value, output_json, pin as pin, read_pin, text, utc)
++
++
++@dataclass
++class Session:
++    process: subprocess.Popen[bytes]
++    output: Path
++    started: float
++    stdout: BinaryIO
++    stderr: BinaryIO
++    cancel_handle: int
++    machine_id: str
++    created_filetime: str | None = None
++
++
++SESSIONS: dict[str,Session] = {}
++COMMANDS: dict[int,subprocess.Popen[bytes]] = {}
++EVENTS: dict[str,int] = {}
++
++
++def write(path: Path, value: Object) -> FilePin:
++    from ck3_live_run_id import current_machine_id
++    document: Object = {'machine_id':text(current_machine_id(),'actual machine'),
++        'observed_at_utc':datetime.now(timezone.utc).isoformat(),**value}
++    payload = output_json(document)
++    need(len(payload) <= 65536,'Bounded controller record')
++    with path.open('xb') as stream:
++        stream.write(payload)
++    return pin(path)
++
++
++def process_birth(process: subprocess.Popen[bytes]) -> str:
++    kernel = ctypes.WinDLL('kernel32',use_last_error=True)
++    kernel.GetProcessTimes.argtypes = (wintypes.HANDLE,ctypes.POINTER(wintypes.FILETIME),ctypes.POINTER(wintypes.FILETIME),ctypes.POINTER(wintypes.FILETIME),ctypes.POINTER(wintypes.FILETIME))
++    kernel.GetProcessTimes.restype = wintypes.BOOL
++    handle: object = getattr(process,'_handle',None)
++    if not isinstance(handle,int):
++        raise ValueError('Original Popen handle unavailable')
++    a,b,c,d = (wintypes.FILETIME() for _ in range(4))
++    if not kernel.GetProcessTimes(wintypes.HANDLE(handle),ctypes.byref(a),ctypes.byref(b),ctypes.byref(c),ctypes.byref(d)):
++        raise ctypes.WinError(ctypes.get_last_error())
++    return str((int(a.dwHighDateTime)<<32)|int(a.dwLowDateTime))
++
++
++def create_cancel(name: str) -> int:
++    kernel = ctypes.WinDLL('kernel32',use_last_error=True)
++    kernel.CreateEventW.argtypes = (wintypes.LPVOID,wintypes.BOOL,wintypes.BOOL,wintypes.LPCWSTR)
++    kernel.CreateEventW.restype = wintypes.HANDLE
++    handle = kernel.CreateEventW(None,True,False,name)
++    error = ctypes.get_last_error()
++    if not handle or error == 183:
++        if handle:
++            close_cancel(int(handle))
++        raise OSError(error,'New unique pointer cancel event required')
++    return int(handle)
++
++
++def close_cancel(handle: int) -> None:
++    kernel = ctypes.WinDLL('kernel32',use_last_error=True)
++    kernel.CloseHandle.argtypes = (wintypes.HANDLE,)
++    kernel.CloseHandle.restype = wintypes.BOOL
++    if not kernel.CloseHandle(handle):
++        raise ctypes.WinError(ctypes.get_last_error())
++
++
++def wait_original(process: subprocess.Popen[bytes], *, threshold: float,
++                  warning: Callable[[],None], sleep: Callable[[float],None] = time.sleep) -> int:
++    warned = False
++    while True:
++        try:
++            return process.wait(timeout=max(.25,threshold-time.monotonic()))
++        except BaseException:
++            if not warned:
++                warned = True
++                try:
++                    warning()
++                except BaseException:
++                    pass
++            try:
++                sleep(.25)
++            except BaseException:
++                try:
++                    ctypes.WinDLL('kernel32').Sleep(250)
++                except BaseException:
++                    pass
++
++
++def run_owned(argv: list[str], output: Path, label: str, timeout: float) -> int:
++    """Readonly prepare/consume commands retain their original owner as well."""
++    write(output/(label+'.once.json'),{'argv':argv,'no_replay':True})
++    created: str | None = None
++    errors: list[str] = []
++    with (output/(label+'.stdout')).open('xb') as stdout, (output/(label+'.stderr')).open('xb') as stderr:
++        process: subprocess.Popen[bytes] = subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=stdout,stderr=stderr,
++            creationflags=subprocess.CREATE_NO_WINDOW)
++        COMMANDS[process.pid] = process
++        started = time.monotonic()
++        try:
++            created = process_birth(process)
++            write(output/(label+'.CREATED.actual.json'),{'argv':argv,'pid':process.pid,'creation_filetime_decimal':created})
++        except BaseException as exc:
++            errors.append(type(exc).__name__+': '+str(exc)[:1024])
++        finally:
++            def warning() -> None:
++                write(output/(label+'.OWNER-HOLD.actual.json'),{'pid':process.pid,
++                    'original_popen_retained':True,'kill_retry_SDK':False})
++            code = wait_original(process,threshold=started+timeout,warning=warning)
++            COMMANDS.pop(process.pid)
++    write(output/(label+'.ORIGINAL-WAIT.actual.json'),{'argv':argv,'pid':process.pid,
++        'creation_filetime_decimal':created,'returncode':code,'actual_original_popen_wait':True,'errors':errors,
++        'stdout':pin(output/(label+'.stdout')),'stderr':pin(output/(label+'.stderr'))})
++    need(not errors,'Original command identity/receipt error; no replay')
++    return code
++
++
++def fresh(scope: Object, *, machine: str, collected_at: float,
++          monotonic: Callable[[],float] = time.monotonic) -> None:
++    issued,expires = utc(scope.get('observed_at_utc'),'issued'),utc(scope.get('expires_at_utc'),'expiry')
++    current = datetime.now(timezone.utc)
++    need(scope.get('schema') == 'xar.maintenance.parent_postload.root-scope.v1'
++         and scope.get('machine_id') == machine and scope.get('mode') == MODE
++         and scope.get('postload_execution_authorized') is True and issued <= current < expires
++         and 0 < (expires-issued).total_seconds() <= 30,'Fresh separate pointer Root scope required')
++    need(0 <= monotonic()-collected_at <= 30,'Same-client owner pair older than 30s')
++
++
++def observer_argv(exe: Path, prepared: Path, output: Path, machine: str) -> list[str]:
++    return [str(exe),'--enable-ck3-12004-parent-postload-once','--admission-meta',
++        str(prepared/'PARENT-POSTLOAD.meta.txt'),'--timeout-ms','30000','--raw',str(output/'parent.raw.ndjson'),
++        '--ready',str(output/'parent.ready.json'),'--machine-id',machine,'--explicit-postload-execution-breakpoint-v1']
++
++
++def prepare(python: str, repo: Path, tools: Path, collected: Collected, scope_pin: FilePin,
++            qualification: FilePin, observer: FilePin, bundle_index: FilePin, output: Path) -> Path:
++    need(not output.exists(),'New control directory required; no prepare replay')
++    output.mkdir(parents=True)
++    read_pin(scope_pin)
++    read_pin(qualification)
++    need(pin(Path(observer['path'])) == observer,'Observer changed before prepare')
++    prepared = output/'prepared'
++    argv = [python,'-B','-X','utf8',str(tools/'prepare_parent_postload_admission.py'),
++        '--prepare-parent-postload','--repo',str(repo),'--snapshot',collected.before['path'],
++        '--cash',collected.cash['path'],'--root-scope',scope_pin['path'],'--qualification',qualification['path'],
++        '--observer',observer['path'],'--bundle-index',bundle_index['path'],'--output-root',str(prepared)]
++    need(run_owned(argv,output,'prepare',45) == 0,'Actual pointer prepare rejected')
++    Binding.parse(read_pin(pin(prepared/'BINDING.prepared.json')))
++    return prepared
++
++
++def bind_ready(raw_path: Path, binding: Binding, ready: Ready) -> Object | None:
++    """Validate the entire observed census; sidecar may precede raw READY flush."""
++    need(raw_path.stat().st_size <= 1048576,'Bounded actual raw')
++    with raw_path.open('rb') as stream:
++        prefix = stream.read(262144)
++    complete = prefix.rfind(b'\n')+1
++    lines = prefix[:complete].splitlines(keepends=True)
++    if not lines:
++        return None
++    parsed: list[Object] = []
++    for line in lines:
++        value: object = json.loads(line)
++        parsed.append(object_value(value,'raw row'))
++    start_wire = parsed[0]
++    start = decoded(start_wire)
++    need(start.get('kind') == 'start' and start.get('schema') == SCHEMA and start.get('mode') == MODE,
++         'Actual raw v2 start required')
++    need(start.get('entryExact') is False and start.get('observation_kind') == 'parent_postload_execution',
++         'Post-read evidence only')
++    need(start.get('breakpoint_kind') == 'execution','New postload execution breakpoint required before day')
++    need(number(start.get('target_record_limit'),'target record limit') == 1
++         and start.get('prefix_sha256') == PREFIX_SHA,'Exact one-target source contract')
++    for key,value in binding.expected.items():
++        need(key in start and type(start[key]) is type(value) and start[key] == value,'Raw/prepared binding differs: '+key)
++    active: dict[int,tuple[int,int,list[int],list[int]]] = {}
++    highest: dict[int,int] = {}
++    length = len(lines[0])
++    for wire,line in zip(parsed[1:],lines[1:]):
++        row = decoded(wire)
++        length += len(line)
++        kind = row.get('kind')
++        if kind == 'arm':
++            tid = number(row.get('thread_id'),'TID',minimum=1)
++            generation = number(row.get('thread_generation'),'generation',minimum=1)
++            birth = number(row.get('thread_created'),'thread FILETIME',(1<<64)-1,1)
++            need(tid not in active and generation > highest.get(tid,0),'Distinct live thread generation')
++            need(row.get('success') is True and row.get('readback') is True,'Actual arm/readback required')
++            vectors: list[list[int]] = []
++            for name in ('saved_debug','armed_debug'):
++                raw_vector = row.get(name)
++                need(isinstance(raw_vector,list) and len(raw_vector) == 6,'Complete six debug registers')
++                vector: list[int] = []
++                if isinstance(raw_vector,list):
++                    vector = [number(v,name,(1<<64)-1) for v in raw_vector]
++                vectors.append(vector)
++            saved,actual = vectors
++            need(saved[:4] == [0,0,0,0] and saved[5] & (0xff|0xffff0000) == 0,'Original debug slots free')
++            need(actual[:4] == [binding.expected['post_pc'],0,0,0]
++                 and actual[4] & 15 == 0 and actual[5] == saved[5] | 1,'Actual full watch vector')
++            active[tid] = (generation,birth,saved,actual)
++            highest[tid] = generation
++        elif kind == 'thread_exited':
++            tid = number(row.get('thread_id'),'exit TID',minimum=1)
++            generation = number(row.get('thread_generation'),'exit generation',minimum=1)
++            need(tid in active and active[tid][0] == generation,'Exact retired generation')
++            active.pop(tid)
++        elif kind == 'ready':
++            need(row.get('census_complete') is True and len(active) == ready.count,'Actual READY/raw census differs')
++            table = [{'thread_id':tid,'thread_generation':state[0],'thread_created':state[1],
++                'saved_debug':state[2],'armed_debug':state[3]} for tid,state in sorted(active.items())]
++            return {'actual_raw_ready':True,'active_thread_count':len(active),
++                'all_six_debug_registers_validated':True,'generation_table_sha256':hashlib.sha256(output_json(table)).hexdigest(),
++                'raw_prefix':{'path':str(raw_path),'offset':0,'bytes':length,'sha256':hashlib.sha256(prefix[:length]).hexdigest()}}
++        else:
++            raise ValueError('Unexpected pre-READY row: '+str(kind))
++    need(len(prefix) < 262144,'READY absent from bounded prefix')
++    return None
++
++
++def await_ready(session: Session, binding: Binding, *, monotonic: Callable[[],float] = time.monotonic,
++                sleep: Callable[[float],None] = time.sleep) -> Object:
++    sidecar = session.output/'parent.ready.json'
++    raw = session.output/'parent.raw.ndjson'
++    while monotonic() < session.started+12:
++        need(session.process.poll() is None,'Observer exited before READY; zero day')
++        if sidecar.exists():
++            need(0 < sidecar.stat().st_size <= 65536,'READY size')
++            try:
++                value: object = json.loads(sidecar.read_bytes())
++            except json.JSONDecodeError:
++                sleep(.025)
++                continue
++            ready = Ready.parse(value)
++            if raw.exists():
++                proof = bind_ready(raw,binding,ready)
++                if proof is not None:
++                    need(session.process.poll() is None,'Observer exited while observing census')
++                    return {'ready':ready.raw,'binding':proof}
++        sleep(.025)
++    raise TimeoutError('Complete READY/raw census absent; zero day/no replay')
++
++
++def validate_cleanup(actual: Object, code: int, raw: Path, binding_path: Path) -> None:
++    number(code,'original exit status',1)
++    need(actual.get('schema') == 'xar.maintenance.parent_postload.result.v1'
++         and actual.get('synthetic') is False and actual.get('cleanup_complete') is True
++         and actual.get('full_R08') is False and actual.get('entryExact') is False
++         and actual.get('observation_kind') == 'parent_postload_execution','Actual nonsynthetic narrow cleanup required')
++    need(type(actual.get('target_postload_qualified')) is bool
++         and code in (0,1) and (code == 0) is actual['target_postload_qualified'],'Original exit/result differs')
++    need(file_pin(actual.get('raw_pin')) == pin(raw)
++         and file_pin(actual.get('binding_pin')) == pin(binding_path),'Consumer source pins differ')
++    binding = Binding.parse(read_pin(pin(binding_path)))
++    need(actual.get('machine_id') == binding.expected['machine_id'] and binding.expected['synthetic'] is False,
++         'Cleanup machine/ordinary binding differs')
++    for key in ('paid_maintenance_raw','payer','cadence'):
++        need(key in actual and actual[key] is None,'Payment remains explicit null')
++
++
++def finish(session: Session, *, python: str, tools: Path, prepared: Path) -> Object:
++    def warning() -> None:
++        write(session.output/'UNRESOLVED-NATIVE-HOLD.actual.json',{'pid':session.process.pid,
++            'observer_created_filetime':session.created_filetime,'original_popen_retained':True,'kill_relaunch_SDK':False})
++    code = wait_original(session.process,threshold=session.started+45,warning=warning)
++    session.stdout.close()
++    session.stderr.close()
++    close_cancel(session.cancel_handle)
++    EVENTS.pop(str(session.output),None)
++    write(session.output/'OBSERVER-ORIGINAL-WAIT.actual.json',{'pid':session.process.pid,
++        'observer_created_filetime':session.created_filetime,'returncode':code,'actual_original_popen_wait':True})
++    result_path = session.output/'PARENT-POSTLOAD.actual.json'
++    argv = [python,'-B','-X','utf8',str(tools/'consume_parent_postload_actual.py'),
++        '--raw',str(session.output/'parent.raw.ndjson'),'--binding',str(prepared/'BINDING.prepared.json'),
++        '--output',str(result_path)]
++    need(run_owned(argv,session.output,'consume',20) == 0,'Typed consumer rejected; no cleanup credit')
++    actual = read_pin(pin(result_path))
++    validate_cleanup(actual,code,session.output/'parent.raw.ndjson',prepared/'BINDING.prepared.json')
++    SESSIONS.pop(str(session.output),None)
++    return actual
++
++
++def hold_uncertain(session: Session, error: BaseException) -> NoReturn:
++    try:
++        write(session.output/'UNRESOLVED-TYPED-CLEANUP-HOLD.actual.json',{'pid':session.process.pid,
++            'observer_created_filetime':session.created_filetime,'error':(type(error).__name__+': '+str(error))[:4096],
++            'original_cli_retains_owner':True,'SDK_Quit_kill_retry':False})
++    except BaseException:
++        pass
++    while True:
++        try:
++            time.sleep(1)
++        except BaseException:
++            try:
++                ctypes.WinDLL('kernel32').Sleep(1000)
++            except BaseException:
++                pass
++
++
++def observe(*, python: str, tools: Path, observer: FilePin, prepared: Path, output: Path,
++            machine: str, scope_pin: FilePin, collected_at: float, before: Snapshot, deadline_utc: str,
++            call: Call, packet_pin: PinLookup, guard: Callable[[], None]) -> Object:
++    guard()
++    scope = read_pin(scope_pin)
++    binding = Binding.parse(read_pin(pin(prepared/'BINDING.prepared.json')))
++    need(binding.root_scope_sha256 == scope_pin['sha256'],'Prepared scope changed')
++    need(binding.expected['synthetic'] is False and binding.expected['machine_id'] == machine,'Actual public owner required')
++    need(pin(Path(observer['path'])) == observer,'Observer content changed after qualification')
++    deadline = utc(deadline_utc,'deadline')
++    fresh(scope,machine=machine,collected_at=collected_at)
++    need((deadline-datetime.now(timezone.utc)).total_seconds() >= 1050,'Original close reserve expired before observer')
++    argv = observer_argv(Path(observer['path']),prepared,output,machine)
++    handle = create_cancel(text(scope.get('cancel_event'),'cancel event'))
++    EVENTS[str(output)] = handle
++    try:
++        stdout = (output/'observer.stdout').open('xb')
++        try:
++            stderr = (output/'observer.stderr').open('xb')
++        except BaseException:
++            stdout.close()
++            raise
++        try:
++            guard()
++            fresh(read_pin(scope_pin),machine=machine,collected_at=collected_at)
++            write(output/'observer-start.once.json',{'argv':argv,'no_replay':True})
++            process: subprocess.Popen[bytes] = subprocess.Popen(argv,stdout=stdout,stderr=stderr,
++                creationflags=subprocess.CREATE_NO_WINDOW)
++        except BaseException:
++            stdout.close()
++            stderr.close()
++            raise
++    except BaseException:
++        close_cancel(handle)
++        EVENTS.pop(str(output),None)
++        raise
++    session = Session(process,output,time.monotonic(),stdout,stderr,handle,machine)
++    SESSIONS[str(output)] = session
++    day: Object = {'submitted':False,'exact_day_verified':False}
++    error: str | None = None
++    step: MappingResult | None = None
++    step_error: str | None = None
++    try:
++        session.created_filetime = process_birth(process)
++        write(output/'OBSERVER-ORIGINAL-POPEN.actual.json',{'pid':process.pid,
++            'observer_created_filetime':session.created_filetime,'actual_original_popen_retained':True,'argv':argv})
++        write(output/'READY-OBSERVED.actual.json',await_ready(session,binding))
++        fresh(read_pin(scope_pin),machine=machine,collected_at=collected_at)
++        need(process.poll() is None and time.monotonic()-session.started < 18,'Watch headroom absent; zero day')
++        write(output/'day.once.json',{'tool':'ck3_execute_step','step':'life-advance-one-day','no_replay':True})
++        day['submitted'] = True
++        try:
++            step = object_value(call('day-once','ck3_execute_step',{'step':'life-advance-one-day','expected_revision':None}))
++        except BaseException as exc:
++            step_error = type(exc).__name__+': '+str(exc)
++    except BaseException as exc:
++        error = type(exc).__name__+': '+str(exc)
++    finally:
++        try:
++            actual = finish(session,python=python,tools=tools,prepared=prepared)
++        except BaseException as exc:
++            hold_uncertain(session,exc)
++    if day['submitted'] is True:
++        try:
++            after = Snapshot.parse(call('independent-after','ck3_take_snapshot',{'include_native_command_history':False}),before.actor)
++            need(after.date == before.date+24 and after.pid == before.pid and after.generation == before.generation
++                 and after.episode_present == before.episode_present,'Independent exact-day owner/date differs')
++            if step is not None and step_error is None:
++                from xar_autoplayer.bridge.exact_one_day_postcondition import exact_day_postcondition
++                day['postcondition'] = object_value(exact_day_postcondition(step,before.raw,after.raw))
++                day['exact_day_verified'] = True
++            day['independent_after_source'] = packet_pin('independent-after')
++            day['original_step_error'] = step_error
++            need(step_error is None,'Original day unknown; no replay')
++        except BaseException as exc:
++            error = type(exc).__name__+': '+str(exc)
++    result: Object = {'day':day,'observer':actual,'primary_error':error,'safe_to_begin_normal_close':True,
++        'full_R08_qualified':False,'paid_maintenance_raw':None,'payer':None,'cadence':None,
++        'entryExact':False,'observation_kind':'parent_postload_execution'}
++    write(output/'ROOT-WINDOW-RESULT.actual.json',result)
++    return result
++
++
++MappingResult = dict[str,object]
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/r08_parent_postload_one_day.py
+@@ -0,0 +1,161 @@
++"""One same-CaseClient ordinary day; post-pointer evidence is not payment."""
++from __future__ import annotations
++from collections.abc import Mapping
++from datetime import datetime, timezone
++from pathlib import Path
++import importlib
++import time
++from . import r08_writer_common_adapter as bridge
++from . import r08_writer_one_day as cleanup_library
++from . import r08_parent_postload_controller as controller
++from .postload_public_models import (Bundle, CORE_NAMES, Collected, FilePin, MODE, Object, Settings, Snapshot,
++    client_value, file_pin, need, number, object_value, read_pin, text)
++
++
++def validate_contract(context: Mapping[str,object]) -> Settings:
++    cfg = Settings.parse(context)
++    cfg.budget()
++    bundle = Bundle.parse(cfg.bundle_index_pin)
++    bundle.verify()
++    bundle.tools(cfg.parent_tools)
++    for name in ('ck3_live_run_id','ck3_mod_acceptance_background_types','xar_autoplayer.bridge.war_payment_observations_v1',
++                 'xar_autoplayer.bridge.exact_one_day_postcondition'):
++        runtime_module = importlib.import_module(name)
++        runtime_path: object = runtime_module.__file__
++        if not isinstance(runtime_path,str) or Path(runtime_path).resolve() not in bundle.files:
++            raise ValueError('Actual runtime dependency lacks an explicit source pin: '+name)
++    for module in (controller,bridge,cleanup_library):
++        peer_path: object = module.__file__
++        if not isinstance(peer_path,str) or Path(peer_path).resolve() not in bundle.files:
++            raise ValueError('Actual public module not in source index')
++        need(controller.pin(Path(peer_path)) == bundle.files[Path(peer_path).resolve()],'Actual public peer differs')
++    from postload_admission import validate_qualification
++    validate_qualification(read_pin(cfg.qualification_pin),observer=cfg.observer_pin,typed_root=cfg.parent_tools)
++    return cfg
++
++
++def executable(value: object) -> str:
++    if isinstance(value,Path):
++        return str(value)
++    return text(value,'Python path')
++
++
++def run_case(context: Mapping[str,object], client: object) -> Object:
++    from ck3_live_run_id import current_machine_id
++    from xar_autoplayer.bridge.war_payment_observations_v1 import normalize_payment_extras, JOURNAL_KEY
++    cfg = validate_contract(context)
++    actual_client = client_value(client)
++    machine = text(current_machine_id(),'actual machine')
++    q = read_pin(cfg.qualification_pin)
++    need(q.get('machine_id') == machine,'Qualification belongs to another machine')
++    output = actual_client.output
++    scope_path = cfg.root_scope_path
++    need(not scope_path.exists(),'Root scope must follow this fresh actual owner pair')
++    run_id = text(context.get('run_id'),'run ID')
++    repo = Path(text(context.get('repo_root'),'repo root'))
++    controller.write(output/'r08-parent.once.json',{'run_id':run_id,'predeclared_date_raw':cfg.expected_start_date_raw,
++        'maximum_actual_days':1,'no_replay':True,'full_R08_qualified':False})
++    gate = cleanup_library.CloseGate(actual_client)
++    packets = bridge.CommonPackets(context,actual_client,output/'r08-postload-common-packets',machine=machine)
++    serial = 0
++    views: dict[str,FilePin] = {}
++    errors: list[str] = []
++    result: Object = {'machine_id':machine,'run_id':run_id,'observation_kind':'parent_postload_execution',
++        'entryExact':False,'reconstructed_arguments_basis':'post-load RCX/R8/R9 and RBP; RDX may be null; no entry atomic or return evidence',
++        'actual_days':0,'exact_day_verified':False,'target_postload_qualified':False,'opportunity_complete':False,'full_R08_qualified':False,'business_pass':False,
++        'paid_maintenance_raw':None,'payer':None,'cadence':None,'status':'ENTERED','errors':errors}
++
++    def call(label: str, tool: str, args: dict[str,object]) -> Mapping[str,object]:
++        nonlocal serial
++        serial += 1
++        response: object = packets.request(cfg.prefix+'-'+str(serial)+'-'+label,tool,args)
++        need(isinstance(response,tuple) and len(response) == 2,'Original CommonPackets pair required')
++        if not isinstance(response,tuple):
++            raise ValueError('CommonPackets response')
++        body = object_value(response[0],'common body')
++        views[label] = file_pin(response[1])
++        return body
++
++    def packet_pin(label: str) -> FilePin:
++        need(label in views,'Original common-view pin absent')
++        return views[label]
++
++    def snapshot(label: str) -> Mapping[str,object]:
++        return Snapshot.parse(call(label,'ck3_take_snapshot',{'include_native_command_history':False}),cfg.actor_id).raw
++
++    def payment(label: str, mode: str) -> Mapping[str,object]:
++        frame = object_value(snapshot(label+'-frame'),'payment snapshot')
++        args: dict[str,object] = {'expected_revision':frame['revision'],'payment_sampling':mode}
++        if mode == 'enable':
++            args['payment_window_contract'] = 'same_owned_process_no_load_v1'
++        normalized = object_value(normalize_payment_extras(call(label,bridge.CASH_TOOL,args),
++            snapshot=frame,payment_sampling=mode),'payment normalization')
++        if mode != 'query':
++            need(object_value(normalized.get('war_payment_control_v1'),'payment control').get('accepted') is True,
++                 'Payment control not accepted; no replay')
++        return object_value(normalized.get(JOURNAL_KEY),'payment journal')
++
++    control = output/'r08-postload-control'
++    try:
++        initial = object_value(payment('initial-payment','query'),'initial payment')
++        if object_value(initial.get('sampling'),'initial sampling').get('capture_enabled') is not True:
++            need(cfg.payment_enable_once_authorized,'Payment enable not authorized')
++            cleanup_library.prepare_natural_phase(call,snapshot,enable_once_authorized=cfg.natural_phase_enable_once_authorized)
++            payment('payment-enable-once','enable')
++        current = object_value(payment('payment-independent-on','query'),'independent payment')
++        need(object_value(current.get('sampling'),'sampling').get('capture_enabled') is True,'Independent payment ON required')
++        collected_at = time.monotonic()
++        collected = Collected.parse(bridge.collect_current_context(context,actual_client,machine=machine,
++            prefix=cfg.prefix+'-owner',packet_root=output/'r08-postload-inputs',
++            owner_binding_mode='native_campaign_owned_no_load_v2'),machine)
++        need(collected.date == cfg.expected_start_date_raw and collected.actor == cfg.actor_id,'Predeclared owner/day differs')
++        controller.write(output/'R08-POSTLOAD-AWAITING-ROOT.json',{'run_id':run_id,'snapshot_view_pin':collected.before,
++            'cash_view_pin':collected.cash,'common_inputs_receipt_pin':collected.receipt,'common_output':str(output),
++            'root_scope_path':str(scope_path),'owner_pair_freshness_seconds':30,'observer_started':False,
++            'actor_id':collected.actor,'date_raw':collected.date,
++            'created':str(collected.created),
++            'retained_owner_evidence':'Read original common_inputs_receipt_pin; no invented case_client_id'})
++        while not scope_path.exists():
++            need(time.monotonic()-collected_at <= 30,'Root grant absent before owner-pair expiry; zero launch/day')
++            time.sleep(.05)
++        scope_pin = controller.pin(scope_path)
++        controller.fresh(read_pin(scope_pin),machine=machine,collected_at=collected_at)
++        python = executable(actual_client.selection.locations['python'])
++        prepared = controller.prepare(python,repo,cfg.parent_tools,collected,scope_pin,
++            cfg.qualification_pin,cfg.observer_pin,cfg.bundle_index_pin,control)
++        before_view = read_pin(collected.before,3*1024*1024)
++        before = Snapshot.parse(before_view.get('body'),cfg.actor_id)
++        actual_client.guard(reserve=1050)
++        validate_contract(context)
++        gate.restored = False
++        window: Object = {}
++        try:
++            window = controller.observe(python=python,tools=cfg.parent_tools,observer=cfg.observer_pin,
++                prepared=prepared,output=control,machine=machine,scope_pin=scope_pin,collected_at=collected_at,
++                before=before,deadline_utc=cfg.deadline.isoformat(),call=call,packet_pin=packet_pin,
++                guard=lambda: actual_client.guard(reserve=1050))
++            result['window'] = window
++            observer_result = object_value(window.get('observer'),'typed observer result')
++            result['target_postload_qualified'] = observer_result.get('target_postload_qualified') is True
++            result['opportunity_complete'] = False
++        finally:
++            gate.restored = not (control/'observer-start.once.json').exists() or window.get('safe_to_begin_normal_close') is True
++        day = object_value(window.get('day'),'day proof')
++        result['exact_day_verified'] = day.get('exact_day_verified') is True
++        result['status'] = 'PARENT_WINDOW_CONSUMED' if window.get('primary_error') is None else 'STOPPED_ERROR_PRESERVED_NO_REPLAY'
++    except BaseException as exc:
++        result.update(status='STOPPED_ERROR_PRESERVED_NO_REPLAY',error=type(exc).__name__+': '+str(exc))
++    finally:
++        cleanup,cleanup_errors,days = cleanup_library.cleanup_writer_window(call,snapshot,payment,gate,
++            observer_claimed=(control/'day.once.json').exists(),expected_start_date_raw=cfg.expected_start_date_raw)
++        result.update(cleanup=cleanup,native_restore_verified=gate.restored,normal_close_owned_by_shared_entry=True)
++        errors.extend(cleanup_errors)
++        if days is not None:
++            result['actual_days'] = number(days,'actual days',1)
++        actual_client.checkpoint('R08-POSTLOAD-RESULT',result)
++        actual_client.checkpoint('R08-POSTLOAD-TERMINAL',{'machine_id':machine,'run_id':run_id,'status':result['status'],
++            'actual_days':result['actual_days'],'exact_day_verified':result['exact_day_verified'],
++            'target_postload_qualified':result['target_postload_qualified'],'opportunity_complete':False,
++            'native_restore_verified':gate.restored,'OFFclear':cleanup['OFFclear'],'Save':cleanup['Save'],
++            'full_R08_qualified':False,'business_pass':False})
++    return result
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/postload_bundle_loader.py
+@@ -0,0 +1,106 @@
++"""Finite source-pinned pointer-v2 peers; never infer an external package path."""
++from __future__ import annotations
++from collections.abc import Mapping
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import sys
++from types import ModuleType
++from typing import Protocol, runtime_checkable
++
++CORE = ('postload_wire','postload_models','postload_owner_binding','parent_postload_contract','postload_admission')
++PUBLIC = ('r10_prepare_adapter','r04_county_entry_window','r04_county_entry','r08_writer_common_adapter','ordinary_save_contract',
++          'r08_writer_one_day','postload_public_models','r08_parent_postload_controller','r08_parent_postload_one_day')
++
++
++@runtime_checkable
++class Entry(Protocol):
++    def validate_contract(self, context: Mapping[str,object]) -> object: ...
++    def run_case(self, context: Mapping[str,object], client: object) -> object: ...
++
++
++def obj(value: object) -> dict[str,object]:
++    if not isinstance(value,dict):
++        raise ValueError('Source index object required')
++    result: dict[str,object] = {}
++    for key,item in value.items():
++        if not isinstance(key,str):
++            raise ValueError('Source key type')
++        result[key] = item
++    return result
++
++
++def text(value: object) -> str:
++    if not isinstance(value,str) or not value:
++        raise ValueError('Source path/digest text required')
++    return value
++
++
++def verify(value: object) -> Path:
++    row = obj(value)
++    if set(row) != {'path','bytes','sha256'}:
++        raise ValueError('Exact source pin required')
++    path = Path(text(row['path'])).resolve()
++    size = row['bytes']
++    if not isinstance(size,int) or type(size) is not int or not 0 <= size <= 1048576 or path.stat().st_size != size:
++        raise ValueError('Bounded source size')
++    data = path.read_bytes()
++    if len(data) != size or hashlib.sha256(data).hexdigest() != text(row['sha256']):
++        raise ValueError('Source pin changed')
++    return path
++
++
++def load(context: Mapping[str,object]) -> Entry:
++    cfg = obj(obj(context['case_inputs'])['r08_parent_postload_one_day'])
++    ref = obj(cfg['bundle_index_pin'])
++    index_path = verify(ref)
++    if index_path.stat().st_size > 65536:
++        raise ValueError('Bounded index required')
++    value: object = json.loads(index_path.read_bytes())
++    index = obj(value)
++    if set(index) != {'schema','files','modules'} or index['schema'] != 'xar.e04.postload.public-source-bundle.v1':
++        raise ValueError('Distinct pointer-v2 source index required')
++    rows = index['files']
++    if not isinstance(rows,list):
++        raise ValueError('Explicit peer files required')
++    files: set[Path] = set()
++    for row in rows:
++        path = verify(row)
++        if path in files:
++            raise ValueError('Duplicate source path')
++        files.add(path)
++    modules = obj(index['modules'])
++    expected_names = set(CORE) | set(PUBLIC) | {'r08_postload_adapter','postload_bundle_loader'}
++    if set(modules) != expected_names:
++        raise ValueError('Exact finite pointer module graph required')
++    sources = {name:Path(text(source)).resolve() for name,source in modules.items()}
++    for name,source in sources.items():
++        if source not in files or source.name != name+'.py':
++            raise ValueError('Module missing source pin')
++    for name in ('r08_postload_adapter','postload_bundle_loader'):
++        # The real public entry loads this very external adapter. Do not silently
++        # replace an unrelated canonical module to simulate a working route.
++        existing = sys.modules.get('ck3_mod_acceptance_cases.'+name)
++        if existing is None or existing.__file__ is None or Path(existing.__file__).resolve() != sources[name]:
++            raise ValueError('Actual public bootstrap module differs: '+name)
++    for name in (*CORE,*PUBLIC):
++        qualified = name if name in CORE else 'ck3_mod_acceptance_cases.'+name
++        source = sources[name]
++        existing = sys.modules.get(qualified)
++        if existing is not None and existing.__file__ is not None and Path(existing.__file__).resolve() == source:
++            continue
++        if existing is not None:
++            raise ValueError('Postload peer already bound to another immutable source: '+qualified)
++        spec = importlib.util.spec_from_file_location(qualified,source)
++        if spec is None or spec.loader is None:
++            raise ValueError('Explicit source loader unavailable')
++        module = importlib.util.module_from_spec(spec)
++        sys.modules[qualified] = module
++        spec.loader.exec_module(module)
++        if name in PUBLIC:
++            setattr(sys.modules['ck3_mod_acceptance_cases'],name,module)
++    actor = sys.modules['ck3_mod_acceptance_cases.r08_parent_postload_one_day']
++    if not isinstance(actor,Entry):
++        raise ValueError('Typed pointer actor interface unavailable')
++    return actor
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/r08_postload_adapter.py
+@@ -0,0 +1,75 @@
++"""Explicit finite R10/postload adapter; ordinary planner never auto-loads it."""
++from __future__ import annotations
++from collections.abc import Mapping
++from pathlib import Path
++import importlib.util
++import sys
++from types import ModuleType
++from typing import Protocol,runtime_checkable
++
++Object=dict[str,object]
++
++@runtime_checkable
++class Actor(Protocol):
++    def validate_contract(self,context: Mapping[str,object]) -> object: ...
++    def run_case(self,context: Mapping[str,object],client: object) -> object: ...
++
++def object_value(value: object) -> Object:
++    if not isinstance(value,dict) or type(value) is not dict:raise ValueError('actual case object')
++    result: Object={}
++    for key,item in value.items():
++        if not isinstance(key,str):raise ValueError('case string key')
++        result[key]=item
++    return result
++
++def actor(context: Mapping[str,object]) -> Actor:
++    inputs=object_value(context.get('case_inputs'))
++    keys=('r04_county_entry','r06_refill_one_day','r08_writer_one_day','r08_parent_entry_one_day',
++        'r08_parent_pointer_read_one_day','r08_parent_postload_one_day')
++    if inputs.get('r08_parent_postload_one_day') is None or sum(inputs.get(key) is not None for key in keys)!=1:
++        raise ValueError('Explicit sole postload mode required; ordinary planner does not auto-load it')
++    if object_value(context.get('case_contract')).get('schema')!='xar.e04.r10-common-preparation.v1':
++        raise ValueError('Existing R10 common preparation contract required')
++    path=Path(__file__).with_name('postload_bundle_loader.py')
++    name='ck3_mod_acceptance_cases.postload_bundle_loader'
++    existing=sys.modules.get(name)
++    if existing is None or existing.__file__ is None or Path(existing.__file__).resolve()!=path.resolve():
++        spec=importlib.util.spec_from_file_location(name,path)
++        if spec is None or spec.loader is None:raise ValueError('source loader unavailable')
++        existing=importlib.util.module_from_spec(spec);sys.modules[name]=existing;spec.loader.exec_module(existing)
++    method: object=getattr(existing,'load',None)
++    if not callable(method):raise ValueError('actual source loader interface')
++    value: object=method(context)
++    if not isinstance(value,Actor):raise ValueError('actual postload actor interface')
++    return value
++
++def common(context: Mapping[str,object]) -> ModuleType:
++    actor(context)
++    module=sys.modules.get('ck3_mod_acceptance_cases.r10_prepare_adapter')
++    if module is None:raise ValueError('actual pinned R10 library unavailable')
++    return module
++
++def validate_contract(context: Mapping[str,object]) -> None:
++    actor(context).validate_contract(context)
++
++def prepare_case(context: Mapping[str,object]) -> object:
++    validate_contract(context)
++    method: object=getattr(common(context),'prepare_case',None)
++    if not callable(method):raise ValueError('actual R10 prepare interface')
++    # R10's unchanged prepare validates common S0/plain configs; it performs no
++    # observer, day, sampling, Game or SDK operation.
++    return method(context)
++
++def run_case(context: Mapping[str,object],client: object) -> Object:
++    value=actor(context);value.validate_contract(context)
++    # Match the existing explicit pointer route: the new actor owns its readonly
++    # common packet collection. The unrelated legacy readiness binding requires
++    # episode_run_id to be present, unlike real ordinary native snapshots.
++    # Do not insert null into that original snapshot or replay its queries.
++    result=object_value(value.run_case(context,client))
++    result['full_R08_qualified']=False
++    return result
++
++def verify_case(context: Mapping[str,object]) -> Object:
++    return {'case_contract_qualified':False,'business_pass':False,'full_R08_qualified':False,
++        'scope':'Exact day and typed postload capture are separate; payment/payer/cadence remain unqualified'}
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/r08_postload.json
+@@ -0,0 +1,23 @@
++{
++  "schema": "xar.e04.r10-common-preparation.v1",
++  "scope": "Explicit standalone postload execution observer through the existing CaseClient; no planner autoload",
++  "settings": "case_inputs.r08_parent_postload_one_day",
++  "maximum_actual_days": 1,
++  "maximum_observer_launches": 1,
++  "native_window_ms": 30000,
++  "foreign_limit": 4096,
++  "target_record_limit": 1,
++  "execution_rva_decimal": "42956890",
++  "raw_schema": "xar.maintenance.parent_postload.raw.v1",
++  "owner_schema": "xar.maintenance.parent_postload.owner-binding.v1",
++  "required_new_Q_schema": "xar.maintenance.parent_postload.qualification.v1",
++  "exact_day_does_not_guarantee_player_postload": true,
++  "entryExact": false,
++  "paid_maintenance_raw": null,
++  "payer": null,
++  "cadence": null,
++  "full_R08_qualified": false,
++  "normal_close_owner": "Original public entry/CaseClient after full-six restore, independent OFF/clear and ordinary Save proof",
++  "close_reserve_seconds": 1050,
++  "new_mode_requires_actual_qualification": true
++}

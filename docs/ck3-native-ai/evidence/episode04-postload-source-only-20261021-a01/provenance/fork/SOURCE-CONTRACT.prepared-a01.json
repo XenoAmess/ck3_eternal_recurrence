@@ -1,0 +1,83 @@
+{
+  "schema": "xar.e04.parent-postload.source-contract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_only": true,
+  "deadline_utc": "2026-10-21T01:30:00Z",
+  "mode": "player-parent-postload-execution-once-v1",
+  "raw_schema": "xar.maintenance.parent_postload.raw.v1",
+  "source_anchor": {
+    "anchor_bytes": 29,
+    "anchor_hex": "488bc453554881ec980000004c8970e0488bea488b92c00100004c8bf1",
+    "anchor_rva": "42956864",
+    "anchor_sha256": "ee16d61e71e672c87a648a3ce6c12c6e9f1f1d5c2b5387a9206b9c88603892f3",
+    "execution_rva": "42956890",
+    "new_binary_qualification": false,
+    "next_instruction": "4c8bf1 mov r14,rcx",
+    "source_asm": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+    "source_asm_sha256": "36eecdf78b4e958833f90ee903e1cd2cb607e0a1d5e8ea1adb0fc3e1d14f040f"
+  },
+  "breakpoint": {
+    "kind": "execution",
+    "rva": "42956890",
+    "DR0": "module_base+42956890",
+    "rw_len": 0,
+    "target_filter": "RBP==admitted Character pointer",
+    "other_character_foreign_limit": 4096,
+    "target_records": 1,
+    "capture_ms_max": 30000
+  },
+  "capture": {
+    "scope": "after parent pointer load, before MOV R14,RCX",
+    "original_entry_RSP": "current RSP+0xA8 verified equal RAX",
+    "loaded_pointer": "RDX; null is retained",
+    "arguments": "RCX task and R8/R9 preserved; RBP Character",
+    "source_validation_bytes": 29,
+    "parent_return_observed": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null
+  },
+  "rf": {
+    "foreign_stop": "pre-instruction execution fault; same RIP, DR0 retained, RF set for one instruction, TF never taken over",
+    "cleanup": "restore all six exact saved DR values before continue/detach; pending unknown retains original owner; late exact execution event uses existing generation/restore ledger"
+  },
+  "future_native_cases": [
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "foreign257_then_target",
+    "foreign4096_limit",
+    "created_thread",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "null-admission",
+    "other-player-read4096-then-target",
+    "other-player-write4096-then-target",
+    "cancel_late"
+  ],
+  "future_native_cases_actual": false,
+  "future_native_requirements": [
+    "fresh new two EXE build and exact SYSTEM registration",
+    "new schema/observer/source-bound Q, no old17/21 Q reuse",
+    "actual compiled cold body/return/argument counters",
+    "foreign RF actual register readback and original function once",
+    "independent peer audit all live armed generations full six slots",
+    "real late execution and fault-hold original Popen/wait proof",
+    "new typed admission builder/public adapter integration before live use"
+  ],
+  "not_implemented_this_scope": [
+    "native cold runner for the new schema",
+    "new RootScope/prepare/public case adapter",
+    "new compiled Windows qualification",
+    "live owner opportunity"
+  ],
+  "why": "R225 retained first foreign data-access postPC2C06B38 and cleanup witness28C2E2E; neither is expected28F785A. Full4096 PC/subject distribution unavailable; other Character parent execution pressure remains unknown."
+}

@@ -1,0 +1,54 @@
+test_21_case_contract_is_distinct_and_cancel_last (__main__.PostloadPublicTests.test_21_case_contract_is_distinct_and_cancel_last) ... ok
+test_RDX_null_and_decimal_birth_preserved_in_independent_root_scope (__main__.PostloadPublicTests.test_RDX_null_and_decimal_birth_preserved_in_independent_root_scope) ... ok
+test_missing_null_bool_float_and_old_root_modes_refused (__main__.PostloadPublicTests.test_missing_null_bool_float_and_old_root_modes_refused) ... ok
+test_new_Q_absent_legacy_or_partial_cannot_open_any_file (__main__.PostloadPublicTests.test_new_Q_absent_legacy_or_partial_cannot_open_any_file) ... ok
+test_pin_safe_numbers_reject_bool_float_and_unsafe_integer (__main__.PostloadPublicTests.test_pin_safe_numbers_reject_bool_float_and_unsafe_integer) ... ok
+test_ready_binds_exec_DR0_not_character_data_watch (__main__.PostloadPublicTests.test_ready_binds_exec_DR0_not_character_data_watch) ... ok
+test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK (__main__.PostloadPublicTests.test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK) ... ERROR
+test_root_false_declarations_refuse_before_process_inspection (__main__.PostloadPublicTests.test_root_false_declarations_refuse_before_process_inspection) ... ok
+test_unknown_day_is_never_replayed_and_after_only_after_cleanup (__main__.PostloadPublicTests.test_unknown_day_is_never_replayed_and_after_only_after_cleanup) ... ERROR
+
+======================================================================
+ERROR: test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK (__main__.PostloadPublicTests.test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\test_postload_public.py", line 127, in test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK
+    with self.assertRaises(ValueError):adapter.validate_contract(context)
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\r08_postload_adapter.py", line 53, in validate_contract
+    actor(context).validate_contract(context)
+    ~~~~~^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\r08_postload_adapter.py", line 42, in actor
+    value: object=method(context)
+                  ~~~~~~^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\postload_bundle_loader.py", line 98, in load
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\r04_county_entry_window.py", line 3, in <module>
+    from .r10_prepare_adapter import need
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\r10_prepare_adapter.py", line 12, in <module>
+    from ck3_mod_acceptance_background_types import JsonObject, json_object
+ModuleNotFoundError: No module named 'ck3_mod_acceptance_background_types'
+
+======================================================================
+ERROR: test_unknown_day_is_never_replayed_and_after_only_after_cleanup (__main__.PostloadPublicTests.test_unknown_day_is_never_replayed_and_after_only_after_cleanup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\test_postload_public.py", line 157, in test_unknown_day_is_never_replayed_and_after_only_after_cleanup
+    result=controller.observe(python=sys.executable,tools=ROOT/'candidate/native-tools',observer=pin(observer),
+        prepared=prepared,output=control,machine='synthetic-source-machine',scope_pin=pin(scope_path),
+        collected_at=time.monotonic(),before=before,deadline_utc=(datetime.now(timezone.utc)+timedelta(hours=1)).isoformat(),
+        call=call,packet_pin=lambda label:pin(scope_path),guard=lambda:None)
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_controller.py", line 317, in observe
+    need(binding.root_scope_sha256 == scope_pin['sha256'],'Prepared scope changed')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-postload-cold-0230-a01\public-adapter-a01\candidate\tools\ck3_mod_acceptance_cases\postload_public_models.py", line 27, in need
+    raise ValueError(message)
+ValueError: Prepared scope changed
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.184s
+
+FAILED (errors=2)

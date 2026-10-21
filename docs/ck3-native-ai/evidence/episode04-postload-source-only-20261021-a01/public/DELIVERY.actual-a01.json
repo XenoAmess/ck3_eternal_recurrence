@@ -1,0 +1,145 @@
+{
+  "schema": "xar.e04.postload.public-source-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:15:12.213726+00:00",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 21316,
+    "sha256": "071879b9f7332dba83f85fe6839e355e36ba7319cee37b9c169b4494bcb415c2"
+  },
+  "production_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\POSTLOAD-PUBLIC-SOURCE.candidate-a01.patch",
+    "bytes": 92509,
+    "sha256": "f4fe44d4f18ca4569874baaafab6e148d82520c49f26327f06247d82304910f8"
+  },
+  "source_contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\PUBLIC-SOURCE-CONTRACT.prepared-a01.json",
+    "bytes": 2443,
+    "sha256": "8f19bb296a93fa7eb15a0a27f1aed5a4aa899ded3ee33ca083cdf696f2c1f70e"
+  },
+  "bundle_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\PUBLIC-SOURCE-INDEX.prepared-a04.json",
+    "bytes": 8752,
+    "sha256": "584d1f9b63352fc7459570d41557ae8145f146296803eb7411df2c35601b5e2d"
+  },
+  "production_mapping": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_admission.py",
+        "bytes": 12847,
+        "sha256": "8fccee9b35ead9b761d7763c5fa485a65e97decc33476efb970979dce7e4bcfd"
+      },
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/postload_admission.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\prepare_parent_postload_admission.py",
+        "bytes": 4853,
+        "sha256": "03e714d3d04f713fd1c98d39f914e4c9f9aac438ceba08b06bb6e693868fedef"
+      },
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/prepare_parent_postload_admission.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\consume_parent_postload_actual.py",
+        "bytes": 1829,
+        "sha256": "5799fc0606e1c94bbbe643d8ce40bf907992d87df5396424d92f2afcdbd12b94"
+      },
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_parent_postload_actual.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_root_scope.py",
+        "bytes": 18380,
+        "sha256": "fd8c43258549b690302eb64a5ad692bdde580a63f22156376473586764f76160"
+      },
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/postload_root_scope.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+        "bytes": 11189,
+        "sha256": "92f989081828b0f0cefd5ac662b4f7d88d7e9f973cd3e3b95fe8c7e43e9cc40f"
+      },
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/postload_public_models.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+        "bytes": 20735,
+        "sha256": "a182f3779b68f405ef4d0f61669d9193c8e909dc95cda5eeb417843065c72d69"
+      },
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/r08_parent_postload_controller.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+        "bytes": 10207,
+        "sha256": "1c63bffa8a4790e7ca0bc5f7cc18eb849aaa4e4be335c10dc5dc10ca605325d3"
+      },
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/r08_parent_postload_one_day.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_bundle_loader.py",
+        "bytes": 4856,
+        "sha256": "f6e2e4170f382760b4e247f7c0f8e735ca0ae9a8bbd2ca9fdfc72e34f5af0359"
+      },
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/postload_bundle_loader.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py",
+        "bytes": 3867,
+        "sha256": "d587bbea8860f2049949a4fd0dbed43beafd18049485e188f074790e9c14c36d"
+      },
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/r08_postload_adapter.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload.json",
+        "bytes": 1005,
+        "sha256": "5f88e983a6a2e441f1ecca3ae5a0ef822b4b0cdd1b33616ac344e91135dd894f"
+      },
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/r08_postload.json"
+    }
+  ],
+  "final_checks": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-focused-final-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 3915,
+      "sha256": "e268c714ae4c3f4fe01b5b5f2fbc2818b0f509ef5fa2a62eb808e2f4166a7396"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\checks-mypy-final-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 5291,
+      "sha256": "b9cd56f5a594d03b3ac08185c7b6ecd41fc74932d8860e18ac4065d612fb5b72"
+    }
+  ],
+  "finite_Python_methods": 15,
+  "strict_new_production_files": 9,
+  "typecheck_scope": "modified sources, strict, follow-imports=skip, no incremental/cache; not whole tree",
+  "README": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\README.md",
+    "bytes": 4663,
+    "sha256": "8cb67d3a2fa735dc2ed9e1d7f0fe48cb3cf86334b72b7db361867046ef14ff21"
+  },
+  "copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\MINIMAL-COPYPLAN.actual-a01.json",
+    "bytes": 20095,
+    "sha256": "2893ad0162077de767bde8a623b1efafc86df946d75e86eff4e6cc302d84c1b9"
+  },
+  "qualification": {
+    "actual_new_Q_exists": false,
+    "native_successor_frozen": false,
+    "new_native_build_cold": false,
+    "runtime_complete": false,
+    "Game_Steam_SDK": false,
+    "full_R08": false,
+    "paid_maintenance_raw": null
+  },
+  "writer_state": "all source and metadata writers stop after this delivery",
+  "tmp_remaining": [],
+  "lane_hardcap_bytes": 2097152,
+  "hard_deadline_utc": "2026-10-21T02:30:00Z"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "xar.capacity.sourcebound-stage-withheld.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:03:46.536128+00:00",
+  "withdrawn_stage_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\capacity\\SOURCE-BOUND-SINGLE-EXTRACTION.actual-a02.json",
+    "bytes": 6379,
+    "sha256": "00b086772a4b9671e73a6af8b2160c973975ad9a2f4579cb288a9fac127523d9"
+  },
+  "source_bound_single_extraction_execution_admitted": false,
+  "FFmpeg_execution_admitted": false,
+  "Root_instruction": "Root received immediately after rev597 dispatch: withhold old once because contract equality admits float aliases900.0/57.0/18.0. Require create-only integer-validation contract and focused checks, runner unchanged; later exact revised pins may receive one new card without repeated Root confirmation.",
+  "actual_old_stage_use_at_issuance": "UNKNOWN; urgent stop-before-Popen message sent to original owner; no assumption of zero invocation or unknown retry.",
+  "full_future_preserved": {
+    "C:/": 5242880,
+    "D:/": 0
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 467346,
+    "sha256": "1c28f087f5051e1b80fe4414f4b6fea1e57ee9cfb411078ceda0b657940b795d"
+  },
+  "expected_adopted_revision": 598,
+  "physical_credit_bytes": 0
+}

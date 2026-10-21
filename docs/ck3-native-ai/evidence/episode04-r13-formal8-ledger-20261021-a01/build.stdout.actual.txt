@@ -1,0 +1,1 @@
+{"manifest": {"bytes": 6452, "sha256": "a5371e323a90f99194d62c41e86c5c608fe1823f4ef4d05265e28e66da81ea5a"}, "candidate_bytes": 155810, "patch_bytes": 19952, "aggregate": 200353, "actual_base_commit": "992ca426939c19dcb62375344fc4a230e86a38f1", "all_five_preimages_byte_equal": true}

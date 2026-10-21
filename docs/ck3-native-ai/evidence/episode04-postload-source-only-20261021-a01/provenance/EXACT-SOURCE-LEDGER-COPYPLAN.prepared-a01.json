@@ -1,0 +1,1628 @@
+{
+  "schema": "xar.e04.production-publication.exact-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:58:08.379092+00:00",
+  "W": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "D_readonly_expected_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "expected_W_and_remote": "992ca426939c19dcb62375344fc4a230e86a38f1",
+  "hard_deadline_utc": "2026-10-21T03:15:00Z",
+  "summary": {
+    "formal": "8/11",
+    "research": "10/14",
+    "business": "7/11",
+    "B": "0/2",
+    "ABC": "0/3",
+    "fullR08": false
+  },
+  "items": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\ARCHIVE-MANIFEST.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/ARCHIVE-MANIFEST.actual-a01.json",
+      "bytes": 99248,
+      "sha256": "92aac60634f7b15d5bd300986c00f869a7f28cebc4a93fac5c122dc447113ccf",
+      "git_blob": "23be69a73d7d3682b0b63c0b7be78032dcc87a22",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\README.md",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/README.md",
+      "bytes": 2137,
+      "sha256": "a4d9e9af27ff24e7fcde26613c601e524ec91ca287f3ccef13171df6b79126f2",
+      "git_blob": "f3c7f894e861448a111f35f7cd1abd95fe077327",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\derived\\NATIVE-INTERRUPTION-STATUS.derived-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/derived/NATIVE-INTERRUPTION-STATUS.derived-a01.json",
+      "bytes": 1318,
+      "sha256": "6c3df7cb55284b9f44bd81bd51d190b4aba14944629fc781919a0cc542c85fe7",
+      "git_blob": "caca38e2281560348fa0d6f89be98a92315c0a40",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\derived\\PEER-MESSAGE-PROJECTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/derived/PEER-MESSAGE-PROJECTION.actual-a01.json",
+      "bytes": 1126,
+      "sha256": "76cb28f1fd74e8480a3a7da51262f690b681508c76ad549ffef737206f9c8498",
+      "git_blob": "ffcc049d24417aa0e3f455007d31a034533fea2d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\historical-inputs\\candidate-a01\\parent_postload_execution_once.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/historical-inputs/candidate-a01/parent_postload_execution_once.inc",
+      "bytes": 30442,
+      "sha256": "9685f09b175703e2566fbd0732dc1bfbb4f10f1a8bc2db5efb7cc39870f47213",
+      "git_blob": "7f0bbdabf412c2f58d0deb25c67041be1b40487a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\historical-inputs\\e04-r08-parent-read-source-p03\\CMakeLists.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/historical-inputs/e04-r08-parent-read-source-p03/CMakeLists.txt",
+      "bytes": 2087,
+      "sha256": "cfd2473914b9dd7c14dd31c6800a7b79a3015f9f1041c7ca5099132fe9a3847b",
+      "git_blob": "872f8ce0fca9b924f21fa0dc9f94d0492e3bc836",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\historical-inputs\\e04-r08-parent-read-source-p03\\cold_observer.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/historical-inputs/e04-r08-parent-read-source-p03/cold_observer.cpp",
+      "bytes": 29917,
+      "sha256": "ef38ab08bbe396c1087e5ddca03b3160ffd99a9bbb27075182662799f5949600",
+      "git_blob": "de13be38e5adbf1319c7ff45594a18b72abb2a3e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\SOURCE-ASSEMBLY.prepared-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/SOURCE-ASSEMBLY.prepared-a01.json",
+      "bytes": 8711,
+      "sha256": "efb1ff6a031d8796715e272a8bd43473477f2e6208805274e50c20395ed3a319",
+      "git_blob": "9003373496b5387208c142749868db76fd24ab89",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\CMakeLists.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/CMakeLists.txt",
+      "bytes": 2862,
+      "sha256": "5db5e9d198d1d5571cdb797b92b07afd15dc81a9eb865f89fd10e4812f49bc6c",
+      "git_blob": "9179e823ff23c313815f047e7ffbf1b8dea62aed",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\cold_observer.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/cold_observer.cpp",
+      "bytes": 30108,
+      "sha256": "1a6ff23866af2714403e9555fff92490cd248c904c28f84cc5640027e45e33eb",
+      "git_blob": "be51550b420e7b105401926e1adc2ffe769f9adf",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\cold_runner_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/cold_runner_models.py",
+      "bytes": 7648,
+      "sha256": "082c9169fb8fbd4b7ae446b336bf7f41664cc93f95280e0d7567b68d40ec4358",
+      "git_blob": "8ee5a7d90096a97d355e2610ffca232c5c2872ea",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9",
+      "git_blob": "91868691ef30543a36144583dfcf80df431b67a0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\consume_parent_pointer_read_actual.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/consume_parent_pointer_read_actual.py",
+      "bytes": 1675,
+      "sha256": "cb2ee518c476c8997cf2f4f4d2cffe683b8666af194cbc879b8adfa5ea2b2cf7",
+      "git_blob": "43ac755faeef27b122363c8e91ac9aaf87ce8250",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_entry_cold_call.asm",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_entry_cold_call.asm",
+      "bytes": 889,
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8",
+      "git_blob": "af4f2585c84ed4998ba2418e17b9a94fb9e9a8f0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_entry_cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa",
+      "git_blob": "d505e587d84ff465aeb8ad092590d5f456f4dac9",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_entry_execution_once.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a",
+      "git_blob": "db3999606e19fc351af58c2fca250ab63eca94ca",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_pointer_read_capture.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_pointer_read_capture.inc",
+      "bytes": 3412,
+      "sha256": "0d8735910cc7db29aa2958a3f0e412632e429cd20fde28cc56feb26942a86f8e",
+      "git_blob": "f5e3558161489b30624c18df2806e29b804e08e0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_pointer_read_cold_call.asm",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_pointer_read_cold_call.asm",
+      "bytes": 1458,
+      "sha256": "1088433abc5ed080c3b40d97c793f9f33a6a58b650dba838369aa94009659bef",
+      "git_blob": "55b4a04209416d7f915f55bef1661c3c95a2ec88",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_pointer_read_cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_pointer_read_cold_target.cpp",
+      "bytes": 15348,
+      "sha256": "2695270ed9eaec7f52b8453215356ed065b2a52208371ef5f821365aa7a1eee1",
+      "git_blob": "7b66146dc0bb8fb1dcd7c9b10bd86ac2554f1e64",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_pointer_read_contract.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_pointer_read_contract.py",
+      "bytes": 14350,
+      "sha256": "d30d6bea63eb95fb2efd0d3aa3ca43ddcde8fbcaa58d588fc84965ebfd414f4c",
+      "git_blob": "813f35bb058f5c5353fea7df752821ad9684d792",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_pointer_read_once.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_pointer_read_once.inc",
+      "bytes": 32581,
+      "sha256": "132dcaf3bdbfe979e5fcf4fe9a79443930687dbb19aae0a1e6c0c453956a2264",
+      "git_blob": "657ba6460f0c222128e1b28ffdff27bd811c2dab",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_postload_capture.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_postload_capture.inc",
+      "bytes": 3428,
+      "sha256": "33225771c18eedb28a1cbd4a2fad2f1aa6a04080af670e4ce86418e0df0f93a6",
+      "git_blob": "c5da830d299b6b002c13aec7e581903fb13c7711",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_postload_cold_target.cpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_postload_cold_target.cpp",
+      "bytes": 15086,
+      "sha256": "8f717c46d8347c003137f1aac597109698e2d13e580cd367f73fb3b47b3c02a2",
+      "git_blob": "ca0e02109866e14351a35b24a3284e3946b9742d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\parent_postload_execution_once.inc",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/parent_postload_execution_once.inc",
+      "bytes": 30583,
+      "sha256": "f3b3323ecba3199ac73c87f2c72f340288167aa260d782f3e8d638eae986a8ff",
+      "git_blob": "0abeb1060bc28ef5a7f241a4d553c606894923fe",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\pointer_read_admission_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/pointer_read_admission_models.py",
+      "bytes": 5796,
+      "sha256": "d0b3629cbf7d0e18684f66ef52de47b5ea2821b14f5771530eec066f1271506a",
+      "git_blob": "a2aa9104fb8504136843988672b3dbddb0525adf",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\pointer_read_decimal64.hpp",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/pointer_read_decimal64.hpp",
+      "bytes": 696,
+      "sha256": "15a492605745099e80395a87a5517c0376d5d43b8ada87312f7098fcfd7d5a06",
+      "git_blob": "9792aa4a39eae92bccb2bc11c3ca2abac7c7fd69",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\pointer_read_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/pointer_read_models.py",
+      "bytes": 5310,
+      "sha256": "61583c2fe78e0c2ba62198a5ef28b6285444ed4b3b942a691b3ce69d27516445",
+      "git_blob": "14aff3b762b28b745470517a573b4afd0f28e7e0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\pointer_read_owner_binding.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/pointer_read_owner_binding.py",
+      "bytes": 7195,
+      "sha256": "e4381638192cdeb8ff29e267a6a3817f25cb54c0e4c12a01946ad59077f02f76",
+      "git_blob": "df7f849dc1a6f688b5375af481a91a5c03bb2af0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\pointer_read_wire.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/pointer_read_wire.py",
+      "bytes": 5008,
+      "sha256": "49a56284295e22541bbf9b9091a85e6c44d287607b5c129b07cfd7dd5cff96cf",
+      "git_blob": "2b501ae50bb60760cf058f3e99412d5eccf28c12",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\postload_common_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/postload_common_models.py",
+      "bytes": 670,
+      "sha256": "46034f4f31400aa476bd3824dede597a52ba4ad5cc56ee9d3e99a5efa4ea1c71",
+      "git_blob": "4f088a810828e1ef68e4ec25b1135c4091ba1a56",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\postload_runner_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/postload_runner_models.py",
+      "bytes": 7633,
+      "sha256": "97ae7539bf3027e0b22cd66a6d2fcd39637d5549d617309ef5850d19be8e843e",
+      "git_blob": "51e723cc5841b4d00aae519a7217b4f850aa266f",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\prepare_parent_pointer_read_admission.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/prepare_parent_pointer_read_admission.py",
+      "bytes": 11349,
+      "sha256": "02b824a8c6dcfdbd6b02345af93b6f42d536dc1ca0472e90a342aab268f441b5",
+      "git_blob": "7a06d5b0a417bcbe475edaf7c4df931032cd96c5",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\run_parent_pointer_read_cold.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/run_parent_pointer_read_cold.py",
+      "bytes": 37027,
+      "sha256": "2abbe1c928a04267896967ca24a8d5b018721a665c046d207ee8eff654601c80",
+      "git_blob": "b5582d902f25f09c6e33a0f6b9b14f894e5e6cd9",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\run_parent_postload_cold.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/run_parent_postload_cold.py",
+      "bytes": 36982,
+      "sha256": "e489a5898e0264d3c812cfb49872ac8109c821773bb4d9faf149c7ec8f19ac38",
+      "git_blob": "af8d26f3c465ff990d8725d7469d7dfc53b187a6",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\synthetic_write.asm",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef",
+      "git_blob": "07faeec2e9f841e7c727db8e5e5b59ca0c03c085",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\native-wip\\source-candidate-a01\\test_postload_contract.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/source-candidate-a01/test_postload_contract.py",
+      "bytes": 14907,
+      "sha256": "4cfbe990ead8931615d9058a4c540989c4bee0ccaa44837eedef58676fc4bc18",
+      "git_blob": "dbaa88c52b72f9000897578ccd208d0163d58a28",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\FINANCIAL-SOURCE-PLANNING0230.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/FINANCIAL-SOURCE-PLANNING0230.actual-a01.json",
+      "bytes": 4500,
+      "sha256": "3cf49058ab528ecfdc6b74d94cae7537a5f20923ac44351d4d26760794e8e005",
+      "git_blob": "7aeb2b8aa6f9163de02c152d47d4c77602d8709e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\FINANCIAL-SOURCE-PLANNING0315.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/FINANCIAL-SOURCE-PLANNING0315.actual-a01.json",
+      "bytes": 4173,
+      "sha256": "76ab0e6054c7957cb6c6a06a6f7709e6f891681621321c215ced5d7e6842f6e5",
+      "git_blob": "7c904a0728f108c9c649d5ac881af421f642ed7d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\FORK-SOURCE-FREEZE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/FORK-SOURCE-FREEZE.actual-a01.json",
+      "bytes": 12430,
+      "sha256": "80c722a71e596d4cc3e2410042a80e6c897e9baa6918c833626f41f8f71a266e",
+      "git_blob": "2684bb58df2121679e73ce03168ef19b511568ff",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\ROOT-FROZEN-SOURCE-FORK-ADOPTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-FROZEN-SOURCE-FORK-ADOPTION.actual-a01.json",
+      "bytes": 2051,
+      "sha256": "a9f917c688fad92d5aaed556414bdb9a90447ccec71e8fce8857bb8141fc6440",
+      "git_blob": "28e0ddb91c76f591c6316bab06bb841f334f14ad",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json",
+      "bytes": 5360,
+      "sha256": "5fad2634e14c9eccb505628449a93cd1223b42d2f85a19a6bfb728ba26441cb3",
+      "git_blob": "1de1af0acf2128caf094918dd146ab07748ba5f3",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\fork\\ANCHOR.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/fork/ANCHOR.json",
+      "bytes": 562,
+      "sha256": "dda323e3c294e26b24e2ed424373fed142c0d7b355a3d8fce83d4e873b78296e",
+      "git_blob": "674c8f9a6d0aa0dd5f6078c17238f7c11aae3b80",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\provenance\\fork\\SOURCE-CONTRACT.prepared-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/fork/SOURCE-CONTRACT.prepared-a01.json",
+      "bytes": 3441,
+      "sha256": "d23239eea92994fef2cb322c74512b9fd0098543c80bace4f5ff4ab27b4bb14e",
+      "git_blob": "d8c3c8c7ca880d18e78b450196a3f65eeb34e4f1",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\CASE-INPUTS.source-only-template-a04.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/CASE-INPUTS.source-only-template-a04.json",
+      "bytes": 1232,
+      "sha256": "59a1519f5cbd49b1ab12d0c6f250c698c8166eb9b35009c766eb12ac223c5ae4",
+      "git_blob": "cc66eaa2dc8ea60bfe530ed408ff9d93d777fcdf",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/DELIVERY.actual-a01.json",
+      "bytes": 7122,
+      "sha256": "2086afa6fb61874209e78a9a979c43c526bf880ab6482160a1a2e2011bedd33c",
+      "git_blob": "c45f9a9d5eab90edfa999cbeb53fd5fd9dd888ff",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\EXTERNAL-PUBLIC-CASE.source-fragment-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/EXTERNAL-PUBLIC-CASE.source-fragment-a01.json",
+      "bytes": 487,
+      "sha256": "02e177c8c05e00ac12945a3f6c38199c688fa408efb80ffecd7f94fcf98fe8a7",
+      "git_blob": "ffe4fe2783dd289637df043361c910ffb2c12a94",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\MINIMAL-COPYPLAN.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/MINIMAL-COPYPLAN.actual-a01.json",
+      "bytes": 20095,
+      "sha256": "2893ad0162077de767bde8a623b1efafc86df946d75e86eff4e6cc302d84c1b9",
+      "git_blob": "cc39000a8d51501d3cfa4bdc09f33cbda0d42e65",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\POSTLOAD-PUBLIC-SOURCE.candidate-a01.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/POSTLOAD-PUBLIC-SOURCE.candidate-a01.patch",
+      "bytes": 92509,
+      "sha256": "f4fe44d4f18ca4569874baaafab6e148d82520c49f26327f06247d82304910f8",
+      "git_blob": "3f380f936f873a5e3838f83f598c2701907b6776",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\PUBLIC-SOURCE-CONTRACT.prepared-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/PUBLIC-SOURCE-CONTRACT.prepared-a01.json",
+      "bytes": 2443,
+      "sha256": "8f19bb296a93fa7eb15a0a27f1aed5a4aa899ded3ee33ca083cdf696f2c1f70e",
+      "git_blob": "d3ad2fb6b5696050a590ecd6d348428a880b19ec",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\PUBLIC-SOURCE-INDEX.prepared-a04.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/PUBLIC-SOURCE-INDEX.prepared-a04.json",
+      "bytes": 8752,
+      "sha256": "584d1f9b63352fc7459570d41557ae8145f146296803eb7411df2c35601b5e2d",
+      "git_blob": "0ffecfa79e172da67bc0cb7de41ef7686f0e38df",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\README.md",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/README.md",
+      "bytes": 4663,
+      "sha256": "8cb67d3a2fa735dc2ed9e1d7f0fe48cb3cf86334b72b7db361867046ef14ff21",
+      "git_blob": "2fe815197eb96f79d7a447ce8d735cff2103a080",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\ROOT-AUTHORIZATION.source-template-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/ROOT-AUTHORIZATION.source-template-a01.json",
+      "bytes": 1373,
+      "sha256": "20cb6a2fca4a3ef6b79b93e29b6c93d8de8da9c24a14847622678e9ccdf5d3dd",
+      "git_blob": "0013751e202ff80a4a6868f8c0dc38a8ccb1fe6a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\SOURCE-FREEZE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/SOURCE-FREEZE.actual-a01.json",
+      "bytes": 21316,
+      "sha256": "071879b9f7332dba83f85fe6839e355e36ba7319cee37b9c169b4494bcb415c2",
+      "git_blob": "89ab9f3c1c8e7ef955251e367ad2a6c72a43e328",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\SOURCE-INPUTS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/SOURCE-INPUTS.actual-a01.json",
+      "bytes": 8053,
+      "sha256": "5676968620a098d4a39692d5651df74cd45f25dcc4a028b78c8d3025cf4d71da",
+      "git_blob": "92634b139a5bf62fa7f8f83ec1432eb7d70133d4",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\assemble_source.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/assemble_source.py",
+      "bytes": 7524,
+      "sha256": "abac0fd5fd281673aa759ef3f7143e73464ed7c9bb763fd355e8cf1197f4f312",
+      "git_blob": "09f14c3ac848a5a3440a6be4d60f98e4fae5eb73",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\build_index.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/build_index.py",
+      "bytes": 3047,
+      "sha256": "f48ffbd9b4e4f060b1071663702fac0714360451a36b402852abebc9b617ba8c",
+      "git_blob": "28561505fede72ac5c10e2ea2a6ea073570132ac",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\consume_parent_postload_actual.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/consume_parent_postload_actual.py",
+      "bytes": 1829,
+      "sha256": "5799fc0606e1c94bbbe643d8ce40bf907992d87df5396424d92f2afcdbd12b94",
+      "git_blob": "8e5fbca2980e0bd0917a304707e44593e0c98cf3",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\parent_postload_contract.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/parent_postload_contract.py",
+      "bytes": 14116,
+      "sha256": "b17178d8bf775e5d8eede32e8b71c5bed754601f9d3b4828b6adc1ae15652b9a",
+      "git_blob": "11fc38f406c45e998352e413ae6c33aedea4580a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\postload_admission.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/postload_admission.py",
+      "bytes": 12847,
+      "sha256": "8fccee9b35ead9b761d7763c5fa485a65e97decc33476efb970979dce7e4bcfd",
+      "git_blob": "5960efc9789945becc730d8607f9a09c4a32640e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\postload_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/postload_models.py",
+      "bytes": 5316,
+      "sha256": "e06a867c928beac9bee281fab69624ca8099f4294ee4137df7774bbe5e9af093",
+      "git_blob": "017183f0e39e1f125fc6e94b759dcfe6bf9838fe",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\postload_owner_binding.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/postload_owner_binding.py",
+      "bytes": 7116,
+      "sha256": "e37aee9122ca4748cf662ad0bf5105c782c1384b65de4898aebd4ae1658ddc9e",
+      "git_blob": "9add91b6433009e4a19b625c1b617d07fe8ec945",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\postload_root_scope.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/postload_root_scope.py",
+      "bytes": 18380,
+      "sha256": "fd8c43258549b690302eb64a5ad692bdde580a63f22156376473586764f76160",
+      "git_blob": "624fce8be5cb83456f34717c71eeb02b657c47eb",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\postload_wire.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/postload_wire.py",
+      "bytes": 5032,
+      "sha256": "d3c440abf80f285848c7c44acbcb9bd8eae3680eb520103d84d530f88f91de1a",
+      "git_blob": "feabcb69f06a558e85e05ffcbaaedd4a5156a6bb",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\native-tools\\prepare_parent_postload_admission.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/prepare_parent_postload_admission.py",
+      "bytes": 4853,
+      "sha256": "03e714d3d04f713fd1c98d39f914e4c9f9aac438ceba08b06bb6e693868fedef",
+      "git_blob": "f43ef290c479063db73a2f6edd6b6b75825309ab",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_background_types.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e",
+      "git_blob": "df37df45360925bde6d302e14657140a18e15e86",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb",
+      "git_blob": "6de0a10b2b50974f30a8f3a12b207523b527c66b",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_bundle_loader.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/postload_bundle_loader.py",
+      "bytes": 4856,
+      "sha256": "f6e2e4170f382760b4e247f7c0f8e735ca0ae9a8bbd2ca9fdfc72e34f5af0359",
+      "git_blob": "320c7895e7bbd699a9c6995a7905055926a340b5",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/postload_public_models.py",
+      "bytes": 11189,
+      "sha256": "92f989081828b0f0cefd5ac662b4f7d88d7e9f973cd3e3b95fe8c7e43e9cc40f",
+      "git_blob": "83f0cb59ff6411e3aeebc5515a832f83331ae3b9",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4",
+      "git_blob": "2dff0d4e430e2a6a4ad047ac14af43a8cc5680fb",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128",
+      "git_blob": "faa2bed33f3eacd6598557778c5b385e9a2b3181",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r08_parent_postload_controller.py",
+      "bytes": 20735,
+      "sha256": "a182f3779b68f405ef4d0f61669d9193c8e909dc95cda5eeb417843065c72d69",
+      "git_blob": "09ad50791106fb016ccf370da9e24338a04d6463",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r08_parent_postload_one_day.py",
+      "bytes": 10207,
+      "sha256": "1c63bffa8a4790e7ca0bc5f7cc18eb849aaa4e4be335c10dc5dc10ca605325d3",
+      "git_blob": "195b105c874b5e183d760319070dde90ddda8a89",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r08_postload.json",
+      "bytes": 1005,
+      "sha256": "5f88e983a6a2e441f1ecca3ae5a0ef822b4b0cdd1b33616ac344e91135dd894f",
+      "git_blob": "cd4dd5ad74071f519c811741c0433d1ecffe14a6",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r08_postload_adapter.py",
+      "bytes": 3867,
+      "sha256": "d587bbea8860f2049949a4fd0dbed43beafd18049485e188f074790e9c14c36d",
+      "git_blob": "0b1c3105a4886c08257882b809a573c5b030829d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21",
+      "git_blob": "1c7040b17065e03a74cfb19c42858517bebf5ba0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14",
+      "git_blob": "8929a286b198db3464f5faf5ba45494f03e63cbb",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\candidate\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "bytes": 18032,
+      "sha256": "8f30c0e963a18046baede607d1b5a9b3fb1e5d823c51533f0c3700d81a41ab8c",
+      "git_blob": "2e51b3399be37dfb4e77db36000d14ee9d442f3e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a01/ORIGINAL-WAIT.actual.json",
+      "bytes": 3902,
+      "sha256": "5c002998c8a5182f2cb696b0be7a93296908e4c22e1a2330004a35963f15a1f2",
+      "git_blob": "836026598787db374aef95150b1c950b0d170c52",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a01/stderr.log",
+      "bytes": 5250,
+      "sha256": "c60b46f1a8e9a6c9b681f04a0a07f3f7064b147cb94cf66ca46f7ecff682619c",
+      "git_blob": "00c74719e5e69f181eb68b91d947bcadc81a7594",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a01/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a02-finaldraft\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a02-finaldraft/ORIGINAL-WAIT.actual.json",
+      "bytes": 4916,
+      "sha256": "76760cee16ffeffa148dda1c4cc513d88f03255efddfefeebf899a68b58ef83b",
+      "git_blob": "965c3508a8c652c513c6d79f8e00386169dad4b6",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a02-finaldraft\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a02-finaldraft/stderr.log",
+      "bytes": 3513,
+      "sha256": "0cfa79ceb121d7cfb3cc3f19c48657bb527dfcd2b7859f5eddc63ab27c0e782a",
+      "git_blob": "c103160fe9717c8095076978fac389ece786bc47",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a03\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a03/ORIGINAL-WAIT.actual.json",
+      "bytes": 3903,
+      "sha256": "5c4fc2277d3b4b1cad705bea9ae60336d7fd1bb3aa44e43a56b0f592d7c2678a",
+      "git_blob": "80739ffa7776ff05c2508b43f9d295a23392170f",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a03\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a03/stderr.log",
+      "bytes": 1851,
+      "sha256": "91880a988f717f55f9644b9e201dede629e379d779241fac5313efd5072e6ec3",
+      "git_blob": "05408e69abbfad74b92b0537f2c1bcc15fc29b2e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a04\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a04/ORIGINAL-WAIT.actual.json",
+      "bytes": 3903,
+      "sha256": "0fa851a52508fcc1e2c9a45fe69fbffb75b850695bec244a1033dec7fedad232",
+      "git_blob": "e5ed2cfc6927ad930379a79f73458620aebf35d9",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-a04\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a04/stderr.log",
+      "bytes": 1851,
+      "sha256": "4760940e83b351355a23195b1d7b3ba15941f43ff8e6ee60c0e991cef2278a08",
+      "git_blob": "288a5f30bce9fc67420c2b4391cafe3ea0614ce0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-final-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-final-a01/ORIGINAL-WAIT.actual.json",
+      "bytes": 3915,
+      "sha256": "e268c714ae4c3f4fe01b5b5f2fbc2818b0f509ef5fa2a62eb808e2f4166a7396",
+      "git_blob": "4a9ff5b83844f5fa0e0c6b58e17fe0ad3bd5815f",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-focused-final-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-final-a01/stderr.log",
+      "bytes": 2585,
+      "sha256": "1cab4036a33988b0d20a30143f12e756b0e2cd54958e8d3648a8c1920de895b5",
+      "git_blob": "43b19aa09414764304b66182f9e37b41b8b984ee",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a01/ORIGINAL-WAIT.actual.json",
+      "bytes": 5281,
+      "sha256": "695c5ca1acf0182d1e623814c14ee5dae21dd58ce31f99be4bcefcbc5683783d",
+      "git_blob": "901378f526c2dad2787c2780e3b8874c600712b0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a01/stdout.log",
+      "bytes": 2723,
+      "sha256": "b1c2d1be00bbe53f6e47ec8d859ecadf50758d1f23b8a9832afafe295262f688",
+      "git_blob": "870c545c6852ac854c2548094673073541930c4c",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-a02-finaldraft\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a02-finaldraft/ORIGINAL-WAIT.actual.json",
+      "bytes": 6293,
+      "sha256": "6b58ff5864caf456ae00b86768a605973159eec3d12153dff4810f69105d9b70",
+      "git_blob": "24503f49f48f31814dfab74233df6af2404e7ade",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-a02\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a02/ORIGINAL-WAIT.actual.json",
+      "bytes": 5279,
+      "sha256": "faad0e271e6bdf6ff11d9521f571a41fd66ad2b359d33677e5d0599edf1bb91a",
+      "git_blob": "9b6687da42f9a4fc76ab9409c178fda975077bda",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-a02\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a02/stdout.log",
+      "bytes": 44,
+      "sha256": "f645b10e21546f038559fbaaffb91f957d61ada15bed410cfd1fd85e15524598",
+      "git_blob": "17cc29132ec682be0f6e36dc853e2b67a5d206d6",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-a04\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a04/ORIGINAL-WAIT.actual.json",
+      "bytes": 5279,
+      "sha256": "cf0116f3b80d14a3fb24c338117ca1339ec668f231e27c048d0b472cc8703e7d",
+      "git_blob": "95de4efea91e1f34dfc2fef597f2091684935d84",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\checks-mypy-final-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-final-a01/ORIGINAL-WAIT.actual.json",
+      "bytes": 5291,
+      "sha256": "b9cd56f5a594d03b3ac08185c7b6ecd41fc74932d8860e18ac4065d612fb5b72",
+      "git_blob": "92393b5e99117b8d7e5188afe4143bbb80aefe13",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\deliver.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/deliver.py",
+      "bytes": 4776,
+      "sha256": "bffb88ac01141f88744f183a97ccee1345add88144276dc270b84e4c79429eb0",
+      "git_blob": "426cfdd56bc7736a1bc5cb3e2641d2215ca221f3",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\initial-index-a01\\CASE-INPUTS.source-only-template-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/initial-index-a01/CASE-INPUTS.source-only-template-a01.json",
+      "bytes": 1232,
+      "sha256": "08b01ec4f4b43d189c696f1548ff65555ca812b3678a425c91987eca539489f2",
+      "git_blob": "ea8e76f75a621d4bb56d37e0f912e4857c7a1914",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\initial-index-a01\\PUBLIC-SOURCE-INDEX.prepared-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/initial-index-a01/PUBLIC-SOURCE-INDEX.prepared-a01.json",
+      "bytes": 8271,
+      "sha256": "dee01b690cc952bbd05f378fda553d7ddaf073505f10cb30c5af7845f5f16e03",
+      "git_blob": "08a3f174c16c029805b097deffb79fa747e1288d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\native-tools\\postload_admission.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/native-tools/postload_admission.py",
+      "bytes": 12741,
+      "sha256": "d1587902bc5a6dcda868a6277ed0e8f8457ae497a27bf8e63c7727233d457ef1",
+      "git_blob": "6022f840ac36d2c06e487fc744c7d6b4d28c43cf",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\native-tools\\postload_root_scope.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/native-tools/postload_root_scope.py",
+      "bytes": 13582,
+      "sha256": "77d2e557f3275d338d176d646e70ee7d3c38ec8a53700366d38582e5550b8493",
+      "git_blob": "c81584cfd5c072c3fddc15378b46727610d9364d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\tools\\ck3_mod_acceptance_cases\\postload_bundle_loader.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/tools/ck3_mod_acceptance_cases/postload_bundle_loader.py",
+      "bytes": 4723,
+      "sha256": "bfb300d32d676242d365fd6469a4239b76e06430152dad76342e6be5d849c011",
+      "git_blob": "261cf3382493fa74e0d85cef931e4b933bab6d9a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/tools/ck3_mod_acceptance_cases/postload_public_models.py",
+      "bytes": 11149,
+      "sha256": "5563a6a9dd5cc444540f6683d8da949c64a591cbcfa0775313a445b6d55c18ad",
+      "git_blob": "71abc2254b824156904ab67cff77b31291049c70",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/tools/ck3_mod_acceptance_cases/r08_parent_postload_controller.py",
+      "bytes": 20618,
+      "sha256": "e051b485df65741e85d9f315dffc9ef76c6d54c5140cdf4ae08f39a306b7ef98",
+      "git_blob": "250daee6307c346c3d3c581487c3c12ca7cccad6",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/tools/ck3_mod_acceptance_cases/r08_parent_postload_one_day.py",
+      "bytes": 10169,
+      "sha256": "934b2209d64113649660c3c7476d5ae6396c3c701546fb571f0c34ed800316f7",
+      "git_blob": "8d2f223fe22956597d8c6abd2259c123f3577981",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\history\\pre-type-fix-a01\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/pre-type-fix-a01/tools/ck3_mod_acceptance_cases/r08_postload_adapter.py",
+      "bytes": 3883,
+      "sha256": "30ac97686aafd099d5ebc5e54e02bccd1eafab2aad5c633fb8862e4f403cc03d",
+      "git_blob": "a1b3c71e063de59dbfb807aad838027dcdc38a3b",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\run_checks.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/run_checks.py",
+      "bytes": 4085,
+      "sha256": "375c4339b47642fa66eb3529cd5ad4e0af9766f3149d2cc3c40573aa2ce52012",
+      "git_blob": "9ee03f49a2d8a39ec72f57bc438ca73011dfd313",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\seal_source.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/seal_source.py",
+      "bytes": 14013,
+      "sha256": "250cdb2c5195cfa0cf82b2df475b0626687b0c701cb37328bfa6e2efae8426d6",
+      "git_blob": "363a7e4305ef8edbc1e0a0de491ac1bb53bb2ec1",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\public\\test_postload_public.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/test_postload_public.py",
+      "bytes": 18612,
+      "sha256": "599bb782148c0c2e748e31d7065da2cc84a35c43437a2dd3d1f0f336b6930437",
+      "git_blob": "739a0c732ba3e7a75997c5d304889c9b3fdfff1a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\support\\project\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\exact_one_day_postcondition.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/support/project/ck3_autonomous_player/src/xar_autoplayer/bridge/exact_one_day_postcondition.py",
+      "bytes": 3545,
+      "sha256": "c1bff9b7f9183e202c58122b064da968ef72a1bf4c73b21bbb994222d91271c8",
+      "git_blob": "df31f55a35ea671bead273cc5d2ea9f277ffd56f",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\support\\project\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/support/project/ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "bytes": 25750,
+      "sha256": "b4a49efbb6e409001050aaf9ff8208bc73e9c0608f7161f2840fdf70c786c11b",
+      "git_blob": "669b43a0a6b0edf3338edc5ad054d9be64c2efe5",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\payload\\support\\project\\tools\\ck3_live_run_id.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/support/project/tools/ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f",
+      "git_blob": "a1967e829e4f2648066e52114668897983b38a25",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\CANONICAL-ARCHIVE-COPYPLAN.prepared-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/CANONICAL-ARCHIVE-COPYPLAN.prepared-a01.json",
+      "bytes": 46760,
+      "sha256": "c3d6d7ed98cdf02264ef24ffe5fe104496f71c78e8860410f376f0fa444fb464",
+      "git_blob": "6cdefa878b6f99d6ff9ca4e1559ca607e24bfb45",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\public-archive-a01\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/ARCHIVE-DELIVERY.actual-a01.json",
+      "bytes": 1753,
+      "sha256": "c615653daf38e5b91a0964e21c6761b1182accce5eb8a33127132a13d441a872",
+      "git_blob": "eb2917ab7122b4b94f1c9dfd958032f71385f3f0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0175-r12-positive-review-a01\\formal-dynamic-theme-ledger.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json",
+      "bytes": 21175,
+      "sha256": "6ec34b59306dfa77e6f7ec85082a6735bad9ac92573c25c04094d26e04457ff8",
+      "git_blob": "4f7d940bb2eebe38c8811a8a3a23c4cdefefc1f8",
+      "old": {
+        "bytes": 17486,
+        "sha256": "0e908aa7c3d03b760b261117477ec00755475e38030bee033664662b94f274fb",
+        "git_blob": "023f50742365b69bff2fbdcee618a35b88308d92"
+      },
+      "kind": "canonical_document"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\ck3-native-ai\\episode04-r13-locked-reroute-r0176-12004.md",
+      "target": "docs/ck3-native-ai/episode04-r13-locked-reroute-r0176-12004.md",
+      "bytes": 4596,
+      "sha256": "375e1919427a6d36e81fe75b422d49c7ecef040d9817b155a5843b7b11d3a982",
+      "git_blob": "e6cb504f3841321f7a9e60169caf0e0e46785355",
+      "old": {
+        "bytes": 2289,
+        "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b",
+        "git_blob": "e2df039ead7bdf259fe591dbd16253e7731384e8"
+      },
+      "kind": "canonical_document"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\ck3-native-ai\\episode04-gameplay-agent-use-12004.md",
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "bytes": 19305,
+      "sha256": "9856bb2dc7de6af4ede99dcfd27c5bb2574af3463dc35d9491d7a1766fadfe2b",
+      "git_blob": "467d8e8b1cb574258136883f710dbead9a584ca4",
+      "old": {
+        "bytes": 16881,
+        "sha256": "936f36272da6fd00b90081ac221cbf89aca281c0143aa2f3d894f8a0d49e86fe",
+        "git_blob": "f9a091990b1baffcad81bad8aa2d1bffee14e50b"
+      },
+      "kind": "canonical_document"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\ck3-native-ai\\episode04-current-execution-map-12004.md",
+      "target": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "bytes": 61610,
+      "sha256": "e83696ef433e72baa9e88ca720896b7d6a258fde53fcc62b0c6b607d41865f16",
+      "git_blob": "292399d1e40e2fa71799a9314acc55b084f47cc8",
+      "old": {
+        "bytes": 59186,
+        "sha256": "75ba016f5f48b519ecd188997509288b2063f0570867fb5648c5bfe663af2317",
+        "git_blob": "f038d243899915d2f9e2dffdfd7ab42dd339b276"
+      },
+      "kind": "canonical_document"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\candidates\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "target": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "bytes": 49124,
+      "sha256": "fe9922db4e833cfed490424efe5db08b406ddfb0a9cbfdc78a94752f74fd3399",
+      "git_blob": "41d1ade57ada7ca66fb3e741bd507aca7b4e4adb",
+      "old": {
+        "bytes": 46649,
+        "sha256": "3199b5d908d56c32c9322b68007abc6529958b3690dcaea222487c24337b73b8",
+        "git_blob": "cac50c5fd65e8b17dcd1f6e0e4a39ab513ea9255"
+      },
+      "kind": "canonical_document"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\build_candidates.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/build_candidates.py",
+      "bytes": 12969,
+      "sha256": "dbe17621c1455069f2f205fecc940bc339b5160c6c929d5243393b7ebcb4c534",
+      "git_blob": "1748509218f355995bc19a1f734d29bb203b31a0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\SNAPSHOT.source.md",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/SNAPSHOT.source.md",
+      "bytes": 2103,
+      "sha256": "c86404bfd3f75387b077559ac45fb26a98ef44042c346f6f929ac9a711c33be1",
+      "git_blob": "dc9a0f078f1c0ff8d0444c35d172d346f4cd5f13",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\R13-APPEND.source.md",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/R13-APPEND.source.md",
+      "bytes": 2170,
+      "sha256": "eef1fe26695e978b41df59e99aa9dc0a04f7661259974e753b9ac63b1230f53c",
+      "git_blob": "f1822208884e1295e1d5d6f71dee1b6ffc9c054c",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\CANDIDATE-MANIFEST.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/CANDIDATE-MANIFEST.actual-a01.json",
+      "bytes": 6452,
+      "sha256": "a5371e323a90f99194d62c41e86c5c608fe1823f4ef4d05265e28e66da81ea5a",
+      "git_blob": "951c73b987cb67e63d55173386f6e3f469693ffa",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\MYPY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/MYPY.actual-a01.json",
+      "bytes": 846,
+      "sha256": "0c77948aa50eb2387db2146310a6c3eb73b0b47b2694d139dc49cf9d56fd3d89",
+      "git_blob": "3980e27d869f2f66071dff3c549f07ec6c7ab8f2",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\mypy.stdout.actual.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/mypy.stdout.actual.txt",
+      "bytes": 43,
+      "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff",
+      "git_blob": "7df7328cfcc9aac186481be267e27a28345d2911",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\mypy.stderr.actual.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/mypy.stderr.actual.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\BUILD-CHECKS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/BUILD-CHECKS.actual-a01.json",
+      "bytes": 628,
+      "sha256": "43c3f4b030888b11c554fe37a4f838480c3894d620619753be5a0ae93206d098",
+      "git_blob": "a64bbcf38cbcd18dd8d944d882d359282527a535",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\build.stdout.actual.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/build.stdout.actual.txt",
+      "bytes": 284,
+      "sha256": "02bf2b3e70f76688461b5cb83cd1621ca83939a36959700bf860bf21246bc604",
+      "git_blob": "f266489dfdcdb5f484327856186f8f4e77c00416",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\build.stderr.actual.txt",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/build.stderr.actual.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\R13-ONCE-CONTACT-RECIPE.prepared-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/R13-ONCE-CONTACT-RECIPE.prepared-a01.json",
+      "bytes": 5915,
+      "sha256": "bb87a9cd970f4de1f7cb89dc646b736a190067275fc08c3fe367bac6560f21ad",
+      "git_blob": "a7a1fe11271477d70ec295f8b193a733c0ed476f",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\R13-ONCE-CONTACT-RECIPE.prepared-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/R13-ONCE-CONTACT-RECIPE.prepared-a02.json",
+      "bytes": 5952,
+      "sha256": "f02d6c90ed449a540be3c3c6bcf282ff1041fdb33620d5ddc226f31d558db5e8",
+      "git_blob": "caee9010ac7d401a197aa4768794383518b1774a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\r13_contract.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/r13_contract.py",
+      "bytes": 5393,
+      "sha256": "b57fdd9ccd4f095f9013c84b08a768d7556dac4ea33de0b128aa34478c063847",
+      "git_blob": "d3073bf7d403d0b7a4a9cf76ef8d705ebb040ebc",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\SOURCE-CHECKS.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/SOURCE-CHECKS.actual-a01.json",
+      "bytes": 1328,
+      "sha256": "0277f37c5bcf5bee239e10b4845b546131473f1aeaa416962ec5a906af0279ba",
+      "git_blob": "61b01b19b22ca6e527e05c880c98dfa8007ecc43",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\guard-tests.stderr.actual.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/guard-tests.stderr.actual.txt",
+      "bytes": 665,
+      "sha256": "48d495c5af9d26c0a54f9ff9aa6fcd18d71f45e30cb6d6af6fc8a9eee18af3d7",
+      "git_blob": "13d75b4583fb6372f58d97feeee63b707c16b35d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\mypy.stdout.actual.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/mypy.stdout.actual.txt",
+      "bytes": 44,
+      "sha256": "718df785efbbd4b57e63b5f64aff2c5b5592e433447681f759b307f97a3ec96a",
+      "git_blob": "7c966e0ceeaf5833f3449664690345e5826f212e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\r13_once_contacts.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/r13_once_contacts.py",
+      "bytes": 20674,
+      "sha256": "007aac49fd60c1c3c1366edd46906900e2c31e51bb1daade662d15928ef03f9a",
+      "git_blob": "0a271561ac1bd61b70af66faa7c349bea34a548e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\r13_contract.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/r13_contract.py",
+      "bytes": 5756,
+      "sha256": "8a10358baafab6d87eabd4277a8560c308a2a29f9be05b77ebcdf49047e6122f",
+      "git_blob": "ecf5668583a796648afd6db410cdd38ac25da01c",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\test_r13_guards.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/test_r13_guards.py",
+      "bytes": 4323,
+      "sha256": "9d160f3b7b358d12933e5161f243f8b4e2efe56c450006b42ae2ad89a39ef574",
+      "git_blob": "fcf15c17ee8b30c916274f86b8e9300958665e95",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\run_modified_checks.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/run_modified_checks.py",
+      "bytes": 2103,
+      "sha256": "36b9718eb5ab28940428092de9f06e92fef6c06b8a2e3ea668fb99a7ec9edd18",
+      "git_blob": "1874069e9a7abc638a0e69a8964c0adc564c4f0c",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\mypy-empty.ini",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/mypy-empty.ini",
+      "bytes": 7,
+      "sha256": "e96b3933c1194a7a75b0bfa014b8f663c0739cc06fa33ab40777aae3c132d6a8",
+      "git_blob": "f8b1844b64aa325804c11149e915ab8c63c3c4fb",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\SOURCE-CHECKS.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/SOURCE-CHECKS.actual-a02.json",
+      "bytes": 1330,
+      "sha256": "4189989c0ae79ea7535bbb902440305481d418a78880ac11a10047d627d022c6",
+      "git_blob": "7bbf13497b30be1842e783e15db6282091de39ca",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\mypy.stdout.actual.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/mypy.stdout.actual.txt",
+      "bytes": 44,
+      "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76",
+      "git_blob": "49a1e82b673afb21ac31d8b4a25c43daabf4f4d3",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\mypy.stderr.actual.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/mypy.stderr.actual.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\guard-tests.stdout.actual.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/guard-tests.stdout.actual.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-a02\\guard-tests.stderr.actual.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/guard-tests.stderr.actual.txt",
+      "bytes": 809,
+      "sha256": "309f8648f5e6375bc23f25c6078d8d07a72d61f0772e1d3555427ca36d2f3847",
+      "git_blob": "20c4729d79077bc45c8cd7e1998b1ed266cfff66",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\capacity\\SOURCE-BOUND-WITHHELD.actual-a03.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/capacity/SOURCE-BOUND-WITHHELD.actual-a03.json",
+      "bytes": 1367,
+      "sha256": "ba075ac6643e75bcd93d4b19573f3b64d3b5ccef94a1750e465d6ee28c948c33",
+      "git_blob": "80900d46c237ef840b7986886d4a50fdf023c8b0",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\capacity\\SOURCE-BOUND-SINGLE-EXTRACTION.actual-a04.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/capacity/SOURCE-BOUND-SINGLE-EXTRACTION.actual-a04.json",
+      "bytes": 7101,
+      "sha256": "c994c3ec92dd79104bd26af17b4251309998339b461b1da76e6ff2a1d181687f",
+      "git_blob": "283c45eb22b3d51e0b0327047f8d1ebc306b3570",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\COMMAND.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/COMMAND.actual.json",
+      "bytes": 856,
+      "sha256": "02c736497f3dd828be5331e29796e038b4c2e254888b9d000130ec8635bd2c5c",
+      "git_blob": "74944913f80e6fc79e4923038b825f1ef4db7a8e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\ONCE-CLAIM.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ONCE-CLAIM.actual.json",
+      "bytes": 975,
+      "sha256": "3ae268154a93d8c83694967c2b71e924fbe9e10d708115b2f104fa5e1dbacce8",
+      "git_blob": "57a59e6df14ce132c30e20b5505497bee389760e",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\LATEST-RELEASE.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/LATEST-RELEASE.actual.json",
+      "bytes": 430,
+      "sha256": "551c70556a6de897681ba3a8dae9b7d2e1beff6843ee63adfe9a101f966784f9",
+      "git_blob": "56e081a145274bc05822ed5ad7f79e9a6b4a1ba1",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\SOURCE-STAT-BEFORE.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/SOURCE-STAT-BEFORE.actual.json",
+      "bytes": 239,
+      "sha256": "bb35b1afaa924b531db32a91b126bbaf9f2826ede20fb793326f71c426514968",
+      "git_blob": "58dd32ae3bc25f784f548fb116a19843c098796a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\PARSER-SANITY.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/PARSER-SANITY.actual.json",
+      "bytes": 83,
+      "sha256": "efea55634f1ea6a6ac08bbf83b50d533056f18174fd8bbd0f05471c50b26036f",
+      "git_blob": "a8aa61b389ff622e376c738c36e026d8956f0d76",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\OWNED-PROCESS.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/OWNED-PROCESS.actual.json",
+      "bytes": 93,
+      "sha256": "002a9ecd5ebf52cf2a529a571ae05713d56513585181d3d288f7c5a4d66010c6",
+      "git_blob": "6da604a7141f4f81abe609b0c7e41cc772740142",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\OWNED-PRIORITY.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/OWNED-PRIORITY.actual.json",
+      "bytes": 91,
+      "sha256": "c1bc29e83a87bc6e283e908eaf668d58f9c483750cacc073298164d72a510343",
+      "git_blob": "829161c49e7730863f2269b47a7ce35a1fb19ff7",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\EXTRACTION.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/EXTRACTION.actual.json",
+      "bytes": 23107,
+      "sha256": "eb7a0b07fa5e4d2c1d4390fa2cb84fde000118add701fcbc403d7c7b352453c3",
+      "git_blob": "0615336363fff8ee28f93f09a65e672c9d8ef854",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\source-frame-PTS.actual.csv",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-frame-PTS.actual.csv",
+      "bytes": 14825,
+      "sha256": "5e381d252d2e82f76ec8fff3cf1764a40a5535047040f96fc34e8ab92b130a72",
+      "git_blob": "2ce13a99ed5fba94c9685257490526dd073d768d",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\ffmpeg-stderr.actual.log.gz",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ffmpeg-stderr.actual.log.gz",
+      "bytes": 9946,
+      "sha256": "2caac0b4fbaad23a67b56e463e3fda8a2b77b6a68ad6769976592938a2169fe5",
+      "git_blob": "72263173d0672fa1e9a019f99d119936fad3d193",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\GZIP-CRC-AND-OWNED-WAIT.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/GZIP-CRC-AND-OWNED-WAIT.actual.json",
+      "bytes": 579,
+      "sha256": "9b7153853a4327b47197012664b524127e28ac2e1cc21e2b704389aeaa587438",
+      "git_blob": "d50a6ead0d34c2c4f9b6bc7a31482d305f7d04a2",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\image-dimensions.actual.jsonl",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/image-dimensions.actual.jsonl",
+      "bytes": 10478,
+      "sha256": "1c20358bf47443f1937f043feac29fd69d04b193dba46d697fe0d5f684e470bf",
+      "git_blob": "d4c545b7202589bfba79af4eddf7c00872123d8b",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\usage-by-sheet.actual.csv",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/usage-by-sheet.actual.csv",
+      "bytes": 1905,
+      "sha256": "04f23795aa9ebcb402d7487f9cab16f326685aff51774c727b99fc040f2bc811",
+      "git_blob": "4739e9892d40fa336e55c693d11bbb2340613a9a",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\AI-CONTINUOUS-REVIEW.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/AI-CONTINUOUS-REVIEW.actual-a01.json",
+      "bytes": 3314,
+      "sha256": "4ff7d9baf5288b2c7338ca5c82dbcb385f25d405bf6f2d586c949a4d3a846a8a",
+      "git_blob": "c70b5626a4273d7c12d7c03eb37cb66fd8f40699",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\PROCESS-CENSUS-AFTER.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/PROCESS-CENSUS-AFTER.actual.json",
+      "bytes": 435,
+      "sha256": "f553f7e8c58d82b1daf33a940e7e8f150531130a48718ea4d8e395f9155ea705",
+      "git_blob": "290cd485b132c692fa9f3ae4adf7d9746b02a6cd",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\DELIVERY.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/DELIVERY.actual-a01.json",
+      "bytes": 3233,
+      "sha256": "b15840c08dfd8ae850a64d1a596e1504ced04dd15413c9031931bb0935bebff6",
+      "git_blob": "29587a340446c4c4f99c91d10e129daf4c594c67",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\SMALLARCHIVE-COPYPLAN.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/SMALLARCHIVE-COPYPLAN.actual-a01.json",
+      "bytes": 5463,
+      "sha256": "7b69811a5f8881db4eca415ba04ef80b3d506358e747d282e2cc694d24c66c2e",
+      "git_blob": "bc5502397aff591f113ded0a5e7357bb87d1a7d3",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+      "bytes": 4850,
+      "sha256": "cbfcdfdffb377a3aec38ee256ec88b0b122eb28a7e78c6203f6dc7630fcb9d03",
+      "git_blob": "45a677d0149c7b872609129160e0ff8fa40772c6",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\PUBLICATION-COPYPLAN.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/PUBLICATION-COPYPLAN.actual-a01.json",
+      "bytes": 24671,
+      "sha256": "b5c018c233ed447a6a4aeb9b042a7f0f7d292a656dbb6330b6818ebad7a7b8a5",
+      "git_blob": "a6eae8a9b63f8c881fb0d93bdb48d3d1a4ca7c78",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\TIMELINE-DELTA.source-only.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/TIMELINE-DELTA.source-only.actual-a01.json",
+      "bytes": 2229,
+      "sha256": "a9c7feb44c78dccfe42d4fa882a7aa3a0c23980479de6337cc3f5bf81607e04f",
+      "git_blob": "a4eaef84dbcb63a3ca2d6bdc7d72b08db76af375",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\media-ledger-a01\\DELIVERY.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/DELIVERY.actual-a02.json",
+      "bytes": 3228,
+      "sha256": "52d41181bb6551c351db1d0d8faf1be101f8170f9bd62dbba41490485b293e18",
+      "git_blob": "41e21314a41040331664c5697f7b01c8ab63b8a1",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\ROOT-RESEARCH-DOCUMENT-ADOPTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/ROOT-RESEARCH-DOCUMENT-ADOPTION.actual-a01.json",
+      "bytes": 3176,
+      "sha256": "31a7d3bea780cd9a03127df51699add0d8860f30903e9b0d534170288b2ec852",
+      "git_blob": "4620c8d529d07042bfd2c6ec23fd31ec2233b141",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\second-source-a01\\episode04-r08-player-parent-opportunity-input-contract-12004.md",
+      "target": "docs/ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md",
+      "bytes": 11435,
+      "sha256": "3783f822841e295a957c5215967ebea36f151ff83fe5008f084379c746b7f2ca",
+      "git_blob": "f5ce263334775d922a2674760ad4d6fcdf55de49",
+      "old": null,
+      "kind": "canonical_document"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\research-a01\\PROPOSED-SOURCE-INDEX.a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/source-index.json",
+      "bytes": 3880,
+      "sha256": "075f6a76db60c4d6ef4eb11d7a061dd2622ea1db9097dbc7ee7618b8d959f1ff",
+      "git_blob": "bd3635eaa012eabdcfd84f5223d339aee6aca6ee",
+      "old": null,
+      "kind": "immutable_source_archive"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\second-source-a01\\.gitattributes",
+      "target": ".gitattributes",
+      "bytes": 133331,
+      "sha256": "0681074d5f01ab420df51866d49a9e3b4d3660e0aea42960fbe7879a76944acb",
+      "git_blob": "75c4c5891e5637cbc3faae102a997887072d3ce8",
+      "old": {
+        "bytes": 132905,
+        "sha256": "39fe37926e5f83eab059f1af76310eb8d431d4443cd6e9d8b22fa22ff8505b36",
+        "git_blob": "468b1a11cbacb25a878a80eb5be14f1725d236aa"
+      },
+      "kind": "canonical_document"
+    }
+  ],
+  "raw_whitespace_exceptions": [
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/native-wip/SOURCE-ASSEMBLY.prepared-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/FORK-SOURCE-FREEZE.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/fork/SOURCE-CONTRACT.prepared-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/CASE-INPUTS.source-only-template-a04.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/PUBLIC-SOURCE-INDEX.prepared-a04.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/candidate/native-tools/postload_owner_binding.py",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a01/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a02-finaldraft/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a02-finaldraft/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a03/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a03/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a04/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-a04/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-final-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-focused-final-a01/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a01/stdout.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a02-finaldraft/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a02/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a02/stdout.log",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-a04/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/checks-mypy-final-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/initial-index-a01/CASE-INPUTS.source-only-template-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/public/history/initial-index-a01/PUBLIC-SOURCE-INDEX.prepared-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/build.stdout.actual.txt",
+    "docs/ck3-native-ai/evidence/episode04-r13-formal8-ledger-20261021-a01/mypy.stdout.actual.txt",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/R13-ONCE-CONTACT-RECIPE.prepared-a02.json",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/guard-tests.stderr.actual.txt",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/image-dimensions.actual.jsonl",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/mypy.stdout.actual.txt",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/guard-tests.stderr.actual.txt",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-a02/mypy.stdout.actual.txt",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/source-frame-PTS.actual.csv",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/usage-by-sheet.actual.csv"
+  ],
+  "plan_self_target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/EXACT-SOURCE-LEDGER-COPYPLAN.prepared-a01.json",
+  "purpose": "Immutable source-only archive, limited R13 formal8 and file-reading research; no native/tool runtime installation or new qualification",
+  "production_code_changes": false,
+  "default_whitespace_proof": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\second-source-a01\\DEFAULT-WHITESPACE.actual-a01.json",
+    "bytes": 9641,
+    "sha256": "5d7e3f5047ec84fcbbf99554cd539bd16d27188f53e921c7fab8e95f0a59df47"
+  },
+  "execution_admitted": false
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "xar.e04.root.research-document-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:48:50Z",
+  "decision": "ADOPT_SOURCE_BOUND_RESEARCH_DOCUMENT_FOR_FILE_READING_AGENTS",
+  "markdown": {
+    "source": "research-a01/PROPOSED-SHARED-KNOWLEDGE.a02.md",
+    "bytes": 11071,
+    "sha256": "ea8a38ef723908b6cd0559015377ec3df8ba02760bc0629dfea24c280b5711ba",
+    "target": "docs/ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md"
+  },
+  "index": {
+    "source": "research-a01/PROPOSED-SOURCE-INDEX.a02.json",
+    "bytes": 3880,
+    "sha256": "075f6a76db60c4d6ef4eb11d7a061dd2622ea1db9097dbc7ee7618b8d959f1ff",
+    "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/source-index.json"
+  },
+  "Root_review": {
+    "full_original_markdown": "actual tool53c0d2",
+    "full_a02_delta": "actual tool3250c3; expected diff exit1",
+    "source_index_read": "actual tool380620",
+    "prior_primary_reads": "retained Root actual reads of scheduler, parent and source spans; no new native action",
+    "independent_R225_archive_targets": "actual toolf910b3",
+    "R223_committed_target": "actual toolbda468"
+  },
+  "research_conclusions": [
+    "exact one-day clock progress does not guarantee a player parent invocation or observation opportunity",
+    "A+B selects a candidate task containing the player; same-instance producer/calendar and actual coverage C+D are separate and still missing",
+    "null loaded context is a legal control-flow branch and does not prove zero maintenance",
+    "foreign counts do not establish Character population, scheduler frequency or parent ABI",
+    "budget maintenance scenarios and observed payment are distinct; reserve cash and commitments before optional wartime construction"
+  ],
+  "actual_first110_publication_binding": {
+    "commit": "992ca426939c19dcb62375344fc4a230e86a38f1",
+    "Root_W_readback": "tool4c9cd7 exit0",
+    "Root_remote_readback": "tool28f67e exit0",
+    "Root_final_read": "tool45be70",
+    "R225_result_target": "docs/ck3-native-ai/evidence/episode04-r225-live-close-and-source-followup-20261021/raw/r225/R08-PARENT-RESULT.json",
+    "R225_raw_target": "docs/ck3-native-ai/evidence/episode04-r225-live-close-and-source-followup-20261021/raw/r225/parent.raw.ndjson",
+    "note": "This dated actual binding resolves the research candidate's earlier pending-first-commit paragraph without rewriting its immutable source snapshot."
+  },
+  "agent_use": {
+    "file_reading_gameplay_agent": "can explicitly read and cite rules, source pins, input gaps and conservative action constraints",
+    "ordinary_planner_autoload": false,
+    "new_programmatic_consumer_wiring": false,
+    "helper_existence_is_not_scene_execution_proof": true
+  },
+  "qualifications_unchanged": {
+    "research": "10/14",
+    "business": "7/11",
+    "formal": "8/11 from separate R13 receipt",
+    "B": "0/2",
+    "ABC": "0/3",
+    "full_R08": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null
+  },
+  "native_build_SYSTEM_SDK_Game_execution_admitted": false,
+  "review_due_utc": "2026-10-22T03:15:00Z"
+}

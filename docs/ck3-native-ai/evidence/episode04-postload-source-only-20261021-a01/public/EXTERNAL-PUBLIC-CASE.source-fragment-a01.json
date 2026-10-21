@@ -1,0 +1,10 @@
+{
+  "source_only_not_a_complete_product_catalog": true,
+  "ordinary_planner_autoload": false,
+  "adapter": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload_adapter.py",
+    "config": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_postload.json"
+  },
+  "actual_run_ready": false,
+  "native_Q": null
+}

@@ -1,0 +1,14 @@
+candidate\tools\ck3_mod_acceptance_cases\postload_public_models.py:267: error: Returning Any from function declared to return "dict[str, object]"  [no-any-return]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_controller.py:14: error: Module "ck3_mod_acceptance_cases.postload_public_models" does not explicitly export attribute "FilePin"  [attr-defined]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_controller.py:36: error: Skipping analyzing "ck3_live_run_id": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_controller.py:379: error: Skipping analyzing "xar_autoplayer.bridge.exact_one_day_postcondition": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\native-tools\prepare_parent_postload_admission.py:30: error: Skipping analyzing "ck3_live_run_id": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\native-tools\prepare_parent_postload_admission.py:36: error: Skipping analyzing "xar_autoplayer.bridge.nonwar_private_build": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\native-tools\prepare_parent_postload_admission.py:36: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+candidate\native-tools\prepare_parent_postload_admission.py:37: error: Skipping analyzing "xar_autoplayer.bridge.version_identity": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_one_day.py:11: error: Module "ck3_mod_acceptance_cases.postload_public_models" does not explicitly export attribute "FilePin"  [attr-defined]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_one_day.py:31: error: Module "ck3_mod_acceptance_cases.r08_parent_postload_controller" does not explicitly export attribute "pin"  [attr-defined]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_one_day.py:44: error: Skipping analyzing "ck3_live_run_id": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_one_day.py:45: error: Skipping analyzing "xar_autoplayer.bridge.war_payment_observations_v1": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+candidate\tools\ck3_mod_acceptance_cases\r08_parent_postload_one_day.py:121: error: Module "ck3_mod_acceptance_cases.r08_parent_postload_controller" does not explicitly export attribute "pin"  [attr-defined]
+Found 12 errors in 4 files (checked 9 source files)

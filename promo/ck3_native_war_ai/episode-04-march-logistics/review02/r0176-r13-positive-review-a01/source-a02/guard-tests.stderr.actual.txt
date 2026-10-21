@@ -1,0 +1,11 @@
+test_fill_exact_and_concatenated_boundaries (__main__.Guards.test_fill_exact_and_concatenated_boundaries) ... ok
+test_numeric_aliases_refused_at_all_selected_window_fields (__main__.Guards.test_numeric_aliases_refused_at_all_selected_window_fields) ... ok
+test_second_start_failure_still_waits_original_once (__main__.Guards.test_second_start_failure_still_waits_original_once) ... ok
+test_timeout_kills_and_reaps_same_original (__main__.Guards.test_timeout_kills_and_reaps_same_original) ... ok
+test_truncated_JPEG_is_rejected (__main__.Guards.test_truncated_JPEG_is_rejected) ... ok
+test_uint64_roundtrip_and_wrong_type_refusal (__main__.Guards.test_uint64_roundtrip_and_wrong_type_refusal) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.042s
+
+OK

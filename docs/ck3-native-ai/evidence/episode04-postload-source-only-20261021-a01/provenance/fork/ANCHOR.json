@@ -1,0 +1,11 @@
+{
+  "anchor_bytes": 29,
+  "anchor_hex": "488bc453554881ec980000004c8970e0488bea488b92c00100004c8bf1",
+  "anchor_rva": "42956864",
+  "anchor_sha256": "ee16d61e71e672c87a648a3ce6c12c6e9f1f1d5c2b5387a9206b9c88603892f3",
+  "execution_rva": "42956890",
+  "new_binary_qualification": false,
+  "next_instruction": "4c8bf1 mov r14,rcx",
+  "source_asm": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+  "source_asm_sha256": "36eecdf78b4e958833f90ee903e1cd2cb607e0a1d5e8ea1adb0fc3e1d14f040f"
+}

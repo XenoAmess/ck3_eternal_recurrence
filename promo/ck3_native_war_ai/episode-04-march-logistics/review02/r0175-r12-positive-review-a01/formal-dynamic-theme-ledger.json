@@ -1,7 +1,7 @@
 {
   "schema": "xar.e04.formal_dynamic_theme_accepted_source_shots.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-20T22:51:43Z",
+  "observed_at_utc": "2026-10-21T02:23:09Z",
   "role": "derived tiny ledger bound to actual Root decision; no new media review",
   "unit": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
   "definition": "Each R03..R13 theme counts once after at least one accepted original-M source shot; no full-suite or finished-film equivalence",
@@ -15,9 +15,9 @@
     "bytes": 27122,
     "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
   },
-  "accepted_count": 7,
+  "accepted_count": 8,
   "total_themes": 11,
-  "percentage": 63.63636363636363,
+  "percentage": 72.72727272727273,
   "themes": [
     {
       "theme": "R03",
@@ -259,15 +259,60 @@
     },
     {
       "theme": "R13",
-      "status": "pending_accepted_original_M_source_shot",
-      "accepted_shots": []
+      "status": "accepted_original_M_positive_source_shot",
+      "accepted_shots": [
+        {
+          "run": "R0176",
+          "span_seconds_half_open": [
+            0,
+            30
+          ],
+          "span_frames_half_open": [
+            0,
+            900
+          ],
+          "source_fps": 30,
+          "source_time_base": "1/1000",
+          "last_selected_PTS_ms": 29967,
+          "Root_decision_repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+          "native_army_id": 18,
+          "native_actor_id": 31254,
+          "native_lock_progress": 95108,
+          "native_lock_cutoff": 50000,
+          "native_old_front": 8653,
+          "native_new_target": 8645,
+          "native_final_alternate_arrival_confirmed": true,
+          "alternate_endpoint_within_selected_clip": false,
+          "visible_suffix_change_seconds_open_closed": [
+            4,
+            10
+          ],
+          "visible_front_direction_change_seconds_open_closed": [
+            10,
+            20
+          ],
+          "exact_native_event_encoded_PTS": null,
+          "AI_all_contact_sheets": 57,
+          "AI_actual_valid_cells": 900,
+          "Root_contact_sheets_actually_viewed": [
+            0,
+            7,
+            18,
+            37,
+            56
+          ],
+          "Root_valid_contact_cells_actually_viewed": 68,
+          "human_1x": false,
+          "human_signoff": false
+        }
+      ]
     }
   ],
   "explicit_limits": [
     "No single-hop refusal/equal-cutoff shot credit.",
     "No boarding-fee or supply/refill causation from this route clip.",
-    "No extra-credit R13; no finished chapter, full film, human1x, signoff or OneDrive delivery.",
-    "No new raw copy/hash, packet pass, decoding, image generation or render; existing technical QA reused.",
+    "The R0175/R12 source gives no R13 credit; R13 is credited only by separately adjudicated R0176 [0,30). No finished chapter/full film/human1x/signoff/OneDrive credit.",
+    "This derived ledger update performs no media copy/hash/decode/render. Separate R0176 one-pass900-frame extraction and Root independent raw hash are bound by its receipt; retained full-raw QA reused.",
     "R0221 original strict decoder rc1/soft7MiB failure and whole35.166s non-PASS preserved; only [0,33) accepted.",
     "Native target+1 is independently bound; visible Army+10 is not wholly attributed, no exact native encoded PTS.",
     "R0217 only17 direct-v2 physical debit calls/subtotal236 accepted; county total remains null/fullR04false,5emptyDATAcalls excluded.",
@@ -275,7 +320,8 @@
     "R0194 only Split [0,15)/450 frames: selected GUI250->75 plus independent native75+175=250; child175 not simultaneously GUI readable; no merge251/physical250 or fullR09 film credit.",
     "R0196 only [32,52)/600 frames: boarding panel/count1162 unchanged, supply300/300 unchanged, gold260->257 with independently bound payer31254 raw300000; no universal fee quote, maintenance attribution, exact callback PTS or fullR07 suite credit.",
     "R0174 R11 only original-M Halt [0,20)/600 source frames; immediate-after stale route and original exit1 retained; independent empty-route read plus next-day stationary native evidence are separate and next-day is outside clip. Exact Halt PTS null; no fresh ABC, human1x or finished-film credit.",
-    "R0191 R03 only original-M [0,40)/1200 frames and seven source-qualified siege-only events summing11; cached1184to1173 and physical1174to1163 separate; no allworld/wholeinterval total, exact PTS, wholeR03 card, human1x or finished film."
+    "R0191 R03 only original-M [0,40)/1200 frames and seven source-qualified siege-only events summing11; cached1184to1173 and physical1174to1163 separate; no allworld/wholeinterval total, exact PTS, wholeR03 card, human1x or finished film.",
+    "R0176/R13 only original-M three-state [0,30)/900 frames; alternate endpoint outside45s raw, exact native event encodedPTS null, no all-variants/wholecase/historical-cleanup/human1x/final-film credit."
   ],
   "full_R12_variant_suite_film_qualified": false,
   "human_1x": false,
@@ -405,12 +451,32 @@
         "bytes": 5474,
         "sha256": "51fc740573c9e4f275d42475dcf368a95beebb38df9cf0ff12bf9518ae75ca95"
       }
+    },
+    {
+      "observed_at_utc": "2026-10-21T02:23:09Z",
+      "accepted_count": 8,
+      "accepted_themes": [
+        "R03",
+        "R04",
+        "R06",
+        "R07",
+        "R09",
+        "R11",
+        "R12",
+        "R13"
+      ],
+      "previous_ledger_sha256": "0e908aa7c3d03b760b261117477ec00755475e38030bee033664662b94f274fb",
+      "Root_decision": {
+        "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+        "bytes": 4850,
+        "sha256": "cbfcdfdffb377a3aec38ee256ec88b0b122eb28a7e78c6203f6dc7630fcb9d03"
+      }
     }
   ],
   "current_Root_decision": {
-    "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/ROOT-R03-FORMAL-ADJUDICATION.actual-a01.json",
-    "bytes": 5474,
-    "sha256": "51fc740573c9e4f275d42475dcf368a95beebb38df9cf0ff12bf9518ae75ca95"
+    "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+    "bytes": 4850,
+    "sha256": "cbfcdfdffb377a3aec38ee256ec88b0b122eb28a7e78c6203f6dc7630fcb9d03"
   },
   "Root_decisions": [
     {
@@ -447,6 +513,11 @@
       "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0191-r03-positive-review-a01/ROOT-R03-FORMAL-ADJUDICATION.actual-a01.json",
       "bytes": 5474,
       "sha256": "51fc740573c9e4f275d42475dcf368a95beebb38df9cf0ff12bf9518ae75ca95"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+      "bytes": 4850,
+      "sha256": "cbfcdfdffb377a3aec38ee256ec88b0b122eb28a7e78c6203f6dc7630fcb9d03"
     }
   ],
   "full_R06_qualified": false,
@@ -457,5 +528,23 @@
   "full_R07_qualified": false,
   "full_R07_variant_film_qualified": false,
   "full_R11_variant_film_qualified": false,
-  "full_R03_card_film_qualified": false
+  "full_R03_card_film_qualified": false,
+  "full_R13_variant_film_qualified": false,
+  "R13_alternate_endpoint_in_selected_clip": false,
+  "historical_R0176_cleanup_accepted": false,
+  "scope_wording_history": [
+    {
+      "observed_at_utc": "2026-10-21T02:23:09Z",
+      "previous_ledger_sha256": "0e908aa7c3d03b760b261117477ec00755475e38030bee033664662b94f274fb",
+      "old_R12_scoped_limit_wording": [
+        "No extra-credit R13; no finished chapter, full film, human1x, signoff or OneDrive delivery.",
+        "No new raw copy/hash, packet pass, decoding, image generation or render; existing technical QA reused."
+      ]
+    }
+  ],
+  "R13_evidence_retention": {
+    "purpose": "active Episode04 formal shot source, native binding and final edit QA; source raw and existing native originals remain necessary inputs",
+    "review_due_utc": "2026-10-22T02:30:00Z",
+    "not_indefinite_or_automatic_renewal": true
+  }
 }

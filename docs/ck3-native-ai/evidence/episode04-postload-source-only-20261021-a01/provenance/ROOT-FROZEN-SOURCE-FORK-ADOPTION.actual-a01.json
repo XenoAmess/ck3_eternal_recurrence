@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.root-postload-source-fork-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:30:43Z",
+  "reviewer": "/root",
+  "status": "SOURCE_ONLY_FORK_POINT_ACCEPTED",
+  "source_freeze": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-post-window-source-0130-a01/native-postload-a01/SOURCE-FREEZE.actual-a01.json",
+    "bytes": 12430,
+    "sha256": "80c722a71e596d4cc3e2410042a80e6c897e9baa6918c833626f41f8f71a266e"
+  },
+  "production_patch": {
+    "bytes": 100227,
+    "sha256": "cc684a594d8545eed34caf1291abf46d4186d25a89610c16f298f93e298a6d7c"
+  },
+  "review": {
+    "independent_peer": "/root/readwatch_review",
+    "peer_result": "Final source pins, original final waits and eight real rejection counterexamples verified; limited source-only adoption",
+    "root_contract_full_read": "019dae",
+    "root_owner_binding_full_read": "523207",
+    "root_delivery_full_read": "5f54cd",
+    "final_model_methods": 16,
+    "final_strict_sources": 6,
+    "original_final_check_waits": [0, 0]
+  },
+  "semantics": {
+    "mode": "player-parent-postload-execution-once-v1",
+    "execution_rva": "42956890",
+    "loaded_RDX_null_is_retained": true,
+    "target_qualification": "owner plus clock plus source and stack ABI; context drift diagnostic is separate",
+    "entryExact": false,
+    "parent_return_observed": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null
+  },
+  "execution_grants": {
+    "new_source_and_bounded_Python_checks_within_financial_scope": true,
+    "native_build": false,
+    "SYSTEM": false,
+    "EXE_or_native_cold": false,
+    "Game_or_Steam": false
+  },
+  "limits": [
+    "New typed runner, prepare/public adapter and source-bound new qualification remain necessary.",
+    "Old entry17 and pointer-read21 qualification do not qualify this new mode.",
+    "Initial arm exact DR7 and active owned-event masked predicate are different producer contracts; preserve exact full-six restore evidence."
+  ],
+  "review_by_utc": "2026-10-22T02:30:00Z"
+}

@@ -1,0 +1,166 @@
+{
+  "schema": "xar.e04.postload.public-source-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:37:18.272860+00:00",
+  "copies": [
+    {
+      "role": "immutable native typed fork",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\native-postload-a01\\candidate-a01\\postload_wire.py",
+        "bytes": 5032,
+        "sha256": "d3c440abf80f285848c7c44acbcb9bd8eae3680eb520103d84d530f88f91de1a"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_wire.py",
+        "bytes": 5032,
+        "sha256": "d3c440abf80f285848c7c44acbcb9bd8eae3680eb520103d84d530f88f91de1a"
+      }
+    },
+    {
+      "role": "immutable native typed fork",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\native-postload-a01\\candidate-a01\\postload_models.py",
+        "bytes": 5316,
+        "sha256": "e06a867c928beac9bee281fab69624ca8099f4294ee4137df7774bbe5e9af093"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_models.py",
+        "bytes": 5316,
+        "sha256": "e06a867c928beac9bee281fab69624ca8099f4294ee4137df7774bbe5e9af093"
+      }
+    },
+    {
+      "role": "immutable native typed fork",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\native-postload-a01\\candidate-a01\\postload_owner_binding.py",
+        "bytes": 7116,
+        "sha256": "e37aee9122ca4748cf662ad0bf5105c782c1384b65de4898aebd4ae1658ddc9e"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\postload_owner_binding.py",
+        "bytes": 7116,
+        "sha256": "e37aee9122ca4748cf662ad0bf5105c782c1384b65de4898aebd4ae1658ddc9e"
+      }
+    },
+    {
+      "role": "immutable native typed fork",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\native-postload-a01\\candidate-a01\\parent_postload_contract.py",
+        "bytes": 14116,
+        "sha256": "b17178d8bf775e5d8eede32e8b71c5bed754601f9d3b4828b6adc1ae15652b9a"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\native-tools\\parent_postload_contract.py",
+        "bytes": 14116,
+        "sha256": "b17178d8bf775e5d8eede32e8b71c5bed754601f9d3b4828b6adc1ae15652b9a"
+      }
+    },
+    {
+      "role": "unchanged shared same-client collection/cleanup",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+        "bytes": 6940,
+        "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+        "bytes": 6940,
+        "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+      }
+    },
+    {
+      "role": "unchanged shared same-client collection/cleanup",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+        "bytes": 49534,
+        "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+        "bytes": 49534,
+        "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+      }
+    },
+    {
+      "role": "unchanged shared same-client collection/cleanup",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+        "bytes": 10850,
+        "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+        "bytes": 10850,
+        "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+      }
+    },
+    {
+      "role": "unchanged shared same-client collection/cleanup",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+        "bytes": 12638,
+        "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+        "bytes": 12638,
+        "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+      }
+    },
+    {
+      "role": "unchanged shared same-client collection/cleanup",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+        "bytes": 24161,
+        "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+        "bytes": 24161,
+        "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+      }
+    },
+    {
+      "role": "new postload semantic fork of shared lifecycle",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\revision-a02\\pointer_read_public_models.py",
+        "bytes": 11604,
+        "sha256": "6e3283657d0b2db5a490dd3fc9077d565c724ff0492d5f4894f4bbaaef23abec"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\postload_public_models.py",
+        "bytes": 11149,
+        "sha256": "5563a6a9dd5cc444540f6683d8da949c64a591cbcfa0775313a445b6d55c18ad"
+      }
+    },
+    {
+      "role": "new postload semantic fork of shared lifecycle",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\revision-a02\\r08_parent_pointer_read_controller.py",
+        "bytes": 20590,
+        "sha256": "ec25cd4dfa697a4cfc82ecdfbe2d5aad4993752de680078beeb294467a76e53c"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_controller.py",
+        "bytes": 20618,
+        "sha256": "e051b485df65741e85d9f315dffc9ef76c6d54c5140cdf4ae08f39a306b7ef98"
+      }
+    },
+    {
+      "role": "new postload semantic fork of shared lifecycle",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\revision-a02\\r08_parent_pointer_read_one_day.py",
+        "bytes": 10634,
+        "sha256": "27d51183057fb3c460bd60d924c9b76f102ea6b4279c12b524dbf3d575848f4e"
+      },
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-postload-cold-0230-a01\\public-adapter-a01\\candidate\\tools\\ck3_mod_acceptance_cases\\r08_parent_postload_one_day.py",
+        "bytes": 9751,
+        "sha256": "9e230a3c61df56bc8d47d11df4c9f5b759b49126a311d06b4ca062111dad8653"
+      }
+    }
+  ],
+  "qualified": false,
+  "native_game_sdk_steam": false,
+  "legacy_Q_reused": false
+}

@@ -1,0 +1,100 @@
+{
+  "schema": "xar.capacity.independent-finite-purpose-financial.v1",
+  "phase": "financial-source-planning-only",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T02:30:33.227217+00:00",
+  "admitted": true,
+  "financial_reservation_admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-source-ledger-0315-20261021-a01",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01",
+  "aggregate_ceiling_bytes": 8388608,
+  "all_inclusive_aggregate_ceiling_bytes": 8388608,
+  "D_peak_ceiling_bytes": 16777216,
+  "reserved_future_bytes_by_volume": {
+    "C:/": 8388608,
+    "D:/": 16777216
+  },
+  "hard_deadline_utc": "2026-10-21T03:15:00Z",
+  "Root_authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\ROOT-SOURCE-LEDGER-SUCCESSOR-PURPOSE.actual-a01.json",
+    "bytes": 2823,
+    "sha256": "354e79e053c9436e77aa9984011e8b0e7f7adb9779fbf53fa7cbe63c5e0acfa8"
+  },
+  "C_subscope_ceiling_bytes": {
+    "research_source_documentation": 32768,
+    "media_method_documentation": 262144,
+    "public_source_only_archive": 1310720,
+    "Root_review": 65536,
+    "capacity": 262144,
+    "publisher_new_root_W_growth_all_TEMP_and_logs": 6455296
+  },
+  "C_accounting": "New root plus nonnegative W growth and C TEMP share8MiB; report insufficient lane before writing.",
+  "source_preparation_execution_admitted": true,
+  "bounded_source_checks_execution_admitted": true,
+  "source_only_archive_execution_admitted": true,
+  "Git_mutation_execution_admitted": false,
+  "W_existing_object_FF_execution_admitted": false,
+  "copy_to_W_execution_admitted": false,
+  "stage_execution_admitted": false,
+  "commit_execution_admitted": false,
+  "push_execution_admitted": false,
+  "native_build_execution_admitted": false,
+  "native_runner_execution_admitted": false,
+  "SYSTEM_execution_admitted": false,
+  "EXE_execution_admitted": false,
+  "SDK_execution_admitted": false,
+  "Game_execution_admitted": false,
+  "Steam_execution_admitted": false,
+  "media_extraction_execution_admitted": false,
+  "rendering_execution_admitted": false,
+  "D_frozen_worktree_write_execution_admitted": false,
+  "later_publication_limit": "Max2 commits/pushes after Root exact-plan admission; no Git mutation now.",
+  "old_publication_independent_closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r09-source-ledger-0315-a01\\capacity\\OLD-PUB0230-INDEPENDENT-CLOSED.actual-a01.json",
+    "bytes": 1693,
+    "sha256": "47bc8d0a84bc2528ecfa628a543b09199ccc7831b2b9c8ed6818a08a17f7e49c"
+  },
+  "full_future_consumption_policy": "Full C8/D16 until owner closure; no actual subtraction or physical credit.",
+  "all_claims_BASE_budget": {
+    "C_known_future_bytes": 8388608,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25778192384,
+    "C_floor_margin_bytes": 52202754048,
+    "C_projected_whole_volume_upper_bound_bytes": 437456355328,
+    "C_quota_margin_bytes": 630308864,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 15429632
+  },
+  "physical_source": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-21T02:30:33.227257+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77980946432,
+      "available_to_caller_bytes": 77980946432,
+      "total_free_bytes": 77980946432,
+      "entire_volume_used_allocation_upper_bound_bytes": 433152999424,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-21T02:30:33.227257+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21641261056,
+      "available_to_caller_bytes": 21641261056,
+      "total_free_bytes": 21641261056,
+      "entire_volume_used_allocation_upper_bound_bytes": 478448746496,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "quota_exception": null,
+  "physical_credit_bytes": 0,
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 468795,
+    "sha256": "89a8a02f271cfbba4a108ce152ae041e224bfebfaa1a8aeeac4e40b0f3b82d20"
+  },
+  "expected_adopted_revision": 601,
+  "review_due_utc": "2026-10-22T03:15:00Z"
+}

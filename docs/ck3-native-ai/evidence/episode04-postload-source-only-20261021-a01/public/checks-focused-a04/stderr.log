@@ -1,0 +1,16 @@
+test_21_case_contract_is_distinct_and_cancel_last (__main__.PostloadPublicTests.test_21_case_contract_is_distinct_and_cancel_last) ... ok
+test_RDX_null_and_decimal_birth_preserved_in_independent_root_scope (__main__.PostloadPublicTests.test_RDX_null_and_decimal_birth_preserved_in_independent_root_scope) ... ok
+test_missing_null_bool_float_and_old_root_modes_refused (__main__.PostloadPublicTests.test_missing_null_bool_float_and_old_root_modes_refused) ... ok
+test_new_Q_absent_legacy_or_partial_cannot_open_any_file (__main__.PostloadPublicTests.test_new_Q_absent_legacy_or_partial_cannot_open_any_file) ... ok
+test_numeric_root_declarations_cannot_impersonate_true (__main__.PostloadPublicTests.test_numeric_root_declarations_cannot_impersonate_true) ... ok
+test_pin_safe_numbers_reject_bool_float_and_unsafe_integer (__main__.PostloadPublicTests.test_pin_safe_numbers_reject_bool_float_and_unsafe_integer) ... ok
+test_prewatcher_expired_reserve_creates_no_scope_and_never_sleeps (__main__.PostloadPublicTests.test_prewatcher_expired_reserve_creates_no_scope_and_never_sleeps) ... ok
+test_ready_binds_exec_DR0_not_character_data_watch (__main__.PostloadPublicTests.test_ready_binds_exec_DR0_not_character_data_watch) ... ok
+test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK (__main__.PostloadPublicTests.test_real_standard_Selection_load_no_R10_preload_and_missingQ_zero_SDK) ... ok
+test_root_false_declarations_refuse_before_process_inspection (__main__.PostloadPublicTests.test_root_false_declarations_refuse_before_process_inspection) ... ok
+test_unknown_day_is_never_replayed_and_after_only_after_cleanup (__main__.PostloadPublicTests.test_unknown_day_is_never_replayed_and_after_only_after_cleanup) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.234s
+
+OK
