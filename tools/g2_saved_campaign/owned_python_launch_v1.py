@@ -9,7 +9,7 @@ from pathlib import Path
 import sys
 
 
-def _loaded_image_v1():
+def _loaded_image_v1() -> str:
     if os.name != "nt":
         raise OSError("owned direct launch qualification is Windows-only")
     import ctypes
@@ -24,7 +24,7 @@ def _loaded_image_v1():
     return buffer.value
 
 
-def owned_python_launch_v1():
+def owned_python_launch_v1() -> tuple[str, dict[str, str]]:
     """Return this interpreter's exact direct image and explicit fixture env.
 
     No PATH lookup, PID substitution, shell/launcher following or child adoption.
@@ -33,13 +33,17 @@ def owned_python_launch_v1():
     """
     actual=_loaded_image_v1()
     base=getattr(sys,"_base_executable",None)
-    if not base or not os.path.samefile(actual,base):
+    if not isinstance(base, str) or not base or not os.path.samefile(actual,base):
         raise ValueError("actual interpreter image differs from declared base executable")
-    paths=[]
-    for value in (*sys.path,*os.environ.get("PYTHONPATH","").split(os.pathsep)):
-        if value:
-            absolute=str(Path(value).resolve())
-            if absolute not in paths:paths.append(absolute)
+    paths: list[str] = []
+    python_path = os.environ.get("PYTHONPATH")
+    inherited = () if python_path is None else tuple(python_path.split(os.pathsep))
+    # Python interprets an empty search entry as the caller's current directory.
+    # Freeze that meaning before a fixture child changes its working directory.
+    for value in (*sys.path, *inherited):
+        absolute = str(Path(value).resolve())
+        if absolute not in paths:
+            paths.append(absolute)
     env=dict(os.environ)
     env["PYTHONPATH"]=os.pathsep.join(paths)
     return str(Path(actual).resolve()),env

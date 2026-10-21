@@ -1852,5 +1852,97 @@ class PythonMcpResultDomainTests(unittest.TestCase):
             "legacy_cache_failed_after_one_return": True, "new_original_postcheck_passed": True,
             "ordinary_cycle_credit": 0, "peak_allocation_upper_bytes": max(peaks)})
 
+
+class QueueGuardInstallationTests(unittest.TestCase):
+    """Execute the actual wrappers and admission parser without filesystem fixtures."""
+
+    def test_guarded_base_then_child_override_cannot_bypass_request_guard(self) -> None:
+        hits: list[str] = []
+
+        class Base:
+            next_sequence = False
+            _current_saved_active_permit_v1 = None
+
+            def check_before(self, tool: object, arguments: object) -> None:
+                hits.append("base_check")
+
+            async def call(self, session: core.CurrentSavedOriginalSessionV1,
+                           request: object, path: Path) -> object:
+                hits.append("base_call")
+                return None
+
+        class Session:
+            async def call_tool(self, name: str, arguments: JsonObject, *,
+                                read_timeout_seconds: float) -> core.CurrentSavedToolResultV1:
+                raise AssertionError("transport must not run")
+
+        core.install_current_saved_queue_guard_v1(Base, runtime_root=REPO)
+
+        class Child(Base):
+            def check_before(self, tool: object, arguments: object) -> None:
+                hits.append("child_check")
+
+            async def call(self, session: core.CurrentSavedOriginalSessionV1,
+                           request: object, path: Path) -> object:
+                hits.append("child_call")
+                return None
+
+        core.install_current_saved_queue_guard_v1(Child, runtime_root=REPO)
+        child = Child()
+        with self.assertRaises(ValueError):
+            asyncio.run(child.call(Session(), {"sequence": False,
+                "tool": core.CAPABILITIES_TOOL, "arguments": {}}, REPO / "never-written"))
+        with self.assertRaises(ValueError):
+            child.check_before(core.CAPABILITIES_TOOL, {})
+        self.assertEqual(hits, [])
+
+    def test_same_class_idempotence_rejects_new_runtime_and_method_override(self) -> None:
+        class Queue:
+            def check_before(self, tool: object, arguments: object) -> None:
+                return None
+
+            async def call(self, session: core.CurrentSavedOriginalSessionV1,
+                           request: object, path: Path) -> object:
+                return None
+
+        core.install_current_saved_queue_guard_v1(Queue, runtime_root=REPO)
+        original = (Queue.call, Queue.check_before)
+        self.assertIs(core.install_current_saved_queue_guard_v1(
+            Queue, runtime_root=REPO), Queue)
+        self.assertEqual((Queue.call, Queue.check_before), original)
+        with self.assertRaisesRegex(ValueError, "cannot rebind runtime root"):
+            core.install_current_saved_queue_guard_v1(Queue, runtime_root=REPO / "tools")
+
+        async def replacement(self: object, session: core.CurrentSavedOriginalSessionV1,
+                              request: object, path: Path) -> object:
+            raise AssertionError("modified method must be rejected before use")
+
+        setattr(Queue, "call", replacement)
+        with self.assertRaisesRegex(ValueError, "methods changed"):
+            core.install_current_saved_queue_guard_v1(Queue, runtime_root=REPO)
+
+    def test_partial_override_inherits_original_under_a_new_guard(self) -> None:
+        class Base:
+            next_sequence = False
+            _current_saved_active_permit_v1 = None
+
+            def check_before(self, tool: object, arguments: object) -> None:
+                raise AssertionError("original check must not run")
+
+            async def call(self, session: core.CurrentSavedOriginalSessionV1,
+                           request: object, path: Path) -> object:
+                raise AssertionError("original call must not run")
+
+        core.install_current_saved_queue_guard_v1(Base, runtime_root=REPO)
+
+        class Child(Base):
+            def check_before(self, tool: object, arguments: object) -> None:
+                raise AssertionError("child check must not run")
+
+        core.install_current_saved_queue_guard_v1(Child, runtime_root=REPO / "tools")
+        self.assertIsNot(Child.call, Base.call)
+        with self.assertRaises(ValueError):
+            Child().check_before(core.CAPABILITIES_TOOL, {})
+
 if __name__ == "__main__":
     unittest.main()

@@ -1640,18 +1640,45 @@ class CurrentSavedOriginalSessionV1(Protocol):
     ) -> CurrentSavedToolResultV1: ...
 
 
+@dataclass(frozen=True)
+class _QueueGuardBindingV1:
+    runtime_root: str
+    original_call: object
+    original_check: object
+    guarded_call: object
+    guarded_check: object
+
+
+_QUEUE_GUARD_BINDINGS: dict[type[object], _QueueGuardBindingV1] = {}
+
+
 def install_current_saved_queue_guard_v1(
     queue_type: type[object], *, runtime_root: Path,
 ) -> type[object]:
     """Wrap the original factory methods at the single legacy dynamic boundary."""
     from collections.abc import Awaitable
     from types import FunctionType
+    root = str(runtime_root.resolve())
     marker: object = getattr(queue_type, "_current_saved_guard_installed_v1", None)
-    if marker is _ISSUER:
+    binding = _QUEUE_GUARD_BINDINGS.get(queue_type)
+    if binding is not None:
+        need(marker is _ISSUER
+             and queue_type.__dict__.get("call") is binding.guarded_call
+             and queue_type.__dict__.get("check_before") is binding.guarded_check,
+             "installed Queue methods changed after guarding")
+        need(_same_path(root, binding.runtime_root), "Queue guard cannot rebind runtime root")
         return queue_type
-    need(marker is None, "Queue class cannot carry a foreign guard installer")
-    original_call = queue_type.__dict__.get("call")
-    original_check = queue_type.__dict__.get("check_before")
+    inherited = [_QUEUE_GUARD_BINDINGS[base] for base in queue_type.__mro__[1:]
+                 if base in _QUEUE_GUARD_BINDINGS]
+    need(marker is None or marker is _ISSUER and bool(inherited),
+         "Queue class cannot carry a foreign guard installer")
+    original_call: object = getattr(queue_type, "call", None)
+    original_check: object = getattr(queue_type, "check_before", None)
+    for parent in inherited:
+        if original_call is parent.guarded_call:
+            original_call = parent.original_call
+        if original_check is parent.guarded_check:
+            original_check = parent.original_check
     need(isinstance(original_call, FunctionType) and isinstance(original_check, FunctionType),
          "actual original cold factory call and check_before functions")
     if not isinstance(original_call, FunctionType) or not isinstance(original_check, FunctionType):
@@ -1693,6 +1720,8 @@ def install_current_saved_queue_guard_v1(
     setattr(queue_type, "check_before", check_before)
     setattr(queue_type, "call", call)
     setattr(queue_type, "_current_saved_guard_installed_v1", _ISSUER)
+    _QUEUE_GUARD_BINDINGS[queue_type] = _QueueGuardBindingV1(
+        root, original_call, original_check, call, check_before)
     return queue_type
 
 
