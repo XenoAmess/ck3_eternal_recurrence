@@ -8,6 +8,7 @@ the exact source can provide final legal candidates.
 from __future__ import annotations
 
 import uuid
+import math
 from typing import Mapping
 
 from ..all_lifestyle_catalog_v1 import PERK_TARGETS
@@ -190,6 +191,41 @@ def parse_player_lifestyle_focus_private_v1(
     }
 
 
+def _lifestyle_metadata_snapshot_v1(driver: object) -> dict[str, object]:
+    """Read the existing semantic frame without exporting unused history."""
+    missing = object()
+    reader: object = getattr(driver, "take_snapshot_without_native_command_history", missing)
+    if reader is missing:
+        reader = getattr(driver, "take_snapshot", None)
+    if not callable(reader):
+        raise TypeError("lifestyle snapshot provider is not callable")
+    snapshot: object = reader()
+    if not isinstance(snapshot, Mapping):
+        raise TypeError("lifestyle snapshot must be a mapping")
+    checked: dict[str, object] = {}
+    for key, value in snapshot.items():
+        if not isinstance(key, str):
+            raise TypeError("lifestyle snapshot keys must be strings")
+        checked[key] = value
+    return checked
+
+
+def _lifestyle_focus_request_v1(
+    driver: object, request: dict[str, object], request_id: str,
+) -> object:
+    sender: object = getattr(getattr(driver, "endpoint", None), "send", None)
+    waiter: object = getattr(getattr(driver, "state", None), "wait_for_command_result", None)
+    timeout: object = getattr(driver, "command_timeout_seconds", None)
+    if not callable(sender) or not callable(waiter):
+        raise TypeError("lifestyle request provider is not callable")
+    if isinstance(timeout, bool) or not isinstance(timeout, (int, float)):
+        raise TypeError("lifestyle command timeout must be numeric")
+    if timeout <= 0 or not math.isfinite(timeout):
+        raise ValueError("lifestyle command timeout must be finite and positive")
+    sender(request)
+    return waiter(request_id, timeout)
+
+
 def query_player_lifestyle_focus_private_v1(
     driver: object, *, expected_revision: int | None = None,
     query_step: str = FOCUS_QUERY_STEP,
@@ -205,7 +241,7 @@ def query_player_lifestyle_focus_private_v1(
         raise ValueError("unsupported private lifestyle focus query step")
     if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
         return {"status": "trial_off", "step": query_step}
-    starting = driver.take_snapshot()
+    starting = _lifestyle_metadata_snapshot_v1(driver)
     played = starting.get("played_character")
     player_id = played.get("character_id") if isinstance(played, Mapping) else None
     public_revision = starting.get("revision")
@@ -226,7 +262,7 @@ def query_player_lifestyle_focus_private_v1(
     ):
         return {"status": "paused_frame_unavailable", "step": query_step}
     request_id = f"life-focus-query-{uuid.uuid4().hex}"
-    driver.endpoint.send({
+    response = _lifestyle_focus_request_v1(driver, {
         "type": "execute_step", "protocol_version": 1,
         "request_id": request_id, "step": query_step,
         "expected_revision": native_revision,
@@ -234,11 +270,8 @@ def query_player_lifestyle_focus_private_v1(
         "episode_run_id": episode_run_id,
         "expected_date_raw": date_raw,
         "expected_player_character_id": player_id,
-    })
-    response = driver.state.wait_for_command_result(
-        request_id, driver.command_timeout_seconds
-    )
-    ending = driver.take_snapshot()
+    }, request_id)
+    ending = _lifestyle_metadata_snapshot_v1(driver)
     source_frame = {
         "paused": starting["paused"],
         "snapshot_id": starting["snapshot_id"],

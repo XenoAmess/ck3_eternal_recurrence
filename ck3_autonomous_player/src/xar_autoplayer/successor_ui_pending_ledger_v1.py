@@ -62,7 +62,9 @@ def owner_source_epoch_v1() -> str:
              "bridge/driver.py",
              "bridge/timeline_control_ack_v1.py",
              "family_marriage_formal_consumer.py",
-             "bridge/war_contract.py")
+             "bridge/war_contract.py",
+             "bridge/cached_native_clock_summary_v1.py",
+             "bridge/player_lifestyle_private_transport_v1.py")
     return digest({name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in names})
 
 
