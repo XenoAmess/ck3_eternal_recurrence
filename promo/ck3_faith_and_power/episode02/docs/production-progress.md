@@ -1,5 +1,15 @@
 # 第二期执行进度
 
+## 2026-10-21：完整29:02.4首版已生成，本机本地交付
+
+`machine_id: 4-8e1c2f1861`；来源读取时间`2026-10-21T06:47:13.147453+00:00`。[完整MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)已由原渲染PID16976实际wait0生成：92,236,911字节，SHA-256 `a3ffe10bbea6578bc706072cadadec6dce4df05cddf612585f5149fab5308c53`。画面／编排1742.400秒＝29:02.400，封装probe1742.421354秒；1440p30／H.264、AAC48kHz双声道。完整严格解码、probe、PTS、音频信号四个原检查exit0；FULL准入41scope容量与配额检查通过，实际runtime来源已绑定。88/88段、24/24来源绑定槽及六批22句新声均已用于本片。技术完成不代表24项研究全部正向或整产品业务验收。
+
+[交付记录](local-review-delivery-20261021.md)同时链接实际脚本、中英／双语字幕、原回执与有限6帧审阅。状态`ENCODED_REVIEW_PENDING`：尚无人工整片1×／完整试听签字。H1仅普通Native300／225与主要GUI200／150显示对照，四Native报价仍未完成；H2为独立Parent世界一次创建，头衔18373持有人65865并非付款人31254，礼仪领袖仍31254；H3最终许可unknown且未发动。器物267供奉缓存4→8／麦加+8，两人物总量不变，刷新和净归因未知，钱包不变不证明免费。R27／R29行政失败闭场及OS0false／retained null／public run2保留，R28正常退出。
+
+本机按用户持续local-only偏好交付，不要求OneDrive；不据此永久保留全部过程资产。共享研究可被registered MCP参考，`ordinary_auto_consumes=false`；最终H研究补充当时仍为待Root合入的候选，不追写冻结C16已apply。
+
+06:58Z整合补注：最终H研究模块、事实JSON、注册MCP消费者及朝圣optional episode修复已应用。Root合入后实际执行MCP消费者1项、朝圣定向4项、修改范围strict类型检查4文件及diff检查，全部通过；没有启动游戏或重渲染。历史经验差与许可未知仍保持，完整交付和剩余研究边界见[本地交付记录](local-review-delivery-20261021.md)。
+
 ## 10月21日：R0021主要名额上限已证，H1改为合法降级后共母档两臂
 
 `machine_id: 4-8e1c2f1861`；本条于`2026-10-20T22:02:08.332025+00:00`读取已封原件。B34/R0021共12次公共调用、升格／HOF／GHW提交0、take0；实际人物31254／Faith103／site32匹配，但本信仰已有3处主要圣地。原生最终许可和正常要求均false、bypass原值0；十资源报价0及原文“剩余2次”免费行动不解除数量上限。免费次数只按原文／截图呈现，未绑定typed数值getter。[008明细](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-promote-008.actual-results.json)、[原PNG](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/screenshots/r21-promote-blocked-a01.png)及[组合结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/live/4-8e1c2f1861--faith-engine--R0021/case-output/h1-h2-ghw-composite-result.json)分别保留原生、像素和PARTIAL业务边界；[21:43:56Z闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b34-h-major-retry-a01/SCENE-CLOSURE.a03.actual.json)实际正常、游戏与原host／run／allocator等待0，keeper停止、fresh Steam离线审图及1024×768恢复，CAS12952空资源，业务仍false。

@@ -452,6 +452,96 @@ def _source(path: str, sha256: str, first: int, last: int) -> dict[str, object]:
     return {"game_relative_path": path, "sha256": sha256, "line_ranges": [[first, last]]}
 
 
+class HResourcePair(TypedDict):
+    piety: int
+    gold: int
+
+
+class HistoricalHReference(TypedDict):
+    """Historical source values; never a current permission or execution policy."""
+    source_document: str
+    analysis_status: Literal["h1_closed_h2_h3_pending", "historical_h_source_closed"]
+    historical_machine_id: Literal["4-8e1c2f1861"]
+    ordinary_hof_quote: HResourcePair
+    ordinary_fresh_native_full10_quotes: Literal[2]
+    promoted_hof_display_quote: HResourcePair
+    promoted_hof_quote_evidence: Literal["display_only"]
+    promoted_hof_native_full10: None
+    promoted_hof_native_can_confirm: None
+    promoted_hof_reader_unavailable_reason: str
+    four_native_hof_quotes_complete: Literal[False]
+    actual_hof_fee_savings_observed: Literal[False]
+    h2_actual_document: str | None
+    h3_actual_document: str | None
+    state_observed: Literal[False]
+    native_legality: None
+    action_ready: Literal[False]
+    ordinary_auto_consumes: Literal[False]
+    historical_evidence_is_current_state: Literal[False]
+
+
+class ArtifactPairReference(TypedDict):
+    source_document: str
+    raw_totals_unchanged: Literal[True]
+    native_text_and_site_cache_changed: Literal[True]
+    refresh_time_known: Literal[False]
+    world_effects_applied_observed: Literal[False]
+    site_attribution_observed: Literal[False]
+    total_payment_observed: Literal[False]
+    action_ready: Literal[False]
+    ordinary_auto_consumes: Literal[False]
+
+
+_H_OBSERVATION_DOCUMENT = 'promo/ck3_faith_and_power/episode02/docs/knowledge/h-common-mother-arms-hof-ghw-observed.json'
+_ARTIFACT_PAIR_REFERENCE: ArtifactPairReference = {
+    "source_document": _H_OBSERVATION_DOCUMENT,
+    "raw_totals_unchanged": True, "native_text_and_site_cache_changed": True,
+    "refresh_time_known": False, "world_effects_applied_observed": False,
+    "site_attribution_observed": False, "total_payment_observed": False,
+    "action_ready": False, "ordinary_auto_consumes": False,
+}
+_H_OBSERVED_REFERENCE: HistoricalHReference = {'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/h-common-mother-arms-hof-ghw-observed.json',
+ 'analysis_status': 'historical_h_source_closed',
+ 'historical_machine_id': '4-8e1c2f1861',
+ 'ordinary_hof_quote': {'piety': 300, 'gold': 225},
+ 'ordinary_fresh_native_full10_quotes': 2,
+ 'promoted_hof_display_quote': {'piety': 200, 'gold': 150},
+ 'promoted_hof_quote_evidence': 'display_only',
+ 'promoted_hof_native_full10': None,
+ 'promoted_hof_native_can_confirm': None,
+ 'promoted_hof_reader_unavailable_reason': 'selected_terms_nonempty_parameters_not_yet_qualified',
+ 'four_native_hof_quotes_complete': False,
+ 'actual_hof_fee_savings_observed': False,
+ 'h2_actual_document': _H_OBSERVATION_DOCUMENT,
+ 'h3_actual_document': _H_OBSERVATION_DOCUMENT,
+ 'state_observed': False,
+ 'native_legality': None,
+ 'action_ready': False,
+ 'ordinary_auto_consumes': False,
+ 'historical_evidence_is_current_state': False}
+
+
+def _validate_historical_h_reference(reference: HistoricalHReference) -> None:
+    if reference["source_document"] != _H_OBSERVATION_DOCUMENT:
+        raise ValueError("H source document differs")
+    for pair in (reference["ordinary_hof_quote"], reference["promoted_hof_display_quote"]):
+        if any(type(value) is not int or value < 0 for value in pair.values()):
+            raise ValueError("H resource source must use nonnegative exact integers")
+    if (reference["promoted_hof_quote_evidence"] != "display_only"
+            or reference["promoted_hof_native_full10"] is not None
+            or reference["promoted_hof_native_can_confirm"] is not None
+            or reference["four_native_hof_quotes_complete"] is not False
+            or reference["actual_hof_fee_savings_observed"] is not False):
+        raise ValueError("H1 GUI evidence cannot grant Native quote or payment")
+    for document in (reference["h2_actual_document"], reference["h3_actual_document"]):
+        if document is not None and document != _H_OBSERVATION_DOCUMENT:
+            raise ValueError("H actual source document differs")
+    if (reference["state_observed"] is not False or reference["native_legality"] is not None
+            or reference["action_ready"] is not False or reference["ordinary_auto_consumes"] is not False
+            or reference["historical_evidence_is_current_state"] is not False):
+        raise ValueError("H historical research cannot grant current action readiness")
+
+
 _RESEARCH: dict[str, object] = {
     "schema": "xar.ck3.holy-site-episode02-research.v1",
     "ck3_build": "1.20.0.4",
@@ -486,7 +576,8 @@ _RESEARCH: dict[str, object] = {
     ],
     "topics": {
         "artifacts": {
-            "documents": [_REFERENCE, _ARTIFACTS, "docs/ck3-native-ai/holy-site-relic-actions-python12004.md"],
+            "documents": [_REFERENCE, _ARTIFACTS, "docs/ck3-native-ai/holy-site-relic-actions-python12004.md", _H_OBSERVATION_DOCUMENT],
+            "artifact_pair_reference": _ARTIFACT_PAIR_REFERENCE,
             "rules": [
                 "Personal, court and holy-site equipment are distinct inventories/slots; a holy-site equipped flag is not personal equipment.",
                 "item_modifier_definition and original item effect text describe the item, not the actor's actual net gain.",
@@ -541,7 +632,8 @@ _RESEARCH: dict[str, object] = {
             "unknowns": ["Current actor totals/original source text, piety_level_impact actual beneficiaries and selected-site net contribution."],
         },
         "head_of_faith": {
-            "documents": [_REFERENCE, _POWER],
+            "documents": [_REFERENCE, _POWER, _H_OBSERVATION_DOCUMENT],
+            "historical_h_reference": _H_OBSERVED_REFERENCE,
             "rules": [
                 "Spiritual-head creation can count qualifying ordinary sites; control, holder Faith and the complete native requirements remain separate.",
                 "Piety, gold/treasury prices and non-main-Rite/eminent-site multipliers have separate source scopes; do not multiply all resources together.",
@@ -593,7 +685,7 @@ _RESEARCH: dict[str, object] = {
             "unknowns": ["Current choices/configured activity quote/Start permission; whole-journey cost is not established, nor real elapsed travel and independent actual reward/return state."],
         },
         "great_holy_war": {
-            "documents": [_REFERENCE, _POWER],
+            "documents": [_REFERENCE, _POWER, _H_OBSERVATION_DOCUMENT],
             "rules": [
                 "Religion unlock flags, the Faith's current permission, preparation object and linked live War are distinct states.",
                 "The 120-day condition has source-specific target exceptions; a preparation object or requested action does not prove a declared war.",
@@ -624,6 +716,7 @@ _RESEARCH: dict[str, object] = {
 
 def episode02_research() -> dict[str, object]:
     """Return independent source-valued knowledge without reading the world."""
+    _validate_historical_h_reference(_H_OBSERVED_REFERENCE)
     _validate_r22_source_events(_R22_SOURCE_ANALYZED_EVENTS)
     _validate_source_only_events(_SOURCE_ONLY_EVENTS)
     _validate_source_analyzed_events(_R18_SOURCE_ANALYZED_EVENTS)

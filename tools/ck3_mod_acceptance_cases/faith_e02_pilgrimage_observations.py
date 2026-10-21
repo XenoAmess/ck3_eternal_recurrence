@@ -1,4 +1,4 @@
-"""Optional milestone reads with one validated JSON and persisted-field contract."""
+﻿"""Optional milestone reads with one validated JSON and persisted-field contract."""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -217,7 +217,8 @@ def _frame(value: object, binding: MilestoneBinding) -> NativeFrame | None:
                 and _integer(diagnostic.get("bridge_pid"), 1) == _integer(hello.get("pid"), 1) == binding["bridge_pid"]
                 and _integer(diagnostic.get("connection_generation"), 1) ==
                     _integer(hello.get("connection_generation"), 1) == binding["connection_generation"]
-                and "episode_run_id" in raw and raw["episode_run_id"] == binding["episode_run_id"]
+                and type(raw.get("episode_run_id")) is type(binding["episode_run_id"])
+                and raw.get("episode_run_id") == binding["episode_run_id"]
                 and raw.get("paused") is True and raw.get("map_ready") is True
                 and raw.get("backend_id") == "native-headless" and raw.get("source") == "injected-dll-named-pipe"
                 and hello.get("ck3_build_match") is True and hello.get("game_adapter_id") == "ck3-1.20.0.4-msvc-x64"):

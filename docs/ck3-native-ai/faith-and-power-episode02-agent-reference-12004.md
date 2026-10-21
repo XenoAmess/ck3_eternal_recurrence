@@ -94,3 +94,23 @@ Root另逐一核对摘要13个仓库引用与9项实际原版文件SHA，未发�
 [1701 实际变体](../../promo/ck3_faith_and_power/episode02/docs/knowledge/stress-threshold-1701-r0022-display-variant.json)：五份原版来源 SHA 相同，但当前两个 saved scopes、三个显示项 native `3/6/8` 不符合旧专用合同。现场先调用旧专用路由，真实拒绝形状后依用户首显策略选 native3，本次扣105金；这是动态报价的一次后验，不是未来固定价格，也不是新 registry 已注册。下次智能体可先查研究，再以 fresh native scopes/options/合法性决定，不能把“来源已分析”当“当前可执行”。
 
 Start 配置费本次70金；途中31.25、15、105金分开记录。全程钱包净差混有自然收入和其他事件，不称纯旅费或总报价。每批陌生事件照原生显示与合法策略继续，离线来源分析并行；隐藏后续不得预先认定发生。
+
+## H1 显示对照与独立 H2／H3 来源
+
+[H共同母档／双臂／领袖与大圣战事实](../../promo/ck3_faith_and_power/episode02/docs/knowledge/h-common-mother-arms-hof-ghw-observed.json)由既有知识MCP的 `topics.head_of_faith.historical_h_reference` 及建制／大圣战topic文档指针返回。该引用只供检索历史实证，当前许可仍null、action_ready=false、ordinary_auto_consumes=false，不增加action或执行策略。
+
+来源机器`4-8e1c2f1861`：R23合法降级Jerusalem，主要数3→2并NativeSave新母档bf894；R24／R25从同一新母档分别恢复。R24普通状态两次fresh Native full10报价为300虔诚／225金币。R25已独立证纳杰夫32升格、主要数2→3且升格付款0；升格后的领袖窗口原PTS70.067帧显示200虔诚／150金币。这两项显示数分别少100和75，但**主要臂的完整Native建制报价和CanConfirm仍未知**，不能说已省钱、已付款或已建制。
+
+R25原query因3个named parameters未获reader资格而selected_terms unavailable，full10／Can／cooldown均null；这是读取范围缺口，不是原版拒绝或资金不足。普通臂两个major计数也不是“领地内合资格主要县”计数。R24／R25正常闭场不覆盖各自businessfalse、R25 PARTIAL及原错误；原R21容量拒绝与当时未执行候选原样保留，新进展另记。
+
+R29的H2／H3从独立Parent de0f冷恢复，不能剪成R25续局，也没有借用R24价格。两次fresh Native full10报价均为300虔诚／225金币、可负担且normal／native CanConfirm均true、bypass0；一次canonical Confirm后，独立Faith教首title／holder由null变为18373／65865。付款玩家仍为31254；Faith103／Rite150／mainRite150及两个Rite领袖31254均未变，说明创建Faith教首与现有Rite领袖是不同后态。
+
+独立钱包243金／14800虔诚变为18金／14500虔诚，分别扣225／300；十资源报价已观察，但`quote_settlement_resource_index_join_verified=false`，不能据此声称十资源实际结算全部闭合。独立受领与钱包先采，事件随后DRAINED、events为空；H2 business true不改aggregate business false或whole-product credit false。长期once ledger为`EP02/once-ledgers/h2-create-hof-r19-a01`，本次claim已消费；任何后续相同意图先核原claim与submit marker，已有或unknown只观察，不能换目录／日期重发。本记录不授权重做建制。
+
+其后两次H3读取capture82387／84327：四具名变量均read_available=true、present=false，保留remaining_raw=-1与calendar-unqualified单位，不能改写成bool false、零天或可发动。该Faith链的GHW／War对象为absent，不代表世界和平。实际33行决议中launch匹配0、`requested_decision_key_not_in_actual_rows`；因此最终CanConfirm、目标合法性与日历倒计时仍unknown，launch／war提交均0。`current_group_qualified=true`仅证明这组只读观测成功，原`director_slot25_complete=false`仍保留；全局实现资格、必要前提缺席与最终许可分列。
+
+本知识增量按已封Native case结果完成，未据此声明R29正常闭场或retained OS0；闭场回执尚待独立提供。`final_data_ready=true`表示这些历史来源已齐，不授当前action-ready、完整产品验收或ordinary-auto消费资格。换机器／局面必须重新读取实际身份、价格与许可。
+
+同一JSON的`artifact_pair`由既有`topics.artifacts.artifact_pair_reference`引用：同母档物品267的R27个人装备／R28供奉两臂，两人raw104000／129000（scale100000）均未变；R28两人原生麦加说明+4%→+8%、site缓存rarity4→8，独立物主／site26／slot1／库存[60,267]后态已证。刷新时间、world effects实际应用和单地点净贡献仍未知；不能重算raw或说立即净增。钱包不变不证明总供奉无成本，`total_payment_observed=false`与原businessfalse保留；不升级当前许可或auto消费。
+
+2026-10-21后续整合补注（`machine_id: 4-8e1c2f1861`，06:57Z）：上述最终知识已纳入本次源码整合，注册MCP消费者验证与候选strict检查已通过；冻结C16影片来源不因此改变。R29的[05:14:24Z闭场回执](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b39-h2-h3-a01/SCENE-CLOSURE.actual.json)及[后续行政闭场交付](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b39-h2-h3-a01/full-custody-a01/ADMINISTRATIVE-FAILURE-CLOSURE-DELIVERY.actual.json)现已独立提供：normal_close=false、OS0未证、保留退出码null，public run2／host0／allocator0，CAS13129空资源。现场已释放；研究JSON保留原采样时闭场未知，不追认正常退出或整体业务通过。
