@@ -5,6 +5,7 @@ from ck3_mod_acceptance_background_types import JsonObject, json_object
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
+    fresh_ledger_path, retire_pre_identity_request, parse_bootstrap, validate_frozen_fresh_admission,
 )
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -142,6 +143,12 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
         prepared_path=Path(ready.get('prepared_case',{}).get('path','')).resolve()
         original('prepared_case_pin',prepared_path)
         ledger=Path(freeze['state_dir']).resolve().parent/'single-use-ledger'
+        if 'single_use_ledger' in freeze:
+            nested=Path(freeze['single_use_ledger']).resolve()
+            require(nested==ledger/'pre-identity-epoch-000002',
+                    'Recovered first allocation ledger must remain in the original profile ledger namespace')
+            validate_frozen_fresh_admission(json_object(freeze),previous)
+            ledger=nested
         allocation_intent=original('single_use_intent_pin',ledger/'allocation-intent.json')
         allocated=original('single_use_allocated_pin',ledger/'allocated.json')
         keeper_ready=original('keeper_ready_pin',keeper_root/'ready.json')
@@ -1871,9 +1878,10 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
         records=sorted(path for path in root.glob('[0-9]*') if path.is_dir())
         bootstrap=closure['mode'] in ('first-machine-legacy-profile-mcp-closure','first-machine-legacy-managed-session-closure',FRESH_ADMISSION_MODE)
         if bootstrap:
-            require(not records,'First-machine bootstrap is already consumed, including failed/RED attempts')
             if closure['mode']==FRESH_ADMISSION_MODE:
                 require_empty_machine_history(binding)
+            else:
+                require(not records,'First-machine bootstrap is already consumed, including failed/RED attempts')
         elif records:
             previous=read_json(records[-1]/'allocation.json')
             require(Path(previous['live']).resolve()==args.previous_live.resolve() and
@@ -1956,10 +1964,18 @@ def wait_for_keeper_ready(child,keeper_root,live,started,stdout,stderr):
 
 def _allocate_and_keep_impl(selection,args):
     require(selection.prepared_path and not selection.context,'One prepared unused case and no allocated context required')
+    # Validate identity configuration before either machine/profile intent is consumed.
+    import ck3_live_run_id as ids
+    external_mod=selection.product.get('external_mod',False)
+    require(type(external_mod) is bool,'Product external_mod must be a literal boolean')
+    mod_key=selection.product.get('runtime_mod_key') or selection.product_key
+    ids.validate_mod_key(mod_key,external_mod=external_mod)
     bootstrap_path=getattr(args,'first_machine_bootstrap',None)
+    retirement_path=getattr(args,'retire_pre_identity',None)
     failure_path=getattr(args,'previous_failure_close',None)
     fresh_bundle=read_json(bootstrap_path) if bootstrap_path else None
     fresh_machine=bool(fresh_bundle and fresh_bundle.get('schema')==FRESH_BOOTSTRAP_SCHEMA)
+    require(not retirement_path or fresh_machine,'Pre-identity retirement requires the explicit first-machine bootstrap')
     for name in (('attempt','keeper_output') if fresh_machine else ('attempt','keeper_output','previous_release')):
         require(getattr(args,name,None),'Allocation missing --'+name.replace('_','-'))
     if bootstrap_path:
@@ -1993,8 +2009,10 @@ def _allocate_and_keep_impl(selection,args):
     task=configured['task_prefix']+args.attempt
     require(not (bus.parents[1]/'tasks'/(task+'.json')).exists(),'Choose a globally unused screen task')
     require(not args.keeper_output.exists(),'Keeper output already consumed')
-    ledger=selection.state_dir.parent/'single-use-ledger'
-    require(not ledger.exists(),'Prepared cold input already consumed; preserve ledger')
+    ledger_root=selection.state_dir.parent/'single-use-ledger'
+    ledger=ledger_root
+    if not fresh_machine:
+        require(not ledger.exists(),'Prepared cold input already consumed; preserve ledger')
     preflight=selection.preflight();require(not preflight['blockers'],'Preflight blocked: '+str(preflight['blockers']))
     sys.path.insert(0,str(root/'tools'));import ck3_live_run_id as ids
     binding=actual_machine_binding(ids);machine=binding['machine_id'];state_root=Path(binding['state_root'])
@@ -2025,6 +2043,13 @@ def _allocate_and_keep_impl(selection,args):
             fresh_inventory=create_current_process_observation(
                 runtime_inventory=runtime_process_inventory(psutil,os.getpid()),
                 ck3_inventory=game_inventory,binding=binding)
+            if retirement_path:
+                retire_pre_identity_request(retirement_path,binding=binding,product=selection.product_key,
+                    case=selection.case['id'],ledger_root=ledger_root,process_inventory=fresh_inventory,
+                    bus_events=events,bus_packet=bus_packet,
+                    maintenance_closures=parse_bootstrap(fresh_bundle)['maintenance_closures'])
+            ledger=fresh_ledger_path(binding,ledger_root)
+            require(not ledger.exists(),'Prepared cold input already consumed; preserve ledger')
             closure=json_object(validate_fresh_bootstrap(fresh_bundle,bootstrap_path=bootstrap_path,
                 binding=binding,runtime_path=selection.runtime_path,manifest_path=selection.manifest_path,
                 repo_root=root,bus_dir=bus_dir,bus_events=events,bus_packet=bus_packet,
@@ -2161,7 +2186,7 @@ def _allocate_and_keep_impl(selection,args):
         peer=shared_tools/name;files[peer]=pin(peer)
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
-        rows=([closure['bootstrap'],*closure['maintenance_evidence']] if fresh_machine else
+        rows=([closure['bootstrap'],*closure['maintenance_evidence'],*closure['pre_identity_retirement_evidence']] if fresh_machine else
               [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()])
         for row in rows:
             files[Path(row['path']).resolve()]=row
@@ -2175,9 +2200,6 @@ def _allocate_and_keep_impl(selection,args):
         'product':selection.product_key,'case':selection.case['id'],'prepared_case':pin(selection.prepared_path),
         'at_utc':datetime.now(timezone.utc).isoformat(),'machine_admission':str(machine_admission),
         'predecessor_admission':closure,'actual_process_inventory':inventory})
-    external_mod=selection.product.get('external_mod',False)
-    require(type(external_mod) is bool,'Product external_mod must be a literal boolean')
-    mod_key=selection.product.get('runtime_mod_key') or selection.product_key
     identity=ids.allocate_live_run_id(mod_key,state_root=state_root,machine_id=machine,external_mod=external_mod)
     live=selection.locations['artifacts_root']/identity.run_id;live.mkdir(parents=True,exist_ok=False);(live/'controls').mkdir()
     write_json(machine_admission/'allocation.json',{'schema':'ck3-mod-acceptance-machine-allocation-v1',
@@ -2205,6 +2227,8 @@ def _allocate_and_keep_impl(selection,args):
         'launch_requires_fresh_owned_cas_and_background_offline':True,'business_pass':False}
     if fresh_machine:
         frozen['initial_machine_no_predecessor']=True
+        if ledger!=ledger_root:
+            frozen['single_use_ledger']=str(ledger.resolve())
     write_json(live/'frozen-argv.json',frozen)
     # All slow pin/profile work precedes register. No tool boundary occurs
     # between the actual allocated JSON and the original keeper subprocess.

@@ -465,6 +465,12 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test machine- and mod-scoped CK3 live-run IDs
         run: python tools/test_ck3_live_run_id.py
+      - name: Test Living Artifacts contracts without installed CK3
+        run: python -B -X utf8 -m unittest discover -s mod_living_artifacts/tools -p test_*.py
+      - name: Test first-machine acceptance without CK3 or Steam
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_fresh_machine_bootstrap.py
+      - name: Test pre-identity failure retirement without CK3 or Steam
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_pre_identity.py
       - name: Test shared CK3 acceptance without installed CK3
         run: |
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_exact_tree_binding.py

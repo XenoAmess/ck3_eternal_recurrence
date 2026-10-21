@@ -6,9 +6,12 @@ Canonical IDs and the existing machine admission chain remain authoritative.
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+import ast
 import hashlib
 import json
+import os
 from pathlib import Path
+import re
 from typing import Final, Literal, TypedDict
 
 from ck3_mod_acceptance_background_types import (
@@ -66,6 +69,7 @@ class FreshMachineAdmission(TypedDict):
     runtime_config: FilePin
     runtime_manifest: FilePin
     maintenance_evidence: list[FilePin]
+    pre_identity_retirement_evidence: list[FilePin]
     canonical_history_empty: Literal[True]
     prior_session_exists: Literal[False]
     previous_normal_exit_claimed: Literal[False]
@@ -166,10 +170,12 @@ def parse_bootstrap(value: object) -> FreshMachineBootstrap:
 
 def create_bootstrap(*, binding: object, runtime_path: Path, manifest_path: Path,
                      repo_root: Path, bus_dir: Path,
-                     maintenance_closures: tuple[Path, ...] = ()) -> FreshMachineBootstrap:
+                     maintenance_closures: tuple[Path, ...] = (),
+                     pending_pre_identity_retirement: Path | None = None) -> FreshMachineBootstrap:
     """Prepare an identity-bound proposal; actual absence is rechecked at allocation."""
     return parse_bootstrap({
-        'schema': FRESH_BOOTSTRAP_SCHEMA, 'machine': require_empty_machine_history(binding),
+        'schema': FRESH_BOOTSTRAP_SCHEMA, 'machine': require_empty_machine_history(
+            binding, pending_pre_identity_retirement=pending_pre_identity_retirement),
         'runtime_config': exact_pin(runtime_path), 'runtime_manifest': exact_pin(manifest_path),
         'repo_root': str(repo_root.resolve()), 'bus_dir': str(bus_dir.resolve()),
         'created_at_utc': datetime.now(timezone.utc).isoformat(),
@@ -177,7 +183,7 @@ def create_bootstrap(*, binding: object, runtime_path: Path, manifest_path: Path
     })
 
 
-def require_empty_machine_history(value: object) -> MachineBinding:
+def require_empty_machine_history(value: object, *, pending_pre_identity_retirement: Path | None = None) -> MachineBinding:
     """Also called under the original machine chain lock before first intent."""
     binding = machine_binding(value)
     namespace = Path(binding['state_root']) / binding['machine_id']
@@ -188,9 +194,291 @@ def require_empty_machine_history(value: object) -> MachineBinding:
             if child.name != '.shared-runtime-admissions-v1' or not child.is_dir() or child.is_symlink():
                 raise ValueError('Machine already has canonical live history; use its actual predecessor')
             for record in child.iterdir():
-                if record.name not in {'chain.lock', 'machine.json'} or not record.is_file():
-                    raise ValueError('First-machine admission already consumed, including failed intents')
+                if record.name in {'chain.lock', 'machine.json'} and record.is_file():
+                    continue
+                if record.is_dir() and record.name == '000001':
+                    if (record/'retired-pre-identity.json').is_file():
+                        validate_pre_identity_retirement(record, binding, require_no_canonical=True)
+                        continue
+                    if pending_pre_identity_retirement is not None:
+                        request = validate_pre_identity_request(pending_pre_identity_retirement, binding)
+                        if Path(request['machine_intent']['path']).parent == record:
+                            continue
+                raise ValueError('First-machine admission already consumed, including failed intents')
     return binding
+
+
+class PreIdentityRetirementRequest(TypedDict):
+    schema: Literal['ck3-mod-acceptance-pre-identity-retirement-request-v1']
+    machine: MachineBinding
+    command: FilePin
+    stdout: FilePin
+    stderr: FilePin
+    terminal_observation: FilePin
+    terminal_tool_event: FilePin
+    machine_intent: FilePin
+    ledger_intent: FilePin
+    id_source: FilePin
+    products: FilePin
+
+
+PRE_ID_REFERENCES: Final = ('command', 'stdout', 'stderr', 'terminal_observation',
+                           'terminal_tool_event', 'machine_intent', 'ledger_intent', 'id_source', 'products')
+
+
+class RetiredPreIdentityEpoch(TypedDict):
+    schema: Literal['ck3-mod-acceptance-pre-identity-retirement-v1']
+    machine: MachineBinding
+    observed_at_utc: str
+    request: FilePin
+    current_process_observation: JsonObject
+    canonical_id_allocated: Literal[False]
+    normal_exit_proven: Literal[False]
+    business_pass: Literal[False]
+
+
+def create_pre_identity_request(*, binding: object, command: Path, stdout: Path, stderr: Path,
+                                terminal_observation: Path, terminal_tool_event: Path,
+                                machine_intent: Path, ledger_intent: Path, id_source: Path,
+                                products: Path) -> PreIdentityRetirementRequest:
+    """Freeze references to preserved originals; this grants no retirement or ID."""
+    return PreIdentityRetirementRequest(
+        schema='ck3-mod-acceptance-pre-identity-retirement-request-v1', machine=machine_binding(binding),
+        command=exact_pin(command), stdout=exact_pin(stdout), stderr=exact_pin(stderr),
+        terminal_observation=exact_pin(terminal_observation), terminal_tool_event=exact_pin(terminal_tool_event),
+        machine_intent=exact_pin(machine_intent), ledger_intent=exact_pin(ledger_intent),
+        id_source=exact_pin(id_source), products=exact_pin(products))
+
+
+def _original_pin(value: object, *, maximum: int = 1048576) -> FilePin:
+    reference = file_pin(value)
+    if reference['bytes'] > maximum or exact_pin(Path(reference['path'])) != reference:
+        raise ValueError('Original pre-identity evidence changed or exceeds bound')
+    return reference
+
+
+def _read_original(reference: FilePin) -> JsonObject:
+    return json_object(json.loads(Path(reference['path']).read_text(encoding='utf-8-sig')))
+
+
+def _argument(argv: list[str], flag: str) -> str:
+    if argv.count(flag) != 1 or argv.index(flag)+1 >= len(argv):
+        raise ValueError('Original pre-identity allocator argument missing/duplicate: '+flag)
+    return argv[argv.index(flag)+1]
+
+
+def _no_canonical_ids(binding: MachineBinding) -> None:
+    namespace = Path(binding['state_root'])/binding['machine_id']
+    if namespace.is_symlink() or any(child.name != '.shared-runtime-admissions-v1' for child in namespace.iterdir()):
+        raise ValueError('A canonical ID namespace already exists; this is not a pre-identity failure')
+
+
+def validate_pre_identity_request(path: Path, binding: MachineBinding, *,
+                                  require_no_canonical: bool = True) -> PreIdentityRetirementRequest:
+    row = json_object(json.loads(path.read_text(encoding='utf-8-sig')))
+    if set(row) != {'schema', 'machine', *PRE_ID_REFERENCES} or row.get('schema') != 'ck3-mod-acceptance-pre-identity-retirement-request-v1':
+        raise ValueError('Exact pre-identity retirement request required')
+    if machine_binding(row['machine']) != binding:
+        raise ValueError('Pre-identity retirement belongs to another actual machine/namespace')
+    refs = {key: _original_pin(row[key]) for key in PRE_ID_REFERENCES}
+    command, intent, ledger = (_read_original(refs[key]) for key in ('command', 'machine_intent', 'ledger_intent'))
+    _machine_utc_observation(command, binding['machine_id'])
+    raw_argv = command.get('argv')
+    if not isinstance(raw_argv, list) or not all(isinstance(item, str) for item in raw_argv):
+        raise ValueError('Original exact allocator argv required')
+    argv = [text for text in raw_argv if isinstance(text, str)]
+    if argv.count('allocate') != 1 or any(flag in argv for flag in ('--previous-live', '--previous-keeper', '--previous-release')):
+        raise ValueError('Only an actual first allocator failure can retire before identity')
+    record = Path(refs['machine_intent']['path']).parent
+    if (record != Path(binding['admission_root'])/'000001' or record.is_symlink()
+            or Path(refs['machine_intent']['path']).name != 'intent.json'
+            or (record/'allocation.json').exists()
+            or any(child.name not in {'intent.json', 'retired-pre-identity.json'} for child in record.iterdir())):
+        raise ValueError('Exact sole first pre-identity intent without allocation required')
+    if require_no_canonical:
+        _no_canonical_ids(binding)
+        if sorted(child.name for child in Path(binding['admission_root']).glob('[0-9]*')) != ['000001']:
+            raise ValueError('A later machine admission already exists')
+    closure = object_field(intent, 'closure')
+    if (intent.get('schema') != 'ck3-mod-acceptance-machine-admission-intent-v1'
+            or intent.get('machine') != binding or intent.get('status') != 'CONSUMED_ADMISSION_INTENT_NOT_RUN'
+            or intent.get('business_pass') is not False
+            or closure.get('mode') != FRESH_ADMISSION_MODE or closure.get('machine') != binding
+            or closure.get('canonical_history_empty') is not True
+            or closure.get('prior_session_exists') is not False
+            or closure.get('previous_normal_exit_claimed') is not False
+            or closure.get('initial_machine_no_predecessor') is not True or closure.get('business_pass') is not False
+            or ledger.get('status') != 'CONSUMED_ALLOCATION_INTENT_NOT_RUN'
+            or ledger.get('predecessor_admission') != closure
+            or Path(text_field(ledger, 'machine_admission')) != record
+            or ledger.get('product') != _argument(argv, '--product') or ledger.get('case') != _argument(argv, '--case')
+            or ledger.get('attempt') != _argument(argv, '--attempt')):
+        raise ValueError('Original machine/profile intent chain differs')
+    for key, flag in (('runtime_config', '--runtime'), ('prepared_case', '--prepared-case')):
+        reference = _original_pin(intent.get(key))
+        if Path(reference['path']) != Path(_argument(argv, flag)) or (key == 'prepared_case' and ledger.get(key) != reference):
+            raise ValueError('Original allocator inputs differ from the consumed intent')
+    manifest_ref = _original_pin(intent.get('runtime_manifest'))
+    bootstrap_ref = _original_pin(closure.get('bootstrap'))
+    if Path(bootstrap_ref['path']) != Path(_argument(argv, '--first-machine-bootstrap')):
+        raise ValueError('Original bootstrap differs')
+    runtime = _read_original(file_pin(intent['runtime_config']))
+    prepared = _read_original(file_pin(intent['prepared_case']))
+    if runtime.get('manifest') != manifest_ref or prepared.get('runtime_manifest') != manifest_ref:
+        raise ValueError('Original runtime/prepared manifest chain differs')
+    startup = object_field(prepared, 'startup')
+    state = Path(text_field(startup, 'state_dir'))
+    ledger_children = {child.name for child in Path(refs['ledger_intent']['path']).parent.iterdir()}
+    allowed_ledger_children = {'allocation-intent.json'}
+    if not require_no_canonical:
+        allowed_ledger_children.add('pre-identity-epoch-000002')
+    if (Path(refs['ledger_intent']['path']) != state.parent/'single-use-ledger/allocation-intent.json'
+            or not ledger_children.issubset(allowed_ledger_children)
+            or 'allocation-intent.json' not in ledger_children
+            or Path(_argument(argv, '--keeper-output')).exists() or (state/'control').exists()
+            or any((state/'profile'/name).exists() and any((state/'profile'/name).iterdir()) for name in ('logs', 'save games', 'run'))):
+        raise ValueError('Keeper, allocation result or played profile exists; not an unlaunched pre-ID epoch')
+    if Path(refs['products']['path']) != Path(_argument(argv, '--products')):
+        raise ValueError('Original products source differs')
+    products = _read_original(refs['products'])
+    product = object_field(object_field(products, 'products'), _argument(argv, '--product'))
+    mod_key = product.get('runtime_mod_key') or _argument(argv, '--product')
+    if not isinstance(mod_key, str) or re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', mod_key) is None or product.get('external_mod', False) is not False:
+        raise ValueError('Only the original unregistered built-in mod key failure is supported')
+    expected_id_source = Path(argv[argv.index('allocate')-1]).parent/'ck3_live_run_id.py'
+    if Path(refs['id_source']['path']) != expected_id_source:
+        raise ValueError('Original failed ID allocator source differs')
+    tree = ast.parse(expected_id_source.read_text(encoding='utf-8-sig'))
+    keys: set[str] | None = None
+    for statement in tree.body:
+        if isinstance(statement, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'CANONICAL_MOD_KEYS' for target in statement.targets):
+            call = statement.value
+            if isinstance(call, ast.Call) and isinstance(call.func, ast.Name) and call.func.id == 'frozenset' and len(call.args) == 1:
+                values = ast.literal_eval(call.args[0])
+                if isinstance(values, set) and all(isinstance(item, str) for item in values):
+                    keys = {item for item in values if isinstance(item, str)}
+    if keys is None or mod_key in keys:
+        raise ValueError('Pinned original allocator does not establish the unknown-key failure')
+    stderr = Path(refs['stderr']['path']).read_text(encoding='utf-8-sig').replace('\r\n', '\n')
+    expected = "ck3_live_run_id.LiveRunIdError: unknown mod key '"+mod_key+"'; expected one of: "+', '.join(sorted(keys))
+    if (not stderr.startswith('Traceback (most recent call last):\n') or stderr.rstrip().splitlines()[-1] != expected
+            or str(expected_id_source) not in stderr or Path(refs['stdout']['path']).read_bytes() != b''):
+        raise ValueError('Original terminal failure is not the exact pre-ID unknown-key exception')
+    observation = _read_original(refs['terminal_observation'])
+    _machine_utc_observation(observation, binding['machine_id'])
+    if (observation.get('schema') != 'ck3-preidentity-root-tool-observation-v1'
+            or type(observation.get('observed_allocator_tool_exit_code')) is not int or observation.get('observed_allocator_tool_exit_code') != 1
+            or observation.get('extracted_original_event') != refs['terminal_tool_event']
+            or observation.get('historical_original_HANDLE_wait_claimed') is not False
+            or observation.get('normal_game_exit_claimed') is not False):
+        raise ValueError('Actual tool-exit-only observation required; no invented HANDLE/game exit')
+    event = _read_original(refs['terminal_tool_event'])
+    payload = object_field(event, 'payload')
+    output = payload.get('output')
+    if payload.get('type') != 'custom_tool_call_output' or not isinstance(output, list):
+        raise ValueError('Original tool terminal event unavailable')
+    matches = 0
+    for raw in output:
+        block = json_object(raw)
+        value = block.get('text')
+        if not isinstance(value, str):
+            continue
+        try:
+            terminal = json_object(json.loads(value))
+        except (ValueError, json.JSONDecodeError):
+            continue
+        text = terminal.get('output')
+        if type(terminal.get('exit_code')) is not int or terminal.get('exit_code') != 1 or not isinstance(text, str):
+            continue
+        operation_bound = False
+        for line in text.splitlines():
+            try:
+                detail = json_object(json.loads(line))
+            except (ValueError, json.JSONDecodeError):
+                continue
+            operation = detail.get('operation')
+            if isinstance(operation, str) and Path(operation) == Path(refs['command']['path']).parent:
+                operation_bound = True
+        if stderr.strip() in text.replace('\r\n', '\n') and operation_bound:
+            matches += 1
+    if matches != 1:
+        raise ValueError('Exactly one original allocator tool exit1 with matching stderr/operation required')
+    return PreIdentityRetirementRequest(schema='ck3-mod-acceptance-pre-identity-retirement-request-v1', machine=binding,
+        command=refs['command'], stdout=refs['stdout'], stderr=refs['stderr'], terminal_observation=refs['terminal_observation'],
+        terminal_tool_event=refs['terminal_tool_event'], machine_intent=refs['machine_intent'],
+        ledger_intent=refs['ledger_intent'], id_source=refs['id_source'], products=refs['products'])
+
+
+def validate_pre_identity_retirement(record: Path, binding: MachineBinding, *, require_no_canonical: bool) -> list[FilePin]:
+    marker = record/'retired-pre-identity.json'
+    row = _read_original(exact_pin(marker))
+    if (set(row) != {'schema', 'machine', 'observed_at_utc', 'request', 'current_process_observation',
+                     'canonical_id_allocated', 'normal_exit_proven', 'business_pass'}
+            or row.get('schema') != 'ck3-mod-acceptance-pre-identity-retirement-v1'
+            or row.get('machine') != binding or row.get('canonical_id_allocated') is not False
+            or row.get('normal_exit_proven') is not False or row.get('business_pass') is not False):
+        raise ValueError('Exact retired pre-identity epoch required')
+    _machine_utc_observation(json_object({'machine_id': binding['machine_id'], 'observed_at_utc': row['observed_at_utc']}), binding['machine_id'])
+    reference = _original_pin(row['request'])
+    request = validate_pre_identity_request(Path(reference['path']), binding, require_no_canonical=require_no_canonical)
+    if Path(request['machine_intent']['path']).parent != record:
+        raise ValueError('Retirement crossed original machine intent')
+    require_current_process_observation(row['current_process_observation'], binding)
+    original = json_object(request)
+    return [exact_pin(marker), reference, *[_original_pin(original[key]) for key in PRE_ID_REFERENCES]]
+
+
+def retire_pre_identity_request(path: Path, *, binding: MachineBinding, product: str, case: str,
+                                ledger_root: Path, process_inventory: object, bus_events: object,
+                                bus_packet: object, maintenance_closures: list[FilePin]) -> FilePin:
+    """Append a narrow retired epoch under the original machine lock; allocate no ID."""
+    import ck3_live_run_id as ids
+    require_current_process_observation(process_inventory, binding)
+    require_unused_bus(bus_events, bus_packet, maintenance_closures=maintenance_closures, binding=binding)
+    with ids._exclusive_file_lock(Path(binding['admission_root'])/'chain.lock'):
+        request = validate_pre_identity_request(path, binding)
+        command = _read_original(request['command'])
+        argv_raw = command['argv']
+        if not isinstance(argv_raw, list):
+            raise ValueError('Original argv unavailable')
+        argv = [item for item in argv_raw if isinstance(item, str)]
+        if (_argument(argv, '--product') != product or _argument(argv, '--case') != case
+                or Path(request['ledger_intent']['path']).parent != ledger_root):
+            raise ValueError('Retirement cannot change original product/case/profile ledger namespace')
+        marker = Path(request['machine_intent']['path']).parent/'retired-pre-identity.json'
+        if marker.exists():
+            validate_pre_identity_retirement(marker.parent, binding, require_no_canonical=True)
+            if _read_original(exact_pin(marker)).get('request') != exact_pin(path):
+                raise ValueError('Retirement already bound to a different original request')
+            return exact_pin(marker)
+        value = RetiredPreIdentityEpoch(schema='ck3-mod-acceptance-pre-identity-retirement-v1', machine=binding,
+                 observed_at_utc=datetime.now(timezone.utc).isoformat(), request=exact_pin(path),
+                 current_process_observation=json_object(process_inventory),
+                 canonical_id_allocated=False, normal_exit_proven=False, business_pass=False)
+        with marker.open('x', encoding='utf-8') as stream:
+            json.dump(value, stream, indent=2)
+            stream.flush()
+            os.fsync(stream.fileno())
+        return exact_pin(marker)
+
+
+def pre_identity_retirement_evidence(binding: MachineBinding, *, require_no_canonical: bool = True) -> list[FilePin]:
+    record = Path(binding['admission_root'])/'000001'
+    if not (record/'retired-pre-identity.json').exists():
+        return []
+    return validate_pre_identity_retirement(record, binding, require_no_canonical=require_no_canonical)
+
+
+def fresh_ledger_path(binding: MachineBinding, ledger: Path) -> Path:
+    if not ledger.exists():
+        return ledger
+    evidence = pre_identity_retirement_evidence(binding)
+    if not evidence:
+        raise ValueError('Prepared cold input already consumed; preserve ledger')
+    request = validate_pre_identity_request(Path(evidence[1]['path']), binding)
+    if Path(request['ledger_intent']['path']).parent != ledger:
+        raise ValueError('Retired epoch cannot bypass the original profile ledger namespace')
+    return ledger/'pre-identity-epoch-000002'
 
 
 def _pinned_object(reference: FilePin) -> JsonObject:
@@ -372,6 +660,7 @@ def validate_fresh_bootstrap(
         mode=FRESH_ADMISSION_MODE, machine=actual, bootstrap=exact_pin(bootstrap_path),
         runtime_config=bundle['runtime_config'], runtime_manifest=bundle['runtime_manifest'],
         maintenance_evidence=maintenance_evidence,
+        pre_identity_retirement_evidence=pre_identity_retirement_evidence(actual),
         canonical_history_empty=True, prior_session_exists=False,
         previous_normal_exit_claimed=False, initial_machine_no_predecessor=True,
         business_pass=False,
@@ -412,11 +701,18 @@ def validate_frozen_fresh_admission(frozen: JsonObject, run_root: Path) -> None:
         reference = file_pin(value)
         if reference != exact_pin(Path(reference['path'])):
             raise ValueError('Actual maintenance originals changed before fresh-machine launch')
+    retirement = closure.get('pre_identity_retirement_evidence')
+    if not isinstance(retirement, list):
+        raise ValueError('Explicit frozen pre-identity retirement evidence list required')
+    expected_retirement = pre_identity_retirement_evidence(binding, require_no_canonical=False)
+    if retirement != json_object({'evidence': expected_retirement})['evidence']:
+        raise ValueError('Frozen pre-identity retirement originals differ')
     records = sorted(Path(binding['admission_root']).glob('[0-9]*'))
-    if len(records) != 1 or records[0].name != '000001':
+    expected_names = ['000001', '000002'] if retirement else ['000001']
+    if [record.name for record in records] != expected_names or any(not record.is_dir() or record.is_symlink() for record in records):
         raise ValueError('Fresh-machine launch is no longer the sole actual allocation')
-    record = json_object(json.loads((records[0]/'allocation.json').read_text(encoding='utf-8-sig')))
-    intent = json_object(json.loads((records[0]/'intent.json').read_text(encoding='utf-8-sig')))
+    record = json_object(json.loads((records[-1]/'allocation.json').read_text(encoding='utf-8-sig')))
+    intent = json_object(json.loads((records[-1]/'intent.json').read_text(encoding='utf-8-sig')))
     if (record.get('run_id') != frozen.get('run_id')
             or Path(text_field(record, 'live')).resolve() != run_root.resolve()
             or intent.get('closure') != closure):

@@ -893,10 +893,14 @@ def main(argv: list[str] | None = None) -> int:
                         help='Explicit failed report-writer resource closure; never normal exit or business credit')
     parser.add_argument('--latest-screen-release',type=Path)
     parser.add_argument('--first-machine-bootstrap',type=Path)
+    parser.add_argument('--retire-pre-identity',type=Path,
+        help='allocate only: append verified first pre-identity failure retirement before the actual first ID')
     parser.add_argument('--gui-review', type=Path,
                         help='Direct review of the fresh Steam offline frame for the shared GUI-only runtime')
     args = parser.parse_args(argv)
     try:
+        if args.retire_pre_identity and args.mode != 'allocate':
+            raise ValueError('--retire-pre-identity is confined to the public allocate mode')
         runtime = read_json(args.runtime)
         shared_manifest = read_json(path_at(runtime['manifest']['path'], args.runtime.resolve().parent))
         if shared_manifest.get('execution_mode') == 'gui_only':
