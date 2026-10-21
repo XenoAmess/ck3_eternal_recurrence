@@ -1,0 +1,623 @@
+{
+  "schema": "xar.e04.formal8-timeline.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T05:03:13.051011+00:00",
+  "stage": "SOURCE_ONLY_PLAN_NOT_NEW_MOVIE",
+  "method_frames": 58406,
+  "frame_rate": 30,
+  "card_seconds": 6,
+  "method": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full69-typo-repair-a02/runs/review02-full69-typography-a02/artifacts/derived/sha256/8F/8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+    "bytes": 89450267,
+    "retained_sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b",
+    "fresh_stat": {
+      "bytes": 89450267,
+      "mtime_ns": "1792308837303232400",
+      "st_dev": "7220568048185129294",
+      "st_ino": "844424934720744"
+    }
+  },
+  "music": {
+    "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+    "bytes": 30726160,
+    "retained_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+    "fresh_stat": {
+      "bytes": 30726160,
+      "mtime_ns": "1792292353296549000",
+      "st_dev": "7220568048185129294",
+      "st_ino": "281474981269859"
+    }
+  },
+  "existing_r04_render": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r0217-proof-chapter-a01/work-a01/R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+    "bytes": 4398526,
+    "retained_sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c",
+    "fresh_stat": {
+      "bytes": 4398526,
+      "mtime_ns": "1792473306722281400",
+      "st_dev": "13886423844274364792",
+      "st_ino": "844424931352013"
+    }
+  },
+  "original_full69_binding": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/project-binding.json",
+  "music_gain_db": -17,
+  "new_TTS_calls": 0,
+  "independent_runs_not_one_causal_replay": true,
+  "formal_dynamic_accepted_themes": [
+    "R03",
+    "R04",
+    "R06",
+    "R07",
+    "R09",
+    "R11",
+    "R12",
+    "R13"
+  ],
+  "unaccepted_themes": [
+    "R05",
+    "R08",
+    "R10"
+  ],
+  "clips": [
+    {
+      "theme": "R03",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0191",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r191-window-capture-a01/raw-window-a01/raw.mkv",
+        "bytes": 66574010,
+        "retained_sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872",
+        "fresh_stat": {
+          "bytes": 66574010,
+          "mtime_ns": "1792186745751031500",
+          "st_dev": "7220568048185129294",
+          "st_ino": "562949956071195"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r03-r191-continuous-review-2245-a01\\ROOT-R03-FORMAL-ADJUDICATION.actual-a01.json",
+        "bytes": 5474,
+        "sha256": "51fc740573c9e4f275d42475dcf368a95beebb38df9cf0ff12bf9518ae75ca95",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T22:51:43Z"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        40
+      ],
+      "speed": "1/1",
+      "title_zh": "围城时的人数变化",
+      "caption_zh": [
+        "画面所选军队1184→1173；补给两端均为300/300。",
+        "独立原生：7笔已归因的围城扣兵，实体1174→1163，共11。",
+        "当前1%是比例读数；右上全局计数与所选军队分列。"
+      ],
+      "caption_en": "Selected army -11; seven native siege writes debit 11. UI and physical totals stay separate.",
+      "exact_native_event_PTS": null,
+      "render_action": "plan new accepted span plus a real 6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 58406,
+      "timeline_end_frame_exclusive": 59786
+    },
+    {
+      "theme": "R04",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0217",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261020-a01/r221-scene-a01/raw-a01/take01/raw.mkv",
+        "bytes": 57159155,
+        "retained_sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf",
+        "fresh_stat": {
+          "bytes": 57159155,
+          "mtime_ns": "1792468765548903800",
+          "st_dev": "13886423844274364792",
+          "st_ino": "562949954640679"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0217-r04-positive-review-a01\\ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 6102,
+        "sha256": "af7fff15c256023886f15253eb822e27018261ec6a957f3dfc9b3e52a9b54d88",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T12:55:30.954695+00:00"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        30
+      ],
+      "speed": "1/1",
+      "title_zh": "县进入：17次扣兵小计236",
+      "caption_zh": [
+        "画面军队6746→6510；实体兵槽6741→6505。",
+        "17次direct-v2实际扣兵小计236；5空DATA调用排除。",
+        "县总额仍未知；不把端点相等解释为全县完整NET。"
+      ],
+      "caption_en": "Seventeen proven county debits total 236; the complete county total remains unknown.",
+      "exact_native_event_PTS": null,
+      "render_action": "reuse existing 36s render directly, including its original 6s card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 59786,
+      "timeline_end_frame_exclusive": 60866
+    },
+    {
+      "theme": "R06",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261020-a01/r06-scene-a05/raw-a01/take01/raw.mkv",
+        "bytes": 20403313,
+        "retained_sha256": "5280a139b1f1b1fb54b432e824ab4786c030668efe71465435f7f99aeb75912e",
+        "fresh_stat": {
+          "bytes": 20403313,
+          "mtime_ns": "1792497152023788900",
+          "st_dev": "13886423844274364792",
+          "st_ino": "2814749768986483"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0221-target-add-positive-review-a01\\ROOT-R0221-TARGET-ADD-AND-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 7705,
+        "sha256": "f83255d5a8e6ebec025ecdbf2218a075c761fcd017bc8eecc066762d2aab7b8e",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T12:29:04.386195+00:00"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        33
+      ],
+      "speed": "1/1",
+      "title_zh": "月界后的净增与单槽补员",
+      "caption_zh": [
+        "画面军队6679→6689；日期Mar31→Apr1。",
+        "独立原生：Regi2602/slot1同次Core实际68→69。",
+        "整军净+10与单槽+1分列；完整NET和开关因果未闭。"
+      ],
+      "caption_en": "Panel +10; one independently proven Core slot receives +1. Whole-army attribution remains open.",
+      "exact_native_event_PTS": null,
+      "render_action": "plan new accepted span plus a real 6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 60866,
+      "timeline_end_frame_exclusive": 62036
+    },
+    {
+      "theme": "R07",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/raw-r07-treatment-a01/raw.mkv",
+        "bytes": 49062501,
+        "retained_sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+        "fresh_stat": {
+          "bytes": 49062501,
+          "mtime_ns": "1792204609193863600",
+          "st_dev": "7220568048185129294",
+          "st_ino": "562949956322860"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ROOT-R196-R07-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 5566,
+        "sha256": "8a11a08a217d355ec2a0d1d4fdc88e7277709e185de71e832fbf5b8001b29731",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T17:22:16.054526+00:00"
+      },
+      "accepted_seconds_half_open": [
+        32,
+        52
+      ],
+      "speed": "1/1",
+      "title_zh": "登船与这一笔实际付款",
+      "caption_zh": [
+        "陆营→船面板；画面钱包260→257。",
+        "独立原生：本场个人账户实际支付3金币。",
+        "仅此登船正例；不推通用费率、维护费或统帅因果。"
+      ],
+      "caption_en": "This boarding case paid 3 gold from a personal account; no universal fee or maintenance claim.",
+      "exact_native_event_PTS": null,
+      "render_action": "plan new accepted span plus a real 6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 62036,
+      "timeline_end_frame_exclusive": 62816
+    },
+    {
+      "theme": "R09",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/raw-r09-forward-a01/raw.mkv",
+        "bytes": 71202833,
+        "retained_sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+        "fresh_stat": {
+          "bytes": 71202833,
+          "mtime_ns": "1792195497700620400",
+          "st_dev": "7220568048185129294",
+          "st_ino": "844424932777670"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "kind": "git-blob",
+        "repository": "D:\\workspace\\ck3_eternal_recurrence",
+        "commit": "c71045efb0e9ce46c2172ac260f142ed7a868072",
+        "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-split-positive-review-a01/ROOT-R194-SPLIT-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 5694,
+        "sha256": "d1a4377b9b79281ba7b89cf4381ef663dc2a221d3ba9c4091dc12ec64919260a",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T16:10:17.060873+00:00"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        15
+      ],
+      "speed": "1/1",
+      "title_zh": "分兵：显示人数与实体后验",
+      "caption_zh": [
+        "画面选中军队250→75。",
+        "独立原生：两支军队实体75+175=250。",
+        "175未同时在GUI读清；本段不含合军或新增兵员因果。"
+      ],
+      "caption_en": "Selected count 250 to 75; native child totals 75+175=250. Only the Split positive is accepted.",
+      "exact_native_event_PTS": null,
+      "render_action": "plan new accepted span plus a real 6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 62816,
+      "timeline_end_frame_exclusive": 63446
+    },
+    {
+      "theme": "R11",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0174",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-t0-control-a01/raw-t0-halt-a01/raw.mkv",
+        "bytes": 56479663,
+        "retained_sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12",
+        "fresh_stat": {
+          "bytes": 56479663,
+          "mtime_ns": "1792078260762602000",
+          "st_dev": "13886423844274364792",
+          "st_ino": "844424932065981"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+        "bytes": 6036,
+        "sha256": "65db0c714b6f22c9205f20040684451a7ee27a70f859d920f6c06cf277ae1d0c",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T21:27:19.131257+00:00"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        20
+      ],
+      "speed": "1/1",
+      "title_zh": "未锁定时停止移动",
+      "caption_zh": [
+        "移动路线随后清空，目标为空；地点仍为2624。",
+        "即时后验曾未刷新；随后独立读回确认停止。",
+        "次日驻定来自片外原生后验；不宣称本片已拍次日。"
+      ],
+      "caption_en": "Unlocked Halt clears the route in later independent reads; next-day stability is outside this clip.",
+      "exact_native_event_PTS": null,
+      "render_action": "plan new accepted span plus a real 6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 63446,
+      "timeline_end_frame_exclusive": 64226
+    },
+    {
+      "theme": "R12",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0175",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-locked-route-a01/raw-locked-halt-a01/raw.mkv",
+        "bytes": 59537290,
+        "retained_sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11",
+        "fresh_stat": {
+          "bytes": 59537290,
+          "mtime_ns": "1792086841620205500",
+          "st_dev": "13886423844274364792",
+          "st_ino": "562949955370857"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0175-r12-positive-review-a01\\ROOT-R12-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 8538,
+        "sha256": "9320bdf68b6fad1668492b83beaae9dd5d71ada2f8a83c2e500c227ca9df5b88",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-20T10:42:54.384011+00:00"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        34
+      ],
+      "speed": "1/1",
+      "title_zh": "已锁定时只取消后续路线",
+      "caption_zh": [
+        "完整多跳路线→Halt只留原首段→到达原front。",
+        "同场原生确认到1036后route空；不转称登船付款。",
+        "前态约5.33秒，比原拟6秒短；不含单跳拒绝或精确等号。"
+      ],
+      "caption_en": "Locked Halt retains the first leg and reaches its front. No single-hop refusal or equality claim.",
+      "exact_native_event_PTS": null,
+      "render_action": "plan new accepted span plus a real 6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 64226,
+      "timeline_end_frame_exclusive": 65426
+    },
+    {
+      "theme": "R13",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0176",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\raw-locked-reroute-a01\\raw.mkv",
+        "bytes": 60656946,
+        "retained_sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535",
+        "fresh_stat": {
+          "bytes": 60656946,
+          "mtime_ns": "1792089485622771700",
+          "st_dev": "13886423844274364792",
+          "st_ino": "562949955377337"
+        }
+      },
+      "root_formal_source_accepted": true,
+      "root_adjudication": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r13-r176-continuous-review-0230-a01\\ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json",
+        "bytes": 4850,
+        "sha256": "cbfcdfdffb377a3aec38ee256ec88b0b122eb28a7e78c6203f6dc7630fcb9d03",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-21T02:23:09Z"
+      },
+      "accepted_seconds_half_open": [
+        0,
+        30
+      ],
+      "speed": "1/1",
+      "title_zh": "已锁定改道：首段保留，后续转向",
+      "caption_zh": [
+        "画面：旧路线→新后缀→首段后新方向。",
+        "原生：锁定进度95108>50000，先到8653。",
+        "目标8645到达在片外；不把墙钟倒算为PTS。"
+      ],
+      "caption_en": "One independently accepted three-state reroute; exact native event PTS unknown.",
+      "exact_native_event_PTS": null,
+      "render_action": "new accepted30s plus real6s blank conclusion card",
+      "reuse_old_raw_QA": true,
+      "repeat_contact_review": false,
+      "timeline_start_frame": 65426,
+      "timeline_end_frame_exclusive": 66506
+    }
+  ],
+  "predicted": {
+    "source_seconds": 222,
+    "conclusion_card_seconds": 48,
+    "appendix_seconds": 270,
+    "total_frames": 66506,
+    "frame_clock_seconds": 2216.866666666667,
+    "nominal_timecode": "36:56.867",
+    "container_duration_measured": false,
+    "container_AAC_seams_are_not_CFR_claim": true,
+    "new_raw_encoded_source_seconds": 192,
+    "new_card_encoded_seconds": 42
+  },
+  "limits": {
+    "whole_R04_county_total": null,
+    "whole_R06_NET": false,
+    "R07_universal_fee": false,
+    "R09_merge_credit": false,
+    "R11_nextday_in_clip": false,
+    "R12_all_variants": false,
+    "ABC": "0/3",
+    "human_full_1x": false,
+    "human_signoff": false,
+    "final_film": false,
+    "external_upload": false,
+    "R13_endpoint_in_clip": false,
+    "R13_wholecase": false
+  },
+  "old_130s_appendix_reused": false,
+  "old_130s_reason": "Contains controlled R05 and older R215/R217 limited claims; not relabelled as the seven newly accepted sources.",
+  "retention": {
+    "purpose": "Proposed full-length review edit of the seven accepted source shots",
+    "review_at_utc": "2026-10-22T00:15:00Z",
+    "original_assets_protection_not_automatically_renewed": true
+  },
+  "future_budget_advisory": {
+    "chapter192MiB_conditional": true,
+    "full384MiB_requires_new_whole_ledger_peak_funding": true
+  },
+  "final_delivery_gaps": [
+    "Root review of these plan/caption boundaries and the new encoded layout/audio, followed by one bounded QA of new deliverable bytes.",
+    "The unchanged 69-cue method section still carries historical pending statements; it remains explicitly historical in this rough review.",
+    "Original final-film contract still has R05/R08/R10/R13 source topics, actual A/B/C comparison and claim/visual gaps; this edit does not mark them complete.",
+    "A named human must watch/listen to the complete new movie at 1x before exact-byte signoff.",
+    "OneDrive single specified MP4 copy/sync evidence and archival commit/CI remain separate delivery actions."
+  ],
+  "production_forecast": {
+    "not_an_admission": true,
+    "preferred_mode": "evidence-only",
+    "evidence_frames": 8100,
+    "evidence_seconds": 270,
+    "full_frames": 66506,
+    "full_seconds": 2216.866666666667,
+    "C_allinclusive_conditional_bytes": 201326592,
+    "D_bytes": 0,
+    "segment_work_and_native_CAS_copies": 2,
+    "final_work_and_native_CAS_copies": 2,
+    "new_segments_total_max_bytes": 41943040,
+    "existing_R04_readonly_input_bytes": 4398526,
+    "concat_allowed_overhead_bytes": 3145728,
+    "final_movie_conditional_max_bytes": 49487294,
+    "QA_small_metadata_fonts_temp_native_manifest_headroom_bytes": 16777216,
+    "physical_complete_upper_bytes": 199637884,
+    "physical_headroom_under192MiB_bytes": 1688708,
+    "maximum_active_final_copy_bytes": 49487294,
+    "full_future_192MiB_held_until_actual_close": true,
+    "worst_ledger_future_plus_actual_bytes": 402653184,
+    "fresh_actual_ledger_card_required": true,
+    "native64MiB_execution_serial_after_media_closed": true,
+    "fixed_quality": "1920x1080@30 H264 high4.0 CRF21 veryfast maxrate4M buf8M audio192k threads1",
+    "conditional_not_a_maxrate_guarantee": true,
+    "overflow": "guard terminates original Popen, waits, retains partial; no lower quality, retry or automatic tail",
+    "full_review384MiB_root_only": "2S+2F+16MiB conditional; separate whole-ledger active-copy headroom not currently qualified",
+    "source_media_copies": false,
+    "cards": "6s solid background with readable ASS theme, conclusions, boundary and independent-run notice; existing R04 retained",
+    "new_AV_PTS_QA": "one pass of newly produced chapter after separate actual media admission; old inputs not redecoded",
+    "human1x": false,
+    "whole_11_theme_completion": false
+  },
+  "input_inventory": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+      "retained_sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b",
+      "actual_stat": {
+        "bytes": 89450267,
+        "mtime_ns": "1792308837303232400",
+        "st_dev": "7220568048185129294",
+        "st_ino": "844424934720744"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\assets\\music\\quiet-courtly-tension.wav",
+      "retained_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+      "actual_stat": {
+        "bytes": 30726160,
+        "mtime_ns": "1792292353296549000",
+        "st_dev": "7220568048185129294",
+        "st_ino": "281474981269859"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r0217-proof-chapter-a01\\work-a01\\R0217-COUNTY-17-DEBITS-236-SUBTOTAL-36s-REVIEW-a01.mp4",
+      "retained_sha256": "eaab2c0356a7c95191963f90a79a0eb7ddbf1cd73d72d3e02f466444e524981c",
+      "actual_stat": {
+        "bytes": 4398526,
+        "mtime_ns": "1792473306722281400",
+        "st_dev": "13886423844274364792",
+        "st_ino": "844424931352013"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "retained_sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872",
+      "actual_stat": {
+        "bytes": 66574010,
+        "mtime_ns": "1792186745751031500",
+        "st_dev": "7220568048185129294",
+        "st_ino": "562949956071195"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "retained_sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf",
+      "actual_stat": {
+        "bytes": 57159155,
+        "mtime_ns": "1792468765548903800",
+        "st_dev": "13886423844274364792",
+        "st_ino": "562949954640679"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\raw.mkv",
+      "retained_sha256": "5280a139b1f1b1fb54b432e824ab4786c030668efe71465435f7f99aeb75912e",
+      "actual_stat": {
+        "bytes": 20403313,
+        "mtime_ns": "1792497152023788900",
+        "st_dev": "13886423844274364792",
+        "st_ino": "2814749768986483"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+      "retained_sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+      "actual_stat": {
+        "bytes": 49062501,
+        "mtime_ns": "1792204609193863600",
+        "st_dev": "7220568048185129294",
+        "st_ino": "562949956322860"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+      "retained_sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+      "actual_stat": {
+        "bytes": 71202833,
+        "mtime_ns": "1792195497700620400",
+        "st_dev": "7220568048185129294",
+        "st_ino": "844424932777670"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\raw.mkv",
+      "retained_sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12",
+      "actual_stat": {
+        "bytes": 56479663,
+        "mtime_ns": "1792078260762602000",
+        "st_dev": "13886423844274364792",
+        "st_ino": "844424932065981"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\raw-locked-halt-a01\\raw.mkv",
+      "retained_sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11",
+      "actual_stat": {
+        "bytes": 59537290,
+        "mtime_ns": "1792086841620205500",
+        "st_dev": "13886423844274364792",
+        "st_ino": "562949955370857"
+      },
+      "body_rehashed": false,
+      "copied": false
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\raw-locked-reroute-a01\\raw.mkv",
+      "retained_sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535",
+      "actual_stat": {
+        "bytes": 60656946,
+        "mtime_ns": "1792089485622771700",
+        "st_dev": "13886423844274364792",
+        "st_ino": "562949955377337"
+      },
+      "body_rehashed": false,
+      "copied": false
+    }
+  ],
+  "producer_usage": {
+    "plan_full": "python -B formal8_composer.py --timeline timeline.prepared-a01.json --future-workdir ABSENT/work --ffmpeg ABSOLUTE_FFMPEG --plan-only",
+    "plan_chapter": "same plus --evidence-only",
+    "production": "python -B formal8_composer.py --timeline timeline.prepared-a01.json --output-root NEW_ROOT --ffmpeg ABSOLUTE_FFMPEG --evidence-only --produce-phase PHASE --admission EXACT_CARD --admission-sha SHA",
+    "serial_phases": [
+      "R03",
+      "R06",
+      "R07",
+      "R09",
+      "R11",
+      "R12",
+      "R13",
+      "concat",
+      "final-CAS"
+    ],
+    "notes": "separately admitted create-only phase; 8 themes includes reused R04 36s; no method copy in evidence-only; each native CAS preservation copies immutable new output"
+  }
+}

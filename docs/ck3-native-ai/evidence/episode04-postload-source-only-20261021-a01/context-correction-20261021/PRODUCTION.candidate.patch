@@ -1,0 +1,294 @@
+--- a/research/maintenance_writer_cold_12004/postload_common_models.py
++++ b/research/maintenance_writer_cold_12004/postload_common_models.py
+@@ -1,18 +1,22 @@
+-"""Small typed collection readers shared by this synthetic runner only."""
+-from typing import cast
+-from postload_models import JsonObject,object_value
++"""Validated scalar and collection readers for this synthetic runner only."""
++from postload_models import JsonObject, object_value
+ 
+-def text(value: object,name: str) -> str:
+-    if type(value) is not str:
++def text(value: object, name: str) -> str:
++    if not isinstance(value,str) or type(value) is not str:
+         raise ValueError(name+' must be text')
+-    return cast(str,value)
++    return value
+ 
+-def objects(value: object,name: str) -> list[JsonObject]:
+-    if type(value) is not list:
++def flag(value: object, name: str) -> bool:
++    if not isinstance(value,bool) or type(value) is not bool:
++        raise ValueError(name+' must be bool')
++    return value
++
++def objects(value: object, name: str) -> list[JsonObject]:
++    if not isinstance(value,list) or type(value) is not list:
+         raise ValueError(name+' must be list')
+     return [object_value(item,name) for item in value]
+ 
+-def strings(value: object,name: str) -> list[str]:
+-    if type(value) is not list:
++def strings(value: object, name: str) -> list[str]:
++    if not isinstance(value,list) or type(value) is not list:
+         raise ValueError(name+' must be list')
+     return [text(item,name) for item in value]
+--- a/research/maintenance_writer_cold_12004/postload_runner_models.py
++++ b/research/maintenance_writer_cold_12004/postload_runner_models.py
+@@ -112,6 +112,7 @@
+     loaded_context: int
+     post_arithmetic_flags: int
+     worker_tid: int
++    occupied_warmup_calls: int
+ 
+ 
+ def load_object(path: Path, maximum: int = 262144) -> JsonObject:
+@@ -135,7 +136,8 @@
+         other_access_calls=decimal64(row.get('other_access_calls'), 'other access calls'),
+         loaded_context=decimal64(row.get('loaded_context'), 'loaded context'),
+         post_arithmetic_flags=numeric32(row.get('post_arithmetic_flags'), 'post arithmetic flags'),
+-        worker_tid=numeric32(row.get('worker_tid'), 'worker TID'))
++        worker_tid=numeric32(row.get('worker_tid'), 'worker TID'),
++        occupied_warmup_calls=numeric32(row.get('occupied_warmup_calls'), 'occupied warm-up calls'))
+ 
+ 
+ def ready_value(value: object) -> Ready:
+--- a/research/maintenance_writer_cold_12004/run_parent_postload_cold.py
++++ b/research/maintenance_writer_cold_12004/run_parent_postload_cold.py
+@@ -1,4 +1,4 @@
+-"""Future qualified synthetic pointer-read data-watch cold only; --help never runs EXEs.
++"""Future qualified synthetic postload execution cold only; --help never runs EXEs.
+ 
+ Unknown debugger/restore state retains both Popen owners. It never kills a
+ debugger. A proven detached synthetic target may finish after audit FAIL;
+@@ -16,14 +16,28 @@
+ 
+ 
+ CASES=('foreign257_then_target','created_thread','foreign4096_limit','timeout',
+-       'cancel_late','restore-fault','readback-fault','continue-fault',
++       'restore-fault','readback-fault','continue-fault',
+        'default-off','missing-ack','bad-schema','occupied-dr','occupied-tf',
+-       'context-drift','fullid-drift','magic-drift','session-drift','null-context','other-player-read','other-player-write','null-admission')
++       'context-drift','fullid-drift','magic-drift','session-drift','null-context','other-player-read','other-player-write','null-admission','cancel_late')
+ REFUSALS={'default-off','missing-ack','bad-schema','occupied-dr','occupied-tf'}
+ FAULTS={'restore-fault':'restore','readback-fault':'readback','continue-fault':'continue'}
+ PARTIAL_REASONS={'foreign4096_limit':'foreign_limit','timeout':'timeout','cancel_late':'cancel',
+                  'fullid-drift':'target_read_incomplete','magic-drift':'target_read_incomplete',
+                  'session-drift':'target_read_incomplete'}
++
++def expected_body_counts(case: str) -> tuple[int,int]:
++    if case not in CASES:raise ValueError('Unknown exact synthetic case')
++    if case=='foreign257_then_target' or case in FAULTS:return 257,1
++    if case in {'foreign4096_limit','cancel_late'}:return 4096,1
++    if case=='timeout' or case in REFUSALS:return 0,0
++    return 0,1
++
++def validate_meta_events(meta: dict[str,str],pid: int) -> None:
++    numeric32(pid,'retained target PID')
++    if pid<=0:raise ValueError('Positive retained target PID')
++    prefix='Local\\XarPostloadCold'+str(pid)
++    for key,suffix in (('go_event','Go'),('cancel_event','Cancel'),('audit_event','Audit'),('finish_event','Finish'),('fault_release_event','FaultRelease')):
++        if meta.get(key)!=prefix+suffix:raise ValueError('Event metadata does not bind this exact synthetic process')
+ 
+ def parser() -> argparse.ArgumentParser:
+     p=argparse.ArgumentParser(description=__doc__)
+@@ -34,6 +48,7 @@
+ 
+ def select_cases(values: Sequence[str]) -> tuple[str,...]:
+     if not values or len(set(values))!=len(values) or any(x not in CASES for x in values):raise ValueError('Select distinct explicit finite cold cases')
++    if 'cancel_late' in values and values[-1]!='cancel_late':raise ValueError('Required late-cancel case must be last; no replay')
+     return tuple(values)
+ 
+ def now() -> str:return datetime.datetime.now(datetime.timezone.utc).isoformat()
+@@ -95,7 +110,7 @@
+         if not self.k.GetProcessTimes(W.HANDLE(handle),ctypes.byref(c),ctypes.byref(e),ctypes.byref(k),ctypes.byref(u)):raise ctypes.WinError(ctypes.get_last_error())
+         return Identity(pid=p.pid,created=(c.dwHighDateTime<<32)|c.dwLowDateTime)
+     def event(self,name: str) -> None:
+-        if not name.startswith('Local\\XarPointerEntryCold'):raise ValueError('Not an exact synthetic target event')
++        if not name.startswith('Local\\XarPostloadCold'):raise ValueError('Not an exact synthetic target event')
+         h=self.k.OpenEventW(2,False,name)
+         if not h:raise ctypes.WinError(ctypes.get_last_error())
+         try:
+@@ -115,8 +130,8 @@
+         if value['bytes']!=item['bytes'] or value['sha256']!=item['sha256']:
+             raise ValueError('Build source changed')
+     names={Path(x['path']).name for x in record['source_pins']}
+-    if not {'cold_observer.cpp','parent_postload_once.inc','parent_postload_capture.inc','parent_postload_cold_target.cpp','parent_postload_cold_call.asm','CMakeLists.txt','pointer_read_decimal64.hpp'}<=names:
+-        raise ValueError('New pointer-read data-watch source closure is not bound')
++    if not {'cold_observer.cpp','parent_postload_execution_once.inc','parent_postload_capture.inc','parent_postload_cold_target.cpp','parent_postload_cold_call.asm','CMakeLists.txt','pointer_read_decimal64.hpp'}<=names:
++        raise ValueError('New postload execution source closure is not bound')
+     ex=report['defender_exclusions']
+     receipt_raw=object_value(load(Path(ex['receipt']),1048576),'actual SYSTEM receipt')
+     manifest_raw=object_value(load(Path(ex['manifest'])),'actual SYSTEM manifest')
+@@ -225,7 +240,7 @@
+               s['machine_id']==machine and s['synthetic'] is True and 'owner_binding' in s and s['owner_binding'] is None and
+               u64(s.get('pid'),'refusal PID')==int(meta['pid'])==identity['pid'] and decimal64(s.get('created'),'refusal birth')==int(meta['created'])==identity['created'] and
+               decimal64(s.get('entry'),'refusal entry')==int(meta['parent_postload']) and
+-              decimal64(s.get('watch_address'),'refusal watch')==int(meta['watch_address']) and
++              decimal64(s.get('subject_field_address'),'refusal subject')==int(meta['subject_field_address']) and
+               decimal64(s.get('post_pc'),'refusal post PC')==int(meta['post_pc']))
+     except (KeyError,TypeError,ValueError):return False
+     return same and all(t.get(k) is True for k in ('restored','detached','cleanup_complete')) and t.get('pending_event') is False and t.get('process_exited') is False
+@@ -336,6 +351,7 @@
+                 if time.monotonic()>meta_until:raise
+                 time.sleep(.01)
+         if int(meta['pid'])!=target.pid or int(meta['created'])!=win.identity(target)['created']:raise ValueError('Metadata does not bind retained original target Popen')
++        validate_meta_events(meta,target.pid)
+         wait_file(Path(str(prefix)+'.initial-debug.json'))
+         selected=mp
+         if case=='bad-schema':
+@@ -370,8 +386,9 @@
+         target_code=finish_target(case in REFUSALS)
+         result=target_result(load_complete(Path(str(prefix)+'.result.json')))
+         if target_code!=0 or result.return_failures or result.audit_failures:raise ValueError('Original declared function/return or independent audit failed')
+-        expected_counts=(257,1) if case=='foreign257_then_target' or case in FAULTS else (0,0) if case=='timeout' or case in REFUSALS else (0,1)
++        expected_counts=expected_body_counts(case)
+         if (result.foreign_body_calls,result.target_body_calls)!=expected_counts or result.actual_body_calls!=sum(expected_counts):raise ValueError('Original synthetic function did not execute each actual call exactly once')
++        if result.occupied_warmup_calls!=(1 if case=='occupied-dr' else 0):raise ValueError('Occupied baseline needs its actual one round-trip; TF must never warm up')
+         expected_other=4096 if case in {'other-player-read','other-player-write'} else 0
+         if result.other_access_calls!=expected_other:raise ValueError('Synthetic non-parent access executed other than once per call')
+         if normalized is not None:
+@@ -380,7 +397,7 @@
+             if case=='null-admission' and (int(meta['context'],0)!=0 or normalized['admitted_context_unchanged'] is not True):raise ValueError('Null-admission did not start with an actual null pointer')
+             if case=='null-context' and (int(meta['context'],0)<=0 or normalized['admitted_context_unchanged'] is not False):raise ValueError('Null-context did not start nonnull before the actual null load')
+             captures=[row for row in rows if row.get('kind')=='parent_postload_execution']
+-            if captures and (u64(captures[0].get('eflags'),'actual captured flags')&0x8d5)!=result.post_arithmetic_flags:raise ValueError('Original prefix arithmetic flags did not survive data-trap continuation')
++            if captures and (u64(captures[0].get('eflags'),'actual captured flags')&0x8d5)!=result.post_arithmetic_flags:raise ValueError('Original prefix arithmetic flags did not survive postload execution continuation')
+             if not normalized['cleanup_complete']:raise ValueError('Incomplete cleanup cannot be a cold pass')
+             if case=='foreign257_then_target' and (normalized['foreign_count']!=257 or not normalized['target_postload_qualified']):raise ValueError('257 other Character parent executions require RF once before target')
+             if case=='foreign4096_limit' and (normalized['foreign_count']!=4096 or normalized['target_postload_retained']):raise ValueError('4096 cap must remain partial before later unobserved target')
+--- /dev/null
++++ b/research/maintenance_writer_cold_12004/test_postload_runner_contract.py
+@@ -0,0 +1,132 @@
++"""Pure source/JSON regression checks. Never instantiate Windows or run native code."""
++import copy
++from pathlib import Path
++import unittest
++
++import run_parent_postload_cold as runner
++from postload_common_models import flag, strings
++from postload_models import JsonObject
++from postload_runner_models import AuditRow, Identity, target_result
++
++
++class PostloadRunnerContractTests(unittest.TestCase):
++    def test_explicit_21_case_selection_and_late_last(self) -> None:
++        self.assertEqual(len(runner.CASES), 21)
++        self.assertEqual(len(set(runner.CASES)), 21)
++        self.assertEqual(runner.CASES[-1], 'cancel_late')
++        self.assertEqual(runner.select_cases(runner.CASES), runner.CASES)
++        for selection in ((), ('timeout', 'timeout'), ('cancel_late', 'timeout'), ('not-a-case',)):
++            with self.subTest(selection=selection), self.assertRaises(ValueError):
++                runner.select_cases(selection)
++
++    def test_actual_target_body_counts_cover_all_selected_cases(self) -> None:
++        # Bound to the retained C++ branches, not observer captures: the target
++        # continues its own declared calls after observer cleanup at the cap.
++        for case in runner.CASES:
++            expected = (0, 1)
++            if case == 'foreign257_then_target' or case in runner.FAULTS:
++                expected = (257, 1)
++            elif case in {'foreign4096_limit', 'cancel_late'}:
++                expected = (4096, 1)
++            elif case == 'timeout' or case in runner.REFUSALS:
++                expected = (0, 0)
++            self.assertEqual(runner.expected_body_counts(case), expected, case)
++        with self.assertRaises(ValueError):
++            runner.expected_body_counts('unrecognized')
++
++    def test_new_observer_cli_and_refusal_switches(self) -> None:
++        for case in runner.CASES:
++            argv, timeout = runner.observer_argv(Path('observer.exe'), Path('meta.txt'), Path('raw'), Path('ready'), 'synthetic-machine', case)
++            self.assertEqual('--enable-parent-postload-execution-cold' in argv, case != 'default-off')
++            self.assertEqual('--explicit-postload-execution-breakpoint-v1' in argv, case != 'missing-ack')
++            self.assertNotIn('--enable-parent-pointer-read-cold', argv)
++            self.assertEqual(timeout, 750 if case == 'timeout' else 30000 if case == 'foreign4096_limit' else 15000)
++            self.assertEqual('--cold-fault' in argv, case in runner.FAULTS)
++
++    def test_exact_synthetic_event_binding(self) -> None:
++        meta = {key: 'Local\\XarPostloadCold41' + suffix for key, suffix in (
++            ('go_event', 'Go'), ('cancel_event', 'Cancel'), ('audit_event', 'Audit'),
++            ('finish_event', 'Finish'), ('fault_release_event', 'FaultRelease'))}
++        runner.validate_meta_events(meta, 41)
++        for key in meta:
++            invalid = dict(meta)
++            invalid[key] = invalid[key].replace('Cold41', 'Cold42')
++            with self.subTest(key=key), self.assertRaises(ValueError):
++                runner.validate_meta_events(invalid, 41)
++        with self.assertRaises(ValueError):
++            runner.validate_meta_events(meta, True)
++
++    def test_scalar_parser_rejects_equal_but_wrong_types(self) -> None:
++        self.assertIs(flag(True, 'flag'), True)
++        self.assertIs(flag(False, 'flag'), False)
++        for value in (0, 1, 'true', None, 1.0):
++            with self.subTest(value=value), self.assertRaises(ValueError):
++                flag(value, 'flag')
++        with self.assertRaises(ValueError):
++            strings(['a', 1], 'names')
++
++    @staticmethod
++    def refusal() -> tuple[list[JsonObject], dict[str, str], Identity]:
++        meta = {'parent_schema': 'xar.maintenance.parent_postload.cold-meta.v1',
++            'pid': '41', 'created': '134370000000000001', 'parent_postload': '65536',
++            'subject_field_address': '131520', 'post_pc': '65562'}
++        rows: list[JsonObject] = [
++            {'kind': 'start', 'schema': 'xar.maintenance.parent_postload.raw.v1',
++             'mode': 'player-parent-postload-execution-once-v1', 'machine_id': 'synthetic-machine',
++             'synthetic': True, 'owner_binding': None, 'pid': 41, 'created': meta['created'],
++             'entry': meta['parent_postload'], 'subject_field_address': meta['subject_field_address'],
++             'post_pc': meta['post_pc']},
++            {'kind': 'arm', 'success': False, 'saved_debug': [], 'readback': True,
++             'armed_debug': ['0'] * 6, 'thread_id': 8, 'thread_generation': 1, 'thread_created': '134370000000000002'},
++            {'kind': 'terminal', 'restored': True, 'detached': True, 'cleanup_complete': True,
++             'pending_event': False, 'process_exited': False}]
++        return rows, meta, Identity(pid=41, created=134370000000000001)
++
++    def test_zero_arm_exception_uses_current_subject_field(self) -> None:
++        rows, meta, identity = self.refusal()
++        self.assertTrue(runner.synthetic_detached_cleanup_proven(rows, meta, identity, 1, True, 'synthetic-machine', True))
++        for mutation in ('success', 'saved', 'pending', 'subject', 'unwaited', 'nonrefusal'):
++            bad = copy.deepcopy(rows)
++            if mutation == 'success': bad[1]['success'] = True
++            elif mutation == 'saved': bad[1]['saved_debug'] = ['0'] * 6
++            elif mutation == 'pending': bad[-1]['pending_event'] = True
++            elif mutation == 'subject': bad[0]['subject_field_address'] = '131528'
++            self.assertFalse(runner.synthetic_detached_cleanup_proven(bad, meta, identity, 1,
++                mutation != 'unwaited', 'synthetic-machine', mutation != 'nonrefusal'), mutation)
++
++    def test_full_six_audit_drift_remains_rejected(self) -> None:
++        saved = [0, 0, 0, 0, 0xffff0ff0, 1024]
++        before = [AuditRow(tid=8, created=134370000000000002, complete=True, eflags=514, dr=saved)]
++        rows: list[JsonObject] = [{'kind': 'arm', 'success': True, 'readback': True,
++            'thread_id': 8, 'thread_generation': 1, 'thread_created': '134370000000000002',
++            'saved_debug': [str(value) for value in saved]}]
++        result = runner.verify_audit(rows, before, copy.deepcopy(before))
++        self.assertTrue(result['all_required_owned_DR_vectors_equal'])
++        for slot in range(6):
++            after = copy.deepcopy(before)
++            after[0]['dr'][slot] ^= 1
++            with self.subTest(slot=slot), self.assertRaises(ValueError):
++                runner.verify_audit(rows, before, after)
++
++    def test_target_result_uses_decimal_u64_and_strict_warmup(self) -> None:
++        row: JsonObject = dict(return_failures=0, audit_failures=0, foreign_body_calls=4096,
++            target_body_calls=1, actual_body_calls='4097', other_access_calls='0', loaded_context='0',
++            post_arithmetic_flags=0, worker_tid=0, occupied_warmup_calls=1)
++        result = target_result(row)
++        self.assertEqual(result.actual_body_calls, 4097)
++        self.assertEqual(result.occupied_warmup_calls, 1)
++        for key, value in (('actual_body_calls', 4097), ('occupied_warmup_calls', True), ('occupied_warmup_calls', 1.0)):
++            bad = dict(row)
++            bad[key] = value
++            with self.subTest(key=key, value=value), self.assertRaises(ValueError):
++                target_result(bad)
++
++    def test_native_source_name_is_the_existing_exact_file(self) -> None:
++        source = Path(runner.__file__).read_text()
++        self.assertIn("'parent_postload_execution_once.inc'", source)
++        self.assertNotIn("'parent_postload_once.inc'", source)
++        self.assertNotIn("meta['watch_address']", source)
++
++
++if __name__ == '__main__':
++    unittest.main()

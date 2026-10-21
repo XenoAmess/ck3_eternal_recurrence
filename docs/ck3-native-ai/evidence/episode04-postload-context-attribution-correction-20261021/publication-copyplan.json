@@ -1,0 +1,134 @@
+{
+  "schema": "xar.e04.production-publication.exact-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T05:22:29.546090+00:00",
+  "W": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "expected_W_and_remote": "bd73ecc95eed59cecfc5e7fe944e777a5be4e527",
+  "D_readonly_expected_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "hard_deadline_utc": "2026-10-21T05:30:00Z",
+  "summary": {
+    "formal": "8/11",
+    "tracked_items_including_plan": 12,
+    "unsupported_platform_attribution_corrected_without_rewriting_history": true,
+    "independent_existing_object_FF_before_copy": {
+      "from": "ecd7e14089c290ca08bfa3a5c674617d143ab0c4",
+      "to": "e7ef97f250e13009136d03e9ab54210f9e21cb41"
+    },
+    "new_native_build_Game_SYSTEM_render_qualification": false,
+    "ordinary_planner_autoload": false
+  },
+  "items": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\docs-source-a01\\candidate\\docs\\ck3-native-ai\\evidence\\episode04-postload-context-attribution-correction-20261021\\CORRECTION.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-context-attribution-correction-20261021/CORRECTION.actual.json",
+      "bytes": 4761,
+      "sha256": "13d4300542b0818a22befdae18e9243fc89d822a8482e6d7b610894ab92d7d2a",
+      "git_blob": "43dc4616fa503e557eb4a61bd6ae6e2e57f9a7f7",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\docs-source-a01\\candidate\\docs\\ck3-native-ai\\episode04-gameplay-agent-use-12004.md",
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "bytes": 22069,
+      "sha256": "67afa18d2ad83d92451502ac04d0eb290c2594ba7f1103ffa4b79bd0076fc459",
+      "git_blob": "2bfd81cdabb50f8a7bd2f94b5ff178b6656c523d",
+      "old": {
+        "bytes": 20072,
+        "sha256": "8ee307eb422acba7849abe475977785cdabeec6aba3fff94e7dfa22d892079f8",
+        "git_blob": "9531e436394c455c9ee9b2350a66c1a14c58f464"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\docs-source-a01\\candidate\\docs\\ck3-native-ai\\episode04-current-execution-map-12004.md",
+      "target": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "bytes": 63607,
+      "sha256": "72eb8c2cb2893e4a5ba8558ee3f62e2ad778138afe16f3a72afaeabb5dc8369e",
+      "git_blob": "8cd450d86067ab0626b0e6410a4db0dbe791fcf2",
+      "old": {
+        "bytes": 61610,
+        "sha256": "e83696ef433e72baa9e88ca720896b7d6a258fde53fcc62b0c6b607d41865f16",
+        "git_blob": "292399d1e40e2fa71799a9314acc55b084f47cc8"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\docs-source-a01\\candidate\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "target": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "bytes": 51850,
+      "sha256": "d6e49b1439538eb8d4db11f41f2be794c3b738a43df7d0a4a062c7388014d22b",
+      "git_blob": "88433c191ff52470c733ceadc122a5fe60b5b628",
+      "old": {
+        "bytes": 49819,
+        "sha256": "73a76af3ab28838350289f05c7e985fd64511bf6f293aa576e25dc2484916485",
+        "git_blob": "01cf9ba11e9aa5d675215a5260b4128a0ae2fa62"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\docs-source-a01\\candidate\\docs\\ck3-native-ai\\evidence\\episode04-r08-player-parent-opportunity-20261021\\knowledge-closure20.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/knowledge-closure20.json",
+      "bytes": 11610,
+      "sha256": "7f78b659a98543dd0190929ff5a95ae693f5a6c29fe1325e6dab17dd48c077a3",
+      "git_blob": "21303511b8e310459177228af222431c8f2cb608",
+      "old": {
+        "bytes": 10543,
+        "sha256": "29f29eefeb080732fc64c06dab67a606368978e622dd2ba11596d3121dacf055",
+        "git_blob": "987d215c90537308a41eed67b0ed86d6b987149c"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\docs-source-a01\\candidate\\docs\\ck3-native-ai\\evidence\\episode04-r08-player-parent-opportunity-20261021\\canonical-binding.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/canonical-binding.json",
+      "bytes": 4044,
+      "sha256": "6bd8c72adfd59517f5b118bb4a8c481ceb7583c0d92d348f9858fd4db20cc2f0",
+      "git_blob": "ad9b296de4f5cec4647d8672657f7a2884efc2db",
+      "old": {
+        "bytes": 2825,
+        "sha256": "397a784687308749bf7e4a988fac7d5ad8bdbd44228a980d8842e7df5fc4b79d",
+        "git_blob": "bebad779f71184821a70752d8024df832f7ad4c2"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\native-source-a01\\PRODUCTION.candidate.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/context-correction-20261021/PRODUCTION.candidate.patch",
+      "bytes": 18981,
+      "sha256": "79b04fa3c2821e2d12113866bb9581ad09cdd25abeccbaddb7ea0b36795b1108",
+      "git_blob": "6ffef8e39d29c36c24923b4bafaee4511fbc65ac",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\native-source-a01\\test_postload_runner_contract.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/context-correction-20261021/test_postload_runner_contract.py",
+      "bytes": 7627,
+      "sha256": "4810870064c63a753d5bc5c7f9e704d6ee0ee9af8bbecf4a42752dcc76a030d2",
+      "git_blob": "c4f67c0a17698f57b5062f93028c289ccb23425f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\native-source-a01\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/context-correction-20261021/DELIVERY.actual-a01.json",
+      "bytes": 38842,
+      "sha256": "15155dc79bd852c651527d2bbf7105d3d17336b4f73749e802a659ec26f6c025",
+      "git_blob": "f9edd1b039a75329c020efabdf0d790264f0b042",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\publisher-source-a01\\media-EOF-overlay-a02\\formal8_composer.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/formal8-review-source-a01/formal8_composer.py",
+      "bytes": 25893,
+      "sha256": "ecdb5f2ffff93bdc8dba07c382bddb13adf3837aab034844dbd491cb1b6f1c28",
+      "git_blob": "af142ebf81aff344cb1727bcf5e0798083f9c2ef",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\publisher-source-a01\\media-LF-overlay-a01\\timeline.prepared-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/formal8-review-source-a01/timeline.prepared-a01.json",
+      "bytes": 26126,
+      "sha256": "e1b30620dc0f15c4db28565a997ab0346955d0c160c80d79e19153ff568290d3",
+      "git_blob": "a812761dc42041e62c7b7bdb28bfd12816515b46",
+      "old": null
+    }
+  ],
+  "raw_whitespace_exceptions": [
+    "docs/ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/context-correction-20261021/PRODUCTION.candidate.patch"
+  ],
+  "plan_self_target": "docs/ck3-native-ai/evidence/episode04-postload-context-attribution-correction-20261021/publication-copyplan.json"
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "xar.e04.postload.context-attribution-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T04:59:31.874510+00:00",
+  "evidence_kind": "derived_projection_of_direct_agent_messages_and_Root_instructions_NOT_original_platform_or_tool_refusal",
+  "source_commit": "ecd7e14089c290ca08bfa3a5c674617d143ab0c4",
+  "direct_message_source": {
+    "author": "/root/native_prepare",
+    "recipient": "/root/public_preflight",
+    "message_timestamp_utc": null,
+    "timestamp_note": "Original message timestamp unavailable; projection observation time is separate",
+    "exact_message_text": "可作message-derived projection：我保留上下文没有原始 possible cybersecurity risk 平台/工具响应、error code或request ID；最早可见归因为Root转述“上一轮出现平台内容风险过滤中断”。不能据此确认平台原因，也不能断言其从未发生。未收到工具审批拒绝/Windows安全拒绝；已见普通命令长度与JS/Python语法错误不作为安全拒绝。旧draft现实际readback仍33文件/375117B，SOURCE-ASSEMBLY8711/efb1ff6a031d8796715e272a8bd43473477f2e6208805274e50c20395ed3a319；当时无native/System/Game/observer Popen/所有已有Python原wait完成。当前Root另授r13新source-only任务，正普通Python源码修复/check，仍native/System/Game0，不复写旧root。"
+  },
+  "Root_correction_source": {
+    "author": "/root",
+    "recipient": "/root/public_preflight",
+    "message_role": "new docs-correction task in this source purpose, not an original tool response",
+    "reported_user_communication": "Root withdrew the previously confirmed OpenAI-block assertion and apologized"
+  },
+  "attribution": {
+    "confirmed_platform_filter_cause": false,
+    "original_possible_cybersecurity_risk_response_available_in_retained_context": false,
+    "error_code": null,
+    "request_id": null,
+    "earliest_visible_source": "Root narration relayed by author",
+    "whether_any_platform_event_ever_occurred": "unknown",
+    "definitely_a_false_positive": "unknown",
+    "tool_approval_or_Windows_security_refusal_observed_in_author_context": false,
+    "ordinary_syntax_and_command_length_errors_are_not_security_refusal_evidence": true
+  },
+  "prior_native_state_reported_by_author": {
+    "draft_files": 33,
+    "draft_bytes": 375117,
+    "SOURCE_ASSEMBLY_initial_not_final_freeze": {
+      "bytes": 8711,
+      "sha256": "efb1ff6a031d8796715e272a8bd43473477f2e6208805274e50c20395ed3a319"
+    },
+    "new_native_SYSTEM_Game_observer_Popen_started": false,
+    "existing_Python_original_waits_completed": true,
+    "final_native_freeze_build_cold_Q_completed": false
+  },
+  "user_context": {
+    "purpose": "single-player CK3 study and public Bilibili creative project",
+    "user_supplied_url": "https://b23.tv/05tUFNk",
+    "Root_reported_HEAD_status": 302,
+    "Root_reported_redirect_video_id": "BV1BFHq6WE5d",
+    "HEAD_evidence_source": "Root task message; this docs author did not repeat the request",
+    "video_page_content_read_by_this_docs_author": false,
+    "video_watched_or_liked_by_this_docs_author": false
+  },
+  "technical_capability_description_preserved": [
+    "execution-breakpoint sampling",
+    "player/owner and clock/source binding",
+    "read-only observation and all-debug-register restoration/detach design"
+  ],
+  "technical_purpose_renamed_or_disguised_to_evade_refusal": false,
+  "current_authority": {
+    "financial": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\capacity\\FINANCIAL-SOURCE-PLANNING0530.actual-a01.json",
+      "bytes": 4426,
+      "sha256": "f8d9246b8404eab49104e1fde3c909a1f7f8cdd87916fa6e6914ff449a2d9389"
+    },
+    "docs_partition": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\capacity\\DOCS256-PARTITION-SUPPLEMENT.actual-a01.json",
+      "bytes": 2993,
+      "sha256": "c5dd48de80ec2b92e388e7ac4e2a503e535fedcbadee720acca8d83eef22f7cb"
+    },
+    "source_only": true,
+    "native_build_SYSTEM_EXE_debugger_Game_SDK_Steam_or_Git_mutation": false,
+    "ordinary_planner_autoload": false,
+    "source_docs_grant_execution_qualification": false
+  },
+  "history_policy": "Old raw, Root source-only adoption and earlier derived status remain byte-exact historical records; append correction only, no retrospective original tool receipt is fabricated",
+  "known_remaining_gaps": [
+    "Original platform/tool response provenance is unavailable",
+    "Complete accepted native successor freeze/build/SYSTEM/cold/new Q are still absent",
+    "No public runtime/Game qualification follows from this correction",
+    "Video page content was not reviewed"
+  ],
+  "formal_business_research_counts_changed": false
+}

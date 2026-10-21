@@ -1,12 +1,22 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-21 归因更正：此前“已确认平台过滤”的证据不足
+
+`machine_id: desktop-3fevhd2-1c74096080`；本次来源观察时间为`2026-10-21T04:59:31.874510+00:00`。本条纠正当前说明，旧raw、Root源码归档采用和当时的派生状态原件保持原字节。Root已收回向用户作出的“已确认OpenAI拦截”断言并道歉；不能反向断言从未发生平台事件或必为误判。
+
+原生作者最新直接RAM消息说明：其保留上下文没有原始`possible cybersecurity risk`平台/工具响应、error code或request ID，最早可见归因来自Root转述；没有工具审批或Windows安全拒绝原件。普通命令长度、JS/Python语法错误不能当作安全过滤证据。准确结论是归因证据不足、执行资格尚未完成。旧分支仍为33文件/375117B未冻结draft，未开始新的native/SYSTEM/Game/observer Popen；现有Python原wait已完成。
+
+用户提供单机CK3研究与公开创作背景及[B站链接](https://b23.tv/05tUFNk)。Root只报告HEAD请求302跳转至`BV1BFHq6WE5d`；本次未读取视频页面内容，不冒称观看或点赞。后续应完整、如实说明该用途和真实技术能力后正常办理新的源码或执行准入，不改名、隐去执行断点采样/恢复设计或绕过实际拒绝。当前新目的仅授权源码与文档准备，未授native build、SYSTEM、SDK或Game。
+
+技术范围仍是执行断点采样、玩家/owner与时钟/来源绑定、完整调试寄存器恢复和detach设计。仍缺完整native successor freeze/build/cold/new Q；10条公共候选未安装生产路由，普通planner不自动加载。正式8/11、业务与研究信用均不变。完整来源与未知项见[归因更正投影](evidence/episode04-postload-context-attribution-correction-20261021/CORRECTION.actual.json)。
+
 ## 2026-10-21：R13限定三态使正式8/11；postload采用限于源码归档
 
 `machine_id: desktop-3fevhd2-1c74096080`。来源为Root于2026-10-21T02:23:09Z签出的[R13限定正式裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json)，以及02:31:55Z的[postload源码归档采用](evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json)。正式动态按R03–R13每主题至少一段已验原M源镜头计，现为 **8/11（72.73%，R03/R04/R06/R07/R09/R11/R12/R13）**；余R05/R08/R10。研究10/14、业务7/11、B0/2、ABC0/3不变，R05 R211受控补充仍不授原M正式镜头信用。
 
 R13仅授R0176原片`[0,30)`秒/900帧：旧路线→一次新命令后的后缀替换→首段完成后的新方向。AI代理实际看全57张联系表的900有效格；Root代理直接复核5张联系表/68有效格及0/4/10/20秒4张既有原分辨JPEG，未把末张12个padding格计入源帧。后缀变化只定位`(4,10]`秒，位置/方向变化只定位`(10,20]`秒，原生事件精确encoded PTS仍为null。原M163的原生最终到达与M165的镜头三态分列；alternate8645终点在45秒原片之外，未授终点镜头、整卡/全变体、人工1×、最终影片或OneDrive交付。[R13专题与实际边界](episode04-r13-locked-reroute-r0176-12004.md)。
 
-postload公共Python与固定依赖仅被采用作源码归档，10条候选未安装到production；原生分支因平台过滤中断，仍缺新Q、已冻结完整native successor与runtime资格，未授后继native build/cold或Game。旧entry17/pointer21资格不能转授此新模式。普通planner不会自动加载Markdown或新case；文件阅读代理和开发者可按来源显式参考。[玩家parent机会与输入合同](episode04-r08-player-parent-opportunity-input-contract-12004.md)明确：exact_day并非玩家结算机会，未命中不等于0军费；缺少付款实证时，使用当前原生费率、钱包、已有承诺与雇佣应急金作保守预算。本段不把source-only代码、35键投影或文档存在当作实际运行通过。
+postload公共Python与固定依赖仅被采用作源码归档，10条候选未安装到production；原生分支原先被归因为平台过滤，该归因证据不足（见[本次更正](evidence/episode04-postload-context-attribution-correction-20261021/CORRECTION.actual.json)），仍缺新Q、已冻结完整native successor与runtime资格，未授后继native build/cold或Game。旧entry17/pointer21资格不能转授此新模式。普通planner不会自动加载Markdown或新case；文件阅读代理和开发者可按来源显式参考。[玩家parent机会与输入合同](episode04-r08-player-parent-opportunity-input-contract-12004.md)明确：exact_day并非玩家结算机会，未命中不等于0军费；缺少付款实证时，使用当前原生费率、钱包、已有承诺与雇佣应急金作保守预算。本段不把source-only代码、35键投影或文档存在当作实际运行通过。
 
 下方01:17/7以及更早的7/11、旧pending和闭场记录按其实际时点保留；本次只追加新的有限镜头裁定，不追认R0176历史现场闭场，也不改写其他研究或运行结论。
 

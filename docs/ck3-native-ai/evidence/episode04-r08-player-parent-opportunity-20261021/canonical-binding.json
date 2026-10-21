@@ -1,8 +1,8 @@
 {
   "schema": "xar.e04.r08.canonical-document-binding.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-21T04:19:01.819797+00:00",
-  "input_HEAD": "c7e2b286b3de8c708d11b8da5eee98e3df59a1ef",
+  "observed_at_utc": "2026-10-21T04:59:31.874510+00:00",
+  "input_HEAD": "ecd7e14089c290ca08bfa3a5c674617d143ab0c4",
   "canonical_document": {
     "path": "docs/ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md",
     "bytes": 11435,
@@ -12,15 +12,21 @@
   },
   "entry_same_tree_candidate": {
     "path": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
-    "bytes": 20072,
-    "sha256": "8ee307eb422acba7849abe475977785cdabeec6aba3fff94e7dfa22d892079f8",
-    "git_blob_oid": "9531e436394c455c9ee9b2350a66c1a14c58f464"
+    "bytes": 22069,
+    "sha256": "67afa18d2ad83d92451502ac04d0eb290c2594ba7f1103ffa4b79bd0076fc459",
+    "git_blob_oid": "2bfd81cdabb50f8a7bd2f94b5ff178b6656c523d",
+    "origin": "context_attribution_correction_candidate",
+    "source_commit": null,
+    "base_source_commit": "ecd7e14089c290ca08bfa3a5c674617d143ab0c4"
   },
   "closure_manifest": {
     "path": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/knowledge-closure20.json",
-    "bytes": 10543,
-    "sha256": "29f29eefeb080732fc64c06dab67a606368978e622dd2ba11596d3121dacf055",
-    "git_blob_oid": "987d215c90537308a41eed67b0ed86d6b987149c"
+    "bytes": 11610,
+    "sha256": "7f78b659a98543dd0190929ff5a95ae693f5a6c29fe1325e6dab17dd48c077a3",
+    "git_blob_oid": "21303511b8e310459177228af222431c8f2cb608",
+    "origin": "context_attribution_correction_control",
+    "source_commit": null,
+    "base_source_commit": "ecd7e14089c290ca08bfa3a5c674617d143ab0c4"
   },
   "historical_index_unchanged": {
     "path": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/source-index.json",
@@ -47,7 +53,25 @@
     "file_reading_agent_must_verify_actual_files": true,
     "explicit_reference_required": true,
     "ordinary_planner_autoload": false,
-    "source_document_does_not_grant_native_SDK_Game_or_payment_qualification": true
+    "source_document_does_not_grant_native_SDK_Game_or_payment_qualification": true,
+    "actual_candidate_overlay_readable_knowledge_inputs": 20,
+    "actual_candidate_overlay_readable_including_binding": 21,
+    "unchanged18_actual_W_readable": true
   },
-  "historical_index_markdown_pin_role": "immutable original candidate pin; use canonical_document for the current full document"
+  "historical_index_markdown_pin_role": "immutable original candidate pin; use canonical_document for the current full document",
+  "map_same_tree_candidate": {
+    "path": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+    "bytes": 63607,
+    "sha256": "72eb8c2cb2893e4a5ba8558ee3f62e2ad778138afe16f3a72afaeabb5dc8369e",
+    "git_blob_oid": "8cd450d86067ab0626b0e6410a4db0dbe791fcf2",
+    "origin": "context_attribution_correction_candidate",
+    "source_commit": null,
+    "base_source_commit": "ecd7e14089c290ca08bfa3a5c674617d143ab0c4"
+  },
+  "correction": {
+    "path": "docs/ck3-native-ai/evidence/episode04-postload-context-attribution-correction-20261021/CORRECTION.actual.json",
+    "bytes": 4761,
+    "sha256": "13d4300542b0818a22befdae18e9243fc89d822a8482e6d7b610894ab92d7d2a",
+    "git_blob_oid": "43dc4616fa503e557eb4a61bd6ae6e2e57f9a7f7"
+  }
 }
