@@ -233,15 +233,14 @@ class InprocessQueueTests(unittest.TestCase):
         function=next(node for node in ast.parse(raw).body
                       if isinstance(node,ast.FunctionDef) and node.name=='frozen_run')
         groups=[node.iter for node in ast.walk(function)
-                if isinstance(node,ast.For) and isinstance(node.iter,ast.Tuple)
-                and any(isinstance(item,ast.Constant) and item.value=='ck3_mod_acceptance_launcher.py'
-                        for item in node.iter.elts)]
+                if isinstance(node,ast.For) and isinstance(node.iter,ast.Name)
+                and node.iter.id=='CONTROL_QUEUE_MODULE_ORDER_V1']
         self.assertEqual(len(groups),1)
-        filenames=[]
-        for item in groups[0].elts:
-            self.assertIsInstance(item,ast.Constant)
-            self.assertIsInstance(item.value,str)
-            filenames.append(item.value)
+        launcher=self.bundle['modules']['ck3_mod_acceptance_launcher']
+        self.assertIs(launcher.frozen_run.__globals__['CONTROL_QUEUE_MODULE_ORDER_V1'],
+                      launcher.CONTROL_QUEUE_MODULE_ORDER_V1)
+        self.assertEqual(launcher.CONTROL_QUEUE_MODULE_ORDER_V1,CONTROL_QUEUE_MODULE_ORDER_V1)
+        filenames=[name+'.py' for name in launcher.CONTROL_QUEUE_MODULE_ORDER_V1]
         self.assertEqual(len(CONTROL_QUEUE_MODULE_ORDER_V1),len(set(CONTROL_QUEUE_MODULE_ORDER_V1)))
         self.assertEqual(set(filenames),{name+'.py' for name in CONTROL_QUEUE_MODULE_ORDER_V1})
         self.assertEqual(set(self.bundle['modules']),set(CONTROL_QUEUE_MODULE_ORDER_V1))
