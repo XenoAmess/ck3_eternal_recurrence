@@ -123,6 +123,25 @@ def normalize_raw_ck3_quote_escapes(
     return normalized
 
 
+def normalize_raw_ck3_newline_escapes(
+    source: dict[str, str], candidate: dict[str, str]
+) -> dict[str, str]:
+    """Encode JSON-decoded line breaks in CK3's raw, single-line YML domain.
+
+    Only a source with an actual protected backslash-n token permits decoded
+    line feeds. The unchanged protected-token gate then verifies exact counts;
+    this cannot excuse an added, missing, or changed line break.
+    """
+    normalized: dict[str, str] = {}
+    for key, value in candidate.items():
+        if "\n" in value:
+            if "\\n" not in protected_tokens(source[key]):
+                raise TranslationError(f"{key}: decoded line break absent from source")
+            value = value.replace("\n", "\\n")
+        normalized[key] = value
+    return normalized
+
+
 def parse_ck3_localization(path: Path) -> dict[str, str]:
     try:
         data = Path(path).read_bytes()
@@ -324,8 +343,11 @@ def request_candidate(
             if not isinstance(message, dict):
                 raise TranslationError("response message is not an object")
             content = message.get("content")
+            if not isinstance(content, str):
+                raise TranslationError("response translation content is not a string")
             candidate = extract_candidate(content, tuple(source))
             candidate = normalize_raw_ck3_quote_escapes(source, candidate)
+            candidate = normalize_raw_ck3_newline_escapes(source, candidate)
             assert_protected_tokens(source, candidate, explicit_protected)
             return target_key, candidate
         except error.HTTPError as exc:

@@ -2143,7 +2143,7 @@ def _allocate_and_keep_impl(selection,args):
         peer=shared_tools/name;files[peer]=pin(peer)
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
-        rows=([closure['bootstrap']] if fresh_machine else
+        rows=([closure['bootstrap'],*closure['maintenance_evidence']] if fresh_machine else
               [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()])
         for row in rows:
             files[Path(row['path']).resolve()]=row

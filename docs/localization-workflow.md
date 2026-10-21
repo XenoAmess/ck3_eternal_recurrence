@@ -115,6 +115,8 @@ MiniMax-M3 只能承担低风险、机械性的翻译工作。
 返回候选 JSON，**不会写入 yml**；
 候选仍必须由当前执行者检查格式并用正常文件编辑流程落盘；只有简体中文候选做语义审阅。示例：
 
+共享调用器将JSON解码后真实的换行字符规范化为CK3单行YML中的字面`\n`，只允许源文案原本就具有对应保护token的条目；随后仍精确验证换行数量和其他token。新增、缺失换行以及scope漂移照常拒绝，不把格式域转换误判为模型删掉换行，也不放宽实际内容守卫。
+
 ```text
 py tools/translate_localization_minimax.py --source path/to/source_l_simp_chinese.yml --source-language "Simplified Chinese" --reference path/to/source_l_english.yml --reference-language English --target french="French (France)" --context "Short, task-specific UI context" --key first_key --key second_key --protect "Product Name"
 ```

@@ -33,6 +33,7 @@ class FreshMachineBootstrapTests(unittest.TestCase):
             'runtime_config': exact_pin(self.runtime), 'runtime_manifest': exact_pin(self.manifest),
             'repo_root': str(self.root), 'bus_dir': str(self.root/'bus'),
             'created_at_utc': datetime.now(timezone.utc).isoformat(),
+            'maintenance_closures': [],
         })
         self.source = self.root/'fresh-bootstrap.json'
         self.save(self.source, self.bundle)
@@ -166,6 +167,102 @@ class FreshMachineBootstrapTests(unittest.TestCase):
         (root/'chain.lock').write_bytes(b'0')
         self.save(root/'machine.json', self.binding)
         self.assertEqual(require_empty_machine_history(self.binding), self.binding)
+
+    def add_maintenance(self) -> Path:
+        task = 'steam-repair-maintenance'
+        acquired: JsonObject = {'schema': 'codex.task_bus.v1', 'task_id': task, 'sequence': 2,
+            'kind': 'registered', 'state': 'running', 'resources': ['ck3-screen:acquired'],
+            'summary': 'maintenance-only:no-game-start:steam-core-file-validation'}
+        released: JsonObject = {'schema': 'codex.task_bus.v1', 'task_id': task, 'sequence': 3,
+            'kind': 'completed', 'state': 'done', 'resources': [],
+            'summary': 'maintenance-only:no-game-start:steam-core-file-validation-released'}
+        self.events.extend((acquired, released))
+        original = self.root/'maintenance-registration.json'
+        final = self.root/'maintenance-release.json'
+        before = self.root/'maintenance-before.json'
+        after = self.root/'maintenance-after.json'
+        actions = self.root/'maintenance-actions.json'
+        self.save(original, {'event': acquired, 'task': {'task_id': task, 'last_sequence': 2,
+                   'state': 'running', 'resources': ['ck3-screen:acquired']}})
+        head: JsonObject = {'task_id': task, 'last_sequence': 3, 'state': 'done', 'resources': []}
+        self.save(final, {'event': released, 'task': head})
+        self.packet['tasks'] = [head]
+        inventory = {'machine_id': self.binding['machine_id'],
+                     'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+                     'tasklist_returncode': 0, 'tasklist_pids': [], 'wmi_pids': [], 'processes': []}
+        self.save(before, inventory)
+        self.save(after, inventory)
+        self.save(actions, {'machine_id': self.binding['machine_id'],
+                            'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+                            'maintenance_only': True, 'no_game_start': True})
+        closure = self.root/'maintenance-closure.json'
+        self.save(closure, {'schema': 'ck3-mod-acceptance-maintenance-screen-closure-v1',
+            'machine_id': self.binding['machine_id'], 'task_id': task,
+            'maintenance_only': True, 'no_game_start': True,
+            'registration': exact_pin(original), 'release': exact_pin(final),
+            'before_inventory': exact_pin(before), 'after_inventory': exact_pin(after),
+            'actions_result': exact_pin(actions)})
+        self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+        self.save(self.source, self.bundle)
+        return closure
+
+    def test_exact_released_maintenance_epoch_admits_without_claiming_game_exit(self) -> None:
+        self.add_maintenance()
+        result = self.validate()
+        self.assertIs(result['prior_session_exists'], False)
+        self.assertIs(result['previous_normal_exit_claimed'], False)
+        evidence = result['maintenance_evidence']
+        self.assertIsInstance(evidence, list)
+        self.assertEqual(len(evidence) if isinstance(evidence, list) else 0, 6)
+
+    def test_each_raw_maintenance_observation_requires_machine_utc_and_order(self) -> None:
+        closure = self.add_maintenance()
+        original_closure = json.loads(closure.read_text())
+        for field in ('before_inventory', 'after_inventory', 'actions_result'):
+            raw_path = Path(original_closure[field]['path'])
+            original = json.loads(raw_path.read_text())
+            for change in ({'machine_id': 'different-machine'}, {'observed_at_utc': None},
+                           {'observed_at_utc': '2020-01-01T00:00:00'},
+                           {'observed_at_utc': '2020-01-01T00:00:00+01:00'}):
+                self.save(raw_path, {**original, **change})
+                self.save(closure, {**original_closure, field: exact_pin(raw_path)})
+                self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+                self.save(self.source, self.bundle)
+                with self.assertRaises(ValueError):
+                    self.validate()
+            self.save(raw_path, original)
+        self.save(closure, original_closure)
+        after = Path(original_closure['after_inventory']['path'])
+        self.save(after, {**json.loads(after.read_text()), 'observed_at_utc': '2020-01-01T00:00:00Z'})
+        self.save(closure, {**original_closure, 'after_inventory': exact_pin(after)})
+        self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+        self.save(self.source, self.bundle)
+        with self.assertRaisesRegex(ValueError, 'out of order'):
+            self.validate()
+
+    def test_unreleased_maintenance_and_missing_declaration_and_game_history_refused(self) -> None:
+        closure = self.add_maintenance()
+        self.packet['tasks'] = [{'task_id': 'steam-repair-maintenance', 'last_sequence': 2,
+                                'state': 'running', 'resources': ['ck3-screen:acquired']}]
+        with self.assertRaisesRegex(ValueError, 'released head'):
+            self.validate()
+        self.packet['tasks'] = [{'task_id': 'steam-repair-maintenance', 'last_sequence': 3,
+                                'state': 'done', 'resources': []}]
+        raw = json.loads(closure.read_text())
+        del raw['no_game_start']
+        self.save(closure, raw)
+        self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+        self.save(self.source, self.bundle)
+        with self.assertRaisesRegex(ValueError, 'Exact maintenance-only'):
+            self.validate()
+        raw['no_game_start'] = True
+        self.save(closure, raw)
+        self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+        self.save(self.source, self.bundle)
+        ids.allocate_live_run_id('vanilla', machine_id=self.binding['machine_id'],
+                                 state_root=Path(self.binding['state_root']))
+        with self.assertRaisesRegex(ValueError, 'canonical live history'):
+            self.validate()
 
 
 if __name__ == '__main__':

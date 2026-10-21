@@ -5,7 +5,7 @@ Canonical IDs and the existing machine admission chain remain authoritative.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -33,6 +33,20 @@ class FreshMachineBootstrap(TypedDict):
     repo_root: str
     bus_dir: str
     created_at_utc: str
+    maintenance_closures: list[FilePin]
+
+
+class MaintenanceScreenClosure(TypedDict):
+    schema: Literal['ck3-mod-acceptance-maintenance-screen-closure-v1']
+    machine_id: str
+    task_id: str
+    maintenance_only: Literal[True]
+    no_game_start: Literal[True]
+    registration: FilePin
+    release: FilePin
+    before_inventory: FilePin
+    after_inventory: FilePin
+    actions_result: FilePin
 
 
 class FreshMachineAdmission(TypedDict):
@@ -41,6 +55,7 @@ class FreshMachineAdmission(TypedDict):
     bootstrap: FilePin
     runtime_config: FilePin
     runtime_manifest: FilePin
+    maintenance_evidence: list[FilePin]
     canonical_history_empty: Literal[True]
     prior_session_exists: Literal[False]
     previous_normal_exit_claimed: Literal[False]
@@ -75,7 +90,7 @@ def exact_pin(path: Path) -> FilePin:
 def parse_bootstrap(value: object) -> FreshMachineBootstrap:
     row = json_object(value)
     fields = {'schema', 'machine', 'runtime_config', 'runtime_manifest',
-              'repo_root', 'bus_dir', 'created_at_utc'}
+              'repo_root', 'bus_dir', 'created_at_utc', 'maintenance_closures'}
     if set(row) != fields or row.get('schema') != FRESH_BOOTSTRAP_SCHEMA:
         raise ValueError('Exact fresh-machine bootstrap contract required; no predecessor permitted')
     stamp = text_field(row, 'created_at_utc')
@@ -85,23 +100,29 @@ def parse_bootstrap(value: object) -> FreshMachineBootstrap:
     for key in ('repo_root', 'bus_dir'):
         if not Path(text_field(row, key)).is_absolute():
             raise ValueError('Absolute fresh-machine root required: ' + key)
+    closures = row.get('maintenance_closures')
+    if not isinstance(closures, list):
+        raise ValueError('Explicit maintenance closure pin list required')
     return FreshMachineBootstrap(
         schema=FRESH_BOOTSTRAP_SCHEMA, machine=machine_binding(row['machine']),
         runtime_config=file_pin(row['runtime_config']),
         runtime_manifest=file_pin(row['runtime_manifest']),
         repo_root=text_field(row, 'repo_root'), bus_dir=text_field(row, 'bus_dir'),
         created_at_utc=stamp,
+        maintenance_closures=[file_pin(item) for item in closures],
     )
 
 
 def create_bootstrap(*, binding: object, runtime_path: Path, manifest_path: Path,
-                     repo_root: Path, bus_dir: Path) -> FreshMachineBootstrap:
+                     repo_root: Path, bus_dir: Path,
+                     maintenance_closures: tuple[Path, ...] = ()) -> FreshMachineBootstrap:
     """Prepare an identity-bound proposal; actual absence is rechecked at allocation."""
     return parse_bootstrap({
         'schema': FRESH_BOOTSTRAP_SCHEMA, 'machine': require_empty_machine_history(binding),
         'runtime_config': exact_pin(runtime_path), 'runtime_manifest': exact_pin(manifest_path),
         'repo_root': str(repo_root.resolve()), 'bus_dir': str(bus_dir.resolve()),
         'created_at_utc': datetime.now(timezone.utc).isoformat(),
+        'maintenance_closures': [exact_pin(path) for path in maintenance_closures],
     })
 
 
@@ -121,24 +142,120 @@ def require_empty_machine_history(value: object) -> MachineBinding:
     return binding
 
 
-def require_unused_bus(events: object, packet: object) -> None:
+def _pinned_object(reference: FilePin) -> JsonObject:
+    path = Path(reference['path'])
+    if not 0 < reference['bytes'] <= 1048576 or reference != exact_pin(path):
+        raise ValueError('Bounded original maintenance evidence changed')
+    return json_object(json.loads(path.read_text(encoding='utf-8-sig')))
+
+
+def parse_maintenance_closure(value: object) -> MaintenanceScreenClosure:
+    row = json_object(value)
+    fields = {'schema', 'machine_id', 'task_id', 'maintenance_only', 'no_game_start',
+              'registration', 'release', 'before_inventory', 'after_inventory', 'actions_result'}
+    if (set(row) != fields or row.get('schema') != 'ck3-mod-acceptance-maintenance-screen-closure-v1'
+            or row.get('maintenance_only') is not True or row.get('no_game_start') is not True):
+        raise ValueError('Exact maintenance-only/no-game-start closure required')
+    return MaintenanceScreenClosure(
+        schema='ck3-mod-acceptance-maintenance-screen-closure-v1',
+        machine_id=text_field(row, 'machine_id'), task_id=text_field(row, 'task_id'),
+        maintenance_only=True, no_game_start=True,
+        registration=file_pin(row['registration']), release=file_pin(row['release']),
+        before_inventory=file_pin(row['before_inventory']), after_inventory=file_pin(row['after_inventory']),
+        actions_result=file_pin(row['actions_result']),
+    )
+
+
+def _maintenance_observation(row: JsonObject, binding: MachineBinding) -> datetime:
+    if row.get('machine_id') != binding['machine_id']:
+        raise ValueError('Maintenance raw observation belongs to another machine')
+    stamp = datetime.fromisoformat(text_field(row, 'observed_at_utc').replace('Z', '+00:00'))
+    if stamp.utcoffset() != timedelta(0) or stamp > datetime.now(timezone.utc):
+        raise ValueError('Maintenance raw observation requires an actual past UTC timestamp')
+    return stamp
+
+
+def _maintenance_epochs(refs: list[FilePin], events: list[JsonObject], tasks: list[JsonObject],
+                        binding: MachineBinding) -> dict[str, tuple[int, int]]:
+    epochs: dict[str, tuple[int, int]] = {}
+    for reference in refs:
+        closure = parse_maintenance_closure(_pinned_object(reference))
+        task = closure['task_id']
+        if closure['machine_id'] != binding['machine_id'] or task in epochs:
+            raise ValueError('Maintenance closure machine or task uniqueness differs')
+        registration = _pinned_object(closure['registration'])
+        release = _pinned_object(closure['release'])
+        acquired = object_field(registration, 'event')
+        released = object_field(release, 'event')
+        acquired_task = object_field(registration, 'task')
+        released_task = object_field(release, 'task')
+        first, last = acquired.get('sequence'), released.get('sequence')
+        if (type(first) is not int or not isinstance(first, int)
+                or type(last) is not int or not isinstance(last, int) or not 0 < first < last
+                or acquired.get('task_id') != task or released.get('task_id') != task
+                or acquired_task.get('task_id') != task or released_task.get('task_id') != task
+                or type(acquired_task.get('last_sequence')) is not int or acquired_task.get('last_sequence') != first
+                or type(released_task.get('last_sequence')) is not int or released_task.get('last_sequence') != last
+                or acquired.get('kind') != 'registered' or released.get('kind') != 'completed'
+                or acquired.get('resources') != ['ck3-screen:acquired']
+                or acquired_task.get('resources') != ['ck3-screen:acquired']
+                or released.get('state') != 'done' or released.get('resources') != []
+                or released_task.get('state') != 'done' or released_task.get('resources') != []
+                or acquired not in events or released not in events):
+            raise ValueError('Original maintenance screen registration/release is not proven by durable bus events')
+        prefix = 'maintenance-only:no-game-start:'
+        if not all(isinstance(row.get('summary'), str) and str(row['summary']).startswith(prefix)
+                   for row in (acquired, released)):
+            raise ValueError('Screen epoch was not explicitly declared maintenance-only before custody')
+        matching = [row for row in tasks if row.get('task_id') == task]
+        if (len(matching) != 1 or matching[0].get('last_sequence') != last
+                or type(matching[0].get('last_sequence')) is not int
+                or matching[0].get('state') != 'done' or matching[0].get('resources') != []):
+            raise ValueError('Actual maintenance task is not the exact released head')
+        inventory_times: list[datetime] = []
+        for field in ('before_inventory', 'after_inventory'):
+            inventory = _pinned_object(closure['before_inventory'] if field == 'before_inventory' else closure['after_inventory'])
+            inventory_times.append(_maintenance_observation(inventory, binding))
+            if (type(inventory.get('tasklist_returncode')) is not int or inventory.get('tasklist_returncode') != 0
+                    or any(inventory.get(key) != [] for key in ('tasklist_pids', 'wmi_pids', 'processes'))):
+                raise ValueError('Maintenance before/after actual CK3 absence is unavailable')
+        actions = _pinned_object(closure['actions_result'])
+        action_time = _maintenance_observation(actions, binding)
+        if not inventory_times[0] <= inventory_times[1] <= action_time:
+            raise ValueError('Maintenance before/after/action observations are out of order')
+        if (actions.get('machine_id') != binding['machine_id']
+                or actions.get('maintenance_only') is not True or actions.get('no_game_start') is not True):
+            raise ValueError('Maintenance action result cannot certify no game start')
+        epochs[task] = first, last
+    return epochs
+
+
+def require_unused_bus(events: object, packet: object, *, maintenance_closures: list[FilePin],
+                       binding: MachineBinding) -> None:
     if not isinstance(events, list):
         raise ValueError('Actual existing local bus history required')
-    for event in events:
-        row = json_object(event)
+    rows = [json_object(event) for event in events]
+    tasks_raw = json_object(packet).get('tasks')
+    if not isinstance(tasks_raw, list):
+        raise ValueError('Fresh actual local task inventory required')
+    tasks = [json_object(task) for task in tasks_raw]
+    maintenance = _maintenance_epochs(maintenance_closures, rows, tasks, binding)
+    for row in rows:
         sequence = row.get('sequence')
         if (row.get('schema') != 'codex.task_bus.v1' or type(sequence) is not int
                 or not isinstance(sequence, int) or sequence < 1):
             raise ValueError('Actual bus sequence/schema is invalid')
         summary = row.get('summary', '')
         resources = row.get('resources', [])
-        if not isinstance(summary, str) or not isinstance(resources, list):
+        if (not isinstance(summary, str) or not isinstance(resources, list)
+                or any(not isinstance(resource, str) for resource in resources)):
             raise ValueError('Actual bus history fields are invalid')
-        if ('shared runtime acceptance' in summary or 'ck3-screen:acquired' in resources):
+        if 'shared runtime acceptance' in summary:
             raise ValueError('Existing live/screen history cannot be bypassed by fresh-machine bootstrap')
-    tasks = json_object(packet).get('tasks')
-    if not isinstance(tasks, list):
-        raise ValueError('Fresh actual local task inventory required')
+        if 'ck3-screen:acquired' in resources:
+            bounds = maintenance.get(str(row.get('task_id')))
+            if bounds is None or not bounds[0] <= sequence < bounds[1]:
+                raise ValueError('Existing live/screen history lacks an exact released maintenance-only epoch')
     for task in tasks:
         row = json_object(task)
         resources = row.get('resources')
@@ -172,13 +289,20 @@ def validate_fresh_bootstrap(
     inventory = json_object(process_inventory)
     if inventory.get('blockers') != [] or inventory.get('process_absence_is_normal_exit_proof') is not False:
         raise ValueError('Actual CK3/keeper/controller absence is not proven')
-    require_unused_bus(bus_events, bus_packet)
+    require_unused_bus(bus_events, bus_packet, maintenance_closures=bundle['maintenance_closures'], binding=actual)
     source = json.loads(bootstrap_path.read_text(encoding='utf-8-sig'))
     if parse_bootstrap(source) != bundle:
         raise ValueError('Bootstrap original changed during validation')
+    maintenance_evidence = list(bundle['maintenance_closures'])
+    for reference in bundle['maintenance_closures']:
+        maintenance = parse_maintenance_closure(_pinned_object(reference))
+        maintenance_evidence.extend((maintenance['registration'], maintenance['release'],
+                                     maintenance['before_inventory'], maintenance['after_inventory'],
+                                     maintenance['actions_result']))
     return FreshMachineAdmission(
         mode=FRESH_ADMISSION_MODE, machine=actual, bootstrap=exact_pin(bootstrap_path),
         runtime_config=bundle['runtime_config'], runtime_manifest=bundle['runtime_manifest'],
+        maintenance_evidence=maintenance_evidence,
         canonical_history_empty=True, prior_session_exists=False,
         previous_normal_exit_claimed=False, initial_machine_no_predecessor=True,
         business_pass=False,
@@ -212,6 +336,13 @@ def validate_frozen_fresh_admission(frozen: JsonObject, run_root: Path) -> None:
     if source != exact_pin(Path(source['path'])):
         raise ValueError('Original fresh-machine bootstrap changed')
     parse_bootstrap(json.loads(Path(source['path']).read_text(encoding='utf-8-sig')))
+    maintenance_evidence = closure.get('maintenance_evidence')
+    if not isinstance(maintenance_evidence, list):
+        raise ValueError('Explicit frozen maintenance evidence list required')
+    for value in maintenance_evidence:
+        reference = file_pin(value)
+        if reference != exact_pin(Path(reference['path'])):
+            raise ValueError('Actual maintenance originals changed before fresh-machine launch')
     records = sorted(Path(binding['admission_root']).glob('[0-9]*'))
     if len(records) != 1 or records[0].name != '000001':
         raise ValueError('Fresh-machine launch is no longer the sole actual allocation')
