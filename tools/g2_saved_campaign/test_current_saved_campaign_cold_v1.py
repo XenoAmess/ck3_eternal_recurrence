@@ -117,18 +117,7 @@ class TypedColdContractTests(unittest.TestCase):
         material_path = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_MATERIAL")
         import_root = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_IMPORT_ROOT")
         if material_path is None:
-            material = b"""from __future__ import annotations
-from datetime import datetime, timedelta
-import hashlib
-from pathlib import Path
-import re
-def digest(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-def read(path):
-    return Path(path).read_bytes()
-def main(args):
-    return 0
-"""
+            material = foreground_supervisor_material_v1()
         else:
             if import_root is None:
                 raise RuntimeError("actual supervisor requires its exact companion import root")
@@ -366,6 +355,243 @@ def main(args):
         self.assertEqual(old_closed.next_sequence, old_checked.next_sequence)
 
 
+def foreground_supervisor_material_v1() -> bytes:
+    """Portable original supervisor shape; optional real material exercises the same renderer."""
+    path = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_MATERIAL")
+    if path is not None:
+        with Path(path).open("rb") as stream:
+            raw = stream.read(262145)
+        if len(raw) > 262144:
+            raise ValueError("bounded original supervisor material")
+        return raw
+    return b'''from __future__ import annotations
+from datetime import datetime, timedelta
+import ctypes
+import hashlib
+from pathlib import Path
+import re
+PLACEMENT_SHA = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def read(path):
+    return Path(path).read_bytes()
+def main(args):
+    placement = load_file("root_owned_generation", repo / "tools/g2_saved_campaign/managed_desktop1_placement.py", PLACEMENT_SHA)
+    if True:
+        _, desktop_after = placement.desktop_inventory()
+        foreground_after = user.GetForegroundWindow()
+        write(N / "ROOT-LAUNCH-USER-DESKTOP-OBSERVED-C23.json", {"foreground_before": foreground,
+            "foreground_after": foreground_after, "desktop_before": desktop_before, "desktop_after": desktop_after,
+            "game_pid": generation.pid, "game_creation_filetime": generation.creation_filetime,
+            "gameplay_input": False, "desktop_switch_requested": False})
+        if foreground_after != foreground or desktop_after != desktop_before:
+            raise RuntimeError("user foreground/desktop changed during launch; stop without restoring user windows")
+    return 0
+'''
+
+
+def rendered_foreground_nodes_v1() -> list[ast.stmt]:
+    generated = producer.emit_supervisor_v1(foreground_supervisor_material_v1(), machine_id=MACHINE)
+    tree = ast.parse(generated)
+    imported = [node for node in tree.body if isinstance(node, ast.ImportFrom)
+        and node.module == "tools.g2_saved_campaign"
+        and any(alias.name == "background_foreground_contract_v1" for alias in node.names)]
+    if len(imported) != 1:
+        raise ValueError("generated consumer must import the standalone contract")
+    main = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "main")
+    blocks = [main.body]
+    for node in ast.walk(main):
+        if isinstance(node, (ast.Try, ast.If, ast.While, ast.For, ast.With)):
+            blocks.append(node.body)
+    matches: list[list[ast.stmt]] = []
+    for block in blocks:
+        starts = [i for i, node in enumerate(block) if isinstance(node, ast.Assign)
+            and any(isinstance(part, ast.Name) and part.id == "desktop_after" for part in ast.walk(node.targets[0]))]
+        ends = [i for i, node in enumerate(block) if isinstance(node, ast.If)
+            and isinstance(node.test, ast.UnaryOp) and isinstance(node.test.op, ast.Not)
+            and isinstance(node.test.operand, ast.Attribute) and node.test.operand.attr == "permitted"]
+        if len(starts) == len(ends) == 1 and starts[0] < ends[0]:
+            matches.append(block[starts[0]:ends[0]+1])
+    if len(matches) != 1:
+        raise ValueError("one actual emitted foreground consumer block")
+    return matches[0]
+
+
+class ForegroundGetterV1:
+    def __init__(self, windows: tuple[int, int]) -> None:
+        self.windows = iter(windows)
+        self.argtypes: object = None
+        self.restype: object = None
+
+    def __call__(self) -> int:
+        return next(self.windows)
+
+
+class ForegroundPidGetterV1:
+    def __init__(self, pid: int, thread: int) -> None:
+        self.pid = pid
+        self.thread = thread
+        self.argtypes: object = None
+        self.restype: object = None
+
+    def __call__(self, window: object, pointer: object) -> int:
+        import ctypes
+        if not isinstance(window, ctypes.c_void_p):
+            raise TypeError("actual HWND pointer boundary")
+        target: object = getattr(pointer, "_obj", None)
+        if not isinstance(target, ctypes.c_ulong):
+            raise TypeError("actual DWORD output pointer boundary")
+        target.value = self.pid
+        return self.thread
+
+
+class ForegroundUserV1:
+    def __init__(self, windows: tuple[int, int], pid: int, thread: int) -> None:
+        self.GetForegroundWindow = ForegroundGetterV1(windows)
+        self.GetWindowThreadProcessId = ForegroundPidGetterV1(pid, thread)
+
+
+class LaunchForegroundContractTests(unittest.TestCase):
+    DESKTOP = "11b2eee2-855d-4029-b35c-59adc9a19203"
+
+    def _input(self) -> dict[str, object]:
+        return {"foreground_before": 101, "foreground_after": 103,
+            "foreground_after_pid": 71, "desktop_before": self.DESKTOP,
+            "desktop_after": self.DESKTOP, "game_pid": 61, "owned_auxiliary_pids": []}
+
+    def test_pure_contract_json_facts_and_all_classifications(self) -> None:
+        from tools.g2_saved_campaign import background_foreground_contract_v1 as contract
+        cases: tuple[tuple[int, int | None, str, list[int], str, bool], ...] = (
+            (101, 71, self.DESKTOP, [], "FOREGROUND_UNCHANGED", True),
+            (103, 71, self.DESKTOP, [], "NON_GAME_USER_FOREGROUND", True),
+            (103, None, self.DESKTOP, [], "UNKNOWN_FOREGROUND_OWNER", False),
+            (101, None, self.DESKTOP, [], "UNKNOWN_FOREGROUND_OWNER", False),
+            (103, 61, self.DESKTOP, [], "OWNED_GAME_FOREGROUND", False),
+            (101, 61, self.DESKTOP, [], "OWNED_GAME_FOREGROUND", False),
+            (103, 71, self.DESKTOP, [71], "OWNED_AUXILIARY_FOREGROUND", False),
+            (103, 71, "964b3ff9-3cf7-4ba9-881b-47444f31cfbe", [], "USER_DESKTOP_CHANGED", False))
+        for window, pid, desktop, auxiliary, classification, allowed in cases:
+            value = self._input(); value.update(foreground_after=window, foreground_after_pid=pid,
+                desktop_after=desktop, owned_auxiliary_pids=auxiliary)
+            with self.subTest(classification=classification, window=window):
+                observed = contract.classify_current_saved_launch_foreground_v1(value)
+                self.assertEqual(observed.classification, classification)
+                self.assertIs(observed.permitted, allowed)
+                self.assertIs(observed.foreground_unchanged, window == 101)
+                self.assertEqual(contract.parse_current_saved_launch_foreground_v1(
+                    json.loads(json.dumps(observed.to_wire()))), observed)
+        changed = contract.classify_current_saved_launch_foreground_v1(self._input()).to_wire()
+        changed["foreground_unchanged"] = True
+        with self.assertRaises(ValueError): contract.parse_current_saved_launch_foreground_v1(changed)
+
+    def test_entry_rejects_missing_alias_wrong_types_and_unproven_owners(self) -> None:
+        from tools.g2_saved_campaign import background_foreground_contract_v1 as contract
+        cases: tuple[tuple[str, object], ...] = (
+            ("foreground_before", True), ("foreground_before", 101.0),
+            ("foreground_after", 2**53), ("foreground_after", -1),
+            ("foreground_after_pid", True), ("foreground_after_pid", 71.0),
+            ("foreground_after_pid", 0), ("foreground_after_pid", 2**32),
+            ("game_pid", True), ("game_pid", 61.0), ("game_pid", 0),
+            ("desktop_before", None), ("desktop_after", "unknown"),
+            ("owned_auxiliary_pids", None), ("owned_auxiliary_pids", (71,)),
+            ("owned_auxiliary_pids", [True]), ("owned_auxiliary_pids", [71.0]),
+            ("owned_auxiliary_pids", [71, 71]), ("owned_auxiliary_pids", [61]))
+        for key, bad in cases:
+            value = self._input(); value[key] = bad
+            with self.subTest(key=key, bad=bad), self.assertRaises(ValueError):
+                contract.classify_current_saved_launch_foreground_v1(value)
+        for key in self._input():
+            value = self._input(); del value[key]
+            with self.subTest(missing=key), self.assertRaises(ValueError):
+                contract.classify_current_saved_launch_foreground_v1(value)
+        value = self._input(); value["pid_alias"] = 71
+        with self.assertRaises(ValueError): contract.classify_current_saved_launch_foreground_v1(value)
+        value = self._input(); value["foreground_after"] = 0
+        with self.assertRaises(ValueError): contract.classify_current_saved_launch_foreground_v1(value)
+
+    def test_real_rendered_main_win32_boundary_and_receipt(self) -> None:
+        import ctypes
+        from types import SimpleNamespace
+        from tools.g2_saved_campaign import background_foreground_contract_v1 as contract
+        nodes = rendered_foreground_nodes_v1()
+        other_desktop = "964b3ff9-3cf7-4ba9-881b-47444f31cfbe"
+        cases: tuple[tuple[int, int, int, int, tuple[str, str], bool, str], ...] = (
+            (101, 101, 71, 1, (self.DESKTOP, self.DESKTOP), True, "FOREGROUND_UNCHANGED"),
+            (103, 103, 71, 1, (self.DESKTOP, self.DESKTOP), True, "NON_GAME_USER_FOREGROUND"),
+            (103, 103, 61, 1, (self.DESKTOP, self.DESKTOP), False, "OWNED_GAME_FOREGROUND"),
+            (103, 103, 0, 0, (self.DESKTOP, self.DESKTOP), False, "UNKNOWN_FOREGROUND_OWNER"),
+            (103, 107, 71, 1, (self.DESKTOP, self.DESKTOP), False, "UNKNOWN_FOREGROUND_OWNER"),
+            (103, 103, 71, 1, (other_desktop, other_desktop), False, "USER_DESKTOP_CHANGED"),
+            (103, 103, 71, 1, (self.DESKTOP, other_desktop), False, "USER_DESKTOP_CHANGED"),
+            (101, 101, 71, 1, (other_desktop, self.DESKTOP), False, "UNKNOWN_FOREGROUND_OWNER"))
+        for first, final, pid, thread, desktops, expected, classification in cases:
+            recorded: list[dict[str, object]] = []
+            user = ForegroundUserV1((first, final), pid, thread)
+            desktop_reads = iter(desktops)
+            def write(path: Path, value: object) -> None:
+                self.assertEqual(path.name, "ROOT-LAUNCH-USER-DESKTOP-OBSERVED-C23.json")
+                recorded.append(record(value))
+            namespace: dict[str, object] = {"ctypes": ctypes, "user": user,
+                "placement": SimpleNamespace(desktop_inventory=lambda: ((), next(desktop_reads))),
+                "foreground": 101, "desktop_before": self.DESKTOP,
+                "generation": SimpleNamespace(pid=61, creation_filetime=134370617141148601),
+                "N": Path(ROOT), "write": write, "_launch_foreground_contract_v1": contract}
+            permitted = True
+            try:
+                exec(compile(ast.Module(body=nodes, type_ignores=[]), "<actual rendered launch consumer>", "exec"), namespace)
+            except RuntimeError:
+                permitted = False
+            with self.subTest(classification=classification, final=final):
+                self.assertIs(permitted, expected)
+                self.assertEqual(len(recorded), 1)
+                self.assertEqual(recorded[0]["classification"], classification)
+                self.assertIs(recorded[0]["foreground_unchanged"], final == 101)
+                self.assertIs(recorded[0]["gameplay_input"], False)
+                self.assertIs(recorded[0]["desktop_switch_requested"], False)
+                self.assertEqual(user.GetWindowThreadProcessId.argtypes,
+                    [ctypes.c_void_p, ctypes.POINTER(ctypes.c_ulong)])
+                self.assertIs(user.GetWindowThreadProcessId.restype, ctypes.c_ulong)
+                self.assertEqual(user.GetForegroundWindow.argtypes, [])
+        for node in nodes:
+            self.assertFalse(any(isinstance(part, ast.Attribute) and part.attr in
+                ("SetForegroundWindow", "ShowWindow", "SwitchDesktop", "SetWindowPos") for part in ast.walk(node)))
+
+    def test_actual_compose_placement_source_seal_and_runtime_lookup(self) -> None:
+        from types import SimpleNamespace
+        tree = ast.parse(Path(producer.__file__).read_bytes())
+        compose = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "compose_v1")
+        statements: list[ast.stmt] = [node for node in compose.body if isinstance(node, ast.Expr)
+            and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name)
+            and node.value.func.id == "put" and node.value.args
+            and isinstance(node.value.args[0], ast.Constant)
+            and node.value.args[0].value == "root_native30_supervisor_c23.py"]
+        self.assertEqual(len(statements), 2)
+        placement = b'"""Synthetic frozen placement source for pin derivation."""\n'
+        values = {"root_native30_supervisor_c23.py": foreground_supervisor_material_v1(),
+            "tools/g2_saved_campaign/managed_desktop1_placement.py": placement}
+        def get(name: str) -> bytes:
+            return values[name]
+        def put(name: str, data: bytes) -> None:
+            values[name] = data
+        namespace: dict[str, object] = dict(vars(producer))
+        namespace.update(p=SimpleNamespace(machine_id=MACHINE), get=get, put=put)
+        exec(compile(ast.Module(body=statements, type_ignores=[]), "<actual compose placement seal>", "exec"), namespace)
+        generated = ast.parse(values["root_native30_supervisor_c23.py"])
+        pins = [node for node in generated.body if isinstance(node, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == "PLACEMENT_SHA" for target in node.targets)]
+        self.assertEqual(len(pins), 1)
+        self.assertEqual(ast.literal_eval(pins[0].value), hashlib.sha256(placement).hexdigest())
+        loads = [node for node in ast.walk(generated) if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name) and node.func.id == "load_file"
+            and node.args and isinstance(node.args[0], ast.Constant)
+            and node.args[0].value == "root_owned_generation"]
+        self.assertEqual(len(loads), 1)
+        self.assertEqual(ast.unparse(loads[0].args[1]), "N / 'tools/g2_saved_campaign/managed_desktop1_placement.py'")
+        self.assertIn("tools/g2_saved_campaign/managed_desktop1_placement.py", producer.GENERIC_SOURCE_PATHS)
+        self.assertIn("tools/g2_saved_campaign/background_foreground_contract_v1.py", producer.GENERIC_SOURCE_PATHS)
+        self.assertIn("tools/g2_saved_campaign/current_saved_background_display_v1.py", producer.GENERIC_SOURCE_PATHS)
+
+
 class NoTransport:
     """The real SDK constructor is used with an offline transport test boundary."""
     pipe_name = PIPE
@@ -565,7 +791,8 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
                 owner.derive_current_saved_state_paths_v1(bad)
         material_path = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_MATERIAL")
         materials = {
-            "root_native30_supervisor_c23.py": b'def main(args):\n    spec = environment.make_spec(state_dir=N / "state", game_dir=game_dir)\n',
+            "root_native30_supervisor_c23.py": foreground_supervisor_material_v1().replace(b'def main(args):\n',
+                b'def main(args):\n    spec = environment.make_spec(state_dir=N / "state", game_dir=game_dir)\n',1),
             "launch_sdk_p37c23_owner.py": b"args=['--environment-manifest',str(N/'state/profile/xar-autoplayer-environment.json')]\n",
             "root_p37c23_sdk_queue.py": b'STATE_DIR = N / "state"\n',
             "root_p37c23_mcp_entry.py": b'STATE_DIR=N/"state"\n',

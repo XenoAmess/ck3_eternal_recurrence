@@ -31,7 +31,7 @@ CANONICAL_NAMES = frozenset((
  "root_checkpoint_bootstrap_c23.py", "root_native30_supervisor_c23.py",
  "root_p37c23_mcp_entry.py", "root_p37c23_sdk_queue.py",
 ))
-GENERIC_SOURCE_PATHS = frozenset(('tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/ck3_live_run_id.py'))
+GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
 def sha256_v1(raw: bytes) -> str:
  need(type(raw) is bytes, "exact source bytes")
  return hashlib.sha256(raw).hexdigest()
@@ -438,6 +438,41 @@ def validate_source28_frozen_business(admission: object, freeze: object, checked
    "current bootstrap has no historical business authority")
  compile(source, "<independent current saved bootstrap>", "exec")
  return source.encode("utf-8")
+_LAUNCH_FOREGROUND_BLOCK_V1 = '''        _, desktop_after = placement.desktop_inventory()
+        foreground_after = user.GetForegroundWindow()
+        write(N / "ROOT-LAUNCH-USER-DESKTOP-OBSERVED-C23.json", {"foreground_before": foreground,
+            "foreground_after": foreground_after, "desktop_before": desktop_before, "desktop_after": desktop_after,
+            "game_pid": generation.pid, "game_creation_filetime": generation.creation_filetime,
+            "gameplay_input": False, "desktop_switch_requested": False})
+        if foreground_after != foreground or desktop_after != desktop_before:
+            raise RuntimeError("user foreground/desktop changed during launch; stop without restoring user windows")'''
+
+_LAUNCH_FOREGROUND_REPLACEMENT_V1 = '''        _, desktop_after = placement.desktop_inventory()
+        user.GetForegroundWindow.argtypes = []
+        foreground_after = user.GetForegroundWindow()
+        user.GetWindowThreadProcessId.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_ulong)]
+        user.GetWindowThreadProcessId.restype = ctypes.c_ulong
+        foreground_pid = ctypes.c_ulong()
+        foreground_thread = user.GetWindowThreadProcessId(ctypes.c_void_p(foreground_after), ctypes.byref(foreground_pid))
+        foreground_after_pid = foreground_pid.value if type(foreground_thread) is int and 0 < foreground_thread < 2**32 and foreground_pid.value else None
+        foreground_final = user.GetForegroundWindow()
+        if foreground_final != foreground_after:
+            foreground_after, foreground_after_pid = foreground_final, None
+        _, desktop_final = placement.desktop_inventory()
+        if desktop_final != desktop_after:
+            desktop_after, foreground_after_pid = desktop_final, None
+        foreground_observation = _launch_foreground_contract_v1.classify_current_saved_launch_foreground_v1({
+            "foreground_before": 0 if foreground is None else foreground,
+            "foreground_after": 0 if foreground_after is None else foreground_after, "foreground_after_pid": foreground_after_pid,
+            "desktop_before": desktop_before, "desktop_after": desktop_after,
+            "game_pid": generation.pid, "owned_auxiliary_pids": []})
+        write(N / "ROOT-LAUNCH-USER-DESKTOP-OBSERVED-C23.json", {
+            **foreground_observation.to_wire(), "game_creation_filetime": generation.creation_filetime,
+            "gameplay_input": False, "desktop_switch_requested": False})
+        if not foreground_observation.permitted:
+            raise RuntimeError("launch foreground authority rejected: " + foreground_observation.classification
+                + "; stop without restoring user windows")'''
+
 def emit_supervisor_v1(material: bytes, *, machine_id: str) -> bytes:
  source = material.decode("utf-8")
  tree = ast.parse(source)
@@ -454,8 +489,14 @@ def emit_supervisor_v1(material: bytes, *, machine_id: str) -> bytes:
         "verify_current_saved_supervisor_attempt_v1("
   "{'machine_id':MACHINE,'attempt_nonce':args.attempt_nonce,'task_nonce':args.task_nonce,"
   "'runtime_root':str(N)},config,runtime_root=N,expected_machine_id=MACHINE)")
+ need(result.count(_LAUNCH_FOREGROUND_BLOCK_V1) == 1, "one original launch foreground authority block")
+ result = result.replace(_LAUNCH_FOREGROUND_BLOCK_V1, _LAUNCH_FOREGROUND_REPLACEMENT_V1, 1)
+ placement_path = 'repo / "tools/g2_saved_campaign/managed_desktop1_placement.py"'
+ need(result.count(placement_path) == 1, "one original host placement consumer")
+ result = result.replace(placement_path, 'N / "tools/g2_saved_campaign/managed_desktop1_placement.py"', 1)
  result += """
 from tools.g2_saved_campaign import current_saved_basis_v1 as _screen_basis_v1
+from tools.g2_saved_campaign import background_foreground_contract_v1 as _launch_foreground_contract_v1
 from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
     verify_current_saved_supervisor_attempt_v1,
 )
@@ -741,6 +782,8 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
   put(item.relative_path,load(item.source_ref))
  put("root_checkpoint_bootstrap_c23.py",emit_bootstrap_v1(get("root_checkpoint_bootstrap_c23.py"),machine_id=p.machine_id))
  put("root_native30_supervisor_c23.py",emit_supervisor_v1(get("root_native30_supervisor_c23.py"),machine_id=p.machine_id))
+ put("root_native30_supervisor_c23.py",assignment_v1(get("root_native30_supervisor_c23.py"),
+  "PLACEMENT_SHA",sha256_v1(get("tools/g2_saved_campaign/managed_desktop1_placement.py"))))
  put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py")))
  put("root_p37c23_sdk_queue.py",emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue"))
  cold = emit_cold_resume_v1(get("root_p37c23_cold_resume.py"),machine_id=p.machine_id).decode("utf-8")
@@ -815,6 +858,14 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  display_spec = literal_assignment_v1(get(display),"SPEC")
  display_spec["previous_Game_tuple"] = [old_game.pid,old_game.creation_filetime]
  put(display,assignment_v1(get(display),"SPEC",display_spec))
+ from tools.g2_saved_campaign.current_saved_background_display_v1 import render_current_saved_background_display_v1
+ background = render_current_saved_background_display_v1(actor=get(display),
+  obs_desktop=get("presentation-c23/obs_owned_desktop.py"),
+  capture_worker=get("presentation-c23/ck3_obs_capture_png_retry_c23.py"),
+  placement_sha256=sha256_v1(get("tools/g2_saved_campaign/managed_desktop1_placement.py")))
+ put(display,background.actor)
+ put("presentation-c23/obs_owned_desktop.py",background.obs_desktop)
+ put("presentation-c23/ck3_obs_capture_png_retry_c23.py",background.capture_worker)
  put("ROOT-CURRENT-SAVED-INPUTS01.json",encode_v1({
   "schema":"xar.current-saved-cold-inputs/v1","machine_id":p.machine_id,
   "basis_ref":p.basis_ref.to_wire(),"validation_ref":p.validation_ref.to_wire()}))

@@ -1,4 +1,4 @@
-# CurrentSaved CAP 提交前门禁整改（2026-10-21）
+# CurrentSaved CAP 与后台窗口门禁整改（2026-10-21）
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。证据截至 UTC `2026-10-21T13:52:50.450482Z`；闭场观察为 `13:46:29.382952Z`，basis 资格观察为 `13:47:25.462208Z`。来源为本轮真实 A28 请求、闭场及 Driver/SAVE 小型取证回执。
 
@@ -43,3 +43,25 @@ D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh10
 | ROOT-CAPFIX-FINAL-STRICT11-QUALIFICATION01.json | 11243 | bffd8102e446fe0604f2948c4c27847859648e4c2a09980b92d91028d22ee022 |
 
 回归结果来源为本轮实际执行 stdout；上述回执继续绑定原生请求、失败 traceback、原 frozen guard、闭场与 basis 原件。
+
+## 14:48 UTC 补充：后台任务与用户窗口共存
+
+以下仍属于 `machine_id: xenoamess-full-tower-eb9d2c1186`。
+
+A29（R0017）于14:07:48实际启动 Game，原监护器因启动前后 HWND 不同而关闭，桌面 ID 未变；SDK 未启动，Game forced1、Job0、Task 已移除，screen127按8029释放。14:09:12对仍存在的 after HWND 做只读查询，观察到非 Game PID6292；这不是启动瞬时的 PID 证明。旧门禁只比较 HWND，缺少归属采样，不能据其拒绝回执断言游戏抢了焦点。
+
+A30（R0018）在 Task 注册前，因临时追加的20秒窗口静止诊断被拒绝，Game/SDK/录制/请求均为0。screen128按8031释放，编号记为 voided、allocated unrun，永不复用。20秒静止是本轮执行者追加的诊断，不是用户要求的后台任务前提；后续准入不要求用户停止正常切窗。
+
+整改使用独立共享 `background_foreground_contract_v1.py`。入口严格接收七字段，持久化输出九字段；JSON auxiliary PID list 与内存 tuple 由唯一编码/解析往返。精确整数、未知归属、Game/owned OBS 归属、桌面变化及伪造派生分类均有校验。用户切到明确的非 Game/非 owned OBS 窗口可以继续，未知归属或桌面变化拒绝。采样采用 HWND→PID→HWND，并复查桌面；不能以 HWND 相等掩盖未知身份或采样竞态。
+
+迁移覆盖实际启动监护器、窗口放置、显示入口、active PNG worker 与 OBS placement 回调。窗口放置从当前源码冻结到新运行树，监护器、子进程加载器与哈希共同指向该副本；只修改 Z 工作树而仍加载旧 H 模块不能算完成。原 H、旧运行树和旧失败回执保留。
+
+OBS 内部保留已有的有限自身窗口最小化清理：只有已保留身份的自身 HWND/PID 才可进入一次原生最小化，观察仍记录 `OWNED_AUXILIARY_FOREGROUND`、`permitted=False`；这不是准入。最终 probe 必须无例外通过才能 GREEN。观察回执描述采样端点，不能声称整个区间从未瞬时改变前台；不恢复或激活其他用户窗口。
+
+14:41的最终十一叶联合类型检查真实拦下两条 focused test 类型错误，失败回执 `R/ROOT-FOREGROUND-FINAL-STRICT11-QUALIFICATION01.json`（4131B，`d7da33e95f33e79412a9608da3182978bc3cc6fc721ae42dc6eef3f63b995b32`）保留。已修正 JSON list 类型上下文及未显式导出的 ctypes 测试访问，后续最终检查另记新回执。placement 单独扩大检查仍有26条历史诊断，不把聚焦新模块通过写成该整文件严格通过。
+
+CAP 修复提交 `2f07ef209da59f08ccf90bcacc94a9bb125a41b7` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39613515160) 与 [Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39613515141) 已终态 SUCCESS。观察来自 GitHub Actions API；CI runner 的机器 ID 未知，本机仅作观察者。小型回执 `R/ROOT-CAPFIX-2F07-CI-TERMINAL01.json` 为1840B，SHA-256 `fd460b7887fae219a5dfd0c4e1d49732c996429134c680a63dda61549f13ea9e`。它不代表尚未提交的后台窗口修复或实机 CAP 已验收。
+
+14:51 UTC 最终软件验收：十一叶联合 `--strict --strict-equality --explicit-package-bases --follow-imports=silent` 实际0诊断，输入前后稳定；新回执 `R/ROOT-FOREGROUND-FINAL-STRICT11-QUALIFICATION02.json` 为3646B，SHA-256 `bb6bbfae70aea30b4a018f1125af7ff7087995ef2411cbf9c42879e47d47e25e`，旧失败01不覆盖。最终生成启动代码4项、8个原生采样模拟分支通过；最终录制流水线14项、0 skip通过，包含实际写入调用→JSON序列化→机器/UTC/嵌套九字段解析。独立只读审查于14:51:37 UTC通过，无剩余P0/P1；它是源码与生成接线审查，不代表新运行树已物理加载或 Game 已通过。
+
+最终十一叶类型范围包含原八叶及新共享合同、renderer、focused test；placement 本体的26条历史诊断继续保留。CI 已接入同一十一叶参数、新 launch 测试类及整个 focused 测试模块。六个修改源码的精确摘要与各执行者结果收于 `R/ROOT-FOREGROUND-FINAL-SOFTWARE-QUALIFICATION01.json`。下一步仍需新运行树的完整实际前置链、子进程来源、原生 SEM/CAP 和首批 FULL 验收；当前业务进度没有增加。

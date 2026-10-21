@@ -22,6 +22,8 @@ from typing import Literal, NotRequired, Protocol, TypedDict
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ck3_live_run_id
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from tools.g2_saved_campaign import background_foreground_contract_v1 as foreground_contract
 
 
 class PlacementArguments(Protocol):
@@ -48,6 +50,7 @@ class SourcePin(TypedDict):
 class PlacementSource(TypedDict):
     producer: SourcePin
     machine_identity_provider: SourcePin
+    foreground_contract: SourcePin
     machine_identity_api: Literal["ck3_live_run_id.current_machine_id"]
 
 
@@ -95,7 +98,8 @@ class PlacementReceipt(TypedDict):
     topmost: NotRequired[bool]
     minimized: NotRequired[bool]
     current_desktop_unchanged: NotRequired[Literal[True]]
-    foreground_unchanged: NotRequired[Literal[True]]
+    foreground_unchanged: NotRequired[bool]
+    foreground_observation: NotRequired[foreground_contract.JsonObject]
     background_assignment_verified: NotRequired[bool]
     error: NotRequired[str]
 
@@ -134,6 +138,9 @@ def _new_receipt(launch_receipt: Path) -> PlacementReceipt:
     identity_source = ck3_live_run_id.__file__
     if identity_source is None:
         raise RuntimeError("machine identity provider has no source path")
+    contract_source = foreground_contract.__file__
+    if contract_source is None or Path(contract_source).resolve() != Path(__file__).resolve().with_name("background_foreground_contract_v1.py"):
+        raise RuntimeError("foreground contract belongs to another source root")
     machine_id = ck3_live_run_id.current_machine_id()
     if not isinstance(machine_id, str) or not ck3_live_run_id.SLUG_RE.fullmatch(machine_id):
         raise ValueError("machine identity provider returned an invalid machine ID")
@@ -141,6 +148,7 @@ def _new_receipt(launch_receipt: Path) -> PlacementReceipt:
             "machine_id": machine_id, "at_utc": datetime.now(timezone.utc).isoformat(),
             "source": {"producer": _source_pin(Path(__file__)),
                        "machine_identity_provider": _source_pin(Path(identity_source)),
+                       "foreground_contract": _source_pin(Path(contract_source)),
                        "machine_identity_api": "ck3_live_run_id.current_machine_id"},
             "launch_receipt": str(launch_receipt.resolve()), "gameplay_input_sent": False,
             "desktop_switches": 0, "process_launch_or_stop_calls": 0,
@@ -271,7 +279,7 @@ def wait_game_window(generation, seconds, deadline_utc):
         time.sleep(.25)
 
 
-def desktop_inventory():
+def desktop_inventory() -> tuple[list[str], str]:
     import winreg
     with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
             r"Software\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops") as key:
@@ -311,6 +319,25 @@ def explicit_pyvda(root):
                                    for name, path in origins.items()}}
 
 
+def read_foreground_window_v1() -> tuple[int, int | None]:
+    """Read HWND/PID with explicit native prototypes; races remain unknown."""
+    user = ctypes.WinDLL("user32", use_last_error=True)
+    user.GetForegroundWindow.argtypes = []
+    user.GetForegroundWindow.restype = wintypes.HWND
+    user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+    user.GetWindowThreadProcessId.restype = wintypes.DWORD
+    before = int(user.GetForegroundWindow() or 0)
+    pid = wintypes.DWORD()
+    try:
+        thread = user.GetWindowThreadProcessId(before, ctypes.byref(pid)) if before else 0
+        after = int(user.GetForegroundWindow() or 0)
+    except OSError:
+        return int(user.GetForegroundWindow() or 0), None
+    if before != after or not thread or not pid.value:
+        return after, None
+    return after, int(pid.value)
+
+
 def place(args: PlacementArguments) -> PlacementReceipt:
     data = _new_receipt(args.launch_receipt)
     primary: Exception | None = None
@@ -327,7 +354,7 @@ def place(args: PlacementArguments) -> PlacementReceipt:
         from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop
         ids, current = desktop_inventory()
         target_id = str(uuid.UUID(args.desktop_id))
-        foreground = win32gui.GetForegroundWindow()
+        foreground, _ = read_foreground_window_v1()
         data.update({"target_desktop_id": target_id, "current_desktop_id": current,
                      "foreground_before": foreground})
         if target_id != ids[0]:
@@ -361,8 +388,24 @@ def place(args: PlacementArguments) -> PlacementReceipt:
             def guard() -> None:
                 deadline_check(args.deadline_utc)
                 check_game_window(generation, hwnd, classname)
-                if desktop_inventory() != (ids, current) or win32gui.GetForegroundWindow() != foreground:
-                    raise RuntimeError("user desktop or foreground changed; no focus restoration will be attempted")
+                observed_ids, observed_current = desktop_inventory()
+                after_foreground, after_pid = read_foreground_window_v1()
+                checked_ids, checked_current = desktop_inventory()
+                if target_id not in observed_ids or target_id not in checked_ids:
+                    raise RuntimeError("the exact managed Game desktop disappeared")
+                if checked_current != observed_current:
+                    raise RuntimeError("user desktop changed during foreground sampling")
+                observation = foreground_contract.classify_current_saved_launch_foreground_v1({
+                    "foreground_before": foreground, "foreground_after": after_foreground,
+                    "foreground_after_pid": after_pid, "desktop_before": current,
+                    "desktop_after": checked_current, "game_pid": generation.pid,
+                    "owned_auxiliary_pids": []})
+                data.update({"foreground_after": observation.foreground_after,
+                             "foreground_unchanged": observation.foreground_unchanged,
+                             "foreground_observation": observation.to_wire(),
+                             "current_desktop_after": observation.desktop_after})
+                if not observation.permitted:
+                    raise RuntimeError("background foreground denied: " + observation.classification)
             guard()
             view = pyvda.AppView(hwnd=hwnd)
             if view.hwnd != hwnd:
@@ -389,24 +432,21 @@ def place(args: PlacementArguments) -> PlacementReceipt:
             actual_rect = win32gui.GetWindowRect(hwnd)
             actual_topmost = bool(win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) & win32con.WS_EX_TOPMOST)
             actual_minimized = bool(win32gui.IsIconic(hwnd))
-            observed_foreground = win32gui.GetForegroundWindow()
             observed_ids, observed_current = desktop_inventory()
             generation.check()
             data.update({"after": final, "window_rect": list(actual_rect),
-                         "client_rect": list(client), "foreground_after": observed_foreground,
-                         "current_desktop_after": observed_current,
+                         "client_rect": list(client),
                          "topmost": actual_topmost, "minimized": actual_minimized})
             if (final["desktop_id"] != target_id or actual_minimized
                     or not actual_topmost or actual_rect != monitor
                     or client != (0, 0, right - left, bottom - top)
-                    or observed_foreground != foreground or (observed_ids, observed_current) != (ids, current)
+                    or target_id not in observed_ids or observed_current != current
                     or (current != target_id and (final["on_current_virtual_desktop"] is not False
                                                   or not final["dwm_cloaked_flags"] & 2))):
                 raise RuntimeError("final Desktop1 geometry/topmost/nonmin qualification failed")
             deadline_check(args.deadline_utc)
-            check_game_window(generation, hwnd, classname)
+            guard()
             data.update({"status": "GREEN", "current_desktop_unchanged": True,
-                         "foreground_unchanged": True,
                          "background_assignment_verified": current != target_id})
     except Exception as error:
         data["error"] = str(error)
