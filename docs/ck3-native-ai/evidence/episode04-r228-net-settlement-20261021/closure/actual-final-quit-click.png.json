@@ -1,0 +1,65 @@
+{
+  "action": "click",
+  "button": "left",
+  "click_completed": true,
+  "expected_foreground_hwnd": 313723486,
+  "failures": [],
+  "focus_after": {
+    "focus_hwnd": 313723486,
+    "foreground_hwnd": 313723486,
+    "foreground_pid": 33668,
+    "foreground_thread_id": 29296,
+    "title": "Crusader Kings III"
+  },
+  "focus_before": {
+    "focus_hwnd": 313723486,
+    "foreground_hwnd": 313723486,
+    "foreground_pid": 33668,
+    "foreground_thread_id": 29296,
+    "title": "Crusader Kings III"
+  },
+  "live_screen_size": [
+    2560,
+    1440
+  ],
+  "observed_point": [
+    1024,
+    611
+  ],
+  "preview_bounds": [
+    0,
+    0,
+    2048,
+    1152
+  ],
+  "receipt_image_size": [
+    2560,
+    1440
+  ],
+  "receipt_path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\actual-final-quit-click.png",
+  "screen_point": [
+    1280,
+    764
+  ],
+  "screen_size_after": [
+    2560,
+    1440
+  ],
+  "screen_size_before": [
+    2560,
+    1440
+  ],
+  "sidecar_path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\actual-final-quit-click.png.json",
+  "source_age_before": {
+    "age_seconds": 29.292935371398926,
+    "checked_at_unix": 1792583403.6741605,
+    "maximum_seconds": 90,
+    "source_mtime_unix": 1792583374.381225
+  },
+  "source_image": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\actual-exit-dialog.png",
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "status": "guarded-click-readback-matched"
+}

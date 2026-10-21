@@ -1,0 +1,44 @@
+{
+  "schema": "xar.r228.gui-close-sequence-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:19:34.985028+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0228",
+  "original_receipts_unchanged": true,
+  "correction": "The original normal-quit-root-result associated an earlier click acknowledgement with GUI review. That click alone did not exit CK3. The later actual-final-quit-click is the successful exit input; original retained OS/native/host evidence independently proves process_exit0 before the original hold deadline.",
+  "actual_normal_exit": {
+    "native_finished_at_utc": "2026-10-21T11:50:12.261063+00:00",
+    "host_finished_at_utc": "2026-10-21T11:50:18.004718+00:00",
+    "original_hold_deadline_utc": "2026-10-21T11:50:53.974920+00:00",
+    "exit_code": 0,
+    "exit_reason": "process_exit",
+    "kill_or_forced_termination": false
+  },
+  "working_GUI_input_recipe": [
+    "Confirm exact retained PID/birth, sole visible Game HWND, English LANGID=0x0409 and foreground/focus.",
+    "Use existing scan-code SendInput Escape; ordinary pyautogui virtual Escape did not change GUI in this run.",
+    "Directly view the original Quit confirmation image and observe autosave_exit unchecked.",
+    "Use desktop_coordinate_map map_point and guarded_click with the actual image/desktop sizes and explicit preview bounds. Move the real cursor to that mapped point before normal WM_LBUTTONDOWN/UP on the retained Game HWND; keep input/readback receipts.",
+    "Review actual postcondition and the original retained OS/native/host exit receipts; input ACK alone proves no exit."
+  ],
+  "original_early_review_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\case-output\\normal-quit-root-result.json",
+    "bytes": 2562,
+    "sha256": "6c0c53eadb71d15d7b46e988d5db07003be22fc02ff70e7b410f74bc385e239b"
+  },
+  "successful_final_mapped_click_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\actual-final-quit-click.png.json",
+    "bytes": 1647,
+    "sha256": "4f11455098023056c757e52d54c2afc1d11e2cd0a8ac1417a033c0089d5455fd"
+  },
+  "successful_unchecked_source_image_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\actual-exit-dialog.png",
+    "bytes": 1645410,
+    "sha256": "c5368de8d10a06f85781dbddbca9197bde4e9c3e3b5632d1bf7cf67c57d46846"
+  },
+  "normal_close_result_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\case-output\\normal-close-result.json",
+    "bytes": 10616,
+    "sha256": "edcf04a28da7a8df86ab651f6524cb330722fe48a91030a88a8e79bc9cff0f8e"
+  },
+  "scope": "Technical sequence correction only; no new Game action, business, payment or full-R08 qualification."
+}

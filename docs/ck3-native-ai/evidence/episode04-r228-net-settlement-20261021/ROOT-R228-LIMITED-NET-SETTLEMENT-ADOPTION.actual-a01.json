@@ -1,0 +1,45 @@
+{
+  "schema": "xar.root.r228.limited-net-settlement-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:54:32Z",
+  "reviewer": "/root",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0228",
+  "pid": 33668,
+  "process_birth_decimal": "134370531135233564",
+  "projection": {
+    "path": "../live-scene-r08-a02/hot-r08-repair-a01/R228-POSTLOAD-POSITIVE-PROJECTION.actual-a01.json",
+    "bytes": 4159,
+    "sha256": "c50885d1ecc6e5258ab964d37c45883e4950036cc45176c8fb7c6daad800eb40"
+  },
+  "actor_result_sha256": "e1e0f0f94c153b638c55848b0b2980e59eaf11e8ce1b2179b39d243a42c396c0",
+  "parent_raw_sha256": "106e9ed2f90eb23cfeec2b404e6a5503326e29f32924d2f407675037d2ba39e0",
+  "static_source": {
+    "path": "../source-support-a01/native-r08-static-a05/SOURCE.actual.json",
+    "sha256": "e107fbe8f6d1df3d9edec1f67f53bcd8a5bd0f6d9f83515318a0ef2f33af84bb"
+  },
+  "accepted": {
+    "target_postload_primitive": true,
+    "observed_day": [53146872, 53146896],
+    "completed_personal_wallet_add": 111391,
+    "wallet_before_after": [25455910, 25567301],
+    "stable_context_decimal": "2856717694048",
+    "raw_a_b_c_d": [384653, 0, 273262, 0],
+    "net_formula": "a-b-c-d=111391",
+    "wallet_own_unwind": "28A6D7C -> 28F7939 -> 3978BF8",
+    "interpretation": "Actual personal-wallet net settlement incorporates a nonzero military cache component; positive cash delta does not prove zero military cost."
+  },
+  "limits": [
+    "No separate gross-c debit, payer-role generalization or full cadence proof.",
+    "Postload sampler captures pointer, not four slots at that instant; independent samplers lack a shared invocation ID.",
+    "Normal c producer is source-backed; exact live refresh epoch and exclusive writers remain unproved.",
+    "Original typed paid/payer/cadence null, natural_parent_matches false and qualified_records zero remain unchanged.",
+    "Legacy journal date decimal 300064548703630608 is an erroneous eight-byte read; low32 diagnostic 53146896 does not rewrite or requalify originals.",
+    "Ordinary Save is independently rehashed; no one-life or in-file actor qualification.",
+    "No new video capture or human signoff; session-close status is reported separately by owner."
+  ],
+  "full_R08": false,
+  "formal_themes": "8/11",
+  "B_sites": "0/2",
+  "ABC": "0/3",
+  "review_by_utc": "2026-10-28T11:54:32Z"
+}

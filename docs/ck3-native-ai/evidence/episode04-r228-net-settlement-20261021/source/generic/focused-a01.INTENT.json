@@ -1,0 +1,15 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "test_generic_applied_net"
+  ],
+  "observed_at_utc": "2026-10-21T12:27:39.674632+00:00",
+  "no_native_Game": true
+}

@@ -1,0 +1,43 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:29:45.741111+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a01\\test_capture_budget.py"
+  ],
+  "pid": 37072,
+  "original_wait": 0,
+  "source_pins": [
+    {
+      "name": "capture_budget_monitor.py",
+      "bytes": 5499,
+      "sha256": "865346aacf0bb50e418ea8e0d8ffd8399ed460ff7247c938e2276d4632aac94f"
+    },
+    {
+      "name": "capture_recorder.py",
+      "bytes": 24353,
+      "sha256": "adc63c498f4ef95e4bd9428cd1ec24cb2cef55c9ae9477431f3d70c5b731214a"
+    },
+    {
+      "name": "freeze_candidate.py",
+      "bytes": 4852,
+      "sha256": "fa50c41c61d59e1a3c5327132476bfe7e3b5581797a91931d6d805aaf4a1f388"
+    },
+    {
+      "name": "test_capture_budget.py",
+      "bytes": 6972,
+      "sha256": "c8a1b5d70b3d4f44829d8e9fbcba4a05334d70abd79b1742f93b53fe76d54d4c"
+    },
+    {
+      "name": "window_take.py",
+      "bytes": 27338,
+      "sha256": "e73336a1be44d5da364fafa9bc4c9351f560b1628c8f7104992de7f9596c7633"
+    }
+  ],
+  "stdout": "",
+  "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.312s\n\nOK\n",
+  "no_Game_desktop_SDK_FFmpeg": true
+}

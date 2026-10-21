@@ -1,3 +1,9 @@
+> 2026-10-21 13:04 UTC 后继实况；machine_id: desktop-3fevhd2-1c74096080。
+
+R228 留下原生应用净额 **+111391** 与钱包 25455910→25567301；它没有证明 gross 军费、payer 或 cadence。旧 typed false/fullR08 false 不改，formal 8/11、B 0/2、ABC 0/3。原 Game 已正常关闭并释放 screen CAS7895；早期 GUI 原件只 ACK，真正退出点击与独立 native/OS/host 终态另有原件，见[实测专题](../ck3-native-ai/episode04-r228-net-military-settlement-12004.md)及[GUI 勘误](../ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/closure/R228-GUI-CLOSE-SEQUENCE-CORRECTION.actual-a01.json)。
+
+本批补普通 native_campaign 缺 episode 的 B 输入、独立净额 consumer、相机 per-take 预算和两文件三处 date32 读取源码；实际 loaded-DLL/OS 资格、拍摄与新的业务结果仍须各自取得。阅读[后继源码用法与边界](../ck3-native-ai/episode04-r228-consumer-source-followup-12004.md)。智能体可显式参考，普通 planner 不自动加载。前一 master b887921 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39598433316) 已在 12:50:48 UTC 完成 success；旧 pending 记录保留。下方旧段按其时点保留。
+
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
 ## 2026-10-21 UTC 后继实际里程碑

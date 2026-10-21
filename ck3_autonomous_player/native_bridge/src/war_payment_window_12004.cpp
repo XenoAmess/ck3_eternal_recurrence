@@ -16,9 +16,12 @@ std::uint64_t CreateTime() noexcept {
 }
 bool State(WarPaymentWindow12004 &w,std::uintptr_t &identity,std::uint64_t &date,std::uint32_t &day) noexcept {
   constexpr auto max=(std::numeric_limits<std::uintptr_t>::max)();
-  return w.read&&w.module_base&&w.module_base<=max-0x5C68C50&&
+  std::uint32_t date32=0;
+  const bool complete=w.read&&w.module_base&&w.module_base<=max-0x5C68C50&&
     w.read(w.read_context,w.module_base+0x5C68C50,&identity,sizeof identity)&&identity&&identity<=max-0xA0&&
-    w.read(w.read_context,identity+8,&date,sizeof date)&&w.read(w.read_context,identity+0x9C,&day,sizeof day);
+    w.read(w.read_context,identity+8,&date32,sizeof date32)&&w.read(w.read_context,identity+0x9C,&day,sizeof day);
+  if(complete)date=static_cast<std::uint64_t>(date32);
+  return complete;
 }
 void StopLocked(WarPaymentWindow12004 &w,std::string_view reason) {
   w.admitted=false;w.session.same_owned_process_no_load_window=false;

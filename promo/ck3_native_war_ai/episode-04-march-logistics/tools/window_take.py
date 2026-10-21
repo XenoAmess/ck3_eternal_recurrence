@@ -334,6 +334,7 @@ def start(spec, context, client, *, reviewed_frame):
     from ck3_live_run_id import current_machine_id
     from ck3_mod_acceptance_full_army import FullArmyResultClient
     from ck3_mod_acceptance_recorder import require_no_legacy_blue_overlay
+    from capture_budget_monitor import from_capacity
 
     need(Path(recorder_job.__file__).resolve() == (spec.integration / "recorder_job.py").resolve(strict=True),
          "canonical managed recorder Job dependency differs")
@@ -341,6 +342,7 @@ def start(spec, context, client, *, reviewed_frame):
          Path(context["run_dir"]).resolve() == spec.live and client.live.resolve() == spec.live,
          "same actual machine/public CaseClient required")
     cap, cap_ref = spec.capacity()
+    budget_monitor = from_capacity(spec.workdir, spec.workdir / "raw.mkv", spec.raw_budget_bytes, cap)
     # This is the sole fresh-workdir check. start_admission runs again AFTER
     # OwnedRecorder creates workdir, so it must never require absence.
     need(not spec.workdir.exists() and not spec.receipt("claim").exists() and
@@ -404,7 +406,8 @@ def start(spec, context, client, *, reviewed_frame):
     prepared = {"assets_root": str(spec.scene), "machine_id": spec.machine_id,
                 "checkpoint": {"source": {"actor_id": actor}}}
     recorder = OwnedRecorder(spec.live, KeeperView(spec, client), spec.offline_ref["path"], prepared,
-                            start_admission=lambda seconds: spec.admission(seconds, client))
+                            start_admission=lambda seconds: spec.admission(seconds, client),
+                            budget_monitor=budget_monitor)
     claim = write_once(spec.receipt("claim"), {
         "machine_id": spec.machine_id, "observed_at_utc": utc(), "run_id": spec.live.name,
         "config": pin(spec.config_path), "capacity": cap_ref, "offline": spec.offline_ref,

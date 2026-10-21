@@ -171,7 +171,8 @@ ArmyNaturalPhaseRecord12004 InvokeArmyNaturalPhaseScope12004(
     scope.session_identity = b.session_identity;
     scope.entry_event = Event(b);
     if (scope.game_state_identity) {
-      scope.date_raw = Read<std::uint64_t>(b, scope.game_state_identity + 8);
+      scope.date_raw = std::optional<std::uint64_t>(
+          Read<std::uint32_t>(b, scope.game_state_identity + 8));
       scope.absolute_day_raw = Read<std::uint32_t>(b, scope.game_state_identity + 0x9C);
       scope.entry_c0_raw = Read<std::uint8_t>(b, scope.game_state_identity + 0xC0);
     }
@@ -192,7 +193,8 @@ ArmyNaturalPhaseRecord12004 InvokeArmyNaturalPhaseScope12004(
   if (permit.admitted() && scope.observed && out.original_returned) {
     out.returned_event = Event(b);
     if (scope.game_state_identity) {
-      out.returned_date_raw = Read<std::uint64_t>(b, scope.game_state_identity + 8);
+      out.returned_date_raw = std::optional<std::uint64_t>(
+          Read<std::uint32_t>(b, scope.game_state_identity + 8));
       out.returned_absolute_day_raw = Read<std::uint32_t>(b, scope.game_state_identity + 0x9C);
       out.returned_c0_raw = Read<std::uint8_t>(b, scope.game_state_identity + 0xC0);
     }

@@ -1,0 +1,78 @@
+{
+  "schema": "xar.r08.date32.source-repair.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:03:45.028699+00:00",
+  "status": "SOURCE_ONLY_NOT_COMPILED",
+  "base_source_root": "D:/workspace/ck3_eternal_recurrence",
+  "compiled_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "source_reconstruction": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp",
+      "before": "66d311b72913e55eb37c0b6d76a8b04515001a6d273f372d79a296ed19e9a639",
+      "after": "2f862af8cb83a13c420b8c28b12b82a3379fa678a7c168b1f85ab8b6f04fae83",
+      "bytes": 10474
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/army_natural_phase_scope_12004.cpp",
+      "before": "ba6566c39bc2e1ab6bc1044c14572b7fa002196adacf751fa206904ca2d958b9",
+      "after": "011d4c84ea39d700a6d91ce9f95a1014de06ab9696b41ac93183ad485bb7ba0c",
+      "bytes": 14910
+    }
+  ],
+  "payload_pins": [
+    {
+      "name": "check_date32.py",
+      "bytes": 2241,
+      "sha256": "b3c232aea96a4753e60229697a4fbc16e2b20cfa3eafb57ecb1a9d56e3e6029f"
+    },
+    {
+      "name": "DATE32.candidate.patch",
+      "bytes": 1700,
+      "sha256": "06fc86bd08104b49cd0de45762846ca46b9362826e02ea33307278aa631d50ad"
+    }
+  ],
+  "focused": {
+    "original_pid": 32284,
+    "original_wait": 0,
+    "stdout_sha256": "847fccc17584f9d86371f519663b1afacbf292bec865d020e507666c90996dcb",
+    "stderr": "",
+    "tool_chunk": "0662a9",
+    "checks": [
+      "immutable source SHA and RAM reconstruction",
+      "actual legacy read64 date reproduced; read32 yields53146896",
+      "adjacent high32 changes do not change date32",
+      "persisted patch exactly equals computed minimal diff"
+    ],
+    "scope": "Python source/layout checks; no native compilation or runtime qualification"
+  },
+  "typing": {
+    "original_pid": 37056,
+    "original_wait": 0,
+    "argv": [
+      "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "mypy",
+      "--strict",
+      "--no-incremental",
+      "--cache-dir=nul",
+      "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/native-date32-repair-a01/check_date32.py"
+    ],
+    "stdout": "Success: no issues found in 1 source file\r\n",
+    "stderr": "",
+    "pythonpath": "C:/ck3-e04-resume-20261020-a01/r08-mypy1201-tools-2115-a01/Lib",
+    "tool_chunk": "dd27d4"
+  },
+  "retained_initial_typing_failure": {
+    "tool_chunk": "41b071",
+    "exit_code": 1,
+    "stderr": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe: No module named mypy",
+    "resolution": "Reused already installed immutable Lib via explicit PYTHONPATH; no download/install"
+  },
+  "semantic_boundary": "Only three GameState+8 date reads narrow to4B and explicitly widen into original uint64/optional containers. Amount, owner, qualification, DR, actual prefix-register evidence and old raw are unchanged. Does not make old natural_parent_matches=false or qualified_records=0 true.",
+  "source_files_copied": false,
+  "build_SYSTEM_Game_SDK": false,
+  "writer0_after_this_receipt": true
+}

@@ -1,0 +1,168 @@
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/schema_source.py
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/schema_source.py
+@@ -33,7 +33,9 @@
+  'compare_fees':B,'follow_after_arrival_to_day90':B,'post_arrival_policy':{'anyOf':[S,NULL]},'event_policy':S,'wall_budget_seconds_per_arm':{'type':'integer','minimum':1},
+  'prerequisites':obj({'exact_clock':ref('pin'),'loss_refill_subject_qualification':ref('pin'),'B_microexperiment':ref('pin'),'boarding_payment':{'anyOf':[ref('pin'),NULL]},'maintenance_settlement':{'anyOf':[ref('pin'),NULL]}})
+ })
+-RUNTIME=obj({'machine_id':S,'started_at_utc':S,'pid':{'type':'integer','minimum':1},'process_create_time_100ns':{'type':'integer','minimum':1},'connection_generation':{'type':'integer','minimum':1},'episode':S,'player_character_id':U,'source_head':HEAD,'native_dll_sha256':SHA,'source_proof':ref('pin')})
++MANAGED_CAMPAIGN=obj({'run_id':S,'state_dir':S,'bridge_pipe':S,'host_path':S,'frozen_argv_sha256':SHA})
++RUNTIME=obj({'machine_id':S,'started_at_utc':S,'pid':{'type':'integer','minimum':1},'process_create_time_100ns':{'type':'integer','minimum':1},'connection_generation':{'type':'integer','minimum':1},'episode':{'anyOf':[S,NULL]},'player_character_id':U,'source_head':HEAD,'native_dll_sha256':SHA,'source_proof':ref('pin'),'managed_campaign_run_binding':MANAGED_CAMPAIGN},required=['machine_id', 'started_at_utc', 'pid', 'process_create_time_100ns', 'connection_generation', 'episode', 'player_character_id', 'source_head', 'native_dll_sha256', 'source_proof'])
++RUNTIME['allOf']=[{'if':{'properties':{'episode':{'type':'null'}}},'then':{'required':['managed_campaign_run_binding']}}]
+ CLOCK_DAY=obj({'day':{'type':'integer','minimum':1,'maximum':90},'clock_source':ref('pin'),'paused_snapshot':ref('pin'),'strategy_army_ids':arr(U,1,True)})
+ LEDGER=obj({'loss_refill_qualified':B,'payment_qualified':B,'loss_physical_debits':{'anyOf':[U,NULL]},'refill_physical_adds':{'anyOf':[U,NULL]},'boarding_gold_raw':{'anyOf':[U,NULL]},'maintenance_gold_raw':{'anyOf':[U,NULL]},'other_cash_income_raw':{'anyOf':[U,NULL]},'other_cash_expense_raw':{'anyOf':[U,NULL]},'through_day':{'type':'integer','minimum':0,'maximum':90},'evidence':arr(ref('pin'))})
+ EXECUTION=obj({'prespecified_policy_followed':B,'B_merge_destination_policy':{'anyOf':[S,NULL]},'B_commander_policy':{'anyOf':[S,NULL]},'B_rest_exit_records':arr(obj({'province_id':U,'unit_id':U,'start_day':U,'end_day':U,'reason':{'enum':['threshold','maximum_rest_days']},'endpoint_day':U})), 'C_waypoint_observed_days':arr(obj({'province_id':U,'day':U})),'evidence':arr(ref('pin'),1)})
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b.py
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b.py
+@@ -12,6 +12,7 @@
+ import sys
+ 
+ import r10_compare as c
++from ordinary_campaign import check_runtime, episode_value, same_episode
+ 
+ 
+ def need(ok, reason):
+@@ -83,6 +84,7 @@
+     """
+     metrics = c.endpoint(ep, plan, evidence, runtime)
+     snapshot = c.frame(evidence.json(ep['snapshot']), runtime)
++    check_runtime(snapshot, runtime)
+     query = c.body(evidence.json(ep['army_result']))
+     need(query.get('status') == 'available', 'complete available Army result required')
+     wanted = set(ep['strategy_army_ids'])
+@@ -121,8 +123,8 @@
+ 
+ def _frame_order(before, after, same_day=False):
+     a, b = before['snapshot'], after['snapshot']
+-    need(a['episode_run_id'] == b['episode_run_id'] and
+-         a['diagnostics']['connection_generation'] == b['diagnostics']['connection_generation'],
++    same_episode(a, b)
++    need(a['diagnostics']['connection_generation'] == b['diagnostics']['connection_generation'],
+          'action crossed episode/generation')
+     need(b['date_raw'] >= a['date_raw'] and b['native_revision'] >= a['native_revision']
+          and b['revision'] >= a['revision'], 'action evidence goes backwards')
+@@ -336,12 +338,12 @@
+             need(action.get('destination_army_id') == destination and action.get('source_army_id') == source,
+                  'merge response participants differ')
+             for field in ('date_raw', 'snapshot_id', 'native_revision', 'episode_run_id'):
+-                need(action.get('submitted_' + field) == before['snapshot'][field],
++                need(action.get('submitted_' + field) == (episode_value(before['snapshot']) if field == 'episode_run_id' else before['snapshot'][field]),
+                      'merge receipt submitted frame differs: ' + field)
+             need(action.get('submitted_public_revision') == before['snapshot']['revision'],
+                  'merge receipt submitted public revision differs')
+             need(action.get('observed_date_raw') == after['snapshot']['date_raw'] and
+-                 action.get('observed_episode_run_id') == after['snapshot']['episode_run_id'] and
++                 action.get('observed_episode_run_id') == episode_value(after['snapshot']) and
+                  c.integer(action.get('observed_native_revision')) and
+                  before['snapshot']['native_revision'] < action['observed_native_revision'] <= after['snapshot']['native_revision'],
+                  'merge receipt observed frame not bracketed by independent post-state')
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_next.py
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_next.py
+@@ -62,8 +62,11 @@
+     actual = current['snapshot']
+     # The capabilities DTO has no queried frame. Preserve original packets and
+     # require a stable independent snapshot on each side instead of adding one.
+-    fields = ('snapshot_id', 'revision', 'native_revision', 'date_raw', 'episode_run_id',
++    fields = ('snapshot_id', 'revision', 'native_revision', 'date_raw',
+               'played_character', 'player_armies', 'active_event', 'pending_character_interaction')
++    b.check_runtime(actual, runtime)
++    b.same_episode(before, after)
++    b.same_episode(before, actual)
+     for field in fields:
+         _need(field in actual and before.get(field) == after.get(field) == actual[field],
+               'capabilities bracket/current frame differs: ' + field)
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_normal_stages.py
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_normal_stages.py
+@@ -116,7 +116,7 @@
+          and preview.get('target_province_id') == target and preview.get('previewed_date_raw') == frame['date_raw'], 'native preview scope/rejection differs')
+     for key, actual in (('snapshot_id', frame['snapshot_id']), ('revision', frame['revision']),
+                         ('native_revision', frame['native_revision']), ('connection_generation', st.live.binding['generation']),
+-                        ('episode_run_id', frame['episode_run_id'])):
++                        ('episode_run_id', st.next.b.episode_value(frame))):
+         need(body.get('queried_' + key) == actual, 'native preview frame differs: ' + key)
+     route = deepcopy(preview.get('route_province_ids'))
+     need(type(route) is list and route and all(type(x) is int and x > 0 for x in route), 'complete native route required')
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json
+@@ -107,8 +107,15 @@
+           "minimum": 1
+         },
+         "episode": {
+-          "type": ["string", "null"],
+-          "minLength": 1
++          "anyOf": [
++            {
++              "type": "string",
++              "minLength": 1
++            },
++            {
++              "type": "null"
++            }
++          ]
+         },
+         "player_character_id": {
+           "type": "integer",
+@@ -124,6 +131,39 @@
+         },
+         "source_proof": {
+           "$ref": "#/$defs/pin"
++        },
++        "managed_campaign_run_binding": {
++          "type": "object",
++          "properties": {
++            "run_id": {
++              "type": "string",
++              "minLength": 1
++            },
++            "state_dir": {
++              "type": "string",
++              "minLength": 1
++            },
++            "bridge_pipe": {
++              "type": "string",
++              "minLength": 1
++            },
++            "host_path": {
++              "type": "string",
++              "minLength": 1
++            },
++            "frozen_argv_sha256": {
++              "type": "string",
++              "pattern": "^[0-9a-f]{64}$"
++            }
++          },
++          "required": [
++            "run_id",
++            "state_dir",
++            "bridge_pipe",
++            "host_path",
++            "frozen_argv_sha256"
++          ],
++          "additionalProperties": false
+         }
+       },
+       "required": [
+@@ -138,7 +178,23 @@
+         "native_dll_sha256",
+         "source_proof"
+       ],
+-      "additionalProperties": false
++      "additionalProperties": false,
++      "allOf": [
++        {
++          "if": {
++            "properties": {
++              "episode": {
++                "type": "null"
++              }
++            }
++          },
++          "then": {
++            "required": [
++              "managed_campaign_run_binding"
++            ]
++          }
++        }
++      ]
+     },
+     "clock_day": {
+       "type": "object",

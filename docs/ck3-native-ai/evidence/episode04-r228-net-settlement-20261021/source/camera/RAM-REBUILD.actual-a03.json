@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:52:24.789822+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\freeze_candidate.py"
+  ],
+  "pid": 32652,
+  "original_wait": 0,
+  "stdout": "{\"base_commit\": \"0540c67b33c1a0c2b63cbf5906cef61ef22fba6d\", \"RAM_patch_rebuild_exact\": true, \"protected_recorder_and_start_behavior_unchanged\": true, \"pins\": [{\"name\": \"capture_recorder.py\", \"bytes\": 24353, \"sha256\": \"adc63c498f4ef95e4bd9428cd1ec24cb2cef55c9ae9477431f3d70c5b731214a\"}, {\"name\": \"window_take.py\", \"bytes\": 27340, \"sha256\": \"006d4848374ede10f03be24266f35b67a4ce74004ed9755aeefbc6875f3180a6\"}, {\"name\": \"capture_budget_monitor.py\", \"bytes\": 5591, \"sha256\": \"b4e925e1a9dd412761fedbd9cc9fd067dba3bd51d82d04d4cb5ba4cb680568e9\"}]}\r\n",
+  "stderr": "",
+  "source_pins": [
+    {
+      "name": "capture_budget_monitor.py",
+      "bytes": 5591,
+      "sha256": "b4e925e1a9dd412761fedbd9cc9fd067dba3bd51d82d04d4cb5ba4cb680568e9"
+    },
+    {
+      "name": "capture_recorder.py",
+      "bytes": 24353,
+      "sha256": "adc63c498f4ef95e4bd9428cd1ec24cb2cef55c9ae9477431f3d70c5b731214a"
+    },
+    {
+      "name": "window_take.py",
+      "bytes": 27340,
+      "sha256": "006d4848374ede10f03be24266f35b67a4ce74004ed9755aeefbc6875f3180a6"
+    },
+    {
+      "name": "freeze_candidate.py",
+      "bytes": 6235,
+      "sha256": "a3c26b88d866e6058e4f90c41180c6d06455da0e9fb0e9d3798d32749b3ebe72"
+    }
+  ],
+  "no_Game_desktop_SDK_FFmpeg": true
+}

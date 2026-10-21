@@ -107,8 +107,15 @@
           "minimum": 1
         },
         "episode": {
-          "type": ["string", "null"],
-          "minLength": 1
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "player_character_id": {
           "type": "integer",
@@ -124,6 +131,39 @@
         },
         "source_proof": {
           "$ref": "#/$defs/pin"
+        },
+        "managed_campaign_run_binding": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state_dir": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bridge_pipe": {
+              "type": "string",
+              "minLength": 1
+            },
+            "host_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "frozen_argv_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "run_id",
+            "state_dir",
+            "bridge_pipe",
+            "host_path",
+            "frozen_argv_sha256"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -138,7 +178,23 @@
         "native_dll_sha256",
         "source_proof"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "episode": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "managed_campaign_run_binding"
+            ]
+          }
+        }
+      ]
     },
     "clock_day": {
       "type": "object",

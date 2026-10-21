@@ -1,0 +1,27 @@
+--- a/ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp
++++ b/ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp
+@@ -18,5 +18,8 @@
+   constexpr auto max=(std::numeric_limits<std::uintptr_t>::max)();
+-  return w.read&&w.module_base&&w.module_base<=max-0x5C68C50&&
++  std::uint32_t date32=0;
++  const bool complete=w.read&&w.module_base&&w.module_base<=max-0x5C68C50&&
+     w.read(w.read_context,w.module_base+0x5C68C50,&identity,sizeof identity)&&identity&&identity<=max-0xA0&&
+-    w.read(w.read_context,identity+8,&date,sizeof date)&&w.read(w.read_context,identity+0x9C,&day,sizeof day);
++    w.read(w.read_context,identity+8,&date32,sizeof date32)&&w.read(w.read_context,identity+0x9C,&day,sizeof day);
++  if(complete)date=static_cast<std::uint64_t>(date32);
++  return complete;
+ }
+--- a/ck3_autonomous_player/native_bridge/src/army_natural_phase_scope_12004.cpp
++++ b/ck3_autonomous_player/native_bridge/src/army_natural_phase_scope_12004.cpp
+@@ -173,3 +173,4 @@
+     if (scope.game_state_identity) {
+-      scope.date_raw = Read<std::uint64_t>(b, scope.game_state_identity + 8);
++      scope.date_raw = std::optional<std::uint64_t>(
++          Read<std::uint32_t>(b, scope.game_state_identity + 8));
+       scope.absolute_day_raw = Read<std::uint32_t>(b, scope.game_state_identity + 0x9C);
+@@ -194,3 +195,4 @@
+     if (scope.game_state_identity) {
+-      out.returned_date_raw = Read<std::uint64_t>(b, scope.game_state_identity + 8);
++      out.returned_date_raw = std::optional<std::uint64_t>(
++          Read<std::uint32_t>(b, scope.game_state_identity + 8));
+       out.returned_absolute_day_raw = Read<std::uint32_t>(b, scope.game_state_identity + 0x9C);

@@ -1,0 +1,110 @@
+{
+  "schema": "xar.e04.camera-budget.source-delivery.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:54:07.382397+00:00",
+  "source_only": true,
+  "base_commit": "0540c67b33c1a0c2b63cbf5906cef61ef22fba6d",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\PRODUCTION-a03.patch",
+      "bytes": 13021,
+      "sha256": "825d932ce303a71b3496c425b4c91ef066122c4734fa527a7a677c68de39938f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\capture_recorder.py",
+      "bytes": 24353,
+      "sha256": "adc63c498f4ef95e4bd9428cd1ec24cb2cef55c9ae9477431f3d70c5b731214a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\window_take.py",
+      "bytes": 27340,
+      "sha256": "006d4848374ede10f03be24266f35b67a4ce74004ed9755aeefbc6875f3180a6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\capture_budget_monitor.py",
+      "bytes": 5591,
+      "sha256": "b4e925e1a9dd412761fedbd9cc9fd067dba3bd51d82d04d4cb5ba4cb680568e9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\test_camera_scope.py",
+      "bytes": 3443,
+      "sha256": "5cc9994767428a28bb16662ca90feb5425e0ddbcfff0299d249f27d21d0ff30f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\freeze_candidate.py",
+      "bytes": 6235,
+      "sha256": "a3c26b88d866e6058e4f90c41180c6d06455da0e9fb0e9d3798d32749b3ebe72"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\MYPY.actual-a03.json",
+      "bytes": 1442,
+      "sha256": "079ffaf2525e74011214e344298c51ad575c77e4fc13737245102e8e5fa23adf"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\FOCUSED-TESTS.actual-a03.json",
+      "bytes": 1074,
+      "sha256": "1f9d7bb75b99bafa8455baede72be075d251052be48a189e8d18f4db461685bf"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\RAM-REBUILD.actual-a03.json",
+      "bytes": 1691,
+      "sha256": "f2600763c47b1d5d7cf4237fe8aaf319d3477372c79238bc1471560428803fba"
+    }
+  ],
+  "canonical_prefix": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/",
+  "production_files": [
+    "capture_recorder.py",
+    "window_take.py",
+    "capture_budget_monitor.py"
+  ],
+  "delta": "Recorder byte-identical to a02; window_take only spec.scene to spec.workdir; monitor only typed os.walk onerror which rethrows OSError into existing measurement-unavailable handling.",
+  "binding": "capacity.capture_budget_monitor.camera_root must equal canonical spec.workdir; raw_path must equal workdir/raw.mkv. Constructing before workdir exists is allowed; measuring an absent root is unavailable, never 0 PASS.",
+  "outer_aggregate": "Outer Game capacity still counts profile/state-a01/userdirs, driver-runs, camera bytes and scene-level control/frame files. This nested camera guard does not exempt them or replace the full scene ceiling.",
+  "next_config": {
+    "provenance": "predecessor_admission direct message in this task",
+    "status": "planned only: no scene or actual TakeSpec file yet",
+    "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-b-a03",
+    "profile": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-b-a03\\state-a01",
+    "driver": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-b-a03\\driver-runs",
+    "raw_root": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-b-a03\\camera-raw-a01",
+    "take_id": "b-site01-a01",
+    "camera_root": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-b-a03\\camera-raw-a01\\b-site01-a01",
+    "actual_config": null,
+    "second_take_admitted": false
+  },
+  "checks": {
+    "mypy": "3 typed files PASS: helper, new tests, RAM builder; original wait0",
+    "focused": "3 new cases PASS: absent then own-only bytes, wrong scene-root binding rejected, PermissionError fails closed; original wait0",
+    "RAM_rebuild": "Exact all3 production bytes from fixed Git preimages; narrow a02 delta and protected behavior AST checked; original wait0",
+    "legacy_boundary": "No whole legacy strict-mypy claim; five existing fake-Job Finish/no-deadlock cases reused, not rerun."
+  },
+  "reused_checks": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a01\\TESTS.actual-a04.json",
+      "bytes": 1422,
+      "sha256": "18bfb4ad878b383cb297e71cb38553c1556ec5721b6a7e1946c6956c26813ff9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a01\\MYPY.actual-a04.json",
+      "bytes": 1803,
+      "sha256": "9f498c02ec921291a3483af32cf0dc9330def3e3b04300059d20e817022ee4f4"
+    }
+  ],
+  "prior_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a01\\DELIVERY.actual-a01.json",
+    "bytes": 4603,
+    "sha256": "7480dc9895ec7809b95701d172fd6e95fbdacf0204064945de5d61ae4adb50a3"
+  },
+  "fund": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\capacity\\SOURCE8-MEDIA1856K-SUPPORT3328K.actual-a13.json",
+    "bytes": 3656,
+    "sha256": "d37b97c14ae0c38d1bff59130b780d461797d5a1db915b19af31643615fe0683"
+  },
+  "preserved": "Offline-image direct review, Root nohover, sameGame, legacy blue-overlay refusal, geometry, original Finish/Job wait, quality and no-retry unchanged.",
+  "hard_deadline_utc": "2026-10-21T14:30:00Z",
+  "source_child_limit": 131072,
+  "media_partition_limit": 1900544,
+  "Game_screen_SDK_FFmpeg_recording_executed": false,
+  "writer0_after_delivery": true,
+  "remaining_heavy": 0
+}

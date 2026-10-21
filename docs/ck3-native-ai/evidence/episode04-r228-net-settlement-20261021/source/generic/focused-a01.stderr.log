@@ -1,0 +1,10 @@
+test_absent_callback_is_unknown_and_wrong_scalar_types_reject (test_generic_applied_net.AppliedNetTests.test_absent_callback_is_unknown_and_wrong_scalar_types_reject) ... ok
+test_actual_R228_financial_positive_original_unchanged (test_generic_applied_net.AppliedNetTests.test_actual_R228_financial_positive_original_unchanged) ... ok
+test_amount_account_unwind_and_order_counterexamples (test_generic_applied_net.AppliedNetTests.test_amount_account_unwind_and_order_counterexamples) ... ok
+test_date64_remains_pending_and_preserves_financial_proof (test_generic_applied_net.AppliedNetTests.test_date64_remains_pending_and_preserves_financial_proof) ... ok
+test_synthetic_date32_outer_revisions_bracket_not_equal (test_generic_applied_net.AppliedNetTests.test_synthetic_date32_outer_revisions_bracket_not_equal) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.215s
+
+OK

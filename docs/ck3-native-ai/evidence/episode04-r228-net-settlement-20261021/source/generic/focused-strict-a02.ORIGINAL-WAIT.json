@@ -1,0 +1,33 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:46:42.223725+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "test_generic_applied_net.AppliedNetTests.test_strict_requires_OS_original_and_exact_build_DLL_output"
+  ],
+  "pid": 11580,
+  "created": "134370604018596625",
+  "identity_error": null,
+  "original_Popen": true,
+  "original_wait": true,
+  "returncode": 0,
+  "streams": {
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\generic-applied-net-a01\\focused-strict-a02.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\generic-applied-net-a01\\focused-strict-a02.stderr.log",
+      "bytes": 273,
+      "sha256": "be27738b1a9a63451d254569dfd0bf46b37e0871fac0ca0650bc3011f88b0f3e"
+    }
+  },
+  "SDK_native_Game": false
+}

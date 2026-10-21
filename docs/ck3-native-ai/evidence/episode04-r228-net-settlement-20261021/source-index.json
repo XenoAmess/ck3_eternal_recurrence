@@ -1,0 +1,184 @@
+{
+ "schema": "xar.r228.net_settlement.knowledge_sources.v1",
+ "machine_id": "desktop-3fevhd2-1c74096080",
+ "observed_at_utc": "2026-10-21T12:11:53.848363+00:00",
+ "status": "SOURCE_ONLY_CANDIDATE",
+ "planner_autoload": false,
+ "registry_kind": "dated gameplay-v1 Markdown entry; no new event registry",
+ "review_by_utc": "2026-10-28T11:54:32Z",
+ "sources": [
+  {
+   "id": "projection",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/live-scene-r08-a02/hot-r08-repair-a01/R228-POSTLOAD-POSITIVE-PROJECTION.actual-a01.json",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/R228-POSTLOAD-POSITIVE-PROJECTION.actual-a01.json",
+   "role": "actual derived projection",
+   "publication_state": "proposed_not_published",
+   "bytes": 4159,
+   "sha256": "c50885d1ecc6e5258ab964d37c45883e4950036cc45176c8fb7c6daad800eb40"
+  },
+  {
+   "id": "root_adoption",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/root/ROOT-R228-LIMITED-NET-SETTLEMENT-ADOPTION.actual-a01.json",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/ROOT-R228-LIMITED-NET-SETTLEMENT-ADOPTION.actual-a01.json",
+   "role": "actual limited adjudication",
+   "publication_state": "proposed_not_published",
+   "bytes": 2375,
+   "sha256": "f738bdaa658e878f0c2f4f43345799f77f1c3e8d66c91fbcfd7a899ef3ca66b4"
+  },
+  {
+   "id": "wallet_result",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/live-scene-r08-a02/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0228/hot-r08-repair-a02/R08-POSTLOAD-RESULT.json",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/observations/R08-POSTLOAD-RESULT.json",
+   "role": "original actual",
+   "publication_state": "proposed_not_published",
+   "bytes": 50945,
+   "sha256": "e1e0f0f94c153b638c55848b0b2980e59eaf11e8ce1b2179b39d243a42c396c0"
+  },
+  {
+   "id": "typed",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/live-scene-r08-a02/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0228/hot-r08-repair-a02/r08-postload-control/PARENT-POSTLOAD.actual.json",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/observations/PARENT-POSTLOAD.actual.json",
+   "role": "original actual",
+   "publication_state": "proposed_not_published",
+   "bytes": 1142,
+   "sha256": "0dc3de51affed0b9c459040cbec285b2e0bafd1b47d738416f0304f48a0f94c7"
+  },
+  {
+   "id": "postload_raw",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/live-scene-r08-a02/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0228/hot-r08-repair-a02/r08-postload-control/parent.raw.ndjson",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/observations/parent.raw.ndjson",
+   "role": "original actual",
+   "publication_state": "proposed_not_published",
+   "bytes": 45420,
+   "sha256": "106e9ed2f90eb23cfeec2b404e6a5503326e29f32924d2f407675037d2ba39e0"
+  },
+  {
+   "id": "observer_wait",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/live-scene-r08-a02/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0228/hot-r08-repair-a02/r08-postload-control/OBSERVER-ORIGINAL-WAIT.actual.json",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/observations/OBSERVER-ORIGINAL-WAIT.actual.json",
+   "role": "original actual",
+   "publication_state": "proposed_not_published",
+   "bytes": 206,
+   "sha256": "e470dd412bb6320bdaf3c9d160ff2600e174bdee14ebde1ecbfb04b3ab0a8001"
+  },
+  {
+   "id": "native_source",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/native-r08-static-a05/SOURCE.actual.json",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r08-task-construction-20261021/normal-producer-a05/SOURCE.actual.json",
+   "role": "source-only provenance",
+   "publication_state": "separate_batch_fixed_commit_not_bound",
+   "bytes": 5422,
+   "sha256": "e107fbe8f6d1df3d9edec1f67f53bcd8a5bd0f6d9f83515318a0ef2f33af84bb"
+  },
+  {
+   "id": "native_FINDINGS.md",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/native-r08-static-a05/FINDINGS.md",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r08-task-construction-20261021/normal-producer-a05/FINDINGS.md",
+   "role": "source-only retained bytes",
+   "publication_state": "separate_batch_fixed_commit_not_bound",
+   "bytes": 4346,
+   "sha256": "687cce2cf3217082ece7ab054e53b0c174a868441c7dc7191a6ef865f55d7b8a"
+  },
+  {
+   "id": "native_producer-spans.bin",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/native-r08-static-a05/producer-spans.bin",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r08-task-construction-20261021/normal-producer-a05/producer-spans.bin",
+   "role": "source-only retained bytes",
+   "publication_state": "separate_batch_fixed_commit_not_bound",
+   "bytes": 3717,
+   "sha256": "9a2eaa57c90dad18cfcbee96fcde01db5361a4a1a1eb76d3a64174b531ae858f"
+  },
+  {
+   "id": "native_SELECTED.asm",
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/native-r08-static-a05/SELECTED.asm",
+   "repository_path": "docs/ck3-native-ai/evidence/episode04-r08-task-construction-20261021/normal-producer-a05/SELECTED.asm",
+   "role": "source-only retained bytes",
+   "publication_state": "separate_batch_fixed_commit_not_bound",
+   "bytes": 1818,
+   "sha256": "9d55f26a0611de42c75835202c8b70b0ec0733cacbc52648d676e8c92ac2af5e"
+  },
+  {
+   "id": "held_parent.complete.asm",
+   "source_path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+   "repository_path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+   "role": "held original asm",
+   "publication_state": "existing_repository_source",
+   "bytes": 15822,
+   "sha256": "36eecdf78b4e958833f90ee903e1cd2cb607e0a1d5e8ea1adb0fc3e1d14f040f"
+  },
+  {
+   "id": "held_saved-settlement-asm.asm",
+   "source_path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-15-maintenance-cache-source/inputs/saved-settlement-asm.asm",
+   "repository_path": "docs/ck3-native-ai/acceptance/2026-10-15-maintenance-cache-source/inputs/saved-settlement-asm.asm",
+   "role": "held original asm",
+   "publication_state": "existing_repository_source",
+   "bytes": 9102,
+   "sha256": "55a27f9d54562c31a8690ef99cab18cc8fe10eb5c1bcbeb9c3aca32b5cd70607"
+  }
+ ],
+ "candidate_artifacts": [
+  {
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/research-a01/next-knowledge-a09/episode04-r228-net-military-settlement-12004.md",
+   "repository_target": "docs/ck3-native-ai/episode04-r228-net-military-settlement-12004.md",
+   "role": "candidate only",
+   "bytes": 8683,
+   "sha256": "d83f546810864c7bedb4939a6074bd9fc32d480fc185f61d7944e3924bef0aef"
+  },
+  {
+   "source_path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/research-a01/next-knowledge-a09/gameplay-v1.entry.patch",
+   "repository_target": "ck3_autonomous_player/knowledge/ck3/gameplay-v1.md",
+   "role": "candidate only",
+   "bytes": 1416,
+   "sha256": "f402820c04695ac95c1be111b7701dd8caa83b5ecc20f5a223f333fbd5d96639"
+  }
+ ],
+ "entry_baseline": {
+  "input_commit": "0540c67b33c1a0c2b63cbf5906cef61ef22fba6d",
+  "repository_path": "ck3_autonomous_player/knowledge/ck3/gameplay-v1.md",
+  "bytes": 6074,
+  "sha256": "bc9e4129c2bbe9bd3c38a9deb13e76a74293d36e87184cf888fe0ba45508f93e",
+  "git_blob": "55c4cff06c7934d600d16cf4fd8fdc38850f8073"
+ },
+ "entry_after_apply": {
+  "bytes": 7158,
+  "sha256": "51416d93913c76cfb06caf4448f270105ce97c62a33836c3b2e770850b4b2eb5",
+  "git_blob": "b6ae4e88c16e7997feb138ec943e4fec002d4d54"
+ },
+ "scope": {
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0228",
+  "pid": 33668,
+  "process_birth_decimal": "134370531135233564",
+  "context_decimal": "2856717694048",
+  "legacy_erroneous_date_decimal": "300064548703630608",
+  "legacy_low32_diagnostic_only": 53146896,
+  "raw_a_b_c_d": [
+   384653,
+   0,
+   273262,
+   0
+  ],
+  "wallet_before_after": [
+   25455910,
+   25567301
+  ],
+  "net_add_raw": 111391,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "natural_parent_matches": false,
+  "full_R08": false,
+  "formal_themes": "8/11",
+  "B_sites": "0/2",
+  "ABC": "0/3"
+ },
+ "not_claimed": [
+  "live cache refresh epoch",
+  "exclusive writer",
+  "shared invocation across samplers",
+  "gross-c independent debit",
+  "general payer or cadence",
+  "planner has consumed candidate",
+  "current installation or other-machine runtime qualification"
+ ],
+ "plan_replay": "not applicable: documentation only"
+}

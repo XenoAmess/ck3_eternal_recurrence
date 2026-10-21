@@ -1,0 +1,40 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T12:50:25.673202+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-m",
+    "mypy",
+    "--config-file",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\mypy.ini",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\capture_budget_monitor.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\test_camera_scope.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\camera-budget-a03\\freeze_candidate.py"
+  ],
+  "pid": 26900,
+  "original_wait": 0,
+  "stdout": "Success: no issues found in 3 source files\r\n",
+  "stderr": "",
+  "source_pins": [
+    {
+      "name": "capture_budget_monitor.py",
+      "bytes": 5591,
+      "sha256": "b4e925e1a9dd412761fedbd9cc9fd067dba3bd51d82d04d4cb5ba4cb680568e9"
+    },
+    {
+      "name": "test_camera_scope.py",
+      "bytes": 3443,
+      "sha256": "5cc9994767428a28bb16662ca90feb5425e0ddbcfff0299d249f27d21d0ff30f"
+    },
+    {
+      "name": "freeze_candidate.py",
+      "bytes": 6235,
+      "sha256": "a3c26b88d866e6058e4f90c41180c6d06455da0e9fb0e9d3798d32749b3ebe72"
+    }
+  ],
+  "no_Game_desktop_SDK_FFmpeg": true
+}

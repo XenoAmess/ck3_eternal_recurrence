@@ -1,0 +1,250 @@
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_recorder.py
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_recorder.py
+@@ -10,6 +10,7 @@
+ import subprocess
+ import threading
+ import time
++from capture_budget_monitor import BudgetMonitor, CaptureBudgetFailure, OwnedJob
+ 
+ 
+ CAPTURE_SOURCE = "gdigrab-desktop-client-region"
+@@ -164,23 +165,28 @@
+ 
+ 
+ class OwnedRecorder:
+-    def __init__(self, run, keeper, offline, prepared, *, start_admission=None):
++    def __init__(self, run, keeper, offline, prepared, *, start_admission=None,
++                 budget_monitor: BudgetMonitor | None = None):
+         self.run, self.keeper, self.offline, self.prepared = run, keeper, offline, prepared
+         self.assets_root = Path(prepared["assets_root"]).resolve()
+-        self.directory = None
+-        self.job = None
++        self.directory: Path | None = None
++        self.job: OwnedJob | None = None
+         self.streams = []
+         self.terminal = None
+-        self.start_ns = None
+-        self.start_at = None
++        self.start_ns: int | None = None
++        self.start_at: str | None = None
+         self.cleanup_error = None
+         self._end_lock = threading.RLock()
+         self.capture_source = None
+-        self.capture_guard_error = None
++        self.capture_guard_error: str | None = None
+         self.capture_guard_stop = threading.Event()
+-        self.capture_guard_thread = None
+-        self.result = None
++        self.capture_guard_thread: threading.Thread | None = None
++        self.result: dict[str, object] | None = None
+         self.start_admission = start_admission
++        self.budget_monitor = budget_monitor
++        self.capture_guard_state = "RED_CAPTURE_SOURCE_CHANGED"
++        self.capture_budget_failure: dict[str, object] | None = None
++        self.last_capture_budget: dict[str, object] | None = None
+         self.deadline_admission_at_request = None
+         self.deadline_admission_at_spawn = None
+ 
+@@ -200,6 +206,10 @@
+                                       self.capture_source["owned_ck3_create_time"])
+         require_same_source(self.capture_source, actual)
+         return actual
++
++    def _check_budget(self) -> None:
++        if self.budget_monitor is not None:
++            self.last_capture_budget = self.budget_monitor()
+ 
+     def _watch_capture_source(self):
+         while not self.capture_guard_stop.wait(CAPTURE_GUARD_INTERVAL_SECONDS):
+@@ -207,15 +217,20 @@
+                 if self.job.poll() is not None:
+                     return
+                 self._check_capture_source()
++                self._check_budget()
+             except BaseException as error:
+                 with self._end_lock:
+                     if self.capture_guard_stop.is_set():
+                         return
+                     self.capture_guard_error = repr(error)
++                    if isinstance(error, CaptureBudgetFailure):
++                        self.capture_guard_state = "RED_CAPTURE_BUDGET"
++                        self.capture_budget_failure = error.facts
+                     try:
+                         write(self.directory / "capture-guard-failure.json", {
+                             "machine_id": self.prepared["machine_id"], "at_utc": now(),
+-                            "state": "RED_CAPTURE_SOURCE_CHANGED", "error": self.capture_guard_error,
++                            "state": self.capture_guard_state, "error": self.capture_guard_error,
++                            "capture_budget_failure": self.capture_budget_failure,
+                             "capture_source": self.capture_source, "clean_spans_certified": False,
+                             "guard_interval_seconds": CAPTURE_GUARD_INTERVAL_SECONDS})
+                     finally:
+@@ -351,9 +366,20 @@
+             self.capture_guard_stop.set()
+             require(terminal.get("job_active_processes") == 0, "Owned recorder Job not proven empty")
+             self._close_streams()
++            try:
++                self._check_budget()
++            except CaptureBudgetFailure as error:
++                if self.capture_guard_error is None:
++                    self.capture_guard_error = repr(error)
++                    self.capture_guard_state = "RED_CAPTURE_BUDGET"
++                self.capture_budget_failure = error.facts
+             raw = self.directory / "raw.mkv"
+             result = {"machine_id": self.prepared["machine_id"],
+-                      "state": "RED_CAPTURE_SOURCE_CHANGED" if self.capture_guard_error else terminal["state"],
++                      "state": self.capture_guard_state if self.capture_guard_error else terminal["state"],
++                      "budget_monitor_enabled": self.budget_monitor is not None,
++                      "budget_qualified": None if self.budget_monitor is None else self.capture_budget_failure is None,
++                      "capture_budget_failure": self.capture_budget_failure,
++                      "last_capture_budget": self.last_capture_budget,
+                       "job": terminal, "raw": pin(raw) if raw.is_file() else None,
+                       "capture_source": self.capture_source, "capture_guard_error": self.capture_guard_error,
+                       "deadline_admission_at_spawn": self.deadline_admission_at_spawn,
+--- a/promo/ck3_native_war_ai/episode-04-march-logistics/tools/window_take.py
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/window_take.py
+@@ -334,6 +334,7 @@
+     from ck3_live_run_id import current_machine_id
+     from ck3_mod_acceptance_full_army import FullArmyResultClient
+     from ck3_mod_acceptance_recorder import require_no_legacy_blue_overlay
++    from capture_budget_monitor import from_capacity
+ 
+     need(Path(recorder_job.__file__).resolve() == (spec.integration / "recorder_job.py").resolve(strict=True),
+          "canonical managed recorder Job dependency differs")
+@@ -341,6 +342,7 @@
+          Path(context["run_dir"]).resolve() == spec.live and client.live.resolve() == spec.live,
+          "same actual machine/public CaseClient required")
+     cap, cap_ref = spec.capacity()
++    budget_monitor = from_capacity(spec.workdir, spec.workdir / "raw.mkv", spec.raw_budget_bytes, cap)
+     # This is the sole fresh-workdir check. start_admission runs again AFTER
+     # OwnedRecorder creates workdir, so it must never require absence.
+     need(not spec.workdir.exists() and not spec.receipt("claim").exists() and
+@@ -404,7 +406,8 @@
+     prepared = {"assets_root": str(spec.scene), "machine_id": spec.machine_id,
+                 "checkpoint": {"source": {"actor_id": actor}}}
+     recorder = OwnedRecorder(spec.live, KeeperView(spec, client), spec.offline_ref["path"], prepared,
+-                            start_admission=lambda seconds: spec.admission(seconds, client))
++                            start_admission=lambda seconds: spec.admission(seconds, client),
++                            budget_monitor=budget_monitor)
+     claim = write_once(spec.receipt("claim"), {
+         "machine_id": spec.machine_id, "observed_at_utc": utc(), "run_id": spec.live.name,
+         "config": pin(spec.config_path), "capacity": cap_ref, "offline": spec.offline_ref,
+--- /dev/null
++++ b/promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_budget_monitor.py
+@@ -0,0 +1,117 @@
++"""Stat-only limits for one explicitly owned camera directory; no media IO."""
++from __future__ import annotations
++
++from dataclasses import dataclass
++import os
++from pathlib import Path
++from collections.abc import Mapping
++from typing import Protocol
++
++
++class BudgetMonitor(Protocol):
++    def __call__(self) -> dict[str, object]: ...
++
++
++class OwnedJob(Protocol):
++    def poll(self) -> int | None: ...
++    def finish(self, *, receipt: Path, unsafe_marker: Path, timeout: int) -> dict[str, object]: ...
++    def abort(self, *, receipt: Path, unsafe_marker: Path) -> dict[str, object]: ...
++
++
++class CaptureBudgetFailure(RuntimeError):
++    def __init__(self, facts: dict[str, object]) -> None:
++        self.facts = dict(facts)
++        super().__init__(str(facts))
++
++
++def _raise_walk_error(error: OSError) -> None:
++    raise error
++
++
++@dataclass(frozen=True)
++class CaptureByteBudget:
++    root: Path
++    raw: Path
++    raw_soft_stop_bytes: int
++    aggregate_soft_stop_bytes: int
++    raw_ceiling_bytes: int
++    aggregate_ceiling_bytes: int
++
++    def __post_init__(self) -> None:
++        for value in (self.raw_soft_stop_bytes, self.aggregate_soft_stop_bytes,
++                      self.raw_ceiling_bytes, self.aggregate_ceiling_bytes):
++            if type(value) is not int or value <= 0:
++                raise ValueError("Positive integer byte limits required")
++        if not (self.raw_soft_stop_bytes < self.raw_ceiling_bytes <= self.aggregate_ceiling_bytes
++                and self.aggregate_soft_stop_bytes < self.aggregate_ceiling_bytes):
++            raise ValueError("Explicit normal-finish headroom required")
++        if not self.root.is_absolute() or not self.raw.is_absolute() or self.raw == self.root:
++            raise ValueError("Explicit absolute camera root and raw path required")
++        if not self.raw.is_relative_to(self.root) or self.root.parent == self.root:
++            raise ValueError("Raw must be inside the dedicated camera root")
++        if self.root.resolve() != self.root or self.raw.resolve() != self.raw:
++            raise ValueError("Canonical paths without aliases required")
++
++    def __call__(self) -> dict[str, object]:
++        facts: dict[str, object] = {
++            "camera_root": str(self.root), "raw": str(self.raw),
++            "raw_soft_stop_bytes": self.raw_soft_stop_bytes,
++            "aggregate_soft_stop_bytes": self.aggregate_soft_stop_bytes,
++            "raw_ceiling_bytes": self.raw_ceiling_bytes,
++            "aggregate_ceiling_bytes": self.aggregate_ceiling_bytes,
++        }
++        try:
++            if not self.root.is_dir() or any(p.is_symlink() or p.is_junction() for p in (self.root, *self.root.parents)):
++                raise ValueError("Camera root missing or symlinked")
++            aggregate = 0
++            raw_bytes = 0
++            for directory, subdirs, filenames in os.walk(self.root, followlinks=False, onerror=_raise_walk_error):
++                parent = Path(directory)
++                if any((parent / name).is_symlink() or (parent / name).is_junction() for name in subdirs):
++                    raise ValueError("Camera directory contains a symlink")
++                for name in filenames:
++                    path = parent / name
++                    if path.is_symlink() or not path.is_file():
++                        raise ValueError("Camera member is not a regular file")
++                    size = path.stat().st_size
++                    aggregate += size
++                    if path == self.raw:
++                        raw_bytes = size
++            facts.update(raw_bytes=raw_bytes, aggregate_bytes=aggregate,
++                         raw_hard_ceiling_exceeded=raw_bytes > self.raw_ceiling_bytes,
++                         aggregate_hard_ceiling_exceeded=aggregate > self.aggregate_ceiling_bytes)
++        except (OSError, ValueError) as error:
++            facts.update(reason="budget_measurement_unavailable", error=repr(error))
++            raise CaptureBudgetFailure(facts) from error
++        if raw_bytes >= self.raw_soft_stop_bytes or aggregate >= self.aggregate_soft_stop_bytes:
++            facts["reason"] = "raw_soft_stop" if raw_bytes >= self.raw_soft_stop_bytes else "aggregate_soft_stop"
++            raise CaptureBudgetFailure(facts)
++        facts["reason"] = "below_soft_limits"
++        return facts
++
++
++def from_capacity(root: Path, raw: Path, raw_ceiling: int,
++                  capacity: Mapping[str, object]) -> CaptureByteBudget:
++    """Bind the optional low-level monitor to an explicit window-take card."""
++    value = capacity.get("capture_budget_monitor")
++    if not isinstance(value, Mapping):
++        raise ValueError("This budgeted take requires capture_budget_monitor capacity facts")
++    fields: dict[str, object] = {}
++    for key, member in value.items():
++        if not isinstance(key, str):
++            raise ValueError("Budget field names must be strings")
++        fields[key] = member
++    if fields.get("camera_root") != str(root) or fields.get("raw_path") != str(raw):
++        raise ValueError("Capacity budget belongs to another camera root/raw")
++
++    def byte_count(name: str) -> int:
++        number = fields.get(name)
++        if type(number) is not int:
++            raise ValueError("Integer capacity byte field required: " + name)
++        return number
++
++    if byte_count("raw_ceiling_bytes") != raw_ceiling:
++        raise ValueError("Raw ceiling differs from the existing admitted raw component")
++    return CaptureByteBudget(root, raw, byte_count("raw_soft_stop_bytes"),
++        byte_count("aggregate_soft_stop_bytes"), byte_count("raw_ceiling_bytes"),
++        byte_count("aggregate_ceiling_bytes"))

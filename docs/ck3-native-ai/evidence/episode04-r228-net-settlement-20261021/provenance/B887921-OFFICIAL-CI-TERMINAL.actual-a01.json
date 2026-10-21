@@ -1,0 +1,65 @@
+{
+  "schema": "xar.r15.publication.official-ci-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-21T12:52:15.953521+00:00",
+  "observed_at_utc": "2026-10-21T12:51:12.539752+00:00",
+  "head_sha": "b887921f6b026f79b95a76a18dcd69f258c8e2b2",
+  "workflow": "Official Runner CI",
+  "run_id": "39598433316",
+  "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39598433316",
+  "status": "completed",
+  "conclusion": "success",
+  "job": {
+    "database_id": "119216483571",
+    "name": "static",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at_utc": "2026-10-21T12:17:35Z",
+    "completed_at_utc": "2026-10-21T12:50:48Z",
+    "last_step": {
+      "number": 291,
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "completed_at_utc": "2026-10-21T12:50:45Z"
+    }
+  },
+  "provenance": {
+    "kind": "direct_readonly_tool_output_projection",
+    "tool_chunk_id": "df5ed4",
+    "command": [
+      "gh",
+      "run",
+      "view",
+      "39598433316",
+      "--repo",
+      "XenoAmess/ck3_eternal_recurrence",
+      "--json",
+      "status,conclusion,headSha,url,jobs"
+    ],
+    "tool_exit_code": 0,
+    "original_process_pid": null,
+    "original_process_wait_receipt": null,
+    "note": "The direct tool output is the observation source; no separately retained original Popen or full raw response is claimed. No workflow rerun or logs download."
+  },
+  "previous_pending_observation": {
+    "observed_at_utc": "2026-10-21T12:50:07Z",
+    "tool_chunk_id": "7d401f",
+    "status": "in_progress",
+    "conclusion": ""
+  },
+  "machine_identity_source": {
+    "command": [
+      "tools/ck3_live_run_id.py",
+      "machine"
+    ],
+    "tool_chunk_id": "f67832",
+    "tool_exit_code": 0
+  },
+  "financial_source": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/capacity/SOURCE8-MEDIA1856K-SUPPORT3328K.actual-a13.json",
+    "bytes": 3656,
+    "sha256": "d37b97c14ae0c38d1bff59130b780d461797d5a1db915b19af31643615fe0683"
+  },
+  "scope": "CI status only; no new native/Game/SDK/business qualification."
+}

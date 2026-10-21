@@ -1,0 +1,92 @@
+{
+  "schema": "xar.r228.postload-positive-window-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:34:11.791692+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0228",
+  "Game_PID": 33668,
+  "Game_birth_decimal": "134370531135233564",
+  "connection_generation": 1,
+  "original_allocation_and_launch_not_replayed": true,
+  "preparatory_unobserved_days": 1,
+  "observed_window_days": 1,
+  "observed_date_before": 53146872,
+  "observed_date_after": 53146896,
+  "target_postload_qualified": true,
+  "full_R08_qualified": false,
+  "formal_counters_not_changed_by_this_projection": true,
+  "original_actor_result_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\hot-r08-repair-a02\\R08-POSTLOAD-RESULT.json",
+    "bytes": 50945,
+    "sha256": "e1e0f0f94c153b638c55848b0b2980e59eaf11e8ce1b2179b39d243a42c396c0"
+  },
+  "typed_result_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\hot-r08-repair-a02\\r08-postload-control\\PARENT-POSTLOAD.actual.json",
+    "bytes": 1142,
+    "sha256": "0dc3de51affed0b9c459040cbec285b2e0bafd1b47d738416f0304f48a0f94c7"
+  },
+  "raw_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\hot-r08-repair-a02\\r08-postload-control\\parent.raw.ndjson",
+    "bytes": 45420,
+    "sha256": "106e9ed2f90eb23cfeec2b404e6a5503326e29f32924d2f407675037d2ba39e0"
+  },
+  "original_observer_wait_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\hot-r08-repair-a02\\r08-postload-control\\OBSERVER-ORIGINAL-WAIT.actual.json",
+    "bytes": 206,
+    "sha256": "e470dd412bb6320bdaf3c9d160ff2600e174bdee14ebde1ecbfb04b3ab0a8001"
+  },
+  "cleanup": {
+    "OFFclear": true,
+    "Save": true,
+    "native_restore_verified": true,
+    "payment_OFFclear": true,
+    "army_families_OFFclear": true,
+    "clock_quiescent": true
+  },
+  "ordinary_Save_independent_consumer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\next-namespace-a03\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 71748320,
+    "sha256": "dc5ccd801d3d4e361545809485530b0c5fb0263872fbe38e64439a32b8dbda40",
+    "same_open_handle_before_after_stat_equal": true,
+    "device": "13886423844274364792",
+    "file_identity": "844424932196153",
+    "mtime_ns": "1792582279641124600",
+    "consumer_rehashed_file": true,
+    "source_producer_checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\next-namespace-a03\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 71748320,
+      "sha256": "dc5ccd801d3d4e361545809485530b0c5fb0263872fbe38e64439a32b8dbda40",
+      "date_raw": 53146896,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 19,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "original_actor_proof_consumer_rehashed_file_remains_false": true,
+    "file_internal_actor_not_decoded": true
+  },
+  "wallet_observation": {
+    "journal_sequence": 1,
+    "amount_raw": 111391,
+    "personal_gold_before": 25455910,
+    "personal_gold_after": 25567301,
+    "context_identity_decimal": "2856717694048",
+    "a": 384653,
+    "b": 0,
+    "c": 273262,
+    "d": 0,
+    "formula_matches_amount": true,
+    "context_values_stable": true,
+    "maintenance_attribution": "unclosed",
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null,
+    "gross_military_cash_debit_not_separately_claimed": true
+  },
+  "Game_still_retained_at_projection": true,
+  "not_a_full_session_closure": true
+}

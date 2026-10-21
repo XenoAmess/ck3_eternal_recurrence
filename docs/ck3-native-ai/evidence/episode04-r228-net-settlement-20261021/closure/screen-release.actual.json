@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    },
+    "last_sequence": 7895,
+    "next_step": "",
+    "pid": 30836,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R228 actual normal GUI Quit before original hold; retained OS/native/host zero; keeper and original allocator wait0; postload target captured and exact one observed day; release owned screen",
+    "task_id": "e04-r15-r08-a233",
+    "updated_at_utc": "2026-10-21T12:03:13.645321+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 7895,
+    "event_id": "57e773223b234b05af3963cd3fa6d683",
+    "timestamp_utc": "2026-10-21T12:03:13.646608+00:00",
+    "kind": "completed",
+    "task_id": "e04-r15-r08-a233",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R228 actual normal GUI Quit before original hold; retained OS/native/host zero; keeper and original allocator wait0; postload target captured and exact one observed day; release owned screen",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    }
+  }
+}

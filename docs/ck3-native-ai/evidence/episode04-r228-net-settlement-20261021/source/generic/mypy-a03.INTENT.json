@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/research-a01/generic-applied-net-a01/war_generic_applied_net_12004.py",
+    "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/research-a01/generic-applied-net-a01/test_generic_applied_net.py",
+    "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/research-a01/generic-applied-net-a01/run_checks.py"
+  ],
+  "observed_at_utc": "2026-10-21T12:46:41.838755+00:00",
+  "no_native_Game": true
+}

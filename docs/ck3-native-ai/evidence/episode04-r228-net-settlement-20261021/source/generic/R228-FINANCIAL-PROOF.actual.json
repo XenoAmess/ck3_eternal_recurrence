@@ -1,0 +1,53 @@
+{
+  "schema": "xar.generic-wallet.applied-positive-net.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\hot-r08-repair-a02\\R08-POSTLOAD-RESULT.json",
+    "bytes": 50945,
+    "sha256": "e1e0f0f94c153b638c55848b0b2980e59eaf11e8ce1b2179b39d243a42c396c0"
+  },
+  "source_pointer": "/payment_before_disable",
+  "static_source": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/native-r08-static-a05/SOURCE.actual.json",
+    "bytes": 5422,
+    "sha256": "e107fbe8f6d1df3d9edec1f67f53bcd8a5bd0f6d9f83515318a0ef2f33af84bb"
+  },
+  "status": "POSITIVE_APPLIED_NET_PROVED",
+  "callbacks": [
+    {
+      "journal_sequence": "1",
+      "account_character": "2856849619424",
+      "account_character_full_id": 31254,
+      "wallet_wrapper": "2857148843368",
+      "context": "2856717694048",
+      "context_terms_raw": {
+        "value_2c0": "384653",
+        "value_2c8": "0",
+        "value_28": "273262",
+        "value_30": "0"
+      },
+      "applied_net_raw": "111391",
+      "before_balance_bits": "25455910",
+      "after_balance_bits": "25567301",
+      "parent_return_rva": "42957113",
+      "callback_pid": 33668,
+      "callback_birth": "134370531135233564",
+      "callback_generation": "1",
+      "callback_revision": "9",
+      "observed_date_raw": "300064548703630608",
+      "observed_day_raw": 389454,
+      "entry_event_sequence": "53401989",
+      "returned_event_sequence": "53401990",
+      "event_clock": "140715122734968",
+      "event_thread": 21884
+    }
+  ],
+  "date_qualified": false,
+  "date_status": "NOT_REQUESTED",
+  "date_diagnostic": null,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "runtime_evidence": null
+}

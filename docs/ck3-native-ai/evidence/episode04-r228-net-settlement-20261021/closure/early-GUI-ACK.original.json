@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0228",
+  "reviewer": "/root/predecessor_admission",
+  "pid": 33668,
+  "create_time": 1792579513.5233564,
+  "original_hold_deadline": 1792583453.9749203,
+  "quit_request": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0228\\case-output\\normal-quit-awaiting.json",
+    "bytes": 730,
+    "sha256": "5c4c5421f433bcd55bf22ca261a955b5ce4aad1f4f20caa4f2b2a60bf08c10cb"
+  },
+  "normal_gui_quit": true,
+  "direct_reviewed": true,
+  "review_method": "explicit operator direct image review; no automatic image-content judgment",
+  "autosave_unchecked_observed": true,
+  "autosave_unchecked_screenshot": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\quit-dialog-message-click.png",
+    "bytes": 1690809,
+    "sha256": "8912692eb2579c6c7bded10a7cee83f309cb097370186a56ddd7c88a769b54a8"
+  },
+  "final_click": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\final-quit-click.png.json",
+    "bytes": 1641,
+    "sha256": "1a4f314debf74b80bc5d19012b0ebb8282bc51a06c5a7df7bfca2cdd2f65754d"
+  },
+  "after_click_screenshot": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\final-quit-click.png",
+    "bytes": 1981993,
+    "sha256": "75a3d0a851d3c21e49992f14b42ddf96404071537a66cd8ca6d33bc6a57f6980"
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\quit-dialog-message-click.png",
+      "bytes": 1690809,
+      "sha256": "8912692eb2579c6c7bded10a7cee83f309cb097370186a56ddd7c88a769b54a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\final-quit-click.png.json",
+      "bytes": 1641,
+      "sha256": "1a4f314debf74b80bc5d19012b0ebb8282bc51a06c5a7df7bfca2cdd2f65754d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\normal-close-a02\\final-quit-click.png",
+      "bytes": 1981993,
+      "sha256": "75a3d0a851d3c21e49992f14b42ddf96404071537a66cd8ca6d33bc6a57f6980"
+    }
+  ],
+  "actual_os0_proven": false,
+  "actual_native0_proven": false,
+  "process_exit_claimed": false,
+  "business_pass": false
+}

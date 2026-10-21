@@ -1,0 +1,4 @@
+war_generic_applied_net_12004.py:103: error: Variable "war_generic_applied_net_12004.FilePin.bytes" is not valid as a type  [valid-type]
+war_generic_applied_net_12004.py:103: note: See https://mypy.readthedocs.io/en/stable/common_issues.html#variables-vs-type-aliases
+war_generic_applied_net_12004.py:265: error: Incompatible types in assignment (expression has type "object", variable has type "str")  [assignment]
+Found 2 errors in 1 file (checked 3 source files)

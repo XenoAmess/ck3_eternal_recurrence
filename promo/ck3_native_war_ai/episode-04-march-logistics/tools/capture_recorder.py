@@ -10,6 +10,7 @@ from pathlib import Path
 import subprocess
 import threading
 import time
+from capture_budget_monitor import BudgetMonitor, CaptureBudgetFailure, OwnedJob
 
 
 CAPTURE_SOURCE = "gdigrab-desktop-client-region"
@@ -164,23 +165,28 @@ def write(path, body):
 
 
 class OwnedRecorder:
-    def __init__(self, run, keeper, offline, prepared, *, start_admission=None):
+    def __init__(self, run, keeper, offline, prepared, *, start_admission=None,
+                 budget_monitor: BudgetMonitor | None = None):
         self.run, self.keeper, self.offline, self.prepared = run, keeper, offline, prepared
         self.assets_root = Path(prepared["assets_root"]).resolve()
-        self.directory = None
-        self.job = None
+        self.directory: Path | None = None
+        self.job: OwnedJob | None = None
         self.streams = []
         self.terminal = None
-        self.start_ns = None
-        self.start_at = None
+        self.start_ns: int | None = None
+        self.start_at: str | None = None
         self.cleanup_error = None
         self._end_lock = threading.RLock()
         self.capture_source = None
-        self.capture_guard_error = None
+        self.capture_guard_error: str | None = None
         self.capture_guard_stop = threading.Event()
-        self.capture_guard_thread = None
-        self.result = None
+        self.capture_guard_thread: threading.Thread | None = None
+        self.result: dict[str, object] | None = None
         self.start_admission = start_admission
+        self.budget_monitor = budget_monitor
+        self.capture_guard_state = "RED_CAPTURE_SOURCE_CHANGED"
+        self.capture_budget_failure: dict[str, object] | None = None
+        self.last_capture_budget: dict[str, object] | None = None
         self.deadline_admission_at_request = None
         self.deadline_admission_at_spawn = None
 
@@ -201,21 +207,30 @@ class OwnedRecorder:
         require_same_source(self.capture_source, actual)
         return actual
 
+    def _check_budget(self) -> None:
+        if self.budget_monitor is not None:
+            self.last_capture_budget = self.budget_monitor()
+
     def _watch_capture_source(self):
         while not self.capture_guard_stop.wait(CAPTURE_GUARD_INTERVAL_SECONDS):
             try:
                 if self.job.poll() is not None:
                     return
                 self._check_capture_source()
+                self._check_budget()
             except BaseException as error:
                 with self._end_lock:
                     if self.capture_guard_stop.is_set():
                         return
                     self.capture_guard_error = repr(error)
+                    if isinstance(error, CaptureBudgetFailure):
+                        self.capture_guard_state = "RED_CAPTURE_BUDGET"
+                        self.capture_budget_failure = error.facts
                     try:
                         write(self.directory / "capture-guard-failure.json", {
                             "machine_id": self.prepared["machine_id"], "at_utc": now(),
-                            "state": "RED_CAPTURE_SOURCE_CHANGED", "error": self.capture_guard_error,
+                            "state": self.capture_guard_state, "error": self.capture_guard_error,
+                            "capture_budget_failure": self.capture_budget_failure,
                             "capture_source": self.capture_source, "clean_spans_certified": False,
                             "guard_interval_seconds": CAPTURE_GUARD_INTERVAL_SECONDS})
                     finally:
@@ -351,9 +366,20 @@ class OwnedRecorder:
             self.capture_guard_stop.set()
             require(terminal.get("job_active_processes") == 0, "Owned recorder Job not proven empty")
             self._close_streams()
+            try:
+                self._check_budget()
+            except CaptureBudgetFailure as error:
+                if self.capture_guard_error is None:
+                    self.capture_guard_error = repr(error)
+                    self.capture_guard_state = "RED_CAPTURE_BUDGET"
+                self.capture_budget_failure = error.facts
             raw = self.directory / "raw.mkv"
             result = {"machine_id": self.prepared["machine_id"],
-                      "state": "RED_CAPTURE_SOURCE_CHANGED" if self.capture_guard_error else terminal["state"],
+                      "state": self.capture_guard_state if self.capture_guard_error else terminal["state"],
+                      "budget_monitor_enabled": self.budget_monitor is not None,
+                      "budget_qualified": None if self.budget_monitor is None else self.capture_budget_failure is None,
+                      "capture_budget_failure": self.capture_budget_failure,
+                      "last_capture_budget": self.last_capture_budget,
                       "job": terminal, "raw": pin(raw) if raw.is_file() else None,
                       "capture_source": self.capture_source, "capture_guard_error": self.capture_guard_error,
                       "deadline_admission_at_spawn": self.deadline_admission_at_spawn,

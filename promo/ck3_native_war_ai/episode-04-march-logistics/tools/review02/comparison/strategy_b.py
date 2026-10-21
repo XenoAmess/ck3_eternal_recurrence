@@ -12,6 +12,7 @@ from pathlib import Path
 import sys
 
 import r10_compare as c
+from ordinary_campaign import check_runtime, episode_value, same_episode
 
 
 def need(ok, reason):
@@ -83,6 +84,7 @@ def observe(ep, plan, evidence, runtime):
     """
     metrics = c.endpoint(ep, plan, evidence, runtime)
     snapshot = c.frame(evidence.json(ep['snapshot']), runtime)
+    check_runtime(snapshot, runtime)
     query = c.body(evidence.json(ep['army_result']))
     need(query.get('status') == 'available', 'complete available Army result required')
     wanted = set(ep['strategy_army_ids'])
@@ -121,8 +123,8 @@ def observe(ep, plan, evidence, runtime):
 
 def _frame_order(before, after, same_day=False):
     a, b = before['snapshot'], after['snapshot']
-    need(a['episode_run_id'] == b['episode_run_id'] and
-         a['diagnostics']['connection_generation'] == b['diagnostics']['connection_generation'],
+    same_episode(a, b)
+    need(a['diagnostics']['connection_generation'] == b['diagnostics']['connection_generation'],
          'action crossed episode/generation')
     need(b['date_raw'] >= a['date_raw'] and b['native_revision'] >= a['native_revision']
          and b['revision'] >= a['revision'], 'action evidence goes backwards')
@@ -336,12 +338,12 @@ def audit(plan, arm, trace, evidence, *, plan_sha256):
             need(action.get('destination_army_id') == destination and action.get('source_army_id') == source,
                  'merge response participants differ')
             for field in ('date_raw', 'snapshot_id', 'native_revision', 'episode_run_id'):
-                need(action.get('submitted_' + field) == before['snapshot'][field],
+                need(action.get('submitted_' + field) == (episode_value(before['snapshot']) if field == 'episode_run_id' else before['snapshot'][field]),
                      'merge receipt submitted frame differs: ' + field)
             need(action.get('submitted_public_revision') == before['snapshot']['revision'],
                  'merge receipt submitted public revision differs')
             need(action.get('observed_date_raw') == after['snapshot']['date_raw'] and
-                 action.get('observed_episode_run_id') == after['snapshot']['episode_run_id'] and
+                 action.get('observed_episode_run_id') == episode_value(after['snapshot']) and
                  c.integer(action.get('observed_native_revision')) and
                  before['snapshot']['native_revision'] < action['observed_native_revision'] <= after['snapshot']['native_revision'],
                  'merge receipt observed frame not bracketed by independent post-state')

@@ -1,0 +1,70 @@
+{
+ "schema": "xar.r228.knowledge_candidate.delivery.v1",
+ "machine_id": "desktop-3fevhd2-1c74096080",
+ "observed_at_utc": "2026-10-21T12:13:28.526950+00:00",
+ "source_only": true,
+ "files": [
+  {
+   "path": "episode04-r228-net-military-settlement-12004.md",
+   "bytes": 8683,
+   "sha256": "d83f546810864c7bedb4939a6074bd9fc32d480fc185f61d7944e3924bef0aef"
+  },
+  {
+   "path": "gameplay-v1.entry.patch",
+   "bytes": 1416,
+   "sha256": "f402820c04695ac95c1be111b7701dd8caa83b5ecc20f5a223f333fbd5d96639"
+  },
+  {
+   "path": "SOURCE-INDEX.candidate-a01.json",
+   "bytes": 8927,
+   "sha256": "363e7387b29a614a628c2c9bc27cfa2b89f1262aec46e3a89016714d48dd5033"
+  }
+ ],
+ "source_pin_readbacks": 12,
+ "checks": {
+  "original_wallet_delta": 111391,
+  "raw_formula": 111391,
+  "own_unwind_required_rvas": [
+   "28A6D7C",
+   "28F7939",
+   "3978BF8"
+  ],
+  "typed_false_and_null_preserved": true,
+  "legacy_wide_date_original_unchanged": true,
+  "entry_patch_hunk_validated_by_source_index": true,
+  "old_gameplay_body_preserved": true,
+  "additional_existing_links": [
+   {
+    "repository_path": "docs/ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md",
+    "bytes": 11435,
+    "sha256": "3783f822841e295a957c5215967ebea36f151ff83fe5008f084379c746b7f2ca"
+   }
+  ]
+ },
+ "failed_check_history": [
+  {
+   "tool_chunk": "aa5340",
+   "reason": "validator expected 11 new hunk lines; valid actual patch header and body both contain 10; no source modified and no index written by failed check",
+   "resolved_by": "dynamic header/body count and exact baseline prefix validation in chunk031b8c"
+  }
+ ],
+ "baseline_input_commit": "0540c67b33c1a0c2b63cbf5906cef61ef22fba6d",
+ "publication": {
+  "performed": false,
+  "owner": "public_preflight",
+  "topic_target": "docs/ck3-native-ai/episode04-r228-net-military-settlement-12004.md",
+  "index_target": "docs/ck3-native-ai/evidence/episode04-r228-net-settlement-20261021/source-index.json",
+  "entry_patch_target": "ck3_autonomous_player/knowledge/ck3/gameplay-v1.md",
+  "raw_evidence_rows": "proposals only; source index preserves exact local originals"
+ },
+ "capacity_pin": {
+  "path": "C:/ck3-e04-resume-20261020-a01/r15-complete-episode04-1030-a01/source-support-a01/SOURCE8-SUPPORT2816-DATE4K-RESEARCH24K.actual-a10.json",
+  "bytes": 4567,
+  "sha256": "c334110b5ea8ab61e8b896ae4421ba4e58c6efbd79f81a7ea2ce058c75d8b3c2"
+ },
+ "native_Game_SDK_build_SYSTEM_Steam_Git_mutations": 0,
+ "planner_autoload": false,
+ "plan_replay": "not applicable: documentation only",
+ "writer0_after_seal": true,
+ "owned_Popen0": true
+}

@@ -62,8 +62,11 @@ def _scope_steps(scope, current, evidence, runtime):
     actual = current['snapshot']
     # The capabilities DTO has no queried frame. Preserve original packets and
     # require a stable independent snapshot on each side instead of adding one.
-    fields = ('snapshot_id', 'revision', 'native_revision', 'date_raw', 'episode_run_id',
+    fields = ('snapshot_id', 'revision', 'native_revision', 'date_raw',
               'played_character', 'player_armies', 'active_event', 'pending_character_interaction')
+    b.check_runtime(actual, runtime)
+    b.same_episode(before, after)
+    b.same_episode(before, actual)
     for field in fields:
         _need(field in actual and before.get(field) == after.get(field) == actual[field],
               'capabilities bracket/current frame differs: ' + field)

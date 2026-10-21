@@ -116,7 +116,7 @@ def move(st, aid, *, post=False):
          and preview.get('target_province_id') == target and preview.get('previewed_date_raw') == frame['date_raw'], 'native preview scope/rejection differs')
     for key, actual in (('snapshot_id', frame['snapshot_id']), ('revision', frame['revision']),
                         ('native_revision', frame['native_revision']), ('connection_generation', st.live.binding['generation']),
-                        ('episode_run_id', frame['episode_run_id'])):
+                        ('episode_run_id', st.next.b.episode_value(frame))):
         need(body.get('queried_' + key) == actual, 'native preview frame differs: ' + key)
     route = deepcopy(preview.get('route_province_ids'))
     need(type(route) is list and route and all(type(x) is int and x > 0 for x in route), 'complete native route required')
