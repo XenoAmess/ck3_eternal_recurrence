@@ -492,7 +492,9 @@ def emit_supervisor_v1(material: bytes, *, machine_id: str) -> bytes:
  need(sum(isinstance(node, ast.FunctionDef) and node.name == "main" for node in tree.body) == 1,
    "one retained canonical supervisor main")
  result = "\n".join(parts).replace("_validate_a15_attempt(args, config)",
-        "verify_current_saved_supervisor_attempt_v1("
+        "from root_checkpoint_bootstrap_c23 import api as _current_saved_canonical_api_v1\n"
+        "    _current_saved_canonical_api_v1()\n"
+        "    verify_current_saved_supervisor_attempt_v1("
   "{'machine_id':MACHINE,'attempt_nonce':args.attempt_nonce,'task_nonce':args.task_nonce,"
   "'runtime_root':str(N)},config,runtime_root=N,expected_machine_id=MACHINE)")
  need(result.count(_LAUNCH_FOREGROUND_BLOCK_V1) == 1, "one original launch foreground authority block")
