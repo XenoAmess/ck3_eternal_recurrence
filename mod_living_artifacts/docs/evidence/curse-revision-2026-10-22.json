@@ -1,0 +1,115 @@
+{
+  "schema": "xalw-curse-design-revision-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T19:16:37.042616+00:00",
+  "task_id": "ck3-living-artifacts-curses-20261022",
+  "design_revision": "0.3",
+  "base_commit": "3d333e0a95052feb84361b1c3779d3ff3577e6ab",
+  "scope": "original_gameplay_design_documents_only",
+  "content_counts": {
+    "affixes": 36,
+    "curses": 32,
+    "combos": 10
+  },
+  "core_curses": 8,
+  "preserved_original_curse_ids": [
+    "xalw_curse_ancestral_grudge",
+    "xalw_curse_aristocratic_appetite",
+    "xalw_curse_blood_tithe",
+    "xalw_curse_fickle_body",
+    "xalw_curse_jealous_lover",
+    "xalw_curse_runaway",
+    "xalw_curse_telltale",
+    "xalw_curse_toll_of_names"
+  ],
+  "rules": {
+    "equipped_automatic_growth_unchanged": true,
+    "unequip_freely_stops_growth_and_continuous_effects": true,
+    "ai_and_player_same_rules": true,
+    "feeding_cooldown_added": false,
+    "curse_slots": 2,
+    "replacement_inherits_slot_rank": true,
+    "curse_penalties_outside_base_hunger_cap": true,
+    "new_technical_capabilities_claimed": false
+  },
+  "documents": [
+    {
+      "relative_path": "docs/affix-catalog.md",
+      "bytes": 28801,
+      "sha256": "e29ed15c6aacf1c7d8138922bdabdf545cde50eab866955dc07c6a6b9f16e623"
+    },
+    {
+      "relative_path": "docs/curse-catalog.md",
+      "bytes": 23473,
+      "sha256": "89f9fa9b3eb1af385cb20cc4e948356cdef949ac6dbc46b551a822aa6a412175"
+    },
+    {
+      "relative_path": "docs/design.md",
+      "bytes": 20231,
+      "sha256": "56c7665da35eafa1e8bda430f90a3a6393801fd0f185d65574cd70c54670b85a"
+    },
+    {
+      "relative_path": "docs/elona-living-weapons-research.md",
+      "bytes": 10686,
+      "sha256": "5b62b147d8046ff481737009243ab1f7605dedf24a934da5ea48ae68d33fdb5e"
+    },
+    {
+      "relative_path": "docs/implementation-plan.md",
+      "bytes": 17988,
+      "sha256": "fc9c4637c9a1c9f89fb1bb5f9e0557960e3470116cb405e7f8e9eee98db30f2a"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 2399,
+      "sha256": "1fa81cfe7b2a77f07fbc0d8c05d392873c9b591808a83ad5e7903fd2b6f0327b"
+    }
+  ],
+  "validation": {
+    "status": "passed_document_and_git_diff_checks",
+    "checks": [
+      "UTF-8 readback",
+      "local Markdown targets",
+      "32 unique curse IDs including original eight",
+      "unchanged 36 affixes and 10 combos",
+      "single canonical curse table",
+      "current count references"
+    ],
+    "static_type_check": "not_applicable_no_production_code_changes",
+    "runtime_acceptance": "not_run_design_only"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "root_id": "repository",
+    "resolved_root": "D:\\workspace\\ck3_eternal_recurrence",
+    "volume": "D:\\",
+    "task_start": {
+      "recorded_at_utc": "2026-10-21T19:09:33.114808+00:00",
+      "source": "exec_command shutil.disk_usage and subsequent UTC binding",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471465598976
+    },
+    "task_close": {
+      "observed_at_utc": "2026-10-21T19:16:37.042616+00:00",
+      "source": "shutil.disk_usage(resolved_root)",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471464738816
+    },
+    "document_bytes_excluding_receipts": 103578,
+    "document_budget_bytes": 262144,
+    "expired_assets_assigned_for_reclamation": [],
+    "heavy_write": "not_requested",
+    "other_unspent_reservations_bytes": null,
+    "system_growth_reserve_bytes": null,
+    "current_project_allocated_bytes": null,
+    "effective_project_quota_bytes": null,
+    "heavy_write_admission": "not_qualified_unknown_inputs",
+    "deletions": 0,
+    "review_at_utc": "2027-04-19T19:16:37.042616+00:00",
+    "review_action": "review_and_consolidate_no_automatic_delivery_deletion"
+  },
+  "ck3_started": false,
+  "steam_state_observed": false,
+  "steam_state_changed": false,
+  "workshop_written": false
+}
