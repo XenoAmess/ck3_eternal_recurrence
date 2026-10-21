@@ -41,9 +41,16 @@ FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1 = LauncherSourcePairV1(
     "background-keyed-pins-v2", 17182,
     "e9df84ebc0e31fa65fcb82210efdd4f39d28976c82b4f7def517a7968eb773ce",
     6023, "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274")
+# Reviewed launcher using the shared producer/consumer sibling module registry.
+# Earlier identities above remain valid historical pairs with their original bytes.
+SIBLING_QUEUE_SOURCE_PROTOCOL_V1 = LauncherSourcePairV1(
+    "background-keyed-pins-v2", 16864,
+    "9ebb997e5496d430fa018348b65f6fe3eb59949bfe00e623482aeba58a9f55df",
+    6023, "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274")
 LAUNCHER_PROTOCOL_REGISTRY_V1 = (
     LEGACY_BACKGROUND_PROTOCOL_V1, CURRENT_BACKGROUND_PROTOCOL_V1,
     FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1,
+    SIBLING_QUEUE_SOURCE_PROTOCOL_V1,
 )
 
 

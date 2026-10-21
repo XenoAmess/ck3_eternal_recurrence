@@ -25,6 +25,7 @@ from ck3_mod_acceptance_background_types import (
 from ck3_mod_acceptance_launcher_protocol_v1 import (
     CURRENT_CLOSURE_SCHEMA_V1, LEGACY_CLOSURE_SCHEMA_V1,
     CURRENT_BACKGROUND_PROTOCOL_V1, FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1,
+    SIBLING_QUEUE_SOURCE_PROTOCOL_V1,
     LAUNCHER_PROTOCOL_REGISTRY_V1,
     LAUNCHER_PROTOCOL_SHA256, build_launcher_protocol_v1,
     verify_closure_protocol_v1,
@@ -304,8 +305,8 @@ class LauncherProtocolTests(unittest.TestCase):
     def test_all_reviewed_source_pairs_keep_their_exact_wire_protocol(self) -> None:
         current, gate, _ = self.pins()
         self.assertEqual((current["bytes"], current["sha256"]),
-                         (FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1.launcher_bytes,
-                          FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1.launcher_sha256))
+                         (SIBLING_QUEUE_SOURCE_PROTOCOL_V1.launcher_bytes,
+                          SIBLING_QUEUE_SOURCE_PROTOCOL_V1.launcher_sha256))
         versions: list[str] = []
         for pair in LAUNCHER_PROTOCOL_REGISTRY_V1:
             source = FilePin(path=current["path"], bytes=pair.launcher_bytes,
@@ -325,20 +326,23 @@ class LauncherProtocolTests(unittest.TestCase):
                                  descriptor)
                 versions.append(descriptor["version"])
         self.assertEqual(versions, ["background-offline-v1",
-                                    "background-keyed-pins-v2", "background-keyed-pins-v2"])
+                                    "background-keyed-pins-v2", "background-keyed-pins-v2",
+                                    "background-keyed-pins-v2"])
 
     def test_reviewed_bootstrap_does_not_whitelist_crossed_or_future_source(self) -> None:
         current, gate, _ = self.pins()
-        previous = CURRENT_BACKGROUND_PROTOCOL_V1
-        wrong = (
-            FilePin(path=current["path"], bytes=current["bytes"],
-                    sha256=previous.launcher_sha256),
-            FilePin(path=current["path"], bytes=previous.launcher_bytes,
-                    sha256=current["sha256"]),
+        wrong = [
             FilePin(path=current["path"], bytes=current["bytes"], sha256="0" * 64),
             FilePin(path=current["path"], bytes=current["bytes"] + 1,
                     sha256=current["sha256"]),
-        )
+        ]
+        for previous in (CURRENT_BACKGROUND_PROTOCOL_V1, FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1):
+            wrong.extend((
+                FilePin(path=current["path"], bytes=current["bytes"],
+                        sha256=previous.launcher_sha256),
+                FilePin(path=current["path"], bytes=previous.launcher_bytes,
+                        sha256=current["sha256"]),
+            ))
         for source in wrong:
             with self.subTest(source=source), self.assertRaisesRegex(
                     ValueError, "Unknown or crossed"):
