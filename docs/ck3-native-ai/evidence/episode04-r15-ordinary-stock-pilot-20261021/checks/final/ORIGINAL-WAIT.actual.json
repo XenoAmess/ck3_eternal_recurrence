@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:08:13.134116+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\test_ordinary_stock_pilot.py",
+    "-v"
+  ],
+  "original_Popen_pid": 23232,
+  "original_creation_filetime_100ns": "134370436926386425",
+  "original_wait_returncode": 0,
+  "source_pins_before": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\ordinary_stock_pilot.py",
+      "bytes": 24919,
+      "sha256": "113c56c5c4fb1abdc485731c00d90ce6f34b7e184423281bd5dc1d4f990fe32f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\test_ordinary_stock_pilot.py",
+      "bytes": 11926,
+      "sha256": "5f41ed53b14af1b93b99a3d60a82acc51535950b6d23fbdb89756422013a166c"
+    }
+  ],
+  "source_pins_after": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\ordinary_stock_pilot.py",
+      "bytes": 24919,
+      "sha256": "113c56c5c4fb1abdc485731c00d90ce6f34b7e184423281bd5dc1d4f990fe32f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\test_ordinary_stock_pilot.py",
+      "bytes": 11926,
+      "sha256": "5f41ed53b14af1b93b99a3d60a82acc51535950b6d23fbdb89756422013a166c"
+    }
+  ],
+  "retained_core_original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\case-output\\stock-pilot-1-initial-core-survey.actual-results.json",
+    "bytes": 34632,
+    "sha256": "486bb2a764b83ddd268a0dc6986a164f50afe54538baeaa094c7e850b6b260b2"
+  },
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "546163d238bd33af85e7e77fe139be788a98a3c9cea97245f7c8f9da40f4a196",
+  "scope": "actual R226 retained compact source replay plus fake-client finite pilot; no SDK/Game/native calls"
+}

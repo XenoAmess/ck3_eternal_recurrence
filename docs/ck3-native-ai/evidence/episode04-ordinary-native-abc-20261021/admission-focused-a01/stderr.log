@@ -1,0 +1,24 @@
+test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift (__main__.NativeAdmission.test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift) ... ERROR
+
+======================================================================
+ERROR: test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift (__main__.NativeAdmission.test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\research-a01\revision-a02\tools\test_episode04_ordinary_native_admission.py", line 42, in test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift
+    subject.validate_frame(frame, binding)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\research-a01\revision-a02\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\split_merge\root_relay.py", line 130, in validate_frame
+    roster(frame)
+    ~~~~~~^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\research-a01\revision-a02\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\split_merge\root_relay.py", line 65, in roster
+    rows=frame.get('player_armies');need(type(rows) is list and 0<len(rows)<=32,'complete bounded player roster required')
+                                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\research-a01\revision-a02\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\split_merge\root_relay.py", line 24, in need
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: complete bounded player roster required
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (errors=1)

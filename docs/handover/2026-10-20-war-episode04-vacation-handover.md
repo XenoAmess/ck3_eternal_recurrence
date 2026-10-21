@@ -1,5 +1,35 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-21 08:21后继补记：R226实际状态与工作片图审
+
+`machine_id: desktop-3fevhd2-1c74096080`；文档记录时间`2026-10-21T08:24:25.689582+00:00`。[小原件及精确观察时点](../ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a04.json)。08:17的R226派生投影记录同一Game PID4992、actor31254、MapReady/date53146848：首次parser失败后尾段续接已实际split一次，独立读回子军175兵、stock100/capacity100，无补给headroom；day0、未观察增长、B/ABC/fullR08均不授信用。其后create-only结果检查点发生已知FileExistsError，原wait1保留；不重发split。当时Game/keeper尚活，本补记不冒充新的实机闭场观察。
+
+08:21工作片闭场记录已补图审：Root查看第8、10、11张，共3张；同行查看12张。原生config/run收尾均wait0、6章28 artifacts，工作片仍含method debug字样与三方案空槽，八段玩家声音/字幕替换继续；无人工完整1×审阅、无最终签收。下方08:08 QA的pending图审与07:26旧失败段均保留真实时点。
+
+## 2026-10-21 R15后续里程碑：P06限定冷验与31:58工作片
+
+`machine_id: desktop-3fevhd2-1c74096080`；记录时间`2026-10-21T08:16:11.949324+00:00`。这是下方07:26阶段快照的后继，旧失败与旧时点原样保留；[本次小原件与边界](../ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a03.json)。
+
+P06后继21项选定真实冷验已完成，Root于08:08Z依据独立审阅及现成consumer PASS签发`SELECTED_POSTLOAD_EXECUTION_COLD_PASS`限定资格。独审范围为21项synthetic cold、原target/observer waits、97次arm（81次存活线程精确DR恢复、16个已退出线程退役）；fault仍为注入seam。P04/P05失败不改，新consumer须绑定P06当前源码与两个EXE，包括contract `25f3c0c3…`；这不授实际CK3付款、付款者、周期或fullR08信用。
+
+六章工作片已实际生成：31:58.233视频、57547帧、102081362B，SHA-256 `1408f2dfd2039508a9f122d9a59a29725992f0c24ae3cb33be237d94027686a9`；08:08Z原QA记录唯一完整AV解码wait0、各流presentation PTS及packet DTS单调。其12张边界图在该QA时点仍待图审，无人工完整1×审阅或签收；八段玩家口播/字幕替换继续，这份工作片不是整片最终交付。270秒章节的OneDrive同步事实不外推为这份工作片云交付。
+
+普通`episode=null`兼容后继已冻结5个生产路径和2个测试，保留实际受改范围的检查结果及非strict类型检查参数；本次发布仍不等于Game部署或B/ABC业务通过。正式8/11、B0/2、ABC0/3不变，主任务继续，普通planner不自动加载这些文档。
+
+## 2026-10-21 R15阶段快照：270秒章节已同步，整片与新R08资格继续推进
+
+`machine_id: desktop-3fevhd2-1c74096080`；截至`2026-10-21T07:26:30.804576+00:00`。本段更新当前状态，下方04:59的未冻结33源及其他旧结论保留其真实时点；新的构建、失败和交付不追记成旧稿当时已完成。全部实际来源、8副本可用性映射及边界见[本轮里程碑](../ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a01.json)。
+
+已完成的是8主题**270秒阶段审阅章节**：8100帧、27034588B，SHA-256 `48adfc22928d7152dff253e7487d6ec35edde343bc658dc3e22189d5eedfb625`。原QA只做过一次完整AV解码且原wait0；同行AI抽审10张；Root复核第9、10张，共2张（总计10张），无人工完整1×审阅或签收。OneDrive精确单文件`C:/Users/1/OneDrive/CK3-War-AI-20260923/E04-FORMAL8-EVIDENCE-270s-REVIEW-a01.mp4`已核源/流/目标SHA一致，客户端于`2026-10-21T07:07:28.807832Z`对同file-id报告InSync；未独立验证云网页、远端SHA或分享URL。这不是20–40分钟整片完成。
+
+06:59:20Z原回执确认8个重复work副本已精确退役：旧34:37 work片与7个segment work，共124316029逻辑字节（分配124338176B）。旧路径已不可读取，8份对应CAS均保留可用，旧QA/manifest和当前270秒work/CAS保留；没有制造同名原件，也未将整卷空闲变化独占归因于本次回收。
+
+新postload后继33源已有实际producer固定输入、2个EXE构建与SYSTEM精确门验，不再停在04:59的未冻结阶段；但fixed21真实冷验首例`foreign257_then_target`失败：runner原wait1，原observer终态`foreign_resume_readback_failed`、capture0/foreign1，并记录restored/detached/cleanup=true、pending=false。native owner报告observer原wait1、target原wait0；余20例未启动，无自动重试、无新Q。构建或SYSTEM通过不替代冷验，更不授新Game、付款或fullR08信用；旧entry17/pointer21资格不能转授。独立Game pilot若另用已有provider，须保自己的真实来源。
+
+普通`episode=null`的ABC研究修复已有冻结候选：focused6项与旧正例1项原wait0；mypy1.20.1三源0诊断的实际参数含`follow-imports=skip/ignore-missing-imports`，并非`--strict`，旧readyT0整模块仍16项旧诊断。该候选尚未发布或部署，A/B admission90的null边界后继和formalC实际repo/module绑定仍须单列，不能把源码通过当同态90日或ABC已完成。
+
+主编辑继续执行Root已采纳的删10 cue、目标31:58/67 cue并将8段实证归入正文的方案；目前这是编辑目标，不是新整片render/QA/交付结果。Root明确阶段审阅不能作为停点，并以额外4GiB有限额度至`2026-10-21T10:30:00Z`继续主任务，各实际操作仍按其独立scope办理。正式8/11、研究10/14、业务7/11、B0/2、ABC0/3保持；R05/R08/R10未新增正式信用。普通planner不自动加载这些文档。
+
 ## 2026-10-21 归因更正：此前“已确认平台过滤”的证据不足
 
 `machine_id: desktop-3fevhd2-1c74096080`；本次来源观察时间为`2026-10-21T04:59:31.874510+00:00`。本条纠正当前说明，旧raw、Root源码归档采用和当时的派生状态原件保持原字节。Root已收回向用户作出的“已确认OpenAI拦截”断言并道歉；不能反向断言从未发生平台事件或必为误判。

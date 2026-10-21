@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T06:52:36.706485+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\tools\\test_episode04_ordinary_native_abc.py",
+    "--candidate-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01",
+    "--dependency-repo",
+    "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/integration-worktree",
+    "--scratch-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\scratch",
+    "-v"
+  ],
+  "original_Popen_pid": 19556,
+  "original_process_creation_filetime_100ns": "134370391498030637",
+  "identity_error": null,
+  "original_wait_returncode": 0,
+  "stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "bytes": 1137,
+    "sha256": "57c94db27a449610b04aa85805dcd5e8eff3a8e63a2c6126cedd17b2816e7453"
+  },
+  "scope": "Python source/synthetic checks; SDK/Game0"
+}

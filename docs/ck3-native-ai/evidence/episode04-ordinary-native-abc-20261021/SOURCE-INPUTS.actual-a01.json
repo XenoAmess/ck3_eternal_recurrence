@@ -1,0 +1,43 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T06:41:22.522145+00:00",
+  "input_HEAD": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+  "rows": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_ready_t0_12004.py",
+      "bytes": 19457,
+      "sha256": "9c4a860a1ccf5fea3603ddf1d6b80555830fefaf0e0f22748be601473fff4017"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/runtime_binding.py",
+      "bytes": 11095,
+      "sha256": "714b281f9c1c4024e5b66b34d029004b0dcabc9ae0badc75de98973ddf39267b"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json",
+      "bytes": 21442,
+      "sha256": "1a3f67701a1211a8a904301925fd35998dcb7d6481aa3a322256366079c1fc42"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/phased_relay.py",
+      "bytes": 39251,
+      "sha256": "e8c01d1392d9d730fe576bb55ae0d19df0fc07f49d3fc20fa8e5ec90793a487b"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/test_episode04_ready_t0_12004.py",
+      "bytes": 12651,
+      "sha256": "aea10e32a8ffe129bc7afb10083417ce997f8bf3698cc9a0f35f78d730eadded"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/tests/test_runtime_binding.py",
+      "bytes": 12351,
+      "sha256": "0ad989e09298238b20e4f277131cf0f930e11c38a70e6d414cbbc1b5e8c40acc"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/test_phased_relay_explicit_bindings.py",
+      "bytes": 7160,
+      "sha256": "c5b12ab5c4eca9e55bf9cd1d33824f43c8e861df64f479eb4634e211a903d553"
+    }
+  ],
+  "scope": "ordinary/native null-episode compatibility; no SDK/Game/Git mutation"
+}

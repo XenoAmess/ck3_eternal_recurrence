@@ -1,0 +1,8 @@
+test_actual_pilot_split_day_and_refusals (__main__.PilotContract.test_actual_pilot_split_day_and_refusals) ... ok
+test_actual_retained_r226_core_compact_keeps_partial_and_null_fields (__main__.PilotContract.test_actual_retained_r226_core_compact_keeps_partial_and_null_fields) ... ok
+test_native_event_query_refreshes_revision_before_the_only_submission (__main__.PilotContract.test_native_event_query_refreshes_revision_before_the_only_submission) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.208s
+
+OK

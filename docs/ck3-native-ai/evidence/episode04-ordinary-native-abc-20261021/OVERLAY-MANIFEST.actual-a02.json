@@ -1,0 +1,62 @@
+{
+  "schema": "xar.e04.ordinary-abc.explicit-source-overlay.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "base_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+  "effective_source_is_base_plus_exact_overlay": true,
+  "overlay_is_not_content_of_base_commit": true,
+  "production_paths": 5,
+  "test_paths": 2,
+  "files": [
+    {
+      "repository_relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_ready_t0_12004.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\episode04_ready_t0_12004.py",
+      "bytes": 20534,
+      "sha256": "a2669df1257543af4aeff81e254c502bebc9da391ef04ef7f32e0268e83f36ba"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/runtime_binding.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\runtime_binding.py",
+      "bytes": 12861,
+      "sha256": "612d325229a17affe2b1e8797df91e00fed380063eff3f7ba214675b84373f41"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\r10.schema.json",
+      "bytes": 21452,
+      "sha256": "605c55754230d222be18fcb1c1186ca30b0ccbe9b9005bafee15b4bd13a798a7"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/phased_relay.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\phased_relay.py",
+      "bytes": 40205,
+      "sha256": "5c3be28d813825635548ff796ab127c45323a13a66011121f9267e4081c0fc45"
+    },
+    {
+      "repository_relative_path": "tools/test_episode04_ordinary_native_abc.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\tools\\test_episode04_ordinary_native_abc.py",
+      "bytes": 7692,
+      "sha256": "c3016f11a1964fe76a1f1c7458f976136362937b9b63b233197c900698576ecb"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/split_merge/root_relay.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+      "bytes": 56774,
+      "sha256": "74a813d73979aa42b7ce1c2a483c3381f9d68f1e4355311a8d20b066513a0f2f"
+    },
+    {
+      "repository_relative_path": "tools/test_episode04_ordinary_native_admission.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\tools\\test_episode04_ordinary_native_admission.py",
+      "bytes": 3408,
+      "sha256": "197132abed09657f7cf3c4584843f375d8c08205d49d79be64dd9aeb8e7cc792"
+    }
+  ],
+  "D_W_Git_mutated": false,
+  "native_source_or_binary_changed": false,
+  "new_runtime_deployment_or_Game_qualified": false,
+  "observed_at_utc": "2026-10-21T07:32:28.322401+00:00",
+  "predecessor_overlay": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\OVERLAY-MANIFEST.actual-a01.json",
+    "bytes": 2636,
+    "sha256": "0da8a3ff3f8baf24e3d25d299b8bcfb0eabf30c1982ee65274368dd752ddb5d3"
+  }
+}

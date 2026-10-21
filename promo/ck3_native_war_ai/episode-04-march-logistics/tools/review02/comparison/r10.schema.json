@@ -107,7 +107,7 @@
           "minimum": 1
         },
         "episode": {
-          "type": "string",
+          "type": ["string", "null"],
           "minLength": 1
         },
         "player_character_id": {

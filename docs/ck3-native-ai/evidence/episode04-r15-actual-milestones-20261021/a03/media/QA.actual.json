@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:08:46.866346+00:00",
+  "movie": "C:\\ck3-e04-resume-20261020-a01\\r15-full-film-workingcut-1030-a01\\native\\runs\\full-workingcut-a01\\artifacts\\derived\\sha256\\14\\1408F2DFD2039508A9F122D9A59A29725992F0C24AE3CB33BE237D94027686A9.mp4",
+  "retained_closed_sha256": "1408f2dfd2039508a9f122d9a59a29725992f0c24ae3cb33be237d94027686a9",
+  "before_after_identity": {
+    "bytes": 102081362,
+    "mtime_ns": "1792569513268150100",
+    "st_dev": "13886423844274364792",
+    "st_ino": "562949955350894"
+  },
+  "video_frames": 57547,
+  "decoded_presentation_PTS_strict_increasing": true,
+  "packet_DTS_strict_increasing_per_stream": true,
+  "AV_decode_original_wait": 0,
+  "complete_decode_attempts": 1,
+  "boundary_image_source_frame_indices": [
+    0,
+    10257,
+    13512,
+    18579,
+    22169,
+    29966,
+    33103,
+    35125,
+    36608,
+    38939,
+    48143,
+    57546
+  ],
+  "boundary_image_bytes": 1102365,
+  "gzip_CRC_and_exact_uncompressed_SHA_verified": true,
+  "image_visual_review": "pending actual reviewer",
+  "human1x": false,
+  "signoff": false,
+  "no_old_input_decode": true
+}

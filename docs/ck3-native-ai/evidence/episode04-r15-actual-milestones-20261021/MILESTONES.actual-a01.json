@@ -1,0 +1,300 @@
+{
+  "schema": "xar.e04.r15.actual-milestone-snapshot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T07:26:30.804576+00:00",
+  "base_document_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+  "purpose": "Current bounded progress, not whole episode completion",
+  "chapter270": {
+    "original_closed_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\DELIVERY-CLOSED.actual-a01.json",
+      "bytes": 1513,
+      "sha256": "435a5cf2fe15c3580d2da3b3845eea610687141a451674f214132bfee5aaa513"
+    },
+    "original_QA": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\qa\\QA.actual.json",
+      "bytes": 1167,
+      "sha256": "1f0b50e0e852416797a8e8e65f5e794339b0771d3172d33ce39647c9a1f133d5"
+    },
+    "movie": {
+      "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\E04-FORMAL8-EVIDENCE-270s-REVIEW-a01.mp4",
+      "bytes": 27034588,
+      "sha256": "48adfc22928d7152dff253e7487d6ec35edde343bc658dc3e22189d5eedfb625"
+    },
+    "video_frames": 8100,
+    "video_seconds": 270.0,
+    "complete_AV_decode_attempts": 1,
+    "AV_decode_original_pid": 37272,
+    "AV_decode_original_wait": 0,
+    "QA_owner_original_wait": 0,
+    "image_review_evidence_kind": "Root original adoption records exact indices [9,10]; peer ten-image review remains the later RAM report recorded by the original closed receipt; no new image viewing or human review",
+    "human_full1x": false,
+    "human_signoff": false,
+    "whole_episode_completed": false,
+    "historical_closed_receipt_image_review_text": "peer /root/readwatch_review actually viewed10/10, no blockers; Root viewed09/10; RAM reports",
+    "image_review_summary": "Root复核第9、10张，共2张；同行AI复核10张；总计10张边界图",
+    "Root_images_reviewed": [
+      9,
+      10
+    ],
+    "Root_images_reviewed_count": 2,
+    "peer_images_reviewed_count": 10,
+    "total_boundary_images": 10,
+    "Root_original_adoption": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r13-native-context-review-0530-a01\\root-context-a01\\ROOT-ACTUAL-270S-REVIEW-ADOPTION.actual-a01.json",
+      "bytes": 2062,
+      "sha256": "be2e7b43cc73a9b2a4293661ca1edef986b4c6366ef011e7d786280af3b10532"
+    }
+  },
+  "onedrive": {
+    "original_delivery": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-review-a01\\DELIVERY.actual-a01.json",
+      "bytes": 6256,
+      "sha256": "1aa0e829acceba294897703b07296b301180603491d30c32cc7a62ff3cf5559e"
+    },
+    "target": {
+      "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\E04-FORMAL8-EVIDENCE-270s-REVIEW-a01.mp4",
+      "bytes": 27034588,
+      "sha256": "48adfc22928d7152dff253e7487d6ec35edde343bc658dc3e22189d5eedfb625"
+    },
+    "source_stream_target_SHA_equal": true,
+    "client_exact_file_id_matches_copy": true,
+    "client_InSync_observed_at_utc": "2026-10-21T07:07:28.807832+00:00",
+    "independent_remote_readback": false,
+    "cloud_SHA_verified": false,
+    "share_URL_verified": false
+  },
+  "exact8_retirement": {
+    "original_final": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\storage-a01\\FINAL.actual-a03.json",
+      "bytes": 17935,
+      "sha256": "2cbf105d75fadb42fbd90fcd1b513fa0473758d4d249b8966ce6399bc72c65fd"
+    },
+    "observed_at_utc": "2026-10-21T06:59:20.507138+00:00",
+    "deleted_files": 8,
+    "deleted_logical_bytes": 124316029,
+    "deleted_allocation_bytes": 124338176,
+    "availability_mapping": [
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R03.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\81\\8108C92DC20305C27190A74355DC1DB2FACB555B70BDA608DFFEEF2D253C03E9.mp4",
+        "bytes": 4648856,
+        "sha256": "8108c92dc20305c27190a74355dc1db2facb555b70bda608dffeef2d253c03e9",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R06.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\9A\\9ADC1A38F39A717D39BD6375275B883044E52374F6BECE03AC45F7B2FFBA04A5.mp4",
+        "bytes": 4343031,
+        "sha256": "9adc1a38f39a717d39bd6375275b883044e52374f6bece03ac45f7b2ffba04a5",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R07.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\70\\7044F41BC2112406D63F3D1E00827906072B7B71D088FF4DAE36B5E685D14705.mp4",
+        "bytes": 2695479,
+        "sha256": "7044f41bc2112406d63f3d1e00827906072b7b71d088ff4dae36b5e685d14705",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R09.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\5B\\5BA004C7C0519AACA8525A20A6CECDCE5CAD614789633DF73ECFD3326EDE56B5.mp4",
+        "bytes": 1982917,
+        "sha256": "5ba004c7c0519aaca8525a20a6cecdce5cad614789633df73ecfd3326ede56b5",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R11.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\B8\\B84001A19EF3464D2EAD9DA9FA011D5A69ACB4C5C13B1D0D6D199F9BD008EE28.mp4",
+        "bytes": 2060834,
+        "sha256": "b84001a19ef3464d2ead9da9fa011d5a69acb4c5c13b1d0d6d199f9bd008ee28",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R12.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\BE\\BE08D706BC844093F55678A09BDD3FFA92F9ABE719DEC604D96F312577576A60.mp4",
+        "bytes": 3725083,
+        "sha256": "be08d706bc844093f55678a09bdd3ffa92f9abe719dec604d96f312577576a60",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\work\\segment-R13.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\r14-eight-theme-chapter-render-0615-a01\\native\\runs\\review-a01\\artifacts\\derived\\sha256\\C1\\C1246B77D652751E34DA52AC11DF1900740B22BF6DC48BD5A788D69704B3817F.mp4",
+        "bytes": 3188006,
+        "sha256": "c1246b77d652751e34da52ac11df1900740b22bf6dc48bd5a788d69704b3817f",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      },
+      {
+        "target": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\work-a01\\E04-METHOD69-PLUS-INDEPENDENT-EVIDENCE-34m37s-REVIEW-a01.mp4",
+        "keeper": "C:\\ck3-e04-resume-20261020-a01\\full-review-a01\\run-a01\\artifacts\\derived\\sha256\\47\\473EA068E33026DE746954880E4388C88AC2B6731DAA34A8A19C4D53446054D7.mp4",
+        "bytes": 101671823,
+        "sha256": "473ea068e33026de746954880e4388c88ac2b6731daa34a8a19c4d53446054d7",
+        "state": "deleted",
+        "old_path_readable": false,
+        "retained_CAS_available": true
+      }
+    ],
+    "CAS_changes": 0,
+    "QA_manifests_preserved": true,
+    "same_name_evidence_recreated": false,
+    "physical_free_delta_not_exclusive_attribution": true
+  },
+  "native_postload": {
+    "new_source_inputs_pinned_by_actual_producer": true,
+    "compiled_source_inputs_count": 33,
+    "compiled_source_pin_manifest": {
+      "path": "C:\\w\\e04postload04\\producer-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 9088,
+      "sha256": "d99c79b7c2a8b2b80adc57e268967ce25634076cca8db3774e7569dcee0bd119"
+    },
+    "producer_original_pid": 29740,
+    "producer_creation_100ns": "134370388326611259",
+    "producer_original_wait": 0,
+    "actual_SYSTEM_gate": {
+      "path": "C:\\w\\e04postload04\\phase-system-gate-a01\\stdout.log",
+      "bytes": 502,
+      "sha256": "3fdf8f21a2dd5db341ca42bcca9f9a76aca5c5b8856824551ac31fcfc39899bd"
+    },
+    "SYSTEM_verified": true,
+    "exact_two_EXEs": [
+      {
+        "path": "C:\\w\\e04postload04\\build-a01\\maintenance_parent_postload_observer.exe",
+        "bytes": 133120,
+        "sha256": "0a4e0a79b2cabb8b7c38480299d1d0b8eb071d42686d029f5db2160167b5bf50"
+      },
+      {
+        "path": "C:\\w\\e04postload04\\build-a01\\maintenance_parent_postload_cold_target.exe",
+        "bytes": 64512,
+        "sha256": "b4999444cafcc733af5b3bc815b8d7c74f4af5166fbead6a0c1adf36621e7a44"
+      }
+    ],
+    "old_0459_unfrozen_draft_status_remains_historical": true,
+    "fixed21_attempt_original": {
+      "path": "C:\\w\\e04postload04\\cold-carrier-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1962,
+      "sha256": "e60237693854e160f35ac27bcaf5e0336128d9c31bc6eab99c249da5c34f674a"
+    },
+    "runner_original_pid": 14016,
+    "runner_creation_100ns": "134370403628593886",
+    "runner_original_wait": 1,
+    "first_case": "foreign257_then_target",
+    "first_case_status": "FAIL",
+    "original_failure": {
+      "path": "C:\\w\\e04postload04\\cold-a01\\foreign257_then_target\\FAILED.actual.json",
+      "bytes": 309,
+      "sha256": "13ebbeed74d3d0ea4b04e843f0368fe6a8e3244c6ae04afc754967a649f8e48b"
+    },
+    "original_small_observer_stream": {
+      "path": "C:\\w\\e04postload04\\cold-a01\\foreign257_then_target\\observer.raw.ndjson",
+      "bytes": 3373,
+      "sha256": "6a98e854cf9a6188704c084ea9a04758275c9736f6acc4f3f285189118d793c7"
+    },
+    "terminal_projection_is_derived_from_original_stream": true,
+    "terminal_projection": {
+      "kind": "terminal",
+      "reason": "foreign_resume_readback_failed",
+      "capture_count": 0,
+      "foreign_count": 1,
+      "restored": true,
+      "detached": true,
+      "pending_event": false,
+      "cleanup_complete": true,
+      "process_exited": false,
+      "observation_thread_admission_complete": true,
+      "window_complete": false,
+      "full_R08": false
+    },
+    "observer_original_wait_reported_by_native_owner": 1,
+    "target_original_wait_reported_by_native_owner": 0,
+    "remaining20_executed": false,
+    "automatic_retry": false,
+    "new_postload_Q": false,
+    "old_entry17_pointer21_Q_transferred": false,
+    "new_R08_business_or_payment_qualification": false
+  },
+  "ordinary_null_ABC_candidate": {
+    "original_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 5456,
+      "sha256": "36870f2b7922a4942fb7f919e8494266f0993286a5622b7d302aee8416e1078b"
+    },
+    "original_overlay_manifest": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\OVERLAY-MANIFEST.actual-a01.json",
+      "bytes": 2636,
+      "sha256": "0da8a3ff3f8baf24e3d25d299b8bcfb0eabf30c1982ee65274368dd752ddb5d3"
+    },
+    "base_source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+    "production_paths": 4,
+    "test_paths": 1,
+    "focused_methods_reported_by_source_owner": 6,
+    "legacy_positive_methods_reported_by_source_owner": 1,
+    "original_waits": "focused-a02/ORIGINAL-WAIT.actual.json and legacy-C-positive-a01/ORIGINAL-WAIT.actual.json under the frozen research root",
+    "actual_mypy": "1.20.1, three selected sources, zero diagnostics; follow-imports=skip and ignore-missing-imports, NOT --strict",
+    "old_readyT0_module_diagnostics": 16,
+    "whole_module_strict_PASS": false,
+    "published_or_runtime_installed_as_of_source_owner_report": false,
+    "same_state_ABC90_actual_credit_added": false,
+    "remaining_source_gap_reported_by_owner": "A/B admission90 null handling is a separate small successor; runtime owner must bind formalC selected repo/module source"
+  },
+  "full_episode_continuation": {
+    "Root_direct_message_plan_is_not_render_receipt": true,
+    "adopted_edit_target_seconds": 1918,
+    "adopted_edit_target_display": "31:58",
+    "adopted_cue_count": 67,
+    "planned_removed_cues": 10,
+    "eight_evidence_clips_planned_inside_main_body": true,
+    "whole_episode_edit_render_QA_delivery_complete": false,
+    "new_Game_actual_acceptance_receipt_available_to_this_snapshot": false,
+    "separate_Game_pilot_provider_cannot_borrow_new_postload_Q": true,
+    "Root_finite_continuation": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\OWNER-CONTINUE-FILM-QUOTA-EXCEPTION.actual-a01.json",
+      "bytes": 2370,
+      "sha256": "38a570f9b389d3d501ca079b72a22ae1cd7cea4ad2d8eea452aaf5c7011e7df6"
+    },
+    "additional_quota_bytes": 4294967296,
+    "hard_deadline_utc": "2026-10-21T10:30:00Z",
+    "scope_envelopes_not_execution_cards": true,
+    "authorized_task_still_active": true
+  },
+  "unchanged_credit": {
+    "formal_dynamic": "8/11",
+    "research": "10/14",
+    "business": "7/11",
+    "B": "0/2",
+    "ABC": "0/3",
+    "R05_R08_R10_new_formal_credit": false,
+    "full_R08": false
+  },
+  "ordinary_planner_autoload": false,
+  "docs_author_executed_new_native_Game_SDK_media_decode_or_cloud_actions": false,
+  "source_partition": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\capacity\\SOURCE8-DOCS512-PARTITION.actual-a04.json",
+    "bytes": 4430,
+    "sha256": "47aa1e04e5c537b154f083cd67b0cf0709186c54ae3f0187e234a3637c63b6ff"
+  },
+  "snapshot_policy": "New actual Game/full-movie results require a dated successor; do not rewrite old receipts or treat this checkpoint as final completion",
+  "readcount_correction": {
+    "observed_at_utc": "2026-10-21T07:37:32.592040+00:00",
+    "prior_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\docs-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 11202,
+      "sha256": "cf34de5b1c0b5448af40f718186af57602a91470a0fe43dcd5d2dd684014c388"
+    },
+    "scope": "Correct the docs author misreading of historical Root viewed09/10; original receipt and a01 source remain unchanged",
+    "underlying_milestones_reobserved": false,
+    "new_image_view_or_QA": false
+  }
+}

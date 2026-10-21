@@ -1,0 +1,111 @@
+{
+  "schema": "xar.e04.r226.actual-pilot-derived-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:17:16.319221+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0226",
+  "classification": "derived small projection of preserved actual public controls and normalized native wire, not an original SDK response",
+  "paused_initial": {
+    "map_ready": true,
+    "paused": true,
+    "date_raw": 53146848,
+    "played_character_id": 31254,
+    "bridge_pid": 4992,
+    "connection_generation": 1
+  },
+  "split_submissions": 1,
+  "split_original_row_ok": true,
+  "split_ACK": {
+    "step": "split-army-half-93",
+    "accepted": true,
+    "status": "split_submitted",
+    "backend_id": "native-headless",
+    "war_action": {
+      "status": "split_submitted",
+      "source_army_id": 93,
+      "submitted_date_raw": 53146848,
+      "player_army_ids_before": [
+        18,
+        93,
+        94,
+        95,
+        16777321
+      ]
+    }
+  },
+  "independent_core": [
+    {
+      "army_id": 93,
+      "current_soldiers": 75,
+      "current_supply_raw": 10000000
+    },
+    {
+      "army_id": 16777340,
+      "current_soldiers": 175,
+      "current_supply_raw": 10000000
+    }
+  ],
+  "chosen_child": {
+    "army_id": 16777340,
+    "native_carmy_id": 16777332,
+    "current_soldiers": 175,
+    "current_supply_raw": 10000000,
+    "current_supply_capacity_raw": 10000000,
+    "current_supply_change_monthly_raw": 2000000
+  },
+  "scale": 100000,
+  "chosen_child_headroom": false,
+  "day_requests": 0,
+  "stock_growth_observed": false,
+  "formal_B_site_qualified": false,
+  "full_R08": false,
+  "formal_ABC_completed": 0,
+  "program_terminal": "known FileExistsError on repeated create-only result checkpoint after child full read; wait1 preserved; no business replay",
+  "scene_disposition": "same Game PID4992/keeper live, original owner pending manual normal Quit; no new launch",
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\case-output\\stock-pilot-initial.json",
+      "bytes": 27647,
+      "sha256": "f7f6ec2a8f0586f3f6c670957d47e6f3b1ab040b8073fea1c70fe5294be0ad0d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\case-output\\case-error-preserved.json",
+      "bytes": 191,
+      "sha256": "a3f9a11d7b2c6c4f23314212b3d2f9ecb343a7755df78b34c3c4b9eec92080a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\pilot-hotfix-a01\\r15-stock-hotfix-a01-stock-pilot-3-split-once.actual-results.json",
+      "bytes": 33215,
+      "sha256": "b7550a33031b4e0292ca8f1dc2dc3103827b01987a6e4a31de1610fb445ab80a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\pilot-hotfix-a01\\stock-pilot-split-after.json",
+      "bytes": 29144,
+      "sha256": "3fbd3a6ee18481b41cb17886ae1c52ddcad911a7b614ab1645064e6738f4e4dc"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\pilot-hotfix-a01\\r15-stock-hotfix-a01-stock-pilot-4-split-core-independent.actual-results.json",
+      "bytes": 36215,
+      "sha256": "886a57b1f4e397b168e72f5315484adc574e7386c0ded8ddf2f4682767350a3c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\pilot-hotfix-a01\\r15-stock-hotfix-a01-stock-pilot-5-chosen-full-baseline-full-wire-proof.json",
+      "bytes": 1886,
+      "sha256": "d87c62d97193151d9feb595e26b349b3c05a3f556a0184baf4a5fce429fae0b6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\pilot-hotfix-a01\\r15-stock-hotfix-a01-stock-pilot-5-chosen-full-baseline-derived-normalized-full.json",
+      "bytes": 13336131,
+      "sha256": "c0483f53a8cf600cfb9429134a133bf9c58989b8177e9cfab7b55e702eae3ce5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\pilot-hotfix-a01\\hotfix-error-preserved.json",
+      "bytes": 375,
+      "sha256": "f1b6e75ce7feaa94f550a93ceab97712a08ac8dfd0a1f69548167fe156acc316"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\ops-a01\\existing-session-pilot-hotfix-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 715,
+      "sha256": "a6046f67ceb37c7394ae7b47af65f1e08e6ca2fffb9ebff6dc823320547e6173"
+    }
+  ]
+}

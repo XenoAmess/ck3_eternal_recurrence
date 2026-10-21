@@ -1,0 +1,99 @@
+{
+  "schema": "xar.e04.ordinary-abc.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T07:00:49.544157+00:00",
+  "base_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+  "candidate_files": [
+    {
+      "repository_relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_ready_t0_12004.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\episode04_ready_t0_12004.py",
+      "bytes": 20534,
+      "sha256": "a2669df1257543af4aeff81e254c502bebc9da391ef04ef7f32e0268e83f36ba"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/runtime_binding.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\runtime_binding.py",
+      "bytes": 12861,
+      "sha256": "612d325229a17affe2b1e8797df91e00fed380063eff3f7ba214675b84373f41"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\r10.schema.json",
+      "bytes": 21452,
+      "sha256": "605c55754230d222be18fcb1c1186ca30b0ccbe9b9005bafee15b4bd13a798a7"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/phased_relay.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\phased_relay.py",
+      "bytes": 40205,
+      "sha256": "5c3be28d813825635548ff796ab127c45323a13a66011121f9267e4081c0fc45"
+    },
+    {
+      "repository_relative_path": "tools/test_episode04_ordinary_native_abc.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\source-candidate-a01\\tools\\test_episode04_ordinary_native_abc.py",
+      "bytes": 7692,
+      "sha256": "c3016f11a1964fe76a1f1c7458f976136362937b9b63b233197c900698576ecb"
+    }
+  ],
+  "overlay": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\OVERLAY-MANIFEST.actual-a01.json",
+    "bytes": 2636,
+    "sha256": "0da8a3ff3f8baf24e3d25d299b8bcfb0eabf30c1982ee65274368dd752ddb5d3"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\ordinary-native-abc.candidate-a01.patch",
+    "bytes": 29189,
+    "sha256": "af6c57ec71e60a0218d3ad73fb8e90ea7ab69fddcec6a7b09bfecf60be25b64e"
+  },
+  "README": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\README.md",
+    "bytes": 2629,
+    "sha256": "70e212be661ed99f86d8796638cc03f9c4632dccb72b9f2dfe8a04b4b19a849b"
+  },
+  "original_waits": {
+    "focused-a01": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\focused-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1202,
+      "sha256": "216e0182c567cfd323c4fb5d651b4970d495d1d591e7ce67beb7929fd63aeaa9"
+    },
+    "focused-a02": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\focused-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1167,
+      "sha256": "47c99d55a4cdd57c0727ef62f4399649476953cac27b02717850b06b1f7d9ffc"
+    },
+    "legacy-C-positive-a01": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\legacy-C-positive-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 989,
+      "sha256": "fd720cdaedf766c31233133a1ca44a67e6e45ff2f4ce701bf6ee44142eec9db6"
+    },
+    "mypy-baseline-a01": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\mypy-baseline-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1404,
+      "sha256": "f0a879bad83445e529f392a168cd8a45c30c37d2747f2b658be2f659359f347d"
+    },
+    "mypy-candidate-a01": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\mypy-candidate-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1440,
+      "sha256": "f2cdc24bf9f787f1fec6cf1bde61edf175142a27364aff94a39fd581bf5ee009"
+    },
+    "static-final-a01": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\static-final-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 5507,
+      "sha256": "63b0a7871164d1886cfdc6cfc675868eeb0751bcff6537daef721cdcfe1b21fa"
+    }
+  },
+  "full_mypy_baseline_diagnostics": 16,
+  "full_mypy_candidate_diagnostics": 16,
+  "diagnostics_same_function_message_multiset": true,
+  "modified_typed_functions_with_diagnostics": [],
+  "static_final_three_files_wait": 0,
+  "focused_methods": 6,
+  "legacy_positive_methods": 1,
+  "focused_latest_wait": 0,
+  "first_fixture_failure_preserved": true,
+  "patch_git_apply_cached_check_whitespace_error_actual_exit": 0,
+  "public_native_Game_qualification_granted": false,
+  "source_writers_after_freeze": 0,
+  "owned_processes": 0,
+  "ordinary_formal_C_nonGit_source_binding_still_requires_runtime_owner_connection": true
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "xar.e04.ordinary-abc.admission-source-supplement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T07:32:28.343892+00:00",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+      "bytes": 56774,
+      "sha256": "74a813d73979aa42b7ce1c2a483c3381f9d68f1e4355311a8d20b066513a0f2f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\tools\\test_episode04_ordinary_native_admission.py",
+      "bytes": 3408,
+      "sha256": "197132abed09657f7cf3c4584843f375d8c08205d49d79be64dd9aeb8e7cc792"
+    }
+  ],
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\ordinary-native-admission.candidate-a02.patch",
+    "bytes": 8227,
+    "sha256": "87f6220f21ebb610f19d235a16606c4d5666bebddb21b90354306809e4311782"
+  },
+  "overlay": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\OVERLAY-MANIFEST.actual-a02.json",
+    "bytes": 3775,
+    "sha256": "992b5a2f5b06d0101e2f1036b52ec48a657effc6156066257fface64e6d722c6"
+  },
+  "readme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\README.md",
+    "bytes": 1212,
+    "sha256": "375a48b6759efe8b32ea6c2abd1235b7e04dcfac91c8f5d838fcbdde17c79b67"
+  },
+  "checks": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\admission-focused-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2006,
+      "sha256": "8e6c290dd1d7dc37fefdf5ce15ce0753ab0a0bfe9a879a5d7363744cd91fa899"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\admission-focused-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2046,
+      "sha256": "bb8aa0628f70d298948bc57e9e10e9ea517fbdb5161fa9471d5c17299bf40db9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\admission-mypy-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2379,
+      "sha256": "169ff5df44189d8bf48d06ea23533c9b60bcf6fcae6038f9122221f0ef369b0e"
+    }
+  ],
+  "a01_reused_without_rerun": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 5456,
+    "sha256": "36870f2b7922a4942fb7f919e8494266f0993286a5622b7d302aee8416e1078b"
+  },
+  "SDK_Game_D_W_Git_native_mutation": false
+}

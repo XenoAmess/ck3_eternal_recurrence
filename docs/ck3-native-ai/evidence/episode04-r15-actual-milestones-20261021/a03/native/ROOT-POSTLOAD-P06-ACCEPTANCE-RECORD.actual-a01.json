@@ -1,0 +1,43 @@
+{
+  "schema": "xar.e04.root-postload-p06-cold-acceptance-record.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:08:20.881195+00:00",
+  "Root_acceptance_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\ROOT-POSTLOAD-P06-COLD-ACCEPTANCE.actual-a01.json",
+    "bytes": 8966,
+    "sha256": "219dd28e46443db3866eba0d348c45c0a8588957cce4a27efa05310d6deac2ab"
+  },
+  "qualification_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\POSTLOAD-P06-QUALIFICATION.actual-a01.json",
+    "bytes": 9408,
+    "sha256": "bd3e257c1b6bb0e1cc1e194694c8c3a2754e90237824e4e678da0b99bcf6831d"
+  },
+  "source_manifest_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-postload-source-p06\\SOURCE-MANIFEST.actual.json",
+    "bytes": 11468,
+    "sha256": "788c1498d08a86aea8f207468d632cabbeea16d705454b36e78984c740429b92"
+  },
+  "original_suite_owner_wait_pin": {
+    "path": "C:\\w\\e04postload06\\cold-carrier-a02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1965,
+    "sha256": "cef0df51e8d186b343a8b1ae90814e23b78917f9fadcc0f428911877b4377ba0"
+  },
+  "existing_qualification_consumer_validation": "PASS",
+  "independent_reviewer": "/root/cold_readwatch",
+  "independent_review_result": "PASS_SELECTED_SYNTHETIC_COLD",
+  "independent_review_tool_refs": [
+    "d81dfc",
+    "cafda2",
+    "cceb24",
+    "8d22bf",
+    "bafd67",
+    "d6c3c1"
+  ],
+  "review_scope": "21 ordered selected synthetic cases; original target/observer waits; 97 arms, 81 exact live DR restores and 16 exited-thread retirements; bit1-only EFlags normalization, RF/TF retained.",
+  "limitations": [
+    "Synthetic cold qualification only.",
+    "Fault tests are seams, not proof of real OS failure.",
+    "No CK3 business outcome, paid-maintenance, payer, cadence or full R08 credit.",
+    "Any actual CK3 observation requires a fresh run-bound owner and Root scope."
+  ]
+}

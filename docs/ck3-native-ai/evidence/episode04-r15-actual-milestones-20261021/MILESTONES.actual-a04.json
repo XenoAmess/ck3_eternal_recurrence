@@ -1,0 +1,60 @@
+{
+  "schema": "xar.e04.r15.dated-live-and-workingcut-supplement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:24:25.689582+00:00",
+  "R226_projection_original_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\ops-a01\\R226-PILOT-ACTUAL-PROJECTION.actual-a01.json",
+    "bytes": 4971,
+    "sha256": "1d16ece08fbd05307f8839dae264268bdf8f18ac45521aa07c0c36449e0931bd"
+  },
+  "R226_projection_archive": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a04/R226-PILOT-ACTUAL-PROJECTION.actual-a01.json",
+  "R226_projection_kind": "derived source-owner projection, not an original SDK response",
+  "R226_as_of_projection_0817": {
+    "MapReady": true,
+    "actor": 31254,
+    "Game_pid": 4992,
+    "date_raw": 53146848,
+    "split_submissions": 1,
+    "day_requests": 0,
+    "child_army": 16777340,
+    "child_native_carmy": 16777332,
+    "soldiers": 175,
+    "supply": 100,
+    "capacity": 100,
+    "headroom": false,
+    "stock_growth_observed": false,
+    "formal_B": false,
+    "full_R08": false,
+    "ABC_completed": 0,
+    "known_terminal": "FileExistsError / original wait1 after child full read; no repeated split",
+    "Game_keeper_disposition": "live at source observation, not a new observation by docs author"
+  },
+  "workingcut_closed_original_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-film-workingcut-1030-a01\\DELIVERY-CLOSED.actual-a01.json",
+    "bytes": 1477,
+    "sha256": "8b786953086cd1eba056a83161a0c5248d0f97926355a11ff2ab7e1b757a5d18"
+  },
+  "workingcut_closed_archive": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a04/WORKINGCUT-DELIVERY-CLOSED.actual-a01.json",
+  "workingcut_review_as_recorded": {
+    "Root_boundary_indices": [
+      8,
+      10,
+      11
+    ],
+    "Root_count": 3,
+    "peer_count": 12,
+    "total": 12,
+    "human_full1x": false,
+    "signoff": false,
+    "final_film": false
+  },
+  "previous_snapshot": {
+    "path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a03.json",
+    "bytes": 6379,
+    "sha256": "e5332f79f409e03e6863c2535a840dd765082c63d34ad4532fbe5845c792b03c",
+    "git_blob_oid": "e77dc7bf9c1270389602556809b6439719c7b9c9"
+  },
+  "ordinary_planner_autoload": false,
+  "no_new_formal_business_credit": true,
+  "old_a01_a02_a03_sources_unchanged": true
+}

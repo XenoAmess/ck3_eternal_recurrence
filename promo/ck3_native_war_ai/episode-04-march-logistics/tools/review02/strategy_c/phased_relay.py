@@ -9,6 +9,7 @@ import argparse, ast, hashlib, importlib.util, json, re, sys, time, types
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
+from collections.abc import Mapping
 
 # Historical source only. New bundles must bind their source explicitly below.
 SOURCE = 'dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb'
@@ -18,6 +19,23 @@ DEADLINE = '2026-10-16T07:45:01.597+00:00'
 def need(ok, message):
     if not ok:
         raise ValueError(message)
+
+
+def _episode_identity(proof: Mapping[str, object]) -> str | None:
+    if 'episode_run_id' not in proof:
+        raise ValueError('C actual runtime episode missing')
+    value = proof['episode_run_id']
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value:
+        raise ValueError('C actual runtime episode must be nonempty string or explicit null')
+    return value
+
+
+def _object(value: object, label: str) -> dict[str, object]:
+    if not isinstance(value, dict) or not all(isinstance(k, str) for k in value):
+        raise ValueError(label + ' object required')
+    return {str(k): v for k, v in value.items()}
 
 
 def pin(path, limit=16*1024*1024):
@@ -56,7 +74,7 @@ def write_new(path, value):
     return pin(path)
 
 
-def runtime_binding(bundle):
+def runtime_binding(bundle: Mapping[str, object]) -> dict[str, object]:
     """Read exact pinned normal-run identities without importing a provider.
 
     No current HEAD or historical SOURCE is a default admission. The explicit
@@ -64,24 +82,28 @@ def runtime_binding(bundle):
     Live still performs its existing checkout/PID/Robert/transport checks.
     """
     source = bundle.get('source_head')
-    need(type(source) is str and re.fullmatch('[0-9a-f]{40}', source) is not None,
-         'explicit reviewed bundle source_head is required')
-    context = load(checked(bundle['context']))
-    proof = load(checked(bundle['runtime_proof']))
-    plan = load(checked(bundle['plan']))
-    runtime = bundle.get('runtime')
-    need(type(runtime) is dict and runtime.get('source_head') == source
+    if not isinstance(source, str) or re.fullmatch('[0-9a-f]{40}', source) is None:
+        raise ValueError('explicit reviewed bundle source_head is required')
+    context = _object(load(checked(bundle['context'])), 'C context')
+    proof = _object(load(checked(bundle['runtime_proof'])), 'C runtime proof')
+    plan = _object(load(checked(bundle['plan'])), 'C plan')
+    runtime = _object(bundle.get('runtime'), 'C runtime')
+    need(runtime.get('source_head') == source
          and context.get('source_head') == source and proof.get('source_head') == source
-         and (plan.get('build') or {}).get('source_head') == source,
+          and _object(plan.get('build'), 'C build').get('source_head') == source,
          'explicit C source differs from runtime/context/proof/plan; no implicit migration')
-    identity = context.get('identity') or {}
+    identity = _object(context.get('identity'), 'C context identity')
     machine = bundle.get('machine_id')
-    need(type(machine) is str and machine and context.get('machine_id') == machine
+    if not isinstance(machine, str) or not machine:
+        raise ValueError('C context/proof machine binding differs')
+    need(context.get('machine_id') == machine
          and identity.get('machine_id') == machine and proof.get('machine_id') == machine,
          'C context/proof machine binding differs')
     sequence = identity.get('sequence')
     run_id = identity.get('run_id')
-    need(type(sequence) is int and sequence > 0 and identity.get('mod_key') == 'vanilla'
+    if type(sequence) is not int or not isinstance(sequence, int) or sequence <= 0:
+        raise ValueError('C actual context/proof/run ID sequence differs')
+    need(identity.get('mod_key') == 'vanilla'
          and run_id == machine+'--vanilla--R'+str(sequence).zfill(4)
          and proof.get('run_id') == run_id,
          'C actual context/proof/run ID sequence differs')
@@ -93,8 +115,7 @@ def runtime_binding(bundle):
         value = proof.get(field)
         need(type(value) is int and (value >= 0 if field == 'connection_generation' else value > 0),
              'C actual runtime proof identity missing: '+field)
-    need(type(proof.get('episode_run_id')) is str and proof['episode_run_id'],
-         'C actual runtime episode missing')
+    _episode_identity(proof)
     return {'source_head': source, 'machine_id': machine,
             'run_id': run_id, 'run_sequence': sequence}
 

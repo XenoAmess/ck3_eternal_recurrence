@@ -39,6 +39,30 @@ def _sha(value: object) -> bool:
     return isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdefABCDEF" for c in value)
 
 
+def _episode_identity(row: Mapping[str, object], key: str) -> str | None:
+    """Preserve an observed ordinary null; missing is not an identity witness."""
+    if key not in row:
+        raise ValueError("explicit episode identity field required: " + key)
+    value = row[key]
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value:
+        raise ValueError("episode must be an observed nonempty string or explicit null")
+    return value
+
+
+def _frame_object(value: object, label: str) -> dict[str, object]:
+    if not isinstance(value, dict) or not all(isinstance(k, str) for k in value):
+        raise ValueError(label + " object required")
+    return {str(k): v for k, v in value.items()}
+
+
+def _frame_integer(value: object, label: str, *, positive: bool = False) -> int:
+    if type(value) is not int or not isinstance(value, int) or (positive and value <= 0):
+        raise ValueError(label + " actual integer required")
+    return value
+
+
 def _normal_source_receipt_sha256(binding: Mapping[str, object]) -> str:
     """Accept a neutral source pin; keep the old Robert key for Robert only."""
     neutral = binding.get("normal_source_receipt_sha256")
@@ -111,18 +135,20 @@ def _bound(packet: Mapping[str, object], frame: Mapping[str, object], name: str)
             _need(packet[query_key] == expected, name + " belongs to another journal lifetime")
 
 
-def _frame_pair(before, after, binding, army_id, expected_province_id):
+def _frame_pair(before: Mapping[str, object], after: Mapping[str, object],
+                binding: Mapping[str, object], army_id: int,
+                expected_province_id: int) -> None:
     _need(isinstance(binding, Mapping) and isinstance(binding.get("machine_id"), str)
           and bool(binding["machine_id"]), "Root source binding/machine_id required")
-    _need(type(binding.get("process_creation_filetime_100ns")) is int
-          and binding["process_creation_filetime_100ns"] > 0, "Root process creation-time receipt required")
+    _frame_integer(binding.get("process_creation_filetime_100ns"),
+                   "Root process creation-time receipt", positive=True)
     _need(binding.get("game_version") == "1.20.0.4"
           and str(binding.get("executable_sha256", "")).lower() == EXE_12004,
           "exact actual4 source binding required")
     _id(binding.get("actor_id"), "Root-bound actor_id")
-    _need(all(type(binding.get(k)) is int and binding[k] > 0 for k in ("pid", "connection_generation"))
-          and isinstance(binding.get("episode_run_id"), str) and bool(binding["episode_run_id"]),
-          "positive Root PID/generation and episode required")
+    _need(all(_frame_integer(binding.get(k), k, positive=True) > 0 for k in ("pid", "connection_generation")),
+          "positive Root PID/generation required")
+    episode = _episode_identity(binding, "episode_run_id")
     _normal_source_receipt_sha256(binding)
     _need(isinstance(binding.get("director_scope_revision"), str) and bool(binding["director_scope_revision"]),
           "normal source/director scope revision required")
@@ -131,28 +157,30 @@ def _frame_pair(before, after, binding, army_id, expected_province_id):
               "independent F must remain paused/map-ready")
         _need(f.get("active_event") is None and f.get("pending_character_interaction") is None,
               "process pending event/interaction before freezing T0")
-        actor = f.get("played_character", {})
+        actor = _frame_object(f.get("played_character"), "played_character")
         _need(isinstance(actor, Mapping) and actor.get("alive") is True and actor.get("character_id") == binding.get("actor_id"),
               "Root-bound living Robert differs")
-        diag = f.get("diagnostics", {})
+        diag = _frame_object(f.get("diagnostics"), "diagnostics")
         _need(isinstance(diag, Mapping) and diag.get("bridge_pid") == binding.get("pid")
               and diag.get("connection_generation") == binding.get("connection_generation")
-              and f.get("episode_run_id") == binding.get("episode_run_id"),
+              and _episode_identity(f, "episode_run_id") == episode,
               "Root-bound process/connection/episode differs")
         a = _army(f, army_id)
         _need(a.get("source") == "native" and a.get("controllable") is True
               and a.get("owner_character_id") == binding["actor_id"], "selected native Army owner/control unavailable")
         _need(a.get("in_combat") is False and a.get("retreating") is False,
               "selected Army is in combat/retreat or unknown")
-        _need(a.get("army_state") in ("regular", "sieging")
-              and a.get("army_state_code") == {"regular": 1, "sieging": 3}.get(a.get("army_state")),
+        state = a.get("army_state")
+        _need((state == "regular" and a.get("army_state_code") == 1)
+              or (state == "sieging" and a.get("army_state_code") == 3),
               "selected Army has not reached a ready land state")
         _need(a.get("route_read_status") == "complete_empty" and a.get("route_province_ids") == []
               and a.get("route_source_count") == 0, "selected Army has not independently stopped")
         _need(a.get("current_province_id") == expected_province_id, "selected Army is not at the declared T0 staging province")
     _need(before.get("date_raw") == after.get("date_raw"), "F advanced a game date")
     for k in ("revision", "native_revision"):
-        _need(type(before.get(k)) is int and type(after.get(k)) is int and after[k] >= before[k], "F revision moved backwards/unknown")
+        _need(_frame_integer(after.get(k), k) >= _frame_integer(before.get(k), k),
+              "F revision moved backwards/unknown")
     _need(all(isinstance(f.get("snapshot_id"), str) and bool(f["snapshot_id"]) for f in (before, after)),
           "F snapshot identity missing")
     first, last = _army(before, army_id), _army(after, army_id)

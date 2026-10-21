@@ -1,0 +1,6 @@
+test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift (__main__.NativeAdmission.test_actual_admission_and_frame_keep_null_but_refuse_missing_and_identity_drift) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK

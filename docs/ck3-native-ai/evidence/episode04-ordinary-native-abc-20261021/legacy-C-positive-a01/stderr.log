@@ -1,0 +1,6 @@
+test_normal_constructor_accepts_explicit_new_machine_and_low_allocated_sequence (__main__.ConstructorTests.test_normal_constructor_accepts_explicit_new_machine_and_low_allocated_sequence) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.103s
+
+OK

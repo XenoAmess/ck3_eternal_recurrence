@@ -1,0 +1,40 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T07:23:39.664131+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\tools\\test_episode04_ordinary_native_admission.py",
+    "-v"
+  ],
+  "original_Popen_pid": 27900,
+  "original_creation_filetime_100ns": "134370410193198943",
+  "original_wait_returncode": 0,
+  "source_pins_before": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+      "bytes": 56774,
+      "sha256": "74a813d73979aa42b7ce1c2a483c3381f9d68f1e4355311a8d20b066513a0f2f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\tools\\test_episode04_ordinary_native_admission.py",
+      "bytes": 3408,
+      "sha256": "197132abed09657f7cf3c4584843f375d8c08205d49d79be64dd9aeb8e7cc792"
+    }
+  ],
+  "source_pins_after": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+      "bytes": 56774,
+      "sha256": "74a813d73979aa42b7ce1c2a483c3381f9d68f1e4355311a8d20b066513a0f2f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\revision-a02\\tools\\test_episode04_ordinary_native_admission.py",
+      "bytes": 3408,
+      "sha256": "197132abed09657f7cf3c4584843f375d8c08205d49d79be64dd9aeb8e7cc792"
+    }
+  ],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "51a974136b4c3f3834166868adc3d68704142187689ed45fb601df176d4355ec",
+  "scope": "actual pure admission/frame synthetic input; SDK/Game0"
+}

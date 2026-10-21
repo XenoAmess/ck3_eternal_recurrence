@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.ordinary-stock-pilot.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:08:41.412875+00:00",
+  "predecessor_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a03\\SOURCE-FREEZE.actual-a03.json",
+    "bytes": 1786,
+    "sha256": "6212ddf1edb1e844a0c22937994b62022b4413914956be9244ec67c827284a00"
+  },
+  "literal_delta": "Actual ordinary_core compact armies/stock-only, partial unavailable preserves stock+scale null; cap/rate only production normalized full army_strengths. Prefix existing FullArmyResultClient for independent hot output IDs. Existing r15-pilot-handoff still has no followup executor.",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\ordinary_stock_pilot.py",
+      "bytes": 24919,
+      "sha256": "113c56c5c4fb1abdc485731c00d90ce6f34b7e184423281bd5dc1d4f990fe32f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\test_ordinary_stock_pilot.py",
+      "bytes": 11926,
+      "sha256": "5f41ed53b14af1b93b99a3d60a82acc51535950b6d23fbdb89756422013a166c"
+    }
+  ],
+  "checks": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\focused-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2264,
+      "sha256": "141466a6e7beed47084c6e6181a72152750139243c94f43225d43d5ab5c1cd8a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\focused-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2265,
+      "sha256": "58b55e82acc3590ae645ca3f98e49feab2f74368e37386184b4230973c43623c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\pilot-adapter-a04\\mypy-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2391,
+      "sha256": "c0987a4a1e4b7cda0af96b95df06023a0d7150f315b882783bce32f244c51bd2"
+    }
+  ],
+  "retained_core_original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0226\\case-output\\stock-pilot-1-initial-core-survey.actual-results.json",
+    "bytes": 34632,
+    "sha256": "486bb2a764b83ddd268a0dc6986a164f50afe54538baeaa094c7e850b6b260b2"
+  },
+  "existing_full_provider": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\source-a01\\tools\\ck3_mod_acceptance_full_army.py",
+    "bytes": 10364,
+    "sha256": "d162e80d965076005c9cf3fce60d7ab1856f25670f24b7f6184e80cd2a812511"
+  },
+  "source_writer0": true,
+  "SDK_Game_native_calls": 0,
+  "R226_original_failure_preserved": true
+}

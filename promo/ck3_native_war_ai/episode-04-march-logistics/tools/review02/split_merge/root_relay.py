@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse, ctypes, hashlib, importlib.util, json, re, subprocess, sys
 from datetime import datetime, timezone
 from pathlib import Path
+from collections.abc import Mapping
 sys.dont_write_bytecode=True
 
 SOURCE='dcda9fde1afa1effb75d46fe99bba4bcd9aeabcb'
@@ -70,8 +71,27 @@ def roster(frame):
         result[identity]=row
     return result
 def same_frame(first,second):need(frame_key(first)==frame_key(second),'paused frame drifted; do not submit')
-def admission(context,proof,*,run_id,source=SOURCE,sequence=176,machine=MACHINE,minimum_sequence=176):
-    identity=context.get('identity',{})
+def _native_object(value: object, label: str) -> dict[str, object]:
+    if not isinstance(value, dict) or not all(isinstance(k, str) for k in value):
+        raise RuntimeError(label + ' object required')
+    return {str(k): v for k, v in value.items()}
+
+
+def _native_episode(value: Mapping[str, object], key: str) -> str | None:
+    if key not in value:
+        raise RuntimeError('actual episode missing')
+    episode = value[key]
+    if episode is None:
+        return None
+    if not isinstance(episode, str) or not episode:
+        raise RuntimeError('actual episode must be nonempty string or explicit null')
+    return episode
+
+
+def admission(context: Mapping[str, object], proof: Mapping[str, object], *,
+              run_id: str, source: str = SOURCE, sequence: int = 176,
+              machine: str = MACHINE, minimum_sequence: int = 176) -> dict[str, object]:
+    identity=_native_object(context.get('identity'), 'context identity')
     need(context.get('machine_id')==machine and identity.get('machine_id')==machine,'machine binding differs')
     need(re.fullmatch('[0-9a-f]{40}',source) is not None
          and context.get('source_head')==source and proof.get('source_head')==source,'reviewed normal source differs')
@@ -79,21 +99,25 @@ def admission(context,proof,*,run_id,source=SOURCE,sequence=176,machine=MACHINE,
          and identity.get('sequence')==sequence and identity.get('mod_key')=='vanilla'
          and run_id==machine+'--vanilla--R'+str(sequence).zfill(4),'actual explicitly allocated run differs')
     need(proof.get('machine_id')==machine and proof.get('run_id')==run_id,'runtime proof belongs to another run')
-    intent=proof.get('stable_character_intent',{})
+    intent=_native_object(proof.get('stable_character_intent'), 'stable character intent')
     need(intent.get('historical_id')==1128 and intent.get('bookmark_character_name_key')=='bookmark_rags_to_riches_duke_robert',
          'normal Robert intent missing')
     binding={k:proof.get(v) for k,v in {
       'pid':'pid','process_create_time_100ns':'process_creation_filetime_100ns',
       'generation':'connection_generation','actor':'actual_runtime_character_full_id','episode':'episode_run_id'}.items()}
-    need(all(type(binding[k]) is int and binding[k]>0 for k in ('pid','process_create_time_100ns','generation','actor')),
-         'actual positive runtime identities missing')
-    need(type(binding['episode']) is str and binding['episode'],'actual episode missing')
+    for key in ('pid','process_create_time_100ns','generation','actor'):
+        value=binding[key]
+        if type(value) is not int or not isinstance(value, int) or value <= 0:
+            raise RuntimeError('actual positive runtime identities missing')
+    binding['episode']=_native_episode(proof, 'episode_run_id')
     return binding
-def validate_frame(frame,binding):
-    d=frame.get('diagnostics') or {};hello=d.get('hello') or {};actor=frame.get('played_character') or {}
+def validate_frame(frame: Mapping[str, object], binding: Mapping[str, object]) -> None:
+    d=_native_object(frame.get('diagnostics'), 'diagnostics')
+    hello=_native_object(d.get('hello'), 'hello')
+    actor=_native_object(frame.get('played_character'), 'played character')
     need(frame.get('paused') is True and frame.get('map_ready') is True and d.get('connected') is True,'paused connected map required')
     need(d.get('bridge_pid')==binding['pid'] and d.get('connection_generation')==binding['generation']
-         and frame.get('episode_run_id')==binding['episode'] and actor.get('character_id')==binding['actor']
+          and _native_episode(frame, 'episode_run_id')==binding['episode'] and actor.get('character_id')==binding['actor']
          and actor.get('alive') is True,'fresh frame crossed runtime/actor')
     need(hello.get('expected_ck3_version')=='1.20.0.4'
          and str(hello.get('expected_ck3_sha256','')).lower()==EXE_SHA

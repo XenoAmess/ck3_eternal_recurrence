@@ -1,0 +1,131 @@
+{
+  "schema": "xar.e04.r15.actual-milestone-successor.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:16:11.949324+00:00",
+  "previous_snapshot": {
+    "path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a01.json",
+    "bytes": 14979,
+    "sha256": "d7a76cb9b9a04ea52ac1ce85b2ab926145ef3149a763452e17c0aea0633f248f",
+    "git_blob_oid": "6464b6d46da5d065a72cffde3380d90748ba5d9d"
+  },
+  "prior_0726_snapshot_unchanged": true,
+  "evidence": [
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\POSTLOAD-P06-QUALIFICATION.actual-a01.json",
+        "bytes": 9408,
+        "sha256": "bd3e257c1b6bb0e1cc1e194694c8c3a2754e90237824e4e678da0b99bcf6831d"
+      },
+      "canonical_archive_path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a03/native/POSTLOAD-P06-QUALIFICATION.actual-a01.json",
+      "role": "exact original bytes; not a new review"
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\ROOT-POSTLOAD-P06-COLD-ACCEPTANCE.actual-a01.json",
+        "bytes": 8966,
+        "sha256": "219dd28e46443db3866eba0d348c45c0a8588957cce4a27efa05310d6deac2ab"
+      },
+      "canonical_archive_path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a03/native/ROOT-POSTLOAD-P06-COLD-ACCEPTANCE.actual-a01.json",
+      "role": "exact original bytes; not a new review"
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\ROOT-POSTLOAD-P06-ACCEPTANCE-RECORD.actual-a01.json",
+        "bytes": 1975,
+        "sha256": "50fa391c3f1739e1bec86872be162255eba895b7625c1c54c3b81ef7671e9697"
+      },
+      "canonical_archive_path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a03/native/ROOT-POSTLOAD-P06-ACCEPTANCE-RECORD.actual-a01.json",
+      "role": "exact original bytes; not a new review"
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-film-workingcut-1030-a01\\FULL-MOVIE-CLOSED.actual.json",
+        "bytes": 1348,
+        "sha256": "f201b174997f33cc17e82e3c3a699c50401dfe230d9d913340385cd318e33e78"
+      },
+      "canonical_archive_path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a03/media/FULL-MOVIE-CLOSED.actual.json",
+      "role": "exact original bytes; not a new review"
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-film-workingcut-1030-a01\\qa\\QA.actual.json",
+        "bytes": 1206,
+        "sha256": "a35cf365ffd94f0d7328c7672bfe83c26f217351dce1fa079ebb348905e766ca"
+      },
+      "canonical_archive_path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a03/media/QA.actual.json",
+      "role": "exact original bytes; not a new review"
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-film-workingcut-1030-a01\\qa\\bound-probe.json",
+        "bytes": 4680,
+        "sha256": "ae881e33a48adeab47dff1dd3d4b28dd0edd9fff426574b4f02679973baba20a"
+      },
+      "canonical_archive_path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/a03/media/bound-probe.json",
+      "role": "exact original bytes; not a new review"
+    }
+  ],
+  "postload_P06": {
+    "status": "SELECTED_POSTLOAD_EXECUTION_COLD_PASS",
+    "mode": "player-parent-postload-execution-once-v1",
+    "Root_accepted_cases": 21,
+    "Root_acceptance_observed_at_utc": "2026-10-21T08:08:20.881195+00:00",
+    "existing_consumer_validation": "PASS",
+    "independent_review_result_recorded_by_Root": "PASS_SELECTED_SYNTHETIC_COLD",
+    "independent_review_scope_recorded_by_Root": "21 ordered selected synthetic cases; original target/observer waits; 97 arms, 81 exact live DR restores and 16 exited-thread retirements; bit1-only EFlags normalization, RF/TF retained.",
+    "peer_receipt_kind": "Root actual acceptance record of peer RAM review; no invented standalone peer file",
+    "current_contract_sha256": "25f3c0c397f049307a9e56f762861176cb4b5669fd93c5472150ae07f2240fe8",
+    "consumer_must_bind_current_source_and_EXEs": true,
+    "previous_04_05_failures_preserved": true,
+    "qualification_scope": "selected synthetic cold only",
+    "actual_CK3_payment_or_fullR08": false,
+    "full_native_source_cold_bundle_archived_by_this_small_docs_package": false
+  },
+  "full_working_movie": {
+    "work_movie": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-film-workingcut-1030-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+      "bytes": 102081362,
+      "sha256": "1408f2dfd2039508a9f122d9a59a29725992f0c24ae3cb33be237d94027686a9"
+    },
+    "video_seconds": "1918.233333",
+    "video_frames": 57547,
+    "container_seconds": "1918.254687",
+    "format": "1920x1080 30fps",
+    "QA_observed_at_utc": "2026-10-21T08:08:46.866346+00:00",
+    "complete_AV_decode_attempts": 1,
+    "original_wait": 0,
+    "presentation_PTS_strict_increasing": true,
+    "packet_DTS_strict_increasing": true,
+    "boundary_images": 12,
+    "image_review_as_of_original_QA": "pending actual reviewer",
+    "human1x": false,
+    "signoff": false,
+    "player_eight_new_voice_subtitle_replacement": "still in progress per source owner message",
+    "whole_episode_finished": false,
+    "cloud_delivery_of_this_working_movie": false
+  },
+  "ordinary_null_source_successor": {
+    "overlay": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\research-a01\\OVERLAY-MANIFEST.actual-a02.json",
+      "bytes": 3775,
+      "sha256": "992b5a2f5b06d0101e2f1036b52ec48a657effc6156066257fface64e6d722c6"
+    },
+    "production_paths": 5,
+    "test_paths": 2,
+    "source_frozen_not_a_Game_result": true,
+    "publication_status": "pending this publication",
+    "mypy_not_strict": true,
+    "no_new_B_ABC_business_credit": true
+  },
+  "R226_Game_results": "Not included without a small original result receipt; this source snapshot does not grant Game business credit",
+  "unchanged_credit": {
+    "formal": "8/11",
+    "research": "10/14",
+    "business": "7/11",
+    "B": "0/2",
+    "ABC": "0/3"
+  },
+  "ordinary_planner_autoload": false,
+  "whole_task_complete": false,
+  "docs_author_repeated_native_or_media_checks": false
+}
