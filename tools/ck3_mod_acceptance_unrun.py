@@ -6,6 +6,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 import argparse, hashlib, json, os
 from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
+from ck3_mod_acceptance_launcher_pin_refusal import public_operation_argv, validate_launcher_pin_refusal
 
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
 def need(value, message):
@@ -32,10 +33,15 @@ def _allocator_argv(bundle, machine, keeper_stamps):
         ref=bundle[key];check_pin(Path(ref['path']),ref);return _read(ref['path'])
     if combined:
         command=original('allocator_result')
-        need(command.get('machine_id')==machine and command.get('exit_code')==0
-             and command.get('shell') is False and bool(command.get('finished_at_utc')),
-             'Actual original allocator wait0 differs')
-        argv=command.get('argv',[])
+        if command.get('original_subprocess_wait_observed') is True:
+            argv,finished=public_operation_argv(bundle['allocator_command'],bundle['allocator_result'],
+                machine_id=machine,mode='allocate',exit_code=0)
+            need(keeper_stamps[-1]<=finished,'Actual allocator completion predates keeper exit')
+        else:
+            need(command.get('machine_id')==machine and command.get('exit_code')==0
+                 and command.get('shell') is False and bool(command.get('finished_at_utc')),
+                 'Actual original allocator wait0 differs')
+            argv=command.get('argv',[])
     else:
         intent,process,exit_row=(original(k) for k in keys)
         pid=process.get('pid');created=process.get('create_time')
@@ -61,13 +67,15 @@ def _allocator_argv(bundle, machine, keeper_stamps):
          'Actual original allocator command differs')
     return argv
 
-def _release_stages(keeper,cas,done,cas_source,done_source,release,task):
+def _release_stages(keeper,cas,done,cas_source,done_source,release,task,*,cooperative_pin_refusal=False):
     closed_lease = same_directory_control_peer('ck3_mod_acceptance_allocate').closed_lease
     for value in (cas,done):
         need(value['event']['task_id']==task and value['event']['resources']==[],
              'Wrong allocated-unrun CAS task/resources')
     separate=(cas['event']['kind']=='status' and done['event']['kind']=='completed'
               and cas['event']['sequence']<done['event']['sequence'])
+    completed_then_admin=(cooperative_pin_refusal and cas['event']['kind']==done['event']['kind']=='completed'
+                         and cas['event']['sequence']<done['event']['sequence'])
     # A direct CAS completion is one original event. The two proof files must
     # preserve the same canonical bytes/offset/task, rather than mix releases.
     direct=(cas['event']['kind']==done['event']['kind']=='completed'
@@ -75,11 +83,11 @@ def _release_stages(keeper,cas,done,cas_source,done_source,release,task):
             and cas['event']==done['event'] and cas['task']==done['task']
             and cas_source.get('schema')=='xar-screen-release-canonical-reconstruction-v1'
             and cas_source==done_source)
-    need((separate or direct) and keeper['last_sequence']<cas['event']['sequence']
+    need((separate or direct or completed_then_admin) and keeper['last_sequence']<cas['event']['sequence']
          and done['task']['last_sequence']==done['event']['sequence'] and done['task']['state']=='done'
          and release==done and closed_lease(keeper,done,task),
          'Actual allocated-unrun CAS then admin DONE differs')
-    return 'direct-completed' if direct else 'status-then-completed'
+    return 'direct-completed' if direct else ('completed-then-admin-completed' if completed_then_admin else 'status-then-completed')
 
 def _journal_events(raw,start,release_sequence,done_sequence):
     requested={release_sequence,done_sequence};lines={};offset=start
@@ -115,17 +123,26 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
          and keeper.get('entry_error') is None and keeper.get('game_actions') is False
          and parent.get('run_id')==run and parent.get('keeper_actual_exit_code')==0
          and parent.get('keeper_report')==keeper,'Original idle keeper STOP/wait0 unavailable')
-    idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
-    stop=bundle['keeper_STOP'];need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
-    check_pin(keeper_root/'STOP',stop)
-    need((keeper_root/'STOP').read_text(encoding='utf-8')=='Unused allocation idle deadline; no game/native/normal credit.\n'
-         and idle.get('reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT' and idle.get('idle_seconds')==600
-         and all(idle.get(k) is False for k in ('game_started','native_session_started','normal_close_qualified','business_pass')),
-         'Original unused idle STOP differs')
+    cooperative=bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent'
+    need(bundle.get('closure_kind') is None or cooperative,'Unknown allocated-unrun closure kind')
+    refusal_evidence={}
+    if cooperative:
+        refusal_evidence=validate_launcher_pin_refusal(bundle['launcher_pin_refusal'],frozen=freeze,
+            live=previous,keeper=keeper_root,machine_id=machine)
+        need(bundle['keeper_STOP']==refusal_evidence['keeper_stop'],'Cooperative STOP references differ')
+    else:
+        idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
+        stop=bundle['keeper_STOP'];need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
+        check_pin(keeper_root/'STOP',stop)
+        need((keeper_root/'STOP').read_text(encoding='utf-8')=='Unused allocation idle deadline; no game/native/normal credit.\n'
+             and idle.get('reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT' and idle.get('idle_seconds')==600
+             and all(idle.get(k) is False for k in ('game_started','native_session_started','normal_close_qualified','business_pass')),
+             'Original unused idle STOP differs')
     keeper_ready=_exact(bundle,'keeper_ready',keeper_root/'ready.json')
-    stamps=[datetime.fromisoformat(v) for v in (keeper_ready['at_utc'],idle['utc'],keeper['at_utc'])]
-    need(all(x.tzinfo is not None for x in stamps) and (stamps[1]-stamps[0]).total_seconds()>=600
-         and stamps[2]>=stamps[1],'Original ten-minute unused interval unproven')
+    stamps=[datetime.fromisoformat(v) for v in ((keeper_ready['at_utc'],keeper['at_utc']) if cooperative else
+        (keeper_ready['at_utc'],idle['utc'],keeper['at_utc']))]
+    need(all(x.tzinfo is not None for x in stamps) and stamps==sorted(stamps)
+         and (cooperative or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
     argv=_allocator_argv(bundle,machine,stamps)
     def argument(name):
         need(argv.count(name)==1 and argv.index(name)+1<len(argv),'Original allocator argument missing: '+name)
@@ -165,7 +182,7 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     for key in ('CAS_release','admin_done'):
         check_pin(Path(bundle[key]['path']),bundle[key])
     _release_stages(keeper,cas,done,_read(bundle['CAS_release']['path']),
-        _read(bundle['admin_done']['path']),release,task)
+        _read(bundle['admin_done']['path']),release,task,cooperative_pin_refusal=cooperative)
     current=[x for x in bus_packet.get('tasks',[]) if x.get('task_id')==task]
     # The canonical list command adds only age_seconds/stale to raw task files.
     # Keep every original field exact, and reject undeclared or invalid extras.
@@ -175,10 +192,11 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
          and type(snapshot['age_seconds']) is int and snapshot['age_seconds']>=0
          and snapshot['stale'] is False,'Current allocated-unrun task readback differs')
     import psutil
-    inventory=runtime_process_inventory(psutil,os.getpid())
+    inventory={**runtime_process_inventory(psutil,os.getpid()),'machine_id':machine,
+               'observed_at_utc':datetime.now(timezone.utc).isoformat()}
     need(not inventory['blockers'],'Allocated-unrun predecessor process still running: '+repr(inventory['blockers']))
-    return {'mode':'previous-shared-allocated-unrun-idle','actual_process_inventory':inventory,
-        'failure_cleanup':{'close':pin(close_path),'original_evidence':{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},
+    return {'mode':'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else 'previous-shared-allocated-unrun-idle','actual_process_inventory':inventory,
+        'failure_cleanup':{'close':pin(close_path),'original_evidence':{**{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},**refusal_evidence},
             'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
             'host_started':False,'native_session_started':False,'original_host_exit_code':None,
             'original_ck3_exit_code':None,'typed_normal_exit_proven':False,'business_pass':False}}
@@ -217,6 +235,12 @@ def build_bundle(args):
         'keeper_ready':keeper/'ready.json','idle_timeout':live/'allocation-unused-idle-timeout.json',
         **{k:v for k,v in allocator.items() if v is not None},'allocator_stdout':args.allocator_stdout,
         'counter':ids.default_state_root()/machine/freeze['mod_key']/'counter.json'}
+    if getattr(args,'launcher_pin_refusal',None):
+        row['closure_kind']='launcher-pin-admission-refused-before-launch-intent'
+        paths.pop('idle_timeout')
+        paths['launcher_pin_refusal']=args.launcher_pin_refusal
+        need(getattr(args,'allocator_command',None),'Cooperative original wrapper allocator command required')
+        paths['allocator_command']=args.allocator_command
     row.update({k:pin(v) for k,v in paths.items()});bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
     bus=args.task_bus_root/'bin/codex_task_bus.py'
@@ -229,6 +253,8 @@ def main():
     p.add_argument('--keeper-root',type=Path,required=True)
     allocator=p.add_mutually_exclusive_group(required=True)
     allocator.add_argument('--allocator-result',type=Path)
+    p.add_argument('--allocator-command',type=Path)
+    p.add_argument('--launcher-pin-refusal',type=Path)
     allocator.add_argument('--allocator-intent',type=Path)
     p.add_argument('--allocator-process',type=Path);p.add_argument('--allocator-exit',type=Path)
     p.add_argument('--allocator-stdout',type=Path,required=True);p.add_argument('--task-bus-root',type=Path,required=True)

@@ -412,6 +412,8 @@ class Focused(unittest.TestCase):
             bus=root/'bus/bin/bus.py';bus.parent.mkdir(parents=True);bus.write_text('synthetic-bus')
             (bus.parents[1]/'events.jsonl').write_text('')
             keeper=root/'keeper.py';keeper.write_text('synthetic-keeper');launcher=root/'launcher.py';launcher.write_text('synthetic-launcher')
+            for name in allocation.CONTROL_QUEUE_MODULE_ORDER_V1:
+                (root/(name+'.py')).write_bytes((Path(__file__).resolve().parent/(name+'.py')).read_bytes())
             queue=root/'queue.py';queue.write_text('synthetic-queue')
             for path in (config,products,prepared):path.write_text('{}')
             state=root/'input/state';profile=state/'profile';profile.mkdir(parents=True)
@@ -439,7 +441,7 @@ class Focused(unittest.TestCase):
                     {'schema':'codex.task_bus.v1','sequence':3,'kind':'completed','task_id':'old','resources':[]}]
             (bus.parents[1]/'events.jsonl').write_text('\n'.join(json.dumps(row) for row in events)+'\n',encoding='utf-8')
             selected=SimpleNamespace(prepared_path=prepared,context={},runtime_path=config,manifest_path=config,products_path=products,
-                product_key='synthetic',product={'runtime_mod_key':'synthetic'},case={'id':'basic'},state_dir=state,adapter_path=None,
+                product_key='synthetic',product={'runtime_mod_key':'vanilla'},case={'id':'basic'},state_dir=state,adapter_path=None,
                 locations={'python':Path(sys.executable),'repo_root':repo,'artifacts_root':root/'live'},
                 runtime={'allocation':{'task_bus':entry.pin(bus),'screen_keeper':entry.pin(keeper),'lease_repo':str(lease),'task_prefix':'test-'},
                          'reviewed_launcher':entry.pin(launcher),'control_queue':entry.pin(queue)},
@@ -449,7 +451,7 @@ class Focused(unittest.TestCase):
                 manifest_path_key=lambda row:root/'shared-source',runtime_environment={'PYTHONUTF8':'1'})
             args=SimpleNamespace(attempt='a999',keeper_output=root/'keeper-output',previous_live=prior,previous_keeper=previous_keeper,
                                   previous_release=release,latest_screen_release=None,first_machine_bootstrap=None)
-            identity=SimpleNamespace(run_id='synthetic-R0001',mod_key='synthetic',execution_id='synthetic-exec')
+            identity=SimpleNamespace(run_id='synthetic-R0001',mod_key='vanilla',execution_id='synthetic-exec')
             sequence=[]
             def call_bus(script,bus_dir,sha,*argv,**kwargs):
                 self.assertEqual(script,lease/'tools/codex_task_bus.py')
@@ -488,7 +490,7 @@ class Focused(unittest.TestCase):
                  patch.object(allocation.subprocess,'run',side_effect=run),
                  patch.object(allocation.subprocess,'Popen',side_effect=popen)):
                 answer=allocation.allocate_and_keep(selected,args)
-            allocate_id.assert_called_once_with('synthetic',state_root=root/'ids',machine_id=machine,external_mod=False)
+            allocate_id.assert_called_once_with('vanilla',state_root=root/'ids',machine_id=machine,external_mod=False)
             self.assertEqual(sequence,['FRESH_BUS_LIST','REGISTER','KEEPER_POPEN','WAIT_REAL_CHILD'])
             self.assertEqual(answer['keeper_actual_exit_code'],0)
             self.assertFalse(answer['game_started'])
@@ -714,8 +716,10 @@ class FailedRuntimeClosureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'actual canonical event stream'):self.check()
 
     def test_failure_flag_cannot_be_used_as_first_machine_bootstrap(self):
-        selected=SimpleNamespace(prepared_path=Path('prepared'),context=None)
-        args=SimpleNamespace(first_machine_bootstrap=Path('bootstrap'),previous_failure_close=Path('failure'),
+        selected=SimpleNamespace(prepared_path=Path('prepared'),context=None,
+            product={'runtime_mod_key':'vanilla'},product_key='synthetic')
+        bootstrap=self.root/'bootstrap.json';bootstrap.write_text('{}',encoding='utf-8')
+        args=SimpleNamespace(first_machine_bootstrap=bootstrap,previous_failure_close=Path('failure'),
             attempt='a179',keeper_output=Path('keeper'),previous_release=Path('release'),
             previous_live=None,previous_keeper=None)
         with self.assertRaisesRegex(ValueError,'mutually exclusive'):

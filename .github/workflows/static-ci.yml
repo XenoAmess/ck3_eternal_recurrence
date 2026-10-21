@@ -471,6 +471,8 @@ jobs:
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_fresh_machine_bootstrap.py
       - name: Test pre-identity failure retirement without CK3 or Steam
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_pre_identity.py
+      - name: Test unconsumed launcher source pin refusal without CK3 or Steam
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_launcher_pin_refusal.py
       - name: Test shared CK3 acceptance without installed CK3
         run: |
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_exact_tree_binding.py

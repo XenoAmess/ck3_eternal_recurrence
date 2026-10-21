@@ -1,7 +1,7 @@
 """One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
-from ck3_mod_acceptance_background_types import JsonObject, json_object
+from ck3_mod_acceptance_background_types import JsonObject, json_object, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
@@ -2184,6 +2184,11 @@ def _allocate_and_keep_impl(selection,args):
     shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
     for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_mod_acceptance_launcher_protocol_v1.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py','ck3_mod_acceptance_fresh_machine_bootstrap.py'):
         peer=shared_tools/name;files[peer]=pin(peer)
+    # The CLI checkout and reviewed launcher's immutable source can be distinct.
+    # Pin the actual consumer siblings as well as the public CLI import closure.
+    actual_launcher=path_at(selection.runtime['reviewed_launcher']['path'],base)
+    for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+        peer=actual_launcher.with_name(name+'.py').resolve();files[peer]=pin(peer)
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
         rows=([closure['bootstrap'],*closure['maintenance_evidence'],*closure['pre_identity_retirement_evidence']] if fresh_machine else

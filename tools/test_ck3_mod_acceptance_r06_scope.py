@@ -23,6 +23,7 @@ options, remaining = parser.parse_known_args()
 sys.argv = [sys.argv[0], *remaining]
 sys.path[:0] = [str(REPO / 'tools'), str(REPO / 'ck3_autonomous_player/src')]
 import ck3_mod_acceptance as entry
+from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1
 import ck3_mod_acceptance_allocate as allocator
 from ck3_mod_acceptance_cases import r10_prepare_adapter as adapter
 from ck3_mod_acceptance_cases import r06_refill_one_day as r06
@@ -63,6 +64,10 @@ class PublicR06ScopeTests(unittest.TestCase):
             path = self.root / (name + '.fixture')
             path.write_bytes(b'{}')
             self.paths[name] = path
+        # The allocation producer must freeze the actual launcher's sibling
+        # closure even when the public CLI lives in a distinct checkout.
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            (self.root/(name+'.py')).write_bytes((REPO/'tools'/(name+'.py')).read_bytes())
         self.bus = self.root / 'lease/tools/codex_task_bus.py'
         self.bus.write_bytes(b'# never executed\n')
         (self.root / 'lease/promo/ck3_native_war_ai/integration/screen_bus_lease.py').write_bytes(b'# fixture\n')

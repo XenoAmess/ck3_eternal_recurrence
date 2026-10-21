@@ -16,7 +16,8 @@ import sys
 import time
 from collections.abc import Sequence
 from ck3_mod_acceptance_background_types import (JsonObject, ProcessGeneration, json_object,
-    text_field, object_field, strings_field, environment, process_handle, keyed_file_pin)
+    text_field, object_field, strings_field, environment, process_handle, keyed_file_pin,
+    CONTROL_QUEUE_MODULE_ORDER_V1)
 from ck3_mod_acceptance_steam_gate import OfflineAdmission
 
 from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
@@ -75,8 +76,8 @@ def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "lau
                 check_pin(keyed_file_pin(name, row))
         check_pin(frozen["runtime_manifest"])
     # A copied helper must not silently import another unpinned sibling.
-    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_steam_gate.py", "steam_offline_state_contract.py", "steam_offline_state_probe.py", "steam_offline_native_provider_v1.py", "steam_offline_native_profiles.py", "ck3_mod_acceptance_background_types.py", "ck3_live_run_id.py", "ck3_mod_acceptance_fresh_machine_bootstrap.py"):
-        path = Path(__file__).with_name(name).resolve()
+    for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+        path = Path(__file__).with_name(name+'.py').resolve()
         require(str(path) in files, "Public helper is absent from allocation pins: " + str(path))
         check_pin(keyed_file_pin(str(path), files[str(path)]))
     host = str(Path(argv[argv.index("--agent-source-root") - 1]).resolve())

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T21:10:05.364256+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0001",
+  "execution_checkout_commit": "27b713719c4f670fe5c8fd2ae3dce74fa7d22fd7",
+  "actual_outcome": "LAUNCHER_ADMISSION_REFUSED_BEFORE_LAUNCH_INTENT",
+  "reason": "Actual launcher expected its immutable-snapshot sibling helpers; allocator pinned checkout siblings instead.",
+  "game_started": false,
+  "native_session_started": false,
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "keeper_actual_exit_code": 0,
+  "screen_release_sequence": 293,
+  "administrative_done_sequence": 294,
+  "sources": {
+    "allocation": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0001\\frozen-argv.json",
+      "bytes": 61597,
+      "sha256": "2c9b63f0052f5cf1b559976a65d246afc0a32d6fd1d5f2a3e3fc6279a76f7e0b"
+    },
+    "launcher_completion": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261021T210212860493Z-run\\completion.json",
+      "bytes": 309,
+      "sha256": "3c986e05594a68ace7e73bb1b5a019cbfcb64f27b66753991709bb9e2a1f7231"
+    },
+    "launcher_refusal": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261021T210212860493Z-run\\stderr.log",
+      "bytes": 129,
+      "sha256": "0d849fb440081b3824b2a82188f6f272827f484f08b5c1d905dbbe3805f07ed2"
+    },
+    "keeper_report": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-core-a02\\report.json",
+      "bytes": 465,
+      "sha256": "c545b6ddcbaa23a71f9392a49fb70603b8cfb2d616ac7c9cd86ed7ed1dfc946e"
+    },
+    "keeper_original_parent_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0001\\keeper-actual-parent-exit.json",
+      "bytes": 637,
+      "sha256": "cf1c6440a205f8084488b0ea616797ab9643ca6023c5db01fc657a00346d6fa5"
+    },
+    "allocator_original_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261021T210124159345Z-allocate\\completion.json",
+      "bytes": 314,
+      "sha256": "b5ffb58a528b937654ff252d32063550abb8f2db012ad03b1a677c9e822f730a"
+    },
+    "release": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r0001-prelaunch-release\\0-stdout.json",
+      "bytes": 1304,
+      "sha256": "15cb6d3b477939521b53499bf00bf9109c5b41a83b1ae12379b4d284301de798"
+    },
+    "done": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r0001-prelaunch-release\\1-stdout.json",
+      "bytes": 1462,
+      "sha256": "4434a10d55724d1a57d168e216206af37cb52883ee6814a9c199a371a3b8af1f"
+    },
+    "verified_closure": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r0001-launcher-pin-refusal-close-a01\\ALLOCATED-UNRUN.actual.json",
+      "bytes": 4085,
+      "sha256": "70c63cf53ae97296f96b5208e83825519bbaa58ae54b01ce57796ce4e76d9ae3"
+    }
+  },
+  "scope": "Runtime admission and resource closure only; no CK3 business execution or screenshot exists for this attempt."
+}

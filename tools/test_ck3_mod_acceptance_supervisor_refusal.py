@@ -20,6 +20,8 @@ if str(TOOLS) not in sys.path:
 import test_ck3_mod_acceptance_r06_scope as scope_fixture
 import ck3_mod_acceptance as entry
 import ck3_mod_acceptance_allocate as allocator
+import ck3_mod_acceptance_launcher as launcher_consumer
+from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1
 import ck3_mod_acceptance_supervisor_refusal as subject
 from ck3_mod_acceptance_legacy_launcher_fixture_v1 import materialize_legacy_launcher_fixture_v1
 import ck3_live_run_id as ids
@@ -350,6 +352,14 @@ class SupervisorRefusalTests(unittest.TestCase):
         self.assertEqual(len(history.read_text(encoding='utf-8').splitlines()), 2)
         admitted = entry.read_json(Path(self.binding['admission_root']) / '000002/allocation.json')
         self.assertEqual(admitted['run_id'], Path(result['live']).name)
+        # Real allocator and launcher use distinct source directories. Every
+        # actual consumer sibling must be frozen under its own resolved path.
+        new_live=Path(result['live'])
+        frozen=entry.read_json(new_live/'frozen-argv.json')
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            self.assertIn(str((self.root/(name+'.py')).resolve()),frozen['files'])
+        with patch.object(launcher_consumer,'__file__',str(self.fixture.paths['launcher'])):
+            launcher_consumer.frozen_run(new_live)
         closure = entry.read_json(Path(result['live']) / 'predecessor-admission.json')['closure']
         self.assertFalse(closure['failure_cleanup']['business_pass'])
         for path, original in originals.items():

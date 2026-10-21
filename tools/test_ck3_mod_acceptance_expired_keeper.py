@@ -167,6 +167,7 @@ class ExpiredKeeperResourceClosureTests(unittest.TestCase):
         script=self.root/'dummy.py';script.write_text('pass',encoding='utf-8')
         bus_script=self.bus_dir/'bin/codex_task_bus.py';bus_script.parent.mkdir();bus_script.write_text('pass',encoding='utf-8')
         selection=SimpleNamespace(prepared_path=self.root/'prepared-new.json',context=None,
+            product={'runtime_mod_key':'living-artifacts'},product_key='living-artifacts',
             runtime={'allocation':dict(lease_repo=str(self.root),screen_keeper=allocation.pin(script),
                                       task_bus=allocation.pin(bus_script),task_prefix='new-screen-'),
                      'reviewed_launcher':allocation.pin(script)},
