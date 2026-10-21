@@ -11,6 +11,9 @@
 - [异能图鉴](docs/affix-catalog.md)：36个机制异能与10组联动。
 - [诅咒图鉴](docs/curse-catalog.md)：8类共32种诅咒，每种三阶，包含重度生存、财务、统治、人际与失控后果。
 - [实现与验收方案](docs/implementation-plan.md)：脚本落点、持久化字段合同、兼容性、待验证接口与开发顺序。
+- [测试验收总方案](docs/test-plan.md)：分层流程、夹具、核心机制/AI/冷载用例、运行安排和通过标准。
+- [内容验收矩阵](docs/content-acceptance-matrix.md)：12异能、8重诅咒、4代表联动逐条前置、真实触发、数字后验与负例，全部NOT_RUN。
+- [验收执行与结果合同](docs/acceptance-execution-contract.md)：公共六模式登记、执行模板、证据与状态字段；当前未登记或实跑。
 - 工作记录：[v0.1](docs/evidence/design-session-2026-10-22.json)、[v0.2](docs/evidence/design-revision-2026-10-22.json)、[v0.3诅咒修订](docs/evidence/curse-revision-2026-10-22.json)。旧回执只对应各自当时的内容。
 
 每件合格装备默认 **5%** 觉醒且只判定一次。玩家与AI使用相同规则；实际装备时持续成长，经验足够便**自动升级并随机演化**，11级起出现基础饥渴，没有15级硬上限。卸下免费停级且失去加成；仍装备时只能付费暂缓成长。喂养按原版普通/大师级/名作级/卓越级四档给经验，**无冷却**。

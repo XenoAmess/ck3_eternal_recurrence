@@ -1,0 +1,194 @@
+{
+  "schema": "xalw-test-plan-documentation-session-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T19:33:13.760741+00:00",
+  "task_id": "ck3-living-artifacts-test-plan-20261022",
+  "base_commit": "d85e46c3ba2068bba9a81c62a47f78b159a92d32",
+  "scope": "test_acceptance_design_documents_only",
+  "planned_case_count": 63,
+  "core_mechanic_case_count": 39,
+  "content_case_count": 24,
+  "planned_case_ids": [
+    "LW-A01",
+    "LW-A02",
+    "LW-A03",
+    "LW-A04",
+    "LW-A05",
+    "LW-A06",
+    "LW-A07",
+    "LW-A08",
+    "LW-A09",
+    "LW-A10",
+    "LW-A11",
+    "LW-A12",
+    "LW-C01",
+    "LW-C02",
+    "LW-C03",
+    "LW-C04",
+    "LW-C05",
+    "LW-C06",
+    "LW-C07",
+    "LW-C08",
+    "LW-F01",
+    "LW-F02",
+    "LW-F03",
+    "LW-F04",
+    "LW-F05",
+    "LW-G01",
+    "LW-G02",
+    "LW-G03",
+    "LW-G04",
+    "LW-G05",
+    "LW-G06",
+    "LW-G07",
+    "LW-I01",
+    "LW-I02",
+    "LW-I03",
+    "LW-I04",
+    "LW-L01",
+    "LW-P01",
+    "LW-P02",
+    "LW-P03",
+    "LW-R01",
+    "LW-R02",
+    "LW-R03",
+    "LW-R04",
+    "LW-R05",
+    "LW-R06",
+    "LW-S01",
+    "LW-S02",
+    "LW-S03",
+    "LW-S04",
+    "LW-S05",
+    "LW-S06",
+    "LW-T01",
+    "LW-T02",
+    "LW-T03",
+    "LW-T04",
+    "LW-U01",
+    "LW-U02",
+    "LW-U03",
+    "LW-X01",
+    "LW-X02",
+    "LW-X03",
+    "LW-X04"
+  ],
+  "all_planned_cases_status": "NOT_RUN",
+  "business_cases_executed": 0,
+  "business_pass_claimed": false,
+  "public_product_registered": false,
+  "adapter_created": false,
+  "validation": {
+    "status": "passed_document_and_git_diff_checks",
+    "checks": [
+      "UTF-8/local targets",
+      "unique defined case IDs and references",
+      "12 affixes and 8 curses match canonical core selection",
+      "4 combos match canonical pool",
+      "four feeding tier and multi-level arithmetic",
+      "NOT_RUN result example JSON"
+    ],
+    "static_type_check": "not_applicable_no_production_code_changes",
+    "game_acceptance": "not_run"
+  },
+  "documents": [
+    {
+      "relative_path": "docs/acceptance-execution-contract.md",
+      "bytes": 11607,
+      "sha256": "8783af53e99aa5fd033d1aaf94c4f413acf1dcd7e10520d351c10495aa1382b8"
+    },
+    {
+      "relative_path": "docs/affix-catalog.md",
+      "bytes": 28801,
+      "sha256": "e29ed15c6aacf1c7d8138922bdabdf545cde50eab866955dc07c6a6b9f16e623"
+    },
+    {
+      "relative_path": "docs/content-acceptance-matrix.md",
+      "bytes": 25432,
+      "sha256": "ea1270b3de0f92b1b4c8ee69479812007b79941ec9c561ff6564e45735b2742c"
+    },
+    {
+      "relative_path": "docs/curse-catalog.md",
+      "bytes": 23473,
+      "sha256": "89f9fa9b3eb1af385cb20cc4e948356cdef949ac6dbc46b551a822aa6a412175"
+    },
+    {
+      "relative_path": "docs/design.md",
+      "bytes": 20231,
+      "sha256": "56c7665da35eafa1e8bda430f90a3a6393801fd0f185d65574cd70c54670b85a"
+    },
+    {
+      "relative_path": "docs/elona-living-weapons-research.md",
+      "bytes": 10686,
+      "sha256": "5b62b147d8046ff481737009243ab1f7605dedf24a934da5ea48ae68d33fdb5e"
+    },
+    {
+      "relative_path": "docs/implementation-plan.md",
+      "bytes": 18288,
+      "sha256": "b85454f7706ea8a40e5d8730c03c4d016171118e0fab994d3bf804a9fbbda292"
+    },
+    {
+      "relative_path": "docs/test-plan.md",
+      "bytes": 21384,
+      "sha256": "98cb623af0cc964bedbeac9d77e480216646e20f7ee1b36d88e7eed15dc8ee17"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 2864,
+      "sha256": "37c03e27754221c78ec8e1c51e92cc497fbd0b32fe2998775a879d054a080996"
+    }
+  ],
+  "local_reference_sources": [
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "sha256": "bc8d2e18518513cc0f6b571f094e1dd1f68f82991543fc762d1128226f47d1f5"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_products.json",
+      "sha256": "a73f39da95c97625278712061a5c327a206b87580fa56575d9389dc09ab853d7"
+    },
+    {
+      "relative_path": "tools/steam_offline_state_probe.py",
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    },
+    {
+      "relative_path": "docs/workshop-cache-acceptance.md",
+      "sha256": "33dff1146bccfa05fcf747f476e09d1d0f7db96c55a091a6530bf933177f5831"
+    }
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "root_id": "repository",
+    "resolved_root": "D:\\workspace\\ck3_eternal_recurrence",
+    "volume": "D:\\",
+    "task_start": {
+      "recorded_at_utc": "2026-10-21T19:20:46.368153+00:00",
+      "source": "exec_command shutil.disk_usage and subsequent UTC binding",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471464648704
+    },
+    "task_close": {
+      "observed_at_utc": "2026-10-21T19:33:13.760741+00:00",
+      "source": "shutil.disk_usage(resolved_root)",
+      "total_volume_bytes": 500105216000,
+      "available_bytes": 471464288256
+    },
+    "markdown_content_bytes": 162766,
+    "document_budget_bytes": 262144,
+    "expired_assets_assigned_for_reclamation": [],
+    "heavy_write": "not_requested",
+    "other_unspent_reservations_bytes": null,
+    "system_growth_reserve_bytes": null,
+    "current_project_allocated_bytes": null,
+    "effective_project_quota_bytes": null,
+    "heavy_write_admission": "not_qualified_unknown_inputs",
+    "deletions": 0,
+    "review_at_utc": "2027-04-19T19:33:13.760741+00:00",
+    "review_action": "review_and_consolidate_without_automatic_delivery_deletion"
+  },
+  "ck3_started": false,
+  "steam_state_observed": false,
+  "steam_state_changed": false,
+  "workshop_written": false
+}
