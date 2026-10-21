@@ -2,11 +2,14 @@
 from __future__ import annotations
 
 import copy
+from datetime import datetime, timezone
+import hashlib
 import os
 from pathlib import Path
+import sys
 import unittest
 from unittest.mock import patch
-from typing import Callable
+from typing import Callable, Protocol, runtime_checkable
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     ExactRefV1, JsonObject, JsonValue, SavedFrameV1, encode_current_saved_basis_v1,
@@ -79,7 +82,67 @@ def seed() -> JsonObject:
         "checkpoint_dirty_since_save": True, "checkpoint_due_after_readonly_chain": True}
 
 
+@runtime_checkable
+class FileDigestV1(Protocol):
+    def __call__(self, path: Path) -> str: ...
+
+
+@runtime_checkable
+class ScreenParserV1(Protocol):
+    def __call__(self, value: object, *, machine_id: str, repo: Path,
+            git_head: str, at_utc: datetime) -> JsonObject: ...
+
+
 class TypedColdContractTests(unittest.TestCase):
+    def test_generated_supervisor_preserves_path_digest_and_screen_contract(self) -> None:
+        material_path = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_MATERIAL")
+        import_root = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_IMPORT_ROOT")
+        if material_path is None:
+            material = b"""from __future__ import annotations
+from datetime import datetime, timedelta
+import hashlib
+from pathlib import Path
+import re
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def read(path):
+    return Path(path).read_bytes()
+def main(args):
+    return 0
+"""
+        else:
+            if import_root is None:
+                raise RuntimeError("actual supervisor requires its exact companion import root")
+            with Path(material_path).open("rb") as stream:
+                material = stream.read(262145)
+            self.assertLessEqual(len(material), 262144)
+        generated = producer.emit_supervisor_v1(material, machine_id=MACHINE)
+        namespace: dict[str, object] = {"__name__": "current_saved_supervisor_fixture",
+            "__file__": str(Path(import_root) / "root_native30_supervisor_c23.py")
+            if import_root is not None else __file__}
+        search = ([import_root] if import_root is not None else []) + sys.path
+        with patch.object(sys, "path", search):
+            exec(compile(generated, "<actual emitted supervisor prefix>", "exec"), namespace)
+        hasher = namespace.get("digest")
+        parser = namespace.get("parse_screen_admission_v1")
+        if not isinstance(hasher, FileDigestV1) or not isinstance(parser, ScreenParserV1):
+            raise TypeError("generated file hasher and screen parser must be callable")
+        for path in (Path(__file__), Path(producer.__file__)):
+            self.assertEqual(hasher(path), hashlib.sha256(path.read_bytes()).hexdigest())
+        repo = Path(ROOT)
+        at = datetime(2026, 10, 21, 6, tzinfo=timezone.utc)
+        screen: JsonObject = {"schema": "xar.C23-root-resource-screen-admission/v3",
+            "machine_id": MACHINE, "observed_at_utc": at.isoformat(), "status": "ACQUIRED",
+            "task_id": "synthetic-current-screen", "sequence": 23, "repo": str(repo),
+            "git_head": "f" * 40, "reviewer": "/root", "provenance": [ref("proof.json").to_wire()]}
+        parsed = parser(wire(screen), machine_id=MACHINE, repo=repo,
+            git_head="f" * 40, at_utc=at)
+        self.assertEqual(parsed["sequence"], 23)
+        for sequence in (True, 23.0, None):
+            with self.subTest(sequence=sequence), self.assertRaises(ValueError):
+                parser({**screen, "sequence": sequence}, machine_id=MACHINE, repo=repo,
+                    git_head="f" * 40, at_utc=at)
+
     def test_plan_producer_json_consumer_roundtrip(self) -> None:
         item = plan()
         parsed = producer.parse_plan_v1(wire(item.to_wire()))

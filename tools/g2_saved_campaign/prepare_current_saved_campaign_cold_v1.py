@@ -420,31 +420,28 @@ def emit_supervisor_v1(material: bytes, *, machine_id: str) -> bytes:
   "{'machine_id':MACHINE,'attempt_nonce':args.attempt_nonce,'task_nonce':args.task_nonce,"
   "'runtime_root':str(N)},config,runtime_root=N,expected_machine_id=MACHINE)")
  result += """
-from typing import Protocol
-from tools.g2_saved_campaign.current_saved_basis_v1 import (
- ExactRefV1, JsonObject, digest, integer, need, parse_ref, record, rows, text, utc,
-)
+from tools.g2_saved_campaign import current_saved_basis_v1 as _screen_basis_v1
 from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
     verify_current_saved_supervisor_attempt_v1,
 )
 def parse_screen_admission_v1(value: object, *, machine_id: str,
-  repo: Path, git_head: str, at_utc: datetime) -> JsonObject:
- row = record(value, {"schema","machine_id","observed_at_utc","status","task_id",
-  "sequence","repo","git_head","reviewer","provenance"})
- need(row["schema"] == "xar.C23-root-resource-screen-admission/v3"
-  and row["machine_id"] == machine_id and row["status"] == "ACQUIRED"
-  and row["reviewer"] == "/root", "actual current screen authority")
- observed = datetime.fromisoformat(utc(row["observed_at_utc"]).replace("Z","+00:00"))
- need(at_utc.tzinfo is not None and at_utc.utcoffset() == timedelta(0)
-  and 0 <= (at_utc-observed).total_seconds() <= 600, "fresh screen admission")
- need(Path(text(row["repo"])).resolve() == repo.resolve() and row["git_head"] == git_head
-  and re.fullmatch("[0-9a-f]{40}",git_head) is not None, "screen actual checkout")
- provenance = tuple(parse_ref(item) for item in rows(row["provenance"]))
- need(1 <= len(provenance) <= 8, "bounded current screen provenance")
- return {"schema":"xar.C23-root-resource-screen-admission/v3","machine_id":machine_id,
-  "observed_at_utc":utc(row["observed_at_utc"]),"status":"ACQUIRED","task_id":text(row["task_id"]),
-  "sequence":integer(row["sequence"],1),"repo":str(repo),"git_head":git_head,"reviewer":"/root",
-  "provenance":[item.to_wire() for item in provenance]}
+    repo: Path, git_head: str, at_utc: datetime) -> _screen_basis_v1.JsonObject:
+    row = _screen_basis_v1.record(value, {"schema","machine_id","observed_at_utc","status","task_id",
+        "sequence","repo","git_head","reviewer","provenance"})
+    _screen_basis_v1.need(row["schema"] == "xar.C23-root-resource-screen-admission/v3"
+        and row["machine_id"] == machine_id and row["status"] == "ACQUIRED"
+        and row["reviewer"] == "/root", "actual current screen authority")
+    observed = datetime.fromisoformat(_screen_basis_v1.utc(row["observed_at_utc"]).replace("Z","+00:00"))
+    _screen_basis_v1.need(at_utc.tzinfo is not None and at_utc.utcoffset() == timedelta(0)
+        and 0 <= (at_utc-observed).total_seconds() <= 600, "fresh screen admission")
+    _screen_basis_v1.need(Path(_screen_basis_v1.text(row["repo"])).resolve() == repo.resolve() and row["git_head"] == git_head
+        and re.fullmatch("[0-9a-f]{40}",git_head) is not None, "screen actual checkout")
+    provenance = tuple(_screen_basis_v1.parse_ref(item) for item in _screen_basis_v1.rows(row["provenance"]))
+    _screen_basis_v1.need(1 <= len(provenance) <= 8, "bounded current screen provenance")
+    return {"schema":"xar.C23-root-resource-screen-admission/v3","machine_id":machine_id,
+        "observed_at_utc":_screen_basis_v1.utc(row["observed_at_utc"]),"status":"ACQUIRED","task_id":_screen_basis_v1.text(row["task_id"]),
+        "sequence":_screen_basis_v1.integer(row["sequence"],1),"repo":str(repo),"git_head":git_head,"reviewer":"/root",
+        "provenance":[item.to_wire() for item in provenance]}
 """
  result += "\nMACHINE = " + repr(text(machine_id)) + "\n"
  result += """
