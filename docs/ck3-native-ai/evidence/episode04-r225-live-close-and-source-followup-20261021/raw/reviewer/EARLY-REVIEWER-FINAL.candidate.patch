@@ -1,0 +1,308 @@
+--- a/tools/ck3_mod_acceptance.py
++++ b/tools/ck3_mod_acceptance.py
+@@ -623,6 +623,12 @@
+                     errors.append("Actual frozen shared Python environment differs from runtime config")
+             except (KeyError, OSError, ValueError) as error:
+                 errors.append(str(error))
++        if self.context and self.adapter_path:
++            try:
++                from ck3_mod_acceptance_client import resolve_operator_reviewer
++                resolve_operator_reviewer(self)
++            except (ImportError, KeyError, OSError, TypeError, ValueError) as error:
++                errors.append("Operator reviewer: " + str(error))
+         if hasattr(self, "saved") and all(self.saved.get(key) is not None for key in SAVED_FLAGS):
+             try:
+                 checks.append(check_pin(self.case_path(self.saved["save"]), self.saved))
+@@ -831,6 +837,9 @@
+         environment = dict(os.environ)
+         environment.update(self.runtime_environment)
+         environment.update(PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1")
++        if self.adapter_path:
++            from ck3_mod_acceptance_client import resolve_operator_reviewer
++            resolve_operator_reviewer(self)
+         completed = subprocess.run(argv, cwd=self.locations["repo_root"], env=environment, check=False)
+         result.update(status="REVIEWED_LAUNCHER_RETURNED" if completed.returncode == 0 else "LAUNCHER_FAILED",
+                       launcher_argv=argv, launcher_exit_code=completed.returncode,
+--- a/tools/test_ck3_mod_acceptance_operator_quit.py
++++ b/tools/test_ck3_mod_acceptance_operator_quit.py
+@@ -296,6 +296,12 @@
+             selected.runtime_path=root/'runtime.json';selected.context_path=root/'context.json'
+             selected.run_dir=root/'SYNTHETIC_FAILED_ENTRY';selected.locations={'python':Path(sys.executable),'repo_root':root}
+             selected.runtime_environment={};selected.adapter_path=root/'synthetic-adapter.py'
++            selected.argv=['SYNTHETIC FROZEN HOST ARGV'];selected.context['reviewer']='/test/actual-operator'
++            frozen_path=root/'synthetic-frozen-argv.json'
++            frozen_path.write_text(json.dumps({'run_id':selected.run_dir.name,'argv':selected.argv,
++                'runtime_environment':{},'reviewer':'/test/actual-operator'}),encoding='utf-8')
++            selected.context['frozen_argv']=self.entry.pin(frozen_path)
++            selected.context_path.write_text(json.dumps(selected.context),encoding='utf-8')
+             adapter=SimpleNamespace(run_case=Mock(side_effect=AssertionError('Never replay failed startup business')))
+             selected.load_adapter=lambda:adapter;selected.adapter_context=lambda output:{'synthetic':True}
+             client=SimpleNamespace(_handle=None,output=root/'case-output',
+--- /dev/null
++++ b/tools/test_ck3_mod_acceptance_reviewer_prelaunch.py
+@@ -0,0 +1,254 @@
++"""Real reviewer resolver and public preflight/run, with harmless file fixtures.
++
++The child is a Python marker writer, never a host, game, Steam or SDK process.
++Only held-process/normal-close boundaries are mocked; reviewer admission is real.
++"""
++from __future__ import annotations
++import importlib.util
++import json
++import os
++from pathlib import Path
++import sys
++import tempfile
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++HERE = Path(__file__).resolve().parent
++sys.path.insert(0, str(HERE))
++override = os.environ.get('CK3_REVIEWER_ENTRY_PATH')
++if override:
++    spec = importlib.util.spec_from_file_location('ck3_mod_acceptance', override)
++    if spec is None or spec.loader is None:
++        raise ImportError('Exact entry source required')
++    entry = importlib.util.module_from_spec(spec)
++    sys.modules['ck3_mod_acceptance'] = entry
++    spec.loader.exec_module(entry)
++else:
++    import ck3_mod_acceptance as entry
++import ck3_mod_acceptance_client as client_module
++
++
++def save(path: Path, value: object) -> None:
++    path.write_text(json.dumps(value), encoding='utf-8')
++
++
++class Fixture:
++    def __init__(self, root: Path) -> None:
++        self.root = root
++        self.live = root / 'SYNTHETIC_REVIEWER_RUN'
++        self.live.mkdir(parents=True)
++        self.launcher = root / 'harmless_marker_launcher.py'
++        self.marker = self.launcher.with_suffix('.launched')
++        self.launcher.write_text(
++            'from pathlib import Path\n'
++            "with Path(__file__).with_suffix('.launched').open('a',encoding='utf-8') as s:s.write('harmless child\\n')\n",
++            encoding='utf-8')
++        self.host = root / 'never_executed_host.py'
++        self.host.write_text('import argparse\np=argparse.ArgumentParser()\n', encoding='utf-8')
++        self.exe = root / 'game/binaries/ck3.exe'
++        self.exe.parent.mkdir(parents=True)
++        self.exe.write_bytes(b'SYNTHETIC NONEXECUTABLE HASH INPUT ONLY\n')
++        self.adapter = root / 'adapter.py'
++        self.adapter.write_text('# finite source fixture, never product qualification\n', encoding='utf-8')
++        self.contract = root / 'contract.json'
++        save(self.contract, {'synthetic': True})
++        self.frozen_path = self.live / 'frozen-argv.json'
++        self.context_path = self.live / 'context.json'
++        self.frozen = {'run_id': self.live.name, 'argv': [], 'runtime_environment': {},
++                       'reviewer': '/test/actual-operator', 'screen_task': 'synthetic-original-screen'}
++        self.context = {'run_id': self.live.name, 'reviewer': '/test/actual-operator',
++                        'keeper_root': str(root / 'keeper'),
++                        'steam_offline_receipt': str(root / 'never-read-steam-receipt.json')}
++        self.refreeze()
++        self.delegation: dict[str, object] | None = None
++        self.observed: list[str] = []
++        self.selected = entry.Selection.__new__(entry.Selection)
++        selected = self.selected
++        selected.context = self.context
++        selected.context_path = self.context_path
++        selected.argv = []
++        selected.runtime_environment = {}
++        selected.run_dir = self.live
++        selected.state_dir = root / 'state'
++        selected.runtime_path = root / 'runtime.json'
++        selected.manifest_path = root / 'manifest.json'
++        selected.product_key = 'synthetic-product'
++        selected.runtime = {'reviewed_launcher': entry.pin(self.launcher)}
++        selected.blockers = []
++        selected.required_pins = []
++        selected.paths = {'host': self.host}
++        selected.locations = {'python': Path(sys.executable), 'repo_root': root,
++                              'game_dir': self.exe.parents[1], 'userdir_root': root}
++        selected.values = {'run_id': self.live.name}
++        selected.manifest = {'host': None, 'game': {'exe_sha256': entry.pin(self.exe)['sha256']}}
++        selected.case = {'id': 'synthetic-case', 'status': 'ready'}
++        selected.prepared = None
++        selected.adapter_path = self.adapter
++        selected.adapter_config = self.contract
++        selected.describe = lambda: {'business_acceptance': 'NOT_ASSESSED'}
++        selected.adapter_context = lambda output=None: {'synthetic': True}
++        def run_case(context: object, held: object) -> dict[str, object]:
++            self.observed.append(held.operator_reviewer)
++            return {'synthetic': True, 'business_pass': False}
++        self.adapter_module = SimpleNamespace(
++            prepare_case=lambda *args: None, run_case=run_case, verify_case=lambda *args: None)
++        selected.load_adapter = lambda: self.adapter_module
++
++    def persist(self) -> None:
++        save(self.context_path, self.context)
++
++    def refreeze(self) -> None:
++        save(self.frozen_path, self.frozen)
++        self.context['frozen_argv'] = entry.pin(self.frozen_path)
++        self.persist()
++
++    def delegate(self) -> None:
++        self.context['reviewer'] = self.frozen['reviewer'] = '/root'
++        self.refreeze()
++        self.delegation = {
++            'schema': 'ck3-mod-acceptance-operator-delegation-v1',
++            'run_id': self.live.name, 'screen_task': self.frozen['screen_task'],
++            'frozen_argv': self.context['frozen_argv'], 'delegated_by': '/root',
++            'delegate_reviewer': '/test/actual-delegate', 'scopes': ['ui', 'checkpoint']}
++        self.persist_delegation()
++
++    def persist_delegation(self) -> None:
++        path = self.live / 'delegation.json'
++        save(path, self.delegation)
++        self.context['operator_delegation'] = entry.pin(path)
++        self.persist()
++
++
++class ReviewerPrelaunchTests(unittest.TestCase):
++    def setUp(self) -> None:
++        self.temporary = tempfile.TemporaryDirectory(prefix='reviewer-prelaunch-',
++            dir=os.environ.get('CK3_REVIEWER_TEST_TMP'))
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++
++    def fixture(self, name: str = 'case') -> Fixture:
++        return Fixture(self.root / name)
++
++    def assert_blocked_without_child(self, fixture: Fixture) -> None:
++        result = fixture.selected.preflight()
++        self.assertTrue(result['blockers'], result)
++        self.assertTrue(any('Operator reviewer:' in row for row in result['blockers']), result)
++        with self.assertRaises(ValueError):
++            fixture.selected.run()
++        self.assertFalse(fixture.marker.exists())
++        self.assertFalse((fixture.live / 'case-output').exists())
++        self.assertEqual(fixture.observed, [])
++
++    def test_missing_reviewer_is_blocked_in_real_preflight(self) -> None:
++        fixture = self.fixture()
++        del fixture.context['reviewer']
++        fixture.persist()
++        self.assert_blocked_without_child(fixture)
++
++    def test_null_empty_and_whitespace_reviewer_zero_launch(self) -> None:
++        for index, value in enumerate([None, '', ' ', ' /test/operator']):
++            with self.subTest(value=value):
++                fixture = self.fixture(str(index))
++                fixture.context['reviewer'] = value
++                fixture.persist()
++                self.assert_blocked_without_child(fixture)
++
++    def test_explicit_null_delegation_and_persisted_identity_drift_zero_launch(self) -> None:
++        null = self.fixture('null')
++        null.context['operator_delegation'] = None
++        null.persist()
++        self.assert_blocked_without_child(null)
++        drift = self.fixture('drift')
++        save(drift.context_path, {**drift.context, 'reviewer': '/test/other'})
++        self.assert_blocked_without_child(drift)
++
++    def test_delegation_run_screen_scope_and_pin_rejection_zero_launch(self) -> None:
++        updates = [{'run_id': 'OTHER_RUN'}, {'screen_task': 'OTHER_SCREEN'},
++                   {'scopes': ['ui', 'checkpoint', 'launch']},
++                   {'frozen_argv': {'path': 'wrong', 'bytes': 1, 'sha256': '0' * 64}}]
++        for index, update in enumerate(updates):
++            with self.subTest(update=update):
++                fixture = self.fixture(str(index))
++                fixture.delegate()
++                assert fixture.delegation is not None
++                fixture.delegation.update(update)
++                fixture.persist_delegation()
++                self.assert_blocked_without_child(fixture)
++        tamper = self.fixture('tamper')
++        tamper.delegate()
++        (tamper.live / 'delegation.json').write_bytes(b'{}')
++        self.assert_blocked_without_child(tamper)
++
++    def test_valid_direct_and_delegated_identity_reaches_real_client_after_one_child(self) -> None:
++        for mode in ('operator', 'root', 'delegated'):
++            with self.subTest(mode=mode):
++                fixture = self.fixture(mode)
++                expected = '/test/actual-operator'
++                if mode == 'root':
++                    fixture.context['reviewer'] = fixture.frozen['reviewer'] = '/root'
++                    fixture.refreeze()
++                    expected = '/root'
++                if mode == 'delegated':
++                    fixture.delegate()
++                    expected = '/test/actual-delegate'
++                self.assertEqual(fixture.selected.preflight()['blockers'], [])
++                with patch.object(client_module.CaseClient, 'wait_hold'), \
++                     patch.object(client_module.CaseClient, 'retain_held_process', return_value=False), \
++                     patch.object(client_module.CaseClient, 'close_handle') as close:
++                    result = fixture.selected.run()
++                self.assertEqual(fixture.marker.read_text(encoding='utf-8').splitlines(), ['harmless child'])
++                self.assertEqual(fixture.observed, [expected])
++                self.assertFalse(result['case_result']['business_pass'])
++                self.assertEqual(entry.read_json(fixture.live / 'case-output/case-once.json')['run_id'], fixture.live.name)
++                close.assert_called_once()
++
++    def test_context_drift_after_successful_preflight_is_rechecked_before_child(self) -> None:
++        fixture = self.fixture()
++        actual_preflight = fixture.selected.preflight
++        def preflight_then_drift() -> dict:
++            result = actual_preflight()
++            self.assertEqual(result['blockers'], [])
++            save(fixture.context_path, {**fixture.context, 'reviewer': '/test/changed-after-preflight'})
++            return result
++        fixture.selected.preflight = preflight_then_drift
++        with self.assertRaisesRegex(ValueError, 'persisted allocated context'):
++            fixture.selected.run()
++        self.assertFalse(fixture.marker.exists())
++        self.assertFalse((fixture.live / 'case-output').exists())
++
++    def test_failed_case_keeps_actual_client_finally_and_original_failure(self) -> None:
++        fixture = self.fixture()
++        def retain(held: object, **kwargs: object) -> bool:
++            held._handle = 'SYNTHETIC ORIGINAL HANDLE'
++            return True
++        with patch.object(client_module.CaseClient, 'wait_hold', side_effect=ValueError('ORIGINAL SYNTHETIC HOLD FAILURE')), \
++             patch.object(client_module.CaseClient, 'retain_held_process', autospec=True, side_effect=retain) as retained, \
++             patch.object(client_module.CaseClient, 'normal_close', return_value={'normal_close_qualified': False}) as normal, \
++             patch.object(client_module.CaseClient, 'close_handle') as close:
++            result = fixture.selected.run()
++        self.assertEqual(len(fixture.marker.read_text(encoding='utf-8').splitlines()), 1)
++        self.assertEqual(fixture.observed, [])
++        self.assertIn('ORIGINAL SYNTHETIC HOLD FAILURE', result['case_error'])
++        self.assertEqual(result['business_acceptance'], 'RED_OR_INCOMPLETE')
++        self.assertFalse(result['normal_close']['normal_close_qualified'])
++        self.assertEqual(retained.call_args.kwargs, {'wait': True})
++        normal.assert_called_once_with('business_failure_preserved')
++        close.assert_called_once()
++
++    def test_prepare_without_context_and_nonadapter_routes_keep_existing_scope(self) -> None:
++        no_context = self.fixture('prepare')
++        no_context.selected.context = None
++        self.assertEqual(no_context.selected.preflight()['blockers'], [])
++        no_adapter = self.fixture('no-adapter')
++        del no_adapter.context['reviewer']
++        no_adapter.persist()
++        no_adapter.selected.adapter_path = None
++        self.assertEqual(no_adapter.selected.preflight()['blockers'], [])
++        result = no_adapter.selected.run()
++        self.assertEqual(result['launcher_exit_code'], 0)
++        self.assertFalse((no_adapter.live / 'case-output').exists())
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- a/.github/workflows/static-ci.yml
++++ b/.github/workflows/static-ci.yml
+@@ -488,6 +488,8 @@
+           python -B -X utf8 tools/test_ck3_mod_acceptance_normal_quit_reviewer.py
+           if not "%errorlevel%"=="0" exit /b %errorlevel%
+           python -B -X utf8 tools/test_ck3_mod_acceptance_business_reviewer.py
++          if not "%errorlevel%"=="0" exit /b %errorlevel%
++          python -B -X utf8 tools/test_ck3_mod_acceptance_reviewer_prelaunch.py
+           if not "%errorlevel%"=="0" exit /b %errorlevel%
+           python -B -X utf8 tools/test_ck3_mod_acceptance_title_reference.py
+           if not "%errorlevel%"=="0" exit /b %errorlevel%

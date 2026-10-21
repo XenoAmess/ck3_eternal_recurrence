@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:40:36.254805+00:00",
+  "source_head": "e2578b59273b886a7ab58eff24ba76a161d84e6c",
+  "codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "all_expected_zero": true,
+  "Save_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\save\\candidate\\tools\\test_r08_writer_save_gate.py",
+    "bytes": 5113,
+    "sha256": "547cda5ba80b17b8047cb38f77febfe31ebb2674465c3e2685ee775158214f54"
+  },
+  "workflow_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\workflow\\static-ci.yml",
+    "bytes": 75687,
+    "sha256": "ad07945ac929f3de777f127cf2cecbaf2a4c863f9b3a1cdcc61a49858eb957ab"
+  },
+  "support_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\reviewer\\candidate\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 68212,
+      "sha256": "3306d79956827717596671425b11073a5cce4ee79ea9cca14b90cd140037801e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\reviewer\\candidate\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 5901,
+      "sha256": "f55fab8e2ea8e600255954cd80dfa926aff9255c586e67b372d8e79ce2856a73"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\reviewer\\candidate\\tools\\ck3_mod_acceptance_native_day.py",
+      "bytes": 8325,
+      "sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\reviewer\\candidate\\tools\\ck3_mod_acceptance_launcher_protocol_v1.py",
+      "bytes": 3835,
+      "sha256": "259555c239c583e5d0017fb097dd812078f85115471527e6583a1f11d74c8483"
+    }
+  ],
+  "only_added_to_upstream_Save": "obj import and four stronger branch assertions",
+  "temporary_remaining": [],
+  "D_W_Git_Game_SDK_Steam_mutation": false
+}

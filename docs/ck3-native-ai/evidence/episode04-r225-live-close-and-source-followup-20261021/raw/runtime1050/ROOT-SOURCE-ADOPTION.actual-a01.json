@@ -1,0 +1,48 @@
+{
+  "schema": "xar.pointer-live.Root-source-adoption.v1",
+  "owner": "Root",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:59:26Z",
+  "status": "SOURCE_CONFIG_AND_CONDITIONAL_SCOPE_BUILDER_ACCEPTED",
+  "source_freeze": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/SOURCE-FREEZE.actual-a02.json",
+    "bytes": 3440,
+    "sha256": "4691825f344361157854ef540082d911257d662fd637b3c20b3129fa7233cfb7"
+  },
+  "runtime": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/config-a01/runtime.actual-a02.json",
+    "bytes": 245070,
+    "sha256": "b521cc938138d65cdc506b8bf8cec87bd0fc88f360fcd397b0cdb0bd3745081c"
+  },
+  "case_inputs": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/config-a01/case-inputs.actual-a02.json",
+    "bytes": 3395,
+    "sha256": "f3afb0d6f8355d8416cf1701fc98122f6f26173406d9e4e587c26054247db1ca"
+  },
+  "scope_helper": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/root_scope_once.py",
+    "bytes": 17608,
+    "sha256": "32efa77845e7ac34e1928d9f2cb229823b97984ee9a9ef892902165c8558aa24"
+  },
+  "independent_peer": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/review-a01/INDEPENDENT-POINTER-SOURCE-PREP-REVIEW.actual-a01.json",
+    "bytes": 13629,
+    "sha256": "a6276043265db75f3d77c73cd3e05c2fbf50f8ec0072ed8c1a77d3e3554cb42a"
+  },
+  "Game_financial": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/capacity/GAME1024C1D-FINANCIAL0100.actual-a01.json",
+    "bytes": 5537,
+    "sha256": "eb53bf2f3756aa1d7bb56fdf8201040337b6817dc6effb30d120cc431eecaddf"
+  },
+  "root_actual_review": "Read first187 initial builderlines151e0a and full final274lines viaf305eb/f58d8a; new3 guard-source callsites78f9b5; complete SOURCE-FREEZE+AUTHOR-DELIVERY ccadf1/910a55. Core21/Q unchanged. Peer independently verified actual source8/public15 checks,246 localimports within1036source files and1047 full overlaypins. Reject helper-source2-card confusion; explicit typed Game schema/root/runtime/actualfrozen+prepared bindings; real ordinary owner/FILETIME/module metadata; atomic scope only after real AWAITING.",
+  "known_limits": "Actual standardCLI plan exit2 is expected unbound before realprepare, not passedGame.3570s from native_session timer excludes earlier host preprocessing; no absolute host-Popen completion guarantee. Actual min(originalhold,scene01:00)-1050 controls Scope and sameCaseClient guard at trueobserver Popen; normal Save/close still require actual receipts. EntryExact/parent return/paid/payer/cadence/fullR08 stay unqualified.",
+  "next_phase_owner": "cold_readwatch",
+  "next_phase_explicit_authorization": "After capacity actual closes this2.25MiB parent source phase with allwriters0 and activates the newchild scene1GiB C/1MiB D reservation/verified-consumption accounting, cold_readwatch may execute existing standard actualprepare and allocate once, retain original keeper/host Popen ownership, obtain fresh background Steam offline evidence and complete standard preflight. ActualGame launch additionally needs its exact sourcebound admission; no SteamUI/online or oldblueoverlay. Root will bind actual READY/real runpins in the reviewed typed preauthorization before scope watcher is started; scope itself must await the real owner pair. No unknown action replay.",
+  "maximum_actual_days": 1,
+  "maximum_observer_launches": 1,
+  "maximum_capture_ms": 30000,
+  "foreign_limit": 4096,
+  "scene_deadline_utc": "2026-10-21T01:00:00Z",
+  "source_stage_writers_after_this_record": 0,
+  "actual_Game_or_Scope_proven_by_this_record": false
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "xar.e04.root-early-reviewer-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:22:06Z",
+  "reviewer": "/root",
+  "baseline_commit": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+  "status": "SOURCE_ACCEPTED_PENDING_CANONICAL_INTEGRATION_AND_CI",
+  "accepted_patch": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-post-window-source-0130-a01/reviewer-preflight-a01/EARLY-REVIEWER-FINAL.candidate.patch",
+    "bytes": 16398,
+    "sha256": "02714249484441b84605c96af4699b535150f72a71732da23d378263921300df"
+  },
+  "source_freeze": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-post-window-source-0130-a01/reviewer-preflight-a01/SOURCE-FREEZE.actual-a02.json",
+    "bytes": 9165,
+    "sha256": "dcf29752983234764d4af8d20c55da562eb42b5abfd8c4af04dfe48f3dfad2a5"
+  },
+  "root_review": {
+    "full_patch_reads": ["ed398e", "e7de56"],
+    "source_freeze_full_read": "d6df1b",
+    "corrected_delivery_full_read": "6033e0",
+    "independent_patch_hash": "28efed",
+    "independent_corrected_freeze_hash": "336812",
+    "actual_test_outputs": ["ef8443", "e2d495"],
+    "actual_original_wait_read": "9c0f9a",
+    "static_baseline_comparison_read": "a6b61c"
+  },
+  "scope": "Existing canonical resolver at contextual adapter preflight and immediately before launcher; preserve constructor and normal-close identity checks",
+  "validation": {
+    "new_actual_methods_passed": 8,
+    "existing_actual_finally_method_passed": 1,
+    "old_missing_reviewer_regression_reproduced": true,
+    "mypy_baseline_diagnostics": 11,
+    "mypy_candidate_diagnostics": 11,
+    "mypy_introduced_diagnostics": 0,
+    "whole_repository_typecheck_pass": false
+  },
+  "limits": [
+    "No D/W or Git mutation has been accepted by this source-only adjudication.",
+    "No Game, Steam, SDK, native, formal-shot or R08 business qualification.",
+    "Original numeric64 wait receipts remain immutable; corrected freeze encodes exact birth identities as decimal strings."
+  ],
+  "review_by_utc": "2026-10-22T01:30:00Z"
+}

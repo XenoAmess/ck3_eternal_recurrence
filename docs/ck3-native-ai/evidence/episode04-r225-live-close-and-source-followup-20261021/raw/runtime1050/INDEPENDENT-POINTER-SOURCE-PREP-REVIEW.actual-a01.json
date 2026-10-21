@@ -1,0 +1,287 @@
+{
+  "schema": "xar.pointer-live.independent-source-prep-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:58:32.330453+00:00",
+  "reviewer": "public_preflight",
+  "status": "PASS_SOURCE_PREPARATION_ONLY",
+  "blocking_source_findings": [],
+  "source_freeze": {
+    "schema": "xar.pointer-live.source-preparation-successor.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "historical_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 34683,
+      "sha256": "870c3b9d60a4148f23d30a2e3f85df0796e65178f3943b6face15438561de2ba"
+    },
+    "source_join": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\source-join.actual-a02.json",
+      "bytes": 1982,
+      "sha256": "331cae93531c4b13a7100c659297cf5adf3f8fb109eef05b7bd841f650042f8a"
+    },
+    "runtime": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\runtime.actual-a02.json",
+      "bytes": 245070,
+      "sha256": "b521cc938138d65cdc506b8bf8cec87bd0fc88f360fcd397b0cdb0bd3745081c"
+    },
+    "case_inputs": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\case-inputs.actual-a02.json",
+      "bytes": 3395,
+      "sha256": "f3afb0d6f8355d8416cf1701fc98122f6f26173406d9e4e587c26054247db1ca"
+    },
+    "standard_argv": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\STANDARD-ARGV.prepared-a02.json",
+      "bytes": 5029,
+      "sha256": "886e4b9deb524b9019fd0865883ea0d5a03a4c9ef587b7d1d4eac486a46db353"
+    },
+    "ancestor_package_files": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\mod_bridge\\tools\\__init__.py",
+        "bytes": 71,
+        "sha256": "8996afccf7fff255e93141cb995a20d5b87f4cae7d5fdbf33e0b337b1c342f86"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vision\\__init__.py",
+        "bytes": 528,
+        "sha256": "6a7c559ed1d13acaee13df1476fadfa951fb8f17fa4a365646dcf762429738e3"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vision\\classifier.py",
+        "bytes": 25934,
+        "sha256": "e63124f59a2bfd5c7011ab70286db6aafcd038f4b6d9de07b381dddfa700e254"
+      }
+    ],
+    "qualified_native_source21_bytes_unchanged": true,
+    "public_hold_guard_revision": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\revision-a02\\pointer_read_public_models.py",
+        "bytes": 11604,
+        "sha256": "6e3283657d0b2db5a490dd3fc9077d565c724ff0492d5f4894f4bbaaef23abec"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\revision-a02\\r08_parent_pointer_read_controller.py",
+        "bytes": 20590,
+        "sha256": "ec25cd4dfa697a4cfc82ecdfbe2d5aad4993752de680078beeb294467a76e53c"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\revision-a02\\r08_parent_pointer_read_one_day.py",
+        "bytes": 10634,
+        "sha256": "27d51183057fb3c460bd60d924c9b76f102ea6b4279c12b524dbf3d575848f4e"
+      }
+    ],
+    "current_source_cap": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\capacity\\POINTER-LIVE-SOURCEPREP225-AMENDMENT.actual-a02.json",
+      "bytes": 3511,
+      "sha256": "dbd0abcc4bef72e720fba62ba38660f6e2185b2855f360288ab3f3b4347b46d0"
+    },
+    "actual_public_prepare_executed": false,
+    "Game_SDK_Steam_probe_EXE_executed": false,
+    "RootScope_before_actual_owner_pair_admitted": false,
+    "original_S0_fact": {
+      "pin": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+        "bytes": 74273410,
+        "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc"
+      },
+      "stat_dev_decimal": "7220568048185129294",
+      "stat_file_id_decimal": "5348024562126102",
+      "stat_mtime_ns_decimal": "1792349903637785500",
+      "native_FILETIME_not_claimed": true,
+      "observed_at_utc": "2026-10-20T23:28:58.222861+00:00"
+    },
+    "local_total_before_this_receipt": 2003081
+  },
+  "runtime": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\runtime.actual-a02.json",
+    "bytes": 245070,
+    "sha256": "b521cc938138d65cdc506b8bf8cec87bd0fc88f360fcd397b0cdb0bd3745081c"
+  },
+  "refs": {
+    "SOURCE-FREEZE.actual-a02.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\SOURCE-FREEZE.actual-a02.json",
+      "bytes": 3440,
+      "sha256": "4691825f344361157854ef540082d911257d662fd637b3c20b3129fa7233cfb7"
+    },
+    "AUTHOR-DELIVERY.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\AUTHOR-DELIVERY.actual-a01.json",
+      "bytes": 3116,
+      "sha256": "f110b6b5c6140195244d26b5647671d2b480d9132d2bf42f4807ffe63f083fea"
+    },
+    "root_scope_once.py": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\root_scope_once.py",
+      "bytes": 17608,
+      "sha256": "32efa77845e7ac34e1928d9f2cb229823b97984ee9a9ef892902165c8558aa24"
+    },
+    "checks-a01/METADATA-CONSUMER.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\METADATA-CONSUMER.actual-a01.json",
+      "bytes": 66612,
+      "sha256": "b72295e2e66c5105d1e4d42362b08e2ba0263d7f79b690179859290fdc4229c6"
+    },
+    "config-a01/TIMEBOUND-CONDITIONS.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\TIMEBOUND-CONDITIONS.actual-a01.json",
+      "bytes": 1146,
+      "sha256": "e2c2658d17046f7cab22067c9c24e74f94f01d4a1ef12bb902900e99e8b8edeb"
+    },
+    "config-a01/ROOT-PREAUTH.source-template-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\ROOT-PREAUTH.source-template-a01.json",
+      "bytes": 1410,
+      "sha256": "4258bab473ffb44526add178797515e66526195f96f8c5659312608ebcbe292c"
+    },
+    "config-a01/manifest.actual-a02.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\manifest.actual-a02.json",
+      "bytes": 2611,
+      "sha256": "cece443f128e8144e439a5a982dfc5ab22ced84de1443fa33acf8aa33f6f711a"
+    },
+    "config-a01/products.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\products.actual-a01.json",
+      "bytes": 2501,
+      "sha256": "ebc54e845894204974d709deb2b498051d07bf61b2c8ac2a802db94dfac55d42"
+    },
+    "capacity/POINTER-LIVE-SOURCEPREP2-FINANCIAL.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\capacity\\POINTER-LIVE-SOURCEPREP2-FINANCIAL.actual-a01.json",
+      "bytes": 3402,
+      "sha256": "89af86807db50369051b38e3ce2a7269018b7ad64f96f160eaaabedd4b06d78f"
+    },
+    "capacity/POINTER-LIVE-SOURCEPREP225-AMENDMENT.actual-a02.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\capacity\\POINTER-LIVE-SOURCEPREP225-AMENDMENT.actual-a02.json",
+      "bytes": 3511,
+      "sha256": "dbd0abcc4bef72e720fba62ba38660f6e2185b2855f360288ab3f3b4347b46d0"
+    },
+    "capacity/GAME1024C1D-FINANCIAL0100.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\capacity\\GAME1024C1D-FINANCIAL0100.actual-a01.json",
+      "bytes": 5537,
+      "sha256": "eb53bf2f3756aa1d7bb56fdf8201040337b6817dc6effb30d120cc431eecaddf"
+    }
+  },
+  "original_author_waits": {
+    "source-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\source-a01.ORIGINAL-WAIT.actual.json",
+        "bytes": 540,
+        "sha256": "afd858db6f85b6d28f67859537c01b3a870b5b284f215651addff10596c2fffd"
+      },
+      "pid": 8584,
+      "created": "134370124965873945",
+      "exit_code": 0
+    },
+    "mypy-a09": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\mypy-a09.ORIGINAL-WAIT.actual.json",
+        "bytes": 1346,
+        "sha256": "3f9df5f7e62993353c4af8b903c3764a720dc1d3f324307779c80f4b7cd519c4"
+      },
+      "pid": 14676,
+      "created": "134370140950501992",
+      "exit_code": 0
+    },
+    "mypy-public-a02": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\mypy-public-a02.ORIGINAL-WAIT.actual.json",
+        "bytes": 3826,
+        "sha256": "c3e999dd553a94df88cca659ccbb8bcf3527304ccc9c896414992400064f51f7"
+      },
+      "pid": 27544,
+      "created": "134370137951677578",
+      "exit_code": 0
+    },
+    "metadata-a03": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\metadata-a03.ORIGINAL-WAIT.actual.json",
+        "bytes": 544,
+        "sha256": "0e4b739fadfb628c23c955885cded69e55d154245bdd6428d33c4b2cdf45ec10"
+      },
+      "pid": 4584,
+      "created": "134370140062266134",
+      "exit_code": 0
+    },
+    "boundaries-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\boundaries-a01.ORIGINAL-WAIT.actual.json",
+        "bytes": 552,
+        "sha256": "16c4f696c017914d00af789ac66a51a68334d5c0ff08106fb3f10e168555bc7a"
+      },
+      "pid": 35004,
+      "created": "134370131721877218",
+      "exit_code": 0
+    },
+    "plan-a02": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\plan-a02.ORIGINAL-WAIT.actual.json",
+        "bytes": 919,
+        "sha256": "1a3a62a2065aa37aca48f49e688ecd5f205fa4f470a558fe0dd14c61f0c1fa63"
+      },
+      "pid": 28848,
+      "created": "134370139573310636",
+      "exit_code": 2
+    },
+    "finalize-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\checks-a01\\finalize-a01.ORIGINAL-WAIT.actual.json",
+        "bytes": 545,
+        "sha256": "58b5a51402a92152491eb720fc3c46986aecf0e8901cd09e08c412cdd78e4974"
+      },
+      "pid": 16184,
+      "created": "134370141044259569",
+      "exit_code": 0
+    }
+  },
+  "resolved_findings": [
+    "Three automatic ancestor imports now pinned.",
+    "Original client hold1050 rechecked after prepare and before observer claim/Popen; old sources preserved.",
+    "RootScope checks real financial purpose and actual frozen runtime/helper/index/contract, fresh original pair/FILETIME/module/hold; atomic create-once.",
+    "Optional entry_environment suspicion withdrawn; actual field absent."
+  ],
+  "closure": {
+    "base_files": 1030,
+    "selected_pointer_files": 37,
+    "join_files": 6,
+    "allocator_overlay_files": 1047,
+    "missing": [],
+    "mismatched": [],
+    "actual_metadata_consumer_project_imports": 246,
+    "actual_metadata_consumer_closure_files": 1036,
+    "actual_native_Q_source_files": 21,
+    "all_21_bytes_equal": true,
+    "observer_exe_body_read_by_reviewer": false
+  },
+  "route_and_cleanup": [
+    "Standard entry -> Selection -> real r10 adapter -> pin-verified explicit pointer loader -> original CaseClient; no fake client identity/private host launch.",
+    "Real consumer rejects bad date/pin and guard refusal before claim/Popen/day. Once day, unknown never replayed; after query follows original observer wait and complete typed restore/detach.",
+    "Shared ordinary Save native bracketing/materialization + OFF-clear + restored proof gate original normal_close; oneLife remains unconfirmed. Exact manual-review helper exists; no future GUI result asserted."
+  ],
+  "time_scope": {
+    "conditional_correction": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\TIMEBOUND-CONDITIONS.actual-a01.json",
+      "bytes": 1146,
+      "sha256": "e2c2658d17046f7cab22067c9c24e74f94f01d4a1ef12bb902900e99e8b8edeb"
+    },
+    "native_session_total_seconds": 3570,
+    "formula": "1800+1650+120",
+    "host_preparation_excluded": true,
+    "absolute_host_Popen_to_end_guarantee": false,
+    "source": "D host lines4170,4176-79,4268-70; native_session862-863",
+    "required_runtime_reserve": "Original CaseClient remaining >1050 AND scene deadline remaining >=1050, checked before observer admission; watcher min(original hold,01:00)-now>=1050",
+    "scene_deadline_utc": "2026-10-21T01:00:00Z",
+    "automatic_deadline_extension": false
+  },
+  "evidence_limits": {
+    "standard_CLI_plan_exit_code": 2,
+    "reason": "Public plan only describes unprepared Selection; budgets/S0 remain unbound, original blockers preserved.",
+    "whole_repository_typecheck_claimed": false,
+    "prepare": false,
+    "allocation": false,
+    "Game": false,
+    "Steam_probe": false,
+    "SDK": false,
+    "EXE_execution": false,
+    "VM_query_by_reviewer": false,
+    "RootScope": false,
+    "full_R08_qualification": false,
+    "oneLife_persistence": false,
+    "tests_rerun_by_reviewer": false
+  },
+  "next_stage_boundaries": [
+    "Settle source parent future before independent scene child writes. Runtime watcher must not use old source aggregate writer/deadline.",
+    "Actual prepare/allocate/probe/Game require new Root stage authority, fresh actual Steam and READY. Real prepared-case plan remains pending.",
+    "Root template remains false; no prewritten owner/Scope. Standalone cold/native historical identities do not grant Game/payment/fullR08."
+  ]
+}

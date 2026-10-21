@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "e2578b59273b886a7ab58eff24ba76a161d84e6c",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--strict-equality",
+    "--follow-imports=skip",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\save\\baseline\\tools\\test_r08_writer_save_gate.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01",
+  "started_at_utc": "2026-10-21T01:40:17.132564+00:00",
+  "completed_at_utc": "2026-10-21T01:40:26.541293+00:00",
+  "pid": 22652,
+  "creation_filetime": "134370204171335146",
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "identity_diagnostic": null,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\receipts\\STRICT-MYPY-SAVE-baseline.stdout.log",
+    "bytes": 43,
+    "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\receipts\\STRICT-MYPY-SAVE-baseline.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "D_W_Git_Game_SDK_Steam_mutation": false
+}

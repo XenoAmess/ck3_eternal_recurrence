@@ -1,5 +1,12 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-21 01:17 UTC：R0225实际一天与有限正常闭场，target研究未通过
+
+`machine_id: desktop-3fevhd2-1c74096080`。R0225日期53149056→53149080实际一天；observer因foreign_limit4096退出1，target0/window_complete=false，未取得目标post-read或实付。110个armed实例中109个存活完整六DR恢复等于original，另1个真实退出单列。Root有限验收确认payment/army OFFclear、clock quiescent、正常GUI/retained OS/native/host/keeper闭场和screen done7763；Root仅审委托GUI回执，未另作屏幕操作。ordinarySave的producer物化与前后同native owner bracketing通过，原consumer rehashfalse保留，作者postclose独立实hash另列；atomic owner/文件内部actor/oneLife仍未知。
+
+本次候选以e2578b5为集成基线，保留上游完整Save夹具与严格类型门禁，只叠加4个更强分支断言、reviewer前置resolver及三处1050秒真实守卫；本次候选冻结时尚未Git发布，最终发布状态以实际发布回执与Git提交为准；不覆盖上游Steam/timeline/native-driver变更。使用实际e257 client/background/native_day/launcher_protocol的reviewer8方法与既有finally1通过；Save上游/候选各1方法2分支及新增严格mypy均通过。旧entry的mypy11→11无新增记录保留，这些有限结果不等于全clean或新head CI绿色。正式7/11、研究10/14、业务7/11、B0/2、ABC0/3不变，paid/payer/cadence/fullR08和影片仍未完成。研究文件可供智能体阅读参考，普通planner不autoload。SDK3和R176旧raw的后继实际回收取代旧23:00可读性快照，lossless替代载体继续保留。详见[本轮实际与source边界](../ck3-native-ai/episode04-r225-live-close-and-source-followup-20261021.md)。
+
+
 ## 2026-10-20 23:00 UTC：普通Save/public v2源码集成，R03限定正例使正式7/11
 
 `machine_id: desktop-3fevhd2-1c74096080`。Root已采用普通Save3/public pointer-read v2五源与c710 CI夹具修正；本批以各原件精确pins集成，实际commit/push及后继head CI须看新发布回执。SAVE helper4c8eb1/writer1329f4/test99be6c同闭包；host原本已正确跟随native_campaign实际玩家/自然继承，本次补shared cleanup对producer物化及Save前后同native owner的消费，不生成oneLife episode。source-only六focused/四源mypy通过不等于游戏Save；旧oneLife unconfirmed、atomic Save时刻owner/文件内部actor/native FILETIME边界仍保留。SAVE手写时间戳转录勘误与RD旧采用真实晚8.965880秒分开，不追认及时。

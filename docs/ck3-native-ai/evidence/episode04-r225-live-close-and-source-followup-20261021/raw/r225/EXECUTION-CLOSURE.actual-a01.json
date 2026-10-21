@@ -1,0 +1,108 @@
+{
+  "schema": "xar.pointer-live.executor-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:10:29.016339+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0225",
+  "actual_operator": "/root/cold_readwatch",
+  "status": "EXECUTION_CLOSED_RESEARCH_WINDOW_FAILED",
+  "Root_business_acceptance_granted": false,
+  "observer": {
+    "original_wait": 1,
+    "reason": "foreign_limit",
+    "foreign_count": 4096,
+    "capture_count": 0,
+    "window_complete": false,
+    "target_post_read_qualified": false
+  },
+  "restore": {
+    "armed_threads": 110,
+    "surviving_full6DR_readbacks": 109,
+    "readbacks_equal_original": true,
+    "thread_exited": [
+      {
+        "thread_id": 12156,
+        "thread_generation": 1,
+        "thread_created": "134370177227496332"
+      }
+    ],
+    "exited_thread_not_counted_as_readback": true,
+    "DR_masks_applied": false
+  },
+  "exact_day": {
+    "start": 53149056,
+    "end": 53149080,
+    "days": 1,
+    "verified": true
+  },
+  "normal_close_qualified_from_shared_entry": true,
+  "screen_release_sequence": 7763,
+  "ordinary_Save_consumer_postclose_rehash": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74141604,
+    "sha256": "c3f9742de3bd451abdbc7fee37cbc5b77f67f5cac75ddeb672091babf0adf7e6"
+  },
+  "one_life_identity_proven": false,
+  "entryExact": false,
+  "full_R08_qualified": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\case-output\\R08-PARENT-RESULT.json",
+      "bytes": 57653,
+      "sha256": "0d18fbb9366cde79c113dc445edc49b7bedf6bb9e6d7e5a80b4b703fc31552c0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\case-output\\normal-close-result.json",
+      "bytes": 10310,
+      "sha256": "fc3d9b585e306b855914b64e81fa4ed31fd9b77d87a7e1b37d194ef7051536a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "45b548bd113b01de2fa94f8051ea625dd7ff106d571718fd3b190de7e82c2e71"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\case-output\\r08-pointer-control\\parent.raw.ndjson",
+      "bytes": 45081,
+      "sha256": "419cd6f6391e7e86b1ec317fff8b80793f7274729c13e0fb1171702590be6d79"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\case-output\\r08-pointer-control\\OBSERVER-ORIGINAL-WAIT.actual.json",
+      "bytes": 207,
+      "sha256": "b93abef22a1cc96a489cb828d7cd03b9e8e4b0ba6388e6a167dda945a6a86982"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "ba0e61dd8d54b3313421f7eb2b0e9aec03015c481ef4778f89949ebed5cf4891"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0225\\keeper-actual-parent-exit.json",
+      "bytes": 621,
+      "sha256": "3668e7d8c518b6d4e6c88ea3ff9a5a9fc0ad69e6c536397d36495a52d7b89726"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ops\\next-existing-case-continuation-a01.WAIT.json",
+      "bytes": 1271,
+      "sha256": "18c2de3d4a00584325ee8cf6b1df550f5b9b9e11ba3a91104e1787bc52f17739"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ops\\next-allocate-a01.WAIT.json",
+      "bytes": 2461,
+      "sha256": "40212f5b762b909b2d40ac5e550a0572c9d02d1b8530ce0de7204f9dd0e61737"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ops\\next-public-run-a01.WAIT.json",
+      "bytes": 1854,
+      "sha256": "6775821f4b7b29c80d87bc7333ddc29b1a9c85343aa37ccd14653cc4a65dcf91"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ops\\next-screen-release-cas-a01.stdout",
+      "bytes": 1353,
+      "sha256": "2595e9c10357664c44a28818f0a2344784c25c94405a4a9b4cef82ee2048030a"
+    }
+  ],
+  "review_by_utc": "2026-10-22T01:30:00Z"
+}

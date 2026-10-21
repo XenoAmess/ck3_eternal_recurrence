@@ -1,0 +1,6 @@
+test_failed_entry_finally_uses_actual_hold_fallback_and_keeps_failure (__main__.ExistingFinallyOnly.test_failed_entry_finally_uses_actual_hold_fallback_and_keeps_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.039s
+
+OK

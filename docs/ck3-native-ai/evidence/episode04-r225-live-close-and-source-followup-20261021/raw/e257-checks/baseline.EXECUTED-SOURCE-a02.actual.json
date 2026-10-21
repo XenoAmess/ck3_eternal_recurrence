@@ -1,0 +1,254 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_HEAD": "e2578b59273b886a7ab58eff24ba76a161d84e6c",
+  "variant": "baseline",
+  "normal_imports": true,
+  "primary_before": [
+    {
+      "target": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    }
+  ],
+  "primary_after": [
+    {
+      "target": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    }
+  ],
+  "executed_sources_exact_e257": [
+    {
+      "target": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "actual_path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 18032,
+      "sha256": "8f30c0e963a18046baede607d1b5a9b3fb1e5d823c51533f0c3700d81a41ab8c"
+    },
+    {
+      "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "actual_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observer_research_sampling_control.py",
+      "bytes": 13969,
+      "sha256": "927fdbb94ae5c07a14f4039595c865af3b28eac0ecdb0fb629ead9b38016b5ae"
+    }
+  ],
+  "repository_function_trace": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "begin_save",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "cleanup_result",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "cleanup_result.<locals>.<genexpr>",
+      "calls": 4
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "finite_json",
+      "calls": 72
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "integer",
+      "calls": 16
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "native_owner",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "nullable_representation",
+      "calls": 4
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "obj",
+      "calls": 10
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "obj.<locals>.<genexpr>",
+      "calls": 62
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "require",
+      "calls": 14
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "retained_client",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "text",
+      "calls": 86
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "function": "unconfirmed",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "CloseGate.__init__",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "CloseGate.__init__.<locals>.guarded",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl.<locals>.<lambda>",
+      "calls": 8
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl.<locals>.army_off",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl.<locals>.army_off.<locals>.<genexpr>",
+      "calls": 20
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl.<locals>.attempt",
+      "calls": 14
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl.<locals>.payment_off",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "_cleanup_writer_window_impl.<locals>.save_once",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "cleanup_clock",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "cleanup_writer_window",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "normalize_cleanup_clock",
+      "calls": 2
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "normalize_cleanup_clock.<locals>.<genexpr>",
+      "calls": 42
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "function": "sampling_control",
+      "calls": 4
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "function": "need",
+      "calls": 8
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observer_research_sampling_control.py",
+      "function": "normalize_result",
+      "calls": 4
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observer_research_sampling_control.py",
+      "function": "require",
+      "calls": 568
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observer_research_sampling_control.py",
+      "function": "selected_families",
+      "calls": 4
+    }
+  ],
+  "real_driver_runtime_calls": [],
+  "imported_driver": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\driver.py",
+    "sha256": "571c3776ac958d38d15906412f7f7af24cc6be098d62341a479ec905f48a9c31",
+    "canonical_equivalence_claimed": false,
+    "reason": "D is frozen older; imported dependency, no real driver function executed"
+  },
+  "Git_source_original_waits": [
+    {
+      "target": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "pid": 34372,
+      "creation_filetime": "134370204109770035",
+      "original_wait": 0
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/ordinary_save_contract.py",
+      "pid": 37272,
+      "creation_filetime": "134370204110789519",
+      "original_wait": 0
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "pid": 37812,
+      "creation_filetime": "134370204118351243",
+      "original_wait": 0
+    },
+    {
+      "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "pid": 34288,
+      "creation_filetime": "134370204119378892",
+      "original_wait": 0
+    }
+  ],
+  "tests_run": 1,
+  "failures": 0,
+  "errors": 0,
+  "Game_SDK_native_D_W_Git_mutation": false
+}

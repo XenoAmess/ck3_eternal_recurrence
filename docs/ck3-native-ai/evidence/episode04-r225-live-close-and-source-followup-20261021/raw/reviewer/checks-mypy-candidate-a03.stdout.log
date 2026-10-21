@@ -1,0 +1,13 @@
+candidate\tools\ck3_mod_acceptance.py:157: error: Cannot find implementation or library stub for module named "ck3_mod_acceptance_graphics_cache"  [import-not-found]
+candidate\tools\ck3_mod_acceptance.py:157: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+candidate\tools\ck3_mod_acceptance.py:263: error: Item "None" of "Path | None" has no attribute "parent"  [union-attr]
+candidate\tools\ck3_mod_acceptance.py:299: error: Argument 1 to "path_at" has incompatible type "Any | None"; expected "str"  [arg-type]
+candidate\tools\ck3_mod_acceptance.py:314: error: Incompatible types in assignment (expression has type "None", variable has type "Path")  [assignment]
+candidate\tools\ck3_mod_acceptance.py:537: error: Argument 1 to "Path" has incompatible type "str | None"; expected "str | PathLike[str]"  [arg-type]
+candidate\tools\ck3_mod_acceptance.py:617: error: Item "None" of "Path | None" has no attribute "parent"  [union-attr]
+candidate\tools\ck3_mod_acceptance.py:789: error: Cannot find implementation or library stub for module named "ck3_mod_acceptance_prepare"  [import-not-found]
+candidate\tools\ck3_mod_acceptance.py:835: error: Item "None" of "Path | None" has no attribute "parent"  [union-attr]
+candidate\tools\ck3_mod_acceptance.py:836: error: Item "None" of "Path | None" has no attribute "parent"  [union-attr]
+candidate\tools\ck3_mod_acceptance.py:902: error: Cannot find implementation or library stub for module named "ck3_mod_acceptance_gui"  [import-not-found]
+candidate\tools\ck3_mod_acceptance.py:927: error: Cannot find implementation or library stub for module named "ck3_mod_acceptance_allocate"  [import-not-found]
+Found 11 errors in 1 file (checked 1 source file)

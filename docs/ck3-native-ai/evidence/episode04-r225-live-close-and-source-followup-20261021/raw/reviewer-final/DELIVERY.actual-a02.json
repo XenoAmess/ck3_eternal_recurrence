@@ -1,0 +1,99 @@
+{
+  "schema": "xar.e04.early-reviewer-delivery-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:20:24.555676+00:00",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 9165,
+    "sha256": "dcf29752983234764d4af8d20c55da562eb42b5abfd8c4af04dfe48f3dfad2a5"
+  },
+  "final_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER-FINAL.candidate.patch",
+    "bytes": 16398,
+    "sha256": "02714249484441b84605c96af4699b535150f72a71732da23d378263921300df"
+  },
+  "readme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\README.md",
+    "bytes": 2836,
+    "sha256": "b41f1e528af02f4046d7281e4b5fe123cd798ab8aeec8790a08b90be13a24956"
+  },
+  "copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\MINIMAL-COPYPLAN.actual-a02.json",
+    "bytes": 19332,
+    "sha256": "a2ff206be2e78a06535f276e6a92ac41f3d0c5356b00ca9896c928671a5c1a33"
+  },
+  "canonical_source_mappings": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance.py",
+        "bytes": 61981,
+        "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+      },
+      "base_bytes": 61488,
+      "base_sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_operator_quit.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32557,
+        "sha256": "668d5b95837aca7b13ec521b6069fbabf068c6ae54f90fa26848ad5d6ff3a4e9"
+      },
+      "base_bytes": 32029,
+      "base_sha256": "3bc4cc5bacc7a5337435d08dc06ddf86558b0bf98f21176337ab0b899059f92b"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_reviewer_prelaunch.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_reviewer_prelaunch.py",
+        "bytes": 12617,
+        "sha256": "3f8422f952510a22630822bb07dafa47ac437663f8a509dad989caef405a4b70"
+      },
+      "new_file": true
+    }
+  ],
+  "workflow_delta": {
+    "repo_path": ".github/workflows/static-ci.yml",
+    "base_bytes": 73026,
+    "base_sha256": "84f613e0fccb9985a5c4ccac180ba16c3efc12c0d02b4d8b1734c634986a5f92",
+    "result_bytes": 73164,
+    "result_sha256": "732e35f6531d903ae84b51b83e9db6249f7ab4fd4120ed5d7a191ab695ba9d30",
+    "patch": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER-CI.candidate.patch",
+      "bytes": 654,
+      "sha256": "92b8a0fb08288f60c0c17ddcabcbeda150622f028d746620a2715aaeb4330e77"
+    }
+  },
+  "check_summary": {
+    "candidate_new_methods_pass": 8,
+    "existing_modified_finally_method_pass": 1,
+    "baseline_missing_reviewer_method_failed_as_expected": true,
+    "syntax_modified_sources_pass": 3
+  },
+  "typecheck": "11 identical baseline/candidate diagnostics; no introduced diagnostic; whole PASS false",
+  "temporary_remaining": [],
+  "all_source_and_metadata_writers_stopped_after_delivery": true,
+  "capacity_hardcap_bytes": 524288,
+  "current_bytes_before_this_delivery": 448994,
+  "hard_deadline_utc": "2026-10-21T01:30:00Z",
+  "no_live_changes": true,
+  "supersedes_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\DELIVERY.actual-a01.json",
+    "bytes": 3824,
+    "sha256": "95413c4856bdaa3980fe70ac5602b816218d982ab4d8686f3e55f9a8a10843dd"
+  },
+  "representation_correction": {
+    "prior_freeze": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 8609,
+      "sha256": "c7e3c571b7ae3fc7645988a56891c1abd0b42d28aabce0ff3da1d2858ff06cef"
+    },
+    "prior_observed_at_utc": "2026-10-21T01:18:27.602112+00:00",
+    "change": "Only original wait birth identities encoded as canonical unsigned decimal strings",
+    "conversion": "Python json.loads exact int -> str; no JavaScript Number/float conversion",
+    "raw_historical_numeric64_original_wait_files_unchanged": true,
+    "production_sources_tests_patch_and_check_results_unchanged": true,
+    "new_tests_run": false
+  }
+}

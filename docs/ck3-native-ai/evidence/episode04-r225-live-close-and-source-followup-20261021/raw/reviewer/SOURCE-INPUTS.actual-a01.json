@@ -1,0 +1,92 @@
+{
+  "schema": "xar.e04.early-reviewer-exact-source-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:11:47.141925+00:00",
+  "source_repo": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+  "source_read": "git show exact immutable object; no lazy fetch",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\capacity\\SOURCE2C1D-FINANCIAL0130.actual-a01.json",
+    "bytes": 5557,
+    "sha256": "1983748aef1f161f24e4af82ecc6da871e912212cd3783c488c56d5cce56b9af"
+  },
+  "sources": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+      "git_blob_sha1": "1af160da352bda0432873a115ea175a015a49f5e",
+      "original_bytes": 61488,
+      "original_sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance.py",
+        "bytes": 61981,
+        "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+      },
+      "baseline": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\baseline\\tools\\ck3_mod_acceptance.py",
+        "bytes": 61488,
+        "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+      }
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_operator_quit.py",
+      "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+      "git_blob_sha1": "077ae7f1ef62e8593e379d254aa48d9c336ab910",
+      "original_bytes": 32029,
+      "original_sha256": "3bc4cc5bacc7a5337435d08dc06ddf86558b0bf98f21176337ab0b899059f92b",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32557,
+        "sha256": "668d5b95837aca7b13ec521b6069fbabf068c6ae54f90fa26848ad5d6ff3a4e9"
+      },
+      "baseline": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\baseline\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32029,
+        "sha256": "3bc4cc5bacc7a5337435d08dc06ddf86558b0bf98f21176337ab0b899059f92b"
+      }
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_client.py",
+      "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+      "git_blob_sha1": "80fb37010d82d82a6a612d04d657ba97e9171ace",
+      "original_bytes": 68500,
+      "original_sha256": "b26ac84bf92af3408a83b94c76c72f9665ae09c2dced91dc2507f72ca2ad4abb",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 68500,
+        "sha256": "b26ac84bf92af3408a83b94c76c72f9665ae09c2dced91dc2507f72ca2ad4abb"
+      }
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_types.py",
+      "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+      "git_blob_sha1": "512c0f34e7c5442c916717a7c121adf57dc195d2",
+      "original_bytes": 5228,
+      "original_sha256": "60e43b3f88f3018a33bdf9cf2f27a41eddf779fa11fb68a43dd189f9553d3f92",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance_background_types.py",
+        "bytes": 5228,
+        "sha256": "60e43b3f88f3018a33bdf9cf2f27a41eddf779fa11fb68a43dd189f9553d3f92"
+      }
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_native_day.py",
+      "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+      "git_blob_sha1": "fbe535aef2f59755b4a85d43db4fcaa0e53f746d",
+      "original_bytes": 8325,
+      "original_sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace",
+      "candidate": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance_native_day.py",
+        "bytes": 8325,
+        "sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace"
+      }
+    }
+  ],
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER.candidate.patch",
+    "bytes": 2783,
+    "sha256": "1ae2438f2a21dc6e267c98349698ff81e44b486e352f3b21ccb2a77f92c98fe0"
+  },
+  "git_mutation": false,
+  "game_sdk_ui": false
+}

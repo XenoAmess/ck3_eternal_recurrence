@@ -1,0 +1,99 @@
+{
+  "schema": "xar.r176-keeper.post-retirement-availability.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:26:50.775176+00:00",
+  "Root_substitution": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\ROOT-EXACT2-PURPOSE-SUBSTITUTION.actual-a01.json",
+    "bytes": 4946,
+    "sha256": "e768418bcf5d00a950723a0852983572e0d188b90b2b39dffa922d6126b26667"
+  },
+  "Root_execution_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\ROOT-EXACT2-EXECUTION-APPROVAL.actual-a01.json",
+    "bytes": 2536,
+    "sha256": "ea4e965db6c18064eadc7f08665933aa3f9995b3c49aa726b2f3464cc91f6766"
+  },
+  "actual_transaction_final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\FINAL.actual.json",
+    "bytes": 3858,
+    "sha256": "be6e8cbc1bcf56d561081523548c16fca6fcb9b97982e708a6fc58160f669e3c"
+  },
+  "mappings": [
+    {
+      "kind": "before",
+      "historical_source_machine_id": "unknown",
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-before.json",
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1125899907708075",
+        "bytes": 193474721,
+        "mtime_ns": "1791245191768030400",
+        "fstat_ctime_ns": "1791245191768030400"
+      },
+      "original_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+      "original_readable": false,
+      "absence_verified_now": true,
+      "carrier_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\before.json.gz",
+      "carrier_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1688849862180337",
+        "bytes": 8562240,
+        "mtime_ns": "1792536452340650600",
+        "fstat_ctime_ns": "1792536452340650600"
+      },
+      "carrier_bytes": 8562240,
+      "carrier_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67",
+      "carrier_current_metadata_readback": true,
+      "carrier_regular_singlelink_finalpath_verified": true,
+      "carrier_allocation_bytes": 8564736,
+      "full_crc_and_content_sha_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\FINAL.actual.json",
+        "bytes": 3858,
+        "sha256": "be6e8cbc1bcf56d561081523548c16fca6fcb9b97982e708a6fc58160f669e3c"
+      },
+      "carrier_body_rehashed_by_this_receipt": false,
+      "same_name_substitute": false
+    },
+    {
+      "kind": "after",
+      "historical_source_machine_id": "unknown",
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-after.json",
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "844424930997500",
+        "bytes": 193481991,
+        "mtime_ns": "1791245222909094600",
+        "fstat_ctime_ns": "1791245222909094600"
+      },
+      "original_sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+      "original_readable": false,
+      "absence_verified_now": true,
+      "carrier_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\after.json.gz",
+      "carrier_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1688849862180351",
+        "bytes": 8563211,
+        "mtime_ns": "1792536462095132000",
+        "fstat_ctime_ns": "1792536462095132000"
+      },
+      "carrier_bytes": 8563211,
+      "carrier_sha256": "87d7f2bbd533e9ee61dd54c2d9573a2ed0eab7e07ebb55418fcb97a75af91b4d",
+      "carrier_current_metadata_readback": true,
+      "carrier_regular_singlelink_finalpath_verified": true,
+      "carrier_allocation_bytes": 8564736,
+      "full_crc_and_content_sha_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\FINAL.actual.json",
+        "bytes": 3858,
+        "sha256": "be6e8cbc1bcf56d561081523548c16fca6fcb9b97982e708a6fc58160f669e3c"
+      },
+      "carrier_body_rehashed_by_this_receipt": false,
+      "same_name_substitute": false
+    }
+  ],
+  "logical_original_bytes_retired": 386956712,
+  "retained_gzip_bytes": 17125451,
+  "keeper_review_due_utc": "2026-10-25T06:59:39.751702Z",
+  "automatic_protection_extension": false,
+  "physical_credit_bytes": 0,
+  "historical_records_rewritten": false,
+  "availability": "Both exact original raw paths are no longer readable. Complete plaintext bytes remain in these exact validated gzip carriers; future stream decode or separately admitted new derived filename only, never recreate original evidence paths."
+}

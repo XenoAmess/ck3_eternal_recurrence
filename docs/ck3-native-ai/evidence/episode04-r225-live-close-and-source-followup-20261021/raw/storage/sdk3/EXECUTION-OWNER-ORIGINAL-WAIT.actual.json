@@ -1,0 +1,48 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T22:46:30.175044+00:00",
+  "finished_at_utc": "2026-10-20T22:46:46.053796+00:00",
+  "entry_card_age_seconds": 13.27709,
+  "original_popen_pid": 23944,
+  "creation_filetime": "134370099901760332",
+  "birth_error": null,
+  "actual_original_popen_wait_returncode": 0,
+  "owned_running_after_wait": false,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\retire_sdk_exact.py",
+    "--plan",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+    "--execute",
+    "--execution-admission",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-EXACT3-RETIREMENT-ACTUAL.actual-a06.json"
+  ],
+  "card": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-EXACT3-RETIREMENT-ACTUAL.actual-a06.json",
+    "bytes": 4245,
+    "sha256": "07f5c9c576279872f78f276a697d2a1658d8569e3119852bd8c49d960056cfc9"
+  },
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\retire_sdk_exact.py",
+    "bytes": 23756,
+    "sha256": "8d4d66c1a969924db5d4818fbd18ece594133b4513b5f4892014470e506af815"
+  },
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\RETIRE-PLAN.prepared-a01.json",
+    "bytes": 2454,
+    "sha256": "58456bc6470a66480ec9f2b4b203877f722ed5d6e018a10868153fb9065bf2f8"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

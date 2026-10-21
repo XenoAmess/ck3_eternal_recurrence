@@ -1,0 +1,62 @@
+{
+  "schema": "xar.ci.r08-save-fixture.delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "TEST_ONLY_CANDIDATE_FOCUSED_AND_TYPES_PASS_NOT_INTEGRATED",
+  "source_head": "81ac4459a19451c8435d91f16f9d6ede7038a7ac",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 10351,
+    "sha256": "1d3eece127afec237876443b646f3e00c59002bf5656e1049ca0cc3250b4f0a5"
+  },
+  "candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\candidate\\tools\\test_r08_writer_save_gate.py",
+    "bytes": 5380,
+    "sha256": "550d6546b127b5c4d32d0a7acd05c1794cb1dec92c33a63bba2ef60ed153ab4f"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\SAVE-FIXTURE.candidate.patch",
+    "bytes": 5536,
+    "sha256": "201a972517f8229fb101ab63886c341a313849f706f000b17bffad09d4bd428d"
+  },
+  "checks": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\BASELINE-a02.ORIGINAL-WAIT.actual.json",
+      "bytes": 4300,
+      "sha256": "00bfcd6a5cf52a890601abed7eac4bbc49063352170fa518af4a3a66c073a6da"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\CANDIDATE-a02.ORIGINAL-WAIT.actual.json",
+      "bytes": 4302,
+      "sha256": "8409471ee1ebd2a9d7609ed816874ff2003954c818c82adf70045796b56c59e7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\MYPY-a02.ORIGINAL-WAIT.actual.json",
+      "bytes": 4963,
+      "sha256": "ef351433270a65b475d549669f5688e63b7be9516fe241d27370710e0e30344d"
+    }
+  ],
+  "source_scope": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\baseline.EXECUTED-SOURCE-a02.actual.json",
+      "bytes": 10241,
+      "sha256": "e5ce12a88609d390cb9b87bc7773b4fb9a34473e3a6f00e76182419652603ccd"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\candidate.EXECUTED-SOURCE-a02.actual.json",
+      "bytes": 11340,
+      "sha256": "a5b4de788f5d9469e8293079fe158e6a5b8cf4e3bd250ee263a9ae2aac2b0489"
+    }
+  ],
+  "root_cause": "Old fake client lacks retained handle/PID; old before frame lacks native player/diagnostics/managed campaign fields. Valid production Save preflight rejected it before intended unknown-result injection.",
+  "change": "Synthetic client/frame and explicit callback types only; preserve all 8 original assertions and add 4 assertions proving intended timeout branches, after request count and received Save_result preservation.",
+  "production_changes": 0,
+  "real_driver_runtime_calls": 0,
+  "full_import_closure_equivalence_claimed": false,
+  "full_CI_pass_claimed": false,
+  "Git_mutation": false,
+  "Game_SDK_native_UI_Steam_actions": false,
+  "pending": "Independent candidate review and separately admitted integration/CI; current game run remains independent.",
+  "code_writers": 0,
+  "owned_Popen": 0,
+  "observed_at_utc": "2026-10-21T00:46:59.599858+00:00"
+}

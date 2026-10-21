@@ -1,0 +1,53 @@
+{
+  "schema": "xar.pointer-live.original-command-wait.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "operation": "next-allocate-a01",
+  "pid": 29428,
+  "created_filetime": "134370169057659015",
+  "identity_diagnostic": null,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance.py",
+    "allocate",
+    "--runtime",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\config-a02\\runtime.actual-a01.json",
+    "--products",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\config-a01\\products.actual-a01.json",
+    "--product",
+    "war-episode04-r10",
+    "--case",
+    "r10-common-preparation",
+    "--prepared-case",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\prepared-a02\\prepared-case.json",
+    "--attempt",
+    "a230",
+    "--keeper-output",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\keeper-a02",
+    "--previous-live",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0224",
+    "--previous-keeper",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\keeper-a01",
+    "--previous-release",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\allocated-unrun-close-a01\\admin_done.canonical.json",
+    "--previous-failure-close",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\allocated-unrun-close-a01\\ALLOCATED-UNRUN.actual.json"
+  ],
+  "shell": false,
+  "started_at_utc": "2026-10-21T00:41:45.762401+00:00",
+  "finished_at_utc": "2026-10-21T01:04:58.931381+00:00",
+  "authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\capacity\\POINTER-SUCCESSOR-ALLOCATE0130.actual-a05.json",
+    "bytes": 6294,
+    "sha256": "a0249b9e0b260f288b7e52aa1b89bd358a28955d059dc401188013d638e11496"
+  },
+  "creator_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ops\\command_custody_a02.py",
+    "bytes": 3413,
+    "sha256": "9c0c076ffecab6be442b4365955f6b2820c1b97e8c2e81ea84cd874591218850"
+  },
+  "actual_original_popen_wait": true,
+  "exit_code": 0
+}

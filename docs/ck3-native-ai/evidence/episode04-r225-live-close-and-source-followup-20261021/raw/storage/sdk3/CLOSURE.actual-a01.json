@@ -1,0 +1,168 @@
+{
+  "schema": "xar.old-sdk-three-aggregate.retirement-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:47:57.695793+00:00",
+  "status": "COMPLETE_EXACT_THREE_ORIGINALS_RETIRED",
+  "historical_source_machine_id": "unknown",
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\DELIVERY.actual-a01.json",
+    "bytes": 18946,
+    "sha256": "37f2c034008cafbfd779b93f5b58d6a9e1423e71c75f2a0f0c22758c815104c2"
+  },
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\review-a01\\INDEPENDENT-SDK-RETIRE-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 5874,
+    "sha256": "48c452dcb3643065dd158c29e48297ad21ba17b3a51625e7b6e043dda9bc8c7e"
+  },
+  "Root_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-EXACT3-RETIREMENT-APPROVAL.actual-a01.json",
+    "bytes": 3006,
+    "sha256": "17350a58af1c10f10666137fa53a3e3024dd05a0341ffd19f0393d38533787ce"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-EXACT3-RETIREMENT-ACTUAL.actual-a06.json",
+    "bytes": 4245,
+    "sha256": "07f5c9c576279872f78f276a697d2a1658d8569e3119852bd8c49d960056cfc9"
+  },
+  "expired_entry": {
+    "card": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\capacity\\SDK-EXACT3-RETIREMENT-ACTUAL.actual-a05.json",
+      "bytes": 4245,
+      "sha256": "3e2676e3962569eeffb3a2272f547c95ca2f108e77e9b780720de4232cf1c86c"
+    },
+    "age_seconds_at_refusal": 45.713528,
+    "original_helper_popen_count": 0,
+    "original_body_bytes_read": 0,
+    "delete_count": 0,
+    "evidence": "Actual exec tool ab23ad stdout ValueError before Popen; this is a later closure annotation, no contemporaneous file recreated"
+  },
+  "actual_original_popen": {
+    "pid": 23944,
+    "creation_filetime": "134370099901760332",
+    "returncode": 0,
+    "owned_running": false,
+    "original_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-ORIGINAL-WAIT.actual.json",
+      "bytes": 2252,
+      "sha256": "584ece6585314bd7b01b233a86b55772d9b131630aeed2ff7c23d197af9187c2"
+    }
+  },
+  "actual_entry_card_age_seconds": 13.27709,
+  "actual_transaction_started_at_utc": "2026-10-20T22:46:30.175044+00:00",
+  "actual_original_wait_at_utc": "2026-10-20T22:46:46.053796+00:00",
+  "results": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\mcp-calls.jsonl",
+      "original_bytes": 303227579,
+      "original_sha256": "b7dfe418c6155bcd64853540c3951f3654fa8dcaaf54840d4ab36cecc112bca8",
+      "current_original_readable": false,
+      "actual_absence_verified": true,
+      "origin_machine_id": "unknown",
+      "same_name_substitute": false
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\mcp-calls.jsonl",
+      "original_bytes": 191399668,
+      "original_sha256": "ab74a3b1bbb286d5a560883677933229b3bed7a00f679b2d10e42c05c34f10e2",
+      "current_original_readable": false,
+      "actual_absence_verified": true,
+      "origin_machine_id": "unknown",
+      "same_name_substitute": false
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\mcp-calls.jsonl",
+      "original_bytes": 287041520,
+      "original_sha256": "637219dd8a64d3330a71934a5404822c987b90dac624835b9ec4df4d05caed93",
+      "current_original_readable": false,
+      "actual_absence_verified": true,
+      "origin_machine_id": "unknown",
+      "same_name_substitute": false
+    }
+  ],
+  "logical_original_bytes_retired": 781668767,
+  "same_delete_held_handle_sha256_bytes": 781668767,
+  "keepers_read_locked_through_disposition": 2954,
+  "retained_immutable_proof_chain": true,
+  "all_actual_payload": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\01-INTENT.actual.json",
+      "bytes": 683,
+      "sha256": "31849211d4ec55d62ac5923bf5742be2ce799e08e7632a9fbb0bd18c4a2293c4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\01-RESULT.actual.json",
+      "bytes": 745,
+      "sha256": "3ad77834a499490f9f4aca735ffedfbdda8c990c81989e5010139da2da296484"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\02-INTENT.actual.json",
+      "bytes": 677,
+      "sha256": "7253f1478737ea4ab4ee7d831fc971138120b239c52214af1755e7da840b3f3c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\02-RESULT.actual.json",
+      "bytes": 739,
+      "sha256": "3672b2952721a8146fafc6ada83b833a0e1006a6cb750e970088b1f941e95e1b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\03-INTENT.actual.json",
+      "bytes": 677,
+      "sha256": "5006ebb795dd422f17882d41c83849a510b2a1e7322b0f84bd8f185f393e4215"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\03-RESULT.actual.json",
+      "bytes": 739,
+      "sha256": "3cb7a636dd02f571e474b9a3313e3e27cb2986f2195740d2f3c671f53848dcb7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-ORIGINAL-WAIT.actual.json",
+      "bytes": 2252,
+      "sha256": "584ece6585314bd7b01b233a86b55772d9b131630aeed2ff7c23d197af9187c2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\RETIREMENT-FINAL.actual.json",
+      "bytes": 2799,
+      "sha256": "f5b460c03c05e3e64b21d7b23c9af0cfc47e643d699f6678f373e5b82e648a56"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\retire-source-a01\\execution-a01\\RETIREMENT-START.actual.json",
+      "bytes": 1006,
+      "sha256": "6bd77569cf5fac64e343acdb15a0e8104427d7732660f59cc23eca1d8e72c3ef"
+    }
+  ],
+  "retention": {
+    "keep_request_response_count": 2954,
+    "original_response_and_request_bodies_not_deleted": true,
+    "ordered_indexes": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\source-candidate-a01\\EXACT3-REPLAY-DELIVERY.actual-a01.json",
+      "bytes": 9848,
+      "sha256": "fb36d56334b837d98a84e29c9d6c0ddd58b0f7306044a4c85c07e36d90f3ee3e"
+    },
+    "purpose_release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-old-sdk-exact-replay-2245-a01\\ROOT-THREE-AGGREGATE-PURPOSE-RELEASE.actual-a01.json",
+      "bytes": 3226,
+      "sha256": "016c0a606596767bcc10880c481321531ae46158793c616753bdc42b41c151df"
+    },
+    "review_at_utc": "2026-10-27T22:26:00Z",
+    "old_originals_no_longer_readable": true,
+    "reconstruction": "Only a new derived filename may be reconstructed from retained exact responses and ordered indexes using the retained replay source contract; never recreate original log paths",
+    "post_transaction_independent_keeper_metadata_audit": "Root/capacity independent readback pending; this receipt does not substitute for it"
+  },
+  "source_files_unchanged": true,
+  "remaining_heavy_write_bytes": 0,
+  "remaining_owned_helper_popen": 0,
+  "remaining_author_metadata_writers_after_this_receipt": 0,
+  "read_errors": [],
+  "physical_free_credit_bytes": 0,
+  "capacity_settlement": "Independent volume/accounting readback required; helper claims no physical credit"
+}

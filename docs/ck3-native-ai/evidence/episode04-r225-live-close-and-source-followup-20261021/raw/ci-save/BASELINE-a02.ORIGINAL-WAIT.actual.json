@@ -1,0 +1,93 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T00:43:08.048661+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\run_fixture_normal_a02.py",
+    "baseline"
+  ],
+  "pid": 20228,
+  "creation_filetime": "134370169860695234",
+  "actual_original_popen_wait": true,
+  "returncode": 1,
+  "diagnostics": [],
+  "source_before": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\baseline\\tools\\test_r08_writer_save_gate.py",
+      "bytes": 3448,
+      "sha256": "4d766f76e72348ed95db6b67d09c1b78f3c7ff13d8e0b1b453a97637088e8156"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\candidate\\tools\\test_r08_writer_save_gate.py",
+      "bytes": 5380,
+      "sha256": "550d6546b127b5c4d32d0a7acd05c1794cb1dec92c33a63bba2ef60ed153ab4f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\run_fixture_normal_a02.py",
+      "bytes": 5883,
+      "sha256": "af1bc31c37f3f63207eed6108502d211fcf8cfb4413fd92b8c83b7682370df0b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\run_source_checks_a02.py",
+      "bytes": 4483,
+      "sha256": "d9b0576f6f7a614828dd1d8a9849b4ba110750805f1c838917f15f734df5e2cb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    }
+  ],
+  "source_after": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\baseline\\tools\\test_r08_writer_save_gate.py",
+      "bytes": 3448,
+      "sha256": "4d766f76e72348ed95db6b67d09c1b78f3c7ff13d8e0b1b453a97637088e8156"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\candidate\\tools\\test_r08_writer_save_gate.py",
+      "bytes": 5380,
+      "sha256": "550d6546b127b5c4d32d0a7acd05c1794cb1dec92c33a63bba2ef60ed153ab4f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\run_fixture_normal_a02.py",
+      "bytes": 5883,
+      "sha256": "af1bc31c37f3f63207eed6108502d211fcf8cfb4413fd92b8c83b7682370df0b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\run_source_checks_a02.py",
+      "bytes": 4483,
+      "sha256": "d9b0576f6f7a614828dd1d8a9849b4ba110750805f1c838917f15f734df5e2cb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\ordinary_save_contract.py",
+      "bytes": 12638,
+      "sha256": "4c8eb1e31b91ad6eb5e92484cf9e150d2a23019812cc989e7a94025bf2995bbb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\immutable-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 24161,
+      "sha256": "1329f4a6d98a3a33176a70da6ea208bcd87cb9d0c022348382e8f827af17ff14"
+    }
+  ],
+  "sources_unchanged": true,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\BASELINE-a02.stdout.log",
+    "bytes": 281,
+    "sha256": "78abbb6b16b37889829a51d20ed351bb7d723e0b4bc477871ae4d4e3e7893055"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ci-save-fixture-a01\\BASELINE-a02.stderr.log",
+    "bytes": 2405,
+    "sha256": "7d226601200ee6ac0e87fbc664530989b97c5ed1ea638446ac4d6d1d4c76dc54"
+  },
+  "Game_SDK_native_D_W_Git_mutation": false
+}

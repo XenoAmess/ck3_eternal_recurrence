@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.root-next-publication-cold-purpose.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:22:06Z",
+  "owner": "/root",
+  "authorization_basis": "User requested continued mechanism research, runtime repairs, evidence and increased concurrency; repository instructions authorize integration of valuable results into master.",
+  "capacity_policy": "docs/storage-retention-policy.md and docs/storage-retention-policy.json",
+  "prior_runtime": "R0225 closed; original failures preserved; no new game or observer admission",
+  "prior_source_phase_deadline_utc": "2026-10-21T01:30:00Z",
+  "phase_status": "PURPOSE_ONLY_REQUIRE_SEPARATE_ACTUAL_FINANCIAL_ADMISSION",
+  "hard_deadline_utc": "2026-10-21T02:30:00Z",
+  "new_quota_exception_authorized": false,
+  "independent_phases": [
+    {
+      "name": "canonical-publication",
+      "owner": "/root/predecessor_admission",
+      "root": "C:/ck3-e04-resume-20261020-a01/r08-canonical-publication-0230-a01",
+      "full_unspent_future_bytes": {"C:/": 8388608, "D:/": 8388608},
+      "scope": [
+        "Exact reviewed copyplan and portable evidence from the closed R225 and frozen source lanes",
+        "Single controlled integration in the existing W worktree, preserve upstream master changes and frozen D",
+        "Targeted integration checks, exact staged and committed object verification, ordinary commit and non-force push to master",
+        "One exact-head CI status inspection after actual completion, bounded logs if failure"
+      ],
+      "requires_before_mutation": ["Actual financial GREEN admission", "Root review and exact copyplan execution admission"],
+      "no": ["Game or Steam", "native or media build", "force push or GC", "rewrite frozen evidence", "unreviewed whole-tree copy"]
+    },
+    {
+      "name": "postload-native-cold-qualification",
+      "owner": "/root/native_prepare",
+      "root": "C:/ck3-e04-resume-20261020-a01/r08-postload-cold-0230-a01",
+      "full_unspent_future_bytes": {"C:/": 33554432, "D:/": 4194304},
+      "scope": [
+        "New source copies and typed runner/admission plumbing for the independently named postload execution mode",
+        "Resolve independent source-review blockers before compilation",
+        "Build only declared project observer and synthetic cold target into new exact paths",
+        "Existing authorized Defender broker registration with exact SYSTEM readback for these two new project EXE paths",
+        "Finite synthetic cold qualification, retained original Popen and actual waits, exact six-register restoration and negative cases",
+        "Independent source and raw-evidence review; report remaining public adapter and Game qualification gaps"
+      ],
+      "requires_before_mutation": ["Actual financial GREEN admission"],
+      "requires_before_build": ["Frozen source inputs with known review blockers resolved", "Root source/build execution admission"],
+      "no": ["CK3 or Steam", "desktop or recording", "old binary/Q reuse as new qualification", "SYSTEM changes beyond exact authorized project EXE paths", "unknown-action replay"]
+    }
+  ],
+  "accounting": "Keep each independent full future reserve until its writers and original process custodians have actually closed. No candidate credit; no runtime materialization shrink. Recheck shared C base quota and C/D floors including all other active claims before each heavy write.",
+  "expiry": "At deadline stop new work and close actual custodians, or obtain a distinct explicit purpose and financial admission before dependent continuation."
+}

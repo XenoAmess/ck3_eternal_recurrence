@@ -1,0 +1,72 @@
+{
+  "schema": "xar.pointer-live.root-limited-closure-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:17:42Z",
+  "reviewer": "/root",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0225",
+  "status": "LIMITED_CLOSURE_ACCEPTED_RESEARCH_TARGET_FAILED",
+  "machine_identity_evidence": "tools/ck3_live_run_id.py machine; original exit 0; tool chunk 501aba",
+  "author_closure": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/scene-a01/next-a02/EXECUTION-CLOSURE.actual-a01.json",
+    "bytes": 4857,
+    "sha256": "fc6c3dfeff40ac77073f54f4c6941696b2328f13cd6d60118f85e799f80a258e",
+    "independent_full_read": "626e59",
+    "independent_sha256_readback": "104f0b"
+  },
+  "accepted": {
+    "actual_one_day": true,
+    "date_raw_start": 53149056,
+    "date_raw_end": 53149080,
+    "payment_OFFclear": true,
+    "army_families_OFFclear": true,
+    "clock_quiescent": true,
+    "armed_threads": 110,
+    "surviving_full_six_DR_readbacks_equal_original": 109,
+    "actually_exited_thread_generations": 1,
+    "exited_thread_counted_as_readback": false,
+    "ordinary_Save": "producer_materialization_and_native_bracketing",
+    "ordinary_Save_consumer_rehashed_file_in_original_result": false,
+    "author_postclose_independent_hash_is_separate_evidence": true,
+    "normal_GUI_review": "delegated operator /root/cold_readwatch",
+    "original_retained_OS_exit": 0,
+    "native_finished_process_exit_and_cleanup": true,
+    "host_original_Popen_wait": 0,
+    "keeper_original_wait": 0,
+    "screen_final_sequence": 7763,
+    "screen_final_state": "done",
+    "screen_final_resources": []
+  },
+  "actual_target_result": {
+    "observer_original_wait": 1,
+    "reason": "foreign_limit",
+    "foreign_count": 4096,
+    "target_captures": 0,
+    "window_complete": false,
+    "target_post_read_qualified": false,
+    "entryExact": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null,
+    "one_life_identity_proven": false,
+    "full_R08_qualified": false,
+    "formal_dynamic_shots_accepted": 7,
+    "formal_dynamic_shots_total": 11
+  },
+  "additional_independent_reads": [
+    "normal-close-result.json: 1ae41a; SHA readback bb0da8",
+    "actual-retained-handle-os-exit.json: f4ee23",
+    "host-original-process-exit.json: 924bf4",
+    "keeper-actual-parent-exit.json: 07ca29",
+    "R08-PARENT-TERMINAL.json: a819dc",
+    "R08-PARENT-RESULT.json cleanup and ordinary_save_proof: 7f25f7, c7cea9",
+    "actual screen release stdout: f146e0"
+  ],
+  "limits": [
+    "Root reviewed the delegated GUI receipt; Root did not operate or independently view the desktop in this adjudication.",
+    "One advanced day does not prove the observer covered the whole day.",
+    "The retained first foreign sample does not describe the distribution of all 4096 foreign events.",
+    "Ordinary Save does not prove atomic Save owner, file-internal actor, or one-life persistence.",
+    "Actual clean closure does not qualify target observation, payment, cadence, or full R08."
+  ],
+  "review_by_utc": "2026-10-22T01:30:00Z"
+}

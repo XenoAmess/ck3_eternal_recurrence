@@ -1,0 +1,131 @@
+{
+  "schema": "xar.r176-keeper.exact-two-retirement-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:26:50.776859+00:00",
+  "status": "COMPLETE_TWO_RAW_REPLICAS_REPLACED_BY_RETAINED_VERIFIED_GZIP",
+  "availability": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\AVAILABILITY.actual-a01.json",
+    "bytes": 4831,
+    "sha256": "aa87900204da9d109adc187f22dbd670d340153539e292a58c32bf87a9fa2472"
+  },
+  "final": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\FINAL.actual.json",
+    "bytes": 3858,
+    "sha256": "be6e8cbc1bcf56d561081523548c16fca6fcb9b97982e708a6fc58160f669e3c"
+  },
+  "original_execution_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-a02-ORIGINAL-WAIT.actual.json",
+    "bytes": 2258,
+    "sha256": "7095d9a61dc6f2de62141aba205b7fc70d940cea1511b13c125eda282c27010c"
+  },
+  "actual_helper": {
+    "pid": 27236,
+    "creation_filetime": "134370122675275695",
+    "original_wait": 0,
+    "running": false
+  },
+  "actual_watcher": {
+    "pid": 37108,
+    "creation_filetime": null,
+    "closure_basis": "Original exec session29137 actual exit0; READY tool chunk5552eb and completionf00635, no creation time manufactured"
+  },
+  "entry_age_seconds": 0.186838,
+  "failed_pre_entry_attempt": {
+    "original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\EXECUTION-OWNER-ORIGINAL-WAIT.actual.json",
+      "bytes": 2224,
+      "sha256": "6fd43ce973fbec9af0d67c304d433b10c11ae904e2702031d5effad29425e270"
+    },
+    "outer_entry_age_seconds": 29.964101,
+    "child_authority_age_not_recorded_separately": true,
+    "closed_original_popen": true,
+    "zero_original_or_carrier_handle_allocations": true,
+    "zero_body_reads_or_deletions": true,
+    "disposition": "No transaction replay; Root explicitly allowed new fresh a09 after known pre-entry refusal"
+  },
+  "actual_card": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\capacity\\R176-EXACT2-RETIREMENT-ACTUAL.actual-a09.json",
+    "bytes": 4186,
+    "sha256": "fcfb6967b77097cb426438bc7a444b56ba16b6d12bd6738a5ca6f245f42add0a"
+  },
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\DELIVERY.actual-a01.json",
+    "bytes": 15744,
+    "sha256": "f7208169f06bdb5366dfb02aea1a97b0fc01712484c3bef581c520e394004acf"
+  },
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\review-retire-a01\\INDEPENDENT-EXACT2-RETIRE-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 17870,
+    "sha256": "13c01f92472ccd92fa78893c315ad89a5fff61492ef2a2bb02895086658a4ec4"
+  },
+  "source_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\retire_keeper2.py",
+    "bytes": 22486,
+    "sha256": "03f0cf45a8d6b8c58bca66c9346265f5fe1cf3a9805705a297a219ce2e24cf26"
+  },
+  "source_files_unchanged": true,
+  "all_execution_payload_before_closure": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\01-INTENT.actual.json",
+      "bytes": 1135,
+      "sha256": "55a9873dce58aa2b0b516089694d48236f686ea1203d639fd757630f95d2132f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\01-RESULT.actual.json",
+      "bytes": 1210,
+      "sha256": "462446176db2f2fb192a816f15557aa5239f66b70daf3820fd9029c272195e97"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\02-INTENT.actual.json",
+      "bytes": 1131,
+      "sha256": "98e528e52992ea32452941a0334e2b84c163405adfe3416b715255072e32d6dc"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\02-RESULT.actual.json",
+      "bytes": 1206,
+      "sha256": "d02c22a76cf5c5e53f8fed869fe40c2b4c79e3946c734b555b2bf2b2f2aedce2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\AVAILABILITY.actual-a01.json",
+      "bytes": 4831,
+      "sha256": "aa87900204da9d109adc187f22dbd670d340153539e292a58c32bf87a9fa2472"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-a02-ORIGINAL-WAIT.actual.json",
+      "bytes": 2258,
+      "sha256": "7095d9a61dc6f2de62141aba205b7fc70d940cea1511b13c125eda282c27010c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-a02.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\EXECUTION-OWNER-a02.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\FINAL.actual.json",
+      "bytes": 3858,
+      "sha256": "be6e8cbc1bcf56d561081523548c16fca6fcb9b97982e708a6fc58160f669e3c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\retire-source-a01\\execution-a01\\START.actual.json",
+      "bytes": 2742,
+      "sha256": "b3de9fc0b8ee649129277cbde980b68155437ee4a51ff87f668b3c31f0bcb7f5"
+    }
+  ],
+  "same_delete_held_raw_sha_bytes": 386956712,
+  "whole_carrier_crc_and_compressed_sha_bytes": 17125451,
+  "uncompressed_payload_files_created": 0,
+  "originals_no_longer_readable": 2,
+  "remaining_heavy_write_bytes": 0,
+  "remaining_owned_execution_children": 0,
+  "remaining_author_writers_after_this_receipt": 0,
+  "temporary_files": 0,
+  "physical_credit_bytes": 0,
+  "capacity_and_independent_actual_readback": "Separate Root/reviewer/capacity readback, not asserted by source-only review",
+  "retention_review_utc": "2026-10-25T06:59:39.751702Z",
+  "hard_deadline_utc": "2026-10-20T23:30:00Z"
+}

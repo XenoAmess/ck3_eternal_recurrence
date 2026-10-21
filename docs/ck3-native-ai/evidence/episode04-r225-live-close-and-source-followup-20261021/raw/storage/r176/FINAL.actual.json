@@ -1,0 +1,93 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:24:31.622357+00:00",
+  "origin_machine_id": "unknown",
+  "status": "COMPLETE",
+  "error": null,
+  "results": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T23:24:31.454072+00:00",
+      "origin_machine_id": "unknown",
+      "kind": "before",
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-before.json",
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1125899907708075",
+        "bytes": 193474721,
+        "mtime_ns": "1791245191768030400",
+        "fstat_ctime_ns": "1791245191768030400"
+      },
+      "original_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+      "gzip_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\before.json.gz",
+      "gzip_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1688849862180337",
+        "bytes": 8562240,
+        "mtime_ns": "1792536452340650600",
+        "fstat_ctime_ns": "1792536452340650600"
+      },
+      "gzip_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67",
+      "phase": "RESULT",
+      "original_readable_before": true,
+      "intended_absent_after": true,
+      "absence_verified": true,
+      "original_readable": false,
+      "both_gzip_carriers_still_available": true
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T23:24:31.555014+00:00",
+      "origin_machine_id": "unknown",
+      "kind": "after",
+      "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-after.json",
+      "original_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "844424930997500",
+        "bytes": 193481991,
+        "mtime_ns": "1791245222909094600",
+        "fstat_ctime_ns": "1791245222909094600"
+      },
+      "original_sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+      "gzip_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\after.json.gz",
+      "gzip_identity": {
+        "volume_serial": "13886423844274364792",
+        "file_id": "1688849862180351",
+        "bytes": 8563211,
+        "mtime_ns": "1792536462095132000",
+        "fstat_ctime_ns": "1792536462095132000"
+      },
+      "gzip_sha256": "87d7f2bbd533e9ee61dd54c2d9573a2ed0eab7e07ebb55418fcb97a75af91b4d",
+      "phase": "RESULT",
+      "original_readable_before": true,
+      "intended_absent_after": true,
+      "absence_verified": true,
+      "original_readable": false,
+      "both_gzip_carriers_still_available": true
+    }
+  ],
+  "carrier_verification": [
+    {
+      "compressed_bytes": 8562240,
+      "compressed_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67",
+      "decompressed_bytes": 193474721,
+      "decompressed_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+      "plain_crc32": "6d1f2b28",
+      "gzip_crc_and_isize_verified": true,
+      "whole_single_member_verified": true
+    },
+    {
+      "compressed_bytes": 8563211,
+      "compressed_sha256": "87d7f2bbd533e9ee61dd54c2d9573a2ed0eab7e07ebb55418fcb97a75af91b4d",
+      "decompressed_bytes": 193481991,
+      "decompressed_sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286",
+      "plain_crc32": "bd4ad7fe",
+      "gzip_crc_and_isize_verified": true,
+      "whole_single_member_verified": true
+    }
+  ],
+  "raw_originals_no_longer_readable": 2,
+  "carrier_protection_review_utc": "2026-10-25T06:59:39.751702Z",
+  "physical_credit_bytes": 0,
+  "no_same_name_substitute": true
+}

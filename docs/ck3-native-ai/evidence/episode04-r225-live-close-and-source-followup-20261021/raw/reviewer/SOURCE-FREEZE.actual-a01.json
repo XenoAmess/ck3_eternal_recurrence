@@ -1,0 +1,197 @@
+{
+  "schema": "xar.e04.early-reviewer-source-freeze-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:18:27.602112+00:00",
+  "source_repo": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+  "source_inputs": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-INPUTS.actual-a01.json",
+    "bytes": 4770,
+    "sha256": "a931473d7a94596be6bb50c8c3390b44b294ec6b87e59a4fba07e1488d8ea52d"
+  },
+  "canonical_source_mappings": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance.py",
+        "bytes": 61981,
+        "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+      },
+      "base_bytes": 61488,
+      "base_sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_operator_quit.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32557,
+        "sha256": "668d5b95837aca7b13ec521b6069fbabf068c6ae54f90fa26848ad5d6ff3a4e9"
+      },
+      "base_bytes": 32029,
+      "base_sha256": "3bc4cc5bacc7a5337435d08dc06ddf86558b0bf98f21176337ab0b899059f92b"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_reviewer_prelaunch.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_reviewer_prelaunch.py",
+        "bytes": 12617,
+        "sha256": "3f8422f952510a22630822bb07dafa47ac437663f8a509dad989caef405a4b70"
+      },
+      "new_file": true
+    }
+  ],
+  "workflow_delta": {
+    "repo_path": ".github/workflows/static-ci.yml",
+    "base_bytes": 73026,
+    "base_sha256": "84f613e0fccb9985a5c4ccac180ba16c3efc12c0d02b4d8b1734c634986a5f92",
+    "result_bytes": 73164,
+    "result_sha256": "732e35f6531d903ae84b51b83e9db6249f7ab4fd4120ed5d7a191ab695ba9d30",
+    "patch": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER-CI.candidate.patch",
+      "bytes": 654,
+      "sha256": "92b8a0fb08288f60c0c17ddcabcbeda150622f028d746620a2715aaeb4330e77"
+    }
+  },
+  "final_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER-FINAL.candidate.patch",
+    "bytes": 16398,
+    "sha256": "02714249484441b84605c96af4699b535150f72a71732da23d378263921300df"
+  },
+  "static_comparison": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\STATIC-COMPARISON.actual-a01.json",
+    "bytes": 1759,
+    "sha256": "e466bd02800d9838840c6fa6c74ffd0c085dc86d1155ca5406d090c105d9b0d5"
+  },
+  "actual_original_waits": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2469,
+        "sha256": "1acbfa3cf0338319821b76c2723cd9698b72e6d841fed1e95e42e47ac29f8ebc"
+      },
+      "pid": 34116,
+      "creation_time_100ns": 134370188172652881,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-existing-finally-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2367,
+        "sha256": "a5f07fc064a54325a817c69abbaf937bafb01d6c07973bd04a114b120fcc2d9d"
+      },
+      "pid": 6904,
+      "creation_time_100ns": 134370189113244389,
+      "returncode": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-focused-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2384,
+        "sha256": "25b0f5425359e6cb96d5974ffce938c9d3e5343dc05761cc54e16b35f6bfdfc1"
+      },
+      "pid": 24924,
+      "creation_time_100ns": 134370188182024098,
+      "returncode": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2484,
+        "sha256": "10674dfdce47df3ee23b7ad0b4d9d3682f80a9983f36cd943b191ae5fcf2eda4"
+      },
+      "pid": 17568,
+      "creation_time_100ns": 134370188296814613,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2488,
+        "sha256": "8b61b446a4b94fd914166363b9292c6fe8936cad228d834de2d501f221724265"
+      },
+      "pid": 33172,
+      "creation_time_100ns": 134370189112978642,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2488,
+        "sha256": "bde3de8b53d8658ce4ac9c0001e3e936936a6aec37922458fc5c5e3d93964224"
+      },
+      "pid": 13320,
+      "creation_time_100ns": 134370189732867665,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2487,
+        "sha256": "80d77fb7236bdcf480373b69b08b73c61804749d72ce536cd9873296ec0ce1fd"
+      },
+      "pid": 27292,
+      "creation_time_100ns": 134370188296788061,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2491,
+        "sha256": "432089b4c829321321df21a1d108222fcdcad8946208cae146078e1e75d34d51"
+      },
+      "pid": 33608,
+      "creation_time_100ns": 134370189113017547,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2491,
+        "sha256": "575c93b454f72501481b300177295f8ec0625545117faef973593da3d5ad88c2"
+      },
+      "pid": 11492,
+      "creation_time_100ns": 134370189733069716,
+      "returncode": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-syntax-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2859,
+        "sha256": "bb6f6fd2ba7e2005e9c69ed9e2eb53ebbe603efe1fdb2bbe208610f94f9bbea3"
+      },
+      "pid": 37760,
+      "creation_time_100ns": 134370188297013333,
+      "returncode": 0
+    }
+  ],
+  "patch_parse": {
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\PATCH-NUMSTAT.stdout.log",
+      "bytes": 177,
+      "sha256": "2d4a682a9a6837932022a33c94814e46e643e056b3501504169cdbf5e423a3ed"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\PATCH-NUMSTAT.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "not_apply_check": true
+  },
+  "finite_checks": {
+    "candidate_new_methods_pass": 8,
+    "existing_modified_finally_method_pass": 1,
+    "baseline_missing_reviewer_method_failed_as_expected": true,
+    "syntax_modified_sources_pass": 3
+  },
+  "temporary_remaining": [],
+  "production_change": "Resolve existing canonical reviewer during contextual adapter preflight and immediately before launcher",
+  "limits": [
+    "Not a game or Steam qualification",
+    "No native/SDK/UI actions",
+    "No D/W or Git mutations",
+    "No change to resolver identity/delegation semantics",
+    "Mypy retains eleven identical baseline diagnostics; not a full PASS"
+  ],
+  "writer_state": "source_frozen; final delivery metadata only"
+}

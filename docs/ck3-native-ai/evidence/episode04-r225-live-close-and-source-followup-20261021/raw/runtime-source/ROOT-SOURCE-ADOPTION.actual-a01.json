@@ -1,0 +1,38 @@
+{
+  "schema": "xar.pointer-live.root-successor-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T00:39:54Z",
+  "owner": "Root",
+  "source_adopted": true,
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 2706,
+    "sha256": "dc59d680810c43e6122533518dadc9b811b585f597663de89ae88d949b15a545"
+  },
+  "runtime": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\config-a02\\runtime.actual-a01.json",
+    "bytes": 246510,
+    "sha256": "ef1187cbe87e0a0b53dff5c5c5e4f30169e068f8a52ee80d9c530e98d24c80eb"
+  },
+  "financial": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\capacity\\GAME1024C1D-FINANCIAL0130.actual-a03.json",
+    "bytes": 8916,
+    "sha256": "f7794d97b0f20c590ed03c724a8aa7630d8bdd7cdc49e5b67acbef1a8cd1e8bc"
+  },
+  "evidence": [
+    "Root actual helper delta848289 and full generatorfe06c1/STDARGV0e856c/freeze0ce0b1.",
+    "Actual modified3 strict follow-imports silent/no-incremental PID34936 wait0, stdout Success3; helpers --help34424 wait0. Original frozen-dependency3 diagnostics retained; no whole-closure strict claim.",
+    "Standard new prepare17616 wait0 and prepared-plan596 wait0, actual --prepared-case bound. Root read original receipts8d735e/4652a0/2007e4/3652f2 and custody full source0e8547.",
+    "Independent peer already reports exact1047 retained+5 new overlay, no source/config/financial blockers; final actual-check confirmation required before allocation."
+  ],
+  "actual_allocator_once_admitted_after_conditions": true,
+  "conditions": [
+    "Final independent peer pass and fresh full all-claims GREEN within existing1GiB/512-448-64/metadata32.",
+    "Use only new namespace state-a02/userdirs-a02/prepared-a02/keeper-a02 and exactR224 allocated-unrun predecessor release7743; choose actual globally-unused attempt.",
+    "Retain original allocator/keeper Popen until actual waits; send actual READY pin immediately for Root canonical authorization.",
+    "Start one reviewed new Root watcher, then new background Steam/preflight/run with existing immediate-before-Game freshness gate. All preparation/source/funding completed before allocation."
+  ],
+  "Game_Popen_not_yet_admitted_by_this_source_record": true,
+  "scope": "Source and one standard allocation only; separate actual READY/Root authorization and runtime admission precede first Game/one observer/day1. No recording or native rebuild.",
+  "hard_deadline_utc": "2026-10-21T01:30:00Z"
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "xar.pointer-live.original-command-wait.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "operation": "next-existing-case-continuation-a01",
+  "pid": 24260,
+  "created_filetime": "134370176565950991",
+  "identity_diagnostic": null,
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\source\\continue_existing_case_a01.py",
+    "--execute-Root-known-precase-continuation"
+  ],
+  "shell": false,
+  "started_at_utc": "2026-10-21T00:54:16.591901+00:00",
+  "finished_at_utc": "2026-10-21T01:03:49.084757+00:00",
+  "authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\next-a02\\ROOT-PRECASE-RESUME-ADMISSION.actual-a01.json",
+    "bytes": 1860,
+    "sha256": "c5d5f8cfc41702acd612b18d18a01f19f7a88bacc583dd6769d5abe258cf2d12"
+  },
+  "creator_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-pointer-live-0030-a01\\scene-a01\\ops\\command_custody_a02.py",
+    "bytes": 3413,
+    "sha256": "9c0c076ffecab6be442b4365955f6b2820c1b97e8c2e81ea84cd874591218850"
+  },
+  "actual_original_popen_wait": true,
+  "exit_code": 0
+}

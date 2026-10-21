@@ -1,0 +1,6 @@
+test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit (save_gate_source_fixture.SaveGate.test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.574s
+
+OK

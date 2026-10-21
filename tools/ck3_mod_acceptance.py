@@ -623,6 +623,12 @@ class Selection:
                     errors.append("Actual frozen shared Python environment differs from runtime config")
             except (KeyError, OSError, ValueError) as error:
                 errors.append(str(error))
+        if self.context and self.adapter_path:
+            try:
+                from ck3_mod_acceptance_client import resolve_operator_reviewer
+                resolve_operator_reviewer(self)
+            except (ImportError, KeyError, OSError, TypeError, ValueError) as error:
+                errors.append("Operator reviewer: " + str(error))
         if hasattr(self, "saved") and all(self.saved.get(key) is not None for key in SAVED_FLAGS):
             try:
                 checks.append(check_pin(self.case_path(self.saved["save"]), self.saved))
@@ -831,6 +837,9 @@ class Selection:
         environment = dict(os.environ)
         environment.update(self.runtime_environment)
         environment.update(PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1")
+        if self.adapter_path:
+            from ck3_mod_acceptance_client import resolve_operator_reviewer
+            resolve_operator_reviewer(self)
         completed = subprocess.run(argv, cwd=self.locations["repo_root"], env=environment, check=False)
         result.update(status="REVIEWED_LAUNCHER_RETURNED" if completed.returncode == 0 else "LAUNCHER_FAILED",
                       launcher_argv=argv, launcher_exit_code=completed.returncode,

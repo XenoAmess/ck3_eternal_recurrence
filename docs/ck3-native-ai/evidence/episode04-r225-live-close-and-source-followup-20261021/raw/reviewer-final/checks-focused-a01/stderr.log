@@ -1,0 +1,13 @@
+test_context_drift_after_successful_preflight_is_rechecked_before_child (__main__.ReviewerPrelaunchTests.test_context_drift_after_successful_preflight_is_rechecked_before_child) ... ok
+test_delegation_run_screen_scope_and_pin_rejection_zero_launch (__main__.ReviewerPrelaunchTests.test_delegation_run_screen_scope_and_pin_rejection_zero_launch) ... ok
+test_explicit_null_delegation_and_persisted_identity_drift_zero_launch (__main__.ReviewerPrelaunchTests.test_explicit_null_delegation_and_persisted_identity_drift_zero_launch) ... ok
+test_failed_case_keeps_actual_client_finally_and_original_failure (__main__.ReviewerPrelaunchTests.test_failed_case_keeps_actual_client_finally_and_original_failure) ... ok
+test_missing_reviewer_is_blocked_in_real_preflight (__main__.ReviewerPrelaunchTests.test_missing_reviewer_is_blocked_in_real_preflight) ... ok
+test_null_empty_and_whitespace_reviewer_zero_launch (__main__.ReviewerPrelaunchTests.test_null_empty_and_whitespace_reviewer_zero_launch) ... ok
+test_prepare_without_context_and_nonadapter_routes_keep_existing_scope (__main__.ReviewerPrelaunchTests.test_prepare_without_context_and_nonadapter_routes_keep_existing_scope) ... ok
+test_valid_direct_and_delegated_identity_reaches_real_client_after_one_child (__main__.ReviewerPrelaunchTests.test_valid_direct_and_delegated_identity_reaches_real_client_after_one_child) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.656s
+
+OK

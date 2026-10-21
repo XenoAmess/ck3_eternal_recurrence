@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "e2578b59273b886a7ab58eff24ba76a161d84e6c",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\save\\run_fixture_normal_e257.py",
+    "candidate"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01",
+  "started_at_utc": "2026-10-21T01:40:12.174772+00:00",
+  "completed_at_utc": "2026-10-21T01:40:14.198213+00:00",
+  "pid": 31356,
+  "creation_filetime": "134370204121757403",
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "identity_diagnostic": null,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\receipts\\SAVE-candidate.stdout.log",
+    "bytes": 290,
+    "sha256": "2abc6e70c8a5cf3b0edcce44d3a67077023d4f40af40f26171be66bebaa2582f"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-canonical-publication-0230-a01\\source-checks-e257-a01\\receipts\\SAVE-candidate.stderr.log",
+    "bytes": 298,
+    "sha256": "d76bb8e1497962daf5579e7192c4cbc998730fe4eac39a8d2444551c5abea68a"
+  },
+  "D_W_Git_Game_SDK_Steam_mutation": false
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "xar.ci.root-save-fixture-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T00:50:59Z",
+  "owner": "Root",
+  "source_adopted": true,
+  "candidate": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-pointer-live-0030-a01/scene-a01/ci-save-fixture-a01/candidate/tools/test_r08_writer_save_gate.py",
+    "bytes": 5380,
+    "sha256": "550d6546b127b5c4d32d0a7acd05c1794cb1dec92c33a63bba2ef60ed153ab4f"
+  },
+  "source_freeze": {
+    "bytes": 10351,
+    "sha256": "1d3eece127afec237876443b646f3e00c59002bf5656e1049ca0cc3250b4f0a5"
+  },
+  "delivery": {
+    "bytes": 3280,
+    "sha256": "be91d82d5391cc7dc0067533e3c08c2722c13c8f9e9c84c567f70368bb13cad7"
+  },
+  "review": "Root read full79-line candidatebac5e3, exact patch6ee483, full freezee5c22f and delivery7fbbb7. Only synthetic retained client/native campaign frame, typed callback signatures and4 additional branch assertions; old8 assertions preserved. Production Save guards unchanged.",
+  "verification": "Baseline actualPID20228 wait1 reproduced2 failures; candidate17048 wait0 same1method/2subcases, modified4-input mypy34096 wait0. Actual executed4 repository sources equal81ac. ImportedDdriver differs but runtime driver calls0; no whole canonical import closure or CIgreen claim.",
+  "status": "SOURCE_ACCEPTED_PENDING_SEPARATE_GIT_INTEGRATION_AND_CI",
+  "Git_mutation_admitted_by_this_record": false,
+  "Game_qualification_admitted_by_this_record": false,
+  "closed_author_lane_unmodified": true
+}

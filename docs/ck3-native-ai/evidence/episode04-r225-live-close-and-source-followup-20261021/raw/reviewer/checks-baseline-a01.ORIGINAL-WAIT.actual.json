@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.early-reviewer-original-wait-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:13:37.822354+00:00",
+  "started_at_utc": "2026-10-21T01:13:37.263397+00:00",
+  "elapsed_seconds": 0.558968500001356,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_reviewer_prelaunch.py",
+    "ReviewerPrelaunchTests.test_missing_reviewer_is_blocked_in_real_preflight"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01",
+  "original_popen_pid": 34116,
+  "creation_time_100ns": 134370188172652881,
+  "original_wait_returncode": 1,
+  "expected_returncode": 1,
+  "expected_exit_observed": true,
+  "original_handle_owned_until_wait": true,
+  "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61981,
+      "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_reviewer_prelaunch.py",
+      "bytes": 12617,
+      "sha256": "3f8422f952510a22630822bb07dafa47ac437663f8a509dad989caef405a4b70"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\run_checks.py",
+      "bytes": 4685,
+      "sha256": "2a65f62037842d681a798fc65b20963103312705c85bd6cab1455f79ff7a45e9"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-baseline-a01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-baseline-a01\\stderr.log",
+    "bytes": 2515,
+    "sha256": "97a003066392d359e0f39365031d1150ba8dae22037619b2ddf0d44948b831e1"
+  },
+  "temporary_remaining": [],
+  "native_game_sdk_steam_ui": false,
+  "qualification": false
+}

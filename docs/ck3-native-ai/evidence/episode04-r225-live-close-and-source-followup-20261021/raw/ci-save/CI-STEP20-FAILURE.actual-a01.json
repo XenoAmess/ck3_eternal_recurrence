@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T00:44:27.804347+00:00",
+  "collector_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_runner_machine_id": "unknown",
+  "run_id": 39520294147,
+  "job_id": 118962219139,
+  "step_number": 20,
+  "step_name": "Test public R08 single writer opportunity refusals",
+  "head": "81ac4459a19451c8435d91f16f9d6ede7038a7ac",
+  "source_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39520294147/job/118962219139#step:20:1",
+  "method": "GitHub official jobs-log endpoint HTTP206 byte range; no whole job/archive or artifact downloaded",
+  "body_range_start": 100000,
+  "body_range_end": 107999,
+  "range_bytes": 8000,
+  "range_sha256": "7223ade86c8e6e598dfd0378bcd9069df972492b8df7f0b8cbff19328e594768",
+  "excerpt": "2026-10-21T00:18:10.8204620Z FF\n2026-10-21T00:18:10.8205062Z ======================================================================\n2026-10-21T00:18:10.8206642Z FAIL: test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit (__main__.SaveGate.test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit) (failed='Save-once')\n2026-10-21T00:18:10.8208225Z ----------------------------------------------------------------------\n2026-10-21T00:18:10.8209181Z Traceback (most recent call last):\n2026-10-21T00:18:10.8219848Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_r08_writer_save_gate.py\", line 45, in test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit\n2026-10-21T00:18:10.8221506Z     self.assertEqual(sum(tool=='ck3_save_checkpoint' for _,tool,_ in calls),1)\n2026-10-21T00:18:10.8222255Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-10-21T00:18:10.8222780Z AssertionError: 0 != 1\n2026-10-21T00:18:10.8223016Z \n2026-10-21T00:18:10.8223196Z ======================================================================\n2026-10-21T00:18:10.8224840Z FAIL: test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit (__main__.SaveGate.test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit) (failed='Save-independent-after')\n2026-10-21T00:18:10.8226514Z ----------------------------------------------------------------------\n2026-10-21T00:18:10.8227105Z Traceback (most recent call last):\n2026-10-21T00:18:10.8228526Z   File \"D:\\a\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\tools\\test_r08_writer_save_gate.py\", line 45, in test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit\n2026-10-21T00:18:10.8230078Z     self.assertEqual(sum(tool=='ck3_save_checkpoint' for _,tool,_ in calls),1)\n2026-10-21T00:18:10.8231189Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-10-21T00:18:10.8231716Z AssertionError: 0 != 1\n2026-10-21T00:18:10.8231943Z \n2026-10-21T00:18:10.8232173Z ----------------------------------------------------------------------\n2026-10-21T00:18:10.8232707Z Ran 1 test in 0.002s\n2026-10-21T00:18:10.8232926Z \n2026-10-21T00:18:10.8233056Z FAILED (failures=2)\n2026-10-21T00:18:10.8596716Z ##[error]Process completed with exit code 1.\n"
+}

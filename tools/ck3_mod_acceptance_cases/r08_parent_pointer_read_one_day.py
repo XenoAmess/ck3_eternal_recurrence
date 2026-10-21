@@ -141,14 +141,15 @@ def run_case(context: Mapping[str,object], client: object) -> Object:
             cfg.qualification_pin,cfg.observer_pin,control)
         before_view = read_pin(collected.before,3*1024*1024)
         before = Snapshot.parse(before_view.get('body'),cfg.actor_id)
-        actual_client.guard()
+        actual_client.guard(reserve=1050)
         validate_contract(context)
         gate.restored = False
         window: Object = {}
         try:
             window = controller.observe(python=python,tools=cfg.parent_tools,observer=cfg.observer_pin,
                 prepared=prepared,output=control,machine=machine,scope_pin=scope_pin,collected_at=collected_at,
-                before=before,deadline_utc=cfg.deadline.isoformat(),call=call,packet_pin=packet_pin)
+                before=before,deadline_utc=cfg.deadline.isoformat(),call=call,packet_pin=packet_pin,
+                guard=lambda: actual_client.guard(reserve=1050))
             result['window'] = window
         finally:
             gate.restored = not (control/'observer-start.once.json').exists() or window.get('safe_to_begin_normal_close') is True

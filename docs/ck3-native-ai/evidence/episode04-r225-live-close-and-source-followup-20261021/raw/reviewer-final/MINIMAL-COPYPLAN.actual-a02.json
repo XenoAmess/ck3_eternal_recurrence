@@ -1,0 +1,441 @@
+{
+  "schema": "xar.e04.early-reviewer-minimal-copyplan-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:20:24.555676+00:00",
+  "source_head": "9592cefdda846fc0242430d8fef1fef1f58c81a0",
+  "source_frozen": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 9165,
+    "sha256": "dcf29752983234764d4af8d20c55da562eb42b5abfd8c4af04dfe48f3dfad2a5"
+  },
+  "copy_files": [
+    {
+      "relative_path": "SOURCE-INPUTS.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-INPUTS.actual-a01.json",
+        "bytes": 4770,
+        "sha256": "a931473d7a94596be6bb50c8c3390b44b294ec6b87e59a4fba07e1488d8ea52d"
+      }
+    },
+    {
+      "relative_path": "SOURCE-FREEZE.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-FREEZE.actual-a01.json",
+        "bytes": 8609,
+        "sha256": "c7e3c571b7ae3fc7645988a56891c1abd0b42d28aabce0ff3da1d2858ff06cef"
+      }
+    },
+    {
+      "relative_path": "STATIC-COMPARISON.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\STATIC-COMPARISON.actual-a01.json",
+        "bytes": 1759,
+        "sha256": "e466bd02800d9838840c6fa6c74ffd0c085dc86d1155ca5406d090c105d9b0d5"
+      }
+    },
+    {
+      "relative_path": "EARLY-REVIEWER-FINAL.candidate.patch",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER-FINAL.candidate.patch",
+        "bytes": 16398,
+        "sha256": "02714249484441b84605c96af4699b535150f72a71732da23d378263921300df"
+      }
+    },
+    {
+      "relative_path": "EARLY-REVIEWER-CI.candidate.patch",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\EARLY-REVIEWER-CI.candidate.patch",
+        "bytes": 654,
+        "sha256": "92b8a0fb08288f60c0c17ddcabcbeda150622f028d746620a2715aaeb4330e77"
+      }
+    },
+    {
+      "relative_path": "PATCH-NUMSTAT.stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\PATCH-NUMSTAT.stdout.log",
+        "bytes": 177,
+        "sha256": "2d4a682a9a6837932022a33c94814e46e643e056b3501504169cdbf5e423a3ed"
+      }
+    },
+    {
+      "relative_path": "PATCH-NUMSTAT.stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\PATCH-NUMSTAT.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "build_candidate.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\build_candidate.py",
+        "bytes": 5473,
+        "sha256": "e2c24b5102c219c278b64072320e7e6a461c81feb3b286404599c6e1a2c0f5e2"
+      }
+    },
+    {
+      "relative_path": "finish_candidate.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\finish_candidate.py",
+        "bytes": 8159,
+        "sha256": "dac178ea0520ceee69c5bd50627a245ee19a1fb92d35b05a1e9f880f635cb075"
+      }
+    },
+    {
+      "relative_path": "run_checks.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\run_checks.py",
+        "bytes": 4685,
+        "sha256": "2a65f62037842d681a798fc65b20963103312705c85bd6cab1455f79ff7a45e9"
+      }
+    },
+    {
+      "relative_path": "run_checks_a02.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\run_checks_a02.py",
+        "bytes": 4853,
+        "sha256": "0f2484e6abf5d3210a90dd8d49c55927e8e5ef8670d753694db0b467da906465"
+      }
+    },
+    {
+      "relative_path": "run_checks_a03.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\run_checks_a03.py",
+        "bytes": 4891,
+        "sha256": "be1da71e544caf4727c9a3a89603e4dfb796a8a573353b6104e1506f30e47b5b"
+      }
+    },
+    {
+      "relative_path": "check_existing_finally.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\check_existing_finally.py",
+        "bytes": 2811,
+        "sha256": "ea05b27552236a3774098d498637c5513eba33b4e439d4aed001ea7d47bc8b60"
+      }
+    },
+    {
+      "relative_path": "README.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\README.md",
+        "bytes": 2836,
+        "sha256": "b41f1e528af02f4046d7281e4b5fe123cd798ab8aeec8790a08b90be13a24956"
+      }
+    },
+    {
+      "relative_path": "deliver.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\deliver.py",
+        "bytes": 6707,
+        "sha256": "b71f545706a1680d651626427cb81b4538b552cddc963142e88e9fec94f39270"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/ck3_mod_acceptance.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\ck3_mod_acceptance.py",
+        "bytes": 61981,
+        "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/test_ck3_mod_acceptance_operator_quit.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32557,
+        "sha256": "668d5b95837aca7b13ec521b6069fbabf068c6ae54f90fa26848ad5d6ff3a4e9"
+      }
+    },
+    {
+      "relative_path": "candidate/tools/test_ck3_mod_acceptance_reviewer_prelaunch.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\candidate\\tools\\test_ck3_mod_acceptance_reviewer_prelaunch.py",
+        "bytes": 12617,
+        "sha256": "3f8422f952510a22630822bb07dafa47ac437663f8a509dad989caef405a4b70"
+      }
+    },
+    {
+      "relative_path": "checks-baseline-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2469,
+        "sha256": "1acbfa3cf0338319821b76c2723cd9698b72e6d841fed1e95e42e47ac29f8ebc"
+      }
+    },
+    {
+      "relative_path": "checks-baseline-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-baseline-a01\\stderr.log",
+        "bytes": 2515,
+        "sha256": "97a003066392d359e0f39365031d1150ba8dae22037619b2ddf0d44948b831e1"
+      }
+    },
+    {
+      "relative_path": "checks-baseline-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-baseline-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-existing-finally-a02/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-existing-finally-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2367,
+        "sha256": "a5f07fc064a54325a817c69abbaf937bafb01d6c07973bd04a114b120fcc2d9d"
+      }
+    },
+    {
+      "relative_path": "checks-existing-finally-a02/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-existing-finally-a02\\stderr.log",
+        "bytes": 281,
+        "sha256": "4f78b710715d084a3955cd553da5bb294ead4ec2e7865ca3c9f4abfb138b011b"
+      }
+    },
+    {
+      "relative_path": "checks-existing-finally-a02/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-existing-finally-a02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-focused-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2384,
+        "sha256": "25b0f5425359e6cb96d5974ffce938c9d3e5343dc05761cc54e16b35f6bfdfc1"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-focused-a01\\stderr.log",
+        "bytes": 1485,
+        "sha256": "6d47fe97cef7907ff6725571c17c142f7dcb0386c04e4a3d512f839b7c5b59e0"
+      }
+    },
+    {
+      "relative_path": "checks-focused-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-focused-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2484,
+        "sha256": "10674dfdce47df3ee23b7ad0b4d9d3682f80a9983f36cd943b191ae5fcf2eda4"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a01\\stderr.log",
+        "bytes": 90,
+        "sha256": "7169117829fe6ad447c756b962b7a3dd754d5987d30f2a21e9ddd20386a9950b"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a02/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2488,
+        "sha256": "8b61b446a4b94fd914166363b9292c6fe8936cad228d834de2d501f221724265"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a02/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a02/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a02\\stdout.log",
+        "bytes": 1889,
+        "sha256": "fd2c9019ab4faca29fdd72c39fc47bf975170a167290b5d30d60e28e13029d5e"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a03/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2488,
+        "sha256": "bde3de8b53d8658ce4ac9c0001e3e936936a6aec37922458fc5c5e3d93964224"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a03/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-baseline-a03/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-baseline-a03\\stdout.log",
+        "bytes": 1731,
+        "sha256": "ec7e7d95c9dbc9693f055ad1c15b0f589c3d912d616f3d88d0225dda61c7d38f"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2487,
+        "sha256": "80d77fb7236bdcf480373b69b08b73c61804749d72ce536cd9873296ec0ce1fd"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a01\\stderr.log",
+        "bytes": 90,
+        "sha256": "7169117829fe6ad447c756b962b7a3dd754d5987d30f2a21e9ddd20386a9950b"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a02/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2491,
+        "sha256": "432089b4c829321321df21a1d108222fcdcad8946208cae146078e1e75d34d51"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a02/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a02/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a02\\stdout.log",
+        "bytes": 1743,
+        "sha256": "48f9f994e533017b561d1dc5cf2258a6c0d5ac11cbed03b9abf5dd1f8017801e"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a03/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2491,
+        "sha256": "575c93b454f72501481b300177295f8ec0625545117faef973593da3d5ad88c2"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a03/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-mypy-candidate-a03/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-mypy-candidate-a03\\stdout.log",
+        "bytes": 1743,
+        "sha256": "48f9f994e533017b561d1dc5cf2258a6c0d5ac11cbed03b9abf5dd1f8017801e"
+      }
+    },
+    {
+      "relative_path": "checks-syntax-a01/ORIGINAL-WAIT.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-syntax-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2859,
+        "sha256": "bb6f6fd2ba7e2005e9c69ed9e2eb53ebbe603efe1fdb2bbe208610f94f9bbea3"
+      }
+    },
+    {
+      "relative_path": "checks-syntax-a01/stderr.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-syntax-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "relative_path": "checks-syntax-a01/stdout.log",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\checks-syntax-a01\\stdout.log",
+        "bytes": 37,
+        "sha256": "a04d91e575c023c37eff2fc566bd1376feee4a4e014150bc34a1c7a4f11ba112"
+      }
+    },
+    {
+      "relative_path": "SOURCE-FREEZE.actual-a02.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\SOURCE-FREEZE.actual-a02.json",
+        "bytes": 9165,
+        "sha256": "dcf29752983234764d4af8d20c55da562eb42b5abfd8c4af04dfe48f3dfad2a5"
+      }
+    },
+    {
+      "relative_path": "MINIMAL-COPYPLAN.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\MINIMAL-COPYPLAN.actual-a01.json",
+        "bytes": 18275,
+        "sha256": "746cf0569b1325104672841d160792466660952ea45d7ecc553305b29f3116f6"
+      }
+    },
+    {
+      "relative_path": "DELIVERY.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\DELIVERY.actual-a01.json",
+        "bytes": 3824,
+        "sha256": "95413c4856bdaa3980fe70ac5602b816218d982ab4d8686f3e55f9a8a10843dd"
+      }
+    },
+    {
+      "relative_path": "seal_decimal_birth_a02.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\seal_decimal_birth_a02.py",
+        "bytes": 3496,
+        "sha256": "bfe51e86923a0bc76cd09cba6fba350060de0c355b6efaf91a75e12880769d2f"
+      }
+    }
+  ],
+  "payload_bytes": 251309,
+  "pin_only_exact_git_support": [
+    "baseline/tools/ck3_mod_acceptance.py",
+    "baseline/tools/test_ck3_mod_acceptance_operator_quit.py",
+    "candidate/tools/ck3_mod_acceptance_client.py",
+    "candidate/tools/ck3_mod_acceptance_background_types.py",
+    "candidate/tools/ck3_mod_acceptance_native_day.py"
+  ],
+  "publishing": false,
+  "git_mutation": false,
+  "native_game_sdk_ui": false,
+  "representation_correction": "a01/raw numeric64 retained historically; a02 freeze decimal-string births"
+}

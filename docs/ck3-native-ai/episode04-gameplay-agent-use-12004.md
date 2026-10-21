@@ -1,5 +1,12 @@
 # 战争四期研究：游玩智能体参考入口
 
+## 2026-10-21 01:17 UTC：R0225实际一天与有限正常闭场，target研究未通过
+
+`machine_id: desktop-3fevhd2-1c74096080`。R0225日期53149056→53149080实际一天；observer因foreign_limit4096退出1，target0/window_complete=false，未取得目标post-read或实付。110个armed实例中109个存活完整六DR恢复等于original，另1个真实退出单列。Root有限验收确认payment/army OFFclear、clock quiescent、正常GUI/retained OS/native/host/keeper闭场和screen done7763；Root仅审委托GUI回执，未另作屏幕操作。ordinarySave的producer物化与前后同native owner bracketing通过，原consumer rehashfalse保留，作者postclose独立实hash另列；atomic owner/文件内部actor/oneLife仍未知。
+
+本次候选以e2578b5为集成基线，保留上游完整Save夹具与严格类型门禁，只叠加4个更强分支断言、reviewer前置resolver及三处1050秒真实守卫；本次候选冻结时尚未Git发布，最终发布状态以实际发布回执与Git提交为准；不覆盖上游Steam/timeline/native-driver变更。使用实际e257 client/background/native_day/launcher_protocol的reviewer8方法与既有finally1通过；Save上游/候选各1方法2分支及新增严格mypy均通过。旧entry的mypy11→11无新增记录保留，这些有限结果不等于全clean或新head CI绿色。正式7/11、研究10/14、业务7/11、B0/2、ABC0/3不变，paid/payer/cadence/fullR08和影片仍未完成。研究文件可供智能体阅读参考，普通planner不autoload。SDK3和R176旧raw的后继实际回收取代旧23:00可读性快照，lossless替代载体继续保留。详见[本轮实际与source边界](episode04-r225-live-close-and-source-followup-20261021.md)。
+
+
 > 2026-10-20 23:00 UTC后继；machine_id: `desktop-3fevhd2-1c74096080`；来源Root普通Save/public源码采用、独立T3 cold及R03正式裁定。
 
 普通Save的shared cleanup消费者现选定接入producer物化与前后同native owner核验；host原有native_campaign/自然继承正确，不生成oneLife episode。未知Save不重提，旧oneLife unconfirmed独立保留，atomic Save时刻owner/文件内部actor仍未知。本批是源码集成，D冻结运行树未更新，不能据此声称新游戏Save通过。public pointer-read的有限21 synthetic cold和15源mypy/9fixture只授其本来范围，显式外置adapter/index与新鲜场景准入仍必需，文档不会自动成为planner策略。无target、loaded-null、空paid journal都不能推军费0；parent phase不等于付款writer被选中，正当前费率只作预算输入。继续用当前原生费率、钱包、已有承诺和雇佣应急金处理战争，资金不足延后可选建设，不停止合法战争处理。

@@ -1,0 +1,18 @@
+test_missing_reviewer_is_blocked_in_real_preflight (__main__.ReviewerPrelaunchTests.test_missing_reviewer_is_blocked_in_real_preflight) ... FAIL
+
+======================================================================
+FAIL: test_missing_reviewer_is_blocked_in_real_preflight (__main__.ReviewerPrelaunchTests.test_missing_reviewer_is_blocked_in_real_preflight)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-post-window-source-0130-a01\reviewer-preflight-a01\candidate\tools\test_ck3_mod_acceptance_reviewer_prelaunch.py", line 147, in test_missing_reviewer_is_blocked_in_real_preflight
+    self.assert_blocked_without_child(fixture)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r08-post-window-source-0130-a01\reviewer-preflight-a01\candidate\tools\test_ck3_mod_acceptance_reviewer_prelaunch.py", line 135, in assert_blocked_without_child
+    self.assertTrue(result['blockers'], result)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : {'business_acceptance': 'NOT_ASSESSED', 'status': 'READY_FOR_EXISTING_REVIEWED_LAUNCH', 'blockers': [], 'checked_inputs': [{'path': 'C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\tmp\\reviewer-prelaunch-8qn95mx8\\case\\game\\binaries\\ck3.exe', 'bytes': 40, 'sha256': '2d7d87dfdb8666be933c0d7e68ae9562398b40bfffe97e541e83360ff217a30c'}, {'path': 'C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\tmp\\reviewer-prelaunch-8qn95mx8\\case\\adapter.py', 'bytes': 54, 'sha256': 'f52bef9106f0a032e4ca14bb9045e01522d98bbeed3d0586e62075dcff59f220'}, {'path': 'C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\tmp\\reviewer-prelaunch-8qn95mx8\\case\\contract.json', 'bytes': 19, 'sha256': 'f1a8594e8976c89f1e5c028870c3d3764a7a5423473cd8635448d7f6d8cc6574'}, {'path': 'C:\\ck3-e04-resume-20261020-a01\\r08-post-window-source-0130-a01\\reviewer-preflight-a01\\tmp\\reviewer-prelaunch-8qn95mx8\\case\\SYNTHETIC_REVIEWER_RUN\\frozen-argv.json', 'bytes': 156, 'sha256': '727966ff9f675f776af8836707246ba348c1d5d394036c5c88cd49421b25e7e3'}], 'tool_status': {}, 'capability_limit': 'Source/build evidence only; actual live tool and product gates remain mandatory'}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.095s
+
+FAILED (failures=1)

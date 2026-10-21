@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T23:24:31.454072+00:00",
+  "origin_machine_id": "unknown",
+  "kind": "before",
+  "original_path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\responses\\root-r0176-C-final-leg-eta-a01-before.json",
+  "original_identity": {
+    "volume_serial": "13886423844274364792",
+    "file_id": "1125899907708075",
+    "bytes": 193474721,
+    "mtime_ns": "1791245191768030400",
+    "fstat_ctime_ns": "1791245191768030400"
+  },
+  "original_sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a",
+  "gzip_path": "C:\\ck3-e04-resume-20261020-a01\\r08-r176-keeper-lossless-2300-a01\\payload\\before.json.gz",
+  "gzip_identity": {
+    "volume_serial": "13886423844274364792",
+    "file_id": "1688849862180337",
+    "bytes": 8562240,
+    "mtime_ns": "1792536452340650600",
+    "fstat_ctime_ns": "1792536452340650600"
+  },
+  "gzip_sha256": "2ba59fe7638932c6b8e735b6f2b32c845e61fbeb908cf96dbe84d6689bef7e67",
+  "phase": "INTENT",
+  "original_readable_before": true,
+  "intended_absent_after": true,
+  "absence_verified": false
+}

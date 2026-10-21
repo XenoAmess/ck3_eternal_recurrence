@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.early-reviewer-static-comparison-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T01:18:27.544189+00:00",
+  "configuration": "mypy --no-incremental --cache-dir nul --follow-imports=skip; exact candidate support MYPYPATH for both",
+  "mypy_tool_path": "C:/ck3-e04-resume-20261020-a01/r08-mypy1201-tools-2115-a01/Lib",
+  "baseline_diagnostic_count": 11,
+  "candidate_diagnostic_count": 11,
+  "introduced_messages": [],
+  "messages": {
+    "error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_graphics_cache\"  [import-not-found]": 1,
+    "error: Item \"None\" of \"Path | None\" has no attribute \"parent\"  [union-attr]": 4,
+    "error: Argument 1 to \"path_at\" has incompatible type \"Any | None\"; expected \"str\"  [arg-type]": 1,
+    "error: Incompatible types in assignment (expression has type \"None\", variable has type \"Path\")  [assignment]": 1,
+    "error: Argument 1 to \"Path\" has incompatible type \"str | None\"; expected \"str | PathLike[str]\"  [arg-type]": 1,
+    "error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_prepare\"  [import-not-found]": 1,
+    "error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_gui\"  [import-not-found]": 1,
+    "error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_allocate\"  [import-not-found]": 1
+  },
+  "whole_repository_typecheck_pass": false,
+  "bounded_fixture_missing_sibling_imports": [
+    "graphics_cache",
+    "prepare",
+    "gui",
+    "allocate"
+  ],
+  "changed_Selection_methods": [
+    "preflight",
+    "run"
+  ],
+  "client_upstream_bytes_preserved": true
+}

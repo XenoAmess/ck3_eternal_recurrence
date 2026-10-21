@@ -296,6 +296,12 @@ class OperatorQuitTests(unittest.TestCase):
             selected.runtime_path=root/'runtime.json';selected.context_path=root/'context.json'
             selected.run_dir=root/'SYNTHETIC_FAILED_ENTRY';selected.locations={'python':Path(sys.executable),'repo_root':root}
             selected.runtime_environment={};selected.adapter_path=root/'synthetic-adapter.py'
+            selected.argv=['SYNTHETIC FROZEN HOST ARGV'];selected.context['reviewer']='/test/actual-operator'
+            frozen_path=root/'synthetic-frozen-argv.json'
+            frozen_path.write_text(json.dumps({'run_id':selected.run_dir.name,'argv':selected.argv,
+                'runtime_environment':{},'reviewer':'/test/actual-operator'}),encoding='utf-8')
+            selected.context['frozen_argv']=self.entry.pin(frozen_path)
+            selected.context_path.write_text(json.dumps(selected.context),encoding='utf-8')
             adapter=SimpleNamespace(run_case=Mock(side_effect=AssertionError('Never replay failed startup business')))
             selected.load_adapter=lambda:adapter;selected.adapter_context=lambda output:{'synthetic':True}
             client=SimpleNamespace(_handle=None,output=root/'case-output',

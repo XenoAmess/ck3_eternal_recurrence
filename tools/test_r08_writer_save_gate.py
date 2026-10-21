@@ -6,6 +6,7 @@ import sys,unittest
 sys.path[:0]=[str(Path(__file__).resolve().parent),str(Path(__file__).resolve().parents[1]/'ck3_autonomous_player/src')]
 from ck3_mod_acceptance_cases import r08_writer_one_day as actor
 from xar_autoplayer.bridge.army_observer_research_sampling_control import FAMILIES
+from ck3_mod_acceptance_cases.ordinary_save_contract import obj
 
 
 class SaveGate(unittest.TestCase):
@@ -52,6 +53,14 @@ class SaveGate(unittest.TestCase):
                 self.assertTrue(cleanup['OFFclear']);self.assertFalse(cleanup['Save'])
                 self.assertFalse(gate.save_verified);self.assertTrue(errors);self.assertIsNone(days)
                 self.assertEqual(sum(tool=='ck3_save_checkpoint' for _,tool,_ in calls),1)
+                self.assertEqual(sum(label=='Save-independent-after' for label,_,_ in calls),
+                    0 if failed=='Save-once' else 1)
+                proof = obj(cleanup['ordinary_save_proof'], 'synthetic unconfirmed proof')
+                self.assertEqual(proof['reason_code'], 'TimeoutError')
+                expected = ('synthetic original result unknown' if failed=='Save-once'
+                    else 'synthetic independent endpoint unknown')
+                self.assertIn(expected, str(proof['detail']))
+                self.assertEqual('Save_result' in cleanup, failed=='Save-independent-after')
                 with self.assertRaisesRegex(ValueError,'Save unproved'):client.normal_close('must not Quit')
                 self.assertEqual(closed,[])
 

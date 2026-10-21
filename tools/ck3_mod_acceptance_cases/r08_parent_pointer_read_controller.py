@@ -310,7 +310,8 @@ def hold_uncertain(session: Session, error: BaseException) -> NoReturn:
 
 def observe(*, python: str, tools: Path, observer: FilePin, prepared: Path, output: Path,
             machine: str, scope_pin: FilePin, collected_at: float, before: Snapshot, deadline_utc: str,
-            call: Call, packet_pin: PinLookup) -> Object:
+            call: Call, packet_pin: PinLookup, guard: Callable[[], None]) -> Object:
+    guard()
     scope = read_pin(scope_pin)
     binding = Binding.parse(read_pin(pin(prepared/'BINDING.prepared.json')))
     need(binding.root_scope_sha256 == scope_pin['sha256'],'Prepared scope changed')
@@ -323,7 +324,6 @@ def observe(*, python: str, tools: Path, observer: FilePin, prepared: Path, outp
     handle = create_cancel(text(scope.get('cancel_event'),'cancel event'))
     EVENTS[str(output)] = handle
     try:
-        write(output/'observer-start.once.json',{'argv':argv,'no_replay':True})
         stdout = (output/'observer.stdout').open('xb')
         try:
             stderr = (output/'observer.stderr').open('xb')
@@ -331,6 +331,9 @@ def observe(*, python: str, tools: Path, observer: FilePin, prepared: Path, outp
             stdout.close()
             raise
         try:
+            guard()
+            fresh(read_pin(scope_pin),machine=machine,collected_at=collected_at)
+            write(output/'observer-start.once.json',{'argv':argv,'no_replay':True})
             process: subprocess.Popen[bytes] = subprocess.Popen(argv,stdout=stdout,stderr=stderr,
                 creationflags=subprocess.CREATE_NO_WINDOW)
         except BaseException:

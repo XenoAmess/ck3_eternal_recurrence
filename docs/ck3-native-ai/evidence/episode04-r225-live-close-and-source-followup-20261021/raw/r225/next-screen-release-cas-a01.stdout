@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    },
+    "last_sequence": 7763,
+    "next_step": "",
+    "pid": 25724,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R225 normal GUI Quit completed; actual retained OS0 native cleanup0 host wait0 and keeper wait0; observer foreign4096 failure preserved",
+    "task_id": "e04-common-12004-a230",
+    "updated_at_utc": "2026-10-21T01:05:37.854904+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 7763,
+    "event_id": "9d6bb62afb6044db90f67eca15b6ff34",
+    "timestamp_utc": "2026-10-21T01:05:37.856242+00:00",
+    "kind": "completed",
+    "task_id": "e04-common-12004-a230",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R225 normal GUI Quit completed; actual retained OS0 native cleanup0 host wait0 and keeper wait0; observer foreign4096 failure preserved",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    }
+  }
+}
