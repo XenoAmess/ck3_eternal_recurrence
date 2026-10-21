@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 from ck3_mod_acceptance_cases import parent_bundle_loader as loader
 from ck3_mod_acceptance_cases import r10_prepare_adapter as adapter
-from ck3_mod_acceptance_background_types import file_pin,json_value
+from ck3_mod_acceptance_background_types import FilePin,file_pin,json_value
 
 ROOT=Path(os.environ.get('XAR_PRODUCTION_SOURCE_TOOLS',str(Path(__file__).resolve().parent)))
 ACTOR=Path(os.environ.get('XAR_PARENT_ACTOR_SOURCE',str(ROOT/'ck3_mod_acceptance_cases/r08_parent_entry_one_day.py')))
@@ -14,9 +14,9 @@ TOOL_NAMES=('prepare_parent_entry_admission.py','consume_parent_entry_actual.py'
 SCRATCH=Path(tempfile.gettempdir())
 
 
-def pin(path: Path) -> dict:
+def pin(path: Path) -> FilePin:
     payload=path.read_bytes()
-    return dict(path=str(path),bytes=len(payload),sha256=hashlib.sha256(payload).hexdigest())
+    return file_pin(dict(path=str(path),bytes=len(payload),sha256=hashlib.sha256(payload).hexdigest()))
 
 
 class ParentBundle(unittest.TestCase):
@@ -77,9 +77,26 @@ class ParentBundle(unittest.TestCase):
 
     def test_refusal_protocol_is_exact_final_pair(self) -> None:
         import ck3_mod_acceptance_background_refusal as refusal
-        self.assertEqual(refusal.GATE_PROTOCOL_SHA256,pin(ROOT/'ck3_mod_acceptance_steam_gate.py')['sha256'])
-        self.assertEqual(refusal.LAUNCHER_PROTOCOL_SHA256,pin(ROOT/'ck3_mod_acceptance_launcher.py')['sha256'])
-        self.assertNotEqual(refusal.LAUNCHER_PROTOCOL_SHA256,'6ef5b8b0882c56fb3bccff74d9c3e77437663add415b63fda2995cbcba4e1d76')
+        import ck3_mod_acceptance_launcher_protocol_v1 as protocol
+        current = protocol.CURRENT_BACKGROUND_PROTOCOL_V1
+        legacy = protocol.LEGACY_BACKGROUND_PROTOCOL_V1
+        launcher = pin(ROOT/'ck3_mod_acceptance_launcher.py')
+        gate = pin(ROOT/'ck3_mod_acceptance_steam_gate.py')
+        self.assertEqual((current.launcher_bytes,current.launcher_sha256),
+                         (launcher['bytes'],launcher['sha256']))
+        self.assertEqual((current.gate_bytes,current.gate_sha256),(gate['bytes'],gate['sha256']))
+        self.assertEqual(protocol.build_launcher_protocol_v1(launcher,gate)['version'],
+                         'background-keyed-pins-v2')
+        self.assertEqual((legacy.launcher_bytes,legacy.launcher_sha256),
+                         (16572,'e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24'))
+        self.assertEqual((legacy.gate_bytes,legacy.gate_sha256),
+                         (6023,'a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274'))
+        self.assertEqual(refusal.LAUNCHER_PROTOCOL_SHA256,legacy.launcher_sha256)
+        self.assertEqual(refusal.GATE_PROTOCOL_SHA256,legacy.gate_sha256)
+        legacy_pin = dict(path='historical-launcher.py',bytes=legacy.launcher_bytes,
+                          sha256=legacy.launcher_sha256)
+        self.assertEqual(protocol.build_launcher_protocol_v1(legacy_pin,gate)['version'],
+                         'background-offline-v1')
 
     def test_each_executed_parent_tool_is_bound_before_any_action(self) -> None:
         from unittest.mock import Mock

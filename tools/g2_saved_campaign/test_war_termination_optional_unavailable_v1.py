@@ -4,6 +4,7 @@ from __future__ import annotations
 import ast
 from collections.abc import Iterable, Mapping
 from copy import deepcopy
+from contextlib import ExitStack
 import inspect
 from enum import IntEnum
 import json
@@ -12,6 +13,7 @@ import sys
 from types import FunctionType, ModuleType
 from typing import Protocol, TypeGuard, cast, get_type_hints
 import unittest
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
@@ -141,25 +143,87 @@ def no_timing(*args: object, **kwargs: object) -> None:
     return None
 
 
+
+class Project(Protocol):
+    def __call__(self, native_driver: bytes, strategy: bytes,
+                 war_contract: bytes) -> producer.CandidateSourcesV1: ...
+
+
+def producer_seams_v1() -> dict[str, list[tuple[str, str]]]:
+    """Read the real recipe without duplicating its before/after literals."""
+    seams: dict[str, list[tuple[str, str]]] = {"native_driver": [], "strategy": []}
+
+    def trace(source: str, before: str, after: str) -> str:
+        key = {"# driver\n": "native_driver", "# strategy\n": "strategy"}.get(source)
+        if key is None:
+            raise AssertionError("unexpected recipe source")
+        seams[key].append((before, after))
+        return source
+
+    tree = ast.parse(inspect.getsource(producer.project_war_optional_query_unavailable_v1))
+    scope: Doc = dict(vars(producer))
+    scope["_one"] = trace
+    exec(compile(tree, "<actual recipe seam recorder>", "exec"), scope)
+    project = cast(Project, checked_function(scope,
+        "project_war_optional_query_unavailable_v1",
+        ("native_driver", "strategy", "war_contract")))
+    project(b"# driver\n", b"# strategy\n", b"")
+    if [len(seams[name]) for name in ("native_driver", "strategy")] != [3, 2]:
+        raise AssertionError("the actual producer recipe changed")
+    return seams
+
+
+def source_views_v1(driver: bytes, strategy: bytes, contract: bytes
+                    ) -> tuple[producer.CandidateSourcesV1, producer.CandidateSourcesV1, bool]:
+    current: producer.CandidateSourcesV1 = {
+        "native_driver": driver, "strategy": strategy, "war_contract": contract}
+    seams = producer_seams_v1()
+    addition = producer.WAR_CONTRACT_ADDITION_V1.encode()
+    installed = b"WarTerminationUnavailableV1" in contract
+    originals: dict[str, bytes] = {}
+    for name, rows in seams.items():
+        body = current["native_driver"] if name == "native_driver" else current["strategy"]
+        text = body.decode("utf-8")
+        if installed:
+            for original_text, installed_text in reversed(rows):
+                text = producer._one(text, installed_text, original_text)
+        elif any(after in text for _, after in rows):
+            raise ValueError("partly installed war query sources")
+        originals[name] = text.encode()
+    if installed:
+        if not contract.endswith(addition) or contract.count(addition) != 1:
+            raise ValueError("unique exact installed war contract suffix required")
+        contract = contract[:-len(addition)]
+    before: producer.CandidateSourcesV1 = {"native_driver": originals["native_driver"],
+        "strategy": originals["strategy"], "war_contract": contract}
+    projected = producer.project_war_optional_query_unavailable_v1(
+        before["native_driver"], before["strategy"], before["war_contract"])
+    if installed and projected != current:
+        raise ValueError("installed war sources differ from the real forward recipe")
+    return before, projected, installed
+
 class Runtime:
     def __init__(self) -> None:
-        self.before_driver = (SDK / "xar_autoplayer/bridge/native_driver.py").read_bytes()
-        self.before_strategy = (SDK / "xar_autoplayer/strategy.py").read_bytes()
-        before_contract = (SDK / "xar_autoplayer/bridge/war_contract.py").read_bytes()
-        projected = producer.project_war_optional_query_unavailable_v1(
-            self.before_driver, self.before_strategy, before_contract)
+        raw_driver = (SDK / "xar_autoplayer/bridge/native_driver.py").read_bytes()
+        raw_strategy = (SDK / "xar_autoplayer/strategy.py").read_bytes()
+        raw_contract = (SDK / "xar_autoplayer/bridge/war_contract.py").read_bytes()
+        before, projected, installed = source_views_v1(raw_driver, raw_strategy, raw_contract)
+        self.before_driver = before["native_driver"]
+        self.before_strategy = before["strategy"]
         self.driver_raw = projected["native_driver"]
         self.strategy_raw = projected["strategy"]
         self.contract_raw = projected["war_contract"]
-        if not self.contract_raw.endswith(producer.WAR_CONTRACT_ADDITION_V1.encode()):
-            raise AssertionError("the production contract addition was not installed")
-
-        self.contract = ModuleType("_war_optional_portable_contract")
-        vars(self.contract).update(vars(old_contract))
-        self.contract.__name__ = "_war_optional_portable_contract"
-        sys.modules[self.contract.__name__] = self.contract
-        exec(compile(producer.WAR_CONTRACT_ADDITION_V1, "<actual war DTO addition>", "exec"),
-             vars(self.contract))
+        self._owns_contract = not installed
+        self._timing_stack = ExitStack()
+        if installed:
+            self.contract = old_contract
+        else:
+            self.contract = ModuleType("_war_optional_portable_contract")
+            vars(self.contract).update(vars(old_contract))
+            self.contract.__name__ = "_war_optional_portable_contract"
+            sys.modules[self.contract.__name__] = self.contract
+            exec(compile(producer.WAR_CONTRACT_ADDITION_V1, "<actual war DTO addition>", "exec"),
+                 vars(self.contract))
         scope: Doc = dict(vars(self.contract))
         # Verify the real signatures before narrowing exec-boundary callables.
         self.unavailable = cast(Unavailable, checked_function(scope,
@@ -170,28 +234,39 @@ class Runtime:
         self.parse_stored = cast(ParseStored, checked_function(scope,
             "parse_war_termination_optional_unavailable_v1", ("value",)))
 
-        driver_scope: Doc = dict(vars(old_driver))
-        driver_scope["war_termination_optional_unavailable_v1"] = self.unavailable
-        driver_scope["finish_army_timing"] = no_timing
-        driver_scope["start_army_timing"] = no_timing
-        names = {"_execute_war_termination_step", "execute_step"}
-        exec(compile(definitions(self.driver_raw, names), "<actual projected Driver functions>", "exec"),
-             driver_scope)
+        driver_scope: Doc
+        strategy_scope: Doc
+        if installed:
+            # Invoke installed function objects; replace only optional timing I/O.
+            driver_scope = dict(vars(old_driver.NativeHeadlessGameplayDriver))
+            strategy_scope = dict(vars(old_strategy))
+            self._timing_stack.enter_context(patch.object(old_driver, "finish_army_timing", no_timing))
+            self._timing_stack.enter_context(patch.object(old_driver, "start_army_timing", no_timing))
+        else:
+            driver_scope = dict(vars(old_driver))
+            driver_scope["war_termination_optional_unavailable_v1"] = self.unavailable
+            driver_scope["finish_army_timing"] = no_timing
+            driver_scope["start_army_timing"] = no_timing
+            names = {"_execute_war_termination_step", "execute_step"}
+            exec(compile(definitions(self.driver_raw, names), "<actual projected Driver functions>", "exec"),
+                 driver_scope)
+            strategy_scope = dict(vars(old_strategy))
+            strategy_scope["war_termination_optional_query_defer_v1"] = self.deferred
+            exec(compile(definitions(self.strategy_raw, {"_choose_one_life_turn_core"}),
+                         "<actual projected strategy>", "exec"), strategy_scope)
         self.war_step = cast(WarStep, checked_function(driver_scope,
             "_execute_war_termination_step", ("self", "step", "starting", "selected_revision",
             "query_war_id", "surrender_war_id", "white_peace_war_id", "explicit_surrender")))
         self.execute = cast(Execute, checked_function(driver_scope,
             "execute_step", ("self", "step", "expected_revision")))
-        strategy_scope: Doc = dict(vars(old_strategy))
-        strategy_scope["war_termination_optional_query_defer_v1"] = self.deferred
-        exec(compile(definitions(self.strategy_raw, {"_choose_one_life_turn_core"}),
-                     "<actual projected strategy>", "exec"), strategy_scope)
         self.plan = cast(Plan, checked_function(strategy_scope,
             "_choose_one_life_turn_core", ("commands", "snapshot", "action_steps",
             "bridge_capabilities", "next_run_plan", "battle_speed_readiness")))
 
     def close(self) -> None:
-        sys.modules.pop(self.contract.__name__, None)
+        self._timing_stack.close()
+        if self._owns_contract:
+            sys.modules.pop(self.contract.__name__, None)
 
     def unavailable_result(self, *, start: Doc | None = None, current: Doc | None = None) -> Doc:
         first = frame() if start is None else start
@@ -493,6 +568,34 @@ class WarOptionalTests(unittest.TestCase):
         self.assertEqual(ast.dump(original, include_attributes=False),
                          ast.dump(projected, include_attributes=False))
 
+
+
+    def test_real_source_recipe_accepts_whole_states_and_rejects_partial_install(self) -> None:
+        driver, strategy, contract = (self.runtime.driver_raw,
+                                     self.runtime.strategy_raw, self.runtime.contract_raw)
+        original, projected, installed = source_views_v1(driver, strategy, contract)
+        self.assertTrue(installed)
+        self.assertEqual(projected, {"native_driver": driver, "strategy": strategy,
+                                     "war_contract": contract})
+        self.assertEqual(original["native_driver"], self.runtime.before_driver)
+        self.assertEqual(original["strategy"], self.runtime.before_strategy)
+        restored, forward, installed = source_views_v1(
+            original["native_driver"], original["strategy"], original["war_contract"])
+        self.assertFalse(installed)
+        self.assertEqual(restored, original)
+        self.assertEqual(forward, projected)
+        invalid: list[tuple[bytes, bytes, bytes]] = [
+            (original["native_driver"], strategy, contract),
+            (driver, original["strategy"], contract),
+            (driver, strategy, original["war_contract"]),
+            (driver + driver, strategy, contract),
+            (driver, strategy + strategy, contract),
+            (driver, strategy, contract + b"\n# foreign suffix\n"),
+            (driver, strategy, contract + producer.WAR_CONTRACT_ADDITION_V1.encode()),
+        ]
+        for values in invalid:
+            with self.subTest(lengths=[len(item) for item in values]), self.assertRaises(ValueError):
+                source_views_v1(*values)
 
 if __name__ == "__main__":
     unittest.main()

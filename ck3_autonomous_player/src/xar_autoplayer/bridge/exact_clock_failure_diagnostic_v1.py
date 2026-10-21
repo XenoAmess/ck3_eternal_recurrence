@@ -6,10 +6,12 @@ from __future__ import annotations
 
 import json
 from .exact_clock_wait_progress_v1 import project_wait_progress_v1
+from .cached_native_clock_summary_v1 import parse_cached_native_clock_summary_v1
 
 SCHEMA = "xar.exact-day-clock-failure.v2"
 MESSAGE = "exact-day native clock did not stop the map"
 MAX_BYTES = 8192
+_CACHED_MAX_BYTES = 16384
 _FRAME = ("date_raw", "native_revision", "revision", "snapshot_id", "speed",
           "paused", "player_character_id", "episode_character_id", "episode_id",
           "alive", "map_ready", "monotonic_ms")
@@ -123,7 +125,7 @@ def exact_clock_failure_diagnostic_v1(error: object) -> dict[str, object] | None
             or error.primitive_step != "life-advance-one-day"):
         return None
     value: object = getattr(error, "step_result", None)
-    if (type(value) is not dict or set(value) != set(_DIAGNOSTIC)
+    if (type(value) is not dict or set(value) not in (set(_DIAGNOSTIC), set(_DIAGNOSTIC) | {"cached_native_clock_summary_v1"})
             or value.get("schema") != SCHEMA
             or value.get("is_error") is not True or value.get("never_replay") is not True
             or type(value.get("credit")) is not int or value["credit"] != 0
@@ -136,8 +138,16 @@ def exact_clock_failure_diagnostic_v1(error: object) -> dict[str, object] | None
     try:
         result: dict[str, object] = {key: value[key] for key in _DIAGNOSTIC}
         result["wait_progress"] = project_wait_progress_v1(value["wait_progress"])
+        if len(_encode(result)) > MAX_BYTES:
+            return None
+        if "cached_native_clock_summary_v1" in value:
+            cached_summary = parse_cached_native_clock_summary_v1(value["cached_native_clock_summary_v1"])
+            if cached_summary is None:
+                return None
+            result["cached_native_clock_summary_v1"] = cached_summary
         encoded = _encode(result)
-        if len(encoded) > MAX_BYTES:
+        limit = _CACHED_MAX_BYTES if "cached_native_clock_summary_v1" in result else MAX_BYTES
+        if len(encoded) > limit:
             return None
         isolated: object = json.loads(encoded)
         if not isinstance(isolated, dict):

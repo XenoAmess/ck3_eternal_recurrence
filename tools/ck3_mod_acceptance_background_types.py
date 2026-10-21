@@ -3,6 +3,7 @@ from __future__ import annotations
 import math,re,subprocess
 from typing import Final, Literal, TypeAlias, TypedDict
 from types import ModuleType
+from pathlib import Path
 
 JsonValue: TypeAlias = None | bool | int | float | str | list['JsonValue'] | dict[str,'JsonValue']
 JsonObject: TypeAlias = dict[str,JsonValue]
@@ -68,6 +69,20 @@ def file_pin(value: object) -> FilePin:
     if not isinstance(digest,str) or re.fullmatch('[0-9a-f]{64}',digest) is None:
         raise ValueError('Exact file SHA256 required')
     return FilePin(path=path,bytes=size,sha256=digest)
+
+def keyed_file_pin(key: object, value: object) -> FilePin:
+    if not isinstance(key, str) or not key or chr(0) in key or not Path(key).is_absolute():
+        raise ValueError('Absolute selected file key required')
+    row = json_object(value)
+    if set(row) not in ({'bytes', 'sha256'}, {'path', 'bytes', 'sha256'}):
+        raise ValueError('Exact keyed file pin fields required')
+    if 'path' in row:
+        declared = row['path']
+        if not isinstance(declared, str) or declared != key:
+            raise ValueError('Declared file path differs from selected key')
+        return file_pin(row)
+    return file_pin({**row, 'path': key})
+
 
 def previous_refusal(value: object) -> PreviousRefusalClosure:
     row=json_object(value)

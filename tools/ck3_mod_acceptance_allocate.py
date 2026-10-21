@@ -1,5 +1,6 @@
 """One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
+from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
 from ck3_mod_acceptance_background_types import JsonObject, json_object
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -1935,7 +1936,8 @@ def _allocate_and_keep_impl(selection,args):
         allocated_unrun=failure_schema=='ck3-mod-acceptance-allocated-unrun-closure-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
         prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
-        supervisor_refused=failure_schema in {'ck3-mod-acceptance-supervisor-admission-refused-closure-v1','ck3-mod-acceptance-background-supervisor-refused-closure-v1'}
+        supervisor_refused=(failure_schema=='ck3-mod-acceptance-supervisor-admission-refused-closure-v1'
+                            or failure_schema in BACKGROUND_CLOSURE_SCHEMAS_V1)
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
@@ -1951,7 +1953,7 @@ def _allocate_and_keep_impl(selection,args):
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
         if supervisor_refused:
-            if failure_schema=='ck3-mod-acceptance-background-supervisor-refused-closure-v1':
+            if failure_schema in BACKGROUND_CLOSURE_SCHEMAS_V1:
                 from ck3_mod_acceptance_background_refusal import validate_supervisor_refusal
             else:
                 from ck3_mod_acceptance_supervisor_refusal import validate_supervisor_refusal
@@ -2045,7 +2047,7 @@ def _allocate_and_keep_impl(selection,args):
         for row in index['files']:
             peer=Path(row['path']).resolve();check_pin(peer,row);files[peer]=pin(peer)
     shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
-    for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py'):
+    for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_mod_acceptance_launcher_protocol_v1.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py'):
         peer=shared_tools/name;files[peer]=pin(peer)
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:

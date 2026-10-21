@@ -9,11 +9,12 @@ from xar_autoplayer.bridge.army_observer_research_sampling_control import FAMILI
 
 
 class SaveGate(unittest.TestCase):
-    def test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit(self):
+    def test_unknown_save_or_independent_after_is_never_replayed_and_withholds_quit(self) -> None:
         for failed in ('Save-once','Save-independent-after'):
             with self.subTest(failed=failed):
-                calls=[];closed=[]
-                client=SimpleNamespace(normal_close=lambda why:closed.append(why))
+                calls: list[tuple[str,str,dict[str,object]]]=[];closed: list[str]=[]
+                client=SimpleNamespace(_handle=object(),_process={'pid':41},
+                    normal_close=lambda why:closed.append(why))
                 gate=actor.CloseGate(client)
                 idle=dict(state='idle',generation=0,starting_date_raw=0,target_date_raw=0,last_observed_date_raw=0,
                     trigger_date_raw=0,speed=0,mode='decision_epoch',army_count=0,combat_count=0,
@@ -22,7 +23,7 @@ class SaveGate(unittest.TestCase):
                     pause_observed=False,terminal_observed=False,abnormal=False)
                 row=dict(installed=True,available=True,capture_enabled=False,busy=False,clear_completed=True,
                     epoch=1,active_captures=0,retained_records=0,qualified_records=0,status='disabled',readiness='off')
-                def call(label,tool,args):
+                def call(label: str,tool: str,args: dict[str,object]) -> dict[str,object]:
                     calls.append((label,tool,args))
                     if label==failed:raise TimeoutError('synthetic original result unknown')
                     if tool=='ck3_save_checkpoint':return {'checkpoint':{'status':'saved','date_raw':100}}
@@ -30,11 +31,19 @@ class SaveGate(unittest.TestCase):
                     step=('query' if tool.startswith('ck3_query') else 'disable')+'-army-observer-research-sampling-v1'
                     return dict(step=step,accepted=True,status='completed',backend_id='native-headless',
                         army_observer_research_sampling_v1={family:dict(row) for family in FAMILIES})
-                def snapshot(label):
+                def snapshot(label: str) -> dict[str,object]:
                     calls.append((label,'snapshot',{}))
                     if label==failed:raise TimeoutError('synthetic independent endpoint unknown')
-                    return {'revision':1,'date_raw':100}
-                def payment(label,mode):
+                    return dict(revision=1,date_raw=100,native_revision=1,snapshot_id='synthetic-native-1',
+                        episode_projection='native_campaign',backend_id='native-headless',
+                        source='injected-dll-named-pipe',map_ready=True,paused=True,local_player_id=29829,
+                        played_character=dict(character_id=29829,alive=True,source='native'),
+                        diagnostics=dict(connected=True,bridge_pid=41,connection_generation=1,
+                            pipe_name='synthetic-retained-pipe'),
+                        managed_campaign_run_binding=dict(run_id='synthetic-run',state_dir='synthetic-state',
+                            bridge_pipe='synthetic-retained-pipe',host_path='synthetic-host',
+                            frozen_argv_sha256='a'*64))
+                def payment(label: str,mode: str) -> dict[str,object]:
                     calls.append((label,'payment',{'mode':mode}))
                     return {'sampling':dict(available=True,capture_enabled=False,busy=False,clear_completed=True,
                         active_captures=0,retained_records=0)}

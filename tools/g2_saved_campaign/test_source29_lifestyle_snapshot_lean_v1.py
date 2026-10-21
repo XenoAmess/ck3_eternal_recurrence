@@ -46,6 +46,49 @@ def _functions(source: bytes) -> dict[str, object]:
     exec(compile(ast.fix_missing_locations(module), "<actual-service-functions>", "exec"),
          namespace)
     return namespace
+
+def source_pair_v1(source: bytes) -> tuple[bytes, bytes]:
+    """Accept one whole installation state and prove the exact real recipe."""
+    text = source.decode("utf-8")
+    nodes = [node for node in ast.walk(ast.parse(text))
+             if isinstance(node, ast.FunctionDef) and node.name in FUNCTION_PINS]
+    if len(nodes) != 2 or {node.name for node in nodes} != set(FUNCTION_PINS):
+        raise ValueError("two unique lifestyle source methods required")
+    installed: list[bool] = []
+    replacements: list[tuple[str, str]] = []
+    for node in nodes:
+        calls = [value for value in ast.walk(node)
+                 if isinstance(value, ast.Call) and isinstance(value.func, ast.Attribute)
+                 and isinstance(value.func.value, ast.Name)
+                 and value.func.value.id == "self" and value.func.attr == "snapshot"]
+        if len(calls) != 1 or calls[0].args:
+            raise ValueError("one exact semantic snapshot call required")
+        call = calls[0]
+        omitted = (len(call.keywords) == 1
+                   and call.keywords[0].arg == "include_native_command_history"
+                   and isinstance(call.keywords[0].value, ast.Constant)
+                   and call.keywords[0].value.value is False)
+        if call.keywords and not omitted:
+            raise ValueError("unsupported semantic snapshot arguments")
+        installed.append(omitted)
+        segment = ast.get_source_segment(text, node)
+        call_text = ast.get_source_segment(text, call)
+        if segment is None or call_text is None or segment.count(call_text) != 1:
+            raise ValueError("one reversible method segment required")
+        replacements.append((segment, segment.replace(call_text, "self.snapshot()", 1)))
+    if installed == [False, False]:
+        return source, patch_service_functions_v1(source)
+    if installed != [True, True]:
+        raise ValueError("partly installed lifestyle optimization")
+    for old, new in replacements:
+        if text.count(old) != 1:
+            raise ValueError("one installed method segment required")
+        text = text.replace(old, new, 1)
+    before = text.encode()
+    if patch_service_functions_v1(before) != source:
+        raise ValueError("installed service differs from the exact forward recipe")
+    return before, source
+
 class Probe:
     def __init__(self, case: Case) -> None:
         self.case = case
@@ -120,10 +163,14 @@ class LifestyleSnapshotLeanTests(unittest.TestCase):
     new: dict[str, object]
     @classmethod
     def setUpClass(cls) -> None:
-        before = _BEFORE
-        if before is None:
-            before = (REPO_ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py").read_bytes()
-        after = _AFTER if _AFTER is not None else patch_service_functions_v1(before)
+        if _BEFORE is None:
+            source = (REPO_ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py").read_bytes()
+            before, after = source_pair_v1(source)
+        else:
+            before = _BEFORE
+            if _AFTER is None or patch_service_functions_v1(before) != _AFTER:
+                raise ValueError("exact explicit before/after source pair required")
+            after = _AFTER
         cls.old, cls.new = _functions(before), _functions(after)
         tree = ast.parse(after.decode("utf-8"))
         seen = 0
@@ -195,6 +242,30 @@ class FileRefContractTests(unittest.TestCase):
         for value in bad:
             with self.subTest(value=value), self.assertRaises(RuntimeError):
                 parse_ref(value)
+
+    def test_real_service_recipe_roundtrip_rejects_mixed_or_changed_calls(self) -> None:
+        source = (REPO_ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py").read_bytes()
+        before, after = source_pair_v1(source)
+        self.assertEqual(source_pair_v1(before), (before, after))
+        self.assertEqual(source_pair_v1(after), (before, after))
+        text = after.decode()
+        nodes = [node for node in ast.walk(ast.parse(text))
+                 if isinstance(node, ast.FunctionDef) and node.name in FUNCTION_PINS]
+        segment = ast.get_source_segment(text, nodes[0])
+        if segment is None:
+            raise AssertionError("actual function segment required")
+        call = "self.snapshot(include_native_command_history=False)"
+        self.assertEqual(segment.count(call), 1)
+        cases = [
+            text.replace(segment, segment.replace(call, "self.snapshot()", 1), 1),
+            text.replace(segment, segment.replace(call,
+                "self.snapshot(include_native_command_history=True)", 1), 1),
+            text + "\n" + segment + "\n",
+        ]
+        for value in cases:
+            with self.subTest(length=len(value)), self.assertRaises(ValueError):
+                source_pair_v1(value.encode())
+
 def main() -> int:
     global _BEFORE, _AFTER
     parser = argparse.ArgumentParser()

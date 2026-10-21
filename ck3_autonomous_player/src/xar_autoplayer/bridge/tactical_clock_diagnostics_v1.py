@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
-from typing import Literal, Protocol, TypedDict
+from typing import Literal, Protocol, TypedDict, NotRequired
 
 from .clock_observation_timing_v1 import (
     ClockObservationV1, start_clock_observation_v1, finish_clock_observation_v1,
@@ -14,6 +14,11 @@ from .exact_clock_wait_progress_v1 import (
 )
 from .driver import StepPostconditionError
 from .route_contact_window_contract import parse_advance_route_contact_window_step
+
+from .cached_native_clock_summary_v1 import (
+    CachedNativeClockCollectorV1, CachedNativeClockSummaryV1, PhaseV1,
+    CachedDiagnosticStateV1, parse_cached_native_clock_summary_v1,
+)
 
 SCHEMA: Literal["xar.tactical-clock-failure.v1"] = "xar.tactical-clock-failure.v1"
 MAX_BYTES = 16384
@@ -61,9 +66,14 @@ class TacticalClockObservationV1:
     progress: WaitProgressV1 | None = None
     clock: ClockObservationV1 | None = None
     summary: WaitProgressSummaryV1 | None = None
+    cached: CachedNativeClockCollectorV1 | None = None
 
     def start(self, driver: ClockDiagnosticOwnerV1,
               snapshot: dict[str, object], generation: object) -> None:
+        try:
+            self.cached = CachedNativeClockCollectorV1.from_snapshot(snapshot)
+        except Exception:
+            pass
         try:
             value = start_wait_progress_v1(driver, snapshot, generation)
             self.progress = value if isinstance(value, WaitProgressV1) else None
@@ -92,6 +102,18 @@ class TacticalClockObservationV1:
                 finish_clock_observation_v1(driver, self.clock, snapshot)
             except Exception:
                 pass
+
+
+
+    def capture_cached(self, phase: PhaseV1, state: CachedDiagnosticStateV1) -> None:
+        if self.cached is not None:
+            self.cached.capture_current(phase, state)
+
+    def cached_summary(self) -> CachedNativeClockSummaryV1 | None:
+        try:
+            return None if self.cached is None else self.cached.summary()
+        except Exception:
+            return None
 
 
 class SentinelStatusProjectionV1(TypedDict):
@@ -191,6 +213,7 @@ class TacticalClockFailureV1(TypedDict):
     primitive_step: str
     step_result: TacticalStepFailureProjectionV1
     wait_progress: WaitProgressSummaryV1 | None
+    cached_native_clock_summary_v1: NotRequired[CachedNativeClockSummaryV1]
     truncated: bool
 
 
@@ -403,6 +426,9 @@ def build_tactical_clock_failure_v1(
         wait_progress=project_tactical_wait_progress_v1(wait_progress),
         truncated=armies is None or omitted is None or omitted > 0,
     )
+    cached_summary = parse_cached_native_clock_summary_v1(result.get("cached_native_clock_summary_v1"))
+    if cached_summary is not None:
+        diagnostic["cached_native_clock_summary_v1"] = cached_summary
     encoded = json.dumps(diagnostic, ensure_ascii=True, allow_nan=False,
                          separators=(",", ":"))
     return diagnostic if len(encoded.encode("utf-8")) <= MAX_BYTES else None

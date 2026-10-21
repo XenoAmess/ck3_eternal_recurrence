@@ -1,0 +1,38 @@
+{
+  "DLL_loads": 0,
+  "Game_calls": 0,
+  "files": [
+    {
+      "bytes": 31669,
+      "name": "producer.py",
+      "sha256": "ef2d497a131d3f8f2bf757d87592dca6adb1c5565e12197bf317b0bfffb84406"
+    },
+    {
+      "bytes": 10060,
+      "name": "test_recipe_v1.py",
+      "sha256": "d7719203c44836c90a4b865ab14df039b6b65403465d38406a8c5ae5da347b26"
+    },
+    {
+      "bytes": 1860,
+      "name": "README.md",
+      "sha256": "24bca821ed3cd2759f9df56e015ee3b4017f05777940392c850b4e66385eec6c"
+    }
+  ],
+  "final_tool_pin_guard_added": true,
+  "historical_Native31_producer_success": false,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-21T00:44:17.743978+00:00",
+  "pin_baseline_rebound_rejected": true,
+  "portable_recipe_tests": 9,
+  "portable_tool_result": "c4d824",
+  "production_build_executed": false,
+  "result_receipt_budget_checked": true,
+  "schema": "xar.native32.offline-builder-source/v1",
+  "sealed_Native32_candidate_unchanged": true,
+  "source_admission_sha256": "9659d9a418f588b15541adf57f515c58af92bd2a9ab2d922137736cb7195cc14",
+  "source_phase_hard_bytes": 98304,
+  "strict_exit_code": 0,
+  "strict_files": 2,
+  "strict_tool_result": "f7bd76",
+  "superseded_manifest_sha256": "17c8084ca467603f2809f1dc9fff434a4f53f2fe8fd91c056530c22960ea6351"
+}

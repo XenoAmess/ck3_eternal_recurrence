@@ -16,7 +16,7 @@ import sys
 import time
 from collections.abc import Sequence
 from ck3_mod_acceptance_background_types import (JsonObject, ProcessGeneration, json_object,
-    text_field, object_field, strings_field, environment, process_handle)
+    text_field, object_field, strings_field, environment, process_handle, keyed_file_pin)
 from ck3_mod_acceptance_steam_gate import OfflineAdmission
 
 from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
@@ -56,7 +56,7 @@ def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "lau
             import importlib.util
             source = Path(__file__).with_name("ck3_mod_acceptance_runtime_inputs.py").resolve()
             require(str(source) in files, "Running input helper is absent from allocation pins")
-            check_pin({**json_object(files[str(source)]), "path": str(source)})
+            check_pin(keyed_file_pin(str(source), files[str(source)]))
             spec = importlib.util.spec_from_file_location("shared_acceptance_runtime_inputs", source)
             if spec is None or spec.loader is None:raise ValueError("Running input loader unavailable")
             module = importlib.util.module_from_spec(spec)
@@ -64,16 +64,16 @@ def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "lau
             frozen["_runtime_input_observation"] = json_object(module.validate_running_inputs(root, frozen))
         else:
             for name, row in files.items():
-                check_pin({**json_object(row), "path": name})
+                check_pin(keyed_file_pin(name, row))
         check_pin(frozen["runtime_manifest"])
     # A copied helper must not silently import another unpinned sibling.
     for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_steam_gate.py", "steam_offline_state_contract.py", "steam_offline_state_probe.py", "steam_offline_native_provider_v1.py", "steam_offline_native_profiles.py", "ck3_mod_acceptance_background_types.py", "ck3_live_run_id.py"):
         path = Path(__file__).with_name(name).resolve()
         require(str(path) in files, "Public helper is absent from allocation pins: " + str(path))
-        check_pin({**json_object(files[str(path)]), "path": str(path)})
+        check_pin(keyed_file_pin(str(path), files[str(path)]))
     host = str(Path(argv[argv.index("--agent-source-root") - 1]).resolve())
     require(host in files, "Actual shared host is absent from allocation pins")
-    check_pin({**json_object(files[host]), "path": host})
+    check_pin(keyed_file_pin(host, files[host]))
     frozen["_checked_frozen_argv"] = json_object(pin(frozen_path))
     return frozen, context
 

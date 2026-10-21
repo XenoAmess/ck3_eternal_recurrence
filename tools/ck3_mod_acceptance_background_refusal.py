@@ -7,17 +7,23 @@ supervisor waits are not backfilled.
 from __future__ import annotations
 from datetime import datetime, timezone
 from collections.abc import Mapping
-from ck3_mod_acceptance_background_types import JsonObject, PreviousRefusalClosure, json_object, previous_refusal
+from ck3_mod_acceptance_background_types import JsonObject, PreviousRefusalClosure, keyed_file_pin, json_object, previous_refusal
 from pathlib import Path
 import argparse
 import json
 import os
 from ck3_mod_acceptance import check_pin, pin, read_json
 
-SCHEMA = 'ck3-mod-acceptance-background-supervisor-refused-closure-v1'
-# This profile recognizes only the exact reviewed typed pre-host protocol.
-GATE_PROTOCOL_SHA256 = 'a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274'
-LAUNCHER_PROTOCOL_SHA256 = 'e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24'
+from ck3_mod_acceptance_launcher_protocol_v1 import (
+    BACKGROUND_CLOSURE_SCHEMAS_V1, CURRENT_CLOSURE_SCHEMA_V1,
+    LEGACY_CLOSURE_SCHEMA_V1,
+    GATE_PROTOCOL_SHA256 as GATE_PROTOCOL_SHA256,
+    LAUNCHER_PROTOCOL_SHA256 as LAUNCHER_PROTOCOL_SHA256,
+    build_launcher_protocol_v1, verify_closure_protocol_v1,
+)
+
+SCHEMA = LEGACY_CLOSURE_SCHEMA_V1
+SCHEMA_V2 = CURRENT_CLOSURE_SCHEMA_V1
 FALSE_FIELDS = ('host_started', 'native_session_started', 'game_started',
                 'normal_close_qualified', 'business_pass')
 
@@ -62,7 +68,7 @@ def _validate_supervisor_refusal_impl(previous, freeze, close_path, keeper_root,
     previous, keeper_root = Path(previous).resolve(), Path(keeper_root).resolve()
     bundle = _read(close_path)
     machine, run, task = ids.current_machine_id(), freeze['run_id'], freeze['screen_task']
-    need(bundle.get('schema') == SCHEMA and bundle.get('run_id') == run
+    need(bundle.get('schema') in BACKGROUND_CLOSURE_SCHEMAS_V1 and bundle.get('run_id') == run
          and previous.name == run and bundle.get('machine_id') == machine
          == freeze.get('identity_allocation', {}).get('machine_id'),
          'Supervisor refusal full run/machine identity differs')
@@ -144,9 +150,14 @@ def _validate_supervisor_refusal_impl(previous, freeze, close_path, keeper_root,
     launcher = _launcher(argv)
     original('launcher_source', launcher, decode=False)
     original('steam_gate_source',launcher.with_name('ck3_mod_acceptance_steam_gate.py'),decode=False)
-    need(bundle['steam_gate_source']['sha256']==GATE_PROTOCOL_SHA256 and freeze['files'].get(str(launcher.with_name('ck3_mod_acceptance_steam_gate.py')),{}).get('sha256')==GATE_PROTOCOL_SHA256,'Reviewed background gate protocol differs')
-    source_ref = freeze.get('files', {}).get(str(launcher), {})
-    need(source_ref.get('sha256') == bundle['launcher_source']['sha256'] == LAUNCHER_PROTOCOL_SHA256
+    verify_closure_protocol_v1(bundle)
+    gate_ref = keyed_file_pin(str(launcher.with_name('ck3_mod_acceptance_steam_gate.py')),
+                              freeze['files'].get(str(launcher.with_name('ck3_mod_acceptance_steam_gate.py')), {}))
+    need(gate_ref['sha256'] == bundle['steam_gate_source']['sha256']
+         and gate_ref['bytes'] == bundle['steam_gate_source']['bytes'],
+         'Reviewed background gate protocol differs')
+    source_ref = keyed_file_pin(str(launcher), freeze.get('files', {}).get(str(launcher), {}))
+    need(source_ref.get('sha256') == bundle['launcher_source']['sha256']
          and source_ref.get('bytes') == bundle['launcher_source']['bytes'],
          'Original frozen launcher is not the reviewed pre-retain-host refusal protocol')
     need(intent.get('run_id') == run and intent.get('business_pass') is False
@@ -315,10 +326,12 @@ def build_bundle(args: argparse.Namespace) -> JsonObject:
         'CAS_release': args.release, 'launcher_source': launcher,'steam_gate_source':launcher.with_name('ck3_mod_acceptance_steam_gate.py'),
         'counter': ids.default_state_root() / machine / freeze['mod_key'] / 'counter.json'}
     need(all(Path(p).stat().st_size <= 1048576 for p in paths.values()), 'Bounded original metadata only')
-    row = {'schema': SCHEMA, 'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+    row = {'schema': SCHEMA_V2, 'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
         'run_id': freeze['run_id'], 'failure_stage': 'BACKGROUND_SUPERVISOR_ADMISSION_BEFORE_RETAIN_HOST',
         **{k: False for k in FALSE_FIELDS}, 'supervisor_original_wait_proven':True,'supervisor_original_wait_returncode':2,
         **{k: pin(Path(p).resolve()) for k, p in paths.items()}}
+    row['launcher_protocol'] = json_object(build_launcher_protocol_v1(row['launcher_source'], row['steam_gate_source']))
+    verify_closure_protocol_v1(row)
     output = args.output.resolve()
     need(not output.exists(), 'New immutable closure output required')
     output.parent.mkdir(parents=True, exist_ok=True)

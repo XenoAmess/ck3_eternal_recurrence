@@ -662,6 +662,7 @@ from .army_captured_target_land_supply_inputs_contract import (
     normalize_target_land_supply_in_route_preview,
 )
 from .war_contract import (
+    war_termination_optional_unavailable_v1,
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX,
@@ -9638,6 +9639,9 @@ class NativeHeadlessGameplayDriver:
                         or (parse_query_route_contact_horizon_step(step) is not None
                           and result.get("schema") == "xar.route-contact-readonly-unavailable.v1"
                           and result.get("status") == "unavailable")
+                        or (parse_query_war_termination_options_step(step) is not None
+                            and result.get("schema") == "xar.war-termination-readonly-unavailable/v1"
+                            and result.get("status") == "unavailable")
                         or (parse_query_battle_control_snapshot_v1_step(step) is not None
                             and result.get("schema") == "xar.battle-control-readonly-unavailable.v1"
                             and result.get("status") == "unavailable")) else True), result=result,
@@ -22632,6 +22636,16 @@ class NativeHeadlessGameplayDriver:
                     internal_semantic_snapshot=True,
                 )
             except _NativeCommandRejectedError as error:
+                if error.native_error == "war-termination completion snapshot read failed":
+                    current = self.take_internal_semantic_snapshot()
+                    unavailable = war_termination_optional_unavailable_v1(
+                        step=step, native_error=error.native_error,
+                        native_request_id=error.native_request_id,
+                        request=error.native_request_frame,
+                        response=error.native_command_result_frame,
+                        starting=starting, current=current)
+                    if unavailable is not None:
+                        return dict(unavailable)
                 if error.native_error not in (
                     _WAR_TERMINATION_REVISION_RETRY_ERRORS
                 ):
@@ -25083,6 +25097,7 @@ class NativeHeadlessGameplayDriver:
                     )
             finally:
                 clock_diagnostics.finish(self, current)
+                clock_diagnostics.capture_cached("wait_final", self.state)
             observed_boundary = (
                 _battle_sentinel_player_decision_boundary(current)
                 or _battle_sentinel_active_war_set_boundary(
@@ -25137,6 +25152,7 @@ class NativeHeadlessGameplayDriver:
                         else "managed_failure_cleanup"
                     )
                 finally:
+                    clock_diagnostics.capture_cached("pause_final", self.state)
                     for action in boundary_pause_actions:
                         actions.append({**action, "purpose": purpose})
                 current = paused_inspection
@@ -25370,6 +25386,7 @@ class NativeHeadlessGameplayDriver:
                             )
             except Exception as cleanup:
                 cleanup_error = f"{type(cleanup).__name__}: {cleanup}"
+            clock_diagnostics.capture_cached("cleanup_final", self.state)
             result = _battle_sentinel_step_result(
                 step=step,
                 starting=starting,
@@ -25394,6 +25411,9 @@ class NativeHeadlessGameplayDriver:
             )
             if clock_diagnostics.summary is not None:
                 result["tactical_clock_wait_progress_v1"] = clock_diagnostics.summary
+            cached_summary = clock_diagnostics.cached_summary()
+            if cached_summary is not None:
+                result["cached_native_clock_summary_v1"] = cached_summary
             if boundary_pause_diagnostics is not None:
                 result["player_decision_pause_diagnostics_v1"] = boundary_pause_diagnostics
             message = f"native {step} postcondition failed: {error}"
@@ -25923,6 +25943,7 @@ class NativeHeadlessGameplayDriver:
         cancel_attempted = False
         clock_stop_not_observed = False
         diagnostic_action_start = len(actions)
+        cached_clock = None
         try:
             from .exact_day_speed_configuration_v1 import prepare_exact_day_speed_v1
             current = prepare_exact_day_speed_v1(
@@ -25946,6 +25967,11 @@ class NativeHeadlessGameplayDriver:
                 mode="terminal_or_sentinel", watch_army_ids=watch_army_ids,
                 sentinel_scope=("exact_one_day" if war_daily_watch is None else "war_daily_watch_v1"),
             )
+            try:
+                from .cached_native_clock_summary_v1 import CachedNativeClockCollectorV1
+                cached_clock = CachedNativeClockCollectorV1.from_snapshot(current)
+            except Exception:
+                pass
             from .clock_observation_timing_v1 import (
                 start_clock_observation_v1, finish_clock_observation_v1,
             )
@@ -25978,6 +26004,8 @@ class NativeHeadlessGameplayDriver:
                 except Exception:
                     pass
                 finish_clock_observation_v1(self, clock_observation, current)
+                if cached_clock is not None:
+                    cached_clock.capture_current("wait_final", self.state)
                 finish_army_timing(clock_wait_timing, step="life-advance",
                     date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
             if war_daily_watch is not None:
@@ -26071,9 +26099,13 @@ class NativeHeadlessGameplayDriver:
                 cleanup_frame = self.take_internal_semantic_snapshot()
                 if war_daily_watch is not None and not war_daily_watch.same_connection(cleanup_frame):
                     raise BridgeUnavailableError("war daily watch cleanup connection changed; no command replay")
-                self._pause_life_advance(
-                    cleanup_frame, actions
-                )
+                try:
+                    self._pause_life_advance(
+                        cleanup_frame, actions
+                    )
+                finally:
+                    if cached_clock is not None:
+                        cached_clock.capture_current("pause_final", self.state)
                 if arm_status is not None and not cancel_attempted:
                     cancel_step = (
                         f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}"
@@ -26088,6 +26120,8 @@ class NativeHeadlessGameplayDriver:
             except Exception as cleanup_error:
                 actions.append({"step": "exact-day-clock-cleanup",
                                 "error": str(cleanup_error)})
+            if cached_clock is not None:
+                cached_clock.capture_current("cleanup_final", self.state)
             if war_daily_watch is not None:
                 raise StepPostconditionError(
                     f"war daily watch unresolved; never replay: {original_error}",
@@ -26112,6 +26146,8 @@ class NativeHeadlessGameplayDriver:
                         cleanup_start=diagnostic_cleanup_start,
                         wait_progress=wait_progress_summary,
                     )
+                    if cached_clock is not None:
+                        diagnostic["cached_native_clock_summary_v1"] = cached_clock.summary()
                 except Exception:
                     raise original_error
                 raise StepPostconditionError(

@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from collections.abc import Mapping, Sequence
 from ck3_mod_acceptance_background_types import (
-    CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, file_pin, json_object)
+    CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object)
 from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day)
 import subprocess
 import time
@@ -105,11 +105,7 @@ def load_pinned_control_queue(
         declared_value = files.get(str(path))
         if not isinstance(declared_value, dict):
             raise ValueError('Selected queue sibling absent from frozen pins: ' + str(path))
-        # The frozen mapping key is the producer's path when the row omits it.
-        declared = file_pin(declared_value if 'path' in declared_value else
-                            {**declared_value, 'path': str(path)})
-        if declared['path'] != str(path):
-            raise ValueError('Selected queue sibling declared path differs: ' + str(path))
+        declared = keyed_file_pin(str(path), declared_value)
         raw = path.read_bytes()
         digest = hashlib.sha256(raw).hexdigest()
         if len(raw) != declared['bytes'] or digest != declared['sha256']:

@@ -5339,3 +5339,321 @@ def normalize_actual_compiled_effect_observations_v1(
         if any(event[key] is not None for key in ("derived_seed_raw_u32", "date_at_invocation", "frame_at_invocation")):
             raise ValueError("entry/return cannot manufacture derived seed/date/frame")
     return deepcopy(top)
+
+
+# Optional query failure is neither an empty option set nor a native-negative lease.
+from collections.abc import Iterable as _WTUIterable
+from typing import Literal as _WTULiteral, TypedDict as _WTUTypedDict
+
+
+class WarQueryWarSignatureV1(_WTUTypedDict):
+    war_id: int
+    player_side: _WTULiteral["attacker", "defender"]
+    player_is_primary_war_leader: bool | None
+    primary_opponent_character_id: int | None
+    player_relative_war_score: int
+    targeted_title_ids: list[int]
+
+
+class WarQuerySourceFrameV1(_WTUTypedDict):
+    snapshot_id: str
+    revision: int
+    native_revision: int
+    date_raw: int
+    actor_character_id: int
+    episode_run_id: str
+    bridge_pid: int
+    connection_generation: int
+    active_war_signature: list[WarQueryWarSignatureV1]
+
+
+class WarQueryRequestV1(_WTUTypedDict):
+    type: _WTULiteral["execute_step"]
+    protocol_version: _WTULiteral[1]
+    request_id: str
+    step: str
+    expected_revision: int
+
+
+class WarQueryRejectionV1(_WTUTypedDict):
+    request: WarQueryRequestV1
+    response_error: _WTULiteral["war-termination completion snapshot read failed"]
+    response_request_id: str
+    response_protocol_version: _WTULiteral[1]
+    response_ok: _WTULiteral[False]
+    response_result_presence: _WTULiteral["absent"]
+
+
+class WarTerminationUnavailableV1(_WTUTypedDict):
+    schema: _WTULiteral["xar.war-termination-readonly-unavailable/v1"]
+    step: str
+    accepted: _WTULiteral[False]
+    available: _WTULiteral[False]
+    status: _WTULiteral["unavailable"]
+    read_only: _WTULiteral[True]
+    business_submission: _WTULiteral[False]
+    replay_allowed: _WTULiteral[False]
+    replan_required: _WTULiteral[True]
+    war_id: int
+    war_termination_options: None
+    unavailable_reason: _WTULiteral["native_termination_completion_snapshot_read_failed"]
+    source_frame: WarQuerySourceFrameV1
+    native_rejection: WarQueryRejectionV1
+    semantic_publication_rechecked: _WTULiteral[True]
+    fresh_native_completion_proved: _WTULiteral[False]
+
+
+class WarQueryUnavailableDeferV1(_WTUTypedDict):
+    schema: _WTULiteral["xar.war-termination-optional-query-defer/v1"]
+    war_id: int
+    date_raw: int
+    reason: _WTULiteral["same_day_optional_material_unavailable"]
+    native_negative_assessment: _WTULiteral[False]
+    war_termination_options: None
+    business_submission: _WTULiteral[False]
+    replay_allowed: _WTULiteral[False]
+    source_request_id: str
+
+
+def _wtu_object(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError("war query object required")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if type(key) is not str:
+            raise ValueError("war query text keys required")
+        result[key] = item
+    return result
+
+
+def _wtu_uint(value: object, maximum: int = 2**53 - 1) -> int:
+    if type(value) is not int or not 0 < value <= maximum:
+        raise ValueError("war query exact safe positive integer required")
+    return value
+
+
+def _wtu_text(value: object) -> str:
+    if type(value) is not str or not value or len(value) > 256:
+        raise ValueError("war query bounded nonempty text required")
+    return value
+
+
+def _wtu_step(value: object) -> tuple[str, int]:
+    step = _wtu_text(value)
+    prefix = "query-war-termination-options-"
+    suffix = step.removeprefix(prefix)
+    if (not step.startswith(prefix) or not suffix.isascii()
+            or not suffix.isdecimal() or suffix.startswith("0")):
+        raise ValueError("canonical optional war query required")
+    war_id = _wtu_uint(int(suffix), 2**31 - 1)
+    return step, war_id
+
+
+def _wtu_request_id(value: object) -> str:
+    identity = _wtu_text(value)
+    parts = identity.split("-")
+    if (len(parts) != 3 or parts[0] != "step" or not parts[1].isascii()
+            or not parts[1].isdecimal() or parts[1].startswith("0")
+            or len(parts[2]) != 12 or any(ch not in "0123456789abcdef" for ch in parts[2])):
+        raise ValueError("canonical native step request identity required")
+    _wtu_uint(int(parts[1]))
+    return identity
+
+
+def _wtu_wars(value: object) -> list[WarQueryWarSignatureV1]:
+    if type(value) is not list or not value:
+        raise ValueError("active war signature required")
+    result: list[WarQueryWarSignatureV1] = []
+    seen: set[int] = set()
+    for item in value:
+        row = _wtu_object(item)
+        if not {"war_id", "player_side", "player_is_primary_war_leader",
+                "primary_opponent_character_id", "player_relative_war_score",
+                "targeted_title_ids"} <= set(row):
+            raise ValueError("all nullable war identity fields required")
+        war_id = _wtu_uint(row.get("war_id"), 2**32 - 1)
+        side = row.get("player_side")
+        if type(side) is not str or (side != "attacker" and side != "defender"):
+            raise ValueError("war side required")
+        typed_side: _WTULiteral["attacker", "defender"] = "attacker" if side == "attacker" else "defender"
+        primary = row.get("player_is_primary_war_leader")
+        if primary is not None and type(primary) is not bool:
+            raise ValueError("war primary flag required")
+        opponent_value = row.get("primary_opponent_character_id")
+        opponent = None if opponent_value is None else _wtu_uint(opponent_value, 2**32 - 1)
+        score = row.get("player_relative_war_score")
+        if type(score) is not int or abs(score) > 2**53 - 1:
+            raise ValueError("exact safe war score required")
+        targets_value = row.get("targeted_title_ids")
+        if type(targets_value) is not list:
+            raise ValueError("war targets list required")
+        targets = [_wtu_uint(target, 2**32 - 1) for target in targets_value]
+        if len(set(targets)) != len(targets) or war_id in seen:
+            raise ValueError("unique war identities required")
+        seen.add(war_id)
+        result.append({"war_id": war_id, "player_side": typed_side,
+            "player_is_primary_war_leader": primary,
+            "primary_opponent_character_id": opponent,
+            "player_relative_war_score": score, "targeted_title_ids": targets})
+    return sorted(result, key=lambda row: row["war_id"])
+
+
+def _wtu_frame(snapshot: object) -> WarQuerySourceFrameV1:
+    row = _wtu_object(snapshot)
+    played = _wtu_object(row.get("played_character"))
+    diagnostics = _wtu_object(row.get("diagnostics"))
+    if (row.get("paused") is not True or row.get("map_ready") is not True
+            or played.get("alive") is not True):
+        raise ValueError("paused playable map required")
+    native_revision = _wtu_uint(row.get("native_revision"))
+    snapshot_id = _wtu_text(row.get("snapshot_id"))
+    if snapshot_id != "native:" + str(native_revision):
+        raise ValueError("snapshot/native revision binding differs")
+    return {"snapshot_id": snapshot_id,
+        "revision": _wtu_uint(row.get("revision")),
+        "native_revision": native_revision,
+        "date_raw": _wtu_uint(row.get("date_raw")),
+        "actor_character_id": _wtu_uint(played.get("character_id"), 2**32 - 1),
+        "episode_run_id": _wtu_text(row.get("episode_run_id")),
+        "bridge_pid": _wtu_uint(diagnostics.get("bridge_pid"), 2**32 - 1),
+        "connection_generation": _wtu_uint(diagnostics.get("connection_generation")),
+        "active_war_signature": _wtu_wars(row.get("active_wars"))}
+
+
+def _wtu_bound_result(step: str, request: object, response: object,
+                      frame: WarQuerySourceFrameV1) -> WarTerminationUnavailableV1:
+    canonical, war_id = _wtu_step(step)
+    if not any(row["war_id"] == war_id for row in frame["active_war_signature"]):
+        raise ValueError("queried war must remain active")
+    asked = _wtu_object(request)
+    if set(asked) != {"type", "protocol_version", "request_id", "step", "expected_revision"}:
+        raise ValueError("exact original query request required")
+    request_id = _wtu_request_id(asked.get("request_id"))
+    if (asked.get("type") != "execute_step" or type(asked.get("protocol_version")) is not int
+            or asked["protocol_version"] != 1 or asked.get("step") != canonical
+            or _wtu_uint(asked.get("expected_revision")) != frame["native_revision"]):
+        raise ValueError("original native query binding differs")
+    reply = _wtu_object(response)
+    if (set(reply) != {"type", "protocol_version", "request_id", "ok", "error"}
+            or reply.get("type") != "command_result"
+            or type(reply.get("protocol_version")) is not int or reply["protocol_version"] != 1
+            or reply.get("request_id") != request_id or reply.get("ok") is not False
+            or reply.get("error") != "war-termination completion snapshot read failed"):
+        raise ValueError("exact native query rejection required")
+    return {"schema": "xar.war-termination-readonly-unavailable/v1", "step": canonical,
+        "accepted": False, "available": False, "status": "unavailable", "read_only": True,
+        "business_submission": False, "replay_allowed": False, "replan_required": True,
+        "war_id": war_id, "war_termination_options": None,
+        "unavailable_reason": "native_termination_completion_snapshot_read_failed",
+        "source_frame": frame, "native_rejection": {"request": {
+            "type": "execute_step", "protocol_version": 1, "request_id": request_id,
+            "step": canonical, "expected_revision": frame["native_revision"]},
+            "response_error": "war-termination completion snapshot read failed",
+            "response_request_id": request_id, "response_protocol_version": 1, "response_ok": False,
+            "response_result_presence": "absent"},
+        "semantic_publication_rechecked": True, "fresh_native_completion_proved": False}
+
+
+def war_termination_optional_unavailable_v1(*, step: str, native_error: str,
+        native_request_id: object, request: object, response: object,
+        starting: object, current: object) -> WarTerminationUnavailableV1 | None:
+    """Match one explicit read-only rejection; a publication recheck is not a native fence."""
+    if native_error != "war-termination completion snapshot read failed":
+        return None
+    try:
+        before = _wtu_frame(starting)
+        after = _wtu_frame(current)
+        if before != after:
+            return None
+        result = _wtu_bound_result(step, request, response, before)
+        if _wtu_request_id(native_request_id) != result["native_rejection"]["request"]["request_id"]:
+            return None
+        return result
+    except (ValueError, KeyError, OverflowError):
+        return None
+
+
+def _wtu_parse_stored_result(value: object) -> WarTerminationUnavailableV1:
+    row = _wtu_object(value)
+    frame = _wtu_object(row.get("source_frame"))
+    # Reconstruct the one canonical JSON type domain before comparing evidence.
+    snapshot: dict[str, object] = {key: frame.get(key) for key in
+        ("snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id")}
+    snapshot.update(paused=True, map_ready=True,
+        played_character={"character_id": frame.get("actor_character_id"), "alive": True},
+        diagnostics={"bridge_pid": frame.get("bridge_pid"), "connection_generation": frame.get("connection_generation")},
+        active_wars=frame.get("active_war_signature"))
+    parsed_frame = _wtu_frame(snapshot)
+    if frame != dict(parsed_frame):
+        raise ValueError("stored source frame differs")
+    evidence = _wtu_object(row.get("native_rejection"))
+    response: dict[str, object] = {
+        "type": "command_result", "protocol_version": evidence.get("response_protocol_version"),
+        "request_id": evidence.get("response_request_id"), "ok": evidence.get("response_ok"),
+        "error": evidence.get("response_error")}
+    presence = evidence.get("response_result_presence")
+    if presence != "absent":
+        raise ValueError("original response result presence required")
+    expected = _wtu_bound_result(_wtu_text(row.get("step")), evidence.get("request"), response, parsed_frame)
+    # Python numeric equality is deliberately insufficient at this wire boundary.
+    import json as _wtu_json
+    if _wtu_json.dumps(row, sort_keys=True, separators=(",", ":"), allow_nan=False) != _wtu_json.dumps(expected, sort_keys=True, separators=(",", ":"), allow_nan=False):
+        raise ValueError("stored unavailable result differs")
+    return expected
+
+
+def war_termination_optional_query_defer_v1(snapshot: object, war: object,
+        recent_records: _WTUIterable[object]) -> WarQueryUnavailableDeferV1 | None:
+    """Avoid repeating a failed optional read on unchanged same-day war inputs."""
+    try:
+        current = _wtu_frame(snapshot)
+        war_id = _wtu_uint(_wtu_object(war).get("war_id"), 2**32 - 1)
+        query_step = "query-war-termination-options-" + str(war_id)
+        for index, value in enumerate(recent_records):
+            if index >= 512:
+                return None
+            row = _wtu_object(value)
+            step = _wtu_text(row.get("step"))
+            if step == query_step:
+                if row.get("ok") is not False:
+                    return None
+                result = _wtu_parse_stored_result(row.get("result"))
+                previous = result["source_frame"]
+                current_row: dict[str, object] = dict(current)
+                previous_row: dict[str, object] = dict(previous)
+                if any(current_row[key] != previous_row[key] for key in (
+                        "date_raw", "actor_character_id", "episode_run_id", "bridge_pid",
+                        "connection_generation", "active_war_signature")):
+                    return None
+                return {"schema": "xar.war-termination-optional-query-defer/v1",
+                    "war_id": war_id, "date_raw": current["date_raw"],
+                    "reason": "same_day_optional_material_unavailable",
+                    "native_negative_assessment": False, "war_termination_options": None,
+                    "business_submission": False, "replay_allowed": False,
+                    "source_request_id": result["native_rejection"]["request"]["request_id"]}
+            if step.startswith(("restore-", "load-", "surrender-", "white-peace-",
+                    "offer-white-peace-", "war-enforce-demands", "enforce-")):
+                return None
+            if row.get("ok") is False:
+                other = _wtu_parse_stored_result(row.get("result"))
+                if other["step"] != step:
+                    return None
+                current_scope: dict[str, object] = dict(current)
+                other_scope: dict[str, object] = dict(other["source_frame"])
+                if any(current_scope[key] != other_scope[key] for key in (
+                        "date_raw", "actor_character_id", "episode_run_id", "bridge_pid",
+                        "connection_generation", "active_war_signature")):
+                    return None
+            elif row.get("ok") is not True:
+                return None
+        return None
+    except (ValueError, KeyError, OverflowError, TypeError):
+        return None
+
+
+def parse_war_termination_optional_unavailable_v1(value: object) -> WarTerminationUnavailableV1 | None:
+    """Validate a retained DTO for a future nonmaterial Queue consumer."""
+    try:
+        return _wtu_parse_stored_result(value)
+    except (ValueError, KeyError, OverflowError, TypeError):
+        return None
