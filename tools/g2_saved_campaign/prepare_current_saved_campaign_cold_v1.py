@@ -7,6 +7,7 @@ import hashlib
 import json
 import ntpath
 from pathlib import Path
+from types import ModuleType
 from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 import re
 from typing import Literal
@@ -1000,6 +1001,66 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072)
  return ColdComposeV1(output,parse_quote_v1(quote.to_wire()))
 
+@dataclass(frozen=True, slots=True)
+class SupervisorImportChainV1:
+ placement_source: str
+ keeper_source: str
+ creator_sources: tuple[str, ...]
+ custody_source: str
+
+def probe_current_saved_supervisor_import_chain_v1(
+ supervisor: ModuleType, canonical: object, *, supervisor_source: bytes, runtime_root: Path,
+) -> SupervisorImportChainV1:
+ """Run the original pre-ADMITTED import span before any bootstrap SDK import."""
+ import sys
+ root=runtime_root.resolve(strict=True)
+ need(Path(text(supervisor.__file__)).resolve()==root/"root_native30_supervisor_c23.py",
+      "actual supervisor import-chain origin")
+ main=[node for node in ast.parse(supervisor_source).body
+       if isinstance(node,ast.FunctionDef) and node.name=="main"]
+ need(len(main)==1,"one actual supervisor main import chain")
+ body=main[0].body
+ def assignment(name:str)->ast.Assign:
+  found=[node for node in body if isinstance(node,ast.Assign)
+         and any(isinstance(target,ast.Name) and target.id==name for target in node.targets)
+         and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name)
+         and node.value.func.id=="load_file"]
+  need(len(found)==1,"one original import assignment: "+name)
+  return found[0]
+ placement=assignment("placement");keeper=assignment("keeper_module")
+ branches=[node for node in body if isinstance(node,ast.If)
+           and ast.unparse(node.test)=="canonical is None"
+           and any(isinstance(item,ast.Call) and isinstance(item.func,ast.Attribute)
+                   and isinstance(item.func.value,ast.Name) and item.func.value.id=="canonical"
+                   and item.func.attr=="tools" for item in ast.walk(node))]
+ need(len(branches)==1,"one original canonical import-path branch")
+ custody=[node for node in body if isinstance(node,ast.ImportFrom)
+          and node.module=="g2_saved_campaign.sdk_process_custody"]
+ need(len(custody)==1,"one original custody import")
+ start=body.index(placement)
+ need(start+1==body.index(keeper) and body.index(branches[0])+1==body.index(custody[0]),
+      "retained supervisor import order")
+ # Only the three import statements are executed; intervening live bus/OS checks
+ # remain in the full main prefix and are not claimed by this offline probe.
+ projection:list[ast.stmt]=[placement,keeper,branches[0],custody[0]]
+ need(canonical is not None,"real canonical binding is required")
+ scope:dict[str,object]=dict(vars(supervisor));scope.update(canonical=canonical,N=root)
+ exec(compile(ast.Module(body=projection,type_ignores=[]),str(root/"root_native30_supervisor_c23.py"),"exec"),scope)
+ def origin(name:str)->str:
+  module=sys.modules.get(name)
+  need(isinstance(module,ModuleType),"actual imported module: "+name)
+  if not isinstance(module,ModuleType): raise ValueError("missing imported module")
+  return str(Path(text(module.__file__)).resolve(strict=True))
+ tools=root/"creator-tools/g2_saved_campaign"
+ creators=tuple(origin("g2_saved_campaign."+name) for name in
+   ("canonical_native_provider_chain_v1","sdk_process_custody"))
+ need(all(Path(path).parent==tools for path in creators),"standalone creators retain their exact frozen namespace")
+ need(Path(origin("root_owned_generation"))==root/"tools/g2_saved_campaign/managed_desktop1_placement.py"
+      and Path(origin("root_retained_screen_keeper"))==root/"root_screen_bus_lease_c23.py",
+      "original placement and keeper imports retain frozen origins")
+ return SupervisorImportChainV1(origin("root_owned_generation"),origin("root_retained_screen_keeper"),
+                                creators,origin("g2_saved_campaign.sdk_process_custody"))
+
 def run_current_saved_startup_consumer_probe_v1(
  plan_ref:ExactRefV1,quote_ref:ExactRefV1,*,expected_machine_id:str,
 ) -> JsonObject:
@@ -1109,6 +1170,9 @@ def run_current_saved_startup_consumer_probe_v1(
  need(canonical is not None,"actual canonical constructor returned a binding")
  evidence("canonical_outer_constructor",outer_ref,outer_raw,"OuterBindingV1.__init__",
           {"runtime_root":str(root),"canonical_entry_count":len(plan.canonical_entry_paths)})
+ supervisor,super_ref,super_raw=module_at("_current_saved_probe_supervisor_v1","root_native30_supervisor_c23.py")
+ probe_current_saved_supervisor_import_chain_v1(supervisor,canonical,
+  supervisor_source=super_raw,runtime_root=root)
  boot,_,_=module_at("root_checkpoint_bootstrap_c23","root_checkpoint_bootstrap_c23.py")
  api_result:object=function(boot,"api")()
  need(isinstance(api_result,tuple) and len(api_result)==3,"original bootstrap API result")
@@ -1126,7 +1190,6 @@ def run_current_saved_startup_consumer_probe_v1(
           "validate_current_saved_supervisor_business_v1",
           {"config_ref":config_ref.to_wire(),"basis_ref":plan.basis_ref.to_wire(),
            "validation_ref":plan.validation_ref.to_wire(),"business_schema":text(business_row["schema"])})
- supervisor,super_ref,super_raw=module_at("_current_saved_probe_supervisor_v1","root_native30_supervisor_c23.py")
  main=ast_function(super_raw,"main")
  need(isinstance(main,ast.FunctionDef),"actual supervisor main definition")
  if not isinstance(main,ast.FunctionDef): raise ValueError("supervisor main")

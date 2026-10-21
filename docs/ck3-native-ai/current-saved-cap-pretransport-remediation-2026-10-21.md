@@ -65,3 +65,79 @@ CAP 修复提交 `2f07ef209da59f08ccf90bcacc94a9bb125a41b7` 的 [Official CI](ht
 14:51 UTC 最终软件验收：十一叶联合 `--strict --strict-equality --explicit-package-bases --follow-imports=silent` 实际0诊断，输入前后稳定；新回执 `R/ROOT-FOREGROUND-FINAL-STRICT11-QUALIFICATION02.json` 为3646B，SHA-256 `bb6bbfae70aea30b4a018f1125af7ff7087995ef2411cbf9c42879e47d47e25e`，旧失败01不覆盖。最终生成启动代码4项、8个原生采样模拟分支通过；最终录制流水线14项、0 skip通过，包含实际写入调用→JSON序列化→机器/UTC/嵌套九字段解析。独立只读审查于14:51:37 UTC通过，无剩余P0/P1；它是源码与生成接线审查，不代表新运行树已物理加载或 Game 已通过。
 
 最终十一叶类型范围包含原八叶及新共享合同、renderer、focused test；placement 本体的26条历史诊断继续保留。CI 已接入同一十一叶参数、新 launch 测试类及整个 focused 测试模块。六个修改源码的精确摘要与各执行者结果收于 `R/ROOT-FOREGROUND-FINAL-SOFTWARE-QUALIFICATION01.json`。下一步仍需新运行树的完整实际前置链、子进程来源、原生 SEM/CAP 和首批 FULL 验收；当前业务进度没有增加。
+
+## 停止启动后的系统性复盘（2026-10-21）
+
+本节属于 `machine_id: xenoamess-full-tower-eb9d2c1186`。观察日为2026-10-21，机器身份已再次通过 `tools/ck3_live_run_id.py machine` 读取；来源为原交接、各场小型闭场索引、真实错误栈及本次离线回归。用户最新指令为“先别启动CK3，先梳理为什么一直起不来”。该暂停继续有效；本轮不创建新游戏、SDK、录制或N32运行树，不注册或运行新的启动Task。
+
+### 当前事实
+
+当前工程的主要失败集中在启动、恢复和验收适配层。A20确实完成13个FULL、390个普通周期，并保存193日；累计仍为5622/10950日、5143周期，日期1082-02-09，余5328日。G2的M0–M5原定切片完成，M6、M7未完成，仍为6/8；不能将切片验收外推为全面战略能力。
+
+从源码到推进，实际链路是：源码组合与冻结 → 离线消费者检查 → 监督器/窗口放置/录制 → MCP与Native → 普通规划器/feeder → 保存与闭场。工作树、冻结H、SDK Source32和每次N运行树有不同职责；某个源码或单模块通过，不能代替实际运行树的组合验收。
+
+A31（R0019）已安全闭场：原Task的child退出1、Job活跃数0；原Scheduler实际确认Task不存在，screen129按CAS8034释放至8035，编号记completed-red。未形成ADMITTED、Game launch、SDK或新FULL。原失败树不修改，闭场索引记录Root本次操作错误。
+
+### 逐次失败发生在哪一层
+
+| 场次 | 已证实到达与停止原因 | 对应判断 |
+| --- | --- | --- |
+| A03–04 | Game已经启动；先后暴露base Python -S跳过pywin32路径、录制目录/固定provider处理错误、SDK custody接收超时及闭场validator漏导入 | 多个启动/录制接缝错误；custody超时先后次序未完全确定 |
+| A17 | 已进入实际AUTO；时间推进等待或暂停后验失败 | 有真实原生推进问题，不能归因于其后的零RPC故障 |
+| A18 | Game、Native注入、SDK进程创建；生成entry导入不存在的xar_autoplayer.mcp_server | 正确模块为xar_autoplayer.bridge.mcp_server，0RPC |
+| A19 | SEM/CAP实际通过，journal也返回；Queue后验引用未定义MACHINE | 原生返回不等于完整后验成功，0FULL |
+| A20 | 13FULL、390周期、193日保存成功 | 运行和保存已有实证；Game最终forced1，正常关闭仍未通过 |
+| A21 | 完整前缀、尚无Game | 文件哈希digest(path)被同名SHA文本解析器覆盖 |
+| A22 | Task已运行、尚无Game | 错把新运行树N/state当作共享STATE路径，环境文件不存在 |
+| A23 | Game、SDK和SEM原生返回 | 续存档错误进入“1066创始anchor”分支，后验拒绝当前帧 |
+| A24–27 | 离线整改/准备；A24按用户要求停启，后续资格明确无Game | 不能把每个准备编号都计作一次引擎启动失败 |
+| A28 | Game、SDK、SEM11375均成功 | CAP11376在transport前把flat六字段INFLIGHT误读为nested request |
+| A29–30 | A29创建Game后因HWND变化关闭；A30在Task注册前拒绝 | 缺少即时归属证据，不能认定游戏抢焦点；20秒窗口静止是执行者额外要求 |
+| A31 | 完整前缀失败；原Task也在pre-ADMITTED同错退出，0Game | placement污染包搜索路径，另有Root忽略前缀非零结果仍提交Task的操作错误 |
+
+历史入口：[A03–04交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)、[A17真实推进失败](../handover/2026-10-21-robert-source29-a17-clock-failure.md)、[A20保存闭场](robert-a20-saved-progress-2026-10-21.md)。A28–30原始证据见本文前述章节；A31原件见下表。
+
+### 共性根因与验收为什么漏过
+
+1. **跨模块合同与生成代码反复漂移。** 错误涉及模块名、共享状态路径、字段形状、同名函数与未定义常量。强类型能拦下一部分错字段和错类型；包搜索顺序、真实文件布局、运行分支语义仍必须在运行时验证。当前并未达到全仓库严格类型通过，placement此前整叶检查的26条历史诊断尚未逐项清理。
+
+2. **验收组合不完整。** 旧Prepared准确标记为OFFLINE_CONTRACT_PREPARED，fresh_native_qualification和full_loop_permitted均为false。它执行若干独立消费者；OuterCtor验来源却未调用canonical.tools，boot.api先于placement导入，后续只投影部分原AST。因此它没有测试“placement产生导入副作用以后，再解析原生creator包”。录制child-import测的是另一个入口，Win32模拟主要测试提取后的判断逻辑，也不执行该顶层副作用。将这些局部绿色理解为完整启动通过，是执行者对证据范围的错误外推。
+
+3. **A31确定性包冲突。** N31/creator-tools/g2_saved_campaign没有__init__.py，是namespace package；N31/tools/g2_saved_campaign有44字节__init__.py，是regular package。placement把N31/tools永久加入sys.path；Python会选中regular包，即使creator-tools后来移到首位也不改变结果。canonical文件存在、来源SHA已通过，随后仍找不到子模块。真实错误链为supervisor:441 → canonical.tools():91；它早于ADMITTED:463、keeper.start:473和Game创建:502。多路fresh interpreter与PathFinder复核一致，不需要假定缓存残留。
+
+4. **执行链没有传播失败。** Root的嵌套exec_command返回exit_code=1，外围functions.exec只打印结果，仍继续调用Task注册和Run。这是我自己的操作控制错误。Task的来源/身份检查不消费完整前缀结果；原监督器内部守卫最终再次拒绝，所以本次没有创建Game。更多绿色标签不能弥补这个连接缺口。
+
+5. **额外门槛造成误拒和冷重启成本。** 用户正常切换到其他应用，不应被旧HWND相等或20秒窗口静止条件阻止。预算核对和Steam新鲜度仍是必要约束；执行者将已授权链条拆成过多人工步骤，会消耗有效期和恢复时间。当前A28–31停止点没有容量不足的证据。原feeder具备同进程续批能力，反复冷重建不应成为普通游玩的常态。
+
+以上共性是对多次错误的归纳；不能据此宣称旧Native停滞已经找到唯一根因。低CPU、遮挡和分辨率均不是现有证据证明的根因。
+
+### 本轮已经落地、仍不启动的改正
+
+- placement只加入运行树根N，统一使用from tools import ck3_live_run_id，移除N/tools全局暴露；不加模块别名、不修改旧N31、不放松来源SHA。
+- 公开startup consumer probe在boot.api前执行原监督器的placement → keeper → canonical.tools/custody导入段；该段失败，公开prepare不能发布Prepared。原六消费者operation合同不变。
+- Root现有操作helper增加单一顺序执行函数：完整prefix → register → inspect → run，各步subprocess.run(check=True)，并检查prefix实际布尔成功事实。非零、超时、缺字段、错误类型均停止；用户暂停期间该函数只经fake runner测试，没有调用真实Task。
+- Root实际执行20项窗口/生成代码/接线回归及原有9项cold合同回归，合计29项、0skip通过。另以两个fresh BASE -I -B -S进程验证：N31原字节导入链必失败，仅最小placement变更的RAM读取覆层通过；没有别名、缓存清理或运行树写入。该资格仅涵盖原导入段，**不是完整pre-ADMITTED或新冻结运行树通过**。
+- 新Root helper的7个离线分支与函数strict/equality通过。最终十一叶strict/equality检查通过；首次检查发现sys._base_executable无公开类型声明，已用运行时object校验收紧后另记成功回执，原失败保留。未用Any、cast或ignore压错。
+
+### 未完成与下一步边界
+
+修复后的真实CAP仍未验证：A29–31没有再到SDK，旧CI通过不能代替它。Source32新clock配置尚无新FULL吞吐实测；旧10565原生停滞、M6自然terminal到后续消费、M7广度和正常Game退出仍未闭合。灰色面板富化已有早前实机展示，本轮导入修复没有新增决策能力验收信用。
+
+1秒/日目标未完成。A20有完整墙钟的12批为488.0427秒/186日＝2.62388555秒/日；13批总推进193日，但最后一批缺完整FULL墙钟，不能混用分母。原整场墙钟起点2026-10-19T03:26:49.420926Z不重置；截至本次复盘已超过59小时，本场整体1秒/日已不可能，后续只能另外报告局部实测优化。
+
+当前只完成离线诊断、必要窄修和可审查记录。后续首先整合这些修复并审清完整启动入口，停止逐场追加临时例外；用户明确改变停启指令前，不进行下一次CK3启动。恢复后也须从实际新运行树重做完整前置链，再分别读回SEM/CAP、首FULL与后续推进，不能预记成功。
+
+### 本轮精确小型证据
+
+下列均属上述机器；Q31为O/current-saved-a31-runtime-prep01，O完整路径与本文R相同父目录。
+
+| Q31内文件 | 字节 | SHA-256 |
+| --- | ---: | --- |
+| ROOT-A31-PRE-ADMITTED-FAILED-CLOSED-INDEX01.json | 2523 | f15a959ec71584b05b157f5957de80bea76ba1df144aede5203922ed612ec4f2 |
+| ROOT-CHECKED-CHAIN-OFFLINE-QUALIFICATION01.json | 1925 | 760c078d5fa3b2bc6528109345bfcca89b7bf199ab087bb11470973b1652dc0a |
+| ROOT-NAMESPACE-FINAL-SOFTWARE-QUALIFICATION01.json | 5601 | 1ecd5be9abc38b5ad790c75a93503e212686c0940f916e1627d32430219ed3f6 |
+| ROOT-NAMESPACE-TYPED-COLD-REGRESSION01.json | 2675 | ba72962dc380ef9b6963b3fa2c73eac2ba3c478f85d9ce84366bf730db89d79d |
+| ROOT-NAMESPACE-FINAL-STRICT11-QUALIFICATION01.json（原FAIL） | 3791 | 30d42ed796ccc807bfa331ffe0d2c26f2dc782381c91764f19a871aec982fb95 |
+| ROOT-NAMESPACE-FINAL-STRICT11-QUALIFICATION02.json | 3646 | 539a895f17903217601e611be30fb263b9e22d0fb9c3e4f00bd83a10e5e0fb97 |
+
+该索引绑定原stderr、CLOSED、Task Run ACK、screen释放和R0019终态。小型回归回执绑定实际源码摘要、测试输出和RAM覆层边界。未读取或重新散列SAVE/Driver正文，未新增影片或截图；失败原件按通用存储策略和当前问题用途复核，不因复盘无限延期。

@@ -252,6 +252,19 @@ class PlacementTests(unittest.TestCase):
         self.assertEqual(receipt["status"], "RED")
         self.assertLess(len(calls), 4)
 
+    def test_placement_import_preserves_creator_package_search(self) -> None:
+        import runpy
+        import sys
+        root = Path(placement.__file__).resolve().parents[2]
+        search = [value for value in sys.path if value != str(root / "tools")]
+        with patch.object(sys, "path", search):
+            loaded = runpy.run_path(placement.__file__, run_name="root_owned_generation")
+            self.assertNotIn(str(root / "tools"), sys.path)
+            identity = loaded["ck3_live_run_id"]
+            if not isinstance(identity, ModuleType) or identity.__file__ is None:
+                raise AssertionError("Actual qualified identity module required")
+            self.assertEqual(Path(identity.__file__).resolve(), root / "tools/ck3_live_run_id.py")
+
 
 class RenderedConsumerTests(unittest.TestCase):
     def actor_namespace(self) -> dict[str, object]:
@@ -380,7 +393,7 @@ class RenderedConsumerTests(unittest.TestCase):
         exec(compile(original_writer, "<original-capture-json-writer>", "exec"), writer)
         namespace["_write_new"] = writer["_write_new"]
         before = datetime.now(timezone.utc)
-        with patch("ck3_live_run_id.current_machine_id", return_value="software-fixture") as identity:
+        with patch("tools.ck3_live_run_id.current_machine_id", return_value="software-fixture") as identity:
             exec(compile(renderer._CAPTURE_FOREGROUND_WRITE.strip(), "<actual-rendered-foreground-write>", "exec"), namespace)
             identity.assert_called_once()
         after = datetime.now(timezone.utc)

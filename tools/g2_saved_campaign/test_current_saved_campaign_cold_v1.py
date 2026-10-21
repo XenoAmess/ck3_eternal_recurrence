@@ -592,6 +592,104 @@ class LaunchForegroundContractTests(unittest.TestCase):
         self.assertIn("tools/g2_saved_campaign/current_saved_background_display_v1.py", producer.GENERIC_SOURCE_PATHS)
 
 
+def run_actual_supervisor_import_chain_regression_v1(runtime_root: Path) -> dict[str, str]:
+    """Two fresh interpreters use a sealed runtime; only candidate source reads are overlaid.
+
+    This explicit integration qualification is separate from portable unit tests.
+    It never writes the runtime, changes module aliases, starts a process holder,
+    or claims that the candidate bytes were deployed there.
+    """
+    script = r'''
+import hashlib, importlib.machinery, importlib.util, io, json, sys
+from pathlib import Path
+from unittest.mock import patch
+root=Path(sys.argv[1]).resolve(strict=True)
+producer_path=Path(sys.argv[2]).resolve(strict=True)
+candidate_path=Path(sys.argv[3]).resolve(strict=True)
+mode=sys.argv[4]
+sys.path.insert(0,str(root))
+spec=importlib.util.spec_from_file_location('_candidate_cold_producer',producer_path)
+assert spec is not None and spec.loader is not None
+producer=importlib.util.module_from_spec(spec);sys.modules[spec.name]=producer;spec.loader.exec_module(producer)
+import root_native30_supervisor_c23 as supervisor
+from root_c23_canonical_outer import prepare_supervisor
+canonical=prepare_supervisor(root,enabled=True)
+source=(root/'root_native30_supervisor_c23.py').read_bytes()
+placement=root/'tools/g2_saved_campaign/managed_desktop1_placement.py'
+original=placement.read_bytes();candidate=candidate_path.read_bytes()
+before=b'sys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ck3_live_run_id\nsys.path.insert(0, str(Path(__file__).resolve().parents[2]))\n'
+after=b'sys.path.insert(0, str(Path(__file__).resolve().parents[2]))\nfrom tools import ck3_live_run_id\n'
+assert original.count(before)==1 and original.replace(before,after,1)==candidate
+open_path=Path.open;get_data=importlib.machinery.SourceFileLoader.get_data
+def candidate_open(path,*args,**kwargs):
+    if path.resolve()==placement:
+        assert args==('rb',) and not kwargs
+        return io.BytesIO(candidate)
+    return open_path(path,*args,**kwargs)
+def candidate_load(loader,path):
+    return candidate if Path(path).resolve()==placement else get_data(loader,path)
+if mode=='original':
+    try:
+        producer.probe_current_saved_supervisor_import_chain_v1(supervisor,canonical,
+            supervisor_source=source,runtime_root=root)
+    except ModuleNotFoundError as error:
+        assert error.name=='g2_saved_campaign.canonical_native_provider_chain_v1'
+        package=sys.modules['g2_saved_campaign']
+        assert Path(package.__file__).resolve()==root/'tools/g2_saved_campaign/__init__.py'
+        print(json.dumps({'result':'ORIGINAL_REJECTED','package':package.__file__}))
+    else: raise AssertionError('original shadowing was not reproduced')
+else:
+    supervisor.PLACEMENT_SHA=hashlib.sha256(candidate).hexdigest()
+    with patch.object(Path,'open',candidate_open),patch.object(importlib.machinery.SourceFileLoader,'get_data',candidate_load):
+        observed=producer.probe_current_saved_supervisor_import_chain_v1(supervisor,canonical,
+            supervisor_source=source,runtime_root=root)
+    package=sys.modules['g2_saved_campaign']
+    assert {Path(path).resolve() for path in package.__path__}=={root/'creator-tools/g2_saved_campaign'}
+    assert Path(sys.modules['tools.g2_saved_campaign'].__file__).resolve()==root/'tools/g2_saved_campaign/__init__.py'
+    assert all(Path(path).parent==root/'creator-tools/g2_saved_campaign' for path in observed.creator_sources)
+    assert Path(observed.placement_source)==placement
+    assert str(root/'tools') not in sys.path
+    print(json.dumps({'result':'CANDIDATE_IMPORT_CHAIN_PASSED','creator':observed.creator_sources[0],
+        'placement':observed.placement_source,'runtime_write_calls':0,'candidate_read_overlay':True}))
+'''
+    placement = Path(producer.__file__).with_name("managed_desktop1_placement.py")
+    base_value: object = getattr(sys, "_base_executable", None)
+    if not isinstance(base_value, str) or not base_value:
+        raise ValueError("actual base interpreter path is required")
+    base = Path(base_value).resolve(strict=True)
+    if not base.is_file():
+        raise ValueError("actual base interpreter must be a file")
+    output: dict[str, str] = {}
+    for mode in ("original", "candidate"):
+        completed = subprocess.run([str(base), "-I", "-B", "-S", "-X", "utf8", "-c", script,
+            str(runtime_root), producer.__file__, str(placement), mode],
+            capture_output=True, text=True, check=True, timeout=60)
+        result = record(json.loads(completed.stdout))
+        output[mode] = text(result["result"])
+    return output
+
+
+class SupervisorImportChainTests(unittest.TestCase):
+    def test_public_probe_requires_original_import_order_before_sdk(self) -> None:
+        tree = ast.parse(Path(producer.__file__).read_bytes())
+        probe = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+            and node.name == "run_current_saved_startup_consumer_probe_v1")
+        chain = [node for node in probe.body if isinstance(node, ast.Expr)
+            and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name)
+            and node.value.func.id == "probe_current_saved_supervisor_import_chain_v1"]
+        bootstrap = [node for node in probe.body if isinstance(node, ast.Assign)
+            and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name)
+            and node.value.func.id == "module_at" and len(node.value.args) > 1
+            and isinstance(node.value.args[1], ast.Constant)
+            and node.value.args[1].value == "root_checkpoint_bootstrap_c23.py"]
+        self.assertEqual(len(chain), 1); self.assertEqual(len(bootstrap), 1)
+        self.assertLess(probe.body.index(chain[0]), probe.body.index(bootstrap[0]))
+        helper = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+            and node.name == "probe_current_saved_supervisor_import_chain_v1")
+        self.assertFalse(any(isinstance(node, ast.Attribute) and node.attr in
+            ("clear", "reload", "start", "launch_game") for node in ast.walk(helper)))
+
+
 class NoTransport:
     """The real SDK constructor is used with an offline transport test boundary."""
     pipe_name = PIPE

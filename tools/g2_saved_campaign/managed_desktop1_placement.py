@@ -20,9 +20,8 @@ import uuid
 
 from typing import Literal, NotRequired, Protocol, TypedDict
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import ck3_live_run_id
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from tools import ck3_live_run_id
 from tools.g2_saved_campaign import background_foreground_contract_v1 as foreground_contract
 
 
