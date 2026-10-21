@@ -1,0 +1,289 @@
+{
+  "schema": "faith-e02-native-event-display-variant-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:56:19.020128+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "event_definition_key": "stress_threshold.1701",
+  "live_native_definition_id": "stress_threshold.1701",
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "event_instance_id": 8,
+  "existing_analysis_reused": {
+    "record": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\records_stress1701_12003.py",
+      "bytes": 12729,
+      "sha256": "535f322c5f827f2b80cfdc97c759aa33f412901e13c9ca6802a3fb3053def050"
+    },
+    "original_exact_build": {
+      "game_version": "1.20.0.3",
+      "ck3_executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "steam_build_id": 25652598
+    },
+    "source_SHA_current_12004_match": true,
+    "scope": "source semantics reused; original1.20.0.3 qualification is not promoted to1.20.0.4 runtime qualification"
+  },
+  "source_pins_rechecked": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+      "bytes": 437124,
+      "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_stress_effects.txt",
+      "bytes": 25415,
+      "sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\stress_events\\stress_threshold_events_1_l_simp_chinese.yml",
+      "bytes": 48831,
+      "sha256": "cac3cb2ef54775242053e88b309504d0fa807ff22320b006ff8f2e2937585426"
+    }
+  ],
+  "source_definition_lines": [
+    5017,
+    5805
+  ],
+  "actual_saved_scope_shape": [
+    {
+      "name": "stress_character",
+      "type_key": "character",
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    {
+      "name": "capital_province",
+      "type_key": "province",
+      "typed_identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    }
+  ],
+  "actual_shown_options": [
+    {
+      "rendered_index": 0,
+      "native_option_index": 3,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "也许一件新斗篷会让我好受些……",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set": false,
+        "rows": [
+          {
+            "kind": "trait",
+            "operation": "add",
+            "trait": {
+              "status": "available",
+              "native_id": 94,
+              "key": "profligate"
+            }
+          },
+          {
+            "kind": "stress",
+            "direction": "decrease",
+            "magnitude": {
+              "status": "unavailable"
+            },
+            "affected_by_trait": false,
+            "critical": false
+          }
+        ]
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    },
+    {
+      "rendered_index": 1,
+      "native_option_index": 6,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "一杯烈酒能解决大多数事情……",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set": false,
+        "rows": [
+          {
+            "kind": "trait",
+            "operation": "add",
+            "trait": {
+              "status": "available",
+              "native_id": 88,
+              "key": "drunkard"
+            }
+          },
+          {
+            "kind": "stress",
+            "direction": "decrease",
+            "magnitude": {
+              "status": "unavailable"
+            },
+            "affected_by_trait": false,
+            "critical": false
+          }
+        ]
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    },
+    {
+      "rendered_index": 2,
+      "native_option_index": 8,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "只是些闲言碎语，不关我事。",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set": false,
+        "rows": [
+          {
+            "kind": "stress",
+            "direction": "increase",
+            "magnitude": {
+              "status": "unavailable"
+            },
+            "affected_by_trait": false,
+            "critical": false
+          }
+        ]
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    }
+  ],
+  "actual_shape": {
+    "scope_names": [
+      "stress_character",
+      "capital_province"
+    ],
+    "native_option_indices": [
+      3,
+      6,
+      8
+    ],
+    "actual_rendered_count": 3
+  },
+  "existing_policy_attempt": {
+    "status": "blocked",
+    "source_policy_called_before_fallback": true,
+    "old_selected_native_index": 8,
+    "old_nine_authored_options_are_not_current_three_rendered_rows": true,
+    "actual_failed_checks": [
+      "native_option_indices_exact",
+      "rendered_option_count",
+      "saved_scope_count",
+      "saved_scope_names_exact",
+      "scope_types_cover_projection"
+    ],
+    "old_manual_review_boundary_retained": true
+  },
+  "actual_choice": {
+    "policy": "native_first_displayed_v1",
+    "native_index": 3,
+    "public_option_number": 4,
+    "source_name": "stress_threshold.1701.d.profligate.gain",
+    "source_lines": [
+      5474,
+      5506
+    ],
+    "source_effects": [
+      "add_trait profligate",
+      "minor_stress_impact_loss (base-15, character modifiers apply)",
+      "remove_short_term_gold major_gold_value (dynamic income-based value, not fixed105 for future occurrences)"
+    ],
+    "actual_gold_delta_raw": -10500000,
+    "actual_stress_points": [
+      115,
+      97
+    ],
+    "scale": 100000,
+    "independent_trait_membership": null
+  },
+  "other_actual_rows": [
+    {
+      "native_index": 6,
+      "source_lines": [
+        5630,
+        5670
+      ],
+      "source_semantics_reused": "minor stress loss; existing drunkard gains stress_drinking_binge3years ELSE add drunkard; no option-specific gold deduction",
+      "selected": false
+    },
+    {
+      "native_index": 8,
+      "source_lines": [
+        5714,
+        5722
+      ],
+      "source_semantics_reused": "add medium_stress_impact_gain base40 before modifiers; no option-specific trait/gold changes. Existing source record requires explicit review, not newly enabled here.",
+      "selected": false
+    }
+  ],
+  "common_after_source_reused": "00_stress_effects.txt:47-96 cleans option flags, applies recorded stress-level cooldown flag, removes recorded-level flags, schedules stress_threshold.0005 after stress_threshold_second_check_timing, emits cooldown tooltip. Event after5724-5804 also adds matching personality had_desc blocker flag for10years.",
+  "future_recognition": {
+    "knowledge_available": true,
+    "already_source_analyzed": true,
+    "new_12004_display_variant_analyzed": true,
+    "known_strategy_projection_gap": "Only this actual two-scope/three-rendered-row shape remains unregistered; do not label definition unresearched or assume nine visible options",
+    "policy_changed_by_this_analysis": false,
+    "unknown_scheduled_followup_observed": false
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:25:42.161347+00:00",
+  "ck3_build": "1.20.0.4",
+  "event_definition_key": "pilgrimage.9001",
+  "static_definition_id": "pilgrimage.9001",
+  "live_native_definition_id": "pilgrimage.9001",
+  "source_analysis_completed": true,
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "relevant_lines": [
+        [
+          15160,
+          15280
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+      "relevant_lines": [
+        [
+          1464,
+          1475
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          982,
+          989
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    15160,
+    15280
+  ],
+  "caller": {
+    "hook": "on_travel_plan_complete",
+    "first_valid_order": [
+      "pilgrimage.9010",
+      "pilgrimage.9001"
+    ],
+    "scope": "ruler",
+    "boundary": "Hook comment includes final-destination arrival OR script completion. Event alone is not independent current-location proof."
+  },
+  "trigger_literal": {
+    "has_variable_block": [
+      "has_completed_pilgrimage",
+      "pilgrimage_invalidated"
+    ],
+    "has_none_of_variables": [
+      "pilgrimage_death_turn_back",
+      "pilgrimage_death_bury_home",
+      "pilgrimage_burial_interrupted_pilgrimage"
+    ],
+    "boundary": "Literal multi-name engine trigger retained; invalidated description is supported, so 9001 alone does not prove successful pilgrimage."
+  },
+  "immediate_effects": [
+    "arrival music",
+    "traveler_lifestyle_rank_up_check_effect",
+    "conditional old host/burial/missed-site localization scopes",
+    "conditional cultural-ambassador tooltip",
+    "IF tourney_participant add miniscule horse-track XP"
+  ],
+  "source_options": [
+    {
+      "native_index": 0,
+      "lines": [
+        15235,
+        15242
+      ],
+      "name_keys": [
+        "pilgrimage.9001.a_invalidated",
+        "pilgrimage.9001.a"
+      ],
+      "actual_name": "回家真好。",
+      "effect": "custom tooltip: journey has ended; not another main pilgrimage reward execution"
+    }
+  ],
+  "after_effects": {
+    "lines": [
+      15243,
+      15279
+    ],
+    "effects": [
+      "conditional completed/illness variable cleanup",
+      "remove invalidated flag and pilgrim_group_joined flag",
+      "IF burial-at-capital modifier schedule9010 after10days",
+      "IF exotic-wares modifier schedule9100 after5days",
+      "conditional death_bury_there cleanup"
+    ],
+    "actual_hidden_followup_or_XP_observed": false
+  },
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-014-015-return-occurrence.json",
+  "actual_instance": 15,
+  "actual_boundary": "ACK and independent disappearance, same-day three-wallet delta0; separate exact activity completed flag and independent current tooltip position provide the ending chain. XP null, no payout inferred from return button.",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_occurrence_contract_registered": false,
+  "ordinary_auto_consumes": false,
+  "next_agent_reference": "Read analyzed source plus fresh native context; known qualified policy first, otherwise actual current first shown. Do not replay return or assume hidden follow-up occurred."
+}

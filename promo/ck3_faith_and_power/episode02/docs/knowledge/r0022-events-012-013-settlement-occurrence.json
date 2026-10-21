@@ -1,0 +1,693 @@
+{
+  "schema": "faith-e02-pilgrimage-native-events-occurrence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:14:55.486369+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "ck3_build": "1.20.0.4",
+  "event_count": 2,
+  "events": [
+    {
+      "event_instance_id": 12,
+      "event_definition_key": "pilgrimage.6800",
+      "actor_character_id": 31254,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "date_raw": 53147760,
+      "native_revision_at_query": 448,
+      "native_revision_at_independent_post": 449,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "actual_saved_scopes": [
+        {
+          "name": "activity",
+          "name_identifier": 2,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 6,
+            "type_key": "activity",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "host",
+          "name_identifier": 62,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "province",
+          "name_identifier": 37,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 8,
+            "type_key": "province",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "holy_site_owner",
+          "name_identifier": 17356,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 30490
+            }
+          }
+        },
+        {
+          "name": "bishop_pilgrim",
+          "name_identifier": 17291,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 30737
+            }
+          }
+        },
+        {
+          "name": "called_member",
+          "name_identifier": 17353,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 36310
+            }
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“我明白了，你该做你必须做的。”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“我们老家不也有教堂吗？”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“立刻停止这种胡说八道。”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 5562182,
+          "after_raw": 5562182,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2045113250,
+          "after_raw": 2055113250,
+          "delta_raw": 10000000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 221074740,
+          "after_raw": 221074740,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        147,
+        147
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_status": "not_registered",
+      "key_window_refresh_source": null,
+      "root_capture_checkpoint_present": false,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-12-offline-analysis-input.json",
+          "bytes": 44876,
+          "sha256": "6771cc74f1b71e25a992ec5e323c927fbd6a402a78b09a62940a44b59cf4df83"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-12-selection-intent.json",
+          "bytes": 49451,
+          "sha256": "36a78c1c549e133ab0984daafe4d2dda6411a149061a6659d79f85a612c702ad"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-12-selection-observed.json",
+          "bytes": 21766,
+          "sha256": "5e8fb79362d36e71ab652986a434108d3b19f794c859e65ec9ea359b80970c0a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0053-event-query.actual-results.json",
+          "bytes": 35997,
+          "sha256": "43f9f676c170af29ac6b91e1697f910324d95189be9fc87df69b6ddb7e6e7d64"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0054-event-select-once.actual-results.json",
+          "bytes": 23963,
+          "sha256": "a6ffb32cabf2c79c30e5e6c168903e80c4bc809b20f4bb96bc3aaff465add965"
+        }
+      ],
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "NPC_trait_court_entourage_changes_independently_observed": false,
+      "NPC_trait_court_entourage_changes": null
+    },
+    {
+      "event_instance_id": 13,
+      "event_definition_key": "pilgrimage.7000",
+      "actor_character_id": 31254,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "date_raw": 53148024,
+      "native_revision_at_query": 481,
+      "native_revision_at_independent_post": 482,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "actual_saved_scopes": [
+        {
+          "name": "activity",
+          "name_identifier": 2,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 6,
+            "type_key": "activity",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "host",
+          "name_identifier": 62,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "province",
+          "name_identifier": 37,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 8,
+            "type_key": "province",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "来到罗马是一种荣幸。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "fulfillment",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 5562182,
+          "after_raw": 5562182,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2067613250,
+          "after_raw": 2067613250,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 221074740,
+          "after_raw": 221074740,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        147,
+        147
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_status": "not_registered",
+      "key_window_refresh_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-13-key-window-refresh.json",
+        "bytes": 41020,
+        "sha256": "e86bbf37e16bc74d11dce41adf9cfa88aefa3e8f4658eef2bed1068b6de56580"
+      },
+      "root_capture_checkpoint_present": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-13-offline-analysis-input.json",
+          "bytes": 41341,
+          "sha256": "0b93d90f8fe1a1f7cbed51ef943f0c9faf5162dc9ab82295deb98aecd7cedfb6"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-13-selection-intent.json",
+          "bytes": 44687,
+          "sha256": "cef4fd62de918c9b569b6486c34ecc1795e4aaa92fd9aac43718093d3178965b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-13-selection-observed.json",
+          "bytes": 45723,
+          "sha256": "7e3398f1a01f360fe0bbb020237091ae2e28de6462f79655cb07655887396110"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0057-event-query.actual-results.json",
+          "bytes": 29771,
+          "sha256": "af2c4a22afc9eb83c123916f55413c39530797098f0ffe4882f9891922fcb005"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json",
+          "bytes": 23963,
+          "sha256": "408b00e8a3a84aac8ba2d43175075627f7337e0b8ac0e93a31e5008af0dec180"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-13-key-window-refresh.json",
+          "bytes": 41020,
+          "sha256": "e86bbf37e16bc74d11dce41adf9cfa88aefa3e8f4658eef2bed1068b6de56580"
+        }
+      ],
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "NPC_trait_court_entourage_changes_independently_observed": false,
+      "NPC_trait_court_entourage_changes": null
+    }
+  ],
+  "settlement_interval": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\SETTLEMENT-INTERVAL.actual.json",
+      "bytes": 6069,
+      "sha256": "0efa98ce4bfd64c4269ce3a3c2017a4fc4c9576aead5ed45c8fee62afe20bc05"
+    },
+    "row_provenance_status": "live report; row identifiers and decoded-row hashes retained; file pin deferred until original final",
+    "rows": [
+      {
+        "step_id": "case-snapshot-0392",
+        "finished_at": "2026-10-20T22:58:14.072968+00:00",
+        "ok": true,
+        "canonical_decoded_row_sha256": "111dc1f1dc23f4708e352889925a51dffe018ab8a89f09c37818eb80ec2a758d",
+        "frame": {
+          "snapshot_id": "native:478",
+          "revision": 479,
+          "native_revision": 478,
+          "date_raw": 53148000,
+          "played_character_gold": {
+            "raw": 5562182,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 2055113250,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 221074740,
+            "scale": 100000
+          },
+          "active_event": null
+        },
+        "actor_character_id": 31254,
+        "stress_points": 147
+      },
+      {
+        "step_id": "case-natural-day-0393",
+        "finished_at": "2026-10-20T22:58:20.812019+00:00",
+        "ok": true,
+        "canonical_decoded_row_sha256": "e60a46926e823535e53e9846e6d9d1025ab324a6dea7f742521fd95c938e9d39",
+        "frame": {
+          "snapshot_id": "native:481",
+          "revision": 482,
+          "native_revision": 481,
+          "date_raw": 53148024,
+          "played_character_gold": {
+            "raw": 5562182,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 2067613250,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 221074740,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 13,
+            "option_count": 2,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        "actor_character_id": 31254,
+        "stress_points": 147
+      },
+      {
+        "step_id": "case-snapshot-0394",
+        "finished_at": "2026-10-20T22:58:29.202594+00:00",
+        "ok": true,
+        "canonical_decoded_row_sha256": "4ad03e437457a7afc5aa6671a23155874551d99911c301596b18357fc4c5bd82",
+        "frame": {
+          "snapshot_id": "native:481",
+          "revision": 482,
+          "native_revision": 481,
+          "date_raw": 53148024,
+          "played_character_gold": {
+            "raw": 5562182,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 2067613250,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 221074740,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 13,
+            "option_count": 2,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        "actor_character_id": 31254,
+        "stress_points": 147
+      },
+      {
+        "step_id": "faith-e02-journey-001-0059-event-select-once",
+        "finished_at": "2026-10-20T22:59:41.414384+00:00",
+        "ok": true,
+        "canonical_decoded_row_sha256": "f8ef6de3f2db2165846956301800b6609ecddec28b4b138e4d8edfdedbe7ae4c",
+        "frame": {
+          "snapshot_id": "native:482",
+          "revision": 483,
+          "native_revision": 482,
+          "date_raw": 53148024,
+          "played_character_gold": {
+            "raw": 5562182,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 2067613250,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 221074740,
+            "scale": 100000
+          },
+          "active_event": null
+        },
+        "actor_character_id": 31254,
+        "stress_points": 147
+      },
+      {
+        "step_id": "case-snapshot-0396",
+        "finished_at": "2026-10-20T22:59:45.514058+00:00",
+        "ok": true,
+        "canonical_decoded_row_sha256": "a688dd105fe3af145fb2452b1642364ea30ccb50b15f7b6c0b628126748bf17b",
+        "frame": {
+          "snapshot_id": "native:482",
+          "revision": 483,
+          "native_revision": 482,
+          "date_raw": 53148024,
+          "played_character_gold": {
+            "raw": 5562182,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 2067613250,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 221074740,
+            "scale": 100000
+          },
+          "active_event": null
+        },
+        "actor_character_id": 31254,
+        "stress_points": 147
+      }
+    ],
+    "delta_raw": {
+      "piety": 12500000,
+      "gold": 0,
+      "prestige": 0,
+      "scale": 100000,
+      "elapsed_date_raw": 24
+    },
+    "button_delta_raw": {
+      "piety": 0,
+      "gold": 0,
+      "prestige": 0,
+      "scale": 100000
+    },
+    "attribution_boundary": "Observed natural-day interval includes settlement appearing before its button; button delta is not total settlement reward; activity return is separate."
+  },
+  "failed_milestone_metric_attempts": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\ordinary-pilgrimage-milestone-03-faith-e02-journey-001-pilgrimage-7000-13-window.json",
+        "bytes": 1183,
+        "sha256": "d15162727894749273feee2fdb3afab5c68d6ee194e99b01b2f977d30bdfb8dd"
+      },
+      "status": "original_read_failed_or_unavailable",
+      "error": "ValueError: Fresh native milestone owner differs",
+      "metrics": null,
+      "query_source": null
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\ordinary-pilgrimage-milestone-04-faith-e02-journey-001-pilgrimage-7000-13-consumed.json",
+        "bytes": 1185,
+        "sha256": "242d5702650e414954742a50b626e1881a34ffd44e1ef45b156976031e66dad2"
+      },
+      "status": "original_read_failed_or_unavailable",
+      "error": "ValueError: Fresh native milestone owner differs",
+      "metrics": null,
+      "query_source": null
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\ordinary-pilgrimage-milestone-05-faith-e02-journey-001-terminal-0.json",
+        "bytes": 1142,
+        "sha256": "fe533c0f9ebb6a16c752bd7369818853f14959cd11a0c7480ba5d8c86aef2542"
+      },
+      "status": "original_read_failed_or_unavailable",
+      "error": "ValueError: Fresh native milestone owner differs",
+      "metrics": null,
+      "query_source": null,
+      "provided_activity_identity": {
+        "activity_id": 0,
+        "host_character_id": 31254,
+        "type_key": "activity_pilgrimage",
+        "terminal_flags_observed": true,
+        "native_completed": true,
+        "native_invalidated": false,
+        "native_completion_stamp_observed": true,
+        "native_completion_stamp_raw_decimal": "18446462598776632200"
+      },
+      "identity_boundary": "Caller-provided identity is separate from failed religion metrics; authoritative identity-query source should be linked in final closure, not inferred from this filename."
+    }
+  ],
+  "source_analysis_complete_for_actual_batch": true,
+  "unresolved_definition_analysis_todo": [],
+  "boundary": "Only events12-13 and sealed interval/failed-metric evidence; scene still returning. No9001/home/current-location assertion or independent XP proof.",
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "full_registry_qualified": false,
+  "ordinary_auto_new_policy_enabled": false,
+  "game_actions_by_analyst": 0,
+  "tests_run_by_analyst": 0
+}

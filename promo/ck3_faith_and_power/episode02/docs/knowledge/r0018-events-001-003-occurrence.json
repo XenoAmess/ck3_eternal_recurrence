@@ -1,0 +1,383 @@
+{
+  "schema": "faith-e02-r0018-event-occurrences-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T20:16:42.076420+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0018",
+  "ck3_build": "1.20.0.4",
+  "event_count": 3,
+  "events": [
+    {
+      "event_instance_id": 1,
+      "event_definition_key": "travel_start_event.1060",
+      "actor_character_id": 31254,
+      "date_raw": 53144352,
+      "bridge_pid": 13116,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 7,
+      "native_revision_at_independent_post": 8,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "我等不及了！",
+          "shown": true,
+          "enabled": true
+        }
+      ],
+      "scope_shape": [
+        {
+          "name": "travel_plan",
+          "type_key": "travel_plan",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "pilgrim_net",
+          "type_key": "landed_title",
+          "typed_identity": {
+            "status": "available",
+            "kind": "landed_title",
+            "title_id": 2231
+          }
+        },
+        {
+          "name": "province_temp",
+          "type_key": "province",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "char_temp",
+          "type_key": "character",
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 36310
+          }
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 17300000,
+          "after_raw": 17300000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2000000000,
+          "after_raw": 2000000000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220000000,
+          "after_raw": 220000000,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        0
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_decision_status": "not_registered",
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-1-offline-analysis-input.json",
+          "bytes": 41050,
+          "sha256": "e9569402f9e59f92c27a9adf5617694fc8d0cba61f6596eaea644fcf4f78c13e"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-1-selection-intent.json",
+          "bytes": 44137,
+          "sha256": "622c5a2244345e1fe469df04261ea41a261cf0042546fd668ef73ec2e9d0111f"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-1-selection-observed.json",
+          "bytes": 21753,
+          "sha256": "38c6ddf1bf99fcf3427dccf0503948f679172f123f0d9ddc954f058bbc4eba79"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0002-event-query.actual-results.json",
+          "bytes": 29860,
+          "sha256": "f1bc5bbe67b725e8135dd3863624684376052701dd13e5cc4ebf60e371d694f8"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0003-event-select-once.actual-results.json",
+          "bytes": 23914,
+          "sha256": "d1980736eb12b899139052f4b61ec8ad302aba9e2d13229b3b4a6ce8e133a398"
+        }
+      ],
+      "trait_xp_observed": false,
+      "pilgrim_trait_xp": null,
+      "lifestyle_mystic_trait_xp": null,
+      "fulfillment_observed": false,
+      "fulfillment_raw": null,
+      "activity_performance_variable_observed": false,
+      "activity_performance_variable": null,
+      "character_modifier_membership_observed": false
+    },
+    {
+      "event_instance_id": 2,
+      "event_definition_key": "pilgrimage.2070",
+      "actor_character_id": 31254,
+      "date_raw": 53144496,
+      "bridge_pid": 13116,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 26,
+      "native_revision_at_independent_post": 27,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "“你的迷信是对神的亵渎。”",
+          "shown": true,
+          "enabled": true
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "“好吧。”",
+          "shown": true,
+          "enabled": true
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "“我们必须加快脚步。”",
+          "shown": true,
+          "enabled": true
+        }
+      ],
+      "scope_shape": [
+        {
+          "name": "travel_plan",
+          "type_key": "travel_plan",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "pilgrim",
+          "type_key": "character",
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 41946
+          }
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 17300000,
+          "after_raw": 17300000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2000000000,
+          "after_raw": 2000000000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220000000,
+          "after_raw": 220000000,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        0
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_decision_status": "not_registered",
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-2-offline-analysis-input.json",
+          "bytes": 42582,
+          "sha256": "167bf9b2829d9a063064f55e289115f20a14ebb19f35f8dc6b0e5a30aa71d241"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-2-selection-intent.json",
+          "bytes": 47118,
+          "sha256": "da260c1f23edadd28322bc7da4d50aec9f070cb261d5d18c176223e52d5c8dff"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-2-selection-observed.json",
+          "bytes": 21747,
+          "sha256": "4a8ddedd19bf92e6486f90d31fc422753cadc6ebb43431de41a9396d503a402e"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0005-event-query.actual-results.json",
+          "bytes": 31997,
+          "sha256": "1715ed8d5059ca0d8d8c4d5861964c2ee3b26ce9841912715637e4f3656cd2f8"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0006-event-select-once.actual-results.json",
+          "bytes": 23933,
+          "sha256": "b4f39620b4fb86e40c44e3d99404264045aa5ebc64a6e2bcb2f561e078938294"
+        }
+      ],
+      "trait_xp_observed": false,
+      "pilgrim_trait_xp": null,
+      "lifestyle_mystic_trait_xp": null,
+      "fulfillment_observed": false,
+      "fulfillment_raw": null,
+      "activity_performance_variable_observed": false,
+      "activity_performance_variable": null,
+      "character_modifier_membership_observed": false
+    },
+    {
+      "event_instance_id": 3,
+      "event_definition_key": "pilgrimage_intent.1100",
+      "actor_character_id": 31254,
+      "date_raw": 53144736,
+      "bridge_pid": 13116,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 55,
+      "native_revision_at_independent_post": 56,
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "resolved_name": "这当然是我的神圣义务！",
+          "shown": true,
+          "enabled": true
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "resolved_name": "我真正想要的是享受和体验其他文化。",
+          "shown": true,
+          "enabled": true
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "resolved_name": "我所做的只是我所处的地位所要求的。",
+          "shown": true,
+          "enabled": true
+        }
+      ],
+      "scope_shape": [
+        {
+          "name": "travel_plan",
+          "type_key": "travel_plan",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      ],
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 17887351,
+          "after_raw": 17887351,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2002655000,
+          "after_raw": 2002655000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220213640,
+          "after_raw": 220213640,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        0
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_decision_status": "not_registered",
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+          "bytes": 42537,
+          "sha256": "a37fa185ef70e09b955f194da5bebe6809e2ef0abeae52bec8893832fce3cd56"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-3-selection-intent.json",
+          "bytes": 47378,
+          "sha256": "c3e931e95dc18bd36104eeadd905e5695c574c41169f18048a11fe72e9d1c09e"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+          "bytes": 21761,
+          "sha256": "75e105195f36f4cb1f7a620851a7bb35ebca94430a5261a281a81f83aec6c965"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0009-event-query.actual-results.json",
+          "bytes": 31851,
+          "sha256": "b51c66d27a738915294e3ee7c70ab0212bd21b90ebe1681f17c9645900b5077b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b30-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0018\\case-output\\faith-e02-journey-001-0010-event-select-once.actual-results.json",
+          "bytes": 23933,
+          "sha256": "47022041b835b98ba8ef92145f219e777dcd4f97d2a83280fc6673caa5383711"
+        }
+      ],
+      "trait_xp_observed": false,
+      "pilgrim_trait_xp": null,
+      "lifestyle_mystic_trait_xp": null,
+      "fulfillment_observed": false,
+      "fulfillment_raw": null,
+      "activity_performance_variable_observed": false,
+      "activity_performance_variable": null,
+      "character_modifier_membership_observed": false
+    }
+  ],
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_documents": [
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-2070-source-analysis.json",
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1100-source-analysis.json"
+  ],
+  "source_reuse_1060": {
+    "scope_names_and_types_equal_to_R0014": true,
+    "actual_shown_mapping_text_and_enabled_equal_to_R0014": true,
+    "new_source_research_repeated": false
+  },
+  "source_analysis_complete_for_actual_batch": true,
+  "unresolved_definition_analysis_todo": [],
+  "interval_boundary": "Original completed typed-query frame to independent post on the same actor and paused date. Cross-natural-day passive changes and earlier/later events are excluded from each button delta.",
+  "material_boundaries": [
+    "2070 pious caller enters activity-performance branch instead of the direct50piety ELSE. Observed piety0 change does not establish performance0 change.",
+    "1100 may add10year monthly piety multiplier and conditional pilgrim/mystic XP without an immediate wallet delta. Modifier membership, XP and fulfillment remain unknown, not false or0.",
+    "Empty/incomplete indicators do not prove complete effect coverage or zero consequences.",
+    "All three button deltas are zero in gold/piety/prestige/stress. Natural-time changes between events are not assigned to an event or modifier.",
+    "This partial event batch proves no arrival, final pilgrimage settlement, terminal state, return or current-home position."
+  ],
+  "full_registry_qualified": false,
+  "ordinary_auto_new_policy_enabled": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "game_actions_by_analyst": 0,
+  "tests_run_by_analyst": 0
+}

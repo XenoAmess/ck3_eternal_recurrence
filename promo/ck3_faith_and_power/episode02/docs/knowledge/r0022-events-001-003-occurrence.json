@@ -1,0 +1,594 @@
+{
+  "schema": "faith-e02-pilgrimage-native-events-occurrence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:39:00.854172+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "event_count": 3,
+  "events": [
+    {
+      "event_instance_id": 1,
+      "event_definition_key": "travel_start_event.1060",
+      "actor_character_id": 31254,
+      "date_raw": 53144352,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 7,
+      "native_revision_at_independent_post": 8,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "scope_shape": [
+        {
+          "name": "travel_plan",
+          "type_key": "travel_plan",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "pilgrim_net",
+          "type_key": "landed_title",
+          "typed_identity": {
+            "status": "available",
+            "kind": "landed_title",
+            "title_id": 2231
+          }
+        },
+        {
+          "name": "province_temp",
+          "type_key": "province",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "char_temp",
+          "type_key": "character",
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 36310
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我等不及了！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "core_option_count_is_not_rendered_count": false,
+      "core_snapshot_option_count": 1,
+      "actual_rendered_option_count": 1,
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 17300000,
+          "after_raw": 17300000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2000000000,
+          "after_raw": 2000000000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220000000,
+          "after_raw": 220000000,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        0
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_decision_status": "not_registered",
+      "source_reuse_comparison": {
+        "source": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-start-1060-source-analysis.json",
+          "bytes": 9927,
+          "sha256": "50d844aa0fbf036b974fb0cd22fc7a340c374d8264f9ad6c1506ef9ef3066540"
+        },
+        "prior_occurrence": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\p3-r0014-event-knowledge-a01\\r0018-batch01-a01\\r0018-events-001-003-occurrence.json",
+          "bytes": 15639,
+          "sha256": "1e6bf0cb1c07167d9b20a3b0e47ca1c53b758cd071e562917e78e8935110e85b"
+        },
+        "saved_scope_shape_and_payload_match": true,
+        "actual_displayed_option_projection_match": true,
+        "official_source_pins_match": true
+      },
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-1-offline-analysis-input.json",
+          "bytes": 41045,
+          "sha256": "26ee7bcb1c125061ab4844efcf2e8ab2b8044b3e52dbd89f7ec39bd443bb7c70"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-1-selection-intent.json",
+          "bytes": 44132,
+          "sha256": "b6cab1a5b3e0317b9fe355d7b0950cf41ffb1c75382c195d314f23b0a9b81d54"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-1-selection-observed.json",
+          "bytes": 21750,
+          "sha256": "ddebbd939487292a2ac8a3e82cdb6a1a6090164ace344d097cfb4630aa3fca31"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0002-event-query.actual-results.json",
+          "bytes": 29857,
+          "sha256": "03316d5d4be88d3fd3e72e3501fcf31a3acd0994c5684e85b38ee130e27a9a00"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0003-event-select-once.actual-results.json",
+          "bytes": 23911,
+          "sha256": "9749d732b114a0b56ec73194fa1cec6cb9392d86310f49bb865ebe15584474a2"
+        }
+      ],
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "travel_ETA_change_observed": false,
+      "travel_ETA_change": null,
+      "activity_performance_observed": false,
+      "activity_performance": null,
+      "fulfillment_observed": false,
+      "fulfillment": null
+    },
+    {
+      "event_instance_id": 2,
+      "event_definition_key": "pilgrimage.3004",
+      "actor_character_id": 31254,
+      "date_raw": 53144496,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 26,
+      "native_revision_at_independent_post": 27,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "scope_shape": [
+        {
+          "name": "travel_plan",
+          "type_key": "travel_plan",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        },
+        {
+          "name": "dummy_clergy_gender",
+          "type_key": "character",
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 1
+          }
+        },
+        {
+          "name": "doomsayer",
+          "type_key": "character",
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 65878
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "幸运的是，这次朝圣带来了大赦。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "那个男人\u0015EMP 不\u0015!是神父！把他弄下来！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "core_option_count_is_not_rendered_count": true,
+      "core_snapshot_option_count": 3,
+      "actual_rendered_option_count": 2,
+      "selected_native_option_index": 1,
+      "selected_option_number": 2,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 17300000,
+          "after_raw": 17300000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2000000000,
+          "after_raw": 2000000000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220000000,
+          "after_raw": 220000000,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        0
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_decision_status": "not_registered",
+      "source_reuse_comparison": null,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-2-offline-analysis-input.json",
+          "bytes": 42502,
+          "sha256": "845214ea35d603ad82e97929e59395a0dd6a7e35d052adf21db191b002f0fa0c"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-2-selection-intent.json",
+          "bytes": 46614,
+          "sha256": "d091884185e67ae164abc676dde157c66b6c9f61da661db580300e77b71c9d5b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-2-selection-observed.json",
+          "bytes": 21744,
+          "sha256": "3fdc541e55de5e77bd4bab358938e747376c462d147052205d42e9efea3cd68b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0005-event-query.actual-results.json",
+          "bytes": 31842,
+          "sha256": "03100020d58a39a012d8b7093857d974dc7ff904787409ff70d0abdcfbbc6295"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0006-event-select-once.actual-results.json",
+          "bytes": 23930,
+          "sha256": "07d6df40ad8eadccda186c7b093a4dbf0aed5431b855f1c7bd0bfc12fc471e18"
+        }
+      ],
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "travel_ETA_change_observed": false,
+      "travel_ETA_change": null,
+      "activity_performance_observed": false,
+      "activity_performance": null,
+      "fulfillment_observed": false,
+      "fulfillment": null
+    },
+    {
+      "event_instance_id": 3,
+      "event_definition_key": "pilgrimage_intent.1030",
+      "actor_character_id": 31254,
+      "date_raw": 53144616,
+      "bridge_pid": 21144,
+      "connection_generation": 1,
+      "native_revision_at_original_query": 42,
+      "native_revision_at_independent_post": 43,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "scope_shape": [
+        {
+          "name": "travel_plan",
+          "type_key": "travel_plan",
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      ],
+      "actual_shown_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这是神的意志。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们不能拖延！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "core_option_count_is_not_rendered_count": false,
+      "core_snapshot_option_count": 2,
+      "actual_rendered_option_count": 2,
+      "selected_native_option_index": 0,
+      "selected_option_number": 1,
+      "submission_attempted": true,
+      "ack_accepted": true,
+      "old_instance_gone_in_independent_snapshot": true,
+      "wallet_piety_prestige_readback": {
+        "played_character_gold": {
+          "before_raw": 17300000,
+          "after_raw": 17300000,
+          "delta_raw": 0,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "before_raw": 2002500000,
+          "after_raw": 2007500000,
+          "delta_raw": 5000000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "before_raw": 220000000,
+          "after_raw": 220000000,
+          "delta_raw": 0,
+          "scale": 100000
+        }
+      },
+      "stress_points_before_after": [
+        0,
+        0
+      ],
+      "policy": "native_first_displayed_v1",
+      "registry_decision_status": "not_registered",
+      "source_reuse_comparison": null,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+          "bytes": 41329,
+          "sha256": "cdc558b50b0dd45fecf0e6228a5a54a561d280e066a6ec11a0b0a1345d92f218"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-3-selection-intent.json",
+          "bytes": 45383,
+          "sha256": "ad77562170f1f96d001893916cb1e59cb7789e3008196c307252a603d69b10b3"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+          "bytes": 21758,
+          "sha256": "5f16451a028ad789729867b5c84ca22f8c69f568f5f2e10235e6030f707d3fdb"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0008-event-query.actual-results.json",
+          "bytes": 29762,
+          "sha256": "f0eb4fd1c654b95e9b8edcbccb86a9e2f4a99e6d052fd7eb0309c05400355773"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0009-event-select-once.actual-results.json",
+          "bytes": 23930,
+          "sha256": "9b328f4dc3a6c25055d04854ae6459827566dcdc7e67e429928e5fedef9d5ecd"
+        }
+      ],
+      "trait_XP_observed": false,
+      "trait_XP": null,
+      "travel_ETA_change_observed": false,
+      "travel_ETA_change": null,
+      "activity_performance_observed": false,
+      "activity_performance": null,
+      "fulfillment_observed": false,
+      "fulfillment": null
+    }
+  ],
+  "source_documents": [
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3004-source-analysis.json",
+    "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1030-source-analysis.json"
+  ],
+  "source_reuse_1060": {
+    "source_document": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-start-1060-source-analysis.json",
+      "bytes": 9927,
+      "sha256": "50d844aa0fbf036b974fb0cd22fc7a340c374d8264f9ad6c1506ef9ef3066540"
+    },
+    "current_install_source_pins_checked": [
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_start_events.txt",
+        "bytes": 95408,
+        "sha256": "4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_start_events_l_simp_chinese.yml",
+        "bytes": 33689,
+        "sha256": "7c6146fc235866430d1fa2667afe2610b703830ef74d181cfae4a952b1372e78"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+        "bytes": 136481,
+        "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+        "bytes": 71526,
+        "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\50_pilgrimage_values.txt",
+        "bytes": 11353,
+        "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+        "bytes": 116295,
+        "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38"
+      }
+    ],
+    "prior_R18_occurrence": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\p3-r0014-event-knowledge-a01\\r0018-batch01-a01\\r0018-events-001-003-occurrence.json",
+      "bytes": 15639,
+      "sha256": "1e6bf0cb1c07167d9b20a3b0e47ca1c53b758cd071e562917e78e8935110e85b"
+    },
+    "definition_scope_and_shown_shape_match": true
+  },
+  "source_analysis_complete_for_actual_batch": true,
+  "unresolved_definition_analysis_todo": [],
+  "interval_boundary": "Only sealed events1-3; active dayloop continues outside this analysis. This is not an all-event scene summary or a terminal claim.",
+  "material_boundaries": [
+    "ACK and independent disappearance are separately sourced",
+    "wallet deltas compare same actor/date; no inference across natural days",
+    "empty icon/effect-indicator subset is not proof of no effects",
+    "no reward/XP/ETA/return is inferred from source alone"
+  ],
+  "full_registry_qualified": false,
+  "ordinary_auto_new_policy_enabled": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false,
+  "game_actions_by_analyst": 0,
+  "tests_run_by_analyst": 0
+}

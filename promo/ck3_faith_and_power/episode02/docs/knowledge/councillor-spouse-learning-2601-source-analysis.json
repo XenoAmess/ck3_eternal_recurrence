@@ -1,0 +1,224 @@
+{
+  "schema": "faith-e02-native-event-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:02:08.236567+00:00",
+  "ck3_build": "1.20.0.4",
+  "event_definition_key": "councillor_spouse_learning.2601",
+  "static_definition_id": "councillor_spouse_learning.2601",
+  "live_native_definition_id": "councillor_spouse_learning.2601",
+  "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+  "source_analysis_completed": true,
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\councillor_task_events\\councillor_spouse_events\\councillor_spouse_learning_events.txt",
+      "bytes": 65744,
+      "sha256": "e9d59eba1d239784695586c6fa5d90470c370bc8d9897ae130d7fe2665c78f59",
+      "relevant_lines": [
+        [
+          2167,
+          2313
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_councillor_effects.txt",
+      "bytes": 32126,
+      "sha256": "48105e7f44a132c1b65ef6a3609893901086a930309a16cf9ab2d648800cab46",
+      "relevant_lines": [
+        [
+          105,
+          262
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\councillor_task_events\\councillor_spouse_events\\councillor_spouse_learning_events_l_simp_chinese.yml",
+      "bytes": 10145,
+      "sha256": "547617117df3bb9f92a56b1f1a58cb85cf6081ae744f498fa4226125d94a8f8f",
+      "relevant_lines": [
+        [
+          23,
+          29
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\relations\\spouse_on_actions.txt",
+      "bytes": 11768,
+      "sha256": "391dbf0f6614eadae5cd0dde3721a2bfcde6c9645cc6e640878bef09687b9ae6",
+      "relevant_lines": [
+        [
+          316,
+          343
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_councillor_spouse_modifiers.txt",
+      "bytes": 4453,
+      "sha256": "712b36551ee11235a62785705f752fd80cb3caa37e783a91b5f81b252e8a086f",
+      "relevant_lines": [
+        [
+          215,
+          242
+        ]
+      ]
+    }
+  ],
+  "definition_lines": [
+    2175,
+    2313
+  ],
+  "helper_lines": [
+    105,
+    262
+  ],
+  "title_key": "councillor_spouse_learning.2601.t",
+  "native_title_observed": false,
+  "candidate_producer_and_caller": {
+    "on_action": "patronage_task_on_action",
+    "lines": [
+      316,
+      343
+    ],
+    "candidate_weight": 30,
+    "zero_event_weight": 300,
+    "trigger": "spouse councillor exists AND equals scope:councillor",
+    "occurrence_guaranteed": false
+  },
+  "trigger_and_weight": {
+    "lines": [
+      2201,
+      2220
+    ],
+    "AND": [
+      "valid_spouse_councillor_trigger",
+      "spouse_learning_tier_2_trigger",
+      "not education rank4",
+      "not had_councillor_spouse_learning_2601_event flag",
+      "valid student in heir OR child OR councillor"
+    ],
+    "weight": "base1 then councillor_spouse_limited_skill_rating_modifier learning/scale1/spouse_skill_rating_2"
+  },
+  "immediate_effects": {
+    "lines": [
+      2222,
+      2267
+    ],
+    "effects": [
+      "save actual spouse councillor",
+      "build tutoring_students list from eligible heir/children; source every_councillor block has only its limit, no invented add_to_list",
+      "choose tutoring_student_1 preferring eligible heir then fallback; choose distinct tutoring_student_2 if available"
+    ],
+    "actual_binding": "councillor36311, councillor_liege/root31254; no tutoring_student_1/2 in captured scopes, so only native0/3 shown"
+  },
+  "student_trigger": {
+    "lines": [
+      2167,
+      2173
+    ],
+    "AND": [
+      "adult",
+      "not education rank4",
+      "is_available_ai",
+      "liege ?= root",
+      "not spouse councillor"
+    ]
+  },
+  "source_options": [
+    {
+      "key": "councillor_spouse_learning.2601.a",
+      "native_index": 0,
+      "lines": [
+        2270,
+        2275
+      ],
+      "effect": "councillor_spouse_learning_2601_tutoring_effect STUDENT=root",
+      "selected": true
+    },
+    {
+      "key": "councillor_spouse_learning.2601.b",
+      "native_index": 1,
+      "lines": [
+        2278,
+        2284
+      ],
+      "visibility": "tutoring_student_1 exists",
+      "effect": "same helper on student1",
+      "R22_shown": false
+    },
+    {
+      "key": "councillor_spouse_learning.2601.c",
+      "native_index": 2,
+      "lines": [
+        2287,
+        2293
+      ],
+      "visibility": "tutoring_student_2 exists",
+      "effect": "same helper on student2",
+      "R22_shown": false
+    },
+    {
+      "key": "councillor_spouse_learning.2601.d",
+      "native_index": 3,
+      "lines": [
+        2296,
+        2312
+      ],
+      "effect": "IF councillor has education_learning, tutoring helper on councillor; ELSE councillor studying_learning modifier10years",
+      "selected": false
+    }
+  ],
+  "tutoring_helper_source": {
+    "critical_weight": "base20; factor0.6 for education rank3, independent factor0.6 for rank4; factor1.5 if root spouse_learning_tier_3. Not a fixed20percent.",
+    "critical_effects": [
+      "student rank_up_education_effect",
+      "root flag had_councillor_spouse_learning_2601_event7300days",
+      "IF student differs from councillor, student grateful_opinion+15 toward councillor",
+      "councillor gets ten-year studying modifier matching student's education category",
+      "councillor nickname random raw weights1 scholar/1 wise/10 none"
+    ],
+    "normal_weight": 55,
+    "normal_effects": [
+      "student gets ten-year studying modifier matching student's education category",
+      "student flag had_councillor_spouse_learning_2601_event3650days",
+      "IF student differs from councillor, grateful_opinion+10 toward councillor"
+    ],
+    "flag_scope_boundary": "Critical branch flag is on root; normal branch flag is on tutoring_student. For this selectedA student=root, but do not generalize target scopes for unselectedB/C/D.",
+    "studying_modifiers": {
+      "diplomacy": {
+        "diplomacy": 2,
+        "learning": 1
+      },
+      "martial": {
+        "martial": 2,
+        "learning": 1
+      },
+      "stewardship": {
+        "stewardship": 2,
+        "learning": 1
+      },
+      "intrigue": {
+        "intrigue": 2,
+        "learning": 1
+      },
+      "learning": {
+        "learning": 3
+      }
+    },
+    "boundary": "All are conditional source outcomes; no actual branch, education rank, skill/modifier/opinion/nickname readback was obtained. Education rank and trait XP are separate concepts."
+  },
+  "actual_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-event011-occurrence.json",
+  "actual_effect_boundary": "ACK and independent old window disappearance true; same actor/date gold/piety/prestige and stress unchanged. This does not imply no source tutoring effect, and is not pilgrimage settlement credit.",
+  "next_agent_reference": {
+    "knowledge_available": true,
+    "recognize": "exact definition/source SHA and councillor/councillor_liege character scopes plus actual shown native0/3",
+    "submission_rule": "existing qualified dedicated policy first; otherwise collect actual native shown options and choose legal first shown; do not invent absent student slots or hidden result"
+  },
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false
+}

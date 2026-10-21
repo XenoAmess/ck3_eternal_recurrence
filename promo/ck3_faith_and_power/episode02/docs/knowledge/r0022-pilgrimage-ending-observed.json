@@ -1,0 +1,150 @@
+{
+  "schema": "faith-e02-pilgrimage-ending-observed-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T23:25:42.161347+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "actor_character_id": 31254,
+  "bridge_pid": 21144,
+  "connection_generation": 1,
+  "start_date_raw": 53144328,
+  "return_date_raw": 53149152,
+  "observed_game_days": 201,
+  "day_requests": 204,
+  "actual_event_count": 15,
+  "actual_interaction_count": 1,
+  "ending_four_facts": {
+    "settlement_interval": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\SETTLEMENT-INTERVAL.actual.json",
+        "bytes": 6069,
+        "sha256": "0efa98ce4bfd64c4269ce3a3c2017a4fc4c9576aead5ed45c8fee62afe20bc05"
+      },
+      "piety_delta_raw": 12500000,
+      "scale": 100000,
+      "one_day_not_single_effect_attribution": true,
+      "7000_button_delta_raw": 0
+    },
+    "native_activity_terminal": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-0062-identity.actual-results.json",
+        "bytes": 21585,
+        "sha256": "69e7a424ed8c9691b7e8b34b27f72b6ae42637fac7a031d8a4f0b6b6ceccc777"
+      },
+      "date_raw": 53148360,
+      "identity": {
+        "activity_id": 0,
+        "host_character_id": 31254,
+        "type_key": "activity_pilgrimage",
+        "terminal_flags_observed": true,
+        "native_completed": true,
+        "native_invalidated": false,
+        "native_completion_stamp_observed": true,
+        "native_completion_stamp_raw_decimal": "18446462598776632200"
+      }
+    },
+    "return_event_consumed": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-event-15-selection-observed.json",
+        "bytes": 45261,
+        "sha256": "8439568800a64d068227ed93a8776ce149ef7af773166016ac4ed90a39d89f48"
+      },
+      "definition": "pilgrimage.9001",
+      "instance": 15,
+      "ack_accepted": true,
+      "independent_old_window_gone": true
+    },
+    "independent_current_position": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\POSITION-RETURN.actual.json",
+        "bytes": 2007,
+        "sha256": "4ef747b0e8d48c3db0ab4d23a48cdeed32fa698bc1851119f034bb7727a645b9"
+      },
+      "literal_location_text": "位于阿普利亚",
+      "current_subject_id": 31254,
+      "date_raw": 53149152,
+      "typed_province_id": null,
+      "coordinate_home_inferred": false
+    }
+  },
+  "current_postreturn_religion_only": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\RELIGION-CURRENT-POSTRETURN.actual.json",
+      "bytes": 48301,
+      "sha256": "3e06c517f37553875a9c8891eef411ea934309396baf27cd60ba69cb2eeab8ca"
+    },
+    "date_raw": 53149152,
+    "player_spendable_piety_raw": 2068148750,
+    "raw_scale": 100000,
+    "spiritual_fulfillment_raw": 3500000,
+    "fulfillment_progress": {
+      "schema": "ck3_12004_spiritual_fulfillment_progress_v1",
+      "read_only": true,
+      "available": true,
+      "unavailable_reason": null,
+      "capture_epoch": 317958,
+      "date_raw": 53149152,
+      "played_character_id": 31254,
+      "current_fulfillment_raw": 3500000,
+      "active_level_index": 4,
+      "level_count": 7,
+      "level_lower_bound_raw": 3000000,
+      "level_upper_bound_raw": 6500000,
+      "progress_percent_raw": 1428500,
+      "highest_level": false,
+      "runtime_minimum_raw": -10000000,
+      "runtime_maximum_raw": 10000000,
+      "raw_scale": 100000,
+      "progress_unit": "percent",
+      "is_monthly_change": false
+    },
+    "devotion_profile": {
+      "schema": "ck3_12004_player_devotion_profile_v1",
+      "read_only": true,
+      "available": true,
+      "unavailable_reason": null,
+      "capture_epoch": 317958,
+      "date_raw": 53149152,
+      "played_character_id": 31254,
+      "current_devotion_total_raw": 12153148750,
+      "effective_level": 5,
+      "effective_cap": 5,
+      "progress_percent_raw": 251181000,
+      "progress_numerator_raw": 11303148750,
+      "progress_denominator_raw": 450000000,
+      "runtime_threshold_count": 8,
+      "level_lower_threshold_raw": 850000000,
+      "level_upper_threshold_raw": 1300000000,
+      "native_terminal_threshold_branch": false,
+      "raw_scale": 100000,
+      "progress_unit": "percent",
+      "is_monthly_change": false
+    },
+    "historical_metric_delta": null,
+    "historical_milestone_query_submitted": false,
+    "trait_XP": null,
+    "trait_XP_observed": false
+  },
+  "scene_closure": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\SCENE-CLOSURE.actual.json",
+      "bytes": 4494,
+      "sha256": "0b886205de7b7926bfeac148f9d3966abe145ec02fd095616d24fd813e72b83c"
+    },
+    "game_exit": 0,
+    "host_exit": 0,
+    "public_run_exit": 0,
+    "allocator_exit": 0,
+    "normal_close_contract_pass": true,
+    "native_business_pass": false
+  },
+  "journey_result": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b35-p3-a01\\live\\4-8e1c2f1861--faith-engine--R0022\\case-output\\faith-e02-journey-001-result.json",
+    "bytes": 711059,
+    "sha256": "76fd36e171286321e87bc70eb2a23a1bcb0b341ccc0e8306b39a0f642891b04a"
+  },
+  "complete_travel_total_known": false,
+  "full_trip_wallet_difference_is_pure_cost": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false
+}

@@ -385,7 +385,70 @@ def previous_never_launched_closure(previous,freeze,close_path,keeper_root,relea
                 'native_session_started':False,'host_started':False,'typed_normal_exit_proven':False,
                 'original_ck3_exit_code':None,'business_pass':False}}
 
-def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
+def _prelaunch_fields(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError('Prelaunch evidence must be an object')
+    fields: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError('Prelaunch evidence key must be a string')
+        fields[key] = item
+    return fields
+
+
+def _saved_readonly_tail_prelaunch(stderr: object, bundle: object) -> bool:
+    terminal = ('saved campaign initial tail plan permits read-only observations only; '
+                'normal GUI Save/Load/quit has separate same-live evidence')
+    if not isinstance(stderr, str) or stderr.splitlines() != [terminal]:
+        return False
+    fields = _prelaunch_fields(bundle)
+    if (fields.get('closure_kind') != 'saved-campaign-readonly-tail-prelaunch'
+            or fields.get('native_session_started') is not False
+            or fields.get('normal_close_qualified') is not False
+            or fields.get('business_pass') is not False):
+        raise ValueError('Readonly-tail closure must explicitly preserve no-native/no-business state')
+    return True
+
+
+def _prelaunch_public_completion(value: object, mode: Literal['run', 'allocate'],
+                                 machine: object) -> list[str]:
+    fields = _prelaunch_fields(value)
+    if not isinstance(machine, str) or not machine or fields.get('machine_id') != machine:
+        raise ValueError('Readonly-tail public command machine differs')
+    code = 2 if mode == 'run' else 0
+    wait_key = 'original_popen_wait_result' if mode == 'run' else 'original_Popen_wait_returncode'
+    pid_key = 'pid' if mode == 'run' else 'original_pid'
+    pid = fields.get(pid_key)
+    if (type(fields.get('exit_code')) is not int or fields['exit_code'] != code
+            or type(fields.get(wait_key)) is not int or fields[wait_key] != code
+            or type(pid) is not int or pid <= 0
+            or (mode == 'allocate' and fields.get('status') != 'ORIGINAL_POPEN_COMPLETED')):
+        raise ValueError('Readonly-tail original public command retained wait differs')
+    stamps: list[datetime] = []
+    for key in ('started_at_utc', 'finished_at_utc'):
+        raw = fields.get(key)
+        if not isinstance(raw, str):
+            raise ValueError('Readonly-tail public command timestamp missing')
+        stamp = datetime.fromisoformat(raw)
+        if stamp.tzinfo is None or stamp.utcoffset() is None:
+            raise ValueError('Readonly-tail public command timestamp lacks timezone')
+        stamps.append(stamp)
+    if stamps[1] < stamps[0]:
+        raise ValueError('Readonly-tail public command completion precedes start')
+    raw_argv = fields.get('argv')
+    if not isinstance(raw_argv, list):
+        raise ValueError('Readonly-tail public command argv missing')
+    argv: list[str] = []
+    for argument in raw_argv:
+        if not isinstance(argument, str):
+            raise ValueError('Readonly-tail public command argv must contain strings')
+        argv.append(argument)
+    return argv
+
+
+def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, object], close_path: Path,
+                                            keeper_root: Path, release: dict[str, object],
+                                            bus_packet: dict[str, object]) -> dict[str, object]:
     """Release a host that exited before game launch; grant no native or normal-exit credit."""
     bundle=read_json(close_path)
     require(bundle.get('schema')=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1' and
@@ -422,9 +485,11 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
         len(terminal[0])>len(registrar_prefix) and 'in prepare_saved_campaign' in stderr and
         'saved_campaign = prepare_saved_campaign(args, spec)' in stderr and
         'raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))' in stderr)
+    readonly_tail_rejected=_saved_readonly_tail_prelaunch(stderr,bundle)
+    saved_profile_rejected=saved_registrar_rejected or readonly_tail_rejected
     supervisor_bound=supervisor.get('pid')==host.get('supervisor_pid')
     supervisor_binding=None
-    if saved_registrar_rejected:
+    if saved_profile_rejected:
         intent=original('launch_intent',previous/'launch-intent.json')
         sargv=supervisor.get('argv',[])
         def supervisor_argument(name):
@@ -461,8 +526,8 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             exited.get('actual_original_popen_wait') is True and
             type(exited.get('returncode')) is int and exited['returncode']!=0 and
             exited.get('normal_ck3_exit_inferred') is False and
-            (not (cache_identity_rejected or saved_registrar_rejected) or exited['returncode']==1) and
-            (cache_identity_rejected or saved_registrar_rejected or any(cause in stderr for cause in (
+            (not (cache_identity_rejected or saved_profile_rejected) or exited['returncode']==1) and
+            (cache_identity_rejected or saved_profile_rejected or any(cause in stderr for cause in (
                 'ValueError: normal exit requires the actual public prepared profile',
                 'ValueError: effective host differs from reviewed projection',
                 'ValueError: normal-exit private V1 does not support enabled mod GUI files'))),
@@ -500,16 +565,18 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
                 profile.get('fixture_mounted') is False and profile.get('campaign_started') is False and
                 profile.get('cache_content_copied') is False,
                 'Cache identity rejection requires its exact pre-identity menu preparation')
-    if saved_registrar_rejected:
+    if saved_profile_rejected:
         prepared_path=Path(ready.get('prepared_case',{}).get('path','')).resolve()
         prepared=original('prepared_case',prepared_path)
-        registrar=Path(terminal[0][len(registrar_prefix):]).resolve()
         require(ready.get('prepared_case')==evidence['prepared_case'] and
                 prepared.get('startup',{}).get('mode')=='saved_campaign' and
-                Path(prepared.get('startup',{}).get('state_dir','')).resolve()==Path(freeze['state_dir']).resolve() and
-                registrar.is_relative_to(Path(freeze['state_dir']).resolve()/'profile') and
-                registrar.suffix.casefold()=='.txt',
-                'Saved registrar rejection crossed original prepared saved campaign/profile')
+                Path(prepared.get('startup',{}).get('state_dir','')).resolve()==Path(freeze['state_dir']).resolve(),
+                'Saved rejection crossed original prepared saved campaign/profile')
+        if saved_registrar_rejected:
+            registrar=Path(terminal[0][len(registrar_prefix):]).resolve()
+            require(registrar.is_relative_to(Path(freeze['state_dir']).resolve()/'profile') and
+                    registrar.suffix.casefold()=='.txt',
+                    'Saved registrar rejection crossed original prepared saved campaign/profile')
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
@@ -532,6 +599,8 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
                         type(value.get('pid')) is int and value.get('returncode')==code and
                         started.get('at_utc')==value.get('at_utc') and value.get('completed_at_utc'),
                         'Cache original allocation parent completion differs')
+        elif readonly_tail_rejected:
+            argv=_prelaunch_public_completion(value,mode,freeze.get('identity_allocation',{}).get('machine_id'))
         elif saved_registrar_rejected:
             require(path.name=='intent.json', 'Saved registrar original public intent path differs')
             started=original(key+'_process',path.parent/'original-process.json')
@@ -553,14 +622,14 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
                 ((argv[-1:]==[mode] and argv.count(mode)==1) if saved_registrar_rejected else
                     argv[argv.index('--runtime')-1]==mode) and argv.count('--prepared-case')==1 and
                 Path(argv[argv.index('--prepared-case')+1]).resolve()==
-                    (prepared_path if saved_registrar_rejected else
+                    (prepared_path if saved_profile_rejected else
                      (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve()),
                 'Prelaunch original public '+mode+' completion differs')
         if mode=='run':
             require(argv.count('--run-context')==1 and
                     Path(argv[argv.index('--run-context')+1]).is_file(),
                     'Prelaunch reviewed run context missing')
-            if saved_registrar_rejected:
+            if saved_profile_rejected:
                 context_path=Path(argv[argv.index('--run-context')+1]).resolve()
                 context=read_json(context_path)
                 require(context.get('run_id')==freeze['run_id'] and
@@ -617,7 +686,7 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             'native_session_started':False,'original_ck3_exit_code':None,
             'normal_close_qualified':False,'typed_normal_exit_proven':False,
             'business_pass':False,'release_pass':False,'absent_game_controls':absent,
-            **({'supervisor_binding':supervisor_binding} if saved_registrar_rejected else {})}}
+            **({'supervisor_binding':supervisor_binding} if saved_profile_rejected else {})}}
 
 def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Keep historical unknown waits; retain the observed argparse original wait2."""

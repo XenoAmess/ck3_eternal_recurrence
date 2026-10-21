@@ -1,0 +1,265 @@
+{
+  "schema": "faith-e02-native-event-display-variant-source-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T22:46:33.497214+00:00",
+  "event_definition_key": "travel_events_cities.1020",
+  "live_native_definition_id": "travel_events_cities.1020",
+  "analysis_status": "source_closed_native_display_variant_and_independent_post_observed",
+  "source_analysis_completed": true,
+  "run_id": "4-8e1c2f1861--faith-engine--R0022",
+  "event_instance_id": 4,
+  "occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-004-005-occurrence.json",
+  "source_analysis_reused": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-cities-1020-source-analysis.json",
+    "bytes": 9786,
+    "sha256": "cae8c5617e14cf438fb1340d77f4a81eb45e82c079424eb9f66842ffa86449bc"
+  },
+  "source_pins_rechecked": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_events_cities.txt",
+      "bytes": 83546,
+      "sha256": "e8090780726e31671cf28605341b0ca5e515dfcc66d994f18ee66be5070c94d5"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_events_cities_l_simp_chinese.yml",
+      "bytes": 11198,
+      "sha256": "b653990f01e6fc3eca6104179e65e6f34a69ad9b1b6b9646f6f3090f9ae78d15"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    }
+  ],
+  "new_modifier_source_pin": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_travel_modifiers.txt",
+    "bytes": 8782,
+    "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+    "relevant_lines": [
+      [
+        355,
+        365
+      ]
+    ]
+  },
+  "prior_display_variant": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\travel-cities-1020-r0014-display-variant.json",
+    "bytes": 10858,
+    "sha256": "672e34f4f17243206af5ad1050f6396898fca2953c8325b2073395eef977eb26"
+  },
+  "actual_scope_shape": [
+    {
+      "name": "province",
+      "type_key": "province",
+      "typed_identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "city_province",
+      "type_key": "province",
+      "typed_identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "city_sight",
+      "type_key": "flag",
+      "typed_identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "city_ancient_insight",
+      "type_key": "flag",
+      "typed_identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    }
+  ],
+  "actual_options": [
+    {
+      "rendered_index": 0,
+      "native_option_index": 2,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "思考生命有多么脆弱是有价值的。",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set": false,
+        "rows": [
+          {
+            "kind": "stress",
+            "direction": "increase",
+            "magnitude": {
+              "status": "unavailable"
+            },
+            "affected_by_trait": true,
+            "critical": false
+          }
+        ]
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    },
+    {
+      "rendered_index": 1,
+      "native_option_index": 7,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "我不会再这里浪费任何时间。",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+        "complete_effect_set": false,
+        "rows": [
+          {
+            "kind": "stress",
+            "direction": "decrease",
+            "magnitude": {
+              "status": "unavailable"
+            },
+            "affected_by_trait": true,
+            "critical": false
+          }
+        ]
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    }
+  ],
+  "new_display_variant": "Actual rendered0/native2 reflection and rendered1/native7 opt-out; four saved scopes include additional city_ancient_insight flag. Neither province nor flag payload is decoded; no precise city/coordinates/insight value is asserted.",
+  "selected_option_source": {
+    "source_option_ordinal": 3,
+    "native_option_index_observed": 2,
+    "public_option_number_observed": 3,
+    "name_key": "travel_city_option_reflection_on_existance",
+    "definition_file": "events/travel_events/travel_events_cities.txt",
+    "lines": [
+      1619,
+      1817
+    ],
+    "localization_line": 8,
+    "eligibility": "scope:city_sight = flag:caesars_needle (source trigger, not a decoded native flag value)",
+    "effects": [
+      "Delay current_travel_plan7days",
+      "random_list raw weights15/40/40; conditional weights and triggers mean these are not fixed percentages",
+      "weight15 branch: IF no writing_history_perk, add it and diplomacy+1; otherwise diplomacy+2",
+      "first40 branch: only if NOT contemplated_life, add contemplated_life15years",
+      "second40 branch: literally also gated by NOT contemplated_life, add travel_city_existential_dread15years",
+      "if sightseeing_companion exists, applicable branches additionally try friend/best-friend and grant companion diplomacy/modifier effects; no companion is present in captured saved scopes",
+      "stress_and_fulfillment_impact: base major gain; content/humble minor loss; craven/arrogant/ambitious minor gain"
+    ],
+    "weight15_modifier": "Subtract10 from weight if learning<decent_skill_rating AND no sightseeing_companion; no live learning/perk query was performed.",
+    "modifier_definitions": {
+      "contemplated_life": {
+        "source_lines": [
+          355,
+          359
+        ],
+        "monthly_piety_gain_mult": 0.1,
+        "learning": 1
+      },
+      "travel_city_existential_dread": {
+        "source_lines": [
+          361,
+          365
+        ],
+        "stewardship": 1,
+        "stress_gain_mult": 0.1
+      }
+    },
+    "interpretation": "No short-term gold deduction or direct piety/prestige grant in this option block. Random outcome/perk/modifier/skill is not inferred from toast or unchanged wallet. Literal duplicate NOT contemplated_life condition is retained, not silently corrected."
+  },
+  "other_actual_option_source": {
+    "native_option_index_observed": 7,
+    "name_key": "travel_city_option_opt_out",
+    "lines": [
+      2290,
+      2305
+    ],
+    "effects_reused": "No option-specific travel delay/gold; lifestyle_traveler-conditioned stress reduction; this option was not selected."
+  },
+  "actual_effect_readback": {
+    "same_actor_same_date": true,
+    "gold_piety_prestige_delta_raw": [
+      0,
+      0,
+      0
+    ],
+    "stress_points_before_after": [
+      0,
+      75
+    ],
+    "selected_ACK": true,
+    "independent_old_window_gone": true,
+    "no_comparison_to_old_souvenir_50gold_cost": true
+  },
+  "unobserved": [
+    "random outcome",
+    "actual perk/modifier/skill changes",
+    "trait XP",
+    "actual seven-day ETA change",
+    "scope flag payloads",
+    "current coordinates"
+  ],
+  "future_recognition": {
+    "knowledge_available": true,
+    "match": "exact definition/build/source SHA plus actual native2/7 shown mapping and saved scope shape",
+    "policy": "qualified existing dedicated policy first; otherwise native actual first shown and no assumed button index",
+    "current_native_legality": null
+  },
+  "full_occurrence_contract_registered": false,
+  "selection_policy_changed": false,
+  "ordinary_auto_consumes": false,
+  "historical_evidence_is_current_state": false,
+  "native_legality": null,
+  "action_ready": false
+}

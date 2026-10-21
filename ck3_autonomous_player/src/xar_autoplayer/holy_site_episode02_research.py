@@ -66,6 +66,367 @@ _SOURCE_ONLY_EVENTS: list[SourceOnlyEvent] = [
 ]
 
 
+class SourceAnalyzedPilgrimageEvent(TypedDict):
+    """Indexed source knowledge with historical proof, never current permission."""
+
+    static_definition_id: Literal["pilgrimage.2070", "pilgrimage_intent.1100", "pilgrimage_intent.1040"]
+    historical_native_definition_id: str
+    analysis_status: Literal["source_closed_actual_native_definition_and_choice_observed"]
+    source_analysis_completed: Literal[True]
+    source_document: str
+    occurrence_document: str
+    definition_source_sha256: str
+    decision_summary: str
+    historical_observation_summary: str
+    unobserved: list[str]
+    historical_run_id: Literal["4-8e1c2f1861--faith-engine--R0018"]
+    historical_machine_id: Literal["4-8e1c2f1861"]
+    historical_evidence_is_current_state: Literal[False]
+    full_occurrence_contract_registered: Literal[False]
+    selection_policy_changed: Literal[False]
+    ordinary_auto_consumes: Literal[False]
+    state_observed: Literal[False]
+    native_legality: None
+    action_ready: Literal[False]
+
+
+_R18_SOURCE_ANALYZED_EVENTS: dict[str, SourceAnalyzedPilgrimageEvent] = {
+    "pilgrimage.2070": {
+        "static_definition_id": "pilgrimage.2070",
+        "historical_native_definition_id": "pilgrimage.2070",
+        "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+        "source_analysis_completed": True,
+        "source_document": _EVENT_DOCUMENTS + "pilgrimage-2070-source-analysis.json",
+        "occurrence_document": _EVENT_DOCUMENTS + "r0018-events-001-003-occurrence.json",
+        "definition_source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+        "decision_summary": "First option uses the pious activity-performance branch OR the direct base50piety ELSE; it does not grant both. Other options declare a5-day prayer/friendship step or travel-speed modifier. Bind current type, traits and legal shown rows.",
+        "historical_observation_summary": "R0018 native0/public1 ACK and independent old-window disappearance were observed; same actor/date gold, piety, prestige and stress did not change. This does not prove no activity-performance or conditional effect.",
+        "unobserved": ["activity performance", "fulfillment", "trait-conditioned stress inputs", "friendship", "travel ETA"],
+        "historical_run_id": "4-8e1c2f1861--faith-engine--R0018",
+        "historical_machine_id": "4-8e1c2f1861",
+        "historical_evidence_is_current_state": False,
+        "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+        "ordinary_auto_consumes": False, "state_observed": False,
+        "native_legality": None, "action_ready": False,
+    },
+    "pilgrimage_intent.1100": {
+        "static_definition_id": "pilgrimage_intent.1100",
+        "historical_native_definition_id": "pilgrimage_intent.1100",
+        "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+        "source_analysis_completed": True,
+        "source_document": _EVENT_DOCUMENTS + "pilgrimage-intent-1100-source-analysis.json",
+        "occurrence_document": _EVENT_DOCUMENTS + "r0018-events-001-003-occurrence.json",
+        "definition_source_sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878",
+        "decision_summary": "First option declares conditional pious/hajj performance, a10-year monthly_piety_gain_mult=0.1 modifier and conditional pilgrim/mystic XP. It does not immediately grant10piety or establish the final total monthly multiplier. Other options have separate stress/worldly/personal-scheme or opinion modifiers.",
+        "historical_observation_summary": "R0018 native0/public1 ACK and independent old-window disappearance were observed; immediate gold/piety/prestige/stress deltas were0. Later natural-time growth was not attributed solely to the declared modifier.",
+        "unobserved": ["modifier membership", "monthly piety attribution", "pilgrim XP", "mystic XP", "fulfillment", "activity performance"],
+        "historical_run_id": "4-8e1c2f1861--faith-engine--R0018",
+        "historical_machine_id": "4-8e1c2f1861",
+        "historical_evidence_is_current_state": False,
+        "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+        "ordinary_auto_consumes": False, "state_observed": False,
+        "native_legality": None, "action_ready": False,
+    },
+    "pilgrimage_intent.1040": {
+        "static_definition_id": "pilgrimage_intent.1040",
+        "historical_native_definition_id": "pilgrimage_intent.1040",
+        "analysis_status": "source_closed_actual_native_definition_and_choice_observed",
+        "source_analysis_completed": True,
+        "source_document": _EVENT_DOCUMENTS + "pilgrimage-intent-1040-source-analysis.json",
+        "occurrence_document": _EVENT_DOCUMENTS + "r0018-event004-and-scene-cutoff.json",
+        "definition_source_sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878",
+        "decision_summary": "Two displayed options in R0018. Following the animal declares base50piety, a10-day detour and conditional performance/hidden omen outcomes. The separate90-day helper is multiplayer-only. Source1044 literally checks predator_omen despite its prey comment; no hidden outcome or XP is inferred from a toast.",
+        "historical_observation_summary": "R0018 native0/public1 ACK and independent old-window disappearance were observed; same actor/date piety increased50 while gold/prestige/stress did not change. This was a journey event, not the final on_end settlement.",
+        "unobserved": ["live ETA change", "hidden followup definition/outcome", "trait XP", "modifier membership", "fulfillment", "activity performance", "animal province ID"],
+        "historical_run_id": "4-8e1c2f1861--faith-engine--R0018",
+        "historical_machine_id": "4-8e1c2f1861",
+        "historical_evidence_is_current_state": False,
+        "full_occurrence_contract_registered": False, "selection_policy_changed": False,
+        "ordinary_auto_consumes": False, "state_observed": False,
+        "native_legality": None, "action_ready": False,
+    },
+}
+
+
+class R0022SourceAnalyzedEvent(TypedDict):
+    """Additional analyzed source/history; no current observation or permission."""
+
+    static_definition_id: str
+    historical_native_definition_id: str
+    analysis_status: Literal["source_closed_actual_native_definition_and_choice_observed"]
+    source_analysis_completed: Literal[True]
+    source_document: str
+    occurrence_document: str
+    definition_source_sha256: str
+    decision_summary: str
+    historical_observation_summary: str
+    historical_run_id: Literal["4-8e1c2f1861--faith-engine--R0022"]
+    historical_machine_id: Literal["4-8e1c2f1861"]
+    historical_evidence_is_current_state: Literal[False]
+    full_occurrence_contract_registered: Literal[False]
+    selection_policy_changed: Literal[False]
+    ordinary_auto_consumes: Literal[False]
+    state_observed: Literal[False]
+    native_legality: None
+    action_ready: Literal[False]
+
+
+_R22_SOURCE_ANALYZED_EVENTS: dict[str, R0022SourceAnalyzedEvent] = {'pilgrimage.3004': {'static_definition_id': 'pilgrimage.3004',
+                     'historical_native_definition_id': 'pilgrimage.3004',
+                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                     'source_analysis_completed': True,
+                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-3004-source-analysis.json',
+                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json',
+                     'definition_source_sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                     'decision_summary': '3004.B is the first of two actually shown options; '
+                                         'learning-gated A is hidden, not a legal candidate to invent.',
+                     'historical_observation_summary': 'Selected indulgence option: wallets and floor-zero '
+                                                       'stress unchanged; source base stress loss does not '
+                                                       'mean no authored effect.',
+                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                     'historical_machine_id': '4-8e1c2f1861',
+                     'historical_evidence_is_current_state': False,
+                     'full_occurrence_contract_registered': False,
+                     'selection_policy_changed': False,
+                     'ordinary_auto_consumes': False,
+                     'state_observed': False,
+                     'native_legality': None,
+                     'action_ready': False},
+ 'pilgrimage_intent.1030': {'static_definition_id': 'pilgrimage_intent.1030',
+                            'historical_native_definition_id': 'pilgrimage_intent.1030',
+                            'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                            'source_analysis_completed': True,
+                            'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1030-source-analysis.json',
+                            'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-001-003-occurrence.json',
+                            'definition_source_sha256': '3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878',
+                            'decision_summary': 'Ten-day delay and conditional XP/piety branches; '
+                                                'separate90-day helper is multiplayer-only.',
+                            'historical_observation_summary': 'Same-day piety+50, other wallets/stress0; '
+                                                              'ETA, traitXP and performance not '
+                                                              'independently observed.',
+                            'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                            'historical_machine_id': '4-8e1c2f1861',
+                            'historical_evidence_is_current_state': False,
+                            'full_occurrence_contract_registered': False,
+                            'selection_policy_changed': False,
+                            'ordinary_auto_consumes': False,
+                            'state_observed': False,
+                            'native_legality': None,
+                            'action_ready': False},
+ 'pilgrimage.6840': {'static_definition_id': 'pilgrimage.6840',
+                     'historical_native_definition_id': 'pilgrimage.6840',
+                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                     'source_analysis_completed': True,
+                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6840-source-analysis.json',
+                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json',
+                     'definition_source_sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                     'decision_summary': 'Blessing fee is dynamic with15gold cap; artifact durability/stat '
+                                         'changes require independent artifact readback. Unselected '
+                                         'prestige modifier code and localization differ.',
+                     'historical_observation_summary': 'Native0 charged15gold and gave25piety; '
+                                                       'stress81to98. Artifact identity/stats remain '
+                                                       'opaque.',
+                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                     'historical_machine_id': '4-8e1c2f1861',
+                     'historical_evidence_is_current_state': False,
+                     'full_occurrence_contract_registered': False,
+                     'selection_policy_changed': False,
+                     'ordinary_auto_consumes': False,
+                     'state_observed': False,
+                     'native_legality': None,
+                     'action_ready': False},
+ 'stress_threshold.1701': {'static_definition_id': 'stress_threshold.1701',
+                           'historical_native_definition_id': 'stress_threshold.1701',
+                           'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                           'source_analysis_completed': True,
+                           'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/stress-threshold-1701-r0022-display-variant.json',
+                           'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json',
+                           'definition_source_sha256': 'feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339',
+                           'decision_summary': 'Five official source SHA pins match. Existing dedicated '
+                                               'route ran first but rejected the actual2scope/3shown3,6,8 '
+                                               'envelope, so current first native3 was used; no hot '
+                                               'registry expansion.',
+                           'historical_observation_summary': 'Native3 cost105gold, stress115to97; '
+                                                             'profligate add indicator is not independent '
+                                                             'membership. Future dynamic price/current '
+                                                             'legality unknown.',
+                           'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                           'historical_machine_id': '4-8e1c2f1861',
+                           'historical_evidence_is_current_state': False,
+                           'full_occurrence_contract_registered': False,
+                           'selection_policy_changed': False,
+                           'ordinary_auto_consumes': False,
+                           'state_observed': False,
+                           'native_legality': None,
+                           'action_ready': False},
+ 'pilgrimage.6750': {'static_definition_id': 'pilgrimage.6750',
+                     'historical_native_definition_id': 'pilgrimage.6750',
+                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                     'source_analysis_completed': True,
+                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6750-source-analysis.json',
+                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-006-010-and-marriage-occurrence.json',
+                     'definition_source_sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                     'decision_summary': 'Selected redemption removes one eligible secret OR first '
+                                         'matching coping trait, not every trait. Immediate '
+                                         'once-per-character marker is set even if choosing B. Log score50 '
+                                         'is not piety.',
+                     'historical_observation_summary': 'Native0 piety+100/stress97to165; removed-trait '
+                                                       'indicator does not prove XP or complete trait '
+                                                       'membership.',
+                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                     'historical_machine_id': '4-8e1c2f1861',
+                     'historical_evidence_is_current_state': False,
+                     'full_occurrence_contract_registered': False,
+                     'selection_policy_changed': False,
+                     'ordinary_auto_consumes': False,
+                     'state_observed': False,
+                     'native_legality': None,
+                     'action_ready': False},
+ 'councillor_spouse_learning.2601': {'static_definition_id': 'councillor_spouse_learning.2601',
+                                     'historical_native_definition_id': 'councillor_spouse_learning.2601',
+                                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                                     'source_analysis_completed': True,
+                                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/councillor-spouse-learning-2601-source-analysis.json',
+                                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-event011-occurrence.json',
+                                     'definition_source_sha256': 'e9d59eba1d239784695586c6fa5d90470c370bc8d9897ae130d7fe2665c78f59',
+                                     'decision_summary': 'Ordinary spouse tutoring, not a pilgrimage '
+                                                         'reward. Random raw weights and root/student '
+                                                         'flags retain their own scopes.',
+                                     'historical_observation_summary': 'First shown native0 acknowledged; '
+                                                                       'wallets and stress147 unchanged. '
+                                                                       'Education/skill/opinion/modifier/nickname '
+                                                                       'outcome unobserved.',
+                                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                                     'historical_machine_id': '4-8e1c2f1861',
+                                     'historical_evidence_is_current_state': False,
+                                     'full_occurrence_contract_registered': False,
+                                     'selection_policy_changed': False,
+                                     'ordinary_auto_consumes': False,
+                                     'state_observed': False,
+                                     'native_legality': None,
+                                     'action_ready': False},
+ 'pilgrimage.6800': {'static_definition_id': 'pilgrimage.6800',
+                     'historical_native_definition_id': 'pilgrimage.6800',
+                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                     'source_analysis_completed': True,
+                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6800-source-analysis.json',
+                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-012-013-settlement-occurrence.json',
+                     'definition_source_sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                     'decision_summary': 'Called-member monk effects target NPC36310, not the player; '
+                                         'devoted is not celibate. Score50 and player100piety are '
+                                         'separate.',
+                     'historical_observation_summary': 'Player gained100piety at same date; no independent '
+                                                       'NPC court/spouse/trait post or XP.',
+                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                     'historical_machine_id': '4-8e1c2f1861',
+                     'historical_evidence_is_current_state': False,
+                     'full_occurrence_contract_registered': False,
+                     'selection_policy_changed': False,
+                     'ordinary_auto_consumes': False,
+                     'state_observed': False,
+                     'native_legality': None,
+                     'action_ready': False},
+ 'pilgrimage.7000': {'static_definition_id': 'pilgrimage.7000',
+                     'historical_native_definition_id': 'pilgrimage.7000',
+                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                     'source_analysis_completed': True,
+                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-7000-source-analysis.json',
+                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-012-013-settlement-occurrence.json',
+                     'definition_source_sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                     'decision_summary': 'Normal phase on_end resolves main rewards before the conclusion '
+                                         'button; normal A shows reward tooltip without a second payout.',
+                     'historical_observation_summary': 'Last-before/first-after24h piety+125 is observed, '
+                                                       'not a single-effect attribution; button wallets0 '
+                                                       'is not reward0. Historical milestone '
+                                                       'devotion/fulfillment remain unknown.',
+                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                     'historical_machine_id': '4-8e1c2f1861',
+                     'historical_evidence_is_current_state': False,
+                     'full_occurrence_contract_registered': False,
+                     'selection_policy_changed': False,
+                     'ordinary_auto_consumes': False,
+                     'state_observed': False,
+                     'native_legality': None,
+                     'action_ready': False},
+ 'pilgrimage.9001': {'static_definition_id': 'pilgrimage.9001',
+                     'historical_native_definition_id': 'pilgrimage.9001',
+                     'analysis_status': 'source_closed_actual_native_definition_and_choice_observed',
+                     'source_analysis_completed': True,
+                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-9001-source-analysis.json',
+                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0022-events-014-015-return-occurrence.json',
+                     'definition_source_sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                     'decision_summary': 'Travel completion hook includes script completion and event '
+                                         'supports invalidated branches; never infer independent home '
+                                         'position or success from9001 alone.',
+                     'historical_observation_summary': 'ACK+old-window disappearance, same-activity '
+                                                       'completed=true/invalidated=false and independent '
+                                                       'Apulia tooltip align. Return-button wallets0; '
+                                                       'current fulfillment35/devotion level5 are not '
+                                                       'historical reward deltas.',
+                     'historical_run_id': '4-8e1c2f1861--faith-engine--R0022',
+                     'historical_machine_id': '4-8e1c2f1861',
+                     'historical_evidence_is_current_state': False,
+                     'full_occurrence_contract_registered': False,
+                     'selection_policy_changed': False,
+                     'ordinary_auto_consumes': False,
+                     'state_observed': False,
+                     'native_legality': None,
+                     'action_ready': False}}
+
+
+def _validate_r22_source_events(events: dict[str, R0022SourceAnalyzedEvent]) -> None:
+    """Validate finite reference identity/paths and reject permission promotion."""
+    if set(events) != {'pilgrimage.3004', 'stress_threshold.1701', 'pilgrimage_intent.1030', 'councillor_spouse_learning.2601', 'pilgrimage.6750', 'pilgrimage.9001', 'pilgrimage.7000', 'pilgrimage.6800', 'pilgrimage.6840'}:
+        raise ValueError("R22 analyzed definition set differs")
+    for definition, event in events.items():
+        if (event["static_definition_id"] != definition
+                or event["historical_native_definition_id"] != definition
+                or event["analysis_status"] != "source_closed_actual_native_definition_and_choice_observed"
+                or event["source_analysis_completed"] is not True):
+            raise ValueError("R22 analyzed source identity differs")
+        if (event["historical_evidence_is_current_state"] is not False
+                or event["full_occurrence_contract_registered"] is not False
+                or event["selection_policy_changed"] is not False
+                or event["ordinary_auto_consumes"] is not False
+                or event["state_observed"] is not False
+                or event["native_legality"] is not None
+                or event["action_ready"] is not False):
+            raise ValueError("R22 history cannot grant current state or permission")
+        for path in (event["source_document"], event["occurrence_document"]):
+            if not path.startswith(_EVENT_DOCUMENTS) or ".." in path.split("/") or ":" in path or "\\" in path:
+                raise ValueError("R22 source path must be repository-relative")
+        digest = event["definition_source_sha256"]
+        if len(digest) != 64 or any(character not in "0123456789abcdef" for character in digest):
+            raise ValueError("R22 source SHA differs")
+
+
+def _validate_source_analyzed_events(events: dict[str, SourceAnalyzedPilgrimageEvent]) -> None:
+    """Check the finite source index without reading evidence or game state."""
+    if set(events) != {"pilgrimage.2070", "pilgrimage_intent.1100", "pilgrimage_intent.1040"}:
+        raise ValueError("E02 source-analyzed definition set differs")
+    for definition, event in events.items():
+        if (event["static_definition_id"] != definition
+                or event["historical_native_definition_id"] != definition
+                or event["analysis_status"] != "source_closed_actual_native_definition_and_choice_observed"
+                or event["source_analysis_completed"] is not True):
+            raise ValueError("E02 analyzed source identity or qualification differs")
+        if (event["historical_evidence_is_current_state"] is not False
+                or event["full_occurrence_contract_registered"] is not False
+                or event["selection_policy_changed"] is not False
+                or event["ordinary_auto_consumes"] is not False
+                or event["state_observed"] is not False
+                or event["native_legality"] is not None
+                or event["action_ready"] is not False):
+            raise ValueError("E02 source knowledge cannot grant current state or permission")
+        for path in (event["source_document"], event["occurrence_document"]):
+            if (not path.startswith(_EVENT_DOCUMENTS) or ".." in path.split("/")
+                    or ":" in path or "\\" in path):
+                raise ValueError("E02 analyzed source document must be repository-relative")
+        digest = event["definition_source_sha256"]
+        if len(digest) != 64 or any(character not in "0123456789abcdef" for character in digest):
+            raise ValueError("E02 analyzed source digest differs")
+
+
 def _validate_source_only_events(events: list[SourceOnlyEvent]) -> None:
     """Validate the shared static rows without reading their referenced files."""
     expected = {"pilgrimage.5001", "travel_start_event.1060", "travel_events_cities.1020", "pilgrimage.4100"}
@@ -142,13 +503,16 @@ _RESEARCH: dict[str, object] = {
             "unknowns": ["Current legal candidate/slot/replacement and independent personal benefit; item text does not close either."],
         },
         "site_effects_and_cache": {
-            "documents": [_REFERENCE, _ARTIFACTS, "docs/ck3-native-ai/holy-site-grade-effects-and-limits-12004.md", "docs/ck3-native-ai/holy-site-effect-observation-12004.md"],
+            "documents": [_REFERENCE, _ARTIFACTS, "docs/ck3-native-ai/holy-site-grade-effects-and-limits-12004.md", "docs/ck3-native-ai/holy-site-effect-observation-12004.md", _EVENT_DOCUMENTS + "r0021-promotion-cap-source-analysis.json"],
             "rules": [
                 "Faith fixed/scaled effects require the Faith/site major relation and county-holder Faith gate; local fixed and county-scaled effects have distinct recipient/Active gates.",
                 "Recipients may have different Rites within the same Faith; preserve each recipient's own Rite/Faith/full ID instead of asserting cross-person Rite equality.",
                 "cached_world_state.total_active_artifact_rarity and current_relic_evaluation.active_artifact_rarity_sum are different observations; retain cache_evaluation_disagreement.",
                 "The rarity evaluator reads site+1C; current rarity reevaluation and the character's cached skills/modifiers do not establish when either cache was rebuilt.",
                 "A same-paused-frame grade transition with unchanged named actor text does not prove the mechanic ineffective or the benefit applied.",
+                "Before promote, read the complete current Faith major membership/count and that current Religion actual max/override; do not inspect only the selected site or assume universal max3. Keep missing typed limit unknown and retain current native requirement text with source.",
+                "Final normal CanConfirm, native CanConfirm, bypass0, cooldown and complete10-resource quote/affordability must be fresh. A free-action count or zero quote never waives the major-count cap or another legal requirement.",
+                "R0021 historical Faith103 already had major sites0/1/3, so target32 promotion failed count<3 with free-action text2 and all10 costs0; no Confirm or promotion result occurred. Read the linked source analysis, never reuse this history as current state.",
             ],
             "native_source_chain": {
                 "faith_producer": "29CC520->24FB270->Rite+20/+2C",
@@ -181,6 +545,7 @@ _RESEARCH: dict[str, object] = {
             "rules": [
                 "Spiritual-head creation can count qualifying ordinary sites; control, holder Faith and the complete native requirements remain separate.",
                 "Piety, gold/treasury prices and non-main-Rite/eminent-site multipliers have separate source scopes; do not multiply all resources together.",
+                "The no-eminent HoF multiplier tests the whole Faith for any major-site county controlled by root with holder Faith=root Faith; selected-site ordinary/major alone never decides the quote. Releasing one cap slot can leave other qualifying majors and unchanged cost.",
                 "Read the actual resulting head, title, Faith and main Rite independently; the creator is not automatically the resulting head.",
             ],
             "sources": [
@@ -196,6 +561,11 @@ _RESEARCH: dict[str, object] = {
                 _EVENT_DOCUMENTS + "pilgrimage-3001-r0014-occurrence.json",
                 _EVENT_DOCUMENTS + "travel-cities-1020-r0014-display-variant.json",
                 _EVENT_DOCUMENTS + "r0014-event-batch-summary.json",
+                _EVENT_DOCUMENTS + "pilgrimage-2070-source-analysis.json",
+                _EVENT_DOCUMENTS + "pilgrimage-intent-1100-source-analysis.json",
+                _EVENT_DOCUMENTS + "pilgrimage-intent-1040-source-analysis.json",
+                _EVENT_DOCUMENTS + "r0018-events-001-003-occurrence.json",
+                _EVENT_DOCUMENTS + "r0018-event004-and-scene-cutoff.json",
             ],
             "rules": [
                 "Read the current Rite and actual legal planner choices; mandatory_hajj without hajjaj can exclude ordinary pious/worldly choices.",
@@ -208,12 +578,18 @@ _RESEARCH: dict[str, object] = {
                 "Historical R0014 pilgrimage.3001 first-shown choice had ACK plus independent old-window disappearance and +100 piety on the same actor/date. Conditional illness and pilgrim/learning XP remain unobserved; this is not final pilgrimage settlement.",
                 "travel_events_cities.1020 R0014 has a different unselected learning-option label in the same official option block; bind current native shown options, never reuse the historical label/index as current permission.",
                 "The R0014 five-event batch contains 1060, 3001, 1020, 5001 and 4100; it ended without observed 7000/9001, full journey completion or independent home position. These source/actual references add no occurrence registry or ordinary-auto execution policy.",
+                "Lookup source_analyzed_events by current native definition to find the already-analyzed2070/intent1100/intent1040 source and historical references. Recognition as analyzed is not native permission or a new execution policy; current scopes/options and any existing dedicated strategy still decide the live action.",
+                "R0018 actually captured4 events and56 elapsed days/57 day requests, then failed before arrival, final settlement or return. Game/host/public-run exits1/1/2 and normalclose=false are historical failure facts, not completed-pilgrimage or normal-Quit evidence.",
             ],
             "sources": [
                 _source("common/scripted_effects/00_pilgrimage_effects.txt", "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80", 516, 629),
                 _source("events/activities/pilgrimage_activity/pilgrimage_events.txt", "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06", 15187, 15279),
             ],
             "source_only_events": _SOURCE_ONLY_EVENTS,
+            "source_analyzed_events": _R18_SOURCE_ANALYZED_EVENTS,
+            "r0022_source_analyzed_events": _R22_SOURCE_ANALYZED_EVENTS,
+            "r0022_complete_event_index_document": _EVENT_DOCUMENTS + "r0022-all-event-source-index.json",
+            "r0022_ending_document": _EVENT_DOCUMENTS + "r0022-pilgrimage-ending-observed.json",
             "unknowns": ["Current choices/configured activity quote/Start permission; whole-journey cost is not established, nor real elapsed travel and independent actual reward/return state."],
         },
         "great_holy_war": {
@@ -248,5 +624,7 @@ _RESEARCH: dict[str, object] = {
 
 def episode02_research() -> dict[str, object]:
     """Return independent source-valued knowledge without reading the world."""
+    _validate_r22_source_events(_R22_SOURCE_ANALYZED_EVENTS)
     _validate_source_only_events(_SOURCE_ONLY_EVENTS)
+    _validate_source_analyzed_events(_R18_SOURCE_ANALYZED_EVENTS)
     return deepcopy(_RESEARCH)
