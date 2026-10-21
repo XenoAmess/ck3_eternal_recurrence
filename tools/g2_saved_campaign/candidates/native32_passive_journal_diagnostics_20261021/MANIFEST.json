@@ -1,0 +1,62 @@
+{
+  "Game_calls": 0,
+  "abi_qualified": false,
+  "deployment_changes": 0,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "native31_manifest_sha256": "574b0aa2b58cf140698cba156fb192132c4c048b18e3dbd556c5d66b6d9d2d1c",
+  "native31_source_root": "../native31_passive_journal_20261020",
+  "observed_at_utc": "2026-10-21T00:08:01.480576+00:00",
+  "production_dll_sha256": null,
+  "required_recompile": [
+    "observer_core",
+    "observer_installer",
+    "bridge.cpp",
+    "ck3_12002_commands.cpp",
+    "any_additional_header_or_by_value_ABI_consumers"
+  ],
+  "runtime_admission_granted": false,
+  "schema": "xar.native32.passive-journal-source-candidate/v1",
+  "source_files": [
+    {
+      "bytes": 4669,
+      "name": "native/include/xar_bridge/native_time_command_observer_12004.hpp",
+      "sha256": "e5534112bd49e9242f6d4ff6cbee7fcbbab38bb3628d006ffcd726c9baa6bf62"
+    },
+    {
+      "bytes": 16599,
+      "name": "native/src/native_time_command_observer_12004.cpp",
+      "sha256": "5f8ee4ea50b3b2441978fea1e82a10792d5bcd59bd29fd39d7ff6229d57d0b5d"
+    },
+    {
+      "bytes": 13469,
+      "name": "native/tests/native32_core_fixture.cpp",
+      "sha256": "3bab6347ae37f9910aaadcd72bc74e1276db06f96be8340adf8413224f57d5d1"
+    },
+    {
+      "bytes": 15948,
+      "name": "cold/observer_journal_v1.py",
+      "sha256": "97e1495f857f2562dc90dcbfea351362f6be9363372f1bc3ecd65e11ef22d6d6"
+    },
+    {
+      "bytes": 11025,
+      "name": "cold/test_observer_journal_v1.py",
+      "sha256": "0f2f430f23236f5330ebe3a8552b8a5fe21b4afd5ac438840aaf6307b2a311ac"
+    },
+    {
+      "bytes": 587,
+      "name": "cold/qualify_host_fixture.py",
+      "sha256": "2947d2d3703b2d15355832814d378767918a03bf07ec8dc8c82f13e89ac13347"
+    },
+    {
+      "bytes": 4018,
+      "name": "README.md",
+      "sha256": "09bee4d70696fdf477fd031f6fa1acd90c153f11ea6d24db62d81f1f505cb9fe"
+    },
+    {
+      "bytes": 3654,
+      "name": "verify.py",
+      "sha256": "af885ef16b22a6123a73858b656afa4d536293ba23cb1010ae4f05e264fcbc08"
+    }
+  ],
+  "source_only_qualification": true
+}

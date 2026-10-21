@@ -146,6 +146,14 @@ def _rejected_candidates(resolved: Mapping[str, object]) -> frozenset[int]:
     return frozenset(values)
 
 
+def _without_action_bound_war_presentation(
+    plan: Mapping[str, object],
+) -> dict[str, object]:
+    """A new marriage action cannot reuse the previous war action's display."""
+    return {key: value for key, value in plan.items()
+            if key != "war_decision_presentation_v1"}
+
+
 def _plan_existing_resolution(
     driver: object, planned: dict[str, object], plan: dict[str, object],
     resolved: dict[str, object], snapshot: Mapping[str, object],
@@ -160,7 +168,7 @@ def _plan_existing_resolution(
         source_pending = resolved.get("source_pending")
         if not isinstance(source_pending, dict):
             raise ValueError("resolved marriage lacks cold source pair")
-        return {**planned, "plan": {**plan,
+        return {**planned, "plan": {**_without_action_bound_war_presentation(plan),
             "phase": "first_heir_marriage_cold_material_recheck",
             "selected_step": RESULT_STEP,
             "family_marriage_pending": dict(source_pending),

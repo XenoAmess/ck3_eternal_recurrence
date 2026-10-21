@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import ck3_mod_acceptance_client as source
 from ck3_mod_acceptance_launcher import retain_host
+from ck3_mod_acceptance_test_background_fixture import make_background_fixture
 
 
 class ReadinessHostExitTests(unittest.TestCase):
@@ -46,14 +47,17 @@ class ReadinessHostExitTests(unittest.TestCase):
         raw = path.read_bytes()
         return {'path': str(path.resolve()), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
 
-    def child(self, code):
+    def child(self, code: str) -> int:
         frozen = {'run_id': self.live.name, 'screen_task': 'synthetic-screen',
-                  'argv': [sys.executable, '-c', code], 'lease_anchor': str(self.live)}
+                  'argv': [sys.executable, '-B', '-c', code], 'lease_anchor': str(self.live)}
         self.client.frozen = frozen
         path = self.live / 'frozen-argv.json'
         path.write_text(json.dumps(frozen), encoding='utf-8')
         self.client.context = {'frozen_argv': self.pin(path)}
-        return retain_host(self.live, frozen, {}, {'lease': {}})
+        fixture = make_background_fixture(self.live)
+        fixture.write_receipt()
+        with fixture.os_boundaries():
+            return retain_host(self.live, frozen, fixture.admission(), {'lease': {}})
 
     def result(self):
         return json.loads((self.output / 'readiness-window-result.json').read_bytes())

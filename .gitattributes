@@ -3,6 +3,7 @@
 # Keep these machine-bound recovery qualifications at their original SHA bytes.
 docs/ck3-native-ai/evidence/c16-war8495-reconcile-source-qualification-2026-10-20.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c16-war8496-feeder-source-qualification-2026-10-20.json -text whitespace=cr-at-eol
+/tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/build-host/defender-receipt.json -text whitespace=cr-at-eol
 
 # Preserve the owned native serializer packet used by the rarity projection replay.
 ck3_autonomous_player/tests/fixtures/holy_site_relic_rarity/context-integration.json -text whitespace=cr-at-eol

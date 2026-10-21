@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -282,14 +283,15 @@ class OperatorQuitTests(unittest.TestCase):
             client.close_handle()
             kernel.CloseHandle.assert_called_once_with(8642)
 
-    def test_failed_entry_finally_uses_actual_hold_fallback_and_keeps_failure(self):
+    def test_failed_entry_finally_uses_actual_hold_fallback_and_keeps_failure(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
             launcher=root/'synthetic-launcher.py';launcher.write_text('SYNTHETIC ONLY')
             selected=self.entry.Selection.__new__(self.entry.Selection)
             selected.preflight=lambda:{'blockers':[]}
             selected.context={'run_id':'SYNTHETIC_FAILED_ENTRY','keeper_root':str(root/'keeper'),
-                'proof':str(root/'proof'),'challenge':str(root/'challenge'),'observed_nonce':'SYNTHETIC','reviewer':'/root'}
+                'steam_offline_receipt':str(write_unavailable_receipt_fixture(
+                    root,machine_id='synthetic-failed-entry-machine'))}
             selected.runtime={'reviewed_launcher':self.entry.pin(launcher)}
             selected.runtime_path=root/'runtime.json';selected.context_path=root/'context.json'
             selected.run_dir=root/'SYNTHETIC_FAILED_ENTRY';selected.locations={'python':Path(sys.executable),'repo_root':root}

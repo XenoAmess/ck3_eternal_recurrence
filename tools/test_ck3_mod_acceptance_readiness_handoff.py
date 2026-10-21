@@ -7,6 +7,7 @@ from unittest.mock import Mock, patch
 import json
 import sys
 import tempfile
+from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
 
 import ck3_mod_acceptance as entry
 import ck3_mod_acceptance_client as client_source
@@ -18,7 +19,7 @@ class StopAtFirstObservation(Exception):
 
 
 class ReadinessHandoff(TestCase):
-    def test_public_run_owns_single_readiness_before_original_adapter_entry(self):
+    def test_public_run_owns_single_readiness_before_original_adapter_entry(self) -> None:
         routes = (
             (rmtm_adapter, 'core', 'rmtm-D0-qualified'),
             (rmtm_adapter, 'threshold_ui', 'rmtm-threshold-D0-qualified'),
@@ -30,8 +31,8 @@ class ReadinessHandoff(TestCase):
                 selection = entry.Selection.__new__(entry.Selection)
                 selection.context = {
                     'run_id': 'SYNTHETIC-NO-GAME', 'keeper_root': 'synthetic-keeper',
-                    'proof': 'synthetic-proof', 'challenge': 'synthetic-challenge',
-                    'observed_nonce': 'synthetic-nonce', 'reviewer': 'synthetic-reviewer',
+                    'steam_offline_receipt': str(write_unavailable_receipt_fixture(
+                        root, machine_id='synthetic-handoff-machine')),
                     'frozen_argv': {'path': 'synthetic-frozen.json', 'bytes': 1, 'sha256': 'a' * 64},
                 }
                 selection.context_path = root / 'synthetic-context.json'
@@ -97,6 +98,7 @@ class ReadinessHandoff(TestCase):
 
                 client = clients[0]
                 launch.assert_called_once()
+                self.assertEqual(launch.call_args.args[0][-2], '--steam-offline-receipt')
                 client.wait_hold.assert_called_once_with()
                 observe.assert_called_once_with(client, prefix)
                 day.assert_not_called()

@@ -21,6 +21,7 @@ import test_ck3_mod_acceptance_r06_scope as scope_fixture
 import ck3_mod_acceptance as entry
 import ck3_mod_acceptance_allocate as allocator
 import ck3_mod_acceptance_supervisor_refusal as subject
+from ck3_mod_acceptance_legacy_launcher_fixture_v1 import materialize_legacy_launcher_fixture_v1
 import ck3_live_run_id as ids
 
 
@@ -54,7 +55,7 @@ class SupervisorRefusalTests(unittest.TestCase):
         host_argv = list(selected.argv)
         for flag, value in (('--output', self.live / 'native-report.json'), ('--state-dir', self.state)):
             host_argv[host_argv.index(flag) + 1] = str(value)
-        launcher = TOOLS / 'ck3_mod_acceptance_launcher.py'
+        launcher = materialize_legacy_launcher_fixture_v1(self.root / 'historical-launcher')
         self.closure_bus_root = self.root / 'closure-bus'
         closure_bus = self.closure_bus_root / 'bin/codex_task_bus.py'
         self.write(closure_bus, {'synthetic_bus_source_never_executed': True})

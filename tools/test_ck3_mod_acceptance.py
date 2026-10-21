@@ -6,6 +6,7 @@ import json
 import sys
 import tempfile
 import unittest
+from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
 
 spec = importlib.util.spec_from_file_location('entry_under_test', Path(__file__).with_name('ck3_mod_acceptance.py'))
 entry = importlib.util.module_from_spec(spec)
@@ -66,12 +67,12 @@ class SharedEntryTests(unittest.TestCase):
     def write(self, path, value): path.write_text(json.dumps(value), encoding='utf-8')
     def select(self, product='xqol', context=None):
         return entry.Selection(self.runtime_path, self.products_path, product, 'core', context)
-    def context(self):
+    def context(self) -> tuple[Path, Path, Path, dict[str, object]]:
         run = self.locations['artifacts'] / 'actual-allocated-R0001'; run.mkdir()
         context_path = self.root / 'context.json'
-        context = {'schema':entry.CONTEXT_SCHEMA,'run_id':run.name,'run_dir':str(run),
-                   'keeper_root':str(self.root/'keeper'),'proof':str(self.root/'proof.json'),
-                   'challenge':str(self.root/'challenge.json'),'observed_nonce':'test','reviewer':'test'}
+        receipt = write_unavailable_receipt_fixture(self.root, machine_id='synthetic-entry-machine')
+        context: dict[str, object] = {'schema':entry.CONTEXT_SCHEMA,'run_id':run.name,'run_dir':str(run),
+                   'keeper_root':str(self.root/'keeper'),'steam_offline_receipt':str(receipt)}
         freeze = run / 'frozen-argv.json'
         self.write(freeze,{})
         context['frozen_argv'] = entry.pin(freeze); self.write(context_path, context)

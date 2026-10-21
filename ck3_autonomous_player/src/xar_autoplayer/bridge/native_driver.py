@@ -13043,8 +13043,18 @@ class NativeHeadlessGameplayDriver:
                 native_command_result_frame=frame,
             )
         result = frame.get("result")
+        timeline_control_ack = None
+        if step in {"pause-map", "resume-map"}:
+            from .timeline_control_ack_v1 import normalize_timeline_control_ack_v1
+            try:
+                timeline_control_ack = normalize_timeline_control_ack_v1(
+                    frame, expected_step=step, expected_request_id=request_id)
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
         if isinstance(result, dict):
             projected = {**result, "backend_id": "native-headless"}
+            if timeline_control_ack is not None:
+                projected.update(timeline_control_ack)
             if ui_raw_receipt is not None:
                 projected["native_ui_raw_return_receipt"] = ui_raw_receipt
             if trace_raw_receipt is not None:

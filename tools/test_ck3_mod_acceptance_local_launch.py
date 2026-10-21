@@ -14,7 +14,10 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
-from PIL import Image, ImageDraw
+from dataclasses import replace
+from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1
+from ck3_mod_acceptance_test_background_fixture import BackgroundSteamFixtureV1, FixtureIdentityReader, make_background_fixture
+from ck3_mod_acceptance_steam_gate import recheck_before_popen, validate_observation
 
 import ck3_mod_acceptance_keeper as keeper
 import ck3_mod_acceptance_launcher as launcher
@@ -34,78 +37,59 @@ class LocalLaunchTests(unittest.TestCase):
         keeper.write_new(path, value)
         return path
 
-    def review_fixture(self):
-        before, moved = self.root / "before.png", self.root / "moved.png"
-        original = Image.new("RGB", (100, 80), "black")
-        ImageDraw.Draw(original).rectangle((10, 10, 59, 59), fill="white")
-        original.save(before)
-        current = Image.new("RGB", original.size, "black")
-        ImageDraw.Draw(current).rectangle((30, 10, 79, 59), fill="white")
-        current.save(moved)
-        frame = self.write("fresh-frame.json", {
-            "schema": "ck3.steam_fresh_desktop_frame.v1", "captured_at_utc": (self.now - timedelta(seconds=4)).isoformat(),
-            "steam_pid": 123, "before_path": str(before), "moved_path": str(moved),
-            "before_sha256": keeper.pin(before)["sha256"], "moved_sha256": keeper.pin(moved)["sha256"],
-            "before_rect": [10, 10, 60, 60], "moved_rect": [30, 10, 80, 60],
-            "restored_rect": [10, 10, 60, 60], "desktop_size": [100, 80],
-            "moving_edge_changed": True, "clock_check": None})
-        frozen_path = self.write("frozen.json", {"run_id": "synthetic-only", "argv": ["unused"]})
-        inputs = self.write("keeper/inputs.json", {"synthetic": True})
-        review_image = self.root / "direct-review.png"
-        current.save(review_image)
-        nonce = "a" * 32
-        frozen = {"run_id": "synthetic-only", "screen_task": "synthetic-screen",
-                  "_checked_frozen_argv": keeper.pin(frozen_path)}
-        challenge = self.write("challenge.json", {
-            "schema": "ck3-mod-acceptance-review-challenge-v1", "created_at_utc": (self.now - timedelta(seconds=3)).isoformat(),
-            "nonce": nonce, "run_id": frozen["run_id"], "screen_task": frozen["screen_task"],
-            "frozen_argv": keeper.pin(frozen_path), "keeper_root": str(inputs.parent),
-            "keeper_inputs": keeper.pin(inputs), "frame": keeper.pin(frame),
-            "image": keeper.pin(moved), "review_image": keeper.pin(review_image)})
-        proof = self.write("proof.json", {
-            "schema": "ck3-mod-acceptance-direct-review-v1", "reviewed_at_utc": (self.now - timedelta(seconds=2)).isoformat(),
-            "reviewer": "synthetic-operator", "direct_image_review": True, "steam_offline_confirmed": True,
-            "observed_nonce": nonce, "run_id": frozen["run_id"], "screen_task": frozen["screen_task"],
-            "frozen_argv": keeper.pin(frozen_path), "challenge": keeper.pin(challenge),
-            "image": keeper.pin(moved), "review_image": keeper.pin(review_image)})
-        return frozen, inputs.parent, proof, challenge, nonce
+    def background_fixture(self) -> BackgroundSteamFixtureV1:
+        fixture = make_background_fixture(self.root, now=self.now)
+        fixture.write_receipt()
+        return fixture
 
-    def test_fresh_bound_direct_review_and_nonce(self):
-        frozen, root, proof, challenge, nonce = self.review_fixture()
-        result = launcher.validate_review(frozen, root, proof, challenge, nonce, "synthetic-operator", now=self.now)
-        self.assertEqual(result["screen_task"], frozen["screen_task"])
-        with self.assertRaisesRegex(ValueError, "nonce"):
-            launcher.validate_review(frozen, root, proof, challenge, "b" * 32, "synthetic-operator", now=self.now)
-        with self.assertRaisesRegex(ValueError, "stale"):
-            launcher.validate_review(frozen, root, proof, challenge, nonce, "synthetic-operator", now=self.now + timedelta(minutes=11))
-        changed = copy.deepcopy(frozen); changed["run_id"] = "other-run"
-        with self.assertRaisesRegex(ValueError, "another"):
-            launcher.validate_review(changed, root, proof, challenge, nonce, "synthetic-operator", now=self.now)
+    def test_fresh_bound_background_observation_and_generation(self) -> None:
+        fixture = self.background_fixture()
+        wire = fixture.result.to_wire()
+        admitted = fixture.admission()
+        self.assertEqual(admitted["receipt"]["path"], str(fixture.receipt_path))
+        self.assertEqual(admitted["steam_pid"], fixture.steam.pid)
+        self.assertEqual(validate_observation(wire, machine_id=fixture.result.machine_id,
+            reader=fixture.reader, now=self.now), fixture.result)
+        with self.assertRaises(ValueError):
+            validate_observation(wire, machine_id="other-machine", reader=fixture.reader, now=self.now)
+        with self.assertRaises(ValueError):
+            validate_observation(wire, machine_id=fixture.result.machine_id, reader=fixture.reader,
+                now=self.now + timedelta(seconds=31))
+        changed = FixtureIdentityReader(replace(fixture.steam, birth_filetime="134000000000000002"))
+        with self.assertRaises(ValueError):
+            validate_observation(wire, machine_id=fixture.result.machine_id, reader=changed, now=self.now)
 
-    def test_mutated_original_image_rejects_previously_reviewed_proof(self):
-        frozen, root, proof, challenge, nonce = self.review_fixture()
-        image = Path(keeper.read_json(challenge)["image"]["path"])
-        image.write_bytes(b"changed")
-        with self.assertRaisesRegex(ValueError, "Pinned input changed"):
-            launcher.validate_review(frozen, root, proof, challenge, nonce, "synthetic-operator", now=self.now)
+    def test_mutated_receipt_rejects_previously_admitted_observation(self) -> None:
+        fixture = self.background_fixture()
+        admitted = fixture.admission()
+        fixture.receipt_path.write_bytes(fixture.receipt_path.read_bytes() + b" ")
+        with self.assertRaisesRegex(ValueError, "receipt (changed|content changed)"):
+            recheck_before_popen(admitted, reader=fixture.reader)
 
-    def test_missing_direct_review_or_offline_assertion_rejected(self):
-        frozen, root, proof, challenge, nonce = self.review_fixture()
-        value = keeper.read_json(proof)
-        for field in ("direct_image_review", "steam_offline_confirmed"):
-            changed = copy.deepcopy(value); changed[field] = False
-            path = self.write(field + ".json", changed)
-            with self.assertRaisesRegex(ValueError, "direct Steam offline"):
-                launcher.validate_review(frozen, root, path, challenge, nonce, "synthetic-operator", now=self.now)
+    def test_missing_or_crossed_native_observation_is_rejected(self) -> None:
+        fixture = self.background_fixture()
+        for field, value in (("native_evidence", None), ("offline_mode", False),
+                             ("observation_method", "cef_app_getters")):
+            wire = copy.deepcopy(fixture.result.to_wire())
+            wire[field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                validate_observation(wire, machine_id=fixture.result.machine_id,
+                                     reader=fixture.reader, now=self.now)
+        wire = copy.deepcopy(fixture.result.to_wire())
+        del wire["native_evidence"]
+        with self.assertRaises(ValueError):
+            validate_observation(wire, machine_id=fixture.result.machine_id,
+                                 reader=fixture.reader, now=self.now)
 
-    def test_frozen_input_pin_changes_block_before_any_launch(self):
+    def test_frozen_input_pin_changes_block_before_any_launch(self) -> None:
         source = self.root / "input.txt"; source.write_bytes(b"original")
         files = {str(source): keeper.pin(source)}
-        for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py"):
+        for module_name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            name = module_name + ".py"
             path = Path(launcher.__file__).with_name(name).resolve(); files[str(path)] = keeper.pin(path)
         frozen_path = self.write("frozen-argv.json", {
             "run_id": "synthetic-only", "argv": ["unused", str(source), "--agent-source-root", "unused"], "files": files,
-            "launch_requires_fresh_owned_cas_and_offline_direct_review": True,
+            "launch_requires_fresh_owned_cas_and_background_offline": True,
             "previous_session_closed": True, "previous_screen_released": True,
             "runtime_manifest": keeper.pin(source)})
         self.write("ready-context.json", {"run_id": "synthetic-only", "run_dir": str(self.root),
@@ -174,7 +158,7 @@ class LocalLaunchTests(unittest.TestCase):
                   "files": {str(host): keeper.pin(host)}}
         self.assertIsNone(queue.native_zero_proof(frozen, {"returncode": 0, "actual_original_popen_wait": True}))
 
-    def test_original_harmless_child_returncode_is_preserved(self):
+    def test_original_harmless_child_returncode_is_preserved(self) -> None:
         script = self.root / "harmless.py"; script.write_text("raise SystemExit(7)\n", encoding="utf-8")
         frozen = {"argv": [sys.executable, "-B", str(script)], "lease_anchor": str(self.root), "run_id": "synthetic-only"}
         # The portable static runner need not install desktop process tools.
@@ -183,8 +167,9 @@ class LocalLaunchTests(unittest.TestCase):
         metadata_only = SimpleNamespace(
             Process=lambda _pid: SimpleNamespace(create_time=lambda: None),
             NoSuchProcess=type("SyntheticNoSuchProcess", (Exception,), {}))
-        with patch.dict(sys.modules, {"psutil": metadata_only}):
-            result = launcher.retain_host(self.root, frozen, {}, {"lease": {"synthetic": True}})
+        fixture = self.background_fixture()
+        with fixture.os_boundaries(), patch.dict(sys.modules, {"psutil": metadata_only}):
+            result = launcher.retain_host(self.root, frozen, fixture.admission(), {"lease": {"synthetic": True}})
         self.assertEqual(result, 1)
         self.assertIsNone(keeper.read_json(self.root / "host-started.json")["create_time"])
         actual = keeper.read_json(self.root / "host-original-process-exit.json")

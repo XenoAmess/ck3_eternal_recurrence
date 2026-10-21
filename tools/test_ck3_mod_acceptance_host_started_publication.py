@@ -12,20 +12,24 @@ import unittest
 from unittest.mock import patch
 
 import ck3_mod_acceptance_launcher as launcher
+from ck3_mod_acceptance_test_background_fixture import make_background_fixture
 
 SCRATCH = None
 
 class HostStartedPublicationTests(unittest.TestCase):
-    def test_partial_publication_completes_once_and_failure_bounds_remain(self):
+    def test_partial_publication_completes_once_and_failure_bounds_remain(self) -> None:
         for mode in ("complete_after_partial", "deadline", "malformed_object", "child_exit"):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
                 root = Path(directory)
-                for name in ("proof.json", "challenge.json", "frozen-argv.json"):
+                for name in ("frozen-argv.json",):
                     (root / name).write_text("{}", encoding="utf8")
+                fixture = make_background_fixture(root)
+                fixture.write_receipt()
+                review = fixture.admission()
                 args = SimpleNamespace(run_root=root, keeper_root=root / "keeper",
-                    proof=root / "proof.json", challenge=root / "challenge.json",
-                    observed_nonce="a" * 32, reviewer="synthetic-reviewer")
-                frozen = {"run_id": "synthetic-managed-run", "lease_anchor": str(root), "argv": ["not-executed"]}
+                    steam_offline_receipt=fixture.receipt_path)
+                frozen = {"run_id": "synthetic-managed-run", "lease_anchor": str(root), "argv": ["not-executed"],
+                          "identity_allocation": {"machine_id": fixture.result.machine_id}}
                 acknowledgment = {"run_id": frozen["run_id"], "pid": 1234,
                     "actual_popen_retained": True, "business_pass": False}
                 started = root / "host-started.json"
@@ -35,13 +39,15 @@ class HostStartedPublicationTests(unittest.TestCase):
                     clock.sleeps += 1
                     if mode == "complete_after_partial":
                         started.write_text(json.dumps(acknowledgment), encoding="utf8")
-                child = SimpleNamespace(pid=123, poll=lambda: 7 if mode == "child_exit" else None)
+                child = SimpleNamespace(pid=123, _handle=1,
+                    poll=lambda: 7 if mode == "child_exit" else None, wait=lambda timeout=None: 7)
                 def popen(*_args, **_kwargs):
                     started.write_text("[]" if mode == "malformed_object" else '{"run_id":', encoding="utf8")
                     return child
                 output = io.StringIO()
-                with patch.object(launcher, "admission", return_value=(frozen, {}, {"lease": {"synthetic": True}})), \
+                with patch.object(launcher, "admission", return_value=(frozen, review, {"lease": {"synthetic": True}})), \
                         patch.object(launcher.subprocess, "Popen", side_effect=popen) as create, \
+                        patch.object(launcher, "_birth_filetime", return_value="134000000000000009"), \
                         patch.object(launcher.time, "monotonic", side_effect=lambda: clock.elapsed), \
                         patch.object(launcher.time, "sleep", side_effect=sleep), \
                         contextlib.redirect_stdout(output):
@@ -66,11 +72,14 @@ class HostStartedPublicationTests(unittest.TestCase):
                             launcher.launch(args)
                         self.assertEqual(clock.sleeps, 0)
                     else:
-                        with self.assertRaisesRegex(ValueError, "supervisor failed"):
+                        with self.assertRaisesRegex(ValueError, "supervisor refused"):
                             launcher.launch(args)
                         self.assertEqual(clock.sleeps, 0)
                     self.assertEqual(create.call_count, 1)
                     self.assertTrue((root / "launch-intent.json").is_file())
+                    intent = json.loads((root / "launch-intent.json").read_bytes())
+                    self.assertEqual(intent["steam_offline_receipt"], review["receipt"])
+                    self.assertNotIn("proof", intent)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)

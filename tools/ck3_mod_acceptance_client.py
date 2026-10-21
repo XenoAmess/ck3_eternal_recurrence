@@ -5,6 +5,9 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from collections.abc import Mapping, Sequence
+from ck3_mod_acceptance_background_types import (
+    CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, file_pin, json_object)
 from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day)
 import subprocess
 import time
@@ -79,48 +82,87 @@ def resolve_operator_reviewer(selection):
     return reviewer
 
 
-def load_pinned_control_queue(queue, frozen, previous=None):
-    """Execute complete selected sibling modules with private import bindings."""
+def load_pinned_control_queue(
+        queue: str | Path, frozen: Mapping[str, object],
+        previous: ControlQueueBindingV1 | None = None) -> ControlQueueBindingV1:
+    """Bind the complete pinned source closure without public sibling imports."""
     import builtins
+    import secrets
+    import sys
     import types
+
     queue = Path(queue).resolve()
-    require(queue.name == 'ck3_mod_acceptance_queue.py', 'Selected public queue basename differs')
-    files = frozen.get('files')
-    require(isinstance(files, dict), 'Original allocated helper pins missing')
-    sources, refs = {}, {}
-    for name in ('ck3_mod_acceptance_keeper', 'ck3_mod_acceptance_launcher', 'ck3_mod_acceptance_queue'):
+    if queue.name != 'ck3_mod_acceptance_queue.py':
+        raise ValueError('Selected public queue basename differs')
+    files_value = frozen.get('files')
+    if not isinstance(files_value, dict):
+        raise ValueError('Original allocated helper pins missing')
+    files = json_object(files_value)
+    sources: dict[str, tuple[Path, bytes]] = {}
+    refs: dict[str, FilePin] = {}
+    for name in CONTROL_QUEUE_MODULE_ORDER_V1:
         path = queue.with_name(name + '.py')
-        declared = files.get(str(path))
-        require(isinstance(declared, dict), 'Selected queue sibling absent from frozen pins: ' + str(path))
+        declared_value = files.get(str(path))
+        if not isinstance(declared_value, dict):
+            raise ValueError('Selected queue sibling absent from frozen pins: ' + str(path))
+        # The frozen mapping key is the producer's path when the row omits it.
+        declared = file_pin(declared_value if 'path' in declared_value else
+                            {**declared_value, 'path': str(path)})
+        if declared['path'] != str(path):
+            raise ValueError('Selected queue sibling declared path differs: ' + str(path))
         raw = path.read_bytes()
         digest = hashlib.sha256(raw).hexdigest()
-        require(type(declared.get('bytes')) is int and len(raw) == declared['bytes'] and
-                digest == str(declared.get('sha256', '')).lower(), 'Selected queue sibling bytes changed: ' + str(path))
+        if len(raw) != declared['bytes'] or digest != declared['sha256']:
+            raise ValueError('Selected queue sibling bytes changed: ' + str(path))
         sources[name] = (path, raw)
-        refs[name] = {'path': str(path), 'bytes': len(raw), 'sha256': digest}
+        refs[name] = FilePin(path=str(path), bytes=len(raw), sha256=digest)
     if previous is not None:
-        require(previous['refs'] == refs, 'Selected queue dependency closure changed after first submission')
+        if previous['refs'] != refs:
+            raise ValueError('Selected queue dependency closure changed after first submission')
         return previous
-    modules = {}
-    for name in ('ck3_mod_acceptance_keeper', 'ck3_mod_acceptance_launcher', 'ck3_mod_acceptance_queue'):
-        path, raw = sources[name]
-        dependencies = dict(modules)
-        def selected_import(import_name, globals=None, locals=None, fromlist=(), level=0, *, dependencies=dependencies):
-            if level == 0 and import_name in dependencies:
-                return dependencies[import_name]
-            if level == 0 and import_name.startswith('ck3_mod_acceptance_'):
-                raise ImportError('Unpinned selected queue sibling import: ' + import_name)
-            return builtins.__import__(import_name, globals, locals, fromlist, level)
-        private_builtins = dict(vars(builtins))
-        private_builtins['__import__'] = selected_import
-        module = types.ModuleType('_selected_' + name + '_' + refs[name]['sha256'])
-        module.__file__ = str(path)
-        module.__package__ = None
-        module.__dict__['__builtins__'] = private_builtins
-        exec(compile(raw, str(path), 'exec'), module.__dict__)
-        modules[name] = module
-    return {'refs': refs, 'module': modules['ck3_mod_acceptance_queue'], 'modules': modules}
 
+    closure_sha256 = hashlib.sha256(json.dumps(
+        refs, sort_keys=True, separators=(',', ':')).encode('utf-8')).hexdigest()
+    namespace = '_selected_control_queue_' + closure_sha256 + '_' + secrets.token_hex(16) + '_'
+    modules = {name: types.ModuleType(namespace + name) for name in CONTROL_QUEUE_MODULE_ORDER_V1}
+
+    def selected_import(
+            import_name: str, global_scope: dict[str, object] | None = None,
+            local_scope: dict[str, object] | None = None,
+            fromlist: Sequence[str] | None = (), level: int = 0) -> types.ModuleType:
+        if level == 0 and import_name in modules:
+            return modules[import_name]
+        if level == 0 and (import_name.startswith(('ck3_mod_acceptance_', 'steam_offline_'))
+                           or import_name == 'ck3_live_run_id'):
+            raise ImportError('Unpinned selected queue sibling import: ' + import_name)
+        external: object = builtins.__import__(import_name, global_scope, local_scope,
+                                               () if fromlist is None else fromlist, level)
+        if not isinstance(external, types.ModuleType):
+            raise ImportError('External import returned no module: ' + import_name)
+        return external
+
+    registered: dict[str, types.ModuleType] = {}
+    try:
+        for name, module in modules.items():
+            module.__file__ = str(sources[name][0])
+            module.__package__ = None
+            private_builtins: dict[str, object] = dict(vars(builtins))
+            private_builtins['__import__'] = selected_import
+            module.__dict__['__builtins__'] = private_builtins
+            # Dataclass annotation resolution requires its exact private module.
+            # Never replace another binding, including the same source closure.
+            if sys.modules.setdefault(module.__name__, module) is not module:
+                raise ValueError('Selected queue private namespace collision')
+            registered[module.__name__] = module
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            path, raw = sources[name]
+            exec(compile(raw, str(path), 'exec'), modules[name].__dict__)
+    except BaseException:
+        for private_name, module in registered.items():
+            if sys.modules.get(private_name) is module:
+                del sys.modules[private_name]
+        raise
+    return ControlQueueBindingV1(refs=refs, module=modules['ck3_mod_acceptance_queue'], modules=modules)
 
 class CaseClient:
     def __init__(self, selection, output=None):

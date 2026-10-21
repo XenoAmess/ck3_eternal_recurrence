@@ -1,7 +1,8 @@
 """Validated JSON boundary shared by the new background refusal protocol."""
 from __future__ import annotations
 import math,re,subprocess
-from typing import Literal, TypeAlias, TypedDict
+from typing import Final, Literal, TypeAlias, TypedDict
+from types import ModuleType
 
 JsonValue: TypeAlias = None | bool | int | float | str | list['JsonValue'] | dict[str,'JsonValue']
 JsonObject: TypeAlias = dict[str,JsonValue]
@@ -10,6 +11,27 @@ class FilePin(TypedDict):
     path: str
     bytes: int
     sha256: str
+
+CONTROL_QUEUE_MODULE_ORDER_V1: Final[tuple[str, ...]] = (
+    'ck3_mod_acceptance_keeper',
+    'ck3_mod_acceptance_background_types',
+    'steam_offline_state_contract',
+    'steam_offline_native_profiles',
+    'steam_offline_native_provider_v1',
+    'steam_offline_state_probe',
+    'ck3_live_run_id',
+    'ck3_mod_acceptance_steam_gate',
+    'ck3_mod_acceptance_launcher',
+    'ck3_mod_acceptance_queue',
+)
+
+
+class ControlQueueBindingV1(TypedDict):
+    """Python objects for one private binding; never a persisted JSON receipt."""
+    refs: dict[str, FilePin]
+    module: ModuleType
+    modules: dict[str, ModuleType]
+
 
 class ProcessGeneration(TypedDict):
     pid: int

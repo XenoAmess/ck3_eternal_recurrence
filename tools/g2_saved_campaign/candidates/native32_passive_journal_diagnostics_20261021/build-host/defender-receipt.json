@@ -1,0 +1,27 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "status": "settings_failed",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "before": null,
+  "after": null,
+  "calls": [],
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\native32_passive_journal_diagnostics_20261021\\build-host\\native32_core_fixture.exe",
+      "size": 110592,
+      "sha256": "7216848ecb09cbfca916cc47bc9ba41537a0d89465d223580810b5627b862e0f"
+    }
+  ],
+  "settings_success_is_runtime_trust": false,
+  "exclusion_types_written": [
+    "ExclusionPath exact files"
+  ],
+  "manifest_sha256": "a3077c86ff89a817a9e3ed5d5de009daff0784acef130160100b403f36bb76a4",
+  "admin_token": false,
+  "admin_required_for_verified_readback": true,
+  "readback_visibility": "unverified; administrative token required",
+  "error": "admin_required_for_verified_readback; no Add attempted and no UAC bypass",
+  "error_type": "PermissionError",
+  "error_stage": "broker-dispatch"
+}

@@ -1,0 +1,119 @@
+{
+  "Game_calls": 0,
+  "RPC_calls": 0,
+  "absence_is_nonexecution_proof": false,
+  "active_candidate_protection_review_at_utc": "2026-10-28T00:12:18.203501+00:00",
+  "automatic_recovery_allowed": false,
+  "build_retention_review_at_utc": "2026-11-04T00:12:18.203501+00:00",
+  "closed_at_utc": "2026-10-21T00:13:20.434733+00:00",
+  "continued_retention_reason": "Current Native32 diagnostic candidate and reproducible host qualification; no automatic protection renewal",
+  "credit_days": 0,
+  "current_failed_request_completion_proven": false,
+  "deployment_changes": 0,
+  "documentation_append_after_host": {
+    "append_bytes": 485,
+    "before_bytes": 3533,
+    "before_sha256": "2fb492ff207780f0c07dfa404eaf2f4f941eaa7bffcf8ec791029b42a75405ed",
+    "host_manifest_ram_preimage_sha256_verified": "4f9a5c0ec499998dd39062ad50bb3cfd0ec113c4adbc03133a1e4fc17bf1d1a8",
+    "name": "README.md",
+    "reconstruction": "Take README prefix of 3533 bytes, replace only its source_files pin in current manifest, sort_keys indent2 plus LF. Then apply the existing fixture preimage recipe for the first failed manifest."
+  },
+  "drain_fence": false,
+  "host": {
+    "actual_cpp_producer_python_consumer_frames": 3,
+    "assertions_enabled": true,
+    "defender_exclusion_readback_verified": false,
+    "defender_reason": "admin_required_for_verified_readback; no Add attempted and no UAC bypass",
+    "defender_receipt": {
+      "bytes": 1068,
+      "name": "build-host/defender-receipt.json",
+      "sha256": "14838f682dddd4f51d2809361a98f754f11faec9fb69c964f97cecc4707cf97f"
+    },
+    "defender_status": "settings_failed",
+    "failure_reason": "Single-TU fixture anonymous globals shadowed core local parameters; C4459 under /W4 /WX",
+    "first_failure": {
+      "bytes": 3688,
+      "name": "build-host/HOST-QUALIFICATION.json",
+      "sha256": "c136daacc7413ffae44234adb9463e0051fec9f655c892d14c5da49e8cc7807d"
+    },
+    "fixture_current": {
+      "bytes": 13469,
+      "name": "native/tests/native32_core_fixture.cpp",
+      "sha256": "3bab6347ae37f9910aaadcd72bc74e1276db06f96be8340adf8413224f57d5d1"
+    },
+    "fixture_exe": {
+      "bytes": 110592,
+      "name": "build-host/native32_core_fixture.exe",
+      "sha256": "7216848ecb09cbfca916cc47bc9ba41537a0d89465d223580810b5627b862e0f"
+    },
+    "fixture_object": {
+      "bytes": 255658,
+      "name": "build-host/native32_core_fixture.obj",
+      "sha256": "6dd727d28039ec3ad73ed1881387092ef773121afe1243bed2841d50d5bdd7a6"
+    },
+    "fixture_original_bytes": 13261,
+    "fixture_original_sha256": "cf1a39af65d4d6ce1c9c97da8f44acc2f5fece08f1f2a4761b33c40bc791e225",
+    "installer_built_or_tested": false,
+    "passed_retry": {
+      "bytes": 1480,
+      "name": "build-host/HOST-QUALIFICATION02.json",
+      "sha256": "1854d63179c2cc9071afcdc5837be59ae991d3f5f7738e2cad98c4e1a656c74a"
+    },
+    "production_DLL_built": false,
+    "repair_recipe": {
+      "failed_fixture_ram_preimage_sha256_verified": true,
+      "failed_manifest_ram_preimage_sha256": "0e651035bf9816592e7fed2e90a05273bb30ca9f0f83451b103b8f712496613e",
+      "forward": [
+        {
+          "pattern": "\\bsource\\b",
+          "replacement": "fixture_source"
+        },
+        {
+          "pattern": "(?<![A-Za-z0-9_.])paused\\b",
+          "replacement": "fixture_paused"
+        },
+        {
+          "pattern": "\\bcontainer\\b",
+          "replacement": "fixture_container"
+        }
+      ],
+      "inverse_verification_tool_chunk": "1cab1f",
+      "reverse": "Apply word-boundary substitutions fixture_source->source, fixture_paused->paused, fixture_container->container"
+    },
+    "warnings_are_errors": true
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine, actual tool result b590ff at task start",
+  "native32_ABI_qualified": false,
+  "native32_target_DLL_sha256": null,
+  "observed_at_utc": "2026-10-21T00:12:18.203501+00:00",
+  "protocol_connection_binding_verified": false,
+  "python": {
+    "arguments": [
+      "--strict",
+      "--strict-equality",
+      "--follow-imports=skip",
+      "--no-incremental",
+      "--cache-dir",
+      "nul"
+    ],
+    "checker_cache_created": false,
+    "checker_source": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/strong-types-checker01/site-packages",
+    "contract_tests_passed": 8,
+    "pycache_created": false,
+    "source_verifier_leaves": 8,
+    "source_verifier_tool_chunk": "5592fb",
+    "strict_files": 4,
+    "strict_typecheck_tool_chunk": "62b199",
+    "unittest_tool_chunk": "c4cd39"
+  },
+  "runtime_admission_granted": false,
+  "schema": "xar.native32.offline-source-host-qualification/v1",
+  "source_manifest": {
+    "bytes": 2062,
+    "name": "MANIFEST.json",
+    "sha256": "71ec7f5a993ff60380dfeee0eace5226d89d6b5add53de2c4989914dbec595a4"
+  },
+  "status": "OFFLINE_SOURCE_AND_SINGLE_TU_HOST_QUALIFIED_NOT_DEPLOYED",
+  "storage_policy_version": "1.0.0"
+}

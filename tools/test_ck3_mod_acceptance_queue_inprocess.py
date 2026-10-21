@@ -1,5 +1,9 @@
 """Pure isolated fixtures. No actual lease, bus, process, CK3 or native calls."""
 from pathlib import Path
+import ast
+import copy
+from typing import get_type_hints
+from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1, FilePin
 import contextlib
 import hashlib
 import importlib.util
@@ -17,12 +21,14 @@ from unittest.mock import patch
 
 CANDIDATE = Path(__file__).resolve().parents[1]
 
-def pin(path):
+def pin(path: Path) -> FilePin:
     raw=path.read_bytes()
-    return {'path':str(path.resolve()),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+    return FilePin(path=str(path.resolve()),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
 
-def load(path,name):
+def load(path: Path, name: str) -> types.ModuleType:
     spec=importlib.util.spec_from_file_location(name,path)
+    if spec is None or spec.loader is None:
+        raise ValueError('Fixture module loader unavailable')
     module=importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -33,8 +39,8 @@ class InprocessQueueTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root=Path(self.temporary.name).resolve()
         self.helpers=self.root/'selected-tools';self.helpers.mkdir()
-        for name in ('keeper','launcher','queue'):
-            file='ck3_mod_acceptance_'+name+'.py'
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            file=name+'.py'
             shutil.copyfile(CANDIDATE/'tools'/file,self.helpers/file)
         self.queue=self.helpers/'ck3_mod_acceptance_queue.py'
         files={str(path.resolve()):pin(path)for path in self.helpers.iterdir()}
@@ -73,13 +79,20 @@ class InprocessQueueTests(unittest.TestCase):
         self.client.await_steps=await_steps
 
     def test_01_complete_selected_modules_do_not_import_main_siblings(self):
-        poisoned={name:types.ModuleType('poisoned_'+name)for name in ('ck3_mod_acceptance_keeper','ck3_mod_acceptance_launcher','ck3_mod_acceptance_queue')}
+        poisoned={name:types.ModuleType('poisoned_'+name)for name in CONTROL_QUEUE_MODULE_ORDER_V1}
         with patch.dict(sys.modules,poisoned):
             bundle=self.client_module.load_pinned_control_queue(self.queue,self.frozen)
             self.assertIs(bundle['module'].live_lease,bundle['modules']['ck3_mod_acceptance_keeper'].live_lease)
             self.assertIs(bundle['module'].frozen_run,bundle['modules']['ck3_mod_acceptance_launcher'].frozen_run)
             for name,module in poisoned.items():self.assertIs(sys.modules[name],module)
         self.assertEqual(Path(bundle['module'].__file__),self.queue)
+        modules=bundle['modules']
+        self.assertIs(modules['ck3_mod_acceptance_steam_gate'].ProcessIdentity,
+                      modules['steam_offline_state_contract'].ProcessIdentity)
+        self.assertIs(modules['steam_offline_native_provider_v1'].ProcessIdentity,
+                      modules['steam_offline_state_contract'].ProcessIdentity)
+        self.assertIs(get_type_hints(modules['steam_offline_state_contract'].parse_result)['return'],
+                      modules['steam_offline_state_contract'].ProbeResult)
 
     def test_02_cached_code_still_checks_exact_frozen_bytes(self):
         keeper=self.helpers/'ck3_mod_acceptance_keeper.py'
@@ -204,6 +217,155 @@ class InprocessQueueTests(unittest.TestCase):
                 self.assertEqual(self.module.main(argv),0)
             self.assertEqual(enqueue.call_args.kwargs['deadline'],expected)
             self.assertEqual(json.loads(output.getvalue()),{'fixture_only':True})
+
+    def tearDown(self) -> None:
+        # Release only this test's selected modules; public/importing peers stay.
+        for name, module in tuple(sys.modules.items()):
+            if not name.startswith('_selected_control_queue_') or not isinstance(module,types.ModuleType):
+                continue
+            location=getattr(module,'__file__',None)
+            if isinstance(location,str) and Path(location).parent==self.helpers:
+                if sys.modules.get(name) is module:
+                    del sys.modules[name]
+
+    def test_10_shared_closure_matches_actual_launcher_required_pins(self) -> None:
+        raw=(CANDIDATE/'tools/ck3_mod_acceptance_launcher.py').read_text(encoding='utf-8-sig')
+        function=next(node for node in ast.parse(raw).body
+                      if isinstance(node,ast.FunctionDef) and node.name=='frozen_run')
+        groups=[node.iter for node in ast.walk(function)
+                if isinstance(node,ast.For) and isinstance(node.iter,ast.Tuple)
+                and any(isinstance(item,ast.Constant) and item.value=='ck3_mod_acceptance_launcher.py'
+                        for item in node.iter.elts)]
+        self.assertEqual(len(groups),1)
+        filenames=[]
+        for item in groups[0].elts:
+            self.assertIsInstance(item,ast.Constant)
+            self.assertIsInstance(item.value,str)
+            filenames.append(item.value)
+        self.assertEqual(len(CONTROL_QUEUE_MODULE_ORDER_V1),len(set(CONTROL_QUEUE_MODULE_ORDER_V1)))
+        self.assertEqual(set(filenames),{name+'.py' for name in CONTROL_QUEUE_MODULE_ORDER_V1})
+        self.assertEqual(set(self.bundle['modules']),set(CONTROL_QUEUE_MODULE_ORDER_V1))
+
+    def test_11_each_helper_requires_present_exact_runtime_pin(self) -> None:
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            key=str(self.helpers/(name+'.py'))
+            for mode in ('missing','boolean_bytes','float_bytes','wrong_sha'):
+                with self.subTest(module=name,mode=mode):
+                    frozen=copy.deepcopy(self.frozen)
+                    if mode=='missing':
+                        del frozen['files'][key]
+                    elif mode=='boolean_bytes':
+                        frozen['files'][key]['bytes']=True
+                    elif mode=='float_bytes':
+                        frozen['files'][key]['bytes']=float(frozen['files'][key]['bytes'])
+                    else:
+                        frozen['files'][key]['sha256']='0'*64
+                    with self.assertRaises(ValueError):
+                        self.client_module.load_pinned_control_queue(self.queue,frozen,self.bundle)
+
+    def test_12_changed_transitive_closure_never_executes_or_reuses_cache(self) -> None:
+        source=self.helpers/'steam_offline_native_profiles.py'
+        source.write_bytes(source.read_bytes()+b'\nraise AssertionError("new closure must not execute")\n')
+        frozen=copy.deepcopy(self.frozen)
+        frozen['files'][str(source)]=pin(source)
+        before={name:sys.modules[name] for name in
+                (module.__name__ for module in self.bundle['modules'].values())}
+        with self.assertRaisesRegex(ValueError,'closure changed'):
+            self.client_module.load_pinned_control_queue(self.queue,frozen,self.bundle)
+        for name,module in before.items():
+            self.assertIs(sys.modules[name],module)
+
+    def test_13_unknown_sibling_import_rolls_back_only_owned_registry(self) -> None:
+        original=self.queue.read_bytes()
+        retained_name='_selected_control_queue_unrelated_retained_fixture'
+        retained=types.ModuleType(retained_name)
+        for foreign in ('ck3_mod_acceptance_unpinned_fixture','steam_offline_unpinned_fixture'):
+            with self.subTest(module=foreign):
+                self.queue.write_bytes(original+('\nimport '+foreign+'\n').encode())
+                frozen=copy.deepcopy(self.frozen)
+                frozen['files'][str(self.queue)]=pin(self.queue)
+                poisoned={name:types.ModuleType('poisoned_'+name)
+                          for name in (*CONTROL_QUEUE_MODULE_ORDER_V1,foreign)}
+                poisoned[retained_name]=retained
+                with patch.dict(sys.modules,poisoned):
+                    before={name:module for name,module in sys.modules.items()
+                            if name.startswith('_selected_control_queue_')}
+                    with self.assertRaisesRegex(ImportError,'Unpinned selected queue sibling import'):
+                        self.client_module.load_pinned_control_queue(self.queue,frozen)
+                    after={name:module for name,module in sys.modules.items()
+                           if name.startswith('_selected_control_queue_')}
+                    self.assertEqual(before,after)
+                    for name,module in poisoned.items():
+                        self.assertIs(sys.modules[name],module)
+
+    def test_14_identical_closure_has_independent_private_module_instances(self) -> None:
+        second=self.client_module.load_pinned_control_queue(self.queue,self.frozen)
+        closure=hashlib.sha256(json.dumps(self.bundle['refs'],sort_keys=True,
+                              separators=(',',':')).encode('utf-8')).hexdigest()
+        self.assertEqual(self.bundle['refs'],second['refs'])
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            original,rebound=self.bundle['modules'][name],second['modules'][name]
+            self.assertIsNot(original,rebound)
+            self.assertNotEqual(original.__name__,rebound.__name__)
+            self.assertIn(closure,original.__name__)
+            self.assertIn(closure,rebound.__name__)
+            self.assertIs(sys.modules[original.__name__],original)
+            self.assertIs(sys.modules[rebound.__name__],rebound)
+        second['module'].fixture_mutable_state=['second only']
+        self.assertFalse(hasattr(self.bundle['module'],'fixture_mutable_state'))
+        self.assertIs(self.client_module.load_pinned_control_queue(
+            self.queue,self.frozen,self.bundle),self.bundle)
+
+    def test_15_namespace_collision_preserves_previous_binding(self) -> None:
+        import secrets
+        with patch.object(secrets,'token_hex',return_value='f'*32):
+            first=self.client_module.load_pinned_control_queue(self.queue,self.frozen)
+            before={module.__name__:module for module in first['modules'].values()}
+            with self.assertRaisesRegex(ValueError,'namespace collision'):
+                self.client_module.load_pinned_control_queue(self.queue,self.frozen)
+            for name,module in before.items():
+                self.assertIs(sys.modules[name],module)
+
+    def test_16_base_exception_rolls_back_all_new_private_modules(self) -> None:
+        self.queue.write_bytes(self.queue.read_bytes()+b'\nraise SystemExit("synthetic module refusal")\n')
+        frozen=copy.deepcopy(self.frozen)
+        frozen['files'][str(self.queue)]=pin(self.queue)
+        before={name:module for name,module in sys.modules.items()
+                if name.startswith('_selected_control_queue_')}
+        with self.assertRaisesRegex(SystemExit,'synthetic module refusal'):
+            self.client_module.load_pinned_control_queue(self.queue,frozen)
+        after={name:module for name,module in sys.modules.items()
+               if name.startswith('_selected_control_queue_')}
+        self.assertEqual(before,after)
+
+    def test_17_loader_public_annotations_resolve_to_shared_binding(self) -> None:
+        from ck3_mod_acceptance_background_types import ControlQueueBindingV1
+        hints=get_type_hints(self.client_module.load_pinned_control_queue)
+        self.assertIs(hints['return'],ControlQueueBindingV1)
+        binding_hints=get_type_hints(ControlQueueBindingV1)
+        self.assertEqual(set(binding_hints),{'refs','module','modules'})
+        self.assertEqual(binding_hints['module'],types.ModuleType)
+
+    def test_18_keyed_pins_do_not_override_an_explicit_declared_path(self) -> None:
+        # The real allocator stores bytes/sha256 under the absolute path key.
+        keyed = copy.deepcopy(self.frozen)
+        keyed['files'] = {key: {'bytes': row['bytes'], 'sha256': row['sha256']}
+                          for key, row in keyed['files'].items()}
+        roundtrip = json.loads(json.dumps(keyed))
+        rebound = self.client_module.load_pinned_control_queue(self.queue, roundtrip)
+        self.assertEqual(rebound['refs'], self.bundle['refs'])
+        self.assertIs(self.client_module.load_pinned_control_queue(
+            self.queue, roundtrip, self.bundle), self.bundle)
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            key = str(self.helpers / (name + '.py'))
+            for wrong in ('another-selected-source.py', None, True):
+                for cached in (False, True):
+                    with self.subTest(helper=name, declared_path=wrong, cached=cached):
+                        frozen = copy.deepcopy(self.frozen)
+                        frozen['files'][key]['path'] = wrong
+                        with self.assertRaises(ValueError):
+                            self.client_module.load_pinned_control_queue(
+                                self.queue, frozen, self.bundle if cached else None)
 
 if __name__ == '__main__':
     unittest.main()
