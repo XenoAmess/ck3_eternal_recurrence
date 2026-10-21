@@ -1,18 +1,18 @@
 # 活武器：验收执行与结果合同
 
-2026-10-22。本文配套[总测试方案](test-plan.md)和[内容矩阵](content-acceptance-matrix.md)，用于后续接入公共验收器和保存可核验结果。**当前为合同设计，未新增产品登记、adapter、runner或业务PASS。**
+2026-10-22。本文配套[总测试方案](test-plan.md)和[内容矩阵](content-acceptance-matrix.md)，用于接入公共验收器和保存可核验结果。**`core_continuous`已接入公共入口并完成plan，尚未实机运行；加载专用用例因fixture启动策略未完成而标为BLOCKED。**
 
 ## 1. 复用公共入口
 
 后续仅从[公共六模式入口](../../tools/ck3_mod_acceptance.py)执行`plan / prepare / allocate / preflight / run / verify`。产品不复制host、DLL、启动器、屏幕keeper、正常退出或SDK下载。通用协议见[公共说明](../../docs/ck3-mod-upgrade-fast-validation.md)。历史文件中的固定本机路径不作为本产品运行参数。
 
-拟登记product key为`living-artifacts`、runtime_mod_key为同一产品身份；Workshop ID保持null。拟登记case见总方案；当前[公共产品清单](../../tools/ck3_mod_acceptance_products.json)还没有该产品，不能把下面模板说成现在就能运行。
+已登记product key为`living-artifacts`、runtime_mod_key为同一产品身份；Workshop ID保持null。[公共产品清单](../../tools/ck3_mod_acceptance_products.json)的`core_continuous`使用[产品adapter](../tools/acceptance_adapter.py)和[冻结合同](../tools/core_continuous.contract.json)，只覆盖首阶段真实装备、自动月成长、卸下停经验入口。现有MCP没有通用宝物选择通道，生产喂养子项明确BLOCKED；其他矩阵仍未实跑。`static-and-basicload`保留原配置，但空`required_startup`与未绑定`post_start`不能通过共享prepare，状态为BLOCKED，不能凭历史plan把它称为可运行。
 
 登记前先实现真实adapter，提供`prepare_case / run_case / verify_case`，可提供`validate_contract`。配置冻结其path/config、initial_plan、startup mode/state_dir、预算、required_mcp_tools、normal_close及实际业务范围；所需工具必须已存在且source_build_ready，不用占位能力或空adapter满足形式检查。
 
 ## 2. 六阶段的职责与命令模板
 
-共同四参数固定为`--runtime <本机共同映射.json> --products tools/ck3_mod_acceptance_products.json --product living-artifacts --case <实际登记case>`。以下仅是**登记完成后的模板**，本轮没有执行这些命令。
+共同四参数固定为`--runtime <本机共同映射.json> --products tools/ck3_mod_acceptance_products.json --product living-artifacts --case <实际登记case>`。`core_continuous`已执行不启动游戏的plan与动态加载检查；后续prepare、allocate和实机结论须分别取证。
 
 ```text
 py tools/ck3_mod_acceptance.py plan --runtime <本机共同映射.json> --products tools/ck3_mod_acceptance_products.json --product living-artifacts --case core_continuous
@@ -33,7 +33,7 @@ py tools/ck3_mod_acceptance.py prepare --runtime <本机共同映射.json> --pro
 
 `allocate`的首次启动/历史关闭参数采用所绑定公共源码的实际合同；本方案不复制一套简化allocator。无法核对上一真实状态时先完成该状态核验，不拿其他机器的关闭回执代用。
 
-公共Selection一次只选一个`--case`，没有`--cases/--all/--reuse-session`。组合测试在`core_continuous`的**一次run_case内**编排LW-G/F/T/I/A/C/X子场景，各自独立记录；finally只做一次正常退出。不能向多个公共run重复投同一已消费context来制造进程复用。
+公共Selection一次只选一个`--case`，没有`--cases/--all/--reuse-session`。当前`core_continuous`在一次run_case内编排首阶段四子项并分别记录，完整LW-G/F/T/I/A/C/X矩阵继续分阶段接入；最后由公共入口做一次正常退出。不能向多个公共run重复投同一已消费context来制造进程复用。
 
 ## 3. 现场与身份
 

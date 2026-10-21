@@ -1,0 +1,15 @@
+﻿xalw_awakening = {
+	categories = { game_modes }
+	default = xalw_awakening_normal
+	xalw_awakening_none = { }
+	xalw_awakening_rare = { }
+	xalw_awakening_normal = { }
+	xalw_awakening_frequent = { }
+}
+
+xalw_backlash = {
+	categories = { game_modes }
+	default = xalw_backlash_standard
+	xalw_backlash_standard = { }
+	xalw_backlash_mild = { }
+}

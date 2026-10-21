@@ -1,0 +1,11 @@
+﻿xalw_manage_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_smith.dds" }
+	desc = xalw_manage_decision_desc
+	selection_tooltip = xalw_manage_decision_tooltip
+	confirm_text = xalw_manage_decision_confirm
+	sort_order = 35
+	is_shown = { is_ai = no }
+	is_valid = { is_alive = yes }
+	effect = { xalw_discover_owner_effect = yes trigger_event = xalw.12 }
+	ai_will_do = { base = 0 }
+}

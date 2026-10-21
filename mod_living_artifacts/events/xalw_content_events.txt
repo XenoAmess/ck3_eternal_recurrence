@@ -1,0 +1,16 @@
+﻿namespace = xalw
+xalw.1000 = {
+scope = artifact
+hidden = yes
+immediate = { xalw_refresh_artifact_effect = yes }
+}
+xalw.1001 = {
+scope = artifact
+hidden = yes
+immediate = { xalw_refresh_artifact_effect = yes }
+}
+xalw.1002 = {
+scope = artifact
+hidden = yes
+immediate = { xalw_refresh_artifact_effect = yes }
+}

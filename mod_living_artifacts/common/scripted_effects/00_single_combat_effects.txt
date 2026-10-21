@@ -1,0 +1,1 @@
+﻿# Original source definitions are preserved in generated xalw_native_00_single_combat_effects_* groups.

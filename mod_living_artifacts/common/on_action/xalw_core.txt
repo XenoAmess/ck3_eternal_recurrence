@@ -1,0 +1,16 @@
+﻿on_game_start_after_lobby = { on_actions = { xalw_bootstrap_on_action } }
+random_yearly_everyone_pulse = { on_actions = { xalw_discovery_on_action } }
+on_artifact_changed_owner = { on_actions = { xalw_owner_changed_on_action } }
+xalw_bootstrap_on_action = {
+    effect = {
+        every_living_character = {
+            limit = { xalw_owner_needs_monthly_trigger = yes }
+            xalw_discover_owner_effect = yes
+        }
+    }
+}
+xalw_discovery_on_action = {
+    trigger = { is_alive = yes has_any_artifact = yes }
+    effect = { xalw_discover_owner_effect = yes }
+}
+xalw_owner_changed_on_action = { effect = { xalw_owner_changed_effect = yes } }

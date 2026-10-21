@@ -12,7 +12,7 @@ from ck3_mod_acceptance_background_types import JsonObject, json_object
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     exact_pin, parse_bootstrap, require_empty_machine_history,
-    validate_fresh_bootstrap, validate_frozen_fresh_admission,
+    validate_fresh_bootstrap, validate_frozen_fresh_admission, create_current_process_observation,
 )
 
 
@@ -41,7 +41,11 @@ class FreshMachineBootstrapTests(unittest.TestCase):
             {'schema': 'codex.task_bus.v1', 'sequence': 1, 'kind': 'registered',
              'summary': 'development task', 'resources': []}]
         self.packet: JsonObject = {'tasks': [{'resources': [], 'state': 'running'}]}
-        self.inventory: JsonObject = {'blockers': [], 'process_absence_is_normal_exit_proof': False}
+        self.inventory: JsonObject = json_object(create_current_process_observation(
+            runtime_inventory={'blockers': [], 'process_absence_is_normal_exit_proof': False},
+            ck3_inventory={'tasklist_returncode': 0, 'tasklist_pids': [], 'wmi_pids': [],
+                           'native_pids': [], 'processes': [], 'inventory_backend': 'tasklist+toolhelp32'},
+            binding=self.binding))
 
     def save(self, path: Path, value: object) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -111,8 +115,28 @@ class FreshMachineBootstrapTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'still owned'):
             self.validate()
         self.packet['tasks'] = [{'resources': []}]
-        self.inventory['blockers'] = [{'pid': 77, 'name': 'ck3.exe'}]
+        self.inventory['runtime_inventory'] = {'blockers': [{'pid': 77, 'name': 'ck3.exe'}],
+            'machine_id': self.binding['machine_id'], 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+            'process_absence_is_normal_exit_proof': False}
         with self.assertRaisesRegex(ValueError, 'absence is not proven'):
+            self.validate()
+
+    def test_actual_current_observation_round_trip_rejects_incomplete_or_conflicting_dual_sources(self) -> None:
+        original = json.loads(json.dumps(self.inventory))
+        self.inventory = json_object(json.loads(json.dumps(original)))
+        self.validate()
+        for field, bad in (('tasklist_pids', [77]), ('native_pids', [77]),
+                           ('processes', [{}]), ('tasklist_returncode', True),
+                           ('inventory_backend', 'single-source'), ('machine_id', 'different-machine')):
+            self.inventory = json_object(json.loads(json.dumps(original)))
+            game = json_object(self.inventory['ck3_inventory'])
+            game[field] = json_object({'bad': bad})['bad']
+            self.inventory['ck3_inventory'] = game
+            with self.assertRaises(ValueError):
+                self.validate()
+        self.inventory = json_object(json.loads(json.dumps(original)))
+        del self.inventory['ck3_inventory']
+        with self.assertRaisesRegex(ValueError, 'Exact current'):
             self.validate()
 
     def test_boolean_and_float_sequences_and_wrong_pin_types_refused(self) -> None:
@@ -256,10 +280,13 @@ class FreshMachineBootstrapTests(unittest.TestCase):
         self.save(self.source, self.bundle)
         result = self.validate()
         self.assertIs(result['previous_normal_exit_claimed'], False)
-        self.inventory['blockers'] = [{'pid': 77, 'name': 'ck3.exe'}]
+        original_runtime = self.inventory['runtime_inventory']
+        self.inventory['runtime_inventory'] = {'blockers': [{'pid': 77, 'name': 'ck3.exe'}],
+            'machine_id': self.binding['machine_id'], 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+            'process_absence_is_normal_exit_proof': False}
         with self.assertRaisesRegex(ValueError, 'absence is not proven'):
             self.validate()
-        self.inventory['blockers'] = []
+        self.inventory['runtime_inventory'] = original_runtime
         raw['raw_observation_identity'] = 'verified'
         self.save(closure, raw)
         self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']

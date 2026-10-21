@@ -4,7 +4,7 @@ from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V
 from ck3_mod_acceptance_background_types import JsonObject, json_object
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
-    require_empty_machine_history, validate_fresh_bootstrap,
+    require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
 )
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -2006,7 +2006,25 @@ def _allocate_and_keep_impl(selection,args):
         require(not shared_history,'This machine bus already contains a shared allocation; use normal predecessor closure')
         if fresh_machine:
             import psutil
-            fresh_inventory=runtime_process_inventory(psutil,os.getpid())
+            # The existing environment provider independently compares tasklist with
+            # native Toolhelp. Import only the selected immutable common source.
+            source=selection.manifest_path_key(selection.manifest['source_root'])
+            import_root=source/'ck3_autonomous_player/src'
+            if not import_root.is_dir():
+                import_root=source/'src'
+            sys.path.insert(0,str(import_root))
+            try:
+                import importlib
+                provider=importlib.import_module('xar_autoplayer.environment')
+                provider_source=getattr(provider,'__file__',None)
+                if not isinstance(provider_source,str) or not Path(provider_source).resolve().is_relative_to(import_root.resolve()):
+                    raise ValueError('Fresh dual process provider differs from selected shared source')
+                game_inventory=provider.ck3_process_inventory()
+            finally:
+                sys.path.remove(str(import_root))
+            fresh_inventory=create_current_process_observation(
+                runtime_inventory=runtime_process_inventory(psutil,os.getpid()),
+                ck3_inventory=game_inventory,binding=binding)
             closure=json_object(validate_fresh_bootstrap(fresh_bundle,bootstrap_path=bootstrap_path,
                 binding=binding,runtime_path=selection.runtime_path,manifest_path=selection.manifest_path,
                 repo_root=root,bus_dir=bus_dir,bus_events=events,bus_packet=bus_packet,

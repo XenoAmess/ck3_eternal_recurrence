@@ -1,0 +1,70 @@
+﻿xalw_manage_interaction = {
+	category = interaction_category_friendly
+	common_interaction = yes
+	interface_priority = 90
+	icon = artifact
+	target_type = artifact
+	target_filter = actor_artifacts
+	show_all_targets = no
+	ai_targets = { ai_recipients = self }
+	is_shown = { scope:recipient = scope:actor }
+	auto_accept = yes
+	ai_will_do = { base = 0 }
+
+	desc = xalw_manage_interaction_desc
+	is_available = { any_character_artifact = { xalw_is_living_trigger = yes } }
+	can_be_picked_artifact = { scope:target = { xalw_is_living_trigger = yes } }
+	on_accept = {
+	    scope:target = { save_scope_as = xalw_artifact }
+	    scope:actor = { trigger_event = xalw.10 }
+	}
+}
+
+xalw_feed_interaction = {
+	category = interaction_category_friendly
+	common_interaction = yes
+	interface_priority = 90
+	icon = artifact
+	target_type = artifact
+	target_filter = actor_artifacts
+	show_all_targets = no
+	ai_targets = { ai_recipients = self }
+	is_shown = { scope:recipient = scope:actor }
+	auto_accept = yes
+	ai_will_do = { base = 0 }
+
+	desc = xalw_feed_interaction_desc
+	is_available = { var:xalw_selected_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = prev } }
+	can_be_picked_artifact = { scope:target = { xalw_is_safe_feed_material_trigger = yes } }
+	on_accept = {
+	    scope:target = { save_scope_as = xalw_material }
+	    scope:actor = {
+	        var:xalw_selected_artifact = { save_scope_as = xalw_artifact }
+	        trigger_event = xalw.11
+	    }
+	}
+}
+
+xalw_keep_interaction = {
+	category = interaction_category_friendly
+	common_interaction = yes
+	interface_priority = 90
+	icon = artifact
+	target_type = artifact
+	target_filter = actor_artifacts
+	show_all_targets = no
+	ai_targets = { ai_recipients = self }
+	is_shown = { scope:recipient = scope:actor }
+	auto_accept = yes
+	ai_will_do = { base = 0 }
+
+	desc = xalw_keep_interaction_desc
+	is_available = { has_any_artifact = yes }
+	can_be_picked_artifact = { scope:target = { xalw_is_personal_trigger = yes } }
+	on_accept = {
+	    scope:target = {
+	        if = { limit = { has_variable = xalw_keep } remove_variable = xalw_keep }
+	        else = { set_variable = { name = xalw_keep value = yes } }
+	    }
+	}
+}

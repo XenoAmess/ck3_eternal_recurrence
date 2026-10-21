@@ -1,0 +1,248 @@
+﻿# Generated; edit tools, then run generate.py.
+xalw_discover_owner_effect = {
+	save_scope_as = owner
+	set_variable = { name = xalw_discovery_budget value = 50 }
+	every_character_artifact = {
+	    limit = {
+	        xalw_is_personal_trigger = yes
+	        NOT = { has_variable = xalw_schema_version }
+	        scope:owner.var:xalw_discovery_budget > 0
+	    }
+	    xalw_discover_artifact_effect = yes
+	    scope:owner = { change_variable = { name = xalw_discovery_budget add = -1 } }
+	}
+	remove_variable = xalw_discovery_budget
+	if = {
+	    limit = { xalw_owner_needs_monthly_trigger = yes NOT = { has_variable = xalw_monthly_chain } }
+	    set_variable = { name = xalw_monthly_chain value = yes }
+	    set_variable = { name = xalw_last_owner_month value = xalw_current_month_value }
+	    trigger_event = { id = xalw.1 days = 1 }
+	    if = { limit = { is_ai = yes any_character_artifact = { xalw_is_living_trigger = yes } } xalw_queue_ai_review_effect = yes }
+	}
+}
+
+xalw_settle_xp_effect = {
+	if = {
+	            limit = { xalw_can_gain_xp_trigger = yes var:xalw_pending_xp > 0 }
+	            change_variable = { name = xalw_xp_in_level add = var:xalw_pending_xp }
+	            set_variable = { name = xalw_pending_xp value = 0 }
+	            while = {
+	                limit = { var:xalw_xp_in_level >= xalw_next_level_xp_value }
+	                change_variable = { name = xalw_xp_in_level subtract = xalw_next_level_xp_value }
+	                change_variable = { name = xalw_level add = 1 }
+	                change_variable = { name = xalw_growth_sequence add = 1 }
+	                if = {
+	                    limit = { var:xalw_level <= 10 }
+	                    random_list = {
+	    45 = {
+		xalw_add_affix_effect = yes
+	}
+
+	25 = {
+		xalw_upgrade_affix_effect = yes
+	}
+
+	20 = {
+		xalw_mutate_affix_effect = yes
+	}
+
+	10 = {
+		xalw_grow_curse_effect = yes
+	}
+
+	}
+	} else = { random_list = {
+	25 = {
+		xalw_add_affix_effect = yes
+	}
+
+	20 = {
+		xalw_upgrade_affix_effect = yes
+	}
+
+	30 = {
+		xalw_mutate_affix_effect = yes
+	}
+
+	25 = {
+		xalw_grow_curse_effect = yes
+	}
+
+	} }
+	}
+	xalw_refresh_artifact_effect = yes
+	xalw_notify_growth_effect = yes
+	}
+}
+
+xalw_notify_growth_effect = {
+	if = {
+	    limit = { var:xalw_growth_sequence > var:xalw_last_notified_sequence }
+	    set_variable = { name = xalw_last_notified_sequence value = var:xalw_growth_sequence }
+	    save_scope_as = xalw_artifact
+	    artifact_owner ?= {
+	        if = {
+	            limit = { is_ai = no }
+	            send_interface_toast = {
+	                type = event_toast_effect_neutral
+	                title = xalw_growth_title
+	                left_icon = this
+	                right_icon = scope:xalw_artifact
+	                custom_tooltip = xalw_growth_text
+	            }
+	        }
+	    }
+	}
+}
+
+xalw_refresh_artifact_effect = {
+	xalw_content_refresh_artifact_effect = yes
+	remove_artifact_modifier = xalw_hunger_1_modifier
+	remove_artifact_modifier = xalw_hunger_2_modifier
+	remove_artifact_modifier = xalw_hunger_3_modifier
+	remove_artifact_modifier = xalw_hunger_4_modifier
+	remove_artifact_modifier = xalw_hunger_5_modifier
+	if = { limit = { NOT = { has_game_rule = xalw_backlash_mild } xalw_actual_hunger_value = 1 } add_artifact_modifier = xalw_hunger_1_modifier }
+	if = { limit = { NOT = { has_game_rule = xalw_backlash_mild } xalw_actual_hunger_value = 2 } add_artifact_modifier = xalw_hunger_2_modifier }
+	if = { limit = { NOT = { has_game_rule = xalw_backlash_mild } xalw_actual_hunger_value = 3 } add_artifact_modifier = xalw_hunger_3_modifier }
+	if = { limit = { NOT = { has_game_rule = xalw_backlash_mild } xalw_actual_hunger_value = 4 } add_artifact_modifier = xalw_hunger_4_modifier }
+	if = { limit = { NOT = { has_game_rule = xalw_backlash_mild } xalw_actual_hunger_value = 5 } add_artifact_modifier = xalw_hunger_5_modifier }
+}
+
+xalw_artifact_monthly_effect = {
+	if = {
+	    limit = { xalw_is_living_trigger = yes var:xalw_last_settled_month != xalw_current_month_value }
+	    set_variable = { name = xalw_last_settled_month value = xalw_current_month_value }
+	    if = {
+	        limit = { is_equipped = yes xalw_is_personal_trigger = yes }
+	        change_variable = { name = xalw_resonance add = 5 }
+	        if = { limit = { var:xalw_resonance > 100 } set_variable = { name = xalw_resonance value = 100 } }
+	        if = {
+	            limit = { xalw_can_gain_xp_trigger = yes }
+	            change_variable = { name = xalw_pending_xp add = 8 }
+	            xalw_settle_xp_effect = yes
+	            change_variable = { name = xalw_unsuppressed_equipped_months add = 1 }
+	            if = {
+	                limit = { var:xalw_unsuppressed_equipped_months >= 6 }
+	                set_variable = { name = xalw_unsuppressed_equipped_months value = 6 }
+	                set_variable = { name = xalw_suppression_chain value = 0 }
+	            }
+	        }
+	        if = {
+	            limit = { NOT = { has_variable = xalw_seen_equipped } }
+	            set_variable = { name = xalw_seen_equipped value = yes }
+	            xalw_content_on_equip_effect = yes
+	        }
+	        if = {
+	            limit = { OR = { current_month = 1 current_month = 4 current_month = 7 current_month = 10 } }
+	            save_scope_value_as = { name = xalw_quarterly_hunger_stress value = { value = xalw_actual_hunger_value multiply = 2 } }
+	            artifact_owner = { add_stress = scope:xalw_quarterly_hunger_stress }
+	        }
+	    }
+	    else = { remove_variable = xalw_seen_equipped }
+	}
+}
+
+xalw_owner_monthly_effect = {
+	save_scope_as = owner
+	xalw_discover_owner_effect = yes
+	every_character_artifact = { limit = { xalw_is_living_trigger = yes } xalw_artifact_monthly_effect = yes }
+	xalw_content_monthly_effect = yes
+	if = { limit = { is_ai = yes } xalw_ai_cultivate_effect = yes }
+}
+
+xalw_owner_changed_effect = {
+	xalw_discover_artifact_effect = yes
+	if = {
+	    limit = { xalw_is_living_trigger = yes }
+	    remove_variable = xalw_seen_equipped
+	    if = {
+	        limit = { exists = scope:owner }
+	        set_variable = { name = xalw_attuned_character value = scope:owner }
+	        set_variable = { name = xalw_resonance value = 20 }
+	    }
+	    else = {
+	        remove_variable = xalw_attuned_character
+	        set_variable = { name = xalw_resonance value = 0 }
+	    }
+	    xalw_content_on_owner_changed_effect = yes
+	    xalw_refresh_artifact_effect = yes
+	}
+	scope:owner ?= {
+	    xalw_discover_owner_effect = yes
+	    if = { limit = { is_ai = yes any_character_artifact = { xalw_is_living_trigger = yes } } xalw_queue_ai_review_effect = yes }
+	}
+}
+
+xalw_feed_material_effect = {
+	if = {
+	            limit = {
+	                scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = scope:owner }
+	                scope:xalw_material ?= { xalw_is_safe_feed_material_trigger = yes artifact_owner = scope:owner }
+	                scope:xalw_material != scope:xalw_artifact
+	            }
+	            save_scope_value_as = { name = xalw_feed_xp value = xalw_selected_feed_xp_value }
+	            if = { limit = { scope:xalw_material = { artifact_slot_type = helmet } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:helmet } } }
+	if = { limit = { scope:xalw_material = { artifact_slot_type = regalia } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:regalia } } }
+	if = { limit = { scope:xalw_material = { artifact_slot_type = armor } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:armor } } }
+	if = { limit = { scope:xalw_material = { artifact_slot_type = primary_armament } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:primary_armament } } }
+	if = { limit = { scope:xalw_material = { artifact_slot_type = brooch } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:brooch } } }
+	if = { limit = { scope:xalw_material = { artifact_slot_type = miscellaneous } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:miscellaneous } } }
+	if = { limit = { scope:xalw_material = { artifact_slot_type = journal } } scope:xalw_artifact = { set_variable = { name = xalw_pending_feed_imprint value = flag:journal } } }
+	            destroy_artifact = scope:xalw_material
+	            if = {
+	                limit = { NOT = { exists = scope:xalw_material } }
+	                scope:xalw_artifact = {
+	                    set_variable = { name = xalw_feeding_imprint value = var:xalw_pending_feed_imprint days = 90 }
+	                    change_variable = { name = xalw_pending_xp add = scope:xalw_feed_xp }
+	                    xalw_settle_xp_effect = yes
+	                }
+	            }
+	            scope:xalw_artifact = { remove_variable = xalw_pending_feed_imprint }
+	        }
+}
+
+xalw_train_effect = {
+	save_scope_as = owner
+	if = {
+	    limit = {
+	        prestige >= 50
+	        NOT = { has_variable = xalw_training_cooldown }
+	        scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = scope:owner }
+	    }
+	    add_prestige = -50
+	    add_stress = 10
+	    set_variable = { name = xalw_training_cooldown value = yes days = 365 }
+	    scope:xalw_artifact = { change_variable = { name = xalw_pending_xp add = 25 } xalw_settle_xp_effect = yes }
+	}
+}
+
+xalw_suppress_effect = {
+	save_scope_as = owner
+	if = {
+	    limit = {
+	        prestige >= 50
+	        scope:xalw_artifact ?= {
+	            xalw_is_living_trigger = yes artifact_owner = scope:owner
+	            OR = {
+	                NOT = { xalw_is_growth_suppressed_trigger = yes }
+	                xalw_can_renew_suppression_trigger = yes
+	            }
+	        }
+	        gold >= scope:xalw_artifact.xalw_suppression_cost_value
+	    }
+	    add_gold = { value = scope:xalw_artifact.xalw_suppression_cost_value multiply = -1 }
+	    add_prestige = -50
+	    add_stress = 10
+	    scope:xalw_artifact = {
+	        if = {
+	            limit = { xalw_is_growth_suppressed_trigger = yes }
+	            change_variable = { name = xalw_growth_suppressed_until add = 90 }
+	        }
+	        else = { xalw_begin_suppression_timer_effect = yes }
+	        change_variable = { name = xalw_suppression_chain add = 1 }
+	        set_variable = { name = xalw_unsuppressed_equipped_months value = 0 }
+	        xalw_refresh_artifact_effect = yes
+	    }
+	}
+}

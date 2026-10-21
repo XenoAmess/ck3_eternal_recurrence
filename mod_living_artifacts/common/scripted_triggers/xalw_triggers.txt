@@ -1,0 +1,59 @@
+﻿xalw_is_personal_trigger = {
+	OR = { artifact_slot_type = helmet artifact_slot_type = regalia artifact_slot_type = armor artifact_slot_type = primary_armament artifact_slot_type = brooch artifact_slot_type = miscellaneous artifact_slot_type = journal }
+}
+
+xalw_is_living_trigger = {
+	var:xalw_schema_version ?= 2
+	var:xalw_kind ?= flag:living
+}
+
+xalw_is_growth_suppressed_trigger = {
+	has_variable = xalw_growth_suppressed_until
+	var:xalw_growth_suppressed_until > current_date
+}
+
+xalw_can_renew_suppression_trigger = {
+	xalw_is_growth_suppressed_trigger = yes
+	var:xalw_growth_suppressed_until <= xalw_renewal_window_ends_value
+}
+
+xalw_owner_needs_monthly_trigger = {
+	OR = {
+	    any_character_artifact = { xalw_is_living_trigger = yes }
+	    any_character_artifact = { xalw_is_personal_trigger = yes NOT = { has_variable = xalw_schema_version } }
+	    AND = { has_variable = xalw_content_loan_periods var:xalw_content_loan_periods > 0 }
+	    AND = { has_variable = xalw_content_loan_arrears var:xalw_content_loan_arrears > 0 }
+	}
+}
+
+xalw_can_gain_xp_trigger = {
+	xalw_is_living_trigger = yes
+	xalw_is_personal_trigger = yes
+	is_equipped = yes
+	artifact_owner ?= { is_alive = yes }
+	NOT = { xalw_is_growth_suppressed_trigger = yes }
+}
+
+xalw_is_safe_feed_material_trigger = {
+	xalw_is_personal_trigger = yes
+	is_unique = no
+	var:xalw_schema_version ?= 2
+	var:xalw_kind ?= flag:ordinary
+	is_equipped = no
+	has_none_of_variables = {
+	    name = xalw_keep
+	    name = 1025_treasure_map
+	    name = is_tribute_mission_artifact
+	    name = mandala_capital_05_unconfirmed_talisman
+	    name = artifact_prevent_transfer
+	    name = ungiftable
+	    name = banner_house
+	    name = banner_dynasty
+	    name = relic
+	    name = relic_religion
+	    name = historical_artifact
+	    name = artifact_succession_title
+	    name = pam_saint_relic_saint
+	}
+	NOT = { is_holy_relic_for = artifact_owner.faith }
+}

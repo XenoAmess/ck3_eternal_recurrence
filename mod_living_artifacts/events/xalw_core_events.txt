@@ -1,0 +1,108 @@
+﻿namespace = xalw
+xalw.1 = {
+    type = character_event
+    hidden = yes
+    trigger = { is_alive = yes }
+    immediate = {
+        if = {
+            limit = { var:xalw_last_owner_month != xalw_current_month_value }
+            set_variable = { name = xalw_last_owner_month value = xalw_current_month_value }
+            xalw_owner_monthly_effect = yes
+        }
+        if = {
+            limit = { has_any_artifact = yes }
+            trigger_event = { id = xalw.1 days = 1 }
+        }
+        else = { remove_variable = xalw_monthly_chain }
+    }
+}
+xalw.2 = {
+    type = character_event
+    hidden = yes
+    trigger = { is_alive = yes is_ai = yes }
+    immediate = { remove_variable = xalw_ai_review_queued xalw_ai_cultivate_effect = yes }
+}
+xalw.4 = {
+    scope = artifact
+    hidden = yes
+    trigger = { var:xalw_suppression_timer_sequence = scope:xalw_suppression_timer_sequence }
+    immediate = {
+        if = {
+            limit = { xalw_is_growth_suppressed_trigger = yes }
+            trigger_event = { id = xalw.4 days = xalw_suppression_remaining_days_value }
+        }
+        else = {
+            remove_variable = xalw_growth_suppressed_until
+        }
+        xalw_refresh_artifact_effect = yes
+    }
+}
+xalw.5 = {
+    scope = artifact
+    hidden = yes
+    immediate = {
+        if = { limit = { has_variable = xalw_appeased_until var:xalw_appeased_until <= current_date } remove_variable = xalw_appeased_until }
+        xalw_refresh_artifact_effect = yes
+    }
+}
+xalw.10 = {
+    type = character_event
+    title = xalw.10.t
+    desc = xalw.10.desc
+    theme = learning
+    override_background = { reference = throne_room }
+    trigger = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes artifact_owner = root } }
+    immediate = {
+        set_variable = { name = xalw_selected_artifact value = scope:xalw_artifact }
+        save_scope_as = owner
+    }
+    option = {
+        name = xalw.10.feed
+        custom_tooltip = xalw_feed_selector_help
+    }
+    option = {
+        name = xalw.10.train
+        trigger = { scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes } }
+        show_as_unavailable = { OR = { prestige < 50 has_variable = xalw_training_cooldown } }
+        xalw_train_effect = yes
+    }
+    option = {
+        name = xalw.10.suppress
+        trigger = { scope:xalw_artifact = { NOT = { xalw_is_growth_suppressed_trigger = yes } } }
+        show_as_unavailable = { OR = { gold < scope:xalw_artifact.xalw_suppression_cost_value prestige < 50 } }
+        xalw_suppress_effect = yes
+    }
+    option = {
+        name = xalw.10.renew
+        trigger = { scope:xalw_artifact = { xalw_can_renew_suppression_trigger = yes } }
+        show_as_unavailable = { OR = { gold < scope:xalw_artifact.xalw_suppression_cost_value prestige < 50 } }
+        xalw_suppress_effect = yes
+    }
+    option = {
+        name = xalw.10.appease
+        trigger = { scope:xalw_artifact = { xalw_base_hunger_value > 0 OR = { NOT = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date } } }
+        show_as_unavailable = { gold < scope:xalw_artifact.xalw_appease_cost_value }
+        xalw_appease_effect = yes
+    }
+    option = { name = xalw.10.close }
+}
+xalw.11 = {
+    type = character_event
+    title = xalw.11.t
+    desc = xalw.11.desc
+    theme = learning
+    trigger = {
+        scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = root }
+        scope:xalw_material ?= { xalw_is_safe_feed_material_trigger = yes artifact_owner = root }
+    }
+    immediate = { save_scope_as = owner }
+    option = { name = xalw.11.confirm xalw_feed_material_effect = yes }
+    option = { name = xalw.11.cancel }
+}
+xalw.12 = {
+    type = character_event
+    title = xalw.12.t
+    desc = xalw.12.desc
+    theme = learning
+    option = { name = xalw.10.close }
+}

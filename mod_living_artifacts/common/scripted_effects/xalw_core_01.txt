@@ -1,0 +1,600 @@
+﻿# Generated; edit tools, then run generate.py.
+xalw_roll_affix_effect = {
+	random_list = {
+	40 = { remove_variable = xalw_weighted_roll }
+	60 = { set_variable = { name = xalw_weighted_roll value = yes } }
+	}
+	random_list = {
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 1 var:xalw_affix_2 ?= 1 var:xalw_affix_3 ?= 1 var:xalw_affix_4 ?= 1 var:xalw_affix_5 ?= 1 var:xalw_affix_6 ?= 1 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 1
+		        var:xalw_diet ?= flag:helmet
+		        var:xalw_feeding_imprint ?= flag:helmet
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 1 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 2 var:xalw_affix_2 ?= 2 var:xalw_affix_3 ?= 2 var:xalw_affix_4 ?= 2 var:xalw_affix_5 ?= 2 var:xalw_affix_6 ?= 2 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 2
+		        var:xalw_diet ?= flag:regalia
+		        var:xalw_feeding_imprint ?= flag:regalia
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 2 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 3 var:xalw_affix_2 ?= 3 var:xalw_affix_3 ?= 3 var:xalw_affix_4 ?= 3 var:xalw_affix_5 ?= 3 var:xalw_affix_6 ?= 3 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 3
+		        var:xalw_diet ?= flag:armor
+		        var:xalw_feeding_imprint ?= flag:armor
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 3 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 4 var:xalw_affix_2 ?= 4 var:xalw_affix_3 ?= 4 var:xalw_affix_4 ?= 4 var:xalw_affix_5 ?= 4 var:xalw_affix_6 ?= 4 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 4
+		        var:xalw_diet ?= flag:primary_armament
+		        var:xalw_feeding_imprint ?= flag:primary_armament
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 4 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 5 var:xalw_affix_2 ?= 5 var:xalw_affix_3 ?= 5 var:xalw_affix_4 ?= 5 var:xalw_affix_5 ?= 5 var:xalw_affix_6 ?= 5 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 5
+		        var:xalw_diet ?= flag:brooch
+		        var:xalw_feeding_imprint ?= flag:brooch
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 5 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 6 var:xalw_affix_2 ?= 6 var:xalw_affix_3 ?= 6 var:xalw_affix_4 ?= 6 var:xalw_affix_5 ?= 6 var:xalw_affix_6 ?= 6 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 6
+		        var:xalw_diet ?= flag:miscellaneous
+		        var:xalw_feeding_imprint ?= flag:miscellaneous
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 6 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 7 var:xalw_affix_2 ?= 7 var:xalw_affix_3 ?= 7 var:xalw_affix_4 ?= 7 var:xalw_affix_5 ?= 7 var:xalw_affix_6 ?= 7 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 1
+		        var:xalw_diet ?= flag:journal
+		        var:xalw_feeding_imprint ?= flag:journal
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 7 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 8 var:xalw_affix_2 ?= 8 var:xalw_affix_3 ?= 8 var:xalw_affix_4 ?= 8 var:xalw_affix_5 ?= 8 var:xalw_affix_6 ?= 8 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 2
+		        var:xalw_diet ?= flag:helmet
+		        var:xalw_feeding_imprint ?= flag:helmet
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 8 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 9 var:xalw_affix_2 ?= 9 var:xalw_affix_3 ?= 9 var:xalw_affix_4 ?= 9 var:xalw_affix_5 ?= 9 var:xalw_affix_6 ?= 9 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 3
+		        var:xalw_diet ?= flag:regalia
+		        var:xalw_feeding_imprint ?= flag:regalia
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 9 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 10 var:xalw_affix_2 ?= 10 var:xalw_affix_3 ?= 10 var:xalw_affix_4 ?= 10 var:xalw_affix_5 ?= 10 var:xalw_affix_6 ?= 10 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 4
+		        var:xalw_diet ?= flag:armor
+		        var:xalw_feeding_imprint ?= flag:armor
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 10 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 11 var:xalw_affix_2 ?= 11 var:xalw_affix_3 ?= 11 var:xalw_affix_4 ?= 11 var:xalw_affix_5 ?= 11 var:xalw_affix_6 ?= 11 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 5
+		        var:xalw_diet ?= flag:primary_armament
+		        var:xalw_feeding_imprint ?= flag:primary_armament
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 11 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_affix_1 ?= 12 var:xalw_affix_2 ?= 12 var:xalw_affix_3 ?= 12 var:xalw_affix_4 ?= 12 var:xalw_affix_5 ?= 12 var:xalw_affix_6 ?= 12 } }
+		modifier = {
+		    factor = 2
+		    var:xalw_weighted_roll ?= yes
+		    OR = {
+		        var:xalw_personality ?= 6
+		        var:xalw_diet ?= flag:brooch
+		        var:xalw_feeding_imprint ?= flag:brooch
+		    }
+		}
+		set_variable = { name = xalw_candidate_affix value = 12 }
+	}
+
+	}
+	remove_variable = xalw_weighted_roll
+}
+
+xalw_add_affix_effect = {
+	if = {
+		limit = { NOT = { has_variable = xalw_affix_1 } }
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_1 value = var:xalw_candidate_affix }
+		set_variable = { name = xalw_affix_rank_1 value = 1 }
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_affix_2 } }
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_2 value = var:xalw_candidate_affix }
+		set_variable = { name = xalw_affix_rank_2 value = 1 }
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_affix_3 } }
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_3 value = var:xalw_candidate_affix }
+		set_variable = { name = xalw_affix_rank_3 value = 1 }
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_affix_4 } }
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_4 value = var:xalw_candidate_affix }
+		set_variable = { name = xalw_affix_rank_4 value = 1 }
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_affix_5 } }
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_5 value = var:xalw_candidate_affix }
+		set_variable = { name = xalw_affix_rank_5 value = 1 }
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_affix_6 } }
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_6 value = var:xalw_candidate_affix }
+		set_variable = { name = xalw_affix_rank_6 value = 1 }
+	}
+
+	else = { xalw_mutate_affix_effect = yes }
+	remove_variable = xalw_candidate_affix
+}
+
+xalw_mutate_affix_effect = {
+	xalw_content_prepare_mutation_effect = yes
+	random_list = {
+	1 = {
+		trigger = {
+		    has_variable = xalw_affix_1
+		    OR = {
+		        NOT = { has_variable = xalw_content_preferred_mutation_slot }
+		        var:xalw_content_preferred_mutation_slot ?= 1
+		    }
+		}
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_1 value = var:xalw_candidate_affix }
+		random_list = {
+		    60 = { set_variable = { name = xalw_affix_rank_1 value = 1 } }
+		    30 = { set_variable = { name = xalw_affix_rank_1 value = 2 } }
+		    10 = { set_variable = { name = xalw_affix_rank_1 value = 3 } }
+		}
+	}
+
+	1 = {
+		trigger = {
+		    has_variable = xalw_affix_2
+		    OR = {
+		        NOT = { has_variable = xalw_content_preferred_mutation_slot }
+		        var:xalw_content_preferred_mutation_slot ?= 2
+		    }
+		}
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_2 value = var:xalw_candidate_affix }
+		random_list = {
+		    60 = { set_variable = { name = xalw_affix_rank_2 value = 1 } }
+		    30 = { set_variable = { name = xalw_affix_rank_2 value = 2 } }
+		    10 = { set_variable = { name = xalw_affix_rank_2 value = 3 } }
+		}
+	}
+
+	1 = {
+		trigger = {
+		    has_variable = xalw_affix_3
+		    OR = {
+		        NOT = { has_variable = xalw_content_preferred_mutation_slot }
+		        var:xalw_content_preferred_mutation_slot ?= 3
+		    }
+		}
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_3 value = var:xalw_candidate_affix }
+		random_list = {
+		    60 = { set_variable = { name = xalw_affix_rank_3 value = 1 } }
+		    30 = { set_variable = { name = xalw_affix_rank_3 value = 2 } }
+		    10 = { set_variable = { name = xalw_affix_rank_3 value = 3 } }
+		}
+	}
+
+	1 = {
+		trigger = {
+		    has_variable = xalw_affix_4
+		    OR = {
+		        NOT = { has_variable = xalw_content_preferred_mutation_slot }
+		        var:xalw_content_preferred_mutation_slot ?= 4
+		    }
+		}
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_4 value = var:xalw_candidate_affix }
+		random_list = {
+		    60 = { set_variable = { name = xalw_affix_rank_4 value = 1 } }
+		    30 = { set_variable = { name = xalw_affix_rank_4 value = 2 } }
+		    10 = { set_variable = { name = xalw_affix_rank_4 value = 3 } }
+		}
+	}
+
+	1 = {
+		trigger = {
+		    has_variable = xalw_affix_5
+		    OR = {
+		        NOT = { has_variable = xalw_content_preferred_mutation_slot }
+		        var:xalw_content_preferred_mutation_slot ?= 5
+		    }
+		}
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_5 value = var:xalw_candidate_affix }
+		random_list = {
+		    60 = { set_variable = { name = xalw_affix_rank_5 value = 1 } }
+		    30 = { set_variable = { name = xalw_affix_rank_5 value = 2 } }
+		    10 = { set_variable = { name = xalw_affix_rank_5 value = 3 } }
+		}
+	}
+
+	1 = {
+		trigger = {
+		    has_variable = xalw_affix_6
+		    OR = {
+		        NOT = { has_variable = xalw_content_preferred_mutation_slot }
+		        var:xalw_content_preferred_mutation_slot ?= 6
+		    }
+		}
+		xalw_roll_affix_effect = yes
+		set_variable = { name = xalw_affix_6 value = var:xalw_candidate_affix }
+		random_list = {
+		    60 = { set_variable = { name = xalw_affix_rank_6 value = 1 } }
+		    30 = { set_variable = { name = xalw_affix_rank_6 value = 2 } }
+		    10 = { set_variable = { name = xalw_affix_rank_6 value = 3 } }
+		}
+	}
+
+	}
+	random = { chance = 10 xalw_roll_personality_effect = yes }
+	remove_variable = xalw_candidate_affix
+	remove_variable = xalw_content_preferred_mutation_slot
+}
+
+xalw_upgrade_affix_effect = {
+	if = { limit = { OR = { AND = { has_variable = xalw_affix_1 var:xalw_affix_rank_1 < 3 } AND = { has_variable = xalw_affix_2 var:xalw_affix_rank_2 < 3 } AND = { has_variable = xalw_affix_3 var:xalw_affix_rank_3 < 3 } AND = { has_variable = xalw_affix_4 var:xalw_affix_rank_4 < 3 } AND = { has_variable = xalw_affix_5 var:xalw_affix_rank_5 < 3 } AND = { has_variable = xalw_affix_6 var:xalw_affix_rank_6 < 3 } } } random_list = {
+	1 = {
+		trigger = { has_variable = xalw_affix_1 var:xalw_affix_rank_1 < 3 }
+		change_variable = { name = xalw_affix_rank_1 add = 1 }
+	}
+
+	1 = {
+		trigger = { has_variable = xalw_affix_2 var:xalw_affix_rank_2 < 3 }
+		change_variable = { name = xalw_affix_rank_2 add = 1 }
+	}
+
+	1 = {
+		trigger = { has_variable = xalw_affix_3 var:xalw_affix_rank_3 < 3 }
+		change_variable = { name = xalw_affix_rank_3 add = 1 }
+	}
+
+	1 = {
+		trigger = { has_variable = xalw_affix_4 var:xalw_affix_rank_4 < 3 }
+		change_variable = { name = xalw_affix_rank_4 add = 1 }
+	}
+
+	1 = {
+		trigger = { has_variable = xalw_affix_5 var:xalw_affix_rank_5 < 3 }
+		change_variable = { name = xalw_affix_rank_5 add = 1 }
+	}
+
+	1 = {
+		trigger = { has_variable = xalw_affix_6 var:xalw_affix_rank_6 < 3 }
+		change_variable = { name = xalw_affix_rank_6 add = 1 }
+	}
+
+	} }
+	else = { xalw_mutate_affix_effect = yes }
+}
+
+xalw_roll_different_curse_effect = {
+	random_list = {
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 1 var:xalw_curse_2 ?= 1 } }
+		set_variable = { name = xalw_candidate_curse value = 1 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 2 var:xalw_curse_2 ?= 2 } }
+		set_variable = { name = xalw_candidate_curse value = 2 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 3 var:xalw_curse_2 ?= 3 } }
+		set_variable = { name = xalw_candidate_curse value = 3 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 4 var:xalw_curse_2 ?= 4 } }
+		set_variable = { name = xalw_candidate_curse value = 4 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 5 var:xalw_curse_2 ?= 5 } }
+		set_variable = { name = xalw_candidate_curse value = 5 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 6 var:xalw_curse_2 ?= 6 } }
+		set_variable = { name = xalw_candidate_curse value = 6 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 7 var:xalw_curse_2 ?= 7 } }
+		set_variable = { name = xalw_candidate_curse value = 7 }
+	}
+
+	1 = {
+		trigger = { NOR = { var:xalw_curse_1 ?= 8 var:xalw_curse_2 ?= 8 } }
+		set_variable = { name = xalw_candidate_curse value = 8 }
+	}
+
+	}
+}
+
+xalw_grow_curse_effect = {
+	random_list = {
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 1 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 2 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 3 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 4 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 5 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 6 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 7 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_candidate_curse value = 8 }
+	}
+
+	}
+	if = {
+		limit = { var:xalw_curse_1 ?= var:xalw_candidate_curse }
+		if = {
+		    limit = { var:xalw_curse_rank_1 < 3 }
+		    change_variable = { name = xalw_curse_rank_1 add = 1 }
+		}
+		else = {
+		    xalw_roll_different_curse_effect = yes
+		    set_variable = { name = xalw_curse_1 value = var:xalw_candidate_curse }
+		}
+	}
+
+	else_if = {
+		limit = { var:xalw_curse_2 ?= var:xalw_candidate_curse }
+		if = {
+		    limit = { var:xalw_curse_rank_2 < 3 }
+		    change_variable = { name = xalw_curse_rank_2 add = 1 }
+		}
+		else = {
+		    xalw_roll_different_curse_effect = yes
+		    set_variable = { name = xalw_curse_2 value = var:xalw_candidate_curse }
+		}
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_curse_1 } }
+		set_variable = { name = xalw_curse_1 value = var:xalw_candidate_curse }
+		set_variable = { name = xalw_curse_rank_1 value = 1 }
+	}
+
+	else_if = {
+		limit = { NOT = { has_variable = xalw_curse_2 } }
+		set_variable = { name = xalw_curse_2 value = var:xalw_candidate_curse }
+		set_variable = { name = xalw_curse_rank_2 value = 1 }
+	}
+
+	else = {
+		random_list = {
+		1 = {
+			set_variable = { name = xalw_curse_1 value = var:xalw_candidate_curse }
+			# Keep this slot's rank unchanged.
+		}
+
+		1 = {
+			set_variable = { name = xalw_curse_2 value = var:xalw_candidate_curse }
+			# Keep this slot's rank unchanged.
+		}
+
+		}
+	}
+
+	remove_variable = xalw_candidate_curse
+}
+
+xalw_roll_personality_effect = {
+	random_list = {
+	1 = {
+		set_variable = { name = xalw_personality value = 1 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_personality value = 2 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_personality value = 3 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_personality value = 4 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_personality value = 5 }
+	}
+
+	1 = {
+		set_variable = { name = xalw_personality value = 6 }
+	}
+
+	}
+}
+
+xalw_roll_diet_effect = {
+	random_list = {
+	1 = {
+		set_variable = { name = xalw_diet value = flag:helmet }
+	}
+
+	1 = {
+		set_variable = { name = xalw_diet value = flag:regalia }
+	}
+
+	1 = {
+		set_variable = { name = xalw_diet value = flag:armor }
+	}
+
+	1 = {
+		set_variable = { name = xalw_diet value = flag:primary_armament }
+	}
+
+	1 = {
+		set_variable = { name = xalw_diet value = flag:brooch }
+	}
+
+	1 = {
+		set_variable = { name = xalw_diet value = flag:miscellaneous }
+	}
+
+	1 = {
+		set_variable = { name = xalw_diet value = flag:journal }
+	}
+
+	}
+}
+
+xalw_awaken_artifact_effect = {
+	set_variable = { name = xalw_kind value = flag:living }
+	set_variable = { name = xalw_level value = 1 }
+	set_variable = { name = xalw_xp_in_level value = 0 }
+	set_variable = { name = xalw_pending_xp value = 0 }
+	set_variable = { name = xalw_growth_sequence value = 0 }
+	set_variable = { name = xalw_last_notified_sequence value = 0 }
+	set_variable = { name = xalw_resonance value = 20 }
+	set_variable = { name = xalw_suppression_chain value = 0 }
+	set_variable = { name = xalw_unsuppressed_equipped_months value = 0 }
+	set_variable = { name = xalw_attuned_character value = artifact_owner }
+	set_variable = { name = xalw_last_settled_month value = xalw_current_month_value }
+	xalw_roll_personality_effect = yes
+	xalw_roll_diet_effect = yes
+	xalw_add_affix_effect = yes
+	xalw_refresh_artifact_effect = yes
+	save_scope_as = xalw_artifact
+	artifact_owner ?= { if = { limit = { is_ai = no } send_interface_toast = { type = event_toast_effect_good title = xalw_awakened_title left_icon = this right_icon = scope:xalw_artifact custom_tooltip = xalw_awakened_text } } }
+}
+
+xalw_discover_artifact_effect = {
+	if = {
+	    limit = { xalw_is_personal_trigger = yes NOT = { has_variable = xalw_schema_version } }
+	    set_variable = { name = xalw_schema_version value = 2 }
+	    set_variable = { name = xalw_kind value = flag:ordinary }
+	    if = { limit = { has_game_rule = xalw_awakening_none } }
+	    else_if = { limit = { has_game_rule = xalw_awakening_rare } random = { chance = 1 xalw_awaken_artifact_effect = yes } }
+	    else_if = { limit = { has_game_rule = xalw_awakening_frequent } random = { chance = 15 xalw_awaken_artifact_effect = yes } }
+	    else = { random = { chance = 5 xalw_awaken_artifact_effect = yes } }
+	}
+}

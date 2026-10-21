@@ -1,0 +1,118 @@
+﻿xalw_current_month_value = {
+	value = current_year
+	multiply = 12
+	if = { limit = { current_month = 1 } add = 1 }
+	if = { limit = { current_month = 2 } add = 2 }
+	if = { limit = { current_month = 3 } add = 3 }
+	if = { limit = { current_month = 4 } add = 4 }
+	if = { limit = { current_month = 5 } add = 5 }
+	if = { limit = { current_month = 6 } add = 6 }
+	if = { limit = { current_month = 7 } add = 7 }
+	if = { limit = { current_month = 8 } add = 8 }
+	if = { limit = { current_month = 9 } add = 9 }
+	if = { limit = { current_month = 10 } add = 10 }
+	if = { limit = { current_month = 11 } add = 11 }
+	if = { limit = { current_month = 12 } add = 12 }
+}
+
+xalw_next_level_xp_value = {
+	value = var:xalw_level
+	multiply = 100
+}
+
+xalw_suppression_cost_value = {
+	value = 20
+	add = { value = var:xalw_level multiply = 5 }
+	add = { value = var:xalw_suppression_chain multiply = 20 }
+}
+
+xalw_base_hunger_value = {
+	value = var:xalw_level
+	subtract = 10
+	min = 0
+	max = 5
+}
+
+xalw_actual_hunger_value = {
+	value = xalw_base_hunger_value
+	if = { limit = { has_variable = xalw_appeased_until var:xalw_appeased_until > current_date } subtract = 1 }
+	min = 0
+	if = { limit = { xalw_is_growth_suppressed_trigger = yes } add = 1 }
+	max = 5
+}
+
+xalw_appease_cost_value = {
+	value = xalw_base_hunger_value
+	multiply = 25
+}
+
+xalw_suppression_remaining_days_value = {
+	value = 0
+	if = { limit = { xalw_is_growth_suppressed_trigger = yes } add = var:xalw_growth_suppressed_until subtract = current_date }
+}
+
+xalw_renewal_window_ends_value = {
+	value = current_date
+	add = 30
+}
+
+xalw_feed_base_xp_value = {
+	value = 0
+	if = { limit = { rarity = common } add = 80 }
+	else_if = { limit = { rarity = masterwork } add = 200 }
+	else_if = { limit = { rarity = famed } add = 500 }
+	else_if = { limit = { rarity = illustrious } add = 1200 }
+}
+
+xalw_selected_feed_xp_value = {
+	value = scope:xalw_material.xalw_feed_base_xp_value
+	if = { limit = { OR = { AND = { scope:xalw_artifact.var:xalw_diet ?= flag:helmet scope:xalw_material = { artifact_slot_type = helmet } } AND = { scope:xalw_artifact.var:xalw_diet ?= flag:regalia scope:xalw_material = { artifact_slot_type = regalia } } AND = { scope:xalw_artifact.var:xalw_diet ?= flag:armor scope:xalw_material = { artifact_slot_type = armor } } AND = { scope:xalw_artifact.var:xalw_diet ?= flag:primary_armament scope:xalw_material = { artifact_slot_type = primary_armament } } AND = { scope:xalw_artifact.var:xalw_diet ?= flag:brooch scope:xalw_material = { artifact_slot_type = brooch } } AND = { scope:xalw_artifact.var:xalw_diet ?= flag:miscellaneous scope:xalw_material = { artifact_slot_type = miscellaneous } } AND = { scope:xalw_artifact.var:xalw_diet ?= flag:journal scope:xalw_material = { artifact_slot_type = journal } } } } multiply = 1.25 }
+	floor = yes
+}
+
+xalw_ai_living_adjustment_value = {
+	value = 0
+	        if = {
+	            limit = { xalw_is_living_trigger = yes }
+	            add = 60
+	            add = { value = xalw_base_hunger_value multiply = -15 }
+	            if = { limit = { artifact_owner ?= { health < 4 } } add = { value = xalw_base_hunger_value multiply = -45 } }
+
+	if = { limit = { has_variable = xalw_affix_1 } add = { value = var:xalw_affix_rank_1 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_2 } add = { value = var:xalw_affix_rank_2 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_3 } add = { value = var:xalw_affix_rank_3 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_4 } add = { value = var:xalw_affix_rank_4 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_5 } add = { value = var:xalw_affix_rank_5 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_6 } add = { value = var:xalw_affix_rank_6 multiply = 12 } }
+	if = { limit = { has_variable = xalw_curse_1 } add = { value = var:xalw_curse_rank_1 multiply = -30 } }
+	if = { limit = { var:xalw_curse_1 ?= 1 } add = { value = var:xalw_curse_rank_1 multiply = -45 } }
+	if = { limit = { var:xalw_curse_1 ?= 2 artifact_owner ?= { gold < 100 } } add = -300 }
+	if = { limit = { has_variable = xalw_curse_2 } add = { value = var:xalw_curse_rank_2 multiply = -30 } }
+	if = { limit = { var:xalw_curse_2 ?= 1 } add = { value = var:xalw_curse_rank_2 multiply = -45 } }
+	if = { limit = { var:xalw_curse_2 ?= 2 artifact_owner ?= { gold < 100 } } add = -300 }
+	if = { limit = { artifact_owner ?= { has_trait = brave } } add = 20 }
+	if = { limit = { artifact_owner ?= { has_trait = craven } } add = -20 }
+	}
+}
+
+xalw_ai_equipment_value = {
+	value = rarity_level
+	multiply = 100
+	if = { limit = { has_variable = quality } add = var:quality }
+	if = { limit = { has_variable = wealth } add = var:wealth }
+	add = { value = artifact_durability multiply = 0.01 }
+	add = xalw_ai_living_adjustment_value
+	if = { limit = { has_variable = cursed_artifact } add = -10000 }
+}
+
+artifact_ai_will_equip_score = {
+	value = 0
+	if = {
+	    limit = { scope:artifact = { has_variable = cursed_artifact } }
+	    add = -10000
+	}
+	if = {
+	    limit = { scope:artifact = { xalw_is_living_trigger = yes } }
+	    add = scope:artifact.xalw_ai_living_adjustment_value
+	}
+}

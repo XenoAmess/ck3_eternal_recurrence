@@ -1,0 +1,19 @@
+﻿xalw_hunger_1_modifier = {
+	health = -0.1
+}
+
+xalw_hunger_2_modifier = {
+	health = -0.2
+}
+
+xalw_hunger_3_modifier = {
+	health = -0.3
+}
+
+xalw_hunger_4_modifier = {
+	health = -0.4
+}
+
+xalw_hunger_5_modifier = {
+	health = -0.5
+}

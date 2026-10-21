@@ -109,6 +109,15 @@
       "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"]
     },
     {
+      "key": "living-artifacts",
+      "directory": "mod_living_artifacts",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "mod_living_artifacts/tools/build_release.py",
+      "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
+      "publication": "unreleased; original product; no Workshop target assigned"
+    },
+    {
       "key": "li-yu-dao",
       "directory": "mod_li_yu_dao",
       "workshop_item_id": "3817934804",

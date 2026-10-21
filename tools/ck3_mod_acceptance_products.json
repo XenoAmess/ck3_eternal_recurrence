@@ -705,7 +705,7 @@
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/xqol_ui_tail.json"
           },
-            "description": "Focused Song slider keypaths with explicit prior actual core and guard evidence; no core/appointment matrix replay.",
+          "description": "Focused Song slider keypaths with explicit prior actual core and guard evidence; no core/appointment matrix replay.",
           "opt_in_read_only_mcp_tools": [
             "ck3_query_current_title_appointment_v1"
           ]
@@ -3261,6 +3261,120 @@
       },
       "runtime_mod_key": "li-yu-dao",
       "external_mod": false
+    },
+    "living-artifacts": {
+      "directory": "mod_living_artifacts",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/mod_living_artifacts/tools/build_release.py",
+      "runtime_mod_key": "living-artifacts",
+      "external_mod": false,
+      "integration_status": "first-stage-core-ready-for-prototype-load-only-policy-blocked-live-not-run",
+      "cases": [
+        {
+          "id": "static-and-basicload",
+          "status": "blocked",
+          "implementation_credit": "Pending fixture policy: required_startup is empty and post_start remains unbound; generic prepare is not runnable; no live acceptance credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/living_artifacts_static_and_basicload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 1800,
+            "hold_seconds": 600,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "New bounded source-load case; no growth/content-matrix credit",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_engine_diagnostics_v1",
+            "ck3_query_engine_log_literals_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "source_load_only",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_living_artifacts",
+            "builder": "mod_living_artifacts/tools/build_release.py",
+            "release_flags": [
+              "--game",
+              "{game_dir}/game",
+              "--output",
+              "{new-output}"
+            ],
+            "workshop_item_id": null
+          }
+        },
+        {
+          "id": "core_continuous",
+          "status": "ready",
+          "implementation_credit": "First-stage real equip/monthly-growth/unequip adapter; actual observations NOT_RUN and production feeding remains picker-BLOCKED",
+          "adapter": {
+            "path": "{repo_root}/mod_living_artifacts/tools/acceptance_adapter.py",
+            "config": "{repo_root}/mod_living_artifacts/tools/core_continuous.contract.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 900,
+            "timeout": 4800,
+            "hold_seconds": 2700,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Bounded first-stage prototype; shared readiness floor remains separately effective; no content-matrix or release acceptance credit",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_player_artifact_personal_use_v1",
+            "ck3_submit_player_artifact_personal_use_v1",
+            "ck3_query_player_artifact_personal_use_action_post_v1",
+            "ck3_open_player_inventory_window_v1",
+            "ck3_query_player_inventory_window_open_post_v1",
+            "ck3_query_ingame_ui_window_v1",
+            "ck3_query_character_interaction_ordinary_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_pending_character_interaction_context_v1",
+            "ck3_reply_pending_character_interaction",
+            "ck3_save_checkpoint"
+          ],
+          "opt_in_read_only_mcp_tools": ["ck3_query_player_artifact_personal_use_v1"],
+          "opt_in_player_inventory_window_open": true,
+          "opt_in_player_artifact_personal_use_actions": true,
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "fixture_live_core_first_stage",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_living_artifacts",
+            "builder": "mod_living_artifacts/tools/build_release.py",
+            "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
+            "workshop_item_id": null
+          }
+        }
+      ]
     }
   },
   "workshop_cache_case": {

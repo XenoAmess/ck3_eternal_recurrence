@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T19:53:19Z",
+  "game_source_root": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game",
+  "evidence_scope": "Static installed-source inspection only; no executable version or live business qualification is inferred.",
+  "hash_algorithm": "SHA-256 of original file bytes, including BOM and original line endings",
+  "localization_followup": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-21T20:32:00Z",
+    "scope": "Static original localization/GUI inspection; no live getter qualification",
+    "correction": "Remove the script-only scope: prefix inside localization brackets. Named saved artifacts/characters resolve as objects and retain their original-source MakeScope methods; ROOT is already a scope and is a different receiver.",
+    "sources": [
+      {"path": "localization/english/artifacts/court_artifacts_l_english.yml", "sha256": "a79e057ae2a69fbd266aa763f957d2dcdfd840b030c4fc22ff281cea6fd94cda", "bindings": ["line72 newly_created_artifact.MakeScope.Var('banner_commissioner').Char.GetNameRegnal", "lines224-225 owner.MakeScope.Var('adventure_artifact_location')"]},
+      {"path": "localization/english/event_localization/hold_court_events/hold_court_events_joe_l_english.yml", "sha256": "89be82f0560d1e0c94fda3ccd7993b5241df563658d47ededc9002c74114d986", "bindings": ["line657 actor.MakeScope.ScriptValue('number_of_glory_hound_vassals')"]}
+    ]
+  },
+  "sources": [
+    {
+      "path": "common/on_action/inventory_on_actions.txt",
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "bindings": ["on_artifact_changed_owner: artifact root with owner and optional old_owner", "succession is followed by the ordinary changed-owner callback"]
+    },
+    {
+      "path": "common/on_action/_on_actions.info",
+      "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f",
+      "bindings": ["append child on_actions rather than override vanilla effect", "random_yearly_everyone_pulse covers unlanded NPCs", "trigger_event supports days/months/years delays"]
+    },
+    {
+      "path": "common/script_values/00_artifact_values.txt",
+      "sha256": "63f8372fc8892e9f00a823642926a2518b4caf036d65c67b91f553623a44c7ff",
+      "bindings": ["artifact_ai_will_equip_score root is owner, scope:artifact is candidate", "preserve vanilla cursed_artifact=-10000 behavior", "four native rarity enums are common/masterwork/famed/illustrious"]
+    },
+    {
+      "path": "common/scripted_effects/00_custom_loc_effects.txt",
+      "sha256": "0eb1dfe9f803238d1f97a33146459bc495e4ebffdb55bba727ae0960a3b8722b",
+      "bindings": ["source header explicitly states date arithmetic uses days", "current_date is stored as variable then used in subtraction"]
+    },
+    {
+      "path": "common/scripted_effects/00_ep1_artifact_effects.txt",
+      "sha256": "02f0408f7483eeee252333cd1ff57548406615de933f16c705bf100da4adfff7",
+      "bindings": ["destroy_artifact accepts a saved artifact scope", "source warns not to continue effects on a destroyed artifact; feeding destroys from owner scope"]
+    },
+    {
+      "path": "common/character_interactions/00_artifact_interactions.txt",
+      "sha256": null,
+      "hash_status": "unavailable",
+      "diagnostic": "CertUtil hash read failed twice with ERROR_FILE_INVALID 0x800703ee; text was read with rg and Python, but no byte identity is claimed here.",
+      "bindings": ["target_type=artifact, target_filter=actor_artifacts, can_be_picked_artifact", "is_unique trigger", "can_equip_artifact/can_benefit_from_artifact and equip_artifact_to_owner_replace"]
+    },
+    {
+      "path": "common/artifacts/templates/_templates.info",
+      "sha256": "6cdaf0ac1518c57a9343ae82ef2f05d7a7edf1a59823aa9ee62fbc8139407c0d",
+      "bindings": ["native can_benefit must not be bypassed", "fallback modifier applies only while equipped", "no scripted on_equip or on_unequip effect is documented"]
+    },
+    {
+      "path": "common/game_rules/_game_rules.info",
+      "sha256": "4432ad2d0218428bbc570ac363fbf9d314d54d5627b3c8670bc5d940a16be95b",
+      "bindings": ["rule_<key>, setting_<key>, setting_<key>_desc are mandatory localization names"]
+    }
+  ],
+  "limitations": [
+    "The executable's on_artifact_* string inspection found no equipped/unequipped callback; this absence does not prove that every possible native extension is impossible.",
+    "InventoryView.Unequip is a native GUI method, not an overridable scripted effect.",
+    "Native artifact modifiers provide immediate equip/unequip health projection; one-shot equip content requires its own verified producer.",
+    "Calendar experience dispatch uses a daily lightweight owner timer and a year/month key; there is no inference that native months=1 means a calendar month.",
+    "Suppression is explicitly 90 game days with renewal by 90 days during the final 30 days; annual actions use 365 days."
+  ]
+}

@@ -1,0 +1,354 @@
+﻿# Generated; edit tools, then run generate.py.
+xalw_begin_suppression_timer_effect = {
+	# Vanilla 00_custom_loc_effects explicitly states date arithmetic is days.
+	# Keep the single deadline on the artifact; ownership never resets it.
+	set_variable = { name = xalw_growth_suppressed_until value = { value = current_date add = 90 } }
+	if = { limit = { NOT = { has_variable = xalw_suppression_timer_sequence } } set_variable = { name = xalw_suppression_timer_sequence value = 0 } }
+	change_variable = { name = xalw_suppression_timer_sequence add = 1 }
+	save_scope_value_as = { name = xalw_suppression_timer_sequence value = var:xalw_suppression_timer_sequence }
+	trigger_event = { id = xalw.4 days = 90 }
+}
+
+xalw_appease_effect = {
+	save_scope_as = owner
+	if = {
+	    limit = {
+	        scope:xalw_artifact ?= {
+	            xalw_is_living_trigger = yes artifact_owner = scope:owner
+	            xalw_base_hunger_value > 0
+	            OR = { NOT = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+	        }
+	        gold >= scope:xalw_artifact.xalw_appease_cost_value
+	    }
+	    add_gold = { value = scope:xalw_artifact.xalw_appease_cost_value multiply = -1 }
+	    add_stress = 10
+	    scope:xalw_artifact = {
+	        set_variable = { name = xalw_appeased_until value = { value = current_date add = 365 } }
+	        set_variable = { name = xalw_appease_available_on value = { value = current_date add = 365 } }
+	        trigger_event = { id = xalw.5 days = 365 }
+	        xalw_refresh_artifact_effect = yes
+	    }
+	}
+}
+
+xalw_queue_ai_review_effect = {
+	# Defer out of the artifact ownership callback before any destruction.
+	# A new acquisition can queue another review as soon as this one ran.
+	if = {
+	    limit = { NOT = { has_variable = xalw_ai_review_queued } }
+	    set_variable = { name = xalw_ai_review_queued value = yes }
+	    trigger_event = { id = xalw.2 days = 1 }
+	}
+}
+
+xalw_ai_cultivate_effect = {
+	save_scope_as = owner
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = helmet
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = regalia
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = armor
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = primary_armament
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = brooch
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = miscellaneous
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+
+	        ordered_character_artifact = {
+	            limit = {
+	                artifact_slot_type = journal
+	                save_temporary_scope_as = xalw_ai_candidate
+	                scope:owner = { can_equip_artifact = scope:xalw_ai_candidate can_benefit_from_artifact = scope:xalw_ai_candidate }
+	            }
+	            order_by = xalw_ai_equipment_value
+	            if = {
+	                limit = { is_equipped = no xalw_ai_equipment_value > 0 }
+	                equip_artifact_to_owner_replace = yes
+	            }
+	        }
+
+	    ordered_character_artifact = {
+	        limit = { xalw_can_gain_xp_trigger = yes }
+	        order_by = { value = var:xalw_level multiply = 10 add = rarity_level }
+	        save_scope_as = xalw_artifact
+	    }
+	    if = {
+	        limit = { scope:xalw_artifact ?= { artifact_owner = scope:owner xalw_can_gain_xp_trigger = yes } }
+	every_character_artifact = { remove_variable = xalw_ai_keep }
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = helmet
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = regalia
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = armor
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = primary_armament
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = brooch
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = miscellaneous
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = miscellaneous
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = miscellaneous
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = miscellaneous
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	            ordered_character_artifact = {
+	                limit = {
+	                    artifact_slot_type = journal
+	                    is_equipped = no
+	                    NOT = { has_variable = xalw_ai_keep }
+	                }
+	                order_by = { value = rarity_level multiply = 1000 add = artifact_durability }
+	                set_variable = { name = xalw_ai_keep value = yes }
+	            }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = helmet
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = helmet } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = regalia
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = regalia } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = armor
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = armor } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = primary_armament
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = primary_armament } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = brooch
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = brooch } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = miscellaneous
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = miscellaneous } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+
+	        every_character_artifact = {
+	            limit = {
+	                artifact_slot_type = journal
+	                xalw_is_safe_feed_material_trigger = yes
+	                NOT = { has_variable = xalw_ai_keep }
+	                artifact_owner = { any_equipped_character_artifact = { artifact_slot_type = journal } }
+	            }
+	            add_to_list = xalw_ai_feed_materials
+	        }
+
+	        every_in_list = {
+	            list = xalw_ai_feed_materials
+	            save_scope_as = xalw_material
+	            scope:owner = { xalw_feed_material_effect = yes }
+	        }
+	        if = { limit = { prestige >= 200 stress < 70 } xalw_train_effect = yes }
+	        if = {
+	            limit = { gold >= 300 prestige >= 100 health < 4 scope:xalw_artifact.var:xalw_level >= 10 }
+	            xalw_suppress_effect = yes
+	        }
+	        if = {
+	            limit = { gold >= 300 health < 4 scope:xalw_artifact.xalw_base_hunger_value > 0 }
+	            xalw_appease_effect = yes
+	        }
+	    }
+}

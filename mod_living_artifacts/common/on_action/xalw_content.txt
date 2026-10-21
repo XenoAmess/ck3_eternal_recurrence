@@ -1,0 +1,12 @@
+﻿sway_success = { on_actions = { xalw_content_sway_success } }
+xalw_content_sway_success = { effect = { xalw_content_sway_success_effect = yes } }
+on_building_completed = { on_actions = { xalw_content_building_completed } }
+xalw_content_building_completed = { effect = { xalw_content_building_completed_effect = yes } }
+on_travel_plan_arrival = { on_actions = { xalw_content_arrival } }
+xalw_content_arrival = { effect = { xalw_content_arrival_effect = yes } }
+on_army_combat_finished = { on_actions = { xalw_content_army_finished } }
+xalw_content_army_finished = { effect = { xalw_content_army_finished_effect = yes } }
+on_scheme_discovered = { on_actions = { xalw_content_scheme_discovered } }
+xalw_content_scheme_discovered = { effect = { xalw_content_scheme_discovered_effect = yes } }
+on_death = { on_actions = { xalw_content_borrower_died } }
+xalw_content_borrower_died = { effect = { xalw_content_borrower_died_effect = yes } }

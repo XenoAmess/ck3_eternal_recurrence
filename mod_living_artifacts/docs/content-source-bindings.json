@@ -1,0 +1,840 @@
+{
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T20:12:41Z",
+  "evidence_kind": "installed-game-source-only",
+  "runtime_status": "NOT_RUN",
+  "source_root": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "patches": [
+    {
+      "relative_path": "common/activities/activity_types/feast.txt",
+      "normalized_sha256": "948ff37e08fa6426c12d11554785c81b65d4595f5e2f6367afccfa91da3b058d",
+      "family": "feast"
+    },
+    {
+      "relative_path": "common/secret_types/00_secret_types.txt",
+      "normalized_sha256": "a88dbbd075b1beda99ec15ffb32a7db2d23c49e7ea21798494b6b64cff6f2069",
+      "family": "secret"
+    },
+    {
+      "relative_path": "common/secret_types/00_bastard_secrets.txt",
+      "normalized_sha256": "f5d8970aa62f2987e57f4808ed694daf4aebb4b0fb94539dba84a00dea3ff14f",
+      "family": "secret"
+    },
+    {
+      "relative_path": "common/secret_types/dynastic_cycle_secrets.txt",
+      "normalized_sha256": "0033b55f0e0a7f5588d16062545359e1595d13b2f931d2812284b77073954d91",
+      "family": "secret"
+    },
+    {
+      "relative_path": "common/scripted_effects/00_single_combat_effects.txt",
+      "normalized_sha256": "ad9ea3686167effc327802dffe4091d90d82935a035448fc3bc9ad2ebbb550b9",
+      "family": "duel"
+    },
+    {
+      "relative_path": "events/stress_events/stress_threshold_events.txt",
+      "normalized_sha256": "a7bbf5307c62fdef9d90f8c591081c8c43d4b763eee57d0e7db7b5d20f9c7138",
+      "family": "stress"
+    },
+    {
+      "relative_path": "events/stress_events/stress_threshold_prison_events.txt",
+      "normalized_sha256": "377b30d55f3066e25bd73d155259616843833762910819dd60a13ed5de35d14f",
+      "family": "stress"
+    },
+    {
+      "relative_path": "events/stress_events/stress_threshold_special_events.txt",
+      "normalized_sha256": "5d1061732ba1a2ccdc5a2d279c783f0260842b9095a961b7177514ba3d3ea916",
+      "family": "stress"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt",
+      "normalized_sha256": "698583496ea1d149b23b726ba544176df3f4aa7b8090d171d40a85f7e84cc3a9",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_diplomacy_2_majesty_tree_perks.txt",
+      "normalized_sha256": "dc9473b6fb07db890eb62fa6c36e845b8b67a81db870cf72c03c79597fd41bf6",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_diplomacy_3_family_tree_perks.txt",
+      "normalized_sha256": "b4f34759b284904ee2ca0374a14642fd62ee645b6737a80ed4a3c2759807376d",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_intrigue_1_skulduggery_tree_perks.txt",
+      "normalized_sha256": "33686477df9bee8897c66959d643ac0772ea67f480f795f28b37c32e04f5cb63",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_intrigue_2_temptation_tree_perks.txt",
+      "normalized_sha256": "91dd9a6de9f8f88021e434986283f933729efa4713f0be0d1412a192d22b379f",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_intrigue_3_intimidation_tree_perks.txt",
+      "normalized_sha256": "b6bbc57ca7809395f12b8423dcbcfcfd7c21d1a383dbbb9c431560d4ce22fd47",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_learning_1_medicine_tree_perks.txt",
+      "normalized_sha256": "0b27116205d2d38c68310721be132374032515bf7bb01e309829d0f2255bb9cb",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_learning_2_scholarship_tree_perks.txt",
+      "normalized_sha256": "0706135c762ac4d30f214dc33e0fb1d822b140e48ae596c5fa839d922cac4367",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_learning_3_theology_tree_perks.txt",
+      "normalized_sha256": "bd65d0caa3f9bf46a3a68ceb939d98074f4306fa7cfecdb73d79e67fb644d14a",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_martial_1_strategy_tree_perks.txt",
+      "normalized_sha256": "8ab9fcd47490c3c5ab44e20ef1ae7ee1715e02c6d224be74045dfdaced2fbe85",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_martial_2_authority_tree_perks.txt",
+      "normalized_sha256": "de661b047853bbe2e1c74c3d112109adef2cf19b49feb9a5901ed816277069ad",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_martial_3_chivalry_tree_perks.txt",
+      "normalized_sha256": "8a69af9665a14049b3828dab99e26fb0abcfe8fa0bf945bbe8b27319c8416cf9",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_stewardship_1_wealth_tree_perks.txt",
+      "normalized_sha256": "8038dcc6cd14b31c169cfdde5d8b9ebf4bb76915d5799f341cb86c642d3f83aa",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt",
+      "normalized_sha256": "127c28c330ab1028558ee4b114c11982800d6b7465eb532eb56a725f9ec61e9f",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_stewardship_3_duty_tree_perks.txt",
+      "normalized_sha256": "d68c34617f297fc558ab19000b0f74a533c44e2a002223cd2d0d3e336f34dd4b",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_wanderer_1_surveyor_tree_perks.txt",
+      "normalized_sha256": "772e4aaa28e7a77df42ea38ee77cae6d6b064cdde22b46a2bec5a85d015b1a48",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "normalized_sha256": "3c9ce5eef3df1949f73ff8299ee31359fe0e4e4954761bcfeb140e0fa89f4e4b",
+      "family": "perk"
+    },
+    {
+      "relative_path": "common/lifestyle_perks/00_wanderer_3_voyager_tree_perks.txt",
+      "normalized_sha256": "f1c01f401d55124ef929862323304996432a4cb86dcd72a4dc238b283d04d62e",
+      "family": "perk"
+    }
+  ],
+  "native_on_action_sources": [
+    {
+      "relative_path": "common/on_action/knight_on_actions.txt",
+      "normalized_sha256": "351830441f08950cc15dce2c308732b5b280742d2aa17791a0ab9a1fdbafe1fc",
+      "native_entry": "on_army_combat_finished",
+      "scope_contract": "character; combat_side, victory, knights list"
+    },
+    {
+      "relative_path": "common/on_action/schemes/sway_on_actions.txt",
+      "normalized_sha256": "3e562a11e58952f2dc9cab90c59eeb849bd2c8a323d5df2380c94b07c7488086",
+      "native_entry": "sway_success",
+      "scope_contract": "character owner; target character"
+    },
+    {
+      "relative_path": "common/on_action/province_on_actions.txt",
+      "normalized_sha256": "459007812d708b0313c263d88f04722274af832c61155dda4847f95f0a6df523",
+      "native_entry": "on_building_completed",
+      "scope_contract": "province; actual county holder"
+    },
+    {
+      "relative_path": "common/on_action/travel_on_actions.txt",
+      "normalized_sha256": "dc81b4d831b19fd8c061eab78a2a1e516adbef80575415fae5b7057d48b468c6",
+      "native_entry": "on_travel_plan_arrival",
+      "scope_contract": "character; actual travel destination"
+    },
+    {
+      "relative_path": "common/on_action/scheme_on_actions.txt",
+      "normalized_sha256": "86360c5d7920f062315963dbe76306e27b37bdfed2c5383bcd05025f539d8812",
+      "native_entry": "on_scheme_discovered",
+      "scope_contract": "scheme; scheme_target_character"
+    },
+    {
+      "relative_path": "common/on_action/death.txt",
+      "normalized_sha256": "1a0f90c2fe5342d562e29d755ba062a6223cd1055f90971c2c3d1e0d3e4e982d",
+      "native_entry": "on_death",
+      "scope_contract": "dead character"
+    },
+    {
+      "relative_path": "common/on_action/inventory_on_actions.txt",
+      "normalized_sha256": "1499e4200e190e82397324972e4ca00d61ff140ae3097391a3cbf15d96693d41",
+      "native_entry": "on_artifact_changed_owner",
+      "scope_contract": "artifact; owner, old_owner"
+    }
+  ],
+  "state_fields": [
+    {
+      "name": "xalw_content_month_done",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Last real monthly dispatch; never advanced by UI inspection."
+    },
+    {
+      "name": "xalw_content_rank",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Transient selected rank for a real source callback."
+    },
+    {
+      "name": "xalw_content_source",
+      "scope": "character",
+      "value_type": "scope",
+      "purpose": "Transient selected equipped artifact reference."
+    },
+    {
+      "name": "xalw_content_loan_principal_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Annual original-borrower principal opportunity."
+    },
+    {
+      "name": "xalw_content_loan_instalment",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Actual original-borrower instalment size."
+    },
+    {
+      "name": "xalw_content_loan_periods",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Number of future instalment obligations remaining."
+    },
+    {
+      "name": "xalw_content_loan_arrears",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Unpaid amounts; cannot be reassigned with the artifact."
+    },
+    {
+      "name": "xalw_content_loan_due",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Current payment including older unpaid amounts."
+    },
+    {
+      "name": "xalw_content_payment",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Current bounded actual payment."
+    },
+    {
+      "name": "xalw_content_appetite_quote",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Frozen quote before the monthly deduction."
+    },
+    {
+      "name": "xalw_content_blood_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Ninety-day real-victory curse event cooldown."
+    },
+    {
+      "name": "xalw_content_dividend_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Ninety-day real-victory positive event cooldown."
+    },
+    {
+      "name": "xalw_content_sway_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "180-day actual successful sway cooldown."
+    },
+    {
+      "name": "xalw_content_build_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "180-day actual building completion cooldown."
+    },
+    {
+      "name": "xalw_content_dividend_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_dividend_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_blood_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_blood_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_sway_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_sway_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_build_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_build_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_destination_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_destination_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_ink_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_ink_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_feast_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_feast_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_laughter_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_laughter_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_alibi_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_alibi_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_secret_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_secret_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_funeral_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_funeral_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_exposure_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_exposure_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_realm_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_realm_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_lover_year",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_lover_count",
+      "scope": "character",
+      "value_type": "integer",
+      "purpose": "Calendar-year source opportunity ledger; follows the character."
+    },
+    {
+      "name": "xalw_content_destination_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_ink_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_feast_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_laughter_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_alibi_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_secret_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_funeral_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_prompt_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "Real source callback cooldown; transferring an item does not reset it."
+    },
+    {
+      "name": "xalw_content_loan_credit",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Original borrower payment/credit ledger; remains after unequip or transfer."
+    },
+    {
+      "name": "xalw_content_loan_credit_used",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Original borrower payment/credit ledger; remains after unequip or transfer."
+    },
+    {
+      "name": "xalw_content_loan_bad_debt",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Original borrower payment/credit ledger; remains after unequip or transfer."
+    },
+    {
+      "name": "xalw_content_build_credit",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Original borrower payment/credit ledger; remains after unequip or transfer."
+    },
+    {
+      "name": "xalw_content_build_reward",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Original borrower payment/credit ledger; remains after unequip or transfer."
+    },
+    {
+      "name": "xalw_content_previous_owner",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_prima_target",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_feast_guest",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_secret_1",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_secret_2",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_secret_3",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_memory_1",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_memory_2",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_memory_3",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_1",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_2",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_3",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_4",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_5",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_6",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_7",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_destination_8",
+      "scope": "artifact",
+      "value_type": "scope",
+      "purpose": "A reference to a genuinely observed game object; always validate existence before use."
+    },
+    {
+      "name": "xalw_content_fickle_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_runaway_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_rust_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_inherited_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_recovery_year",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_prima_streak",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_prima_last_month",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_ink_slot",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_ink_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_ink_effective_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_prima_slot",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_prima_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_prima_effective_rank",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_echo_power",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_echo_slot",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_jealous_slot",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_disabled_1",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_disabled_2",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_disabled_3",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_memory_prowess_1",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_memory_prowess_2",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_memory_prowess_3",
+      "scope": "artifact",
+      "value_type": "integer",
+      "purpose": "Persistent original-item ability/projection state; never creates an extra growth transaction."
+    },
+    {
+      "name": "xalw_content_ink_active",
+      "scope": "artifact",
+      "value_type": "timed_flag",
+      "purpose": "Timed original-item state; original calendar expiry continues while unequipped."
+    },
+    {
+      "name": "xalw_content_prima_active",
+      "scope": "artifact",
+      "value_type": "timed_flag",
+      "purpose": "Timed original-item state; original calendar expiry continues while unequipped."
+    },
+    {
+      "name": "xalw_content_echo_active",
+      "scope": "artifact",
+      "value_type": "timed_flag",
+      "purpose": "Timed original-item state; original calendar expiry continues while unequipped."
+    },
+    {
+      "name": "xalw_content_runaway_cooldown",
+      "scope": "artifact",
+      "value_type": "timed_flag",
+      "purpose": "Timed original-item state; original calendar expiry continues while unequipped."
+    },
+    {
+      "name": "xalw_content_last_equipped_durability",
+      "scope": "artifact",
+      "value_type": "number",
+      "purpose": "Last actually equipped monthly durability observation; repair is inferred only from a later increase."
+    },
+    {
+      "name": "xalw_content_secret_pending_owner",
+      "scope": "artifact",
+      "value_type": "flag",
+      "purpose": "One first-equipped-month attempt for this native ownership change; not an immediate equip hook."
+    },
+    {
+      "name": "xalw_content_observed_liege",
+      "scope": "character",
+      "value_type": "scope",
+      "purpose": "Knight's genuine living every_knight membership observation."
+    },
+    {
+      "name": "xalw_content_observed_prowess",
+      "scope": "character",
+      "value_type": "number",
+      "purpose": "Knight's last genuinely living prowess observation; not a death-time reconstruction."
+    },
+    {
+      "name": "xalw_content_last_wine_host",
+      "scope": "character",
+      "value_type": "scope",
+      "purpose": "Real feast guest relation, expires after 730 days."
+    },
+    {
+      "name": "xalw_content_wine_guest_cooldown",
+      "scope": "character",
+      "value_type": "timed_flag",
+      "purpose": "A real feast guest can receive the wine benefit once per 730 days across hosts."
+    }
+  ],
+  "enabled_affixes": [
+    "blood_dividend",
+    "funeral_choir",
+    "table_crasher",
+    "borrowed_voice",
+    "copper_stomach",
+    "dream_credit",
+    "secret_sniffer",
+    "alibi",
+    "map_chewer",
+    "ink_addiction",
+    "unseemly_laughter",
+    "jealous_prima"
+  ],
+  "enabled_curses": [
+    "blood_tithe",
+    "aristocratic_appetite",
+    "fickle_body",
+    "telltale",
+    "runaway",
+    "jealous_lover",
+    "rust_hunger",
+    "unquiet_realm"
+  ],
+  "enabled_combos": [
+    "victors_requiem",
+    "credit_inspection",
+    "under_table_prompt",
+    "let_it_cry"
+  ]
+}

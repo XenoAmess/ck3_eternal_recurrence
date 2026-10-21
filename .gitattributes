@@ -1,5 +1,13 @@
 * text=auto eol=lf
 
+# Living Artifacts preserves SHA-bound vanilla source around literal hook inserts.
+# Keep inherited whitespace rather than rewriting unrelated game definitions.
+mod_living_artifacts/common/activities/activity_types/feast.txt whitespace=-blank-at-eol,-blank-at-eof
+mod_living_artifacts/common/lifestyle_perks/*.txt whitespace=-blank-at-eol,-blank-at-eof
+mod_living_artifacts/common/secret_types/*.txt whitespace=-blank-at-eol,-blank-at-eof
+mod_living_artifacts/common/scripted_effects/xalw_native_00_single_combat_effects_*.txt whitespace=-blank-at-eol,-blank-at-eof
+mod_living_artifacts/events/stress_events/*.txt whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
+
 # Keep these machine-bound recovery qualifications at their original SHA bytes.
 docs/ck3-native-ai/evidence/c16-war8495-reconcile-source-qualification-2026-10-20.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c16-war8496-feeder-source-qualification-2026-10-20.json -text whitespace=cr-at-eol

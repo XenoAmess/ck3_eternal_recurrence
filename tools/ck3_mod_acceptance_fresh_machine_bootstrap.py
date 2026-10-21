@@ -73,6 +73,47 @@ class FreshMachineAdmission(TypedDict):
     business_pass: Literal[False]
 
 
+class FreshCurrentProcessObservation(TypedDict):
+    machine_id: str
+    observed_at_utc: str
+    runtime_inventory: JsonObject
+    ck3_inventory: JsonObject
+    process_absence_is_normal_exit_proof: Literal[False]
+
+
+def create_current_process_observation(*, runtime_inventory: object, ck3_inventory: object,
+                                       binding: MachineBinding) -> FreshCurrentProcessObservation:
+    """Bind two just-collected providers, never historical or cached inventories."""
+    observed = datetime.now(timezone.utc).isoformat()
+    identity = {'machine_id': binding['machine_id'], 'observed_at_utc': observed}
+    value = FreshCurrentProcessObservation(
+        machine_id=binding['machine_id'], observed_at_utc=observed,
+        runtime_inventory=json_object({**json_object(runtime_inventory), **identity}),
+        ck3_inventory=json_object({**json_object(ck3_inventory), **identity}),
+        process_absence_is_normal_exit_proof=False)
+    require_current_process_observation(value, binding)
+    return value
+
+
+def require_current_process_observation(value: object, binding: MachineBinding) -> None:
+    row = json_object(value)
+    if set(row) != {'machine_id', 'observed_at_utc', 'runtime_inventory', 'ck3_inventory',
+                   'process_absence_is_normal_exit_proof'}:
+        raise ValueError('Exact current fresh-machine process observation required')
+    _machine_utc_observation(row, binding['machine_id'])
+    runtime = object_field(row, 'runtime_inventory')
+    game = object_field(row, 'ck3_inventory')
+    for source in (runtime, game):
+        _machine_utc_observation(source, binding['machine_id'])
+    if (row.get('process_absence_is_normal_exit_proof') is not False
+            or runtime.get('blockers') != []
+            or runtime.get('process_absence_is_normal_exit_proof') is not False
+            or type(game.get('tasklist_returncode')) is not int or game.get('tasklist_returncode') != 0
+            or game.get('inventory_backend') != 'tasklist+toolhelp32'
+            or any(game.get(key) != [] for key in ('tasklist_pids', 'wmi_pids', 'native_pids', 'processes'))):
+        raise ValueError('Actual current dual-source CK3/runtime absence is not proven')
+
+
 def machine_binding(value: object) -> MachineBinding:
     row = json_object(value)
     if set(row) != {'machine_id', 'state_root', 'admission_root'}:
@@ -179,7 +220,7 @@ def parse_maintenance_closure(value: object) -> MaintenanceScreenClosure | Maint
         if (row.get('raw_observation_identity') != 'unknown'
                 or row.get('evidence_scope') != 'declared-maintenance-not-previous-game-exit'):
             raise ValueError('Maintenance declaration must preserve unknown raw identity and its limited scope')
-        _maintenance_observation(row, common['machine_id'])
+        _machine_utc_observation(row, common['machine_id'])
         return MaintenanceScreenDeclaration(
             **common, schema='ck3-mod-acceptance-maintenance-screen-declaration-v1',
             observed_at_utc=text_field(row, 'observed_at_utc'), raw_observation_identity='unknown',
@@ -189,7 +230,7 @@ def parse_maintenance_closure(value: object) -> MaintenanceScreenClosure | Maint
     return MaintenanceScreenClosure(**common, schema='ck3-mod-acceptance-maintenance-screen-closure-v1')
 
 
-def _maintenance_observation(row: JsonObject, machine_id: str) -> datetime:
+def _machine_utc_observation(row: JsonObject, machine_id: str) -> datetime:
     if row.get('machine_id') != machine_id:
         raise ValueError('Maintenance raw observation belongs to another machine')
     stamp = datetime.fromisoformat(text_field(row, 'observed_at_utc').replace('Z', '+00:00'))
@@ -246,12 +287,12 @@ def _maintenance_epochs(refs: list[FilePin], events: list[JsonObject], tasks: li
         inventory_times: list[datetime] = []
         for field in ('before_inventory', 'after_inventory'):
             inventory = _pinned_object(closure['before_inventory'] if field == 'before_inventory' else closure['after_inventory'])
-            inventory_times.append(_maintenance_observation(inventory, binding['machine_id']))
+            inventory_times.append(_machine_utc_observation(inventory, binding['machine_id']))
             if (type(inventory.get('tasklist_returncode')) is not int or inventory.get('tasklist_returncode') != 0
                     or any(inventory.get(key) != [] for key in ('tasklist_pids', 'wmi_pids', 'processes'))):
                 raise ValueError('Maintenance before/after actual CK3 absence is unavailable')
         actions = _pinned_object(closure['actions_result'])
-        action_time = _maintenance_observation(actions, binding['machine_id'])
+        action_time = _machine_utc_observation(actions, binding['machine_id'])
         if not inventory_times[0] <= inventory_times[1] <= action_time:
             raise ValueError('Maintenance before/after/action observations are out of order')
         if (actions.get('machine_id') != binding['machine_id']
@@ -316,10 +357,7 @@ def validate_fresh_bootstrap(
             or Path(bundle['repo_root']).resolve() != repo_root.resolve()
             or Path(bundle['bus_dir']).resolve() != bus_dir.resolve()):
         raise ValueError('Fresh-machine bootstrap differs from selected runtime/repository/local bus')
-    # The caller generated this inventory using the existing native/process provider.
-    inventory = json_object(process_inventory)
-    if inventory.get('blockers') != [] or inventory.get('process_absence_is_normal_exit_proof') is not False:
-        raise ValueError('Actual CK3/keeper/controller absence is not proven')
+    require_current_process_observation(process_inventory, actual)
     require_unused_bus(bus_events, bus_packet, maintenance_closures=bundle['maintenance_closures'], binding=actual)
     source = json.loads(bootstrap_path.read_text(encoding='utf-8-sig'))
     if parse_bootstrap(source) != bundle:

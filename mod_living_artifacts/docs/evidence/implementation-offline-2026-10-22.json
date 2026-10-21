@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T20:33:32.088699+00:00",
+  "scope": "offline_structure_and_format_only",
+  "business_pass": false,
+  "game_started": false,
+  "mod_unit_tests": {
+    "status": "PASS",
+    "count": 32,
+    "command": "python -m unittest discover -s mod_living_artifacts/tools -p test_*.py"
+  },
+  "strict_type_check": {
+    "status": "PASS",
+    "files": 13,
+    "command": "python -m mypy --strict --follow-imports=silent mod_living_artifacts/tools/*.py"
+  },
+  "release_structure": {
+    "status": "PASS",
+    "runtime_files": 57,
+    "live_credit": false
+  },
+  "localization": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-21T20:32:53.411187+00:00",
+    "source_sha256": "d0f3eab1503688305d55b8c57a505536dd25e4e5e69ec1f7fdb5f0c48e517a01",
+    "model": "MiniMax-M3",
+    "source_keys": 294,
+    "format_certified": [
+      "french",
+      "german",
+      "japanese",
+      "korean",
+      "polish",
+      "russian",
+      "spanish"
+    ],
+    "failures": [],
+    "non_chinese_semantic_review": false,
+    "live_verified": false,
+    "receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\localization\\incremental-20261021T203237Z\\result.json",
+      "bytes": 473,
+      "sha256": "dd826969efde10fc70e387ed04dd78b29dd8b2e9cab01469b23bb9408ae4a55e"
+    },
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\simp_chinese\\xalw_l_simp_chinese.yml",
+      "bytes": 26774,
+      "sha256": "d0f3eab1503688305d55b8c57a505536dd25e4e5e69ec1f7fdb5f0c48e517a01"
+    },
+    "files": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\english\\xalw_l_english.yml",
+        "bytes": 27602,
+        "sha256": "7c6cd70ec6009647d3f9122265438e36143716e068a8c6f05895fb658930ec60"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\french\\xalw_l_french.yml",
+        "bytes": 29540,
+        "sha256": "e1c4aaabcc7621af8ab037d907bb359fa7b20b3e75ff468306b04a1d51784b15"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\german\\xalw_l_german.yml",
+        "bytes": 29248,
+        "sha256": "2cb39042b258642858f47f7161aa875cf1ea69baf20ccd5045bdd44606293a2e"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\japanese\\xalw_l_japanese.yml",
+        "bytes": 29415,
+        "sha256": "94d7e74fa5f38d357345f5a562ec03e9dfd8c5a1154ca3859af1cb1c585735e2"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\korean\\xalw_l_korean.yml",
+        "bytes": 29794,
+        "sha256": "ca3ebcd320a416acad7c293df7b412622104fcb562865361e0f73ac662610ade"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\polish\\xalw_l_polish.yml",
+        "bytes": 28669,
+        "sha256": "465bbfa39b6e2096240b7b9acff79e471ae40caf6c3e2e48376d60a371fd4430"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\russian\\xalw_l_russian.yml",
+        "bytes": 36403,
+        "sha256": "491511a4ee9b20f4a6fd3cd06790f88aabfbad0540a315e5e58c8d49a6f13d50"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\simp_chinese\\xalw_l_simp_chinese.yml",
+        "bytes": 26774,
+        "sha256": "d0f3eab1503688305d55b8c57a505536dd25e4e5e69ec1f7fdb5f0c48e517a01"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\spanish\\xalw_l_spanish.yml",
+        "bytes": 29321,
+        "sha256": "61f124ed4b91fc10ff9432070e02d75af43512262d31ba2686006f9fdf38e8e8"
+      }
+    ]
+  },
+  "installed_artifact_interaction_reinspection": {
+    "scope": "New observation after Steam same-build file repair; earlier unavailable SHA remains historical",
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_artifact_interactions.txt",
+    "bytes": 108928,
+    "sha256": "6272e3df8fcdfbeda14a83f3d4410251db5176496e0647f0833e252653aa8e7a",
+    "repair_receipt_directory": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-maintenance-a01",
+    "business_pass": false
+  },
+  "python": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe"
+}

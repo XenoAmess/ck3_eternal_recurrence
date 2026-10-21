@@ -11,3 +11,5 @@
 同日补充：首次启动前可能需要修复安装或维护Steam。已有屏幕历史只有在逐项提交 `maintenance_closures` 原件pin，证明原始登记就声明 `maintenance-only:no-game-start`、从未分配canonical实机编号、维护前后CK3双源清单为空、任务实际释放并保持该释放头时，才可作为纯维护epoch放行。两份清单及动作结果各自必须有匹配的machine_id和有序UTC时间；不拿外层机器字段推认原件所属机器。当前屏幕占用、原件漂移、缺少声明和真实游戏历史仍拒绝，旧legacy规则不变。增量回归累计15项通过，新合同及测试仍通过严格mypy。
 
 第二次补充：对早于上述原件字段合同的纯维护记录，另有显式`maintenance-screen-declaration-v1`。它保留`raw_observation_identity=unknown`及原件pin，只证明该屏幕epoch事前声明维护且已真实释放，不使用身份未核的旧清单证明同机、旧游戏退出或过去的进程状态。声明自身有当前machine_id/UTC；首次游戏分配仍只依赖当前OS身份、无canonical/shared实机历史、当前进程及资源守卫和原子首次编号。它不降级严格原件闭场schema，也不能用于普通第二场或绕过在用CK3。累计16项回归与修改文件严格类型检查通过。
+
+第三次补充：首次分配的当前进程守卫同时读取所绑定共同源码的tasklist、Toolhelp和psutil清单，使用严格的`FreshCurrentProcessObservation`字段合同拒绝缺失、错类型、非空或来源不可用。这是分配当时的新鲜观测，不授予历史维护记录退出信用。累计17项回归通过；本次增量的合同、helper与测试通过严格mypy。legacy allocator以同一`--check-untyped-defs`参数对基线和当前各检查一次，均为64项既有问题，归一化增量为空，未声称整个allocator通过严格类型检查。当前机器及实际命令证据见外置`environment/allocator-type-scope/result.json`。

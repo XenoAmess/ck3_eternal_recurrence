@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "living-artifacts",
+  "case_id": "static-and-basicload",
+  "acceptance_scope": "static_and_basicload",
+  "fixture_emitter": null,
+  "maximum_natural_days": 0,
+  "failure_prefixes": ["xalw:"],
+  "gui_phases": [],
+  "source_contracts": [
+    "mod_living_artifacts/docs/test-plan.md",
+    "mod_living_artifacts/docs/implementation-adjustments.md"
+  ],
+  "uncovered_product_business": [
+    "automatic growth and native material destruction",
+    "AI and unlanded autonomous cultivation",
+    "all twelve abilities and eight curses",
+    "unequip, gift, inheritance, cold reload and multiplayer",
+    "Chinese gameplay screenshots and actual Workshop publication"
+  ],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "required_startup": [],
+  "forbidden_startup": ["xalw: TEST FAIL"],
+  "source_catalogue": {
+    "directory": "mod_living_artifacts",
+    "builder": "mod_living_artifacts/tools/build_release.py",
+    "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
+    "workshop_item_id": null
+  },
+  "business_contract_applicable": false,
+  "ordinary_post_start_input": "Only actual selected 1066 Robert government/tier/independence may fill these nulls; no actor change or fixture business setters",
+  "calendar_bound_provenance": "No natural-day advancement or business acceptance credit in the load case"
+}
