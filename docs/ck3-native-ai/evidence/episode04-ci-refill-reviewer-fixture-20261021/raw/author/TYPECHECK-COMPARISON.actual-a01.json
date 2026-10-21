@@ -1,0 +1,40 @@
+{
+  "schema": "xar.e04.ci-refill.modified-strict-comparison.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T03:32:21.866752+00:00",
+  "baseline": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline\\test_ck3_mod_acceptance_r06_scope.py",
+    "bytes": 21626,
+    "sha256": "caf54694403fdf97d12c9514e53bc2ca75e54ac9fbb02b03d9db40da58630465"
+  },
+  "candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+    "bytes": 23975,
+    "sha256": "7abfe27faec9bd806319d20af499ac5bcf40d193f625d2dd33758551341c0284"
+  },
+  "baseline_error_count": 35,
+  "candidate_error_count": 1,
+  "introduced_diagnostics": [],
+  "legacy_remaining": {
+    "baseline_line": 292,
+    "candidate_line": 330,
+    "statement": "change(s, c, reviewed)",
+    "AST_equal": true,
+    "diagnostic": "Call to untyped function (unknown) in typed context [no-untyped-call]"
+  },
+  "modified_reviewer_fixture_or_new_regression_diagnostics": 0,
+  "two_external_helper_diagnostics_in_actual_three_file_check": 0,
+  "whole_fixture_strict_PASS": false,
+  "actual_receipts": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-baseline-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1889,
+      "sha256": "5447a609cb23566b54c71e57e7b361439d54e80801e0f386821d2272f2d6dcbf"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-candidate-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2575,
+      "sha256": "7dc9b81f15517a21f1459ce8c639a0d9cc360dae01dc47336de4e391518b8644"
+    }
+  ]
+}

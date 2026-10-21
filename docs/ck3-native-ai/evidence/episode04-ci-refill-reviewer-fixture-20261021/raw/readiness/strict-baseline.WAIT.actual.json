@@ -1,0 +1,45 @@
+{
+  "schema": "xar.ci.readiness.original-check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-21T03:38:10.503604+00:00",
+  "observed_at_utc": "2026-10-21T03:38:20.141278+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "--follow-imports=skip",
+    "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\baseline\\test_ck3_mod_acceptance_readiness_handoff.py"
+  ],
+  "pid": 30324,
+  "creation_time_100ns": "134370274905051698",
+  "identity_diagnostic": null,
+  "actual_original_popen_wait": true,
+  "returncode": 1,
+  "fixture": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\baseline\\test_ck3_mod_acceptance_readiness_handoff.py",
+    "bytes": 7346,
+    "sha256": "faac711a8c610ff36931ab519fa21265d0ec78cd2a9daa2aa3d118f983ce91ee"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\run_fixture.py",
+    "bytes": 832,
+    "sha256": "c48af2a4822016e2071050efe13efba63362841f010f62995a767498644f4719"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\strict-baseline.stdout",
+    "bytes": 1406,
+    "sha256": "282ea2ce856b8160ae9c920aa9a1c10f230dc265f74e9224779647da42a70520"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\strict-baseline.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "no_native_SDK_Steam_Game": true
+}

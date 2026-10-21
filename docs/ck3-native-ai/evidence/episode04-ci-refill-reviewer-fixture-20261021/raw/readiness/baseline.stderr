@@ -1,0 +1,71 @@
+EEE
+======================================================================
+ERROR: test_public_run_owns_single_readiness_before_original_adapter_entry (__main__.ReadinessHandoff.test_public_run_owns_single_readiness_before_original_adapter_entry) (adapter='ck3_mod_acceptance_cases.rmtm_adapter', case='core')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\readiness-repair-a01\baseline\test_ck3_mod_acceptance_readiness_handoff.py", line 97, in test_public_run_owns_single_readiness_before_original_adapter_entry
+    result = selection.run()
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance.py", line 842, in run
+    resolve_operator_reviewer(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance_client.py", line 40, in resolve_operator_reviewer
+    frozen = read_json(frozen_path)
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance_client.py", line 29, in read_json
+    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+                      ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\tmp\\tmpwuwt1prc\\synthetic-frozen.json'
+
+======================================================================
+ERROR: test_public_run_owns_single_readiness_before_original_adapter_entry (__main__.ReadinessHandoff.test_public_run_owns_single_readiness_before_original_adapter_entry) (adapter='ck3_mod_acceptance_cases.rmtm_adapter', case='threshold_ui')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\readiness-repair-a01\baseline\test_ck3_mod_acceptance_readiness_handoff.py", line 97, in test_public_run_owns_single_readiness_before_original_adapter_entry
+    result = selection.run()
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance.py", line 842, in run
+    resolve_operator_reviewer(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance_client.py", line 40, in resolve_operator_reviewer
+    frozen = read_json(frozen_path)
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance_client.py", line 29, in read_json
+    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+                      ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\tmp\\tmpn14yjd1z\\synthetic-frozen.json'
+
+======================================================================
+ERROR: test_public_run_owns_single_readiness_before_original_adapter_entry (__main__.ReadinessHandoff.test_public_run_owns_single_readiness_before_original_adapter_entry) (adapter='ck3_mod_acceptance_cases.ted_adapter', case='production_ui')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\readiness-repair-a01\baseline\test_ck3_mod_acceptance_readiness_handoff.py", line 97, in test_public_run_owns_single_readiness_before_original_adapter_entry
+    result = selection.run()
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance.py", line 842, in run
+    resolve_operator_reviewer(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance_client.py", line 40, in resolve_operator_reviewer
+    frozen = read_json(frozen_path)
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\ck3_mod_acceptance_client.py", line 29, in read_json
+    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+                      ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\readiness-repair-a01\\tmp\\tmpqne7ywys\\synthetic-frozen.json'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.083s
+
+FAILED (errors=3)

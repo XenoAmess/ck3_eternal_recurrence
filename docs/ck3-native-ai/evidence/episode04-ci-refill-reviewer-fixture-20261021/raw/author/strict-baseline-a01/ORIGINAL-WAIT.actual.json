@@ -1,0 +1,47 @@
+{
+  "schema": "xar.e04.ci-refill-scope.original-Popen-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-21T03:25:07.383585+00:00",
+  "observed_at_utc": "2026-10-21T03:25:17.736336+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--follow-imports=skip",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\shadow\\tools\\test_ck3_mod_acceptance_r06_scope.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01",
+  "original_pid": 36956,
+  "creation_time_100ns": "134370267073847021",
+  "original_wait_returncode": 1,
+  "elapsed_seconds": 10.352755399886519,
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\shadow\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 21626,
+      "sha256": "caf54694403fdf97d12c9514e53bc2ca75e54ac9fbb02b03d9db40da58630465"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-baseline-a01\\stdout.log",
+    "bytes": 4677,
+    "sha256": "2984bc97856d1466b37d97be393497ba07dcccbf73e9f1c34e8c41b6ac6163af"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-baseline-a01\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logs_total_retained_bytes": 9606,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "all_native_SDK_Game_launch_boundaries_mocked": true,
+  "actual_native_Game_SDK_Steam": false,
+  "tmp_remaining": []
+}

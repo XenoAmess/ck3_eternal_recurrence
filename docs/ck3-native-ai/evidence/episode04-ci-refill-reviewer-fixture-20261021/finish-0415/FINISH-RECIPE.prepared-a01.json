@@ -1,0 +1,90 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T03:57:30.119253+00:00",
+  "schema": "xar.e04.exact-staged-finish.recipe.v1",
+  "expected_HEAD": "7e5b2ea60cb7634239ffb8c00fb3495af41d4ac7",
+  "old_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\EXACT-COPYPLAN.prepared-a02.json",
+    "bytes": 25011,
+    "sha256": "20fa5f72cd2df9a88524b79660e52e8695761f167129952f160c52699ef20f69"
+  },
+  "old52_count": 52,
+  "hard_deadline_utc": "2026-10-21T04:15:00Z",
+  "supplements": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-ci-staged-finish-0415-a01\\EXACT-WHITESPACE-EXCEPTIONS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/finish-0415/EXACT-WHITESPACE-EXCEPTIONS.actual-a01.json",
+      "bytes": 15430,
+      "sha256": "63b080d0376ede7b09e25afdbb66d05094f1c71c140dc063f19ffe44599a47dd",
+      "git_blob": "9ac051edab80202a65c456be31a2546faf389aea",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-ci-staged-finish-0415-a01\\OLD52-INTEGRITY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/finish-0415/OLD52-INTEGRITY.actual-a01.json",
+      "bytes": 841,
+      "sha256": "4f1d72ce2a733af35107b791aee1babe43ad890d60b3f6ac9f83945dbe91e9fd",
+      "git_blob": "ba9c957778995335d315e6860c1f39b32f3ae56b",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-ci-staged-finish-0415-a01\\SOURCE-PREVIEW-CORRECTION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/finish-0415/SOURCE-PREVIEW-CORRECTION.actual-a01.json",
+      "bytes": 1134,
+      "sha256": "634776b09d9f6a30862a64fe30598d9ce08a6c8a11351214632724426205228b",
+      "git_blob": "2a44e6044797e04ca910d0526e715e7e5cbc546e",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-ci-staged-finish-0415-a01\\FINISH-SOURCE-FREEZE.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/finish-0415/FINISH-SOURCE-FREEZE.actual-a01.json",
+      "bytes": 23005,
+      "sha256": "611bb5654013b9234eeb22d891aed0f5cc1e51fe492f4d88b6a27402e2859ef5",
+      "git_blob": "d1de30e0e668fcbcdda798e6635c8fa5c1700244",
+      "old": null
+    }
+  ],
+  "maximum_new_LF_JSON": 6,
+  "actual_new_LF_JSON_count_including_recipe": 5,
+  "Root_adoption": "external exact pin in new actual execution card, not staged",
+  "exact_raw_whitespace_exceptions": [
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/EXACT-SHADOW-SOURCES.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/R06-SCOPE-FIXTURE.candidate-a01.patch",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/SOURCE-INPUTS.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/SUPPORT-SOURCES.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/baseline-complete-a02/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/baseline-complete-a02/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/baseline-repro-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/baseline-repro-a01/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/candidate-focused-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/candidate-focused-a01/stderr.log",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/strict-baseline-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/strict-baseline-a01/stdout.log",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/strict-candidate-a01/ORIGINAL-WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/author/strict-candidate-a01/stdout.log",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/SOURCE-FREEZE.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/SOURCES.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/baseline.WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/baseline.stderr",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/focused.WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/focused.stderr",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/strict-baseline.WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/strict-baseline.stdout",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/strict-candidate.WAIT.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-ci-refill-reviewer-fixture-20261021/raw/readiness/strict-candidate.stdout"
+  ],
+  "actual_full_staged_diagnostic": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-ci-staged-finish-0415-a01\\FULL-STAGED-DEFAULT-CHECK.stdout.actual.txt",
+    "bytes": 223727,
+    "sha256": "7a639528813bbca98a57077bd39e3916e23efbb8ecfaa3d03106dd26544f9299"
+  },
+  "old52_integrity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-ci-staged-finish-0415-a01\\OLD52-INTEGRITY.actual-a01.json",
+    "bytes": 841,
+    "sha256": "4f1d72ce2a733af35107b791aee1babe43ad890d60b3f6ac9f83945dbe91e9fd"
+  },
+  "core_whitespace_changed": false,
+  "old_copy_stage_replayed": false,
+  "maximum_commit": 1,
+  "maximum_nonforce_push": 1
+}

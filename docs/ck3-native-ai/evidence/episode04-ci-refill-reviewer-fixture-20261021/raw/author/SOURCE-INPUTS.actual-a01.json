@@ -1,0 +1,59 @@
+{
+  "schema": "xar.e04.ci-refill.exact-source-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T03:19:32.236753+00:00",
+  "source_head": "58d6058d9aa202f91f1046753bb5d0df23e55c77",
+  "repo": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "Git_readonly_no_lazy_fetch": true,
+  "financial": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\capacity\\FINANCIAL-SOURCE-PLANNING0345.actual-a01.json",
+    "bytes": 2814,
+    "sha256": "e8d61d2e408e0e642f73eff7c6088c5472e5b4f24244147dbc6f468d17b22505"
+  },
+  "sources": [
+    {
+      "repository_relative_path": "tools/test_ck3_mod_acceptance_r06_scope.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 21626,
+      "sha256": "caf54694403fdf97d12c9514e53bc2ca75e54ac9fbb02b03d9db40da58630465"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61981,
+      "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_client.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 68212,
+      "sha256": "3306d79956827717596671425b11073a5cce4ee79ea9cca14b90cd140037801e"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_allocate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158788,
+      "sha256": "b99c56abbb08306387ea216efa75041f00c947af8fe132bac0b2c61cc1c84545"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 18032,
+      "sha256": "8f30c0e963a18046baede607d1b5a9b3fb1e5d823c51533f0c3700d81a41ab8c"
+    }
+  ],
+  "baseline_command_runs_canonical_exact_test": true,
+  "safety": {
+    "keeper_Popen": "Mock",
+    "allocator_subprocess_run": "Mock",
+    "CaseClient": "Mock",
+    "business_R06_R04": "Mock",
+    "native_snapshot": "Mock",
+    "machine_screen_inventory": "Mock",
+    "ID_state": "temporary isolated namespace",
+    "host_cli": "AST only; fake host raises if executed",
+    "CK3": "33-byte nonexecutable text fixture, never executed",
+    "profile_S0_materialization": "fixture override"
+  },
+  "production_guard_changes": false
+}

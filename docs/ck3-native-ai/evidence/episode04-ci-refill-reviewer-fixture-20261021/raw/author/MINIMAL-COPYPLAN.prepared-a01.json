@@ -1,0 +1,225 @@
+{
+  "schema": "xar.e04.ci-refill.minimal-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T03:32:21.866752+00:00",
+  "base_source_head": "58d6058d9aa202f91f1046753bb5d0df23e55c77",
+  "mappings": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+        "bytes": 23975,
+        "sha256": "7abfe27faec9bd806319d20af499ac5bcf40d193f625d2dd33758551341c0284"
+      },
+      "repository_relative_path": "tools/test_ck3_mod_acceptance_r06_scope.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline\\test_ck3_mod_acceptance_r06_scope.py",
+        "bytes": 21626,
+        "sha256": "caf54694403fdf97d12c9514e53bc2ca75e54ac9fbb02b03d9db40da58630465"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline/test_ck3_mod_acceptance_r06_scope.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\R06-SCOPE-FIXTURE.candidate-a01.patch",
+        "bytes": 7904,
+        "sha256": "fb8a2a10e96ff3f4d2e398e8bc4e8d721388c87f4e34eb758ffc86c00723f2c8"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/R06-SCOPE-FIXTURE.candidate-a01.patch"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\run_check.py",
+        "bytes": 3798,
+        "sha256": "254a079120ee025f59d55b5dc2c7714ed0854ec5d100be3bd748d6a73b2cc20a"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/run_check.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\run_candidate.py",
+        "bytes": 714,
+        "sha256": "032f2660ab73ddf31985b42ed6fda9c86a48585e92c896f4eeb1cc08df5033a6"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/run_candidate.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\SOURCE-INPUTS.actual-a01.json",
+        "bytes": 2825,
+        "sha256": "2e6fe50c7e78024cdad38c8130215ffc934fe6f3b53a9ff89dd1f44287fd4c2b"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/SOURCE-INPUTS.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\SUPPORT-SOURCES.actual-a01.json",
+        "bytes": 3439,
+        "sha256": "2358f37d53d46751069202dd23d24eb07d37dc19d9b70010a52a98741b36e79f"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/SUPPORT-SOURCES.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\EXACT-SHADOW-SOURCES.actual-a01.json",
+        "bytes": 9656,
+        "sha256": "e9d5c56d70b0a90b1a8c75816dc16b3bf3a3d1b27c8ab4ad638e5680e9799619"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/EXACT-SHADOW-SOURCES.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\TYPECHECK-COMPARISON.actual-a01.json",
+        "bytes": 1763,
+        "sha256": "eecde8cf8778cdf8968416d3e4c55669966c7861d46f7e16b369cad61338b93a"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/TYPECHECK-COMPARISON.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\README.md",
+        "bytes": 2502,
+        "sha256": "39da3a42631e84ab03a9448c2f7d93ed791966c417a906a4adc2a0c20d2ff431"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/README.md"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\SOURCE-FREEZE.actual-a01.json",
+        "bytes": 8249,
+        "sha256": "c32374d9763061078e451fe8528729ba252c2c6cc7fa6d7d948ef51e61c18986"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/SOURCE-FREEZE.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline-repro-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2332,
+        "sha256": "40713a4dd1f3c86aebe8c285639ed3ce8deea60ae6adad399df9396c39f8d47f"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline-repro-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline-repro-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline-repro-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline-repro-a01\\stderr.log",
+        "bytes": 533,
+        "sha256": "45b7c18b9d97b2805fed972f36bb786e50a4d35515abaec3d2954e4c9acadd11"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline-repro-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline-complete-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2148,
+        "sha256": "c4598e7d060bc8fe7ddfda55e16f3bb83e7b2389df3635176bb4e138fd37ecc6"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline-complete-a02/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline-complete-a02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline-complete-a02/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\baseline-complete-a02\\stderr.log",
+        "bytes": 4396,
+        "sha256": "38a8258d13096efdec8fc550a5b6eb41851ab39b8fdd907529d121fff8881980"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/baseline-complete-a02/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1889,
+        "sha256": "5447a609cb23566b54c71e57e7b361439d54e80801e0f386821d2272f2d6dcbf"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/strict-baseline-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-baseline-a01\\stdout.log",
+        "bytes": 4677,
+        "sha256": "2984bc97856d1466b37d97be393497ba07dcccbf73e9f1c34e8c41b6ac6163af"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/strict-baseline-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-baseline-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/strict-baseline-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate-focused-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2235,
+        "sha256": "c640fc76d8a21e498411b2c66303c819f3a341b627911cc5e03ee3a1a667b0ba"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/candidate-focused-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate-focused-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/candidate-focused-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate-focused-a01\\stderr.log",
+        "bytes": 109,
+        "sha256": "327c590abd651c3a0f2837e39ddaa097e68c3c048b1f984596de1d8757767c39"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/candidate-focused-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-candidate-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2575,
+        "sha256": "7dc9b81f15517a21f1459ce8c639a0d9cc360dae01dc47336de4e391518b8644"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/strict-candidate-a01/ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-candidate-a01\\stdout.log",
+        "bytes": 187,
+        "sha256": "82171100106d96ef18048f31e004de8778a6557f3f01773cc7843bce1497c6b2"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/strict-candidate-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\strict-candidate-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/evidence/episode04-ci-r06-scope-reviewer-20261021-a01/strict-candidate-a01/stderr.log"
+    }
+  ],
+  "files": 26,
+  "payload_bytes": 107532,
+  "shadow_tree_not_copied": true,
+  "exact_shadow_inputs_reconstruct_from_Git_head": "58d6058d9aa202f91f1046753bb5d0df23e55c77",
+  "code_changes_only": [
+    "tools/test_ck3_mod_acceptance_r06_scope.py"
+  ],
+  "production_guards_unchanged": true,
+  "Git_mutation_admitted": false
+}

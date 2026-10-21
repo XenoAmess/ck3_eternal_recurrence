@@ -1,0 +1,61 @@
+..FFFF.
+======================================================================
+FAIL: test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client (__main__.PublicR06ScopeTests.test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\test_ck3_mod_acceptance_r06_scope.py", line 216, in test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client
+    self.assertEqual(entry.native_dispatch(self.args('preflight', self.reviewed_path))['blockers'], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['Operator reviewer: Actual allocated run [39 chars]iew'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'Operator reviewer: Actual allocated run reviewer required; never claim Root review'
+
++ []
+- ['Operator reviewer: Actual allocated run reviewer required; never claim Root '
+-  'review']
+
+======================================================================
+FAIL: test_run_requires_background_receipt_before_launcher (__main__.PublicR06ScopeTests.test_run_requires_background_receipt_before_launcher) (mode='missing')
+----------------------------------------------------------------------
+ValueError: Preflight blocked: Operator reviewer: Actual allocated run reviewer required; never claim Root review
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\test_ck3_mod_acceptance_r06_scope.py", line 264, in test_run_requires_background_receipt_before_launcher
+    with self.assertRaisesRegex(ValueError, 'steam_offline_receipt'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "steam_offline_receipt" does not match "Preflight blocked: Operator reviewer: Actual allocated run reviewer required; never claim Root review"
+
+======================================================================
+FAIL: test_run_requires_background_receipt_before_launcher (__main__.PublicR06ScopeTests.test_run_requires_background_receipt_before_launcher) (mode='null')
+----------------------------------------------------------------------
+ValueError: Preflight blocked: Operator reviewer: Actual allocated run reviewer required; never claim Root review
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\test_ck3_mod_acceptance_r06_scope.py", line 264, in test_run_requires_background_receipt_before_launcher
+    with self.assertRaisesRegex(ValueError, 'steam_offline_receipt'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "steam_offline_receipt" does not match "Preflight blocked: Operator reviewer: Actual allocated run reviewer required; never claim Root review"
+
+======================================================================
+FAIL: test_run_requires_background_receipt_before_launcher (__main__.PublicR06ScopeTests.test_run_requires_background_receipt_before_launcher) (mode='empty')
+----------------------------------------------------------------------
+ValueError: Preflight blocked: Operator reviewer: Actual allocated run reviewer required; never claim Root review
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r10-ci-refill-scope-0345-a01\public-repair-a01\shadow\tools\test_ck3_mod_acceptance_r06_scope.py", line 264, in test_run_requires_background_receipt_before_launcher
+    with self.assertRaisesRegex(ValueError, 'steam_offline_receipt'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "steam_offline_receipt" does not match "Preflight blocked: Operator reviewer: Actual allocated run reviewer required; never claim Root review"
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.207s
+
+FAILED (failures=4)

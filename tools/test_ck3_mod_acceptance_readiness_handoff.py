@@ -5,6 +5,7 @@ from types import SimpleNamespace
 from unittest import TestCase, main
 from unittest.mock import Mock, patch
 import json
+import hashlib
 import sys
 import tempfile
 from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
@@ -29,13 +30,24 @@ class ReadinessHandoff(TestCase):
             with self.subTest(adapter=adapter.__name__, case=case), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 selection = entry.Selection.__new__(entry.Selection)
+                selection.argv = ['SYNTHETIC-NO-GAME']
+                reviewer = 'synthetic-readiness-reviewer'
+                frozen_path = root / 'synthetic-frozen.json'
+                frozen_bytes = (json.dumps({
+                    'run_id': 'SYNTHETIC-NO-GAME', 'argv': selection.argv,
+                    'runtime_environment': {}, 'reviewer': reviewer,
+                }, sort_keys=True) + '\n').encode('utf-8')
+                frozen_path.write_bytes(frozen_bytes)
                 selection.context = {
                     'run_id': 'SYNTHETIC-NO-GAME', 'keeper_root': 'synthetic-keeper',
                     'steam_offline_receipt': str(write_unavailable_receipt_fixture(
                         root, machine_id='synthetic-handoff-machine')),
-                    'frozen_argv': {'path': 'synthetic-frozen.json', 'bytes': 1, 'sha256': 'a' * 64},
+                    'reviewer': reviewer,
+                    'frozen_argv': {'path': str(frozen_path), 'bytes': len(frozen_bytes),
+                                    'sha256': hashlib.sha256(frozen_bytes).hexdigest()},
                 }
                 selection.context_path = root / 'synthetic-context.json'
+                selection.context_path.write_text(json.dumps(selection.context), encoding='utf-8')
                 selection.runtime_path = root / 'synthetic-runtime.json'
                 selection.runtime = {
                     'reviewed_launcher': {'path': 'NEVER-STARTED.py', 'bytes': 1, 'sha256': 'b' * 64},

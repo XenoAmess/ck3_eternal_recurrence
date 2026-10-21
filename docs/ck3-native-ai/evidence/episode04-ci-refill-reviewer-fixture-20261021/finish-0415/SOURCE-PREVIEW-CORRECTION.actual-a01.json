@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T03:57:30.043378+00:00",
+  "schema": "xar.e04.staged-source-preview-correction.v1",
+  "old_attempt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\execution\\STOPPED.actual.json",
+    "bytes": 309,
+    "sha256": "5a02168bd700f4ddc6aa21b4b3a8636e616df0b67eb236e009f83a895e983e48"
+  },
+  "old52_bytes_unchanged": true,
+  "actual_source_preview_context": "no-index source path text filtering did not test the actual staged -text raw CRLF bytes",
+  "actual_stage_guard": "default diff-check returncode2, preserved; no canonical guard changed",
+  "separate_full_check": "new full check includes original raw patch; prior failed check excluded that one exact patch, so they are distinct outputs",
+  "old_failed_check_stdout_bytes": 222217,
+  "old_failed_check_stdout_sha256": "e55c87b3420691b7e41a37b8c1a0f9bb23d4421e8c8d266a238460ce1d682464",
+  "old_administrative_closure_late_seconds": "8.706508",
+  "old_deadline_not_retroactively_extended": true,
+  "core_whitespace_changed": false,
+  "new_scope_old52_copy_stage": false
+}

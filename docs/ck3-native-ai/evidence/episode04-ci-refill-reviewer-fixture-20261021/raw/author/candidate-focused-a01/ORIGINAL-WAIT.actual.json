@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.ci-refill-scope.original-Popen-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-21T03:27:48.102147+00:00",
+  "observed_at_utc": "2026-10-21T03:27:51.310477+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\run_candidate.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01",
+  "original_pid": 19120,
+  "creation_time_100ns": "134370268681032320",
+  "original_wait_returncode": 0,
+  "elapsed_seconds": 3.2083298000507057,
+  "sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+      "bytes": 23975,
+      "sha256": "7abfe27faec9bd806319d20af499ac5bcf40d193f625d2dd33758551341c0284"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\run_candidate.py",
+      "bytes": 714,
+      "sha256": "032f2660ab73ddf31985b42ed6fda9c86a48585e92c896f4eeb1cc08df5033a6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\EXACT-SHADOW-SOURCES.actual-a01.json",
+      "bytes": 9656,
+      "sha256": "e9d5c56d70b0a90b1a8c75816dc16b3bf3a3d1b27c8ab4ad638e5680e9799619"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate-focused-a01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r10-ci-refill-scope-0345-a01\\public-repair-a01\\candidate-focused-a01\\stderr.log",
+    "bytes": 109,
+    "sha256": "327c590abd651c3a0f2837e39ddaa097e68c3c048b1f984596de1d8757767c39"
+  },
+  "logs_total_retained_bytes": 9715,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "all_native_SDK_Game_launch_boundaries_mocked": true,
+  "actual_native_Game_SDK_Steam": false,
+  "tmp_remaining": []
+}

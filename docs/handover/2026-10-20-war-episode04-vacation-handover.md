@@ -1,5 +1,8 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+> 2026-10-21 CI fixture correction (machine_id: desktop-3fevhd2-1c74096080): exact 58d6058d Official CI failed at the refill integration step; its traceback was unavailable. A separate exact-source local reproduction found reviewer identity omitted by the fixture and correctly refused by the production guard. The two candidate test fixtures add synthetic non-Root identity, real fixture context/frozen-argv materialization and launch-refusal regression controls; production guards and formal 8/11 remain unchanged. Candidate-freeze status is distinct from actual later publication/new-head CI. See [the bounded correction](../ck3-native-ai/episode04-ci-refill-reviewer-fixture-20261021.md).
+
+
 ## 2026-10-21：R13限定三态使正式8/11；postload采用限于源码归档
 
 `machine_id: desktop-3fevhd2-1c74096080`。来源为Root于2026-10-21T02:23:09Z签出的[R13限定正式裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0176-r13-positive-review-a01/ROOT-R0176-R13-FORMAL-ADJUDICATION.actual-a01.json)，以及02:31:55Z的[postload源码归档采用](../ck3-native-ai/evidence/episode04-postload-source-only-20261021-a01/provenance/ROOT-POSTLOAD-SOURCE-ONLY-ADOPTION.actual-a01.json)。正式动态按R03–R13每主题至少一段已验原M源镜头计，现为 **8/11（72.73%，R03/R04/R06/R07/R09/R11/R12/R13）**；余R05/R08/R10。研究10/14、业务7/11、B0/2、ABC0/3不变，R05 R211受控补充仍不授原M正式镜头信用。

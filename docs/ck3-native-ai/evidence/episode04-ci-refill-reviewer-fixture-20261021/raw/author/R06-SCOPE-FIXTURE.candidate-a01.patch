@@ -1,0 +1,149 @@
+--- a/tools/test_ck3_mod_acceptance_r06_scope.py
++++ b/tools/test_ck3_mod_acceptance_r06_scope.py
+@@ -41,7 +41,7 @@
+ 
+ 
+ class PublicR06ScopeTests(unittest.TestCase):
+-    def setUp(self):
++    def setUp(self) -> None:
+         temporary = tempfile.TemporaryDirectory(dir=options.scratch_root)
+         self.addCleanup(temporary.cleanup)
+         self.root = Path(temporary.name)
+@@ -66,7 +66,7 @@
+         self.bus = self.root / 'lease/tools/codex_task_bus.py'
+         self.bus.write_bytes(b'# never executed\n')
+         (self.root / 'lease/promo/ck3_native_war_ai/integration/screen_bus_lease.py').write_bytes(b'# fixture\n')
+-        def row(key):
++        def row(key: str) -> dict[str, object]:
+             return {'path_key': key, **{k: v for k, v in entry.pin(self.paths[key]).items() if k != 'path'}}
+         self.machine = 'scope-test-machine'
+         catalog = entry.read_json(REPO / 'tools/ck3_mod_acceptance_r10_products.json')
+@@ -112,16 +112,16 @@
+     def write(self, path: Path, value: object) -> None:
+         path.write_text(json.dumps(value, indent=2) + '\n', encoding='utf-8')
+ 
+-    def args(self, mode, context=None):
++    def args(self, mode: str, context: Path | None = None) -> NS:
+         return NS(mode=mode, runtime=self.runtime_path, products=self.products_path,
+             product='war-episode04-r10', case='r10-common-preparation', run_context=context,
+             prepared_case=self.prepared_path if self.prepared_path.exists() else None,
+             case_inputs=self.root / 'inputs.json', prepare_output=self.prepared_path.parent)
+ 
+-    def prepare(self):
++    def prepare(self) -> bytes:
+         self.write(self.root / 'inputs.json', {'state_dir': str(self.state),
+             'saved_campaign': self.seed, 'case_inputs': self.inputs})
+-        def profile(context):
++        def profile(context: dict[str, object]) -> dict[str, object]:
+             adapter.validate_contract(context)
+             self.state.mkdir()
+             (self.state / 'profile').mkdir()
+@@ -133,7 +133,7 @@
+         self.assertEqual(value['status'], 'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN')
+         return self.prepared_path.read_bytes()
+ 
+-    def allocate(self):
++    def allocate(self) -> dict[Path, bytes]:
+         bootstrap = self.root / 'bootstrap.json'
+         self.write(bootstrap, {})
+         prior = self.root / 'prior-release.json'
+@@ -149,11 +149,11 @@
+         original = entry.pin(bootstrap)
+         closure = {'bootstrap': original, 'archive_index': original, 'original_evidence': {}}
+         child = Mock(pid=987654)
+-        def finish(*unused):
++        def finish(*unused: object) -> int:
+             keeper.mkdir(exist_ok=True)
+             self.write(keeper / 'report.json', {'test_only': True})
+             return 0
+-        def process(argv, **unused):
++        def process(argv: list[str], **unused: object) -> NS:
+             if argv[0] == 'git':
+                 return NS(returncode=0, stdout=b'', stderr=b'')
+             return NS(returncode=0, stdout=b'{"task":{"last_sequence":1}}', stderr=b'')
+@@ -195,6 +195,9 @@
+         self.scope_path = self.root / 'scope.json'
+         self.write(self.scope_path, value)
+         self.reviewed = copy.deepcopy(self.ready)
++        # An explicit synthetic operator exercises the real reviewer guard.
++        # This fixture never claims Root review or actual Steam/Game state.
++        self.reviewed['reviewer'] = '/scope-fixture-operator'
+         self.steam_receipt_path = self.root / 'steam-unavailable-fixture.json'
+         self.write(self.steam_receipt_path, unavailable_steam_receipt_fixture(self.machine))
+         self.reviewed.update(r06_post_allocate_scope=entry.pin(self.scope_path),
+@@ -202,7 +205,7 @@
+         self.reviewed_path = self.root / 'reviewed-context.json'
+         self.write(self.reviewed_path, self.reviewed)
+ 
+-    def select(self, context=None):
++    def select(self, context: Path | None = None) -> entry.Selection:
+         return entry.Selection(self.runtime_path, self.products_path, 'war-episode04-r10',
+             'r10-common-preparation', context or self.reviewed_path, self.prepared_path)
+ 
+@@ -215,6 +218,8 @@
+         self.scope()
+         self.assertEqual(entry.native_dispatch(self.args('preflight', self.reviewed_path))['blockers'], [])
+         selected = self.select()
++        from ck3_mod_acceptance_client import resolve_operator_reviewer
++        self.assertEqual(resolve_operator_reviewer(selected), '/scope-fixture-operator')
+         derived = selected.adapter_context()
+         self.assertEqual(derived['case_inputs']['r06_refill_one_day']['capacity_admission'], entry.pin(self.cap_path))
+         self.assertIsNone(selected.prepared['case_inputs']['r06_refill_one_day']['capacity_admission'])
+@@ -265,13 +270,46 @@
+                     entry.native_dispatch(self.args('run', self.reviewed_path))
+                 launch.assert_not_called()
+ 
+-    def test_prepare_refuses_prefilled_capacity_without_allocating(self):
++    def test_reviewer_missing_null_and_persisted_drift_refuse_before_launcher(self) -> None:
++        self.prepare(); self.allocate(); self.scope()
++        original = copy.deepcopy(self.reviewed)
++        for mode in ('missing', 'null', 'empty'):
++            reviewed = copy.deepcopy(original)
++            if mode == 'missing':
++                del reviewed['reviewer']
++            else:
++                reviewed['reviewer'] = None if mode == 'null' else ''
++            self.write(self.reviewed_path, reviewed)
++            with self.subTest(mode=mode), \
++                 patch.object(entry.subprocess, 'run') as launch, \
++                 patch('ck3_mod_acceptance_client.CaseClient') as public_client, \
++                 patch.object(adapter, 'run_case') as business:
++                with self.assertRaisesRegex(ValueError, 'reviewer'):
++                    entry.native_dispatch(self.args('run', self.reviewed_path))
++                launch.assert_not_called()
++                public_client.assert_not_called()
++                business.assert_not_called()
++        self.write(self.reviewed_path, original)
++        selected = self.select()
++        changed = copy.deepcopy(original)
++        changed['reviewer'] = '/different-synthetic-operator'
++        self.write(self.reviewed_path, changed)
++        with patch.object(entry.subprocess, 'run') as launch, \
++             patch('ck3_mod_acceptance_client.CaseClient') as public_client, \
++             patch.object(adapter, 'run_case') as business:
++            with self.assertRaisesRegex(ValueError, 'differs from persisted allocated context'):
++                selected.run()
++            launch.assert_not_called()
++            public_client.assert_not_called()
++            business.assert_not_called()
++
++    def test_prepare_refuses_prefilled_capacity_without_allocating(self) -> None:
+         self.inputs['r06_refill_one_day']['capacity_admission'] = {'run_id': 'guessed'}
+         with self.assertRaisesRegex(ValueError, 'explicit null capacity'):
+             self.prepare()
+         self.assertFalse((self.root / 'isolated-id-state').exists())
+ 
+-    def test_scope_rejects_crossed_or_expired_inputs_before_public_launcher(self):
++    def test_scope_rejects_crossed_or_expired_inputs_before_public_launcher(self) -> None:
+         self.prepare(); self.allocate(); self.scope()
+         scope = entry.read_json(self.scope_path)
+         cap = entry.read_json(self.cap_path)
+@@ -300,7 +338,7 @@
+                         entry.native_dispatch(self.args('run', self.reviewed_path))
+                 launch.assert_not_called()
+ 
+-    def test_default_and_r04_keep_original_context_and_public_route(self):
++    def test_default_and_r04_keep_original_context_and_public_route(self) -> None:
+         for kind in ('default', 'r04'):
+             with self.subTest(kind=kind):
+                 # A second fixture keeps prepare's single-use contract intact.
