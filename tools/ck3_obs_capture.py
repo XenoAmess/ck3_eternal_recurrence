@@ -25,6 +25,7 @@ import sys
 import threading
 import time
 import uuid
+from typing import Callable, Literal, Protocol, TypedDict, TypeVar
 
 PROVIDER_VERSION = "3.0.0"
 SCHEMA = "xar.ck3.obs-window-capture.v3"
@@ -341,10 +342,117 @@ def validate_job(job):
         raise ValueError("Game+decision capture requires the complete attested group")
 
 
-def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
-                     launch_receipt, ffprobe, placement_receipt=None, overlay_receipt=None,
-                      decision_publisher_receipt=None, start_signal=None, continuous=False):
+
+class CaptureWorkerRequestV1(TypedDict):
+    schema: str
+    session_id: str
+    worker_pid: int
+    worker_creation_filetime: int
+    worker_executable: str
+    receipt_root: str
+    state: Literal["requested"]
+    runtime_qualified: Literal[False]
+
+
+_RequestT = TypeVar("_RequestT")
+
+
+def _recording_handoff_diagnostic_v1(message: str, *args: object) -> None:
+    try:
+        logging.error(message, *args, exc_info=True)
+    except Exception:
+        pass  # Optional diagnostics never own or release the original worker.
+
+
+class RecordingWorkerProcessV1(Protocol):
+    @property
+    def pid(self) -> int: ...
+    def wait(self, timeout: float | None = None) -> int: ...
+
+
+def _write_recording_handoff_state_v1(path: Path, value: dict[str, object] | None) -> None:
+    with path.open("x", encoding="utf-8") as stream:
+        if value is not None:
+            json.dump(value, stream, ensure_ascii=False, allow_nan=False, indent=2)
+        stream.flush()
+
+
+def _hold_owned_recording_worker_v1(
+    worker: RecordingWorkerProcessV1, root: Path, machine_id: str, reason: str,
+) -> None:
+    """Keep the original child until exit; only its existing graceful stop is requested."""
+    def watch() -> None:
+        state: dict[str, object] = {
+            "schema": "xar.recording-worker-handoff-hold/v1",
+            "machine_id": machine_id, "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+            "status": "HOLD_ORIGINAL_WORKER_METADATA_REJECTED",
+            "worker_pid": worker.pid, "receipt_root": str(root), "metadata_error": reason,
+            "worker_birth_claimed": False, "Game_stop_calls": 0, "publisher_stop_calls": 0}
+        for path, body in ((root / "handoff-hold.json", state),
+                           (root / "STOP-OWNED-RECORDING", None)):
+            try:
+                _write_recording_handoff_state_v1(path, body)
+            except FileExistsError:
+                pass
+            except (OSError, ValueError, TypeError):
+                _recording_handoff_diagnostic_v1("owned recording HOLD/stop publication failed: %s", path)
+        while True:
+            try:
+                code = worker.wait(timeout=1.0)
+                break
+            except subprocess.TimeoutExpired:
+                continue
+            except OSError:
+                _recording_handoff_diagnostic_v1("original recording child wait unavailable; custody remains HOLD")
+                time.sleep(1.0)
+        try:
+            _write_recording_handoff_state_v1(root / "handoff-worker-closed.json", {
+                **state, "status": "ORIGINAL_WORKER_EXIT_OBSERVED", "worker_exit_code": code,
+                "observed_at_utc": datetime.now(timezone.utc).isoformat()})
+        except (OSError, ValueError, TypeError):
+            _recording_handoff_diagnostic_v1("original recording worker exited; closure metadata unavailable")
+    # Establish custody before any fallible diagnostic/stop file operation.
+    try:
+        holder = threading.Thread(target=watch, name="owned-recording-handoff-hold", daemon=False)
+        holder.start()
+    except RuntimeError:
+        _recording_handoff_diagnostic_v1("HOLD thread unavailable; original producer retains child synchronously")
+        watch()
+
+
+def _complete_recording_handoff_v1(
+    worker: RecordingWorkerProcessV1, request_factory: Callable[[], _RequestT],
+    handoff: Callable[[object], None], root: Path, machine_id: str,
+) -> _RequestT:
+    try:
+        request = request_factory()
+        handoff(request)
+        return request
+    except BaseException as error:
+        _hold_owned_recording_worker_v1(worker, root, machine_id, str(error)[:1024])
+        _recording_handoff_diagnostic_v1(
+            "recording handoff failed; original owned worker is HOLD: %s", error)
+        raise
+
+
+def launch_recording(
+    profile_path: str | Path, recording_root: str | Path, pid: int, hwnd: int,
+    seconds: int | None, *, launch_receipt: str | Path, ffprobe: str | Path,
+    placement_receipt: str | Path | None = None, overlay_receipt: str | Path | None = None,
+    decision_publisher_receipt: str | Path | None = None,
+    start_signal: str | Path | None = None, continuous: bool = False,
+    worker_handoff: Callable[[object], None] | None = None,
+    custody_machine_id: str | None = None,
+) -> CaptureWorkerRequestV1:
     """Products may record only Game; fresh-agent calls supply the complete group."""
+    owned_handoff: tuple[Callable[[object], None], str] | None = None
+    if worker_handoff is not None:
+        if (not callable(worker_handoff) or not isinstance(custody_machine_id, str)
+                or type(custody_machine_id) is not str or not custody_machine_id):
+            raise ValueError("owned worker handoff requires its actual machine identity")
+        owned_handoff = (worker_handoff, custody_machine_id)
+    elif custody_machine_id is not None:
+        raise ValueError("machine identity requires its owned worker handoff")
     display_policy = require_no_retired_decision_window()
     if overlay_receipt is not None:
         raise ValueError('Legacy blue overlay launch is retired; use a real independent decision text publisher')
@@ -408,21 +516,37 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
     root.mkdir()
     path = root / "job.json"
     _write_new(path, job)
-    with (root / "worker.stdout.txt").open("x", encoding="utf-8") as stdout, (root / "worker.stderr.txt").open("x", encoding="utf-8") as stderr:
-        argv = [sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--job", str(path)]
-        if continuous:
-            argv.append("--continuous")
-        worker = subprocess.Popen(argv,
-            stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    ProcessGeneration, _, _, _ = _generation_helpers()
-    with ProcessGeneration(worker.pid, Path(sys.executable)) as actual_worker:
-        actual_worker.check()
-        worker_birth = actual_worker.creation_filetime
-        worker_executable = str(actual_worker.executable)
-    return {"schema": SCHEMA, "session_id": session, "worker_pid": worker.pid,
-            "worker_creation_filetime": worker_birth, "worker_executable": worker_executable,
-            "receipt_root": str(root), "state": "requested", "runtime_qualified": False}
+    worker: subprocess.Popen[bytes] | None = None
+    try:
+        with (root / "worker.stdout.txt").open("x", encoding="utf-8") as stdout, (root / "worker.stderr.txt").open("x", encoding="utf-8") as stderr:
+            argv = [sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--job", str(path)]
+            if continuous:
+                argv.append("--continuous")
+            worker = subprocess.Popen(argv,
+                stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    except BaseException as error:
+        if worker is not None and owned_handoff is not None:
+            _hold_owned_recording_worker_v1(worker, root, owned_handoff[1], str(error)[:1024])
+        raise
+    if worker is None:
+        raise RuntimeError("original recording worker was not created")
+    owned_worker = worker
+    def request_factory() -> CaptureWorkerRequestV1:
+        ProcessGeneration, _, _, _ = _generation_helpers()
+        with ProcessGeneration(owned_worker.pid, Path(sys.executable)) as actual_worker:
+            actual_worker.check()
+            worker_birth = actual_worker.creation_filetime
+            worker_executable = str(actual_worker.executable)
+        if type(worker_birth) is not int or not 0 < worker_birth <= 0xffffffffffffffff:
+            raise ValueError("actual worker birth must be an exact unsigned integer")
+        return {"schema": SCHEMA, "session_id": session, "worker_pid": owned_worker.pid,
+                "worker_creation_filetime": worker_birth, "worker_executable": worker_executable,
+                "receipt_root": str(root), "state": "requested", "runtime_qualified": False}
+    if owned_handoff is None:
+        return request_factory()
+    return _complete_recording_handoff_v1(
+        owned_worker, request_factory, owned_handoff[0], root, owned_handoff[1])
 
 
 def _window_identity(hwnd, expected_pid):

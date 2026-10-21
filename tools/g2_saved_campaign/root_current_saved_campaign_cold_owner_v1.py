@@ -780,36 +780,12 @@ def validate_current_saved_feeder_v1(
 def transition_current_saved_cold_v1(
  previous:object,details:object,*,verified:CurrentSavedFeederV1,
 )->JsonObject:
- old=_clone(previous)
- need(_same_json(old,verified.inputs.old_ledger) and _same_json(details,verified.expected_transition()),
-   'exact frozen predecessor')
+ from tools.g2_saved_campaign.current_saved_continuity_v1 import reduce_saved_continuity_attachment_v1
  basis=verified.inputs.basis
- need(integer(old.get("window_id"),1) >=1
-   and old.get("status") in ("running","complete","repair_required")
-   and integer(old.get("start_date_raw"))==basis.origin.start_date_raw
-   and integer(old.get("target_date_raw"))==basis.origin.target_date_raw
-   and integer(old.get("last_settled_cycles"))==basis.progress.ledger_cycles
-   and integer(old.get("last_settled_date_raw"))==basis.progress.ledger_date_raw,
-   'original continuity orig')
- changed=_clone(old)
- changed.update(status="complete" if basis.frame.date_raw >=basis.origin.target_date_raw else "running",
-  game_binding=verified.game.to_ledger(),latest_binding=verified.opening.to_wire(),
-  last_settled_cycles=basis.completed_cycles,last_settled_date_raw=basis.frame.date_raw,
-  cold_handoff_count=integer(old.get("cold_handoff_count",0))+1,
-  last_current_saved_cold=verified.expected_transition(),
-  last_settled_source=basis.refs.settled_full_response.to_wire(),
-  current_saved_reconciliation={"progress":basis.progress.to_wire(),
-   "already_settled_alignment_cycles":basis.completed_cycles - basis.progress.ledger_cycles,
-   "already_settled_alignment_date_raw":basis.frame.date_raw - basis.progress.ledger_date_raw,
-   "ordinary_cycle_credit":0,"game_day_credit":0,"original_actions_replayed":False})
- if "interruption" in old:
-  changed["previous_interruption"]=old["interruption"]
- allowed={"status","game_binding","latest_binding","last_settled_cycles",
-  "last_settled_date_raw","cold_handoff_count","last_current_saved_cold",
-  "last_settled_source","current_saved_reconciliation","previous_interruption"}
- need(all(_same_json(changed.get(key),value) for key,value in old.items() if key not in allowed),
-   'origin/window/unknown hi')
- return changed
+ return reduce_saved_continuity_attachment_v1(previous,details,
+  expected_details=verified.expected_transition(),expected_predecessor=verified.inputs.old_ledger,
+  basis_value=basis.to_wire(),game=verified.game.to_ledger(),opening=verified.opening.to_wire(),
+  progress=basis.progress.to_wire())
 def project_completed_maintenance_save_v1(
  state:object,save_row:object,*,semantic_response:ExactRefV1,
  save_response:ExactRefV1,

@@ -12,7 +12,8 @@ from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 import re
 from typing import Literal
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
- CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, digest, integer,
+ BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, digest, integer,
+ decode_current_saved_basis_v1, exact_read,
  json_object, json_value, need, parse_current_saved_basis_v1, parse_json,
  parse_ref, record, rows, text, utc,
 )
@@ -21,6 +22,10 @@ from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
  campaign_score_directory_identity_v1, derive_current_saved_state_paths_v1,
  parse_campaign_score_junction_v1, validate_campaign_score_junction_source_v1,
  validate_campaign_score_junction_physical_v1, validate_current_saved_cold_inputs_v1,
+)
+from tools.g2_saved_campaign.current_saved_continuity_v1 import (
+ ContinuityReaderV1, LocalContinuityReaderV1, read_continuity_view_v1,
+ validate_closed_continuity_frontier_v1,
 )
 PLAN_SCHEMA = "xar.current-saved-cold-plan/v1"
 QUOTE_SCHEMA = "xar.current-saved-cold-quote/v2"
@@ -32,7 +37,7 @@ CANONICAL_NAMES = frozenset((
  "root_checkpoint_bootstrap_c23.py", "root_native30_supervisor_c23.py",
  "root_p37c23_mcp_entry.py", "root_p37c23_sdk_queue.py",
 ))
-GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
+GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/current_saved_continuity_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_replay_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
 def sha256_v1(raw: bytes) -> str:
  need(type(raw) is bytes, "exact source bytes")
  return hashlib.sha256(raw).hexdigest()
@@ -796,6 +801,15 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
   output[child_v1(p.runtime_root,name)] = raw
  for item in p.source_rows:
   put(item.relative_path,load(item.source_ref))
+ from tools.g2_saved_campaign.current_saved_campaign_replay_v1 import (
+  HISTORICAL_REPLAY_DATA_RELATIVE_PATH_V1, HISTORICAL_REPLAY_DATA_BYTES_V1,
+  HISTORICAL_REPLAY_DATA_SHA256_V1,
+ )
+ archive_source=ExactRefV1(str(Path(p.producer_ref.path).parent/"test_data"/
+  "current_saved_sem11373_postcheck_v1.json"),HISTORICAL_REPLAY_DATA_BYTES_V1,
+  HISTORICAL_REPLAY_DATA_SHA256_V1)
+ archive_raw=load(archive_source,135168)
+ put(HISTORICAL_REPLAY_DATA_RELATIVE_PATH_V1,archive_raw)
  put("root_checkpoint_bootstrap_c23.py",emit_bootstrap_v1(get("root_checkpoint_bootstrap_c23.py"),machine_id=p.machine_id))
  put("root_native30_supervisor_c23.py",emit_supervisor_v1(get("root_native30_supervisor_c23.py"),machine_id=p.machine_id))
  put("root_native30_supervisor_c23.py",assignment_v1(get("root_native30_supervisor_c23.py"),
@@ -887,7 +901,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   "basis_ref":p.basis_ref.to_wire(),"validation_ref":p.validation_ref.to_wire()}))
  documents: dict[str,JsonObject] = {}
  for path, raw in output.items():
-  if path.endswith(".json") and ntpath.basename(path) != "STORAGE-ADMISSION.json":
+  if (path.endswith(".json") and ntpath.basename(path) != "STORAGE-ADMISSION.json"
+      and path != child_v1(p.runtime_root,HISTORICAL_REPLAY_DATA_RELATIVE_PATH_V1)):
    documents[path] = json_object(rewrite_json_v1(parse_json(raw),p,old_nonce,{}))
  def doc(name: str) -> JsonObject:
   return documents[child_v1(p.runtime_root,name)]
@@ -966,6 +981,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  for path,raw in profile_companions_v1(profile).items():
   output[path] = raw
  policy = doc("ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")
+ policy["current_saved_data_source_pins"]=[ref_for_bytes_v1(
+  child_v1(p.runtime_root,HISTORICAL_REPLAY_DATA_RELATIVE_PATH_V1),archive_raw).to_wire()]
  need(set(p.canonical_entry_paths) == CANONICAL_NAMES, "same actual max8 canonical entries")
  for iteration in range(8):
   pins = {path:ref_for_bytes_v1(path,raw) for path,raw in output.items()}
@@ -1075,6 +1092,19 @@ def probe_current_saved_supervisor_import_chain_v1(
       "original placement and keeper imports retain frozen origins")
  return SupervisorImportChainV1(origin("root_owned_generation"),origin("root_retained_screen_keeper"),
                                 creators,origin("g2_saved_campaign.sdk_process_custody"))
+
+def probe_current_saved_continuity_v1(
+ plan:ColdPlanV1,*,reader:BasisReaderV1,continuity_reader:ContinuityReaderV1,
+) -> JsonObject:
+ """Read the real canonical head, including exact-next committed events, without repair."""
+ basis=decode_current_saved_basis_v1(exact_read(reader,plan.basis_ref,65536),
+                                    expected_machine_id=plan.machine_id)
+ current=read_continuity_view_v1(
+  canonical_path=Path(plan.runtime_root).parent/"ROOT-CONTINUITY-WINDOW.json",
+  anchor_ref=basis.refs.ledger,expected_machine_id=plan.machine_id,reader=continuity_reader)
+ need(current.ready,"continuity metadata recovery required before Prepared")
+ validate_closed_continuity_frontier_v1(basis.to_wire(),current)
+ return current.to_wire()
 
 def run_current_saved_startup_consumer_probe_v1(
  plan_ref:ExactRefV1,quote_ref:ExactRefV1,*,expected_machine_id:str,
@@ -1235,6 +1265,11 @@ def run_current_saved_startup_consumer_probe_v1(
                      "environment_sha256":text(manifest["environment_sha256"]),"config_ref":config_ref.to_wire()}
  evidence("supervisor_make_spec",super_ref,super_raw,"main",observed,projection)
  evidence("supervisor_verify_cold_profile",super_ref,super_raw,"main",observed,projection)
+ continuity_observed=probe_current_saved_continuity_v1(
+  plan,reader=LocalBasisReaderV1(),continuity_reader=LocalContinuityReaderV1())
+ continuity_ref,continuity_raw=source("tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py")
+ evidence("canonical_continuity_frontier",continuity_ref,continuity_raw,
+          "probe_current_saved_continuity_v1",continuity_observed)
  mcp_observed,mcp_ref,mcp_raw=probe_current_saved_mcp_factory_v1(plan,quote)
  evidence("frozen_mcp_safe_boundary",mcp_ref,mcp_raw,"load_driver",mcp_observed)
  result=gate.CurrentSavedConsumerProbeV1(expected_machine_id,datetime.now(timezone.utc).isoformat(),

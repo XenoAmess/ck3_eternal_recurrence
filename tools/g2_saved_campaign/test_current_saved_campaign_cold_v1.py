@@ -27,6 +27,9 @@ from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
 from tools.g2_saved_campaign import prepare_current_saved_campaign_cold_v1 as producer
 from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
 from tools.g2_saved_campaign import current_saved_campaign_feeder_v1 as feeder
+from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
+from tools.g2_saved_campaign import current_saved_continuity_v1 as continuity
+from tools.g2_saved_campaign import test_current_saved_continuity_v1 as continuity_fixture
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer import environment
 
@@ -1362,6 +1365,146 @@ print('ACTUAL_EMITTED_MAIN_GUARDS_THEN_AUTHORITY_PASS')
         self.assertEqual(result.returncode,0,result.stdout+result.stderr)
         self.assertIn("ACTUAL_EMITTED_MAIN_GUARDS_THEN_AUTHORITY_PASS",result.stdout)
 
+
+
+class _ContinuityProbeMemoryReaderV1:
+    def __init__(self, memory: continuity_fixture.MemoryReader) -> None:
+        self.memory = memory
+
+    def read(self, reference: ExactRefV1, limit: int) -> bytes:
+        document = self.memory.probe(reference.path, limit)
+        if document is None or document.reference != reference:
+            raise ValueError("exact in-memory continuity reference required")
+        return document.payload
+
+    def stat(self, path: str) -> FileStatIdentityV1:
+        document = self.memory.probe(path, 65536)
+        if document is None:
+            raise FileNotFoundError(path)
+        return document.identity
+
+
+class ClosedContinuityPreparationTests(unittest.TestCase):
+    def configured(self, *, exact_head: bool) -> tuple[
+        producer.ColdPlanV1, continuity_fixture.MemoryReader, _ContinuityProbeMemoryReaderV1
+    ]:
+        memory, anchor, head = continuity_fixture.fixture()
+        if exact_head:
+            anchor = memory.put(continuity_fixture.ROOT / "closed228.json", head)
+        original = pure_basis()
+        count = integer(head["last_settled_cycles"])
+        date = integer(head["last_settled_date_raw"])
+        basis = replace(original,
+            origin=replace(original.origin,
+                start_date_raw=integer(head["start_date_raw"]),
+                target_date_raw=integer(head["target_date_raw"]),
+                target_days=integer(head["target_days"])),
+            completed_cycles=count,
+            refs=replace(original.refs, ledger=anchor),
+            progress=replace(original.progress, ledger_cycles=count, ledger_date_raw=date,
+                             settled_cycles=count, settled_date_raw=date))
+        reference = memory.put(continuity_fixture.ROOT / "probe-basis.json", basis.to_wire())
+        configured = replace(plan(), basis_ref=reference,
+                             runtime_root=str(continuity_fixture.ROOT / "new-runtime"))
+        return configured, memory, _ContinuityProbeMemoryReaderV1(memory)
+
+    def test_prepared_gate_rejects_225_anchor_even_with_228_business_frontier(self) -> None:
+        configured, memory, reader = self.configured(exact_head=False)
+        before = dict(memory.documents)
+        with self.assertRaisesRegex(ValueError, "closed basis still binds a stale continuity predecessor"):
+            producer.probe_current_saved_continuity_v1(
+                configured, reader=reader, continuity_reader=memory)
+        self.assertEqual(memory.documents, before)
+
+    def test_exact_head_binding_roundtrip_rechecks_actual_head(self) -> None:
+        configured, memory, reader = self.configured(exact_head=True)
+        before = dict(memory.documents)
+        result = producer.probe_current_saved_continuity_v1(
+            configured, reader=reader, continuity_reader=memory)
+        view = continuity.validate_continuity_binding_v1(
+            wire(result), expected_machine_id=MACHINE, reader=memory)
+        self.assertTrue(view.ready)
+        self.assertEqual(view.head_sequence, 228)
+        self.assertEqual(view.anchor_sequence, 228)
+        self.assertEqual(result["ledger_writes"], 0)
+        self.assertEqual(memory.documents, before)
+        changed = {**view.head_state, "sequence": 229}
+        memory.put(continuity_fixture.CANONICAL, changed)
+        with self.assertRaises(ValueError):
+            continuity.validate_continuity_binding_v1(
+                result, expected_machine_id=MACHINE, reader=memory)
+
+    def test_recoverable_lag_does_not_publish_ready_or_repair_files(self) -> None:
+        configured, memory, reader = self.configured(exact_head=False)
+        memory.put(continuity_fixture.CANONICAL, continuity_fixture.state())
+        before = dict(memory.documents)
+        with self.assertRaisesRegex(ValueError, "metadata recovery required"):
+            producer.probe_current_saved_continuity_v1(
+                configured, reader=reader, continuity_reader=memory)
+        self.assertEqual(memory.documents, before)
+
+
+class SupervisorStandaloneSdkGuardTests(unittest.TestCase):
+    def test_actual_sdk_fresh_child_reproduces_old_early_import_rejection(self) -> None:
+        """Model material, real repo SDK and fresh BASE; stop before keeper authority."""
+        from tools.g2_saved_campaign.owned_python_launch_v1 import owned_python_launch_v1
+        generated = producer.emit_supervisor_v1(
+            foreground_supervisor_material_v1(), machine_id=MACHINE).decode()
+        program = r'''
+import ast,json,sys,types
+from pathlib import Path
+payload=json.loads(sys.stdin.read())
+repo=Path(payload["repo"]).resolve()
+sdk=repo/"ck3_autonomous_player/src"
+assert not any(n=="xar_autoplayer" or n.startswith("xar_autoplayer.") for n in sys.modules)
+tree=ast.parse(payload["source"])
+if payload["early"]:
+ main=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=="main")
+ # Execute the old API's actual SDK import before the existing ambient guard.
+ position=next(i for i,n in enumerate(main.body) if isinstance(n,ast.If)
+               and any(isinstance(c,ast.Constant) and
+                       c.value=="ambient project imports cannot select a different checkout"
+                       for c in ast.walk(n)))
+ main.body.insert(position,ast.ImportFrom(module="xar_autoplayer",
+                  names=[ast.alias(name="environment"),ast.alias(name="runtime")],level=0))
+ast.fix_missing_locations(tree)
+scope={"__name__":"_standalone_guard_model","__file__":str(repo/"model-supervisor.py")}
+exec(compile(tree,"<emitted model with real SDK>","exec"),scope)
+calls=[]
+class BeforeKeeper(Exception):pass
+def checked(*args,**kwargs):
+ for name in ("environment","runtime"):
+  module=sys.modules["xar_autoplayer."+name]
+  assert Path(module.__file__).resolve()==sdk/"xar_autoplayer"/(name+".py")
+ calls.append("checked")
+def stop():
+ calls.append("stop")
+ raise BeforeKeeper()
+scope.update(creator_source=sdk.resolve(),N=repo/"model-no-write",config={},sys=sys,
+ threading=types.SimpleNamespace(Event=stop),
+ verify_current_saved_supervisor_attempt_v1=checked)
+rejected=False
+try:scope["main"](types.SimpleNamespace(attempt_nonce="a"*32,task_nonce="b"*32))
+except BeforeKeeper:assert not payload["early"]
+except ValueError as error:
+ assert payload["early"] and str(error)=="ambient project imports cannot select a different checkout"
+ rejected=True
+assert calls==([] if payload["early"] else ["checked","stop"]),calls
+assert rejected is payload["early"]
+print(json.dumps({"early_rejected":rejected,"calls":calls,"sdk_source":str(sdk)}))
+'''
+        executable, env = owned_python_launch_v1()
+        repo = Path(producer.__file__).resolve().parents[2]
+        for early in (False, True):
+            with self.subTest(old_early_import=early):
+                result = subprocess.run([executable, "-B", "-X", "utf8", "-c", program],
+                    input=json.dumps({"repo": str(repo), "source": generated, "early": early}),
+                    env=env, cwd=repo, capture_output=True, text=True, timeout=20,
+                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                observed = record(parse_json(result.stdout.encode()))
+                self.assertIs(observed["early_rejected"], early)
+                self.assertEqual(observed["calls"], [] if early else ["checked", "stop"])
 
 if __name__ == "__main__":
     unittest.main()

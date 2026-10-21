@@ -37,7 +37,7 @@ def owned_python_launch_v1() -> tuple[str, dict[str, str]]:
         raise ValueError("actual interpreter image differs from declared base executable")
     paths: list[str] = []
     python_path = os.environ.get("PYTHONPATH")
-    inherited = () if python_path is None else tuple(python_path.split(os.pathsep))
+    inherited = () if not python_path else tuple(python_path.split(os.pathsep))
     # Python interprets an empty search entry as the caller's current directory.
     # Freeze that meaning before a fixture child changes its working directory.
     for value in (*sys.path, *inherited):

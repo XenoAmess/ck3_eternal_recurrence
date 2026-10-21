@@ -13,7 +13,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from typing import Callable, Mapping, TypeAlias
+from typing import Callable, Mapping, TypeAlias, Protocol, runtime_checkable
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, exact_read,
@@ -203,10 +203,11 @@ class _VisualQueueV1:
     args: _VisualArgsV1
 
 
-def qualify_current_saved_feeder_v1(
+def _qualify_current_saved_feeder_for_entry_v1(
     warm: WarmCurrentSavedFeederInputsV1, admission: CurrentSavedFeederAdmissionV1, *,
     reader: BasisReaderV1, actual_stage: Path, actual_loop: Path, actual_owner: Path,
     current_next_sequence: int, now_utc: str, exists: Callable[[Path], bool],
+    runtime_root: Path, stage_args: tuple[str, ...],
 ) -> CurrentSavedFeederV1:
     """Verify the actual warm map and finite source-bound Task without a large reread."""
     inputs = warm.inputs
@@ -233,14 +234,12 @@ def qualify_current_saved_feeder_v1(
          "actual feeder Task SPEC/nonce")
     need(_same_path(text(spec.get("stage")), actual_stage)
          and spec.get("stage_sha256") == checked.feeder_source_ref.sha256
-         and spec.get("stage_args") == [
-             "--first-control-sequence", str(checked.first_control_sequence),
-         ]
+         and spec.get("stage_args") == list(stage_args)
          and _same_path(text(spec.get("stop_path")), checked.stop_path),
          "actual Task stage/arguments/stop")
     spec_env = record(spec.get("env"))
     need("XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1" not in spec_env, "feeder cannot impersonate SDK WAL owner")
-    runtime_dir = actual_stage.resolve().parent
+    runtime_dir = runtime_root.resolve()
     need(_same_path(checked.continue_marker, runtime_dir / "CURRENT-SAVED-FIRST-FULL-CONTINUE.json")
          and _same_path(checked.stop_path, runtime_dir / "STOP-CURRENT-SAVED-FEEDER"),
          "canonical current saved control markers")
@@ -269,6 +268,18 @@ def qualify_current_saved_feeder_v1(
     require_saved_campaign_visual(queue, env)
     return validate_current_saved_feeder_v1(
         warm, checked.to_wire(), reader=reader, current_next_sequence=sequence)
+
+
+def qualify_current_saved_feeder_v1(
+    warm: WarmCurrentSavedFeederInputsV1, admission: CurrentSavedFeederAdmissionV1, *,
+    reader: BasisReaderV1, actual_stage: Path, actual_loop: Path, actual_owner: Path,
+    current_next_sequence: int, now_utc: str, exists: Callable[[Path], bool],
+) -> CurrentSavedFeederV1:
+    return _qualify_current_saved_feeder_for_entry_v1(
+        warm, admission, reader=reader, actual_stage=actual_stage, actual_loop=actual_loop,
+        actual_owner=actual_owner, current_next_sequence=current_next_sequence,
+        now_utc=now_utc, exists=exists, runtime_root=actual_stage.resolve().parent,
+        stage_args=("--first-control-sequence", str(admission.first_control_sequence)))
 
 
 @dataclass(frozen=True, slots=True)
@@ -494,6 +505,413 @@ def utc_now_v1() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+
+WARM_FORWARD_SCHEMA = "xar.current-saved-pre-full-warm-forward/v1"
+WARM_FORWARD_KIND = "current_saved_pre_full_cold_attachment_forward_v1"
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentSavedWarmForwardAdmissionV1:
+    machine_id: str
+    observed_at_utc: str
+    runtime_root: str
+    admission_path: str
+    original_admission_ref: ExactRefV1
+    continuity_binding_ref: ExactRefV1
+    continuity_source_ref: ExactRefV1
+    previous_task_closed_ref: ExactRefV1
+    failure_ref: ExactRefV1
+    next_ref: ExactRefV1
+    sdk_pair_ref: ExactRefV1
+    feeder_admission: CurrentSavedFeederAdmissionV1
+
+    def to_wire(self) -> JsonObject:
+        return {
+            "schema": WARM_FORWARD_SCHEMA, "machine_id": self.machine_id,
+            "observed_at_utc": utc(self.observed_at_utc), "runtime_root": self.runtime_root,
+            "admission_path": self.admission_path,
+            "original_admission_ref": self.original_admission_ref.to_wire(),
+            "continuity_binding_ref": self.continuity_binding_ref.to_wire(),
+            "continuity_source_ref": self.continuity_source_ref.to_wire(),
+            "previous_task_closed_ref": self.previous_task_closed_ref.to_wire(),
+            "failure_ref": self.failure_ref.to_wire(), "next_ref": self.next_ref.to_wire(),
+            "sdk_pair_ref": self.sdk_pair_ref.to_wire(),
+            "feeder_admission": self.feeder_admission.to_wire(),
+            "scope": "same_live_epoch_before_first_FULL_only",
+            "ordinary_cycle_credit": 0, "game_day_credit": 0,
+            "original_actions_replayed": False, "window_origin_reset": False}
+
+
+def parse_current_saved_warm_forward_admission_v1(
+    value: object, *, expected_machine_id: str,
+) -> CurrentSavedWarmForwardAdmissionV1:
+    row = record(value, {"schema", "machine_id", "observed_at_utc", "runtime_root",
+        "admission_path", "original_admission_ref", "continuity_binding_ref",
+        "continuity_source_ref", "previous_task_closed_ref", "failure_ref", "next_ref",
+        "sdk_pair_ref", "feeder_admission", "scope", "ordinary_cycle_credit",
+        "game_day_credit", "original_actions_replayed", "window_origin_reset"})
+    need(row["schema"] == WARM_FORWARD_SCHEMA and row["machine_id"] == expected_machine_id
+         and row["scope"] == "same_live_epoch_before_first_FULL_only"
+         and integer(row["ordinary_cycle_credit"], 0, 0) == 0
+         and integer(row["game_day_credit"], 0, 0) == 0
+         and row["original_actions_replayed"] is False and row["window_origin_reset"] is False,
+         "formal pre-FULL warm-forward contract")
+    return CurrentSavedWarmForwardAdmissionV1(
+        text(row["machine_id"]), utc(row["observed_at_utc"]), text(row["runtime_root"]),
+        text(row["admission_path"]), parse_ref(row["original_admission_ref"]),
+        parse_ref(row["continuity_binding_ref"]), parse_ref(row["continuity_source_ref"]),
+        parse_ref(row["previous_task_closed_ref"]), parse_ref(row["failure_ref"]),
+        parse_ref(row["next_ref"]), parse_ref(row["sdk_pair_ref"]),
+        parse_current_saved_feeder_admission_v1(row["feeder_admission"],
+                                               expected_machine_id=expected_machine_id))
+
+
+def build_current_saved_warm_forward_admission_v1(
+    *, original_admission_ref: ExactRefV1, continuity_binding_ref: ExactRefV1,
+    continuity_source_ref: ExactRefV1, previous_task_closed_ref: ExactRefV1,
+    failure_ref: ExactRefV1, next_ref: ExactRefV1, sdk_pair_ref: ExactRefV1,
+    controller_source_ref: ExactRefV1, controller_spec_ref: ExactRefV1,
+    budget_ref: ExactRefV1, runtime_root: Path, admission_path: Path,
+    observed_at_utc: str, review_deadline_utc: str, expected_machine_id: str,
+    reader: BasisReaderV1,
+) -> CurrentSavedWarmForwardAdmissionV1:
+    """Prepare a new authority; never mutate or relabel the old Task/admission."""
+    from dataclasses import replace
+    original = parse_current_saved_feeder_admission_v1(
+        _checked(reader, original_admission_ref, 32768),
+        expected_machine_id=expected_machine_id)
+    spec = _checked(reader, controller_spec_ref, 16384)
+    nonce = text(spec.get("nonce"))
+    need(nonce != original.feeder_task_nonce, "new controller needs a new Task generation")
+    next_row = _checked(reader, next_ref, 16384)
+    first = integer(next_row.get("next_sequence"), 1)
+    need(first == original.first_control_sequence, "pre-FULL forward cannot consume a new sequence")
+    forwarded = replace(original, feeder_source_ref=controller_source_ref,
+        feeder_task_spec_ref=controller_spec_ref, feeder_task_nonce=nonce,
+        budget_ref=budget_ref, review_deadline_utc=utc(review_deadline_utc))
+    result = CurrentSavedWarmForwardAdmissionV1(
+        text(expected_machine_id), utc(observed_at_utc), str(runtime_root.resolve()),
+        str(admission_path.resolve()), original_admission_ref, continuity_binding_ref,
+        continuity_source_ref, previous_task_closed_ref, failure_ref, next_ref,
+        sdk_pair_ref, forwarded)
+    _validate_forward_authority_v1(result, reader=reader)
+    return parse_current_saved_warm_forward_admission_v1(
+        parse_json(canonical_forward_bytes_v1(result)), expected_machine_id=expected_machine_id)
+
+
+def canonical_forward_bytes_v1(value: CurrentSavedWarmForwardAdmissionV1) -> bytes:
+    from tools.g2_saved_campaign.current_saved_basis_v1 import canonical_json_v1
+    return canonical_json_v1(value.to_wire())
+
+
+def _validate_forward_authority_v1(
+    value: CurrentSavedWarmForwardAdmissionV1, *, reader: BasisReaderV1,
+) -> CurrentSavedFeederAdmissionV1:
+    original = parse_current_saved_feeder_admission_v1(
+        _checked(reader, value.original_admission_ref, 32768),
+        expected_machine_id=value.machine_id)
+    changed = value.feeder_admission
+    old_wire, new_wire = original.to_wire(), changed.to_wire()
+    replaceable = {"feeder_source_ref", "feeder_task_spec_ref", "feeder_task_nonce",
+                   "budget_ref", "review_deadline_utc"}
+    need(all(new_wire[key] == old for key, old in old_wire.items() if key not in replaceable),
+         "forward cannot change original Game/SDK/basis/visual/sequence bindings")
+    need(changed.feeder_task_nonce != original.feeder_task_nonce
+         and changed.feeder_source_ref.path != original.feeder_source_ref.path,
+         "new Task/controller must not impersonate the old frozen stage")
+    need(_at(changed.review_deadline_utc) <= _at(original.review_deadline_utc),
+         "warm-forward cannot extend the original runtime review deadline")
+    old_spec = _checked(reader, original.feeder_task_spec_ref, 16384)
+    closed = _checked(reader, value.previous_task_closed_ref, 16384)
+    need(old_spec.get("nonce") == original.feeder_task_nonce
+         and closed.get("machine_id") == value.machine_id
+         and closed.get("nonce") == original.feeder_task_nonce
+         and closed.get("spec_sha256") == original.feeder_task_spec_ref.sha256
+         and integer(closed.get("job_active_after_stage"), 0, 0) == 0
+         and type(closed.get("child_exit_code")) is int
+         and type(closed.get("bootstrap_exit_code")) is int,
+         "previous feeder Task must actually be closed")
+    failure = _checked(reader, value.failure_ref, 16384)
+    need(failure.get("machine_id") == value.machine_id
+         and failure.get("status") == "feeder_error_review_required"
+         and failure.get("error_type") == "ValueError"
+         and failure.get("error") == "exact frozen predecessor",
+         "known local pre-FULL predecessor failure; no business success inferred")
+    need(_same_path(value.next_ref.path, Path(value.runtime_root) / "NEXT-SEQUENCE-P37.json")
+         and integer(_checked(reader, value.next_ref, 16384).get("next_sequence"), 1)
+             == changed.first_control_sequence, "unchanged actual NEXT")
+    return original
+
+
+def qualify_current_saved_warm_forward_v1(
+    value: CurrentSavedWarmForwardAdmissionV1, *, warm: WarmCurrentSavedFeederInputsV1,
+    reader: BasisReaderV1, actual_stage: Path, actual_loop: Path, actual_owner: Path,
+    now_utc: str, exists: Callable[[Path], bool],
+) -> tuple[CurrentSavedFeederV1, JsonObject]:
+    """Reuse live warm/visual checks, with explicit new controller authority."""
+    _validate_forward_authority_v1(value, reader=reader)
+    need(value.machine_id == warm.inputs.basis.machine_id
+         and warm.warm_proof.sources.sdk_pair_ref == value.sdk_pair_ref,
+         "exact retained live SDK pair")
+    need(_at(value.observed_at_utc) <= _at(now_utc)
+         and (_at(now_utc) - _at(value.observed_at_utc)).total_seconds() <= 600,
+         "fresh Root forward authority")
+    runtime = Path(value.runtime_root)
+    need(warm.inputs.basis.next_sequence + 2 == value.feeder_admission.first_control_sequence,
+         "only the untouched first FULL after original SEM/CAP")
+    for name in ("ROOT-CURRENT-HALT-P37.json", "ROOT-FIRST-QUEUE-EXCEPTION-P37C23.json",
+                 "REQUEST-ADMISSION-CLOSED-C23", "EXIT-SDK-P37C23",
+                 "STOP-CURRENT-SAVED-FEEDER", "ROOT-CONTINUOUS-FEEDER-STOP-P37C23",
+                 "p37-queue/ROOT-QUEUE-HALTED.json"):
+        need(not exists(runtime / name), "current runtime remains halted/stopped: " + name)
+    verified = _qualify_current_saved_feeder_for_entry_v1(
+        warm, value.feeder_admission, reader=reader, actual_stage=actual_stage,
+        actual_loop=actual_loop, actual_owner=actual_owner,
+        current_next_sequence=value.feeder_admission.first_control_sequence,
+        now_utc=now_utc, exists=exists, runtime_root=runtime,
+        stage_args=("--warm-forward-admission", value.admission_path))
+    from tools.g2_saved_campaign.current_saved_continuity_v1 import (
+        LocalContinuityReaderV1, validate_continuity_binding_v1, continuity_digest_v1,
+    )
+    binding = _checked(reader, value.continuity_binding_ref, 32768)
+    view = validate_continuity_binding_v1(binding, expected_machine_id=value.machine_id,
+                                        reader=LocalContinuityReaderV1())
+    basis = warm.inputs.basis
+    need(view.ready and _same_path(view.canonical_path, runtime.parent / "ROOT-CONTINUITY-WINDOW.json")
+         and view.anchor_ref == basis.refs.ledger
+         and integer(view.head_state.get("last_settled_cycles")) == basis.completed_cycles
+         and integer(view.head_state.get("last_settled_date_raw")) == basis.frame.date_raw
+         and view.head_state.get("game_binding") != verified.game.to_ledger(),
+         "actual current ledger awaits this cold attachment only")
+    progress = basis.progress.to_wire()
+    progress.update(ledger_cycles=basis.completed_cycles, ledger_date_raw=basis.frame.date_raw)
+    details = verified.expected_transition()
+    source = json_object(details["source"])
+    source.update(original_old_ledger_ref=basis.refs.ledger.to_wire(),
+        original_progress=basis.progress.to_wire(), progress=progress,
+        continuity_binding_ref=value.continuity_binding_ref.to_wire(),
+        controller_spec_ref=value.feeder_admission.feeder_task_spec_ref.to_wire(),
+        original_admission_ref=value.original_admission_ref.to_wire())
+    details.update(evidence_id=WARM_FORWARD_KIND + ":" + continuity_digest_v1(value.to_wire()),
+        source=source, old_ledger_ref=view.snapshot_ref.to_wire())
+    return verified, {"view": view.to_wire(), "details": details, "progress": progress}
+
+
+def _load_continuity_extension_v1(reference: ExactRefV1, *, reader: BasisReaderV1) -> None:
+    import importlib.util
+    import sys
+    name = "tools.g2_saved_campaign.current_saved_continuity_v1"
+    verified_raw = exact_read(reader, reference, 131072)
+    prior = sys.modules.get(name)
+    if prior is not None:
+        filename: object = getattr(prior, "__file__", None)
+        need(type(filename) is str, "continuity extension origin")
+        if not isinstance(filename, str):
+            raise ValueError("continuity extension origin")
+        need(_same_path(filename, reference.path), "a different continuity extension is already imported")
+        return
+    spec = importlib.util.spec_from_file_location(name, reference.path)
+    need(spec is not None and spec.loader is not None, "actual continuity extension loader")
+    if spec is None or spec.loader is None:
+        raise ValueError("continuity extension loader")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    try:
+        exec(compile(verified_raw, reference.path, "exec"), vars(module))
+    except BaseException:
+        if sys.modules.get(name) is module:
+            del sys.modules[name]
+        raise
+
+
+
+@runtime_checkable
+class ForwardWindowWriterV1(Protocol):
+    def apply(self, kind: str, details: JsonObject) -> object: ...
+
+
+@runtime_checkable
+class ForwardLedgerV1(Protocol):
+    __file__: str
+    transition: TransitionV1
+    def WindowLedger(self, path: Path) -> ForwardWindowWriterV1: ...
+
+
+@runtime_checkable
+class ForwardOrdinaryV1(Protocol):
+    __file__: str
+    CONTINUITY_WINDOW: Path
+    def configure_current_saved_feeder_v1(self, value: InstalledCurrentSavedCallbacksV1) -> None: ...
+    def main(self, first_control: int, continuity_resume_admission: object = None) -> None: ...
+    def continuity_interrupted(self, reason: str, source: Path) -> object: ...
+    def status(self, value: str, **details: object) -> None: ...
+
+
+@runtime_checkable
+class ForwardWarmLoaderV1(Protocol):
+    def __call__(self) -> WarmCurrentSavedFeederInputsV1: ...
+
+
+@runtime_checkable
+class RuntimeInitializerV1(Protocol):
+    def __call__(self) -> object: ...
+
+
+@runtime_checkable
+class SharedVerifierV1(Protocol):
+    def __call__(self, root: Path) -> None: ...
+
+
+def run_current_saved_warm_forward_v1(
+    value: CurrentSavedWarmForwardAdmissionV1, *, ordinary: ForwardOrdinaryV1,
+    ledger: ForwardLedgerV1, warm_loader: ForwardWarmLoaderV1,
+    actual_stage: Path, reader: LocalCurrentSavedFeederReaderV1,
+    qualify: bool = False,
+) -> JsonObject:
+    """Official new-controller entry; the old immutable ordinary loop executes."""
+    _load_continuity_extension_v1(value.continuity_source_ref, reader=reader)
+    from tools.g2_saved_campaign.current_saved_continuity_v1 import (
+        LocalContinuityReaderV1, validate_continuity_binding_v1,
+        dry_run_attachment_v1, checked_attachment_reducer_v1,
+        reduce_saved_continuity_attachment_v1,
+    )
+    from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
+    warm = warm_loader()
+    verified, prepared = qualify_current_saved_warm_forward_v1(
+        value, warm=warm, reader=reader, actual_stage=actual_stage,
+        actual_loop=Path(ordinary.__file__), actual_owner=Path(owner.__file__),
+        now_utc=utc_now_v1(), exists=Path.exists)
+    continuity_reader = LocalContinuityReaderV1()
+    view = validate_continuity_binding_v1(prepared["view"],
+        expected_machine_id=value.machine_id, reader=continuity_reader)
+    details = json_object(prepared["details"])
+    progress = json_object(prepared["progress"])
+    original_transition = ledger.transition
+    def forward_transition(previous: object, kind: str, supplied: JsonObject) -> JsonObject:
+        if kind != WARM_FORWARD_KIND:
+            return json_object(original_transition(previous, kind, supplied))
+        return reduce_saved_continuity_attachment_v1(previous, supplied,
+            expected_details=details, expected_predecessor=view.head_state,
+            basis_value=warm.inputs.basis.to_wire(), game=verified.game.to_ledger(),
+            opening=verified.opening.to_wire(), progress=progress)
+    ledger_source = continuity_reader.probe(str(Path(ledger.__file__)), 65536)
+    need(ledger_source is not None, "original frozen continuity reducer source")
+    if ledger_source is None:
+        raise ValueError("missing original reducer")
+    attachment = dry_run_attachment_v1(view, kind=WARM_FORWARD_KIND, details=details,
+        reducer=forward_transition, reducer_sources=(
+            value.feeder_admission.feeder_source_ref, value.continuity_source_ref,
+            value.feeder_admission.owner_source_ref, value.feeder_admission.loop_source_ref,
+            ledger_source.reference))
+    report: JsonObject = {
+        "schema": "xar.current-saved-pre-full-warm-forward-qualification/v1",
+        "machine_id": value.machine_id, "status": "READONLY_FORWARD_QUALIFIED",
+        "observed_at_utc": utc_now_v1(), "admission": value.to_wire(),
+        "warm": warm.warm_proof.to_wire(), "attachment": attachment.to_wire(),
+        "Game_SDK_Task_calls": 0, "ledger_writes": 0,
+        "ordinary_cycle_credit": 0, "game_day_credit": 0}
+    if qualify:
+        return report
+    def apply(kind: str, supplied: JsonObject) -> JsonObject:
+        return json_object(ledger.WindowLedger(ordinary.CONTINUITY_WINDOW).apply(kind, supplied))
+    runtime = CurrentSavedRuntimeV1(warm.inputs, value.feeder_admission, verified,
+                                    apply, utc_now_v1, Path.exists)
+    def can_publish() -> None:
+        runtime.require_can_publish()
+        for source in (value.feeder_admission.feeder_source_ref, value.continuity_source_ref,
+                       value.feeder_admission.feeder_task_spec_ref, value.feeder_admission.budget_ref):
+            exact_read(reader, source, 262144)
+        with Path(value.admission_path).open("rb") as authority_stream:
+            current_authority = authority_stream.read(32769)
+        need(len(current_authority) <= 32768
+             and canonical_forward_bytes_v1(parse_current_saved_warm_forward_admission_v1(
+                 parse_json(current_authority), expected_machine_id=value.machine_id))
+                 == canonical_forward_bytes_v1(value), "Root forward authority changed")
+    def admitted() -> JsonObject:
+        can_publish()
+        return value.feeder_admission.to_wire()
+    def attach(admission_value: object, first: int, resume: object) -> JsonObject:
+        need(record(admission_value) == record(admitted())
+             and integer(first, 1) == value.feeder_admission.first_control_sequence
+             and resume is None, "formal same-epoch first FULL attachment")
+        return apply(WARM_FORWARD_KIND, details)
+    import msvcrt
+    lock_path = Path(value.admission_path).with_suffix(".lock")
+    with lock_path.open("a+b") as lock:
+        lock.seek(0)
+        msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+        try:
+            ledger.transition = checked_attachment_reducer_v1(
+                forward_transition, attachment=attachment, reader=continuity_reader)
+            ordinary.configure_current_saved_feeder_v1(
+                InstalledCurrentSavedCallbacksV1(admitted, attach, can_publish))
+            ordinary.main(value.feeder_admission.first_control_sequence, None)
+        except Exception as error:
+            ordinary.continuity_interrupted(str(error),
+                Path(value.runtime_root) / "p37-queue/ROOT-CUMULATIVE-LOOP-STATE.json")
+            ordinary.status("feeder_error_review_required",
+                error_type=type(error).__name__, error=str(error)[:2048])
+            raise
+        finally:
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+    return report
+
+
+def warm_forward_cli_v1() -> None:
+    import argparse
+    import importlib
+    import sys
+    parser = argparse.ArgumentParser(description="Managed same-live-epoch pre-FULL continuity attachment")
+    parser.add_argument("--warm-forward-admission", type=Path, required=True)
+    parser.add_argument("--qualify", action="store_true")
+    args = parser.parse_args()
+    with args.warm_forward_admission.open("rb") as stream:
+        raw = stream.read(32769)
+    need(len(raw) <= 32768, "bounded Root forward authority")
+    from tools.ck3_live_run_id import current_machine_id
+    value = parse_current_saved_warm_forward_admission_v1(
+        parse_json(raw), expected_machine_id=current_machine_id())
+    need(_same_path(value.admission_path, args.warm_forward_admission),
+         "canonical new admission path")
+    runtime = Path(value.runtime_root).resolve()
+    parent = runtime.parent.parent
+    sys.path[:0] = [str(runtime), str(parent / "p27-shared-harness-read01"),
+                   str(parent / "p28-commonrunner-preflight01")]
+    harness = importlib.import_module("shared_harness_reads")
+    install: object = getattr(harness, "install")
+    if not isinstance(install, RuntimeInitializerV1):
+        raise TypeError("original shared harness installer")
+    install()
+    outer = importlib.import_module("root_c23_canonical_outer")
+    verifier: object = getattr(outer, "verify_current_saved_shared_sources_v1")
+    if not isinstance(verifier, SharedVerifierV1):
+        raise TypeError("original shared-source verifier")
+    verifier(runtime)
+    boot = importlib.import_module("root_checkpoint_bootstrap_c23")
+    initialize: object = getattr(boot, "api")
+    if not isinstance(initialize, RuntimeInitializerV1):
+        raise TypeError("original bound SDK initializer")
+    initialize()
+    ordinary_module: object = importlib.import_module("root_p37c23_same_game_loop_feeder100")
+    ledger_module: object = importlib.import_module("root_continuity_window_c23_100")
+    cold = importlib.import_module("root_p37c23_cold_resume")
+    load: object = getattr(cold, "load_current_saved_feeder_inputs_v1")
+    if not isinstance(ordinary_module, ForwardOrdinaryV1) or not isinstance(ledger_module, ForwardLedgerV1):
+        raise TypeError("original frozen ordinary/ledger interfaces")
+    if not isinstance(load, ForwardWarmLoaderV1):
+        raise TypeError("original current-saved warm loader")
+    need(_same_path(ordinary_module.__file__, runtime / "root_p37c23_same_game_loop_feeder100.py")
+         and _same_path(ledger_module.__file__, runtime / "root_continuity_window_c23_100.py"),
+         "original frozen controller dependencies")
+    result = run_current_saved_warm_forward_v1(
+        value, ordinary=ordinary_module, ledger=ledger_module, warm_loader=load,
+        actual_stage=Path(__file__), reader=LocalCurrentSavedFeederReaderV1(),
+        qualify=args.qualify)
+    if args.qualify:
+        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+
+
 def emit_current_saved_feeder_launcher_v1(
     *, feeder_module_name: str = "root_p37c23_same_game_loop_feeder100",
     cold_module_name: str = "root_p37c23_cold_resume",
@@ -527,6 +945,10 @@ def emit_current_saved_feeder_launcher_v1(
         "    qualify_current_saved_feeder_v1, utc_now_v1,\n"
         ")\n"
         "from tools.g2_saved_campaign.current_saved_basis_v1 import JsonObject, integer, json_object, need\n"
+        "from tools.g2_saved_campaign.current_saved_continuity_v1 import (\n"
+        "    LocalContinuityReaderV1, read_continuity_view_v1, dry_run_attachment_v1,\n"
+        "    checked_attachment_reducer_v1,\n"
+        ")\n"
         "def main(first_control_sequence: int, *, qualify: bool = False) -> None:\n"
         "    first = integer(first_control_sequence, 1)\n"
         "    warm = load_current_saved_feeder_inputs_v1()\n"
@@ -542,17 +964,30 @@ def emit_current_saved_feeder_launcher_v1(
         "        actual_owner=Path(owner.__file__), current_next_sequence=ordinary.next_sequence(),\n"
         "        now_utc=utc_now_v1(), exists=Path.exists,\n"
         "    )\n"
-        "    if qualify:\n"
-        "        print(json.dumps({'machine_id': inputs.basis.machine_id, 'status': 'READONLY_QUALIFIED',\n"
-        "                          'Game_SDK_Task_calls': 0, 'ordinary_cycle_credit': 0, 'game_day_credit': 0}))\n"
-        "        return\n"
         "    original_transition = ledger.transition\n"
         "    def normal_transition(previous: object, kind: str, details: JsonObject) -> JsonObject:\n"
         "        return json_object(original_transition(previous, kind, details))\n"
+        "    wrapped = make_current_saved_transition_v1(normal_transition, verified=verified)\n"
+        "    continuity_reader = LocalContinuityReaderV1()\n"
+        "    view = read_continuity_view_v1(canonical_path=ordinary.CONTINUITY_WINDOW,\n"
+        "        anchor_ref=inputs.basis.refs.ledger, expected_machine_id=inputs.basis.machine_id,\n"
+        "        reader=continuity_reader)\n"
+        "    ledger_source = continuity_reader.probe(str(Path(ledger.__file__)), 65536)\n"
+        "    need(ledger_source is not None, 'actual continuity reducer source')\n"
+        "    if ledger_source is None: raise ValueError('missing continuity source')\n"
+        "    attachment = dry_run_attachment_v1(view, kind=owner.CURRENT_SAVED_COLD_KIND,\n"
+        "        details=verified.expected_transition(), reducer=wrapped,\n"
+        "        reducer_sources=(admission.feeder_source_ref, admission.owner_source_ref,\n"
+        "                         admission.loop_source_ref, ledger_source.reference))\n"
+        "    if qualify:\n"
+        "        print(json.dumps({'machine_id': inputs.basis.machine_id, 'status': 'READONLY_QUALIFIED',\n"
+        "                          'attachment': attachment.to_wire(), 'Game_SDK_Task_calls': 0,\n"
+        "                          'ordinary_cycle_credit': 0, 'game_day_credit': 0}))\n"
+        "        return\n"
         "    def apply(kind: str, details: JsonObject) -> JsonObject:\n"
         "        return json_object(ledger.WindowLedger(ordinary.CONTINUITY_WINDOW).apply(kind, details))\n"
         "    runtime = CurrentSavedRuntimeV1(inputs, admission, verified, apply, utc_now_v1, Path.exists)\n"
-        "    ledger.transition = make_current_saved_transition_v1(normal_transition, verified=verified)\n"
+        "    ledger.transition = checked_attachment_reducer_v1(wrapped, attachment=attachment, reader=continuity_reader)\n"
         "    ordinary.configure_current_saved_feeder_v1(runtime.callbacks())\n"
         "    with (N / 'CURRENT-SAVED-FEEDER.lock').open('a+b') as lock:\n"
         "        lock.seek(0)\n"
@@ -575,4 +1010,8 @@ def emit_current_saved_feeder_launcher_v1(
     ).encode("utf-8")
     compile(result, "<current-saved-feeder-launcher>", "exec", dont_inherit=True)
     return result
+
+
+if __name__ == "__main__":
+    warm_forward_cli_v1()
 

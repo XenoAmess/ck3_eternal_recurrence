@@ -21,12 +21,18 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
 )
 from tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1 import (
     ColdPlanV1, ColdQuoteV1, parse_plan_v1, parse_quote_v1,
+    probe_current_saved_continuity_v1,
 )
 from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
     LocalBasisReaderV1, WarmCurrentSavedFeederInputsV1,
     load_current_saved_warm_inputs_v1, validate_campaign_score_junction_physical_v1,
     validate_campaign_score_junction_source_v1,
     validate_current_saved_cold_inputs_v1, validate_current_saved_cold_owner_v1,
+)
+
+from tools.g2_saved_campaign.current_saved_continuity_v1 import (
+    LocalContinuityReaderV1, validate_continuity_binding_v1,
+    validate_closed_continuity_frontier_v1,
 )
 
 PREFLIGHT_SCHEMA = "xar.current-saved-campaign-preflight/v1"
@@ -1287,12 +1293,30 @@ def _full_historical_replay(
     core_sources = [row.source_ref for row in plan.source_rows
                     if Path(row.relative_path).name == _CORE_NAME]
     need(len(core_sources) == 1, "one approved canonical core source")
-    canonical = Path(core_sources[0].path).parent
-    need(_same_path(full.harness_ref.path,
-                    canonical / "test_current_saved_campaign_preflight_v1.py")
-         and _same_path(full.fixture_ref.path,
-                        canonical / "test_data/current_saved_sem11373_postcheck_v1.json"),
-         "full replay uses this public harness and repository corpus")
+    from tools.g2_saved_campaign.current_saved_campaign_replay_v1 import (
+        HISTORICAL_REPLAY_DATA_RELATIVE_PATH_V1, HISTORICAL_REPLAY_DATA_BYTES_V1,
+        HISTORICAL_REPLAY_DATA_SHA256_V1,
+    )
+    replay_relative = "tools/g2_saved_campaign/current_saved_campaign_replay_v1.py"
+    replay_sources = [row.source_ref for row in plan.source_rows
+                      if row.relative_path == replay_relative]
+    replay_outputs = [ExactRefV1(row.path, row.bytes, row.sha256) for row in quote.files
+                      if row.relative_path == replay_relative]
+    archives = [ExactRefV1(row.path, row.bytes, row.sha256) for row in quote.files
+                if row.relative_path == HISTORICAL_REPLAY_DATA_RELATIVE_PATH_V1]
+    need(len(replay_sources) == len(replay_outputs) == len(archives) == 1,
+         "production replay and immutable data each have one frozen inventory row")
+    need((replay_sources[0].bytes, replay_sources[0].sha256) ==
+         (replay_outputs[0].bytes, replay_outputs[0].sha256)
+         and full.harness_ref in (replay_sources[0], replay_outputs[0]),
+         "replay ran the exact public or frozen production source")
+    archive_source = ExactRefV1(str(Path(plan.producer_ref.path).parent / "test_data" /
+        "current_saved_sem11373_postcheck_v1.json"), HISTORICAL_REPLAY_DATA_BYTES_V1,
+        HISTORICAL_REPLAY_DATA_SHA256_V1)
+    need((archives[0].bytes, archives[0].sha256) ==
+         (archive_source.bytes, archive_source.sha256)
+         and full.fixture_ref in (archive_source, archives[0]),
+         "explicit unchanged historical data inventory and origin")
     original = _archive_historical_replay_v1(reference, full, fixture, plan, quote, reader)
     basis = decode_current_saved_basis_v1(exact_read(reader, plan.basis_ref, 65536),
                                          expected_machine_id=plan.machine_id)
@@ -1498,6 +1522,7 @@ class CurrentSavedConsumerProbeCallV1:
 _PROBE_OPERATIONS = {
     "canonical_outer_constructor", "task_spec_validation", "supervisor_prepared_business",
     "supervisor_make_spec", "supervisor_verify_cold_profile", "frozen_mcp_safe_boundary",
+    "canonical_continuity_frontier",
 }
 
 
@@ -1568,8 +1593,8 @@ def parse_current_saved_consumer_probe_v1(value: object) -> CurrentSavedConsumer
     need(row["fresh_native_qualification"] is False, "consumer software probe is not Native qualification")
     observed = text(row["observed_at_utc"]); utc(observed)
     calls = tuple(_parse_probe_call(item) for item in rows(row["calls"]))
-    need(len(calls) == 6 and {item.operation for item in calls} == _PROBE_OPERATIONS,
-         "all six actual startup consumer operations")
+    need(len(calls) == 7 and {item.operation for item in calls} == _PROBE_OPERATIONS,
+         "all seven actual startup consumer operations")
     return CurrentSavedConsumerProbeV1(
         text(row["machine_id"]), observed, text(row["runtime_root"]),
         _nonce(row["attempt_nonce"]), _nonce(row["task_nonce"]),
@@ -1830,6 +1855,17 @@ def _bind_consumer_probe_call_v1(
         dump = ast.dump(projected, include_attributes=False)
         need("make_spec" in dump and "verify_cold_profile" in dump,
              "both actual business consumers remain in their original projection")
+    elif call.operation == "canonical_continuity_frontier":
+        expected = output(root / "tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py")
+        expected_name = "probe_current_saved_continuity_v1"
+        need(call.execution_kind == "original_function" and call.call_count == 1,
+             "one real closed continuity consumer execution")
+        view = validate_continuity_binding_v1(
+            observed, expected_machine_id=plan.machine_id, reader=LocalContinuityReaderV1())
+        need(_same_path(view.canonical_path, root.parent / "ROOT-CONTINUITY-WINDOW.json")
+             and view.anchor_ref == basis.refs.ledger and view.ready,
+             "current canonical continuity binding before Prepared")
+        validate_closed_continuity_frontier_v1(basis.to_wire(), view)
     else:
         need(call.operation == "frozen_mcp_safe_boundary", "known current consumer operation")
         base = _small(reader, plan.sdk_base_ref)
@@ -2010,8 +2046,8 @@ def prepare_current_saved_offline_v1(
     supply write authority. The historical runner owns a finite isolated fixture;
     it never supplies live SEM/CAP, Native readiness, or ordinary business credit.
     """
-    from tools.g2_saved_campaign.test_current_saved_campaign_preflight_v1 import (
-        run_historical_startup_dispatch_replay_v1,
+    from tools.g2_saved_campaign.current_saved_campaign_replay_v1 import (
+        run_historical_startup_dispatch_replay_v1, resolve_historical_replay_sdk_sources_v1,
     )
     need(expected_machine_id == current_execution_machine_id_v1(),
          "public physical prepare actual execution machine")
@@ -2036,6 +2072,8 @@ def prepare_current_saved_offline_v1(
         plan_ref, quote_ref, reader=reader, expected_machine_id=expected_machine_id)
     basis = decode_current_saved_basis_v1(exact_read(reader, plan.basis_ref, 65536),
                                          expected_machine_id=expected_machine_id)
+    probe_current_saved_continuity_v1(
+        plan, reader=reader, continuity_reader=LocalContinuityReaderV1())
     validate_campaign_score_junction_physical_v1(
         quote.campaign_score_junction, runtime_root=runtime, reader=reader)
     probe = _run_frozen_consumer_probe_v1(plan_ref, quote_ref, plan)
@@ -2048,7 +2086,10 @@ def prepare_current_saved_offline_v1(
     need(len(cold_rows) == 1, "one final quoted complete cold receiver")
     cold_row = cold_rows[0]
     cold_ref = ExactRefV1(cold_row.path, cold_row.bytes, cold_row.sha256)
+    sdk_sources = resolve_historical_replay_sdk_sources_v1(
+        sdk_base_ref=plan.sdk_base_ref, expected_machine_id=expected_machine_id, reader=reader)
     replay = run_historical_startup_dispatch_replay_v1(
+        sdk_sources=sdk_sources,
         fixture_root=historical_fixture_root, historical_fixture_ref=historical_fixture_ref,
         expected_execution_machine_id=expected_machine_id, current_next_sequence=basis.next_sequence,
         raw_governance=inputs.governance, governance_source_ref=basis.refs.governance,
@@ -2068,6 +2109,7 @@ def prepare_current_saved_offline_v1(
     preflight_ref = _create_offline_metadata_v1(
         metadata / names[2], preflight.to_wire(), approved_root=metadata, reader=reader)
     prepared = build_current_saved_prepared_v1(preflight, preflight_ref, reader=reader)
+    _validate_consumer_probe(probe_ref, plan_ref, quote_ref, plan, reader)
     _create_offline_metadata_v1(
         final_path, prepared.to_wire(), approved_root=runtime, reader=reader)
     need(verify_current_saved_prepared_v1(

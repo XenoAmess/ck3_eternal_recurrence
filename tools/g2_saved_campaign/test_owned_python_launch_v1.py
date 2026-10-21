@@ -79,15 +79,19 @@ class FixtureSearchPathTests(unittest.TestCase):
             _, env = launch.owned_python_launch_v1()
         self.assertEqual(env["PYTHONPATH"].split(os.pathsep), [str(Path.cwd())])
 
-    def test_absent_pythonpath_does_not_invent_current_directory(self) -> None:
+    def test_pythonpath_empty_value_and_internal_empty_item_match_python(self) -> None:
         from pathlib import Path
         dependency = str(Path(sys.executable).parent)
-        with patch.object(launch, "_loaded_image_v1", return_value=sys.executable), \
-             patch.object(sys, "_base_executable", sys.executable), \
-             patch.object(sys, "path", [dependency]), \
-             patch.dict(os.environ, {}, clear=True):
-            _, env = launch.owned_python_launch_v1()
-        self.assertEqual(env["PYTHONPATH"], dependency)
+        for inherited in (None, "", os.pathsep):
+            entries = {} if inherited is None else {"PYTHONPATH": inherited}
+            with self.subTest(pythonpath=inherited), \
+                 patch.object(launch, "_loaded_image_v1", return_value=sys.executable), \
+                 patch.object(sys, "_base_executable", sys.executable), \
+                 patch.object(sys, "path", [dependency]), \
+                 patch.dict(os.environ, entries, clear=True):
+                _, env = launch.owned_python_launch_v1()
+            expected = [dependency] if not inherited else [dependency, str(Path.cwd())]
+            self.assertEqual(env["PYTHONPATH"].split(os.pathsep), expected)
 
     @unittest.skipUnless(os.name == "nt", "actual direct interpreter image")
     def test_fresh_child_imports_caller_project_after_cwd_change(self) -> None:

@@ -255,7 +255,8 @@ class CaptureV1(Protocol):
     def launch_recording(self, profile_path: Path, recording_root: Path, pid: int,
                          hwnd: int, seconds: None, *, launch_receipt: Path, ffprobe: Path,
                          placement_receipt: Path, decision_publisher_receipt: Path,
-                         continuous: Literal[True]) -> object: ...
+                         continuous: Literal[True], worker_handoff: Callable[[object], None],
+                         custody_machine_id: str) -> object: ...
     def read_capture_closed_receipt(self, receipt_root: Path, *, session_id: str,
                                    game_pid: int, game_creation_filetime: int,
                                    recording_worker_pid: int, recording_root: Path) -> object: ...
@@ -282,6 +283,27 @@ class ResourcesV1(Protocol):
     def require_live(self, identity: ProcessV1) -> None: ...
     def retain_worker(self, identity: ProcessV1) -> WorkerLeaseV1: ...
     def hold_unretained_worker(self, identity: ProcessV1, reason: str) -> Never: ...
+
+
+@dataclass
+class _WorkerHandoffV1:
+    admission: RecordingOnlyAdmissionV1
+    resources: ResourcesV1
+    accepted: tuple[WorkerRequestV1, WorkerLeaseV1] | None = None
+
+    def accept(self, value: object) -> None:
+        need(self.accepted is None, "worker handoff must occur exactly once")
+        request = parse_worker_request_v1(value, self.admission)
+        worker = self.resources.retain_worker(request.worker)
+        self.accepted = (request, worker)
+
+    def close_after_failed_launch(self) -> None:
+        if self.accepted is not None:
+            _, worker = self.accepted
+            try:
+                worker.wait_exit()
+            finally:
+                worker.close()
 
 
 @dataclass(frozen=True)
@@ -399,16 +421,21 @@ def run_recording_only_owner_v1(
         "observed_at_utc": now_utc().isoformat(), "status": "ONCE_LAUNCH_INTENT",
         "old_session_id": a.old_session_id, "capture_source": a.evidence["capture"].wire(),
         "Game_stop_calls": 0, "publisher_stop_calls": 0, "replay_allowed": False})
-    request = parse_worker_request_v1(capture.launch_recording(
-        Path(a.evidence["profile"].path), a.recording_root, a.game.pid, hwnd, None,
-        launch_receipt=Path(a.evidence["launch"].path), ffprobe=a.ffprobe,
-        placement_receipt=Path(a.evidence["placement"].path),
-        decision_publisher_receipt=Path(a.evidence["publisher_started"].path),
-        continuous=True), a)
+    handoff = _WorkerHandoffV1(a, resources)
     try:
-        worker = resources.retain_worker(request.worker)
-    except Exception as error:
-        resources.hold_unretained_worker(request.worker, str(error)[:1024])
+        capture.launch_recording(
+            Path(a.evidence["profile"].path), a.recording_root, a.game.pid, hwnd, None,
+            launch_receipt=Path(a.evidence["launch"].path), ffprobe=a.ffprobe,
+            placement_receipt=Path(a.evidence["placement"].path),
+            decision_publisher_receipt=Path(a.evidence["publisher_started"].path),
+            continuous=True, worker_handoff=handoff.accept, custody_machine_id=a.machine_id)
+    except BaseException:
+        handoff.close_after_failed_launch()
+        raise
+    need(handoff.accepted is not None, "producer did not transfer its owned worker")
+    if handoff.accepted is None:
+        raise ValueError("worker handoff unavailable")
+    request, worker = handoff.accepted
     error_text: str | None = None
     closure: Obj | None = None
     normal = False
