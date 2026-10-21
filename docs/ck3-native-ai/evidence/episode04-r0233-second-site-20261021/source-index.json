@@ -1,0 +1,169 @@
+{
+  "schema": "xar.e04.r0233.portable-small-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T23:28:42.635409+00:00",
+  "facts_cutoff_utc": "2026-10-21T23:13:02.285451+00:00",
+  "source_commit_for_document_baseline": "cfcf2ac7d40f891a88bbb2bb9ed52b70f7b3e7dd",
+  "source_kind": "Exact-byte small original carrier, with explicit original paths and member SHA",
+  "carrier": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r20-ci-acceptance-fix-a01\\docs-source-a01\\raw-small-evidence.tar.gz",
+    "bytes": 15160,
+    "sha256": "9a8a5d3d50c69df5154184b77cbeb148118b56b063405d9b6c8541cb4d777bab"
+  },
+  "carrier_repository_path": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz",
+  "member_count": 15,
+  "decoded_payload_bytes": 94291,
+  "full_member_readback_verified": true,
+  "sources": [
+    {
+      "member": "R0233-OWNER-CLOSED.actual-a01.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\control-a01\\R0233-OWNER-CLOSED.actual-a01.json",
+        "bytes": 5416,
+        "sha256": "14e903eb8d6bf762cf5ed0c5bf70481a8c3640acc1dccc337b20b3cdf6ee973d"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/normal_close.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\case-output\\normal-close-result.json",
+        "bytes": 10662,
+        "sha256": "a00ff822a04e8a48aa0437d771c247a62517770a97752aefe234854562f40d58"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/GUI_review.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\case-output\\normal-quit-root-result.json",
+        "bytes": 2781,
+        "sha256": "1b67f2af322415af253b5886dfc90587480fd6f5679fb5c54cb081a77bc89091"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/host_original_wait.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\host-original-process-exit.json",
+        "bytes": 245,
+        "sha256": "039e3b9045b7ab711964b008313acacc39e155a3d26bee49736e36201a9bf02f"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/public_original_wait.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\ops-a01\\public-run-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 656,
+        "sha256": "d672b3af39355f123c583634b4c7d5f9c2914aebc455feee7832d26d19356ed0"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/hot_original_wait.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\ops-a01\\hot-preparation-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 665,
+        "sha256": "249c762be8201d21c971c21fe8fb398a392e06ff0b6efbd36318e18b67e3b09b"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/allocator_original_wait.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\ops-a01\\public-allocate-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 663,
+        "sha256": "8d057ccc3f4e6302114467c905e0b2ae38aaf1eb161216d802ebc5f85ae9a485"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/keeper_original_parent_wait.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\keeper-actual-parent-exit.json",
+        "bytes": 603,
+        "sha256": "64e84c432cbf53d38d336f9eda7a9d9c943e85ceef816639c1abfc0ab411bf5d"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/screen_release.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\ops-a01\\final-screen-release-a01\\stdout.actual.txt",
+        "bytes": 1307,
+        "sha256": "e1f37a98682c72a59825dedd8f8620323be1baae17dab36d9aa0950686ab68ff"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/final_ordinary_Save_receipt.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\hot-preparation-a01\\r19-hot-preparation-a01-FINAL-ORDINARY-SAVE.json",
+        "bytes": 6865,
+        "sha256": "48e485ea374faf55f05363066a1659345d589d14ccfe716c96bc35758fb26eb9"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "owner-leaves/original_ordinary_Save_receipt.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\case-output\\r17-b-site-a01-FINAL-ORDINARY-SAVE.json",
+        "bytes": 6867,
+        "sha256": "0759f9b104ae393a4270baba7da8989347736c24c8b4e434f3cc3900ef2208b7"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "hot-progress.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\hot-preparation-a01\\r17-b-site-a01-50009-progress.json",
+        "bytes": 10677,
+        "sha256": "5773a15cc3e10081247c2cab19f06e143b5080693059ba735b7145bd945d76f8"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "war/WAR-OVERVIEW-ORIGINAL.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\ui-war-overview-a01\\WAR-OVERVIEW-ORIGINAL.json",
+        "bytes": 41160,
+        "sha256": "d359aaca55a40631ab380655814311f7f5be11e802027083188e9a3bc0b711ef"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "war/INDEPENDENT-WAR-CLOSE-POST.json",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r19-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0233\\ui-war-post-a01\\INDEPENDENT-WAR-CLOSE-POST.json",
+        "bytes": 3322,
+        "sha256": "419377e701b0b1a90aa1ce8d68a456357fd3d021d13eecfa177075678ffbd671"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    },
+    {
+      "member": "war/window_war_declared_overview.gui",
+      "original_source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_war_declared_overview.gui",
+        "bytes": 2402,
+        "sha256": "769ab461d391853d7c01ecbfa85ce121b5b20069df30358ee5f922fc789737f2"
+      },
+      "canonical_carrier": "docs/ck3-native-ai/evidence/episode04-r0233-second-site-20261021/raw-small-evidence.tar.gz"
+    }
+  ],
+  "not_copied_or_rehashed": [
+    "Save bodies",
+    "native-report",
+    "large snapshots",
+    "PNGs",
+    "movies"
+  ],
+  "formal_counts_unchanged": {
+    "shots": "9/11",
+    "B": "1/2",
+    "research": "10/14",
+    "business": "7/11",
+    "ABC": "0/3"
+  },
+  "ordinary_planner_autoload": false
+}
