@@ -12,6 +12,10 @@ from pydantic import AfterValidator, Field
 
 from .confucian_challenger_graph_v1 import validate_faith_ids
 from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
+from .route_window_clock_v1 import (
+    DEFAULT_ROUTE_WINDOW_CLOCK_V1, RouteWindowClockConfigV1,
+    route_window_clock_json_v1, validate_route_window_clock_v1,
+)
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
@@ -463,6 +467,7 @@ def load_driver(
     userdir: str | os.PathLike[str] | None = None,
     state_dir: str | os.PathLike[str] | None = None,
     pipe_name: str | None = None,
+    route_window_clock_v1: RouteWindowClockConfigV1 = DEFAULT_ROUTE_WINDOW_CLOCK_V1,
     route_contact_timeline_speed: int = 3,
     allow_route_contact_high_speed_ab: bool = False,
     war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
@@ -475,6 +480,7 @@ def load_driver(
     allow_war_daily_watch_v1: bool = False,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
+    route_window_clock_v1 = validate_route_window_clock_v1(route_window_clock_v1)
     if type(allow_war_daily_watch_v1) is not bool:
         raise ValueError("war daily watch trial permission must be an explicit boolean")
     if allow_war_daily_watch_v1 and factory != "native-headless":
@@ -484,6 +490,7 @@ def load_driver(
         raise ValueError("initial lifestyle focus requires the private lifestyle formal trial")
     if factory != "native-headless" and (
         route_contact_timeline_speed != 3 or allow_route_contact_high_speed_ab
+        or route_window_clock_v1 != DEFAULT_ROUTE_WINDOW_CLOCK_V1
     ):
         raise ValueError("route-contact speed A/B requires the native-headless driver")
 
@@ -509,6 +516,7 @@ def load_driver(
             selected_pipe_name(pipe_name),
             state_dir=selected_state_dir(),
             save_dir=selected_save_dir(),
+            route_window_clock_v1=route_window_clock_v1,
             route_contact_timeline_speed=route_contact_timeline_speed,
             allow_route_contact_high_speed_ab=allow_route_contact_high_speed_ab,
             allow_war_daily_watch_v1=allow_war_daily_watch_v1,

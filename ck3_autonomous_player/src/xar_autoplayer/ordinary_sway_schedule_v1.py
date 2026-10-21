@@ -12,6 +12,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .reused_sway_opportunity_v1 import reused_sway_observation_gap_v1
+from .bridge.war_stationary_sway_opportunity_v1 import parse_window_v1, require_current_window_v1
 
 RAW_PER_DAY = 24
 MONTH_RAW = 30 * RAW_PER_DAY
@@ -52,10 +53,15 @@ def plan_ordinary_sway_schedule_v1(
     ledger: Mapping[str, object] | None = None,
     state: Mapping[str, object] | None = None,
     active_observation_only: bool = False,
+    war_stationary_window: object = None,
 ) -> dict[str, object]:
     """Plan optional work; a quiet post-query caller may only observe an applied instance."""
     unchanged = dict(state) if isinstance(state, Mapping) else {}
-    if selected_step != "life-advance" and active_observation_only is not True:
+    window = parse_window_v1(war_stationary_window)
+    war_opportunity = (window is not None
+        and window["original_selected_step"] == selected_step
+        and require_current_window_v1(window, snapshot))
+    if selected_step != "life-advance" and active_observation_only is not True and not war_opportunity:
         return {"job": None, "reason": "preserve_selected_step", "state": unchanged}
     played = snapshot.get("played_character")
     date = snapshot.get("date_raw")

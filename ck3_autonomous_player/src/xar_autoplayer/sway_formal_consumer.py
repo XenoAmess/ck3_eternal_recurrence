@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import uuid
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from pathlib import Path
 
 from .bridge.driver import BridgeUnavailableError
@@ -433,7 +433,8 @@ def _same_target_followup(resolved: Mapping[str, object],
 
 def consume_sway_private_once(driver: object, *, target_character_id: int,
                               snapshot: Mapping[str, object],
-                              readback: Mapping[str, object]) -> dict[str, object]:
+                              readback: Mapping[str, object],
+                              pre_submit_admission: Callable[[], bool] | None = None) -> dict[str, object]:
     """Submit at most once; on a new PID use a read-only recovery first."""
     if getattr(driver, "allow_private_active_scheme_sway_action", False) is not True:
         raise ValueError("private Sway formal trial is disabled")
@@ -474,6 +475,8 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
                 **({"followup": {**followup, "decision": "native_start_unavailable"}}
                    if followup is not None else {})}
 
+    if pre_submit_admission is not None and pre_submit_admission() is not True:
+        return {"status": "wartime_opportunity_no_longer_admitted", "submit_attempted": False}
     action_id = "sway-" + uuid.uuid4().hex
     pending = {
         "stage": "submission_unresolved", "action_id": action_id,

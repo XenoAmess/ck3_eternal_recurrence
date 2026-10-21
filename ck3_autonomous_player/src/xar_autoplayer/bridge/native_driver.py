@@ -8,6 +8,10 @@ semantic driver interface used by the visual and data-Mod backends.
 from __future__ import annotations
 
 from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
+from .route_window_clock_v1 import (
+    DEFAULT_ROUTE_WINDOW_CLOCK_V1, RouteWindowClockConfigV1,
+    route_window_clock_json_v1, validate_route_window_clock_v1,
+)
 
 from .route_contact_window_contract import (
     ADVANCE_ROUTE_CONTACT_WINDOW_STEP_PREFIX,
@@ -1901,6 +1905,7 @@ class NativeHeadlessGameplayDriver:
         restore_poll_interval_seconds: float = 0.05,
         settlement_timeout_seconds: float = 30.0,
         settlement_poll_interval_seconds: float = 0.05,
+        route_window_clock_v1: RouteWindowClockConfigV1 = DEFAULT_ROUTE_WINDOW_CLOCK_V1,
         route_contact_timeline_speed: int = (
             DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED
         ),
@@ -1971,6 +1976,7 @@ class NativeHeadlessGameplayDriver:
         self.life_advance_timeout_seconds = _positive_seconds(
             life_advance_timeout_seconds, "life_advance_timeout_seconds"
         )
+        self.route_window_clock_v1 = validate_route_window_clock_v1(route_window_clock_v1)
         self.route_contact_timeline_speed = _timeline_speed(
             route_contact_timeline_speed,
             "route_contact_timeline_speed",
@@ -2558,7 +2564,7 @@ class NativeHeadlessGameplayDriver:
                 )
                 if (
                     _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES <= bridge_capabilities
-                    and f"set-speed-{self.route_contact_effective_timeline_speed}" in action_steps
+                    and f"set-speed-{self.route_window_clock_v1.timeline_speed}" in action_steps
                 ):
                     proof_steps.update(_fresh_route_contact_window_advance_proofs(
                         current_snapshot, self._command_history
@@ -2755,6 +2761,7 @@ class NativeHeadlessGameplayDriver:
             "composite_action_steps": composite_action_steps,
             "battle_speed_readiness": {
                 **_BATTLE_SPEED_READINESS,
+                "route_window_clock_v1": route_window_clock_json_v1(self.route_window_clock_v1),
                 "stationary_objective_hold_legacy_canary_flag_requested": (
                     self.allow_stationary_objective_hold_sentinel_canary
                 ),
@@ -24622,7 +24629,7 @@ class NativeHeadlessGameplayDriver:
         if route_window_proof is not None:
             if requested_scope != "route_contact_window" or parse_advance_route_contact_window_step(step) is None:
                 raise UnsupportedStepError("route window sentinel request scope is inconsistent")
-            speed = self.route_contact_effective_timeline_speed
+            speed = self.route_window_clock_v1.timeline_speed
             wire_mode = "terminal"
             status_mode = "terminal_or_sentinel"
         elif parsed_objective_hold_request is not None:
