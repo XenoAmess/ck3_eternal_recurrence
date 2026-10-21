@@ -1,0 +1,82 @@
+{
+  "schema": "xar.capacity.r15.source8-native-static-child.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:08:58.014588+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "ledger_claim_task_id": "e04-capacity-r15-source-edit-1030-20261021-a01",
+  "hard_deadline_utc": "2026-10-21T12:30:00Z",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\native-r08-static-a05",
+  "aggregate_ceiling_bytes": 16384,
+  "parent_shared_support_ceiling_bytes": 2293760,
+  "parent_partition": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\SOURCE8-MEDIA3072-SUPPORT2240-PARTITION.actual-a08.json",
+    "bytes": 7661,
+    "sha256": "a34c250dbe5d51b5cecc9063aa4b1d78eb6e29d17393e69ab9f61a91ede6686e"
+  },
+  "fresh_support_actual_bytes": 1156050,
+  "retained_old_publication_W_positive_bytes": 347446,
+  "shared_remaining_before_this_receipt": 790264,
+  "future_delta_bytes_by_volume": {
+    "C:/": 0,
+    "D:/": 0
+  },
+  "source_only_static_analysis_admitted": true,
+  "scope": "Root explicit new c/d field semantics and settlement provenance narrow static a05; exact references to original large bodies only; no repetition of old conclusion",
+  "SDK_Game_build_EXE_execution_admitted": false,
+  "old_a02_a03_a04_and_native_roots_readonly": true,
+  "Root_authority_source": "Root current message explicitly grants native-r08-static-a05 <=16KiB within prospective support2240KiB; no additional hold.",
+  "quota_exception": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\OWNER-CONTINUE-FILM-QUOTA-EXCEPTION.actual-a02.json",
+    "bytes": 2775,
+    "sha256": "53e44c3140f34ff3a8c2753794c8cbcdb3a0ef6ab1e054bd0df816d36b8189ea"
+  },
+  "base_budget": {
+    "C_known_future_bytes": 1216348160,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 26986151936,
+    "C_floor_margin_bytes": 47497252864,
+    "C_projected_whole_volume_upper_bound_bytes": 442161856512,
+    "C_quota_margin_bytes": -4075192320,
+    "D_required_free_bytes": 21610102784,
+    "D_floor_margin_bytes": 23207936
+  },
+  "effective_budget": {
+    "C_known_future_bytes": 1216348160,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 26986151936,
+    "C_floor_margin_bytes": 47497252864,
+    "C_projected_whole_volume_upper_bound_bytes": 442161856512,
+    "C_quota_margin_bytes": 1293516800,
+    "D_required_free_bytes": 21610102784,
+    "D_floor_margin_bytes": 23207936
+  },
+  "volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-21T11:08:58.014301+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 74483404800,
+      "available_to_caller_bytes": 74483404800,
+      "total_free_bytes": 74483404800,
+      "entire_volume_used_allocation_upper_bound_bytes": 436650541056,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-21T11:08:58.014301+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21633310720,
+      "available_to_caller_bytes": 21633310720,
+      "total_free_bytes": 21633310720,
+      "entire_volume_used_allocation_upper_bound_bytes": 478456696832,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "ledger_snapshot": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 632588,
+    "sha256": "d5d896e1d9b2b7d82cc733377dada376fb42baf05587ae42994d097d88b98f85"
+  },
+  "physical_credit_bytes": 0
+}

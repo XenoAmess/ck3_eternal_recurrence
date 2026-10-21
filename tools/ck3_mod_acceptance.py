@@ -14,6 +14,7 @@ import json
 import math
 import os
 from pathlib import Path
+from types import ModuleType
 import re
 import subprocess
 import sys
@@ -918,14 +919,40 @@ def main(argv: list[str] | None = None) -> int:
                  incomplete_verify or incomplete_close) else 0
 
 
-def native_dispatch(args) -> dict:
+def same_directory_control_peer(name: str) -> ModuleType:
+    """Bind allocator/unrun to this entry's directory before their control calls."""
+    if name not in {'ck3_mod_acceptance_allocate', 'ck3_mod_acceptance_unrun'}:
+        raise ValueError('Unknown public control peer: '+name)
+    entry = Path(__file__).resolve()
+    expected = entry.with_name(name+'.py')
+    for key, path in (('ck3_mod_acceptance', entry), (name, expected)):
+        cached = sys.modules.get(key)
+        if cached is not None:
+            source = getattr(cached, '__file__', None)
+            if not isinstance(source, str) or Path(source).resolve() != path:
+                raise ValueError('Public control module directory differs: '+key)
+    prior = list(sys.path)
+    try:
+        sys.path.insert(0, str(entry.parent))
+        module = importlib.import_module(name)
+    finally:
+        sys.path[:] = prior
+    source = getattr(module, '__file__', None)
+    if not isinstance(source, str) or Path(source).resolve() != expected:
+        raise ValueError('Public control module directory differs: '+name)
+    return module
+
+
+def native_dispatch(args: argparse.Namespace) -> dict[str, object]:
     selection = Selection(args.runtime, args.products, args.product, args.case, args.run_context,args.prepared_case)
+    result: dict[str, object]
     if args.mode=='prepare':
         if not args.case_inputs or not args.prepare_output:raise ValueError('prepare requires --case-inputs and --prepare-output')
         result=selection.prepare(args.case_inputs,args.prepare_output)
     elif args.mode=='allocate':
-        from ck3_mod_acceptance_allocate import allocate_and_keep
-        result=allocate_and_keep(selection,args)
+        allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
+        same_directory_control_peer('ck3_mod_acceptance_unrun')
+        result=allocator.allocate_and_keep(selection,args)
     elif args.mode=='verify':result=selection.verify()
     else:result=selection.describe() if args.mode=='plan' else selection.preflight() if args.mode=='preflight' else selection.run()
     return result

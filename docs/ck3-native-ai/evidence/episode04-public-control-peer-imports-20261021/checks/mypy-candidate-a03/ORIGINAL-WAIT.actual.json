@@ -1,0 +1,64 @@
+{
+  "schema": "xar.e04.public-control-import.original-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-21T10:52:09.367633+00:00",
+  "finished_at_utc": "2026-10-21T10:52:22.387880+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "--follow-imports=silent",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-revision-a03\\tools\\ck3_mod_acceptance.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\ck3_mod_acceptance_unrun.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02",
+  "env_overrides": {
+    "PYTHONPATH": "C:/ck3-e04-resume-20261020-a01/r08-mypy1201-tools-2115-a01/Lib",
+    "MYPYPATH": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-revision-a03\\tools;C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools",
+    "CK3_CONTROL_IMPORT_ENTRY": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-revision-a03\\tools\\ck3_mod_acceptance.py"
+  },
+  "shell": false,
+  "pid": 19112,
+  "creation_time_100ns": "134370535293695568",
+  "original_popen_wait": true,
+  "returncode": 1,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a03\\stdout.log",
+    "bytes": 17539,
+    "sha256": "97a1b5caf61efcd9b85e1af93f3af83388eabcbb19ea730ed0a10ab10de78c9f"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a03\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\ck3_mod_acceptance.py",
+      "bytes": 63205,
+      "sha256": "f0f4a4f52f89cf9f3fc915a5b8a5010c673bcb19c74b40f9bd543e2ddb008a0a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\ck3_mod_acceptance_unrun.py",
+      "bytes": 17833,
+      "sha256": "8776bf95e43f4e680b6497aeaa121b594c3cb8909f262aa92d606c1e3bee8c2b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\test_ck3_mod_acceptance_control_peer_imports.py",
+      "bytes": 6930,
+      "sha256": "5c78edd99e46fbbc04c482bb2a1c94f4593031b414532ccb025eca2a94e7eb5f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-revision-a03\\tools\\ck3_mod_acceptance.py",
+      "bytes": 63268,
+      "sha256": "bc8d2e18518513cc0f6b571f094e1dd1f68f82991543fc762d1128226f47d1f5"
+    }
+  ],
+  "native_SDK_Game_execution": false
+}

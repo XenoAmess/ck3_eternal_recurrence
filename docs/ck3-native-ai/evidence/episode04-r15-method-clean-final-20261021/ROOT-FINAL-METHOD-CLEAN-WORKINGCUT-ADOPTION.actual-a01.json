@@ -1,0 +1,55 @@
+{
+  "schema": "xar.e04.root.workingcut-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-21T11:04:00Z",
+  "reviewer": "/root",
+  "decision": "ACCEPT_LIMITED_FULL_WORKING_REVIEW_FOR_AUTHORIZED_ONEDRIVE_DELIVERY",
+  "movie": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-d15-final-full-1230-a01/work/E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+    "bytes": 97531706,
+    "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b",
+    "video_frames": 57547,
+    "video_duration_seconds": "1918.233333",
+    "audio_frames": 90017,
+    "audio_duration_seconds": "1918.254667",
+    "chapters": 6,
+    "cues": 67,
+    "method_cues": 59,
+    "selected_evidence_cues": 8
+  },
+  "technical_QA": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-d15-final-full-1230-a01/qa/QA.actual.json",
+    "bytes": 1100,
+    "sha256": "fac9bd51d0880b0a810f444b55d01b5813072d2e326440806ba77743f10c7027",
+    "complete_decode_attempts": 1,
+    "AV_original_wait": 0,
+    "presentation_PTS_and_packet_DTS_pass": true,
+    "outer_call_sha256": "5537dc0ef4e4663f71741d80b4170f66a2f61568c6c3dd92a04b48684a777661",
+    "outer_original_wait": 0
+  },
+  "Root_direct_visual_review": {
+    "observed_at_utc": "2026-10-21T10:57:10Z",
+    "source": "Four existing original1920x1080 JPEGs from the sole final-movie decode; no additional extraction.",
+    "directory": "C:/ck3-e04-resume-20261020-a01/r15-d15-final-full-1230-a01/qa",
+    "images": ["boundary-03.jpg", "boundary-10.jpg", "boundary-11.jpg", "boundary-12.jpg"],
+    "count": 4,
+    "findings": [
+      "D15 burned graphic states actual weights, fixed-point precision at both stages and the verified positive-weight-path condition.",
+      "A and comparison cards visibly retain unmeasured fields; no invented strategy winner.",
+      "Final movement card distinguishes two observations, strict greater-than-half source condition and arrival outside the recording.",
+      "Selected images show readable complete Chinese text without the former internal-ID banner."
+    ]
+  },
+  "peer_review": {"reviewer": "/root/readwatch_review", "reported_actual_images": 12, "Root_did_not_personally_view_all12": true},
+  "retained_limitations": [
+    "D15 old English subtitle still says truncates each to an integer without explicitly naming fixed-point precision; the corrected Chinese graphic supplies that distinction. Voice and ASS were preserved.",
+    "Five context clips remain labelled scene illustration and do not recover their old underlying HUD or earn formal-theme credit.",
+    "R05/R08/R10 formal evidence, B two-site growth and the three-arm comparison remain unfinished."
+  ],
+  "delivery": "Proceed with the selected full movie only after actual media owner closure and fresh128MiB capacity admission; preserve the already-synced270s review. Existing user upload authorization applies.",
+  "new_gameplay_or_formal_theme_credit": false,
+  "human_1x": false,
+  "signoff": false,
+  "whole_episode_complete": false,
+  "cloud_upload_proven_by_this_record": false
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "xar.e04.single-review-onedrive-copy.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:09:16.574203+00:00",
+  "state": "LOCAL_COPY_SHA_VERIFIED_CLOUD_PENDING",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+    "bytes": 97531706,
+    "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b"
+  },
+  "destination": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261021-a01.mp4",
+    "bytes": 97531706,
+    "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b"
+  },
+  "source_identity": {
+    "device": "13886423844274364792",
+    "file_id": "844424932192059"
+  },
+  "destination_identity": {
+    "device": "13886423844274364792",
+    "file_id": "844424932196657"
+  },
+  "admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\ONEDRIVE-FINAL128-FINANCIAL-EXECUTION.actual-a02.json",
+    "bytes": 5120,
+    "sha256": "5debdbc2949f608b1d38751ea748fba350c134b1636faba2fd403f0e25e74bc2"
+  },
+  "source_stream_sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b",
+  "source_stream_bytes": 97531706,
+  "copied_files": 1,
+  "other_cloud_files_content_read": false,
+  "settings_changed": false,
+  "client_sync_verified": false,
+  "independent_remote_readback": false,
+  "human_1x_signoff": false
+}

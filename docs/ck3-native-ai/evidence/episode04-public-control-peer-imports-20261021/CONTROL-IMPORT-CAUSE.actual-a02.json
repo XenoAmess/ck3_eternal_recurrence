@@ -1,0 +1,102 @@
+{
+  "schema": "xar.e04.public-control-import.historical-cause-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:50:22.829382+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0227",
+  "originals": {
+    "frozen_argv": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0227\\frozen-argv.json",
+      "bytes": 292490,
+      "sha256": "eede4878dd08c4b50f11946db0b5199a4692de1547479869e6212ea87156db4b"
+    },
+    "public_run_created": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\ops-a01\\public-run-a01\\CREATED.actual.json",
+      "bytes": 1032,
+      "sha256": "4b36a7c4a4c969645dd2538054dcc404a7af43f3a26f43b2e191f727686685d7"
+    },
+    "public_run_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\ops-a01\\public-run-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 329,
+      "sha256": "9399e2b850d5d22fb1ed8d696245fd8a9e6d426cb9167690a162da868defea38"
+    },
+    "public_run_stderr": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\ops-a01\\public-run-a01\\stderr",
+      "bytes": 118,
+      "sha256": "b2123df14066668f469b4dfad3014befea82f825d8171d2c1449822815b30984"
+    },
+    "owner_entry_a05": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\config-a05\\public_r08_entry_a05.py",
+      "bytes": 3195,
+      "sha256": "9f2a0b6e5bd9f380a49db991908ae99ffc293cefda797388718607365ecb9892"
+    },
+    "C_allocator": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-a01\\source-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158788,
+      "sha256": "b99c56abbb08306387ea216efa75041f00c947af8fe132bac0b2c61cc1c84545"
+    },
+    "D_allocator": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 147469,
+      "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8"
+    }
+  },
+  "frozen_gate_field_projection": {
+    "launch_requires_fresh_owned_cas_and_offline_direct_review": true
+  },
+  "original_public_run_error": "{\"status\": \"BLOCKED\", \"error\": \"ValueError('Allocated background offline gate is missing')\", \"business_pass\": false}\n",
+  "original_run_created": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\runtime-prepare-a01\\next-r08-a02\\public_r08_entry_a02.py",
+      "run",
+      "--runtime",
+      "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\runtime-prepare-a01\\next-r08-a02\\config\\runtime.actual-a03.json",
+      "--products",
+      "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\runtime-prepare-a01\\next-r08-a02\\config\\products.actual-a01.json",
+      "--product",
+      "war-episode04-r10",
+      "--case",
+      "r10-common-preparation",
+      "--prepared-case",
+      "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\prepared-a02\\prepared-case.json",
+      "--run-context",
+      "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\background-context.actual-a01.json"
+    ],
+    "creation_filetime_decimal": "134370512475330987",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-21T10:14:07.547556+00:00",
+    "pid": 30932
+  },
+  "original_run_wait": {
+    "actual_original_popen_wait": true,
+    "creation_filetime_decimal": "134370512475330987",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-21T10:14:09.981812+00:00",
+    "owner_errors": [],
+    "pid": 30932,
+    "returncode": 2,
+    "stdout_bytes": 10011,
+    "stdout_sha256": "b8d9f1492d56d2439fedc609408dafbbf5f4346baf29d5b68bbdb1f9bad7baf8"
+  },
+  "loaded_allocator_file_original_receipt_available": false,
+  "attribution_strength": "Source-mechanism inference, not original module __file__ observation.",
+  "mechanism": "Entry imported allocator late after adapter path changes; Python search path or existing module cache could resolve the frozen D peer. The frozen metadata has the old launch_requires_fresh_owned_cas_and_offline_direct_review=true field; the C run rejected the missing background gate. This is a metadata field, not an observed argv CLI flag.",
+  "owner_successor_source_action": "a05/a06 explicitly preimport same-C allocator and unrun, then check their __file__; active runtime source was not modified by this review.",
+  "canonical_candidate": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\CONTROL-PEER-SOURCE-FREEZE.actual-a01.json",
+    "bytes": 12152,
+    "sha256": "a33fb8406b9e94c6caae2a6a40387971b0db8c80f63396c37f4d5861df556bee"
+  },
+  "not_platform_risk_attribution": true,
+  "historical_error_or_wait_rewritten": false,
+  "SDK_Game_or_allocator_invoked_by_this_projection": false,
+  "prior_projection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\CONTROL-IMPORT-CAUSE.actual-a01.json",
+    "bytes": 5126,
+    "sha256": "8c2860be45351eb77b2caff8a456a2bd4e7ff3391c6e31cc1634b20372030630"
+  },
+  "projection_correction": "The prior argv projection selected only the SteamLibrary path and did not show a gate flag; this successor records the actual top-level frozen gate field explicitly."
+}

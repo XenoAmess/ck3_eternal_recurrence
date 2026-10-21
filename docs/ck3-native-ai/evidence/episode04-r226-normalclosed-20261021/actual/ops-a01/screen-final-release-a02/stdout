@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    },
+    "last_sequence": 7840,
+    "next_step": "",
+    "pid": 34356,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R226 normal Save and GUI Quit; original retained OS0 native0 host0 keeper0; split1 day0; B/R08 unqualified; release exact owner",
+    "task_id": "e04-r15-common-a231",
+    "updated_at_utc": "2026-10-21T08:59:13.181651+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 7840,
+    "event_id": "9faf7fbf71f94d379966b58a474a3192",
+    "timestamp_utc": "2026-10-21T08:59:13.182959+00:00",
+    "kind": "completed",
+    "task_id": "e04-r15-common-a231",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R226 normal Save and GUI Quit; original retained OS0 native0 host0 keeper0; split1 day0; B/R08 unqualified; release exact owner",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    }
+  }
+}

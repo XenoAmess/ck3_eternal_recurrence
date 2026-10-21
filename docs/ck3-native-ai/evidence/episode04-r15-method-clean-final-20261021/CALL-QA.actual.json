@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:56:40.545720+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-edit-a01\\d15-wording-a02\\qa_d15_final_full_a03.py",
+    "--root",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01",
+    "--movie",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+    "--sha256",
+    "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b",
+    "--ffmpeg",
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "--ffprobe",
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe"
+  ],
+  "pid": 24908,
+  "process_birth_filetime": "134370535695351810",
+  "original_wait": 0,
+  "stdout": "NEW FULL WORKINGCUT TECHNICAL QA PASS:57547 frames; image review pending\n",
+  "stderr": "",
+  "stdout_sha256": "37eec11fae321f1b127e4629224bcc9c47731cefd17bf7f06e548be8b6275924",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

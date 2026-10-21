@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:56:40.521120+00:00",
+  "movie": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+  "retained_closed_sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b",
+  "before_after_identity": {
+    "bytes": 97531706,
+    "mtime_ns": "1792579818861864200",
+    "st_dev": "13886423844274364792",
+    "st_ino": "844424932192059"
+  },
+  "video_frames": 57547,
+  "decoded_presentation_PTS_strict_increasing": true,
+  "packet_DTS_strict_increasing_per_stream": true,
+  "AV_decode_original_wait": 0,
+  "complete_decode_attempts": 1,
+  "boundary_image_source_frame_indices": [
+    0,
+    10257,
+    13662,
+    18579,
+    22169,
+    29966,
+    33103,
+    35125,
+    36608,
+    38939,
+    48143,
+    57546
+  ],
+  "boundary_image_bytes": 793245,
+  "gzip_CRC_and_exact_uncompressed_SHA_verified": true,
+  "image_visual_review": "pending actual reviewer",
+  "human1x": false,
+  "signoff": false,
+  "no_old_input_decode": true
+}

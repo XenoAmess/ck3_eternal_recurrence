@@ -1,0 +1,255 @@
+{
+  "schema": "xar.e04.public-control-import.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:45:38.170666+00:00",
+  "status": "SOURCE_ONLY_FOCUSED_PASS",
+  "mappings": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\ck3_mod_acceptance.py",
+        "bytes": 63205,
+        "sha256": "f0f4a4f52f89cf9f3fc915a5b8a5010c673bcb19c74b40f9bd543e2ddb008a0a"
+      },
+      "target": "tools/ck3_mod_acceptance.py",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 61981,
+      "baseline_sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\ck3_mod_acceptance_unrun.py",
+        "bytes": 17833,
+        "sha256": "8776bf95e43f4e680b6497aeaa121b594c3cb8909f262aa92d606c1e3bee8c2b"
+      },
+      "target": "tools/ck3_mod_acceptance_unrun.py",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 17502,
+      "baseline_sha256": "3bb07f505822128999ff2f608c7dfd1bb66b0c65b6a2008436a5537edfa16897"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\test_ck3_mod_acceptance_control_peer_imports.py",
+        "bytes": 6930,
+        "sha256": "5c78edd99e46fbbc04c482bb2a1c94f4593031b414532ccb025eca2a94e7eb5f"
+      },
+      "target": "tools/test_ck3_mod_acceptance_control_peer_imports.py",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 0,
+      "baseline_sha256": null
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\.github\\workflows\\static-ci.yml",
+        "bytes": 81605,
+        "sha256": "9aee4b3225e5f3747f43a1b2da5795ba0a0d4f33349fcaa4c78727751cb3b0f9"
+      },
+      "target": ".github/workflows/static-ci.yml",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 81463,
+      "baseline_sha256": "0231520e8741c8578eed316cb1fc5144e2fc8f578d5298f1f4de884f6a662c70"
+    }
+  ],
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\CONTROL-PEER-IMPORTS.candidate-a02.patch",
+    "bytes": 12570,
+    "sha256": "a9fcbbc8877df8bbb52d39bbec60028672a2d2affa3a2a7d0f0bda454fbb32cc"
+  },
+  "original_waits": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\baseline-refusal\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1732,
+        "sha256": "f8c752a88730749c36947fe99d3c6b491c1454dc49a90d23660fa0710ec5a4d5"
+      },
+      "pid": 35732,
+      "creation_time_100ns": "134370529710082101",
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\baseline-refusal\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\baseline-refusal\\stderr.log",
+        "bytes": 1106,
+        "sha256": "d37225c49058daf9ede7808425883b20079b5f5401be0a51e4098656810cb6ff"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1433,
+        "sha256": "3774d5f500f3d72ba16d5f4d7e0926110bdad2ccfb51bdd64a9940db0600b581"
+      },
+      "pid": 3148,
+      "creation_time_100ns": "134370529848485402",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a01\\stderr.log",
+        "bytes": 835,
+        "sha256": "8c0c0170a8a8e5fffec29b178b9d65ac90d48afcbd1d66fde90507ddf4b2a8cd"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2339,
+        "sha256": "4eed91e4353fae7d2af477ee726193ca6d761aaf73d3be65d5afa0fadef19d39"
+      },
+      "pid": 34988,
+      "creation_time_100ns": "134370530524671723",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a02\\stderr.log",
+        "bytes": 835,
+        "sha256": "b3bb507decf1240a2aca9550fd8d6506ca81de272bb7b09fef3f980a25d9c333"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-baseline\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1997,
+        "sha256": "8143dfe66ff9e83988bc102e888217ba5d7602f7a71c7ffbce91d8ea20da00b2"
+      },
+      "pid": 24736,
+      "creation_time_100ns": "134370529848795885",
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-baseline\\stdout.log",
+        "bytes": 21115,
+        "sha256": "945440a1de01c0a84bf3c4ceb136b35f1d8be8a707e2c6c932797a3fd35c4a75"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-baseline\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1912,
+        "sha256": "a2b44e38ad5bd84d4b27ad08c2f3128e5ea4c5f095aff201842fb08e0c8094dc"
+      },
+      "pid": 28768,
+      "creation_time_100ns": "134370529849056180",
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate\\stdout.log",
+        "bytes": 17555,
+        "sha256": "2633f8860e722357424263da21047a1d3f900176f2c7aab56fe9a1010d6d1243"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2825,
+        "sha256": "59790ca50eba7ba079eb2601de00c67e910b091480bc3d4ca3ab7923b34e8e7b"
+      },
+      "pid": 17144,
+      "creation_time_100ns": "134370530524818487",
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a02\\stdout.log",
+        "bytes": 16925,
+        "sha256": "2d61d1789620e8a714514dc36a80748bfab2752f0a20780cbe46a7a7950e88e6"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-test\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1768,
+        "sha256": "f2ba17d8ae1102f08018215c6a9a581616bcdfba651507db3b8958d8a3d3882c"
+      },
+      "pid": 28756,
+      "creation_time_100ns": "134370529849179545",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-test\\stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-test\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "legacy_AST_preservation": [
+    {
+      "target": "tools/ck3_mod_acceptance.py",
+      "unchanged_legacy_top_level_functions_and_classes": [
+        "read_json",
+        "path_at",
+        "pin",
+        "check_pin",
+        "host_cli_flags",
+        "Selection",
+        "main"
+      ],
+      "intended_changed_functions": [
+        "native_dispatch"
+      ]
+    },
+    {
+      "target": "tools/ck3_mod_acceptance_unrun.py",
+      "unchanged_legacy_top_level_functions_and_classes": [
+        "need",
+        "_read",
+        "_exact",
+        "_allocator_argv",
+        "_journal_events",
+        "_write",
+        "main"
+      ],
+      "intended_changed_functions": [
+        "_release_stages",
+        "build_bundle",
+        "validate_allocated_unrun"
+      ]
+    }
+  ],
+  "typecheck": {
+    "new_test_strict_errors": 0,
+    "same_two_production_sources_baseline_errors": 134,
+    "same_two_production_sources_candidate_errors": 132,
+    "introduced_diagnostics": [],
+    "removed_diagnostics": [
+      "ck3_mod_acceptance.py: error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_allocate\"  [import-not-found]",
+      "ck3_mod_acceptance_unrun.py: error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_allocate\"  [import-not-found]"
+    ],
+    "whole_legacy_strict_pass": false
+  },
+  "historical_R227_loaded_module_file_observed": false,
+  "historical_R227_source_attribution": "Mechanism inference from frozen old flags and late imports; no original loaded __file__ receipt.",
+  "first_candidate_local_variable_collision_retained": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\history-a01\\ck3_mod_acceptance_unrun.py",
+    "bytes": 17785,
+    "sha256": "60084a0d1ed4c32e04443cb78ced93a2d3115a717cd4c683a049be318e4d7b8d"
+  },
+  "scope": "Only allocator/unrun same-directory origin and existing module cache; not a replacement for immutable import closure.",
+  "Game_SDK_native_Git_execution": false,
+  "active_runtime_or_D_W_source_modified": false,
+  "owned_tmp_empty": true
+}

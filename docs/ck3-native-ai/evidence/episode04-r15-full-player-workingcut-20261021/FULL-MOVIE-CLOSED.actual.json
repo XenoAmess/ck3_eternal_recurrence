@@ -1,0 +1,33 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:48:27.515957+00:00",
+  "work_movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-player-workingcut-1030-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+    "bytes": 101794195,
+    "sha256": "a8f58228bc6ab99980374af3890e2ed447bf7230f45ba9fc6c55d3c05f5e84c7"
+  },
+  "native_CAS_movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-player-workingcut-1030-a01\\native\\runs\\full-workingcut-a01\\artifacts\\derived\\sha256\\A8\\A8F58228BC6AB99980374AF3890E2ED447BF7230F45BA9FC6C55D3C05F5E84C7.mp4",
+    "bytes": 101794195,
+    "sha256": "a8f58228bc6ab99980374af3890e2ed447bf7230f45ba9fc6c55d3c05f5e84c7"
+  },
+  "native_run": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-player-workingcut-1030-a01\\native\\runs\\full-workingcut-a01\\run-manifest.json",
+    "bytes": 2003,
+    "sha256": "c4402bb531d4938d51475a46c81c6d997e28ed369747c0e477697d27559cf1cd"
+  },
+  "nominal_frames": 57547,
+  "aggregate_actual_bytes": 203886976,
+  "remaining_owned_media_processes": 0,
+  "new_movie_AV_PTS_QA": "pending",
+  "player_narration_generation": "separate affected eight segments",
+  "whole_episode_finished": false,
+  "pending": [
+    "R05",
+    "R08",
+    "R10",
+    "ABC"
+  ],
+  "human_1x": false,
+  "signoff": false
+}

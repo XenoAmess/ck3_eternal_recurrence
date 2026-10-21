@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.single-review-client-cloud-metadata.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:20:21.841906+00:00",
+  "state": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "legacy_probe": {
+    "path": "D:\\ck3-research-artifacts\\onedrive-cloud-status-probe-20260930-a01\\probe.py",
+    "sha256": "8488b9a4bc152825a6664c762cd842288348ad4b80271df153e4c6f81cf03e85",
+    "stdout_raw_bytes": 686,
+    "stdout_raw_sha256": "a4cdd5f37798a4888e2d4462dfa52902206b7a3c031cdf728ad0309ffe677d39"
+  },
+  "wide_numeric_legacy_boundary_normalized_to_canonical_decimal_strings": [
+    "file_id",
+    "mtime_ns",
+    "sync_root_file_id"
+  ],
+  "original_process": {
+    "pid": 27116,
+    "birth_filetime": "134370552217178324",
+    "original_wait_returncode": 0,
+    "stderr": ""
+  },
+  "metadata": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261021-a01.mp4",
+    "sample_utc": "2026-10-21T11:20:21.825682+00:00",
+    "size": 97531706,
+    "mtime_ns": "1792580956146417800",
+    "attributes_hex": "0x00000020",
+    "sync_root_hresult": "0x00000000",
+    "handle_attributes_hex": "0x00000020",
+    "reparse_tag_hex": "0x00000000",
+    "cf_placeholder_state_hex": "0x00000000",
+    "cf_placeholder_state_flags": [],
+    "placeholder_hresult": "0x00000000",
+    "placeholder_returned_bytes": 412,
+    "in_sync_state": 1,
+    "on_disk": 97531706,
+    "validated": 97531706,
+    "modified": 0,
+    "pin_state": 0,
+    "file_id": "844424932196657",
+    "sync_root_file_id": "5910974510929700",
+    "stable_size_mtime": true
+  },
+  "client_sync_verified": true,
+  "independent_remote_readback": false,
+  "other_cloud_content_read": false,
+  "settings_changed": false,
+  "human_1x_signoff": false
+}

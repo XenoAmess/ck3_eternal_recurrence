@@ -1,0 +1,55 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:59:00.654297+00:00",
+  "actual_public_API_preserved_artifacts": 26,
+  "results": [
+    {
+      "kind": "config",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\native\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "pid": 29144,
+      "process_birth_filetime": "134370539392418380",
+      "original_wait": 0,
+      "stdout": "{\"artifacts\": 0, \"chapters\": 6, \"document\": \"C:\\\\ck3-e04-resume-20261020-a01\\\\r15-d15-final-full-1230-a01\\\\native\\\\promo-project.json\", \"files_checked\": true, \"profile\": \"authoring\", \"source_format\": \"project-config-v1\", \"status\": \"GREEN\"}\n",
+      "stderr": ""
+    },
+    {
+      "kind": "run",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\native\\runs\\full-workingcut-a01\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "pid": 36592,
+      "process_birth_filetime": "134370539396534474",
+      "original_wait": 0,
+      "stdout": "{\"artifacts\": 28, \"chapters\": 6, \"document\": \"C:\\\\ck3-e04-resume-20261020-a01\\\\r15-d15-final-full-1230-a01\\\\native\\\\runs\\\\full-workingcut-a01\\\\run-manifest.json\", \"files_checked\": true, \"profile\": \"authoring\", \"source_format\": \"run-manifest-v1\", \"status\": \"GREEN\"}\n",
+      "stderr": ""
+    }
+  ],
+  "native_run": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\native\\runs\\full-workingcut-a01\\run-manifest.json",
+    "bytes": 14244,
+    "sha256": "4e9490e37d934a6122634c6ef82e61521608e8b9f733a32b118be97438a364e5"
+  },
+  "aggregate_actual_bytes": 216981336
+}

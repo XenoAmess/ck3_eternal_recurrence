@@ -1,0 +1,127 @@
+{
+  "schema": "xar.e04.full-working-review-onedrive-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:22:24.661322+00:00",
+  "state": "LOCAL_SHA_AND_CLIENT_METADATA_IN_SYNC_VERIFIED",
+  "movie": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261021-a01.mp4",
+    "bytes": 97531706,
+    "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b"
+  },
+  "source_movie": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+    "bytes": 97531706,
+    "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b"
+  },
+  "duration_seconds": 1918.233333,
+  "video_frames": 57547,
+  "cue_count": 67,
+  "source_stream_target_full_SHA_equal": true,
+  "client_sync_verified": true,
+  "client_sync_observed_at_utc": "2026-10-21T11:20:21.841906+00:00",
+  "client_identity": {
+    "device": "13886423844274364792",
+    "file_id": "844424932196657",
+    "sync_root_file_id": "5910974510929700",
+    "mtime_ns": "1792580956146417800"
+  },
+  "client_verified_bytes": 97531706,
+  "client_modified_bytes": 0,
+  "independent_remote_readback": false,
+  "remote_SHA_verified": false,
+  "cloud_share_link_verified": false,
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "old_270s_movie_touched_by_this_task": false,
+  "project_or_source_materials_uploaded": false,
+  "screen_or_UIA_actions_executed": false,
+  "OneDrive_UIA_read_only_status_observed": true,
+  "account_or_sync_settings_changed": false,
+  "other_cloud_contents_read_or_modified": false,
+  "copy_original_process": {
+    "pid": 28848,
+    "birth_filetime": "134370545553112383",
+    "wait": 0
+  },
+  "mutation_retries": 0,
+  "known_limits": [
+    "Working review only; three themes and ABC results remain unfinished",
+    "One D15 English ASS cue lacks explicit fixed-point precision",
+    "Context visuals do not restore HUD or grant topic acceptance",
+    "Local full-SHA and exact-file client InSync do not prove independent cloud-web SHA"
+  ],
+  "evidence_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\CLIENT-METADATA.actual-a01.json",
+      "bytes": 1579,
+      "sha256": "5862bc147d0da0987416f675cbf8edef9df457804c26d9297d04215a56f0ff45"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\CLIENT-METADATA.actual-a02.json",
+      "bytes": 1579,
+      "sha256": "c0801637331845be5cd30cc58b72888502b1d3dd8fd4c2b39a070fbc47e7eca8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\CLIENT-METADATA.actual-a03.json",
+      "bytes": 1984,
+      "sha256": "8056275cfd0677e15d195f34a991046f498428bb2e572d87e2efb4a950c7d948"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\CLIENT-METADATA.actual-a04.json",
+      "bytes": 1579,
+      "sha256": "856c10e56606359cf090de84fe6dc7d58b78d11b2099c0344d9af8c56185f567"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\CLIENT-METADATA.actual-a05.json",
+      "bytes": 1579,
+      "sha256": "0322e2bed911e7e065c81bea476997b881f018ee186492e81230c82c72fc5100"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\CLIENT-METADATA.actual-a06.json",
+      "bytes": 1830,
+      "sha256": "de08e0678f5f2dd8e1e782e8c4dd7459743071f47ff3cb1e8cb201a28812fae1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\COPY-INTENT.actual-a01.json",
+      "bytes": 901,
+      "sha256": "f2cc92bf6a5e63d9f72aa4b7eb7857fef8c02689894dceb50499118d4e0191b5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\COPY-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 2158,
+      "sha256": "613bf807c31452f588fa6b977cd5da1e4572713f578777b3dcc350667510db7a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\deliver_full_review.py",
+      "bytes": 7120,
+      "sha256": "c8c88e6b451c38691ca9d0de0bd900d4a21de89ec0e578473624223bc16244fa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\ENVIRONMENT.actual-a01.json",
+      "bytes": 601,
+      "sha256": "455848a8f637205f5b5928a2813ea68d2326767b5aef62dddb8532a7822dd38a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\LOCAL-COPY.actual-a01.json",
+      "bytes": 1493,
+      "sha256": "0d6626a03b2703c8222fffc729222941626d1b79d9318419efc48eb8b987fb28"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\MYPY.actual-a01.json",
+      "bytes": 756,
+      "sha256": "50c2499dc57b7625aec215bc5f4d552006a6a973adaf74de2ad1b2bc4199f3d8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\UIA-READONLY.actual-a01.json",
+      "bytes": 1138,
+      "sha256": "6d7f65ff4a84c234d1bd84887ed542677a561f2e27b592e7618de0a1d38bf0f2"
+    }
+  ],
+  "control_bytes_before_receipt": 24297,
+  "destination_bytes": 97531706,
+  "aggregate_ceiling_bytes": 134217728,
+  "review_due_utc": "2026-10-22T12:30:00Z",
+  "automatic_delete": false,
+  "writer_after_seal": 0,
+  "owned_Popen_after_seal": 0
+}

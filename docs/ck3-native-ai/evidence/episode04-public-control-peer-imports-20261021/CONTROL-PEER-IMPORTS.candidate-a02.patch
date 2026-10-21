@@ -1,0 +1,241 @@
+--- a/tools/ck3_mod_acceptance.py
++++ b/tools/ck3_mod_acceptance.py
+@@ -14,6 +14,7 @@
+ import math
+ import os
+ from pathlib import Path
++from types import ModuleType
+ import re
+ import subprocess
+ import sys
+@@ -918,14 +919,39 @@
+                  incomplete_verify or incomplete_close) else 0
+ 
+ 
++def same_directory_control_peer(name: str) -> ModuleType:
++    """Bind allocator/unrun to this entry's directory before their control calls."""
++    if name not in {'ck3_mod_acceptance_allocate', 'ck3_mod_acceptance_unrun'}:
++        raise ValueError('Unknown public control peer: '+name)
++    entry = Path(__file__).resolve()
++    expected = entry.with_name(name+'.py')
++    for key, path in (('ck3_mod_acceptance', entry), (name, expected)):
++        cached = sys.modules.get(key)
++        if cached is not None:
++            source = getattr(cached, '__file__', None)
++            if not isinstance(source, str) or Path(source).resolve() != path:
++                raise ValueError('Public control module directory differs: '+key)
++    prior = list(sys.path)
++    try:
++        sys.path.insert(0, str(entry.parent))
++        module = importlib.import_module(name)
++    finally:
++        sys.path[:] = prior
++    source = getattr(module, '__file__', None)
++    if not isinstance(source, str) or Path(source).resolve() != expected:
++        raise ValueError('Public control module directory differs: '+name)
++    return module
++
++
+ def native_dispatch(args) -> dict:
+     selection = Selection(args.runtime, args.products, args.product, args.case, args.run_context,args.prepared_case)
+     if args.mode=='prepare':
+         if not args.case_inputs or not args.prepare_output:raise ValueError('prepare requires --case-inputs and --prepare-output')
+         result=selection.prepare(args.case_inputs,args.prepare_output)
+     elif args.mode=='allocate':
+-        from ck3_mod_acceptance_allocate import allocate_and_keep
+-        result=allocate_and_keep(selection,args)
++        allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
++        same_directory_control_peer('ck3_mod_acceptance_unrun')
++        result=allocator.allocate_and_keep(selection,args)
+     elif args.mode=='verify':result=selection.verify()
+     else:result=selection.describe() if args.mode=='plan' else selection.preflight() if args.mode=='preflight' else selection.run()
+     return result
+--- a/tools/ck3_mod_acceptance_unrun.py
++++ b/tools/ck3_mod_acceptance_unrun.py
+@@ -5,7 +5,7 @@
+ from pathlib import Path
+ from datetime import datetime, timezone
+ import argparse, hashlib, json, os
+-from ck3_mod_acceptance import check_pin, pin, read_json
++from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
+ 
+ SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
+ def need(value, message):
+@@ -62,7 +62,7 @@
+     return argv
+ 
+ def _release_stages(keeper,cas,done,cas_source,done_source,release,task):
+-    from ck3_mod_acceptance_allocate import closed_lease
++    closed_lease = same_directory_control_peer('ck3_mod_acceptance_allocate').closed_lease
+     for value in (cas,done):
+         need(value['event']['task_id']==task and value['event']['resources']==[],
+              'Wrong allocated-unrun CAS task/resources')
+@@ -93,7 +93,8 @@
+     return lines
+ 
+ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release, bus_packet):
+-    from ck3_mod_acceptance_allocate import read_failed_runtime_release, runtime_process_inventory
++    control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
++    read_failed_runtime_release, runtime_process_inventory = control_allocator.read_failed_runtime_release, control_allocator.runtime_process_inventory
+     import ck3_live_run_id as ids
+     previous,keeper_root=Path(previous).resolve(),Path(keeper_root).resolve()
+     bundle=_read(close_path);machine=ids.current_machine_id();run=freeze['run_id'];task=freeze['screen_task']
+@@ -188,7 +189,8 @@
+     return pin(path)
+ def build_bundle(args):
+     import ck3_live_run_id as ids
+-    from ck3_mod_acceptance_allocate import read_failed_runtime_release, current_screen_absent
++    control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
++    read_failed_runtime_release, current_screen_absent = control_allocator.read_failed_runtime_release, control_allocator.current_screen_absent
+     allocator={key:getattr(args,key,None) for key in ('allocator_result','allocator_intent','allocator_process','allocator_exit')}
+     need((allocator['allocator_result'] is not None and all(allocator[k] is None for k in allocator if k!='allocator_result'))
+          or (allocator['allocator_result'] is None and all(allocator[k] is not None for k in allocator if k!='allocator_result')),
+--- /dev/null
++++ b/tools/test_ck3_mod_acceptance_control_peer_imports.py
+@@ -0,0 +1,135 @@
++"""File-backed public control import regressions; no host, SDK or game calls."""
++from __future__ import annotations
++
++import argparse
++import importlib.util
++import os
++from pathlib import Path
++import sys
++import tempfile
++from types import ModuleType
++from typing import Protocol, runtime_checkable
++import unittest
++from unittest.mock import patch
++
++
++@runtime_checkable
++class PublicEntry(Protocol):
++    def native_dispatch(self, args: argparse.Namespace) -> dict[str, object]: ...
++    def same_directory_control_peer(self, name: str) -> ModuleType: ...
++
++
++def load_module(name: str, source: Path) -> ModuleType:
++    spec = importlib.util.spec_from_file_location(name, source)
++    if spec is None or spec.loader is None:
++        raise ValueError('File-backed module unavailable')
++    module = importlib.util.module_from_spec(spec)
++    sys.modules[name] = module
++    spec.loader.exec_module(module)
++    return module
++
++
++class ControlPeerImportTests(unittest.TestCase):
++    def setUp(self) -> None:
++        self.prior_path = list(sys.path)
++        self.names = ('ck3_mod_acceptance', 'ck3_mod_acceptance_allocate', 'ck3_mod_acceptance_unrun')
++        self.prior_modules = {name: sys.modules.pop(name, None) for name in self.names}
++        temporary = Path(os.environ.get('TEMP', tempfile.gettempdir()))
++        temporary.mkdir(parents=True, exist_ok=True)
++        self.temporary = tempfile.TemporaryDirectory(prefix='control-import-', dir=temporary)
++        self.local = Path(self.temporary.name)/'selected-C'
++        self.foreign = Path(self.temporary.name)/'frozen-D'
++        self.local.mkdir()
++        self.foreign.mkdir()
++        tools = Path(__file__).resolve().parent
++        source = Path(os.environ.get('CK3_CONTROL_IMPORT_ENTRY', str(tools/'ck3_mod_acceptance.py')))
++        (self.local/'ck3_mod_acceptance.py').write_bytes(source.read_bytes())
++        (self.local/'ck3_mod_acceptance_unrun.py').write_bytes((tools/'ck3_mod_acceptance_unrun.py').read_bytes())
++        for root in (self.local, self.foreign):
++            (root/'ck3_mod_acceptance_allocate.py').write_text(
++                "from pathlib import Path\ncalls = 0\n"
++                "def allocate_and_keep(selection, args):\n"
++                "    global calls\n    calls += 1\n"
++                "    return {'allocator_file': str(Path(__file__).resolve()), 'synthetic_no_launch': True}\n"
++                "def closed_lease(*args):\n    return True\n", encoding='utf-8')
++        (self.foreign/'ck3_mod_acceptance_unrun.py').write_text('foreign = True\n', encoding='utf-8')
++        sys.path.insert(0, str(self.foreign))
++        self.entry_module = load_module('ck3_mod_acceptance', self.local/'ck3_mod_acceptance.py')
++
++    def tearDown(self) -> None:
++        sys.path[:] = self.prior_path
++        for name in self.names:
++            sys.modules.pop(name, None)
++            previous = self.prior_modules[name]
++            if previous is not None:
++                sys.modules[name] = previous
++        self.temporary.cleanup()
++
++    def dispatch(self) -> dict[str, object]:
++        args = argparse.Namespace(mode='allocate', runtime=None, products=None, product=None,
++                                  case=None, run_context=None, prepared_case=None)
++        # Selection's construction is the boundary; real native_dispatch performs
++        # the imports and calls only the tiny file-backed synthetic allocator.
++        with patch.object(self.entry_module, 'Selection', return_value=object()):
++            dispatch = getattr(self.entry_module, 'native_dispatch')
++            result: object = dispatch(args)
++        if not isinstance(result, dict):
++            raise ValueError('Public dispatch result differs')
++        return {str(key): value for key, value in result.items()}
++
++    def entry(self) -> PublicEntry:
++        if not isinstance(self.entry_module, PublicEntry):
++            raise ValueError('Public entry interface unavailable')
++        return self.entry_module
++
++    def test_allocate_uses_siblings_despite_foreign_search_path(self) -> None:
++        before = list(sys.path)
++        result = self.dispatch()
++        self.assertEqual(Path(str(result['allocator_file'])), (self.local/'ck3_mod_acceptance_allocate.py').resolve())
++        self.assertIs(result['synthetic_no_launch'], True)
++        self.assertEqual(sys.path, before)
++        peer = sys.modules['ck3_mod_acceptance_allocate']
++        self.dispatch()
++        self.assertIs(sys.modules['ck3_mod_acceptance_allocate'], peer)
++        self.assertEqual(getattr(peer, 'calls'), 2)
++        self.assertEqual(Path(str(sys.modules['ck3_mod_acceptance_unrun'].__file__)), self.local/'ck3_mod_acceptance_unrun.py')
++
++    def test_cached_foreign_allocator_refuses_before_call(self) -> None:
++        foreign = load_module('ck3_mod_acceptance_allocate', self.foreign/'ck3_mod_acceptance_allocate.py')
++        before = list(sys.path)
++        with self.assertRaisesRegex(ValueError, 'module directory differs'):
++            self.dispatch()
++        self.assertEqual(getattr(foreign, 'calls'), 0)
++        self.assertIs(sys.modules['ck3_mod_acceptance_allocate'], foreign)
++        self.assertEqual(sys.path, before)
++
++    def test_cached_foreign_unrun_refuses_before_allocate_call(self) -> None:
++        foreign = load_module('ck3_mod_acceptance_unrun', self.foreign/'ck3_mod_acceptance_unrun.py')
++        with self.assertRaisesRegex(ValueError, 'module directory differs'):
++            self.dispatch()
++        self.assertIs(sys.modules['ck3_mod_acceptance_unrun'], foreign)
++        self.assertEqual(getattr(sys.modules['ck3_mod_acceptance_allocate'], 'calls'), 0)
++
++    def test_unrun_release_uses_same_directory_allocator(self) -> None:
++        before = list(sys.path)
++        module = self.entry().same_directory_control_peer('ck3_mod_acceptance_unrun')
++        keeper = {'last_sequence': 1}
++        cas = {'event': {'task_id': 'synthetic', 'resources': [], 'kind': 'status', 'sequence': 2}}
++        done = {'event': {'task_id': 'synthetic', 'resources': [], 'kind': 'completed', 'sequence': 3},
++                'task': {'last_sequence': 3, 'state': 'done'}}
++        result: object = getattr(module, '_release_stages')(keeper, cas, done, {}, {}, done, 'synthetic')
++        self.assertEqual(result, 'status-then-completed')
++        self.assertEqual(Path(str(sys.modules['ck3_mod_acceptance_allocate'].__file__)), self.local/'ck3_mod_acceptance_allocate.py')
++        self.assertEqual(sys.path, before)
++
++    def test_import_failure_restores_path_without_allocate(self) -> None:
++        (self.local/'ck3_mod_acceptance_unrun.py').write_text("raise RuntimeError('synthetic import failure')\n", encoding='utf-8')
++        before = list(sys.path)
++        with self.assertRaisesRegex(RuntimeError, 'synthetic import failure'):
++            self.dispatch()
++        self.assertEqual(sys.path, before)
++        self.assertEqual(getattr(sys.modules['ck3_mod_acceptance_allocate'], 'calls'), 0)
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/.github/workflows/static-ci.yml
++++ b/.github/workflows/static-ci.yml
+@@ -97,6 +97,8 @@
+         run: python -B -X utf8 tools/test_r04_county_entry.py
+       - name: Test public single-day refill admission and observer launch guards
+         run: python -B -X utf8 tools/test_r06_refill_one_day.py
++      - name: Test public same-directory control imports
++        run: python -B -X utf8 tools/test_ck3_mod_acceptance_control_peer_imports.py
+       - name: Test public post-allocation refill capacity scope
+         run: python -B -X utf8 tools/test_ck3_mod_acceptance_r06_scope.py
+       - name: Test public R08 single writer opportunity refusals

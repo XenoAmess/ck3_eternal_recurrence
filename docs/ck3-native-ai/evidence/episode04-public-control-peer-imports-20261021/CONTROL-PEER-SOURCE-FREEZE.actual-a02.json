@@ -1,0 +1,123 @@
+{
+  "schema": "xar.e04.public-control-import.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:53:03.394727+00:00",
+  "status": "SOURCE_ONLY_FOCUSED_PASS",
+  "supersedes_for_publication": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\CONTROL-PEER-SOURCE-FREEZE.actual-a01.json",
+    "bytes": 12152,
+    "sha256": "a33fb8406b9e94c6caae2a6a40387971b0db8c80f63396c37f4d5861df556bee"
+  },
+  "historical_sources_unchanged": true,
+  "delta": "Only native_dispatch args argparse.Namespace, return dict[str, object], and its actual result dict annotation. No behavior change from prior candidate.",
+  "module_type_scope": "ModuleType describes the real importlib boundary for the two named public control peers; it does not claim a typed generic launcher interface.",
+  "mappings": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-revision-a03\\tools\\ck3_mod_acceptance.py",
+        "bytes": 63268,
+        "sha256": "bc8d2e18518513cc0f6b571f094e1dd1f68f82991543fc762d1128226f47d1f5"
+      },
+      "target": "tools/ck3_mod_acceptance.py",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 61981,
+      "baseline_sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\ck3_mod_acceptance_unrun.py",
+        "bytes": 17833,
+        "sha256": "8776bf95e43f4e680b6497aeaa121b594c3cb8909f262aa92d606c1e3bee8c2b"
+      },
+      "target": "tools/ck3_mod_acceptance_unrun.py",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 17502,
+      "baseline_sha256": "3bb07f505822128999ff2f608c7dfd1bb66b0c65b6a2008436a5537edfa16897"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\tools\\test_ck3_mod_acceptance_control_peer_imports.py",
+        "bytes": 6930,
+        "sha256": "5c78edd99e46fbbc04c482bb2a1c94f4593031b414532ccb025eca2a94e7eb5f"
+      },
+      "target": "tools/test_ck3_mod_acceptance_control_peer_imports.py",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 0,
+      "baseline_sha256": null
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\candidate\\.github\\workflows\\static-ci.yml",
+        "bytes": 81605,
+        "sha256": "9aee4b3225e5f3747f43a1b2da5795ba0a0d4f33349fcaa4c78727751cb3b0f9"
+      },
+      "target": ".github/workflows/static-ci.yml",
+      "baseline_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+      "baseline_bytes": 81463,
+      "baseline_sha256": "0231520e8741c8578eed316cb1fc5144e2fc8f578d5298f1f4de884f6a662c70"
+    }
+  ],
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\CONTROL-PEER-IMPORTS.candidate-a03.patch",
+    "bytes": 12670,
+    "sha256": "12bdaac633fe886af8894676b88bd3b3f7ca9867fa7a632d22d96a47f1363f80"
+  },
+  "new_original_waits": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2839,
+        "sha256": "d51ca413ee4a3f6029e3e8c282a40e9c784bb388d4fd744d810b163f1d7995df"
+      },
+      "pid": 9900,
+      "creation_time_100ns": "134370535293374673",
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a03\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\focused-a03\\stderr.log",
+        "bytes": 835,
+        "sha256": "5ab81dd367f52ccc8db3d4be9ad8330338ebc3acb010d384fbb2a6f6cdd08610"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3479,
+        "sha256": "50aa990b9cd9feec316cbb307a8c3249e158573dfe4bcf95ccd5caa43e8dd6ea"
+      },
+      "pid": 19112,
+      "creation_time_100ns": "134370535293695568",
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a03\\stdout.log",
+        "bytes": 17539,
+        "sha256": "97a1b5caf61efcd9b85e1af93f3af83388eabcbb19ea730ed0a10ab10de78c9f"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-candidate-a03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "typecheck": {
+    "same_two_production_sources_baseline_errors": 134,
+    "same_two_production_sources_candidate_errors": 129,
+    "introduced_diagnostics": [],
+    "removed_diagnostics": [
+      "ck3_mod_acceptance.py: error: Missing type arguments for generic type \"dict\"  [type-arg]",
+      "ck3_mod_acceptance.py: error: Function is missing a type annotation for one or more parameters  [no-untyped-def]",
+      "ck3_mod_acceptance.py: error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_allocate\"  [import-not-found]",
+      "ck3_mod_acceptance.py: error: Returning Any from function declared to return \"dict[Any, Any]\"  [no-any-return]",
+      "ck3_mod_acceptance_unrun.py: error: Cannot find implementation or library stub for module named \"ck3_mod_acceptance_allocate\"  [import-not-found]"
+    ],
+    "whole_legacy_strict_pass": false,
+    "unchanged_new_test_previous_strict_errors": 0
+  },
+  "Game_SDK_native_Git_execution": false,
+  "active_runtime_or_D_W_source_modified": false
+}

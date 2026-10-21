@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T08:59:28.061560+00:00",
+  "publicAPI_QA_preserved_materials": 26,
+  "native_run": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-full-player-workingcut-1030-a01\\native\\runs\\full-workingcut-a01\\run-manifest.json",
+    "bytes": 13867,
+    "sha256": "82a763dd6e0bf6af18131c7d9cae279f4d30325da6bb6ff506c7f31d7197b4d2"
+  },
+  "CLI_actual": [
+    {
+      "kind": "config",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "C:\\ck3-e04-resume-20261020-a01\\r15-full-player-workingcut-1030-a01\\native\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "original_pid": 36100,
+      "process_birth_filetime": "134370467668910993",
+      "original_wait": 0,
+      "stdout": "{\"artifacts\": 0, \"chapters\": 6, \"document\": \"C:\\\\ck3-e04-resume-20261020-a01\\\\r15-full-player-workingcut-1030-a01\\\\native\\\\promo-project.json\", \"files_checked\": true, \"profile\": \"authoring\", \"source_format\": \"project-config-v1\", \"status\": \"GREEN\"}\r\n",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "kind": "run",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "C:\\ck3-e04-resume-20261020-a01\\r15-full-player-workingcut-1030-a01\\native\\runs\\full-workingcut-a01\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "original_pid": 34164,
+      "process_birth_filetime": "134370467672855595",
+      "original_wait": 0,
+      "stdout": "{\"artifacts\": 28, \"chapters\": 6, \"document\": \"C:\\\\ck3-e04-resume-20261020-a01\\\\r15-full-player-workingcut-1030-a01\\\\native\\\\runs\\\\full-workingcut-a01\\\\run-manifest.json\", \"files_checked\": true, \"profile\": \"authoring\", \"source_format\": \"run-manifest-v1\", \"status\": \"GREEN\"}\r\n",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "owned_media_processes": 0,
+  "human_1x": false,
+  "signoff": false,
+  "aggregate_actual_bytes": 224781650
+}

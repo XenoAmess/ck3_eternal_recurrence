@@ -1,0 +1,150 @@
+{
+  "schema": "xar.e04.r15.successor-actual-milestones.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:29:10.313979+00:00",
+  "source_base": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+  "formal_themes": "8/11",
+  "B_sites": "0/2",
+  "ABC": "0/3",
+  "full_R08": false,
+  "R226": {
+    "owner_closure": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\runtime-R226-close-a01\\OWNER-CLOSED.actual-a01.json",
+      "bytes": 6739,
+      "sha256": "c148d4e7c15a62e0f8527652ae6ded7f7adde8336e0cbe3fa46436fa91d02a8a"
+    },
+    "split": 1,
+    "Move": 0,
+    "days": 0,
+    "observer_windows": 0,
+    "screen_release": 7840,
+    "OS_native_host_keeper_allocator_wait": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "original_public_exit": 2,
+    "original_hotfix_exit": 1,
+    "Other_component_original_FAIL_preserved": true,
+    "oneLife_identity": false
+  },
+  "full_player_prior_workingcut": {
+    "movie_sha256": "a8f58228bc6ab99980374af3890e2ed447bf7230f45ba9fc6c55d3c05f5e84c7",
+    "Root_images": [
+      8,
+      9,
+      12
+    ],
+    "Root_image_count": 3,
+    "peer_images": 12,
+    "not_the_final_method_clean_movie": true
+  },
+  "final_method_clean_workingcut": {
+    "movie": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\work\\E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+      "bytes": 97531706,
+      "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b"
+    },
+    "video_frames": 57547,
+    "cues": 67,
+    "clean_method_cues": 59,
+    "actual_player_voice_and_subtitle_replacements": 8,
+    "technical_QA": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\qa\\QA.actual.json",
+      "bytes": 1100,
+      "sha256": "fac9bd51d0880b0a810f444b55d01b5813072d2e326440806ba77743f10c7027"
+    },
+    "complete_AV_attempts": 1,
+    "AV_wait": 0,
+    "outer_wait": 0,
+    "Root_adoption": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\ROOT-FINAL-METHOD-CLEAN-WORKINGCUT-ADOPTION.actual-a01.json",
+      "bytes": 3046,
+      "sha256": "36ac1745a12b5fc7f822bed721317481b3511a30c45103cfab0de5fb468d0e50"
+    },
+    "Root_images": [
+      "boundary-03.jpg",
+      "boundary-10.jpg",
+      "boundary-11.jpg",
+      "boundary-12.jpg"
+    ],
+    "Root_image_count": 4,
+    "peer_images": 12,
+    "owner_closed": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-d15-final-full-1230-a01\\DELIVERY-OWNER-CLOSED.actual-a01.json",
+      "bytes": 1575,
+      "sha256": "af726ae027f26a46c426caabe5e78213c77279ed23f7ec4482e3ec4c27c065d9"
+    },
+    "human_1x": false,
+    "whole_episode_complete": false,
+    "remaining": [
+      "D15 old English subtitle still says truncates each to an integer without explicitly naming fixed-point precision; the corrected Chinese graphic supplies that distinction. Voice and ASS were preserved.",
+      "Five context clips remain labelled scene illustration and do not recover their old underlying HUD or earn formal-theme credit.",
+      "R05/R08/R10 formal evidence, B two-site growth and the three-arm comparison remain unfinished."
+    ]
+  },
+  "final_movie_OneDrive": {
+    "receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\onedrive-full-review-a02\\DELIVERY-OWNER-CLOSED.actual-a01.json",
+      "bytes": 5686,
+      "sha256": "24c909b4582493cdaf7018d0c1690e4a17d7320d58da8cb00ceadd114f7832a3"
+    },
+    "movie": {
+      "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261021-a01.mp4",
+      "bytes": 97531706,
+      "sha256": "210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b"
+    },
+    "observed_at_utc": "2026-10-21T11:20:21.841906+00:00",
+    "client_file_id": "844424932196657",
+    "local_source_stream_target_SHA_equal": true,
+    "exact_file_client_InSync": true,
+    "independent_cloud_web_SHA": false,
+    "share_URL_verified": false,
+    "old_270s_untouched": true
+  },
+  "static_native_chain": [
+    "construction-a02",
+    "selector-a03",
+    "phase-a04",
+    "normal-producer-and-net-accounting-a05"
+  ],
+  "static_native_is_live_membership_or_payment_proof": false,
+  "next_window_research": "a06/a07/a08 candidates only; every point still needs fresh legal preview and headroom",
+  "control_import_fix": {
+    "final_source": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\CONTROL-PEER-SOURCE-FREEZE.actual-a02.json",
+      "bytes": 6556,
+      "sha256": "e0645514012fa9b34ca570487d6c8886ddd72abc944e8d14486f358dc8090da0"
+    },
+    "focused_tests": 5,
+    "focused_original_wait": 0,
+    "new_test_strict_errors": 0,
+    "production_strict_baseline_errors": 134,
+    "production_strict_candidate_errors": 129,
+    "introduced_type_diagnostics": 0,
+    "whole_legacy_strict_pass": false,
+    "existing_supervisor_15_required_after_W_application_before_commit": true,
+    "existing_supervisor_original_receipt_target": "docs/ck3-native-ai/evidence/episode04-public-control-peer-imports-20261021/checks/existing-supervisor15/ORIGINAL-WAIT.actual.json"
+  },
+  "CI_previous_master": {
+    "commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+    "Official_run": "39569862854",
+    "conclusion": "success",
+    "completed_at_utc": "2026-10-21T09:01:37Z",
+    "single_read_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\ci-61baf1b-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 781,
+      "sha256": "7baaf9671ee6053171436cfcb0c37b3adda5ced310d3cb69586c8c57b2372f52"
+    }
+  },
+  "R228_message_only_update": {
+    "source_kind": "derived projection of /root current task message, not an original native receipt",
+    "message": "Root reports calendar one day completed to53146872; a subsequent client snapshot requestID collision refused before observer/new enable/observation day. Prospective correction does not mean the observation has occurred.",
+    "actual_native_receipt_read_by_this_publisher": false,
+    "qualification_added": false
+  },
+  "ordinary_planner_autoload": false,
+  "new_Game_permission_from_documents": false
+}

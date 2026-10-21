@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.root.full-player-workingcut-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-21T09:47:30Z",
+  "movie_pin": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-full-player-workingcut-1030-a01/work/E04-FULL-SIX-CHAPTER-REVIEW.mp4",
+    "bytes": 101794195,
+    "sha256": "a8f58228bc6ab99980374af3890e2ed447bf7230f45ba9fc6c55d3c05f5e84c7"
+  },
+  "technical_QA_pin": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-full-player-workingcut-1030-a01/qa/QA.actual.json",
+    "bytes": 1207,
+    "sha256": "bfd40e4e514b3eb80517f24ae0e671f570b723c7c41e800b419eb5845f33ddae"
+  },
+  "owner_closed_pin": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r15-full-player-workingcut-1030-a01/DELIVERY-CLOSED.actual-a01.json",
+    "bytes": 1657,
+    "sha256": "582466c7e3ec6188b79d672804cf2b60f05ad097ffc4d6ce7fcc1b05ec9b5d5a"
+  },
+  "Root_direct_view": {
+    "image_root": "C:/ck3-e04-resume-20261020-a01/r15-full-player-workingcut-1030-a01/qa",
+    "files": ["boundary-08.jpg", "boundary-09.jpg", "boundary-12.jpg"],
+    "actual_image_count": 3,
+    "actual_resolution": [1920, 1080],
+    "findings": [
+      "New R13 and R07 player conclusion cards are readable and omit internal IDs and PTS.",
+      "Old method card12 retains overlapping top banners, an unrelated R10 label and internal source numbers; the next source revision is addressing these observed defects."
+    ]
+  },
+  "peer_direct_view": {
+    "agent": "/root/readwatch_review",
+    "actual_image_count": 12,
+    "basis": "Peer's actual view_image review of this new version, reported separately from both previous films."
+  },
+  "adopted_scope": "Technically validated 31:58 workingcut with eight actually generated player narration and subtitle replacements in the six-chapter body.",
+  "pending": ["R05", "R08", "R10", "ABC", "old method-template cleanup"],
+  "new_theme_credit": 0,
+  "whole_episode_finished": false,
+  "Root_audio_listening": false,
+  "human_1x": false,
+  "final_signoff": false
+}

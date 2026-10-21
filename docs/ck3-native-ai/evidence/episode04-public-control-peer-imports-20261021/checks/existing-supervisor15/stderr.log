@@ -1,0 +1,20 @@
+test_builder_writes_only_pinned_metadata_with_unknown_supervisor_wait (__main__.SupervisorRefusalTests.test_builder_writes_only_pinned_metadata_with_unknown_supervisor_wait) ... ok
+test_current_task_must_be_released (__main__.SupervisorRefusalTests.test_current_task_must_be_released) ... ok
+test_exact_stale_refusal_admits_resources_with_supervisor_wait_unknown (__main__.SupervisorRefusalTests.test_exact_stale_refusal_admits_resources_with_supervisor_wait_unknown) ... ok
+test_game_normal_or_business_credit_is_rejected (__main__.SupervisorRefusalTests.test_game_normal_or_business_credit_is_rejected) ... ok
+test_host_presence_rejects_prehost_credit (__main__.SupervisorRefusalTests.test_host_presence_rejects_prehost_credit) ... ok
+test_later_real_counter_cannot_close_older_run (__main__.SupervisorRefusalTests.test_later_real_counter_cannot_close_older_run) ... ok
+test_latest_machine_record_guard_is_not_bypassed_by_counter_and_release (__main__.SupervisorRefusalTests.test_latest_machine_record_guard_is_not_bypassed_by_counter_and_release) ... ok
+test_live_runtime_or_supervisor_is_rejected (__main__.SupervisorRefusalTests.test_live_runtime_or_supervisor_is_rejected) ... ok
+test_original_pin_tampering_is_rejected (__main__.SupervisorRefusalTests.test_original_pin_tampering_is_rejected) ... ok
+test_original_supervisor_wait_cannot_be_invented (__main__.SupervisorRefusalTests.test_original_supervisor_wait_cannot_be_invented) ... ok
+test_other_machine_is_rejected (__main__.SupervisorRefusalTests.test_other_machine_is_rejected) ... ok
+test_other_supervisor_exception_is_rejected (__main__.SupervisorRefusalTests.test_other_supervisor_exception_is_rejected) ... ok
+test_public_allocate_real_chain_and_ids_preserve_failed_originals (__main__.SupervisorRefusalTests.test_public_allocate_real_chain_and_ids_preserve_failed_originals) ... ok
+test_same_named_directory_cannot_rebind_run (__main__.SupervisorRefusalTests.test_same_named_directory_cannot_rebind_run) ... ok
+test_unknown_public_wait_is_rejected (__main__.SupervisorRefusalTests.test_unknown_public_wait_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 6.376s
+
+OK

@@ -1,0 +1,31 @@
+{
+  "schema": "xar.e04.small-source-pack.bounded-attempts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:01:48.812800+00:00",
+  "first_attempt": {
+    "tool_chunk": "29f3f0",
+    "tool_exit_code": 1,
+    "original_PID": null,
+    "error": "Source archive exceeds its bounded 128KiB write",
+    "invalid_partial": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\METHOD-CLEAN-SOURCE.tar.gz",
+      "bytes": 77326,
+      "sha256": "f6a38eebc3957eb974ab13467df36f2b7c7e6a2d9242a8926438c6b1843c073b"
+    },
+    "partial_retired_exact_path_absent": true
+  },
+  "second_attempt": {
+    "tool_chunk": "0c162b",
+    "tool_exit_code": 1,
+    "original_PID": null,
+    "RAM_source_bytes": 804463,
+    "RAM_members": 109,
+    "RAM_compressed_bytes": 199797,
+    "new_archive_written": false,
+    "error": "Measured source archive exceeds bounded 128KiB output; no new archive written"
+  },
+  "raw_source_and_check_originals_unchanged": true,
+  "reason_for_partial_retirement": "Invalid derived source-only gzip, fully reconstructible from retained frozen small text; no unique evidence body. Failed operation retained here with actual tool transcript references; no invented original Popen wait.",
+  "FFmpeg_Game_SDK_Git_actions": false,
+  "physical_credit_claimed": false
+}

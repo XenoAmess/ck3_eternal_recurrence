@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_allocate_uses_siblings_despite_foreign_search_path (__main__.ControlPeerImportTests.test_allocate_uses_siblings_despite_foreign_search_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\source-support-a01\publication-a02\candidate\tools\test_ck3_mod_acceptance_control_peer_imports.py", line 88, in test_allocate_uses_siblings_despite_foreign_search_path
+    self.assertEqual(Path(str(result['allocator_file'])), (self.local/'ck3_mod_acceptance_allocate.py').resolve())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Windo[129 chars]rol-import-n1d_75wi/frozen-D/ck3_mod_acceptance_allocate.py') != Windo[129 chars]rol-import-n1d_75wi/selected-C/ck3_mod_acceptance_allocate.py')
+
+----------------------------------------------------------------------
+Ran 1 test in 0.103s
+
+FAILED (failures=1)

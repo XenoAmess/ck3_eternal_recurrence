@@ -1,5 +1,25 @@
 # 战争四期研究：游玩智能体参考入口
 
+## 2026-10-21 UTC 后继实际里程碑
+
+machine_id: `desktop-3fevhd2-1c74096080`。以下只更新当前入口，旧段和失败原件保留；各次观察时间、完整SHA与原件角色见[本批实际小结](../ck3-native-ai/evidence/episode04-r15-successor-milestones-20261021/MILESTONES.actual-a01.json)。文件可供智能体显式参考，普通planner不自动加载这些专题，也不因此取得新的游戏动作许可。
+
+**整片已有可用的工作审阅版本，整集仍未完成。** 最后这版为6章、67cue、57547帧/31:58.233，SHA `210a6e797e54caece5fca73d552f52a6aa67d2c0d02501ba61bacefad35c054b`，97,531,706字节。8段玩家新声与烧字已真正融入正文，59段方法模板已清理，D15后继修正了权重、正权重路径限定和分阶段固定点精度。唯一完整AV解码原wait0、presentation PTS及各流packet DTS检查通过，public/native CLI收尾和媒体owner均已闭场。Root本版亲审第3、10、11、12张，共4张；peer审12张。这与旧full-player版Root第8、9、12张、旧full版第8、10、11张，以及270秒版第9、10张严格分版本，不能合并成同一版的全图亲审。[最后版本原件与Root采用](../ck3-native-ai/evidence/episode04-r15-method-clean-final-20261021/ROOT-FINAL-METHOD-CLEAN-WORKINGCUT-ADOPTION.actual-a01.json)
+
+完整审阅片已经投送到本机 `C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-Episode04-Full-Working-Review-20261021-a01.mp4`。源、流和目标全SHA相同；11:20:21Z按exact file ID `844424932196657`读回客户端InSync，97531706字节validated、modified0，copy/probe原wait0，旧270秒审阅片保持。它不证明独立云网页SHA或分享URL，也不表示人类完整1x听看和最终签字完成。[OneDrive闭场原件](../ck3-native-ai/evidence/episode04-r15-method-clean-final-20261021/onedrive/DELIVERY-OWNER-CLOSED.actual-a01.json)
+
+还存在真实限制：D15旧英文ASS未明说固定点精度，中文卡已澄清而原voice/ASS按授权保留；5段context没有恢复底下HUD，不能贡献正式实证。formal仍8/11，R05/R08/R10、B两个增长点和ABC三方案仍未完成，不能从已有工作片的技术QA推成整集完成。[109件小源的无损包与逐member校验](../ck3-native-ai/evidence/episode04-r15-method-clean-final-20261021/source/METHOD-CLEAN-SOURCE-ARCHIVE.actual-a01.json)保留项目、最终timeline、ASS、SVG及必要Python；媒体CAS、字体和工具仍是外部输入，不称完全自包含渲染项目。
+
+**R226已经实际正常闭场，未获得新的业务信用。** 同原Game完成OFF/Save/正常GUIQuit，OS/native/host/keeper/allocator原wait均0，screen CAS7840 done；原public2和hotfix1不改。split1、Move0、day0、observer0，child175兵而stock100/cap100/+20没有headroom，Army18仍stock300/cap300/rate0；B0/ABC0/R08未启动。Other组件超64MiB的原FAIL独立保留，不能用总量未超1GiB追认通过。普通Save的独立后验hash与原producer未重hash、oneLife identity未确认也分列。[R226闭场与限制](../ck3-native-ai/episode04-r226-closed-pilot-12004.md)
+
+**下一窗口有可复用的机制知识，仍要用当次输入。** [原任务构造、mod30 selector、phase顺序及c/d正常生产者](../ck3-native-ai/episode04-r08-task-construction-upstream-12004.md)已由四份后继小源补齐：c来自当前军费向量同源的gold0缓存，d关联条件工资/宫廷amenities/传奇费用。结算是净额`a-b-c-d`，c权重SUB分摊净缺口，不是整笔gross-c军费；正ADD也可能c非零，a/b仍保留raw名称，后置TopLiege getter不能反改此前payer。缓存刷新、真实成员和付款回调仍须live证据，旧unknown封件不覆盖。[自然负补给候选](../ck3-native-ai/episode04-next-natural-negative-supply-12004.md)及[容量/路线与有限两省候选](../ck3-native-ai/episode04-fleet-capacity-and-route-12004.md)要求每段fresh合法preview、每点新headroom；2624→2623未执行，首点+20可能已经回满300，海上一次扣量不自动支持两个增长点。
+
+**公开入口的来源混入已做窄源码修复。** R227原frozen带旧direct-review metadata字段，C run实际拒绝缺background gate；未记录旧allocator loaded `__file__`，所以来源归因只是原字段加晚导入机制推断。R227后来按标准allocated-unrun闭场，没有Game/observer。新入口只要求allocator/unrun同目录并拒外目录缓存，不改reviewer、身份、1050秒、once或未知结果不重试守卫；活动C和冻结D没有热改。新5项定向检查通过，新测试strict0；相同两生产文件strict134→129、introduced0，非全仓strict通过。本批还要求在实际W应用后、commit前让既有15项supervisor回归通过，原始结果随同发表。[导入机制、边界与证据](../ck3-native-ai/episode04-public-control-peer-imports-12004.md)
+
+上一已发表`61baf1b`的Official Runner CI `39569862854`已一次读回completed/success，完成时间09:01:37Z；这不是本批新提交的CI结果。[官方运行](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39569862854)。本批同时保留R228的Root消息派生状态：已报告calendar单日到53146872，随后snapshot request ID冲突在observer/新enable/观察日前拒止；这不是本publisher亲读的native原件，也不把后继授权当作已经完成的观察。当前Game下一动作仍须由独占owner按最新原件决定，不能用这份静态交接重放calendar或split。
+
+
+
 ## 2026-10-21 08:21后继补记：R226实际状态与工作片图审
 
 `machine_id: desktop-3fevhd2-1c74096080`；文档记录时间`2026-10-21T08:24:25.689582+00:00`。[小原件及精确观察时点](evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a04.json)。08:17的R226派生投影记录同一Game PID4992、actor31254、MapReady/date53146848：首次parser失败后尾段续接已实际split一次，独立读回子军175兵、stock100/capacity100，无补给headroom；day0、未观察增长、B/ABC/fullR08均不授信用。其后create-only结果检查点发生已知FileExistsError，原wait1保留；不重发split。当时Game/keeper尚活，本补记不冒充新的实机闭场观察。

@@ -1,0 +1,10 @@
+test_allocate_uses_siblings_despite_foreign_search_path (__main__.ControlPeerImportTests.test_allocate_uses_siblings_despite_foreign_search_path) ... ok
+test_cached_foreign_allocator_refuses_before_call (__main__.ControlPeerImportTests.test_cached_foreign_allocator_refuses_before_call) ... ok
+test_cached_foreign_unrun_refuses_before_allocate_call (__main__.ControlPeerImportTests.test_cached_foreign_unrun_refuses_before_allocate_call) ... ok
+test_import_failure_restores_path_without_allocate (__main__.ControlPeerImportTests.test_import_failure_restores_path_without_allocate) ... ok
+test_unrun_release_uses_same_directory_allocator (__main__.ControlPeerImportTests.test_unrun_release_uses_same_directory_allocator) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.309s
+
+OK

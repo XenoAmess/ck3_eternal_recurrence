@@ -1,8 +1,8 @@
 {
   "schema": "xar.e04.r08.knowledge-closure20.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-21T08:24:25.689582+00:00",
-  "input_HEAD": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+  "observed_at_utc": "2026-10-21T11:29:10.313979+00:00",
+  "input_HEAD": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
   "knowledge_inputs": 20,
   "knowledge_inputs_plus_binding": 21,
   "manifest_is_separate_control_metadata": true,
@@ -79,26 +79,26 @@
     },
     {
       "path": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
-      "bytes": 69281,
-      "sha256": "67f71ae617eb7c972dc6634414e40713150ad0d98f590fac9992d5494d842181",
-      "git_blob_oid": "a58bd6c39646d0cc58d0fd161cbd9c60bd27b4d3",
-      "origin": "R15_actual_milestone_candidate",
+      "bytes": 74799,
+      "sha256": "7de0f6bcdb4591b27914e6c473836af7ac9e39edeed69024ffb9248d7915f765",
+      "git_blob_oid": "e6d3dcb5d68a3f689255e1e845731d0e3fe0f667",
+      "origin": "R15_successor_actual_evidence_candidate",
       "source_commit": null,
       "input_materialized_and_verified": true,
       "action": "update_current_document",
-      "base_source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459"
+      "base_source_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c"
     },
     {
       "path": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
-      "bytes": 27743,
-      "sha256": "85ab87ac94f1daec8e736dc58802316b866ec21fd9212c2d26c9830e61fb2519",
-      "git_blob_oid": "4596d0e24df4131226b9b33e8188aac7977f5fb1",
-      "origin": "R15_actual_milestone_candidate",
+      "bytes": 33261,
+      "sha256": "cb9f22991f66cfbeb20baf13edafd2c411bc4b1a47aeb632f6fb8929ea447c5f",
+      "git_blob_oid": "ef0fd5967eff60b58a9c4b53d1740102cba1801f",
+      "origin": "R15_successor_actual_evidence_candidate",
       "source_commit": null,
       "input_materialized_and_verified": true,
       "action": "update_current_document",
       "prior_entry_materialized_and_verified": true,
-      "base_source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459"
+      "base_source_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c"
     },
     {
       "path": "docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.md",
@@ -211,17 +211,17 @@
       "action": "materialize_existing_Git_file"
     }
   ],
-  "knowledge_input_bytes": 369320,
+  "knowledge_input_bytes": 380356,
   "missing_existing_Git_files": 0,
   "missing_existing_Git_bytes": 0,
   "entry_input": {
     "path": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
-    "bytes": 22069,
-    "sha256": "67afa18d2ad83d92451502ac04d0eb290c2594ba7f1103ffa4b79bd0076fc459",
-    "git_blob_oid": "2bfd81cdabb50f8a7bd2f94b5ff178b6656c523d",
-    "source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459"
+    "bytes": 27743,
+    "sha256": "85ab87ac94f1daec8e736dc58802316b866ec21fd9212c2d26c9830e61fb2519",
+    "git_blob_oid": "4596d0e24df4131226b9b33e8188aac7977f5fb1",
+    "source_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c"
   },
-  "candidate_entry_added_bytes": 5674,
+  "candidate_entry_added_bytes": 5518,
   "planner_autoload": false,
   "qualification_added": false,
   "prior_missing_existing_Git_files": 14,
@@ -238,11 +238,11 @@
     "sha256": "13d4300542b0818a22befdae18e9243fc89d822a8482e6d7b610894ab92d7d2a",
     "git_blob_oid": "43dc4616fa503e557eb4a61bd6ae6e2e57f9a7f7"
   },
-  "current_readability": "18 unchanged inputs actually read in W; entry/map candidate overlay read byte-exact; binding is input21; this closure is separate control metadata",
+  "current_readability": "18 unchanged actual W files verified; 2 new document outputs verified in memory. Binding is input21. This closure remains separate control metadata.",
   "milestones": {
-    "path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a04.json",
-    "bytes": 2415,
-    "sha256": "32635ec367cde9d5a5afbedc95ce09396c8a47c2df2ecfcc78964588230b3f7d",
-    "git_blob_oid": "62e161bbab780ceca564c0ad7c95caeee2e7c9a4"
+    "path": "docs/ck3-native-ai/evidence/episode04-r15-successor-milestones-20261021/MILESTONES.actual-a01.json",
+    "bytes": 6268,
+    "sha256": "dced245ee7c1d1114df57c336a0f1eb398aec4f13205105166954982fd448652",
+    "git_blob_oid": "50cbf50fe8d3c26856108b684df5259cd09784d2"
   }
 }

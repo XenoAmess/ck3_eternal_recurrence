@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:29:52.304886+00:00",
+  "argv": [
+    "gh",
+    "run",
+    "list",
+    "--repo",
+    "XenoAmess/ck3_eternal_recurrence",
+    "--commit",
+    "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
+    "--limit",
+    "30",
+    "--json",
+    "databaseId,workflowName,status,conclusion,url,createdAt,updatedAt,headSha,event"
+  ],
+  "pid": 24884,
+  "creation_time_100ns": "134370521907577184",
+  "original_wait": 0,
+  "stdout_bytes": 658,
+  "stdout_sha256": "631320c0b4adb1b7a6f7800ae5bcf4bc8891beeeaef19c1cbcf62e28b602b0bc",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "scope": "one read-only CI status query; no workflow rerun or log download"
+}

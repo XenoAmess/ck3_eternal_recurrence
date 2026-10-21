@@ -1,8 +1,8 @@
 {
   "schema": "xar.e04.r08.canonical-document-binding.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-21T08:24:25.689582+00:00",
-  "input_HEAD": "e1e23e6f33a16ae9671da9c135db6ad9b872f459",
+  "observed_at_utc": "2026-10-21T11:29:10.313979+00:00",
+  "input_HEAD": "61baf1b22443556bde452a1a3455f9c8afd1ab3c",
   "canonical_document": {
     "path": "docs/ck3-native-ai/episode04-r08-player-parent-opportunity-input-contract-12004.md",
     "bytes": 11435,
@@ -12,21 +12,21 @@
   },
   "entry_same_tree_candidate": {
     "path": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
-    "bytes": 27743,
-    "sha256": "85ab87ac94f1daec8e736dc58802316b866ec21fd9212c2d26c9830e61fb2519",
-    "git_blob_oid": "4596d0e24df4131226b9b33e8188aac7977f5fb1",
-    "origin": "R15_actual_milestone_candidate",
+    "bytes": 33261,
+    "sha256": "cb9f22991f66cfbeb20baf13edafd2c411bc4b1a47aeb632f6fb8929ea447c5f",
+    "git_blob_oid": "ef0fd5967eff60b58a9c4b53d1740102cba1801f",
+    "origin": "R15_successor_actual_evidence_candidate",
     "source_commit": null,
-    "base_source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459"
+    "base_source_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c"
   },
   "closure_manifest": {
     "path": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/knowledge-closure20.json",
-    "bytes": 11888,
-    "sha256": "8ab557a36f0660626ed099dc620fa150d7f06d6092c518f5e6cc91d6132fd351",
-    "git_blob_oid": "c63e5353a0c55ae75839bd8e8d54c5bdecc50400",
-    "origin": "R15_milestone_closure_control",
+    "bytes": 11911,
+    "sha256": "1cce29b70958c489d3b32710f0ce77d17328022db246ed4ae59ece45c203f5c4",
+    "git_blob_oid": "e57c1b93217a831b859d8c5b1c277ceee60a392c",
+    "origin": "R15_successor_actual_evidence_candidate",
     "source_commit": null,
-    "base_source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459"
+    "base_source_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c"
   },
   "historical_index_unchanged": {
     "path": "docs/ck3-native-ai/evidence/episode04-r08-player-parent-opportunity-20261021/source-index.json",
@@ -61,12 +61,12 @@
   "historical_index_markdown_pin_role": "immutable original candidate pin; use canonical_document for the current full document",
   "map_same_tree_candidate": {
     "path": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
-    "bytes": 69281,
-    "sha256": "67f71ae617eb7c972dc6634414e40713150ad0d98f590fac9992d5494d842181",
-    "git_blob_oid": "a58bd6c39646d0cc58d0fd161cbd9c60bd27b4d3",
-    "origin": "R15_actual_milestone_candidate",
+    "bytes": 74799,
+    "sha256": "7de0f6bcdb4591b27914e6c473836af7ac9e39edeed69024ffb9248d7915f765",
+    "git_blob_oid": "e6d3dcb5d68a3f689255e1e845731d0e3fe0f667",
+    "origin": "R15_successor_actual_evidence_candidate",
     "source_commit": null,
-    "base_source_commit": "e1e23e6f33a16ae9671da9c135db6ad9b872f459"
+    "base_source_commit": "61baf1b22443556bde452a1a3455f9c8afd1ab3c"
   },
   "correction": {
     "path": "docs/ck3-native-ai/evidence/episode04-postload-context-attribution-correction-20261021/CORRECTION.actual.json",
@@ -75,9 +75,9 @@
     "git_blob_oid": "43dc4616fa503e557eb4a61bd6ae6e2e57f9a7f7"
   },
   "milestones": {
-    "path": "docs/ck3-native-ai/evidence/episode04-r15-actual-milestones-20261021/MILESTONES.actual-a04.json",
-    "bytes": 2415,
-    "sha256": "32635ec367cde9d5a5afbedc95ce09396c8a47c2df2ecfcc78964588230b3f7d",
-    "git_blob_oid": "62e161bbab780ceca564c0ad7c95caeee2e7c9a4"
+    "path": "docs/ck3-native-ai/evidence/episode04-r15-successor-milestones-20261021/MILESTONES.actual-a01.json",
+    "bytes": 6268,
+    "sha256": "dced245ee7c1d1114df57c336a0f1eb398aec4f13205105166954982fd448652",
+    "git_blob_oid": "50cbf50fe8d3c26856108b684df5259cd09784d2"
   }
 }

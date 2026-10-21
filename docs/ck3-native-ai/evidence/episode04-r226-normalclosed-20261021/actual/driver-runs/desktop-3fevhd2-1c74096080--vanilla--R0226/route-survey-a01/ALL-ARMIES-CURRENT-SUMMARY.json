@@ -1,0 +1,151 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0226",
+  "date_raw": 53146848,
+  "bridge_pid": 4992,
+  "new_client_same_original_game": true,
+  "source_snapshot": "fresh-current-frame.json",
+  "armies": [
+    {
+      "army_id": 18,
+      "province_id": 8645,
+      "army_state": "embarked",
+      "in_combat": false,
+      "route": [],
+      "strengths": {
+        "status": "available",
+        "army_id": 18,
+        "native_carmy_id": 18,
+        "regiment_count": 20,
+        "current_soldiers": 1194,
+        "maximum_soldiers": 1194,
+        "ai_base_power_raw": 3770000000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 30000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "rate_capacity": "not supplied by ordinary_core; unknown"
+    },
+    {
+      "army_id": 93,
+      "province_id": 2624,
+      "army_state": "regular",
+      "in_combat": false,
+      "route": [],
+      "strengths": {
+        "status": "available",
+        "army_id": 93,
+        "native_carmy_id": 85,
+        "regiment_count": 2,
+        "current_soldiers": 75,
+        "maximum_soldiers": 75,
+        "ai_base_power_raw": 487500000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 10000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "rate_capacity": "not supplied by ordinary_core; unknown"
+    },
+    {
+      "army_id": 94,
+      "province_id": 2619,
+      "army_state": "combat",
+      "in_combat": true,
+      "route": [],
+      "strengths": {
+        "status": "available",
+        "army_id": 94,
+        "native_carmy_id": 86,
+        "regiment_count": 4,
+        "current_soldiers": 250,
+        "maximum_soldiers": 250,
+        "ai_base_power_raw": 922500000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 10000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "rate_capacity": "not supplied by ordinary_core; unknown"
+    },
+    {
+      "army_id": 95,
+      "province_id": 2619,
+      "army_state": "combat",
+      "in_combat": true,
+      "route": [],
+      "strengths": {
+        "status": "available",
+        "army_id": 95,
+        "native_carmy_id": 87,
+        "regiment_count": 4,
+        "current_soldiers": 250,
+        "maximum_soldiers": 250,
+        "ai_base_power_raw": 922500000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 10000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "rate_capacity": "not supplied by ordinary_core; unknown"
+    },
+    {
+      "army_id": 16777321,
+      "province_id": 8645,
+      "army_state": "regular",
+      "in_combat": false,
+      "route": [],
+      "strengths": {
+        "status": "unavailable",
+        "army_id": 16777321,
+        "native_carmy_id": null,
+        "regiment_count": null,
+        "current_soldiers": null,
+        "maximum_soldiers": null,
+        "ai_base_power_raw": null,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": null,
+        "current_supply_scale": null,
+        "current_attrition_fraction_raw": null,
+        "current_attrition_fraction_scale": null,
+        "unavailable_reason": "native_carmy_not_found"
+      },
+      "rate_capacity": "not supplied by ordinary_core; unknown"
+    },
+    {
+      "army_id": 16777340,
+      "province_id": 2624,
+      "army_state": "regular",
+      "in_combat": false,
+      "route": [],
+      "strengths": {
+        "status": "available",
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "regiment_count": 2,
+        "current_soldiers": 175,
+        "maximum_soldiers": 175,
+        "ai_base_power_raw": 435000000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 10000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      },
+      "rate_capacity": "not supplied by ordinary_core; unknown"
+    }
+  ],
+  "Move_submissions": 0,
+  "new_split_submissions": 0,
+  "day_requests": 0
+}

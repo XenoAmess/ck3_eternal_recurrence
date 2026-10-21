@@ -1,0 +1,25 @@
+{
+  "schema": "xar.e04.method-clean.source-archive.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T11:06:38.760888+00:00",
+  "archive": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\METHOD-CLEAN-SOURCE-a02.tar.gz",
+    "bytes": 199798,
+    "sha256": "43cb90e6c6431021e6a0fca1f665f5a73c2e1747457194c75523f09a47cf8a24"
+  },
+  "canonical_target": "docs/ck3-native-ai/evidence/episode04-r15-method-clean-final-20261021/source/METHOD-CLEAN-SOURCE.tar.gz",
+  "source_file_count": 109,
+  "source_bytes": 804463,
+  "member_index_inside_archive": {
+    "member": "SOURCE-CONTENTS.json",
+    "bytes": 153304,
+    "sha256": "a40b2de57d8bcb2d1141c9cb247a028833c90e3731c9800ed730e5e9735e932a"
+  },
+  "all_member_bytes_and_SHA_verified": true,
+  "whole_gzip_CRC_readback": true,
+  "external_media_refs_stat_checked": 119,
+  "external_media_refs_missing": 0,
+  "media_bodies_or_EXE_or_fonts_copied": false,
+  "fully_self_contained_render_project": false,
+  "FFmpeg_Game_SDK_Git_actions": false
+}

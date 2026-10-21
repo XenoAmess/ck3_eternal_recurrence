@@ -1,0 +1,77 @@
+{
+  "schema": "ck3-mod-acceptance-allocated-unrun-closure-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T10:23:55.682600+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0227",
+  "host_started": false,
+  "native_session_started": false,
+  "game_started": false,
+  "normal_close_qualified": false,
+  "original_host_exit0": false,
+  "business_pass": false,
+  "CAS_release": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\unrun-R227-a01\\CAS_release.canonical.json",
+    "bytes": 2526,
+    "sha256": "8b3c65d60c529885d9fa3e98b8390e28ff5ac9af2ceb0ba8aac6dbd2cef3005c"
+  },
+  "admin_done": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\unrun-R227-a01\\admin_done.canonical.json",
+    "bytes": 2526,
+    "sha256": "8b3c65d60c529885d9fa3e98b8390e28ff5ac9af2ceb0ba8aac6dbd2cef3005c"
+  },
+  "ready": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0227\\ready-context.json",
+    "bytes": 4612,
+    "sha256": "fe6b1ffb7ca5d4e3d636ff70467d019c9dd70b5d99b8d60b13cf236712620738"
+  },
+  "frozen": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0227\\frozen-argv.json",
+    "bytes": 292490,
+    "sha256": "eede4878dd08c4b50f11946db0b5199a4692de1547479869e6212ea87156db4b"
+  },
+  "allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0227\\allocated-context.json",
+    "bytes": 4311,
+    "sha256": "26a8b8a0080b8daecba261a94bf939c1b730252c5147107fd334a18e018a8dfa"
+  },
+  "keeper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\keeper-a01\\report.json",
+    "bytes": 468,
+    "sha256": "e288a6e2e21a544b5399ab6aaa8251795caa4d24d189f994115b7158e814be6e"
+  },
+  "keeper_parent_exit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0227\\keeper-actual-parent-exit.json",
+    "bytes": 631,
+    "sha256": "cc630d0e4c453334e7c2e98ffe471949069e4cc687db45bc47da06d86dc0e8a7"
+  },
+  "keeper_STOP": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\keeper-a01\\STOP",
+    "bytes": 64,
+    "sha256": "87ddfb1a967996a2afdb2469631eac1c26c6ad4a159bffe7d6d6af983043782c"
+  },
+  "keeper_ready": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\keeper-a01\\ready.json",
+    "bytes": 970,
+    "sha256": "3646136371c8b2bf3c4fd0fe9598fa5f3f4119344d96cf9afc8dd9a408dda64e"
+  },
+  "idle_timeout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0227\\allocation-unused-idle-timeout.json",
+    "bytes": 246,
+    "sha256": "db4cb367b6742dc80b4454d168c72ae6813d7ebcb50e4a4c1ca1aafdfd4e2dbf"
+  },
+  "allocator_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\ops-a01\\ALLOCATOR-LEGACY-CLOSE-PROJECTION.actual-a01.json",
+    "bytes": 6479,
+    "sha256": "689c4f351ebad59759efbaaab2f2f63c94ea476774f275ed0cf780f9f06acc3b"
+  },
+  "allocator_stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\live-scene-r08-a02\\ops-a01\\public-allocate-a03\\stdout",
+    "bytes": 4777,
+    "sha256": "02bcb55e54954277639bc0a6735247bc97310de4f8867ecb37b7a519c4398551"
+  },
+  "counter": {
+    "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+    "bytes": 282,
+    "sha256": "8b224f6222057ab85b5436886d32358364de0598a9cec5b3434838198b868447"
+  }
+}

@@ -1,0 +1,516 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0226",
+  "bridge_pid": 4992,
+  "date_raw": 53146848,
+  "previews": [
+    {
+      "target": 1036,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        1036
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 1036,
+          "native_supply_limit_soldiers": 2147483647,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 1036,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": false,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-1036-preview.actual-results.json"
+    },
+    {
+      "target": 2617,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        2617
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 2617,
+          "native_supply_limit_soldiers": 5135,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 2617,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": true,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-2617-preview.actual-results.json"
+    },
+    {
+      "target": 2618,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        2618
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 2618,
+          "native_supply_limit_soldiers": 5135,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 2618,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": true,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-2618-preview.actual-results.json"
+    },
+    {
+      "target": 2621,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        2621
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 2621,
+          "native_supply_limit_soldiers": 5292,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 2621,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": true,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-2621-preview.actual-results.json"
+    },
+    {
+      "target": 2623,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        2623
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 2623,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 2623,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": true,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-2623-preview.actual-results.json"
+    },
+    {
+      "target": 2631,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        2631
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 2631,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 2631,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": true,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-2631-preview.actual-results.json"
+    },
+    {
+      "target": 2632,
+      "ok": true,
+      "error": null,
+      "accepted": true,
+      "status": "available",
+      "route_province_ids": [
+        2632
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 16777340,
+        "native_carmy_id": 16777332,
+        "owner_character_id": 31254,
+        "commander_character_id": 36445,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 2624,
+          "native_supply_limit_soldiers": 5657,
+          "native_supply_usage_soldiers": 250,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 2632,
+          "native_supply_limit_soldiers": 4380,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1,
+          "captured_target_land_supply_inputs_v1": {
+            "source": "native_captured_target_land_supply_inputs",
+            "input_basis": "captured_owner_and_target_province",
+            "scale": 100000,
+            "status": "available",
+            "current_inputs_ready": true,
+            "unavailable_reason": null,
+            "subject_army_id": 16777340,
+            "subject_carmy_id": 16777332,
+            "owner_character_id": 31254,
+            "province_id": 2632,
+            "province_component_observation_ready": true,
+            "province_component_unavailable_reason": null,
+            "native_province_component_applicable": false,
+            "province_component_raw": 0,
+            "resupply_observation_ready": true,
+            "resupply_unavailable_reason": null,
+            "native_resupply_eligible": true,
+            "loaded_gain_raw": 2000000,
+            "loss_adjustment_operands_v1": {
+              "source": "native_captured_target_loss_operands",
+              "scale": 100000,
+              "status": "available",
+              "observation_ready": true,
+              "unavailable_reason": null,
+              "commander_raw_full_id": 36445,
+              "commander_resolved_full_id": 36445,
+              "commander_used_native_fallback": false,
+              "commander_modifier_1a9_raw": 14000,
+              "loaded_excess_slope_raw": 100,
+              "loaded_min_loss_raw": 500000,
+              "loaded_max_loss_raw": 1000000,
+              "loaded_divisor_floor_raw": 10000
+            }
+          }
+        }
+      },
+      "original_results": "child-to-2632-preview.actual-results.json"
+    }
+  ],
+  "Move_submissions": 0,
+  "split_submissions": 0,
+  "day_requests": 0,
+  "preview_is_not_actual_movement_or_growth": true
+}

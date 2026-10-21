@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.public-control-import.original-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-21T10:43:04.877777+00:00",
+  "finished_at_utc": "2026-10-21T10:43:13.611532+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "--follow-imports=silent",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\baseline-source\\tools\\ck3_mod_acceptance.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\baseline-source\\tools\\ck3_mod_acceptance_unrun.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02",
+  "env_overrides": {
+    "PYTHONPATH": "C:/ck3-e04-resume-20261020-a01/r08-mypy1201-tools-2115-a01/Lib",
+    "MYPYPATH": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\baseline-source\\tools"
+  },
+  "shell": false,
+  "pid": 24736,
+  "creation_time_100ns": "134370529848795885",
+  "original_popen_wait": true,
+  "returncode": 1,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-baseline\\stdout.log",
+    "bytes": 21115,
+    "sha256": "945440a1de01c0a84bf3c4ceb136b35f1d8be8a707e2c6c932797a3fd35c4a75"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-support-a01\\publication-a02\\control-import-checks\\mypy-baseline\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native_SDK_Game_execution": false
+}

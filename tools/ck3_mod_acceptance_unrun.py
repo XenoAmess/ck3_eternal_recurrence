@@ -5,7 +5,7 @@ The CLI writes bounded metadata only. Public allocate remains the only allocator
 from pathlib import Path
 from datetime import datetime, timezone
 import argparse, hashlib, json, os
-from ck3_mod_acceptance import check_pin, pin, read_json
+from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
 
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
 def need(value, message):
@@ -62,7 +62,7 @@ def _allocator_argv(bundle, machine, keeper_stamps):
     return argv
 
 def _release_stages(keeper,cas,done,cas_source,done_source,release,task):
-    from ck3_mod_acceptance_allocate import closed_lease
+    closed_lease = same_directory_control_peer('ck3_mod_acceptance_allocate').closed_lease
     for value in (cas,done):
         need(value['event']['task_id']==task and value['event']['resources']==[],
              'Wrong allocated-unrun CAS task/resources')
@@ -93,7 +93,8 @@ def _journal_events(raw,start,release_sequence,done_sequence):
     return lines
 
 def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release, bus_packet):
-    from ck3_mod_acceptance_allocate import read_failed_runtime_release, runtime_process_inventory
+    control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    read_failed_runtime_release, runtime_process_inventory = control_allocator.read_failed_runtime_release, control_allocator.runtime_process_inventory
     import ck3_live_run_id as ids
     previous,keeper_root=Path(previous).resolve(),Path(keeper_root).resolve()
     bundle=_read(close_path);machine=ids.current_machine_id();run=freeze['run_id'];task=freeze['screen_task']
@@ -188,7 +189,8 @@ def _write(path,value):
     return pin(path)
 def build_bundle(args):
     import ck3_live_run_id as ids
-    from ck3_mod_acceptance_allocate import read_failed_runtime_release, current_screen_absent
+    control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    read_failed_runtime_release, current_screen_absent = control_allocator.read_failed_runtime_release, control_allocator.current_screen_absent
     allocator={key:getattr(args,key,None) for key in ('allocator_result','allocator_intent','allocator_process','allocator_exit')}
     need((allocator['allocator_result'] is not None and all(allocator[k] is None for k in allocator if k!='allocator_result'))
          or (allocator['allocator_result'] is None and all(allocator[k] is not None for k in allocator if k!='allocator_result')),
