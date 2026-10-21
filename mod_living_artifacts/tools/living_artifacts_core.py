@@ -755,6 +755,7 @@ def render_core_decisions() -> str:
         selection_tooltip = xalw_manage_decision_tooltip
         confirm_text = xalw_manage_decision_confirm
         sort_order = 35
+        ai_check_interval = 0
         is_shown = { is_ai = no }
         is_valid = { is_alive = yes }
         effect = { xalw_discover_owner_effect = yes trigger_event = xalw.12 }
@@ -793,6 +794,7 @@ def render_core_interactions() -> str:
         target_filter = actor_artifacts
         show_all_targets = no
         ai_targets = { ai_recipients = self }
+        ai_frequency = 0
         is_shown = { scope:recipient = scope:actor }
         auto_accept = yes
         ai_will_do = { base = 0 }

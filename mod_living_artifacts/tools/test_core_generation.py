@@ -254,6 +254,17 @@ class CoreGenerationTests(unittest.TestCase):
         ai_event = self.events.child(self.events.named("xalw.2"), "immediate")
         self.assertEqual(self.events.scalar(ai_event, "remove_variable").value, "xalw_ai_review_queued")
 
+    def test_manual_management_declares_explicit_native_ai_schedule(self) -> None:
+        # R2 actually logged missing frequency/interval while parsing these.
+        # Automatic AI cultivation is owned by its separate real monthly path.
+        interactions = Script(core.render_core_interactions())
+        for key in ("xalw_manage_interaction", "xalw_feed_interaction", "xalw_keep_interaction"):
+            block = interactions.named(key)
+            interactions.child(block, "ai_targets")
+            self.assertEqual(interactions.scalar(block, "ai_frequency").value, "0")
+        decision = Script(core.render_core_decisions())
+        self.assertEqual(decision.scalar(decision.named("xalw_manage_decision"), "ai_check_interval").value, "0")
+
 
 if __name__ == "__main__":
     unittest.main()

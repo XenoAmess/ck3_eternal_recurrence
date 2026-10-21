@@ -561,13 +561,14 @@ def _render_jealous_monthly() -> str:
     target_slots = " ".join(f"var:xalw_affix_{slot} > 0" for slot in range(1, 7))
     choose_slot = " ".join(f"1 = {{ trigger = {{ var:xalw_affix_{slot} > 0 }} set_variable = {{ name = xalw_content_jealous_slot value = {slot} days = 30 }} }}" for slot in range(1, 7))
     return _selector("affix", 12) + """
+save_scope_value_as = { name = xalw_content_previous_month value = { value = xalw_current_month_value subtract = 1 } }
 if = { limit = { var:xalw_content_rank > 0 }
 clear_saved_scope = xalw_content_jealous_target
 random_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes this != scope:xalw_content_actor.var:xalw_content_source OR = { """ + target_slots + """ } } save_scope_as = xalw_content_jealous_target }
 if = { limit = { exists = scope:xalw_content_jealous_target }
 """ + _positive_gate("""
 var:xalw_content_source = {
-if = { limit = { var:xalw_content_prima_target ?= scope:xalw_content_jealous_target var:xalw_content_prima_last_month = { value = xalw_current_month_value subtract = 1 } }
+if = { limit = { var:xalw_content_prima_target ?= scope:xalw_content_jealous_target var:xalw_content_prima_last_month = scope:xalw_content_previous_month }
 change_variable = { name = xalw_content_prima_streak add = 1 }
 } else = { set_variable = { name = xalw_content_prima_streak value = 1 } }
 set_variable = { name = xalw_content_prima_target value = scope:xalw_content_jealous_target }
@@ -595,7 +596,8 @@ def _render_mutation_preference() -> str:
         candidates.append(f"1 = {{ trigger = {{ var:xalw_affix_{slot} > 0 var:xalw_content_prima_target = {{ OR = {{ {matching} }} }} }} set_variable = {{ name = xalw_content_preferred_mutation_slot value = {slot} }} }}")
     return """remove_variable = xalw_content_preferred_mutation_slot
 save_scope_as = xalw_content_mutating_item
-if = { limit = { is_equipped = yes var:xalw_content_prima_streak >= 3 exists = var:xalw_content_prima_target var:xalw_content_prima_last_month >= { value = xalw_current_month_value subtract = 1 } }
+save_scope_value_as = { name = xalw_content_previous_month value = { value = xalw_current_month_value subtract = 1 } }
+if = { limit = { is_equipped = yes var:xalw_content_prima_streak >= 3 exists = var:xalw_content_prima_target var:xalw_content_prima_last_month >= scope:xalw_content_previous_month }
 set_variable = { name = xalw_content_prima_streak value = 0 }
 if = { limit = { OR = { """ + " ".join(eligible) + """ } }
 random = { chance = 60 random_list = { """ + " ".join(candidates) + "\n} } } }"

@@ -7,6 +7,7 @@
 	target_filter = actor_artifacts
 	show_all_targets = no
 	ai_targets = { ai_recipients = self }
+	ai_frequency = 0
 	is_shown = { scope:recipient = scope:actor }
 	auto_accept = yes
 	ai_will_do = { base = 0 }
@@ -29,6 +30,7 @@ xalw_feed_interaction = {
 	target_filter = actor_artifacts
 	show_all_targets = no
 	ai_targets = { ai_recipients = self }
+	ai_frequency = 0
 	is_shown = { scope:recipient = scope:actor }
 	auto_accept = yes
 	ai_will_do = { base = 0 }
@@ -54,6 +56,7 @@ xalw_keep_interaction = {
 	target_filter = actor_artifacts
 	show_all_targets = no
 	ai_targets = { ai_recipients = self }
+	ai_frequency = 0
 	is_shown = { scope:recipient = scope:actor }
 	auto_accept = yes
 	ai_will_do = { base = 0 }

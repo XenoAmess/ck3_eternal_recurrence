@@ -1080,6 +1080,7 @@ else_if = {
  limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
  change_variable = { name = xalw_content_effective_rank add = -1 }
 }
+save_scope_value_as = { name = xalw_content_previous_month value = { value = xalw_current_month_value subtract = 1 } }
 if = { limit = { var:xalw_content_rank > 0 }
 clear_saved_scope = xalw_content_jealous_target
 random_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes this != scope:xalw_content_actor.var:xalw_content_source OR = { var:xalw_affix_1 > 0 var:xalw_affix_2 > 0 var:xalw_affix_3 > 0 var:xalw_affix_4 > 0 var:xalw_affix_5 > 0 var:xalw_affix_6 > 0 } } save_scope_as = xalw_content_jealous_target }
@@ -1093,7 +1094,7 @@ if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = {
 if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = { var:xalw_content_fickle_rank ?= 3 } } multiply = 0.25 } }
 
 var:xalw_content_source = {
-if = { limit = { var:xalw_content_prima_target ?= scope:xalw_content_jealous_target var:xalw_content_prima_last_month = { value = xalw_current_month_value subtract = 1 } }
+if = { limit = { var:xalw_content_prima_target ?= scope:xalw_content_jealous_target var:xalw_content_prima_last_month = scope:xalw_content_previous_month }
 change_variable = { name = xalw_content_prima_streak add = 1 }
 } else = { set_variable = { name = xalw_content_prima_streak value = 1 } }
 set_variable = { name = xalw_content_prima_target value = scope:xalw_content_jealous_target }
