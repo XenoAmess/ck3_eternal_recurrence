@@ -417,6 +417,177 @@ class ContinuityContractTests(unittest.TestCase):
         self.assertEqual(reader.documents[str(Path(old_ref.path).resolve())].value(), original.to_wire())
 
 
+class ContinuityMetadataForwardTests(unittest.TestCase):
+    def fixture(self) -> tuple[object, owner.CurrentSavedColdInputsV1,
+                               continuity.ContinuityReadViewV1, ExactRefV1, ExactRefV1]:
+        from unittest.mock import patch
+        from tools.g2_saved_campaign import current_saved_basis_v1 as basis_api
+        from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
+            EpochMemoryReader, ReadonlyPrefixUnknownFixture,
+        )
+        original_put = EpochMemoryReader.put
+        def put(instance: EpochMemoryReader, name: str, value: object) -> ExactRefV1:
+            if name == "original-ledger.json":
+                # The existing business fixture predates ledger metadata. Supply
+                # that production boundary before its refs/closed proofs freeze.
+                value = {**json_object(value), "schema": "root.ck3.continuity-window/v1",
+                    "sequence": 225, "window_id": 2, "status": "running",
+                    "cold_handoff_count": 11,
+                    "game_binding": json_object({"pid": 11, "creation_date": "old"})}
+            return original_put(instance, name, value)
+        with patch.object(EpochMemoryReader, "put", put):
+            f = ReadonlyPrefixUnknownFixture()
+        basis, basis_ref, qualification = f.build()
+        reader = f.reader
+        qualification_ref = reader.put("forward-original-qualification.json", qualification.to_wire())
+        inputs = owner.validate_current_saved_cold_inputs_v1(basis,
+            basis_ref=basis_ref, validation_ref=qualification_ref, reader=reader)
+        memory = MemoryReader()
+        raw = reader.raw[basis.refs.ledger.path]
+        memory.documents[str(Path(basis.refs.ledger.path).resolve())] = continuity.PinnedContinuityDocumentV1(
+            basis.refs.ledger, FileStatIdentityV1(len(raw), "100", "1"), raw)
+        game = owner.CurrentGameIdentityV1(128, "134370765451291730", "new-managed-game")
+        sources = owner.WarmSourceRefsV1(*(basis_ref for _ in range(6)))
+        proof = owner.WarmBoundProofV1(MACHINE, basis_ref, qualification_ref,
+            basis.refs.driver, basis.driver_identity, sources, game, basis.frame, (), 1,
+            basis.driver_identity, "a" * 64, 1, True, AT)
+        checked = owner.CurrentSavedFeederV1(inputs, proof,
+            {"feeder_source_ref": basis_ref.to_wire()}, basis.frame, game, basis_ref, basis_ref)
+        head = commit_memory(memory, inputs.old_ledger, owner.CURRENT_SAVED_COLD_KIND,
+            checked.expected_transition(), cold_reducer(checked))
+        memory.put(CANONICAL, head)
+        current = view(memory, basis.refs.ledger)
+        for doc in memory.documents.values():
+            if doc.reference != basis.refs.ledger:
+                reader.raw[doc.reference.path] = doc.payload
+            reader.identities[doc.reference.path] = doc.identity
+        binding_ref = reader.put("forward-binding.json", current.to_wire())
+        head_path = "/epoch/forward-retained-ledger.json"
+        head_raw = memory.read(current.snapshot_ref, 65536)
+        reader.raw[head_path] = head_raw
+        head_ref = ExactRefV1(head_path, len(head_raw), hashlib.sha256(head_raw).hexdigest())
+        forward = basis_api.CurrentSavedContinuityForwardV1(MACHINE, AT, basis_ref,
+            qualification_ref, binding_ref, head_ref)
+        forward_ref = reader.put("forward-authority.json", forward.to_wire())
+        return f, inputs, current, forward_ref, qualification_ref
+
+    def test_original_builder_through_all_four_owner_consumers(self) -> None:
+        from unittest.mock import patch
+        from tools.g2_saved_campaign import current_saved_basis_v1 as basis_api
+        from tools.g2_saved_campaign.test_current_saved_basis_v1 import ReadonlyPrefixUnknownFixture
+        fixture, old, current, forward_ref, _ = self.fixture()
+        self.assertIsInstance(fixture, ReadonlyPrefixUnknownFixture)
+        if not isinstance(fixture, ReadonlyPrefixUnknownFixture):
+            raise TypeError("the actual business fixture")
+        reader = fixture.reader
+        before = dict(reader.raw)
+        forward = basis_api.parse_current_saved_continuity_forward_v1(
+            basis_api.evidence(reader, forward_ref), expected_machine_id=MACHINE)
+        basis = basis_api.build_current_saved_continuity_forward_basis_v1(
+            forward, forward_ref=forward_ref, reader=reader)
+        basis_ref = reader.put("forward-basis.json", basis.to_wire())
+        qualification = basis_api.build_current_saved_continuity_qualification_v1(
+            basis, basis_ref=basis_ref, observed_at_utc=AT, reader=reader)
+        qualification_ref = reader.put("forward-qualification.json", qualification.to_wire())
+        self.assertEqual(owner.parse_basis_qualification_v1(parse_json(canonical_json_v1(
+            qualification.to_wire())), expected_machine_id=MACHINE), qualification)
+        inputs = owner.validate_current_saved_cold_inputs_v1(basis, basis_ref=basis_ref,
+            validation_ref=qualification_ref, reader=reader)
+        self.assertEqual(inputs.closed_epoch, owner._closed_epoch(basis, reader))
+        self.assertEqual(inputs.closed_epoch.sdk_processes, old.closed_epoch.sdk_processes)
+        self.assertEqual(inputs.closed_epoch.old_game, old.closed_epoch.old_game)
+        with patch.object(owner, "LocalBasisReaderV1", return_value=reader):
+            result = owner.validate_current_saved_prepared_sdk_closure_v1(
+                fixture.epoch.refs.sdk_closed.to_wire(), inputs=inputs)
+        self.assertIs(result["normal"], False)
+        self.assertEqual(basis.progress.ledger_cycles, old.basis.completed_cycles)
+        self.assertEqual(basis.unknown_requests, old.basis.unknown_requests)
+        self.assertEqual((inputs.seed, inputs.governance, basis.refs.driver, basis.refs.save),
+            (old.seed, old.governance, old.basis.refs.driver, old.basis.refs.save))
+        self.assertEqual(basis_api.decode_current_saved_basis_v1(
+            basis_api.encode_current_saved_basis_v1(basis), expected_machine_id=MACHINE), basis)
+        # Historical metadata must not reread a mutable canonical old SHA.
+        reader.raw[current.snapshot_ref.path] = b"canonical legitimately advanced"
+        owner.validate_current_saved_cold_inputs_v1(basis, basis_ref=basis_ref,
+            validation_ref=qualification_ref, reader=reader)
+        for ref in (fixture.epoch.refs.raw_state, fixture.epoch.refs.unknown_response,
+                    fixture.epoch.refs.unknown_inflight):
+            self.assertEqual(reader.raw[ref.path], before[ref.path])
+        self.assertNotIn(basis.refs.driver.path, reader.read_paths)
+        self.assertNotIn(basis.refs.save.path, reader.read_paths)
+
+    def test_forward_rejects_business_credit_types_and_mutable_head(self) -> None:
+        from unittest.mock import patch
+        from tools.g2_saved_campaign import current_saved_basis_v1 as basis_api
+        from tools.g2_saved_campaign.test_current_saved_basis_v1 import ReadonlyPrefixUnknownFixture
+        fixture, old, current, forward_ref, _ = self.fixture()
+        if not isinstance(fixture, ReadonlyPrefixUnknownFixture):
+            raise TypeError("the actual business fixture")
+        reader = fixture.reader
+        forward = basis_api.parse_current_saved_continuity_forward_v1(
+            basis_api.evidence(reader, forward_ref), expected_machine_id=MACHINE)
+        for reference in (current.anchor_ref, current.event_refs[0], current.source_indexes[0].reference):
+            identity = reader.identities[reference.path]
+            reader.identities[reference.path] = replace(identity, file_id="999999999999999999")
+            with self.assertRaisesRegex(ValueError, "immutable continuity source identity"):
+                basis_api._continuity_forward_head_v1(forward, old.basis, reader=reader)
+            reader.identities[reference.path] = identity
+        event = current.event_refs[0]
+        identity = reader.identities[event.path]
+        original_read = reader.read
+        def read_then_replace(reference: ExactRefV1, limit: int) -> bytes:
+            raw = original_read(reference, limit)
+            if reference == forward.ledger_ref:
+                reader.identities[event.path] = replace(identity, file_id="999999999999999999")
+            return raw
+        with patch.object(reader, "read", side_effect=read_then_replace):
+            with self.assertRaisesRegex(ValueError, "immutable continuity source identity"):
+                basis_api._continuity_forward_head_v1(forward, old.basis, reader=reader)
+        reader.identities[event.path] = identity
+        for key, bad in (("new_ordinary_cycle_credit", True), ("new_game_day_credit", 0.0),
+                         ("original_actions_replayed", True), ("original_validation_ref", None)):
+            with self.assertRaises(ValueError):
+                basis_api.parse_current_saved_continuity_forward_v1(
+                    {**forward.to_wire(), key: bad}, expected_machine_id=MACHINE)
+        with self.assertRaisesRegex(ValueError, "immutable retained head"):
+            basis_api._continuity_forward_head_v1(
+                replace(forward, ledger_ref=current.snapshot_ref), old.basis, reader=reader)
+        reader.read_paths.clear()
+        with self.assertRaisesRegex(ValueError, "historical anchor"):
+            basis_api._continuity_forward_head_v1(forward, replace(old.basis,
+                refs=replace(old.basis.refs, ledger=current.snapshot_ref)), reader=reader)
+        self.assertEqual(reader.read_paths, [forward.continuity_binding_ref.path])
+        memory = MemoryReader()
+        for path, raw in reader.raw.items():
+            reference = ExactRefV1(path, len(raw), hashlib.sha256(raw).hexdigest())
+            memory.documents[str(Path(path).resolve())] = continuity.PinnedContinuityDocumentV1(
+                reference, reader.identities.get(path, FileStatIdentityV1(len(raw), "100", "1")), raw)
+        advanced_basis = replace(old.basis, completed_cycles=old.basis.completed_cycles + 7,
+            progress=replace(old.basis.progress, settled_cycles=old.basis.completed_cycles + 7,
+                ledger_cycles=old.basis.completed_cycles, ledger_date_raw=old.basis.frame.date_raw))
+        active = verified(current.head_state)
+        active = replace(active, inputs=replace(active.inputs, basis=advanced_basis,
+            old_ledger=current.head_state), opening=advanced_basis.frame)
+        advanced = commit_memory(memory, current.head_state, owner.CURRENT_SAVED_COLD_KIND,
+            active.expected_transition(), cold_reducer(active))
+        memory.put(CANONICAL, advanced)
+        advanced_view = view(memory, old.basis.refs.ledger)
+        for doc in memory.documents.values():
+            if doc.reference.path != old.basis.refs.ledger.path:
+                reader.raw[doc.reference.path] = doc.payload
+            reader.identities[doc.reference.path] = doc.identity
+        advanced_binding = reader.put("advanced-forward-binding.json", advanced_view.to_wire())
+        raw = memory.read(advanced_view.snapshot_ref, 65536)
+        path = "/epoch/advanced-retained-ledger.json"
+        reader.raw[path] = raw
+        advanced_ref = ExactRefV1(path, len(raw), hashlib.sha256(raw).hexdigest())
+        # The actual reducer and exact event/index chain accept the newer
+        # business coordinates; this metadata-only operation must still refuse.
+        with self.assertRaisesRegex(ValueError, "only already proven settled business"):
+            basis_api._continuity_forward_head_v1(replace(forward,
+                continuity_binding_ref=advanced_binding, ledger_ref=advanced_ref), old.basis, reader=reader)
+
+
 if __name__ == "__main__":
     unittest.main()
 

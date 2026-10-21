@@ -2220,6 +2220,242 @@ def _cap_postresponse_source_v3(
     need("state" not in governance and "governance_result_state" in governance
         and "pending_focus" in governance,"the exact source omits the legacy state field")
 
+
+CONTINUITY_FORWARD_SCHEMA = "xar.current-saved-continuity-basis-forward/v1"
+CONTINUITY_FORWARD_QUALIFICATION_SCHEMA = "xar.current-saved-continuity-basis-qualification/v1"
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentSavedContinuityForwardV1:
+    machine_id: str
+    observed_at_utc: str
+    original_basis_ref: ExactRefV1
+    original_validation_ref: ExactRefV1
+    continuity_binding_ref: ExactRefV1
+    ledger_ref: ExactRefV1
+
+    def to_wire(self) -> JsonObject:
+        return {"schema": CONTINUITY_FORWARD_SCHEMA, "machine_id": text(self.machine_id),
+            "observed_at_utc": utc(self.observed_at_utc),
+            "original_basis_ref": self.original_basis_ref.to_wire(),
+            "original_validation_ref": self.original_validation_ref.to_wire(),
+            "continuity_binding_ref": self.continuity_binding_ref.to_wire(),
+            "ledger_ref": self.ledger_ref.to_wire(), "scope": "continuity_metadata_forward_only",
+            "new_ordinary_cycle_credit": 0, "new_game_day_credit": 0,
+            "new_Driver_or_SAVE_identity_claimed": False, "original_actions_replayed": False}
+
+
+def parse_current_saved_continuity_forward_v1(
+    value: object, *, expected_machine_id: str,
+) -> CurrentSavedContinuityForwardV1:
+    r = record(value, {"schema", "machine_id", "observed_at_utc", "original_basis_ref",
+        "original_validation_ref", "continuity_binding_ref", "ledger_ref", "scope",
+        "new_ordinary_cycle_credit", "new_game_day_credit",
+        "new_Driver_or_SAVE_identity_claimed", "original_actions_replayed"})
+    need(r["schema"] == CONTINUITY_FORWARD_SCHEMA and r["machine_id"] == expected_machine_id
+         and r["scope"] == "continuity_metadata_forward_only"
+         and integer(r["new_ordinary_cycle_credit"], 0, 0) == 0
+         and integer(r["new_game_day_credit"], 0, 0) == 0
+         and r["new_Driver_or_SAVE_identity_claimed"] is False
+         and r["original_actions_replayed"] is False, "continuity-only basis forward")
+    return CurrentSavedContinuityForwardV1(text(r["machine_id"]), utc(r["observed_at_utc"]),
+        parse_ref(r["original_basis_ref"]), parse_ref(r["original_validation_ref"]),
+        parse_ref(r["continuity_binding_ref"]), parse_ref(r["ledger_ref"]))
+
+
+def _continuity_forward_head_v1(
+    forward: CurrentSavedContinuityForwardV1, original: CurrentSavedBasisV1, *,
+    reader: BasisReaderV1,
+) -> JsonObject:
+    from tools.g2_saved_campaign.current_saved_continuity_v1 import (
+        continuity_digest_v1, _state, validate_continuity_source_identities_v1,
+    )
+    binding = record(evidence(reader, forward.continuity_binding_ref, 32768),
+        {"schema", "machine_id", "canonical_path", "anchor_ref", "anchor_digest", "anchor_sequence",
+         "snapshot_ref", "event_refs", "source_index_refs", "head_sequence", "head_digest",
+         "missing_source_indexes", "snapshot_needs_recovery", "ready", "ledger_writes", "source_identities"})
+    canonical = Path(text(binding.get("canonical_path"))).resolve()
+    need(all(Path(reference.path).resolve() != canonical
+             for reference in (forward.ledger_ref, original.refs.ledger)),
+         "immutable retained head and historical anchor must not be the mutable canonical path")
+    need(binding.get("schema") == "xar.current-saved-continuity-binding/v1"
+         and binding.get("machine_id") == original.machine_id
+         and parse_ref(binding.get("anchor_ref")) == original.refs.ledger
+         and binding.get("ready") is True and binding.get("snapshot_needs_recovery") is False
+         and rows(binding.get("missing_source_indexes")) == []
+         and integer(binding.get("ledger_writes"), 0, 0) == 0,
+         "captured ready continuity lineage")
+    # This historical replay reads immutable anchor/events and the retained
+    # head copy. The mutable canonical snapshot is provenance, never reread as
+    # though its old bytes should remain current after a legitimate commit.
+    index_refs = tuple(parse_ref(x) for x in rows(binding.get("source_index_refs")))
+    indexes = {x.path: x for x in index_refs}
+    need(len(indexes) == len(index_refs), "unique captured source indexes")
+    events = tuple(parse_ref(x) for x in rows(binding.get("event_refs")))
+    need(len(events) <= 256 and len({x.path for x in events}) == len(events), "finite unique event chain")
+    snapshot = parse_ref(binding.get("snapshot_ref"))
+    need(Path(snapshot.path).resolve() == Path(text(binding["canonical_path"])).resolve(),
+         "captured snapshot is the canonical path")
+    expected_refs = (original.refs.ledger, snapshot, *events, *index_refs)
+    captured: dict[str, tuple[ExactRefV1, FileStatIdentityV1]] = {}
+    for value in rows(binding.get("source_identities")):
+        item = record(value, {"reference", "identity"}); reference = parse_ref(item["reference"])
+        captured_identity = parse_file_stat_identity_v1(item["identity"], schema=STAT_SCHEMA)
+        need(reference.path not in captured and captured_identity.bytes == reference.bytes,
+             "unique captured source identity with exact length")
+        captured[reference.path] = (reference, captured_identity)
+    need({path: reference for path, (reference, _) in captured.items()}
+         == {reference.path: reference for reference in expected_refs},
+         "captured identities bind exactly the immutable chain and historical snapshot")
+    captured_sources = tuple(captured.values())
+    validate_continuity_source_identities_v1(captured_sources, mutable_snapshot_ref=snapshot, reader=reader)
+    state = _state(evidence(reader, original.refs.ledger, 65536), original.machine_id)
+    need(binding.get("anchor_digest") == continuity_digest_v1(state)
+         and integer(binding.get("anchor_sequence")) == integer(state.get("sequence")),
+         "exact original continuity anchor")
+    origin = (state.get("window_id"), state.get("start_date_raw"), state.get("target_date_raw"))
+    for event_ref in events:
+        event = record(evidence(reader, event_ref, 65536), {"sequence", "at_utc", "kind", "details", "identity", "previous_sha256", "after"})
+        utc(event["at_utc"])
+        need(Path(event_ref.path).resolve() == (Path(text(binding.get("canonical_path"))).with_name("ROOT-CONTINUITY-WINDOW-EVENTS") / f"{integer(state.get('sequence')) + 1:08d}.json").resolve(), "canonical committed event path")
+        sequence = integer(state.get("sequence")) + 1
+        details = json_object(event.get("details")); kind = text(event.get("kind"))
+        need(bool(details.get("source")), "committed event exact source")
+        identity = continuity_digest_v1({"kind": kind, "details": details})
+        need(integer(event.get("sequence"), 1) == sequence
+             and event.get("previous_sha256") == continuity_digest_v1(state)
+             and event.get("identity") == identity, "exact committed continuity event chain")
+        state = _state(event.get("after"), original.machine_id)
+        need(integer(state.get("sequence"), 1) == sequence
+             and state.get("last_event_identity") == identity
+             and state.get("machine_id") == original.machine_id
+             and (state.get("window_id"), state.get("start_date_raw"), state.get("target_date_raw")) == origin,
+             "event preserves original campaign/window")
+        key = continuity_digest_v1({"kind": kind, "evidence_id": text(details.get("evidence_id"))})
+        path = str(Path(event_ref.path).parent / ("source-" + key + ".json"))
+        need(path in indexes, "captured source index missing")
+        index = record(evidence(reader, indexes.pop(path), 65536), {"sequence", "identity"})
+        need(integer(index.get("sequence"), 1) == sequence and index.get("identity") == identity,
+             "source index/event binding")
+    need(not indexes and integer(binding.get("head_sequence")) == integer(state.get("sequence"))
+         and binding.get("head_digest") == continuity_digest_v1(state),
+         "complete captured head and index chain")
+    head = json_object(evidence(reader, forward.ledger_ref, 65536))
+    need((snapshot.bytes, snapshot.sha256) == (forward.ledger_ref.bytes, forward.ledger_ref.sha256),
+         "retained head bytes match the captured canonical snapshot")
+    need(canonical_json_v1(head) == canonical_json_v1(state),
+         "retained ledger must be the exact committed head")
+    need(head.get("machine_id") == original.machine_id
+         and integer(head.get("start_date_raw")) == original.origin.start_date_raw
+         and integer(head.get("target_date_raw")) == original.origin.target_date_raw
+         and integer(head.get("target_days"), 1) == original.origin.target_days
+         and integer(head.get("last_settled_cycles")) == original.completed_cycles
+         and integer(head.get("last_settled_date_raw")) == original.frame.date_raw,
+         "ledger forward may align only already proven settled business")
+    validate_continuity_source_identities_v1(captured_sources, mutable_snapshot_ref=snapshot, reader=reader)
+    return head
+
+
+def build_current_saved_continuity_forward_basis_v1(
+    forward: CurrentSavedContinuityForwardV1, *, forward_ref: ExactRefV1,
+    reader: BasisReaderV1,
+) -> CurrentSavedBasisV1:
+    need(parse_current_saved_continuity_forward_v1(evidence(reader, forward_ref, 16384),
+        expected_machine_id=forward.machine_id) == forward, "exact metadata-forward source")
+    original = decode_current_saved_basis_v1(exact_read(reader, forward.original_basis_ref, 65536),
+        expected_machine_id=forward.machine_id)
+    head = _continuity_forward_head_v1(forward, original, reader=reader)
+    return replace(original, observed_at_utc=forward.observed_at_utc,
+        refs=replace(original.refs, ledger=forward.ledger_ref, closure=forward_ref),
+        progress=replace(original.progress, ledger_cycles=integer(head["last_settled_cycles"]),
+                         ledger_date_raw=integer(head["last_settled_date_raw"])))
+
+
+def validate_current_saved_continuity_forward_basis_v1(
+    basis: CurrentSavedBasisV1, *, reader: BasisReaderV1,
+) -> CurrentSavedContinuityForwardV1:
+    forward = parse_current_saved_continuity_forward_v1(evidence(reader, basis.refs.closure, 16384),
+        expected_machine_id=basis.machine_id)
+    expected = build_current_saved_continuity_forward_basis_v1(
+        forward, forward_ref=basis.refs.closure, reader=reader)
+    need(canonical_json_v1(expected.to_wire()) == canonical_json_v1(basis.to_wire()),
+         "metadata forward preserves every non-ledger business/unknown/identity field")
+    return forward
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentSavedContinuityQualificationV1:
+    machine_id: str
+    observed_at_utc: str
+    basis_ref: ExactRefV1
+    forward_ref: ExactRefV1
+    original_validation_ref: ExactRefV1
+    driver_ref: ExactRefV1
+    save_ref: ExactRefV1
+    driver_identity_after: FileStatIdentityV1
+    save_identity_after: FileStatIdentityV1
+    validator_source_ref: ExactRefV1
+
+    def to_wire(self) -> JsonObject:
+        return {"schema": CONTINUITY_FORWARD_QUALIFICATION_SCHEMA,
+            "machine_id": text(self.machine_id), "observed_at_utc": utc(self.observed_at_utc),
+            "basis_ref": self.basis_ref.to_wire(), "forward_ref": self.forward_ref.to_wire(),
+            "original_validation_ref": self.original_validation_ref.to_wire(),
+            "driver_ref": self.driver_ref.to_wire(), "save_ref": self.save_ref.to_wire(),
+            "driver_identity_after": json_object(self.driver_identity_after.to_wire()),
+            "save_identity_after": json_object(self.save_identity_after.to_wire()),
+            "validator_source_ref": self.validator_source_ref.to_wire(),
+            "qualification_scope": "continuity_metadata_only_original_business_qualification_required",
+            "driver_body_reads": 0, "save_hash_reads": 0, "new_credit": 0}
+
+
+def parse_current_saved_continuity_qualification_v1(
+    value: object, *, expected_machine_id: str,
+) -> CurrentSavedContinuityQualificationV1:
+    row = record(value, {"schema", "machine_id", "observed_at_utc", "basis_ref", "forward_ref",
+        "original_validation_ref", "driver_ref", "save_ref", "driver_identity_after",
+        "save_identity_after", "validator_source_ref", "qualification_scope",
+        "driver_body_reads", "save_hash_reads", "new_credit"})
+    need(row["schema"] == CONTINUITY_FORWARD_QUALIFICATION_SCHEMA
+         and row["machine_id"] == expected_machine_id
+         and row["qualification_scope"] == "continuity_metadata_only_original_business_qualification_required",
+         "distinct continuity metadata qualification")
+    for name in ("driver_body_reads", "save_hash_reads", "new_credit"):
+        integer(row[name], 0, 0)
+    return CurrentSavedContinuityQualificationV1(text(row["machine_id"]), utc(row["observed_at_utc"]),
+        parse_ref(row["basis_ref"]), parse_ref(row["forward_ref"]), parse_ref(row["original_validation_ref"]),
+        parse_ref(row["driver_ref"]), parse_ref(row["save_ref"]),
+        parse_file_stat_identity_v1(row["driver_identity_after"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["save_identity_after"], schema=STAT_SCHEMA),
+        parse_ref(row["validator_source_ref"]))
+
+
+def build_current_saved_continuity_qualification_v1(
+    basis: CurrentSavedBasisV1, *, basis_ref: ExactRefV1, observed_at_utc: str,
+    reader: BasisReaderV1,
+) -> CurrentSavedContinuityQualificationV1:
+    forward = validate_current_saved_continuity_forward_basis_v1(basis, reader=reader)
+    need(decode_current_saved_basis_v1(exact_read(reader, basis_ref, 65536),
+        expected_machine_id=basis.machine_id) == basis, "exact forwarded basis")
+    from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
+        parse_basis_qualification_v1, validate_current_saved_cold_inputs_v1,
+    )
+    previous = parse_basis_qualification_v1(evidence(reader, forward.original_validation_ref, 16384),
+        expected_machine_id=basis.machine_id)
+    need(previous.basis_ref == forward.original_basis_ref
+         and previous.driver_ref == basis.refs.driver and previous.save_ref == basis.refs.save
+         and previous.driver_identity_after == basis.driver_identity
+         and previous.save_identity_after == basis.save_identity,
+         "retain the original business qualification and file identities")
+    original = decode_current_saved_basis_v1(exact_read(reader, forward.original_basis_ref, 65536),
+        expected_machine_id=basis.machine_id)
+    validate_current_saved_cold_inputs_v1(original, basis_ref=forward.original_basis_ref,
+        validation_ref=forward.original_validation_ref, reader=reader)
+    return CurrentSavedContinuityQualificationV1(basis.machine_id, utc(observed_at_utc), basis_ref,
+        basis.refs.closure, forward.original_validation_ref, basis.refs.driver, basis.refs.save,
+        basis.driver_identity, basis.save_identity, basis.refs.checkpoint_validator)
+
+
 READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA = "xar.current-saved-readonly-prefix-unknown-epoch/v1"
 READONLY_PREFIX_UNKNOWN_QUALIFICATION_SCHEMA = "xar.current-saved-readonly-prefix-unknown-basis-qualification/v1"
 
@@ -2588,21 +2824,31 @@ def _validate_readonly_prefix_unknown_evidence_v1(
     need(parse_readonly_prefix_unknown_epoch_v1(epoch.to_wire(),expected_machine_id=epoch.machine_id)==epoch,"typed epoch")
     r=epoch.refs;old=decode_current_saved_basis_v1(exact_read(reader,r.business_basis,65536),expected_machine_id=epoch.machine_id)
     need(len(trail)<32 and r.business_basis.path not in trail,"bounded acyclic epoch lineage")
-    closure=evidence(reader,old.refs.closure,65536)
+    lineage_basis=old
+    forward_seen:set[str]=set()
+    closure=evidence(reader,lineage_basis.refs.closure,65536)
+    while closure.get("schema")==CONTINUITY_FORWARD_SCHEMA:
+        need(len(forward_seen)<16 and lineage_basis.refs.closure.path not in forward_seen,
+             "bounded acyclic continuity metadata lineage")
+        forward_seen.add(lineage_basis.refs.closure.path)
+        forward=validate_current_saved_continuity_forward_basis_v1(lineage_basis,reader=reader)
+        lineage_basis=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),
+            expected_machine_id=epoch.machine_id)
+        closure=evidence(reader,lineage_basis.refs.closure,65536)
     prior:ValidatedCapPostresponseFailureEpochV3|ValidatedReadonlyPrefixUnknownEpochV1
     if closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:
         prior=validate_cap_postresponse_failure_evidence_v3(
             parse_cap_postresponse_failure_epoch_v3(closure,expected_machine_id=epoch.machine_id),reader=reader)
-        need(old.refs==replace(prior.business_basis.refs,driver=prior.driver_ref,
-            driver_close=prior.epoch.refs.driver_review,closure=old.refs.closure,next=prior.epoch.refs.next)
-            and old.origin==prior.business_basis.origin and old.frame==prior.business_basis.frame
-            and old.progress==prior.business_basis.progress and old.unknown_requests==prior.business_basis.unknown_requests,
+        need(lineage_basis.refs==replace(prior.business_basis.refs,driver=prior.driver_ref,
+            driver_close=prior.epoch.refs.driver_review,closure=lineage_basis.refs.closure,next=prior.epoch.refs.next)
+            and lineage_basis.origin==prior.business_basis.origin and lineage_basis.frame==prior.business_basis.frame
+            and lineage_basis.progress==prior.business_basis.progress and lineage_basis.unknown_requests==prior.business_basis.unknown_requests,
             "historical saved business references remain exact")
     elif closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
         prior=_validate_readonly_prefix_unknown_evidence_v1(
             parse_readonly_prefix_unknown_epoch_v1(closure,expected_machine_id=epoch.machine_id),
             reader=reader,trail=(*trail,r.business_basis.path))
-        _check_readonly_prefix_basis_v1(prior,old,reader=reader)
+        _check_readonly_prefix_basis_v1(prior,lineage_basis,reader=reader)
     else:raise ValueError("qualified closed business lineage required; no unknown epoch alias")
     need(old.refs.driver==prior.driver_ref and old.driver_identity==prior.driver_identity
         and old.refs.save==prior.save_ref and old.save_identity==prior.save_identity

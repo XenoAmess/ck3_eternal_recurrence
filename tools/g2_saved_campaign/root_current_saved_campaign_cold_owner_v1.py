@@ -1,6 +1,6 @@
 """Typed current saved consumers."""
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass,replace
 from datetime import datetime,timezone
 import hashlib
 import json
@@ -12,6 +12,9 @@ from typing import Literal,Protocol
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
  SavedFrameV1,ValidatedCurrentSavedBasisV1,
+ CONTINUITY_FORWARD_SCHEMA,CONTINUITY_FORWARD_QUALIFICATION_SCHEMA,
+ CurrentSavedContinuityQualificationV1,parse_current_saved_continuity_qualification_v1,
+ validate_current_saved_continuity_forward_basis_v1,
  READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA,READONLY_PREFIX_UNKNOWN_QUALIFICATION_SCHEMA,
  ReadonlyPrefixUnknownQualificationV1,parse_readonly_prefix_unknown_qualification_v1,
  parse_readonly_prefix_unknown_epoch_v1,validate_readonly_prefix_unknown_basis_v1,
@@ -154,7 +157,9 @@ class BasisQualificationV1:
    "save_hash_reads":self.save_hash_reads,
    "read_count_scope":"this_additional_qualification_only",
    "power_loss_durability":"not_asserted"}
-def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1|CapPretransportFailureQualificationV2|CapPostresponseFailureQualificationV3|ReadonlyPrefixUnknownQualificationV1:
+def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1|CapPretransportFailureQualificationV2|CapPostresponseFailureQualificationV3|ReadonlyPrefixUnknownQualificationV1|CurrentSavedContinuityQualificationV1:
+ if record(value).get("schema")==CONTINUITY_FORWARD_QUALIFICATION_SCHEMA:
+  return parse_current_saved_continuity_qualification_v1(value,expected_machine_id=expected_machine_id)
  if record(value).get("schema")==READONLY_PREFIX_UNKNOWN_QUALIFICATION_SCHEMA:
   return parse_readonly_prefix_unknown_qualification_v1(value,expected_machine_id=expected_machine_id)
  if record(value).get("schema")==CAP_POSTRESPONSE_FAILURE_QUALIFICATION_SCHEMA:
@@ -284,8 +289,14 @@ def _validate_task_closure(
     'actual Task absent after')
   matching+=1
  need(matching==1,'one exact Task unregiste')
-def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1)->ClosedEpochV1:
+def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[str,...]=())->ClosedEpochV1:
+ need(len(_trail)<16 and basis.refs.closure.path not in _trail,"bounded acyclic continuity closure lineage")
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==CONTINUITY_FORWARD_SCHEMA:
+  forward=validate_current_saved_continuity_forward_basis_v1(basis,reader=reader)
+  original=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=basis.machine_id)
+  closed=_closed_epoch(original,reader,_trail=(*_trail,basis.refs.closure.path))
+  return replace(closed,closure_ref=basis.refs.closure)
  if closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
   prefix_checked=validate_readonly_prefix_unknown_basis_v1(basis,reader=reader)
   prefix_game=prefix_checked.old_game
@@ -494,8 +505,9 @@ def project_current_saved_seed_v1(basis:CurrentSavedBasisV1,*,reader:BasisReader
  return seed
 def _validated_immutable_inputs_v1(
  basis:CurrentSavedBasisV1,*,basis_ref:ExactRefV1,validation_ref:ExactRefV1,
- reader:BasisReaderV1,
+ reader:BasisReaderV1,_trail:tuple[str,...]=(),
 )->CurrentSavedColdInputsV1:
+ need(len(_trail)<16 and basis_ref.path not in _trail,"bounded acyclic continuity qualification lineage")
  need(_same_json(parse_json(exact_read(reader,basis_ref,65536)),
    parse_json(encode_current_saved_basis_v1(basis))),
    'exact current saved basi')
@@ -507,7 +519,15 @@ def _validated_immutable_inputs_v1(
    and qualification.driver_identity_after==basis.driver_identity
    and qualification.save_identity_after==basis.save_identity,
    'actual one-read canonica')
- if isinstance(qualification,ReadonlyPrefixUnknownQualificationV1):
+ if isinstance(qualification,CurrentSavedContinuityQualificationV1):
+  forward=validate_current_saved_continuity_forward_basis_v1(basis,reader=reader)
+  need(qualification.forward_ref==basis.refs.closure
+   and qualification.original_validation_ref==forward.original_validation_ref,
+   "continuity qualification retains original business qualification")
+  original=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=basis.machine_id)
+  _validated_immutable_inputs_v1(original,basis_ref=forward.original_basis_ref,
+   validation_ref=forward.original_validation_ref,reader=reader,_trail=(*_trail,basis_ref.path))
+ elif isinstance(qualification,ReadonlyPrefixUnknownQualificationV1):
   prefix_failure=parse_readonly_prefix_unknown_epoch_v1(
    evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
   need(qualification.epoch_ref==basis.refs.closure
@@ -1164,7 +1184,14 @@ def validate_campaign_score_junction_physical_v1(
 
 def validate_current_saved_prepared_sdk_closure_v1(value:object,*,inputs:CurrentSavedColdInputsV1)->JsonObject:
  reader=LocalBasisReaderV1();reference=parse_ref(value)
- closure=evidence(reader,inputs.basis.refs.closure,65536)
+ business=inputs.basis;forward_seen:set[str]=set()
+ closure=evidence(reader,business.refs.closure,65536)
+ while closure.get("schema")==CONTINUITY_FORWARD_SCHEMA:
+  need(len(forward_seen)<16 and business.refs.closure.path not in forward_seen,"bounded acyclic prepared SDK closure lineage")
+  forward_seen.add(business.refs.closure.path)
+  forward=validate_current_saved_continuity_forward_basis_v1(business,reader=reader)
+  business=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=inputs.basis.machine_id)
+  closure=evidence(reader,business.refs.closure,65536)
  if closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
   prefix_epoch=parse_readonly_prefix_unknown_epoch_v1(closure,expected_machine_id=inputs.basis.machine_id)
   expected=prefix_epoch.refs.sdk_closed

@@ -20,7 +20,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
     exact_read, integer, json_object, need, parse_ref, record, rows, text, utc,
 )
 from tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1 import (
-    ColdPlanV1, ColdQuoteV1, parse_plan_v1, parse_quote_v1,
+    ColdPlanV1, ColdQuoteV1, MAX_CURRENT_SAVED_CLOSURE_V1, parse_plan_v1, parse_quote_v1,
     probe_current_saved_continuity_v1,
 )
 from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
@@ -301,11 +301,11 @@ def parse_current_saved_campaign_preflight_v1(value: object) -> CurrentSavedCamp
     observed = text(row["observed_at_utc"]); utc(observed)
     need(integer(row["canonical_entry_count"]) == 8, "canonical eight retained")
     closure = integer(row["closure_count"], 1)
-    need(closure <= 64, "original finite active closure limit")
+    need(closure <= MAX_CURRENT_SAVED_CLOSURE_V1, "original finite active closure limit")
     runtime = text(row["runtime_root"])
     need(Path(runtime).is_absolute(), "absolute actual runtime root")
     sources = tuple(parse_ref(item) for item in rows(row["runtime_source_refs"]))
-    need(8 <= len(sources) <= 64 and len({item.path for item in sources}) == len(sources),
+    need(8 <= len(sources) <= MAX_CURRENT_SAVED_CLOSURE_V1 and len({item.path for item in sources}) == len(sources),
          "finite unique receiver source pins")
     result = CurrentSavedCampaignPreflightV1(
         text(row["machine_id"]), observed, runtime, _nonce(row["attempt_nonce"]),
@@ -338,7 +338,9 @@ def preflight_current_saved_campaign_v1(
          and plan.attempt_nonce == _nonce(expected_attempt_nonce)
          and plan.task_nonce == _nonce(expected_task_nonce)
          and quote.plan_ref == plan_ref and quote.basis_ref == plan.basis_ref
-         and quote.validation_ref == plan.validation_ref, "actual preflight run binding")
+         and quote.validation_ref == plan.validation_ref
+         and quote.native32_current_sdk_override == plan.native32_current_sdk_override,
+         "actual preflight run binding")
     post = validate_current_saved_cold_owner_v1(
         plan_ref, quote_ref, reader=reader, expected_machine_id=expected_machine_id)
     basis = decode_current_saved_basis_v1(exact_read(reader, plan.basis_ref, 65536),

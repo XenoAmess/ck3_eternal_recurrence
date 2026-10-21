@@ -10,7 +10,7 @@ from pathlib import Path
 from types import ModuleType
 from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 import re
-from typing import Literal
+from typing import Callable, Literal
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, digest, integer,
  decode_current_saved_basis_v1, exact_read,
@@ -27,8 +27,9 @@ from tools.g2_saved_campaign.current_saved_continuity_v1 import (
  ContinuityReaderV1, LocalContinuityReaderV1, read_continuity_view_v1,
  validate_closed_continuity_frontier_v1,
 )
-PLAN_SCHEMA = "xar.current-saved-cold-plan/v1"
-QUOTE_SCHEMA = "xar.current-saved-cold-quote/v2"
+PLAN_SCHEMA = "xar.current-saved-cold-plan/v2"
+QUOTE_SCHEMA = "xar.current-saved-cold-quote/v3"
+MAX_CURRENT_SAVED_CLOSURE_V1 = 66
 MAX_FILE = 1048576
 MAX_GRAPH = 8 * MAX_FILE
 CANONICAL_NAMES = frozenset((
@@ -37,7 +38,7 @@ CANONICAL_NAMES = frozenset((
  "root_checkpoint_bootstrap_c23.py", "root_native30_supervisor_c23.py",
  "root_p37c23_mcp_entry.py", "root_p37c23_sdk_queue.py",
 ))
-GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/current_saved_continuity_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_replay_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
+GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/current_saved_continuity_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_replay_v1.py', 'tools/g2_saved_campaign/prepare_native32_current_sdk_binding_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
 def sha256_v1(raw: bytes) -> str:
  need(type(raw) is bytes, "exact source bytes")
  return hashlib.sha256(raw).hexdigest()
@@ -103,6 +104,27 @@ def parse_source_row_v1(value: object) -> SourceRowV1:
    "bounded Python shared dependency")
  return result
 @dataclass(frozen=True, slots=True)
+class Native32CurrentSdkOverrideV1:
+ reader_ref: ExactRefV1
+ extension_ref: ExactRefV1
+ binding_ref: ExactRefV1
+ def to_wire(self) -> JsonObject:
+  return {"reader_ref":self.reader_ref.to_wire(),
+          "extension_ref":self.extension_ref.to_wire(),"binding_ref":self.binding_ref.to_wire()}
+
+def parse_native32_current_sdk_override_v1(value:object) -> Native32CurrentSdkOverrideV1|None:
+ if value is None:return None
+ row=record(value,{"reader_ref","extension_ref","binding_ref"})
+ result=Native32CurrentSdkOverrideV1(parse_ref(row["reader_ref"]),
+  parse_ref(row["extension_ref"]),parse_ref(row["binding_ref"]))
+ refs=(result.reader_ref,result.extension_ref,result.binding_ref)
+ need(len({absolute_v1(item.path).casefold() for item in refs})==3,
+      "three distinct exact Native32 current SDK source inputs")
+ for reference,limit in zip(refs,(131072,16384,65536),strict=True):
+  need(1<=reference.bytes<=limit,"bounded explicit Native32 override source")
+ return result
+
+@dataclass(frozen=True, slots=True)
 class ColdPlanV1:
  machine_id: str
  observed_at_utc: str
@@ -127,6 +149,7 @@ class ColdPlanV1:
  business_source_generation: Literal[31,32]
  sdk_base_ref: ExactRefV1
  sdk_anchor_ref: ExactRefV1
+ native32_current_sdk_override: Native32CurrentSdkOverrideV1|None
  def to_wire(self) -> JsonObject:
   return {"schema": PLAN_SCHEMA, "machine_id": self.machine_id,
    "observed_at_utc": self.observed_at_utc, "review_at_utc": self.review_at_utc,
@@ -141,12 +164,13 @@ class ColdPlanV1:
    "screen_admission_path": self.screen_admission_path, "supervisor_spec_path": self.supervisor_spec_path,
    "display_nonce": self.display_nonce, "attempt_nonce": self.attempt_nonce, "task_nonce": self.task_nonce,
    "business_source_generation":self.business_source_generation,"sdk_base_ref":self.sdk_base_ref.to_wire(),
-   "sdk_anchor_ref":self.sdk_anchor_ref.to_wire()}
+   "sdk_anchor_ref":self.sdk_anchor_ref.to_wire(),
+   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire()}
 PLAN_FIELDS = {"schema", "machine_id", "observed_at_utc", "review_at_utc", "runtime_root",
  "material_runtime_root", "material_quote_ref", "basis_ref", "validation_ref", "producer_ref",
  "source_rows", "canonical_entry_paths", "closure_entry_paths", "import_roots", "full_storage_ref",
  "steam_native_state_ref", "screen_admission_path", "supervisor_spec_path", "display_nonce",
- "attempt_nonce", "task_nonce", "business_source_generation", "sdk_base_ref", "sdk_anchor_ref"}
+ "attempt_nonce", "task_nonce", "business_source_generation", "sdk_base_ref", "sdk_anchor_ref", "native32_current_sdk_override"}
 def business_generation_v1(value: object) -> Literal[31,32]:
  number=integer(value,31,32)
  return 31 if number==31 else 32
@@ -162,7 +186,8 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
   parse_ref(row["steam_native_state_ref"]), absolute_v1(row["screen_admission_path"]),
   absolute_v1(row["supervisor_spec_path"]), nonce_v1(row["display_nonce"]),
   nonce_v1(row["attempt_nonce"]), nonce_v1(row["task_nonce"]),
-  business_generation_v1(row["business_source_generation"]),parse_ref(row["sdk_base_ref"]),parse_ref(row["sdk_anchor_ref"]))
+  business_generation_v1(row["business_source_generation"]),parse_ref(row["sdk_base_ref"]),parse_ref(row["sdk_anchor_ref"]),
+  parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]))
  need(result.runtime_root.casefold() != result.material_runtime_root.casefold()
    and len({result.display_nonce, result.attempt_nonce, result.task_nonce}) == 3,
    "fresh independent software/recording/Task namespace")
@@ -170,7 +195,7 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
    datetime.fromisoformat(result.review_at_utc.replace("Z", "+00:00")), "review follows observation")
  need(len(result.canonical_entry_paths) == 8 and set(result.canonical_entry_paths) == CANONICAL_NAMES
    and set(result.canonical_entry_paths) <= set(result.closure_entry_paths)
-   and len(result.closure_entry_paths) <= 64, "canonical max8 and complete bounded closure")
+   and len(result.closure_entry_paths) <= MAX_CURRENT_SAVED_CLOSURE_V1, "canonical max8 and complete bounded closure")
  need(len(result.source_rows) == len(GENERIC_SOURCE_PATHS)
    and {item.relative_path for item in result.source_rows} == GENERIC_SOURCE_PATHS
    and len({item.relative_path for item in result.source_rows}) == len(result.source_rows)
@@ -180,6 +205,11 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
    "actual producer source participates in closure")
  need(result.basis_ref.bytes <= 65536 and result.validation_ref.bytes <= 65536,
    "small qualified current basis")
+ from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import BINDING_NAME
+ need((BINDING_NAME in result.closure_entry_paths)==(result.native32_current_sdk_override is not None),
+      "Native32 current binding has one explicit active closure slot")
+ need(result.native32_current_sdk_override is None or result.business_source_generation==32,
+      "Native32 current SDK override requires explicit Source32")
  return result
 @dataclass(frozen=True, slots=True)
 class OutputRowV1:
@@ -231,6 +261,7 @@ class ColdQuoteV1:
  logical_bytes: int
  allocation_upper: int
  prepare_peak_upper: int
+ native32_current_sdk_override: Native32CurrentSdkOverrideV1|None
  def to_wire(self) -> JsonObject:
   return {"schema": QUOTE_SCHEMA, "machine_id": self.machine_id, "observed_at_utc": self.observed_at_utc,
    "plan_ref": self.plan_ref.to_wire(), "basis_ref": self.basis_ref.to_wire(),
@@ -241,11 +272,26 @@ class ColdQuoteV1:
    "closure_entry_paths": list(self.closure_entry_paths), "import_roots": list(self.import_roots),
    "canonical_entry_limit": self.canonical_entry_limit, "logical_bytes": self.logical_bytes,
    "allocation_upper": self.allocation_upper, "prepare_peak_upper": self.prepare_peak_upper,
+   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(),
    "ordinary_cycle_credit": 0, "game_day_credit": 0, "original_actions_replayed": False}
 QUOTE_FIELDS = {"schema", "machine_id", "observed_at_utc", "plan_ref", "basis_ref", "validation_ref",
  "producer_ref", "runtime_root", "files", "canonical_entry_paths", "closure_entry_paths",
  "import_roots", "canonical_entry_limit", "logical_bytes", "allocation_upper", "prepare_peak_upper",
- "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction"}
+ "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction", "native32_current_sdk_override"}
+def validate_native32_current_sdk_output_rows_v1(quote:ColdQuoteV1) -> None:
+ from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import (
+  READER_NAME, EXTENSION_NAME, BINDING_NAME,
+ )
+ override=quote.native32_current_sdk_override
+ need((BINDING_NAME in quote.closure_entry_paths)==(override is not None),
+      "quoted Native32 current binding closure matches explicit override")
+ if override is None:return
+ for name,reference in ((READER_NAME,override.reader_ref),(EXTENSION_NAME,override.extension_ref),
+                        (BINDING_NAME,override.binding_ref)):
+  found=[row for row in quote.files if row.relative_path==name]
+  need(len(found)==1 and (found[0].bytes,found[0].sha256)==(reference.bytes,reference.sha256),
+       "exact three Native32 override output pins")
+
 def allocation_v1(size: int) -> int:
  return ((integer(size, 1) + 4095) // 4096) * 4096
 def parse_quote_v1(value: object) -> ColdQuoteV1:
@@ -262,7 +308,8 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
   paths_v1(row["canonical_entry_paths"]), paths_v1(row["closure_entry_paths"]),
   executable_import_roots_v1(row["import_roots"]), 8,
   integer(row["logical_bytes"], 1, MAX_GRAPH), integer(row["allocation_upper"], 1, MAX_GRAPH),
-  integer(row["prepare_peak_upper"], 1, MAX_GRAPH))
+  integer(row["prepare_peak_upper"], 1, MAX_GRAPH),
+  parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]))
  need(result.campaign_score_junction.path==child_v1(root,"campaign-score"),"exact directory projection")
  score=ntpath.normcase(ntpath.normpath(result.campaign_score_junction.path))
  need(all(not (ntpath.normcase(ntpath.normpath(item.path))==score or
@@ -273,7 +320,8 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
  need(1 <= len(result.files) <= 192 and len(paths) == len(set(paths))
    and set(result.canonical_entry_paths) == CANONICAL_NAMES
    and set(result.canonical_entry_paths) <= set(result.closure_entry_paths) <= relative
-   and len(result.closure_entry_paths) <= 64, "unique outputs cover actual complete closure/max8")
+   and len(result.closure_entry_paths) <= MAX_CURRENT_SAVED_CLOSURE_V1, "unique outputs cover actual complete closure/max8")
+ validate_native32_current_sdk_output_rows_v1(result)
  allocated = sum(allocation_v1(item.bytes) for item in result.files if item.mode == "create-only")
  need(result.logical_bytes == sum(item.bytes for item in result.files)
    and result.allocation_upper == allocated
@@ -831,9 +879,11 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  material_policy = record(parse_json(get("ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")))
  inherited = {ntpath.relpath(text(rows(row)[0]),p.material_runtime_root).replace("\\","/")
               for row in rows(material_policy["entry_source_pins"])}
+ from tools.g2_saved_campaign import prepare_native32_current_sdk_binding_v1 as native32
  required = inherited | {row.relative_path for row in p.source_rows} | {
      "tools/__init__.py","tools/g2_saved_campaign/__init__.py",
      "launch_current_saved_feeder_v1.py","root_p37c23_same_game_loop_feeder100.py"}
+ if p.native32_current_sdk_override is not None:required.add(native32.BINDING_NAME)
  need(len(inherited) == 47 and set(p.closure_entry_paths) == required,
       "mechanical original source closure plus explicit current dependencies")
  shared = {"tools":"tools/__init__.py","tools.g2_saved_campaign":"tools/g2_saved_campaign/__init__.py",
@@ -940,12 +990,18 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   put("root_p37c23_mcp_entry.py",emit_source32_factory_v1(get("root_p37c23_mcp_entry.py"),load(mcpref),mcp_ref=mcpref))
  for state_name in STATE_SOURCES_V1:
   put(state_name,bind_current_saved_state_source_v1(state_name,get(state_name),basis))
+ if p.native32_current_sdk_override is not None:
+  historical_binding_ref=originals[child_v1(p.runtime_root,native32.HISTORICAL_BINDING_NAME)]
+  apply_native32_current_sdk_override_v1(p,output=output,documents=documents,
+   historical_binding_ref=historical_binding_ref,load=load)
  freeze.update(planned_saved_opening_date_raw=basis.frame.date_raw,
   continuation_basis={"basis_ref":p.basis_ref.to_wire(),"completed_cycles":basis.completed_cycles,
        "date_raw":basis.frame.date_raw,"ordinary_cycle_credit":0,"game_day_credit":0},
   attempt_id="current_saved",actual_native_loaded=False,runtime_admitted=False)
  config = doc("ROOT-LAUNCH-CONFIG-C23-A15.json")
- config["native32_current_sdk_status"]="unavailable_current_sdk_binding_pending" if p.business_source_generation==32 else "historical_source31_binding"
+ config["native32_current_sdk_status"]=("CURRENT_SDK_SOURCE_BOUND_NOT_RUNTIME_ADMITTED"
+  if p.native32_current_sdk_override is not None else
+  "unavailable_current_sdk_binding_pending" if p.business_source_generation==32 else "historical_source31_binding")
  config["status"] = "ADMITTED" if (storage.get("status") == "ADMITTED"
      and storage.get("review_at_utc") == p.review_at_utc) else "PREPARE_ONLY_NOT_LAUNCH_ADMITTED"
  config.update(observed_at_utc=p.observed_at_utc,review_at_utc=p.review_at_utc,
@@ -1030,7 +1086,7 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  allocated = sum(allocation_v1(row.bytes) for row in result_rows if row.mode == "create-only")
  quote = ColdQuoteV1(p.machine_id,p.observed_at_utc,plan_ref,p.basis_ref,p.validation_ref,p.producer_ref,
   p.runtime_root,tuple(result_rows),score_binding,p.canonical_entry_paths,p.closure_entry_paths,p.import_roots,
-  8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072)
+  8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072,p.native32_current_sdk_override)
  return ColdComposeV1(output,parse_quote_v1(quote.to_wire()))
 
 @dataclass(frozen=True, slots=True)
@@ -1092,6 +1148,51 @@ def probe_current_saved_supervisor_import_chain_v1(
       "original placement and keeper imports retain frozen origins")
  return SupervisorImportChainV1(origin("root_owned_generation"),origin("root_retained_screen_keeper"),
                                 creators,origin("g2_saved_campaign.sdk_process_custody"))
+
+def apply_native32_current_sdk_override_v1(
+ plan:ColdPlanV1,*,output:dict[str,bytes],documents:dict[str,JsonObject],
+ historical_binding_ref:ExactRefV1,load:Callable[[ExactRefV1,int],bytes],
+) -> None:
+ """Install only the exact reviewed source-bound triplet; never grant runtime credit."""
+ override=plan.native32_current_sdk_override
+ if override is None:return
+ need(plan.business_source_generation==32,"current Native32 override requires Source32")
+ from tools.g2_saved_campaign import prepare_native32_current_sdk_binding_v1 as native32
+ def get(name:str)->bytes:return output[child_v1(plan.runtime_root,name)]
+ raw_reader=load(override.reader_ref,131072)
+ raw_extension=load(override.extension_ref,16384)
+ raw_binding=load(override.binding_ref,65536)
+ binding=record(parse_json(raw_binding),{"schema","machine_id","status",
+  "historical_binding_ref","current_sdk_base_ref","current_sdk_anchor_ref"})
+ need(binding["schema"]==native32.SCHEMA and text(binding["machine_id"])==plan.machine_id
+  and binding["status"]=="CURRENT_SDK_SOURCE_BOUND_NOT_RUNTIME_ADMITTED"
+  and parse_ref(binding["current_sdk_base_ref"])==plan.sdk_base_ref
+  and parse_ref(binding["current_sdk_anchor_ref"])==plan.sdk_anchor_ref
+  and parse_ref(binding["historical_binding_ref"])==historical_binding_ref,
+  "exact material historical binding and current Source32 authority")
+ load(historical_binding_ref,65536)
+ expected=native32.compose_native32_current_sdk_binding_v1(
+  get(native32.READER_NAME),get(native32.EXTENSION_NAME),
+  historical_binding_ref=historical_binding_ref,current_sdk_base_ref=plan.sdk_base_ref,
+  current_sdk_anchor_ref=plan.sdk_anchor_ref,machine_id=plan.machine_id)
+ need((raw_reader,raw_extension,raw_binding)==(
+  expected.reader_bytes,expected.extension_bytes,expected.current_binding_bytes),
+  "Native32 override must equal the deterministic reviewed source composition")
+ consumers=native32.patch_native32_current_sdk_consumers_v1(
+  get("root_p37c23_mcp_entry.py"),get("root_p37c23_sdk_queue.py"),
+  get("root_c23_canonical_outer.py"),expected)
+ native_path=child_v1(plan.runtime_root,"ROOT-NATIVE30-NATIVE-PIN-C23-A15.json")
+ native=json_object(documents[native_path])
+ need("native32_current_sdk_binding" not in native,"one explicit new Native32 source binding")
+ additions={child_v1(plan.runtime_root,name):raw for name,raw in expected.files().items()}
+ additions.update({
+  child_v1(plan.runtime_root,"root_p37c23_mcp_entry.py"):consumers.entry_bytes,
+  child_v1(plan.runtime_root,"root_p37c23_sdk_queue.py"):consumers.queue_bytes,
+  child_v1(plan.runtime_root,"root_c23_canonical_outer.py"):consumers.outer_bytes})
+ native["native32_current_sdk_binding"]=ref_for_bytes_v1(
+  child_v1(plan.runtime_root,native32.BINDING_NAME),raw_binding).to_wire()
+ output.update(additions)
+ documents[native_path]=native
 
 def probe_current_saved_continuity_v1(
  plan:ColdPlanV1,*,reader:BasisReaderV1,continuity_reader:ContinuityReaderV1,

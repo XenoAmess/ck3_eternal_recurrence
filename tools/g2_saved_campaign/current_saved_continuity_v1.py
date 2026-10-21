@@ -32,6 +32,22 @@ def _path(value: str) -> str:
     return str(Path(text(value)).resolve()).casefold()
 
 
+def validate_continuity_source_identities_v1(
+    sources: tuple[tuple[ExactRefV1, FileStatIdentityV1], ...], *,
+    mutable_snapshot_ref: ExactRefV1, reader: BasisReaderV1,
+) -> None:
+    """Recheck immutable history; only the exact historical snapshot may move."""
+    need(bool(sources) and len({_path(ref.path) for ref, _ in sources}) == len(sources),
+         "unique captured continuity source identities")
+    need(sum(ref == mutable_snapshot_ref for ref, _ in sources) == 1,
+         "one exact mutable continuity snapshot exclusion")
+    for reference, identity in sources:
+        need(reference.bytes == identity.bytes, "captured continuity source length")
+        if reference != mutable_snapshot_ref:
+            need(reader.stat(reference.path) == identity,
+                 "immutable continuity source identity changed")
+
+
 @dataclass(frozen=True, slots=True)
 class PinnedContinuityDocumentV1:
     reference: ExactRefV1

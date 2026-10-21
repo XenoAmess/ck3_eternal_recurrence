@@ -71,7 +71,7 @@ def plan() -> producer.ColdPlanV1:
         (".", "presentation-c23", "creator-tools"), ref("full.json"), ref("steam.json"), ref("screen.json").path,
         ref("spec.json").path, "1" * 32, "2" * 32, "3" * 32,
         business_source_generation=31, sdk_base_ref=ref("sdk-base.json"),
-        sdk_anchor_ref=ref("sdk-anchor.json"))
+        sdk_anchor_ref=ref("sdk-anchor.json"), native32_current_sdk_override=None)
 
 
 def feeder_admission() -> feeder.CurrentSavedFeederAdmissionV1:
@@ -204,7 +204,7 @@ class TypedColdContractTests(unittest.TestCase):
         quote = producer.ColdQuoteV1(MACHINE, item.observed_at_utc, ref("plan.json"),
             item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs, score_junction(),
             item.canonical_entry_paths, item.closure_entry_paths, item.import_roots,
-            8, len(outputs), allocated, allocated + 1 + 131072)
+            8, len(outputs), allocated, allocated + 1 + 131072, None)
         self.assertEqual(producer.parse_quote_v1(wire(quote.to_wire())), quote)
         self.assertEqual(record(wire(quote.to_wire())["campaign_score_junction"])["target_file_id"],
             "9007199254740993")
@@ -1505,6 +1505,203 @@ print(json.dumps({"early_rejected":rejected,"calls":calls,"sdk_source":str(sdk)}
                 observed = record(parse_json(result.stdout.encode()))
                 self.assertIs(observed["early_rejected"], early)
                 self.assertEqual(observed["calls"], [] if early else ["checked", "stop"])
+
+
+class Native32CurrentSdkOverrideTests(unittest.TestCase):
+    def enabled_plan(self) -> producer.ColdPlanV1:
+        from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import BINDING_NAME
+        original = plan()
+        override = producer.Native32CurrentSdkOverrideV1(
+            ref("reviewed-reader.py"), ref("reviewed-extension.py"), ref("reviewed-binding.json"))
+        return replace(original, business_source_generation=32,
+            native32_current_sdk_override=override,
+            closure_entry_paths=original.closure_entry_paths + (BINDING_NAME,))
+
+    def test_required_null_and_source_bound_plan_roundtrip(self) -> None:
+        plain = plan()
+        self.assertIsNone(plain.to_wire()["native32_current_sdk_override"])
+        self.assertEqual(producer.parse_plan_v1(wire(plain.to_wire())), plain)
+        enabled = self.enabled_plan()
+        self.assertEqual(producer.parse_plan_v1(wire(enabled.to_wire())), enabled)
+        for altered in (
+                {k: v for k, v in plain.to_wire().items() if k != "native32_current_sdk_override"},
+                {**plain.to_wire(), "schema": "xar.current-saved-cold-plan/v1"},
+                {**plain.to_wire(), "native32_current_sdk_override": {}},
+                {**plain.to_wire(), "native32_current_sdk_override": False}):
+            with self.subTest(wire=altered), self.assertRaises(ValueError):
+                producer.parse_plan_v1(wire(altered))
+        with self.assertRaises(ValueError):
+            producer.parse_plan_v1(wire(replace(enabled, business_source_generation=31).to_wire()))
+
+    def test_override_rejects_missing_null_wrong_typed_or_crossed_refs(self) -> None:
+        override = self.enabled_plan().native32_current_sdk_override
+        assert override is not None
+        original = override.to_wire()
+        for key in ("reader_ref", "extension_ref", "binding_ref"):
+            wrong: list[object] = [None, True, [], {}, {**ref("bad").to_wire(), "bytes": True},
+                     {**ref("bad").to_wire(), "bytes": 1.0}]
+            for value in wrong:
+                altered = dict(original); altered[key] = json_value(value)
+                with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                    producer.parse_native32_current_sdk_override_v1(wire(altered))
+            missing = dict(original); del missing[key]
+            with self.assertRaises(ValueError):
+                producer.parse_native32_current_sdk_override_v1(wire(missing))
+        crossed = {**original, "extension_ref": original["reader_ref"]}
+        with self.assertRaises(ValueError):
+            producer.parse_native32_current_sdk_override_v1(wire(crossed))
+
+    def test_null_override_does_not_touch_ordinary_output_or_load_sources(self) -> None:
+        output = {"ordinary.py": b"ordinary"}
+        documents: dict[str, JsonObject] = {"ordinary.json": {"status": "unavailable"}}
+
+        def unexpected(reference: ExactRefV1, limit: int) -> bytes:
+            raise AssertionError("null optional binding must not load a source")
+
+        producer.apply_native32_current_sdk_override_v1(
+            plan(), output=output, documents=documents,
+            historical_binding_ref=ref("old.json"), load=unexpected)
+        self.assertEqual(output, {"ordinary.py": b"ordinary"})
+        self.assertEqual(documents, {"ordinary.json": {"status": "unavailable"}})
+
+    def test_quote_v3_pins_all_three_outputs_and_explicit_null(self) -> None:
+        configured = self.enabled_plan()
+        outputs = tuple(producer.OutputRowV1(producer.child_v1(ROOT, name), name,
+            1, "a" * 64, "create-only", None) for name in configured.closure_entry_paths)
+        allocated = len(outputs) * 4096
+        quoted = producer.ColdQuoteV1(MACHINE, configured.observed_at_utc, ref("plan.json"),
+            configured.basis_ref, configured.validation_ref, configured.producer_ref, ROOT,
+            outputs, score_junction(), configured.canonical_entry_paths,
+            configured.closure_entry_paths, configured.import_roots, 8, len(outputs),
+            allocated, allocated + 1 + 131072, configured.native32_current_sdk_override)
+        self.assertEqual(producer.parse_quote_v1(wire(quoted.to_wire())), quoted)
+        for value in ("xar.current-saved-cold-quote/v2", None):
+            changed = quoted.to_wire(); changed["schema"] = value
+            with self.assertRaises(ValueError):
+                producer.parse_quote_v1(wire(changed))
+        changed = quoted.to_wire(); del changed["native32_current_sdk_override"]
+        with self.assertRaises(ValueError):
+            producer.parse_quote_v1(wire(changed))
+        changed = quoted.to_wire()
+        override = record(changed["native32_current_sdk_override"])
+        reader = record(override["reader_ref"]); reader["sha256"] = "b" * 64
+        override["reader_ref"] = json_object(reader); changed["native32_current_sdk_override"] = json_object(override)
+        with self.assertRaisesRegex(ValueError, "three Native32 override output pins"):
+            producer.parse_quote_v1(wire(changed))
+
+    def material(self) -> tuple[
+        producer.ColdPlanV1, dict[str, bytes], dict[str, JsonObject], dict[str, bytes], ExactRefV1
+    ]:
+        from tools.g2_saved_campaign import prepare_native32_current_sdk_binding_v1 as native32
+        from tools.g2_saved_campaign.test_native32_current_sdk_binding_v1 import portable_consumer_fixture_v1
+        root = Path(producer.__file__).resolve().parents[2]
+        frozen = root / "tools/g2_saved_campaign/candidates/native32_runtime_journal_adapter_20261021"
+        configured = replace(plan(), business_source_generation=32)
+        historical_raw = b"{}"
+        historical_ref = producer.ref_for_bytes_v1(
+            producer.child_v1(OLD, native32.HISTORICAL_BINDING_NAME), historical_raw)
+        reader = (frozen / native32.READER_NAME).read_bytes()
+        extension = (frozen / native32.EXTENSION_NAME).read_bytes()
+        bundle = native32.compose_native32_current_sdk_binding_v1(
+            reader, extension, historical_binding_ref=historical_ref,
+            current_sdk_base_ref=configured.sdk_base_ref,
+            current_sdk_anchor_ref=configured.sdk_anchor_ref, machine_id=MACHINE)
+        fixture = portable_consumer_fixture_v1(bundle)
+        refs = {name: producer.ref_for_bytes_v1(producer.child_v1(OLD, "reviewed/" + name), raw)
+                for name, raw in bundle.files().items()}
+        payloads = {refs[name].path: raw for name, raw in bundle.files().items()}
+        payloads[historical_ref.path] = historical_raw
+        configured = replace(configured,
+            native32_current_sdk_override=producer.Native32CurrentSdkOverrideV1(
+                refs[native32.READER_NAME], refs[native32.EXTENSION_NAME], refs[native32.BINDING_NAME]),
+            closure_entry_paths=configured.closure_entry_paths + (native32.BINDING_NAME,))
+        output = {producer.child_v1(ROOT, name): raw for name, raw in {
+            native32.READER_NAME: reader, native32.EXTENSION_NAME: extension,
+            native32.HISTORICAL_BINDING_NAME: historical_raw,
+            "root_p37c23_mcp_entry.py": fixture.entry_bytes,
+            "root_p37c23_sdk_queue.py": fixture.queue_bytes,
+            "root_c23_canonical_outer.py": fixture.outer_bytes}.items()}
+        native_path = producer.child_v1(ROOT, "ROOT-NATIVE30-NATIVE-PIN-C23-A15.json")
+        documents: dict[str, JsonObject] = {native_path: {
+            "native32_observer_binding": historical_ref.to_wire(),
+            "source31_static_binding": {"kept": True}, "dll": "unchanged"}}
+        return configured, output, documents, payloads, historical_ref
+
+    def test_real_producer_applies_reviewed_bundle_and_reseals_output_pins(self) -> None:
+        from tools.g2_saved_campaign import prepare_native32_current_sdk_binding_v1 as native32
+        configured, output, documents, payloads, historical = self.material()
+        original_documents = copy.deepcopy(documents)
+        original_historical = output[producer.child_v1(ROOT, native32.HISTORICAL_BINDING_NAME)]
+
+        def load(reference: ExactRefV1, limit: int) -> bytes:
+            raw = payloads[reference.path]
+            self.assertLessEqual(len(raw), limit)
+            self.assertEqual(producer.ref_for_bytes_v1(reference.path, raw), reference)
+            return raw
+
+        producer.apply_native32_current_sdk_override_v1(configured,
+            output=output, documents=documents, historical_binding_ref=historical, load=load)
+        override = configured.native32_current_sdk_override
+        assert override is not None
+        for name, reference in ((native32.READER_NAME, override.reader_ref),
+                                (native32.EXTENSION_NAME, override.extension_ref),
+                                (native32.BINDING_NAME, override.binding_ref)):
+            self.assertEqual(output[producer.child_v1(ROOT, name)], payloads[reference.path])
+        native_path = producer.child_v1(ROOT, "ROOT-NATIVE30-NATIVE-PIN-C23-A15.json")
+        current = dict(documents[native_path])
+        binding_ref = parse_ref(current.pop("native32_current_sdk_binding"))
+        self.assertEqual(current, original_documents[native_path])
+        self.assertEqual(binding_ref, producer.ref_for_bytes_v1(
+            producer.child_v1(ROOT, native32.BINDING_NAME), payloads[override.binding_ref.path]))
+        self.assertEqual(output[producer.child_v1(ROOT, native32.HISTORICAL_BINDING_NAME)],
+                         original_historical)
+        self.assertEqual(len(configured.canonical_entry_paths), 8)
+        self.assertNotEqual(output[producer.child_v1(ROOT, "root_c23_canonical_outer.py")],
+                            self.material()[1][producer.child_v1(ROOT, "root_c23_canonical_outer.py")])
+
+    def test_valid_ref_cannot_hide_unreviewed_bytes_or_wrong_binding_authority(self) -> None:
+        from tools.g2_saved_campaign import prepare_native32_current_sdk_binding_v1 as native32
+        for case in ("reader_body", "sdk_base", "historical_path", "binding_missing"):
+            with self.subTest(case=case):
+                configured, output, documents, payloads, historical = self.material()
+                override = configured.native32_current_sdk_override
+                assert override is not None
+                changed = override
+                if case == "reader_body":
+                    raw = payloads[override.reader_ref.path] + b"\n"
+                    reference = producer.ref_for_bytes_v1(override.reader_ref.path, raw)
+                    payloads[reference.path] = raw
+                    changed = replace(override, reader_ref=reference)
+                else:
+                    row = record(parse_json(payloads[override.binding_ref.path]))
+                    if case == "sdk_base":
+                        row["current_sdk_base_ref"] = configured.sdk_anchor_ref.to_wire()
+                    elif case == "historical_path":
+                        row["historical_binding_ref"] = {
+                            **historical.to_wire(), "path": ref("same-hash-wrong-origin.json").path}
+                    else:
+                        del row["current_sdk_anchor_ref"]
+                    raw = json.dumps(row, sort_keys=True, separators=(",", ":")).encode()
+                    reference = producer.ref_for_bytes_v1(override.binding_ref.path, raw)
+                    payloads[reference.path] = raw
+                    changed = replace(override, binding_ref=reference)
+                configured = replace(configured, native32_current_sdk_override=changed)
+                before_output, before_documents = dict(output), copy.deepcopy(documents)
+
+                def load(reference: ExactRefV1, limit: int) -> bytes:
+                    raw = payloads[reference.path]
+                    self.assertLessEqual(len(raw), limit)
+                    self.assertEqual(producer.ref_for_bytes_v1(reference.path, raw), reference)
+                    return raw
+
+                with self.assertRaises(ValueError):
+                    producer.apply_native32_current_sdk_override_v1(
+                        configured, output=output, documents=documents,
+                        historical_binding_ref=historical, load=load)
+                self.assertEqual(output, before_output)
+                self.assertEqual(documents, before_documents)
+
+
 
 if __name__ == "__main__":
     unittest.main()

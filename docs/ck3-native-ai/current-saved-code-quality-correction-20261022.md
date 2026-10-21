@@ -66,3 +66,31 @@
 原生失败的只读分析进一步确认：同一Game/connection持续返回心跳，曾采到未暂停状态，但日期不变；owner/observer更新有长间歇，仍出现少量pump。因此不能断言完全死锁，也不能把mailbox15不变归因为时间命令未消费。Source32当前journal状态明确是 `unavailable_current_sdk_binding_pending`，下一施工应将现有 current-SDK binding compositor 接入新冻结图以获得逐命令诊断；不能热改N37或重放原11404。
 
 原正式forward Task实际child0/bootstrap0/Job0闭合，业务结果仍为FULL失败；两种结果分别记账。Root已发原supervisor正常闭场请求，SDK/录制/Game实际退出结果待原回执，不提前称正常退出。
+
+## 闭场及通用恢复修复
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；观察截至 `2026-10-21T20:42Z`。原现场已经闭场：SDK queue/application 实际退出码为1/0，录制 engine/publisher 为0/0；原 owner 发送一次 WM_CLOSE 后，Game 未正常退出，最终由原 Job 清理，Game 退出码1。原 supervisor、display 和 forward 三个任务均已读回 Job0 并注销，屏幕资源以8103→8104完成释放，R0024记为 `completed-red`。不得把任务闭合或录制停止解释为业务成功或游戏正常退出。原 `ROOT-ACTUAL-GAME-EXIT-C23.json`、`ROOT-SUPERVISOR-SDK-PROCESSES-EXITED-C23.json` 与 `ROOT-RECORDING-SHUTDOWN-C23.json` 保留失败原义。
+
+闭场小清单 `ROOT-A37-QUALITY-CLOSEOUT01.json`（4328B，SHA-256 `b08385c47956a17e5fda6f38339ed630e5db9e08b596c354e0d490dba9392f6c`）与后续媒体路径勘误 `ROOT-A37-MEDIA-STAT-CORRECTION01.json`（1695B，SHA-256 `dd4e73e4d4081d9df9bf248b4ca6cee7c4337d853e041676f5d399f25a8d1748`）位于同一质量工作包。实际 MKV 在 recordings 的 SID 同名兄弟文件，stat长度1,848,708,374B；没有读取或重新散列媒体正文，也没有获得完整媒体质量验收。原错误空目录观察保留，使用追加勘误，不能改写为当时已找到。关键证据于2026-10-23复核用途，继续保留须按统一策略重新说明，不能永久积压。
+
+通用 `current_saved_basis_v1` 已增加明确版本的 metadata-forward DTO、解析器、builder及独立qualification；owner四个既有入口均消费同一合同。它只接续已经证明的业务状态：重新验证原资格、不可变事件链、T0/window、未知请求和 Driver/SAVE 身份，绑定保留的精确新head，零新增信用、零动作重放。业务从5145变到5152的场景明确拒绝，必须另有真实业务依据，不能靠调整ledger数字继续。
+
+独立审查实际构造了“内容及SHA不变、FileID改变”的反例，暴露首次实现仅解析身份但未比较stat。已将不可变anchor/event/index的读取前后身份检查补回共享实现；只有合法前移的历史canonical快照按来源记录处理。实际RAM回归14项、0跳过，修复后新增身份反例另实际重验；basis、owner、continuity和测试四个完整模块 strict/equality/explicit/silent 检查通过。独立读回无本轮剩余阻断。没有修改任何冻结运行目录，未再次读取Driver或SAVE正文。
+
+这次仍新增了约30KB的合同与回归，并没有完成架构清债：basis已约197KB，历史链验证存在重复，四处分派仍需收敛。后续应把历史链与当前head验证的共同部分抽成共享实现；不能直接复用要求“当前canonical”的校验器而破坏合法历史回放。本轮修复已经落在公共模块，场次不再新增另一套恢复脚本。
+
+`20:43:48.945440Z` 原后台 Steam probe 再次实际返回 `offline/true`：同一机器，PID165096、出生FILETIME字符串`134362593935766296`、版本10.96.30.42及当前SteamUI来源绑定均稳定；新回执 `STEAM-OFFLINE-CLOSEOUT01.json` 为2480B，SHA-256 `7aa751a536a36e441c481491dc067c9a3a1cebca7c5c3db2605f302e68867d0b`。没有截图、激活、移动窗口或抢焦点，也没有切换Steam模式。该观察只证明此时本机离线，不是后续启动时可永久复用的准入。
+
+## Native32生成接线与持久门禁
+
+本包修复的是诊断链的来源接线，还没有修复原生时钟或取得实机journal通过。旧适配器只更新Entry和Queue，漏更新Outer的两项external pin；原10项测试未调用这条三消费者接线。已改为具名的Entry/Queue/Outer返回类型，实际保留另外24项pin与Outer剩余AST，并覆盖错误来源、歧义和UTF-8边界。完整13项、0跳过，两个完整模块strict通过；实际N37材料的三文件RAM回归也已执行。新独占夹具实测峰值1,394,144B，清理后Root确认ABSENT；旧DLL、4TU和Source31历史资格未改。
+
+公共Plan升级为v2、Quote为v3，新增必填的显式null或三份ExactRef合同。非null只能接受原历史binding权威、当前SDK BASE/anchor及机器ID一致的确定性重组结果；不接受任意当前哈希或把运行目录同字节副本追认为原来源。Entry/Queue/Outer在原固定点封包前一起接线，binding单独作为数据输出；全部依赖显式进入来源闭包，canonical入口仍为8，完整闭包上限按新增依赖收敛到66。null保留原先可用的普通FULL路径，不把诊断缺口变成全场阻断。
+
+`2026-10-21T20:47Z`、机器同上：与持久CI相同的18个完整模块联合strict/equality/explicit/silent/no-cache检查通过；关键runner发现并执行21项、0跳过，包括continuity11、Prepared3、真实独立SDK子进程1和Native32公共合同/生产者6。Plan/Quote更新后的原完整preflight模块又实际执行24项、0跳过，31.278秒，夹具峰值557,056B并清理。两套fixture均由Root再次stat确认ABSENT。新增13项native适配器及6项公共生产者测试已接入CI，Hosted fixture显式使用runner临时根并拒绝跳过；不是本机默认D盘路径。
+
+真实完整compose曾调用原业务验证器，旧N37 Plan因 `closed Driver identity` 被拒绝：现场运行后该Driver已变化，目前没有新的5152业务资格，不能改stat或metadata-forward绕过这项真实准入。后续RAM封图模型若使用历史stat，只能计软件生成集成；必须明确其测试替身，不能授予当前机器、物理部署或运行资格。
+
+Root另把上述真实转换预验、全消费者封图、失败退出码传播、CI零跳过和证据分层要求写入AGENTS.md。这是持续的编码规范；不能用新增规范条数代替实际测试。`20:48:13Z`唯一watcher确认 `9421d65f` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39670436802/job/119466574874)仍在执行，尚未到strict步骤40；Linear历史检查已成功。此处不宣称远端整套CI通过。
+
+`20:49:02Z`同机器实际RAM封图模型通过：使用原材料、Source32引用和当前14份生产源码，仅Driver.stat两次返回历史basis记录的身份，其余read/stat真实；审计记录Driver/SAVE正文尝试0、所有写尝试0。原compose实际输出165文件/3,618,719B，8个canonical和66个closure条目的最终SHA全部逐一匹配实际输出，Quote v3往返通过，未来物理根仍ABSENT。模型依赖当前机器保留的旧材料分类器，因此仅记一次软件集成，不冒充便携CI、当前业务资格或物理部署。可重复的便携覆盖是上列6项生产者用例；真实过期Driver的拒绝仍保留。
