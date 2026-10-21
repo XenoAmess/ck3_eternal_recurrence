@@ -1,0 +1,297 @@
+{
+  "schema": "ck3-12004-pilgrim-tier-static-semantics-addendum-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T20:14:39.967465+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "STATIC_SOURCE_TO_RUNTIME_CLOSED",
+  "runtime_algorithm": "root + sum(each threshold block whose threshold <= xp); corresponding modifier values add",
+  "tier_differencing_before_fold": false,
+  "proof_chain": [
+    "fresh level constructor30E7980 initializes independent vectors",
+    "30E9480 creates each level then30EA9B0 parses only that level",
+    "30EA9B0 and conditional callback2882470 reach2303A70",
+    "2303E92-BA parses raw scalar and directly stores current-block vector value",
+    "conditional parser28813E0/28817F0 starts independent empty modifier and copies its values to parameter row",
+    "postload30E3D30 checks each track/threshold and calls28811A0/28812A0 parameter validity, no tier-value subtraction",
+    "30E49D0 merges root then every qualifying threshold through30E7A10",
+    "2303100 accumulates same IDs by ADD2303244"
+  ],
+  "raw_scale": 100000,
+  "unconditional_all_tiers": {
+    "character_travel_speed": 5,
+    "character_travel_safety": 5
+  },
+  "tier_contributions": [
+    {
+      "xp_range": "0..49",
+      "included_source_blocks": [
+        "root"
+      ],
+      "basic_piety_mult_raw": 5000,
+      "mandatory_extra_piety_mult_raw": 35000,
+      "culture_prowess_if_parameter": 2,
+      "basic_zealot_opinion": 5,
+      "mandatory_extra_zealot_opinion": 5,
+      "mandatory_extra_clergy_opinion": 5,
+      "mandatory_extra_same_faith_opinion": 5,
+      "basic_learning": 0,
+      "basic_different_culture_opinion": 0,
+      "track_ai_zeal_modifier_contribution": 0
+    },
+    {
+      "xp_range": "50..99",
+      "included_source_blocks": [
+        "root",
+        "50"
+      ],
+      "basic_piety_mult_raw": 15000,
+      "mandatory_extra_piety_mult_raw": 75000,
+      "culture_prowess_if_parameter": 5,
+      "basic_zealot_opinion": 15,
+      "mandatory_extra_zealot_opinion": 25,
+      "mandatory_extra_clergy_opinion": 15,
+      "mandatory_extra_same_faith_opinion": 5,
+      "basic_learning": 1,
+      "basic_different_culture_opinion": 0,
+      "track_ai_zeal_modifier_contribution": 10
+    },
+    {
+      "xp_range": "100",
+      "included_source_blocks": [
+        "root",
+        "50",
+        "100"
+      ],
+      "basic_piety_mult_raw": 25000,
+      "mandatory_extra_piety_mult_raw": 115000,
+      "culture_prowess_if_parameter": 8,
+      "basic_zealot_opinion": 35,
+      "mandatory_extra_zealot_opinion": 65,
+      "mandatory_extra_clergy_opinion": 25,
+      "mandatory_extra_same_faith_opinion": 5,
+      "basic_learning": 3,
+      "basic_different_culture_opinion": 5,
+      "track_ai_zeal_modifier_contribution": 25
+    }
+  ],
+  "rite_examples": {
+    "basic_only": {
+      "parameters": [
+        "basic_pilgrimage_rewards"
+      ],
+      "piety_mult_raw_by_tier": [
+        5000,
+        15000,
+        25000
+      ]
+    },
+    "mandatory_doctrine": {
+      "source_lines": [
+        1732,
+        1761
+      ],
+      "parameters": [
+        "basic_pilgrimage_rewards",
+        "mandatory_pilgrimage"
+      ],
+      "doctrine_piety_mult_raw": -25000,
+      "combined_piety_mult_raw_by_tier": [
+        15000,
+        65000,
+        115000
+      ],
+      "doctrine_same_faith_opinion": -5
+    },
+    "mandatory_hajj_doctrine": {
+      "source_lines": [
+        1763,
+        1792
+      ],
+      "parameters": [
+        "basic_pilgrimage_rewards",
+        "mandatory_hajj"
+      ],
+      "does_not_enable": "mandatory_pilgrimage",
+      "doctrine_piety_mult_raw": -25000,
+      "combined_piety_mult_raw_by_tier": [
+        -20000,
+        -10000,
+        0
+      ]
+    }
+  },
+  "scope": "Isolated contributions from pilgrim trait and explicitly listed doctrine; not whole-character monthly piety or all virtue/perk/relic modifiers. Conditions require actual current culture/rite parameter. Hajj doctrine example remains the pilgrim trait; separate hajjaj trait is not included or renamed.",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_types\\20_doctrines.txt",
+      "bytes": 54665,
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+    }
+  ],
+  "add_trait_initialization": {
+    "status": "STATIC_DIRECT_INITIALIZATION_CLOSED",
+    "new_trait_track_xp_raw": 0,
+    "all_new_tracks_zero": true,
+    "duplicate_add_trait_resets_xp": false,
+    "chain": "5D4340 ->2D2A570 ->effectVT48638B8+B0 ->2D2B9C0 ->28BA350 ->28CE030",
+    "new_track_insert": "28BA706 count;28BA723/725 zero;28BA72C pointer to zero;28CE0D0/155 write repeated QWORD",
+    "duplicate_guard": "28D696B-69A7 finds existing trait;returnfalse before28BA558 insert or28BA732 XP allocation",
+    "limit": "Initialization slot only, not final state after later trait hooks/on-actions. Other add-trait modes and removal/re-add are not covered."
+  },
+  "game_or_provider_calls": 0,
+  "live_credit": false,
+  "body_pins": [
+    {
+      "begin_rva": "0x2303a70",
+      "end_rva_exclusive": "0x230403a",
+      "bytes": 1482,
+      "sha256": "f637ca24405b528fb9072d914c6ae5c507a59fec7ca51b128878c2c72d955918",
+      "role": "declared scalar direct store parser"
+    },
+    {
+      "begin_rva": "0x2882470",
+      "end_rva_exclusive": "0x288250a",
+      "bytes": 154,
+      "sha256": "53f241bb110af4b838f87e07c01e229f2fb4db7bc1c74befb21f56e351aade0a",
+      "role": "conditional block callback"
+    },
+    {
+      "begin_rva": "0x28811a0",
+      "end_rva_exclusive": "0x288129d",
+      "bytes": 253,
+      "sha256": "761589dd9a3befe070c9f58383db298655ccefac825de20cd2e5de4609562c18",
+      "role": "rite parameter postload validity"
+    },
+    {
+      "begin_rva": "0x28812a0",
+      "end_rva_exclusive": "0x28813dc",
+      "bytes": 316,
+      "sha256": "c568177e7f8ba7bffdbd610c0169d1be165864d41a0ce4a8b755bc533407d140",
+      "role": "culture parameter postload validity"
+    },
+    {
+      "begin_rva": "0x30e3d30",
+      "end_rva_exclusive": "0x30e49cb",
+      "bytes": 3227,
+      "sha256": "46c2183f1860cd2d7e372df7bd9c833a9581a7fbfc09b4e9727e6e361d3b0abe",
+      "role": "trait postload"
+    },
+    {
+      "begin_rva": "0x30e7980",
+      "end_rva_exclusive": "0x30e7a04",
+      "bytes": 132,
+      "sha256": "4b431bb99d419c8222fdb9ba5c5fd3dd7f1a93b4e142d5576fd15000cef1dc6b",
+      "role": "new level empty modifier constructor"
+    },
+    {
+      "begin_rva": "0x30e9480",
+      "end_rva_exclusive": "0x30e98bd",
+      "bytes": 1085,
+      "sha256": "05179527866adf360c742353108518f430e60a7298ab8536db97c833e09bed19",
+      "role": "level parser"
+    },
+    {
+      "begin_rva": "0x30e49d0",
+      "end_rva_exclusive": "0x30e4b6c",
+      "bytes": 412,
+      "sha256": "b2d8ab5a26a1c12d9d48f840e6088ee65917c677d3edb2309028e467a9de458f",
+      "role": "runtime root/threshold fold"
+    },
+    {
+      "begin_rva": "0x30e7a10",
+      "end_rva_exclusive": "0x30e7b39",
+      "bytes": 297,
+      "sha256": "d2295bcb32f58b43137f86e801820cec97180f7cb6c194c95dd9f7440a9f341f",
+      "role": "runtime parameter and modifier merge"
+    },
+    {
+      "begin_rva": "0x2303100",
+      "end_rva_exclusive": "0x2303276",
+      "bytes": 374,
+      "sha256": "e887ee421dde1979396580cb9559586f3ddb6e83206b177c78ac0d5d38a3950f",
+      "role": "modifier additive accumulator"
+    },
+    {
+      "begin_rva": "0x5d4340",
+      "end_rva_exclusive": "0x5d43e4",
+      "bytes": 164,
+      "sha256": "3210f6b34ac564b009047f767a284a8dc484a1bbcb311e6b061b95b96b97fc56",
+      "role": "add_trait registration"
+    },
+    {
+      "begin_rva": "0x2d2a570",
+      "end_rva_exclusive": "0x2d2a5b9",
+      "bytes": 73,
+      "sha256": "d0d4c58edc929cce253a57646d71d8b6f6ad15373d687ca2f3cdc438e47f9f96",
+      "role": "add_trait factory"
+    },
+    {
+      "begin_rva": "0x2d2b9c0",
+      "end_rva_exclusive": "0x2d2ba50",
+      "bytes": 144,
+      "sha256": "2d0f4b3abbdfba8430c4cec80c725efc27e6b3021311337322658bc4a736a8d2",
+      "role": "add_trait executor"
+    },
+    {
+      "begin_rva": "0x28ba350",
+      "end_rva_exclusive": "0x28ba83e",
+      "bytes": 1262,
+      "sha256": "7378810c5e6c2ebc197b1e1eaecd3691f1c3ccc107cc78a936f70b85a8523b1d",
+      "role": "Character add trait"
+    },
+    {
+      "begin_rva": "0x28d6920",
+      "end_rva_exclusive": "0x28d6fd1",
+      "bytes": 1713,
+      "sha256": "6a318dbec3fc843a01e03d076fbc7ad708760d6dced1fa72119b9ca315ae60a2",
+      "role": "trait add qualification"
+    },
+    {
+      "begin_rva": "0x28ce030",
+      "end_rva_exclusive": "0x28ce197",
+      "bytes": 359,
+      "sha256": "077a51a9aaafe7f1f4fbd83d9936fa5a4c03a1e237b490e78e02ba46b1022345",
+      "role": "XP zero insert"
+    }
+  ],
+  "a01_relationship": {
+    "original_unchanged": true,
+    "closes_prior_unknowns": [
+      "source tier preprocessing and isolated tier values",
+      "direct add_trait initialization and duplicate add behavior"
+    ],
+    "does_not_close": [
+      "missing-limit else_if default",
+      "all dynamic modifier source activation",
+      "world-specific post-hook final XP"
+    ]
+  },
+  "evidence_notes": [
+    "Postload30E3D30 is bound through vtable references to the same trait object track fields290/29C;28D6920 and28CE030 are read-only disassembled, never invoked.",
+    "Parameter postload helpers validate IDs and log unknowns; no numeric vector writes.",
+    "Generic scalar parser has only current node/current destination, no previous-tier/root source.",
+    "Some exploratory windows include adjacent functions; body_pins delimit used bodies. Initial query assumed every entry had pdata membership and raised StopIteration before any output; corrected bounded-leaf handling preserved in tool history."
+  ],
+  "frozen_at_utc": "2026-10-21T20:17:17.382366+00:00",
+  "root_ai_zeal_source_value": 5,
+  "ai_zeal_scope": "Track modifier contribution is separate from root trait AI value. Combined AI total/behavior consumer is not qualified.",
+  "root_review_corrections": [
+    {
+      "observed_at_utc": "2026-10-21T20:22:30.093812+00:00",
+      "machine_id": "4-8e1c2f1861",
+      "reason": "Avoid describing track-only AI modifier as complete unconditional trait AI contribution",
+      "source_lines": [
+        "00_traits.txt:8892 root=5",
+        "00_traits.txt:8801 track50=10",
+        "00_traits.txt:8824 track100=15"
+      ],
+      "original_external_sha256": "331f3dd2a400c5a41bbf32b9f5576ec9efc70c8e32af9caa7a24e3117af1f52d",
+      "original_external_unchanged": true
+    }
+  ]
+}

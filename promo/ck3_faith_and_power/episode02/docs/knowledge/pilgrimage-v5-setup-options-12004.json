@@ -1,0 +1,3022 @@
+{
+  "schema": "ck3-pilgrimage-v5-setup-options-source-v1",
+  "machine_id": "4-8e1c2f1861",
+  "requested_game_version": "1.20.0.4",
+  "status": "SOURCE_ANALYZED_RUNTIME_OPTION_SET_PARTIAL",
+  "scope": "Installed game scripts, simplified Chinese localization, GUI callers and transitive consumers; no game launch or native calls.",
+  "ordinary_auto_consumes": false,
+  "action_ready": false,
+  "current_legality": null,
+  "source_identity_note": "These are the actual hashed files in this machine's installation. PAM/BGA comments or key prefixes do not establish mod provenance or a runtime loadout. No runtime qualification is granted.",
+  "counts": {
+    "activity_option_categories": 3,
+    "activity_option_definitions": 10,
+    "host_explicit_intents": 3,
+    "shared_recreation_intent_candidate": 1,
+    "guest_explicit_intents": 1,
+    "global_travel_option_definitions": 29,
+    "max_simultaneous_travel_options": 2,
+    "distance_cost_bands_including_zero": 8,
+    "reward_distance_bands": 4,
+    "reward_progress_bands": 4,
+    "travel_options_with_explicit_cost": 12,
+    "travel_options_without_explicit_cost": 17
+  },
+  "activity_options": [
+    {
+      "key": "pilgrimage_type_pious",
+      "category": "special_type",
+      "zh": "虔诚朝圣",
+      "availability": "For mandatory_hajj rites, requires hajjaj. Otherwise allowed by this option; general activity gates still apply.",
+      "default": "Not mandatory_hajj or already hajjaj.",
+      "effect": "Pious helpers, active pulse eligibility and four pious reward flags; main piety plus pilgrim XP when eligible.",
+      "refs": [
+        "S01:1392-1441",
+        "S05:1225-1239",
+        "S05:1301-1337",
+        "S05:632-670"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1392,
+        "line_end": 1441
+      },
+      "source_predicates": {
+        "is_valid": {
+          "line_start": 1402,
+          "script": "is_valid = { trigger_if = { limit = { rite = { rite_has_parameter = mandatory_hajj } } custom_tooltip = { text = activity_pilgrimage.is_valid.islam.must_complete_hajj_first has_trait = hajjaj } } trigger_else = { always = yes } }"
+        }
+      },
+      "localization": {
+        "zh": "虔诚朝圣",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 107,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_type_worldly",
+      "category": "special_type",
+      "zh": "世俗朝圣",
+      "availability": "Same mandatory_hajj prerequisite as pious.",
+      "default": null,
+      "effect": "Worldly helpers and encountered-culture tracking; still receives distance main piety, plus cultural acceptance for culture head with tracked cultures or five-year character modifier.",
+      "refs": [
+        "S01:1442-1482",
+        "S10:59-72",
+        "S05:673-874"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1442,
+        "line_end": 1482
+      },
+      "source_predicates": {
+        "is_valid": {
+          "line_start": 1443,
+          "script": "is_valid = { trigger_if = { limit = { rite = { rite_has_parameter = mandatory_hajj } } custom_tooltip = { text = activity_pilgrimage.is_valid.islam.must_complete_hajj_first has_trait = hajjaj } } trigger_else = { always = yes } }"
+        }
+      },
+      "localization": {
+        "zh": "世俗朝圣",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 109,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_type_hajj",
+      "category": "special_type",
+      "zh": "朝觐",
+      "availability": "Shown for mandatory_hajj or Islam+can_go_on_pilgrimage rite. Destination Makka only; own-capital non-adventurer exclusion; hajj memory check one year plus general destination five-year checks.",
+      "default": "mandatory_hajj and no hajjaj.",
+      "effect": "Pious score branch; distinct arrival 3101 and Hajj ritual chain; hajjaj on completion, existing hajjaj learning-lifestyle XP or extra-piety flag. Not a repeatable hajjaj trait-XP ladder.",
+      "refs": [
+        "S01:1483-1558",
+        "S26:1554-1557",
+        "S01:256-265",
+        "S01:2473-2485",
+        "S05:399-485"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1483,
+        "line_end": 1558
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1489,
+          "script": "is_shown = { OR = { rite = { rite_has_parameter = mandatory_hajj } can_perform_the_hajj_trigger = yes } }"
+        },
+        "is_valid": {
+          "line_start": 1495,
+          "script": "is_valid = { trigger_if = { limit = { exists = capital_province NOT = { capital_province.barony = title:b_makka } } custom_tooltip = { text = activity_pilgrimage.is_valid.hajjed_recently NOT = { any_memory = { memory_type = completed_hajj_memory memory_age_years < hajj_cooldown_value } } } } OR = { rite = { rite_has_parameter = mandatory_hajj } can_perform_the_hajj_trigger = yes } custom_tooltip = { text = activity_pilgrimage.is_location_valid.capital_is_mecca NAND = { exists = capital_province capital_province.barony = title:b_makka is_landless_adventurer = no } } }"
+        }
+      },
+      "localization": {
+        "zh": "朝觐",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 111,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_fidelity_obligatory",
+      "category": "pilgrimage_option_fidelity",
+      "zh": "义不容辞",
+      "availability": "advanced_activities; Islam requires mandatory_hajj or impatient, others mandatory_pilgrimage or impatient.",
+      "default": null,
+      "effect": "On travel entry add travel_obligatory_pilgrimage_modifier if absent: travel_speed_mult +0.5, not final speed/time multiplier. Main reward pre-additive component ×0.5. Arrival 4010 normally offers immediate one-day phase advance; zealous eligible alternative can stay.",
+      "refs": [
+        "S01:1564-1637",
+        "S01:2840-2855",
+        "S15:271-274",
+        "S05:522-531",
+        "S11:9205-9287"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1564,
+        "line_end": 1637
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1565,
+          "script": "is_shown = { has_dlc_feature = advanced_activities }"
+        },
+        "is_valid": {
+          "line_start": 1567,
+          "script": "is_valid = { trigger_if = { limit = { religion = religion:islam_religion } custom_tooltip = { text = activity_pilgrimage.is_valid.islam.mandatory_or_impatient OR = { rite = { rite_has_parameter = mandatory_hajj } has_trait = impatient } } } trigger_else = { custom_tooltip = { text = activity_pilgrimage.is_valid.other.mandatory_or_impatient OR = { rite = { rite_has_parameter = mandatory_pilgrimage } has_trait = impatient } } } }"
+        }
+      },
+      "localization": {
+        "zh": "义不容辞",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 115,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_fidelity_pilgrim",
+      "category": "pilgrimage_option_fidelity",
+      "zh": "朝圣者",
+      "availability": "No extra option gate.",
+      "default": true,
+      "effect": "No fidelity travel modifier or fidelity main-piety multiplier; ordinary non-Hajj arrival schedules phase after three months.",
+      "refs": [
+        "S01:1638-1645",
+        "S01:2398-2409"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1638,
+        "line_end": 1645
+      },
+      "source_predicates": {},
+      "localization": {
+        "zh": "朝圣者",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 117,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_fidelity_contemplative",
+      "category": "pilgrimage_option_fidelity",
+      "zh": "深思熟虑",
+      "availability": "advanced_activities plus patient or pilgrim or hajjaj.",
+      "default": null,
+      "effect": "On travel entry add travel_contemplative_pilgrimage_modifier if absent: travel_speed_mult -0.5. Main reward pre-additive component ×1.25. This is a separate axis from the identically localized reflection intent.",
+      "refs": [
+        "S01:1646-1708",
+        "S01:2857-2867",
+        "S15:276-279",
+        "S05:534-543"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1646,
+        "line_end": 1708
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1647,
+          "script": "is_shown = { has_dlc_feature = advanced_activities }"
+        },
+        "is_valid": {
+          "line_start": 1649,
+          "script": "is_valid = { custom_tooltip = { text = activity_pilgrimage.is_valid.pilgrim_or_patient OR = { has_trait = patient has_trait = pilgrim has_trait = hajjaj } } }"
+        }
+      },
+      "localization": {
+        "zh": "深思熟虑",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 119,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_pomp_humble",
+      "category": "pilgrimage_option_pomp",
+      "zh": "朴素",
+      "availability": "advanced_activities.",
+      "default": "personal tenet flag tenet_vows_of_poverty_humble_host.",
+      "cost": "Subtract 10×(tier_scale+era_scale−1), gold or theocracy-with-treasury treasury.",
+      "court_selection_cap": null,
+      "total_entourage_fill_threshold": 7,
+      "effect": "No pomp court-selection block; general auto entourage still exists. travel_safety -25. Main piety additive +50, then inner-journey rite conditional ×1.5. Start 1060 fills total entourage toward 7 with locals/generated pilgrims, not 7 additional guests.",
+      "refs": [
+        "S01:1714-1796",
+        "S01:2655-2659",
+        "S01:2870-2880",
+        "S14:2158-2304",
+        "S14:2456-2470",
+        "S05:569-607"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1714,
+        "line_end": 1796
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1715,
+          "script": "is_shown = { has_dlc_feature = advanced_activities }"
+        }
+      },
+      "localization": {
+        "zh": "朴素",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 123,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_pomp_appropriate",
+      "category": "pilgrimage_option_pomp",
+      "zh": "适度",
+      "availability": "With advanced_activities cannot have poverty humble-host personal-tenet flag; otherwise no extra restriction.",
+      "default": "No poverty flag or no advanced_activities.",
+      "cost": "No explicit option surcharge.",
+      "court_selection_cap": 5,
+      "total_entourage_fill_threshold": 5,
+      "effect": "Weighted core court set, plus separate general entourage; start 1060 fills total toward 5. No pomp main-piety additive.",
+      "refs": [
+        "S01:1797-1825",
+        "S06:160-216",
+        "S14:2471-2485"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1797,
+        "line_end": 1825
+      },
+      "source_predicates": {
+        "is_valid": {
+          "line_start": 1798,
+          "script": "is_valid = { trigger_if = { limit = { has_dlc_feature = advanced_activities } pam_vows_of_poverty_premium_activity_option_valid_trigger = yes } }"
+        }
+      },
+      "localization": {
+        "zh": "适度",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 125,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_pomp_ceremonial",
+      "category": "pilgrimage_option_pomp",
+      "zh": "讲究",
+      "availability": "advanced_activities, not poverty humble-host personal-tenet flag.",
+      "default": null,
+      "cost": "50×(tier_scale+era_scale−1) minus 50×dynasty-discount when eligible; journey_planner ×0.8 and funded pilgrimage ×0.5 thereafter. Gold or theocracy-with-treasury treasury.",
+      "court_selection_cap": 10,
+      "total_entourage_fill_threshold": 10,
+      "effect": "Core+extra court weights; start 1060 fills total toward 10. Main piety additive +50.",
+      "refs": [
+        "S01:1826-1973",
+        "S06:160-251",
+        "S14:2486-2500",
+        "S05:569-584"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1826,
+        "line_end": 1973
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1827,
+          "script": "is_shown = { has_dlc_feature = advanced_activities }"
+        },
+        "is_valid": {
+          "line_start": 1828,
+          "script": "is_valid = { pam_vows_of_poverty_premium_activity_option_valid_trigger = yes }"
+        }
+      },
+      "localization": {
+        "zh": "讲究",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 127,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "pilgrimage_pomp_throng",
+      "category": "pilgrimage_option_pomp",
+      "zh": "盛况空前",
+      "availability": "advanced_activities, not poverty humble-host personal-tenet flag.",
+      "default": null,
+      "cost": "100×(tier_scale+era_scale−1) minus 100×dynasty-discount when eligible; journey_planner ×0.8 and funded pilgrimage ×0.5 thereafter.",
+      "court_selection_cap": 20,
+      "total_entourage_fill_threshold": 20,
+      "effect": "Core+extra+interested-everyone weights; start 1060 fills total toward 20. Main piety additive +100. Not literally every court member with no limit.",
+      "refs": [
+        "S01:1974-2121",
+        "S06:160-283",
+        "S14:2501-2515",
+        "S05:586-595"
+      ],
+      "definition": {
+        "source": "S01",
+        "line_start": 1974,
+        "line_end": 2121
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1975,
+          "script": "is_shown = { has_dlc_feature = advanced_activities }"
+        },
+        "is_valid": {
+          "line_start": 1977,
+          "script": "is_valid = { pam_vows_of_poverty_premium_activity_option_valid_trigger = yes }"
+        }
+      },
+      "localization": {
+        "zh": "盛况空前",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 129,
+        "source": "S46"
+      }
+    }
+  ],
+  "intents": [
+    {
+      "key": "reduce_stress_intent",
+      "zh": "娱乐",
+      "definition_source": "S04",
+      "ui_status": "USER_REPORTED_FOURTH_CANDIDATE_NOT_IN_EXPLICIT_HOST_LIST",
+      "availability": "Shared definition has no is_shown gate; not sufficient to prove pilgrimage host availability. Current potential-intent set not observed.",
+      "effect": "No unconditional stress subtraction on selection. pilgrimage.6001 weight factor 2, with BP1/friend/location/progress gates; first option adds worldly score and 30-day delay before follow-up. Downstream 6003/6004 can give reveler trait/XP; stress response is personality-dependent and may increase. It does not add arbitrary personality traits when selecting intent.",
+      "refs": [
+        "S04:3-17",
+        "S11:8071-8134",
+        "S09:57-58",
+        "S21:126-137",
+        "S11:8211-8509"
+      ],
+      "definition": {
+        "source": "S04",
+        "line_start": 3,
+        "line_end": 17
+      },
+      "source_predicates": {},
+      "localization": {
+        "zh": "娱乐",
+        "relative_path": "localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+        "line": 3,
+        "source": "S47"
+      }
+    },
+    {
+      "key": "reflection_intent",
+      "zh": "深思熟虑",
+      "definition_source": "S02",
+      "ui_status": "EXPLICIT_HOST_DEFAULT_AND_GUEST",
+      "availability": "No extra is_shown condition.",
+      "effect": "Enables intent.1030/1040/1050/1060/1100 and reflection pulse actions; effects depend on choices (piety, pilgrim or mystic XP, stress, delay). auto_complete is not a fixed reward. 1030.a: +10 type-score if pious/Hajj, +10-day travel delay, no pilgrim→50piety; existing pilgrim<100→10XP; capped pilgrim→100piety; existing mystic extraXP; stress differs by personality. 1100.a adds10-year monthly-piety+10% modifier and eligible pilgrim5XP;1100.b gives worldly-score and medium stress loss.",
+      "refs": [
+        "S01:2645-2653",
+        "S02:4-45",
+        "S09:73-78",
+        "S12:781-845",
+        "S08:294-481"
+      ],
+      "definition": {
+        "source": "S02",
+        "line_start": 4,
+        "line_end": 45
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 9,
+          "script": "is_shown = { }"
+        }
+      },
+      "localization": {
+        "zh": "深思熟虑",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 133,
+        "source": "S46"
+      }
+    },
+    {
+      "key": "altruism_intent",
+      "zh": "行善",
+      "definition_source": "S03",
+      "ui_status": "EXPLICIT_HOST",
+      "availability": "advanced_activities, alive, not imprisoned; AI greed/wealth weights do not gate the player.",
+      "effect": "Adds gated alms/royal-touch/feet-washing travel events; active charity/donation/tending pulses can spend tiny/minor dynamic gold and give piety, zealot-vassal opinion or development progress. No fixed start charge or guaranteed net profit. Shared sea1110.a can add pious/Hajj score10, entourage opinion+15 and eligible pilgrim5XP. 1005.a/1006.a spend medium_gold_value and give100piety plus10-year local modifier; their stress response can be positive or negative by personality.",
+      "refs": [
+        "S03:65-131",
+        "S09:62-66",
+        "S08:594-700",
+        "S43:640-1158",
+        "S12:1963-1994"
+      ],
+      "definition": {
+        "source": "S03",
+        "line_start": 65,
+        "line_end": 131
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 68,
+          "script": "is_shown = { has_dlc_feature = advanced_activities is_alive = yes is_imprisoned = no }"
+        }
+      },
+      "localization": {
+        "zh": "行善",
+        "relative_path": "localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+        "line": 18,
+        "source": "S47"
+      }
+    },
+    {
+      "key": "zealot_intent",
+      "zh": "热忱",
+      "definition_source": "S02",
+      "ui_status": "EXPLICIT_HOST",
+      "availability": "advanced_activities.",
+      "effect": "Enables conversion/console/faith-conflict events and host preaching pulses; may convert a qualifying local and grant piety/dread, not an automatic faith conversion on selection. 1000/1001/1010/1020 conversion attempts use skill duels and can fail with piety loss; selecting the conversion option may still add pious/Hajj score10 before duel. Shared sea1110.c adds25piety and eligible pilgrim5XP, zealot stress relief.",
+      "refs": [
+        "S02:48-104",
+        "S09:67-72",
+        "S12:25-100",
+        "S08:486-590"
+      ],
+      "definition": {
+        "source": "S02",
+        "line_start": 48,
+        "line_end": 104
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 53,
+          "script": "is_shown = { has_dlc_feature = advanced_activities }"
+        }
+      },
+      "localization": {
+        "zh": "热忱",
+        "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+        "line": 136,
+        "source": "S46"
+      }
+    }
+  ],
+  "intent_set_gap": {
+    "user_report": "User observed four choices; preserved without replacing it with a static count of three.",
+    "static_host_keys": [
+      "reflection_intent",
+      "altruism_intent",
+      "zealot_intent"
+    ],
+    "static_guest_keys": [
+      "reflection_intent"
+    ],
+    "shared_candidate": "reduce_stress_intent",
+    "gui_native_caller": "ActivityIntentSelectionWindow.GetPotentialIntents / CanPickIntent",
+    "history_roots_searched": [
+      "capture-b35-p3-a01/live/4-8e1c2f1861--faith-engine--R0022/case-output",
+      "v3-pilgrimage-production-20261021-a01/filming/field-session-a01"
+    ],
+    "patterns": [
+      "potential_intents",
+      "intent_choices",
+      "intent_options",
+      "reduce_stress_intent",
+      "GetPotentialIntents"
+    ],
+    "result": "No stored full choice-set match in existing JSON/JSONL. Generic intent matches refer to action-intent receipts, not available activity intents.",
+    "runtime_option_count": null,
+    "game_not_started": true,
+    "next_minimal_evidence": "One original intent-picker frame and native potential-intent key/name/CanPick list from the same actor/date/loadout, if a future already-authorized shoot requires it; not required for this source-only delivery."
+  },
+  "entourage": {
+    "layers": [
+      "Pomp weighted court selection",
+      "Activity-wide standard entourage selection max5",
+      "Travel-option guides/physician/heir/knights",
+      "Start1060 local-pool then player-only generated pilgrims",
+      "Activity guest eligibility/max30"
+    ],
+    "court_weights": {
+      "core": "bodyguard/akolouthos +1000, good knight +5, qualifying relationship/faith +100 or10, court chaplain/devoted +300; bannable diarch -5000",
+      "extra": "same-faith non-bannable court positions +50, zealous or very-high-learning non-cynical +25; diarch penalty",
+      "everyone": "same-faith non-designated-diarch councillor +100, learning education +25, adult +1; diarch penalty",
+      "refs": [
+        "S06:160-283"
+      ]
+    },
+    "start_fill": {
+      "event": "travel_start_event.1060",
+      "gates": "available travelling, landed, involved pilgrimage",
+      "local_candidates": "available, not own court, same Faith, not cynical or secret non-believer; not already entourage and not bannable serving diarch",
+      "thresholds": {
+        "humble": 7,
+        "appropriate": 5,
+        "ceremonial": 10,
+        "throng": 20
+      },
+      "comparator": "current total num_entourage_characters < threshold",
+      "player_creation_only": true,
+      "excess_characters_removed": false,
+      "refs": [
+        "S14:2158-2304",
+        "S14:2405-2515"
+      ]
+    },
+    "important": "No/few/all are descriptive shorthand for pomp choices, not a separate verified three-switch entourage menu. Humble excludes a pomp-specific court-selection block, but does not prove zero actual companions."
+  },
+  "cost_model": {
+    "scope": "Scripted planned charges are not total trip expenditure; dynamic event payments, court salary and later choices remain separate.",
+    "base": {
+      "formula": "standard_activity_base_cost × era, followed by ordered conditional adjustments and floor minor_gold_value",
+      "standard_base": "30×max(primary_title.tier−1,1); tribal ×0.5; king/emperor tier>duchy +50; AI difficulty reductions only for AI.",
+      "refs": [
+        "S07:772-810",
+        "S06:286-481"
+      ]
+    },
+    "era": {
+      "tribal_or_earlier": 0.75,
+      "early_medieval": 1,
+      "high_medieval": 1.5,
+      "late_medieval": 3,
+      "refs": [
+        "S07:1493-1523"
+      ]
+    },
+    "base_adjustments_order": [
+      "subtract medium_gold_value separately for hunt badge urge, ghost promised, hajj promised, pilgrimage promised modifiers",
+      "subtract pilgrimage_base_cost×0.5 with ep2_activities_legacy_1",
+      "matching imaginary-friend destination ×0.5",
+      "court_event_discount_pilgrimage ×0.75",
+      "pam_sf_pilgrimage_funded_modifier ×0.5",
+      "spiritual fulfillment discount ×0.75 or major×0.5",
+      "house humility ×0.75",
+      "realm cheaper_pilgrimages decree ×0.75",
+      "estate parameter subtract 0.2×era-scaled pilgrimage_base_cost (after prior multipliers)",
+      "local_shrine_offering rite ×1.75",
+      "adventurer or nomad plus clerical_justifications ×0.5",
+      "confederation cost reduction ×0.9",
+      "tgp_reflection modifier ×0.8",
+      "ceremonial liege pilgrimage discount variable ×0.85",
+      "AI mandala_godking ×0.25 (AI only)",
+      "floor minor_gold_value",
+      "e_minister_of_revenue title ×0.85 in actual activity cost wrapper"
+    ],
+    "distance_charge": {
+      "basis": "squared capital-to-selected-province map distance, not route kilometres",
+      "bands": [
+        {
+          "upper_inclusive": 22500,
+          "multiplier": 0
+        },
+        {
+          "upper_inclusive": 62500,
+          "multiplier": 0.2
+        },
+        {
+          "upper_inclusive": 422500,
+          "multiplier": 0.4
+        },
+        {
+          "upper_inclusive": 722500,
+          "multiplier": 0.6
+        },
+        {
+          "upper_inclusive": 1440000,
+          "multiplier": 0.8
+        },
+        {
+          "upper_inclusive": 2402500,
+          "multiplier": 1
+        },
+        {
+          "upper_inclusive": 9000000,
+          "multiplier": 1.2
+        },
+        {
+          "upper_inclusive": null,
+          "multiplier": 1.5
+        }
+      ],
+      "formula": "medium_gold_value×band×era; then matching imaginary-friend ×0.5, landed-adventurer-government+clerical_justifications ×0.5, funded modifier×0.5 as actual branch predicates",
+      "refs": [
+        "S01:2133-2370",
+        "S31:4-15"
+      ]
+    },
+    "currencies": {
+      "activity": "Gold unless government_is_theocracy AND has_treasury, then treasury.",
+      "travel_options": "Paid general travel options use has_treasury routing; nomadic branches can additionally charge herd and halve gold. This differs from the activity routing."
+    },
+    "prediction": "ui_predicted_cost averages Holy Site distance values and is not the selected-route final quote.",
+    "travel_option_price": {
+      "low_base": 2,
+      "medium_base": 5,
+      "high_base": 10,
+      "tier": "max(primary_title.tier−1,1)",
+      "well_prepared_multiplier": 0.75,
+      "refs": [
+        "S19:97-141"
+      ]
+    },
+    "dynamic_gold": "medium_gold_value is monthly income×medium multiplier, special treasury-vassal quartering, min/max and upward rounding to 5; never a universal fixed coin price.",
+    "refs": [
+      "S01:865-900",
+      "S01:902-1010",
+      "S06:286-481",
+      "S30:93-111",
+      "S32:93",
+      "S33:960-962",
+      "S34:2304",
+      "S28:2160-2172"
+    ]
+  },
+  "rewards": {
+    "call_chain": [
+      "activity on_start sets squared-distance reward class",
+      "travel/events/pulses alter actual resources and/or type progression",
+      "arrival can grant pilgrim trait and length compensation; Hajj uses ritual chain",
+      "phase on_end resolves score flags, triggers7000, calls completed log effect",
+      "completed effect applies main piety and eligible type rewards",
+      "7000 regular option displays reward via show_as_tooltip; does not issue main reward a second time",
+      "home return is a later distinct travel state/event"
+    ],
+    "progress_increments": {
+      "tiny": 3,
+      "medium": 5,
+      "major": 10,
+      "massive": 40,
+      "refs": [
+        "S35:4337-4383"
+      ]
+    },
+    "reward_distance": {
+      "basis": "capital barony squared distance",
+      "upper_inclusive": [
+        100000,
+        1000000,
+        5000000,
+        null
+      ],
+      "base_piety": [
+        100,
+        150,
+        250,
+        350
+      ],
+      "erudition_legacy4_multiplier": 1.3,
+      "refs": [
+        "S05:880-944",
+        "S06:6-60",
+        "S06:146-149"
+      ]
+    },
+    "pious_progress_bands": [
+      {
+        "min": 0,
+        "max_exclusive": 25,
+        "multiplier": 1.1,
+        "pilgrim_xp_if_eligible": 5
+      },
+      {
+        "min": 25,
+        "max_exclusive": 50,
+        "multiplier": 1.25,
+        "pilgrim_xp_if_eligible": 10
+      },
+      {
+        "min": 50,
+        "max_exclusive": 75,
+        "multiplier": 1.75,
+        "pilgrim_xp_if_eligible": 20
+      },
+      {
+        "min": 75,
+        "max_exclusive": null,
+        "multiplier": 2.5,
+        "pilgrim_xp_if_eligible": 40
+      }
+    ],
+    "main_piety_order": "((distance_base×eligible_dynasty×fidelity_reward_factor×pious_flag_multiplier)+experienced-piety-flag50+pomp_additive)×inner-journey-humble1.5×matching-non-eminent-site0.5×confederation1.1; only qualifying conditions apply. Other separate tenet/event piety is not inside this expression.",
+    "worldly": {
+      "culture_head_with_tracked_cultures": "acceptance +1/+3/+5/+7 to every tracked culture, according to score band; both >5 and other script branches iterate the whole list, so do not infer a five-culture cap from comment.",
+      "otherwise": "five-year character modifier: culture opinion of/received and different Faith opinion, stress_gain_mult; low culture outgoing10/incoming5, not symmetric10.",
+      "no_pious_score_multiplier": true,
+      "still_gets_main_distance_piety": true,
+      "refs": [
+        "S05:673-874",
+        "S16:126-159"
+      ]
+    },
+    "arrival_trait": "Normal arrival gives pilgrim when absent; existing-host nested else_if block at S05:236-270 is structurally unusual, so do not assert a guaranteed flat repeated-arrival20XP from its comment. Source-positive explicit post-completion5/10/20/40 and event-specific XP are separate.",
+    "hajj_trait": "Completion gives hajjaj if absent; existing hajjaj gives major learning-lifestyle XP if learning lifestyle, otherwise should_get_trait_piety. Hajj pious score does not itself mean hajjaj XP; pious XP helper requires pilgrim trait and XP<100.",
+    "extra_tenet_effects": "Armed Pilgrimages, Mendicant Preachers, Pentarchy, Struggle/Submission, Ancestor Worship10-year modifiers; Esotericism weighted mystic trait/XP; personal Pentarchy circuit; spiritual fulfillment +5 or mandatory rite+10; Sacred Mountains matching terrain +100 piety separately; poverty-host guarded separate payout.",
+    "refs": [
+      "S01:2574-2579",
+      "S05:55-213",
+      "S05:216-485",
+      "S05:516-874",
+      "S05:1136-1221",
+      "S05:1301-1367",
+      "S11:15091-15094"
+    ]
+  },
+  "destination": {
+    "general": "Faith holy_sites province filter, eligible adult and playable/physically able actor, capital present, rite not forbidden, cooldowns, active activity invalidation rules.",
+    "filters": "Recent same Holy Site memory five years; Hajj Makka-only; non-adventurer cannot own capital; restricted serving diarch only liege realm; China emperor home-realm restriction is AI-only.",
+    "cooldown_caveat": "Hajj option1-year check does not override coexisting general5-year destination checks.",
+    "effects": "Destination determines two independent squared-distance scales (8 cost bands vs4 reward bands), specific arrival first-valid religious pool, Hajj ritual branch, culture path exposure, non-eminent-site main piety×0.5 and optional mountain-tenet bonus.",
+    "refs": [
+      "S01:37-153",
+      "S01:220-303",
+      "S01:861-863",
+      "S09:130-419",
+      "S05:610-619",
+      "S05:879-944"
+    ]
+  },
+  "travel_settings": {
+    "max_selectable_options": 2,
+    "route": "Native route editor supports waypoint add/remove and IsRouteValid/ApplyChanges. Pilgrimage max_route_deviation_mult=3.0 vs general default2.0; neither is a fixed cost or time multiplier.",
+    "caravan_master": "旅队主管 chosen through court-position appointment, not pilgrimage type/intent. Native travel_leader_speed/safety contribute to planner; exact engine evaluation not reimplemented. Court salary is separate and conditional.",
+    "speed_safety": "Travel speed and safety adders/percent modifiers and terrain danger are separate dimensions. Terrain-specific reductions are not global safety, and safety never guarantees event immunity.",
+    "route_consequences": "Movement calls travel_event_tombola and danger events; pilgrimage pool only outbound, not on capital-return leg. Worldly tracking and traveler/lifestyle XP also depend on movement.",
+    "refs": [
+      "S20:1667-1705",
+      "S01:863",
+      "S20:1728",
+      "S23:357-399",
+      "S24:158-184",
+      "S24:272-406",
+      "S10:1-72",
+      "S10:1053-1086",
+      "S25:2-19",
+      "S39:563-1065",
+      "S40:3383-3441"
+    ]
+  },
+  "gaps": [
+    {
+      "key": "fourth_intent_current_native_set",
+      "status": "UNOBSERVED",
+      "detail": "Shared 娱乐 definition and pilgrimage consumer found; native full four-choice set not stored in searched old reads. User-reportedUI4 preserved. No claim that it is unavailable."
+    },
+    {
+      "key": "actual_actor_option_qualifications",
+      "status": "NOT_RUN",
+      "detail": "Source predicates are complete for listed catalog, not a live menu/CanPick result for any current actor."
+    },
+    {
+      "key": "engine_route_salary_and_speed_final",
+      "status": "SOURCE_BOUNDARY",
+      "detail": "GUI calls and data predicates located; final computed quote/speed/route validation are native. No invented formula or fixed final time multiplier."
+    },
+    {
+      "key": "arrival_host_nested_branch",
+      "status": "SOURCE_ANOMALY",
+      "detail": "S05:236-270 host repeat-arrival XP branch has nested else_if shape; no guarantee of flat XP inferred without runtime."
+    }
+  ],
+  "search_coverage": {
+    "game_roots": [
+      "common/activities",
+      "common/travel",
+      "common/scripted_effects",
+      "common/scripted_triggers",
+      "common/script_values",
+      "common/on_action",
+      "common/modifiers",
+      "common/defines",
+      "common/court_positions",
+      "events/activities/pilgrimage_activity",
+      "events/travel_events",
+      "gui",
+      "localization/simp_chinese",
+      "dlc"
+    ],
+    "definition_scan": "All top-level definitions in common/travel/travel_options/*.txt, all pilgrimage activity options, all intents files, all matching callers/readers of these keys in common/events/gui.",
+    "historical_intent_scan": "Existing R0022/R0031 JSON/JSONL only; no replay, game launch, media decode or new capture.",
+    "omissions": "No selected actor live availability, no new runtime option list, no engine decompilation or replacement formula. Enumerating all travel catalog definitions is not claiming all29 are simultaneously shown to one actor.",
+    "source_pin_count": 51,
+    "intent_reader_count": 76,
+    "travel_reader_count": 28,
+    "travel_catalog_files": [
+      "common/travel/travel_options/travel_options.txt",
+      "common/travel/travel_options/travel_options_modifiers.txt"
+    ]
+  },
+  "travel_options": [
+    {
+      "key": "adventurers_scout_for_talent_option",
+      "name_zh": "搜索人才",
+      "localization": {
+        "zh": "搜索人才",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 92,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1,
+        "line_end": 23
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 2,
+          "script": "is_shown = { has_government = landless_adventurer_government NOT = { has_perk = toe_the_line_perk } }"
+        },
+        "is_valid": {
+          "line_start": 7,
+          "script": "is_valid = { NOT = { has_perk = toe_the_line_perk } has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 12,
+          "script": "travel_modifier = { travel_speed = -5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度−5；开启招募人才事件。toe_the_line perk会使这个选项本身不显示，但该perk也可独立触发人才事件。",
+      "consumers": [
+        "S10:2166-2187"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "adventurers_make_local_deals_option",
+      "name_zh": "高风险交易",
+      "localization": {
+        "zh": "高风险交易",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 89,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 25,
+        "line_end": 46
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 26,
+          "script": "is_shown = { has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 30,
+          "script": "is_valid = { has_perk = fearful_troops_perk has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 35,
+          "script": "travel_modifier = { travel_safety = -20 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "安全−20；经过有可用战利品且未记入haggle_provinces的地产，发动态交易金币并记录，避免同地产重复。",
+      "consumers": [
+        "S10:327-343"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "adventurers_search_for_secrets_option",
+      "name_zh": "搜寻秘密",
+      "localization": {
+        "zh": "搜寻秘密",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 75,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 48,
+        "line_end": 70
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 49,
+          "script": "is_shown = { has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 53,
+          "script": "is_valid = { has_perk = digging_for_dirt_perk has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 58,
+          "script": "travel_modifier = { travel_safety = -10 travel_speed = 10 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+10／安全−10；每次移动有合资格可勒索秘密时，以人物密谋值为百分比机会揭露。",
+      "consumers": [
+        "S10:344-404"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "adventurers_encourage_relationships_option",
+      "name_zh": "鼓励关系",
+      "localization": {
+        "zh": "鼓励关系",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 69,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 72,
+        "line_end": 98
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 73,
+          "script": "is_shown = { has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 77,
+          "script": "is_valid = { has_perk = chains_of_loyalty_perk any_courtier = { is_adult = yes count >= 3 } has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 86,
+          "script": "travel_modifier = { travel_speed = 5 travel_safety = -5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+5／安全−5；移动on_action接ep3_travel_option_events.0002/.0003/.0004结婚／友谊／情人事件池，仍逐事件资格检查。",
+      "consumers": [
+        "S10:2190-2203"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "adventurers_gather_inspiration_option",
+      "name_zh": "搜集灵感",
+      "localization": {
+        "zh": "搜集灵感",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 84,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 100,
+        "line_end": 122
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 101,
+          "script": "is_shown = { has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 105,
+          "script": "is_valid = { has_perk = popular_figurehead_perk has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 110,
+          "script": "travel_modifier = { travel_speed = 5 travel_safety = -5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+5／安全−5；有成年可行动且未有灵感廷臣时，概率为管理÷6且最低1，赋予一人非宫廷宝物灵感。",
+      "consumers": [
+        "S10:453-483"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "adventurers_proselytize_zealously_option",
+      "name_zh": "向当地人传教",
+      "localization": {
+        "zh": "向当地人传教",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 79,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 124,
+        "line_end": 155
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 125,
+          "script": "is_shown = { OR = { has_government = landless_adventurer_government government_has_flag = government_is_theocracy has_personal_tenet_flag = tenet_mendicant_preachers_proselytize_travel_option } }"
+        },
+        "is_valid": {
+          "line_start": 133,
+          "script": "is_valid = { custom_tooltip = { text = adventurers_proselytize_zealously_option.tt.perk_or_tenet OR = { has_perk = zealous_proselytizer_perk has_personal_tenet_flag = tenet_mendicant_preachers_proselytize_travel_option } } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 143,
+          "script": "travel_modifier = { travel_speed = 5 travel_safety = -5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+5／安全−5；当地有合资格异礼仪流浪角色时，以学识百分比机会将其礼仪设为本人礼仪，并加miniscule_piety_value=25。不是只核异Faith。",
+      "consumers": [
+        "S10:405-452"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "adventurers_forward_scouts_option",
+      "name_zh": "斥候",
+      "localization": {
+        "zh": "斥候",
+        "relative_path": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+        "line": 669,
+        "source": "S45"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 157,
+        "line_end": 180
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 158,
+          "script": "is_shown = { has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 162,
+          "script": "is_valid = { custom_tooltip = { text = adventurers_forward_scouts_option.tt.has_right_parameter domicile ?= { has_domicile_parameter = camp_unlocks_forward_scouts } } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 169,
+          "script": "travel_modifier = { travel_safety = 20 travel_speed = -5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "安全+20／速度−5；住所营地参数限制，无额外剧情奖励或朝圣XP直发。",
+      "consumers": [
+        "S18:15-28"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "purchase_rough_terrain_gear_option",
+      "name_zh": "购买探路者装备",
+      "localization": {
+        "zh": "购买探路者装备",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 63,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 182,
+        "line_end": 231
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 183,
+          "script": "is_shown = { is_ruler = yes has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 188,
+          "script": "is_valid = { has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 201,
+          "script": "owner_modifier = { mountains_travel_danger = mountains_low_danger_reduction hills_travel_danger = hills_low_danger_reduction wetlands_travel_danger = wetlands_low_danger_reduction floodplains_travel_danger = floodplains_low_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "山地／丘陵／湿地／洪泛平原的低档危险削减；不是全局安全加成。",
+      "consumers": [
+        "S19:48-95",
+        "S18:21-22"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "purchase_desert_gear_option",
+      "name_zh": "购买旱地探索者物品",
+      "localization": {
+        "zh": "购买旱地探索者物品",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 65,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 233,
+        "line_end": 281
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 234,
+          "script": "is_shown = { is_ruler = yes has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 239,
+          "script": "is_valid = { has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 252,
+          "script": "owner_modifier = { desert_travel_danger = desert_low_danger_reduction steppe_travel_danger = steppe_low_danger_reduction drylands_travel_danger = drylands_low_danger_reduction desert_mountains_travel_danger = desert_mountains_low_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "沙漠／草原／旱地／沙漠山地低档危险削减。",
+      "consumers": [
+        "S19:48-95",
+        "S18:21-22"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "purchase_forest_gear_option",
+      "name_zh": "购买荒野工具包",
+      "localization": {
+        "zh": "购买荒野工具包",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 67,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 283,
+        "line_end": 329
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 284,
+          "script": "is_shown = { is_ruler = yes has_government = landless_adventurer_government }"
+        },
+        "is_valid": {
+          "line_start": 289,
+          "script": "is_valid = { has_government = landless_adventurer_government }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 302,
+          "script": "owner_modifier = { forest_travel_danger = forest_low_danger_reduction taiga_travel_danger = taiga_low_danger_reduction jungle_travel_danger = jungle_low_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "森林／针叶林／丛林低档危险削减。",
+      "consumers": [
+        "S19:48-95",
+        "S18:21-22"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "experienced_captains_option",
+      "name_zh": "雇佣经验丰富的船长",
+      "localization": {
+        "zh": "雇佣经验丰富的船长",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 8,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 331,
+        "line_end": 497
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 332,
+          "script": "is_shown = { is_ruler = yes }"
+        },
+        "is_valid": {
+          "line_start": 336,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 381,
+          "script": "owner_modifier = { coastal_sea_travel_danger = medium_sea_danger_reduction sea_travel_danger = medium_sea_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "沿海／海域危险各−45；玩家应用时招募或创建带涉水者特质的船长并加入同伴，按源支付受雇角色。旅行后按专门清理effect处理临时向导。",
+      "consumers": [
+        "S17:381-490",
+        "S19:45-46",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "medium_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_experienced_mercenaries_option",
+      "name_zh": "雇佣佣兵卫队",
+      "localization": {
+        "zh": "雇佣佣兵卫队",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 12,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 499,
+        "line_end": 636
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 500,
+          "script": "is_shown = { is_ruler = yes }"
+        },
+        "is_valid": {
+          "line_start": 504,
+          "script": "is_valid = { custom_tooltip = { text = available_mercenary.tt any_mercenary_company = { is_mercenary_in_hire_range = root mercenary_company_leader = { is_travelling = no is_at_war = no is_in_army = no NOT = { any_courtier = { is_in_army = yes } } } } } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 565,
+          "script": "travel_modifier = { travel_speed = 10 travel_safety = 20 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+10／安全+20；从雇佣范围内合资格未忙碌佣兵首领中加入同伴并付费，非完整雇佣一支可用军队。",
+      "consumers": [
+        "S17:499-637",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "high_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_jungle_expert_option",
+      "name_zh": "雇佣丛林追猎者",
+      "localization": {
+        "zh": "雇佣丛林追猎者",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 17,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 638,
+        "line_end": 810
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 639,
+          "script": "is_shown = { is_ruler = yes is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 644,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 689,
+          "script": "owner_modifier = { jungle_travel_danger = jungle_medium_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "丛林中档危险削减；招募／创建丛林追猎者向导。",
+      "consumers": [
+        "S17:638-811",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_mountaineer_option",
+      "name_zh": "雇佣登山者",
+      "localization": {
+        "zh": "雇佣登山者",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 21,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 812,
+        "line_end": 987
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 813,
+          "script": "is_shown = { is_ruler = yes is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 818,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 863,
+          "script": "owner_modifier = { mountains_travel_danger = mountains_medium_danger_reduction desert_mountains_travel_danger = desert_mountains_medium_danger_reduction hills_travel_danger = hills_medium_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "山地／沙漠山地／丘陵中档危险削减；招募／创建崎岖地形专家向导。",
+      "consumers": [
+        "S17:812-988",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_forder_option",
+      "name_zh": "雇佣涉水者",
+      "localization": {
+        "zh": "雇佣涉水者",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 25,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 989,
+        "line_end": 1163
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 990,
+          "script": "is_shown = { is_ruler = yes is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 995,
+          "script": "is_valid = { is_playable_character = yes }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 1041,
+          "script": "owner_modifier = { wetlands_travel_danger = wetlands_medium_danger_reduction floodplains_travel_danger = floodplains_medium_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "湿地／洪泛平原中档危险削减；招募／创建涉水者向导。",
+      "consumers": [
+        "S17:989-1164",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_desert_warrior_option",
+      "name_zh": "雇佣沙漠战士",
+      "localization": {
+        "zh": "雇佣沙漠战士",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 34,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1165,
+        "line_end": 1340
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1166,
+          "script": "is_shown = { is_ruler = yes is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 1171,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 1216,
+          "script": "owner_modifier = { desert_travel_danger = desert_medium_danger_reduction steppe_travel_danger = steppe_medium_danger_reduction drylands_travel_danger = drylands_medium_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "沙漠／草原／旱地中档危险削减；招募／创建沙漠战士向导。",
+      "consumers": [
+        "S17:1165-1341",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_rough_terrain_expert_option",
+      "name_zh": "雇佣森林向导",
+      "localization": {
+        "zh": "雇佣森林向导",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 30,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1342,
+        "line_end": 1515
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1343,
+          "script": "is_shown = { is_ruler = yes is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 1348,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 1393,
+          "script": "owner_modifier = { forest_travel_danger = forest_medium_danger_reduction taiga_travel_danger = taiga_medium_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "森林／针叶林中档危险削减；招募／创建森林斗士向导。",
+      "consumers": [
+        "S17:1342-1516",
+        "S37:1583-1613"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "court_physician_option",
+      "name_zh": "带上医疗设备",
+      "localization": {
+        "zh": "带上医疗设备",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 38,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1517,
+        "line_end": 1586
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1518,
+          "script": "is_shown = { is_ruler = yes }"
+        },
+        "is_valid": {
+          "line_start": 1522,
+          "script": "is_valid = { custom_tooltip = { text = court_physician_option_tt exists = court_position:court_physician_court_position court_position:court_physician_court_position = { is_ai = yes is_available = yes } } }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 1578,
+          "script": "owner_modifier = { epidemic_travel_danger = epidemic_medium_danger_reduction }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "只减瘟疫危险；要求现任宫廷医师为AI且可行动，on_applied没有新增招募，源注明医师公共自动随行。",
+      "consumers": [
+        "S17:1517-1586",
+        "S07:1456-1489"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "cultural_ambassador_option",
+      "name_zh": "雇佣文化大使",
+      "localization": {
+        "zh": "雇佣文化大使",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 42,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1588,
+        "line_end": 1766
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1589,
+          "script": "is_shown = { is_ruler = yes }"
+        },
+        "is_valid": {
+          "line_start": 1593,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {},
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "实际招募大使、保存角色scope；移动时追踪异文化，只对满足分支的新文化增加miniscule接纳度。首个列表初始化分支只记名单，增益发生else_if，不能把tooltip逐地立即全给当作源码。",
+      "consumers": [
+        "S17:1638-1702",
+        "S10:108-163"
+      ],
+      "cost": {
+        "explicit": true,
+        "named_prices": [
+          "low_travel_option_cost",
+          "medium_travel_option_cost"
+        ]
+      }
+    },
+    {
+      "key": "hire_allied_mercenaries_option",
+      "name_zh": "私人军队",
+      "localization": {
+        "zh": "私人军队",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 142,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1768,
+        "line_end": 1785
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1769,
+          "script": "is_shown = { has_bp3_dlc_trigger = yes }"
+        },
+        "is_valid": {
+          "line_start": 1773,
+          "script": "is_valid = { has_perk = mercenary_contacts_perk }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 1777,
+          "script": "travel_modifier = { travel_speed = 5 travel_safety = 5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+5／安全+5；该定义无显式费用，不等于旅行本身免费。",
+      "consumers": [
+        "S18:15-22"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "appeasement_option",
+      "name_zh": "安抚",
+      "localization": {
+        "zh": "安抚",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 144,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1787,
+        "line_end": 1804
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1788,
+          "script": "is_shown = { has_bp3_dlc_trigger = yes }"
+        },
+        "is_valid": {
+          "line_start": 1792,
+          "script": "is_valid = { has_perk = local_hero_perk }"
+        }
+      },
+      "modifiers": {
+        "owner_modifier": {
+          "line_start": 1796,
+          "script": "owner_modifier = { monthly_tyranny = -0.8 monthly_dread = -0.4 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "旅行主人月暴政−0.8／月恐怖值−0.4；没有朝圣表现或朝圣者XP直接修改。",
+      "consumers": [
+        "S18:21-22"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "leisurely_option",
+      "name_zh": "悠闲之旅",
+      "localization": {
+        "zh": "悠闲之旅",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 146,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1806,
+        "line_end": 1830
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1807,
+          "script": "is_shown = { has_bp3_dlc_trigger = yes }"
+        },
+        "is_valid": {
+          "line_start": 1811,
+          "script": "is_valid = { has_perk = local_hero_perk }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 1819,
+          "script": "travel_modifier = { travel_speed = -20 }"
+        },
+        "owner_modifier": {
+          "line_start": 1815,
+          "script": "owner_modifier = { stress_gain_mult = -0.5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度−20／压力获得修正−0.5；旅行结束按经过省份数×15加威望经验，不是15威望资源。",
+      "consumers": [
+        "S10:1531-1547"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "tutor_child_option",
+      "name_zh": "教学之旅",
+      "localization": {
+        "zh": "教学之旅",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 150,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1832,
+        "line_end": 1902
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1833,
+          "script": "is_shown = { has_bp3_dlc_trigger = yes }"
+        },
+        "is_valid": {
+          "line_start": 1837,
+          "script": "is_valid = { has_perk = know_your_land_know_your_people_perk trigger_if = { limit = { exists = player_heir } player_heir = { age < 15 save_temporary_scope_as = heir_for_tooltip custom_tooltip = { text = heir_can_join_tt location = root.location is_available_allow_travelling = yes } } } trigger_else = { custom_tooltip = { text = no_heir_tt always = no } } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 1865,
+          "script": "travel_modifier = { travel_speed = -5 }"
+        },
+        "owner_modifier": {
+          "line_start": 1861,
+          "script": "owner_modifier = { child_opinion = 5 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度−5／儿童好感+5；未满15岁、同地点且可同行的继承人加入。每个本人地产位置首次授业，最多8个地点，具体教育修正随机；不是只在tooltip发成长。",
+      "consumers": [
+        "S17:1832-1901",
+        "S36:525-619"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "fancy_mounts_option",
+      "name_zh": "优良坐骑",
+      "localization": {
+        "zh": "优良坐骑",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 46,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1904,
+        "line_end": 1926
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1905,
+          "script": "is_shown = { is_ruler = yes is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 1910,
+          "script": "is_valid = { any_directly_owned_province = { OR = { has_building_or_higher = stables_04 has_building_or_higher = camel_farms_04 } } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 1919,
+          "script": "travel_modifier = { travel_speed = 20 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+20；要求直属地产马厩04或骆驼牧场04及非冒险者统治者。",
+      "consumers": [
+        "S18:15-19"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "military_recruits_option",
+      "name_zh": "训练骑士",
+      "localization": {
+        "zh": "训练骑士",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 48,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1928,
+        "line_end": 1983
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1929,
+          "script": "is_shown = { primary_title.tier >= tier_duchy is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 1934,
+          "script": "is_valid = { any_directly_owned_province = { has_building_or_higher = military_academy_01 } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 1940,
+          "script": "travel_modifier = { travel_safety = 10 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "安全+10；挑至多3名未满50岁可行动的较弱骑士同行、记knights_to_train并触发travel_events.0060递归训练。不是新招三名骑士或直接朝圣XP。",
+      "consumers": [
+        "S17:1928-1983",
+        "S38:187-308"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "superior_armaments_option",
+      "name_zh": "优良军备",
+      "localization": {
+        "zh": "优良军备",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 57,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 1985,
+        "line_end": 2008
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 1986,
+          "script": "is_shown = { primary_title.tier >= tier_duchy is_landless_adventurer = no }"
+        },
+        "is_valid": {
+          "line_start": 1991,
+          "script": "is_valid = { any_directly_owned_province = { has_building_or_higher = blacksmiths_01 } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 1997,
+          "script": "travel_modifier = { travel_safety = 10 }"
+        },
+        "owner_modifier": {
+          "line_start": 2001,
+          "script": "owner_modifier = { artifact_decay_reduction_mult = -0.2 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "安全+10；主人artifact_decay_reduction_mult=−0.2（保留实际字段，不误说宝物寿命必定提高20%）；要求铁匠01。",
+      "consumers": [
+        "S18:15-22"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "anxious_option",
+      "name_zh": "加快脚步",
+      "localization": {
+        "zh": "加快脚步",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 59,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 2010,
+        "line_end": 2032
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 2011,
+          "script": "is_shown = { is_ruler = yes }"
+        },
+        "is_valid": {
+          "line_start": 2015,
+          "script": "is_valid = { OR = { has_trait = impatient has_trait = craven has_trait = reckless } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 2024,
+          "script": "travel_modifier = { travel_speed = 20 travel_safety = -10 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+20／安全−10；急躁或怯懦或鲁莽，不能仅凭源key anxious擅加焦虑特质条件。",
+      "consumers": [
+        "S18:15-19"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "circumspect_option",
+      "name_zh": "谨慎",
+      "localization": {
+        "zh": "谨慎",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 61,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 2034,
+        "line_end": 2060
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 2035,
+          "script": "is_shown = { is_ruler = yes }"
+        },
+        "is_valid": {
+          "line_start": 2039,
+          "script": "is_valid = { OR = { has_trait = fickle has_trait = arbitrary has_trait = paranoid } }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 2048,
+          "script": "travel_modifier = { travel_speed = -10 }"
+        },
+        "owner_modifier": {
+          "line_start": 2052,
+          "script": "owner_modifier = { enemy_hostile_scheme_phase_duration_add = massive_scheme_phase_duration_malus_value enemy_hostile_scheme_success_chance_add = -50 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度−10；敌对阴谋阶段时长增加named massive值、敌对阴谋成功率−50；要求善变或专断或多疑之一。",
+      "consumers": [
+        "S18:15-22"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    },
+    {
+      "key": "estate_mounts_option",
+      "name_zh": "华丽的马匹",
+      "localization": {
+        "zh": "华丽的马匹",
+        "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+        "line": 140,
+        "source": "S44"
+      },
+      "definition": {
+        "source": "S17",
+        "line_start": 2062,
+        "line_end": 2084
+      },
+      "source_predicates": {
+        "is_shown": {
+          "line_start": 2063,
+          "script": "is_shown = { domicile ?= { has_domicile_parameter = estate_unlock_mount_travel_option } }"
+        },
+        "is_valid": {
+          "line_start": 2069,
+          "script": "is_valid = { }"
+        }
+      },
+      "modifiers": {
+        "travel_modifier": {
+          "line_start": 2072,
+          "script": "travel_modifier = { travel_speed = 10 }"
+        },
+        "owner_modifier": {
+          "line_start": 2076,
+          "script": "owner_modifier = { travel_companion_opinion = 10 monthly_prestige = 1 }"
+        }
+      },
+      "current_actor_shown": null,
+      "current_actor_valid": null,
+      "effect": "速度+10／同伴好感+10／月威望+1；住所estate_unlock_mount_travel_option参数，未写额外朝圣奖励。",
+      "consumers": [
+        "S18:15-22"
+      ],
+      "cost": {
+        "explicit": false,
+        "named_prices": []
+      }
+    }
+  ],
+  "observed_at_utc": "2026-10-21T20:04:13.989869+00:00",
+  "installation_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "intent_reader_index": [
+    {
+      "source": "S43",
+      "line": 669,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S43",
+      "line": 914,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S43",
+      "line": 1046,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S43",
+      "line": 1687,
+      "reader": "has_activity_intent = reduce_stress_intent"
+    },
+    {
+      "source": "S43",
+      "line": 2017,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S43",
+      "line": 2041,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S43",
+      "line": 2102,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S08",
+      "line": 75,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 99,
+      "reader": "activity_host = { has_activity_intent = reflection_intent }"
+    },
+    {
+      "source": "S08",
+      "line": 119,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 140,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 182,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S08",
+      "line": 302,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 330,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 379,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 395,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 452,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S08",
+      "line": 491,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S08",
+      "line": 522,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S08",
+      "line": 600,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S08",
+      "line": 642,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S08",
+      "line": 677,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S12",
+      "line": 42,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S12",
+      "line": 268,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S12",
+      "line": 414,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S12",
+      "line": 586,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S12",
+      "line": 802,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S12",
+      "line": 907,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1342,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1599,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1794,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1887,
+      "reader": "trigger = { has_activity_intent = altruism_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 1891,
+      "reader": "trigger = { has_activity_intent = reflection_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 1895,
+      "reader": "trigger = { has_activity_intent = zealot_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 1904,
+      "reader": "trigger = { has_activity_intent = altruism_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 1908,
+      "reader": "trigger = { has_activity_intent = reflection_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 1912,
+      "reader": "trigger = { has_activity_intent = zealot_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 1933,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1934,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1935,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S12",
+      "line": 1965,
+      "reader": "trigger = { has_activity_intent = altruism_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 2002,
+      "reader": "trigger = { has_activity_intent = reflection_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 2028,
+      "reader": "trigger = { has_activity_intent = zealot_intent }"
+    },
+    {
+      "source": "S12",
+      "line": 2220,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 4607,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 4708,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 4718,
+      "reader": "limit = { has_activity_intent = zealot_intent }"
+    },
+    {
+      "source": "S11",
+      "line": 4752,
+      "reader": "trigger = { has_activity_intent = reflection_intent }"
+    },
+    {
+      "source": "S11",
+      "line": 4920,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 4930,
+      "reader": "limit = { has_activity_intent = zealot_intent }"
+    },
+    {
+      "source": "S11",
+      "line": 4948,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S11",
+      "line": 4954,
+      "reader": "limit = { has_activity_intent = reflection_intent }"
+    },
+    {
+      "source": "S11",
+      "line": 7705,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S11",
+      "line": 7820,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S11",
+      "line": 7995,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S11",
+      "line": 8101,
+      "reader": "has_activity_intent = reduce_stress_intent"
+    },
+    {
+      "source": "S11",
+      "line": 10842,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 12185,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 12398,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 13486,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 13782,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 14175,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S11",
+      "line": 14212,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S11",
+      "line": 14420,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S11",
+      "line": 14612,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S13",
+      "line": 83,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S13",
+      "line": 733,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S13",
+      "line": 773,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S13",
+      "line": 963,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S13",
+      "line": 1260,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S13",
+      "line": 1433,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S13",
+      "line": 1734,
+      "reader": "has_activity_intent = zealot_intent"
+    },
+    {
+      "source": "S13",
+      "line": 2334,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S13",
+      "line": 2484,
+      "reader": "has_activity_intent = reflection_intent"
+    },
+    {
+      "source": "S13",
+      "line": 2510,
+      "reader": "has_activity_intent = altruism_intent"
+    },
+    {
+      "source": "S13",
+      "line": 2536,
+      "reader": "has_activity_intent = zealot_intent"
+    }
+  ],
+  "travel_option_reader_index": [
+    {
+      "source": "S43",
+      "line": 2684,
+      "reader": "has_travel_option = hire_experienced_mercenaries_option"
+    },
+    {
+      "source": "S11",
+      "line": 2603,
+      "reader": "current_travel_plan = { has_travel_option = hire_experienced_mercenaries_option }"
+    },
+    {
+      "source": "S11",
+      "line": 2685,
+      "reader": "NOT = { has_travel_option = hire_experienced_mercenaries_option }"
+    },
+    {
+      "source": "S11",
+      "line": 15218,
+      "reader": "has_travel_option = cultural_ambassador_option"
+    },
+    {
+      "source": "S48",
+      "line": 2866,
+      "reader": "has_travel_option = hire_experienced_mercenaries_option"
+    },
+    {
+      "source": "S49",
+      "line": 4285,
+      "reader": "has_travel_option = fancy_mounts_option"
+    },
+    {
+      "source": "S49",
+      "line": 4338,
+      "reader": "NOT = { has_travel_option = fancy_mounts_option }"
+    },
+    {
+      "source": "S49",
+      "line": 4471,
+      "reader": "has_travel_option = fancy_mounts_option"
+    },
+    {
+      "source": "S49",
+      "line": 5023,
+      "reader": "current_travel_plan = { has_travel_option = circumspect_option }"
+    },
+    {
+      "source": "S49",
+      "line": 5228,
+      "reader": "has_travel_option = circumspect_option"
+    },
+    {
+      "source": "S49",
+      "line": 5229,
+      "reader": "has_travel_option = anxious_option"
+    },
+    {
+      "source": "S49",
+      "line": 5985,
+      "reader": "has_travel_option = hire_experienced_mercenaries_option"
+    },
+    {
+      "source": "S49",
+      "line": 5986,
+      "reader": "has_travel_option = military_recruits_option"
+    },
+    {
+      "source": "S50",
+      "line": 256,
+      "reader": "has_travel_option = hire_experienced_mercenaries_option"
+    },
+    {
+      "source": "S50",
+      "line": 257,
+      "reader": "has_travel_option = military_recruits_option"
+    },
+    {
+      "source": "S50",
+      "line": 1101,
+      "reader": "has_travel_option = hire_experienced_mercenaries_option"
+    },
+    {
+      "source": "S50",
+      "line": 1102,
+      "reader": "has_travel_option = military_recruits_option"
+    },
+    {
+      "source": "S51",
+      "line": 62,
+      "reader": "has_travel_option = cultural_ambassador_option"
+    },
+    {
+      "source": "S51",
+      "line": 138,
+      "reader": "has_travel_option = cultural_ambassador_option"
+    },
+    {
+      "source": "S10",
+      "line": 113,
+      "reader": "has_travel_option = cultural_ambassador_option"
+    },
+    {
+      "source": "S10",
+      "line": 329,
+      "reader": "current_travel_plan ?= { has_travel_option = adventurers_make_local_deals_option }"
+    },
+    {
+      "source": "S10",
+      "line": 346,
+      "reader": "current_travel_plan ?= { has_travel_option = adventurers_search_for_secrets_option }"
+    },
+    {
+      "source": "S10",
+      "line": 407,
+      "reader": "current_travel_plan ?= { has_travel_option = adventurers_proselytize_zealously_option }"
+    },
+    {
+      "source": "S10",
+      "line": 455,
+      "reader": "current_travel_plan ?= { has_travel_option = adventurers_gather_inspiration_option }"
+    },
+    {
+      "source": "S10",
+      "line": 1534,
+      "reader": "has_travel_option = leisurely_option"
+    },
+    {
+      "source": "S10",
+      "line": 2169,
+      "reader": "current_travel_plan ?= { has_travel_option = adventurers_scout_for_talent_option }"
+    },
+    {
+      "source": "S10",
+      "line": 2192,
+      "reader": "current_travel_plan ?= { has_travel_option = adventurers_encourage_relationships_option }"
+    },
+    {
+      "source": "S36",
+      "line": 533,
+      "reader": "has_travel_option = tutor_child_option"
+    }
+  ],
+  "source_inventory": [
+    {
+      "id": "S01",
+      "relative_path": "common/activities/activity_types/pilgrimage.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "line_count": 4066
+    },
+    {
+      "id": "S02",
+      "relative_path": "common/activities/intents/pilgrimage_intents.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\intents\\pilgrimage_intents.txt",
+      "bytes": 1505,
+      "sha256": "67c914ef7f84b28dc2ae9072f5aeb48a535bbaa3207f518f3c879737e4e22002",
+      "line_count": 104
+    },
+    {
+      "id": "S03",
+      "relative_path": "common/activities/intents/tour_intents.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\intents\\tour_intents.txt",
+      "bytes": 2536,
+      "sha256": "afd60068603ad3d724a972faf7b80cf41525a20dd8956a7fc535af4b765fb8c9",
+      "line_count": 166
+    },
+    {
+      "id": "S04",
+      "relative_path": "common/activities/intents/shared_intents.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\intents\\shared_intents.txt",
+      "bytes": 8212,
+      "sha256": "f22e167cab10b6f5307f26a40bc33e897f66854a868a8c60ce1414bb560092ad",
+      "line_count": 467
+    },
+    {
+      "id": "S05",
+      "relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "line_count": 1531
+    },
+    {
+      "id": "S06",
+      "relative_path": "common/script_values/50_pilgrimage_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\50_pilgrimage_values.txt",
+      "bytes": 11353,
+      "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9",
+      "line_count": 481
+    },
+    {
+      "id": "S07",
+      "relative_path": "common/script_values/00_activity_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_activity_values.txt",
+      "bytes": 78895,
+      "sha256": "0b5c2da145cf0d2311aba8525c7decfc865d0539b81acdf3974ed74a68b37c92",
+      "line_count": 4111
+    },
+    {
+      "id": "S08",
+      "relative_path": "common/activities/pulse_actions/pilgrimage_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\pulse_actions\\pilgrimage_actions.txt",
+      "bytes": 25245,
+      "sha256": "37cdc5f3bb8afc221fb25a8d8428d0b82511815b7e714a9c4c54e13f39b7f22a",
+      "line_count": 1259
+    },
+    {
+      "id": "S09",
+      "relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "line_count": 419
+    },
+    {
+      "id": "S10",
+      "relative_path": "common/on_action/travel_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+      "line_count": 2203
+    },
+    {
+      "id": "S11",
+      "relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "line_count": 15595
+    },
+    {
+      "id": "S12",
+      "relative_path": "events/activities/pilgrimage_activity/pilgrimage_intent_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_intent_events.txt",
+      "bytes": 57928,
+      "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878",
+      "line_count": 2546
+    },
+    {
+      "id": "S13",
+      "relative_path": "events/activities/pilgrimage_activity/pilgrimage_events_seasia.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events_seasia.txt",
+      "bytes": 62431,
+      "sha256": "19915928dcde818f48c8ef11d90648e37f150940fff61fa55c1dafb3ae44f457",
+      "line_count": 2761
+    },
+    {
+      "id": "S14",
+      "relative_path": "events/travel_events/travel_start_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_start_events.txt",
+      "bytes": 95408,
+      "sha256": "4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9",
+      "line_count": 3917
+    },
+    {
+      "id": "S15",
+      "relative_path": "common/modifiers/00_travel_modifiers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_travel_modifiers.txt",
+      "bytes": 8782,
+      "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+      "line_count": 441
+    },
+    {
+      "id": "S16",
+      "relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+      "line_count": 413
+    },
+    {
+      "id": "S17",
+      "relative_path": "common/travel/travel_options/travel_options.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\travel\\travel_options\\travel_options.txt",
+      "bytes": 40882,
+      "sha256": "c0779e50bada5f148f3dac0ffb5a0d1714ab4553e36488faed7676d1eb776d9e",
+      "line_count": 2084
+    },
+    {
+      "id": "S18",
+      "relative_path": "common/travel/travel_options/_travel_options.info",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\travel\\travel_options\\_travel_options.info",
+      "bytes": 2264,
+      "sha256": "a3ffac8554bddc272fafcf5d7a6dfb28a778b552ae8d0bb98c884e455c56fe35",
+      "line_count": 61
+    },
+    {
+      "id": "S19",
+      "relative_path": "common/script_values/00_travel_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_travel_values.txt",
+      "bytes": 5918,
+      "sha256": "f90b584b8c40546e591077fdefbdfe35fb924ffb0cf9d550da655b473a6bc4b8",
+      "line_count": 164
+    },
+    {
+      "id": "S20",
+      "relative_path": "common/defines/00_defines.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "line_count": 1926
+    },
+    {
+      "id": "S21",
+      "relative_path": "gui/window_activity_intent_selection.gui",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_activity_intent_selection.gui",
+      "bytes": 11633,
+      "sha256": "07b09863a0064aad7abe1e061a93c979b5edcbc662cb8918a535c3a33a93a91a",
+      "line_count": 465
+    },
+    {
+      "id": "S22",
+      "relative_path": "gui/window_activity_planner.gui",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_activity_planner.gui",
+      "bytes": 52892,
+      "sha256": "2f18263ad5be79bfc10c9bc33fd1ccff1e41a0be2bafc7d19e4f9cf0b58feb54",
+      "line_count": 2266
+    },
+    {
+      "id": "S23",
+      "relative_path": "gui/window_travel_planner.gui",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_travel_planner.gui",
+      "bytes": 32351,
+      "sha256": "0cdf5197fac7389d20a71c3018cbbdebf727c3240ea30f65ae5032706cfe13e3",
+      "line_count": 1415
+    },
+    {
+      "id": "S24",
+      "relative_path": "gui/window_travel_route_edit.gui",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_travel_route_edit.gui",
+      "bytes": 9741,
+      "sha256": "c0ac167f5926b047b9dc03adba9bc28ff05c29e9cb7b6d3d22cadfd2870b314f",
+      "line_count": 441
+    },
+    {
+      "id": "S25",
+      "relative_path": "common/scripted_triggers/00_pilgrimage_triggers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_pilgrimage_triggers.txt",
+      "bytes": 2851,
+      "sha256": "5d9058814175bcf018c659be2565f6f6edd3fa06bc2104d474f109cb12ec740a",
+      "line_count": 122
+    },
+    {
+      "id": "S26",
+      "relative_path": "common/scripted_triggers/00_religious_triggers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "line_count": 3599
+    },
+    {
+      "id": "S27",
+      "relative_path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "line_count": 6937
+    },
+    {
+      "id": "S28",
+      "relative_path": "common/script_values/pam_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\pam_values.txt",
+      "bytes": 272209,
+      "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "line_count": 10367
+    },
+    {
+      "id": "S29",
+      "relative_path": "common/script_values/00_basic_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "line_count": 2342
+    },
+    {
+      "id": "S30",
+      "relative_path": "common/script_values/01_dynamic_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "line_count": 2348
+    },
+    {
+      "id": "S31",
+      "relative_path": "common/script_values/00_distance_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_distance_values.txt",
+      "bytes": 770,
+      "sha256": "fd23c44170db684e7ae5fdb330b3622c89f4cc779a853245eee350482f1c65e5",
+      "line_count": 15
+    },
+    {
+      "id": "S32",
+      "relative_path": "common/script_values/00_dynasty_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_dynasty_values.txt",
+      "bytes": 2516,
+      "sha256": "0aad110fd46c8bb7fbedba372e049002caa25ca992cd4362b9387d07dc90ca8e",
+      "line_count": 112
+    },
+    {
+      "id": "S33",
+      "relative_path": "common/script_values/00_lifestyle_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_lifestyle_values.txt",
+      "bytes": 22192,
+      "sha256": "4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0",
+      "line_count": 1090
+    },
+    {
+      "id": "S34",
+      "relative_path": "common/script_values/07_ep3_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\07_ep3_values.txt",
+      "bytes": 147367,
+      "sha256": "b4b46e562baa20f8aa7fbac91b3d8b95f6a59d053eaf6b5f28ca9d091f85c776",
+      "line_count": 6087
+    },
+    {
+      "id": "S35",
+      "relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "line_count": 4858
+    },
+    {
+      "id": "S36",
+      "relative_path": "common/scripted_effects/00_wanderer_lifestyle_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_wanderer_lifestyle_effects.txt",
+      "bytes": 26480,
+      "sha256": "57fda8a1dd7e20f561a0583ae8a18a0fc07390d84217fefd16324271ed56a9ba",
+      "line_count": 1086
+    },
+    {
+      "id": "S37",
+      "relative_path": "common/scripted_effects/00_courtier_guest_management_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_courtier_guest_management_effects.txt",
+      "bytes": 38166,
+      "sha256": "fc71dd61112c225d53f1248b162c4860a92b7d85a68187b78027250af7de70b5",
+      "line_count": 1613
+    },
+    {
+      "id": "S38",
+      "relative_path": "events/travel_events/travel_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_events.txt",
+      "bytes": 70995,
+      "sha256": "b2f76f4a068df1246a7a6e22bc3f65b94910704c66a4afb547bd42f13e4dfc00",
+      "line_count": 3011
+    },
+    {
+      "id": "S39",
+      "relative_path": "common/court_positions/types/00_court_positions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\court_positions\\types\\00_court_positions.txt",
+      "bytes": 257681,
+      "sha256": "a49fca3df3ae5d087d94621d3147db88bdb4f458d97c717e1821b43aa87cc951",
+      "line_count": 11438
+    },
+    {
+      "id": "S40",
+      "relative_path": "common/script_values/00_court_position_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_court_position_values.txt",
+      "bytes": 185196,
+      "sha256": "dbe4ea36a05a5e803626fb6fc3d4dcef394f1cc53f812985439540fa48a854bc",
+      "line_count": 8202
+    },
+    {
+      "id": "S41",
+      "relative_path": "common/activities/activity_types/_activity_type.info",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\_activity_type.info",
+      "bytes": 39978,
+      "sha256": "b082e108a1f1ca8c3e2c6d20ce0b561bc031fc43bb83ee727547e7e24dd985fa",
+      "line_count": 1067
+    },
+    {
+      "id": "S42",
+      "relative_path": "common/scripted_effects/pam_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\pam_effects.txt",
+      "bytes": 369911,
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+      "line_count": 14582
+    },
+    {
+      "id": "S43",
+      "relative_path": "events/activities/tour_activity/tour_travel_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\tour_activity\\tour_travel_events.txt",
+      "bytes": 61534,
+      "sha256": "a0b25d234db06c94097df9e4691aca041cd1568cda1b377f1edef20e275f6556",
+      "line_count": 2774
+    },
+    {
+      "id": "S44",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\ep2\\travel\\dlc_ep2_travel_options_l_simp_chinese.yml",
+      "bytes": 23237,
+      "sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "line_count": 157
+    },
+    {
+      "id": "S45",
+      "relative_path": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\domiciles\\domicile_buildings_l_simp_chinese.yml",
+      "bytes": 83085,
+      "sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac",
+      "line_count": 773
+    },
+    {
+      "id": "S46",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "line_count": 1130
+    },
+    {
+      "id": "S47",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\ep2\\dlc_ep2_intents_l_simp_chinese.yml",
+      "bytes": 3269,
+      "sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3",
+      "line_count": 36
+    },
+    {
+      "id": "S48",
+      "relative_path": "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\tgp\\tgp_japan_yearly_events_ariana.txt",
+      "bytes": 122029,
+      "sha256": "9472fa2899770851f8489f0de57a50f5849da0b13d8cab61f24f47dc1212e4c1",
+      "line_count": 5731
+    },
+    {
+      "id": "S49",
+      "relative_path": "events/travel_events/travel_events_veronica.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_events_veronica.txt",
+      "bytes": 144139,
+      "sha256": "7b41a896227bddb2d7df0828012561b05dd9353e2c663359d338db540fc870f7",
+      "line_count": 6394
+    },
+    {
+      "id": "S50",
+      "relative_path": "events/travel_events/travel_danger_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_danger_events.txt",
+      "bytes": 43538,
+      "sha256": "f0db7d940d106d7031b118e6e2e3f0b3e92e7238859534b13c07f14ab6521b89",
+      "line_count": 1990
+    },
+    {
+      "id": "S51",
+      "relative_path": "events/travel_events/travel_completion_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_completion_events.txt",
+      "bytes": 5019,
+      "sha256": "2fb4f01eb814a3fe28180d05b69856a01b271171a9d754ce16501400f3d19ca1",
+      "line_count": 194
+    }
+  ],
+  "machine_identity_observation": {
+    "command": "python tools/ck3_live_run_id.py machine",
+    "actual_value": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-21T20:05:32.753010+00:00",
+    "exit_code": 0
+  },
+  "trait_xp_numbers_semantics": "All add_trait_xp values quoted here are scripted base requests; do not equate them with final XP delta before current native gain/loss modifiers, truncation and0-100 bounds."
+}

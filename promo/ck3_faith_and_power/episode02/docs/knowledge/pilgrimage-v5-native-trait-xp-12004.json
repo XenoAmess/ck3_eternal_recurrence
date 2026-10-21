@@ -1,0 +1,187 @@
+{
+  "schema": "ck3-12004-pilgrim-native-xp-static-semantics-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T19:59:37.106880+00:00",
+  "qualification": "STATIC_EXACT_EXE_ONLY",
+  "exe": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "image_base": "0x140000000"
+  },
+  "tooling": {
+    "interpreter": "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "pefile": "2024.8.26",
+    "capstone": "5.0.9",
+    "modes": [
+      "read-only PE sections",
+      "bounded disassembly",
+      "existing research CLI"
+    ],
+    "new_python_files": 0,
+    "game_or_native_calls": 0,
+    "engine_execution_tests": 0
+  },
+  "formula": {
+    "scale": 100000,
+    "positive_base_keys": [
+      "pilgrim_xp_gain_mult",
+      "trait_track_pilgrim_xp_gain_mult"
+    ],
+    "negative_base_keys": [
+      "pilgrim_xp_loss_mult",
+      "trait_track_pilgrim_xp_loss_mult"
+    ],
+    "modifier_composition": "factor_raw = 100000 + trait_modifier_raw + track_modifier_raw",
+    "delta": "trunc_toward_zero(base_raw * factor_raw / 100000)",
+    "write": "new_xp_raw = min(10000000, max(0, old_xp_raw + delta_raw))",
+    "zero_base": "returns without XP write",
+    "missing_modifier": "invalid ID 65535 or absent key returns raw 0",
+    "factor_clamp": "none observed; negative factor can reverse signed delta",
+    "overflow_scope": "representable fixed-point arithmetic; no arbitrary signed64 saturation guarantee"
+  },
+  "proven": {
+    "trait_must_already_be_held": true,
+    "single_unnamed_track_resolves_index_zero": true,
+    "hard_xp_cap": 100,
+    "write_precedes_level_recompute": true,
+    "level_changed_followup": "2BAC010, then 28C3CD0; semantic name unassigned",
+    "third_generic_xp_modifier_read_in_gain_helper": false
+  },
+  "level_combination": {
+    "native_fold": "root first, every threshold entry with xp >= threshold, same output",
+    "accumulation": "2303244 adds values for existing modifier ID",
+    "source_to_runtime_normalization_fully_traced": false,
+    "net_pilgrim_tier_values": "unknown; do not sum source constants on this evidence alone"
+  },
+  "unknown": [
+    "add_trait initialization and existing-XP preservation",
+    "script-value input conversion rounding before raw value",
+    "missing-limit else_if compilation default",
+    "all source activation/stacking including domicile replacement",
+    "arbitrary huge signed64 input overflow"
+  ],
+  "live_credit": false,
+  "body_pins": [
+    {
+      "begin_rva": "0x5d4b80",
+      "end_rva_exclusive": "0x5d4c24",
+      "bytes": 164,
+      "sha256": "042663b6bac14967f62d499fa1c4f2e70961beaccafcaf5323b1db396ed37818",
+      "role": "registration"
+    },
+    {
+      "begin_rva": "0x2d2aa00",
+      "end_rva_exclusive": "0x2d2aa9c",
+      "bytes": 156,
+      "sha256": "cd4fa09cfe95fa6704d33aeda69748a1b9cd13654ab3f21e974d357e74fb88fe",
+      "role": "effect factory"
+    },
+    {
+      "begin_rva": "0x2d29cf0",
+      "end_rva_exclusive": "0x2d2a016",
+      "bytes": 806,
+      "sha256": "2a2eeecd4e3c8c23ac4d9ef6f94804cb08588dec30d23253e54d2deeffc7ff09",
+      "role": "executor with multiple pdata fragments"
+    },
+    {
+      "begin_rva": "0x28baf50",
+      "end_rva_exclusive": "0x28bb0c5",
+      "bytes": 373,
+      "sha256": "c9723f21252846e0a0265d5fbc28c845cd0095ce70bd91715c06504ccce377de",
+      "role": "gain/loss helper"
+    },
+    {
+      "begin_rva": "0x23036e0",
+      "end_rva_exclusive": "0x2303783",
+      "bytes": 163,
+      "sha256": "0e06c82214ba5366a5c55c59ed193111821af27c7a96390a739aaeba0a4ab822",
+      "role": "modifier lookup"
+    },
+    {
+      "begin_rva": "0x30e7b40",
+      "end_rva_exclusive": "0x30e7c17",
+      "bytes": 215,
+      "sha256": "68d298a9da07a2b604d714de570bda1dbdda20c4a783d919ba9d4ff851d958bf",
+      "role": "dynamic key builder"
+    },
+    {
+      "begin_rva": "0x30e49d0",
+      "end_rva_exclusive": "0x30e4b6c",
+      "bytes": 412,
+      "sha256": "b2d8ab5a26a1c12d9d48f840e6088ee65917c677d3edb2309028e467a9de458f",
+      "role": "root/level fold"
+    },
+    {
+      "begin_rva": "0x2303100",
+      "end_rva_exclusive": "0x2303276",
+      "bytes": 374,
+      "sha256": "e887ee421dde1979396580cb9559586f3ddb6e83206b177c78ac0d5d38a3950f",
+      "role": "additive accumulator"
+    }
+  ],
+  "evidence_files": [
+    "ACCUMULATOR-WINDOW.actual.json",
+    "AUTH.actual.json",
+    "EXECUTOR-a01.actual.json",
+    "EXECUTOR-WINDOW.actual.json",
+    "FAST-LOCATORS.actual.json",
+    "FUNCTIONS-a01.actual.json",
+    "GAIN-HELPER-a01.actual.json",
+    "LEVEL-CONSUMERS-a01.actual.json",
+    "LEVEL-MERGE-CALLERS.actual.json",
+    "LEVEL-MERGE-HELPERS.actual.json",
+    "LEVEL-PARSER-a01.actual.json",
+    "LOCATORS.actual.json",
+    "MODIFIER-BUILDERS.actual.json",
+    "MODIFIER-CONSUMER-LOCATORS.actual.json",
+    "MODIFIER-KEY-REFS.actual.json",
+    "MODIFIER-LOCATORS.actual.json",
+    "registration-body.actual.json",
+    "research-plan.json",
+    "TRAIT-ID-PRODUCERS.actual.json"
+  ],
+  "corrections": [
+    "FUNCTIONS-a01 predecessor pdata lookup mislabelled requested2D29BD0; EXECUTOR-a01 corrects it.",
+    "LEVEL-MERGE-CALLERS 2BAE594 bounded window decodes no instructions; ACCUMULATOR-WINDOW 2BAE590 has valid boundary.",
+    "Windows explicitly include adjacent code; final body_pins delimit the semantic bodies used."
+  ],
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\_traits.info",
+      "bytes": 13221,
+      "sha256": "40bcad43995d91d35cda894151c0c098519835f2780cf2d4368ba84c06ff8c3b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\disasm_ck3.py",
+      "bytes": 1514,
+      "sha256": "82ec4c2f631b2bfc4040832d5571453e238c27bdaa8c43af0494461ea4a71703"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\find_string_xrefs.py",
+      "bytes": 6203,
+      "sha256": "b0821ee50603cd1754d6270c395cf1f2746d6b7b36aacb11de26eca704c46144"
+    }
+  ],
+  "method_limits": [
+    "Static disassembly inference from exact machine instructions, not execution of those instructions.",
+    "Core arithmetic closure does not verify dynamic modifier cache freshness or source activation in a current world.",
+    "Exploratory byte locator windows containing adjacent code never authorize unrelated semantics."
+  ],
+  "key_mapping": {
+    "trait_ids": "30E3C5A-84 passes name at object+18 and modifier slots object+4B6; postload local pointer is object+538",
+    "track_ids": "30E78CD formats trait_track_%s;30E790C passes track+648 to30E7B40",
+    "getter": "23036E0 reads uint16 ID from current collection; missing/FFFF=0"
+  },
+  "frozen_at_utc": "2026-10-21T20:02:18.866892+00:00"
+}

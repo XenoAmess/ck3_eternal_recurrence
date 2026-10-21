@@ -28,6 +28,23 @@
 
 字段合同以实际生产 reader 为准：[个人使用](../../ck3_autonomous_player/src/xar_autoplayer/bridge/faith_observers_private_transport_v1.py)、[圣地上下文](../../ck3_autonomous_player/src/xar_autoplayer/bridge/player_holy_site_relic_context_private_transport.py)、[技能总量](../../ck3_autonomous_player/src/xar_autoplayer/bridge/character_skill_effects_private_transport_v1.py)、[骑士总量](../../ck3_autonomous_player/src/xar_autoplayer/bridge/character_knight_effectiveness_private_transport_v1.py)。其中 `cached_world_state` 与 `current_relic_evaluation` 分列；实际名字和字段不能由 UI 文案补造。
 
+## 朝圣专题V5：完整输入、特质与公式
+
+2026-10-22追加用户要求的源研究，观察机器`machine_id: 4-8e1c2f1861`；每份JSON分别保存实际UTC、文件SHA、覆盖范围及未闭项。游玩智能体可按以下仓库路径直接查阅。此处是本页的研究扩展索引，既有MCP六专题返回范围按其实际实现，不将本表冒充新增可执行action或自动规划接线。
+
+| 所需知识 | 完整说明 | 结构化来源与应用边界 |
+| --- | --- | --- |
+| 开始活动的全部选项 | [类型、忠诚、排场、意图、目的地与旅行设置](../../promo/ck3_faith_and_power/episode02/docs/research-v5-setup-options.md) | [配置JSON](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-setup-options-12004.json)。先核当前DLC、角色资格、完整可选集合与当前费用；静态定义不等于本次可点。 |
+| 不同宗教规则与朝觐 | [五档朝圣偏好及Hajj调用链](../../promo/ck3_faith_and_power/episode02/docs/research-v5-doctrines-hajj.md) | [宗教／朝觐JSON](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-doctrines-hajj-12004.json)。逐个消费者区分Religion、Faith、Rite与人物状态；分别核活动、目的地和Hajj自身冷却。 |
+| 朝圣者特质全部影响来源 | [获得、XP、倍率、等级效果、移除与活动外入口](../../promo/ck3_faith_and_power/episode02/docs/research-v5-pilgrim-trait-inventory.md) | [完整库存JSON](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-pilgrim-trait-inventory-12004.json)。区分直接状态变化、条件效果和纯AI／事件机会；不能从特质推断已完成几次朝圣。 |
+| 费用、虔诚和朝圣者经验 | [有序公式及全部参数](../../promo/ck3_faith_and_power/episode02/docs/research-v5-cost-reward-xp-formulas.md) | [公式JSON](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-cost-reward-xp-formulas-12004.json)。脚本请求、引擎资源调整、当前报价和最终后态分别判断；未知项不代零。 |
+
+后继[精确等级与初始化a02](../../promo/ck3_faith_and_power/episode02/docs/research-v5-native-tier-12004.a02.md)及[结构化来源](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-native-tier-12004.a02.json)闭合源等级块无预差分累计、直接初始化0与重复授予不重置。较早各JSON保留封稿时的unknown，不将它们误作当前仍未研究；正文头部已追加后继说明。AI根字段与track modifier单列，未授组合AI行为总值。
+
+后继[意图候选原生链](../../promo/ck3_faith_and_power/episode02/docs/research-v5-intent-candidates-12004.md)及[结构化来源](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-intent-candidates-12004.json)闭合候选过滤和顺序，明确区分候选出现与按钮可选。共享娱乐在上游是否加入、当前人物完整集合仍未知，不能自行补出第四个动作。
+
+这些文档不授当前实例合同、原生动作许可、未知结果重试或普通auto自动消费。新场次仍须从当前角色及原生完整许可开始；V5导演案用于组织解释，不能替代这些来源。
+
 ## 关键来源与已知反例
 
 原版 `common/religion/holy_site_types/00_holy_site_types.txt` SHA-256 为 `0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40`；动态类型来源及完整 source pins 见各研究文档。缓存链来源区分 Rite producer `29CC520 → 24FB270`、角色 aggregate `291C0B0 → 291F080` 与 cached reader `2B0C740`／即时 relic evaluation `265A3F0`；这些来源不能单独证明本次缓存刷新。完整原始 source 合同在下述来源机器 Q/a1-effect-refresh-source-a01/SOURCE-PINS.actual.json，SHA-256 `f0c71136a3a3864c0a1f4b1aaf0530d6bac8a819c9490b63ac353f624bb1fa56`。

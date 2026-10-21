@@ -1,0 +1,1611 @@
+{
+  "schema": "faith-e02-pilgrimage-v5-cost-reward-xp-formulas-12004-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T20:11:11.747953+00:00",
+  "scope": "actual installed-source analysis and explicitly pinned exact-EXE static semantics; no new live qualification",
+  "action_ready": false,
+  "ordinary_auto_qualified": false,
+  "new_live_action_authorization": false,
+  "installed_game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "version_context": {
+    "version": "1.20.0.4",
+    "known_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "fresh_whole_exe_hash": false,
+    "fresh_game_start": false
+  },
+  "source_pins": [
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/activity_types/pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "id": "S01",
+      "game_relative_path": "common/activities/activity_types/pilgrimage.txt",
+      "relevant_lines": [
+        [
+          865,
+          900
+        ],
+        [
+          902,
+          1381
+        ],
+        [
+          1563,
+          1709
+        ],
+        [
+          1720,
+          1783
+        ],
+        [
+          1797,
+          1816
+        ],
+        [
+          1832,
+          2112
+        ],
+        [
+          2136,
+          2368
+        ],
+        [
+          2416,
+          2417
+        ],
+        [
+          2544,
+          2579
+        ],
+        [
+          2655,
+          2658
+        ],
+        [
+          2696,
+          2707
+        ],
+        [
+          2746,
+          2748
+        ],
+        [
+          2840,
+          2882
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/50_pilgrimage_values.txt",
+      "bytes": 11353,
+      "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9",
+      "id": "S02",
+      "game_relative_path": "common/script_values/50_pilgrimage_values.txt",
+      "relevant_lines": [
+        [
+          6,
+          59
+        ],
+        [
+          103,
+          149
+        ],
+        [
+          154,
+          281
+        ],
+        [
+          286,
+          481
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_activity_values.txt",
+      "bytes": 78895,
+      "sha256": "0b5c2da145cf0d2311aba8525c7decfc865d0539b81acdf3974ed74a68b37c92",
+      "id": "S03",
+      "game_relative_path": "common/script_values/00_activity_values.txt",
+      "relevant_lines": [
+        [
+          772,
+          810
+        ],
+        [
+          1455,
+          1489
+        ],
+        [
+          1493,
+          1535
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "id": "S04",
+      "game_relative_path": "common/script_values/00_basic_values.txt",
+      "relevant_lines": [
+        [
+          49,
+          114
+        ],
+        [
+          451,
+          456
+        ],
+        [
+          1131,
+          1166
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "id": "S05",
+      "game_relative_path": "common/script_values/01_dynamic_values.txt",
+      "relevant_lines": [
+        [
+          53,
+          110
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_distance_values.txt",
+      "bytes": 770,
+      "sha256": "fd23c44170db684e7ae5fdb330b3622c89f4cc779a853245eee350482f1c65e5",
+      "id": "S06",
+      "game_relative_path": "common/script_values/00_distance_values.txt",
+      "relevant_lines": [
+        [
+          1,
+          15
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_dynasty_values.txt",
+      "bytes": 2516,
+      "sha256": "0aad110fd46c8bb7fbedba372e049002caa25ca992cd4362b9387d07dc90ca8e",
+      "id": "S07",
+      "game_relative_path": "common/script_values/00_dynasty_values.txt",
+      "relevant_lines": [
+        [
+          93,
+          93
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_lifestyle_values.txt",
+      "bytes": 22192,
+      "sha256": "4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0",
+      "id": "S08",
+      "game_relative_path": "common/script_values/00_lifestyle_values.txt",
+      "relevant_lines": [
+        [
+          1,
+          10
+        ],
+        [
+          910,
+          912
+        ],
+        [
+          960,
+          962
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/pam_values.txt",
+      "bytes": 272209,
+      "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "id": "S09",
+      "game_relative_path": "common/script_values/pam_values.txt",
+      "relevant_lines": [
+        [
+          2160,
+          2172
+        ],
+        [
+          2589,
+          2589
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/07_ep3_values.txt",
+      "bytes": 147367,
+      "sha256": "b4b46e562baa20f8aa7fbac91b3d8b95f6a59d053eaf6b5f28ca9d091f85c776",
+      "id": "S10",
+      "game_relative_path": "common/script_values/07_ep3_values.txt",
+      "relevant_lines": [
+        [
+          2304,
+          2304
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_travel_values.txt",
+      "bytes": 5918,
+      "sha256": "f90b584b8c40546e591077fdefbdfe35fb924ffb0cf9d550da655b473a6bc4b8",
+      "id": "S11",
+      "game_relative_path": "common/script_values/00_travel_values.txt",
+      "relevant_lines": [
+        [
+          97,
+          140
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/travel/travel_options/travel_options.txt",
+      "bytes": 40882,
+      "sha256": "c0779e50bada5f148f3dac0ffb5a0d1714ab4553e36488faed7676d1eb776d9e",
+      "id": "S12",
+      "game_relative_path": "common/travel/travel_options/travel_options.txt",
+      "relevant_lines": [
+        [
+          182,
+          199
+        ],
+        [
+          243,
+          250
+        ],
+        [
+          293,
+          300
+        ],
+        [
+          339,
+          379
+        ],
+        [
+          523,
+          563
+        ],
+        [
+          647,
+          687
+        ],
+        [
+          821,
+          861
+        ],
+        [
+          999,
+          1039
+        ],
+        [
+          1174,
+          1214
+        ],
+        [
+          1351,
+          1391
+        ],
+        [
+          1532,
+          1572
+        ],
+        [
+          1596,
+          1636
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/activity_types/_activity_type.info",
+      "bytes": 39978,
+      "sha256": "b082e108a1f1ca8c3e2c6d20ce0b561bc031fc43bb83ee727547e7e24dd985fa",
+      "id": "S13",
+      "game_relative_path": "common/activities/activity_types/_activity_type.info",
+      "relevant_lines": [
+        [
+          190,
+          218
+        ],
+        [
+          392,
+          402
+        ],
+        [
+          517,
+          539
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_travel_planner.gui",
+      "bytes": 32351,
+      "sha256": "0cdf5197fac7389d20a71c3018cbbdebf727c3240ea30f65ae5032706cfe13e3",
+      "id": "S14",
+      "game_relative_path": "gui/window_travel_planner.gui",
+      "relevant_lines": [
+        [
+          174,
+          188
+        ],
+        [
+          747,
+          754
+        ],
+        [
+          796,
+          803
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "id": "S15",
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "relevant_lines": [
+        [
+          55,
+          213
+        ],
+        [
+          216,
+          315
+        ],
+        [
+          317,
+          485
+        ],
+        [
+          488,
+          670
+        ],
+        [
+          673,
+          876
+        ],
+        [
+          880,
+          944
+        ],
+        [
+          1136,
+          1207
+        ],
+        [
+          1225,
+          1369
+        ],
+        [
+          1421,
+          1430
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "id": "S16",
+      "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "relevant_lines": [
+        [
+          4304,
+          4384
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/traits/00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+      "id": "S17",
+      "game_relative_path": "common/traits/00_traits.txt",
+      "relevant_lines": [
+        [
+          8755,
+          8953
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/traits/_traits.info",
+      "bytes": 13221,
+      "sha256": "40bcad43995d91d35cda894151c0c098519835f2780cf2d4368ba84c06ff8c3b",
+      "id": "S18",
+      "game_relative_path": "common/traits/_traits.info",
+      "relevant_lines": [
+        [
+          196,
+          256
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/intents/pilgrimage_intents.txt",
+      "bytes": 1505,
+      "sha256": "67c914ef7f84b28dc2ae9072f5aeb48a535bbaa3207f518f3c879737e4e22002",
+      "id": "S19",
+      "game_relative_path": "common/activities/intents/pilgrimage_intents.txt",
+      "relevant_lines": [
+        [
+          1,
+          104
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/on_action/travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+      "id": "S20",
+      "game_relative_path": "common/on_action/travel_on_actions.txt",
+      "relevant_lines": [
+        [
+          1,
+          40
+        ],
+        [
+          320,
+          340
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/pulse_actions/pilgrimage_actions.txt",
+      "bytes": 25245,
+      "sha256": "37cdc5f3bb8afc221fb25a8d8428d0b82511815b7e714a9c4c54e13f39b7f22a",
+      "id": "S21",
+      "game_relative_path": "common/activities/pulse_actions/pilgrimage_actions.txt",
+      "relevant_lines": [
+        [
+          1,
+          24
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "id": "S22",
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "relevant_lines": [
+        [
+          2770,
+          2784
+        ],
+        [
+          6915,
+          6926
+        ],
+        [
+          8340,
+          8354
+        ],
+        [
+          9090,
+          9104
+        ],
+        [
+          10967,
+          10983
+        ],
+        [
+          14430,
+          14493
+        ],
+        [
+          15091,
+          15145
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/modifiers/00_travel_modifiers.txt",
+      "bytes": 8782,
+      "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+      "id": "S23",
+      "game_relative_path": "common/modifiers/00_travel_modifiers.txt",
+      "relevant_lines": [
+        [
+          266,
+          279
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/dynasty_perks/01_ep2_dynasty_perks.txt",
+      "bytes": 3190,
+      "sha256": "30759c437ec3ebdb532b06019fba32286481fc2a660968f7742654fe877a813b",
+      "id": "S24",
+      "game_relative_path": "common/dynasty_perks/01_ep2_dynasty_perks.txt",
+      "relevant_lines": [
+        [
+          28,
+          43
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "bytes": 3576,
+      "sha256": "958ed520472473b02a3241cee5a79d7ac561c1b6f2d3d3eb86a5918c1c291a23",
+      "id": "S25",
+      "game_relative_path": "common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "relevant_lines": [
+        [
+          70,
+          97
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "bytes": 438719,
+      "sha256": "3b1d429f812be978246268a4965222297b0651bc9b013b390e9b5abd41784a3f",
+      "id": "S26",
+      "game_relative_path": "common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "relevant_lines": [
+        [
+          3840,
+          4010
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/modifier_definition_formats/00_definitions.txt",
+      "bytes": 70167,
+      "sha256": "a1db27f5dc5ae1c1e89764ccb265d4167ba8be5be40b88602b0d90b471287cc4",
+      "id": "S27",
+      "game_relative_path": "common/modifier_definition_formats/00_definitions.txt",
+      "relevant_lines": [
+        [
+          2977,
+          2980
+        ],
+        [
+          3021,
+          3024
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/pam_effects.txt",
+      "bytes": 369911,
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+      "id": "S28",
+      "game_relative_path": "common/scripted_effects/pam_effects.txt",
+      "relevant_lines": [
+        [
+          1475,
+          1498
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_activity_planner.gui",
+      "bytes": 52892,
+      "sha256": "2f18263ad5be79bfc10c9bc33fd1ccff1e41a0be2bafc7d19e4f9cf0b58feb54",
+      "id": "S29",
+      "game_relative_path": "gui/window_activity_planner.gui",
+      "relevant_lines": [
+        [
+          1276,
+          1280
+        ],
+        [
+          1663,
+          1667
+        ],
+        [
+          1801,
+          1805
+        ],
+        [
+          2150,
+          2150
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "id": "S30",
+      "game_relative_path": "common/defines/00_defines.txt",
+      "relevant_lines": [
+        [
+          1667,
+          1705
+        ],
+        [
+          1714,
+          1728
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/events/travel_events/travel_start_events.txt",
+      "bytes": 95408,
+      "sha256": "4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9",
+      "id": "S31",
+      "game_relative_path": "events/travel_events/travel_start_events.txt",
+      "relevant_lines": [
+        [
+          2171,
+          2304
+        ],
+        [
+          2456,
+          2514
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/_script_values.info",
+      "bytes": 3852,
+      "sha256": "764ad711339c61bf239851bd52d87168dc1a2c91fe0c385c308ec4b85e2b5ef1",
+      "id": "S32",
+      "game_relative_path": "common/script_values/_script_values.info",
+      "relevant_lines": [
+        [
+          17,
+          70
+        ],
+        [
+          94,
+          103
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_costs/00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "id": "S33",
+      "game_relative_path": "common/scripted_costs/00_costs.txt",
+      "relevant_lines": [
+        [
+          662,
+          689
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_court_position_values.txt",
+      "bytes": 185196,
+      "sha256": "dbe4ea36a05a5e803626fb6fc3d4dcef394f1cc53f812985439540fa48a854bc",
+      "id": "S34",
+      "game_relative_path": "common/script_values/00_court_position_values.txt",
+      "relevant_lines": [
+        [
+          1132,
+          1194
+        ],
+        [
+          3383,
+          3441
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/court_positions/types/00_court_positions.txt",
+      "bytes": 257681,
+      "sha256": "a49fca3df3ae5d087d94621d3147db88bdb4f458d97c717e1821b43aa87cc951",
+      "id": "S35",
+      "game_relative_path": "common/court_positions/types/00_court_positions.txt",
+      "relevant_lines": [
+        [
+          563,
+          567
+        ],
+        [
+          1003,
+          1034
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_triggers/00_court_position_triggers.txt",
+      "bytes": 69893,
+      "sha256": "410ca0bed58976a985ee5f76c2b1b00b699f1d3167c3b37df24acd4242b8606a",
+      "id": "S36",
+      "game_relative_path": "common/scripted_triggers/00_court_position_triggers.txt",
+      "relevant_lines": [
+        [
+          1225,
+          1240
+        ],
+        [
+          1279,
+          1302
+        ],
+        [
+          1364,
+          1401
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/10_tgp_dynastic_cycle_values.txt",
+      "bytes": 38566,
+      "sha256": "c4972bee4ffe1e96cbfdbc0b7725a96997e651168f44e780d309adef6c6b9b36",
+      "id": "S37",
+      "game_relative_path": "common/script_values/10_tgp_dynastic_cycle_values.txt",
+      "relevant_lines": [
+        [
+          89,
+          89
+        ]
+      ]
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/court_positions/types/_court_positions.info",
+      "bytes": 19032,
+      "sha256": "d33893bbf21caf3886f9e30b2fcb51bfa102be1b138746bd2047dc7ff18d6c1f",
+      "id": "S38",
+      "game_relative_path": "common/court_positions/types/_court_positions.info",
+      "relevant_lines": [
+        [
+          40,
+          45
+        ],
+        [
+          137,
+          158
+        ]
+      ]
+    }
+  ],
+  "gold_values": {
+    "income": "monthly_character_income, not current wallet",
+    "income_factor_q": {
+      "when": "has_treasury AND this!=top_liege AND is_landed",
+      "true": 0.25,
+      "false": 1
+    },
+    "era": {
+      "tribal": 0.75,
+      "early_medieval": 1,
+      "high_medieval": 1.5,
+      "late_medieval": 3,
+      "no_culture_activity_E": 0,
+      "no_culture_gold_cap_E": 1
+    },
+    "minor": "ceil5(min(max(3*I*q,15),150*E_gold))",
+    "medium": "ceil5(min(max(6*I*q,50),300*E_gold))",
+    "ceil5": "5*ceil(x/5)",
+    "rounding_after_clamp": true,
+    "commented_old_fixed_values_are_not_definitions": true
+  },
+  "cost": {
+    "known_planning_formula": "C_body+C_pomp+C_destination+sum(selected travel option cost)",
+    "complete_cost_boundary": "Add exact travel leader hiring quote L when applicable; provisions is separate resource; event payments and refunds/income are separate actual transactions",
+    "body_base": {
+      "formula": "(30*max(t-1,1)*(tribal?0.5:1)+(tier_above_duchy?50:0))*(AI_hard?0.5:AI_very_hard?0.25:1)",
+      "order": [
+        "tier factor",
+        "tribal half",
+        "king/emperor additive50",
+        "AI hard/veryhard factor"
+      ],
+      "normal_landed_human_nontribal": {
+        "county": 30,
+        "duchy": 60,
+        "kingdom": 140,
+        "empire": 170
+      }
+    },
+    "body": {
+      "initial": "B*E",
+      "ordered_operations": [
+        {
+          "condition": "hunt_urge_for_pilgrim_badges_modifier",
+          "operation": "subtract",
+          "value": "G_medium"
+        },
+        {
+          "condition": "ghost_pilgrimage_promised_modifier",
+          "operation": "subtract",
+          "value": "G_medium"
+        },
+        {
+          "condition": "hajj_promised_modifier",
+          "operation": "subtract",
+          "value": "G_medium"
+        },
+        {
+          "condition": "pilgrimage_promised_modifier",
+          "operation": "subtract",
+          "value": "G_medium"
+        },
+        {
+          "condition": "dynasty ep2_activities_legacy_1",
+          "operation": "subtract",
+          "value": "B*0.5"
+        },
+        {
+          "condition": "imaginary friend flag AND owned story destination equals scope:province",
+          "operation": "multiply",
+          "value": 0.5
+        },
+        {
+          "condition": "court_event_discount_pilgrimage",
+          "operation": "multiply",
+          "value": 0.75
+        },
+        {
+          "condition": "pam_sf_pilgrimage_funded_modifier",
+          "operation": "multiply",
+          "value": 0.5
+        },
+        {
+          "condition": "sp_cheaper_pilgrimage_major, else sp_cheaper_pilgrimage",
+          "operation": "multiply",
+          "values": [
+            0.5,
+            0.75
+          ],
+          "mutually_exclusive": true
+        },
+        {
+          "condition": "house aspiration humility_pilgrimage_discount",
+          "operation": "multiply",
+          "value": 0.75
+        },
+        {
+          "condition": "realm law cheaper_pilgrimages",
+          "operation": "multiply",
+          "value": 0.75
+        },
+        {
+          "condition": "domicile estate_cheaper_pilgrimage_cost",
+          "operation": "subtract",
+          "value": "B*E*0.2"
+        },
+        {
+          "condition": "rite local_shrine_offering",
+          "operation": "multiply",
+          "value": 1.75
+        },
+        {
+          "condition": "(landless adventurer OR nomadic government) AND clerical_justifications_perk",
+          "operation": "multiply",
+          "value": 0.5
+        },
+        {
+          "condition": "confederation any_member_activity_cost_reduced",
+          "operation": "multiply",
+          "value": 0.9
+        },
+        {
+          "condition": "tgp_reflection_modifier",
+          "operation": "multiply",
+          "value": 0.8
+        },
+        {
+          "condition": "tgp_ceremonial_liege_events_0020_discount=flag:pilgrimage",
+          "operation": "multiply",
+          "value": 0.85
+        },
+        {
+          "condition": "mandala_godking variable AND is_ai",
+          "operation": "multiply",
+          "value": 0.25
+        },
+        {
+          "condition": "always",
+          "operation": "min_lower_bound",
+          "value": "G_minor"
+        },
+        {
+          "condition": "has_title e_minister_of_revenue; caller, after floor",
+          "operation": "multiply",
+          "value": 0.85
+        }
+      ],
+      "total_upper_bound_in_this_function": null,
+      "final_round_to_multiple5": false,
+      "floor_only_body_not_whole_activity": true
+    },
+    "pomp": {
+      "T": "max(t-1,1)",
+      "A": "T+E-1",
+      "humble": {
+        "formula": "-10*A",
+        "legacy_discount_applied": false,
+        "journey_planner_applied": false,
+        "funded_discount_applied": false
+      },
+      "appropriate": {
+        "formula": "0"
+      },
+      "ceremonial": {
+        "formula": "(50*A-(legacy?25:0))*(journey_planner?0.8:1)*(funded?0.5:1)"
+      },
+      "throng": {
+        "formula": "(100*A-(legacy?50:0))*(journey_planner?0.8:1)*(funded?0.5:1)"
+      },
+      "not_product_T_times_E": true
+    },
+    "entourage": {
+      "appropriate_max_selector": 5,
+      "ceremonial_max_selector": 10,
+      "throng_max_selector": 20,
+      "separate_basic_selector_max": 5,
+      "humble_constant": 7,
+      "humble_direct_option_selector_consumer_found": false,
+      "start_event_consumer": "S31 travel_start_event.1060 calls local-grab then player-only creation; compares entire current num_entourage_characters",
+      "start_event_target_counts": {
+        "humble": 7,
+        "appropriate": 5,
+        "ceremonial": 10,
+        "throng": 20
+      },
+      "existing_excess_not_trimmed": true,
+      "actual_arrival_count_equals_max": false,
+      "simple_sum_of_selector_maxima_is_not_proven_actual_count": true,
+      "explicit_per_person_cost_in_body_pomp_phase": false
+    },
+    "destination": {
+      "distance": "capital_province.squared_distance(scope:province)",
+      "coefficient_table": [
+        {
+          "max_inclusive": 22500,
+          "factor": 0
+        },
+        {
+          "lower_exclusive": 22500,
+          "max_inclusive": 62500,
+          "factor": 0.2
+        },
+        {
+          "lower_exclusive": 62500,
+          "max_inclusive": 422500,
+          "factor": 0.4
+        },
+        {
+          "lower_exclusive": 422500,
+          "max_inclusive": 722500,
+          "factor": 0.6
+        },
+        {
+          "lower_exclusive": 722500,
+          "max_inclusive": 1440000,
+          "factor": 0.8
+        },
+        {
+          "lower_exclusive": 1440000,
+          "max_inclusive": 2402500,
+          "factor": 1
+        },
+        {
+          "lower_exclusive": 2402500,
+          "max_inclusive": 9000000,
+          "factor": 1.2
+        },
+        {
+          "lower_exclusive": 9000000,
+          "factor": 1.5
+        }
+      ],
+      "formula": "G_medium*k*E*(matching_imaginary_friend?0.5:1)*(landless_adventurer_government_and_clerical_justifications?0.5:1)*(funded?0.5:1)",
+      "no_province_fallback": "G_medium before era/remaining conditions, not a selected route quote",
+      "local_shrine_or_confederation_or_legacy_reapplied": false,
+      "floor_or_final_rounding": false
+    },
+    "currency_route": {
+      "activity_body_pomp_phase": "treasury iff government_is_theocracy AND has_treasury; otherwise gold",
+      "minister_discount": "body caller only, not all layers"
+    },
+    "type_and_fidelity_direct_extra_gold_cost": 0,
+    "fidelity_travel_modifier": {
+      "obligatory": {
+        "travel_speed_mult": 0.5
+      },
+      "contemplative": {
+        "travel_speed_mult": -0.5
+      },
+      "humble_pomp": {
+        "travel_safety": -25
+      },
+      "modifiers_are_deltas_not_guaranteed_final_speed": true
+    },
+    "travel_options": {
+      "base_formula": "{low:2,medium:5,high:10}*T*(well_prepared?0.75:1)",
+      "very_low": "0.5*low; unused by paid options in this installed file",
+      "max_selected": 2,
+      "direct_gold_equipment": [
+        "purchase_rough_terrain_gear_option",
+        "purchase_desert_gear_option",
+        "purchase_forest_gear_option"
+      ],
+      "medium": [
+        "experienced_captains_option",
+        "cultural_ambassador_option"
+      ],
+      "high": [
+        "hire_experienced_mercenaries_option"
+      ],
+      "low_hiring": [
+        "hire_jungle_expert_option",
+        "hire_mountaineer_option",
+        "hire_forder_option",
+        "hire_desert_warrior_option",
+        "hire_rough_terrain_expert_option",
+        "court_physician_option"
+      ],
+      "hiring_currency": "gold iff no treasury (nomadic half); treasury iff has_treasury; nomadic additional herd full amount",
+      "cultural_ambassador_herd_exception": "low, while gold/treasury use medium",
+      "employee_compensation_not_second_owner_charge": true,
+      "distinct_paid_option_definitions": 12
+    },
+    "ui_prediction": {
+      "classification": "separate rough expected cost, not actual selected quote",
+      "pomp_average_formula": "(0-10+50+100)*T*E/4",
+      "distance_average": "mean over own faith holy sites",
+      "adventurer_factor_here": 0.25,
+      "actual_body_adventurer_factor": 0.5,
+      "final_rounding": "ceil5 after own floor",
+      "not_current_actual_total": true
+    },
+    "travel_leader_script_cost": {
+      "source_id": "S33",
+      "key": "travel_leader",
+      "condition": "cost root.liege exists AND is_landless_adventurer=no",
+      "if_true": "max(scope:speed_aptitude/5,1)+max(scope:safety_aptitude/5,1)",
+      "if_false": 0,
+      "currency": "gold",
+      "round": false,
+      "max": null,
+      "must_not_replace_aptitude_scopes_with_raw_character_skill": true,
+      "exact_GUI_getter_to_named_key_root_scope_binding_closed": false
+    },
+    "travel_leader_monthly_salary": {
+      "sources": [
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38"
+      ],
+      "initial": 0.1,
+      "core_ordered_multipliers": [
+        {
+          "when": "scope:liege government_is_ecclesiastical",
+          "factor": 0.25
+        },
+        {
+          "when": "liege culture cheaper_court_positions",
+          "factor": 0.8
+        },
+        {
+          "when": "liege h_china and specified dynastic cycle group higher court position salaries parameter",
+          "factor": 1.2
+        },
+        {
+          "when": "hard or very_hard and liege AI",
+          "factor": 0
+        }
+      ],
+      "total_ordered_multipliers": [
+        {
+          "when": "Inner Circle same-house court position condition",
+          "factor": 0,
+          "else_if": "obligation or strong_obligation hook condition",
+          "else_if_factor": 0.5
+        },
+        {
+          "when": "employee in halved_position_salary_employees",
+          "factor": 0.5
+        },
+        {
+          "when": "employee in increased_position_salary_employees",
+          "factor": 1.5
+        },
+        {
+          "when": "landless adventurer government liege",
+          "factor": 0
+        }
+      ],
+      "currency": "treasury iff liege has_treasury, else gold; employee receives gold independently",
+      "not_pilgrimage_specific": true,
+      "not_second_owner_debit_for_received_salary": true
+    },
+    "opaque_engine_quotes": [
+      {
+        "api": "Character.GetTravelLeaderCost / GetTravelLeaderCostBreakdown",
+        "symbol": "L",
+        "known_script_formula": "S33 travel_leader defined; exact getter/root/scope binding still not closed"
+      },
+      {
+        "api": "TravelPlanner.GetProvisionsCost / GetProvisionsCostBreakdown",
+        "symbol": "provisions_resource_quote",
+        "must_not_assume_gold": true
+      },
+      {
+        "api": "TravelPlanner.AccessCostBreakdown",
+        "known_script_formula": null
+      }
+    ],
+    "event_payments": {
+      "separate_from_planning": true,
+      "pilgrimage_6840_A_B": {
+        "requested_gold": "min(G_medium,15)=15 because G_medium>=50",
+        "piety_script_base": 25,
+        "actual_native_payment_or_wallet_result_not_observed_this_task": true
+      },
+      "unseen_random_or_choice_dependent_fees_not_counted_as_paid": true
+    }
+  },
+  "piety": {
+    "distance_measure": "capital_barony of PILGRIM to HOLY_SITE squared_distance, saved to activity enum at start; not routed travel days",
+    "distance_table": [
+      {
+        "max_inclusive": 100000,
+        "base": 100
+      },
+      {
+        "lower_exclusive": 100000,
+        "max_inclusive": 1000000,
+        "base": 150
+      },
+      {
+        "lower_exclusive": 1000000,
+        "max_inclusive": 5000000,
+        "base": 250
+      },
+      {
+        "lower_exclusive": 5000000,
+        "base": 350
+      }
+    ],
+    "formula": "(R0*D*F*Q+A_trait+A_pomp)*J*H*C",
+    "D": {
+      "erudition_legacy_4": 1.3,
+      "otherwise": 1
+    },
+    "F": {
+      "obligatory": 0.5,
+      "standard": 1,
+      "contemplative": 1.25
+    },
+    "Q": {
+      "pious_or_hajj": [
+        {
+          "score": "<25",
+          "factor": 1.1
+        },
+        {
+          "score": "[25,50)",
+          "factor": 1.25
+        },
+        {
+          "score": "[50,75)",
+          "factor": 1.75
+        },
+        {
+          "score": ">=75",
+          "factor": 2.5
+        }
+      ],
+      "worldly": 1
+    },
+    "A_trait": {
+      "when": "should_get_trait_piety flag actually set",
+      "amount": 50,
+      "do_not_infer_from_having_trait_alone": true
+    },
+    "A_pomp": {
+      "humble": 50,
+      "appropriate": 0,
+      "ceremonial": 50,
+      "throng": 100
+    },
+    "J": {
+      "when": "rite tenet_inner_journey_humble_pilgrimage_bonus AND humble",
+      "factor": 1.5,
+      "otherwise": 1
+    },
+    "H": {
+      "when": "matching own faith holy site with is_eminent=no in activity destination county",
+      "factor": 0.5,
+      "otherwise": 1
+    },
+    "C": {
+      "when": "confederation any_member_increased_pilgrimage_rewards",
+      "factor": 1.1,
+      "otherwise": 1
+    },
+    "progress": {
+      "scope": "activity",
+      "variable": "activity_special_type_progression",
+      "on_start": 0,
+      "arrival_distance_boost": {
+        "short": 5,
+        "medium": 3,
+        "long": 0,
+        "very_long": 0
+      },
+      "matching_type_major_step": 10,
+      "matching_type_massive_step": 40,
+      "matching_type_required": true,
+      "variables_must_exist": true,
+      "cap100_in_helpers": false,
+      "not_wallet_or_trait_xp": true
+    },
+    "payment_order": [
+      "destination phase on_end resolve flags",
+      "trigger pilgrimage.7000",
+      "pilgrimage_completed_log_entry_effect",
+      "Hajj trait/lifestyle branch when applicable",
+      "give_pilgrimage_reward_effect by stored distance enum"
+    ],
+    "conclusion_button": "show_as_tooltip only; after removes reward flags; not second payout",
+    "outside_main_formula": [
+      {
+        "when": "Sacred Mountains parameter and matching hills/mountains/desert_mountains terrain",
+        "ordinary_add_piety_base": 100
+      },
+      {
+        "when": "personal tenet_vows_of_poverty_humble_host and activity not already paid",
+        "ordinary_add_piety_base": 150,
+        "once_guard_variable": "pam_vows_of_poverty_completion_piety_paid"
+      }
+    ],
+    "not_direct_main_scalars": [
+      "zealot_intent",
+      "personality AI weight",
+      "monthly piety modifier",
+      "activity log score"
+    ],
+    "worldly_other_rewards": {
+      "acceptance_tier_values": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "guards": "culture head and current travel visited culture list; else timed modifier branch; not pious scalar"
+    },
+    "native_adjustment": {
+      "historical_doc": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/holy-site-piety-experience-consumer12004.md",
+        "bytes": 4846,
+        "sha256": "6ca22677d8ad4022bd443da6158c0781d22e232c5619df2245f9f31be3b3896a"
+      },
+      "historical_clarification": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/holy-site-piety-experience-consumer12004/planning-clarification.piety-consumer-a01.json",
+        "bytes": 2232,
+        "sha256": "9c76ef45ea54e5689e060a18fdb30f3d5989e9e09ad7983ffaaee65548546fb7"
+      },
+      "doc_lines": [
+        13,
+        25,
+        29
+      ],
+      "ordinary_positive_property_id": "0x59",
+      "factor": "max(0,1+m), with original fixed point and overflow behavior",
+      "property_human_name_or_all_producers_not_claimed": true,
+      "no_new_native_read": true
+    },
+    "wallet_and_devotion": {
+      "adjusted_positive_delta": "p",
+      "wallet_gain": "p",
+      "devotion_gain": "max(0,p-max(0,-old_wallet))",
+      "ordinary_negative": "wallet only, not devotion XP",
+      "forced_add_piety_and_experience_is_separate": true
+    }
+  },
+  "trait_xp": {
+    "track": "pilgrim single track",
+    "other_stores_not_equivalent": [
+      "activity_special_type_progression",
+      "piety wallet",
+      "devotion XP",
+      "lifestyle_traveler XP",
+      "learning/wanderer lifestyle XP",
+      "activity log score"
+    ],
+    "trait_thresholds": [
+      50,
+      100
+    ],
+    "hajjaj_has_pilgrim_track": false,
+    "arrival": {
+      "helper": "give_pilgrim_trait_or_xp_effect",
+      "first_grant": "add_trait=pilgrim only; no explicit add_trait_xp in this branch",
+      "parse_boundary": "Static conditional-block interpretation conditional on missing-limit default pass. Exact engine default semantics not closed here; no new parser/log execution. No silent repair of missing outer limit.",
+      "host_existing": [
+        {
+          "condition": "PAM and faith pam_secured_pilgrim_routes and XP<100",
+          "requested_xp": 30
+        },
+        {
+          "condition": "not preceding and XP<100",
+          "requested_xp": 0,
+          "reason": "literal empty else_if effect body"
+        },
+        {
+          "condition": "XP>=100",
+          "requested_xp": 20,
+          "engine_clamp_not_assumed": true
+        }
+      ],
+      "host_later_branches": "learning300 / flag occur after preceding unguarded outer else_if and are shadowed under standard branch semantics",
+      "nonhost_existing": [
+        {
+          "condition": "PAM and secure routes and XP<100",
+          "requested_xp": 20
+        },
+        {
+          "condition": "not preceding and XP<100",
+          "requested_xp": 10
+        },
+        {
+          "condition": "XP>=100 and learning lifestyle",
+          "learning_lifestyle_xp": 300
+        },
+        {
+          "condition": "remaining",
+          "set_flag": "should_get_trait_piety"
+        }
+      ],
+      "entourage": "separate conditional iteration can add pilgrim or request10 for existing trait; do not treat all entourage as host"
+    },
+    "completion": {
+      "helper": "give_pious_type_reward_effect",
+      "guard": "has pilgrim AND XP<100 AND corresponding pious flag",
+      "raw_xp_by_flag": {
+        "low": 5,
+        "mid": 10,
+        "high": 20,
+        "perfect": 40
+      },
+      "same_for_all_distance_branches": true,
+      "distance_is_not_an_extra_xp_multiplier": true,
+      "worldly_flags_do_not_match": true
+    },
+    "hajj": {
+      "first": "add hajjaj",
+      "repeat_learning": "learning_lifestyle_xp300",
+      "repeat_other": "set should_get_trait_piety",
+      "then": "same main reward wrapper",
+      "no_direct_hajjaj_track_write": true,
+      "existing_pilgrim_wrapper_guard_must_still_be_checked": true
+    },
+    "event_helper": {
+      "name": "give_pilgrim_xp_effect",
+      "if_pilgrim_and_XP_lt100": 5,
+      "otherwise_learning_lifestyle_xp": 100,
+      "otherwise_zealous": "medium stress loss",
+      "otherwise": "minor stress loss",
+      "real_caller_lines_in_pilgrimage_events": [
+        2779,
+        6922,
+        8349,
+        10977
+      ],
+      "not_global_arrival_or_monthly_base": true
+    },
+    "gain_modifier": {
+      "name": "pilgrim_xp_gain_mult",
+      "producers": [
+        {
+          "source_id": "S24",
+          "key": "ep2_activities_legacy_1",
+          "value": 0.5,
+          "guard": "active activity dynasty legacy modifier"
+        },
+        {
+          "source_id": "S25",
+          "key": "just_one_more_hill_perk",
+          "value": 0.2,
+          "guard": "government_character_modifier flag government_is_theocracy"
+        },
+        {
+          "source_id": "S26",
+          "value": 0.05,
+          "guard": "eligible active ecclesiastical domicile building level; four upgrade definitions, not automatically four stacked bonuses"
+        }
+      ],
+      "display_definition": "percentage format S27:2977; exact math independently closed by pinned native static evidence",
+      "aggregation_formula": "1+current trait modifier+current track modifier; not product of independent (1+m) factors",
+      "third_generic_xp_modifier_read": false
+    },
+    "exact_native_write": {
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "consumer_RVA": "0x2D29CF0",
+      "delta_helper_RVA": "0x28BAF50",
+      "raw_units_per_xp": 100000,
+      "if_positive_base_gain_keys": [
+        "pilgrim_xp_gain_mult",
+        "trait_track_pilgrim_xp_gain_mult"
+      ],
+      "if_negative_base_loss_keys": [
+        "pilgrim_xp_loss_mult",
+        "trait_track_pilgrim_xp_loss_mult"
+      ],
+      "factor_raw": "100000+current_trait_modifier_raw+current_track_modifier_raw",
+      "delta_raw": "trunc_toward_zero(base_raw*factor_raw/100000)",
+      "new_xp_raw": "clamp(old_xp_raw+delta_raw,0,10000000)",
+      "clamp_units": [
+        0,
+        100
+      ],
+      "order": "compute delta, add old XP, signed clamp, write, update level/cache",
+      "raw_factor_not_separately_clamped_here": true,
+      "zero_base_delta": 0,
+      "new_live_result": false,
+      "evidence": {
+        "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-native-trait-xp-12004.json",
+        "bytes": 7428,
+        "sha256": "31a4c7799f7d1b4d2dbac467961f12dd2a9019110a74c488058cbabcfdb58f40"
+      },
+      "zero_base": "returns without XP write",
+      "trait_must_already_be_held": true,
+      "missing_modifier_raw": 0
+    },
+    "doctrines": "basic_pilgrimage_rewards/mandatory_pilgrimage trait blocks affect monthly piety/opinion etc; no direct pilgrim XP multiplier in those blocks",
+    "degradation": "pilgrim trait defines no monthly_track_xp_degradation; display-only degradation modifier does not prove decay",
+    "outside_activity_inventory_relative": "knowledge/pilgrimage-v5-pilgrim-trait-inventory-12004.json",
+    "runtime_level_modifier_fold": {
+      "observed": "root first, every threshold whose XP requirement is met, same-ID additive accumulator",
+      "source_to_runtime_loading_normalization_fully_closed": false,
+      "do_not_directly_sum_raw_source_constants_as_net_monthly_bonus": true
+    },
+    "engine_gaps": [
+      "exact first trait track initialization",
+      "source trait modifier loading/preprocessing before known runtime fold",
+      "exact no-limit default conditional semantics",
+      "script-value conversion to raw before executor; arbitrary huge input overflow"
+    ],
+    "outside_activity_inventory": {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-pilgrim-trait-inventory-12004.json",
+      "bytes": 380691,
+      "sha256": "7530b566ecee5c4aa60e588f9865a32ca00514b791ba98b4e123e3fd14ba9372"
+    }
+  },
+  "models": [
+    {
+      "name": "A cost",
+      "classification": "hypothetical source arithmetic, not a live quote",
+      "inputs": {
+        "t": 3,
+        "E": 1,
+        "income": 10,
+        "q": 1,
+        "tribal": false,
+        "AI": false,
+        "discounts": false,
+        "cost_squared_distance": 500000,
+        "pomp": "appropriate",
+        "travel_option": "mountaineer low"
+      },
+      "derived": {
+        "G_minor": 30,
+        "G_medium": 60,
+        "B": 60,
+        "body": 60,
+        "pomp": 0,
+        "destination": 36,
+        "travel_option": 4,
+        "known_script_sum": 100
+      },
+      "additional_unknown": "actual leader hire quote L and non-gold provisions if applicable; event fees separate"
+    },
+    {
+      "name": "A ceremonial legacy variant",
+      "inputs": "same duke, ceremonial, ep2_activities_legacy_1 and journey_planner, no other discounts",
+      "body": "max(60-30,30)=30",
+      "pomp": "(50*(2+1-1)-25)*0.8=60",
+      "destination": 36,
+      "three_activity_layers_sum": 126,
+      "compare_no_legacy_no_planner_three_layers": 196
+    },
+    {
+      "name": "B immediate reward vs performance",
+      "classification": "hypothetical source-only counterfactual, not R22 B live",
+      "inputs": {
+        "pious": true,
+        "initial_score": 65,
+        "distance_base": 100,
+        "fidelity_factor": 1,
+        "pomp_add": 50,
+        "site_factor": 0.5,
+        "other_factors": 1,
+        "no_further_score_changes": true,
+        "native_piety_factor": 1
+      },
+      "event_A_B_gold_request_each": 15,
+      "event_A_B_piety_base_each": 25,
+      "A": {
+        "score": 75,
+        "main_piety": 150,
+        "completion_trait_xp_raw_request_if_guard": 40
+      },
+      "B": {
+        "score": 65,
+        "main_piety": 112.5,
+        "completion_trait_xp_raw_request_if_guard": 20
+      },
+      "main_piety_difference": 37.5
+    },
+    {
+      "name": "debt first",
+      "classification": "model uses already-adjusted positive delta",
+      "old_wallet": -100,
+      "adjusted_delta": 150,
+      "new_wallet": 50,
+      "devotion_gain": 50,
+      "not_pilgrim_track_xp": true
+    },
+    {
+      "name": "XP exact native arithmetic model",
+      "classification": "hypothetical held-trait inputs; no current actor read or first-trait initialization claim",
+      "examples": [
+        {
+          "old": 0,
+          "base": 40,
+          "trait_gain": 0.5,
+          "track_gain": 0,
+          "new": 60
+        },
+        {
+          "old": 80,
+          "base": 40,
+          "trait_gain": 0.5,
+          "track_gain": 0,
+          "new": 100,
+          "net_gain": 20
+        },
+        {
+          "old": 0,
+          "base": 40,
+          "trait_gain": 0.5,
+          "track_gain": 0.2,
+          "new": 68,
+          "not_independent_factor_product_72": true
+        }
+      ],
+      "small_raw_truncation_examples": [
+        {
+          "old_raw": 10,
+          "base_raw": 3,
+          "applicable_modifier_raw": 50000,
+          "new_raw": 14
+        },
+        {
+          "old_raw": 10,
+          "base_raw": -3,
+          "applicable_modifier_raw": 50000,
+          "new_raw": 6
+        }
+      ]
+    }
+  ],
+  "unclosed_engine_edges": [
+    "travel leader getter to known named-cost root/scope binding",
+    "provisions quote producer",
+    "final activity aggregate clamp and entourage de-duplication",
+    "first trait track initialization; source modifier loading/preprocessing; exact missing-limit defaults; pre-executor raw conversion/huge input overflow",
+    "unseen event costs or random XP cannot be booked as actual"
+  ],
+  "execution_boundary": {
+    "Native_calls": 0,
+    "game_starts": 0,
+    "Native_builds": 0,
+    "business_test_matrix_runs": 0,
+    "Git_operations": 0,
+    "formula_recomputation_only": true,
+    "raw_source_copy": false
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "schema": "ck3-12004-intent-candidate-static-chain-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-21T20:24:23.106346+00:00",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_bytes": 101040248,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "hash_read_at_utc": "2026-10-21T20:09:52.356105+00:00"
+  },
+  "mode": "offline-only",
+  "status": "STATIC_CANDIDATE_FILTER_CHAIN_WITH_UPSTREAM_SHARED_MERGE_UNKNOWN",
+  "gui": {
+    "file": "gui/window_activity_intent_selection.gui",
+    "list_line": 126,
+    "canpick_line": 137,
+    "sort_or_append_in_gui_block": false
+  },
+  "registration": {
+    "name_rva": "0x457b3d8",
+    "registration_rva": "0x2829e0",
+    "callback_rva": "0x1665a40",
+    "class_name_registration_rva": "0x16663e0",
+    "shared_class_type_id_rva": "0x5d5814c"
+  },
+  "getter": {
+    "leaf_rva": "0xc46370",
+    "ret_leaf_bytes": 8,
+    "container_offset": "0xf0",
+    "appends_candidates": false
+  },
+  "producer": {
+    "begin": "0x16649c0",
+    "end": "0x1664e9c",
+    "blocked_source": "selected activity option +0x2e8 pointer vectors unioned in a set",
+    "input": "activity type +0xd30 pointer vector; +0xd3c length",
+    "root_context": "window +0xc8 character ID passed to context constructor 0x9f9e20",
+    "filter_order": [
+      "skip blocked pointer",
+      "evaluate intent+0x40 predicate",
+      "append accepted pointer to window+0xf0"
+    ],
+    "output_order": "input host-container order preserved; no output sort in this body",
+    "universal_shared_append_in_this_body": false
+  },
+  "semantic_crosscheck": {
+    "body": "0x3112120-0x3113fc0",
+    "host_membership_check": "0x3112f99-0x3113105",
+    "source_path_literal": "activity_type.cpp",
+    "diagnostic": "blocked host intent must be a member of activity type host-intent collection",
+    "guest_collection_distinct_offsets": [
+      "0xd70",
+      "0xd7c"
+    ]
+  },
+  "can_pick": {
+    "callback": "0x1665b40",
+    "body": "0x1664090-0x16645fb",
+    "separate_predicate_offset": "0x110",
+    "target_requirement_and_target_validity_checked": true,
+    "is_shown_is_valid_field_name_mapping": "inference from source contract/order; field parser not fully closed"
+  },
+  "shared_reduce_stress": {
+    "definition_present": true,
+    "explicit_pilgrimage_host_keys": [
+      "reflection_intent",
+      "altruism_intent",
+      "zealot_intent"
+    ],
+    "automatic_upstream_insertion": "unknown",
+    "current_four_keys_names_enabled_and_display_order": "unknown",
+    "user_report_of_four_choices_preserved": true,
+    "absence_in_recovered_append_loop_does_not_prove_global_absence": true
+  },
+  "unknowns": [
+    "activity type host-container full database load/inheritance/merge producer",
+    "all named extra context scopes",
+    "all cache invalidation paths",
+    "current person CanPick and actual current four-item collection"
+  ],
+  "evidence": {
+    "GETTER-REGISTRATIONS.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\GETTER-REGISTRATIONS.actual.json",
+      "bytes": 17932,
+      "sha256": "46be3893e3d2135abf71fa09e8c90b5e4b28f7479fcbfad2fca44bd76f26ee8b"
+    },
+    "GETTER-BODIES.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\GETTER-BODIES.actual.json",
+      "bytes": 7272,
+      "sha256": "740820de8f2328bb7faa41315c3e644e2697fb5a7be649728f5f1e2bd25d1b2a"
+    },
+    "ACCESSOR-LEAVES.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\ACCESSOR-LEAVES.actual.json",
+      "bytes": 1013,
+      "sha256": "9af2fb2c03306b1ee9b660eff3e47f14595c408bc88842788ab4208c3cd2cca9"
+    },
+    "CLASS-TYPE-LINK.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\CLASS-TYPE-LINK.actual.json",
+      "bytes": 7308,
+      "sha256": "4c588cb1a61c08d61a09c9bf8c172d1744ff1b15b3c468a369b3c503b3e6f9e5"
+    },
+    "POTENTIAL-PRODUCER.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\POTENTIAL-PRODUCER.actual.json",
+      "bytes": 12275,
+      "sha256": "256d73031353505669f82ae7a8726ec11ab6cbe7022439ba8958f4b3f0c91717"
+    },
+    "CANDIDATE-CONTEXT-AND-SET.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\CANDIDATE-CONTEXT-AND-SET.actual.json",
+      "bytes": 11347,
+      "sha256": "1c5969a3ea29652c3a7c471e5408c7a19f8521bcc5bbb4ab9696ce51478ce5d5"
+    },
+    "CANDIDATE-ACCESS-AND-CANPICK.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\CANDIDATE-ACCESS-AND-CANPICK.actual.json",
+      "bytes": 25951,
+      "sha256": "13adbdb64206b55d8591b56c9032628d676b7eed7456aadeadc096a46ef7281e"
+    },
+    "ACTIVITY-TYPE-PARSER.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\ACTIVITY-TYPE-PARSER.actual.json",
+      "bytes": 69895,
+      "sha256": "fe4e16b8d6a95eaa63131050c10ad6f7fe4e620a22143ba710c2b2f72e3a8da9"
+    },
+    "SOURCE-INVENTORY.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\SOURCE-INVENTORY.actual.json",
+      "bytes": 1436,
+      "sha256": "00a79b4e08d2221adeb1454554df8d81d3399d04ec7a0ae4c77b1fb9e7fc941f"
+    }
+  },
+  "report": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\director-v5-comprehensive-20261022-a01\\intent-candidate-semantics-a01\\research-intent-candidate-semantics-12004.md",
+    "bytes": 3743,
+    "sha256": "b46c78dd9230bdfc680ed7b356048618e970b5fd34ace97fa7f03cfbc073fab6"
+  },
+  "game_started": false,
+  "provider_native_or_debugger_used": false,
+  "runtime_memory_read": false,
+  "GUI_or_OCR_used": false,
+  "new_live_evidence": false,
+  "source_or_Root_or_Git_changes": false,
+  "new_Python_files_or_dependencies": false,
+  "semantic_correctness_automatically_verified": false
+}
