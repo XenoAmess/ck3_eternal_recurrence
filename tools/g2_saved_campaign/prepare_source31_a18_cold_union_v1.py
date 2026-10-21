@@ -327,7 +327,7 @@ def native32_source_stage_v2(source: Mapping[str, bytes], *,
         "        raise RuntimeError('Native32 observer binding bytes differ')\n"
         "    _n32_binding:object=json.loads(_n32_raw)\n"
         "    from xar_autoplayer.bridge.native_loaded_provider_origin_v1 import ensure_received_provider_v1\n"
-        "    from xar_autoplayer.mcp_server import _forbid_unknown_tool_arguments_v1\n"
+        "    from xar_autoplayer.bridge.mcp_server import _forbid_unknown_tool_arguments_v1\n"
         "    from mcp.types import ToolAnnotations as _N32Annotations\n"
         "    _n32_extension.register_native32_journal_v1(\n"
         "        server.tool(annotations=_N32Annotations(readOnlyHint=True,destructiveHint=False,\n"
