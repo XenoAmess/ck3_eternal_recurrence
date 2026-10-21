@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T18:11:04.603238+00:00",
+  "original_pid": 7044,
+  "created": "134370798625620917",
+  "identity_diagnostic": null,
+  "original_Popen_wait": 0,
+  "actual_original_Popen_wait": true,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\focused-a05\\stdout.actual.txt",
+    "bytes": 2527,
+    "sha256": "34591016a2cdac965449ed099f2683c54ab17ba277c477e58dca7ed424778e15"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\focused-a05\\stderr.actual.txt",
+    "bytes": 107,
+    "sha256": "14c2d51a94972d023dbaefb6d1805f6bd9eb621e40bcf1add7381c6f322be72f"
+  }
+}

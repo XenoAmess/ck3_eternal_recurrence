@@ -1,0 +1,15 @@
+{
+  "schema": "xar.e04.B-rest-site-input.v1",
+  "province_id": 2624,
+  "army_id": 18,
+  "runtime": {
+    "path": "r17-b-site-a01-40015-site-0-actual-runtime.json",
+    "bytes": 1110,
+    "sha256": "16c86e081ff478c17c46460d4feb1843e23d312007599f37af826b84426ce227"
+  },
+  "normal_day": {
+    "path": "r17-b-site-a01-40041-site-0-normal-day-complete.json",
+    "bytes": 4001,
+    "sha256": "351b9882176e0214cdb254f96b0b7d98ce298701c3fe492c698364a87ae9ae3c"
+  }
+}

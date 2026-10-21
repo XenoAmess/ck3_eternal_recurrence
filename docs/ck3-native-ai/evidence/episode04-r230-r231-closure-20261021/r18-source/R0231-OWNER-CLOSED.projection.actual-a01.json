@@ -1,0 +1,100 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T19:23:02.047313+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0231",
+  "resource_status": "ALL_ORIGINAL_OWNERS_CLOSED",
+  "normal_GUI_and_retained_OS0_native0_host0": true,
+  "original_public_wait": 2,
+  "original_allocator_wait": 0,
+  "keeper_actual_exit": 0,
+  "screen_CAS_release": true,
+  "camera_Start": 0,
+  "Arm_submissions": 0,
+  "normal_stationary_days": 0,
+  "lineage_counts": {
+    "actual_days": 113,
+    "requested_days": 113,
+    "rich_queries": 6,
+    "Move_submissions": 1
+  },
+  "new_R0231_counts": {
+    "actual_days": 0,
+    "requested_days": 0,
+    "rich_queries": 0,
+    "Move_submissions": 0
+  },
+  "formal_B_sites": 0,
+  "original_failures_preserved": true,
+  "latest_Save_post_GUI_actual_file_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74768266,
+    "sha256": "a1a4bf14673067a0f104ebbd6571aac8f9db5fa31c01e8d1157999a4ff6e78f3"
+  },
+  "actor": 31254,
+  "date_raw": 53149608,
+  "Army18_province": 2624,
+  "route": [],
+  "original_evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0231\\case-output\\normal-close-result.json",
+      "bytes": 9948,
+      "sha256": "c61d5e0473dd52c3f449ab40bf8a2765ac1474708fb51834f1d2d01e948ee3e8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0231\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "0aa9f19165009138f66e8b5040a26fb7974cde63520b08ddd2c49c14543c034b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0231\\keeper-actual-parent-exit.json",
+      "bytes": 603,
+      "sha256": "9658ed4a9a36d22cd6292d2d585e163f5cc354d90ab44a3b91975e06fbcf17db"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\ops-a01\\public-run-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 656,
+      "sha256": "06d6162c257856d29ccdee23b691f672e9738e49170c9a86912f8641b5407b84"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\ops-a01\\public-allocate-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 665,
+      "sha256": "bf65c9264d44a4ef0791f6d56bbb1aad0f9a208e36cd1633c0dbccb4422b1eab"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\ops-a01\\screen-release-final-a01\\stdout.actual.txt",
+      "bytes": 1265,
+      "sha256": "a8b9be5b80e6df9032899cdbbd60059f775b11f886364a29d89fdabaa9bf2b90"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0231\\case-output\\r17-b-site-a01-FINAL-ORDINARY-SAVE.json",
+      "bytes": 6857,
+      "sha256": "ffd6d42cb3f534cb49b2db7fdb704bfe446cd4524eaed7b1f8c7e2c78715a4f6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0231\\case-output\\normal-quit-root-result.json",
+      "bytes": 2428,
+      "sha256": "85775ea57a4b3ecb0adaa5c448a40f130b2c7e7c2806e526dfc5f1a88ad7f1ad"
+    }
+  ],
+  "all_scene_writers_zero": true,
+  "source_writers_zero": true,
+  "game_writers_zero": true,
+  "future_scene_writes": 0,
+  "hot_executions": 0,
+  "film_executions": 0,
+  "schema": "xar.e04.owner-close.compat-projection.v1",
+  "all_scene_author_writers": 0,
+  "field_projection_provenance": {
+    "original_owner_closed": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-live-scene-b-a01\\control-a01\\R0231-OWNER-CLOSED.actual-a01.json",
+      "bytes": 3481,
+      "sha256": "a72cdac2ee6c538914d554f015391f15257f0b8e3f64158547c1e2d0ca412f45"
+    },
+    "original_observed_at_utc": "2026-10-21T19:23:02.047313+00:00",
+    "projection_written_at_utc": "2026-10-21T19:27:04.241796+00:00",
+    "derivation": "all_scene_writers_zero/source_writers_zero/game_writers_zero are each literal true; canonical author count is therefore0",
+    "original_fields_unchanged": true,
+    "new_OS_or_process_observation": false,
+    "original_public_wait_preserved": 2
+  }
+}

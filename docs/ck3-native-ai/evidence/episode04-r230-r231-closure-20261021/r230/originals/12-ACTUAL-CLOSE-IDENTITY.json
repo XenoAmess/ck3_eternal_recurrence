@@ -1,0 +1,32 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T17:40:33.697894+00:00",
+  "actor": 31254,
+  "date_raw": 53149608,
+  "Army18": {
+    "army_id": 18,
+    "owner_character_id": 31254,
+    "soldiers": null,
+    "current_province_id": 2624,
+    "move_target_province_id": null,
+    "move_target_observable": false,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [],
+    "route_read_status": "complete_empty",
+    "route_source_count": 0,
+    "in_combat": false,
+    "retreating": false,
+    "army_state": "regular",
+    "army_state_code": 1,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  },
+  "original_frame_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\close-native-view-a01\\r16-close-native-view-a01.actual-results.json",
+    "bytes": 52758,
+    "sha256": "69359859c3d9491283607b58d814cb5653a049f8ae183f2a29384c6de61aea09"
+  },
+  "Game_actions": 0
+}

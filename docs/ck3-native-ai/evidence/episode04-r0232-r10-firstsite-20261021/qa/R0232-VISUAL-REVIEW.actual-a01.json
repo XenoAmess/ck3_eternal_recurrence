@@ -1,0 +1,106 @@
+{
+  "schema": "xar.r0232.complete-contact-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T20:48:58.815907+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0232",
+  "status": "COMPLETE_AI_CONTACT_REVIEW",
+  "QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\QA.actual.json",
+    "bytes": 37251,
+    "sha256": "6ec6f7de6b5227703b88f02888079c5d8e53903f102220e0f13d8be777153ad1"
+  },
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\R0232-RECIPE.actual-a02.json",
+    "bytes": 2710,
+    "sha256": "66fb476b2526ac7549b8b14f9f9cb1376d3bdbd6e5e189b89918a8923284a8fd"
+  },
+  "source_binding": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\R0232-SOURCE-BINDING.actual-a02.json",
+    "bytes": 3839,
+    "sha256": "f3f1177a74526981b0811a5ac1525db64c25be780b7795d8fc933c9e1bc5ac14"
+  },
+  "coverage": [
+    {
+      "reviewer": "/root/readwatch_review",
+      "sheet_first": 0,
+      "sheet_last": 44,
+      "sheets_actually_viewed": 45,
+      "first_frame": 0,
+      "end_frame_exclusive": 720,
+      "valid_cells_actually_viewed": 720
+    },
+    {
+      "reviewer": "/root/media_chapter",
+      "sheet_first": 45,
+      "sheet_last": 90,
+      "sheets_actually_viewed": 46,
+      "first_frame": 720,
+      "end_frame_exclusive": 1441,
+      "valid_cells_actually_viewed": 721
+    }
+  ],
+  "all_sheets_actually_viewed": 91,
+  "all_valid_cells_actually_viewed": 1441,
+  "last_sheet_valid_cells": 1,
+  "last_sheet_padding_cells": 15,
+  "no_image_read_errors": true,
+  "contacts_are_320x180_per_cell_not_full_resolution_text_guarantee": true,
+  "findings": [
+    {
+      "first_frame": 648,
+      "last_frame": 679,
+      "actual_pts_first": "21.6",
+      "actual_pts_last": "22.633",
+      "restored_illustration_at_frame": 680,
+      "restored_actual_pts": "22.667",
+      "description": "Lower-left Army pane town illustration temporarily becomes dark/absent; map, pane frame, portrait and text remain. Illustration returns. Native UI refresh observed; cause and callback exact frame are not inferred."
+    },
+    {
+      "reviewer": "/root/media_chapter",
+      "first_frame_approximately": 748,
+      "actual_pts_approximately": "24.933",
+      "description": "Small native map numeric marker appears; no obstruction to the lower-left Army pane."
+    }
+  ],
+  "unwanted_desktop_modal_old_blue_window_or_title_overlay_seen": false,
+  "whole_frame_black_seen": false,
+  "static_map_not_used_as_stale_proof": true,
+  "root_full_resolution_review": {
+    "reported_by": "/root",
+    "source": "Parent collaboration report of actual view_image of all 12 original-resolution JPEGs in this QA list; no invented tool execution ID",
+    "keyframes_actually_reported_viewed": 12,
+    "before_frame": 600,
+    "before_actual_pts": "20",
+    "before_supply": "278/300",
+    "before_display_date": "4-23",
+    "after_frame": 750,
+    "after_actual_pts": "25",
+    "after_supply": "298/300",
+    "after_display_date": "4-24",
+    "visible_change_bracket": "(20,25] seconds; not a native callback timestamp"
+  },
+  "clip_candidate": {
+    "first_frame": 420,
+    "end_frame_exclusive": 1137,
+    "last_frame": 1136,
+    "frames": 717,
+    "actual_raw_pts_start": "14",
+    "actual_raw_pts_last_frame": "37.867",
+    "actual_raw_pts_next_frame_boundary": "37.9",
+    "duration_seconds": "23.9",
+    "readable_before_lower_bound_seconds": "6",
+    "readable_after_lower_bound_seconds": "12.867",
+    "no_clip_or_new_video_created": true,
+    "recommendation": "Single-site continuous source candidate for Root adoption; original partial EOF and budget RED retained"
+  },
+  "producer_state": "RED_CAPTURE_BUDGET",
+  "outer_film_returncode": 2,
+  "recorder_FFmpeg_returncode": 0,
+  "complete_planned_90_seconds": false,
+  "native_callback_exact_encoded_frame": null,
+  "one_life_proven": false,
+  "human1x": false,
+  "signoff": false,
+  "business_pass_issued_by_QA": false,
+  "formal_credit": 0
+}

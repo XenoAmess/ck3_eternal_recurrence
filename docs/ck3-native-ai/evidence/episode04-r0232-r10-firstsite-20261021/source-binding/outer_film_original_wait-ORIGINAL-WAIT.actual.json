@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T20:34:49.913834+00:00",
+  "original_pid": 30940,
+  "created": "134370884237204267",
+  "original_Popen_wait": 2,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\ops-a01\\site01-film-a03\\stdout.actual.txt",
+    "bytes": 557,
+    "sha256": "2bc6a727865304c6d9a806dec729bc602eb4d47aa3b1223a0ac6d8fc1dfd4ed6"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\ops-a01\\site01-film-a03\\stderr.actual.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "xar.r17.firstclip-qa-recipe.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "output_root": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01",
+  "hard_deadline_utc": "2026-10-21T21:00:00Z",
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01\\raw.mkv",
+    "bytes": 27827945,
+    "sha256": "c3045b79b7ed3c8222077cdbec7dcd0cf2182360141b15976f7612920b0eb2f0"
+  },
+  "source_binding": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\R0232-SOURCE-BINDING.actual-a02.json",
+    "bytes": 3839,
+    "sha256": "f3f1177a74526981b0811a5ac1525db64c25be780b7795d8fc933c9e1bc5ac14"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\qa_firstclip.py",
+    "bytes": 22781,
+    "sha256": "27634f311d1c2f11707fcf5128138cf13bc587b78677dd1a1a90b7a86e30f955"
+  },
+  "contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\qa_contract.py",
+    "bytes": 7782,
+    "sha256": "3e4767dd66b8b4a1ef537b2126b564a15bf58e8c8082dc948631b2358bb071fb"
+  },
+  "job_helper": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\recorder_job.py",
+    "bytes": 16683,
+    "sha256": "1eb95419ed818209cc6536b02365d815d821dfeff47a8ba4d9d71e138613a92d"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ffprobe": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "bytes": 222026240,
+    "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+  },
+  "font": {
+    "path": "C:\\Windows\\Fonts\\consola.ttf",
+    "bytes": 459180,
+    "sha256": "c6e6ce8119fdd47ec6a5449a08e2d2ad7f41ea03143aae193068ed9fa58eaebc"
+  },
+  "width": 1280,
+  "height": 720,
+  "expected_audio_streams": 0,
+  "expected_video_frames": 1441,
+  "keyframe_indices": [
+    0,
+    90,
+    180,
+    300,
+    450,
+    600,
+    750,
+    900,
+    1050,
+    1200,
+    1350,
+    1440
+  ],
+  "stdout_jpeg_q": 4,
+  "contact_quality": 60,
+  "fps": "30/1",
+  "producer_budget_state": "RED_CAPTURE_BUDGET",
+  "review_complete_saved_partial_EOF": true,
+  "supersedes_metadata_only": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\R0232-RECIPE.actual-a01.json",
+    "bytes": 2472,
+    "sha256": "3877cf905a9fe19491e7597a87c05fbe7755b47f0b4ce45524373b164736a83d"
+  }
+}

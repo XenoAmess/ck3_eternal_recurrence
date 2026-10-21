@@ -1,0 +1,112 @@
+{
+  "province_id": 2624,
+  "army_id": 18,
+  "native_carmy_id": 18,
+  "runtime": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "started_at_utc": "2026-10-21T20:33:39.878389+00:00",
+    "pid": 31168,
+    "process_create_time_100ns": 134370863607438456,
+    "connection_generation": 1,
+    "episode": null,
+    "managed_campaign_run_binding": {
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0232",
+      "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\state-a01",
+      "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0232",
+      "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "frozen_argv_sha256": "0d24a6fb288ac9a2cdfbb76d7fbc2a2b51a0af694e221c2f9acb6547bb7a9495"
+    },
+    "player_character_id": 31254,
+    "source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "native_dll_sha256": "062b2ae3639c230d2ca4552d5de67c9536605b1fbda2045c040d3fd6f25ca746",
+    "source_proof": {
+      "path": "r17-b-site-a01-40014-actual-source-proof-reference.json",
+      "bytes": 2713,
+      "sha256": "b9e771aea4f7900ba4fa35775d7e3625b2652e4dc841c4cc4fed3735b77d6342"
+    }
+  },
+  "source": {
+    "path": "r17-b-site-a01-40042-site-0-B-rest-site-input.json",
+    "bytes": 461,
+    "sha256": "7fd6fa5a12647989acc147951564f50a5977af6d6dcdcd4757522acad3731e5f"
+  },
+  "normal_day": {
+    "path": "r17-b-site-a01-40041-site-0-normal-day-complete.json",
+    "bytes": 4001,
+    "sha256": "351b9882176e0214cdb254f96b0b7d98ce298701c3fe492c698364a87ae9ae3c"
+  },
+  "before": {
+    "day": 0,
+    "snapshot": {
+      "path": "r17-b-site-a01-40019-canonical-endpoint-frame.json",
+      "bytes": 23437,
+      "sha256": "9de2ebf771251d0c40c1ae00d02d11124b2aa8285e47a8de6011ff58e9d5ae1b"
+    },
+    "army_result": {
+      "path": "r17-b-site-a01-40011-site-0-exact-before-ordinary-rich.json",
+      "bytes": 21428080,
+      "sha256": "b428cb8b4fece10673451af89fc00ea2028fe3aa95bcf37fb9f49bedfc36aca9"
+    },
+    "strategy_army_ids": [
+      18
+    ],
+    "commander": {
+      "source": {
+        "path": "r17-b-site-a01-40018-commander-endpoint.json",
+        "bytes": 22279,
+        "sha256": "0b0b94ad2f331ce44d5cb0252b709513818a322d47dd7b3029114a9dcd43fb9a"
+      },
+      "pointer": "/body/army_commander_candidates/current_commander/character_id"
+    },
+    "loaded_features": {
+      "source": {
+        "path": "r17-b-site-a01-40004-new-loaded-feature-inventory.json",
+        "bytes": 17262,
+        "sha256": "3c7ff3ade47f654ea019ab47951bf5bf9aa4492bdee8d33a86b370a9ae4cf497"
+      },
+      "pointer": "/loaded_feature_manifest"
+    }
+  },
+  "after": {
+    "day": 1,
+    "snapshot": {
+      "path": "r17-b-site-a01-40040-canonical-endpoint-frame.json",
+      "bytes": 23877,
+      "sha256": "968b18205b8e6057c920e664ef5887ed9d67196c088f0439316fab9733f75b69"
+    },
+    "army_result": {
+      "path": "r17-b-site-a01-40034-site-0-exact-after-ordinary-rich.json",
+      "bytes": 21853588,
+      "sha256": "b8388547d48421b433fd2bdfeb393353b90623c948c155691b74ab56392a5160"
+    },
+    "strategy_army_ids": [
+      18
+    ],
+    "commander": {
+      "source": {
+        "path": "r17-b-site-a01-40039-commander-endpoint.json",
+        "bytes": 22279,
+        "sha256": "a39a475251d10d65fae322e68551cf9670eae6762baae52c02121ced48566bae"
+      },
+      "pointer": "/body/army_commander_candidates/current_commander/character_id"
+    },
+    "loaded_features": {
+      "source": {
+        "path": "r17-b-site-a01-40004-new-loaded-feature-inventory.json",
+        "bytes": 17262,
+        "sha256": "3c7ff3ade47f654ea019ab47951bf5bf9aa4492bdee8d33a86b370a9ae4cf497"
+      },
+      "pointer": "/loaded_feature_manifest"
+    }
+  },
+  "stock_before_raw": 27894738,
+  "stock_after_raw": 29894738,
+  "actual_stock_delta_raw": 2000000,
+  "scale": 100000,
+  "positive_callback_sequences": [
+    2
+  ],
+  "site_growth_semantically_qualified": true,
+  "future_safety_guaranteed": false,
+  "actual_soldier_ADD_or_loss_qualified": false
+}

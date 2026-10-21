@@ -1,0 +1,43 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T18:17:02.902676+00:00",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\runtime.json",
+      "bytes": 326631,
+      "sha256": "93d275d1009e4c1c7bcc7caac4839b02b2949b89ff0d128131983526b02c05f5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\products.json",
+      "bytes": 2629,
+      "sha256": "ed030b2e15792fdd0e3d99208ad3b18da42ce9e9d7733b78035435cf0bb29a54"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\manifest.json",
+      "bytes": 2991,
+      "sha256": "a73251c842dfc80ee48125ce9b12dc118c49aeee013037c491554a99839533b7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\case-inputs.json",
+      "bytes": 9416,
+      "sha256": "462f675ff0f97b97d1409c2a02eac0ee58db0986bb7f0be99336833da7b39ac1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\COMMANDS.json",
+      "bytes": 4851,
+      "sha256": "ef040924e13ec5fc08ffae9cf7a3e1e784ea8ace4d31d686cd045e7c2b06a179"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\RECIPE.json",
+      "bytes": 3511,
+      "sha256": "d08700b4760656e389cc8cc1b085f0911b7beb8cbd2af08d94f7bbcb00af98d8"
+    }
+  ],
+  "business_source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 5260,
+    "sha256": "ff23037b54b5ec1adfb193351527c3d2d7ee376dc4094c83ffa313c7c1c7959b"
+  },
+  "runtime_data_writer_count": 0,
+  "old_sources_readonly": true
+}

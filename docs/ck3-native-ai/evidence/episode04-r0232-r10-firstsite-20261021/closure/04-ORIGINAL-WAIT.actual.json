@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T20:39:06.992642+00:00",
+  "original_pid": 32048,
+  "created": "134370863367170386",
+  "original_Popen_wait": 2,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\ops-a01\\public-run-a01\\stdout.actual.txt",
+    "bytes": 23882,
+    "sha256": "f66a8121cd45a95a673a8fbfd5520ce9ab94efc8e86faa12f27ab7850f3d8899"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\ops-a01\\public-run-a01\\stderr.actual.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

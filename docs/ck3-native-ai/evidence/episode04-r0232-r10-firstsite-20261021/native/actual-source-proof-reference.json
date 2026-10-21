@@ -1,0 +1,62 @@
+{
+  "original": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-preflight-a04\\runtime-b-a04\\config-a05\\native-source-index.actual-a05.json",
+    "bytes": 2137,
+    "sha256": "a5b0704dfdedff610ecf148d612f5b9122610d251e8eaa8e2ba8664be6ac365c"
+  },
+  "value": {
+    "schema": "xar.common-native-qualified-producer-index.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-21T14:26:42.312826+00:00",
+    "runtime_source_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "source_head_scope": "Frozen Python/common baseline; external native manifest plus exact date32 deltas, no whole-Git compilation claim",
+    "production_qualification": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\root\\ROOT-DATE32-NATIVE-LIMITED-ADOPTION.actual-a01.json",
+      "bytes": 1362,
+      "sha256": "ea26db61cb60089ac25b4498f55cfc0dcc1112e0b9e02ae2042971f40c2d6c09"
+    },
+    "build_output": {
+      "path": "C:\\w\\e04date32a01\\BUILD-OUTPUT.actual-a01.json",
+      "bytes": 2310,
+      "sha256": "30c58f04dc3161060d92de4b1e35124c14169b220fb968197d00fe5d870d94a8"
+    },
+    "completion": {
+      "path": "C:\\w\\e04date32a01\\DATE32-NATIVE-COMPLETION.actual-a01.json",
+      "bytes": 8064,
+      "sha256": "1717e358227bb57855f0643c0a6ea448f33da0335fab0ec310ed53ba16fee06b"
+    },
+    "native_source_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-date32-source-p07\\SOURCE-MANIFEST.actual.json",
+      "bytes": 1854746,
+      "sha256": "7865d6f72dcbeb8164f4ffe4718233d07236c02dc3eb695b006fddcb1af25471"
+    },
+    "runtime_native_tools": {
+      "dll": {
+        "path": "C:\\w\\e04date32a01\\build-a01\\xar_ck3_bridge.dll",
+        "bytes": 14397440,
+        "sha256": "062b2ae3639c230d2ca4552d5de67c9536605b1fbda2045c040d3fd6f25ca746"
+      },
+      "injector": {
+        "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+      }
+    },
+    "frozen_file_id": [
+      "3061637496",
+      "1125899909067091"
+    ],
+    "file_identity_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r15-complete-episode04-1030-a01\\source-preflight-a04\\runtime-b-a04\\NATIVE-DLL-FILE-IDENTITY.actual-a01.json",
+      "bytes": 561,
+      "sha256": "93ef525263d4bf4fe0181c5e9563ed397ba7ecf6ea06709ed73dda959afb9f1a"
+    },
+    "live_qualified": false,
+    "Game_loaded_module_proven": false
+  },
+  "actual_public_helper": {
+    "path": "actual-R0232-hot-helper.py",
+    "bytes": 13698,
+    "sha256": "a98a386e319b46dea09b133f62f82629f24214c94fc441ec73cb310d10e494c7"
+  }
+}

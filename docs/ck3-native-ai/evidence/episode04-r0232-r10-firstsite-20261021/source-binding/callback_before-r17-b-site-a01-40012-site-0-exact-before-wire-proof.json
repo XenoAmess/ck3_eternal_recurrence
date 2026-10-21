@@ -1,0 +1,40 @@
+{
+  "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0232\\native-report.native-wire.jsonl",
+  "file_identity": [
+    13886423844274364792,
+    1688849862489208
+  ],
+  "begin": 45635126,
+  "end": 59192635,
+  "bytes": 13557509,
+  "sha256": "69c7604b0576b52e31e71f8d29f087094a13a42e63dbf5840e28cfb36923cae2",
+  "native_request_id": "step-8-345357772eb7",
+  "query_sequence": 1,
+  "request_line": {
+    "begin": 45702243,
+    "end": 45702537,
+    "sha256": "2ed28d09bbd503f0fb76b9143b998c79dc6d056a1e08bad9a04da91e1aa5e120"
+  },
+  "response_line": {
+    "begin": 45708130,
+    "end": 59061006,
+    "sha256": "8cb42d694eb2010460274696ae92daee1435608d6525ea3d999c2f80a600bf65"
+  },
+  "source": "existing shared host native-wire original range",
+  "complete_Driver_packet": false,
+  "query_reissued": false,
+  "ordinary_episode_preserved_null": true,
+  "managed_campaign_run_binding": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0232",
+    "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\state-a01",
+    "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0232",
+    "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "frozen_argv_sha256": "0d24a6fb288ac9a2cdfbb76d7fbc2a2b51a0af694e221c2f9acb6547bb7a9495"
+  },
+  "not_complete_Driver_packet": true,
+  "normalized_result": {
+    "path": "r17-b-site-a01-40011-site-0-exact-before-ordinary-rich.json",
+    "bytes": 21428080,
+    "sha256": "b428cb8b4fece10673451af89fc00ea2028fe3aa95bcf37fb9f49bedfc36aca9"
+  }
+}

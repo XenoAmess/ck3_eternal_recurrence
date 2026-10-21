@@ -1,0 +1,102 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T17:51:17.163509+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0230",
+  "resource_status": "ALL_ORIGINAL_OWNERS_CLOSED",
+  "normal_GUI_and_retained_OS0_native0_host0": true,
+  "original_public_wait": 2,
+  "original_hot_wait": 1,
+  "original_allocator_wait": 0,
+  "keeper_actual_exit": 0,
+  "camera_Start": 0,
+  "Arm_submissions": 0,
+  "normal_stationary_days": 0,
+  "lineage_counts": {
+    "actual_days": 113,
+    "requested_days": 113,
+    "rich_queries": 6,
+    "Move_submissions": 1
+  },
+  "new_R0230_counts": {
+    "actual_days": 15,
+    "requested_days": 15,
+    "rich_queries": 2,
+    "Move_submissions": 0
+  },
+  "formal_B_sites": 0,
+  "original_failures_preserved": true,
+  "latest_Save_post_GUI_actual_file_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74768301,
+    "sha256": "175cc3296e0c2dcf7dac58d4e6b250394e6344fcb5276fd61be2a235abe6706c"
+  },
+  "actor": 31254,
+  "date_raw": 53149608,
+  "Army18_province": 2624,
+  "route": [],
+  "original_evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\case-output\\normal-close-result.json",
+      "bytes": 10012,
+      "sha256": "037cf31df49db4bb6c548dab80b157093a8afcd35a4ef6e4e72b3e47f20a2983"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "610c1e4b771ce727fee9a97b0054d1a5e0ab168cf3486c882de171235613184f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\case-output\\normal-quit-root-result.json",
+      "bytes": 2460,
+      "sha256": "19c3e53ead668de68a7cc5f4f1053ba110b1354d564e654988a8578d76cc5a60"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "214784acb52e90f3b864fac6ddde443f915255b9968f1123eb479f76b18dd400"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\keeper-actual-parent-exit.json",
+      "bytes": 608,
+      "sha256": "45857ae8cb3a5343ddfad95dacefff1ba305ceb204356979dbec81020a13b9d3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\ops-a01\\public-run-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 656,
+      "sha256": "c2f145092b70f0164d7d2fd567d2a617bbed7d2caddca14c4600edaa12b0c4e6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\ops-a01\\public-allocate-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 665,
+      "sha256": "4c3138426a617c6e387b63856213850bb9f0354e21f8302e558aa75085504d44"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\ops-a01\\hot-speed-sites-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 665,
+      "sha256": "01dec6fadd907ec6a212b234427aa5a60bacc23b24bdc3cab872c58b80ba8142"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\ops-a01\\screen-release-final-a01\\stdout.actual.txt",
+      "bytes": 1299,
+      "sha256": "f4d689ba10476ec008421d9224316119194878dc588c98eb3767a74491aadf0e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\ops-a01\\screen-release-final-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 675,
+      "sha256": "836b832059854eb61d2651b4bd7dfe2386e399217e2f530cfc55893cdd2ee69e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\hot-speed-a01\\r16-hot-speed-a01-FINAL-ORDINARY-SAVE.json",
+      "bytes": 6865,
+      "sha256": "ad28c3ee0541670c9325711acc0547d055bc65fef9087de7acd67e45d97146d0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r16-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0230\\close-native-view-a01\\ACTUAL-CLOSE-IDENTITY.json",
+      "bytes": 1079,
+      "sha256": "8578a418ef12df80ef3d00931126fd6946bd82f701d310e52d681c31364f0922"
+    }
+  ],
+  "all_scene_author_writers": 0,
+  "future_scene_writes": 0,
+  "next_task_continues_from_real_Save": true
+}

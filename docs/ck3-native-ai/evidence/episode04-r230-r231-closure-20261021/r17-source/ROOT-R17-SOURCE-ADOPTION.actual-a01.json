@@ -1,0 +1,71 @@
+{
+  "schema": "xar.root.r17.normal-save-prepared-sites.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T18:14:26Z",
+  "reviewer": "/root",
+  "status": "SOURCE_SCOPE_ADOPTED",
+  "source_freeze": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r17-site-camera-prepare-a01/source/SOURCE-FREEZE.actual-a01.json",
+    "bytes": 5260,
+    "sha256": "ff23037b54b5ec1adfb193351527c3d2d7ee376dc4094c83ffa313c7c1c7959b"
+  },
+  "Root_independent_verification": {
+    "member_hash_and_six_syntax_compile_original_tool": "3e2973",
+    "exit": 0,
+    "source_read_original_tools": [
+      "60d5dd",
+      "569dd8",
+      "4911d8",
+      "230daa",
+      "6f11ea"
+    ],
+    "original_focused_wait_read_tool": "1b8fc2",
+    "original_strict_wait_read_tool": "029e81",
+    "strict_stdout_read_tool": "5c8e21",
+    "focused_result_read_tool": "774af6"
+  },
+  "checks": {
+    "focused_original_wait": 0,
+    "focused_methods": 4,
+    "strict_original_wait": 0,
+    "strict_new_or_modified_sources": 6,
+    "actual_R0230_source_Save_replay": true,
+    "actual_large_rich_schedule_helper_read": true,
+    "source_and_review_necessary_negatives": true,
+    "synthetic_review_metadata_is_not_actual_Root_image_approval": true,
+    "legacy_failed_checks_preserved": true
+  },
+  "implementation_scope": [
+    "Join ordinary Save brackets and independent file rehash to separate true normal GUI/retainedOS0/native0/original host0 without changing Save-time false fields or claiming one-life.",
+    "Inherit113 actual/requested days,6 diagnostic-rich and1 Move. New run counts remain separate; at most4 new endpoint-rich and lineage10.",
+    "Before each stationary site restore speed5 legally if needed and independently confirm the same paused date.",
+    "Before consuming new before-rich or creating a camera-await marker, wait at most600 seconds for one of three declared fresh Root-reviewed original-frame candidates; preserve916-second full tail.",
+    "Then re-read current native owner/date/speed5/empty route and retain original rich/claim/camera180/exact-day/consumer path. Second site optional; one-site results remain partial.",
+    "The existing final ordinary Save and shared original GUI/OS/native/host close remain required."
+  ],
+  "execution_admission": {
+    "source_only": true,
+    "runtime_materialization_requires_separate_capacity_card": true,
+    "new_Game_launch_admitted_by_this_receipt": false,
+    "SDK_or_camera_Start_admitted_by_this_receipt": false,
+    "formal_business_or_footage_credit_changed": false
+  },
+  "active_input_protection": {
+    "asset_id": "e04-R0230-day113-ordinary-Save-175cc329",
+    "replica_id": "desktop-3fevhd2-1c74096080-R0230-xar-checkpoint",
+    "owner_task": "e04-r15-root-continuation-20261021-a01",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "root_id": "R0230-state-profile",
+    "relative_path": "save games/xar_checkpoint.ck3",
+    "path": "C:/ck3-e04-resume-20261020-a01/r16-live-scene-b-a01/state-a01/profile/save games/xar_checkpoint.ck3",
+    "bytes": 74768301,
+    "sha256": "175cc3296e0c2dcf7dac58d4e6b250394e6344fcb5276fd61be2a235abe6706c",
+    "category": "checkpoint",
+    "state": "closed_source_active_input",
+    "availability": "readable",
+    "protected_until_utc": "2026-10-21T20:00:00Z",
+    "protection_reason": "Necessary immutable input to the next new finite ordinary saved-campaign scene; no replay of consumed travel.",
+    "next_review_at_utc": "2026-10-21T20:00:00Z",
+    "automatic_renewal": false
+  }
+}

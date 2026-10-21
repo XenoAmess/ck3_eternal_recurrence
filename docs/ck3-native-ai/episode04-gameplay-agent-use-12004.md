@@ -1,3 +1,17 @@
+> 2026-10-21 20:47:56 UTC R0232 Root正式裁定；machine_id: desktop-3fevhd2-1c74096080。
+
+**formal9/11、B1/2。** R0232首站实际静止一日，native stock27894738→29894738（+2000000/scale100000）、唯一target callback seq2；原生兵数与RootUI均1195→1195，不授兵员增长。Root接受保存源f[0,1441)的限定R10原M阳性镜头，可剪f[420,1137)/717帧；不是完整R10、完整B或第二站。研究10/14、业务7/11、ABC0/3不变。
+
+[实际原件与使用边界](episode04-r0232-r10-firstsite-shot-12004.md) · [Root正式裁定](evidence/episode04-r0232-r10-firstsite-20261021/ROOT-R0232-R10-FIRSTSITE-SHOT-ACCEPTANCE.actual-a02.json)。唯一AV0、91contact/1441格与Root12fullres/5sheets分列；可读变化(20,25]秒不是exact callback PTS。24MiB softRED、原film2/public2保留，Hot0；原Game已正常GUI/OS/native/host/keeper/allocator关闭，screen CAS8030。第二站按原Quit守卫defer，没有重录或再推日。文件可供其它游玩agent显式参考，普通planner不自动加载。下方R230/R231及更早快照按时点保留。
+
+> 2026-10-21T19:50:21.797160+00:00 R230/R231 后继实况；machine_id: desktop-3fevhd2-1c74096080。
+
+R230、R231 已分别完成普通 Save 与正常 GUI/retained OS0/native0/host0 闭场；原 public2、R230 hot1 保留。累计 lineage 为113个实际/请求日、6次 rich、1次 Move；R230新增15日/2次rich/0Move，R231新增 day/rich/Move/Arm/Start/Hot 均0。R230缺实际 camera-start，R231的600秒准备窗口到期；资源退出成功不能改写业务失败，formal8/11、B0/2、ABC0/3及未完成的R08信用不增。
+
+阅读[普通Save、相机准备与失败后闭场的用法和边界](episode04-r230-r231-normal-closure-and-input-gates-12004.md)及[本次派生快照与原件映射](evidence/episode04-r230-r231-closure-20261021/CURRENT-SNAPSHOT.actual-a01.json)。R17三源只作研究归档，机器bootstrap与外部依赖未装入通用路由；R18后继另有owner和输入，不能从本包推成新场已通过。文件可供游玩智能体显式参考，普通planner不自动加载。
+
+上一已发表6f5ede5的[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39610492374)已于14:17:30Z记录completed/success；它只属于该提交。下方旧段按其时点保留。
+
 > 2026-10-21 13:04 UTC 后继实况；machine_id: desktop-3fevhd2-1c74096080。
 
 R228 留下原生应用净额 **+111391** 与钱包 25455910→25567301；它没有证明 gross 军费、payer 或 cadence。旧 typed false/fullR08 false 不改，formal 8/11、B 0/2、ABC 0/3。原 Game 已正常关闭并释放 screen CAS7895；早期 GUI 原件只 ACK，真正退出点击与独立 native/OS/host 终态另有原件，见[实测专题](episode04-r228-net-military-settlement-12004.md)及[GUI 勘误](evidence/episode04-r228-net-settlement-20261021/closure/R228-GUI-CLOSE-SEQUENCE-CORRECTION.actual-a01.json)。

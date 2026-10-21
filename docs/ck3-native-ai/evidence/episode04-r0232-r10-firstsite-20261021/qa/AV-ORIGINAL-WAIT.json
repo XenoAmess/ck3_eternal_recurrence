@@ -1,0 +1,15 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T20:43:54.539962+00:00",
+  "pid": 15088,
+  "birth_filetime": "134370889298378100",
+  "original_wait": 0,
+  "job_active_processes": 0,
+  "job_handle_closed": true,
+  "job_closed": true,
+  "custody_errors": [],
+  "error": null,
+  "reader_errors": [],
+  "workers_alive": false,
+  "no_retry": true
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "xar.r0232.qa-owner-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T20:48:58.819142+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0232",
+  "technical_QA": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\QA.actual.json",
+    "bytes": 37251,
+    "sha256": "6ec6f7de6b5227703b88f02888079c5d8e53903f102220e0f13d8be777153ad1"
+  },
+  "visual_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\R0232-VISUAL-REVIEW.actual-a01.json",
+    "bytes": 4009,
+    "sha256": "83ebbdea996945b8ae29585cfba37ee8f19f33616db4240b5d90f7bd476a97b3"
+  },
+  "AV_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\AV-ORIGINAL-WAIT.json",
+    "bytes": 376,
+    "sha256": "6e5c68920b925f76ffbf1d2ea9e9117a3837881d209b1c529c4bd4e7a948b1de"
+  },
+  "CLI_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-b-firstclip-qa-a01\\R0232-QA-CLI-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 617,
+    "sha256": "81b7e198a613bc271e20f08aff3f7fe2c9d9427a0fd1b7187e4ad902a11973c9"
+  },
+  "original_decoder_pid": 15088,
+  "original_decoder_birth_filetime": "134370889298378100",
+  "original_CLI_pid": 19480,
+  "original_CLI_birth_filetime": "134370889284304689",
+  "original_decoder_returncode": 0,
+  "queried_job_active_processes": 0,
+  "normal_job_closed": true,
+  "workers_alive": false,
+  "source_before_after_equal": true,
+  "complete_AV_decode_attempts": 1,
+  "all_contacts_actually_reviewed": true,
+  "raw_or_fullrich_copies": 0,
+  "new_video_outputs": 0,
+  "SDK_calls": 0,
+  "screen_calls": 0,
+  "remaining_owned_children": 0,
+  "writer0_after_this_receipt": true,
+  "no_second_take_permission_issued": true,
+  "producer_softRED_and_outer2_preserved": true,
+  "active_purpose": "R0232 single-site native/source-linked editing input; no permanent-retention claim",
+  "human1x": false,
+  "business_qualification_issued": false,
+  "files_before_this_receipt": 139,
+  "bytes_before_this_receipt": 14606855
+}

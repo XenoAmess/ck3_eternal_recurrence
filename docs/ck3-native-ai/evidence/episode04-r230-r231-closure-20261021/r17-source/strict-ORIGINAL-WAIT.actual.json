@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T18:11:33.178168+00:00",
+  "original_pid": 33508,
+  "created": "134370798625620898",
+  "identity_diagnostic": null,
+  "original_Popen_wait": 0,
+  "actual_original_Popen_wait": true,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\strict-a05\\stdout.actual.txt",
+    "bytes": 44,
+    "sha256": "90377c8fd97127580c93ac5740d596c9ebc9db94dafa6560ee11fe16b4460c62"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\strict-a05\\stderr.actual.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

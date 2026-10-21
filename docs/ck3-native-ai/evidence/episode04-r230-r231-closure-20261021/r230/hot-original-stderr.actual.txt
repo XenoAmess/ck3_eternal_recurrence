@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r16-live-scene-b-a01\hot-speed-a01\continue_speed_sites_a02.py", line 166, in <module>
+    main()
+    ~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r16-live-scene-b-a01\hot-speed-a01\continue_speed_sites_a02.py", line 145, in main
+    result = runner.run_sites()
+  File "C:\ck3-e04-resume-20261020-a01\r16-live-scene-b-a01\hot-speed-a01\continue_speed_sites_a02.py", line 94, in run_sites
+    frame = self.site(frame, index, target)
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\source-preflight-a04\runtime-b-a04\ordinary_supply_b.py", line 608, in site
+    started = self.camera_start(before, index)
+  File "C:\ck3-e04-resume-20261020-a01\r16-continue-b-0005-a01\runtime-b-a01\recovered_b_sites.py", line 139, in camera_start
+    return super().camera_start(frame, site)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\source-preflight-a04\runtime-b-a04\ordinary_supply_b.py", line 528, in camera_start
+    need(signal.is_file(), 'No actual camera-start signal; natural action not submitted')
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ck3-e04-resume-20261020-a01\r15-complete-episode04-1030-a01\source-preflight-a04\runtime-b-a04\ordinary_supply_b.py", line 40, in need
+    raise ValueError(reason)
+ValueError: No actual camera-start signal; natural action not submitted

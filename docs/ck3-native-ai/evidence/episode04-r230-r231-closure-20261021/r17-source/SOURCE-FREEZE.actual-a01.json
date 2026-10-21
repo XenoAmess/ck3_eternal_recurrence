@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.normal-save-prepared-sites.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-21T18:12:20.697922+00:00",
+  "production_and_check_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\normal_saved_source.py",
+      "bytes": 17070,
+      "sha256": "1e6055ea34abfe6dfdd45bd5f046b051fd2d19c1e01076308b5c1b78aed7a813"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\site_preparation.py",
+      "bytes": 6910,
+      "sha256": "79ab9830ff12d90eb4827bf826674eec103a8d7fd13d9b1a7b3a9c483074ca81"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\prepared_b_sites.py",
+      "bytes": 17973,
+      "sha256": "6ccb65dfd65104a0deed2ba97640f153734c073cb472ace91b5be3b55cfb96f2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\public_normal_entry.py",
+      "bytes": 1879,
+      "sha256": "e894af8c332c50aad2d2aa2cd5bab7598a17454713367f6abed87ab492fc34ca"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\focused_normal_sites.py",
+      "bytes": 11341,
+      "sha256": "3f44180ad9ab16652ef9695e0b522334c9230592d5c964412fd4831266d78124"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\check_source_once.py",
+      "bytes": 5583,
+      "sha256": "efb1080f8d1e4d3a4204b3dd4ae9e4efd9a14e8c6de1fd7d57e4f77c0d6baede"
+    }
+  ],
+  "normal_source_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\runtime-a01\\CONTEXT-SOURCE.candidate-a02.json",
+    "bytes": 9530,
+    "sha256": "0cf7df6d5208ee80cc9d46ec45db91615338cfe8b354dbab8d107691e2485f28"
+  },
+  "source_financial": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\close\\R17-SOURCE2-FINANCIAL.actual-a03.json",
+    "bytes": 5451,
+    "sha256": "a05e4dc22cedbc7c1fc9655696304fec50314fb78cef73f36ba50ebf0c15c14e"
+  },
+  "focused_actual": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\focused-a05\\ORIGINAL-WAIT.actual.json",
+    "bytes": 731,
+    "sha256": "24e7eeee216cffbfe1718419d8c5ef65658a1195c14d0e1ca361f2c02ef873ec"
+  },
+  "strict_actual": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\strict-a05\\ORIGINAL-WAIT.actual.json",
+    "bytes": 726,
+    "sha256": "00d276af23f0574708126a179546d2f5fea2626f8ad3e58b39086c732bd69d28"
+  },
+  "strict_scope": "Six new/modified sources including focused and finite custody; actual frozen typed imports resolved through MYPYPATH, external legacy bodies follow-imports=silent",
+  "focused_scope": "4methods; actualR0230 normal Save+independent file SHA+21MiB schedule; six source negatives, speed5 order/wrong day, synthetic Root-review/capture/filepins with five negatives; no Game/SDK/OS Game query/UI/FFmpeg",
+  "old_failures_preserved": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\strict-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 728,
+      "sha256": "56f69bff60d5b5cf062a4c7297b0ac7fdf088c0f149f5cce5318f1b83cabebe8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\strict-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 725,
+      "sha256": "b429ddd9d4b6c92af195eae1366baf9fdcda1a3d7bd35c7a5d934b37db012b17"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\strict-a03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 728,
+      "sha256": "7fb3e3312905149a021e392221686fc0b7d44b9ab1213c68cb3ebcd1ba21df42"
+    }
+  ],
+  "strict_history": "a01 missing explicit import roots produced11 Any/import diagnostics; a02 exact old dependencies exposed3 legacy untyped-call diagnostics only; a03 new focused module import-export diagnostics; a04 strict6 PASS; a05 final explicit site_preparation import guard strict6 PASS",
+  "business_scope": {
+    "inherited_counts": {
+      "actual_days": 113,
+      "requested_days": 113,
+      "rich_queries": 6,
+      "Move_submissions": 1
+    },
+    "new_endpoint_cap": 4,
+    "lineage_rich_cap": 10,
+    "primary_site": 2624,
+    "optional_second_site": 2623,
+    "maximum_preparation_seconds": 600,
+    "post_preparation_full_tail_seconds": 916,
+    "normal_Save_status": "ORDINARY_SAVE_AND_INDEPENDENT_REHASH_VERIFIED",
+    "one_life_identity_proven": false,
+    "new_Game_execution_admitted": false,
+    "new_SDK_or_capture_admitted": false,
+    "formal_ABC_completed": 0
+  },
+  "source_import_routes": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r17-site-camera-prepare-a01\\source\\focused-a05\\stdout.actual.txt",
+    "bytes": 2527,
+    "sha256": "34591016a2cdac965449ed099f2683c54ab17ba277c477e58dca7ed424778e15"
+  },
+  "source_writers_after_freeze": 0,
+  "source_immutable_members_only": true,
+  "runtime_data_sole_author": "/root/predecessor_admission; source/runtime-a01<=384KiB separately; final runtime/freeze is not implied by this source-only freeze",
+  "business_source_max_bytes": 1048576,
+  "old_R16_source_and_scene_changed": false,
+  "temporary_file_count": 0
+}

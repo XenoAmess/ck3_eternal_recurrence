@@ -1,0 +1,93 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "state": "RED_CAPTURE_BUDGET",
+  "budget_monitor_enabled": true,
+  "budget_qualified": false,
+  "capture_budget_failure": {
+    "camera_root": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01",
+    "raw": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01\\raw.mkv",
+    "raw_soft_stop_bytes": 25165824,
+    "aggregate_soft_stop_bytes": 54525952,
+    "raw_ceiling_bytes": 29360128,
+    "aggregate_ceiling_bytes": 71303168,
+    "raw_bytes": 27827945,
+    "aggregate_bytes": 29699350,
+    "raw_hard_ceiling_exceeded": false,
+    "aggregate_hard_ceiling_exceeded": false,
+    "reason": "raw_soft_stop"
+  },
+  "last_capture_budget": {
+    "camera_root": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01",
+    "raw": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01\\raw.mkv",
+    "raw_soft_stop_bytes": 25165824,
+    "aggregate_soft_stop_bytes": 54525952,
+    "raw_ceiling_bytes": 29360128,
+    "aggregate_ceiling_bytes": 71303168,
+    "raw_bytes": 23592960,
+    "aggregate_bytes": 25461299,
+    "raw_hard_ceiling_exceeded": false,
+    "aggregate_hard_ceiling_exceeded": false,
+    "reason": "below_soft_limits"
+  },
+  "job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 35560,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-21T20:34:45.043995+00:00"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01\\raw.mkv",
+    "bytes": 27827945,
+    "sha256": "c3045b79b7ed3c8222077cdbec7dcd0cf2182360141b15976f7612920b0eb2f0"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 31168,
+    "owned_ck3_create_time": 1792612760.7438457,
+    "hwnd": 218761780,
+    "foreground_hwnd": 218761780,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-21T20:33:54.715415+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": "CaptureBudgetFailure(\"{'camera_root': 'C:\\\\\\\\ck3-e04-resume-20261020-a01\\\\\\\\r18-live-scene-b-a01\\\\\\\\camera-raw-a01\\\\\\\\b-site01-a01', 'raw': 'C:\\\\\\\\ck3-e04-resume-20261020-a01\\\\\\\\r18-live-scene-b-a01\\\\\\\\camera-raw-a01\\\\\\\\b-site01-a01\\\\\\\\raw.mkv', 'raw_soft_stop_bytes': 25165824, 'aggregate_soft_stop_bytes': 54525952, 'raw_ceiling_bytes': 29360128, 'aggregate_ceiling_bytes': 71303168, 'raw_bytes': 27000832, 'aggregate_bytes': 28869171, 'raw_hard_ceiling_exceeded': False, 'aggregate_hard_ceiling_exceeded': False, 'reason': 'raw_soft_stop'}\")",
+  "deadline_admission_at_spawn": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0232",
+    "capacity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\capacity-a01\\R0232-SITE01-FILM.actual-a02.json",
+      "bytes": 14441,
+      "sha256": "75dcbba9ea78dfd661826db380aec2b8e43c82a0dd11b5ca6f5fe9ce02e20ee3"
+    },
+    "seconds": 90,
+    "hold_remaining_seconds": 927.3790988922119,
+    "normal_close_and_cleanup_reserve_seconds": 245
+  },
+  "started_at_utc": "2026-10-21T20:33:55.739628+00:00",
+  "completed_at_utc": "2026-10-21T20:34:45.133074+00:00",
+  "start_monotonic_ns": 1837600742951000,
+  "end_monotonic_ns": 1837650136420900,
+  "partial_assets_retained": true,
+  "clean_spans_certified": false,
+  "human_approval": false,
+  "media_probe_pending": true
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    },
+    "last_sequence": 8002,
+    "next_step": "",
+    "pid": 31740,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0231 actual normal GUI nativeOS0 host0 originalpublic2 keeperallocator0; screen release only",
+    "task_id": "e04-r17-b-site-a236",
+    "updated_at_utc": "2026-10-21T19:21:51.613570+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 8002,
+    "event_id": "9e626f36ccca49c5ab3e1367fb94d039",
+    "timestamp_utc": "2026-10-21T19:21:51.614901+00:00",
+    "kind": "completed",
+    "task_id": "e04-r17-b-site-a236",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0231 actual normal GUI nativeOS0 host0 originalpublic2 keeperallocator0; screen release only",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    }
+  }
+}
