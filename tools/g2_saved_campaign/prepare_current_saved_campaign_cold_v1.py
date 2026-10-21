@@ -56,6 +56,11 @@ def paths_v1(value: object, *, allow_root: bool = False) -> tuple[str, ...]:
  need(bool(result) and len(result) <= 192 and len(set(result)) == len(result),
    "bounded unique path set")
  return result
+def executable_import_roots_v1(value: object) -> tuple[str, ...]:
+ result = paths_v1(value, allow_root=True)
+ need(all(root.casefold() != "tools" for root in result),
+      "tools must remain a qualified package, not a bare executable import root")
+ return result
 def nonce_v1(value: object) -> str:
  result = text(value)
  need(re.fullmatch("[0-9a-f]{32}", result) is not None, "independent canonical nonce")
@@ -148,7 +153,7 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
   parse_ref(row["material_quote_ref"]), parse_ref(row["basis_ref"]), parse_ref(row["validation_ref"]),
   parse_ref(row["producer_ref"]), tuple(parse_source_row_v1(item) for item in rows(row["source_rows"])),
   paths_v1(row["canonical_entry_paths"]), paths_v1(row["closure_entry_paths"]),
-  paths_v1(row["import_roots"], allow_root=True), parse_ref(row["full_storage_ref"]),
+  executable_import_roots_v1(row["import_roots"]), parse_ref(row["full_storage_ref"]),
   parse_ref(row["steam_native_state_ref"]), absolute_v1(row["screen_admission_path"]),
   absolute_v1(row["supervisor_spec_path"]), nonce_v1(row["display_nonce"]),
   nonce_v1(row["attempt_nonce"]), nonce_v1(row["task_nonce"]),
@@ -250,7 +255,7 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
   tuple(parse_output_row_v1(item, runtime_root=root) for item in rows(row["files"])),
   parse_campaign_score_junction_v1(row["campaign_score_junction"]),
   paths_v1(row["canonical_entry_paths"]), paths_v1(row["closure_entry_paths"]),
-  paths_v1(row["import_roots"], allow_root=True), 8,
+  executable_import_roots_v1(row["import_roots"]), 8,
   integer(row["logical_bytes"], 1, MAX_GRAPH), integer(row["allocation_upper"], 1, MAX_GRAPH),
   integer(row["prepare_peak_upper"], 1, MAX_GRAPH))
  need(result.campaign_score_junction.path==child_v1(root,"campaign-score"),"exact directory projection")

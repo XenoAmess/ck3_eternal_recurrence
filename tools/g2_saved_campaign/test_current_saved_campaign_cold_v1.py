@@ -65,7 +65,7 @@ def plan() -> producer.ColdPlanV1:
         MACHINE, "2026-10-21T06:00:00Z", "2026-10-21T07:30:00Z", ROOT, OLD,
         ref("material.json"), ref("basis.json"), ref("qualification.json"), source,
         source_rows, names, names + tuple(row.relative_path for row in source_rows),
-        (".",), ref("full.json"), ref("steam.json"), ref("screen.json").path,
+        (".", "presentation-c23", "creator-tools"), ref("full.json"), ref("steam.json"), ref("screen.json").path,
         ref("spec.json").path, "1" * 32, "2" * 32, "3" * 32,
         business_source_generation=31, sdk_base_ref=ref("sdk-base.json"),
         sdk_anchor_ref=ref("sdk-anchor.json"))
@@ -180,6 +180,10 @@ class TypedColdContractTests(unittest.TestCase):
             bad[key] = json_value(value)
             with self.subTest(key=key), self.assertRaises(ValueError):
                 producer.parse_plan_v1(wire(bad))
+        for roots in ([".", "tools"], [".", "TOOLS"], [".", "./tools"], None, True, 1.0):
+            bad = copy.deepcopy(item); bad["import_roots"] = json_value(roots)
+            with self.subTest(roots=roots), self.assertRaises(ValueError):
+                producer.parse_plan_v1(wire(bad))
         bad = copy.deepcopy(item)
         del bad["basis_ref"]
         with self.assertRaises(ValueError):
@@ -222,6 +226,11 @@ class TypedColdContractTests(unittest.TestCase):
             bad = quote.to_wire()
             bad[key] = value
             with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                producer.parse_quote_v1(wire(bad))
+
+        for roots in ([".", "tools"], [".", "TOOLS"], [".", "./tools"], None, True, 1.0):
+            bad = quote.to_wire(); bad["import_roots"] = json_value(roots)
+            with self.subTest(roots=roots), self.assertRaises(ValueError):
                 producer.parse_quote_v1(wire(bad))
 
     def test_feeder_admission_roundtrip_and_no_progress_alias(self) -> None:

@@ -141,3 +141,17 @@ A31（R0019）已安全闭场：原Task的child退出1、Job活跃数0；原Sche
 | ROOT-NAMESPACE-FINAL-STRICT11-QUALIFICATION02.json | 3646 | 539a895f17903217601e611be30fb263b9e22d0fb9c3e4f00bd83a10e5e0fb97 |
 
 该索引绑定原stderr、CLOSED、Task Run ACK、screen释放和R0019终态。小型回归回执绑定实际源码摘要、测试输出和RAM覆层边界。未读取或重新散列SAVE/Driver正文，未新增影片或截图；失败原件按通用存储策略和当前问题用途复核，不因复盘无限延期。
+
+## 恢复授权后的 A32 阻断与 import-root 合同修复
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。用户已明确恢复CK3使用；本节观察为2026-10-21 UTC（上海已为10月22日）。bf65fc32的Official run39624266578与Linear run39624266374均已终态SUCCESS，观察时间16:01:33Z；它们只覆盖该提交的软件资格。
+
+16:16Z的A32新Plan/RAM与实际160文件、62闭包、8入口准备通过，但公开prepare在发布Prepared前拒绝，Task/Game/SDK均未创建。原失败小回执Q32/ROOT-A32-PUBLIC-PREPARE-FAILURE01.json为4010B、SHA-256 d1ad08ed0bd4398b907f5fabf65fc8a8f31f05782ad17b8bebb334d6cd863f94；冻结N32不改。
+
+另一路注入源是Plan.import_roots本身仍含tools。producer把它加入N/tools，早于新增的原监督器导入段，再次遮蔽creator namespace。上次仅验证导入段，漏掉公开probe更早的计划路径投影；修复placement并不足以覆盖这个配置入口。
+
+Plan与Quote现共用typed executable_import_roots_v1，拒绝将tools作为裸执行根，同时保留原canonical路径校验；新计划明确使用[".","presentation-c23","creator-tools"]。不清模块缓存、不加别名、不修改N32。Root最终29项回归零skip、十一叶strict/equality通过，资格分别为Q33/ROOT-IMPORT-ROOTS-FINAL-SOFTWARE-QUALIFICATION01.json（7519B，4800204a648889c86bb6149321e76b739b6dbe7eb0bdd058d6d54891b4fafd89）及ROOT-IMPORT-ROOTS-FINAL-STRICT11-QUALIFICATION01.json（3646B，aa1102ef80dcc8994918b26d6bad6a2ada76a0966a7b6b7e8f879e6f312501bf）。
+
+独立线程还运行了冻结N32的完整公开consumer probe：原计划真实拒绝，仅typed import_roots的RAM投影后原六operation全部完成。原stdout未嵌执行UTC；交接观察为16:24:41Z，保留工具chunk来源与此限制。它不代表新物理包、整个publicprepare后序或实机通过；N33仍必须实际执行这些检查。
+
+容量已按原始账更正：撤销过期512GiB未来估算预留，纠正Z上重复计入的40GiB系统/安全额度，N42撤旧credit后只按当前两个实际文件重新计量；没有删除资产或虚构物理释放。ALL430下N33零新增取额，复用Q32新Full及四消费者资格，完整链截止20:30Z。真实CAP、首FULL、性能和G2完成状态仍待后续实测，本节未新增业务信用。
