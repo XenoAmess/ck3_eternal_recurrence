@@ -7,6 +7,7 @@ import hashlib
 import json
 import ntpath
 from pathlib import Path
+from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 import re
 from typing import Literal
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
@@ -14,8 +15,14 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  json_object, json_value, need, parse_current_saved_basis_v1, parse_json,
  parse_ref, record, rows, text, utc,
 )
+from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
+ CampaignScoreJunctionV1, LocalBasisReaderV1, build_campaign_score_junction_v1,
+ campaign_score_directory_identity_v1, derive_current_saved_state_paths_v1,
+ parse_campaign_score_junction_v1, validate_campaign_score_junction_source_v1,
+ validate_campaign_score_junction_physical_v1, validate_current_saved_cold_inputs_v1,
+)
 PLAN_SCHEMA = "xar.current-saved-cold-plan/v1"
-QUOTE_SCHEMA = "xar.current-saved-cold-quote/v1"
+QUOTE_SCHEMA = "xar.current-saved-cold-quote/v2"
 MAX_FILE = 1048576
 MAX_GRAPH = 8 * MAX_FILE
 CANONICAL_NAMES = frozenset((
@@ -212,6 +219,7 @@ class ColdQuoteV1:
  producer_ref: ExactRefV1
  runtime_root: str
  files: tuple[OutputRowV1, ...]
+ campaign_score_junction: CampaignScoreJunctionV1
  canonical_entry_paths: tuple[str, ...]
  closure_entry_paths: tuple[str, ...]
  import_roots: tuple[str, ...]
@@ -224,6 +232,7 @@ class ColdQuoteV1:
    "plan_ref": self.plan_ref.to_wire(), "basis_ref": self.basis_ref.to_wire(),
    "validation_ref": self.validation_ref.to_wire(), "producer_ref": self.producer_ref.to_wire(),
    "runtime_root": self.runtime_root, "files": [item.to_wire() for item in self.files],
+   "campaign_score_junction":self.campaign_score_junction.to_wire(),
    "canonical_entry_paths": list(self.canonical_entry_paths),
    "closure_entry_paths": list(self.closure_entry_paths), "import_roots": list(self.import_roots),
    "canonical_entry_limit": self.canonical_entry_limit, "logical_bytes": self.logical_bytes,
@@ -232,7 +241,7 @@ class ColdQuoteV1:
 QUOTE_FIELDS = {"schema", "machine_id", "observed_at_utc", "plan_ref", "basis_ref", "validation_ref",
  "producer_ref", "runtime_root", "files", "canonical_entry_paths", "closure_entry_paths",
  "import_roots", "canonical_entry_limit", "logical_bytes", "allocation_upper", "prepare_peak_upper",
- "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed"}
+ "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction"}
 def allocation_v1(size: int) -> int:
  return ((integer(size, 1) + 4095) // 4096) * 4096
 def parse_quote_v1(value: object) -> ColdQuoteV1:
@@ -245,10 +254,16 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
   parse_ref(row["plan_ref"]), parse_ref(row["basis_ref"]), parse_ref(row["validation_ref"]),
   parse_ref(row["producer_ref"]), root,
   tuple(parse_output_row_v1(item, runtime_root=root) for item in rows(row["files"])),
+  parse_campaign_score_junction_v1(row["campaign_score_junction"]),
   paths_v1(row["canonical_entry_paths"]), paths_v1(row["closure_entry_paths"]),
   paths_v1(row["import_roots"], allow_root=True), 8,
   integer(row["logical_bytes"], 1, MAX_GRAPH), integer(row["allocation_upper"], 1, MAX_GRAPH),
   integer(row["prepare_peak_upper"], 1, MAX_GRAPH))
+ need(result.campaign_score_junction.path==child_v1(root,"campaign-score"),"exact directory projection")
+ score=ntpath.normcase(ntpath.normpath(result.campaign_score_junction.path))
+ need(all(not (ntpath.normcase(ntpath.normpath(item.path))==score or
+   ntpath.normcase(ntpath.normpath(item.path)).startswith(score+"\\")) for item in result.files),
+  "score junction is an independent directory projection; never copied files")
  paths = [item.path.casefold() for item in result.files]
  relative = {item.relative_path for item in result.files if item.relative_path is not None}
  need(1 <= len(result.files) <= 192 and len(paths) == len(set(paths))
@@ -543,6 +558,31 @@ _source32_load_driver_v1=mcp_server.load_driver
  source=source.replace(seam,seam+"'route_window_clock_v1':route_window_clock_json_v1(validate_route_window_clock_v1(driver.route_window_clock_v1)),")
  compile(source,"<current source32 factory>","exec")
  return source.encode("utf-8")
+def emit_current_saved_sdk_launcher_v1(material:bytes)->bytes:
+ source=material.decode("utf-8")
+ seam="from pathlib import Path"
+ need(source.count(seam)==1,"one launcher import seam")
+ source=source.replace(seam,seam+"\nfrom tools.g2_saved_campaign.current_saved_basis_v1 import JsonObject,JsonValue,integer,need,record,text",1)
+ replacement="""
+def verify_prepared_inputs() -> JsonObject:
+    from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
+        load_current_saved_inputs_v1,validate_current_saved_prepared_sdk_closure_v1)
+    pins=record(read(N/'ROOT-P37C23-OWNER-INPUT-PINS.json'))
+    for name,expected in record(pins['sources']).items():
+        need(sha(N/name)==text(expected),'exact current owner source changed: '+name)
+    admission=record(read(N/'ROOT-P37C23-COLD-RESUME-ADMISSION.json'))
+    inputs=load_current_saved_inputs_v1(runtime_root=N,expected_machine_id=text(MACHINE_ID))
+    proof=validate_current_saved_prepared_sdk_closure_v1(admission['old_closed'],inputs=inputs)
+    need(not (N/'EXIT-SDK-P37C23').exists() and not (N/'REQUEST-ADMISSION-CLOSED-C23').exists(),
+        'current SDK admission already closed')
+    need(not (N/'p37-queue').exists(),'current Queue is create-only')
+    next_sequence=integer(record(read(N/'NEXT-SEQUENCE-P37.json'))['next_sequence'],1)
+    need(next_sequence==integer(admission['next_sequence'],1)==inputs.basis.next_sequence,
+        'qualified current sequence required')
+    return proof
+"""
+ return replace_definition_v1(source.encode("utf-8"),"verify_prepared_inputs",replacement)
+
 def profile_companions_v1(profile: JsonObject) -> dict[str, bytes]:
  name = text(profile["profile_name"])
  root = text(profile["recording_root"]).replace("\\", "/")
@@ -559,6 +599,37 @@ def profile_companions_v1(profile: JsonObject) -> dict[str, bytes]:
  return {ntpath.join(config,"basic","profiles",name,"basic.ini"):basic.encode("utf-8"),
    ntpath.join(config,"basic","scenes",name+".json"):
     json.dumps(scene,ensure_ascii=False,indent=2).encode("utf-8")}
+def prepare_campaign_score_junction_v1(binding:CampaignScoreJunctionV1,basis:CurrentSavedBasisV1,*,approved_root:Path)->JsonObject:
+ """Explicit Root-only mutation after file preparation; compose never calls this."""
+ import os
+ import subprocess
+ from datetime import timezone
+ item=parse_campaign_score_junction_v1(binding.to_wire())
+ root=Path(absolute_v1(str(approved_root)))
+ need(root.is_dir(),"approved runtime directory exists")
+ for parent in (root,*root.parents):
+  need(not getattr(parent.lstat(),"st_file_attributes",0)&0x400,"approved runtime parents have no reparse points")
+ root=root.resolve(strict=True)
+ path=Path(item.path);target=Path(item.exact_target)
+ need(path==root/"campaign-score" and path.parent==root and not os.path.lexists(path),"exact create-only approved child")
+ need(not any(c in str(path)+str(target) for c in '&|<>^%!"\r\n'),"literal cmd junction arguments")
+ reader=LocalBasisReaderV1()
+ validate_campaign_score_junction_source_v1(item,basis,runtime_root=root,reader=reader)
+ expected=(item.target_file_id,item.target_device)
+ need(campaign_score_directory_identity_v1(target)==expected,"qualified target directory identity")
+ anchor=record(parse_json(read_ref_v1(item.anchor_ref,16384)))
+ outcome=subprocess.run(["cmd.exe","/d","/c","mklink","/J",str(path),str(target)],
+  check=False,capture_output=True,timeout=30,creationflags=subprocess.CREATE_NO_WINDOW)
+ need(outcome.returncode==0,"junction creation failed: "+outcome.stderr.decode("utf-8",errors="replace")[:2048])
+ validate_campaign_score_junction_physical_v1(item,runtime_root=root,reader=reader)
+ need(campaign_score_directory_identity_v1(target)==expected,"target directory identity stayed fixed")
+ for parent in (root,*root.parents):
+  need(not getattr(parent.lstat(),"st_file_attributes",0)&0x400,"approved runtime parents stayed ordinary")
+ return {"schema":"xar.current-saved-campaign-score-junction-prepare/v1",
+  "machine_id":text(anchor["machine_id"]),"observed_at_utc":datetime.now(timezone.utc).isoformat(),
+  "status":"CREATED_AND_VERIFIED","campaign_score_junction":item.to_wire(),
+  "copied_files":0,"ordinary_cycle_credit":0,"game_day_credit":0,"original_actions_replayed":False}
+
 def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
      metadata_overlay: dict[str, bytes] | None = None) -> ColdComposeV1:
  """Rebuild every current byte from exact small inputs without filesystem mutation."""
@@ -583,6 +654,14 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  material = record(parse_json(load(p.material_quote_ref)))
  need(material.get("schema") == "xar.Source31-A20-complete-cold-quote/v1"
    and material.get("machine_id") == p.machine_id, "source-bound static A20 material quote")
+ score_anchor=Path(derive_current_saved_state_paths_v1(basis).state_root).parent/"campaign-score"/"CAMPAIGN-ANCHOR.json"
+ before_anchor=score_anchor.stat()
+ with score_anchor.open("rb") as stream:anchor_raw=stream.read(16385)
+ after_anchor=score_anchor.stat()
+ need(len(anchor_raw)<=16384 and (before_anchor.st_dev,before_anchor.st_ino,before_anchor.st_size,before_anchor.st_mtime_ns)==
+  (after_anchor.st_dev,after_anchor.st_ino,after_anchor.st_size,after_anchor.st_mtime_ns),"stable bounded original score anchor")
+ score_binding=build_campaign_score_junction_v1(basis,material,runtime_root=Path(p.runtime_root),
+  anchor_ref=ref_for_bytes_v1(str(score_anchor),anchor_raw),reader=LocalBasisReaderV1())
  original_rows = [record(item) for item in rows(material["files"])]
  need(len(original_rows) == 145, "complete original static material inventory")
  old_profile_ref = next(parse_ref({key:item[key] for key in ("path","bytes","sha256")})
@@ -626,6 +705,7 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
   put(item.relative_path,load(item.source_ref))
  put("root_checkpoint_bootstrap_c23.py",emit_bootstrap_v1(get("root_checkpoint_bootstrap_c23.py"),machine_id=p.machine_id))
  put("root_native30_supervisor_c23.py",emit_supervisor_v1(get("root_native30_supervisor_c23.py"),machine_id=p.machine_id))
+ put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py")))
  cold = emit_cold_resume_v1(get("root_p37c23_cold_resume.py"),machine_id=p.machine_id).decode("utf-8")
  cold += (
         "\ndef load_current_saved_feeder_inputs_v1() -> WarmCurrentSavedFeederInputsV1:\n"
@@ -681,20 +761,22 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  put("root_c23_canonical_outer.py",get("root_c23_canonical_outer.py") +
      ("\nCURRENT_SHARED_IMPORTS = " + repr(shared) + "\n" + guard).encode("utf-8"))
  for name in ("root_native30_supervisor_c23.py","root_checkpoint_bootstrap_c23.py",
-              "root_p37c23_cold_resume.py","launch_current_saved_feeder_v1.py"):
+              "root_p37c23_cold_resume.py","launch_current_saved_feeder_v1.py","launch_sdk_p37c23_owner.py"):
   raw = get(name)
   seam = b"from pathlib import Path"
   need(seam in raw,"actual current consumer import seam")
   raw = raw.replace(seam,seam+b"\nfrom root_c23_canonical_outer import verify_current_saved_shared_sources_v1"
       b"\nverify_current_saved_shared_sources_v1(Path(__file__).resolve().parent)",1)
   put(name,raw)
- closure = record(parse_json(load(basis.refs.closure)))
- game_exit = record(parse_json(load(parse_ref(record(closure["sources"])["ROOT-ACTUAL-GAME-EXIT-C23.json"]))))
- need(game_exit.get("machine_id") == p.machine_id,"actual previous Game machine")
+ class ComposeReaderV1:
+  def read(self,reference:ExactRefV1,limit:int)->bytes:return load(reference,limit)
+  def stat(self,path:str)->FileStatIdentityV1:return LocalBasisReaderV1().stat(path)
+ current_inputs=validate_current_saved_cold_inputs_v1(basis,basis_ref=p.basis_ref,
+  validation_ref=p.validation_ref,reader=ComposeReaderV1())
+ old_game=current_inputs.closed_epoch.old_game
  display = "presentation-c23/start_new_game_display.py"
  display_spec = literal_assignment_v1(get(display),"SPEC")
- display_spec["previous_Game_tuple"] = [integer(game_exit["pid"],1,(1<<32)-1),
-     str(integer(game_exit["creation_filetime"],1,(1<<64)-1))]
+ display_spec["previous_Game_tuple"] = [old_game.pid,old_game.creation_filetime]
  put(display,assignment_v1(get(display),"SPEC",display_spec))
  put("ROOT-CURRENT-SAVED-INPUTS01.json",encode_v1({
   "schema":"xar.current-saved-cold-inputs/v1","machine_id":p.machine_id,
@@ -757,7 +839,7 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   steam_native_state=p.steam_native_state_ref.to_wire(),
   cold_attempt={"machine_id":p.machine_id,"attempt_nonce":p.attempt_nonce,"task_nonce":p.task_nonce,
       "runtime_root":p.runtime_root,"basis_ref":p.basis_ref.to_wire(),
-      "validation_ref":p.validation_ref.to_wire()})
+      "validation_ref":p.validation_ref.to_wire(),"campaign_score_junction":score_binding.to_wire()})
  doc("ROOT-CLEAN-SOURCE-FROZEN-C23-A15.json")["business_source_commit"]=freeze["business_source_commit"]
  ready = doc("ROOT-PROMO-KEEPER-SOURCE-READY-C23-A15.json")
  ready.update(source_review_at_utc=p.review_at_utc)
@@ -826,7 +908,7 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
    "hardlink" if unchanged else "create-only",old if unchanged else None))
  allocated = sum(allocation_v1(row.bytes) for row in result_rows if row.mode == "create-only")
  quote = ColdQuoteV1(p.machine_id,p.observed_at_utc,plan_ref,p.basis_ref,p.validation_ref,p.producer_ref,
-  p.runtime_root,tuple(result_rows),p.canonical_entry_paths,p.closure_entry_paths,p.import_roots,
+  p.runtime_root,tuple(result_rows),score_binding,p.canonical_entry_paths,p.closure_entry_paths,p.import_roots,
   8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072)
  return ColdComposeV1(output,parse_quote_v1(quote.to_wire()))
 

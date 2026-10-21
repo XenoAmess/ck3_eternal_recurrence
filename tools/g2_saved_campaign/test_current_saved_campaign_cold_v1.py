@@ -6,15 +6,18 @@ import ast
 from dataclasses import replace
 from datetime import datetime, timezone
 import hashlib
+import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import unittest
 from unittest.mock import patch
 from typing import Callable, Protocol, runtime_checkable
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
-    ExactRefV1, JsonObject, JsonValue, SavedFrameV1, encode_current_saved_basis_v1,
+    BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, SavedFrameV1,
+    encode_current_saved_basis_v1, exact_read,
     parse_json, record, json_object, json_value, qualify_current_saved_basis_v1,
 )
 from tools.g2_saved_campaign import test_current_saved_basis_v1 as basis_fixture
@@ -42,6 +45,14 @@ def wire(value: object) -> JsonObject:
 
 def ref(name: str) -> ExactRefV1:
     return ExactRefV1("D:\\synthetic-current-saved\\" + name, 1, "a" * 64)
+
+
+def score_junction() -> owner.CampaignScoreJunctionV1:
+    target = r"D:\synthetic-current-saved\canonical-score"
+    return owner.CampaignScoreJunctionV1(path=producer.child_v1(ROOT, "campaign-score"),
+        exact_target=target, must_verify_same_FileID=True,
+        target_file_id="9007199254740993", target_device="9007199254740995",
+        anchor_ref=ExactRefV1(producer.child_v1(target, "CAMPAIGN-ANCHOR.json"), 1, "a" * 64))
 
 
 def plan() -> producer.ColdPlanV1:
@@ -184,10 +195,27 @@ def main(args):
             1, "a" * 64, "create-only", None) for name in item.closure_entry_paths)
         allocated = len(outputs) * 4096
         quote = producer.ColdQuoteV1(MACHINE, item.observed_at_utc, ref("plan.json"),
-            item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs,
+            item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs, score_junction(),
             item.canonical_entry_paths, item.closure_entry_paths, item.import_roots,
             8, len(outputs), allocated, allocated + 1 + 131072)
         self.assertEqual(producer.parse_quote_v1(wire(quote.to_wire())), quote)
+        self.assertEqual(record(wire(quote.to_wire())["campaign_score_junction"])["target_file_id"],
+            "9007199254740993")
+        cases: list[tuple[str, JsonValue, bool]] = [(key, None, True)
+            for key in ("target_file_id", "target_device", "anchor_ref")]
+        cases += [(key, value, False) for key, value in (("target_file_id", True),
+            ("target_file_id", 1.0), ("target_device", "01"),
+            ("must_verify_same_FileID", 1), ("anchor_ref", None))]
+        for key, value, missing in cases:
+            bad = quote.to_wire()
+            part = json_object(bad["campaign_score_junction"])
+            if missing:
+                del part[key]
+            else:
+                part[key] = json_value(value)
+            bad["campaign_score_junction"] = part
+            with self.subTest(key=key, missing=missing), self.assertRaises(ValueError):
+                producer.parse_quote_v1(wire(bad))
         for key, value in (("canonical_entry_limit", True), ("canonical_entry_limit", 8.0),
                 ("canonical_entry_limit", 9), ("allocation_upper", allocated + 4096),
                 ("ordinary_cycle_credit", True), ("original_actions_replayed", True)):
@@ -340,6 +368,76 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
     def tearDownClass(cls) -> None:
         cls.fixture.tearDownClass()
 
+    def test_campaign_score_junction_build_prepare_and_owner(self) -> None:
+        fixture = self.fixture
+        if not fixture.fixture_enabled:
+            self.skipTest("explicit owned fixture, machine and finite review required")
+        root = fixture.root / "score-case"
+        state = root / "campaign-origin/state"
+        save = state / "profile/save games/xar_checkpoint.ck3"
+        old = fixture.basis
+        basis = replace(old, refs=replace(old.refs,
+            driver=replace(old.refs.driver, path=str(state / "native-session/driver-state.json")),
+            save=replace(old.refs.save, path=str(save))),
+            checkpoint={**old.checkpoint, "path": str(save)},
+            campaign_goal_anchor={**old.campaign_goal_anchor, "origin_character_id": 1})
+        attempt, target, other = root / "new", state.parent / "campaign-score", root / "other"
+        attempt.mkdir(parents=True)
+        target.mkdir(parents=True)
+        other.mkdir()
+        anchor: JsonObject = {"schema": "xar.ck3.campaign-score-fixed-anchor/v1",
+            "machine_id": MACHINE, "campaign_id": "robert-first30-v20261019", "founder_character_id": 1,
+            "observed_at_utc": "2026-10-19T03:04:29.665767+00:00",
+            "start_date_raw": basis.origin.start_date_raw,
+            "endpoint_date_raw": basis.origin.target_date_raw,
+            "fixed_across_ruler_and_sdk_changes": True, "old_campaign_inputs_copied": 0}
+        original = fixture.write("score-case/campaign-origin/campaign-score/CAMPAIGN-ANCHOR.json", anchor)
+        material: JsonObject = {"schema": "xar.Source31-A20-complete-cold-quote/v1",
+            "machine_id": MACHINE, "runtime_root": str(target.parent),
+            "campaign_score_junction": {"path": str(target), "exact_target": str(target),
+                "must_verify_same_FileID": True}}
+        binding = owner.build_campaign_score_junction_v1(basis, material,
+            runtime_root=attempt, anchor_ref=original, reader=fixture.reader)
+        binding = owner.parse_campaign_score_junction_v1(wire(binding.to_wire()))
+        self.assertEqual(binding.anchor_ref, original)
+        no_origin = {key: value for key, value in basis.campaign_goal_anchor.items()
+            if key != "origin_character_id"}
+        with self.assertRaises(ValueError):
+            owner.build_campaign_score_junction_v1(replace(basis, campaign_goal_anchor=no_origin),
+                material, runtime_root=attempt, anchor_ref=original, reader=fixture.reader)
+        link = Path(binding.path)
+        try:
+            with self.assertRaises((ValueError, FileNotFoundError)):
+                owner.validate_campaign_score_junction_physical_v1(binding,
+                    runtime_root=attempt, reader=fixture.reader)
+            producer.prepare_campaign_score_junction_v1(binding, basis, approved_root=attempt)
+            owner.validate_campaign_score_junction_physical_v1(binding,
+                runtime_root=attempt, reader=fixture.reader)
+            self.assertEqual(link.stat().st_ino, target.stat().st_ino)
+            self.assertEqual(link.stat().st_dev, target.stat().st_dev)
+            raw = Path(original.path).read_bytes()
+            try:
+                for key, value in (("machine_id", "other"),
+                        ("start_date_raw", basis.origin.start_date_raw + 24),
+                        ("founder_character_id", basis.frame.actor_character_id)):
+                    Path(original.path).write_bytes(producer.encode_v1({**anchor, key: json_value(value)}))
+                    changed = replace(binding, anchor_ref=file_ref(Path(original.path)))
+                    with self.subTest(key=key), self.assertRaises(ValueError):
+                        owner.validate_campaign_score_junction_source_v1(changed, basis,
+                            runtime_root=attempt, reader=fixture.reader)
+            finally:
+                Path(original.path).write_bytes(raw)
+            os.rmdir(link)
+            subprocess.run(["cmd.exe", "/d", "/c", "mklink", "/J", str(link), str(other)],
+                check=True, capture_output=True)
+            with self.assertRaises(ValueError):
+                owner.validate_campaign_score_junction_physical_v1(binding,
+                    runtime_root=attempt, reader=fixture.reader)
+        finally:
+            if link.is_junction():
+                os.rmdir(link)
+            fixture.measure()
+
     def test_shared_state_generated_make_spec_and_real_profile_consumer(self) -> None:
         fixture = self.fixture
         if not fixture.fixture_enabled:
@@ -454,7 +552,10 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
         validated = qualify_current_saved_basis_v1(fixture.inputs,
             reader=fixture.reader, checkpoint_validator=fixture.validator)
         basis = validated.basis
-        basis_ref = save_raw(fixture, "warm-basis.json", encode_current_saved_basis_v1(basis))
+        basis_raw = json.dumps(parse_json(encode_current_saved_basis_v1(basis)),
+            ensure_ascii=False, indent=2).encode("utf-8")
+        self.assertNotEqual(basis_raw, encode_current_saved_basis_v1(basis))
+        basis_ref = save_raw(fixture, "warm-basis.json", basis_raw)
         qualification = owner.build_basis_qualification_v1(validated, basis_ref=basis_ref,
             reader=fixture.reader, observed_at_utc="2026-10-21T06:00:00Z")
         validation_ref = fixture.write("warm-qualification.json", qualification.to_wire())
@@ -555,6 +656,31 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
             "validation_ref": validation_ref.to_wire(), "new_Game": game})
         sources = owner.WarmSourceRefsV1(game_ref, pair_ref, sem_ref, cap_ref, marker_ref, admission_ref)
         reader = WarmFixtureReader(identities)
+        fixture.write("ROOT-CURRENT-SAVED-INPUTS01.json", {
+            "schema": owner.CURRENT_INPUTS_SCHEMA, "machine_id": MACHINE,
+            "basis_ref": basis_ref.to_wire(), "validation_ref": validation_ref.to_wire()})
+        # Only the synthetic closed-epoch evidence shape is supplied here. The
+        # public loader still executes its real immutable inputs, qualification,
+        # seed/ledger, SAVE identity and warm native-header/kernel validators.
+        def fixture_closed_epoch(actual_basis: CurrentSavedBasisV1,
+                actual_reader: BasisReaderV1) -> owner.ClosedEpochV1:
+            self.assertEqual(actual_basis, basis)
+            self.assertIs(actual_reader, reader)
+            return closed
+        with patch.object(owner, "LocalBasisReaderV1", return_value=reader), \
+                patch.object(owner, "_closed_epoch", new=fixture_closed_epoch):
+            warm = owner.load_current_saved_warm_inputs_v1(runtime_root=root,
+                expected_machine_id=MACHINE)
+            self.assertEqual(warm.phase, "warm_bound")
+            self.assertEqual(warm.inputs.seed, inputs.seed)
+            self.assertTrue(warm.warm_proof.closed_driver_identity_replaced)
+            self.assertEqual(warm.warm_proof.closed_driver_identity, before)
+            self.assertEqual(warm.warm_proof.driver_identity, after)
+            with self.assertRaises(ValueError):
+                owner.load_current_saved_inputs_v1(runtime_root=root,
+                    expected_machine_id=MACHINE)
+        with self.assertRaises(ValueError):
+            exact_read(reader, basis.refs.driver, 65536)
         proof = owner.validate_warm_binding_v1(inputs, sources=sources, reader=reader, runtime_root=root)
         self.assertEqual(proof.phase, "warm_bound")
         self.assertTrue(proof.closed_driver_identity_replaced)

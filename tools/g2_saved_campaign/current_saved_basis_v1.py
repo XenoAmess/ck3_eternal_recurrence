@@ -1,7 +1,7 @@
 """Current saved facts, exact evidence and JSON; no request submission."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -9,7 +9,7 @@ import math
 from pathlib import Path
 import re
 from types import FunctionType
-from typing import Callable, Protocol, TypeAlias
+from typing import Callable, Literal, Protocol, TypeAlias
 
 from tools.g2_saved_campaign.file_stat_identity_v1 import (
     SCHEMA as STAT_SCHEMA, FileStatIdentityV1, parse_file_stat_identity_v1,
@@ -630,3 +630,595 @@ def _derive(
         next_sequence, progress, inputs.unknown_requests, inputs.sidecars)
     return ValidatedCurrentSavedBasisV1(basis, len(history), 1, 1)
 
+
+
+# A failed cold-start observation is a new process epoch, never new gameplay.
+READONLY_COLD_FAILURE_EPOCH_SCHEMA = "xar.current-saved-readonly-cold-failure-epoch/v1"
+
+
+@dataclass(frozen=True)
+class ReadonlyColdFailureRefsV1:
+    business_basis: ExactRefV1
+    driver_review: ExactRefV1
+    history_tail: ExactRefV1
+    closure_index: ExactRefV1
+    launch: ExactRefV1
+    semantic_response: ExactRefV1
+    capability_rejection: ExactRefV1
+    first_exception: ExactRefV1
+    inflight: ExactRefV1
+    request_inventory: ExactRefV1
+    sdk_closed: ExactRefV1
+    supervisor_closed: ExactRefV1
+    game_exit: ExactRefV1
+    next: ExactRefV1
+    canonical_qualification: ExactRefV1
+
+    def items(self) -> tuple[tuple[str, ExactRefV1], ...]:
+        return (
+            ("business_basis", self.business_basis),
+            ("driver_review", self.driver_review),
+            ("history_tail", self.history_tail),
+            ("closure_index", self.closure_index),
+            ("launch", self.launch),
+            ("semantic_response", self.semantic_response),
+            ("capability_rejection", self.capability_rejection),
+            ("first_exception", self.first_exception),
+            ("inflight", self.inflight),
+            ("request_inventory", self.request_inventory),
+            ("sdk_closed", self.sdk_closed),
+            ("supervisor_closed", self.supervisor_closed),
+            ("game_exit", self.game_exit),
+            ("next", self.next),
+            ("canonical_qualification", self.canonical_qualification),
+        )
+
+    def to_wire(self) -> JsonObject:
+        return {name: value.to_wire() for name, value in self.items()}
+
+
+def parse_readonly_cold_failure_refs_v1(value: object) -> ReadonlyColdFailureRefsV1:
+    names = {"business_basis", "driver_review", "history_tail", "closure_index", "launch",
+        "semantic_response", "capability_rejection", "first_exception", "inflight",
+        "request_inventory", "sdk_closed", "supervisor_closed", "game_exit", "next", "canonical_qualification"}
+    row = record(value, names)
+    return ReadonlyColdFailureRefsV1(
+        parse_ref(row["business_basis"]), parse_ref(row["driver_review"]),
+        parse_ref(row["history_tail"]), parse_ref(row["closure_index"]),
+        parse_ref(row["launch"]), parse_ref(row["semantic_response"]),
+        parse_ref(row["capability_rejection"]), parse_ref(row["first_exception"]),
+        parse_ref(row["inflight"]), parse_ref(row["request_inventory"]),
+        parse_ref(row["sdk_closed"]), parse_ref(row["supervisor_closed"]),
+        parse_ref(row["game_exit"]), parse_ref(row["next"]), parse_ref(row["canonical_qualification"]))
+
+
+@dataclass(frozen=True)
+class ReadonlyClosedDriverFlagsV1:
+    managed_restore_transaction: None
+    rollback_war_failure: None
+    succession_expectation: None
+    session_binding_present: Literal[False]
+
+    def __post_init__(self) -> None:
+        need(self.managed_restore_transaction is None and self.rollback_war_failure is None
+            and self.succession_expectation is None and self.session_binding_present is False,
+            "explicit closed Driver has no unresolved transaction")
+
+    def to_wire(self) -> JsonObject:
+        return {"managed_restore_transaction": None, "rollback_war_failure": None,
+            "succession_expectation": None, "session_binding_present": False}
+
+
+def parse_readonly_closed_driver_flags_v1(value: object) -> ReadonlyClosedDriverFlagsV1:
+    row = record(value, {"managed_restore_transaction", "rollback_war_failure",
+        "succession_expectation", "session_binding_present"})
+    need(row["managed_restore_transaction"] is None and row["rollback_war_failure"] is None
+        and row["succession_expectation"] is None and row["session_binding_present"] is False,
+        "actual closed Driver flags, missing is not null")
+    return ReadonlyClosedDriverFlagsV1(None, None, None, False)
+
+
+@dataclass(frozen=True)
+class ReadonlyColdFailureEpochV1:
+    machine_id: str
+    observed_at_utc: str
+    refs: ReadonlyColdFailureRefsV1
+    driver_payload_flags: ReadonlyClosedDriverFlagsV1
+
+    def __post_init__(self) -> None:
+        text(self.machine_id)
+        utc(self.observed_at_utc)
+
+    def to_wire(self) -> JsonObject:
+        return {"schema": READONLY_COLD_FAILURE_EPOCH_SCHEMA, "machine_id": self.machine_id,
+            "observed_at_utc": self.observed_at_utc,
+            "status": "CLOSED_READONLY_INIT_POSTCHECK_FAILURE", "refs": self.refs.to_wire(),
+            "driver_payload_flags": self.driver_payload_flags.to_wire(),
+            "new_ordinary_cycle_credit": 0, "new_game_day_credit": 0,
+            "new_checkpoint_credit": 0, "original_requests_replayed": False}
+
+
+def parse_readonly_cold_failure_epoch_v1(
+    value: object, *, expected_machine_id: str,
+) -> ReadonlyColdFailureEpochV1:
+    row = record(value, {"schema", "machine_id", "observed_at_utc", "status", "refs",
+        "new_ordinary_cycle_credit", "new_game_day_credit", "new_checkpoint_credit",
+        "original_requests_replayed", "driver_payload_flags"})
+    need(row["schema"] == READONLY_COLD_FAILURE_EPOCH_SCHEMA
+        and row["status"] == "CLOSED_READONLY_INIT_POSTCHECK_FAILURE"
+        and row["machine_id"] == expected_machine_id, "explicit readonly failure epoch")
+    for name in ("new_ordinary_cycle_credit", "new_game_day_credit", "new_checkpoint_credit"):
+        need(integer(row[name]) == 0, "readonly initialization grants no credit")
+    need(row["original_requests_replayed"] is False, "failed requests are not replayed")
+    return ReadonlyColdFailureEpochV1(text(row["machine_id"]), utc(row["observed_at_utc"]),
+        parse_readonly_cold_failure_refs_v1(row["refs"]),
+        parse_readonly_closed_driver_flags_v1(row["driver_payload_flags"]))
+
+
+def _closed_filetime_v1(value: object) -> str:
+    # Existing Python process receipts use integers; the shared DTO is JSON-safe.
+    if type(value) is int:
+        need(0 < value < 2**64, "closed process FILETIME")
+        return str(value)
+    result = text(value)
+    need(re.fullmatch(r"[1-9][0-9]{0,19}", result) is not None
+        and int(result) < 2**64, "canonical closed process FILETIME")
+    return result
+
+
+@dataclass(frozen=True)
+class ReadonlyColdClosedGameV1:
+    pid: int
+    creation_filetime: str
+    creation_date: str
+
+
+@dataclass(frozen=True)
+class ReadonlyColdClosedSdkV1:
+    role: Literal["sdk_queue", "sdk_application"]
+    pid: int
+    creation_filetime: str
+    executable: str
+    exit_code: int
+
+
+@dataclass(frozen=True)
+class ValidatedReadonlyColdFailureEpochV1:
+    epoch: ReadonlyColdFailureEpochV1
+    business_basis: CurrentSavedBasisV1
+    driver_ref: ExactRefV1
+    driver_identity: FileStatIdentityV1
+    save_ref: ExactRefV1
+    save_identity: FileStatIdentityV1
+    history_count: int
+    history_row: JsonObject
+    old_game: ReadonlyColdClosedGameV1
+    sdk_processes: tuple[ReadonlyColdClosedSdkV1, ...]
+    next_sequence: int
+    pipe_name: str
+
+
+def _readonly_restore_row_v1(
+    value: object, *, checkpoint: JsonObject, previous_pid: int, current_pid: int,
+) -> JsonObject:
+    row = record(value, {"index", "command", "ok", "result"})
+    result = record(row["result"], {"step", "accepted", "status", "backend_id", "source",
+        "checkpoint", "restored_date_raw", "map_ready", "lifecycle"})
+    lifecycle = record(result["lifecycle"], {"previous_pid", "pid"})
+    need(integer(row["index"], 1) == integer(checkpoint["history_index"], 1) + 1
+        and row["command"] == "restore-checkpoint" and row["ok"] is True
+        and result["step"] == "restore-checkpoint" and result["accepted"] is True
+        and result["status"] == "restored" and result["backend_id"] == "native-headless"
+        and result["source"] == "native-session-cold-start"
+        and canonical_json_v1(result["checkpoint"]) == canonical_json_v1(checkpoint)
+        and integer(result["restored_date_raw"]) == integer(checkpoint["date_raw"])
+        and result["map_ready"] is True
+        and integer(lifecycle["previous_pid"], 1, 2**32-1) == previous_pid
+        and integer(lifecycle["pid"], 1, 2**32-1) == current_pid,
+        "only the exact cold restore bookkeeping row is permitted after SAVE")
+    return json_object(row)
+
+
+def _readonly_stat_v1(value: object) -> FileStatIdentityV1:
+    row = record(value, {"bytes", "file_id", "mtime_ns", "device", "links"})
+    device = text(row["device"])
+    need(re.fullmatch(r"(?:0|[1-9][0-9]*)", device) is not None
+        and integer(row["links"], 1) == 1, "closed OS device and single link")
+    return parse_file_stat_identity_v1(
+        {key: row[key] for key in ("bytes", "file_id", "mtime_ns")}, schema=STAT_SCHEMA)
+
+
+def validate_readonly_cold_failure_evidence_v1(
+    epoch: ReadonlyColdFailureEpochV1, *, reader: BasisReaderV1,
+) -> ValidatedReadonlyColdFailureEpochV1:
+    """Validate immutable small receipts without current Driver stat or body I/O."""
+    r = epoch.refs
+    old = decode_current_saved_basis_v1(exact_read(reader, r.business_basis, 65536),
+        expected_machine_id=epoch.machine_id)
+    launch = evidence(reader, r.launch, 32768)
+    pid = integer(launch.get("pid"), 1, 2**32-1)
+    game = ReadonlyColdClosedGameV1(pid, _closed_filetime_v1(launch.get("creation_filetime")),
+        text(launch.get("creation_date")))
+    need(launch.get("machine_id") == epoch.machine_id and launch.get("old_save_loaded") is True
+        and launch.get("load_save_name") == "xar_checkpoint" and launch.get("nonwar_only") is False,
+        "actual fresh saved Game for failed cold epoch")
+    root = Path(r.launch.path).parent
+    need(Path(r.launch.path).name == "ROOT-ACTUAL-GAME-LAUNCH-C23.json",
+        "actual launch reference")
+    semrow = evidence(reader, r.semantic_response, 262144)
+    semseq = old.next_sequence
+    semrequest = {"sequence": semseq, "tool": "ck3_take_semantic_snapshot_private_v1", "arguments": {}}
+    caprequest = {"sequence": semseq + 1, "tool": "ck3_get_capabilities", "arguments": {}}
+    need(canonical_json_v1(record(semrow.get("request"))) == canonical_json_v1(semrequest), "original first SEM identity")
+    semantic = completed_body(semrow, "ck3_take_semantic_snapshot_private_v1")
+    need(integer(semantic.get("date_raw")) == old.frame.date_raw
+        and integer(semantic.get("episode_character_id"), 1) == old.frame.actor_character_id
+        and semantic.get("episode_run_id") == old.frame.episode_run_id
+        and semantic.get("paused") is True and semantic.get("map_ready") is True
+        and semantic.get("one_life_terminal") is False
+        and canonical_json_v1(semantic.get("campaign_goal")) == canonical_json_v1(old.campaign_goal_anchor),
+        "completed observation does not change the saved business frontier")
+    cap = evidence(reader, r.capability_rejection, 16384)
+    need(canonical_json_v1(record(cap.get("request"))) == canonical_json_v1(caprequest) and "result" not in cap
+        and cap.get("client_error") == "C11 normal checkpoint cold denied: fresh cold SEM then CAP required"
+        and cap.get("replay_allowed") is False
+        and cap.get("original_response") == r.semantic_response.path,
+        "CAP was locally rejected without a new RPC result")
+    failure = evidence(reader, r.first_exception, 16384)
+    tree = record(failure.get("exception_tree"))
+    need(failure.get("stage") == "request_dispatch" and failure.get("replay_allowed") is False
+        and canonical_json_v1(record(failure.get("request_identity"))) == canonical_json_v1({
+            "sequence": semseq, "tool": semrequest["tool"], "command": None})
+        and tree.get("type") == "ValueError"
+        and tree.get("message") == "founding score anchor requires actual paused1066 frame",
+        "explicit completed-SEM score postcheck failure")
+    inflight = evidence(reader, r.inflight, 16384)
+    need(integer(inflight.get("sequence"), 1) == semseq and inflight.get("tool") == semrequest["tool"]
+        and record(inflight.get("arguments")) == {}
+        and inflight.get("scope") == "cold-start-readiness-only"
+        and inflight.get("outer_sequence_consumed") is False
+        and integer(inflight.get("business_credit")) == 0
+        and inflight.get("original_P01_response_replayed") is False,
+        "retained readiness failure is not a business attempt")
+    inventory = evidence(reader, r.request_inventory, 16384)
+    need(inventory.get("schema") == "xar.current-saved-closed-request-inventory/v1"
+        and inventory.get("machine_id") == epoch.machine_id and inventory.get("reviewer") == "/root"
+        and inventory.get("closed_directory_snapshot") is True
+        and Path(text(inventory.get("runtime_root"))).resolve() == root.resolve()
+        and integer(inventory.get("epoch_start_sequence"), 1) == semseq
+        and rows(inventory.get("unmatched_new_request_files")) == []
+        and rows(inventory.get("unmatched_new_response_files")) == [],
+        "actual closed request inventory")
+    utc(inventory.get("observed_at_utc"))
+    reqrefs = tuple(parse_ref(v) for v in rows(inventory.get("request_refs")))
+    outrefs = tuple(parse_ref(v) for v in rows(inventory.get("response_refs")))
+    need(len(reqrefs) == len(outrefs) == 2 and outrefs == (r.semantic_response, r.capability_rejection),
+        "exactly the original SEM and locally rejected CAP")
+    for reference, expected in zip(reqrefs, (semrequest, caprequest)):
+        sequence = integer(expected["sequence"], 1)
+        need(Path(reference.path).resolve() == (root/"p37-requests"/f"{sequence:04d}-1-result.json").resolve()
+            and canonical_json_v1(evidence(reader, reference, 16384)) == canonical_json_v1(expected), "actual request inventory source")
+    for reference, sequence in zip(outrefs, (semseq, semseq+1)):
+        need(Path(reference.path).resolve() == (root/"p37-responses"/f"{sequence:04d}-1-result.json").resolve(),
+            "actual response inventory source")
+    need(inflight.get("request_file") == reqrefs[0].path, "original readiness request file")
+    nextseq = integer(evidence(reader, r.next, 16384).get("next_sequence"), 1)
+    need(nextseq == semseq + 2, "failed numbers consumed once without replay")
+    sdk = evidence(reader, r.sdk_closed, 16384)
+    need(sdk.get("machine_id") == epoch.machine_id
+        and sdk.get("status") == "ACTUAL_BOTH_SDK_EXITS_OBSERVED"
+        and sdk.get("normal") is False and integer(sdk.get("launcher_exit_code")) == 1,
+        "abnormal SDK shutdown is preserved")
+    processes: list[ReadonlyColdClosedSdkV1] = []
+    for value in rows(sdk.get("processes")):
+        row = record(value)
+        role = row.get("role")
+        if role == "sdk_queue":
+            typed_role: Literal["sdk_queue", "sdk_application"] = "sdk_queue"
+            expected_code = 1
+        elif role == "sdk_application":
+            typed_role = "sdk_application"
+            expected_code = 0
+        else:
+            raise ValueError("exact closed SDK role")
+        need(row.get("kernel_exit_observed") is True and integer(row.get("wait_result")) == 0
+            and integer(row.get("exit_code")) == expected_code
+            and "observation_error" in row and row["observation_error"] is None,
+            "actual closed SDK 1/0 pair, not normal 0/0")
+        processes.append(ReadonlyColdClosedSdkV1(typed_role, integer(row.get("pid"), 1, 2**32-1),
+            _closed_filetime_v1(row.get("creation_filetime")), text(row.get("executable")), expected_code))
+    need(len(processes) == 2 and {p.role for p in processes} == {"sdk_queue", "sdk_application"}
+        and len({(p.pid, p.creation_filetime) for p in processes}) == 2, "two distinct closed SDK processes")
+    supervisor = evidence(reader, r.supervisor_closed, 16384)
+    need(r.game_exit == r.supervisor_closed, "Game exit is the actual supervisor cleanup receipt")
+    phase = record(supervisor.get("known_preload_phase"))
+    before_game = record(phase.get("before")); after_game = record(phase.get("after"))
+    cleanup = record(supervisor.get("owned_cleanup"))
+    need(supervisor.get("machine_id") == epoch.machine_id
+        and supervisor.get("cleanup_classification") == "FORCED_OWNED_GAME_CLEANUP"
+        and canonical_json_v1(sdk_without_launcher_v1(record(supervisor.get("sdk_actual_exit"))))
+        == canonical_json_v1(sdk_without_launcher_v1(sdk))
+        and integer(cleanup.get("ck3_pid"), 1) == pid and integer(cleanup.get("ck3_exit_code")) == 1
+        and integer(cleanup.get("job_active_processes_final")) == 0
+        and cleanup.get("tree_gone") is True and cleanup.get("cleanup_proven") is True
+        and cleanup.get("ok") is True and rows(cleanup.get("contract_errors")) == []
+        and cleanup.get("ck3_creation_date") == game.creation_date
+        and integer(before_game.get("pid"), 1) == integer(after_game.get("pid"), 1) == pid
+        and _closed_filetime_v1(before_game.get("creation_filetime")) == game.creation_filetime
+        and _closed_filetime_v1(after_game.get("creation_filetime")) == game.creation_filetime,
+        "forced Game exit1/Job0 is preserved")
+    utc(supervisor.get("observed_at_utc"))
+    index = evidence(reader, r.closure_index, 32768)
+    need(index.get("schema") == "xar.readonly-cold-init-postcheck-abort-closure/v1"
+        and index.get("status") == "CLOSED_NO_BUSINESS_PROGRESS"
+        and index.get("machine_id") == epoch.machine_id
+        and parse_ref(index.get("original_basis_ref")) == r.business_basis
+        and integer(index.get("next_sequence"), 1) == nextseq
+        and integer(index.get("business_completed_cycles")) == old.completed_cycles
+        and integer(index.get("business_date_raw")) == old.frame.date_raw
+        and index.get("original_whole_wall_origin") == old.origin.original_wall_origin_utc
+        and index.get("SDK_exit_codes") == [1, 0] and all(type(v) is int for v in rows(index["SDK_exit_codes"]))
+        and index.get("SDK_normal") is False and integer(index.get("Game_exit_code")) == 1
+        and index.get("Game_forced") is True and integer(index.get("Game_Job_active_final")) == 0
+        and index.get("all_owned_Tasks_actual_absent") is True and integer(index.get("owned_Task_count")) == 2
+        and index.get("original_requests_replayed") is False, "explicit readonly abort closure")
+    for name in ("new_ordinary_cycle_credit", "new_game_day_credit", "new_checkpoint_credit"):
+        need(integer(index.get(name)) == 0, "abort epoch adds no progress")
+    indexrefs = record(index.get("refs"))
+    need(set(indexrefs) == {"launch", "sdk_pair", "sdk_closed", "supervisor_sdk_exits",
+        "supervisor_closed", "game_exit", "first_exception", "semantic_response",
+        "capability_rejection", "inflight", "next", "driver_review", "history_tail",
+        "supervisor_spec", "display_spec", "supervisor_task_closed", "display_task_closed",
+        "supervisor_unregister", "display_unregister", "screen_release", "recording_completed"},
+        "complete readonly closed epoch evidence inventory")
+    for value in indexrefs.values():
+        exact_read(reader, parse_ref(value), 65536)
+    for name in ("launch", "sdk_closed", "supervisor_closed", "game_exit", "first_exception",
+                 "semantic_response", "capability_rejection", "inflight", "next", "driver_review", "history_tail"):
+        need(parse_ref(indexrefs.get(name)) == dict(r.items())[name], "closure/index evidence binding: "+name)
+    review = evidence(reader, r.driver_review, 16384)
+    need(review.get("schema") == "xar.readonly-cold-epoch-Driver-SAVE-review/v1"
+        and review.get("status") == "CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_AFTER_READONLY_INIT"
+        and review.get("machine_id") == epoch.machine_id
+        and parse_ref(review.get("original_business_review")) == old.refs.driver_close,
+        "actual readonly Driver/SAVE review")
+    driver = record(review.get("Driver")); saved = record(review.get("SAVE"))
+    driver_ref = parse_ref(driver.get("ref")); save_ref = parse_ref(saved.get("ref"))
+    driver_id = _readonly_stat_v1(driver.get("identity"))
+    save_id = _readonly_stat_v1(saved.get("identity"))
+    cp = record(completed_body(evidence(reader, old.refs.save_response), "ck3_save_checkpoint")["checkpoint"])
+    identity = record(driver.get("recorded_identity"))
+    need(save_ref == old.refs.save and save_id == old.save_identity
+        and driver_ref.path == old.refs.driver.path and driver_id.bytes == driver_ref.bytes
+        and driver_id != old.driver_identity and integer(driver.get("format_version")) == 2
+        and canonical_json_v1(driver.get("last_checkpoint")) == canonical_json_v1(cp)
+        and integer(identity.get("bridge_pid"), 1) == pid
+        and integer(identity.get("episode_character_id"), 1) == old.frame.actor_character_id
+        and identity.get("episode_run_id") == old.frame.episode_run_id
+        and "session_binding" in rows(driver.get("absent_payload_fields"))
+        and integer(review.get("actual_saved_cycles")) == old.completed_cycles
+        and integer(review.get("actual_saved_days")) == (old.frame.date_raw-old.origin.start_date_raw)//24
+        and review.get("unknown10565_replayed") is False
+        and review.get("original_whole_wall_origin") == old.origin.original_wall_origin_utc,
+        "current Driver retains the exact saved business checkpoint")
+    history_count = integer(driver.get("command_history_count"), 1)
+    tail = evidence(reader, r.history_tail, 16384)
+    need(tail.get("schema") == "xar.readonly-cold-epoch-history-tail/v1"
+        and tail.get("machine_id") == epoch.machine_id and parse_ref(tail.get("driver_review")) == r.driver_review
+        and _readonly_stat_v1(tail.get("driver_identity")) == driver_id
+        and integer(tail.get("checkpoint_history_index"), 1) == integer(cp["history_index"], 1)
+        and integer(tail.get("command_history_count"), 1) == history_count
+        and history_count == integer(cp["history_index"], 1)+1, "one actual post-checkpoint restore row")
+    tailrows = rows(tail.get("post_checkpoint_history"))
+    need(len(tailrows) == 1, "one post-checkpoint history row")
+    previous = record(evidence(reader, old.refs.driver_close).get("Driver"))
+    previous_identity = record(previous.get("recorded_identity"))
+    history_row = _readonly_restore_row_v1(tailrows[0], checkpoint=json_object(cp),
+        previous_pid=integer(previous_identity.get("bridge_pid"), 1), current_pid=pid)
+    validated = ValidatedReadonlyColdFailureEpochV1(epoch, old, driver_ref, driver_id, save_ref, save_id,
+        history_count, history_row, game, tuple(sorted(processes,key=lambda p:p.role)), nextseq,
+        text(identity.get("pipe_name")))
+    validate_readonly_canonical_qualification_v1(validated, reader=reader)
+    return validated
+
+
+def validate_readonly_cold_failure_epoch_v1(
+    epoch: ReadonlyColdFailureEpochV1, *, reader: BasisReaderV1,
+) -> ValidatedReadonlyColdFailureEpochV1:
+    """Cold qualification adds current stat checks to immutable closed evidence."""
+    result = validate_readonly_cold_failure_evidence_v1(epoch, reader=reader)
+    need(reader.stat(result.driver_ref.path) == result.driver_identity
+        and reader.stat(result.save_ref.path) == result.save_identity,
+        "closed current Driver/SAVE identities")
+    return result
+
+
+def sdk_without_launcher_v1(sdk: dict[str, object]) -> dict[str, object]:
+    """The supervisor embeds the same SDK report without launcher-only fields."""
+    normalized: list[dict[str, object]] = []
+    for value in rows(sdk.get("processes")):
+        row = record(value)
+        row["creation_filetime"] = _closed_filetime_v1(row.get("creation_filetime"))
+        integer(row.get("pid"), 1, 2**32-1)
+        integer(row.get("exit_code"))
+        integer(row.get("wait_result"))
+        need(row.get("kernel_exit_observed") is True
+            and "observation_error" in row and row["observation_error"] is None,
+            "SDK embedded kernel proof")
+        normalized.append(row)
+    return {"status": sdk["status"], "processes": normalized, "normal": sdk["normal"]}
+
+
+def validate_readonly_cold_failure_driver_v1(
+    validated: ValidatedReadonlyColdFailureEpochV1, payload: object,
+) -> None:
+    row = record(payload)
+    history = rows(row.get("command_history"))
+    need(len(history) == validated.history_count
+        and canonical_json_v1(history[-1]) == canonical_json_v1(validated.history_row),
+        "actual full Driver agrees with bounded history evidence")
+    for name in ("managed_restore_transaction", "rollback_war_failure", "succession_expectation"):
+        need(name in row and row[name] is None, "no unresolved Driver transaction: "+name)
+    need("session_binding" not in row, "no fabricated Driver session binding")
+
+
+READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA = "xar.current-saved-readonly-failure-basis-qualification/v1"
+
+
+def validate_readonly_canonical_qualification_v1(
+    validated: ValidatedReadonlyColdFailureEpochV1, *, reader: BasisReaderV1,
+) -> JsonObject:
+    r = validated.epoch.refs
+    proof = evidence(reader, r.canonical_qualification, 16384)
+    need(proof.get("schema") == "xar.closed-readonly-epoch-canonical-checkpoint-qualification/v1"
+        and proof.get("machine_id") == validated.epoch.machine_id
+        and proof.get("status") == "ACTUAL_CLOSED_DRIVER_CANONICAL_SAVE_VALIDATED"
+        and parse_ref(proof.get("driver_review")) == r.driver_review
+        and parse_ref(proof.get("history_tail")) == r.history_tail
+        and canonical_json_v1(proof.get("checkpoint")) == canonical_json_v1(validated.business_basis.checkpoint)
+        and _readonly_stat_v1(proof.get("Driver_identity")) == validated.driver_identity
+        and _readonly_stat_v1(proof.get("SAVE_identity")) == validated.save_identity
+        and integer(proof.get("Driver_full_read_count"), 1) == 1
+        and integer(proof.get("SAVE_full_hash_count"), 1) == 1
+        and integer(proof.get("Driver_full_read_bytes"), 1) == validated.driver_ref.bytes
+        and integer(proof.get("SAVE_full_hash_bytes"), 1) == validated.save_ref.bytes
+        and proof.get("original_checkpoint_unchanged") is True,
+        "actual successful Root canonical qualification, not cached SHA")
+    for key in ("new_ordinary_cycle_credit", "new_game_day_credit", "actual_constructor_or_Game_RPC_calls"):
+        need(integer(proof.get(key)) == 0, "canonical read gives no gameplay credit")
+    integer(proof.get("total_Root_A23_Driver_full_reads"), 1)
+    integer(proof.get("total_Root_A23_SAVE_full_hashes"), 1)
+    validator = parse_ref(proof.get("validator"))
+    exact_read(reader, validator, 65536)
+    need(Path(validator.path).name == "cold_checkpoint_validator.py", "original canonical validator source")
+    return json_object(proof)
+
+
+def build_readonly_cold_failure_basis_v1(
+    validated: ValidatedReadonlyColdFailureEpochV1, *, epoch_ref: ExactRefV1,
+    observed_at_utc: str, sidecars: tuple[ExactRefV1, ...], reader: BasisReaderV1,
+) -> CurrentSavedBasisV1:
+    """Bind the real completed canonical receipt without another large body read."""
+    checked = validate_readonly_cold_failure_evidence_v1(validated.epoch, reader=reader)
+    need(checked == validated, "validated epoch must match its immutable evidence")
+    encoded = parse_readonly_cold_failure_epoch_v1(
+        parse_json(exact_read(reader, epoch_ref, 65536)),
+        expected_machine_id=validated.epoch.machine_id)
+    need(encoded == validated.epoch, "new basis binds exact epoch")
+    need(reader.stat(validated.driver_ref.path) == validated.driver_identity
+        and reader.stat(validated.save_ref.path) == validated.save_identity,
+        "current closed identities before metadata construction")
+    proof = validate_readonly_canonical_qualification_v1(validated, reader=reader)
+    old = validated.business_basis
+    for reference in sidecars:
+        item = evidence(reader, reference, 65536)
+        need("pending" not in item or item["pending"] is None, "closed sidecar pending must be absent/null")
+    refs = replace(old.refs, driver=validated.driver_ref,
+        driver_close=validated.epoch.refs.driver_review, closure=epoch_ref,
+        next=validated.epoch.refs.next, checkpoint_validator=parse_ref(proof["validator"]))
+    return CurrentSavedBasisV1(old.machine_id, utc(observed_at_utc), old.origin, old.frame,
+        old.completed_cycles, json_object(old.checkpoint), json_object(old.campaign_goal_anchor), refs,
+        validated.driver_identity, validated.save_identity, validated.next_sequence, old.progress,
+        old.unknown_requests, sidecars)
+
+
+@dataclass(frozen=True)
+class ReadonlyColdFailureQualificationV1:
+    machine_id: str
+    observed_at_utc: str
+    basis_ref: ExactRefV1
+    epoch_ref: ExactRefV1
+    canonical_qualification_ref: ExactRefV1
+    driver_ref: ExactRefV1
+    save_ref: ExactRefV1
+    driver_identity_before: FileStatIdentityV1
+    driver_identity_after: FileStatIdentityV1
+    save_identity_before: FileStatIdentityV1
+    save_identity_after: FileStatIdentityV1
+    validator_source_ref: ExactRefV1
+    driver_history_rows: int
+    root_driver_body_reads: int
+    root_save_hash_reads: int
+    driver_body_reads: int = 0
+    canonical_checkpoint_validator_calls: int = 0
+    save_hash_reads: int = 0
+
+    def __post_init__(self) -> None:
+        text(self.machine_id)
+        utc(self.observed_at_utc)
+        integer(self.driver_history_rows, 1)
+        integer(self.root_driver_body_reads, 1)
+        integer(self.root_save_hash_reads, 1)
+        for value in (self.driver_body_reads, self.canonical_checkpoint_validator_calls, self.save_hash_reads):
+            need(integer(value) == 0, "metadata construction does not redo canonical I/O")
+        need(self.driver_identity_before == self.driver_identity_after
+            and self.save_identity_before == self.save_identity_after, "stable readonly metadata identities")
+
+    def to_wire(self) -> JsonObject:
+        return {"schema": READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA,
+            "machine_id": self.machine_id, "observed_at_utc": self.observed_at_utc,
+            "basis_ref": self.basis_ref.to_wire(), "epoch_ref": self.epoch_ref.to_wire(),
+            "canonical_qualification_ref": self.canonical_qualification_ref.to_wire(),
+            "driver_ref": self.driver_ref.to_wire(), "save_ref": self.save_ref.to_wire(),
+            "driver_identity_before": json_object(self.driver_identity_before.to_wire()),
+            "driver_identity_after": json_object(self.driver_identity_after.to_wire()),
+            "save_identity_before": json_object(self.save_identity_before.to_wire()),
+            "save_identity_after": json_object(self.save_identity_after.to_wire()),
+            "validator_source_ref": self.validator_source_ref.to_wire(),
+            "driver_history_rows": self.driver_history_rows,
+            "root_driver_body_reads": self.root_driver_body_reads,
+            "root_save_hash_reads": self.root_save_hash_reads,
+            "driver_body_reads": self.driver_body_reads,
+            "canonical_checkpoint_validator_calls": self.canonical_checkpoint_validator_calls,
+            "save_hash_reads": self.save_hash_reads,
+            "read_count_scope": "metadata_build_only_bound_Root_canonical_receipt"}
+
+
+def parse_readonly_cold_failure_qualification_v1(
+    value: object, *, expected_machine_id: str,
+) -> ReadonlyColdFailureQualificationV1:
+    row = record(value, {"schema", "machine_id", "observed_at_utc", "basis_ref", "epoch_ref",
+        "canonical_qualification_ref", "driver_ref", "save_ref", "driver_identity_before",
+        "driver_identity_after", "save_identity_before", "save_identity_after", "validator_source_ref",
+        "driver_history_rows", "root_driver_body_reads", "root_save_hash_reads", "driver_body_reads",
+        "canonical_checkpoint_validator_calls", "save_hash_reads", "read_count_scope"})
+    need(row["schema"] == READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA
+        and row["machine_id"] == expected_machine_id
+        and row["read_count_scope"] == "metadata_build_only_bound_Root_canonical_receipt",
+        "explicit readonly failure basis qualification")
+    return ReadonlyColdFailureQualificationV1(text(row["machine_id"]), utc(row["observed_at_utc"]),
+        parse_ref(row["basis_ref"]), parse_ref(row["epoch_ref"]), parse_ref(row["canonical_qualification_ref"]),
+        parse_ref(row["driver_ref"]), parse_ref(row["save_ref"]),
+        parse_file_stat_identity_v1(row["driver_identity_before"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["driver_identity_after"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["save_identity_before"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["save_identity_after"], schema=STAT_SCHEMA),
+        parse_ref(row["validator_source_ref"]), integer(row["driver_history_rows"], 1),
+        integer(row["root_driver_body_reads"], 1), integer(row["root_save_hash_reads"], 1),
+        integer(row["driver_body_reads"]), integer(row["canonical_checkpoint_validator_calls"]),
+        integer(row["save_hash_reads"]))
+
+
+def build_readonly_cold_failure_qualification_v1(
+    validated: ValidatedReadonlyColdFailureEpochV1, basis: CurrentSavedBasisV1, *,
+    basis_ref: ExactRefV1, reader: BasisReaderV1, observed_at_utc: str,
+) -> ReadonlyColdFailureQualificationV1:
+    expected = build_readonly_cold_failure_basis_v1(validated,
+        epoch_ref=basis.refs.closure, observed_at_utc=basis.observed_at_utc,
+        sidecars=basis.sidecars, reader=reader)
+    need(canonical_json_v1(expected.to_wire()) == canonical_json_v1(basis.to_wire()),
+        "qualification preserves the exact saved business and failed-epoch basis")
+    need(canonical_json_v1(parse_json(exact_read(reader, basis_ref, 65536))) == canonical_json_v1(basis.to_wire()),
+        "qualification binds actual new basis bytes")
+    need(basis.refs.closure.path != validated.epoch.refs.closure_index.path
+        and basis.refs.driver == validated.driver_ref and basis.refs.save == validated.save_ref,
+        "new epoch is separate from original closure and business evidence")
+    proof = validate_readonly_canonical_qualification_v1(validated, reader=reader)
+    need(reader.stat(basis.refs.driver.path) == basis.driver_identity
+        and reader.stat(basis.refs.save.path) == basis.save_identity, "stable closed metadata identities")
+    return ReadonlyColdFailureQualificationV1(basis.machine_id, utc(observed_at_utc), basis_ref,
+        basis.refs.closure, validated.epoch.refs.canonical_qualification, basis.refs.driver, basis.refs.save,
+        basis.driver_identity, basis.driver_identity, basis.save_identity, basis.save_identity,
+        basis.refs.checkpoint_validator, validated.history_count,
+        integer(proof["total_Root_A23_Driver_full_reads"], 1),
+        integer(proof["total_Root_A23_SAVE_full_hashes"], 1))

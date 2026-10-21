@@ -12,6 +12,10 @@ from typing import Literal,Protocol
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
  SavedFrameV1,ValidatedCurrentSavedBasisV1,
+ READONLY_COLD_FAILURE_EPOCH_SCHEMA,parse_readonly_cold_failure_epoch_v1,
+ validate_readonly_cold_failure_evidence_v1,
+ READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA,ReadonlyColdFailureQualificationV1,
+ parse_readonly_cold_failure_qualification_v1,
  decode_current_saved_basis_v1,digest,encode_current_saved_basis_v1,
  completed_body,evidence,exact_read,integer,json_object,need,
  parse_frame,parse_json,parse_ref,record,rows,text,utc,
@@ -139,7 +143,9 @@ class BasisQualificationV1:
    "save_hash_reads":self.save_hash_reads,
    "read_count_scope":"this_additional_qualification_only",
    "power_loss_durability":"not_asserted"}
-def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1:
+def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1:
+ if record(value).get("schema")==READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA:
+  return parse_readonly_cold_failure_qualification_v1(value,expected_machine_id=expected_machine_id)
  row=record(value,{"schema","machine_id","observed_at_utc","basis_ref",
   "driver_ref","save_ref","driver_identity_before","driver_identity_after",
   "save_identity_before","save_identity_after","validator_source_ref",
@@ -160,7 +166,8 @@ def build_basis_qualification_v1(
  reader:BasisReaderV1,observed_at_utc:str,
 )->BasisQualificationV1:
  basis=validated.basis
- need(exact_read(reader,basis_ref,65536)==encode_current_saved_basis_v1(basis),
+ need(_same_json(parse_json(exact_read(reader,basis_ref,65536)),
+   parse_json(encode_current_saved_basis_v1(basis))),
    'qualification binds exac')
  need(reader.stat(basis.refs.save.path)==basis.save_identity,
    'actual post-qualificatio')
@@ -262,6 +269,22 @@ def _validate_task_closure(
  need(matching==1,'one exact Task unregiste')
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1)->ClosedEpochV1:
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==READONLY_COLD_FAILURE_EPOCH_SCHEMA:
+  epoch=parse_readonly_cold_failure_epoch_v1(closure,expected_machine_id=basis.machine_id)
+  checked=validate_readonly_cold_failure_evidence_v1(epoch,reader=reader)
+  business=checked.business_basis
+  need(checked.driver_ref==basis.refs.driver and checked.driver_identity==basis.driver_identity
+   and checked.save_ref==basis.refs.save and checked.save_identity==basis.save_identity
+   and epoch.refs.driver_review==basis.refs.driver_close and epoch.refs.next==basis.refs.next
+   and checked.next_sequence==basis.next_sequence and business.origin==basis.origin
+   and business.frame==basis.frame and business.completed_cycles==basis.completed_cycles
+   and _same_json(business.checkpoint,basis.checkpoint)
+   and _same_json(business.campaign_goal_anchor,basis.campaign_goal_anchor)
+   and checked.history_count==integer(basis.checkpoint.get("history_index"),1)+1,"qualified readonly failed epoch frontier")
+  game=checked.old_game
+  processes=tuple(ClosedSdkProcessV1(p.role,p.pid,p.creation_filetime,p.executable,p.exit_code) for p in checked.sdk_processes)
+  return ClosedEpochV1(basis.refs.closure,CurrentGameIdentityV1(game.pid,game.creation_filetime,game.creation_date),
+   checked.next_sequence,processes,epoch.observed_at_utc,checked.pipe_name)
  need(closure.get("schema")=="xar.A20-actual-saved-progress-closure/v1"
    and closure.get("machine_id")==basis.machine_id
    and closure.get("all_three_Tasks_actual_absent") is True,
@@ -387,7 +410,8 @@ def _validated_immutable_inputs_v1(
  basis:CurrentSavedBasisV1,*,basis_ref:ExactRefV1,validation_ref:ExactRefV1,
  reader:BasisReaderV1,
 )->CurrentSavedColdInputsV1:
- need(exact_read(reader,basis_ref,65536)==encode_current_saved_basis_v1(basis),
+ need(_same_json(parse_json(exact_read(reader,basis_ref,65536)),
+   parse_json(encode_current_saved_basis_v1(basis))),
    'exact current saved basi')
  qualification=parse_basis_qualification_v1(
   evidence(reader,validation_ref,16384),expected_machine_id=basis.machine_id)
@@ -397,9 +421,11 @@ def _validated_immutable_inputs_v1(
    and qualification.driver_identity_after==basis.driver_identity
    and qualification.save_identity_after==basis.save_identity,
    'actual one-read canonica')
+ if isinstance(qualification,ReadonlyColdFailureQualificationV1):
+  failure=parse_readonly_cold_failure_epoch_v1(evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
+  need(qualification.epoch_ref==basis.refs.closure and qualification.canonical_qualification_ref==failure.refs.canonical_qualification,'readonly failure qualification source')
  exact_read(reader,basis.refs.checkpoint_validator,65536)
- need(reader.stat(basis.refs.driver.path)==basis.driver_identity
-   and reader.stat(basis.refs.save.path)==basis.save_identity,
+ need(reader.stat(basis.refs.save.path)==basis.save_identity,
    'no Driver or SAVE identi')
  for name,reference in basis.refs.items():
   if name not in {"driver","save","checkpoint_validator"}:
@@ -771,6 +797,9 @@ def verify_current_saved_supervisor_attempt_v1(
   nonce=text(arg.get(name))
   need(re.fullmatch("[0-9a-f]{32}",nonce) is not None and cfg.get(name)==nonce,
     "fresh actual supervisor nonce: "+name)
+ score=parse_campaign_score_junction_v1(cfg.get("campaign_score_junction"))
+ validate_campaign_score_junction_source_v1(score,inputs.basis,runtime_root=runtime_root,reader=LocalBasisReaderV1())
+ validate_campaign_score_junction_physical_v1(score,runtime_root=runtime_root,reader=LocalBasisReaderV1())
  return {"schema":"xar.current-saved-supervisor-attempt/v1","machine_id":expected_machine_id,
   "basis_ref":inputs.basis_ref.to_wire(),"validation_ref":inputs.validation_ref.to_wire(),
   "closure_ref":inputs.basis.refs.closure.to_wire(),
@@ -795,6 +824,8 @@ def validate_current_saved_cold_owner_v1(plan_ref:ExactRefV1,quote_ref:ExactRefV
  runtime_root=Path(text(plan_wire.get("runtime_root")))
  basis=decode_current_saved_basis_v1(exact_read(reader,plan.basis_ref,65536),expected_machine_id=expected_machine_id)
  inputs=validate_current_saved_cold_inputs_v1(basis,basis_ref=plan.basis_ref,validation_ref=plan.validation_ref,reader=reader)
+ score=parse_campaign_score_junction_v1(quote_wire.get("campaign_score_junction"))
+ validate_campaign_score_junction_source_v1(score,basis,runtime_root=runtime_root,reader=reader)
  return {"schema":"xar.current-saved-cold-owner-postguard/v1","machine_id":expected_machine_id,"plan_ref":plan_ref.to_wire(),"quote_ref":quote_ref.to_wire(),"basis_ref":inputs.basis_ref.to_wire(),"validation_ref":inputs.validation_ref.to_wire(),"runtime_root":str(runtime_root),"files_verified":len(rows(quote_wire.get("files"))),"canonical_entry_count":len(rows(quote_wire.get("canonical_entry_paths"))),"closure_count":len(rows(quote_wire.get("closure_entry_paths"))),"canonical_entry_limit":integer(quote_wire.get("canonical_entry_limit")),"runtime_sources_modified":False,"ordinary_cycle_credit":0,"game_day_credit":0,"original_actions_replayed":False}
 
 
@@ -944,3 +975,116 @@ def load_current_saved_warm_inputs_v1(*,runtime_root:Path,expected_machine_id:st
  basis=decode_current_saved_basis_v1(exact_read(reader,bref,65536),expected_machine_id=expected_machine_id)
  sources=WarmSourceRefsV1(pin(runtime_root/"ROOT-ACTUAL-GAME-LAUNCH-C23.json"),pin(runtime_root/"ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C23.json"),pin(runtime_root/f"p37-responses/{basis.next_sequence:04d}-1-result.json"),pin(runtime_root/f"p37-responses/{basis.next_sequence+1:04d}-1-result.json"),pin(runtime_root/"p37-queue/ROOT-C23-NORMAL-COLD-BOUND.json"),pin(runtime_root/"ROOT-P37C23-COLD-RESUME-ADMISSION.json"))
  return validate_current_saved_warm_inputs_v1(basis,basis_ref=bref,validation_ref=vref,sources=sources,reader=reader,runtime_root=runtime_root)
+
+def _score_u64_v1(value:object,minimum:int=0)->str:
+ result=text(value)
+ need(re.fullmatch("0|[1-9][0-9]*",result) is not None and minimum<=int(result)<=UINT64_MAX,"score directory uint64 decimal")
+ return result
+def _score_path_v1(value:str)->str:
+ need(ntpath.isabs(text(value)),"absolute score path")
+ return ntpath.normcase(ntpath.normpath(value))
+@dataclass(frozen=True,slots=True)
+class CampaignScoreJunctionV1:
+ path:str
+ exact_target:str
+ must_verify_same_FileID:Literal[True]
+ target_file_id:str
+ target_device:str
+ anchor_ref:ExactRefV1
+ def __post_init__(self)->None:
+  _score_path_v1(self.path);_score_path_v1(self.exact_target)
+  need(self.must_verify_same_FileID is True,"score same FileID mandatory")
+  _score_u64_v1(self.target_file_id,1);_score_u64_v1(self.target_device)
+ def to_wire(self)->JsonObject:
+  return {"path":self.path,"exact_target":self.exact_target,"must_verify_same_FileID":True,
+   "target_file_id":self.target_file_id,"target_device":self.target_device,"anchor_ref":self.anchor_ref.to_wire()}
+def parse_campaign_score_junction_v1(value:object)->CampaignScoreJunctionV1:
+ r=record(value,{"path","exact_target","must_verify_same_FileID","target_file_id","target_device","anchor_ref"})
+ need(r["must_verify_same_FileID"] is True,"score same FileID mandatory")
+ return CampaignScoreJunctionV1(text(r["path"]),text(r["exact_target"]),True,
+  _score_u64_v1(r["target_file_id"],1),_score_u64_v1(r["target_device"]),parse_ref(r["anchor_ref"]))
+def campaign_score_directory_identity_v1(path:Path)->tuple[str,str]:
+ st=os.stat(path,follow_symlinks=False)
+ need(st.st_mode & 0o170000==0o040000 and not getattr(st,"st_file_attributes",0)&0x400,"score target ordinary directory")
+ return _score_u64_v1(str(st.st_ino),1),_score_u64_v1(str(st.st_dev))
+def validate_campaign_score_junction_source_v1(
+ binding:CampaignScoreJunctionV1,basis:CurrentSavedBasisV1,*,runtime_root:Path,reader:BasisReaderV1,
+)->None:
+ expected=ntpath.join(ntpath.dirname(derive_current_saved_state_paths_v1(basis).state_root),"campaign-score")
+ need(_score_path_v1(binding.path)==_score_path_v1(str(runtime_root/"campaign-score"))
+  and _score_path_v1(binding.exact_target)==_score_path_v1(expected)
+  and _score_path_v1(binding.anchor_ref.path)==_score_path_v1(ntpath.join(expected,"CAMPAIGN-ANCHOR.json")),"score path and shared state binding")
+ before=campaign_score_directory_identity_v1(Path(binding.exact_target))
+ need(before==(binding.target_file_id,binding.target_device),"score target identity")
+ anchor=evidence(reader,binding.anchor_ref,16384)
+ need(anchor.get("schema")=="xar.ck3.campaign-score-fixed-anchor/v1"
+  and anchor.get("machine_id")==basis.machine_id
+  and anchor.get("campaign_id")=="robert-first30-v20261019"
+  and integer(anchor.get("founder_character_id"),1)==integer(record(basis.campaign_goal_anchor).get("origin_character_id"),1)
+  and integer(anchor.get("start_date_raw"))==basis.origin.start_date_raw
+  and integer(anchor.get("endpoint_date_raw"))==basis.origin.target_date_raw
+  and anchor.get("fixed_across_ruler_and_sdk_changes") is True
+  and integer(anchor.get("old_campaign_inputs_copied"),0,0)==0,"fixed score campaign source")
+ utc(anchor.get("observed_at_utc"))
+ need(campaign_score_directory_identity_v1(Path(binding.exact_target))==before,"score target stable during anchor validation")
+def build_campaign_score_junction_v1(
+ basis:CurrentSavedBasisV1,material_quote:object,*,runtime_root:Path,anchor_ref:ExactRefV1,reader:BasisReaderV1,
+)->CampaignScoreJunctionV1:
+ old=record(record(material_quote).get("campaign_score_junction"),{"path","exact_target","must_verify_same_FileID"})
+ _score_path_v1(text(old["path"]))
+ need(old["must_verify_same_FileID"] is True,"material score same FileID mandatory")
+ target=text(old["exact_target"]);file_id,device=campaign_score_directory_identity_v1(Path(target))
+ binding=CampaignScoreJunctionV1(str(runtime_root/"campaign-score"),target,True,file_id,device,anchor_ref)
+ validate_campaign_score_junction_source_v1(binding,basis,runtime_root=runtime_root,reader=reader)
+ return binding
+def validate_campaign_score_junction_physical_v1(
+ binding:CampaignScoreJunctionV1,*,runtime_root:Path,reader:BasisReaderV1,
+)->None:
+ need(_score_path_v1(binding.path)==_score_path_v1(str(runtime_root/"campaign-score"))
+  and _score_path_v1(binding.anchor_ref.path)==_score_path_v1(ntpath.join(binding.exact_target,"CAMPAIGN-ANCHOR.json")),"physical score paths")
+ target=Path(binding.exact_target);link=Path(binding.path)
+ before=campaign_score_directory_identity_v1(target)
+ need(before==(binding.target_file_id,binding.target_device),"physical score target identity")
+ first=os.lstat(link)
+ need(link.is_junction() and getattr(first,"st_reparse_tag",0)==0xA0000003,"score path must be real junction")
+ need(os.path.samefile(link,target) and link.resolve(strict=True)==target.resolve(strict=True),"score junction exact target and same FileID")
+ exact_read(reader,binding.anchor_ref,16384)
+ last=os.lstat(link)
+ need((first.st_ino,first.st_dev)==(last.st_ino,last.st_dev)
+  and link.is_junction() and getattr(last,"st_reparse_tag",0)==0xA0000003
+  and os.path.samefile(link,target) and link.resolve(strict=True)==target.resolve(strict=True)
+  and campaign_score_directory_identity_v1(target)==before,"score junction and target stable")
+
+def validate_current_saved_prepared_sdk_closure_v1(value:object,*,inputs:CurrentSavedColdInputsV1)->JsonObject:
+ reader=LocalBasisReaderV1();reference=parse_ref(value)
+ closure=evidence(reader,inputs.basis.refs.closure,65536)
+ if closure.get("schema")==READONLY_COLD_FAILURE_EPOCH_SCHEMA:
+  epoch=parse_readonly_cold_failure_epoch_v1(closure,expected_machine_id=inputs.basis.machine_id)
+  expected=epoch.refs.sdk_closed
+ else:
+  need(closure.get("schema")=="xar.A20-actual-saved-progress-closure/v1","qualified SDK closure schema")
+  expected=parse_ref(record(closure.get("sources")).get("ROOT-P37C23-OWNER-CLOSED.json"))
+ need(inputs.closed_epoch.closure_ref==inputs.basis.refs.closure and reference==expected,"qualified exact SDK closed source")
+ raw=evidence(reader,reference,16384)
+ normal=all(p.exit_code==0 for p in inputs.closed_epoch.sdk_processes)
+ need(raw.get("machine_id")==inputs.basis.machine_id
+  and raw.get("status")=="ACTUAL_BOTH_SDK_EXITS_OBSERVED" and raw.get("normal") is normal,"qualified SDK closure classification")
+ seen:set[str]=set()
+ for value_row in rows(raw.get("processes")):
+  row=record(value_row);role=text(row.get("role"))
+  process=next((p for p in inputs.closed_epoch.sdk_processes if p.role==role),None)
+  need(process is not None and role not in seen,"qualified SDK role")
+  if process is None:raise ValueError("qualified SDK role")
+  need(row.get("kernel_exit_observed") is True and integer(row.get("wait_result"),0,0)==0
+   and "observation_error" in row and row["observation_error"] is None
+   and integer(row.get("pid"),1,PID_MAX)==process.pid
+   and _birth(row.get("creation_filetime"),legacy_python=True)==process.creation_filetime
+   and text(row.get("executable"))==process.executable
+   and integer(row.get("exit_code"))==process.exit_code,"qualified SDK kernel generation and exit")
+  seen.add(role)
+ need(seen=={"sdk_queue","sdk_application"},"both qualified SDK exits")
+ processes:list[JsonValue]=[{"role":p.role,"pid":p.pid,"creation_filetime":p.creation_filetime,
+  "executable":p.executable,"exit_code":p.exit_code,"kernel_exit_observed":True,
+  "wait_result":0,"observation_error":None} for p in inputs.closed_epoch.sdk_processes]
+ return {"schema":"xar.current-saved-qualified-sdk-closure/v1","machine_id":inputs.basis.machine_id,
+  "source_ref":reference.to_wire(),"status":"ACTUAL_BOTH_SDK_EXITS_OBSERVED","normal":normal,"processes":processes}

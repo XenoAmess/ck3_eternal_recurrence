@@ -490,6 +490,336 @@ class CurrentSavedBasisTests(unittest.TestCase):
                     reader=self.reader, checkpoint_validator=self.validator)
 
 
+
+# Synthetic closed-epoch receipts exercise the real shared producer and consumer.
+from tools.g2_saved_campaign import current_saved_basis_v1 as epoch_api
+
+
+class EpochMemoryReader:
+    def __init__(self) -> None:
+        self.raw: dict[str, bytes] = {}
+        self.identities: dict[str, FileStatIdentityV1] = {}
+        self.read_paths: list[str] = []
+        self.stat_paths: list[str] = []
+
+    def put(self, name: str, value: object) -> ExactRefV1:
+        path = "/epoch/" + name
+        data = json_bytes(value)
+        self.raw[path] = data
+        return ExactRefV1(path, len(data), hashlib.sha256(data).hexdigest())
+
+    def read(self, reference: ExactRefV1, limit: int) -> bytes:
+        self.read_paths.append(reference.path)
+        if reference.bytes > limit:
+            raise ValueError("bounded fixture")
+        return self.raw[reference.path]
+
+    def stat(self, path: str) -> FileStatIdentityV1:
+        self.stat_paths.append(path)
+        return self.identities[path]
+
+
+class FailureEpochFixture:
+    def __init__(self) -> None:
+        self.reader = r = EpochMemoryReader()
+        old = pure_basis()
+        old = replace(old, refs=replace(old.refs, driver=ExactRefV1("/epoch/driver-state.json", 1, "a" * 64)))
+        self.checkpoint: dict[str, object] = {
+            "history_index": 1, "date_raw": old.frame.date_raw,
+            "path": old.refs.save.path, "sha256": old.refs.save.sha256,
+        }
+        original_review = r.put("business-review.json", {
+            "Driver": {"recorded_identity": {"bridge_pid": 41}}})
+        saved = r.put("saved-response.json", {
+            "request": {"tool": "ck3_save_checkpoint"},
+            "result": {"is_error": False, "result_type": "complete",
+                "structured_content": {"checkpoint": self.checkpoint}}})
+        old = replace(old, refs=replace(old.refs, driver_close=original_review, save_response=saved))
+        self.old = old
+        old_ref = r.put("business-basis.json", old.to_wire())
+        launch = r.put("ROOT-ACTUAL-GAME-LAUNCH-C23.json", {
+            "machine_id": MACHINE, "pid": 43, "creation_filetime": "134370454913277463",
+            "creation_date": "20261021083811.327746+000", "old_save_loaded": True,
+            "load_save_name": "xar_checkpoint", "nonwar_only": False})
+        sem_request = {"sequence": 103, "tool": "ck3_take_semantic_snapshot_private_v1", "arguments": {}}
+        cap_request = {"sequence": 104, "tool": "ck3_get_capabilities", "arguments": {}}
+        sem = r.put("p37-responses/0103-1-result.json", {
+            "request": sem_request, "result": {"is_error": False, "result_type": "complete",
+                "structured_content": {"date_raw": old.frame.date_raw,
+                    "episode_character_id": old.frame.actor_character_id,
+                    "episode_run_id": old.frame.episode_run_id, "paused": True,
+                    "map_ready": True, "one_life_terminal": False,
+                    "campaign_goal": old.campaign_goal_anchor}}})
+        cap = r.put("p37-responses/0104-1-result.json", {
+            "request": cap_request, "client_error": "C11 normal checkpoint cold denied: fresh cold SEM then CAP required",
+            "replay_allowed": False, "original_response": sem.path})
+        sem_req = r.put("p37-requests/0103-1-result.json", sem_request)
+        cap_req = r.put("p37-requests/0104-1-result.json", cap_request)
+        failure = r.put("first-exception.json", {
+            "stage": "request_dispatch", "replay_allowed": False,
+            "request_identity": {"sequence": 103, "tool": sem_request["tool"], "command": None},
+            "exception_tree": {"type": "ValueError",
+                "message": "founding score anchor requires actual paused1066 frame"}})
+        inflight = r.put("inflight.json", {
+            "sequence": 103, "tool": sem_request["tool"], "arguments": {},
+            "scope": "cold-start-readiness-only", "outer_sequence_consumed": False,
+            "business_credit": 0, "original_P01_response_replayed": False,
+            "request_file": sem_req.path})
+        inventory = r.put("inventory.json", {
+            "schema": "xar.current-saved-closed-request-inventory/v1",
+            "machine_id": MACHINE, "reviewer": "/root", "runtime_root": "/epoch",
+            "observed_at_utc": "2026-10-21T06:02:00Z", "closed_directory_snapshot": True,
+            "epoch_start_sequence": 103, "unmatched_new_request_files": [],
+            "unmatched_new_response_files": [], "request_refs": [sem_req.to_wire(), cap_req.to_wire()],
+            "response_refs": [sem.to_wire(), cap.to_wire()]})
+        nxt = r.put("next.json", {"next_sequence": 105})
+        processes = [{
+            "role": role, "pid": pid, "creation_filetime": birth,
+            "executable": "/base/python.exe", "exit_code": code,
+            "kernel_exit_observed": True, "wait_result": 0, "observation_error": None,
+        } for role, pid, birth, code in (
+            ("sdk_queue", 47, "134370464192232765", 1),
+            ("sdk_application", 53, "134370464225272880", 0))]
+        sdk = r.put("sdk-closed.json", {"machine_id": MACHINE,
+            "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED", "processes": processes,
+            "normal": False, "launcher_exit_code": 1})
+        game = {"pid": 43, "creation_filetime": "134370454913277463"}
+        supervisor = r.put("supervisor-closed.json", {
+            "machine_id": MACHINE, "observed_at_utc": "2026-10-21T06:01:00Z",
+            "cleanup_classification": "FORCED_OWNED_GAME_CLEANUP",
+            "sdk_actual_exit": {"status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+                "processes": processes, "normal": False},
+            "known_preload_phase": {"before": game, "after": game},
+            "owned_cleanup": {"ck3_pid": 43, "ck3_exit_code": 1,
+                "ck3_creation_date": "20261021083811.327746+000",
+                "job_active_processes_final": 0, "tree_gone": True,
+                "cleanup_proven": True, "ok": True, "contract_errors": []}})
+        self.driver_id = FileStatIdentityV1(17, "9007199254740997", "1792563000000000005")
+        driver_ref = ExactRefV1(old.refs.driver.path, 17, "b" * 64)
+        def stat_wire(item: FileStatIdentityV1) -> dict[str, object]:
+            return {**item.to_wire(), "device": "6505083400996699863", "links": 1}
+        review = r.put("driver-review.json", {
+            "schema": "xar.readonly-cold-epoch-Driver-SAVE-review/v1",
+            "status": "CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_AFTER_READONLY_INIT",
+            "machine_id": MACHINE, "original_business_review": original_review.to_wire(),
+            "Driver": {"ref": driver_ref.to_wire(), "identity": stat_wire(self.driver_id),
+                "format_version": 2, "command_history_count": 2, "last_checkpoint": self.checkpoint,
+                "recorded_identity": {"bridge_pid": 43, "episode_character_id": 2,
+                    "episode_run_id": old.frame.episode_run_id, "pipe_name": "pipe"},
+                "absent_payload_fields": ["session_binding"]},
+            "SAVE": {"ref": old.refs.save.to_wire(), "identity": stat_wire(old.save_identity)},
+            "actual_saved_cycles": 20, "actual_saved_days": 2,
+            "unknown10565_replayed": False,
+            "original_whole_wall_origin": old.origin.original_wall_origin_utc})
+        self.restore: dict[str, object] = {
+            "index": 2, "command": "restore-checkpoint", "ok": True,
+            "result": {"step": "restore-checkpoint", "accepted": True, "status": "restored",
+                "backend_id": "native-headless", "source": "native-session-cold-start",
+                "checkpoint": self.checkpoint, "restored_date_raw": 148, "map_ready": True,
+                "lifecycle": {"previous_pid": 41, "pid": 43}}}
+        tail = r.put("history-tail.json", {
+            "schema": "xar.readonly-cold-epoch-history-tail/v1",
+            "machine_id": MACHINE, "driver_review": review.to_wire(),
+            "driver_identity": stat_wire(self.driver_id), "checkpoint_history_index": 1,
+            "command_history_count": 2, "post_checkpoint_history": [self.restore]})
+        validator = r.put("cold_checkpoint_validator.py", {"fixture_source": True})
+        canonical = r.put("canonical-qualification.json", {
+            "schema": "xar.closed-readonly-epoch-canonical-checkpoint-qualification/v1",
+            "machine_id": MACHINE, "status": "ACTUAL_CLOSED_DRIVER_CANONICAL_SAVE_VALIDATED",
+            "driver_review": review.to_wire(), "history_tail": tail.to_wire(),
+            "checkpoint": old.checkpoint, "Driver_identity": stat_wire(self.driver_id),
+            "SAVE_identity": stat_wire(old.save_identity), "Driver_full_read_count": 1,
+            "SAVE_full_hash_count": 1, "Driver_full_read_bytes": 17,
+            "SAVE_full_hash_bytes": 1, "original_checkpoint_unchanged": True,
+            "new_ordinary_cycle_credit": 0, "new_game_day_credit": 0,
+            "actual_constructor_or_Game_RPC_calls": 0,
+            "total_Root_A23_Driver_full_reads": 3, "total_Root_A23_SAVE_full_hashes": 2,
+            "validator": validator.to_wire()})
+        linked = dict(launch=launch, sdk_closed=sdk, supervisor_closed=supervisor,
+            game_exit=supervisor, first_exception=failure, semantic_response=sem,
+            capability_rejection=cap, inflight=inflight, next=nxt,
+            driver_review=review, history_tail=tail)
+        for name in ("sdk_pair", "supervisor_sdk_exits", "supervisor_spec", "display_spec",
+                     "supervisor_task_closed", "display_task_closed", "supervisor_unregister",
+                     "display_unregister", "screen_release", "recording_completed"):
+            linked[name] = r.put(name + ".json", {"synthetic_closed_source": name})
+        index = r.put("index.json", {
+            "schema": "xar.readonly-cold-init-postcheck-abort-closure/v1",
+            "status": "CLOSED_NO_BUSINESS_PROGRESS", "machine_id": MACHINE,
+            "original_basis_ref": old_ref.to_wire(), "next_sequence": 105,
+            "business_completed_cycles": 20, "business_date_raw": 148,
+            "original_whole_wall_origin": old.origin.original_wall_origin_utc,
+            "SDK_exit_codes": [1, 0], "SDK_normal": False, "Game_exit_code": 1,
+            "Game_forced": True, "Game_Job_active_final": 0,
+            "all_owned_Tasks_actual_absent": True, "owned_Task_count": 2,
+            "original_requests_replayed": False, "new_ordinary_cycle_credit": 0,
+            "new_game_day_credit": 0, "new_checkpoint_credit": 0,
+            "refs": {key: value.to_wire() for key, value in linked.items()}})
+        self.epoch = epoch_api.ReadonlyColdFailureEpochV1(
+            MACHINE, "2026-10-21T06:03:00Z",
+            epoch_api.ReadonlyColdFailureRefsV1(old_ref, review, tail, index, launch,
+                sem, cap, failure, inflight, inventory, sdk, supervisor, supervisor, nxt, canonical),
+            epoch_api.ReadonlyClosedDriverFlagsV1(None, None, None, False))
+        r.identities[driver_ref.path] = self.driver_id
+        r.identities[old.refs.save.path] = old.save_identity
+
+    def validated(self) -> epoch_api.ValidatedReadonlyColdFailureEpochV1:
+        return epoch_api.validate_readonly_cold_failure_evidence_v1(self.epoch, reader=self.reader)
+
+
+class ReadonlyFailureEpochTests(unittest.TestCase):
+    def test_historical_sdk_filetime_has_one_json_string_form(self) -> None:
+        f = FailureEpochFixture()
+        sdk = epoch_api.evidence(f.reader, f.epoch.refs.sdk_closed)
+        expected = epoch_api.sdk_without_launcher_v1(sdk)
+        processes = epoch_api.rows(sdk["processes"])
+        converted: list[dict[str, object]] = []
+        for item in processes:
+            row = epoch_api.record(item)
+            row["creation_filetime"] = int(epoch_api.text(row["creation_filetime"]))
+            converted.append(row)
+        sdk["processes"] = converted
+        self.assertEqual(epoch_api.canonical_json_v1(epoch_api.sdk_without_launcher_v1(sdk)),
+            epoch_api.canonical_json_v1(expected))
+        for bad in (True, 1.0, "0134370454913277463", "18446744073709551616"):
+            changed = copy.deepcopy(sdk)
+            first = epoch_api.record(epoch_api.rows(changed["processes"])[0])
+            first["creation_filetime"] = bad
+            changed["processes"] = [first, epoch_api.rows(changed["processes"])[1]]
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                epoch_api.sdk_without_launcher_v1(changed)
+
+    def test_real_evidence_basis_and_qualification_pipeline(self) -> None:
+        f = FailureEpochFixture()
+        checked = f.validated()
+        self.assertEqual(f.reader.stat_paths, [])
+        epoch_ref = f.reader.put("new-epoch.json", f.epoch.to_wire())
+        basis = epoch_api.build_readonly_cold_failure_basis_v1(checked,
+            epoch_ref=epoch_ref, observed_at_utc="2026-10-21T06:04:00Z",
+            sidecars=(), reader=f.reader)
+        basis_ref = f.reader.put("new-basis.json", basis.to_wire())
+        qualification = epoch_api.build_readonly_cold_failure_qualification_v1(
+            checked, basis, basis_ref=basis_ref, reader=f.reader,
+            observed_at_utc="2026-10-21T06:04:01Z")
+        parsed = epoch_api.parse_readonly_cold_failure_qualification_v1(
+            json.loads(json.dumps(qualification.to_wire())), expected_machine_id=MACHINE)
+        self.assertEqual(parsed, qualification)
+        self.assertEqual((basis.completed_cycles, basis.frame, basis.checkpoint,
+            basis.progress, basis.origin, basis.unknown_requests),
+            (f.old.completed_cycles, f.old.frame, f.old.checkpoint,
+            f.old.progress, f.old.origin, f.old.unknown_requests))
+        self.assertEqual((basis.next_sequence, qualification.driver_history_rows), (105, 2))
+        self.assertEqual((qualification.driver_body_reads, qualification.save_hash_reads,
+            qualification.canonical_checkpoint_validator_calls), (0, 0, 0))
+        self.assertEqual((qualification.root_driver_body_reads, qualification.root_save_hash_reads), (3, 2))
+        self.assertNotIn(checked.driver_ref.path, f.reader.read_paths)
+        self.assertNotIn(checked.save_ref.path, f.reader.read_paths)
+        self.assertEqual([p.exit_code for p in checked.sdk_processes], [0, 1])
+
+    def test_warm_evidence_is_immutable_but_cold_requires_current_stat(self) -> None:
+        f = FailureEpochFixture()
+        checked = f.validated()
+        f.reader.identities[checked.driver_ref.path] = replace(f.driver_id, file_id="999")
+        self.assertEqual(f.validated(), checked)
+        with self.assertRaises(ValueError):
+            epoch_api.validate_readonly_cold_failure_epoch_v1(f.epoch, reader=f.reader)
+
+    def test_qualification_does_not_credit_a_forged_basis(self) -> None:
+        f = FailureEpochFixture()
+        checked = f.validated()
+        epoch_ref = f.reader.put("new-epoch.json", f.epoch.to_wire())
+        basis = epoch_api.build_readonly_cold_failure_basis_v1(checked,
+            epoch_ref=epoch_ref, observed_at_utc="2026-10-21T06:04:00Z", sidecars=(), reader=f.reader)
+        drifted = replace(basis, completed_cycles=basis.completed_cycles + 1,
+            progress=replace(basis.progress, settled_cycles=basis.completed_cycles + 1))
+        reference = f.reader.put("forged-basis.json", drifted.to_wire())
+        with self.assertRaises(ValueError):
+            epoch_api.build_readonly_cold_failure_qualification_v1(checked, drifted,
+                basis_ref=reference, reader=f.reader, observed_at_utc="2026-10-21T06:04:01Z")
+        forged = replace(checked, next_sequence=checked.next_sequence + 1)
+        with self.assertRaises(ValueError):
+            epoch_api.build_readonly_cold_failure_basis_v1(forged,
+                epoch_ref=epoch_ref, observed_at_utc="2026-10-21T06:04:00Z", sidecars=(), reader=f.reader)
+
+    def test_epoch_exact_fields_types_and_json(self) -> None:
+        f = FailureEpochFixture()
+        wire = f.epoch.to_wire()
+        self.assertEqual(epoch_api.parse_readonly_cold_failure_epoch_v1(
+            json.loads(json.dumps(wire)), expected_machine_id=MACHINE), f.epoch)
+        for key in wire:
+            for bad in (None, True, 1.0):
+                with self.subTest(key=key, bad=bad):
+                    changed = dict(wire); changed[key] = bad
+                    with self.assertRaises(ValueError):
+                        epoch_api.parse_readonly_cold_failure_epoch_v1(changed, expected_machine_id=MACHINE)
+            changed = dict(wire); del changed[key]
+            with self.assertRaises(ValueError):
+                epoch_api.parse_readonly_cold_failure_epoch_v1(changed, expected_machine_id=MACHINE)
+        for key in ("managed_restore_transaction", "rollback_war_failure", "succession_expectation", "session_binding_present"):
+            flags = dict(epoch_api.record(wire["driver_payload_flags"]))
+            del flags[key]
+            with self.assertRaises(ValueError):
+                epoch_api.parse_readonly_closed_driver_flags_v1(flags)
+
+    def test_restore_is_not_general_permission_for_history(self) -> None:
+        f = FailureEpochFixture()
+        for key, bad in (("command", "advance-days"), ("ok", False), ("index", True),
+                         ("index", 2.0), ("result", None)):
+            changed = copy.deepcopy(f.restore); changed[key] = bad
+            with self.subTest(key=key, bad=bad), self.assertRaises(ValueError):
+                epoch_api._readonly_restore_row_v1(changed, checkpoint=epoch_api.json_object(f.checkpoint),
+                    previous_pid=41, current_pid=43)
+        result_cases: tuple[tuple[str, object], ...] = (
+            ("accepted", False), ("checkpoint", {}), ("restored_date_raw", 149),
+            ("map_ready", False), ("source", "unknown"))
+        for key, result_bad in result_cases:
+            changed = copy.deepcopy(f.restore)
+            result = epoch_api.record(changed["result"]); result[key] = result_bad; changed["result"] = result
+            with self.subTest(key=key, bad=result_bad), self.assertRaises(ValueError):
+                epoch_api._readonly_restore_row_v1(changed, checkpoint=epoch_api.json_object(f.checkpoint),
+                    previous_pid=41, current_pid=43)
+
+    def test_real_evidence_rejects_mutation_stale_proof_and_missing(self) -> None:
+        f = FailureEpochFixture()
+        changed: dict[str, object]
+        for name in ("semantic_response", "capability_rejection", "history_tail",
+                     "sdk_closed", "canonical_qualification", "request_inventory"):
+            reference = dict(f.epoch.refs.items())[name]
+            original = f.reader.raw[reference.path]
+            f.reader.raw[reference.path] = b"{}"
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                f.validated()
+            f.reader.raw[reference.path] = original
+        wire = f.epoch.to_wire()
+        for name in epoch_api.record(wire["refs"]):
+            refs = dict(epoch_api.record(wire["refs"])); del refs[name]
+            changed = dict(wire); changed["refs"] = refs
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                epoch_api.parse_readonly_cold_failure_epoch_v1(changed, expected_machine_id=MACHINE)
+
+    def test_qualification_rejects_fake_read_counts_and_wire_identities(self) -> None:
+        f = FailureEpochFixture()
+        changed: dict[str, object]
+        checked = f.validated()
+        epoch_ref = f.reader.put("new-epoch.json", f.epoch.to_wire())
+        basis = epoch_api.build_readonly_cold_failure_basis_v1(checked,
+            epoch_ref=epoch_ref, observed_at_utc="2026-10-21T06:04:00Z", sidecars=(), reader=f.reader)
+        br = f.reader.put("new-basis.json", basis.to_wire())
+        q = epoch_api.build_readonly_cold_failure_qualification_v1(checked, basis,
+            basis_ref=br, reader=f.reader, observed_at_utc="2026-10-21T06:04:01Z").to_wire()
+        for key in ("driver_body_reads", "save_hash_reads", "driver_history_rows",
+                    "root_driver_body_reads", "root_save_hash_reads"):
+            for bad in (None, True, 1.0, -1):
+                changed = dict(q); changed[key] = bad
+                with self.subTest(key=key, bad=bad), self.assertRaises(ValueError):
+                    epoch_api.parse_readonly_cold_failure_qualification_v1(changed, expected_machine_id=MACHINE)
+        for bad_id in ("01", 9007199254740993, True, 1.0):
+            changed = dict(q); identity = dict(epoch_api.record(q["driver_identity_after"]))
+            identity["file_id"] = bad_id; changed["driver_identity_after"] = identity
+            with self.subTest(bad_id=bad_id), self.assertRaises(ValueError):
+                epoch_api.parse_readonly_cold_failure_qualification_v1(changed, expected_machine_id=MACHINE)
+
+
 if __name__ == "__main__":
     unittest.main()
 
