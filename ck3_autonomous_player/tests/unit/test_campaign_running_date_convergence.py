@@ -87,8 +87,8 @@ class Harness:
     async def run(self):
         return await self.client.advance_campaign_event_boundary({'allow_event_boundary': True, 'days': 1})
 
-    async def run_plain(self) -> dict[str, object]:
-        return await self.client.advance({'days': 1})
+    async def run_plain(self, *, actor_change: bool = False) -> dict[str, object]:
+        return await self.client.advance({'days': 1, 'wait_for_played_character_change': actor_change})
 
 
 class RunningDateConvergenceTests(unittest.IsolatedAsyncioTestCase):
@@ -259,6 +259,33 @@ class RunningDateConvergenceTests(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(ValueError):
                     await h.client.advance(row)
                 self.assertEqual(h.actions, [])
+
+    async def test_plain_explicit_actor_transition_keeps_complete_observer_guard(self) -> None:
+        reached = actual_frame(47, date=START + 24)
+        after = actual_frame(48, date=START + 24, paused=True)
+        for value in (reached, after):
+            value['played_character']['character_id'] += 1
+            value['diagnostics']['last_heartbeat']['snapshot_observer_12002'] = {
+                'read_in_progress': False, 'started_ms': 10, 'completed_ms': 11}
+        h = Harness([reached, after], plain=True)
+        result = await h.run_plain(actor_change=True)
+        self.assertEqual(result['after']['played_character']['character_id'], reached['played_character']['character_id'])
+        self.assertEqual(result['elapsed_hours'], 24)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map', 'pause-map'])
+
+    async def test_plain_missing_actor_observer_stays_unqualified_until_real_complete_frame(self) -> None:
+        pending = actual_frame(47, date=START + 24)
+        complete = actual_frame(48, date=START + 24)
+        after = actual_frame(49, date=START + 24, paused=True)
+        for value in (pending, complete, after):
+            value['played_character']['character_id'] += 1
+        complete['diagnostics']['last_heartbeat']['snapshot_observer_12002'] = {
+            'read_in_progress': False, 'started_ms': 10, 'completed_ms': 11}
+        h = Harness([pending, complete, after], plain=True)
+        result = await h.run_plain(actor_change=True)
+        self.assertEqual(h.reads, 3)
+        self.assertEqual(result['elapsed_hours'], 24)
+        self.assertEqual(h.actions, ['pause-map', 'set-speed-1', 'resume-map', 'pause-map'])
 
 
 if __name__ == '__main__':

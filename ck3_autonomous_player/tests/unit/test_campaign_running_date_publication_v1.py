@@ -4,12 +4,15 @@ from __future__ import annotations
 import ast
 import copy
 import json
+import os
 from pathlib import Path
+import re
+import subprocess
 import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
-from xar_autoplayer.bridge.campaign_running_date_publication_v1 import pending_running_date_v1
+from xar_autoplayer.bridge.campaign_running_date_publication_v1 import AdvanceRequestV1, advance_frame_date_v1, pending_running_date_v1
 
 Object = dict[str, object]
 HOST = Path(__file__).resolve().parents[2] / 'native_bridge/research/run_ck3_12002_mcp_live.py'
@@ -81,6 +84,59 @@ def original_error(snapshot: Object) -> RuntimeError:
 
 
 class PublicationContractTests(unittest.TestCase):
+    def test_actual_modified_host_defs_have_no_strict_diagnostics(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        helper = root / 'ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_running_date_publication_v1.py'
+        environment = os.environ.copy()
+        environment['MYPYPATH'] = os.pathsep.join((str(root / 'tools'), str(root / 'ck3_autonomous_player/src')))
+        command = [sys.executable, '-B', '-X', 'utf8', '-m', 'mypy', '--strict', '--follow-imports=skip',
+            '--no-incremental', '--cache-dir', 'nul', '--no-pretty', '--no-color-output',
+            '--show-column-numbers', '--hide-error-context', '--no-error-summary', str(HOST), str(helper)]
+        completed = subprocess.run(command, cwd=root, env=environment, capture_output=True, text=True, encoding='utf-8')
+        # Full diagnostics stay in the real test/CI stdout; only owned defs are
+        # gated. This deliberately does not certify the entire historical host.
+        print(completed.stdout, end='')
+        print(completed.stderr, end='')
+        self.assertIn(completed.returncode, (0, 1), 'Actual checker failed before producing type diagnostics')
+        tree = ast.parse(HOST.read_text(encoding='utf-8-sig'))
+        ranges: list[tuple[int, int]] = []
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef) and node.name == '_campaign_pending_running_date':
+                ranges.append((node.lineno, node.end_lineno or node.lineno))
+            if isinstance(node, ast.ClassDef) and node.name == 'PlanClient':
+                for method in node.body:
+                    if isinstance(method, ast.AsyncFunctionDef) and method.name == 'advance':
+                        ranges.append((method.lineno, method.end_lineno or method.lineno))
+        self.assertEqual(len(ranges), 2, 'Actual owned host defs missing')
+        pattern = re.compile(r'^(.+?):([0-9]+):[0-9]+: error: (.*)$')
+        owned: list[str] = []
+        for line in completed.stdout.splitlines():
+            match = pattern.match(line)
+            if match is not None and Path(match.group(1)).resolve() == HOST.resolve():
+                number = int(match.group(2))
+                if any(start <= number <= end for start, end in ranges):
+                    owned.append(line)
+        self.assertEqual(owned, [], 'Strict type errors in the actual modified host defs')
+
+    def test_advance_request_is_typed_and_rejects_bad_counts_or_timeouts(self) -> None:
+        self.assertEqual(AdvanceRequestV1.parse({}, 5), AdvanceRequestV1(1, 5.0, False))
+        self.assertEqual(AdvanceRequestV1.parse({'days': 1, 'timeout': .3, 'wait_for_played_character_change': True}, 5),
+                         AdvanceRequestV1(1, .3, True))
+        cases: list[object] = [None, [], {'days': True}, {'days': 1.0}, {'days': 0}, {'days': -1},
+            {'days': None}, {'timeout': None}, {'timeout': True}, {'timeout': float('inf')},
+            {'timeout': float('nan')}, {'timeout': 0}, {'timeout': -1}, {'timeout': 6},
+            {'timeout': 10**1000}, {'wait_for_played_character_change': None}]
+        for value in cases:
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                AdvanceRequestV1.parse(value, 5)
+        for maximum in (None, True, float('inf'), float('nan'), 0):
+            with self.subTest(maximum=maximum), self.assertRaises(ValueError):
+                AdvanceRequestV1.parse({}, maximum)
+        self.assertEqual(advance_frame_date_v1({'date_raw': 1024}), 1024)
+        for value in (None, {}, {'date_raw': True}, {'date_raw': 1.0}, {'date_raw': '1024'}):
+            with self.subTest(frame=value), self.assertRaises(ValueError):
+                advance_frame_date_v1(value)
+
     def test_both_actual_directions_stay_unqualified_and_do_not_repair(self) -> None:
         for snapshot_date, mailbox_date, direction in ((1024, 1000, 'snapshot-ahead'), (1000, 1024, 'mailbox-ahead')):
             value = frame(snapshot_date=snapshot_date, mailbox_date=mailbox_date)

@@ -1964,20 +1964,17 @@ class PlanClient:
 
     async def advance(self, row: dict[str, object]) -> dict[str, object]:
         from collections.abc import Awaitable, Callable
-        days = row.get("days", 1)
-        budget = row.get("timeout", self.args.command_timeout)
-        if type(days) is not int or days < 1:
-            raise ValueError("advance requires a strict positive integer day count")
-        if type(budget) not in (int, float) or not 0 < budget <= self.args.command_timeout:
-            raise ValueError("advance timeout exceeds the original command budget")
+        from xar_autoplayer.bridge.campaign_running_date_publication_v1 import AdvanceRequestV1, advance_frame_date_v1, advance_frame_object_v1
+        request = AdvanceRequestV1.parse(row, self.args.command_timeout)
+        days, budget = request.days, request.timeout_seconds
         await self.invoke("ck3_execute_step", {"step": "pause-map"})
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         await self.set_campaign_speed_one_presubmission_once(before)
         before_resume = await self.wait_snapshot({"speed": 1}, self.args.command_timeout)
-        wait_for_actor_change = row.get("wait_for_played_character_change") is True
+        wait_for_actor_change = request.wait_for_actor_change
         if wait_for_actor_change and before.get("episode_projection") != "native_campaign":
             raise ValueError("player transition wait requires a native campaign")
-        start = int(before["date_raw"])
+        start = advance_frame_date_v1(before)
         target = start + 24 * days
         diagnostics = before_resume.get("diagnostics")
         hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
@@ -2007,8 +2004,10 @@ class PlanClient:
         try:
             while time.monotonic() < deadline:
                 if running_binding is not None:
-                    current, _, running_binding = await self.wait_campaign_running_successor(running_binding, bounded, remaining,
+                    current_value, _, binding_value = await self.wait_campaign_running_successor(running_binding, bounded, remaining,
                         allow_actor_change=wait_for_actor_change)
+                    current = advance_frame_object_v1(current_value)
+                    running_binding = advance_frame_object_v1(binding_value)
                 else:
                     current = await self.fresh()
                 if current.get("active_event") is not None:
@@ -2018,27 +2017,36 @@ class PlanClient:
                         f"paused={current.get('paused')}, "
                         f"active_event={json.dumps(current['active_event'], ensure_ascii=False, sort_keys=True)}"
                     )
-                if int(current["date_raw"]) >= target:
+                if advance_frame_date_v1(current) >= target:
                     if wait_for_actor_change:
-                        diagnostics = current.get("diagnostics") or {}
-                        initial = before.get("diagnostics") or {}
+                        diagnostics = advance_frame_object_v1(current.get("diagnostics"))
+                        initial = advance_frame_object_v1(before.get("diagnostics"))
                         if (current.get("episode_projection") != "native_campaign"
                                 or any(diagnostics.get(key) != initial.get(key) for key in
                                        ("bridge_pid", "connection_generation", "pipe_name"))
                                 or current.get("local_player_id") != before.get("local_player_id")):
                             raise ValueError("player transition crossed the admitted campaign process")
-                        played = current.get("played_character") or {}
-                        observer = (diagnostics.get("last_heartbeat") or {}).get("snapshot_observer_12002") or {}
+                        played = advance_frame_object_v1(current.get("played_character"))
+                        prior_player = advance_frame_object_v1(before.get("played_character"))
+                        heartbeat = advance_frame_object_v1(diagnostics.get("last_heartbeat"))
+                        observer_value = heartbeat.get("snapshot_observer_12002")
+                        if observer_value is None:
+                            await asyncio.sleep(self.args.poll_interval)
+                            continue
+                        observer = advance_frame_object_v1(observer_value)
+                        played_id = played.get("character_id")
+                        native_revision = current.get("native_revision")
+                        prior_native_revision = before.get("native_revision")
+                        started_ms, completed_ms = observer.get("started_ms"), observer.get("completed_ms")
+                        if type(prior_native_revision) is not int or prior_native_revision <= 0:
+                            raise ValueError("Original actor-change frame lacks its native revision")
                         if not (current.get("map_ready") is True and played.get("source") == "native"
-                                and played.get("alive") is True and type(played.get("character_id")) is int
-                                and played["character_id"] > 0
-                                and played["character_id"] != before["played_character"]["character_id"]
-                                and type(current.get("native_revision")) is int
-                                and current["native_revision"] > int(before["native_revision"])
+                                and played.get("alive") is True and type(played_id) is int
+                                and played_id > 0 and played_id != prior_player.get("character_id")
+                                and type(native_revision) is int and native_revision > prior_native_revision
                                 and observer.get("read_in_progress") is False
-                                and type(observer.get("started_ms")) is int
-                                and type(observer.get("completed_ms")) is int
-                                and observer["completed_ms"] >= observer["started_ms"]):
+                                and type(started_ms) is int and type(completed_ms) is int
+                                and completed_ms >= started_ms):
                             await asyncio.sleep(self.args.poll_interval)
                             continue
                     reached = current
@@ -2054,10 +2062,11 @@ class PlanClient:
                 await self.invoke("ck3_execute_step", {"step": "pause-map"})
         if not use_campaign_pause_readback:
             after = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
-        if int(after["date_raw"]) < target:
+        after_date = advance_frame_date_v1(after)
+        if after_date < target:
             raise RuntimeError("pause readback preceded the requested date")
         result = {"before": before, "running_successor": reached, "after": after,
-                  "requested_days": days, "elapsed_hours": int(after["date_raw"]) - start}
+                  "requested_days": days, "elapsed_hours": after_date - start}
         if use_campaign_pause_readback:
             result.update(requested_interval_complete=True, event_boundary=None)
         return result

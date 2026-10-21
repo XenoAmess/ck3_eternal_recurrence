@@ -6,6 +6,7 @@ unchanged complete-frame and successor guards before any pause or business use.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import Literal
 
 IdentityV1 = tuple[int, int, int, int, int, str, int, None]
@@ -40,6 +41,50 @@ def _identity(value: object) -> IdentityV1:
     return (_integer(value[0], 1, 2**32 - 1), _integer(value[1], 1),
             _integer(value[2], 1, 2**31 - 1), _integer(value[3], 0, 2**31 - 1),
             _integer(value[4], 1, 5), value[5], _integer(value[6], 1, 2**32 - 1), None)
+
+
+def advance_frame_object_v1(value: object) -> dict[str, object]:
+    """Narrow a native frame child before the legacy host consumes its fields."""
+    return _object(value)
+
+
+def advance_frame_date_v1(value: object) -> int:
+    """Read an exact native date without bool, float or string coercion."""
+    return _integer(_object(value).get('date_raw'), 1, 2**31 - 1)
+
+
+def _positive_seconds(value: object) -> float:
+    if type(value) is int:
+        try:
+            result = float(value)
+        except OverflowError as error:
+            raise ValueError('Finite original timeout required') from error
+    elif type(value) is float:
+        result = value
+    else:
+        raise ValueError('Strict numeric timeout required; bool rejected')
+    if not math.isfinite(result) or result <= 0:
+        raise ValueError('Finite positive original timeout required')
+    return result
+
+
+@dataclass(frozen=True)
+class AdvanceRequestV1:
+    days: int
+    timeout_seconds: float
+    wait_for_actor_change: bool
+
+    @classmethod
+    def parse(cls, value: object, command_timeout: object) -> AdvanceRequestV1:
+        row = _object(value)
+        maximum = _positive_seconds(command_timeout)
+        timeout = _positive_seconds(row.get('timeout', command_timeout))
+        if timeout > maximum:
+            raise ValueError('Advance timeout exceeds the original command budget')
+        actor = row.get('wait_for_played_character_change', False)
+        if type(actor) is not bool:
+            raise ValueError('Explicit actor policy must be a literal boolean')
+        return cls(_integer(row.get('days', 1), 1, 2**31 - 1), timeout, actor)
 
 
 @dataclass(frozen=True)

@@ -7,6 +7,7 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import threading
 from types import SimpleNamespace
 from typing import Literal, Protocol, runtime_checkable
@@ -15,6 +16,7 @@ import unittest
 from test_ck3_mod_acceptance_pause import frame
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'ck3_autonomous_player/src'))
 HOST = ROOT / "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
 CLIENT = ROOT / "tools/ck3_mod_acceptance_client.py"
 
