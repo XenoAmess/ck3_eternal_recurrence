@@ -14,6 +14,22 @@ import ck3_live_run_id as live_ids
 
 
 class LiveRunIdTests(unittest.TestCase):
+    def test_living_artifacts_is_a_canonical_independent_product(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            original = live_ids.allocate_live_run_id(
+                "living-artifacts", state_root=root, machine_id="living-host")
+            restored = live_ids.load_live_run_identity(
+                original.run_id, "living-artifacts", state_root=root, machine_id="living-host")
+            other = live_ids.allocate_live_run_id(
+                "vanilla", state_root=root, machine_id="living-host")
+            self.assertEqual(restored, original)
+            self.assertEqual(original.run_id, "living-host--living-artifacts--R0001")
+            self.assertEqual(other.sequence, 1)
+            with self.assertRaises(live_ids.LiveRunIdError):
+                live_ids.allocate_live_run_id(
+                    "living-artifacts", external_mod=True, state_root=root, machine_id="living-host")
+
     def cli_json(self, args: list[str]) -> dict:
         output = io.StringIO()
         with contextlib.redirect_stdout(output):

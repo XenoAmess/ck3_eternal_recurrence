@@ -12,6 +12,7 @@ import json
 import os
 import platform
 import re
+import sys
 import tempfile
 import time
 import uuid
@@ -32,6 +33,7 @@ CANONICAL_MOD_KEYS = frozenset(
         "celestial-commerce-corruption",
         "eternal-recurrence",
         "li-yu-dao",
+        "living-artifacts",
         "more-tenets-slots",
         "ox-here",
         "reclaim-the-motherland",
@@ -173,7 +175,7 @@ def _exclusive_file_lock(path: Path) -> Iterator[None]:
         while not locked:
             handle.seek(0)
             try:
-                if os.name == "nt":
+                if sys.platform == "win32":
                     import msvcrt
 
                     msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
@@ -190,7 +192,7 @@ def _exclusive_file_lock(path: Path) -> Iterator[None]:
     finally:
         if locked:
             handle.seek(0)
-            if os.name == "nt":
+            if sys.platform == "win32":
                 import msvcrt
 
                 msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
@@ -495,5 +497,5 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except LiveRunIdError as error:
-        print(f"CK3 LIVE RUN ID FAILED: {error}", file=os.sys.stderr)
+        print(f"CK3 LIVE RUN ID FAILED: {error}", file=sys.stderr)
         raise SystemExit(1)
