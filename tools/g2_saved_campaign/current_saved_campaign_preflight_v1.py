@@ -13,7 +13,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from typing import Callable, Literal, Protocol
+from typing import Callable, Literal, Mapping, Protocol
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, ExactRefV1, JsonObject, JsonValue, decode_current_saved_basis_v1,
@@ -45,6 +45,26 @@ def _same_path(left: str | Path, right: str | Path) -> bool:
 
 def _json_bytes(value: object) -> bytes:
     return json.dumps(json_object(value), ensure_ascii=False, sort_keys=True,
+                      separators=(",", ":"), allow_nan=False).encode("utf-8")
+
+
+def _python_mcp_loading_bytes_v1(value: object) -> bytes:
+    """Compare opaque Python MCP loading results, never admissions or JS data."""
+    def validate(item: object) -> None:
+        if item is None or type(item) in (str, bool, int):
+            return
+        if type(item) is float:
+            import math
+            need(math.isfinite(item), "finite Python MCP result float")
+            return
+        if isinstance(item, list):
+            for child in rows(item):
+                validate(child)
+            return
+        for child in record(item).values():
+            validate(child)
+    validate(value)
+    return json.dumps(value, ensure_ascii=False, sort_keys=True,
                       separators=(",", ":"), allow_nan=False).encode("utf-8")
 
 
@@ -687,7 +707,7 @@ def submit_queue_readiness_request_v1(
 
 
 class CurrentSavedToolResultV1(Protocol):
-    def model_dump(self, *, mode: Literal["json"]) -> JsonObject: ...
+    def model_dump(self, *, mode: Literal["json"]) -> Mapping[str, object]: ...
 
 
 class CurrentSavedToolCallV1(Protocol):
@@ -728,7 +748,10 @@ class GuardedCurrentSavedSessionV1:
                 result = await self._call(name, arguments, float(read_timeout_seconds))
             finally:
                 state.in_transport = False
-            state.last_result_json = _json_bytes(result.model_dump(mode="json"))
+            # The Queue owns opaque Python-only MCP result encoding. Retain only
+            # the actual startup object needed for its exact-loading retry.
+            if state.permit.phase == "semantic" and name == SEMANTIC_TOOL:
+                state.last_semantic_result = result
             return result
         except BaseException:
             state.revoked = True
@@ -742,7 +765,7 @@ class _PermitStateV1:
     calls: int = 0
     in_transport: bool = False
     revoked: bool = False
-    last_result_json: bytes | None = None
+    last_semantic_result: CurrentSavedToolResultV1 | None = None
 
 
 @dataclass(frozen=True)
@@ -835,14 +858,20 @@ def _registered_permit(queue: object, permit: CurrentSavedRequestPermitV1) -> _P
 
 def _loading_retry_grant(state: _PermitStateV1, root: Path) -> None:
     need(state.permit.phase == "semantic" and state.calls > 0
-         and state.last_result_json is not None, "only a completed original loading attempt may retry")
+         and state.last_semantic_result is not None, "only a completed original loading attempt may retry")
+    result = state.last_semantic_result
+    if result is None:
+        raise ValueError("actual original startup result required")
+    original_result = record(dict(result.model_dump(mode="json")))
     reader = LocalBasisReaderV1()
     stem = f"READINESS-{state.permit.sequence:04d}-{state.calls:06d}"
     response = root / "p37-queue" / (stem + "-result.json")
     marker_path = root / "p37-queue" / (stem + "-loading.json")
     _, marker = _read_actual(marker_path, reader, 16384)
     _, row = _read_actual(response, reader, _MAX_SMALL)
-    need(_original_exact_loading_v1(row, state.queue, reader),
+    need(_original_exact_loading_v1(row, state.queue, reader)
+         and _original_exact_loading_v1(
+             {**row, "result": original_result}, state.queue, reader),
          "actual original exact_loading classifier must grant a retry")
     need(marker.get("status") == "startup_readiness_unavailable"
          and marker.get("outer_sequence_consumed") is False
@@ -851,7 +880,8 @@ def _loading_retry_grant(state: _PermitStateV1, root: Path) -> None:
          and _same_path(text(marker.get("source_response")), response)
          and integer(row.get("startup_readiness_attempt"), 1) == state.calls
          and _json_bytes(row.get("request")) == state.permit.request_json
-         and _json_bytes(row.get("result")) == state.last_result_json
+         and _python_mcp_loading_bytes_v1(row.get("result"))
+         == _python_mcp_loading_bytes_v1(original_result)
          and row.get("client_error") is None,
          "original exact_loading branch must grant this next read-only attempt")
 

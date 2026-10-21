@@ -311,7 +311,7 @@ def _module(name: str, path: Path, source: bytes, workspace: _Workspace,
 
 @contextmanager
 def _isolated_modules() -> Iterator[None]:
-    names = ("root_", "startup_readiness_v1", "pending_requests_v1", "xar_autoplayer", "owner_response_")
+    names = ("root_", "p51_resident_", "startup_readiness_v1", "pending_requests_v1", "xar_autoplayer", "owner_response_")
     before = {key: value for key, value in sys.modules.items()
               if any(key.startswith(prefix) for prefix in names)}
     try:
@@ -1712,6 +1712,145 @@ class CompleteColdGovernanceContractTests(unittest.TestCase):
             with self.subTest(fields=list(changed)), self.assertRaises(ValueError):
                 project_current_saved_governance_resume_v1(changed, expected_completed_cycles=5143)
 
+
+
+_UINT64_REPLAY_BUNDLE = record(json.loads(zlib.decompress(base64.b64decode(
+    "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", validate=True))))
+
+@dataclass(frozen=True, slots=True)
+class _CountedPythonResult(_RecordedResult):
+    dumps: list[int]
+    def model_dump(self, *, mode: Literal["json"]) -> JsonObject:
+        self.dumps.append(1)
+        return _RecordedResult.model_dump(self, mode=mode)
+
+class _Int64RecordedTransport(_RecordedTransport):
+    def __init__(self, result: JsonObject) -> None:
+        super().__init__(result)
+        self.dumps: list[int] = []
+    async def __call__(self, tool: str, arguments: JsonObject,
+                       budget: float) -> _CountedPythonResult:
+        original = await super().__call__(tool, arguments, budget)
+        return _CountedPythonResult(original.value, self.dumps)
+
+def _install_original_auto_postcheck(harness: _Harness) -> None:
+    package = REPO / "ck3_autonomous_player/src/xar_autoplayer/__init__.py"
+    exec(compile(package.read_bytes(), str(package), "exec"), vars(sys.modules["xar_autoplayer"]))
+    raw = harness.corpus.payload("queue")
+    tree = ast.parse(raw)
+    definitions = {node.name for node in tree.body if isinstance(node, ast.FunctionDef)
+        and (node.name.startswith("classify_") or node.name in
+             {"_war_optional_object_v1", "_war_optional_uint_v1"})}
+    source = _selected_source(raw, definitions, {"FreshQueue": {"check_after"}})
+    constants: list[str] = []
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and all(
+            isinstance(target, ast.Name) and target.id.isupper() for target in node.targets):
+            try:
+                ast.literal_eval(node.value)
+            except (ValueError, TypeError):
+                continue
+            constants.append(text(ast.get_source_segment(raw.decode(), node)))
+    source += "\n" + "\n".join(constants) + "\n"
+    path = harness.root / "ordinary_postcheck_original.py"
+    exec(compile(source, str(path), "exec"), harness.namespace)
+    original_base = next(cls for cls in type(harness.queue).__mro__
+                         if cls.__name__ == "_OriginalQueueMethods")
+    setattr(original_base, "check_after", harness.namespace["check_after"])
+    setattr(harness.queue, "result_classifier", harness.namespace["classify_auto_result_credit_v1"])
+    for name in ("root_p37c23_automatic_natural_succession_handoff.py",
+                 "p51_resident_successor_adoption_c23.py",
+                 "root_battle_epoch_credit.py", "root_committed_contact_credit.py"):
+        item = record(_UINT64_REPLAY_BUNDLE[name])
+        _module(name.removesuffix(".py"), harness.root / name,
+                text(item["source"]).encode(), harness.workspace)
+    harness.workspace.write(harness.root / "ROOT-ACTUAL-DRIVER-MODE-P37C23.json",
+        _wire({"episode_projection": "one_life", "before_submit_observation": True}))
+
+class PythonMcpResultDomainTests(unittest.TestCase):
+    def test_original_queue_auto_encoder_postcheck_preserves_native_int64(self) -> None:
+        from unittest.mock import patch
+        corpus = _load_corpus()
+        auto = record(_UINT64_REPLAY_BUNDLE["auto"])
+        original = zlib.decompress(base64.b64decode(text(auto["encoded"]), validate=True))
+        self.assertEqual(len(original), integer(auto["bytes"]))
+        self.assertEqual(hashlib.sha256(original).hexdigest(), auto["sha256"])
+        historical = record(parse_json(original))
+        self.assertEqual(record(historical["request"])["sequence"], 11382)
+        result = json_object(historical["result"])
+        body = json_object(result["structured_content"])
+        plan = json_object(body["plan"])
+        plan["current_first_heir_reproductive_inputs_v1"] = {
+            "conception_pair_inputs": {"pairs": [
+                {"conditional_base_stage": {"base_raw": 2**53 + 1}},
+                {"conditional_base_stage": {"base_raw": -(2**63)}}]}}
+        body["plan"] = plan
+        result["structured_content"] = body
+        with self.assertRaisesRegex(ValueError, "JSON integer loses precision"):
+            core._json_bytes(result)
+        frozen_scope = dict(vars(core))
+        exec("from __future__ import annotations\n" + text(_UINT64_REPLAY_BUNDLE["legacy"]),
+             frozen_scope)
+        legacy = frozen_scope["call_tool"]
+        self.assertIsInstance(legacy, FunctionType)
+        peaks: list[int] = []
+        with _owned_workspace() as workspace:
+            for legacy_enabled in (True, False):
+                with _isolated_modules():
+                    harness = _make_harness(workspace, corpus,
+                        name="legacy-cache" if legacy_enabled else "opaque-result", with_anchor=True)
+                    asyncio.run(harness.dispatch(harness.request("SEM")))
+                    asyncio.run(_dispatch_actual_cap(harness))
+                    self.assertEqual(_phase_value(harness), "ready")
+                    _install_original_auto_postcheck(harness)
+                    transport = _Int64RecordedTransport(result)
+                    harness.transport = transport
+                    request = harness.request("AUTO")
+                    if legacy_enabled:
+                        with patch.object(core.GuardedCurrentSavedSessionV1, "call_tool", legacy):
+                            asyncio.run(harness.dispatch(request, submit=False))
+                    else:
+                        asyncio.run(harness.dispatch(request, submit=False))
+                    self.assertEqual(transport.calls, 1)
+                    self.assertEqual(transport.dumps, [1])
+                    seq = integer(request["sequence"])
+                    response = harness.root / "p37-responses" / f"{seq:04d}-1-result.json"
+                    marker = harness.root / "p37-queue" / f"{seq:04d}-after-result.json"
+                    row = record(parse_json(response.read_bytes()))
+                    if legacy_enabled:
+                        self.assertIn("JSON integer loses precision", str(row["client_error"]))
+                        self.assertIsNotNone(getattr(harness.queue, "halted"))
+                        self.assertFalse(marker.exists())
+                        first = _pin(harness.root / "ROOT-FIRST-QUEUE-EXCEPTION-P37C23.json")
+                        before = transport.calls
+                        with self.assertRaises(ValueError):
+                            core.guard_current_saved_request_v1(harness.queue, request,
+                                runtime_root=harness.root)
+                        self.assertEqual(transport.calls, before)
+                        self.assertEqual(_pin(Path(first.path)), first)
+                    else:
+                        self.assertIsNone(row.get("client_error"))
+                        self.assertTrue(marker.is_file(), str(getattr(harness.queue, "halt_cause")))
+                        self.assertIsNone(getattr(harness.queue, "halted"))
+                        saved_body = record(record(row["result"])["structured_content"])
+                        pair_values = rows(record(record(record(saved_body["plan"])[
+                            "current_first_heir_reproductive_inputs_v1"])["conception_pair_inputs"])["pairs"])
+                        values = [record(record(pair)["conditional_base_stage"])["base_raw"]
+                                  for pair in pair_values]
+                        self.assertEqual(values, [2**53 + 1, -(2**63)])
+                        self.assertTrue(all(type(value) is int for value in values))
+                        observation = record(getattr(harness.queue, "last_auto_observation"))
+                        self.assertIs(observation["primitive_accepted"], True)
+                        self.assertIs(observation["business_success_inferred"], False)
+                        state = core._PERMIT_STATES[id(harness.queue)]
+                        self.assertIsNone(state.last_semantic_result)
+                    peaks.append(workspace.peak)
+                    _remove_owned_child(workspace, harness.root)
+        print("ORIGINAL_QUEUE_NATIVE_INT64", {"machine_id": core.current_execution_machine_id_v1(),
+            "historical_subject_machine_id": SUBJECT, "historical_AUTO_sequence": 11382,
+            "actual11386_result_recovered": False, "native_RPC_calls": 0,
+            "legacy_cache_failed_after_one_return": True, "new_original_postcheck_passed": True,
+            "ordinary_cycle_credit": 0, "peak_allocation_upper_bytes": max(peaks)})
+
 if __name__ == "__main__":
     unittest.main()
-
