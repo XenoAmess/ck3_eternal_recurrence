@@ -11,6 +11,7 @@ sys.path[:0]=[str(repo/'tools'),str(repo/'ck3_autonomous_player/src')]
 import ck3_mod_acceptance_cases
 name='ck3_mod_acceptance_cases.r08_writer_one_day'
 spec=importlib.util.spec_from_file_location(name,opts.actor_path or repo/'tools/ck3_mod_acceptance_cases/r08_writer_one_day.py')
+if spec is None or spec.loader is None:raise ValueError('Actual actor module loader unavailable')
 actor=importlib.util.module_from_spec(spec);sys.modules[name]=actor;spec.loader.exec_module(actor)
 from xar_autoplayer.bridge.army_observer_research_sampling_control import FAMILIES,STATE_KEY
 
@@ -23,26 +24,45 @@ IDLE=json.loads('''{"state":"idle","generation":0,"starting_date_raw":0,"target_
 "overshoot_days":-1,"pause_wrapper_called":false,"pause_observed":false,
 "terminal_observed":false,"abnormal":false}''')
 
-def row(on=False,busy=False):
+def row(on: bool=False,busy: bool=False) -> dict[str,object]:
     return dict(installed=True,available=True,capture_enabled=on,busy=busy,
         clear_completed=not on and not busy,epoch=1,active_captures=int(busy),
         retained_records=0,qualified_records=0,status='enabled' if on else 'busy' if busy else 'disabled',
         readiness='inflight' if on and busy else 'awaiting_sample' if on else 'off')
 
 class Queue:
-    def __init__(self,*,clock_bad=False,unknown_enable=False,busy=False,payment_available=True):
-        self.calls=[];self.payment_calls=[];self.clock_bad=clock_bad
+    def __init__(self,*,clock_bad: bool=False,unknown_enable: bool=False,busy: bool=False,payment_available: bool=True) -> None:
+        self.calls: list[tuple[str,dict[str,object]]]=[];self.payment_calls: list[str]=[];self.clock_bad=clock_bad
+        self.state_dir=repo/'synthetic-r08-managed-run'
+        self.client=SimpleNamespace(_handle=object(),_process={'pid':41},normal_close=lambda disposition:None)
         self.natural=False;self.unknown_enable=unknown_enable;self.busy=busy
         self.payment_available=payment_available
-    def snapshot(self,label):return dict(revision=3,date_raw=100,paused=True,map_ready=True)
-    def call(self,label,tool,args):
+    def snapshot(self,label: str) -> dict[str,object]:
+        return dict(revision=3,date_raw=100,paused=True,map_ready=True,native_revision=1,
+            snapshot_id='synthetic-native-1',episode_projection='native_campaign',
+            backend_id='native-headless',source='injected-dll-named-pipe',local_player_id=29829,
+            played_character=dict(character_id=29829,alive=True,source='native'),
+            diagnostics=dict(connected=True,bridge_pid=41,connection_generation=1,
+                pipe_name='synthetic-retained-pipe'),
+            managed_campaign_run_binding=dict(run_id='synthetic-run',state_dir=str(self.state_dir),
+                bridge_pipe='synthetic-retained-pipe',host_path='synthetic-host',frozen_argv_sha256='a'*64))
+    def call(self,label: str,tool: str,args: dict[str,object]) -> dict[str,object]:
         self.calls.append((tool,copy.deepcopy(args)))
         if tool=='ck3_execute_step':
             if args['step']=='pause-map':return {'accepted':True}
             if args['step']=='research-query-tactical-daily-sentinel-v1':
                 return {'tactical_daily_sentinel':{**IDLE,**({'generation':True} if self.clock_bad else {})}}
             raise AssertionError('Unexpected clock action: '+repr(args))
-        if tool=='ck3_save_checkpoint':return {'checkpoint':{'status':'saved','date_raw':100}}
+        if tool=='ck3_save_checkpoint':
+            # Synthetic producer metadata only; the consumer does not rehash a file.
+            save_dir=self.state_dir/'profile'/'save games'
+            return dict(step='save-checkpoint',accepted=True,backend_id='native-headless',
+                checkpoint=dict(status='saved',date_raw=100,episode_projection='native_campaign',
+                    succession_lifecycle=None,episode_run_id=None,episode_character_id=None,
+                    strategy='native-autosave-command-v1',path=str(save_dir/'xar_checkpoint.ck3'),
+                    name='xar_checkpoint.ck3',size=1,sha256='b'*64),
+                materialization=dict(available=True,save_dir=str(save_dir)),
+                submission=dict(date_raw=100,sequence=1))
         if tool not in ('ck3_set_army_observer_research_sampling_v1','ck3_query_army_observer_research_sampling_v1'):
             raise AssertionError('Unexpected queue tool '+tool)
         setting='enabled' in args
@@ -55,19 +75,19 @@ class Queue:
         step=('enable' if args.get('enabled') else 'disable') if setting else 'query'
         return dict(step=step+'-army-observer-research-sampling-v1',accepted=True,status='completed',
             backend_id='native-headless',**{STATE_KEY:{x:row(on,self.busy if on else False) for x in families}})
-    def payment(self,label,mode):
+    def payment(self,label: str,mode: str) -> dict[str,object]:
         self.payment_calls.append(mode)
         return {'sampling':dict(available=self.payment_available,capture_enabled=False,busy=False,clear_completed=True,active_captures=0,retained_records=0)}
 
 class CleanupAndSampling(unittest.TestCase):
-    def test_actual_idle0_only_before_observer_claim_and_typed_mutations_refuse(self):
+    def test_actual_idle0_only_before_observer_claim_and_typed_mutations_refuse(self) -> None:
         self.assertEqual(actor.normalize_cleanup_clock(copy.deepcopy(IDLE),observer_claimed=False),IDLE)
         with self.assertRaises(ValueError):actor.normalize_cleanup_clock(IDLE,observer_claimed=True)
         for change in ({'generation':True},{'generation':1},{'starting_date_raw':1},{'overshoot_days':0},{'mode':'terminal_or_sentinel'}):
             with self.subTest(change=change),self.assertRaises(ValueError):
                 actor.normalize_cleanup_clock({**IDLE,**change},observer_claimed=False)
-    def test_real_cleanup_idle0_proceeds_to_independent_offs_then_one_save(self):
-        q=Queue();gate=SimpleNamespace(restored=True,off_clear=False)
+    def test_real_cleanup_idle0_proceeds_to_independent_offs_then_one_save(self) -> None:
+        q=Queue();gate=actor.CloseGate(q.client)
         result,errors,days=actor.cleanup_writer_window(q.call,q.snapshot,q.payment,gate,
             observer_claimed=False,expected_start_date_raw=100)
         self.assertEqual(errors,[]);self.assertTrue(result['Save']);self.assertTrue(gate.off_clear)
@@ -76,7 +96,7 @@ class CleanupAndSampling(unittest.TestCase):
         controls=[(tool,args) for tool,args in q.calls if args.get('observer_family')=='all']
         self.assertEqual(len(controls),2);self.assertFalse(controls[0][1]['enabled'])
         self.assertNotIn('enabled',controls[1][1])
-    def test_bad_clock_still_attempts_both_off_paths_but_never_save_or_close(self):
+    def test_bad_clock_still_attempts_both_off_paths_but_never_save_or_close(self) -> None:
         q=Queue(clock_bad=True);gate=SimpleNamespace(restored=True,off_clear=False)
         result,errors,days=actor.cleanup_writer_window(q.call,q.snapshot,q.payment,gate,
             observer_claimed=False,expected_start_date_raw=100)
@@ -84,20 +104,20 @@ class CleanupAndSampling(unittest.TestCase):
         self.assertEqual(q.payment_calls,['disable','query'])
         self.assertEqual(sum(args.get('observer_family')=='all' for tool,args in q.calls),2)
         self.assertFalse(any(tool=='ck3_save_checkpoint' for tool,args in q.calls));self.assertIsNone(days)
-    def test_unavailable_empty_payment_is_not_qualified_offclear(self):
+    def test_unavailable_empty_payment_is_not_qualified_offclear(self) -> None:
         q=Queue(payment_available=False);gate=SimpleNamespace(restored=True,off_clear=False)
         result,errors,days=actor.cleanup_writer_window(q.call,q.snapshot,q.payment,gate,
             observer_claimed=False,expected_start_date_raw=100)
         self.assertTrue(errors);self.assertFalse(result['OFFclear']);self.assertFalse(result['Save'])
         self.assertTrue(result['army_families_OFFclear']);self.assertFalse(gate.off_clear)
         self.assertFalse(any(tool=='ck3_save_checkpoint' for tool,args in q.calls))
-    def test_natural_phase_enable_once_and_independent_read_before_payment_prerequisite(self):
+    def test_natural_phase_enable_once_and_independent_read_before_payment_prerequisite(self) -> None:
         q=Queue();state=actor.prepare_natural_phase(q.call,q.snapshot,enable_once_authorized=True)
         self.assertTrue(state['capture_enabled']);self.assertFalse(state['busy'])
         self.assertEqual([tool for tool,args in q.calls],['ck3_query_army_observer_research_sampling_v1',
             'ck3_set_army_observer_research_sampling_v1','ck3_query_army_observer_research_sampling_v1'])
         self.assertEqual(q.calls[1][1],{'observer_family':'natural_phase','expected_revision':3,'enabled':True})
-    def test_natural_phase_missing_authority_unknown_enable_or_busy_never_fakes_ready(self):
+    def test_natural_phase_missing_authority_unknown_enable_or_busy_never_fakes_ready(self) -> None:
         q=Queue()
         with self.assertRaises(ValueError):actor.prepare_natural_phase(q.call,q.snapshot,enable_once_authorized=False)
         self.assertEqual(len(q.calls),1)
