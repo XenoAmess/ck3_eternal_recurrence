@@ -40,8 +40,16 @@ def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "lau
     require(bool(text_field(frozen,"run_id")) and bool(argv), "Actual frozen run/argv required")
     require(frozen.get("launch_requires_fresh_owned_cas_and_background_offline") is True,
             "Allocated background offline gate is missing")
-    require(frozen.get("previous_session_closed") is True and frozen.get("previous_screen_released") is True,
-            "Previous managed session/screen closure is not admitted")
+    if frozen.get('initial_machine_no_predecessor') is True:
+        fresh_helper = Path(__file__).with_name('ck3_mod_acceptance_fresh_machine_bootstrap.py').resolve()
+        fresh_files = object_field(frozen, 'files')
+        require(str(fresh_helper) in fresh_files, 'Fresh-machine helper absent from actual allocation pins')
+        check_pin(keyed_file_pin(str(fresh_helper), fresh_files[str(fresh_helper)]))
+        from ck3_mod_acceptance_fresh_machine_bootstrap import validate_frozen_fresh_admission
+        validate_frozen_fresh_admission(frozen, root)
+    else:
+        require(frozen.get("previous_session_closed") is True and frozen.get("previous_screen_released") is True,
+                "Previous managed session/screen closure is not admitted")
     context = json_object(read_json(root / "ready-context.json"))
     context_pin = object_field(context,"frozen_argv")
     check_pin(context_pin)
@@ -67,7 +75,7 @@ def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "lau
                 check_pin(keyed_file_pin(name, row))
         check_pin(frozen["runtime_manifest"])
     # A copied helper must not silently import another unpinned sibling.
-    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_steam_gate.py", "steam_offline_state_contract.py", "steam_offline_state_probe.py", "steam_offline_native_provider_v1.py", "steam_offline_native_profiles.py", "ck3_mod_acceptance_background_types.py", "ck3_live_run_id.py"):
+    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_steam_gate.py", "steam_offline_state_contract.py", "steam_offline_state_probe.py", "steam_offline_native_provider_v1.py", "steam_offline_native_profiles.py", "ck3_mod_acceptance_background_types.py", "ck3_live_run_id.py", "ck3_mod_acceptance_fresh_machine_bootstrap.py"):
         path = Path(__file__).with_name(name).resolve()
         require(str(path) in files, "Public helper is absent from allocation pins: " + str(path))
         check_pin(keyed_file_pin(str(path), files[str(path)]))

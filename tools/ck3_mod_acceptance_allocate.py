@@ -2,6 +2,10 @@
 from __future__ import annotations
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
 from ck3_mod_acceptance_background_types import JsonObject, json_object
+from ck3_mod_acceptance_fresh_machine_bootstrap import (
+    FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
+    require_empty_machine_history, validate_fresh_bootstrap,
+)
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import argparse
@@ -9,6 +13,7 @@ if TYPE_CHECKING:
 from datetime import datetime,timezone
 import hashlib,json,os,platform,re,subprocess,sys,time
 from pathlib import Path
+from types import ModuleType
 from typing import Literal, TypedDict
 from ck3_mod_acceptance import Selection,path_at,check_pin,pin,read_json
 from ck3_mod_acceptance_prepare import write_json
@@ -1707,7 +1712,7 @@ def require_latest_screen_release(previous,latest_path):
         latest.get('event',{}).get('sequence')==task['last_sequence'],
         'Intervening latest screen epoch is not actually closed')
 
-def actual_machine_binding(ids):
+def actual_machine_binding(ids: ModuleType) -> MachineBinding:
     """The bootstrap uses the OS machine identity and canonical local ID store.
 
     An environment-selected machine/ID namespace must never manufacture a
@@ -1853,7 +1858,8 @@ def validate_legacy_bootstrap(bundle,selection,binding,bus_events,bus_packet,pre
         'canonical_id_history':history_files,'release_event':released[0],
         'fresh_release_task':matched[0],'bootstrap':pin(Path(bundle['_bundle_path']))}
 
-def claim_machine_admission(binding,selection,args,closure):
+def claim_machine_admission(binding: MachineBinding, selection: Selection,
+                            args: argparse.Namespace, closure: JsonObject) -> Path:
     """One machine-wide chain; new artifact/runtime directories cannot reset it."""
     import ck3_live_run_id as ids
     from ck3_mod_acceptance_keeper import write_new
@@ -1863,9 +1869,11 @@ def claim_machine_admission(binding,selection,args,closure):
         if identity.exists():require(read_json(identity)==binding,'Existing machine admission identity changed')
         else:write_new(identity,binding)
         records=sorted(path for path in root.glob('[0-9]*') if path.is_dir())
-        bootstrap=closure['mode'] in ('first-machine-legacy-profile-mcp-closure','first-machine-legacy-managed-session-closure')
+        bootstrap=closure['mode'] in ('first-machine-legacy-profile-mcp-closure','first-machine-legacy-managed-session-closure',FRESH_ADMISSION_MODE)
         if bootstrap:
             require(not records,'First-machine bootstrap is already consumed, including failed/RED attempts')
+            if closure['mode']==FRESH_ADMISSION_MODE:
+                require_empty_machine_history(binding)
         elif records:
             previous=read_json(records[-1]/'allocation.json')
             require(Path(previous['live']).resolve()==args.previous_live.resolve() and
@@ -1950,11 +1958,16 @@ def _allocate_and_keep_impl(selection,args):
     require(selection.prepared_path and not selection.context,'One prepared unused case and no allocated context required')
     bootstrap_path=getattr(args,'first_machine_bootstrap',None)
     failure_path=getattr(args,'previous_failure_close',None)
-    for name in ('attempt','keeper_output','previous_release'):
+    fresh_bundle=read_json(bootstrap_path) if bootstrap_path else None
+    fresh_machine=bool(fresh_bundle and fresh_bundle.get('schema')==FRESH_BOOTSTRAP_SCHEMA)
+    for name in (('attempt','keeper_output') if fresh_machine else ('attempt','keeper_output','previous_release')):
         require(getattr(args,name,None),'Allocation missing --'+name.replace('_','-'))
     if bootstrap_path:
         require(not failure_path and not getattr(args,'previous_live',None) and not getattr(args,'previous_keeper',None),
                 'First-machine legacy bootstrap and previous shared live/keeper are mutually exclusive')
+        if fresh_machine:
+            require(not getattr(args,'previous_release',None) and not getattr(args,'latest_screen_release',None),
+                    'Fresh-machine bootstrap forbids a fictional predecessor/release')
     else:
         for name in ('previous_live','previous_keeper'):
             require(getattr(args,name,None),'Allocation missing --'+name.replace('_','-'))
@@ -1991,8 +2004,18 @@ def _allocate_and_keep_impl(selection,args):
                                     selection.state_dir.parent/'allocation-bus-preflight-audit')
     if bootstrap_path:
         require(not shared_history,'This machine bus already contains a shared allocation; use normal predecessor closure')
-        bundle=read_json(bootstrap_path);bundle['_bundle_path']=str(bootstrap_path.resolve())
-        closure=validate_legacy_bootstrap(bundle,selection,binding,events,bus_packet,args.previous_release)
+        if fresh_machine:
+            import psutil
+            fresh_inventory=runtime_process_inventory(psutil,os.getpid())
+            closure=json_object(validate_fresh_bootstrap(fresh_bundle,bootstrap_path=bootstrap_path,
+                binding=binding,runtime_path=selection.runtime_path,manifest_path=selection.manifest_path,
+                repo_root=root,bus_dir=bus_dir,bus_events=events,bus_packet=bus_packet,
+                process_inventory=fresh_inventory,previous_live=getattr(args,'previous_live',None),
+                previous_keeper=getattr(args,'previous_keeper',None),previous_release=getattr(args,'previous_release',None),
+                previous_failure_close=failure_path,latest_screen_release=getattr(args,'latest_screen_release',None)))
+        else:
+            bundle=read_json(bootstrap_path);bundle['_bundle_path']=str(bootstrap_path.resolve())
+            closure=validate_legacy_bootstrap(bundle,selection,binding,events,bus_packet,args.previous_release)
     else:
         previous=args.previous_live.resolve();freeze=read_json(previous/'frozen-argv.json')
         require(freeze.get('identity_allocation',{}).get('machine_id')==machine and
@@ -2116,11 +2139,13 @@ def _allocate_and_keep_impl(selection,args):
         for row in index['files']:
             peer=Path(row['path']).resolve();check_pin(peer,row);files[peer]=pin(peer)
     shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
-    for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_mod_acceptance_launcher_protocol_v1.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py'):
+    for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_mod_acceptance_launcher_protocol_v1.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py','ck3_mod_acceptance_fresh_machine_bootstrap.py'):
         peer=shared_tools/name;files[peer]=pin(peer)
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
-        for row in [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()]:
+        rows=([closure['bootstrap']] if fresh_machine else
+              [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()])
+        for row in rows:
             files[Path(row['path']).resolve()]=row
     if failure_path:
         proof=closure['failure_cleanup']
@@ -2156,10 +2181,12 @@ def _allocate_and_keep_impl(selection,args):
         'source_root':str(actual.manifest_path_key(actual.manifest['source_root'])),
         'runtime_manifest':pin(actual.manifest_path),'runtime_environment':actual.runtime_environment,
         'identity_allocation':{'machine_id':machine,'state_root':str(state_root)},
-        'lease_anchor':str(lease_repo),'previous_session_closed':True,'previous_screen_released':True,
+        'lease_anchor':str(lease_repo),'previous_session_closed':not fresh_machine,'previous_screen_released':not fresh_machine,
         'predecessor_admission':pin(live/'predecessor-admission.json'),
         'files':{str(path):{k:row[k] for k in ('bytes','sha256')} for path,row in files.items()},
         'launch_requires_fresh_owned_cas_and_background_offline':True,'business_pass':False}
+    if fresh_machine:
+        frozen['initial_machine_no_predecessor']=True
     write_json(live/'frozen-argv.json',frozen)
     # All slow pin/profile work precedes register. No tool boundary occurs
     # between the actual allocated JSON and the original keeper subprocess.

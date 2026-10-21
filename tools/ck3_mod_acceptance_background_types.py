@@ -21,6 +21,7 @@ CONTROL_QUEUE_MODULE_ORDER_V1: Final[tuple[str, ...]] = (
     'steam_offline_native_provider_v1',
     'steam_offline_state_probe',
     'ck3_live_run_id',
+    'ck3_mod_acceptance_fresh_machine_bootstrap',
     'ck3_mod_acceptance_steam_gate',
     'ck3_mod_acceptance_launcher',
     'ck3_mod_acceptance_queue',
