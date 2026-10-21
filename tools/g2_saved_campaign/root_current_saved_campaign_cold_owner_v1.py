@@ -12,6 +12,10 @@ from typing import Literal,Protocol
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
  SavedFrameV1,ValidatedCurrentSavedBasisV1,
+ CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA,parse_cap_postresponse_failure_epoch_v3,
+ validate_cap_postresponse_failure_evidence_v3,
+ CAP_POSTRESPONSE_FAILURE_QUALIFICATION_SCHEMA,CapPostresponseFailureQualificationV3,
+ parse_cap_postresponse_failure_qualification_v3,
  CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA,parse_cap_pretransport_failure_epoch_v2,
  validate_cap_pretransport_failure_evidence_v2,
  CAP_PRETRANSPORT_FAILURE_QUALIFICATION_SCHEMA,CapPretransportFailureQualificationV2,
@@ -147,7 +151,9 @@ class BasisQualificationV1:
    "save_hash_reads":self.save_hash_reads,
    "read_count_scope":"this_additional_qualification_only",
    "power_loss_durability":"not_asserted"}
-def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1|CapPretransportFailureQualificationV2:
+def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1|CapPretransportFailureQualificationV2|CapPostresponseFailureQualificationV3:
+ if record(value).get("schema")==CAP_POSTRESPONSE_FAILURE_QUALIFICATION_SCHEMA:
+  return parse_cap_postresponse_failure_qualification_v3(value,expected_machine_id=expected_machine_id)
  if record(value).get("schema")==CAP_PRETRANSPORT_FAILURE_QUALIFICATION_SCHEMA:
   return parse_cap_pretransport_failure_qualification_v2(value,expected_machine_id=expected_machine_id)
  if record(value).get("schema")==READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA:
@@ -275,6 +281,25 @@ def _validate_task_closure(
  need(matching==1,'one exact Task unregiste')
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1)->ClosedEpochV1:
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:
+  post_epoch=parse_cap_postresponse_failure_epoch_v3(closure,expected_machine_id=basis.machine_id)
+  post_checked=validate_cap_postresponse_failure_evidence_v3(post_epoch,reader=reader)
+  post_business=post_checked.business_basis
+  need(post_checked.driver_ref==basis.refs.driver and post_checked.driver_identity==basis.driver_identity
+   and post_checked.save_ref==basis.refs.save and post_checked.save_identity==basis.save_identity
+   and post_epoch.refs.driver_review==basis.refs.driver_close and post_epoch.refs.next==basis.refs.next
+   and post_checked.next_sequence==basis.next_sequence and post_business.origin==basis.origin
+   and post_business.frame==basis.frame and post_business.completed_cycles==basis.completed_cycles
+   and _same_json(post_business.checkpoint,basis.checkpoint)
+   and _same_json(post_business.campaign_goal_anchor,basis.campaign_goal_anchor)
+   and post_checked.history_count==post_checked.previous_history_count+1,
+   "qualified CAP postresponse failure preserves business and one restore append")
+  post_game=post_checked.old_game
+  post_processes=tuple(ClosedSdkProcessV1(p.role,p.pid,p.creation_filetime,p.executable,p.exit_code)
+   for p in post_checked.sdk_processes)
+  return ClosedEpochV1(basis.refs.closure,
+   CurrentGameIdentityV1(post_game.pid,post_game.creation_filetime,post_game.creation_date),
+   post_checked.next_sequence,post_processes,post_epoch.observed_at_utc,post_checked.pipe_name)
  if closure.get("schema")==CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA:
   cap_epoch=parse_cap_pretransport_failure_epoch_v2(closure,expected_machine_id=basis.machine_id)
   cap_checked=validate_cap_pretransport_failure_evidence_v2(cap_epoch,reader=reader)
@@ -402,6 +427,29 @@ def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1)->ClosedEpochV1
  return ClosedEpochV1(basis.refs.closure,old_game,basis.next_sequence,processes,
   utc(closure.get("observed_at_utc")),text(recorded.get("pipe_name")))
 @dataclass(frozen=True,slots=True)
+class CurrentSavedGovernanceResumeV1:
+ state:JsonObject|None
+ pending_focus:JsonObject|None
+ completed_cycles:int
+ pending_cycle:None=None
+ def to_wire(self)->JsonObject:
+  need(self.pending_cycle is None,"governance resume requires a settled cycle")
+  return {"state":None if self.state is None else _clone(self.state),
+   "pending_focus":None if self.pending_focus is None else _clone(self.pending_focus),
+   "completed_cycles":integer(self.completed_cycles,0),"pending_cycle":None}
+def project_current_saved_governance_resume_v1(
+ value:object,*,expected_completed_cycles:int,
+)->CurrentSavedGovernanceResumeV1:
+ row=record(value)
+ need({"governance_result_state","pending_focus","pending_cycle","completed_cycles"} <= set(row),
+      "raw settled governance requires explicit state, focus, cycle and progress fields")
+ completed=integer(row["completed_cycles"],0)
+ need(completed==integer(expected_completed_cycles,0) and row["pending_cycle"] is None,
+      "raw governance belongs to the settled saved progress")
+ state=row["governance_result_state"];focus=row["pending_focus"]
+ return CurrentSavedGovernanceResumeV1(None if state is None else _clone(state),
+  None if focus is None else _clone(focus),completed)
+@dataclass(frozen=True,slots=True)
 class CurrentSavedColdInputsV1:
  basis:CurrentSavedBasisV1
  seed:JsonObject
@@ -446,7 +494,14 @@ def _validated_immutable_inputs_v1(
    and qualification.driver_identity_after==basis.driver_identity
    and qualification.save_identity_after==basis.save_identity,
    'actual one-read canonica')
- if isinstance(qualification,CapPretransportFailureQualificationV2):
+ if isinstance(qualification,CapPostresponseFailureQualificationV3):
+  post_failure=parse_cap_postresponse_failure_epoch_v3(
+   evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
+  need(qualification.epoch_ref==basis.refs.closure
+   and qualification.canonical_qualification_ref==post_failure.refs.canonical_qualification,
+   "CAP postresponse qualification binds its distinct v3 epoch and actual canonical receipt")
+
+ elif isinstance(qualification,CapPretransportFailureQualificationV2):
   cap_failure=parse_cap_pretransport_failure_epoch_v2(
    evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
   need(qualification.epoch_ref==basis.refs.closure
@@ -463,9 +518,7 @@ def _validated_immutable_inputs_v1(
    evidence(reader,reference,1048576)
  seed=project_current_saved_seed_v1(basis,reader=reader)
  governance=_clone(evidence(reader,basis.refs.governance))
- need("pending_cycle" in governance and governance["pending_cycle"] is None
-   and integer(governance.get("completed_cycles"))==basis.completed_cycles,
-   'current settled governan')
+ project_current_saved_governance_resume_v1(governance,expected_completed_cycles=basis.completed_cycles)
  ledger=_clone(evidence(reader,basis.refs.ledger))
  need(ledger.get("machine_id")==basis.machine_id
    and integer(ledger.get("last_settled_cycles"))==basis.progress.ledger_cycles
@@ -563,7 +616,9 @@ def cold_inputs_v1(
    and integer(pre.get("next_sequence"),1)==inputs.basis.next_sequence
    and pre.get("original_wall_start_utc")==inputs.basis.origin.original_wall_origin_utc,
    'actual generic prelaunch')
- return (_clone(inputs.seed),_clone(inputs.governance),_clone(inputs.checkpoint),
+ governance=project_current_saved_governance_resume_v1(
+  inputs.governance,expected_completed_cycles=inputs.basis.completed_cycles).to_wire()
+ return (_clone(inputs.seed),governance,_clone(inputs.checkpoint),
   pre,{"schema":"xar.current-saved-closed-epoch-view/v1","machine_id":expected_machine_id,
    "source_ref":inputs.basis.refs.closure.to_wire(),
    "old_Game":inputs.closed_epoch.old_game.to_wire(),
@@ -1115,7 +1170,11 @@ def validate_campaign_score_junction_physical_v1(
 def validate_current_saved_prepared_sdk_closure_v1(value:object,*,inputs:CurrentSavedColdInputsV1)->JsonObject:
  reader=LocalBasisReaderV1();reference=parse_ref(value)
  closure=evidence(reader,inputs.basis.refs.closure,65536)
- if closure.get("schema")==CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA:
+ if closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:
+  post_epoch=parse_cap_postresponse_failure_epoch_v3(closure,expected_machine_id=inputs.basis.machine_id)
+  expected=post_epoch.refs.sdk_closed
+
+ elif closure.get("schema")==CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA:
   cap_epoch=parse_cap_pretransport_failure_epoch_v2(closure,expected_machine_id=inputs.basis.machine_id)
   expected=cap_epoch.refs.sdk_closed
  elif closure.get("schema")==READONLY_COLD_FAILURE_EPOCH_SCHEMA:

@@ -534,7 +534,7 @@ class FailureEpochFixture:
             "request": {"tool": "ck3_save_checkpoint"},
             "result": {"is_error": False, "result_type": "complete",
                 "structured_content": {"checkpoint": self.checkpoint}}})
-        old = replace(old, refs=replace(old.refs, driver_close=original_review, save_response=saved))
+        old = replace(old, refs=replace(old.refs, driver_close=original_review, save_response=saved, governance=r.put("saved-governance.json", {"governance_result_state":None,"pending_focus":None,"pending_cycle":None,"completed_cycles":old.completed_cycles})))
         self.old = old
         old_ref = r.put("business-basis.json", old.to_wire())
         launch = r.put("ROOT-ACTUAL-GAME-LAUNCH-C23.json", {
@@ -1120,6 +1120,187 @@ class CapPretransportFailureTests(unittest.TestCase):
         epoch = replace(f.epoch, refs=replace(f.refs, business_basis=reference))
         with self.assertRaisesRegex(ValueError, "prior immutable business references"):
             epoch_api.validate_cap_pretransport_failure_evidence_v2(epoch, reader=f.reader)
+
+
+
+class CapPostresponseFailureFixture:
+    """Three immutable epochs; no disk or Native transport is used."""
+    def __init__(self) -> None:
+        previous = CapPretransportFailureFixture()
+        self.reader = r = previous.reader
+        checked = previous.validated()
+        er = r.put("v3-prior-epoch.json", previous.epoch.to_wire())
+        self.previous_basis = old = epoch_api.build_cap_pretransport_failure_basis_v2(checked,
+            epoch_ref=er, observed_at_utc="2026-10-21T07:00:00Z", sidecars=(), reader=r)
+        old_ref = r.put("v3-prior-basis.json", old.to_wire())
+        def put(name: str, value: object) -> ExactRefV1:
+            return r.put("post/"+name, value)
+        def source(name: str, value: str) -> ExactRefV1:
+            path="/epoch/post/"+name; raw=value.encode(); r.raw[path]=raw
+            return ExactRefV1(path,len(raw),hashlib.sha256(raw).hexdigest())
+        def prior(name: str) -> dict[str,object]:
+            return epoch_api.evidence(r,dict(previous.refs.items())[name])
+        pid=83; birth=134370744784786913; seq=old.next_sequence; root="/epoch/post"
+        launch=prior("launch"); launch.update(pid=pid,creation_filetime=birth,pipe="pipe-post")
+        launch_ref=put("ROOT-ACTUAL-GAME-LAUNCH-C23.json",launch)
+        semrequest={"sequence":seq,"tool":"ck3_take_semantic_snapshot_private_v1","arguments":{}}
+        caprequest={"sequence":seq+1,"tool":"ck3_get_capabilities","arguments":{}}
+        sr=put(f"p37-requests/{seq:04d}-1-result.json",semrequest)
+        cr=put(f"p37-requests/{seq+1:04d}-1-result.json",caprequest)
+        diag={"bridge_pid":pid,"pipe_name":"pipe-post","connection_generation":1,
+            "hello":{"pid":pid,"connection_generation":1}}
+        sem=prior("semantic_response"); sem["request"]=semrequest
+        body=object_row(object_row(sem["result"])["structured_content"]); body["diagnostics"]=diag
+        sem["result"]={"is_error":False,"result_type":"complete","structured_content":body}
+        sem_ref=put(f"p37-responses/{seq:04d}-1-result.json",sem)
+        capbody={"episode_run_id":old.frame.episode_run_id,"episode_character_id":old.frame.actor_character_id,
+            "episode_identity_pending":False,"one_life_terminal":False,"diagnostics":diag,
+            "native_session_control":{"driver_state_restored":True,"driver_state_restore_kind":"cold_checkpoint",
+                "episode_binding_state":"active_resumed","driver_state_error":None,"cold_candidate_rejection":None}}
+        cap_ref=put(f"p37-responses/{seq+1:04d}-1-result.json",{"request":caprequest,
+            "result":{"is_error":False,"result_type":"complete","structured_content":capbody}})
+        after=prior("semantic_after"); after.update(request=sr.path,response=sem_ref.path)
+        after_ref=put(f"p37-queue/{seq:04d}-after-result.json",after)
+        flat=prior("inflight"); flat.update(sequence=seq+1,request_file=cr.path)
+        inflight=put(f"p37-queue/INFLIGHT-{seq+1:04d}.json",flat)
+        before=put(f"p37-queue/{seq+1:04d}-before-action.json",flat)
+        cold=source("root_p37c23_cold_resume.py",
+            "class Cold:\n def check_after(self):\n  self.governance_result_state = copy.deepcopy(cold['governance']['state'])\n")
+        owner=source("tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py",
+            "def cold_inputs_v1():\n return (seed,_clone(inputs.governance),cp,ledger,epoch)\n")
+        queue=source("root_p37c23_sdk_queue.py","async def call():\n return None\n")
+        failure=prior("first_exception")
+        failure.update(stage="request_dispatch",request_identity={"sequence":seq+1,"tool":"ck3_get_capabilities","command":None},
+            exception_tree={"type":"KeyError","message":"'state'"},
+            traceback=f'File "{Path(cold.path)}", line 3, in check_after\nKeyError: state')
+        fail_ref=put("first-exception.json",failure)
+        halt=prior("halt"); halt.update(error_type="KeyError",message="'state'",first_exception_receipt=fail_ref.path,
+            original_request=caprequest,original_response=cap_ref.path,next_sequence=seq+2)
+        halt_ref=put("HALT.json",halt)
+        inv=prior("request_inventory"); inv.update(runtime_root=root,epoch_start_sequence=seq,
+            request_refs=[sr.to_wire(),cr.to_wire()],response_refs=[sem_ref.to_wire(),cap_ref.to_wire()])
+        inv_ref=put("inventory.json",inv); nxt=put("next.json",{"next_sequence":seq+2})
+        sdk=prior("sdk_closed"); processes=epoch_api.rows(sdk["processes"])
+        newprocesses=[]
+        for item,newpid in zip(processes,(89,97)):
+            process=object_row(item); process["pid"]=newpid; newprocesses.append(process)
+        sdk["processes"]=newprocesses; sdk_ref=put("sdk-closed.json",sdk)
+        supervisor=prior("supervisor_closed"); supervisor["sdk_actual_exit"]={k:v for k,v in sdk.items() if k!="launcher_exit_code"}
+        supervisor["known_preload_phase"]={key:{"pid":pid,"creation_filetime":birth} for key in ("before","after")}
+        cleanup=object_row(supervisor["owned_cleanup"]); cleanup["ck3_pid"]=pid; supervisor["owned_cleanup"]=cleanup
+        supervisor_ref=put("supervisor-closed.json",supervisor)
+        exit_ref=put("game-exit.json",{"machine_id":MACHINE,"pid":pid,"creation_filetime":birth,
+            "kernel_signaled":True,"exit_code":1,"forced_owned_job_cleanup":True,"normal_wm_close_qualified":False,
+            "sdk_actual_exit_status":"ACTUAL_BOTH_SDK_EXITS_OBSERVED"})
+        driver_id=FileStatIdentityV1(29,"9007199254741017","1792563000000000033")
+        driver_ref=ExactRefV1(old.refs.driver.path,29,"d"*64)
+        history=[copy.deepcopy(row) for row in checked.history_rows]
+        last=copy.deepcopy(history[-1]); last["index"]=checked.history_count+1
+        result=object_row(last["result"]); result["lifecycle"]={"previous_pid":61,"pid":pid}; last["result"]=epoch_api.json_value(result)
+        history.append(last)
+        review=prior("driver_review"); driver=object_row(review["Driver"]); identity=object_row(driver["recorded_identity"])
+        identity.update(bridge_pid=pid,pipe_name="pipe-post")
+        driver.update(ref=driver_ref.to_wire(),identity=driver_id.to_wire(),command_history_count=4,recorded_identity=identity)
+        raw=epoch_api.evidence(r,epoch_api.parse_ref(review["raw_observation"]))
+        raw.update(Driver_ref=driver_ref.to_wire(),Driver_identity=driver_id.to_wire(),command_history_count=4,
+            post_checkpoint_history=history,recorded_identity=identity)
+        raw_ref=put("raw.json",raw)
+        review.update(schema="xar.readonly-cap-postresponse-Driver-SAVE-review/v3",
+            status="CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_AFTER_CAP_POSTCHECK_FAILURE",
+            original_business_review=old.refs.driver_close.to_wire(),Driver=driver,
+            raw_Driver_body_read_count=1,Driver_body_bytes_read=29,raw_observation=raw_ref.to_wire())
+        review_ref=put("review.json",review)
+        tail=prior("history_tail"); tail.update(schema="xar.readonly-cap-postresponse-history-tail/v3",
+            driver_review=review_ref.to_wire(),driver_identity=driver_id.to_wire(),command_history_count=4,post_checkpoint_history=history)
+        tail_ref=put("tail.json",tail)
+        reuse=prior("canonical_qualification"); reuse.update(schema="xar.closed-cap-postresponse-save-identity-reuse/v3",
+            previous_canonical_qualification=previous.refs.canonical_qualification.to_wire(),
+            driver_review=review_ref.to_wire(),history_tail=tail_ref.to_wire(),Driver_identity=driver_id.to_wire(),
+            Driver_full_read_count=1,Driver_full_read_bytes=29)
+        reuse_ref=put("reuse.json",reuse)
+        linked={key:epoch_api.parse_ref(value) for key,value in object_row(prior("closure_index")["refs"]).items()
+            if key not in {"guard_source","capability_rejection"}}
+        linked.update(launch=launch_ref,sdk_closed=sdk_ref,supervisor_closed=supervisor_ref,game_exit=exit_ref,
+            semantic_response=sem_ref,semantic_after=after_ref,capability_response=cap_ref,first_exception=fail_ref,
+            inflight=inflight,before_action=before,halt=halt_ref,request_inventory=inv_ref,next=nxt,
+            driver_review=review_ref,history_tail=tail_ref,cold_resume_source=cold,owner_source=owner,queue_source=queue)
+        index=prior("closure_index"); index.update(schema="xar.readonly-cap-postresponse-abort-closure/v3",
+            status="CLOSED_CAP_POSTRESPONSE_LOCAL_FAILURE",original_basis_ref=old_ref.to_wire(),next_sequence=seq+2,
+            failure_phase="CAP_POSTRESPONSE_LOCAL_CHECK_AFTER",capability_after_result_absent=True,
+            normal_cold_bound_absent=True,Game_normal_wm_close_qualified=False,
+            refs={key:ref.to_wire() for key,ref in linked.items()})
+        index_ref=put("index.json",index)
+        self.epoch=epoch_api.CapPostresponseFailureEpochV3(MACHINE,"2026-10-21T07:01:00Z",
+            epoch_api.CapPostresponseFailureRefsV3(old_ref,review_ref,tail_ref,index_ref,launch_ref,sem_ref,after_ref,
+                cap_ref,fail_ref,inflight,before,halt_ref,inv_ref,sdk_ref,supervisor_ref,exit_ref,nxt,reuse_ref),
+            epoch_api.ReadonlyClosedDriverFlagsV1(None,None,None,False))
+        self.refs=self.epoch.refs
+        r.identities[driver_ref.path]=driver_id; r.read_paths.clear(); r.stat_paths.clear()
+    def validated(self) -> epoch_api.ValidatedCapPostresponseFailureEpochV3:
+        return epoch_api.validate_cap_postresponse_failure_evidence_v3(self.epoch,reader=self.reader)
+    def changed(self,name:str,value:object) -> epoch_api.CapPostresponseFailureEpochV3:
+        old_ref=dict(self.refs.items())[name]; raw=json_bytes(value); self.reader.raw[old_ref.path]=raw
+        ref=ExactRefV1(old_ref.path,len(raw),hashlib.sha256(raw).hexdigest()); refs=replace(self.refs,**{name:ref})
+        index=epoch_api.evidence(self.reader,self.refs.closure_index); linked=object_row(index["refs"])
+        if name in linked:
+            linked[name]=ref.to_wire(); index["refs"]=linked
+            refs=replace(refs,closure_index=self.reader.put("post/changed-index.json",index))
+        return replace(self.epoch,refs=refs)
+
+
+class CapPostresponseFailureTests(unittest.TestCase):
+    def test_three_epoch_public_builders_and_owner_consumers(self) -> None:
+        from unittest.mock import patch
+        from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
+        f=CapPostresponseFailureFixture(); checked=f.validated()
+        self.assertEqual((checked.previous_history_count,checked.history_count,checked.next_sequence),(3,4,109))
+        er=f.reader.put("post/epoch.json",f.epoch.to_wire())
+        basis=epoch_api.build_cap_postresponse_failure_basis_v3(checked,epoch_ref=er,
+            observed_at_utc=f.epoch.observed_at_utc,sidecars=(),reader=f.reader)
+        br=f.reader.put("post/basis.json",basis.to_wire())
+        qual=epoch_api.build_cap_postresponse_failure_qualification_v3(checked,basis,basis_ref=br,
+            reader=f.reader,observed_at_utc=f.epoch.observed_at_utc)
+        qr=f.reader.put("post/qual.json",qual.to_wire())
+        self.assertEqual(owner.parse_basis_qualification_v1(json.loads(json_bytes(qual.to_wire())),
+            expected_machine_id=MACHINE),qual)
+        self.assertEqual(epoch_api.parse_cap_postresponse_failure_epoch_v3(
+            json.loads(json_bytes(f.epoch.to_wire())),expected_machine_id=MACHINE),f.epoch)
+        for key in ("origin","frame","completed_cycles","checkpoint","progress","unknown_requests"):
+            self.assertEqual(getattr(basis,key),getattr(f.previous_basis,key))
+        closed=owner._closed_epoch(basis,f.reader)
+        inputs=owner.CurrentSavedColdInputsV1(basis,{}, {}, {}, {},closed,br,qr)
+        with patch.object(owner,"LocalBasisReaderV1",return_value=f.reader):
+            proof=owner.validate_current_saved_prepared_sdk_closure_v1(f.refs.sdk_closed.to_wire(),inputs=inputs)
+        self.assertEqual(proof["normal"],False)
+        self.assertEqual((qual.driver_body_reads,qual.save_hash_reads,qual.root_driver_body_reads),(0,0,1))
+        self.assertNotIn(checked.driver_ref.path,f.reader.read_paths)
+        self.assertNotIn(checked.save_ref.path,f.reader.read_paths)
+        f.reader.identities[checked.driver_ref.path]=replace(checked.driver_identity,file_id="123")
+        self.assertEqual(f.validated(),checked)
+        with self.assertRaises(ValueError):
+            epoch_api.validate_cap_postresponse_failure_epoch_v3(f.epoch,reader=f.reader)
+
+    def test_postresponse_and_pretransport_are_distinct(self) -> None:
+        f=CapPostresponseFailureFixture()
+        for parser in (epoch_api.parse_cap_pretransport_failure_epoch_v2,epoch_api.parse_readonly_cold_failure_epoch_v1):
+            with self.assertRaises(ValueError): parser(f.epoch.to_wire(),expected_machine_id=MACHINE)
+        for key in f.epoch.to_wire():
+            for bad in (None,True,1.0):
+                wire:dict[str,object]=dict(f.epoch.to_wire());wire[key]=bad
+                with self.subTest(key=key,bad=bad),self.assertRaises(ValueError):
+                    epoch_api.parse_cap_postresponse_failure_epoch_v3(wire,expected_machine_id=MACHINE)
+            wire=dict(f.epoch.to_wire());del wire[key]
+            with self.assertRaises(ValueError):
+                epoch_api.parse_cap_postresponse_failure_epoch_v3(wire,expected_machine_id=MACHINE)
+        for name,key,bad_receipt in (("first_exception","stage","sdk_call"),("capability_response","client_error","unknown"),
+            ("halt","original_request",f.refs.capability_response.path),("halt","replay_allowed",True),
+            ("history_tail","post_checkpoint_history",[]),("game_exit","kernel_signaled",False),
+            ("canonical_qualification","current_canonical_API_executed",True)):
+            f=CapPostresponseFailureFixture();row=epoch_api.evidence(f.reader,dict(f.refs.items())[name])
+            if key=="client_error": row.pop("result")
+            row[key]=bad_receipt
+            with self.subTest(name=name,key=key),self.assertRaises(ValueError):
+                epoch_api.validate_cap_postresponse_failure_evidence_v3(f.changed(name,row),reader=f.reader)
 
 
 if __name__ == "__main__":

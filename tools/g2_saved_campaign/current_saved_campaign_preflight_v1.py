@@ -332,7 +332,7 @@ def preflight_current_saved_campaign_v1(
     need(_same_path(core.path, __file__) or any(
         _same_path(item.path, __file__) and (item.bytes, item.sha256) == (core.bytes, core.sha256)
         for item in sources), "executed preflight core source origin")
-    exact_read(reader, core, 118784)
+    exact_read(reader, core, 147456)
     _, replay = _full_historical_replay(replay_ref, plan, quote, core, reader)
     _validate_consumer_probe(consumer_probe_ref, plan_ref, quote_ref, plan, reader)
     result = CurrentSavedCampaignPreflightV1(
@@ -1034,6 +1034,71 @@ class HistoricalBlockedFollowupV1:
         }
 
 
+
+@dataclass(frozen=True)
+class CurrentSavedColdQueueReplayV1:
+    governance_ref: ExactRefV1
+    receiver_ref: ExactRefV1
+    capability_source_ref: ExactRefV1
+    governance_resume: JsonObject
+    completed_cycles: int
+
+    def to_wire(self) -> JsonObject:
+        return {
+            "schema": "xar.current-saved-complete-cold-queue-replay/v1",
+            "governance_ref": self.governance_ref.to_wire(),
+            "receiver_ref": self.receiver_ref.to_wire(),
+            "capability_source_ref": self.capability_source_ref.to_wire(),
+            "governance_resume": self.governance_resume,
+            "completed_cycles": self.completed_cycles,
+            "phase_after": "ready", "recorded_sem_calls": 1, "recorded_cap_calls": 1,
+            "original_postchecks": 2, "original_persist_executed": True,
+            "original_classifier_loader_executed": True,
+            "bound_after_original_persistence": True, "raw_unprojected_failure_reproduced": True,
+            "closed_inputs_reloaded_after_sem": False,
+            "actual_rpc_calls": 0, "ordinary_cycle_credit": 0, "game_day_credit": 0,
+            "fresh_native_readiness_claimed": False,
+        }
+
+
+_A33_CAP_REF = ExactRefV1(
+    "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/"
+    "robert30-v20261019-campaign01/runtime-a33/p37-responses/11378-1-result.json",
+    62772, "e1dd6791c613468979f1fceb0d286c6ebb579be6869767f0a0530374b0cf9f64")
+
+
+def parse_current_saved_cold_queue_replay_v1(value: object) -> CurrentSavedColdQueueReplayV1:
+    row = record(value, {
+        "schema", "governance_ref", "receiver_ref", "capability_source_ref",
+        "governance_resume", "completed_cycles", "phase_after", "recorded_sem_calls",
+        "recorded_cap_calls", "original_postchecks", "original_persist_executed",
+        "bound_after_original_persistence", "raw_unprojected_failure_reproduced",
+        "original_classifier_loader_executed",
+        "closed_inputs_reloaded_after_sem", "actual_rpc_calls", "ordinary_cycle_credit",
+        "game_day_credit", "fresh_native_readiness_claimed"})
+    need(row["schema"] == "xar.current-saved-complete-cold-queue-replay/v1"
+         and row["phase_after"] == "ready", "complete offline cold receiver contract")
+    for key in ("original_persist_executed", "original_classifier_loader_executed", "bound_after_original_persistence",
+                "raw_unprojected_failure_reproduced"):
+        need(row[key] is True, "original cold producer executed: " + key)
+    for key in ("closed_inputs_reloaded_after_sem", "fresh_native_readiness_claimed"):
+        need(row[key] is False, "offline cold replay does not grant live identity")
+    for key in ("actual_rpc_calls", "ordinary_cycle_credit", "game_day_credit"):
+        need(integer(row[key]) == 0, "offline cold replay zero: " + key)
+    need(integer(row["recorded_sem_calls"]) == integer(row["recorded_cap_calls"]) == 1
+         and integer(row["original_postchecks"]) == 2, "exact SEM and CAP postchecks")
+    cycles = integer(row["completed_cycles"])
+    resume = record(row["governance_resume"],
+                    {"state", "pending_focus", "completed_cycles", "pending_cycle"})
+    need(resume["pending_cycle"] is None and integer(resume["completed_cycles"]) == cycles,
+         "settled governance cycle identity")
+    for key in ("state", "pending_focus"):
+        need(resume[key] is None or isinstance(resume[key], dict), "nullable governance object")
+    capability = parse_ref(row["capability_source_ref"])
+    need(capability == _A33_CAP_REF, "unaltered historical CAP11378 provenance")
+    return CurrentSavedColdQueueReplayV1(parse_ref(row["governance_ref"]),
+        parse_ref(row["receiver_ref"]), capability, json_object(resume), cycles)
+
 @dataclass(frozen=True)
 class HistoricalStartupDispatchReplayV1:
     fixture_ref: ExactRefV1
@@ -1047,11 +1112,12 @@ class HistoricalStartupDispatchReplayV1:
     current_next_sequence: int
     cases: tuple[HistoricalReplayCaseV1, ...]
     blocked_followups: tuple[HistoricalBlockedFollowupV1, ...]
+    cold_queue_contract: CurrentSavedColdQueueReplayV1
     peak_allocation_upper_bytes: int
 
     def to_wire(self) -> JsonObject:
         return {
-            "schema": "xar.current-saved-historical-startup-dispatch-replay/v1",
+            "schema": "xar.current-saved-historical-startup-dispatch-replay/v2",
             "fixture_ref": self.fixture_ref.to_wire(), "harness_ref": self.harness_ref.to_wire(),
             "core_source_ref": self.core_source_ref.to_wire(),
             "semantic_postcheck_ref": self.semantic_postcheck_ref.to_wire(),
@@ -1062,6 +1128,7 @@ class HistoricalStartupDispatchReplayV1:
             "current_next_sequence": self.current_next_sequence,
             "cases": [item.to_wire() for item in self.cases],
             "blocked_followups": [item.to_wire() for item in self.blocked_followups],
+            "cold_queue_contract": self.cold_queue_contract.to_wire(),
             "factory_executed": True, "dispatch_installed": True, "startup_executed": True,
             "check_after_executed": True, "score_observer_executed": True,
             "original_inputs_unchanged": True, "fixture_cleaned": True,
@@ -1144,10 +1211,10 @@ def parse_historical_startup_dispatch_replay_v1(value: object) -> HistoricalStar
         "schema", "fixture_ref", "harness_ref", "core_source_ref", "semantic_postcheck_ref",
         "historical_subject_machine_id", "execution_machine_id", "observed_at_utc",
         "historical_sequence", "current_next_sequence", "cases", "blocked_followups",
-        "peak_allocation_upper_bytes",
+        "peak_allocation_upper_bytes", "cold_queue_contract",
     }
     need(set(row) == expected and row["schema"] ==
-         "xar.current-saved-historical-startup-dispatch-replay/v1", "exact full historical replay contract")
+         "xar.current-saved-historical-startup-dispatch-replay/v2", "exact full historical replay contract")
     for name in positive:
         need(row[name] is True, "actual original path executed: " + name)
     for name in zero:
@@ -1167,7 +1234,8 @@ def parse_historical_startup_dispatch_replay_v1(value: object) -> HistoricalStar
         parse_ref(row["fixture_ref"]), parse_ref(row["harness_ref"]),
         parse_ref(row["core_source_ref"]), parse_ref(row["semantic_postcheck_ref"]),
         text(row["historical_subject_machine_id"]), text(row["execution_machine_id"]),
-        observed, historical, current, cases, blocked, peak)
+        observed, historical, current, cases, blocked,
+        parse_current_saved_cold_queue_replay_v1(row["cold_queue_contract"]), peak)
 
 
 def _full_historical_replay(
@@ -1178,7 +1246,7 @@ def _full_historical_replay(
     need(full.execution_machine_id == current_execution_machine_id_v1()
          and (full.core_source_ref.bytes, full.core_source_ref.sha256) ==
          (core_ref.bytes, core_ref.sha256), "full replay executed with these exact core bytes")
-    exact_read(reader, full.core_source_ref, 118784)
+    exact_read(reader, full.core_source_ref, 147456)
     exact_read(reader, full.harness_ref, 131072)
     fixture = _small(reader, full.fixture_ref, 135168)
     need(fixture.get("schema") == "xar.current-saved-historical-sem11373-fixture/v1"
@@ -1201,6 +1269,19 @@ def _full_historical_replay(
     need(full.historical_sequence == original.historical_sequence
          and full.current_next_sequence == basis.next_sequence,
          "full historical original sequence and current saved-basis sequence")
+    contract = full.cold_queue_contract
+    from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
+        project_current_saved_governance_resume_v1)
+    actual_governance = _small(reader, basis.refs.governance)
+    projected = project_current_saved_governance_resume_v1(
+        actual_governance, expected_completed_cycles=basis.completed_cycles)
+    receiver = [row for row in quote.files if row.relative_path == "root_p37c23_cold_resume.py"]
+    need(len(receiver) == 1 and contract.receiver_ref ==
+         ExactRefV1(receiver[0].path, receiver[0].bytes, receiver[0].sha256)
+         and contract.governance_ref == basis.refs.governance
+         and contract.completed_cycles == basis.completed_cycles
+         and _json_bytes(contract.governance_resume) == _json_bytes(projected.to_wire()),
+         "complete cold replay binds the actual raw governance and final quoted receiver")
     return full, original
 
 
@@ -1902,9 +1983,18 @@ def prepare_current_saved_offline_v1(
     probe_ref = _create_offline_metadata_v1(
         metadata / names[0], probe.to_wire(), approved_root=metadata, reader=reader)
     _validate_consumer_probe(probe_ref, plan_ref, quote_ref, plan, reader)
+    inputs = validate_current_saved_cold_inputs_v1(
+        basis, basis_ref=plan.basis_ref, validation_ref=plan.validation_ref, reader=reader)
+    cold_rows = [row for row in quote.files if row.relative_path == "root_p37c23_cold_resume.py"]
+    need(len(cold_rows) == 1, "one final quoted complete cold receiver")
+    cold_row = cold_rows[0]
+    cold_ref = ExactRefV1(cold_row.path, cold_row.bytes, cold_row.sha256)
     replay = run_historical_startup_dispatch_replay_v1(
         fixture_root=historical_fixture_root, historical_fixture_ref=historical_fixture_ref,
-        expected_execution_machine_id=expected_machine_id, current_next_sequence=basis.next_sequence)
+        expected_execution_machine_id=expected_machine_id, current_next_sequence=basis.next_sequence,
+        raw_governance=inputs.governance, governance_source_ref=basis.refs.governance,
+        governance_source=exact_read(reader, basis.refs.governance, _MAX_SMALL),
+        cold_receiver_source=exact_read(reader, cold_ref, 65536), cold_receiver_ref=cold_ref)
     need(replay.execution_machine_id == expected_machine_id
          and replay.fixture_ref == historical_fixture_ref
          and replay.current_next_sequence == basis.next_sequence,

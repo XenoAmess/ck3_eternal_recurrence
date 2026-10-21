@@ -155,3 +155,38 @@ Plan与Quote现共用typed executable_import_roots_v1，拒绝将tools作为裸�
 独立线程还运行了冻结N32的完整公开consumer probe：原计划真实拒绝，仅typed import_roots的RAM投影后原六operation全部完成。原stdout未嵌执行UTC；交接观察为16:24:41Z，保留工具chunk来源与此限制。它不代表新物理包、整个publicprepare后序或实机通过；N33仍必须实际执行这些检查。
 
 容量已按原始账更正：撤销过期512GiB未来估算预留，纠正Z上重复计入的40GiB系统/安全额度，N42撤旧credit后只按当前两个实际文件重新计量；没有删除资产或虚构物理释放。ALL430下N33零新增取额，复用Q32新Full及四消费者资格，完整链截止20:30Z。真实CAP、首FULL、性能和G2完成状态仍待后续实测，本节未新增业务信用。
+
+
+## A33 completed CAP response and governance contract (2026-10-21)
+
+- machine_id: xenoamess-full-tower-eb9d2c1186; observed 2026-10-21 16:42:19Z.
+  A33/R0020 SEM11377 passed. CAP11378 returned a complete native response,
+  restored the checkpoint, then the local CAP postcheck raised KeyError('state').
+  The raw governance record has governance_result_state:null and pending_focus:null;
+  the old receiver expected a {state,pending_focus} wrapper. The earlier regression
+  constructed that wrapper and did not dispatch the full CAP postcheck.
+- The owner now validates an explicit typed governance projection before launch.
+  Raw evidence remains unchanged; the sole receiver wire uses state and preserves
+  null versus empty objects. Missing fields and incorrect types fail early.
+  Mandatory historical replay v2 takes the real raw governance source and final
+  quoted receiver, reproduces the original failure, then executes original SEM/CAP,
+  the real classifier loader, persistence and BOUND in an isolated fixture.
+- This differs from pretransport failure: v3 preserves the completed CAP response,
+  original HALT/INFLIGHT, exact sequence, source identity and closed processes.
+  It retains the checkpoint and original wall origin, verifies one appended restore
+  and grants zero cycle/day/checkpoint credit. A33 closed with SDK exits1/0,
+  forced owned Game exit1/Job0, recording exit0 and both Tasks absent.
+  The new Driver was read once after closure; SAVE was stat-only.
+- Root verification at 2026-10-21 17:08Z: 56 tests, zero skips; strict/equality checks
+  passed for 11 files. Evidence under current-saved-a33-runtime-prep01:
+  ROOT-POSTRESPONSE-FINAL-SOFTWARE-QUALIFICATION02.json,
+  ROOT-POSTRESPONSE-FINAL-STRICT11-QUALIFICATION01.json,
+  CURRENT-SAVED-POSTRESPONSE-BASIS01.json and
+  CANONICAL-SAVED-POSTRESPONSE-BASIS-QUALIFICATION01.json.
+  The first aggregate runner omitted required fixture environment; its failed
+  receipt remains. Epoch01 used raw flags instead of the typed epoch contract and
+  was rejected; only typed/roundtripped epoch02 is eligible.
+- New frontier: 5622/10950 days, 5143 cycles, NEXT11379, 1082-02-09.
+  No A33 FULL or new business credit. New physical prepare, fresh background Steam
+  proof, original complete prefix, actual recording, SEM/CAP/BOUND and first FULL
+  remain necessary; software qualification is not live acceptance.
