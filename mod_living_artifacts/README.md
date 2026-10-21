@@ -13,7 +13,8 @@
 - [实现与验收方案](docs/implementation-plan.md)：脚本落点、持久化字段合同、兼容性、待验证接口与开发顺序。
 - [测试验收总方案](docs/test-plan.md)：分层流程、夹具、核心机制/AI/冷载用例、运行安排和通过标准。
 - [内容验收矩阵](docs/content-acceptance-matrix.md)：12异能、8重诅咒、4代表联动逐条前置、真实触发、数字后验与负例，全部NOT_RUN。
-- [验收执行与结果合同](docs/acceptance-execution-contract.md)：连续核心场景已完成公共plan与动态加载，实机仍未运行；加载专用用例因启动策略缺失而BLOCKED。
+- [验收执行与结果合同](docs/acceptance-execution-contract.md)：连续核心 v1 已实际运行并保留失败；当前 v2 使用当次角色身份与保存状态后验，待重新实测。
+- [R2 运行记录](docs/runtime-r2-issues.md)：真实装备、两天推进、第三天读回失败、修复及资源清理；附[真实库存截图](docs/evidence/r2-inventory.png)。
 - [实现调整](docs/implementation-adjustments.md)：90日镇压、每件饥渴叠加和真实原版触发的最终期望。
 - [图片来源](docs/media-provenance.md)：原创宣传封面；实机截图与公开上传单独记录。
 - 工作记录：[v0.1](docs/evidence/design-session-2026-10-22.json)、[v0.2](docs/evidence/design-revision-2026-10-22.json)、[v0.3诅咒修订](docs/evidence/curse-revision-2026-10-22.json)。旧回执只对应各自当时的内容。
@@ -26,4 +27,4 @@
 
 独立运行是预期目标，不要求主模组、MCP或外部后台。AI/NPC完整参与依据用户2026-10-22的本产品明确授权；不外推到其他模组。
 
-开发工具使用Python；实际玩家模组只包含原生CK3脚本与图片。`tools/generate.py --game <CK3安装目录/game>`生成，`tools/validate_static.py --game <同目录>`检查，`tools/test_contracts.py`与`tools/test_core_generation.py`执行离线回归。正式包只用`tools/build_release.py --game <同目录> --output <全新外置目录>`；启用内容未完成或发布本地化不齐时拒绝构建，不把离线通过称为游戏验收。
+开发工具使用Python；实际玩家模组只包含原生CK3脚本与图片。`tools/generate.py --game <CK3安装目录/game>`生成，`tools/validate_static.py --game <同目录>`检查；`python -m unittest discover -s mod_living_artifacts/tools -p test_*.py`执行工具目录的离线回归。正式包只用`tools/build_release.py --game <同目录> --output <全新外置目录>`；启用内容未完成或发布本地化不齐时拒绝构建，不把离线通过称为游戏验收。

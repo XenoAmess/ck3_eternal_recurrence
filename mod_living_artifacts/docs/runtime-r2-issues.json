@@ -1,0 +1,433 @@
+{
+  "schema": "living-artifacts-runtime-r2-issues-v1",
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T21:37:38+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0002",
+  "process_identity": {
+    "pid": 10924,
+    "create_time_decimal": "1792617442.7227743",
+    "generation": 1,
+    "identity_source": "retained-current-process-identity.json; generation from root retained native binding"
+  },
+  "loaded_candidate": "candidate-46cac62bd",
+  "source_checkout_commit": "c78bec01ca1bc48aa85d19b370f5f12ed31e599f",
+  "evidence_files": [
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/runtime/profiles/living-core-a03/state/profile/logs/error.log",
+      "bytes": 518693,
+      "sha256": "81deb752a5b48b8d9f3267f3aebc977b185796eae076df73440699c79ae933c4"
+    },
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/runtime/profiles/living-core-a03/state/profile/logs/game.log",
+      "bytes": 507471,
+      "sha256": "d4f9bb4c9a6dec8948049e8a35c4ba129dedc0983bc349d8392cdaeea594b856"
+    },
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/runtime/profiles/living-core-a03/state/profile/logs/debug.log",
+      "bytes": 1608756,
+      "sha256": "a26a39989ebe1007a27d40ffc46a6c030e40c5220a348f27bbe387598c213e60"
+    },
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0002/allocated-context.json",
+      "bytes": 1938,
+      "sha256": "ad19335062c6332973c0d0196809615a1af69dbdaff77018d5c0f42ab8b0ac84"
+    },
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0002/native-report.json",
+      "bytes": 9611542,
+      "sha256": "4017e533559d5d80aadd38ca787fe63e48acf462126ce1516d493debf3a4a2e4"
+    },
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0002/case-output/retained-current-process-identity.json",
+      "bytes": 110,
+      "sha256": "e984da6fa5a754390fcf9794f7f046faba513a3f60aaab3ee3e11eef524fba36"
+    },
+    {
+      "path": "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0002/case-output/living-artifacts-core-result.json",
+      "bytes": 6758,
+      "sha256": "42b8ea6df24b5d08d295a07c688031bcd3748897569227637c7f0063a909132c"
+    }
+  ],
+  "loaded_content_file": {
+    "path": "D:/workspace/ck3-living-artifacts-20261022/builds/candidate-46cac62bd/common/scripted_effects/xalw_content_01.txt",
+    "bytes": 247779,
+    "sha256": "5a0e3d3d0e865a2b104fff5b01dd94d2e811000e5b9a090fad1cef73bd07bb7a"
+  },
+  "frozen_content_generator": {
+    "path": "D:/workspace/ck3-living-artifacts-20261022/runtime/c03/mod_living_artifacts/tools/living_artifacts_content.py",
+    "bytes": 66582,
+    "sha256": "deedfc0df0f39f15f6e652dd72d229c161a38a0977fab86eaefb0621b7c3f5a9"
+  },
+  "fixed_content_generator": {
+    "path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools/living_artifacts_content.py",
+    "bytes": 68095,
+    "sha256": "ef86e4e8452366ecd82ab9fc82da09ca8380078f41779abdffa1bc5104bc99fa"
+  },
+  "error_log_lines": 6562,
+  "raw_script_error_messages": {
+    "Failed to fetch variable for 'xalw_curse_1' due to not being set": 98,
+    "Event target link 'var' returned an unset scope": 196,
+    "Invalid left side during comparison 'var'": 196,
+    "Failed to fetch variable for 'xalw_curse_2' due to not being set": 98
+  },
+  "localization_missing_type_counts": {
+    "xalw_fixture_item": 19,
+    "xalw_fixture_owner": 3
+  },
+  "issues": [
+    {
+      "id": "R2-01",
+      "root_cause": "Inline arithmetic block used as trigger RHS for prima previous-month comparison",
+      "observed": "Unknown trigger value/subtract and wild card link value at xalw_content_01.txt:1096",
+      "owner": "content",
+      "offline_status": "FIXED",
+      "live_reload_status": "NOT_RUN",
+      "fix": "save_scope_value_as then compare numeric saved scope; previously committed in 17aca6aa2."
+    },
+    {
+      "id": "R2-02",
+      "root_cause": "Missing native AI scheduler fields",
+      "observed": "1 decision ai_check_interval error; 3 interactions ai_targets without ai_frequency",
+      "owner": "core_runtime",
+      "offline_status": "FIXED_BY_OWNER",
+      "live_reload_status": "NOT_RUN",
+      "fix": "Owner added explicit schedule fields; content patch does not touch them."
+    },
+    {
+      "id": "R2-03",
+      "root_cause": "Empty curse slots dereferenced during artifact refresh",
+      "observed": "98 missing curse_1 + 98 missing curse_2; derived 196 unset-scope and 196 invalid-left reports",
+      "owner": "content",
+      "offline_status": "PARTIAL_REQUIRES_LAZY_BOUNDARY",
+      "live_reload_status": "NOT_RUN",
+      "fix": "Previous patch added same-level ID/rank presence checks; pitfalls.md:211 proves these do not establish lazy evaluation. A trigger_if presence limit containing all dependent reads, or equivalent nested effect if, is still required. Preserve prior static results as history only. Empty slots stay absent; equivalent affix failures were not observed in this run."
+    },
+    {
+      "id": "R2-04",
+      "root_cause": "Hidden event immediate debug_log localization lacks full eventdata context; not a missing scope prefix",
+      "observed": "Failed to find type xalw_fixture_item (19) and xalw_fixture_owner (3), plus derived promote/convert/localization reports",
+      "owner": "core_runtime",
+      "offline_status": "OBSERVER_CONTEXT_UNAVAILABLE",
+      "live_reload_status": "NOT_RUN",
+      "fix": "pitfalls.md:200 documents this hidden logger limitation; line205 separately rejects copying script scope prefixes into loc expressions. Production visible localization remains unchanged. Replace observation method instead of adding scope prefixes; no full XP proof from broken observer."
+    },
+    {
+      "id": "R2-05",
+      "root_cause": "Engine unused-state/source diagnostics",
+      "observed": "loan_bad_debt/last_wine_host each twice; fixture variables/targets and historical_artifact have separate diagnostics",
+      "owner": "content_and_fixture_owner",
+      "offline_status": "RETAINED_DIAGNOSTIC",
+      "live_reload_status": "NOT_RUN",
+      "fix": "No artificial getter/read added. A recorded ledger value alone does not prove an implemented consumer."
+    },
+    {
+      "id": "R2-06",
+      "root_cause": "Original v1 adapter identity requirement does not match actual selected scene identity",
+      "observed": "core-result CORE-NATIVE-EQUIP-01 BLOCKED at 2026-10-21T21:24:24.527367+00:00",
+      "owner": "core_runtime",
+      "offline_status": "BLOCKED_OBSERVATION",
+      "live_reload_status": "NOT_RUN",
+      "fix": "Retain original v1 BLOCKED receipt. Later genuine equip402 plus independent equipped=true readback proves only that local action; it does not rewrite the old receipt or prove monthly XP."
+    }
+  ],
+  "additional_corrective_guards": [
+    "Uninitialized prima streak/last_month before first real streak or mutation",
+    "Construction credit loan periods/arrears before first equipped loan monthly setup",
+    "Numeric durability uses has_variable rather than scope existence"
+  ],
+  "offline_validation": {
+    "content_ast_regressions": "PASS 3/3",
+    "strict_mypy": "PASS 18 source files",
+    "catalog": "PASS 63 requirements/63 cells roundtrip and current SHA/anchors",
+    "game_or_steam_started_by_this_task": false,
+    "catalog_tests": "PASS 9/9",
+    "validated_at_utc": "2026-10-21T21:38:55+00:00"
+  },
+  "runtime_acceptance": "NOT_RUN_AFTER_FIX",
+  "correction": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-21T22:05:22+00:00",
+    "source_evidence": [
+      {
+        "path": "docs/grammar/pitfalls.md",
+        "bytes": 112839,
+        "sha256": "9d16a232c1c82eb02ca33ecfa979ad5c1b3f3c149fcc4bf6bee44ab9b4e03201",
+        "anchors": [
+          "line200 hidden immediate debug_log",
+          "line205 localization saved names",
+          "line211 same-level guards are eager"
+        ]
+      },
+      {
+        "path": "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0002/native-report.json",
+        "bytes": 9951672,
+        "sha256": "4b36d89aa4cbdfe8b07f837d42d85d1ec6caed5962c180d7357a3404859dc7fb"
+      },
+      {
+        "path": "D:/workspace/ck3-living-artifacts-20261022/environment/r2-input-desktop-a01.json",
+        "bytes": 664,
+        "sha256": "e0abac49e9bd5119803291f6cbf589596527f39c2286628214f3d6798ad73407"
+      }
+    ],
+    "actual_results": [
+      {
+        "id": "root-r2-target402-equip-a01",
+        "started_at_utc": "2026-10-21T21:45:57.872165+00:00",
+        "status": "LOCAL_ACTION_PASS",
+        "independent_read_id": "root-r2-target402-independent-equipped-read-a01",
+        "independent_read_at_utc": "2026-10-21T21:47:22.840240+00:00",
+        "artifact_id": 402,
+        "equipped": true
+      },
+      {
+        "id": "root-r2-core-natural-day-001",
+        "started_at_utc": "2026-10-21T21:48:26.995093+00:00",
+        "status": "DAY_ADVANCE_PASS",
+        "date_raw_before": 53144328,
+        "date_raw_after": 53144352
+      },
+      {
+        "id": "root-r2-core-natural-day-002",
+        "started_at_utc": "2026-10-21T21:52:14.436207+00:00",
+        "status": "DAY_ADVANCE_PASS",
+        "date_raw_before": 53144352,
+        "date_raw_after": 53144376
+      },
+      {
+        "id": "root-r2-core-natural-day-003",
+        "started_at_utc": "2026-10-21T21:52:23.507208+00:00",
+        "status": "FAIL",
+        "error": "campaign pause readback lost the complete same-owner frame"
+      }
+    ],
+    "input_desktop": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-21T22:03:33.493465+00:00",
+      "input_desktop_open": false,
+      "open_error": 5,
+      "foreground_hwnd": 0,
+      "visible_ck3_pid": 10924
+    },
+    "monthly_settlement_status": "NOT_PROVEN",
+    "normal_exit_status": "NOT_PROVEN",
+    "resource_closeout_status": "WAITING_ORIGINAL_DEADLINE",
+    "release_status": "NOT_COMPLETE",
+    "production_visible_localization_changed": false
+  },
+  "limitations": [
+    "R2 existing loaded scripts remain unchanged runtime RED evidence.",
+    "Source repair made no manual edits to original profile mod/fixture scripts, frozen c03, candidate46, installed game or Steam; actual game/save/log writes are preserved.",
+    "Static validation proves neither clean fresh-load logs nor gameplay behavior.",
+    "Log clock UTC+08: 05:18-05:23 corresponds to 2026-10-21T21:18-21:23Z.",
+    "Hashes bind bytes read at capture; active report files may later change without rebasing this record."
+  ],
+  "final_followup": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-21T22:15:20.090337+00:00",
+    "lazy_fix": {
+      "supersedes_issue": "R2-03",
+      "offline_status": "FIXED_STATIC_ONLY",
+      "live_status": "NOT_RUN",
+      "generator": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_content.py",
+        "bytes": 69791,
+        "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d"
+      },
+      "contract": "trigger_if presence limit contains all dependent reads; sibling trigger_else false; empty slots remain absent",
+      "ast_regression_count": 6,
+      "all_product_tests_at_fix": 59,
+      "strict_modules_at_fix": 22,
+      "generated_files": 49,
+      "catalog": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\content-acceptance-cells.json",
+        "bytes": 153980,
+        "sha256": "1647dc0f2f2fa0e3c2f51a989a957aaae8972345a928484f9f0468adb6f24b89"
+      },
+      "catalog_all_not_run": 63
+    },
+    "resource_closeout_status": "CLOSED_FAILED_ATTEMPT",
+    "normal_gui_quit_qualified": false,
+    "normal_close_qualified": false,
+    "business_pass": false,
+    "release_pass": false,
+    "workshop_upload_complete": false,
+    "original_public_run_exit_code": 2,
+    "original_host_wait_returncode": 1,
+    "original_keeper_wait_exit_code": 0,
+    "screen_release_sequence": 320,
+    "screen_administrative_done_sequence": 321,
+    "evidence": [
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0002\\native-report.json",
+        "bytes": 9994068,
+        "sha256": "6f5232609b5b6deee0177ab3811ceb939e0a526af674736bffb65017e4f25998"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0002\\host-original-process-exit.json",
+        "bytes": 254,
+        "sha256": "e06c2e130217d95c8f1b9cb12c997e8387915aaebef107eed426bde62c9e5318"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0002\\case-output\\normal-close-result.json",
+        "bytes": 781,
+        "sha256": "9c95a34f355163698afa65ff0367e7e821fba203992ea6a1098cdfbec0ac3cf8"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0002\\keeper-actual-parent-exit.json",
+        "bytes": 637,
+        "sha256": "e5bd1c32653f48d80e0731ddeffe65428e89b6c9017effd9cc4a6918b82abeb7"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r2-terminal-resource-observation-a01.json",
+        "bytes": 713,
+        "sha256": "4c5c03932b86ee69318ac25ff40bb88482c35b38580387ba05f3686513965254"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r2-screen-resource-close-a02\\release.stdout.json",
+        "bytes": 1357,
+        "sha256": "94a1f3b649f9136a073ce4b222ff6ab2cc6cc734e8053bddff5946cedd5223ca"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r2-screen-resource-close-a02\\administrative-done.stdout.json",
+        "bytes": 1484,
+        "sha256": "1927a3d862d3f1765e48ed90d6bd6242295f84fe1b475a44cb53cf82406df75b"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r2-screen-resource-close-a02\\independent-list.stdout.json",
+        "bytes": 5943,
+        "sha256": "acf811d44cb744842d34aa98eea6273c9eb82039ff584031697be6aa7df81db7"
+      }
+    ],
+    "actual_inventory_image": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r2-inventory.png",
+      "bytes": 2520629,
+      "sha256": "48abbf50c049b99ffcd39e9df50b9f8716eafb76e2cd1f4c0e6b8ace8a25b020"
+    },
+    "actual_inventory_image_scope": "English fixture inventory before equip; no natural spawn or growth proof"
+  },
+  "final_offline_validation": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "recorded_at_utc": "2026-10-21T22:42:13.149103+00:00",
+    "scope": "offline-only; all new callbacks and fixed loaded scripts still require live validation",
+    "product_tests": 88,
+    "product_strict_modules": 26,
+    "shared_behavioral_tests": 66,
+    "modified_host_defs_type_errors_baseline": 20,
+    "modified_host_defs_type_errors_current": 0,
+    "later_exact_refusal_change": {
+      "behavior": "Only the full observed RuntimeError row admits GUI fallback; substring mentions do not",
+      "targeted_adapter_tests": 15,
+      "strict_modules": 26,
+      "status": "PASS"
+    },
+    "core_generator": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+      "bytes": 59975,
+      "sha256": "9e8ddae7884902e8ceb19743fc704dbdfed8cea4b51f79fc17074a9b22f1e6f3"
+    },
+    "content_generator": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_content.py",
+      "bytes": 69791,
+      "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d"
+    },
+    "catalog": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\content-acceptance-cells.json",
+      "bytes": 149686,
+      "sha256": "9333d405bf5ace8d8b292911e0036a5d6970691e88edc872535b4dd86276a6b2"
+    },
+    "all_catalog_cells": "NOT_RUN",
+    "loss_of_last_item_debt_keeper": "FIXED_STATIC_ONLY; actual two-month collection still NOT_RUN",
+    "source_evidence": [
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\unit\\command.json",
+        "bytes": 16368,
+        "sha256": "22104283ed3386f45be47096eb10de7cdf2eb6cd8062d5af398f1baf74290ddd"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\unit\\completion.json",
+        "bytes": 222,
+        "sha256": "0d71826996b1fd761009741d7d0c46f597ccda65ba3b7bd4b53c8c514658ffee"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\unit\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\unit\\stderr.txt",
+        "bytes": 192,
+        "sha256": "dc09e0b526dc85bfd322a3c2b56b5ae7b822b9561cc6f0d993567318b20b5259"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\mypy\\command.json",
+        "bytes": 16356,
+        "sha256": "b1c960df9cd26ae26233f36f231b30ea3cea6b4df26d9f7be41cbfd9f32726df"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\mypy\\completion.json",
+        "bytes": 222,
+        "sha256": "15c4b19d40f189d9a9614f7e6cb6d123f18ed7c4db605c0f62a40ad5b08a2a25"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\mypy\\stdout.txt",
+        "bytes": 45,
+        "sha256": "d8718b1a9af3d237f75caefa2c246d31ce9b95648bf02213276847f4e0dc6069"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\mypy\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\static\\command.json",
+        "bytes": 16382,
+        "sha256": "17e6ea0981be0aedf0df3d90b015dfaf671cfe25a5b40803ba192df556b68f02"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\static\\completion.json",
+        "bytes": 222,
+        "sha256": "e7ea00da952a92b926471ea93ae2505b5cb4de393eee1f1ad50dd6f011c387a5"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\static\\stdout.txt",
+        "bytes": 108,
+        "sha256": "e85350dffec931c50844747cc7d31f3f8204ea7e48874bb5dec8c1a1ad7ac319"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\final-product-validation-a01\\static\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\running-date-shared-final-source-a01.json",
+        "bytes": 2830,
+        "sha256": "9d6f4d4f43f588ebc3f8a45abc4906d44cd6520bbd4ea3c413b25ac8412ef688"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\host-scope-mypy-a04\\comparison.json",
+        "bytes": 381,
+        "sha256": "c27938645ee9287cba9c647b21804335b2d42590668d9701a177d5c01b896bbc"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-offline-after-r2-close-a01.json",
+        "bytes": 2329,
+        "sha256": "d94ba254bbc8369279414e8ea692c867e61326cffd94385032361314de54c504"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\desktop-before-next-scene-a01.json",
+        "bytes": 311,
+        "sha256": "7d3f3981656850c69389810f7d477811588756b7bfce91dcf683f97cc2ed99d5"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-after-r2-close\\20261021T221700273406Z-task-close.json",
+        "bytes": 1960,
+        "sha256": "92505cd95e71c54a7b451f9d89bca6fe376040e7b634d8cad8aa46e903f0388b"
+      }
+    ],
+    "next_scene_started": false,
+    "business_pass": false,
+    "workshop_release_complete": false,
+    "derived_document_encoding": "Repository LF; earlier historical captures retain their observed byte hashes. Original screenshot receipt/provenance retain exact bytes via precise attributes."
+  }
+}

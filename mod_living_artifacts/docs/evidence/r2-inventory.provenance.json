@@ -1,0 +1,46 @@
+{
+  "schema": "living-artifacts-real-test-image-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-21T21:44:43.973072+00:00",
+  "archived_at_utc": "2026-10-21T22:13:55.685758+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0002",
+  "pid": 10924,
+  "generation": "1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_image": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261021T214443973072Z-inventory-gui-readback.png",
+    "bytes": 2520629,
+    "sha256": "48abbf50c049b99ffcd39e9df50b9f8716eafb76e2cd1f4c0e6b8ace8a25b020"
+  },
+  "tracked_image": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r2-inventory.png",
+    "bytes": 2520629,
+    "sha256": "48abbf50c049b99ffcd39e9df50b9f8716eafb76e2cd1f4c0e6b8ace8a25b020"
+  },
+  "original_capture_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261021T214443973072Z-inventory-gui-readback.json",
+    "bytes": 815,
+    "sha256": "fc363f64653ba37b07b959289d3856b27d9e0c78c208d6da99f4015710e9d0a9"
+  },
+  "frozen_argv": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0002\\frozen-argv.json",
+    "bytes": 63876,
+    "sha256": "4cc319c4e42b256cb829bef9c2cae0777290b678e105d12c37e885b09e645d53"
+  },
+  "loaded_source_verification": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r2-loaded-source-unchanged-a01.json",
+    "bytes": 11974,
+    "sha256": "87893715839a57126b4169f9dedb9feb6249677153c72d2c896bafd94863c62d"
+  },
+  "source_commit": "c78bec01ca1bc48aa85d19b370f5f12ed31e599f",
+  "product_candidate": "candidate-46cac62bd",
+  "scope": "actual-English-inventory-with-initial-test-fixture-items-before-equip",
+  "image_transform": "none; exact original bytes",
+  "root_visual_review": "The actual Inventory window lists the living target and four rarity materials. Weapon slot is still empty. Fixture names are visible.",
+  "natural_spawn_proven": false,
+  "growth_proven": false,
+  "full_acceptance_pass": false,
+  "workshop_uploaded": false
+}

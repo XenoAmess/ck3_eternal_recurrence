@@ -35,7 +35,10 @@ xalw_base_hunger_value = {
 
 xalw_actual_hunger_value = {
 	value = xalw_base_hunger_value
-	if = { limit = { has_variable = xalw_appeased_until var:xalw_appeased_until > current_date } subtract = 1 }
+	if = { limit = {
+	    trigger_if = { limit = { has_variable = xalw_appeased_until } var:xalw_appeased_until > current_date }
+	    trigger_else = { always = no }
+	} subtract = 1 }
 	min = 0
 	if = { limit = { xalw_is_growth_suppressed_trigger = yes } add = 1 }
 	max = 5
@@ -78,17 +81,17 @@ xalw_ai_living_adjustment_value = {
 	            add = { value = xalw_base_hunger_value multiply = -15 }
 	            if = { limit = { artifact_owner ?= { health < 4 } } add = { value = xalw_base_hunger_value multiply = -45 } }
 
-	if = { limit = { has_variable = xalw_affix_1 } add = { value = var:xalw_affix_rank_1 multiply = 12 } }
-	if = { limit = { has_variable = xalw_affix_2 } add = { value = var:xalw_affix_rank_2 multiply = 12 } }
-	if = { limit = { has_variable = xalw_affix_3 } add = { value = var:xalw_affix_rank_3 multiply = 12 } }
-	if = { limit = { has_variable = xalw_affix_4 } add = { value = var:xalw_affix_rank_4 multiply = 12 } }
-	if = { limit = { has_variable = xalw_affix_5 } add = { value = var:xalw_affix_rank_5 multiply = 12 } }
-	if = { limit = { has_variable = xalw_affix_6 } add = { value = var:xalw_affix_rank_6 multiply = 12 } }
-	if = { limit = { has_variable = xalw_curse_1 } add = { value = var:xalw_curse_rank_1 multiply = -30 } }
-	if = { limit = { var:xalw_curse_1 ?= 1 } add = { value = var:xalw_curse_rank_1 multiply = -45 } }
+	if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 } add = { value = var:xalw_affix_rank_1 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 } add = { value = var:xalw_affix_rank_2 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 } add = { value = var:xalw_affix_rank_3 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 } add = { value = var:xalw_affix_rank_4 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 } add = { value = var:xalw_affix_rank_5 multiply = 12 } }
+	if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 } add = { value = var:xalw_affix_rank_6 multiply = 12 } }
+	if = { limit = { has_variable = xalw_curse_1 has_variable = xalw_curse_rank_1 } add = { value = var:xalw_curse_rank_1 multiply = -30 } }
+	if = { limit = { has_variable = xalw_curse_1 has_variable = xalw_curse_rank_1 var:xalw_curse_1 ?= 1 } add = { value = var:xalw_curse_rank_1 multiply = -45 } }
 	if = { limit = { var:xalw_curse_1 ?= 2 artifact_owner ?= { gold < 100 } } add = -300 }
-	if = { limit = { has_variable = xalw_curse_2 } add = { value = var:xalw_curse_rank_2 multiply = -30 } }
-	if = { limit = { var:xalw_curse_2 ?= 1 } add = { value = var:xalw_curse_rank_2 multiply = -45 } }
+	if = { limit = { has_variable = xalw_curse_2 has_variable = xalw_curse_rank_2 } add = { value = var:xalw_curse_rank_2 multiply = -30 } }
+	if = { limit = { has_variable = xalw_curse_2 has_variable = xalw_curse_rank_2 var:xalw_curse_2 ?= 1 } add = { value = var:xalw_curse_rank_2 multiply = -45 } }
 	if = { limit = { var:xalw_curse_2 ?= 2 artifact_owner ?= { gold < 100 } } add = -300 }
 	if = { limit = { artifact_owner ?= { has_trait = brave } } add = 20 }
 	if = { limit = { artifact_owner ?= { has_trait = craven } } add = -20 }

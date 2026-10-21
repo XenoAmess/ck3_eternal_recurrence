@@ -10,7 +10,7 @@ xalw.1 = {
             xalw_owner_monthly_effect = yes
         }
         if = {
-            limit = { has_any_artifact = yes }
+            limit = { xalw_owner_needs_monthly_trigger = yes }
             trigger_event = { id = xalw.1 days = 1 }
         }
         else = { remove_variable = xalw_monthly_chain }
@@ -41,7 +41,10 @@ xalw.5 = {
     scope = artifact
     hidden = yes
     immediate = {
-        if = { limit = { has_variable = xalw_appeased_until var:xalw_appeased_until <= current_date } remove_variable = xalw_appeased_until }
+        if = { limit = {
+            trigger_if = { limit = { has_variable = xalw_appeased_until } var:xalw_appeased_until <= current_date }
+            trigger_else = { always = no }
+        } remove_variable = xalw_appeased_until }
         xalw_refresh_artifact_effect = yes
     }
 }
@@ -80,7 +83,10 @@ xalw.10 = {
     }
     option = {
         name = xalw.10.appease
-        trigger = { scope:xalw_artifact = { xalw_base_hunger_value > 0 OR = { NOT = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date } } }
+        trigger = { scope:xalw_artifact = { xalw_base_hunger_value > 0
+            trigger_if = { limit = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+            trigger_else = { always = yes }
+        } }
         show_as_unavailable = { gold < scope:xalw_artifact.xalw_appease_cost_value }
         xalw_appease_effect = yes
     }

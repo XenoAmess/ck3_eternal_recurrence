@@ -6,37 +6,52 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 11 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 11 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 11 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 11 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 11 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 11 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 11 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 11 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 11 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 11 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 11 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 11 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 if = {
  limit = { NOT = { var:xalw_content_laughter_year ?= current_year } }
  set_variable = { name = xalw_content_laughter_year value = current_year }
@@ -54,32 +69,44 @@ if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = {
 set_variable = { name = xalw_content_laughter_cooldown value = yes days = 180 }
 change_variable = { name = xalw_content_laughter_count add = 1 }
 set_variable = { name = xalw_content_combo_rank value = 0 }
-var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { var:xalw_affix_1 = 12 NOR = { var:xalw_content_disabled_1 ?= 1 var:xalw_content_disabled_2 ?= 1 var:xalw_content_disabled_3 ?= 1 } }
+var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 12 NOR = { var:xalw_content_disabled_1 ?= 1 var:xalw_content_disabled_2 ?= 1 var:xalw_content_disabled_3 ?= 1 }
+} trigger_else = { always = no } } }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_1 }
 if = { limit = { scope:xalw_content_pair_item = { var:xalw_content_jealous_slot ?= 1 } } change_variable = { name = xalw_content_combo_rank add = -1 } }
 set_variable = { name = xalw_content_combo_rank value = { value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank } } }
 } }
-var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { var:xalw_affix_2 = 12 NOR = { var:xalw_content_disabled_1 ?= 2 var:xalw_content_disabled_2 ?= 2 var:xalw_content_disabled_3 ?= 2 } }
+var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 12 NOR = { var:xalw_content_disabled_1 ?= 2 var:xalw_content_disabled_2 ?= 2 var:xalw_content_disabled_3 ?= 2 }
+} trigger_else = { always = no } } }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_2 }
 if = { limit = { scope:xalw_content_pair_item = { var:xalw_content_jealous_slot ?= 2 } } change_variable = { name = xalw_content_combo_rank add = -1 } }
 set_variable = { name = xalw_content_combo_rank value = { value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank } } }
 } }
-var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { var:xalw_affix_3 = 12 NOR = { var:xalw_content_disabled_1 ?= 3 var:xalw_content_disabled_2 ?= 3 var:xalw_content_disabled_3 ?= 3 } }
+var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 12 NOR = { var:xalw_content_disabled_1 ?= 3 var:xalw_content_disabled_2 ?= 3 var:xalw_content_disabled_3 ?= 3 }
+} trigger_else = { always = no } } }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_3 }
 if = { limit = { scope:xalw_content_pair_item = { var:xalw_content_jealous_slot ?= 3 } } change_variable = { name = xalw_content_combo_rank add = -1 } }
 set_variable = { name = xalw_content_combo_rank value = { value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank } } }
 } }
-var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { var:xalw_affix_4 = 12 NOR = { var:xalw_content_disabled_1 ?= 4 var:xalw_content_disabled_2 ?= 4 var:xalw_content_disabled_3 ?= 4 } }
+var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 12 NOR = { var:xalw_content_disabled_1 ?= 4 var:xalw_content_disabled_2 ?= 4 var:xalw_content_disabled_3 ?= 4 }
+} trigger_else = { always = no } } }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_4 }
 if = { limit = { scope:xalw_content_pair_item = { var:xalw_content_jealous_slot ?= 4 } } change_variable = { name = xalw_content_combo_rank add = -1 } }
 set_variable = { name = xalw_content_combo_rank value = { value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank } } }
 } }
-var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { var:xalw_affix_5 = 12 NOR = { var:xalw_content_disabled_1 ?= 5 var:xalw_content_disabled_2 ?= 5 var:xalw_content_disabled_3 ?= 5 } }
+var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 12 NOR = { var:xalw_content_disabled_1 ?= 5 var:xalw_content_disabled_2 ?= 5 var:xalw_content_disabled_3 ?= 5 }
+} trigger_else = { always = no } } }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_5 }
 if = { limit = { scope:xalw_content_pair_item = { var:xalw_content_jealous_slot ?= 5 } } change_variable = { name = xalw_content_combo_rank add = -1 } }
 set_variable = { name = xalw_content_combo_rank value = { value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank } } }
 } }
-var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { var:xalw_affix_6 = 12 NOR = { var:xalw_content_disabled_1 ?= 6 var:xalw_content_disabled_2 ?= 6 var:xalw_content_disabled_3 ?= 6 } }
+var:xalw_content_source = { save_scope_as = xalw_content_pair_item if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 12 NOR = { var:xalw_content_disabled_1 ?= 6 var:xalw_content_disabled_2 ?= 6 var:xalw_content_disabled_3 ?= 6 }
+} trigger_else = { always = no } } }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_6 }
 if = { limit = { scope:xalw_content_pair_item = { var:xalw_content_jealous_slot ?= 6 } } change_variable = { name = xalw_content_combo_rank add = -1 } }
 set_variable = { name = xalw_content_combo_rank value = { value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank } } }
@@ -140,37 +167,52 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 8 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 8 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 8 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 8 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 8 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 8 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 8 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 8 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 8 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 8 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 8 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 8 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 if = {
  limit = { NOT = { var:xalw_content_alibi_year ?= current_year } }
  set_variable = { name = xalw_content_alibi_year value = current_year }
@@ -219,37 +261,52 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 7 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 7 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 7 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 7 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 7 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 7 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 7 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 7 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 7 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 7 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 7 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 7 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 if = {
  limit = { NOT = { var:xalw_content_secret_year ?= current_year } }
  set_variable = { name = xalw_content_secret_year value = current_year }
@@ -292,16 +349,34 @@ xalw_content_secret_inheritance_effect = {
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes has_variable = xalw_content_secret_pending_owner } save_scope_as = xalw_content_inherited_item
 remove_variable = xalw_content_secret_pending_owner
 set_variable = { name = xalw_content_inherited_rank value = 0 }
-if = { limit = { var:xalw_affix_1 = 7 } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_1 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 1 var:xalw_content_disabled_2 ?= 1 var:xalw_content_disabled_3 ?= 1 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 1 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
-if = { limit = { var:xalw_affix_2 = 7 } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_2 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 2 var:xalw_content_disabled_2 ?= 2 var:xalw_content_disabled_3 ?= 2 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 2 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
-if = { limit = { var:xalw_affix_3 = 7 } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_3 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 3 var:xalw_content_disabled_2 ?= 3 var:xalw_content_disabled_3 ?= 3 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 3 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
-if = { limit = { var:xalw_affix_4 = 7 } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_4 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 4 var:xalw_content_disabled_2 ?= 4 var:xalw_content_disabled_3 ?= 4 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 4 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
-if = { limit = { var:xalw_affix_5 = 7 } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_5 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 5 var:xalw_content_disabled_2 ?= 5 var:xalw_content_disabled_3 ?= 5 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 5 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
-if = { limit = { var:xalw_affix_6 = 7 } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_6 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 6 var:xalw_content_disabled_2 ?= 6 var:xalw_content_disabled_3 ?= 6 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 6 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 7
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_1 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 1 var:xalw_content_disabled_2 ?= 1 var:xalw_content_disabled_3 ?= 1 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 1 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 7
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_2 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 2 var:xalw_content_disabled_2 ?= 2 var:xalw_content_disabled_3 ?= 2 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 2 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 7
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_3 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 3 var:xalw_content_disabled_2 ?= 3 var:xalw_content_disabled_3 ?= 3 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 3 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 7
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_4 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 4 var:xalw_content_disabled_2 ?= 4 var:xalw_content_disabled_3 ?= 4 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 4 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 7
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_5 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 5 var:xalw_content_disabled_2 ?= 5 var:xalw_content_disabled_3 ?= 5 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 5 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 7
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_inherited_rank value = var:xalw_affix_rank_6 } if = { limit = { OR = { var:xalw_content_disabled_1 ?= 6 var:xalw_content_disabled_2 ?= 6 var:xalw_content_disabled_3 ?= 6 } } set_variable = { name = xalw_content_inherited_rank value = 0 } } else_if = { limit = { var:xalw_content_jealous_slot ?= 6 } change_variable = { name = xalw_content_inherited_rank add = -1 } } }
 clear_saved_scope = xalw_content_inherited_secret
-if = { limit = { var:xalw_content_inherited_rank >= 3 exists = var:xalw_content_secret_3 var:xalw_content_secret_3 = { NOT = { is_known_by = scope:xalw_content_actor } } } var:xalw_content_secret_3 = { save_scope_as = xalw_content_inherited_secret } }
-if = { limit = { var:xalw_content_inherited_rank >= 2 exists = var:xalw_content_secret_2 var:xalw_content_secret_2 = { NOT = { is_known_by = scope:xalw_content_actor } } } var:xalw_content_secret_2 = { save_scope_as = xalw_content_inherited_secret } }
-if = { limit = { var:xalw_content_inherited_rank >= 1 exists = var:xalw_content_secret_1 var:xalw_content_secret_1 = { NOT = { is_known_by = scope:xalw_content_actor } } } var:xalw_content_secret_1 = { save_scope_as = xalw_content_inherited_secret } }
+if = { limit = { var:xalw_content_inherited_rank >= 3 AND = { trigger_if = { limit = { has_variable = xalw_content_secret_3 }
+var:xalw_content_secret_3 ?= { NOT = { is_known_by = scope:xalw_content_actor } }
+} trigger_else = { always = no } } } var:xalw_content_secret_3 = { save_scope_as = xalw_content_inherited_secret } }
+if = { limit = { var:xalw_content_inherited_rank >= 2 AND = { trigger_if = { limit = { has_variable = xalw_content_secret_2 }
+var:xalw_content_secret_2 ?= { NOT = { is_known_by = scope:xalw_content_actor } }
+} trigger_else = { always = no } } } var:xalw_content_secret_2 = { save_scope_as = xalw_content_inherited_secret } }
+if = { limit = { var:xalw_content_inherited_rank >= 1 AND = { trigger_if = { limit = { has_variable = xalw_content_secret_1 }
+var:xalw_content_secret_1 ?= { NOT = { is_known_by = scope:xalw_content_actor } }
+} trigger_else = { always = no } } } var:xalw_content_secret_1 = { save_scope_as = xalw_content_inherited_secret } }
 if = { limit = { var:xalw_content_inherited_rank = 1 exists = scope:xalw_content_inherited_secret }
 random = { chance = { value = 20
 if = { limit = { var:xalw_resonance < 40 } multiply = 0.5 }
@@ -314,7 +389,7 @@ else_if = { limit = { var:xalw_content_fickle_rank ?= 3 } multiply = 0.25 }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_secret_transfer_guard value = yes } }
 scope:xalw_content_inherited_secret = { reveal_to = scope:xalw_content_actor }
 scope:xalw_content_actor = { remove_variable = xalw_content_secret_transfer_guard add_stress = 8 }
-if = { limit = { exists = var:xalw_content_previous_owner var:xalw_content_previous_owner = { is_alive = yes } } var:xalw_content_previous_owner = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y } } }
+if = { limit = { trigger_if = { limit = { has_variable = xalw_content_previous_owner } var:xalw_content_previous_owner ?= { is_alive = yes } } trigger_else = { always = no } } var:xalw_content_previous_owner = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y } } }
 } }
 if = { limit = { var:xalw_content_inherited_rank = 2 exists = scope:xalw_content_inherited_secret }
 random = { chance = { value = 35
@@ -328,7 +403,7 @@ else_if = { limit = { var:xalw_content_fickle_rank ?= 3 } multiply = 0.25 }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_secret_transfer_guard value = yes } }
 scope:xalw_content_inherited_secret = { reveal_to = scope:xalw_content_actor }
 scope:xalw_content_actor = { remove_variable = xalw_content_secret_transfer_guard add_stress = 8 }
-if = { limit = { exists = var:xalw_content_previous_owner var:xalw_content_previous_owner = { is_alive = yes } } var:xalw_content_previous_owner = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y } } }
+if = { limit = { trigger_if = { limit = { has_variable = xalw_content_previous_owner } var:xalw_content_previous_owner ?= { is_alive = yes } } trigger_else = { always = no } } var:xalw_content_previous_owner = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y } } }
 } }
 if = { limit = { var:xalw_content_inherited_rank = 3 exists = scope:xalw_content_inherited_secret }
 random = { chance = { value = 50
@@ -342,7 +417,7 @@ else_if = { limit = { var:xalw_content_fickle_rank ?= 3 } multiply = 0.25 }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_secret_transfer_guard value = yes } }
 scope:xalw_content_inherited_secret = { reveal_to = scope:xalw_content_actor }
 scope:xalw_content_actor = { remove_variable = xalw_content_secret_transfer_guard add_stress = 8 }
-if = { limit = { exists = var:xalw_content_previous_owner var:xalw_content_previous_owner = { is_alive = yes } } var:xalw_content_previous_owner = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y } } }
+if = { limit = { trigger_if = { limit = { has_variable = xalw_content_previous_owner } var:xalw_content_previous_owner ?= { is_alive = yes } } trigger_else = { always = no } } var:xalw_content_previous_owner = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y } } }
 } }
 }
 }
@@ -366,37 +441,52 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 1 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 1 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 1 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 1 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 1 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 1 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 1 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 1 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 1 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 1 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 1 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 1 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 remove_variable = xalw_content_victor_item
 if = { limit = { exists = var:xalw_content_source var:xalw_content_effective_rank > 0 } set_variable = { name = xalw_content_victor_item value = var:xalw_content_source } }
 save_scope_as = xalw_content_actor
@@ -404,38 +494,55 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
-if = { limit = { scope:victory = yes any_in_list = { list = knights is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor exists = var:xalw_content_observed_prowess } exists = var:xalw_content_victor_item var:xalw_content_source ?= var:xalw_content_victor_item var:xalw_content_effective_rank > 0 NOT = { has_variable = xalw_content_dividend_cooldown } NOT = { has_variable = xalw_content_funeral_cooldown } var:xalw_content_dividend_count < 2 var:xalw_content_funeral_count < 2 }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
+if = { limit = { scope:victory = yes any_in_list = { list = knights is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor has_variable = xalw_content_observed_prowess } AND = { trigger_if = { limit = { has_variable = xalw_content_source has_variable = xalw_content_victor_item }
+var:xalw_content_source = var:xalw_content_victor_item
+} trigger_else = { always = no } } var:xalw_content_effective_rank > 0 NOT = { has_variable = xalw_content_dividend_cooldown } NOT = { has_variable = xalw_content_funeral_cooldown } var:xalw_content_dividend_count < 2 var:xalw_content_funeral_count < 2 }
 set_variable = { name = xalw_content_requiem_opportunity value = yes }
 random = { chance = { value = 100
 if = { limit = { var:xalw_content_source = { var:xalw_resonance < 40 } } multiply = 0.5 }
@@ -453,37 +560,52 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 1 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 1 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 1 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 1 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 1 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 1 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 1 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 1 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 1 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 1 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 1 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 1 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 if = { limit = { var:xalw_content_effective_rank = 1 }
 add_gold = 5
 }
@@ -498,39 +620,54 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 clear_saved_scope = xalw_content_fallen_knight
-random_in_list = { list = knights limit = { is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor exists = var:xalw_content_observed_prowess } save_scope_as = xalw_content_fallen_knight }
+random_in_list = { list = knights limit = { is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor has_variable = xalw_content_observed_prowess } save_scope_as = xalw_content_fallen_knight }
 if = { limit = { exists = scope:xalw_content_fallen_knight }
 if = { limit = { var:xalw_content_effective_rank = 1 }
 add_prestige = 30
@@ -543,8 +680,8 @@ add_prestige = 90
 }
 add_stress = 10
 if = { limit = { var:xalw_content_effective_rank > 0 } var:xalw_content_source = {
-if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 3 exists = var:xalw_content_memory_2 } set_variable = { name = xalw_content_memory_3 value = var:xalw_content_memory_2 } set_variable = { name = xalw_content_memory_prowess_3 value = var:xalw_content_memory_prowess_2 } }
-if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 2 exists = var:xalw_content_memory_1 } set_variable = { name = xalw_content_memory_2 value = var:xalw_content_memory_1 } set_variable = { name = xalw_content_memory_prowess_2 value = var:xalw_content_memory_prowess_1 } }
+if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 3 exists = var:xalw_content_memory_2 has_variable = xalw_content_memory_prowess_2 } set_variable = { name = xalw_content_memory_3 value = var:xalw_content_memory_2 } set_variable = { name = xalw_content_memory_prowess_3 value = var:xalw_content_memory_prowess_2 } }
+if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 2 exists = var:xalw_content_memory_1 has_variable = xalw_content_memory_prowess_1 } set_variable = { name = xalw_content_memory_2 value = var:xalw_content_memory_1 } set_variable = { name = xalw_content_memory_prowess_2 value = var:xalw_content_memory_prowess_1 } }
 set_variable = { name = xalw_content_memory_1 value = scope:xalw_content_fallen_knight }
 set_variable = { name = xalw_content_memory_prowess_1 value = scope:xalw_content_fallen_knight.var:xalw_content_observed_prowess }
 } }
@@ -562,37 +699,52 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 1 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 1 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 1 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 1 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 1 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 1 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 1 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 1 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 1 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 1 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 1 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 1 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
 if = { limit = { scope:victory = yes NOT = { has_variable = xalw_content_requiem_opportunity } }
 if = {
  limit = { NOT = { var:xalw_content_dividend_year ?= current_year } }
@@ -628,11 +780,15 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_curse_1 = 1 var:xalw_curse_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_curse_1 has_variable = xalw_curse_rank_1 }
+var:xalw_curse_1 = 1 var:xalw_curse_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_curse_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_curse_2 = 1 var:xalw_curse_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_curse_2 has_variable = xalw_curse_rank_2 }
+var:xalw_curse_2 = 1 var:xalw_curse_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_curse_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
@@ -663,38 +819,53 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
-if = { limit = { any_in_list = { list = knights is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor exists = var:xalw_content_observed_prowess } NOT = { has_variable = xalw_content_requiem_opportunity } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
+if = { limit = { any_in_list = { list = knights is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor has_variable = xalw_content_observed_prowess } NOT = { has_variable = xalw_content_requiem_opportunity } }
 if = {
  limit = { NOT = { var:xalw_content_funeral_year ?= current_year } }
  set_variable = { name = xalw_content_funeral_year value = current_year }
@@ -712,7 +883,7 @@ if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = {
 set_variable = { name = xalw_content_funeral_cooldown value = yes days = 180 }
 change_variable = { name = xalw_content_funeral_count add = 1 }
 clear_saved_scope = xalw_content_fallen_knight
-random_in_list = { list = knights limit = { is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor exists = var:xalw_content_observed_prowess } save_scope_as = xalw_content_fallen_knight }
+random_in_list = { list = knights limit = { is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor has_variable = xalw_content_observed_prowess } save_scope_as = xalw_content_fallen_knight }
 if = { limit = { exists = scope:xalw_content_fallen_knight }
 if = { limit = { var:xalw_content_effective_rank = 1 }
 add_prestige = 30
@@ -725,8 +896,8 @@ add_prestige = 90
 }
 add_stress = 12
 if = { limit = { var:xalw_content_effective_rank > 0 } var:xalw_content_source = {
-if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 3 exists = var:xalw_content_memory_2 } set_variable = { name = xalw_content_memory_3 value = var:xalw_content_memory_2 } set_variable = { name = xalw_content_memory_prowess_3 value = var:xalw_content_memory_prowess_2 } }
-if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 2 exists = var:xalw_content_memory_1 } set_variable = { name = xalw_content_memory_2 value = var:xalw_content_memory_1 } set_variable = { name = xalw_content_memory_prowess_2 value = var:xalw_content_memory_prowess_1 } }
+if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 3 exists = var:xalw_content_memory_2 has_variable = xalw_content_memory_prowess_2 } set_variable = { name = xalw_content_memory_3 value = var:xalw_content_memory_2 } set_variable = { name = xalw_content_memory_prowess_3 value = var:xalw_content_memory_prowess_2 } }
+if = { limit = { scope:xalw_content_actor.var:xalw_content_rank >= 2 exists = var:xalw_content_memory_1 has_variable = xalw_content_memory_prowess_1 } set_variable = { name = xalw_content_memory_2 value = var:xalw_content_memory_1 } set_variable = { name = xalw_content_memory_prowess_2 value = var:xalw_content_memory_prowess_1 } }
 set_variable = { name = xalw_content_memory_1 value = scope:xalw_content_fallen_knight }
 set_variable = { name = xalw_content_memory_prowess_1 value = scope:xalw_content_fallen_knight.var:xalw_content_observed_prowess }
 } }
@@ -749,38 +920,61 @@ set_variable = { name = xalw_content_rank value = 0 }
 remove_variable = xalw_content_source
 set_variable = { name = xalw_content_slot value = 0 }
 every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes }
-if = { limit = { var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = 2 var:xalw_affix_rank_1 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_1 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 1 } }
 }
-if = { limit = { var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = 2 var:xalw_affix_rank_2 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_2 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 2 } }
 }
-if = { limit = { var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = 2 var:xalw_affix_rank_3 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_3 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 3 } }
 }
-if = { limit = { var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = 2 var:xalw_affix_rank_4 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_4 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 4 } }
 }
-if = { limit = { var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = 2 var:xalw_affix_rank_5 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_5 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 5 } }
 }
-if = { limit = { var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = 2 var:xalw_affix_rank_6 > scope:xalw_content_actor.var:xalw_content_rank
+} trigger_else = { always = no } } }
 save_scope_as = xalw_content_candidate
 scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = scope:xalw_content_candidate.var:xalw_affix_rank_6 } set_variable = { name = xalw_content_source value = scope:xalw_content_candidate } set_variable = { name = xalw_content_slot value = 6 } }
 }
 }
 set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }
-if = { limit = { exists = var:xalw_content_source var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
-else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}
-if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = { OR = { AND = { scope:xalw_content_actor.var:xalw_content_effective_rank >= 1 exists = var:xalw_content_memory_1 var:xalw_content_memory_1 = { is_alive = no } } AND = { scope:xalw_content_actor.var:xalw_content_effective_rank >= 2 exists = var:xalw_content_memory_2 var:xalw_content_memory_2 = { is_alive = no } } AND = { scope:xalw_content_actor.var:xalw_content_effective_rank >= 3 exists = var:xalw_content_memory_3 var:xalw_content_memory_3 = { is_alive = no } } } } }
+if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { var:xalw_content_disabled_1 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_2 ?= scope:xalw_content_actor.var:xalw_content_slot var:xalw_content_disabled_3 ?= scope:xalw_content_actor.var:xalw_content_slot } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_effective_rank value = 0 } }
+else_if = { limit = { AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_jealous_slot }
+var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot
+} trigger_else = { always = no } } }
+} trigger_else = { always = no } } } change_variable = { name = xalw_content_effective_rank add = -1 } }
+if = { limit = { var:xalw_content_effective_rank > 0 AND = { trigger_if = { limit = { has_variable = xalw_content_source }
+var:xalw_content_source = { OR = { AND = { scope:xalw_content_actor.var:xalw_content_effective_rank >= 1 AND = { trigger_if = { limit = { has_variable = xalw_content_memory_1 has_variable = xalw_content_memory_prowess_1 }
+var:xalw_content_memory_1 ?= { is_alive = no }
+} trigger_else = { always = no } } } AND = { scope:xalw_content_actor.var:xalw_content_effective_rank >= 2 AND = { trigger_if = { limit = { has_variable = xalw_content_memory_2 has_variable = xalw_content_memory_prowess_2 }
+var:xalw_content_memory_2 ?= { is_alive = no }
+} trigger_else = { always = no } } } AND = { scope:xalw_content_actor.var:xalw_content_effective_rank >= 3 AND = { trigger_if = { limit = { has_variable = xalw_content_memory_3 has_variable = xalw_content_memory_prowess_3 }
+var:xalw_content_memory_3 ?= { is_alive = no }
+} trigger_else = { always = no } } } } }
+} trigger_else = { always = no } } }
 random = { chance = { value = 100
 if = { limit = { var:xalw_content_source = { var:xalw_resonance < 40 } } multiply = 0.5 }
 else_if = { limit = { var:xalw_content_source = { var:xalw_resonance < 80 } } multiply = 0.75 }
@@ -789,9 +983,15 @@ if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = {
 if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = { var:xalw_content_fickle_rank ?= 2 } } multiply = 0.5 }
 if = { limit = { var:xalw_content_effective_rank > 0 var:xalw_content_source = { var:xalw_content_fickle_rank ?= 3 } } multiply = 0.25 } }
 random_list = {
-1 = { trigger = { var:xalw_content_effective_rank >= 1 var:xalw_content_source = { exists = var:xalw_content_memory_1 var:xalw_content_memory_1 = { is_alive = no } } } set_variable = { name = xalw_content_echo_memory_slot value = 1 } set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_source.var:xalw_content_memory_prowess_1 multiply = 0.25 round = yes min = 0 } } }
-1 = { trigger = { var:xalw_content_effective_rank >= 2 var:xalw_content_source = { exists = var:xalw_content_memory_2 var:xalw_content_memory_2 = { is_alive = no } } } set_variable = { name = xalw_content_echo_memory_slot value = 2 } set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_source.var:xalw_content_memory_prowess_2 multiply = 0.25 round = yes min = 0 } } }
-1 = { trigger = { var:xalw_content_effective_rank >= 3 var:xalw_content_source = { exists = var:xalw_content_memory_3 var:xalw_content_memory_3 = { is_alive = no } } } set_variable = { name = xalw_content_echo_memory_slot value = 3 } set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_source.var:xalw_content_memory_prowess_3 multiply = 0.25 round = yes min = 0 } } }
+1 = { trigger = { var:xalw_content_effective_rank >= 1 var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_memory_1 has_variable = xalw_content_memory_prowess_1 }
+var:xalw_content_memory_1 ?= { is_alive = no }
+} trigger_else = { always = no } } } } set_variable = { name = xalw_content_echo_memory_slot value = 1 } set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_source.var:xalw_content_memory_prowess_1 multiply = 0.25 round = yes min = 0 } } }
+1 = { trigger = { var:xalw_content_effective_rank >= 2 var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_memory_2 has_variable = xalw_content_memory_prowess_2 }
+var:xalw_content_memory_2 ?= { is_alive = no }
+} trigger_else = { always = no } } } } set_variable = { name = xalw_content_echo_memory_slot value = 2 } set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_source.var:xalw_content_memory_prowess_2 multiply = 0.25 round = yes min = 0 } } }
+1 = { trigger = { var:xalw_content_effective_rank >= 3 var:xalw_content_source = { AND = { trigger_if = { limit = { has_variable = xalw_content_memory_3 has_variable = xalw_content_memory_prowess_3 }
+var:xalw_content_memory_3 ?= { is_alive = no }
+} trigger_else = { always = no } } } } set_variable = { name = xalw_content_echo_memory_slot value = 3 } set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_source.var:xalw_content_memory_prowess_3 multiply = 0.25 round = yes min = 0 } } }
 }
 if = { limit = { var:xalw_content_effective_rank = 1 }
 set_variable = { name = xalw_content_echo_power value = { value = var:xalw_content_echo_power max = 2 } }
@@ -826,16 +1026,187 @@ xalw_content_prepare_mutation_effect = {
 remove_variable = xalw_content_preferred_mutation_slot
 save_scope_as = xalw_content_mutating_item
 save_scope_value_as = { name = xalw_content_previous_month value = { value = xalw_current_month_value subtract = 1 } }
-if = { limit = { is_equipped = yes var:xalw_content_prima_streak >= 3 exists = var:xalw_content_prima_target var:xalw_content_prima_last_month >= scope:xalw_content_previous_month }
+if = { limit = { is_equipped = yes
+trigger_if = { limit = { has_variable = xalw_content_prima_streak has_variable = xalw_content_prima_last_month has_variable = xalw_content_prima_target }
+var:xalw_content_prima_streak >= 3 exists = var:xalw_content_prima_target var:xalw_content_prima_last_month >= scope:xalw_content_previous_month
+} trigger_else = { always = no } }
 set_variable = { name = xalw_content_prima_streak value = 0 }
-if = { limit = { OR = { AND = { var:xalw_affix_1 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_1 } } } AND = { var:xalw_affix_2 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_2 } } } AND = { var:xalw_affix_3 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_3 } } } AND = { var:xalw_affix_4 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_4 } } } AND = { var:xalw_affix_5 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_5 } } } AND = { var:xalw_affix_6 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_6 } } } } }
-random = { chance = 60 random_list = { 1 = { trigger = { var:xalw_affix_1 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_1 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_1 } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 1 } } 1 = { trigger = { var:xalw_affix_2 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_2 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_2 } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 2 } } 1 = { trigger = { var:xalw_affix_3 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_3 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_3 } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 3 } } 1 = { trigger = { var:xalw_affix_4 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_4 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_4 } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 4 } } 1 = { trigger = { var:xalw_affix_5 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_5 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_5 } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 5 } } 1 = { trigger = { var:xalw_affix_6 > 0 var:xalw_content_prima_target = { OR = { var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_6 var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_6 } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 6 } }
+if = { limit = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } }
+random = { chance = 60 random_list = { 1 = { trigger = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_1
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 1 } } 1 = { trigger = { AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_2
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 2 } } 1 = { trigger = { AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_3
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 3 } } 1 = { trigger = { AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_4
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 4 } } 1 = { trigger = { AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_5
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 5 } } 1 = { trigger = { AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 > 0 var:xalw_content_prima_target = { OR = { AND = { trigger_if = { limit = { has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1 }
+var:xalw_affix_1 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2 }
+var:xalw_affix_2 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3 }
+var:xalw_affix_3 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4 }
+var:xalw_affix_4 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5 }
+var:xalw_affix_5 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } AND = { trigger_if = { limit = { has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6 }
+var:xalw_affix_6 = scope:xalw_content_mutating_item.var:xalw_affix_6
+} trigger_else = { always = no } } } }
+} trigger_else = { always = no } } } set_variable = { name = xalw_content_preferred_mutation_slot value = 6 } }
 } } } }
 }
 
 xalw_content_borrower_died_effect = {
 
-if = { limit = { has_variable = xalw_content_loan_periods }
+if = { limit = { has_variable = xalw_content_loan_periods has_variable = xalw_content_loan_instalment has_variable = xalw_content_loan_arrears has_variable = xalw_content_loan_credit }
 set_variable = { name = xalw_content_loan_bad_debt value = { value = var:xalw_content_loan_periods multiply = var:xalw_content_loan_instalment add = var:xalw_content_loan_arrears subtract = var:xalw_content_loan_credit min = 0 } }
 }
 

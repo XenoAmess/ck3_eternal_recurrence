@@ -8,21 +8,47 @@ xalw_is_living_trigger = {
 }
 
 xalw_is_growth_suppressed_trigger = {
-	has_variable = xalw_growth_suppressed_until
-	var:xalw_growth_suppressed_until > current_date
+	AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_growth_suppressed_until
+			}
+			var:xalw_growth_suppressed_until > current_date
+		}
+		trigger_else = {
+			always = no
+		}
+	}
 }
 
 xalw_can_renew_suppression_trigger = {
-	xalw_is_growth_suppressed_trigger = yes
-	var:xalw_growth_suppressed_until <= xalw_renewal_window_ends_value
+	AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_growth_suppressed_until
+			}
+
+			            xalw_is_growth_suppressed_trigger = yes
+			            var:xalw_growth_suppressed_until <= xalw_renewal_window_ends_value
+		}
+		trigger_else = {
+			always = no
+		}
+	}
 }
 
 xalw_owner_needs_monthly_trigger = {
 	OR = {
 	    any_character_artifact = { xalw_is_living_trigger = yes }
 	    any_character_artifact = { xalw_is_personal_trigger = yes NOT = { has_variable = xalw_schema_version } }
-	    AND = { has_variable = xalw_content_loan_periods var:xalw_content_loan_periods > 0 }
-	    AND = { has_variable = xalw_content_loan_arrears var:xalw_content_loan_arrears > 0 }
+	    AND = {
+	        trigger_if = { limit = { has_variable = xalw_content_loan_periods } var:xalw_content_loan_periods > 0 }
+	        trigger_else = { always = no }
+	    }
+	    AND = {
+	        trigger_if = { limit = { has_variable = xalw_content_loan_arrears } var:xalw_content_loan_arrears > 0 }
+	        trigger_else = { always = no }
+	    }
 	}
 }
 

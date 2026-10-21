@@ -30,6 +30,13 @@ def _change(name: str, value: str | int) -> str:
     return f"change_variable = {{ name = xalw_{name} add = {value} }}"
 
 
+def _optional_condition(fields: tuple[str, ...], condition: str, *, missing_allowed: bool = False) -> str:
+    """Preserve missing-value semantics behind a real lazy trigger boundary."""
+    present = " ".join(f"has_variable = {field}" for field in fields)
+    return _block("AND", _block("trigger_if", _block("limit", present) + condition)
+                  + _block("trigger_else", "always = " + ("yes" if missing_allowed else "no")))
+
+
 def _not_duplicate(kind: Literal["affix", "curse"], candidate: int) -> str:
     slots = 6 if kind == "affix" else 2
     return "NOR = { " + " ".join(f"var:xalw_{kind}_{slot} ?= {candidate}" for slot in range(1, slots + 1)) + " }"
@@ -66,17 +73,23 @@ def render_core_triggers() -> str:
     return "\n".join([
         _block("xalw_is_personal_trigger", personal),
         _block("xalw_is_living_trigger", "var:xalw_schema_version ?= 2\nvar:xalw_kind ?= flag:living"),
-        _block("xalw_is_growth_suppressed_trigger", "has_variable = xalw_growth_suppressed_until\nvar:xalw_growth_suppressed_until > current_date"),
-        _block("xalw_can_renew_suppression_trigger", """
+        _block("xalw_is_growth_suppressed_trigger", _optional_condition(("xalw_growth_suppressed_until",), "var:xalw_growth_suppressed_until > current_date")),
+        _block("xalw_can_renew_suppression_trigger", _optional_condition(("xalw_growth_suppressed_until",), """
             xalw_is_growth_suppressed_trigger = yes
             var:xalw_growth_suppressed_until <= xalw_renewal_window_ends_value
-        """),
+        """)),
         _block("xalw_owner_needs_monthly_trigger", """
             OR = {
                 any_character_artifact = { xalw_is_living_trigger = yes }
                 any_character_artifact = { xalw_is_personal_trigger = yes NOT = { has_variable = xalw_schema_version } }
-                AND = { has_variable = xalw_content_loan_periods var:xalw_content_loan_periods > 0 }
-                AND = { has_variable = xalw_content_loan_arrears var:xalw_content_loan_arrears > 0 }
+                AND = {
+                    trigger_if = { limit = { has_variable = xalw_content_loan_periods } var:xalw_content_loan_periods > 0 }
+                    trigger_else = { always = no }
+                }
+                AND = {
+                    trigger_if = { limit = { has_variable = xalw_content_loan_arrears } var:xalw_content_loan_arrears > 0 }
+                    trigger_else = { always = no }
+                }
             }
         """),
         _block("xalw_can_gain_xp_trigger", """
@@ -126,10 +139,10 @@ def render_core_script_values() -> str:
             if = { limit = { artifact_owner ?= { health < 4 } } add = { value = xalw_base_hunger_value multiply = -45 } }
     """
     for slot in range(1, 7):
-        adjustment += f"\nif = {{ limit = {{ has_variable = xalw_affix_{slot} }} add = {{ value = var:xalw_affix_rank_{slot} multiply = 12 }} }}"
+        adjustment += f"\nif = {{ limit = {{ has_variable = xalw_affix_{slot} has_variable = xalw_affix_rank_{slot} }} add = {{ value = var:xalw_affix_rank_{slot} multiply = 12 }} }}"
     for slot in (1, 2):
-        adjustment += f"\nif = {{ limit = {{ has_variable = xalw_curse_{slot} }} add = {{ value = var:xalw_curse_rank_{slot} multiply = -30 }} }}"
-        adjustment += f"\nif = {{ limit = {{ var:xalw_curse_{slot} ?= 1 }} add = {{ value = var:xalw_curse_rank_{slot} multiply = -45 }} }}"
+        adjustment += f"\nif = {{ limit = {{ has_variable = xalw_curse_{slot} has_variable = xalw_curse_rank_{slot} }} add = {{ value = var:xalw_curse_rank_{slot} multiply = -30 }} }}"
+        adjustment += f"\nif = {{ limit = {{ has_variable = xalw_curse_{slot} has_variable = xalw_curse_rank_{slot} var:xalw_curse_{slot} ?= 1 }} add = {{ value = var:xalw_curse_rank_{slot} multiply = -45 }} }}"
         adjustment += f"\nif = {{ limit = {{ var:xalw_curse_{slot} ?= 2 artifact_owner ?= {{ gold < 100 }} }} add = -300 }}"
     adjustment += "\nif = { limit = { artifact_owner ?= { has_trait = brave } } add = 20 }\nif = { limit = { artifact_owner ?= { has_trait = craven } } add = -20 }\n}"
     ai = """
@@ -150,7 +163,10 @@ def render_core_script_values() -> str:
         _block("xalw_base_hunger_value", "value = var:xalw_level\nsubtract = 10\nmin = 0\nmax = 5"),
         _block("xalw_actual_hunger_value", """
             value = xalw_base_hunger_value
-            if = { limit = { has_variable = xalw_appeased_until var:xalw_appeased_until > current_date } subtract = 1 }
+            if = { limit = {
+                trigger_if = { limit = { has_variable = xalw_appeased_until } var:xalw_appeased_until > current_date }
+                trigger_else = { always = no }
+            } subtract = 1 }
             min = 0
             if = { limit = { xalw_is_growth_suppressed_trigger = yes } add = 1 }
             max = 5
@@ -225,11 +241,12 @@ def _render_affix_effects() -> str:
         """))
     upgrade_entries: list[str] = []
     for slot in range(1, 7):
+        condition = _optional_condition((f"xalw_affix_{slot}", f"xalw_affix_rank_{slot}"), f"var:xalw_affix_rank_{slot} < 3")
         upgrade_entries.append(_block("1", f"""
-            trigger = {{ has_variable = xalw_affix_{slot} var:xalw_affix_rank_{slot} < 3 }}
+            trigger = {{ {condition} }}
             {_change(f'affix_rank_{slot}', 1)}
         """))
-    eligible = "OR = { " + " ".join(f"AND = {{ has_variable = xalw_affix_{slot} var:xalw_affix_rank_{slot} < 3 }}" for slot in range(1, 7)) + " }"
+    eligible = "OR = { " + " ".join(_optional_condition((f"xalw_affix_{slot}", f"xalw_affix_rank_{slot}"), f"var:xalw_affix_rank_{slot} < 3") for slot in range(1, 7)) + " }"
     return "\n".join([
         candidate,
         _block("xalw_add_affix_effect", "\n".join(insert) + "\nremove_variable = xalw_candidate_affix"),
@@ -556,7 +573,8 @@ def _render_management_effects() -> list[str]:
                 scope:xalw_artifact ?= {
                     xalw_is_living_trigger = yes artifact_owner = scope:owner
                     xalw_base_hunger_value > 0
-                    OR = { NOT = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+                    trigger_if = { limit = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+                    trigger_else = { always = yes }
                 }
                 gold >= scope:xalw_artifact.xalw_appease_cost_value
             }
@@ -648,7 +666,7 @@ def render_core_events() -> str:
                     xalw_owner_monthly_effect = yes
                 }
                 if = {
-                    limit = { has_any_artifact = yes }
+                    limit = { xalw_owner_needs_monthly_trigger = yes }
                     trigger_event = { id = xalw.1 days = 1 }
                 }
                 else = { remove_variable = xalw_monthly_chain }
@@ -679,7 +697,10 @@ def render_core_events() -> str:
             scope = artifact
             hidden = yes
             immediate = {
-                if = { limit = { has_variable = xalw_appeased_until var:xalw_appeased_until <= current_date } remove_variable = xalw_appeased_until }
+                if = { limit = {
+                    trigger_if = { limit = { has_variable = xalw_appeased_until } var:xalw_appeased_until <= current_date }
+                    trigger_else = { always = no }
+                } remove_variable = xalw_appeased_until }
                 xalw_refresh_artifact_effect = yes
             }
         }
@@ -718,7 +739,10 @@ def render_core_events() -> str:
             }
             option = {
                 name = xalw.10.appease
-                trigger = { scope:xalw_artifact = { xalw_base_hunger_value > 0 OR = { NOT = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date } } }
+                trigger = { scope:xalw_artifact = { xalw_base_hunger_value > 0
+                    trigger_if = { limit = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+                    trigger_else = { always = yes }
+                } }
                 show_as_unavailable = { gold < scope:xalw_artifact.xalw_appease_cost_value }
                 xalw_appease_effect = yes
             }

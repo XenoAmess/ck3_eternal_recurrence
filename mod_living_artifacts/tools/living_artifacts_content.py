@@ -135,14 +135,30 @@ def _rank_cases(body_by_rank: tuple[str, ...], variable: str = "xalw_content_ran
     )
 
 
+def _present_condition(fields: tuple[str, ...], condition: str) -> str:
+    """Create an actual lazy trigger branch; sibling guards do not short-circuit."""
+    presence = " ".join(f"has_variable = {field}" for field in fields)
+    return (
+        "AND = { trigger_if = { limit = { " + presence + " }\n" + condition
+        + "\n} trigger_else = { always = no } }"
+    )
+
+
+def _slot_condition(kind: ContentKind, slot: int, condition: str) -> str:
+    """Leave an empty slot absent and read its ID/rank only in a lazy branch."""
+    stem = "xalw_affix" if kind == "affix" else "xalw_curse"
+    return _present_condition((f"{stem}_{slot}", f"{stem}_rank_{slot}"), condition)
+
+
 def _selector(kind: ContentKind, number: int) -> str:
     slots = range(1, 7) if kind == "affix" else range(1, 3)
     stem = "xalw_affix" if kind == "affix" else "xalw_curse"
     pieces = ["save_scope_as = xalw_content_actor", "set_variable = { name = xalw_content_rank value = 0 }", "remove_variable = xalw_content_source", "set_variable = { name = xalw_content_slot value = 0 }"]
     checks: list[str] = []
     for slot in slots:
+        condition = _slot_condition(kind, slot, f"var:{stem}_{slot} = {number} var:{stem}_rank_{slot} > scope:xalw_content_actor.var:xalw_content_rank")
         checks.append(
-            f"if = {{ limit = {{ var:{stem}_{slot} = {number} var:{stem}_rank_{slot} > scope:xalw_content_actor.var:xalw_content_rank }}\n"
+            f"if = {{ limit = {{ {condition} }}\n"
             "save_scope_as = xalw_content_candidate\n"
             f"scope:xalw_content_actor = {{ set_variable = {{ name = xalw_content_rank value = scope:xalw_content_candidate.var:{stem}_rank_{slot} }} "
             f"set_variable = {{ name = xalw_content_source value = scope:xalw_content_candidate }} set_variable = {{ name = xalw_content_slot value = {slot} }} }}\n}}"
@@ -151,11 +167,11 @@ def _selector(kind: ContentKind, number: int) -> str:
     if kind == "affix":
         blocked = " ".join(f"var:xalw_content_disabled_{i} ?= scope:xalw_content_actor.var:xalw_content_slot" for i in range(1, 4))
         pieces.append("set_variable = { name = xalw_content_effective_rank value = var:xalw_content_rank }")
-        pieces.append(f"if = {{ limit = {{ exists = var:xalw_content_source var:xalw_content_source = {{ OR = {{ {blocked} }} }} }} set_variable = {{ name = xalw_content_effective_rank value = 0 }} }}")
-        pieces.append("""else_if = {
- limit = { exists = var:xalw_content_source var:xalw_content_source = { has_variable = xalw_content_jealous_slot var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot } }
- change_variable = { name = xalw_content_effective_rank add = -1 }
-}""")
+        disabled = _present_condition(("xalw_content_source",), f"var:xalw_content_source = {{ OR = {{ {blocked} }} }}")
+        jealous = _present_condition(("xalw_content_jealous_slot",), "var:xalw_content_jealous_slot = scope:xalw_content_actor.var:xalw_content_slot")
+        jealous_source = _present_condition(("xalw_content_source",), f"var:xalw_content_source = {{ {jealous} }}")
+        pieces.append(f"if = {{ limit = {{ {disabled} }} set_variable = {{ name = xalw_content_effective_rank value = 0 }} }}")
+        pieces.append(f"else_if = {{ limit = {{ {jealous_source} }} change_variable = {{ name = xalw_content_effective_rank add = -1 }} }}")
     return "\n".join(pieces)
 
 
@@ -194,7 +210,8 @@ def _paired_rank(number: int) -> str:
     pieces = ["set_variable = { name = xalw_content_combo_rank value = 0 }"]
     for slot in range(1, 7):
         blocked = " ".join(f"var:xalw_content_disabled_{i} ?= {slot}" for i in range(1, 4))
-        pieces.append(f"""var:xalw_content_source = {{ save_scope_as = xalw_content_pair_item if = {{ limit = {{ var:xalw_affix_{slot} = {number} NOR = {{ {blocked} }} }}
+        condition = _slot_condition("affix", slot, f"var:xalw_affix_{slot} = {number} NOR = {{ {blocked} }}")
+        pieces.append(f"""var:xalw_content_source = {{ save_scope_as = xalw_content_pair_item if = {{ limit = {{ {condition} }}
 scope:xalw_content_actor = {{ set_variable = {{ name = xalw_content_combo_rank value = scope:xalw_content_pair_item.var:xalw_affix_rank_{slot} }}
 if = {{ limit = {{ scope:xalw_content_pair_item = {{ var:xalw_content_jealous_slot ?= {slot} }} }} change_variable = {{ name = xalw_content_combo_rank add = -1 }} }}
 set_variable = {{ name = xalw_content_combo_rank value = {{ value = var:xalw_content_combo_rank min = 0 max = var:xalw_content_effective_rank }} }} }}
@@ -226,7 +243,10 @@ add_stress = 5
         True,
     ) + "\n}"
     build_reward = _paired_rank(6) + _rank_cases(tuple(f"set_variable = {{ name = xalw_content_build_reward value = {gold} }}" for gold in (10, 20, 30)), "xalw_content_effective_rank") + """
-if = { limit = { var:xalw_content_combo_rank > 0 OR = { var:xalw_content_loan_periods > 0 var:xalw_content_loan_arrears > 0 } }
+if = { limit = { var:xalw_content_combo_rank > 0
+trigger_if = { limit = { has_variable = xalw_content_loan_periods has_variable = xalw_content_loan_arrears has_variable = xalw_content_loan_instalment has_variable = xalw_content_loan_credit }
+OR = { var:xalw_content_loan_periods > 0 var:xalw_content_loan_arrears > 0 }
+} trigger_else = { always = no } }
 set_variable = { name = xalw_content_build_credit value = { value = var:xalw_content_loan_periods multiply = var:xalw_content_loan_instalment add = var:xalw_content_loan_arrears subtract = var:xalw_content_loan_credit min = 0 max = var:xalw_content_build_reward } }
 change_variable = { name = xalw_content_loan_credit add = var:xalw_content_build_credit }
 } else = { add_gold = var:xalw_content_build_reward }
@@ -246,7 +266,8 @@ county.holder ?= {
     )
     remember = "var:xalw_content_source = {\n" + shifts + "\nset_variable = { name = xalw_content_destination_1 value = scope:xalw_content_destination }\n}"
     arrival_body = "current_travel_plan.current_location = { save_scope_as = xalw_content_destination }\n" + _selector("affix", 9)
-    arrival_body += f"\nif = {{ limit = {{ var:xalw_content_rank > 0 var:xalw_content_source = {{ NOR = {{ {remembered} }} }} }}\n"
+    new_destination = _present_condition(("xalw_content_source",), f"var:xalw_content_source = {{ NOR = {{ {remembered} }} }}")
+    arrival_body += f"\nif = {{ limit = {{ var:xalw_content_rank > 0 {new_destination} }}\n"
     arrival_body += _counted_event(
         "destination", 90, 3,
         _rank_cases(tuple(f"add_learning_lifestyle_xp = {amount}" for amount in (20, 35, 50)), "xalw_content_effective_rank") + "\nadd_stress = 8\n" + remember,
@@ -321,7 +342,8 @@ add_county_modifier = {{ modifier = xalw_content_realm_{rank}_modifier years = 2
     pieces.append("every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes NOT = { has_variable = xalw_content_runaway_cooldown } } save_scope_as = xalw_content_runaway_item")
     for slot in range(1, 3):
         for rank, chance, stress in ((1, 10, 20), (2, 20, 35), (3, 35, 60)):
-            pieces.append(f"""if = {{ limit = {{ var:xalw_curse_{slot} = 5 var:xalw_curse_rank_{slot} = {rank} }} random = {{ chance = {chance}
+            condition = _slot_condition("curse", slot, f"var:xalw_curse_{slot} = 5 var:xalw_curse_rank_{slot} = {rank}")
+            pieces.append(f"""if = {{ limit = {{ {condition} }} random = {{ chance = {chance}
 clear_saved_scope = xalw_content_runaway_recipient
 scope:xalw_content_actor = {{ random_courtier = {{ limit = {{ is_alive = yes is_adult = yes is_imprisoned = no }} save_scope_as = xalw_content_runaway_recipient }} }}
 scope:xalw_content_actor = {{ add_stress = {stress} }}
@@ -352,11 +374,13 @@ set_variable = { name = xalw_content_partner_selected value = yes days = 1 }
 def _render_rust_monthly() -> str:
     entries: list[str] = ["save_scope_as = xalw_content_rust_item", "set_variable = { name = xalw_content_rust_rank value = 0 }"]
     for slot in range(1, 3):
-        entries.append(f"if = {{ limit = {{ var:xalw_curse_{slot} = 7 }} set_variable = {{ name = xalw_content_rust_rank value = var:xalw_curse_rank_{slot} }} }}")
+        condition = _slot_condition("curse", slot, f"var:xalw_curse_{slot} = 7")
+        entries.append(f"if = {{ limit = {{ {condition} }} set_variable = {{ name = xalw_content_rust_rank value = var:xalw_curse_rank_{slot} }} }}")
     entries.append("if = { limit = { var:xalw_content_rust_rank > 0 }")
     for rank, chance, cost, stress in ((1, 30, 5, 15), (2, 60, 10, 25), (3, 100, 15, 40)):
         pay = f"set_variable = {{ name = xalw_content_recovery_quote value = {cost} }}\n" + _bounded_payment("xalw_content_recovery_quote", "")
-        entries.append(f"""if = {{ limit = {{ var:xalw_content_rust_rank = {rank} exists = var:xalw_content_last_equipped_durability artifact_durability > var:xalw_content_last_equipped_durability NOT = {{ var:xalw_content_recovery_year ?= current_year }} }}
+        recovered = _present_condition(("xalw_content_last_equipped_durability",), "artifact_durability > var:xalw_content_last_equipped_durability")
+        entries.append(f"""if = {{ limit = {{ var:xalw_content_rust_rank = {rank} {recovered} NOT = {{ var:xalw_content_recovery_year ?= current_year }} }}
 random = {{ chance = {chance}
 set_variable = {{ name = xalw_content_recovery_year value = current_year }}
 scope:xalw_content_actor = {{ {pay}\nadd_stress = {stress} }}
@@ -377,15 +401,17 @@ def _artifact_projection() -> str:
                 pieces.append(f"remove_artifact_modifier = xalw_content_{kind}_{slot}_{rank}_modifier")
         for number, kind in ((1, "blood"), (8, "control"), (4, "secrecy"), (6, "spouse")):
             for rank in range(1, 4):
-                pieces.append(f"if = {{ limit = {{ var:xalw_curse_{slot} = {number} var:xalw_curse_rank_{slot} = {rank} }} add_artifact_modifier = xalw_content_{kind}_{slot}_{rank}_modifier }}")
+                condition = _slot_condition("curse", slot, f"var:xalw_curse_{slot} = {number} var:xalw_curse_rank_{slot} = {rank}")
+                pieces.append(f"if = {{ limit = {{ {condition} }} add_artifact_modifier = xalw_content_{kind}_{slot}_{rank}_modifier }}")
         for number, cache in ((3, "fickle"), (5, "runaway")):
-            pieces.append(f"if = {{ limit = {{ var:xalw_curse_{slot} = {number} }} set_variable = {{ name = xalw_content_{cache}_rank value = {{ value = var:xalw_content_{cache}_rank max = 3 min = var:xalw_curse_rank_{slot} }} }} }}")
+            condition = _slot_condition("curse", slot, f"var:xalw_curse_{slot} = {number}")
+            pieces.append(f"if = {{ limit = {{ {condition} }} set_variable = {{ name = xalw_content_{cache}_rank value = {{ value = var:xalw_content_{cache}_rank max = 3 min = var:xalw_curse_rank_{slot} }} }} }}")
     for disabled in range(1, 4):
         entries: list[str] = []
         eligible: list[str] = []
         for slot in range(1, 7):
             no_duplicate = " ".join(f"NOT = {{ var:xalw_content_disabled_{other} ?= {slot} }}" for other in range(1, 4))
-            test = f"var:xalw_affix_{slot} > 0 {no_duplicate}"
+            test = _slot_condition("affix", slot, f"var:xalw_affix_{slot} > 0 {no_duplicate}")
             eligible.append(f"AND = {{ {test} }}")
             entries.append(f"1 = {{ trigger = {{ {test} }} set_variable = {{ name = xalw_content_disabled_{disabled} value = {slot} }} }}")
         pieces.append(f"if = {{ limit = {{ is_equipped = yes var:xalw_content_fickle_rank >= {disabled} NOT = {{ has_variable = xalw_content_disabled_{disabled} }} OR = {{ {' '.join(eligible)} }} }} random_list = {{ {' '.join(entries)} }} }}")
@@ -394,7 +420,9 @@ def _artifact_projection() -> str:
         pieces.append(f"set_variable = {{ name = xalw_content_{feature}_effective_rank value = 0 }}")
         for slot in range(1, 7):
             disabled_slots_text = " ".join(f"var:xalw_content_disabled_{i} ?= {slot}" for i in range(1, 4))
-            pieces.append(f"""if = {{ limit = {{ has_variable = xalw_content_{feature}_active var:xalw_content_{feature}_slot ?= {slot} var:xalw_affix_{slot} = {number} }}
+            slot_condition = _slot_condition("affix", slot, f"var:xalw_affix_{slot} = {number}")
+            feature_condition = _present_condition((f"xalw_content_{feature}_active", f"xalw_content_{feature}_rank", f"xalw_content_{feature}_slot"), f"var:xalw_content_{feature}_slot = {slot} {slot_condition}")
+            pieces.append(f"""if = {{ limit = {{ {feature_condition} }}
 set_variable = {{ name = xalw_content_{feature}_effective_rank value = var:xalw_content_{feature}_rank }}
 if = {{ limit = {{ OR = {{ {disabled_slots_text} }} }} set_variable = {{ name = xalw_content_{feature}_effective_rank value = 0 }} }}
 else_if = {{ limit = {{ var:xalw_content_jealous_slot ?= {slot} }} change_variable = {{ name = xalw_content_{feature}_effective_rank add = -1 }} }}
@@ -407,8 +435,9 @@ else_if = {{ limit = {{ var:xalw_content_jealous_slot ?= {slot} }} change_variab
     for power in range(1, 7):
         for scale in range(4):
             pieces.append(f"remove_artifact_modifier = xalw_content_echo_{power}_{scale}_modifier")
-            slots = " ".join(f"AND = {{ var:xalw_content_echo_slot ?= {slot} var:xalw_affix_{slot} = 2 NOR = {{ " + " ".join(f"var:xalw_content_disabled_{i} ?= {slot}" for i in range(1, 4)) + " } }" for slot in range(1, 7))
-            pieces.append(f"if = {{ limit = {{ has_variable = xalw_content_echo_active var:xalw_content_echo_power = {power} var:xalw_content_runaway_rank = {scale} OR = {{ {slots} }} }} add_artifact_modifier = xalw_content_echo_{power}_{scale}_modifier }}")
+            slots = " ".join(_slot_condition("affix", slot, f"var:xalw_content_echo_slot ?= {slot} var:xalw_affix_{slot} = 2 NOR = {{ " + " ".join(f"var:xalw_content_disabled_{i} ?= {slot}" for i in range(1, 4)) + " }") for slot in range(1, 7))
+            echo_condition = _present_condition(("xalw_content_echo_active", "xalw_content_echo_power"), f"var:xalw_content_echo_power = {power} var:xalw_content_runaway_rank = {scale} OR = {{ {slots} }}")
+            pieces.append(f"if = {{ limit = {{ {echo_condition} }} add_artifact_modifier = xalw_content_echo_{power}_{scale}_modifier }}")
     return "\n".join(pieces)
 
 
@@ -486,10 +515,12 @@ set_variable = { name = xalw_content_secret_1 value = scope:xalw_content_discove
     inherit: list[str] = ["every_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger = yes has_variable = xalw_content_secret_pending_owner } save_scope_as = xalw_content_inherited_item", "remove_variable = xalw_content_secret_pending_owner", "set_variable = { name = xalw_content_inherited_rank value = 0 }"]
     for slot in range(1, 7):
         disabled = " ".join(f"var:xalw_content_disabled_{i} ?= {slot}" for i in range(1, 4))
-        inherit.append(f"if = {{ limit = {{ var:xalw_affix_{slot} = 7 }} set_variable = {{ name = xalw_content_inherited_rank value = var:xalw_affix_rank_{slot} }} if = {{ limit = {{ OR = {{ {disabled} }} }} set_variable = {{ name = xalw_content_inherited_rank value = 0 }} }} else_if = {{ limit = {{ var:xalw_content_jealous_slot ?= {slot} }} change_variable = {{ name = xalw_content_inherited_rank add = -1 }} }} }}")
+        condition = _slot_condition("affix", slot, f"var:xalw_affix_{slot} = 7")
+        inherit.append(f"if = {{ limit = {{ {condition} }} set_variable = {{ name = xalw_content_inherited_rank value = var:xalw_affix_rank_{slot} }} if = {{ limit = {{ OR = {{ {disabled} }} }} set_variable = {{ name = xalw_content_inherited_rank value = 0 }} }} else_if = {{ limit = {{ var:xalw_content_jealous_slot ?= {slot} }} change_variable = {{ name = xalw_content_inherited_rank add = -1 }} }} }}")
     inherit.extend(("clear_saved_scope = xalw_content_inherited_secret",))
     for slot in (3, 2, 1):
-        inherit.append(f"if = {{ limit = {{ var:xalw_content_inherited_rank >= {slot} exists = var:xalw_content_secret_{slot} var:xalw_content_secret_{slot} = {{ NOT = {{ is_known_by = scope:xalw_content_actor }} }} }} var:xalw_content_secret_{slot} = {{ save_scope_as = xalw_content_inherited_secret }} }}")
+        available = _present_condition((f"xalw_content_secret_{slot}",), f"var:xalw_content_secret_{slot} ?= {{ NOT = {{ is_known_by = scope:xalw_content_actor }} }}")
+        inherit.append(f"if = {{ limit = {{ var:xalw_content_inherited_rank >= {slot} {available} }} var:xalw_content_secret_{slot} = {{ save_scope_as = xalw_content_inherited_secret }} }}")
     for rank, chance in ((1, 20), (2, 35), (3, 50)):
         inherit.append(f"""if = {{ limit = {{ var:xalw_content_inherited_rank = {rank} exists = scope:xalw_content_inherited_secret }}
 random = {{ chance = {{ value = {chance}
@@ -503,7 +534,7 @@ else_if = {{ limit = {{ var:xalw_content_fickle_rank ?= 3 }} multiply = 0.25 }}
 scope:xalw_content_actor = {{ set_variable = {{ name = xalw_content_secret_transfer_guard value = yes }} }}
 scope:xalw_content_inherited_secret = {{ reveal_to = scope:xalw_content_actor }}
 scope:xalw_content_actor = {{ remove_variable = xalw_content_secret_transfer_guard add_stress = 8 }}
-if = {{ limit = {{ exists = var:xalw_content_previous_owner var:xalw_content_previous_owner = {{ is_alive = yes }} }} var:xalw_content_previous_owner = {{ add_opinion = {{ target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y }} }} }}
+if = {{ limit = {{ trigger_if = {{ limit = {{ has_variable = xalw_content_previous_owner }} var:xalw_content_previous_owner ?= {{ is_alive = yes }} }} trigger_else = {{ always = no }} }} var:xalw_content_previous_owner = {{ add_opinion = {{ target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_10_2y }} }} }}
 }} }}""")
     inherit.append("}")
     return _effect("xalw_content_secret_discovered_effect", discover) + "\n" + _effect("xalw_content_secret_inheritance_effect", "\n".join(inherit))
@@ -512,13 +543,13 @@ if = {{ limit = {{ exists = var:xalw_content_previous_owner var:xalw_content_pre
 def _render_knight_handlers() -> str:
     # A monthly living observation is never represented as death-time prowess.
     memory_body = """clear_saved_scope = xalw_content_fallen_knight
-random_in_list = { list = knights limit = { is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor exists = var:xalw_content_observed_prowess } save_scope_as = xalw_content_fallen_knight }
+random_in_list = { list = knights limit = { is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor has_variable = xalw_content_observed_prowess } save_scope_as = xalw_content_fallen_knight }
 if = { limit = { exists = scope:xalw_content_fallen_knight }
 """ + _rank_cases(tuple(f"add_prestige = {xp}" for xp in (30, 60, 90)), "xalw_content_effective_rank") + """
 add_stress = 12
 if = { limit = { var:xalw_content_effective_rank > 0 } var:xalw_content_source = {
 """ + "\n".join(
-        f"if = {{ limit = {{ scope:xalw_content_actor.var:xalw_content_rank >= {slot} exists = var:xalw_content_memory_{slot - 1} }} set_variable = {{ name = xalw_content_memory_{slot} value = var:xalw_content_memory_{slot - 1} }} set_variable = {{ name = xalw_content_memory_prowess_{slot} value = var:xalw_content_memory_prowess_{slot - 1} }} }}"
+        f"if = {{ limit = {{ scope:xalw_content_actor.var:xalw_content_rank >= {slot} exists = var:xalw_content_memory_{slot - 1} has_variable = xalw_content_memory_prowess_{slot - 1} }} set_variable = {{ name = xalw_content_memory_{slot} value = var:xalw_content_memory_{slot - 1} }} set_variable = {{ name = xalw_content_memory_prowess_{slot} value = var:xalw_content_memory_prowess_{slot - 1} }} }}"
         for slot in (3, 2)
     ) + """
 set_variable = { name = xalw_content_memory_1 value = scope:xalw_content_fallen_knight }
@@ -531,20 +562,23 @@ scope:xalw_content_actor = { change_variable = { name = xalw_content_survivor_co
 }
 }
 """
-    fallen = "any_in_list = { list = knights is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor exists = var:xalw_content_observed_prowess }"
+    fallen = "any_in_list = { list = knights is_alive = no var:xalw_content_observed_liege ?= scope:xalw_content_actor has_variable = xalw_content_observed_prowess }"
     finished = "save_scope_as = xalw_content_actor\nremove_variable = xalw_content_requiem_opportunity\nif = { limit = { is_alive = yes scope:combat_side = { side_commander = scope:xalw_content_actor } }\n"
     combo_memory = memory_body.replace("add_stress = 12", "add_stress = 10").replace("add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_minus_5_2y }", "# The shared requiem removes the survivor opinion penalty.")
     finished += _annual_reset("dividend") + "\n" + _annual_reset("funeral") + "\n" + _selector("affix", 1)
     finished += "\nremove_variable = xalw_content_victor_item\nif = { limit = { exists = var:xalw_content_source var:xalw_content_effective_rank > 0 } set_variable = { name = xalw_content_victor_item value = var:xalw_content_source } }\n" + _selector("affix", 2)
-    finished += f"\nif = {{ limit = {{ scope:victory = yes {fallen} exists = var:xalw_content_victor_item var:xalw_content_source ?= var:xalw_content_victor_item var:xalw_content_effective_rank > 0 NOT = {{ has_variable = xalw_content_dividend_cooldown }} NOT = {{ has_variable = xalw_content_funeral_cooldown }} var:xalw_content_dividend_count < 2 var:xalw_content_funeral_count < 2 }}\n"
+    same_victor_item = _present_condition(("xalw_content_source", "xalw_content_victor_item"), "var:xalw_content_source = var:xalw_content_victor_item")
+    finished += f"\nif = {{ limit = {{ scope:victory = yes {fallen} {same_victor_item} var:xalw_content_effective_rank > 0 NOT = {{ has_variable = xalw_content_dividend_cooldown }} NOT = {{ has_variable = xalw_content_funeral_cooldown }} var:xalw_content_dividend_count < 2 var:xalw_content_funeral_count < 2 }}\n"
     finished += "set_variable = { name = xalw_content_requiem_opportunity value = yes }\n" + _positive_gate("set_variable = { name = xalw_content_dividend_cooldown value = yes days = 90 }\nset_variable = { name = xalw_content_funeral_cooldown value = yes days = 180 }\nchange_variable = { name = xalw_content_dividend_count add = 1 }\nchange_variable = { name = xalw_content_funeral_count add = 1 }\n" + _selector("affix", 1) + "\n" + _rank_cases(tuple(f"add_gold = {gold}" for gold in (5, 10, 15)), "xalw_content_effective_rank") + "\n" + _selector("affix", 2) + "\n" + combo_memory) + "\n}\n"
     finished += _selector("affix", 1) + "\nif = { limit = { scope:victory = yes NOT = { has_variable = xalw_content_requiem_opportunity } }\n" + _counted_event("dividend", 90, 2,
         _rank_cases(tuple(f"add_gold = {gold}" for gold in (10, 20, 30)), "xalw_content_effective_rank") + "\nadd_stress = 8", True) + "\n}\n"
     finished += _selector("curse", 1) + "\nif = { limit = { scope:victory = yes }\n" + _counted_event("blood", 90, 4, _rank_cases(tuple(f"add_stress = {stress}" for stress in (15, 25, 40))), False) + "\n}\n"
     finished += _selector("affix", 2) + f"\nif = {{ limit = {{ {fallen} NOT = {{ has_variable = xalw_content_requiem_opportunity }} }}\n" + _counted_event("funeral", 180, 2, memory_body, True) + "\n}\n}"
-    available_memories = " ".join(f"AND = {{ scope:xalw_content_actor.var:xalw_content_effective_rank >= {slot} exists = var:xalw_content_memory_{slot} var:xalw_content_memory_{slot} = {{ is_alive = no }} }}" for slot in range(1, 4))
-    choose_memory = "random_list = {\n" + "\n".join(f"1 = {{ trigger = {{ var:xalw_content_effective_rank >= {slot} var:xalw_content_source = {{ exists = var:xalw_content_memory_{slot} var:xalw_content_memory_{slot} = {{ is_alive = no }} }} }} set_variable = {{ name = xalw_content_echo_memory_slot value = {slot} }} set_variable = {{ name = xalw_content_echo_power value = {{ value = var:xalw_content_source.var:xalw_content_memory_prowess_{slot} multiply = 0.25 round = yes min = 0 }} }} }}" for slot in range(1, 4)) + "\n}"
-    duel = _selector("affix", 2) + f"\nif = {{ limit = {{ var:xalw_content_effective_rank > 0 var:xalw_content_source = {{ OR = {{ {available_memories} }} }} }}\n" + _positive_gate(choose_memory + "\n" + _rank_cases(tuple(f"set_variable = {{ name = xalw_content_echo_power value = {{ value = var:xalw_content_echo_power max = {cap} }} }}" for cap in (2, 4, 6)), "xalw_content_effective_rank") + "\n" + "\n".join(
+    memory_conditions = tuple(_present_condition((f"xalw_content_memory_{slot}", f"xalw_content_memory_prowess_{slot}"), f"var:xalw_content_memory_{slot} ?= {{ is_alive = no }}") for slot in range(1, 4))
+    available_memories = " ".join(f"AND = {{ scope:xalw_content_actor.var:xalw_content_effective_rank >= {slot} {condition} }}" for slot, condition in enumerate(memory_conditions, start=1))
+    choose_memory = "random_list = {\n" + "\n".join(f"1 = {{ trigger = {{ var:xalw_content_effective_rank >= {slot} var:xalw_content_source = {{ {condition} }} }} set_variable = {{ name = xalw_content_echo_memory_slot value = {slot} }} set_variable = {{ name = xalw_content_echo_power value = {{ value = var:xalw_content_source.var:xalw_content_memory_prowess_{slot} multiply = 0.25 round = yes min = 0 }} }} }}" for slot, condition in enumerate(memory_conditions, start=1)) + "\n}"
+    has_memory = _present_condition(("xalw_content_source",), f"var:xalw_content_source = {{ OR = {{ {available_memories} }} }}")
+    duel = _selector("affix", 2) + f"\nif = {{ limit = {{ var:xalw_content_effective_rank > 0 {has_memory} }}\n" + _positive_gate(choose_memory + "\n" + _rank_cases(tuple(f"set_variable = {{ name = xalw_content_echo_power value = {{ value = var:xalw_content_echo_power max = {cap} }} }}" for cap in (2, 4, 6)), "xalw_content_effective_rank") + "\n" + "\n".join(
         f"if = {{ limit = {{ var:xalw_content_echo_power = {power} }} var:xalw_content_source = {{ set_variable = {{ name = xalw_content_echo_power value = {power} }} set_variable = {{ name = xalw_content_echo_slot value = scope:xalw_content_actor.var:xalw_content_slot }} set_variable = {{ name = xalw_content_echo_active value = yes days = 30 }} xalw_refresh_artifact_effect = yes trigger_event = {{ id = xalw.1002 days = 30 }} }} }}" for power in range(1, 7)
     ) + """
 add_stress = 10
@@ -558,8 +592,8 @@ var:xalw_content_source = {
 
 
 def _render_jealous_monthly() -> str:
-    target_slots = " ".join(f"var:xalw_affix_{slot} > 0" for slot in range(1, 7))
-    choose_slot = " ".join(f"1 = {{ trigger = {{ var:xalw_affix_{slot} > 0 }} set_variable = {{ name = xalw_content_jealous_slot value = {slot} days = 30 }} }}" for slot in range(1, 7))
+    target_slots = " ".join(_slot_condition("affix", slot, f"var:xalw_affix_{slot} > 0") for slot in range(1, 7))
+    choose_slot = " ".join(f"1 = {{ trigger = {{ {_slot_condition('affix', slot, f'var:xalw_affix_{slot} > 0')} }} set_variable = {{ name = xalw_content_jealous_slot value = {slot} days = 30 }} }}" for slot in range(1, 7))
     return _selector("affix", 12) + """
 save_scope_value_as = { name = xalw_content_previous_month value = { value = xalw_current_month_value subtract = 1 } }
 if = { limit = { var:xalw_content_rank > 0 }
@@ -568,7 +602,10 @@ random_character_artifact = { limit = { is_equipped = yes xalw_is_living_trigger
 if = { limit = { exists = scope:xalw_content_jealous_target }
 """ + _positive_gate("""
 var:xalw_content_source = {
-if = { limit = { var:xalw_content_prima_target ?= scope:xalw_content_jealous_target var:xalw_content_prima_last_month = scope:xalw_content_previous_month }
+if = { limit = { var:xalw_content_prima_target ?= scope:xalw_content_jealous_target
+trigger_if = { limit = { has_variable = xalw_content_prima_last_month has_variable = xalw_content_prima_streak }
+var:xalw_content_prima_last_month = scope:xalw_content_previous_month
+} trigger_else = { always = no } }
 change_variable = { name = xalw_content_prima_streak add = 1 }
 } else = { set_variable = { name = xalw_content_prima_streak value = 1 } }
 set_variable = { name = xalw_content_prima_target value = scope:xalw_content_jealous_target }
@@ -591,13 +628,17 @@ def _render_mutation_preference() -> str:
     candidates: list[str] = []
     eligible: list[str] = []
     for slot in range(1, 7):
-        matching = " ".join(f"var:xalw_affix_{other} = scope:xalw_content_mutating_item.var:xalw_affix_{slot}" for other in range(1, 7))
-        eligible.append(f"AND = {{ var:xalw_affix_{slot} > 0 var:xalw_content_prima_target = {{ OR = {{ {matching} }} }} }}")
-        candidates.append(f"1 = {{ trigger = {{ var:xalw_affix_{slot} > 0 var:xalw_content_prima_target = {{ OR = {{ {matching} }} }} }} set_variable = {{ name = xalw_content_preferred_mutation_slot value = {slot} }} }}")
+        matching = " ".join(_slot_condition("affix", other, f"var:xalw_affix_{other} = scope:xalw_content_mutating_item.var:xalw_affix_{slot}") for other in range(1, 7))
+        condition = _slot_condition("affix", slot, f"var:xalw_affix_{slot} > 0 var:xalw_content_prima_target = {{ OR = {{ {matching} }} }}")
+        eligible.append(condition)
+        candidates.append(f"1 = {{ trigger = {{ {condition} }} set_variable = {{ name = xalw_content_preferred_mutation_slot value = {slot} }} }}")
     return """remove_variable = xalw_content_preferred_mutation_slot
 save_scope_as = xalw_content_mutating_item
 save_scope_value_as = { name = xalw_content_previous_month value = { value = xalw_current_month_value subtract = 1 } }
-if = { limit = { is_equipped = yes var:xalw_content_prima_streak >= 3 exists = var:xalw_content_prima_target var:xalw_content_prima_last_month >= scope:xalw_content_previous_month }
+if = { limit = { is_equipped = yes
+trigger_if = { limit = { has_variable = xalw_content_prima_streak has_variable = xalw_content_prima_last_month has_variable = xalw_content_prima_target }
+var:xalw_content_prima_streak >= 3 exists = var:xalw_content_prima_target var:xalw_content_prima_last_month >= scope:xalw_content_previous_month
+} trigger_else = { always = no } }
 set_variable = { name = xalw_content_prima_streak value = 0 }
 if = { limit = { OR = { """ + " ".join(eligible) + """ } }
 random = { chance = 60 random_list = { """ + " ".join(candidates) + "\n} } } }"
@@ -630,7 +671,7 @@ set_variable = {{ name = xalw_content_month_done value = xalw_current_month_valu
     effects.extend((_render_secondary_handlers(), _render_secret_handlers(), _render_knight_handlers()))
     effects.append(_effect("xalw_content_prepare_mutation_effect", _render_mutation_preference()))
     effects.append(_effect("xalw_content_borrower_died_effect", """
-if = { limit = { has_variable = xalw_content_loan_periods }
+if = { limit = { has_variable = xalw_content_loan_periods has_variable = xalw_content_loan_instalment has_variable = xalw_content_loan_arrears has_variable = xalw_content_loan_credit }
 set_variable = { name = xalw_content_loan_bad_debt value = { value = var:xalw_content_loan_periods multiply = var:xalw_content_loan_instalment add = var:xalw_content_loan_arrears subtract = var:xalw_content_loan_credit min = 0 } }
 }
 """))

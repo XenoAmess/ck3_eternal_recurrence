@@ -23,6 +23,10 @@ from acceptance_contract import (ArtifactSample, CasePort, CheckResult, Frame, I
                                  Object, Pin, RESULT_NAME, array, decimal_id, field, integer, json_value, mapping,
                                  native_id, object_value, pin, read, require, text, utc_now, write_once)
 from prepare_fixture import emit_fixture
+from startup_actor_binding import StartupActorBinding
+from checkpoint_artifacts import SavedInputs
+from checkpoint_callback import CheckpointSample, ReadbackRequestBody, verify_readback
+from inventory_gui_contract import InventoryOpenRequest, REFUSAL, parse_opening, pre_intent_source
 
 ITEM = "ck3_query_player_artifact_personal_use_v1"
 EQUIP = "ck3_submit_player_artifact_personal_use_v1"
@@ -50,6 +54,14 @@ class CaseFailed(RuntimeError):
     """Independent actual evidence contradicts the declared product behavior."""
 
 
+class CaseCallUnavailable(CaseBlocked):
+    def __init__(self, tool: str, message: str, record: Pin | None, *, result_present: bool) -> None:
+        super().__init__(message)
+        self.tool = tool
+        self.record = record
+        self.result_present = result_present
+
+
 @runtime_checkable
 class Preparation(Protocol):
     def materialize_fixture_profile(self, context: object, fixture_dir: Path, product_dir: Path,
@@ -63,7 +75,6 @@ class Contract:
     day_timeout: int
     required_checks: tuple[str, ...]
     deferred_checks: tuple[str, ...]
-    expected_actor: int
 
 
 def validate_contract(context: object) -> Contract:
@@ -72,9 +83,9 @@ def validate_contract(context: object) -> Contract:
     config = mapping(field(context, "case_contract"), "core contract")
     expected = {"schema", "schema_version", "product", "case_id", "acceptance_scope", "maximum_natural_days", "max_public_calls",
                 "day_timeout_seconds", "post_start", "required_startup", "forbidden_startup", "required_checks", "deferred_checks",
-                "observer_authority", "artifact_picker_boundary", "whole_product_acceptance_credit", "expected_actor_character_id", "startup_source_guard"}
-    require(set(config) == expected and config["schema"] == "living-artifacts-core-continuous-case-v1" and
-            integer(config["schema_version"], "schema version") == 1 and config["product"] == "living-artifacts" and
+                "observer_authority", "artifact_picker_boundary", "whole_product_acceptance_credit", "actor_binding_authority", "startup_source_guard"}
+    require(set(config) == expected and config["schema"] == "living-artifacts-core-continuous-case-v2" and
+            integer(config["schema_version"], "schema version") == 2 and config["product"] == "living-artifacts" and
             config["case_id"] == "core_continuous" and config["whole_product_acceptance_credit"] is False,
             "Core contract fields/version/credit differ")
     required = tuple(text(item, "required check") for item in array(config["required_checks"], "required checks"))
@@ -88,8 +99,10 @@ def validate_contract(context: object) -> Contract:
         require(spec.get(option) is expected_value, "Original public action opt-in is missing: " + option)
     readers = {text(item, "opt-in read-only tool") for item in array(field(spec, "opt_in_read_only_mcp_tools"), "explicit read-only declarations")}
     require(ITEM in readers, "Explicit original personal-artifact read-only opt-in required")
-    actor = native_id(config["expected_actor_character_id"], "expected original actor")
-    require(actor == 29829, "This prototype requires the selected original Robert actor")
+    require(config["actor_binding_authority"] == "original-source-bound-frontend-start-and-two-native-root-observations",
+            "Runtime actor must be bound from this scene's original frontend Start and native root")
+    require(config["observer_authority"] == "three-actual-checkpoints-strict-melt-and-independent-native-owner-equipment-crosscheck",
+            "V2 requires actual checkpoint/native observation; hidden dynamic logs cannot qualify")
     source_guard = mapping(config["startup_source_guard"], "source-derived startup guard")
     require(set(source_guard) == {"bookmark_key", "character_name_key", "history_id", "start_date", "post_start_authority", "sources"} and
             source_guard["bookmark_key"] == "bm_1066_rags_to_riches" and source_guard["character_name_key"] == "bookmark_rags_to_riches_duke_robert" and
@@ -105,7 +118,7 @@ def validate_contract(context: object) -> Contract:
     require(source_paths == {"common/bookmarks/bookmarks/00_bookmarks.txt", "history/characters/norman.txt", "history/titles/k_sicily.txt"},
             "Original startup source set differs")
     return Contract(integer(config["maximum_natural_days"], "day cap", 35, 90), integer(config["max_public_calls"], "public call cap", 64, 600),
-                    integer(config["day_timeout_seconds"], "day timeout", 10, 120), required, deferred, actor)
+                    integer(config["day_timeout_seconds"], "day timeout", 10, 120), required, deferred)
 
 
 def _bound_config(context: object) -> dict[str, object]:
@@ -130,7 +143,7 @@ def _write_fixture_contract(fixture_root: Path, config: dict[str, object], fixtu
     return write_once(fixture_root / "_case_contract.json", {"product": "living-artifacts", "case": "core_continuous",
                "config": config, "fixture_emission": fixture, "business_pass": False,
                "caller_sources": [pin(PRODUCT_TOOLS / name) for name in (
-                   "acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py")],
+                    "acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py")],
                "contract_source": pin(PRODUCT_TOOLS / "core_continuous.contract.json")})
 
 
@@ -156,14 +169,14 @@ def _prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
     require(set(frozen) == {"product", "case", "config", "fixture_emission", "business_pass", "caller_sources", "contract_source"} and
             frozen["product"] == "living-artifacts" and frozen["case"] == "core_continuous" and frozen["business_pass"] is False and
             frozen["config"] == json_value(_bound_config(context)), "Prepared fixture contract differs from the allocated case")
-    expected_sources = ("acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py")
+    expected_sources = ("acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py")
     sources = array(frozen["caller_sources"], "frozen caller sources")
     require(len(sources) == len(expected_sources), "Prepared caller source set differs")
     refs = [_checked_pin(value, "prepared caller source", PRODUCT_TOOLS / name) for name, value in zip(expected_sources, sources)]
     refs.append(_checked_pin(frozen["contract_source"], "prepared contract source", PRODUCT_TOOLS / "core_continuous.contract.json"))
     emission = mapping(frozen["fixture_emission"], "frozen fixture emission")
     require(set(emission) == {"schema_version", "fixture_root", "files", "input_origin", "business_acceptance", "game_started"} and
-            integer(emission["schema_version"], "fixture schema version", 1, 1) == 1 and emission["input_origin"] == "fixture_generated" and
+            integer(emission["schema_version"], "fixture schema version", 2, 2) == 2 and emission["input_origin"] == "fixture_generated" and
             emission["business_acceptance"] == "NOT_ASSESSED" and emission["game_started"] is False, "Prepared fixture provenance differs")
     original_root = Path(text(emission["fixture_root"], "original fixture root")).resolve()
     files = mapping(emission["files"], "frozen fixture files")
@@ -240,10 +253,13 @@ class Session:
         self.days = 0
         self.sequence = 0
         self.owner: Frame | None = None
+        self.startup_actor: StartupActorBinding | None = None
         self.last_frame: object = None
         self.start: Frame | None = None
-        self.first_sample: ArtifactSample | None = None
-        self.last_sample: ArtifactSample | None = None
+        self.first_sample: CheckpointSample | None = None
+        self.last_sample: CheckpointSample | None = None
+        self.last_saved_inputs: SavedInputs | None = None
+        self.checkpoint_observations = 0
         self.refs: list[Pin] = []
         self.original_action_unknown = False
         self.last_native_record: Pin | None = None
@@ -255,7 +271,11 @@ class Session:
 
     def bind(self, value: object) -> Frame:
         frame = Frame.parse(value, run_id=self.run_id, machine_id=self.machine_id, manifest=self.client.manifest)
-        require(frame.player_id == self.contract.expected_actor, "Actual scene does not contain the selected original Robert actor")
+        if self.startup_actor is None:
+            self.startup_actor = StartupActorBinding.parse(self.client.guard(reserve=180), frozen=self.client.frozen,
+                run_id=self.run_id, machine_id=self.machine_id, manifest=self.client.manifest)
+            self.refs.append(write_once(self.client.output / "startup-actor-binding.json", self.startup_actor.to_json()))
+        self.startup_actor.validate_frame(frame)
         if self.owner is not None:
             require((frame.pid, frame.generation_decimal, frame.player_id) ==
                     (self.owner.pid, self.owner.generation_decimal, self.owner.player_id) and frame.date_raw >= self.owner.date_raw,
@@ -283,7 +303,10 @@ class Session:
             raise CaseBlocked("Fresh actual owner frame unavailable")
         return self.owner
 
-    def call(self, tool: str, args: Object | None = None) -> Object:
+    def call(self, tool: str, args: Object | None = None) -> dict[str, object]:
+        # Raw transport boundary: original rows may contain native Q64/mtime
+        # integers. Keep them in Python's exact integer domain and validate only
+        # consumed fields; never route the whole native result through JS JSON.
         require(tool in REQUIRED_TOOLS, "This case cannot call an undeclared arbitrary tool")
         self.budget(1)
         self.sequence += 1
@@ -291,53 +314,77 @@ class Session:
         step: Object = {"id": name, "tool": tool, "args": {} if args is None else args, "fresh_revision": True,
                         "continue_on_error": True, "timeout": 30}
         self.calls += 1
+        reference: Pin | None = None
         try:
             actual = self.client.execute_plan([step], name, timeout=35)
         finally:
             path = self.client.output / (name + ".actual-results.json")
             if path.is_file():
-                self.refs.append(pin(path))
+                reference = pin(path)
+                self.refs.append(reference)
         rows = array(actual, "actual public response rows")
         require(len(rows) == 1, "Exactly one original public response is required")
         row = mapping(rows[0], "actual public row")
-        self.bind(field(row, "after_snapshot"))
         if row.get("ok") is not True or row.get("error") is not None:
-            raise CaseBlocked("Original public call unavailable; preserve its row and never replay: " + tool)
-        return object_value(field(row, "result"))
+            if row.get("after_snapshot") is not None:
+                self.bind(row["after_snapshot"])
+            error = row.get("error")
+            message = error if type(error) is str else "Original public call unavailable: " + tool
+            raise CaseCallUnavailable(tool, message, reference, result_present="result" in row)
+        self.bind(field(row, "after_snapshot"))
+        return mapping(field(row, "result"), "actual native tool result")
 
-    def observer(self, target: str) -> tuple[ArtifactSample, Pin]:
-        raw = self.client.log_bytes()
-        sample_lines = [line for line in raw.decode("utf-8-sig", errors="strict").splitlines() if OBSERVATION_PREFIX in line]
-        if not sample_lines:
-            raise CaseBlocked("Read-only fixture getter logger has no actual sample; unevaluated/native unsupported logging cannot pass")
-        samples = [ArtifactSample.parse(line) for line in sample_lines]
-        require(len({sample.sequence for sample in samples}) == len(samples), "Duplicate actual observer sequence")
-        selected = samples[-1]
-        owner = self.current()
-        require(selected.owner_id == str(owner.player_id) and selected.artifact_id == target, "Actual observer artifact/owner differs from native scene")
+    def observer(self, target: str | None) -> tuple[CheckpointSample, Pin]:
+        if self.checkpoint_observations >= 3:
+            raise CaseBlocked("This core case permits only three budgeted saved-state observations")
+        before = self.current()
+        result = self.call("ck3_save_checkpoint")
+        checkpoint = field(result, "checkpoint")
+        require(field(checkpoint, "status") == "saved" and field(field(result, "materialization"), "available") is True and
+                integer(field(checkpoint, "date_raw"), "actual checkpoint date") == before.date_raw == self.current().date_raw,
+                "Actual MCP checkpoint did not materialize at the retained paused native date")
+        live = Path(text(field(checkpoint, "path"), "actual checkpoint path")).resolve()
+        require(live.is_relative_to((self.client.state / "profile").resolve()), "Actual checkpoint escaped the allocated profile")
+        source = pin(live)
+        require(source["bytes"] == integer(field(checkpoint, "size"), "actual checkpoint bytes", 1) and
+                source["sha256"] == text(field(checkpoint, "sha256"), "actual checkpoint SHA"), "Actual saved file differs from the original MCP receipt")
+        self.checkpoint_observations += 1
+        if self.last_native_record is None:
+            raise CaseBlocked("Original native snapshot source is unavailable")
+        request: ReadbackRequestBody = {
+            "schema": "living-artifacts-checkpoint-readback-request-v1", "run_id": self.run_id, "machine_id": self.machine_id,
+            "pid": before.pid, "connection_generation": before.generation_decimal, "actor_character_id": before.player_id,
+            "date_raw": before.date_raw, "actual_source_save": source, "expected_target_id": target,
+            "required_response_schema": "living-artifacts-checkpoint-readback-v1", "required_unknown_token_policy": "error",
+            "original_native_frame_record": self.last_native_record, "observation_number": self.checkpoint_observations,
+            "storage_policy": "docs/storage-retention-policy.json", "business_pass": False}
+        response = self.client.root_checkpoint(f"checkpoint-readback-{self.checkpoint_observations:02d}", object_value(request), reserve=180)
+        inputs, references = verify_readback(response, run_id=self.run_id, machine_id=self.machine_id,
+            reviewer=self.client.operator_reviewer, frame=before, source_save=source)
+        require(target is None or inputs.target_id == target, "Actual saved target reference changed")
+        native = self.observe_item(inputs.target_id)
+        require(self.current().date_raw == before.date_raw and type(native.get("equipped")) is bool,
+                "Native owner/equipment crosscheck is unavailable or from another date")
+        actual_equipped = native["equipped"]
+        if type(actual_equipped) is not bool:
+            raise CaseBlocked("Native equipment predicate is unavailable")
+        target_item = [item for item in inputs.artifacts if item.artifact_id == inputs.target_id]
+        require(len(target_item) == 1, "Actual saved target artifact is not unique")
+        selected = CheckpointSample.from_saved(target_item[0], inputs, native_equipped=actual_equipped)
+        self.last_saved_inputs = inputs
+        self.refs.extend(references)
         if self.first_sample is None:
             self.first_sample = selected
-        first = self.first_sample
-        start = self.start
-        if start is None:
-            raise CaseBlocked("Native opening frame absent")
-        # Join the two observed day counters, never an assumed global epoch.
-        # Native day advancement's public contract uses 24 raw calendar hours.
-        require(owner.date_raw // 24 - start.date_raw // 24 == selected.game_day - first.game_day,
-                "Getter sample is not from the current native day; do not credit stale logs")
-        require(selected.pending == 0 and selected.xp < 100 * selected.level, "Actual post-settlement XP invariant violated")
         self.last_sample = selected
-        reference = write_once(self.client.output / f"observer-{selected.sequence:04d}-{self.sequence:04d}.json", {
-            "schema_version": 1, "run_id": self.run_id, "machine_id": self.machine_id, "observed_at_utc": utc_now(),
-            "authority": "fixture-readonly-getter-log-auxiliary", "native_date_raw": owner.date_raw,
-            "actual_log_sha256_at_capture": hashlib.sha256(raw).hexdigest(), "sample": selected.to_json(),
-            "actual_line": sample_lines[-1], "source_log_path": str(self.client.state / "profile/logs/debug.log"),
-            "original_native_frame_record": json_value(self.last_native_record),
+        reference = write_once(self.client.output / f"observer-checkpoint-{self.checkpoint_observations:02d}.json", {
+            "schema_version": 2, "run_id": self.run_id, "machine_id": self.machine_id, "observed_at_utc": utc_now(),
+            "native_date_raw": before.date_raw, "sample": selected.to_json(), "saved_inputs": inputs.to_json(),
+            "readback_response": json_value(response), "original_native_frame_record": json_value(self.last_native_record),
             "current_native_artifact_variable_query": False})
         self.refs.append(reference)
         return selected, reference
 
-    def observe_item(self, target: str) -> Object:
+    def observe_item(self, target: str) -> dict[str, object]:
         reference = int(decimal_id(target, "target", allow_zero=True))
         require(reference <= 2**32 - 2, "Native numeric artifact API requires a safe full uint32 reference")
         result = self.call(ITEM, {"artifact_id": reference})
@@ -352,31 +399,60 @@ class Session:
                 "Native item read crossed identity/date/source")
         return result
 
-    def open_inventory(self) -> None:
-        query = self.call(WINDOW, {"window_kind": "inventory"})
-        if field(query, "available") is not True:
-            raise CaseBlocked("Current original inventory window context unavailable")
-        current = field(query, "current")
-        if field(current, "available") is True and field(current, "native_visible") is True and field(current, "effective_visible") is True:
+    def open_inventory(self, target: str) -> None:
+        if self.original_action_unknown:
+            raise CaseBlocked("Original action result is unknown; no second inventory-opening intent is permitted")
+        item = self.observe_item(target)
+        if item.get("inventory_view_available") is True and item.get("inventory_view_visible") is True:
             return
+        require(item.get("inventory_view_visible") is False, "Actual ITEM does not prove a closed inventory view")
         self.original_action_unknown = True
-        submitted = self.call(OPEN)
+        try:
+            submitted = self.call(OPEN)
+        except CaseCallUnavailable as failure:
+            # This exact pinned Python guard raises before its native frame,
+            # once claim or dispatch (source lines25-49). A bare ACK/error from
+            # any other stage cannot authorize a second opening route.
+            if failure.tool != OPEN or str(failure) != REFUSAL or failure.result_present or failure.record is None:
+                raise
+            source = pre_intent_source(self.client.frozen)
+            self.original_action_unknown = False
+            frame = self.current()
+            request: InventoryOpenRequest = {"schema": "living-artifacts-inventory-gui-open-request-v1", "run_id": self.run_id,
+                "machine_id": self.machine_id, "pid": frame.pid, "connection_generation": frame.generation_decimal,
+                "actor_character_id": frame.player_id, "date_raw": frame.date_raw, "target_artifact_id": target,
+                "original_native_refusal": failure.record, "refusal_source": source, "original_open_intent_not_admitted": True,
+                "action": "open-inventory-only", "required_route": "desktop_coordinate_map", "business_pass": False}
+            self.refs.append(source)
+            self.original_action_unknown = True
+            response = self.client.root_checkpoint(f"inventory-gui-open-{self.sequence:04d}", object_value(request), reserve=180)
+            opened = parse_opening(response, frame=frame, run_id=self.run_id, machine_id=self.machine_id,
+                reviewer=self.client.operator_reviewer, target=target, refusal=failure.record)
+            self.refs.extend(opened.evidence)
+            if opened.status != "completed":
+                self.original_action_unknown = opened.submitted
+                raise CaseBlocked(opened.reason or "Original GUI inventory opening did not complete")
+            self.snapshot()
+            actual = self.observe_item(target)
+            require(self.current().date_raw == frame.date_raw and actual.get("inventory_view_available") is True and
+                    actual.get("inventory_view_visible") is True, "Independent current ITEM did not confirm GUI inventory visibility")
+            self.original_action_unknown = False
+            return
         if submitted.get("once_intent_consumed") is not True:
             raise CaseBlocked("Original inventory-open intent was not admitted")
         sequence = integer(field(submitted, "intent_sequence"), "actual inventory sequence", 1)
         for _ in range(3):
             after = self.call(OPEN_POST, {"expected_intent_sequence": sequence})
             if after.get("desired_window_observed") is True:
-                verify = self.call(WINDOW, {"window_kind": "inventory"})
-                state = field(verify, "current")
-                require(field(state, "native_visible") is True and field(state, "effective_visible") is True,
-                        "Independent native inventory view did not confirm opening")
+                verify = self.observe_item(target)
+                require(verify.get("inventory_view_available") is True and verify.get("inventory_view_visible") is True,
+                        "Independent native ITEM did not confirm inventory opening")
                 self.original_action_unknown = False
                 return
         raise CaseBlocked("Original inventory-open result unknown; do not submit again")
 
     def equip(self, target: str, desired: bool) -> Object:
-        self.open_inventory()
+        self.open_inventory(target)
         before = self.observe_item(target)
         require(before.get("native_equipped_observed") is True and type(before.get("equipped")) is bool and before["equipped"] is not desired,
                 "Native initial equipment predicate differs; no toggle or borrowed action is permitted")
@@ -444,14 +520,22 @@ def run_case(context: object, client: object) -> Object:
     try:
         session.refs.extend(_prepared_sources(context, client.state))
         session.snapshot()
-        raw = client.log_bytes()
-        input_bindings = _inputs(raw)
-        target_owner, target = input_bindings["target"]
-        require(target_owner == str(session.current().player_id) and all(owner == target_owner for owner, _ in input_bindings.values()),
-                "Actual fixture inputs do not belong to the native player")
-        initial, initial_ref = session.observer(target)
+        initial, initial_ref = session.observer(None)
+        inputs = session.last_saved_inputs
+        if inputs is None:
+            raise CaseBlocked("Actual saved fixture input references are unavailable")
+        target_owner, target = inputs.player_id, inputs.target_id
+        input_bindings: dict[str, tuple[str, str]] = {"target": (target_owner, target)}
+        for item in inputs.artifacts:
+            if item.artifact_id != target:
+                require(item.rarity not in input_bindings, "Actual saved material rarities are not unique")
+                input_bindings[item.rarity] = item.owner_id, item.artifact_id
+        require(set(input_bindings) == {"target", "common", "masterwork", "famed", "illustrious"} and
+                target_owner == str(session.current().player_id) and all(owner == target_owner for owner, _ in input_bindings.values()),
+                "Actual saved fixture inputs do not belong to the native player")
         require(not initial.equipped and (initial.level, initial.xp, initial.growth_sequence) == (1, 92, 0),
                 "Observed initial inputs differ from frozen G01 precondition")
+        require(initial.date_literal == "1066.9.15", "This source-bound Robert case must start at actual saved 1066.9.15")
         actual = session.observe_item(target)
         owned = {str(native_id(item, "owned input artifact", allow_zero=True)) for item in array(field(actual, "owned_ids"), "actual owned inventory")}
         require({item[1] for item in input_bindings.values()} <= owned, "Native actual inventory lacks one of the five observed inputs")
@@ -460,13 +544,15 @@ def run_case(context: object, client: object) -> Object:
         active_check = "LW-G01"
         before = initial
         current = initial
-        while current.month == before.month or (current.level, current.xp) == (1, 92):
+        # The first actual monthly boundary after the pinned Sep15 bookmark is
+        # Oct1, sixteen real public daily advances. Save only at checkpoints.
+        for _ in range(16):
             session.advance_one()
-            current, _ = session.observer(target)
             native = session.observe_item(target)
-            require(native.get("equipped") is True and current.equipped, "Actual target ceased being equipped during G01")
-            if current.month > before.month + 1:
-                raise CaseFailed("G01 did not settle at the first actual monthly boundary")
+            require(native.get("equipped") is True, "Actual target ceased being equipped during G01")
+        current, _ = session.observer(target)
+        require(current.date_literal == "1066.10.1" and current.month == before.month + 1,
+                "Actual saved/native daily progression did not reach the first monthly boundary")
         if (current.level, current.xp, current.growth_sequence) != (2, 0, 1):
             raise CaseFailed("Actual +8 monthly G01 did not automatically resolve 1/92 to 2/0 with one growth")
         checks.append(_check(active_check, "PASS", None, session.refs, {"before": before.to_json(), "after": current.to_json(),
@@ -474,13 +560,14 @@ def run_case(context: object, client: object) -> Object:
         active_check = "CORE-UNEQUIP-01"
         unequip = session.equip(target, False)
         frozen = current
-        while current.month == frozen.month:
+        for _ in range(31):
             session.advance_one()
-            current, _ = session.observer(target)
             native = session.observe_item(target)
-            require(native.get("equipped") is False and not current.equipped, "Native/log equipment predicates disagree after unequip")
-            if (current.level, current.xp, current.growth_sequence) != (frozen.level, frozen.xp, frozen.growth_sequence):
-                raise CaseFailed("Unequipped artifact gained XP or evolved during an actual unoccupied month")
+            require(native.get("equipped") is False, "Native equipment predicate changed during unequipped month")
+        current, _ = session.observer(target)
+        require(current.date_literal == "1066.11.1" and current.month == frozen.month + 1, "Actual saved unequipped month boundary differs")
+        if (current.level, current.xp, current.growth_sequence) != (frozen.level, frozen.xp, frozen.growth_sequence):
+            raise CaseFailed("Unequipped artifact gained XP or evolved during an actual unoccupied month")
         checks.append(_check(active_check, "PASS", None, session.refs, {"native_unequip": unequip, "before": frozen.to_json(),
                               "after": current.to_json(), "scope": "monthly-XP-and-evolution-stop-only; aggregate modifiers require separate evidence"}))
         active_check = "CORE-FEED-01"
@@ -492,7 +579,6 @@ def run_case(context: object, client: object) -> Object:
                              session.refs, {"ordinary_context_supported": json_value(payload.get("ordinary_context_supported")),
                              "unsupported_reason": json_value(payload.get("unsupported_reason")), "production_feed_submitted": False,
                              "fixture_feed_submitted": False, "required_actual_material_ids": [input_bindings[rarity][1] for rarity in ("common", "masterwork", "famed", "illustrious")]}))
-        session.call("ck3_save_checkpoint")
     except CaseFailed as failure:
         error = str(failure)
         checks.append(_check(active_check, "FAIL", error, session.refs, {}))
@@ -504,13 +590,14 @@ def run_case(context: object, client: object) -> Object:
         if required not in finished:
             checks.append(_check(required, "BLOCKED", "Dependent earlier stage did not complete; no action or business outcome inferred", [], {}))
     complete = all(check["status"] == "PASS" for check in checks)
-    result: Object = {"schema": "living-artifacts-core-case-result-v1", "schema_version": 1, "run_id": session.run_id,
+    result: Object = {"schema": "living-artifacts-core-case-result-v2", "schema_version": 2, "run_id": session.run_id,
         "product": "living-artifacts", "case": "core_continuous", "machine_id": session.machine_id, "observed_at_utc": utc_now(),
         "status": "PASS" if complete else "FAIL" if any(check["status"] == "FAIL" for check in checks) else "BLOCKED",
         "checks": json_value(checks), "deferred_checks": list(contract.deferred_checks), "actual_natural_days": session.days,
         "actual_public_calls_budgeted": session.calls, "original_action_unknown": session.original_action_unknown,
         "case_contract_qualified": complete, "gui_contract_qualified": False, "business_pass": False, "product_release_pass": False,
-        "current_native_artifact_variable_query": False, "fixture_getter_log_credit": session.first_sample is not None, "error": error,
+        "current_native_artifact_variable_query": False, "fixture_getter_log_credit": False,
+        "actual_checkpoint_readback_credit": session.first_sample is not None, "error": error,
         "normal_close_owner": "shared entry/CaseClient", "normal_close_pending": True}
     write_once(client.output / RESULT_NAME, result)
     return result
@@ -525,7 +612,7 @@ def verify_case(context: object) -> Object:
                 "business_pass": False, "product_release_pass": False}
     result = read(path)
     _prepared_sources(context, Path(text(field(context, "state_dir"), "allocated state")))
-    require(result.get("schema") == "living-artifacts-core-case-result-v1" and integer(field(result, "schema_version"), "result schema version", 1, 1) == 1,
+    require(result.get("schema") == "living-artifacts-core-case-result-v2" and integer(field(result, "schema_version"), "result schema version", 2, 2) == 2,
             "Actual retained result schema differs")
     require(result["run_id"] == field(context, "run_id") and result["product"] == "living-artifacts" and result["case"] == "core_continuous",
             "Actual retained result crossed the public run/product/case")

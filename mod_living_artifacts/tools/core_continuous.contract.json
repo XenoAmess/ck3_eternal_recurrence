@@ -1,20 +1,20 @@
 {
-  "schema": "living-artifacts-core-continuous-case-v1",
-  "schema_version": 1,
+  "schema": "living-artifacts-core-continuous-case-v2",
+  "schema_version": 2,
   "product": "living-artifacts",
   "case_id": "core_continuous",
   "acceptance_scope": "fixture_live_core_first_stage",
   "maximum_natural_days": 72,
   "max_public_calls": 420,
   "day_timeout_seconds": 60,
-  "expected_actor_character_id": 29829,
+  "actor_binding_authority": "original-source-bound-frontend-start-and-two-native-root-observations",
   "post_start": {"government_key": "feudal_government", "primary_title_tier_key": "duchy", "independent": true},
   "startup_source_guard": {
     "bookmark_key": "bm_1066_rags_to_riches",
     "character_name_key": "bookmark_rags_to_riches_duke_robert",
     "history_id": "1128",
     "start_date": "1066.9.15",
-    "post_start_authority": "Source-derived expectation only; shared frontend must observe actual government/tier/independence after Start, and adapter must observe actual actor29829",
+    "post_start_authority": "Source-derived expectation only; runtime actor is bound from this run's original Robert frontend Start and two matching actual native campaign-root observations. History1128 is not a runtime ID.",
     "sources": [
       {"path": "common/bookmarks/bookmarks/00_bookmarks.txt", "sha256": "fee9519196b964bb3eae364ef459f7bc92edff0a435be14b81a2377ab1db1472", "lines": "1811-1822", "supports": "Robert history1128, d_apulia and feudal_government"},
       {"path": "history/characters/norman.txt", "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b", "lines": "467-488", "supports": "history1128 is living Robert Guiscard at 1066 start"},
@@ -30,7 +30,7 @@
     "all-twelve-abilities", "all-eight-curses", "AI-baron-unlanded-cultivation", "inheritance-and-transfer",
     "Chinese-screenshot-review", "Workshop-upload-and-public-readback"
   ],
-  "observer_authority": "fixture-readonly-getter-log-cross-checked-with-native-owner-and-equipment",
+  "observer_authority": "three-actual-checkpoints-strict-melt-and-independent-native-owner-equipment-crosscheck",
   "artifact_picker_boundary": "ordinary interaction tools accept no artifact target; no generic ScriptedGUI route is registered",
   "whole_product_acceptance_credit": false
 }

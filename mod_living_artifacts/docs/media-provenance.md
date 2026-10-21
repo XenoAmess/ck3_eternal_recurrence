@@ -8,4 +8,8 @@
 
 本次导出机器 `pc-20260924rtuf-f11af23c08`，UTC `2026-10-21T20:00:31.511524+00:00`，原始回执 `D:/workspace/ck3-living-artifacts-20261022/media/thumbnail-export.json`。工具包SHA为`1fdfe4558dcf17a72ff5f721b987a86949e1bcde3d53a70ce2b39c84f8815325`，原图SHA为`7f8f65648994719a52d569c3ef8d7bcf82ebd012726f61da67a463739c0053fb`。
 
-用户要求的实机图属于独立交付项；须从通过准入的真实CK3窗口取得，绑定machine/run/PID/游戏版本与加载manifest，不能把本封面计入。Workshop additional previews实际上传及匿名下载回读的顺序、像素与来源将在完成后追加；目前没有截图或公开上传事实。
+用户要求的实机图属于独立交付项；须从通过准入的真实CK3窗口取得，绑定machine/run/PID/游戏版本与加载manifest，不能把本封面计入。Workshop additional previews实际上传及匿名下载回读的顺序、像素与来源将在完成后追加；目前没有 Workshop 上传事实。
+
+已取得并逐字节归档一张[真实库存原图](evidence/r2-inventory.png)，1920×1080、2,520,629字节，SHA `48abbf50c049b99ffcd39e9df50b9f8716eafb76e2cd1f4c0e6b8ace8a25b020`。来源机器 `pc-20260924rtuf-f11af23c08`，实际拍摄时间 `2026-10-21T21:44:43.973072Z`，R0002/PID10924/generation1，CK3 1.20.0.4/build25734779。保存了[原 capture 回执](evidence/r2-inventory.capture.json)和[加载来源、归档及直接审阅记录](evidence/r2-inventory.provenance.json)。没有裁切、重绘或修改像素。
+
+该图显示英语测试夹具创建的活武器目标与四档喂养材料，拍摄时武器槽仍为空。它只作为开发测试证据；不能宣传为自然获得、成长通过、正式中文版界面或完整验收通过。R2 后续装备的通过结论来自独立原生读回，见[运行记录](runtime-r2-issues.md)。

@@ -208,7 +208,9 @@ class CoreGenerationTests(unittest.TestCase):
         self.assertEqual(script.scalar(deadline, "value").value, "current_date")
         self.assertEqual(script.scalar(deadline, "add").value, "90")
         renew = self.triggers.named("xalw_can_renew_suppression_trigger")
-        comparison = self.triggers.scalar(renew, "var:xalw_growth_suppressed_until")
+        renewal_branch = self.triggers.descendants(renew, "trigger_if")
+        self.assertEqual(len(renewal_branch), 1)
+        comparison = self.triggers.scalar(renewal_branch[0], "var:xalw_growth_suppressed_until")
         self.assertEqual((comparison.operator, comparison.value), ("<=", "xalw_renewal_window_ends_value"))
         window = self.values.named("xalw_renewal_window_ends_value")
         self.assertEqual(self.values.scalar(window, "value").value, "current_date")
@@ -264,6 +266,118 @@ class CoreGenerationTests(unittest.TestCase):
             self.assertEqual(interactions.scalar(block, "ai_frequency").value, "0")
         decision = Script(core.render_core_decisions())
         self.assertEqual(decision.scalar(decision.named("xalw_manage_decision"), "ai_check_interval").value, "0")
+
+    def assert_lazy_branches(
+        self, script: Script, parent: Block, fields: tuple[str, ...], *, missing_allowed: bool,
+    ) -> tuple[Block, ...]:
+        found: list[Block] = []
+        for branch in script.descendants(parent, "trigger_if"):
+            guard = script.child(branch, "limit")
+            presence = {item.value for item in script.scalars(guard) if item.key == "has_variable"}
+            if presence != set(fields):
+                continue
+            enclosing = max(script.ancestors(branch), key=lambda block: block.opening)
+            siblings = script.children(enclosing)
+            following = siblings[siblings.index(branch) + 1]
+            self.assertEqual(following.key, "trigger_else")
+            self.assertEqual(script.scalar(following, "always").value, "yes" if missing_allowed else "no")
+            found.append(branch)
+        self.assertTrue(found, (parent.key, fields))
+        return tuple(found)
+
+    def test_optional_suppression_and_renewal_require_present_deadline(self) -> None:
+        for name, operator, value in (
+            ("xalw_is_growth_suppressed_trigger", ">", "current_date"),
+            ("xalw_can_renew_suppression_trigger", "<=", "xalw_renewal_window_ends_value"),
+        ):
+            parent = self.triggers.named(name)
+            branches = self.assert_lazy_branches(self.triggers, parent, ("xalw_growth_suppressed_until",), missing_allowed=False)
+            self.assertEqual(len(branches), 1)
+            comparison = self.triggers.scalar(branches[0], "var:xalw_growth_suppressed_until")
+            self.assertEqual((comparison.operator, comparison.value), (operator, value))
+
+    def test_optional_debt_keeper_guards_independent_fields_without_inventory(self) -> None:
+        parent = self.triggers.named("xalw_owner_needs_monthly_trigger")
+        alternatives = self.triggers.child(parent, "OR")
+        self.assertEqual(len(tuple(item for item in self.triggers.children(alternatives) if item.key == "any_character_artifact")), 2)
+        for field in ("xalw_content_loan_periods", "xalw_content_loan_arrears"):
+            branches = self.assert_lazy_branches(self.triggers, parent, (field,), missing_allowed=False)
+            self.assertEqual(len(branches), 1)
+            comparison = self.triggers.scalar(branches[0], "var:" + field)
+            self.assertEqual((comparison.operator, comparison.value), (">", "0"))
+
+    def test_optional_appeasement_hunger_and_expiry_are_absent_no_ops(self) -> None:
+        for script, parent, operator in (
+            (self.values, self.values.named("xalw_actual_hunger_value"), ">"),
+            (self.events, self.events.named("xalw.5"), "<="),
+        ):
+            branches = self.assert_lazy_branches(script, parent, ("xalw_appeased_until",), missing_allowed=False)
+            self.assertEqual(len(branches), 1)
+            comparison = script.scalar(branches[0], "var:xalw_appeased_until")
+            self.assertEqual((comparison.operator, comparison.value), (operator, "current_date"))
+
+    def test_first_appeasement_missing_deadline_stays_allowed_in_ui_and_effect(self) -> None:
+        for script, parent in (
+            (self.effects, self.effects.named("xalw_appease_effect")),
+            (self.events, self.events.named("xalw.10")),
+        ):
+            branches = self.assert_lazy_branches(script, parent, ("xalw_appease_available_on",), missing_allowed=True)
+            self.assertEqual(len(branches), 1)
+            comparison = script.scalar(branches[0], "var:xalw_appease_available_on")
+            self.assertEqual((comparison.operator, comparison.value), ("<=", "current_date"))
+
+    def test_empty_upgrade_slots_cannot_read_rank_or_become_candidates(self) -> None:
+        parent = self.effects.named("xalw_upgrade_affix_effect")
+        for slot in range(1, 7):
+            field = f"xalw_affix_rank_{slot}"
+            branches = self.assert_lazy_branches(self.effects, parent, (f"xalw_affix_{slot}", field), missing_allowed=False)
+            self.assertEqual(len(branches), 2)  # total eligibility and actual random-list candidate
+            for branch in branches:
+                comparison = self.effects.scalar(branch, "var:" + field)
+                self.assertEqual((comparison.operator, comparison.value), ("<", "3"))
+        fallback = self.effects.child(parent, "else")
+        self.assertEqual(self.effects.scalar(fallback, "xalw_mutate_affix_effect").value, "yes")
+
+    def test_ai_rank_score_reads_only_inside_complete_slot_effect_branches(self) -> None:
+        parent = self.values.named("xalw_ai_living_adjustment_value")
+        checked = 0
+        for addition in self.values.descendants(parent, "add"):
+            scalars = tuple(item for item in self.values.scalars(addition) if item.key == "value")
+            if not scalars:
+                continue
+            match = re.fullmatch(r"var:(xalw_(?:affix|curse))_rank_([1-6])", scalars[0].value)
+            if match is None:
+                continue
+            container = max((item for item in self.values.ancestors(addition) if item.key == "if"), key=lambda block: block.opening)
+            guard = self.values.child(container, "limit")
+            presence = {item.value for item in self.values.scalars(guard) if item.key == "has_variable"}
+            stem, slot = match.groups()
+            self.assertTrue({f"{stem}_{slot}", f"{stem}_rank_{slot}"}.issubset(presence))
+            checked += 1
+        self.assertEqual(checked, 10)
+
+    def test_monthly_keeper_is_shared_by_bootstrap_start_and_continuation(self) -> None:
+        actions = Script(core.render_core_on_actions())
+        bootstrap = actions.named("xalw_bootstrap_on_action")
+        holders = actions.descendants(bootstrap, "every_living_character")
+        self.assertEqual(len(holders), 1)
+        startup = actions.scalar(actions.child(holders[0], "limit"), "xalw_owner_needs_monthly_trigger")
+        self.assertEqual(startup.value, "yes")
+        discovery = self.effects.named("xalw_discover_owner_effect")
+        chain_starts = tuple(branch for branch in self.effects.descendants(discovery, "if")
+                             if any(item.key == "xalw_owner_needs_monthly_trigger"
+                                    for item in self.effects.scalars(self.effects.child(branch, "limit"))))
+        self.assertEqual(len(chain_starts), 1)
+        start_guard = self.effects.scalar(self.effects.child(chain_starts[0], "limit"), "xalw_owner_needs_monthly_trigger")
+        self.assertEqual(start_guard.value, "yes")
+        daily = self.events.child(self.events.named("xalw.1"), "immediate")
+        continuations = tuple(branch for branch in self.events.children(daily) if branch.key == "if"
+                              and self.events.descendants(branch, "trigger_event"))
+        self.assertEqual(len(continuations), 1)
+        continuation = self.events.scalar(self.events.child(continuations[0], "limit"), "xalw_owner_needs_monthly_trigger")
+        self.assertEqual(continuation.value, "yes")
+        ending = self.events.child(daily, "else")
+        self.assertEqual(self.events.scalar(ending, "remove_variable").value, "xalw_monthly_chain")
 
 
 if __name__ == "__main__":

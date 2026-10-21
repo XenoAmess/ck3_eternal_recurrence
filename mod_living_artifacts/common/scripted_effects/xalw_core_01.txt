@@ -336,35 +336,167 @@ xalw_mutate_affix_effect = {
 }
 
 xalw_upgrade_affix_effect = {
-	if = { limit = { OR = { AND = { has_variable = xalw_affix_1 var:xalw_affix_rank_1 < 3 } AND = { has_variable = xalw_affix_2 var:xalw_affix_rank_2 < 3 } AND = { has_variable = xalw_affix_3 var:xalw_affix_rank_3 < 3 } AND = { has_variable = xalw_affix_4 var:xalw_affix_rank_4 < 3 } AND = { has_variable = xalw_affix_5 var:xalw_affix_rank_5 < 3 } AND = { has_variable = xalw_affix_6 var:xalw_affix_rank_6 < 3 } } } random_list = {
+	if = { limit = { OR = { AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1
+			}
+			var:xalw_affix_rank_1 < 3
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	 AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2
+			}
+			var:xalw_affix_rank_2 < 3
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	 AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3
+			}
+			var:xalw_affix_rank_3 < 3
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	 AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4
+			}
+			var:xalw_affix_rank_4 < 3
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	 AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5
+			}
+			var:xalw_affix_rank_5 < 3
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	 AND = {
+		trigger_if = {
+			limit = {
+				has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6
+			}
+			var:xalw_affix_rank_6 < 3
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	 } } random_list = {
 	1 = {
-		trigger = { has_variable = xalw_affix_1 var:xalw_affix_rank_1 < 3 }
-		change_variable = { name = xalw_affix_rank_1 add = 1 }
+		trigger = { AND = {
+			trigger_if = {
+				limit = {
+					has_variable = xalw_affix_1 has_variable = xalw_affix_rank_1
+				}
+				var:xalw_affix_rank_1 < 3
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+		 }
+		            change_variable = { name = xalw_affix_rank_1 add = 1 }
 	}
 
 	1 = {
-		trigger = { has_variable = xalw_affix_2 var:xalw_affix_rank_2 < 3 }
-		change_variable = { name = xalw_affix_rank_2 add = 1 }
+		trigger = { AND = {
+			trigger_if = {
+				limit = {
+					has_variable = xalw_affix_2 has_variable = xalw_affix_rank_2
+				}
+				var:xalw_affix_rank_2 < 3
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+		 }
+		            change_variable = { name = xalw_affix_rank_2 add = 1 }
 	}
 
 	1 = {
-		trigger = { has_variable = xalw_affix_3 var:xalw_affix_rank_3 < 3 }
-		change_variable = { name = xalw_affix_rank_3 add = 1 }
+		trigger = { AND = {
+			trigger_if = {
+				limit = {
+					has_variable = xalw_affix_3 has_variable = xalw_affix_rank_3
+				}
+				var:xalw_affix_rank_3 < 3
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+		 }
+		            change_variable = { name = xalw_affix_rank_3 add = 1 }
 	}
 
 	1 = {
-		trigger = { has_variable = xalw_affix_4 var:xalw_affix_rank_4 < 3 }
-		change_variable = { name = xalw_affix_rank_4 add = 1 }
+		trigger = { AND = {
+			trigger_if = {
+				limit = {
+					has_variable = xalw_affix_4 has_variable = xalw_affix_rank_4
+				}
+				var:xalw_affix_rank_4 < 3
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+		 }
+		            change_variable = { name = xalw_affix_rank_4 add = 1 }
 	}
 
 	1 = {
-		trigger = { has_variable = xalw_affix_5 var:xalw_affix_rank_5 < 3 }
-		change_variable = { name = xalw_affix_rank_5 add = 1 }
+		trigger = { AND = {
+			trigger_if = {
+				limit = {
+					has_variable = xalw_affix_5 has_variable = xalw_affix_rank_5
+				}
+				var:xalw_affix_rank_5 < 3
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+		 }
+		            change_variable = { name = xalw_affix_rank_5 add = 1 }
 	}
 
 	1 = {
-		trigger = { has_variable = xalw_affix_6 var:xalw_affix_rank_6 < 3 }
-		change_variable = { name = xalw_affix_rank_6 add = 1 }
+		trigger = { AND = {
+			trigger_if = {
+				limit = {
+					has_variable = xalw_affix_6 has_variable = xalw_affix_rank_6
+				}
+				var:xalw_affix_rank_6 < 3
+			}
+			trigger_else = {
+				always = no
+			}
+		}
+		 }
+		            change_variable = { name = xalw_affix_rank_6 add = 1 }
 	}
 
 	} }

@@ -9,34 +9,22 @@ import tempfile
 import unittest
 
 import acceptance_adapter as adapter
-from acceptance_contract import ArtifactSample, Object, exact_getter_integer, json_value, pin, read, write_once
+from acceptance_contract import ArtifactSample, Object, array, exact_getter_integer, json_value, mapping, pin, read, write_once
 import prepare_fixture
 from living_artifacts_core import render_core_localization
+from inventory_gui_contract import REFUSAL
+from checkpoint_callback import checked_pin
 from test_core_generation import Script
+from test_inventory_gui_contract import response_fixture
+from startup_actor_binding import StartupActorBinding
 
 
 def sample_line(*, equipped: bool = True) -> str:
-    template = prepare_fixture._sample_log(equipped)
-    match = re.fullmatch(r'debug_log = "(.*)"', template)
-    if match is None:
-        raise AssertionError("Actual logger producer changed its literal form")
-    values = {
-        "xalw_fixture_item.GetOwner.GetID": "29829",
-        "xalw_fixture_item.GetID": "16777217",
-        "xalw_fixture_item.GetDurability|5": "100.00000",
-        "xalw_fixture_owner.MakeScope.Var('xalw_fixture_observer_sequence').GetValue|5": "2.00000",
-        "xalw_fixture_owner.MakeScope.Var('xalw_fixture_observed_day').GetValue|5": "1000.00000",
-        "xalw_fixture_owner.MakeScope.ScriptValue('xalw_current_month_value')|5": "12800.00000",
-    }
-    for name, value in (("level", "2"), ("xp_in_level", "0"), ("pending_xp", "0"), ("growth_sequence", "1"),
-                        ("last_settled_month", "12800"), ("resonance", "25")):
-        values[f"xalw_fixture_item.MakeScope.Var('xalw_{name}').GetValue|5"] = value + ".00000"
-    def resolve(found: re.Match[str]) -> str:
-        key = found.group(1)
-        if key not in values:
-            raise AssertionError("Unit getter fixture must explicitly bind new producer field: " + key)
-        return values[key]
-    return re.sub(r"\[([^\]]+)\]", resolve, match.group(1))
+    # Authored legacy-parser boundary only. R2 proved the removed hidden logger
+    # cannot generate this line; these rows never qualify a real game getter.
+    return (f"XALW_SAMPLE_V1;seq=2.00000;owner=29829;artifact=16777217;equipped={int(equipped)};"
+            "game_day=1000.00000;month=12800.00000;level=2.00000;xp=0.00000;pending=0.00000;"
+            "growth=1.00000;last_month=12800.00000;resonance=25.00000;durability=100.00000")
 
 
 class UnitPort:
@@ -47,6 +35,7 @@ class UnitPort:
         self.state = output / "state"
         self.manifest: object = {"machine_id": "unit-machine", "game": {"version": "1.20.0.4", "exe_sha256": "a" * 64}}
         self.frozen: object = {"run_id": "unit-run"}
+        self.operator_reviewer = "unit-root"
         self.calls: list[str] = []
         self.frame: Object = {
             "paused": True, "map_ready": True, "source": "injected-dll-named-pipe", "backend_id": "native-headless",
@@ -74,6 +63,7 @@ class UnitPort:
             result = {"available": True, "read_only": True, "loaded_source_pins_verified": True, "personally_owned": True,
                       "inventory_artifact": True, "requested_artifact_id": 16777217, "played_character_id": 29829,
                       "date_raw": 24000, "native_equipped_observed": True, "equipped": False, "equipped_slot_index": None,
+                      "inventory_view_available": True, "inventory_view_visible": True,
                       "effective_slot_index": 0, "replacing_artifact_id": None, "can_equip_in_effective_slot": True, "can_unequip": False}
         elif tool == adapter.EQUIP:
             result = {"once_intent_consumed": True, "intent_sequence": 1,
@@ -103,6 +93,60 @@ class UnitPort:
         raise AssertionError("No reviewer in this unit")
 
 
+class GuiPort(UnitPort):
+    """Authored refusal/GUI/readback rows; no desktop or native commands."""
+
+    def __init__(self, output: Path, *, error: str = REFUSAL, callback_status: str = "completed",
+                 actual_visible: bool = True) -> None:
+        super().__init__(output)
+        self.frozen = {"run_id": "unit-run", "source_root": str(Path(__file__).resolve().parents[2])}
+        self.error = error
+        self.callback_status = callback_status
+        self.actual_visible = actual_visible
+        self.visible = False
+        self.gui_requests: list[Object] = []
+        self.snapshot_count = 0
+
+    def snapshot(self, allow_actor_change: bool = False, require_event_free: bool = True) -> object:
+        self.snapshot_count += 1
+        write_once(self.output / f"case-snapshot-{self.snapshot_count:04d}.actual-results.json",
+                   {"rows": [{"ok": True, "result": self.frame}], "unit_test_data": True})
+        return self.frame
+
+    def execute_plan(self, steps: list[Object], name: str, timeout: int | float | None = None, reserve: int = 90) -> object:
+        tool = steps[0]["tool"]
+        if tool == adapter.OPEN:
+            self.calls.append(adapter.OPEN)
+            refusal: Object = {"ok": False, "error": self.error}  # Actual guard refusal has neither result nor after_snapshot.
+            write_once(self.output / (name + ".actual-results.json"), {"rows": [refusal], "unit_test_data": True})
+            return [refusal]
+        actual = super().execute_plan(steps, name, timeout, reserve)
+        if tool == adapter.ITEM:
+            row = mapping(array(actual, "authored rows")[0], "authored row")
+            item = mapping(row["result"], "authored item")
+            item["inventory_view_visible"] = self.visible
+            amended: Object = {"ok": True, "result": json_value(item), "after_snapshot": self.frame}
+            # Preserve exactly the authored boundary returned to Session.call.
+            (self.output / (name + ".actual-results.json")).write_text(
+                json.dumps({"rows": [amended], "unit_test_data": True}), encoding="utf-8")
+            return [amended]
+        return actual
+
+    def root_checkpoint(self, name: str, request: Object, reserve: int = 90) -> object:
+        self.gui_requests.append(request)
+        root = self.output / name
+        root.mkdir()
+        response, _, _ = response_fixture(root, pid=123, generation="1", actor=29829, date_raw=24000,
+            target="16777217", refusal=checked_pin(request["original_native_refusal"], "authored native refusal"))
+        if self.callback_status == "completed":
+            self.visible = self.actual_visible
+        else:
+            response.update(status=self.callback_status, submitted=self.callback_status == "outcome_unknown", reason="Authored GUI boundary")
+            for key in ("mapping_receipt", "source_screenshot", "after_screenshot"):
+                response[key] = None
+        return response
+
+
 class AcceptanceContractTests(unittest.TestCase):
     def test_localization_rejects_script_scope_prefix_and_keeps_named_object_methods(self) -> None:
         for language in ("simp_chinese", "english"):
@@ -111,7 +155,7 @@ class AcceptanceContractTests(unittest.TestCase):
             self.assertIn("xalw_artifact.MakeScope.Var('xalw_level')", entries["xalw.10.desc"])
         self.assertNotIn("[scope:", prepare_fixture.render_observer_effects())
 
-    def test_actual_logger_template_reaches_consumer(self) -> None:
+    def test_legacy_parser_authored_fields_are_closed(self) -> None:
         sample = ArtifactSample.parse(sample_line())
         self.assertEqual((sample.owner_id, sample.artifact_id, sample.level, sample.xp, sample.growth_sequence), ("29829", "16777217", 2, 0, 1))
         self.assertEqual(ArtifactSample.parse(sample_line(equipped=False)).equipped, False)
@@ -154,13 +198,13 @@ class AcceptanceContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "distinct"):
             adapter._inputs("\n".join(rows).replace("artifact=5", "artifact=4").encode())
 
-    def test_observer_after_initialization_only_writes_own_metadata(self) -> None:
+    def test_fixture_has_initial_inputs_and_no_periodic_or_dynamic_logger(self) -> None:
         script = Script(prepare_fixture.render_observer_effects())
-        observer = script.named("xalw_fixture_observe_effect")
-        names = [script.scalar(block, "name").value for block in script.descendants(observer, "set_variable")]
-        self.assertTrue(names)
-        self.assertTrue(all(name.startswith("xalw_fixture_") for name in names))
-        self.assertFalse(script.descendants(observer, "change_variable"))
+        observer = script.named("xalw_fixture_initialize_effect")
+        self.assertFalse(any(block.key == "xalw_fixture_observe_effect" for block in script.blocks))
+        self.assertNotIn("[", script.text)
+        self.assertNotIn("trigger_event", script.text)
+        self.assertNotIn("change_variable", script.text)
         self.assertFalse(any(scalar.key in {"xalw_feed_material_effect", "xalw_settle_xp_effect", "destroy_artifact", "equip_artifact_to_owner_replace"}
                              for block in (observer, *script.blocks) for scalar in script.scalars(block)
                              if observer.opening < scalar.start < observer.end))
@@ -168,12 +212,59 @@ class AcceptanceContractTests(unittest.TestCase):
     def test_unknown_original_equipment_ack_is_not_replayed_or_credited(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             port = UnitPort(Path(temporary))
-            session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), (), 29829))
+            session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+            # This action-only seam supplies an explicitly authored binding;
+            # separate startup tests exercise real frontend/root proof parsing.
+            session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
             with self.assertRaisesRegex(adapter.CaseBlocked, "unknown"):
                 session.equip("16777217", True)
             self.assertEqual(port.calls.count(adapter.EQUIP), 1)
             self.assertEqual(port.calls.count(adapter.EQUIP_POST), 3)
             self.assertTrue(session.original_action_unknown)
+            self.assertNotIn(adapter.WINDOW, port.calls)
+            self.assertNotIn(adapter.OPEN, port.calls)
+
+    def test_exact_pre_intent_refusal_uses_gui_once_and_independent_item_readback(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            port = GuiPort(Path(temporary))
+            session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+            session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
+            session.open_inventory("16777217")
+            self.assertEqual(port.calls, [adapter.ITEM, adapter.OPEN, adapter.ITEM])
+            self.assertEqual((len(port.gui_requests), port.snapshot_count), (1, 1))
+            self.assertFalse(session.original_action_unknown)
+            self.assertIs(port.gui_requests[0]["original_open_intent_not_admitted"], True)
+            session.open_inventory("16777217")
+            self.assertEqual(port.calls.count(adapter.OPEN), 1)
+            self.assertEqual(len(port.gui_requests), 1)
+            self.assertNotIn(adapter.WINDOW, port.calls)
+
+    def test_unknown_native_error_never_authorizes_gui_or_second_open(self) -> None:
+        for error in ("Original native dispatch outcome unavailable", "Another failure mentioning " + REFUSAL):
+            with self.subTest(error=error), tempfile.TemporaryDirectory() as temporary:
+                port = GuiPort(Path(temporary), error=error)
+                session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+                session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
+                with self.assertRaises(adapter.CaseCallUnavailable):
+                    session.open_inventory("16777217")
+                with self.assertRaisesRegex(adapter.CaseBlocked, "unknown"):
+                    session.open_inventory("16777217")
+                self.assertEqual(port.calls, [adapter.ITEM, adapter.OPEN])
+                self.assertEqual(port.gui_requests, [])
+                self.assertTrue(session.original_action_unknown)
+
+    def test_gui_unknown_is_preserved_and_completed_callback_requires_native_visibility(self) -> None:
+        for status, visible in (("outcome_unknown", False), ("completed", False)):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as temporary:
+                port = GuiPort(Path(temporary), callback_status=status, actual_visible=visible)
+                session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+                session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
+                with self.assertRaises((adapter.CaseBlocked, ValueError)):
+                    session.open_inventory("16777217")
+                with self.assertRaisesRegex(adapter.CaseBlocked, "unknown"):
+                    session.open_inventory("16777217")
+                self.assertEqual((port.calls.count(adapter.OPEN), len(port.gui_requests)), (1, 1))
+                self.assertTrue(session.original_action_unknown)
 
     def test_every_declared_optional_action_is_explicit(self) -> None:
         config = read(Path(__file__).with_name("core_continuous.contract.json"))

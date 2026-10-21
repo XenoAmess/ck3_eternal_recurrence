@@ -41,6 +41,7 @@ class CasePort(Protocol):
     state: Path
     manifest: object
     frozen: object
+    operator_reviewer: str
 
     def snapshot(self, allow_actor_change: bool = False, require_event_free: bool = True) -> object: ...
     def execute_plan(self, steps: list[Object], name: str, timeout: int | float | None = None,
@@ -199,7 +200,8 @@ class Frame:
                 "Actual public run/pipe binding differs")
         pid = integer(field(diagnostics, "bridge_pid"), "native PID", 1, 2**32 - 1)
         generation = integer(field(diagnostics, "connection_generation"), "native generation", 1)
-        require(field(hello, "pid") == pid and field(hello, "connection_generation") == generation and
+        require(integer(field(hello, "pid"), "hello PID", 1, 2**32 - 1) == pid and
+                integer(field(hello, "connection_generation"), "hello generation", 1) == generation and
                 field(hello, "ck3_build_match") is True and field(hello, "expected_ck3_version") == field(game, "version") and
                 text(field(hello, "expected_ck3_sha256"), "EXE SHA").lower() == text(field(game, "exe_sha256"), "selected EXE SHA").lower(),
                 "Native hello differs from selected exact runtime")

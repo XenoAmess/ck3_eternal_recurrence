@@ -1,0 +1,4661 @@
+{
+  "schema": "living-artifacts-acceptance-catalog-v1",
+  "schema_version": 1,
+  "requirements": [
+    {
+      "id": "LW-S01",
+      "domain": "static",
+      "cell_ids": [
+        "LW-S01"
+      ]
+    },
+    {
+      "id": "LW-S02",
+      "domain": "static",
+      "cell_ids": [
+        "LW-S02"
+      ]
+    },
+    {
+      "id": "LW-S03",
+      "domain": "static",
+      "cell_ids": [
+        "LW-S03"
+      ]
+    },
+    {
+      "id": "LW-S04",
+      "domain": "static",
+      "cell_ids": [
+        "LW-S04"
+      ]
+    },
+    {
+      "id": "LW-S05",
+      "domain": "static",
+      "cell_ids": [
+        "LW-S05"
+      ]
+    },
+    {
+      "id": "LW-S06",
+      "domain": "static",
+      "cell_ids": [
+        "LW-S06"
+      ]
+    },
+    {
+      "id": "LW-P01",
+      "domain": "prototype",
+      "cell_ids": [
+        "LW-P01",
+        "LW-G02",
+        "LW-R01",
+        "LW-C01"
+      ]
+    },
+    {
+      "id": "LW-P02",
+      "domain": "prototype",
+      "cell_ids": [
+        "LW-P02",
+        "LW-G06",
+        "LW-I01",
+        "LW-I02"
+      ]
+    },
+    {
+      "id": "LW-P03",
+      "domain": "prototype",
+      "cell_ids": [
+        "LW-P03",
+        "LW-F01",
+        "LW-F03",
+        "LW-G03"
+      ]
+    },
+    {
+      "id": "LW-L01",
+      "domain": "load",
+      "cell_ids": [
+        "LW-L01"
+      ]
+    },
+    {
+      "id": "LW-G01",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G01"
+      ]
+    },
+    {
+      "id": "LW-G02",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G02"
+      ]
+    },
+    {
+      "id": "LW-G03",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G03"
+      ]
+    },
+    {
+      "id": "LW-G04",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G04"
+      ]
+    },
+    {
+      "id": "LW-G05",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G05"
+      ]
+    },
+    {
+      "id": "LW-G06",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G06"
+      ]
+    },
+    {
+      "id": "LW-G07",
+      "domain": "growth",
+      "cell_ids": [
+        "LW-G07"
+      ]
+    },
+    {
+      "id": "LW-F01",
+      "domain": "feeding",
+      "cell_ids": [
+        "LW-F01"
+      ]
+    },
+    {
+      "id": "LW-F02",
+      "domain": "feeding",
+      "cell_ids": [
+        "LW-F02"
+      ]
+    },
+    {
+      "id": "LW-F03",
+      "domain": "feeding",
+      "cell_ids": [
+        "LW-F03"
+      ]
+    },
+    {
+      "id": "LW-F04",
+      "domain": "feeding",
+      "cell_ids": [
+        "LW-F04"
+      ]
+    },
+    {
+      "id": "LW-F05",
+      "domain": "feeding",
+      "cell_ids": [
+        "LW-F05"
+      ]
+    },
+    {
+      "id": "LW-T01",
+      "domain": "suppression",
+      "cell_ids": [
+        "LW-T01"
+      ]
+    },
+    {
+      "id": "LW-T02",
+      "domain": "suppression",
+      "cell_ids": [
+        "LW-T02"
+      ]
+    },
+    {
+      "id": "LW-T03",
+      "domain": "suppression",
+      "cell_ids": [
+        "LW-T03"
+      ]
+    },
+    {
+      "id": "LW-T04",
+      "domain": "suppression",
+      "cell_ids": [
+        "LW-T04"
+      ]
+    },
+    {
+      "id": "LW-I01",
+      "domain": "ai",
+      "cell_ids": [
+        "LW-I01"
+      ]
+    },
+    {
+      "id": "LW-I02",
+      "domain": "ai",
+      "cell_ids": [
+        "LW-I02"
+      ]
+    },
+    {
+      "id": "LW-I03",
+      "domain": "ai",
+      "cell_ids": [
+        "LW-I03"
+      ]
+    },
+    {
+      "id": "LW-I04",
+      "domain": "ai",
+      "cell_ids": [
+        "LW-I04"
+      ]
+    },
+    {
+      "id": "LW-R01",
+      "domain": "lifecycle",
+      "cell_ids": [
+        "LW-R01"
+      ]
+    },
+    {
+      "id": "LW-R02",
+      "domain": "lifecycle",
+      "cell_ids": [
+        "LW-R02"
+      ]
+    },
+    {
+      "id": "LW-R03",
+      "domain": "lifecycle",
+      "cell_ids": [
+        "LW-R03"
+      ]
+    },
+    {
+      "id": "LW-R04",
+      "domain": "lifecycle",
+      "cell_ids": [
+        "LW-R04"
+      ]
+    },
+    {
+      "id": "LW-R05",
+      "domain": "lifecycle",
+      "cell_ids": [
+        "LW-R05"
+      ]
+    },
+    {
+      "id": "LW-R06",
+      "domain": "lifecycle",
+      "cell_ids": [
+        "LW-R06"
+      ]
+    },
+    {
+      "id": "LW-U01",
+      "domain": "ui",
+      "cell_ids": [
+        "LW-U01"
+      ]
+    },
+    {
+      "id": "LW-U02",
+      "domain": "ui",
+      "cell_ids": [
+        "LW-U02"
+      ]
+    },
+    {
+      "id": "LW-U03",
+      "domain": "ui",
+      "cell_ids": [
+        "LW-U03",
+        "LW-G05",
+        "LW-X01"
+      ]
+    },
+    {
+      "id": "LW-A01",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A01"
+      ]
+    },
+    {
+      "id": "LW-A02",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A02"
+      ]
+    },
+    {
+      "id": "LW-A03",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A03"
+      ]
+    },
+    {
+      "id": "LW-A04",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A04"
+      ]
+    },
+    {
+      "id": "LW-A05",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A05"
+      ]
+    },
+    {
+      "id": "LW-A06",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A06"
+      ]
+    },
+    {
+      "id": "LW-A07",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A07"
+      ]
+    },
+    {
+      "id": "LW-A08",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A08"
+      ]
+    },
+    {
+      "id": "LW-A09",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A09"
+      ]
+    },
+    {
+      "id": "LW-A10",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A10"
+      ]
+    },
+    {
+      "id": "LW-A11",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A11"
+      ]
+    },
+    {
+      "id": "LW-A12",
+      "domain": "affix",
+      "cell_ids": [
+        "LW-A12"
+      ]
+    },
+    {
+      "id": "LW-C01",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C01"
+      ]
+    },
+    {
+      "id": "LW-C02",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C02"
+      ]
+    },
+    {
+      "id": "LW-C03",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C03"
+      ]
+    },
+    {
+      "id": "LW-C04",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C04"
+      ]
+    },
+    {
+      "id": "LW-C05",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C05"
+      ]
+    },
+    {
+      "id": "LW-C06",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C06"
+      ]
+    },
+    {
+      "id": "LW-C07",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C07"
+      ]
+    },
+    {
+      "id": "LW-C08",
+      "domain": "curse",
+      "cell_ids": [
+        "LW-C08"
+      ]
+    },
+    {
+      "id": "LW-X01",
+      "domain": "combo",
+      "cell_ids": [
+        "LW-X01"
+      ]
+    },
+    {
+      "id": "LW-X02",
+      "domain": "combo",
+      "cell_ids": [
+        "LW-X02"
+      ]
+    },
+    {
+      "id": "LW-X03",
+      "domain": "combo",
+      "cell_ids": [
+        "LW-X03"
+      ]
+    },
+    {
+      "id": "LW-X04",
+      "domain": "combo",
+      "cell_ids": [
+        "LW-X04"
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "id": "LW-S01",
+      "requirement_ids": [
+        "LW-S01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OFFLINE；输入别名仅在实际run中绑定原生身份。",
+        "使用实际源registry/生成器/JSON；不启动游戏。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-S01.action1",
+          "kind": "offline_check",
+          "route": "offline",
+          "description": "运行现有离线validator、registry与生成一致性检查。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-S01.assert1",
+          "metric": "enabled_affixes",
+          "expected_decimal": "12",
+          "description": "12/8/4启用，6+2槽，r1..3、四档80/200/500/1200及日期规则一致；候选不入池。",
+          "evidence_required": [
+            "source_registry",
+            "actual_offline_report"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-S01"
+        }
+      ]
+    },
+    {
+      "id": "LW-S02",
+      "requirement_ids": [
+        "LW-S02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OFFLINE；输入别名仅在实际run中绑定原生身份。",
+        "实际producer、parser和mypy，不只对样例dict手工判定。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-S02.action1",
+          "kind": "offline_check",
+          "route": "offline",
+          "description": "对修改范围严格mypy并运行错字段/缺字段/bool/float/null/ID边界反例。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-S02.assert1",
+          "metric": "invalid_input_accepted",
+          "expected_decimal": "0",
+          "description": "入口拒绝错误域，64位原生身份保十进制字符串，无Any/cast兜底。",
+          "evidence_required": [
+            "actual_mypy_stdout_exit",
+            "producer_consumer_negative_results"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-S02"
+        }
+      ]
+    },
+    {
+      "id": "LW-S03",
+      "requirement_ids": [
+        "LW-S03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OFFLINE；输入别名仅在实际run中绑定原生身份。",
+        "真实to_json->json.dumps/loads->严格parse；区分缺失/null/0/[]。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-S03.action1",
+          "kind": "offline_check",
+          "route": "offline",
+          "description": "运行真实生产者到消费者往返及内容/来源身份反例。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-S03.assert1",
+          "metric": "roundtrip_difference",
+          "expected_decimal": "0",
+          "description": "有序数组/义务/日期完整，不因tuple/list误判，也不宽松掩盖内容改动。",
+          "evidence_required": [
+            "serialized_original",
+            "parsed_roundtrip_comparison"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-S03"
+        }
+      ]
+    },
+    {
+      "id": "LW-S04",
+      "requirement_ids": [
+        "LW-S04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OFFLINE；输入别名仅在实际run中绑定原生身份。",
+        "实际生产成长算法，覆盖两阶段及满槽r3。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-S04.action1",
+          "kind": "offline_check",
+          "route": "offline",
+          "description": "用固定合法随机输入覆盖多级/16+/四分支/无候选回退与诅咒替换。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-S04.assert1",
+          "metric": "curse_replacement_rank",
+          "expected_decimal": "3",
+          "description": "被替换r3仍3，满阶后继续演化、原物身份保留；离线不授实机。",
+          "evidence_required": [
+            "production_branch_report"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-S04"
+        }
+      ]
+    },
+    {
+      "id": "LW-S05",
+      "requirement_ids": [
+        "LW-S05"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OFFLINE；输入别名仅在实际run中绑定原生身份。",
+        "日常简中/英文，正式包另核七外语格式；实际生成字节。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-S05.action1",
+          "kind": "offline_check",
+          "route": "offline",
+          "description": "运行静态引用/结构/BOM/key/占位符及release语言格式检查。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-S05.assert1",
+          "metric": "unresolved_reference_count",
+          "expected_decimal": "0",
+          "description": "新增解析引用和语言格式问题为0；不等于游戏界面已显示。",
+          "evidence_required": [
+            "validator_report",
+            "rendered_file_manifest"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-S05"
+        }
+      ]
+    },
+    {
+      "id": "LW-S06",
+      "requirement_ids": [
+        "LW-S06"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OFFLINE；输入别名仅在实际run中绑定原生身份。",
+        "正式builder全新输出及manifest，source-bound原体可逆恢复。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-S06.action1",
+          "kind": "offline_check",
+          "route": "offline",
+          "description": "实际双构建/verify，核排除docs/tools/fixture/强制随机及inner ID。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-S06.assert1",
+          "metric": "forbidden_runtime_files",
+          "expected_decimal": "0",
+          "description": "正式白名单与manifest一致，非活物及原版接入原体不受意外改写。",
+          "evidence_required": [
+            "formal_build_and_verify",
+            "source_projection_roundtrip"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-S06"
+        }
+      ]
+    },
+    {
+      "id": "LW-P01",
+      "requirement_ids": [
+        "LW-P01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CORE_EQUIP；输入别名仅在实际run中绑定原生身份。",
+        "复用G02/R01/C01同一合格真实穿脱来源，不额外启动。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-P01.action1",
+          "kind": "native_equip",
+          "route": "existing_mcp",
+          "description": "真实穿上/卸下并立即读持续正负modifier与owner。",
+          "required_tools": [
+            "ck3_query_player_artifact_personal_use_v1",
+            "ck3_submit_player_artifact_personal_use_v1"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-P01.assert1",
+          "metric": "unequipped_modifier_residue",
+          "expected_decimal": "0",
+          "description": "不等月轮询/刷新按钮；旧owner无持续残留，既有后果仍在。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-P01"
+        }
+      ]
+    },
+    {
+      "id": "LW-P02",
+      "requirement_ids": [
+        "LW-P02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CALENDAR_AI；输入别名仅在实际run中绑定原生身份。",
+        "复用G06/I01/I02的统治者、男爵、无地与51件队列。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-P02.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "跨真实月/重载，观察每原件实际处理。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-P02.assert1",
+          "metric": "monthly_duplicate_count",
+          "expected_decimal": "0",
+          "description": "全actor正常覆盖，末件后续批次可达，无重复链。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-P02"
+        }
+      ]
+    },
+    {
+      "id": "LW-P03",
+      "requirement_ids": [
+        "LW-P03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次GUI_FEED；输入别名仅在实际run中绑定原生身份。",
+        "复用F01/F03/G03真实选择与提交；不另造测试feed效果。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-P03.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "从真实管理UI选择目标及材料并提交，消费原物后自动跨级。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-P03.assert1",
+          "metric": "feed_time_cooldown",
+          "expected_decimal": "0",
+          "description": "真实材料消失、XP/多级完成再通知；同刻第二次不等CD。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-P03"
+        }
+      ]
+    },
+    {
+      "id": "LW-L01",
+      "requirement_ids": [
+        "LW-L01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次LOAD；输入别名仅在实际run中绑定原生身份。",
+        "仅正式产品与明确分离的fixture；冻结来源、版本和字节。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-L01.action1",
+          "kind": "normal_campaign",
+          "route": "root_gui",
+          "description": "公共受管入口真实加载目标staging并检查原版接入与新增错误。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-L01.assert1",
+          "metric": "new_parse_scope_errors",
+          "expected_decimal": "0",
+          "description": "实际加载且新增解析/scope/未知trigger错误0；不据主菜单授成长通过。",
+          "evidence_required": [
+            "managed_runtime_binding",
+            "engine_load_and_error_delta"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-L01"
+        }
+      ]
+    },
+    {
+      "id": "LW-G01",
+      "requirement_ids": [
+        "LW-G01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "G01Item",
+          "owner_alias": "G01Owner",
+          "slot": "primary_armament",
+          "level": 1,
+          "xp": 92,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次CORE_CALENDAR；输入别名仅在实际run中绑定原生身份。",
+        "G01Owner本件1级92XP，已装备未镇压，无成长选择UI。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G01.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "真实月结+8；通知不必打开。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G01.assert1",
+          "metric": "level_after",
+          "expected_decimal": "2",
+          "description": "2级0XP，growth_sequence精确+1，逐级结果已保存。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-G01.assert2",
+          "metric": "xp_after",
+          "expected_decimal": "0",
+          "description": "奖励来自真实月调度，不能fixture把XP写100再直接settle。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G01"
+        }
+      ]
+    },
+    {
+      "id": "LW-G02",
+      "requirement_ids": [
+        "LW-P01",
+        "LW-G02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "G02Item",
+          "owner_alias": "G02Owner",
+          "slot": "primary_armament",
+          "level": 1,
+          "xp": 92,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次CORE_EQUIP；输入别名仅在实际run中绑定原生身份。",
+        "G02Owner原件1级92XP；先读真实状态。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G02.action1",
+          "kind": "native_unequip",
+          "route": "existing_mcp",
+          "description": "真正卸下。",
+          "required_tools": [
+            "ck3_query_player_artifact_personal_use_v1",
+            "ck3_submit_player_artifact_personal_use_v1"
+          ]
+        },
+        {
+          "id": "LW-G02.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "完整未装备月后重戴，再等下个合格月。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G02.assert1",
+          "metric": "idle_xp_delta",
+          "expected_decimal": "0",
+          "description": "闲置月无XP/持续影响/新能力；重戴不补月，下个真月仅+8。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G02"
+        }
+      ]
+    },
+    {
+      "id": "LW-G03",
+      "requirement_ids": [
+        "LW-P03",
+        "LW-G03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "G03Item",
+          "owner_alias": "G03Owner",
+          "slot": "primary_armament",
+          "level": 10,
+          "xp": 900,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次GUI_FEED；输入别名仅在实际run中绑定原生身份。",
+        "目标10级900XP，非食性卓越材料1200、闲置归己无保护。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G03.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "真实UI选择并喂这一件卓越材料，不能直接给1200XP。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G03.assert1",
+          "metric": "level_after",
+          "expected_decimal": "12",
+          "description": "10/900+1200 ->12/0，序号+2、饥渴2，无11级许可菜单。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-G03.assert2",
+          "metric": "xp_after",
+          "expected_decimal": "0",
+          "description": "材料唯一原件真实消失，两次结果先结算再通知。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G03"
+        }
+      ]
+    },
+    {
+      "id": "LW-G04",
+      "requirement_ids": [
+        "LW-G04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "G04Item15",
+          "owner_alias": "G04Owner15",
+          "slot": "primary_armament",
+          "level": 15,
+          "xp": 1492,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 3
+            }
+          ],
+          "curses": []
+        },
+        {
+          "alias": "G04Item30",
+          "owner_alias": "G04Owner30",
+          "slot": "primary_armament",
+          "level": 30,
+          "xp": 2992,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 3
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次CORE_CALENDAR；输入别名仅在实际run中绑定原生身份。",
+        "两独立原件15级1492XP、30级2992XP，满槽满阶有合法演化结果。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G04.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "两个实际装备物各经真实月+8。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G04.assert1",
+          "metric": "level_15_after",
+          "expected_decimal": "16",
+          "description": "15->16，30->31，两件本级XP归0、仍演化，没有15级硬截断。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G04"
+        }
+      ]
+    },
+    {
+      "id": "LW-G05",
+      "requirement_ids": [
+        "LW-G05",
+        "LW-U03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CORE_GROWTH；输入别名仅在实际run中绑定原生身份。",
+        "初始完整6异能/2诅咒、r3被替换槽；仅固定生产随机输入，不写成长结果。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G05.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "合法XP跨门槛触发真实dispatcher，固定四类/回退后再观察一例不强制随机。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G05.assert1",
+          "metric": "curse_rank_after_replacement",
+          "expected_decimal": "3",
+          "description": "两阶段合法权重、结果类别回退、满槽保原件和咒阶；固定分支不证明自然掉率。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G05"
+        }
+      ]
+    },
+    {
+      "id": "LW-G06",
+      "requirement_ids": [
+        "LW-P02",
+        "LW-G06"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CORE_RELOAD；输入别名仅在实际run中绑定原生身份。",
+        "月末/跨年/同月重入检查点真实保存，通知关闭。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G06.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "真月后保存/同月重入观察，再跨下月。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-G06.action2",
+          "kind": "save_reload",
+          "route": "root_gui",
+          "description": "使用真实保存/重载，不改last_month或月游标。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G06.assert1",
+          "metric": "same_month_extra_settlements",
+          "expected_decimal": "0",
+          "description": "每原件每月最多1次；不补现实离线或闲置月，不依赖通知打开。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G06"
+        }
+      ]
+    },
+    {
+      "id": "LW-G07",
+      "requirement_ids": [
+        "LW-G07"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CORE_DISCOVERY；输入别名仅在实际run中绑定原生身份。",
+        "0/100确定规则测试、七类个人装备及陈设、原生旧库存/新造来源。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-G07.action1",
+          "kind": "native_new_artifact",
+          "route": "root_gui",
+          "description": "原生新造/原有库存进入生产判定，再玩家NPC转赠、修复、改名/重载。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-G07.assert1",
+          "metric": "second_awaken_rolls",
+          "expected_decimal": "0",
+          "description": "成功/失败都一次，未检查与ordinary有区别，陈设不新觉醒；0/100不证明默认5%。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-G07"
+        }
+      ]
+    },
+    {
+      "id": "LW-F01",
+      "requirement_ids": [
+        "LW-P03",
+        "LW-F01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "F01Target",
+          "owner_alias": "F01Owner",
+          "slot": "primary_armament",
+          "level": 1,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次GUI_FEED；输入别名仅在实际run中绑定原生身份。",
+        "目标1级0、非食性四件真实rarity材料common/masterwork/famed/illustrious。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-F01.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "同一游戏时刻通过真实管理UI逐件选材并喂80/200/500/1200。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-F01.assert1",
+          "metric": "final_level",
+          "expected_decimal": "6",
+          "description": "逐步1/80、2/180、4/180、6/480；四件原物分别消失一次，无另领销毁奖励。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-F01.assert2",
+          "metric": "final_xp",
+          "expected_decimal": "480",
+          "description": "无时间CD，不能把选择器回调或输入ACK当消费成功。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-F01"
+        }
+      ]
+    },
+    {
+      "id": "LW-F02",
+      "requirement_ids": [
+        "LW-F02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "F02Target",
+          "owner_alias": "F02Owner",
+          "slot": "primary_armament",
+          "level": 1,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次GUI_FEED；输入别名仅在实际run中绑定原生身份。",
+        "真实四档rarity、分别匹配目标食性；不改名称/颜色冒充分档。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-F02.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "四档匹配食性材料走真实选择/消费；另验证等价材料总XP。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-F02.assert1",
+          "metric": "illustrious_matched_xp",
+          "expected_decimal": "1500",
+          "description": "四档100/250/625/1500；2名作+1大师非食性1200、全匹配1500；不据价格或遗留rare判断。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-F02"
+        }
+      ]
+    },
+    {
+      "id": "LW-F03",
+      "requirement_ids": [
+        "LW-P03",
+        "LW-F03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "F03Target",
+          "owner_alias": "F03Owner",
+          "slot": "primary_armament",
+          "level": 1,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次GUI_FEED_AI；输入别名仅在实际run中绑定原生身份。",
+        "玩家目标1/0与两件普通材料；AI持同样合格多余材料但保持AI。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-F03.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "玩家不推进日连续喂两件普通。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-F03.action2",
+          "kind": "native_ai",
+          "route": "root_gui",
+          "description": "AI自主一次评估可处理多件；不由执行者代AI提交。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-F03.assert1",
+          "metric": "player_xp_after",
+          "expected_decimal": "60",
+          "description": "玩家2级60、两原物消失且无天/月/年CD；AI真实选材/消费另列，不用玩家结果替代。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-F03"
+        }
+      ]
+    },
+    {
+      "id": "LW-F04",
+      "requirement_ids": [
+        "LW-F04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次GUI_FEED；输入别名仅在实际run中绑定原生身份。",
+        "自物、他人物、已穿戴、活物、保护材料及卸下/镇压目标分别为初始输入。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-F04.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "真实打开选择器、取消及选择非法候选/状态变化后提交；不直接invoke隐藏feed effect。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-F04.assert1",
+          "metric": "invalid_materials_consumed",
+          "expected_decimal": "0",
+          "description": "取消/非法不扣不发；真实处理资格与UI一致，不能只隐藏按钮。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-F04"
+        }
+      ]
+    },
+    {
+      "id": "LW-F05",
+      "requirement_ids": [
+        "LW-F05"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次GUI_FEED；输入别名仅在实际run中绑定原生身份。",
+        "至少两件不同真实材料；第一项成功后，第二项状态可经真实转赠/装备变化失去资格。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-F05.action1",
+          "kind": "native_feed",
+          "route": "root_gui",
+          "description": "真实第一项提交，后项归属/目标状态经实际动作变化，再实际尝试；未知结果先读回。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-F05.assert1",
+          "metric": "invalid_second_consumption",
+          "expected_decimal": "0",
+          "description": "第一项XP/成长保留，第二项不消耗不发，不换同名物顶扣、不回滚前项。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-F05"
+        }
+      ]
+    },
+    {
+      "id": "LW-T01",
+      "requirement_ids": [
+        "LW-T01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "T01Item",
+          "owner_alias": "T01Owner",
+          "slot": "primary_armament",
+          "level": 10,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 10,
+              "rank": 2
+            }
+          ],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次GUI_MANAGEMENT；输入别名仅在实际run中绑定原生身份。",
+        "10级chain0，现金>=70、威望>=50；继续真实装备，已有正向被动及独立重咒对照。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-T01.action1",
+          "kind": "native_suppression",
+          "route": "root_gui",
+          "description": "真实UI选择镇灵仪式并支付。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-T01.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "期间真实月/事件来源验证停XP、不能喂、正向机会×0.5而诅咒/旧债不减。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-T01.assert1",
+          "metric": "gold_delta",
+          "expected_decimal": "-70",
+          "description": "实扣70金/50威望、压力+10，有效90游戏日，确定被动仍在。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-T01.assert2",
+          "metric": "suppressed_days",
+          "expected_decimal": "90",
+          "description": "到期失效，不补期间XP；低概率需真源事件，不直接调用奖励。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-T01"
+        }
+      ]
+    },
+    {
+      "id": "LW-T02",
+      "requirement_ids": [
+        "LW-T02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次GUI_MANAGEMENT；输入别名仅在实际run中绑定原生身份。",
+        "真实首镇checkpoint；分别剩余>30/<=30、金币69/威望49。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-T02.action1",
+          "kind": "native_suppression",
+          "route": "root_gui",
+          "description": "实际尝试提前/合法续镇及不足分支。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-T02.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "真实未镇压且装备累计6个月，不能fixture清chain。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-T02.assert1",
+          "metric": "second_quote",
+          "expected_decimal": "90",
+          "description": "合法二次90金、截止+90；不合法不部分扣/不建立镇压；卸下换主不洗chain，6真实月才清。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-T02"
+        }
+      ]
+    },
+    {
+      "id": "LW-T03",
+      "requirement_ids": [
+        "LW-T03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次GUI_MANAGEMENT；输入别名仅在实际run中绑定原生身份。",
+        "真实付费生成截止，保同一原件/保存身份。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-T03.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "推进截止前/当日/后，含期间卸下和到期后重戴。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-T03.action2",
+          "kind": "save_reload",
+          "route": "root_gui",
+          "description": "真实保存重载跨截止读回。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-T03.assert1",
+          "metric": "expired_extra_suppression_days",
+          "expected_decimal": "0",
+          "description": "无恢复按钮、不重复收费/延长；闲置不增长，重戴下合法月才加，不补XP。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-T03"
+        }
+      ]
+    },
+    {
+      "id": "LW-T04",
+      "requirement_ids": [
+        "LW-T04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "T04A",
+          "owner_alias": "T04Owner",
+          "slot": "primary_armament",
+          "level": 15,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        },
+        {
+          "alias": "T04B",
+          "owner_alias": "T04Owner",
+          "slot": "regalia",
+          "level": 15,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 4,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次GUI_MANAGEMENT；输入别名仅在实际run中绑定原生身份。",
+        "15级两原件实际装备，各饥渴5；现金>=125、初始无安抚。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-T04.action1",
+          "kind": "native_soothe",
+          "route": "root_gui",
+          "description": "真实UI年度安抚其中一件。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-T04.assert1",
+          "metric": "gold_delta",
+          "expected_decimal": "-125",
+          "description": "扣125金、压力+10、365日减该件1点，继续成长/诅咒。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-T04.assert2",
+          "metric": "total_hunger_after",
+          "expected_decimal": "9",
+          "description": "两件总10->9，健康-1.0->-0.9；不采用全身5点cap。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-T04"
+        }
+      ]
+    },
+    {
+      "id": "LW-I01",
+      "requirement_ids": [
+        "LW-P02",
+        "LW-I01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "I01Item",
+          "owner_alias": "I01Owner",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": false,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_AI；输入别名仅在实际run中绑定原生身份。",
+        "有地AI获得真实有益合法活物但seed未装备，保AI身份与正常评估。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-I01.action1",
+          "kind": "native_ai",
+          "route": "root_gui",
+          "description": "等待真实AI自主评估装备，不由fixture/执行者先穿上。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-I01.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "AI真装备后经过正常月。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-I01.assert1",
+          "metric": "monthly_xp_delta",
+          "expected_decimal": "8",
+          "description": "实际AI装备、modifier生效、月+8；评分或代穿不是通过。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-I01"
+        }
+      ]
+    },
+    {
+      "id": "LW-I02",
+      "requirement_ids": [
+        "LW-P02",
+        "LW-I02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CALENDAR_AI；输入别名仅在实际run中绑定原生身份。",
+        "AI男爵/无地角色有合法旧/新物品，另51件未判库存；不预seed已检查。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-I02.action1",
+          "kind": "native_ai",
+          "route": "root_gui",
+          "description": "保持真实角色身份，合法转赠新物品后等待生产队列和评估。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-I02.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "真实50件分块后下一批/月处理末件。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-I02.assert1",
+          "metric": "permanently_starved_tail",
+          "expected_decimal": "0",
+          "description": "非playable-only覆盖，51末件可达、无同月双领或凭空新增装备。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-I02"
+        }
+      ]
+    },
+    {
+      "id": "LW-I03",
+      "requirement_ids": [
+        "LW-I03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CALENDAR_AI；输入别名仅在实际run中绑定原生身份。",
+        "AI已装活物、各槽最佳备份、保护项及真实四档多余材料；保持AI。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-I03.action1",
+          "kind": "native_ai",
+          "route": "root_gui",
+          "description": "正常AI评估选择保留/喂养，多件可同周期；执行者不代其提交。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-I03.assert1",
+          "metric": "protected_consumed",
+          "expected_decimal": "0",
+          "description": "只消费真实合格多余材料，最佳/保护保留，材料消失与目标XP对应，不以0价销毁代喂。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-I03"
+        }
+      ]
+    },
+    {
+      "id": "LW-I04",
+      "requirement_ids": [
+        "LW-I04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CALENDAR_AI；输入别名仅在实际run中绑定原生身份。",
+        "同底材有益/重咒比较，AI低健康或缺钱，再经真实资源变化改善；不免疫代价。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-I04.action1",
+          "kind": "native_ai",
+          "route": "root_gui",
+          "description": "等真实评估周期观察卸下危险物或实际有资源时付费镇压。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-I04.assert1",
+          "metric": "free_npc_suppression",
+          "expected_decimal": "0",
+          "description": "原生资格/非活评分不改；NPC继续装备承担全部代价，没选择时BLOCKED不造算法FAIL/PASS。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-I04"
+        }
+      ]
+    },
+    {
+      "id": "LW-R01",
+      "requirement_ids": [
+        "LW-P01",
+        "LW-R01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次LIFECYCLE；输入别名仅在实际run中绑定原生身份。",
+        "真实同原件含等级/XP/affix/三阶咒/截止/chain，玩家和可接收NPC。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-R01.action1",
+          "kind": "native_transfer",
+          "route": "root_gui",
+          "description": "原版合法玩家->NPC->玩家转赠/取得，读真实owner及后续AI评估。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-R01.assert1",
+          "metric": "new_owner_resonance",
+          "expected_decimal": "20",
+          "description": "ID/成长/咒阶/截止/chain保留，owner准确、旧持续不残留；旧债仍原借款人。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-R01"
+        }
+      ]
+    },
+    {
+      "id": "LW-R02",
+      "requirement_ids": [
+        "LW-R02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次LIFECYCLE；输入别名仅在实际run中绑定原生身份。",
+        "原件真实owner、真实继承接收者、无主/陈设/近0耐久/同对象修复输入。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-R02.action1",
+          "kind": "native_inheritance",
+          "route": "root_gui",
+          "description": "用原生生命周期死亡继承，若测试触发须标fixture_live而非自然病死。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-R02.action2",
+          "kind": "native_repair",
+          "route": "root_gui",
+          "description": "实际修复/同对象重铸/陈设转换，另真销毁。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-R02.assert1",
+          "metric": "artifact_copies_created",
+          "expected_decimal": "0",
+          "description": "仅真接手者得原物，无主/陈设不成长，销毁不复活；同对象修复不重抽，替换式重铸不外推。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-R02"
+        }
+      ]
+    },
+    {
+      "id": "LW-R03",
+      "requirement_ids": [
+        "LW-R03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CORE_RELOAD；输入别名仅在实际run中绑定原生身份。",
+        "真实核心checkpoint含顺序/义务/日期/源事件身份，正常退出。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-R03.action1",
+          "kind": "save_reload",
+          "route": "root_gui",
+          "description": "保存、正常退出，再经新受管进程实际冷载，随后真月。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-R03.assert1",
+          "metric": "same_month_extra_rewards",
+          "expected_decimal": "0",
+          "description": "ID/顺序/账本/咒阶/截止保真，同月不补，下月一次；同进程缓存不算冷载。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-R03"
+        }
+      ]
+    },
+    {
+      "id": "LW-R04",
+      "requirement_ids": [
+        "LW-R04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次OLD_SAVE；输入别名仅在实际run中绑定原生身份。",
+        "本来未启用mod的真实旧战役及其普通库存，不造旧mod数据。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-R04.action1",
+          "kind": "normal_campaign",
+          "route": "root_gui",
+          "description": "首次启用正式产品进入旧档，保存再载入。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-R04.assert1",
+          "metric": "invented_ai_artifacts",
+          "expected_decimal": "0",
+          "description": "未检查仅一次初始化、ordinary失败不重抽，旧库存队列继续，不给全世界AI造装备。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-R04"
+        }
+      ]
+    },
+    {
+      "id": "LW-R05",
+      "requirement_ids": [
+        "LW-R05"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次NORMAL_COMPAT；输入别名仅在实际run中绑定原生身份。",
+        "正常战役只有正式投影，无测试按钮；另冻结与主mod两加载顺序。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-R05.action1",
+          "kind": "normal_campaign",
+          "route": "root_gui",
+          "description": "正常中文UI走原生穿脱/修复/转赠/月链。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-R05.action2",
+          "kind": "compatibility_load",
+          "route": "root_gui",
+          "description": "两顺序各核接入及一条关键链，不复跑所有内容。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-R05.assert1",
+          "metric": "fixture_runtime_files",
+          "expected_decimal": "0",
+          "description": "管理可用，无强制随机/fixture；仅授实际两顺序代表兼容，不外推TC。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-R05"
+        }
+      ]
+    },
+    {
+      "id": "LW-R06",
+      "requirement_ids": [
+        "LW-R06"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次MULTIPLAYER；输入别名仅在实际run中绑定原生身份。",
+        "必须两个真人客户端及独立实际机器/连接，单机切角色不可代替。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-R06.action1",
+          "kind": "multiplayer",
+          "route": "missing",
+          "description": "当前公共单机runtime无双客户端资格；待真实第二客户端/同步路线准备后再执行转赠与月边界。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-R06.assert1",
+          "metric": "duplicate_owner_or_growth",
+          "expected_decimal": "0",
+          "description": "两客户端同原件owner/随机结果/序号一致、无旧持续；当前缺多机即BLOCKED，不授单机多人PASS。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-R06"
+        }
+      ]
+    },
+    {
+      "id": "LW-U01",
+      "requirement_ids": [
+        "LW-U01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次NORMAL_UI；输入别名仅在实际run中绑定原生身份。",
+        "可读自己/他人物品和未读成长，真实管理UI。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-U01.action1",
+          "kind": "native_view",
+          "route": "root_gui",
+          "description": "实际打开/关闭/tooltip/查看他人，前后原生状态读回。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-U01.assert1",
+          "metric": "view_mutations",
+          "expected_decimal": "0",
+          "description": "不抽签/发XP/收费，无升级许可/免费锁级，已结算结果可读、不串GetPlayer。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-U01"
+        }
+      ]
+    },
+    {
+      "id": "LW-U02",
+      "requirement_ids": [
+        "LW-U02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次NORMAL_UI；输入别名仅在实际run中绑定原生身份。",
+        "重咒/善变禁槽/不足/镇压安抚截止/多件叠加真实输入或生产checkpoint。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-U02.action1",
+          "kind": "native_view",
+          "route": "root_gui",
+          "description": "正常中文UI逐项读名称rank、费用、目标及失败原因，核实际支付。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-U02.assert1",
+          "metric": "display_payment_mismatches",
+          "expected_decimal": "0",
+          "description": "显示与真实负担/扣费一致，未知秘密不由通知泄漏；页面不是世界后态替代。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-U02"
+        }
+      ]
+    },
+    {
+      "id": "LW-U03",
+      "requirement_ids": [
+        "LW-U03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次NORMAL_UI；输入别名仅在实际run中绑定原生身份。",
+        "真实多级/多件/同源多个回调，通知保持未读或重开。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-U03.action1",
+          "kind": "native_view",
+          "route": "root_gui",
+          "description": "真实通知开关/多次查看，配合实际源和批量成长。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-U03.assert1",
+          "metric": "notification_extra_rewards",
+          "expected_decimal": "0",
+          "description": "每源只结算，关闭通知不暂停，重开不洗随机；需要批合并显示时实际审UI，不用日志代替。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/test-plan.md",
+          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "anchor": "LW-U03"
+        }
+      ]
+    },
+    {
+      "id": "LW-A01",
+      "requirement_ids": [
+        "LW-A01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A01Blade",
+          "owner_alias": "A01Owner",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次BATTLE；输入别名仅在实际run中绑定原生身份。",
+        "A01Owner为本场真实指挥官，装备仅血宴r2；无丧钟/血税，压力留足8点。",
+        "可布置合法战争、军队、骑士与优势初始兵力，不能写胜利；最多3战/24游戏月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A01.action1",
+          "kind": "native_battle",
+          "route": "root_gui",
+          "description": "经原版合法战争/军队流程打一场真实胜利，持有者实际指挥并存活。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A01.action2",
+          "kind": "native_unequip",
+          "route": "existing_mcp",
+          "description": "实际卸下，再走一场真实胜利负例。",
+          "required_tools": [
+            "ck3_query_player_artifact_personal_use_v1",
+            "ck3_submit_player_artifact_personal_use_v1"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A01.assert1",
+          "metric": "gold_delta",
+          "expected_decimal": "20",
+          "description": "相对原生战后S额外金币+20。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A01.assert2",
+          "metric": "stress_delta",
+          "expected_decimal": "8",
+          "description": "相对S压力+8；非本人指挥、90日内第二真胜利、同源重载均不补发。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A01"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_knight_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A02",
+      "requirement_ids": [
+        "LW-A02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A02Bell",
+          "owner_alias": "A02Owner",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 2,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次BATTLE_DUEL；输入别名仅在实际run中绑定原生身份。",
+        "A02Owner实际指挥；至少1名己方骑士及最多3名幸存者，先经过真实装备月产生身份/生前勇武观察。",
+        "骑士初始勇武可设14，最后实际月观察必须独立读回；不能seed死者记忆。最多3战、1决斗/24月/30分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A02.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "战前经过真实装备月，生产every_knight记录在世骑士；保留真实观察。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-A02.action2",
+          "kind": "native_battle",
+          "route": "root_gui",
+          "description": "真实战斗中观察一名已记录己方骑士阵亡；同场多人死亡仍一次。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A02.action3",
+          "kind": "native_duel",
+          "route": "root_gui",
+          "description": "随后从合法原生剧情/互动进入真实决斗并完成原生清理；无可合法启动的决斗来源则该子项BLOCKED。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A02.assert1",
+          "metric": "prestige_delta",
+          "expected_decimal": "60",
+          "description": "战后威望+60、压力+12，最多3名同战已观察幸存骑士好感-5/2年；同场随机只存1条，容量2。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A02.assert2",
+          "metric": "duel_prowess_delta",
+          "expected_decimal": "4",
+          "description": "最近生前月观察14时round(14/4)=4，封顶4；决斗压力+10并消费原记忆；卸下/转赠/原生清理或30日到期撤回声。",
+          "evidence_required": [
+            "native_duel_source",
+            "dead_knight_identity_and_living_observation",
+            "artifact_memory_readonly",
+            "native_prowess_modifier_before_after",
+            "native_duel_cleanup"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A02"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_knight_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A03",
+      "requirement_ids": [
+        "LW-A03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A03Cup",
+          "owner_alias": "A03Owner",
+          "slot": "regalia",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 3,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次SOCIAL；输入别名仅在实际run中绑定原生身份。",
+        "A03Owner存活、实际出席宴会；原生费用后钱包>=15；1名成年合格宾客A03Guest且730日宾客冷却未生效。",
+        "固定目标可选真实在场A03Guest；最多2宴/12月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A03.action1",
+          "kind": "native_feast",
+          "route": "root_gui",
+          "description": "真正举办或出席并完成原版宴会，on_complete由原生触发，不直接调用活物处理器。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A03.assert1",
+          "metric": "gold_delta",
+          "expected_decimal": "-15",
+          "description": "额外酒账15；无合格宾客或不足15时不收费、不发好感。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A03.assert2",
+          "metric": "guest_opinion_delta",
+          "expected_decimal": "15",
+          "description": "只选中宾客好感+15/2年，真实宾客730日全局冷却、原物365日关联；180日/年2次生效。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A03"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_secondary_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A04",
+      "requirement_ids": [
+        "LW-A04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A04Pin",
+          "owner_alias": "A04Owner",
+          "slot": "brooch",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 4,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次SOCIAL；输入别名仅在实际run中绑定原生身份。",
+        "A04Owner恐怖值>=10，合法拉拢目标A04Target，原物没有蹭饭宾客关联。",
+        "最多2次真实拉拢结果/24月/20分钟；另用恐怖值3输入验证截0。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A04.action1",
+          "kind": "native_sway",
+          "route": "root_gui",
+          "description": "通过原生界面发起/继续拉拢，等待实际sway_success；未知结果不重提。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A04.assert1",
+          "metric": "prestige_delta",
+          "expected_decimal": "50",
+          "description": "真实成功额外威望+50，失败无收益。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A04.assert2",
+          "metric": "dread_delta",
+          "expected_decimal": "-10",
+          "description": "恐怖值-10、最低0；180日/年2次，重载不重复。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A04"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_source_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A05",
+      "requirement_ids": [
+        "LW-A05"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A05Trowel",
+          "owner_alias": "A05Owner",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 5,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次BUILD；输入别名仅在实际run中绑定原生身份。",
+        "A05Owner真实直属伯爵领，建设可合法进行；完工原生后态S控制力80，另一分支S=2；无高利贷。",
+        "最多2次完工+1取消/非直属负例/24月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A05.action1",
+          "kind": "native_build",
+          "route": "root_gui",
+          "description": "原生付费开工并真正完成建筑；可seed较短剩余工期输入，不写完成后态。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A05.assert1",
+          "metric": "gold_delta",
+          "expected_decimal": "20",
+          "description": "完工额外金币20，不以造价推算退款。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A05.assert2",
+          "metric": "county_control_delta",
+          "expected_decimal": "-3",
+          "description": "S=80->77；S=2->0。非直属、取消、刚开工不发；180日/年2次。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A05"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_source_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A06",
+      "requirement_ids": [
+        "LW-A06"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A06Ledger",
+          "owner_alias": "A06Owner",
+          "slot": "journal",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 6,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 5,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_LOAN；输入别名仅在实际run中绑定原生身份。",
+        "A06Owner成年、无periods/arrears、年度机会未用、现金可读；原物兼带铜胃r2供X02后续复用，前10期不触发建筑完工。",
+        "主线12期+欠款分支，最多14月/20分钟；借款到账与月收入分别计账。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A06.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "首个真实装备月生产本金；后续12个真月生产还款，不直写还款或扣款终值。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-A06.action2",
+          "kind": "native_transfer",
+          "route": "root_gui",
+          "description": "借款后真实转赠原物及其余可转移物，独立读回原借款人库存无任何artifact，再推进至少两个真月确认仍按期催缴；无物无债时停止续链，新主按自身年度资格独立判断。本段live仍未验。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A06.action3",
+          "kind": "native_inheritance",
+          "route": "root_gui",
+          "description": "死亡分支仅用真实原生死亡/继承来源，原触发若属fixture必须单列fixture_live，不声称自然病死。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A06.assert1",
+          "metric": "loan_principal_delta",
+          "expected_decimal": "50",
+          "description": "首次本金50，12期各5，总应付60；年度失败/旧合同占用不补借。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A06.assert2",
+          "metric": "loan_instalment",
+          "expected_decimal": "5",
+          "description": "一期W=2实际扣2、欠3、压力+5；旧债不随物走，死后记录扣除credit的坏账且不向继承人扣。",
+          "evidence_required": [
+            "native_month_identity",
+            "native_wallet_before_after",
+            "original_borrower_ledger_readonly",
+            "native_transfer_or_death_identity"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A06"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_loan_monthly"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_core.py",
+          "sha256": "9e8ddae7884902e8ceb19743fc704dbdfed8cea4b51f79fc17074a9b22f1e6f3",
+          "anchor": "xalw_owner_needs_monthly_trigger"
+        }
+      ]
+    },
+    {
+      "id": "LW-A07",
+      "requirement_ids": [
+        "LW-A07"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A07Whisper",
+          "owner_alias": "A07Owner",
+          "slot": "brooch",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 7,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次SECRETS；输入别名仅在实际run中绑定原生身份。",
+        "A07Owner合法可发现真实秘密，自己起初未知；新主A07Heir不知道收藏秘密。seed秘密事实输入但不seed已发现/收藏/known终值。",
+        "两次发现须隔180日且年最多2次；最多3机会、1真实转赠及首装备月/24月/30分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A07.action1",
+          "kind": "native_secret_discovery",
+          "route": "root_gui",
+          "description": "用原生找秘密或实际原版事件第一次获知，使on_discover真实到达。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A07.action2",
+          "kind": "native_transfer",
+          "route": "root_gui",
+          "description": "真实赠送原物，新主实际装备后等首次生产月结；固定这一次生产概率分支，不直接reveal秘密。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A07.action3",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "消费新主第一次已装备月尝试；失败/无有效未知记忆后也不补试。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A07.assert1",
+          "metric": "intrigue_xp_delta",
+          "expected_decimal": "60",
+          "description": "真实发现+60谋略XP、压力+8、主体好感-5/1年，原物最多2条有效真实引用。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A07.assert2",
+          "metric": "inheritance_base_percent",
+          "expected_decimal": "35",
+          "description": "基础35%；换主共鸣20且首月仍<40时实际17.5%，固定成功分支须据实际门槛记录。新主真正known、压力+8，旧主对其-10/2年；不再发60XP。",
+          "evidence_required": [
+            "native_secret_discovery_source",
+            "secret_owner_and_known_before_after",
+            "artifact_secret_memory_readonly",
+            "native_transfer_and_equipped_month",
+            "resonance_readonly"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A07"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_secret_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A08",
+      "requirement_ids": [
+        "LW-A08"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A08Alibi",
+          "owner_alias": "A08Owner",
+          "slot": "journal",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 8,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次SECRETS；输入别名仅在实际run中绑定原生身份。",
+        "A08Owner为真实谋杀计谋目标；选已绑定敌对类型，不要求计谋已结束或主谋已公开。",
+        "最多2次真实发现机会/36月/30分钟；未知目标/实际发现不可观测时BLOCKED。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A08.action1",
+          "kind": "native_scheme_discovery",
+          "route": "root_gui",
+          "description": "让真实原生敌对计谋被发现并进入on_scheme_discovered；不能直接设置discovered或结束计谋。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A08.assert1",
+          "metric": "dread_delta",
+          "expected_decimal": "10",
+          "description": "实际发现后恐怖值+10。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A08.assert2",
+          "metric": "prestige_delta",
+          "expected_decimal": "-30",
+          "description": "威望-30；365日/年1次；不结束计谋，不公开/猜测主谋。仅失败或未发现不发。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A08"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_secondary_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A09",
+      "requirement_ids": [
+        "LW-A09"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A09Map",
+          "owner_alias": "A09Owner",
+          "slot": "journal",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 9,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次TRAVEL；输入别名仅在实际run中绑定原生身份。",
+        "A09Owner选原版on_travel_plan_arrival允许的普通非朝圣行程；实际目的地不在本物最近8项。",
+        "主线最多3段抵达/12月/20分钟；8->9边界可seed前8项输入，不seed第9项或抵达标记。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A09.action1",
+          "kind": "native_travel",
+          "route": "root_gui",
+          "description": "原版真实出发、移动并抵达目的地；经过/取消不算；途中卸下负例真实抵达后不发。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A09.assert1",
+          "metric": "learning_xp_delta",
+          "expected_decimal": "35",
+          "description": "有效新抵达+35学识XP、压力+8，记录真实目的地引用；第9个挤最旧。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A09.assert2",
+          "metric": "recent_destination_capacity",
+          "expected_decimal": "8",
+          "description": "90日/年3次，最近记录目的地不刷；原版入口排除的朝圣不授已覆盖。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A09"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_source_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A10",
+      "requirement_ids": [
+        "LW-A10"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A10Ink",
+          "owner_alias": "A10Owner",
+          "slot": "journal",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 10,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次LEARNING；输入别名仅在实际run中绑定原生身份。",
+        "A10Owner在已绑定18份原版perk树中正常取得资格；月度learningXP基数B及其他倍率固定可读。",
+        "最多1perk、2月度到账及365日到期/13月/20分钟；fixture不直接赋perk或ink_active。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A10.action1",
+          "kind": "native_perk",
+          "route": "root_gui",
+          "description": "通过原生perk界面真正解锁新perk，原effect自然执行。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A10.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "观察下一次真实月度学识XP、卸下/重戴与365日到期。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A10.assert1",
+          "metric": "prestige_delta",
+          "expected_decimal": "-60",
+          "description": "真解锁后威望-60。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A10.assert2",
+          "metric": "monthly_learning_xp_modifier",
+          "expected_decimal": "0.1",
+          "description": "月度学识倍率+10%持续365日；B无其他倍率时1.10B，一次性事件XP/其他生活方式不加速；卸下撤、重戴不补时，转赠清旧状态。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A10"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_secondary_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A11",
+      "requirement_ids": [
+        "LW-A11"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A11Laugh",
+          "owner_alias": "A11Owner",
+          "slot": "regalia",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 11,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次MENTAL_BREAK；输入别名仅在实际run中绑定原生身份。",
+        "A11Owner初始压力可接近阈值，再以真实原生行为跨过；本件无首席，隔离X04。",
+        "最多1真崩溃选项及1负例/12月/15分钟，保留原生选项后态S。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A11.action1",
+          "kind": "native_mental_break",
+          "route": "root_gui",
+          "description": "真实精神崩溃窗口实际选择原生选项，选项效果结算后由生产补丁进入笑声；仅压力变化不算。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A11.assert1",
+          "metric": "stress_delta",
+          "expected_decimal": "-15",
+          "description": "相对原生选项后态S减15压力。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A11.assert2",
+          "metric": "prestige_delta",
+          "expected_decimal": "-35",
+          "description": "威望-35；原生特质/伤害及后续故事不取消，180日/年2次；卸下不回滚。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A11"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_secondary_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-A12",
+      "requirement_ids": [
+        "LW-A12"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "A12Prima",
+          "owner_alias": "A12Owner",
+          "slot": "primary_armament",
+          "level": 2,
+          "xp": 168,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 12,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 1,
+              "rank": 1
+            }
+          ],
+          "curses": []
+        },
+        {
+          "alias": "A12Rival",
+          "owner_alias": "A12Owner",
+          "slot": "regalia",
+          "level": 2,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 3
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_JEALOUSY；输入别名仅在实际run中绑定原生身份。",
+        "A12Owner同时装备A12Prima(首席r2+血宴r1)、A12Rival(血宴r3)；固定每次生产目标Rival及其血宴槽。",
+        "Prima初始2级168XP：前三月176/184/192，真实连续资格1/2/3；第四月自然+8到3级0才选突变。最多4月+1战+分支检查点/24月/25分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-A12.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "连续3个真实装备月都由生产首席压同一原件；不写streak、target或active终值。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-A12.action2",
+          "kind": "native_battle",
+          "route": "root_gui",
+          "description": "受压30日内主人一次真实指挥胜利，最高原始血宴在Rival，按有效r2生效。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-A12.action3",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "第四月真实XP跨门槛选突变，固定生产60%优先分支；另从真实第三月checkpoint验证未中和无共同槽也消费资格。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-A12.assert1",
+          "metric": "prima_prowess_delta",
+          "expected_decimal": "3",
+          "description": "首席提供3勇武30日；Rival一次真胜利20金币、压力8。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-A12.assert2",
+          "metric": "streak_after_mutation",
+          "expected_decimal": "0",
+          "description": "真正下一次突变只改Prima共同槽；资格消费，不加额外级/XP、不改RivalXP。卸下Prima即时撤勇武，已施Rival压阶到原30日/联动解除；闲置不续施。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-A12"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_jealous_monthly"
+        }
+      ]
+    },
+    {
+      "id": "LW-C01",
+      "requirement_ids": [
+        "LW-P01",
+        "LW-C01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C01Rank1",
+          "owner_alias": "C01Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C01Rank3",
+          "owner_alias": "C01Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CURSE_BATTLE；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "另有两件同名r3由同主人实际装备，放不同个人槽；预先已有真实原生伤病。最多每阶2真战/24月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C01.action1",
+          "kind": "native_equip",
+          "route": "existing_mcp",
+          "description": "真实穿脱r1/r3并读modifier；两件r3必须真正同时穿戴。",
+          "required_tools": [
+            "ck3_query_player_artifact_personal_use_v1",
+            "ck3_submit_player_artifact_personal_use_v1"
+          ]
+        },
+        {
+          "id": "LW-C01.action2",
+          "kind": "native_battle",
+          "route": "root_gui",
+          "description": "每主人真实亲自指挥获胜，不用同一主人已有血税冷却遮蔽另一阶。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C01.assert1",
+          "metric": "equipped_health_r1",
+          "expected_decimal": "-0.4",
+          "description": "r1健康-0.4，战后压力+15；卸下撤持续项，原生伤病保留。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C01.assert2",
+          "metric": "equipped_health_r3",
+          "expected_decimal": "-1.2",
+          "description": "r3健康-1.2，战后+40；两件r3持续-2.4，同一真胜利只+40，90日/年4次。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C01"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "render_content_modifiers"
+        }
+      ]
+    },
+    {
+      "id": "LW-C02",
+      "requirement_ids": [
+        "LW-C02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C02Rank1",
+          "owner_alias": "C02Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 2,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C02Rank3",
+          "owner_alias": "C02Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 2,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "在真实扣费节点读正月毛收入M和钱包W；完整M=100,W>=100；短缺r3 M=10,W=20。2真月/支，最多4月/15分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C02.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "让生产月结索款，不能由fixture先扣钱包或写压力。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C02.assert1",
+          "metric": "appetite_quote_r1",
+          "expected_decimal": "20",
+          "description": "M=100时r1 max(15,20)=20。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C02.assert2",
+          "metric": "appetite_quote_r3",
+          "expected_decimal": "50",
+          "description": "r3 50；短缺只扣实有20至0、压力+40；两件r3每角色每月只索50，同月重入不扣。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C02"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "render_content_effects"
+        }
+      ]
+    },
+    {
+      "id": "LW-C03",
+      "requirement_ids": [
+        "LW-C03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C03Rank1",
+          "owner_alias": "C03Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 4,
+              "rank": 2
+            },
+            {
+              "slot": 3,
+              "id": 5,
+              "rank": 2
+            },
+            {
+              "slot": 4,
+              "id": 9,
+              "rank": 2
+            }
+          ],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 3,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C03Rank3",
+          "owner_alias": "C03Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 4,
+              "rank": 2
+            },
+            {
+              "slot": 3,
+              "id": 5,
+              "rank": 2
+            },
+            {
+              "slot": 4,
+              "id": 9,
+              "rank": 2
+            }
+          ],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 3,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "每原件4异能；r1首次生产固定禁slot1，r3固定禁slot1/3/4，均留下slot2借嗓；不直接写disabled。最多每阶3真实源+1真季/12月/25分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C03.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "首次实际月投影抽定禁用槽，再经1/4/7/10季度。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-C03.action2",
+          "kind": "native_battle",
+          "route": "root_gui",
+          "description": "被禁血宴真实本人获胜：0金币但+8压力。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-C03.action3",
+          "kind": "native_sway",
+          "route": "root_gui",
+          "description": "未禁借嗓走两次真实拉拢成功；先测试概率未中侧避免建立冷却，再测命中侧。强制分支只证分支后果，不能替代75%/25%概率算式与边界的独立核对。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C03.assert1",
+          "metric": "disabled_slots_r1",
+          "expected_decimal": "1",
+          "description": "r1稳定禁1槽、余正向机会×0.75、季度+15压力。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C03.assert2",
+          "metric": "disabled_slots_r3",
+          "expected_decimal": "3",
+          "description": "r3禁3槽、余机会×0.25、季度+40；被禁血宴真胜利0金币但+8压力；穿脱/换主/槽内突变不洗禁用槽。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C03"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_artifact_projection"
+        }
+      ]
+    },
+    {
+      "id": "LW-C04",
+      "requirement_ids": [
+        "LW-C04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C04Rank1",
+          "owner_alias": "C04Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 4,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C04Rank3",
+          "owner_alias": "C04Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 4,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "每主人有真实有效、自己已知且可公开的自身秘密，另保留无适用秘密分支；真实季度，最多每阶2季+空1季/12月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C04.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "真实季度进入生产20%/50%分支，固定中/未中只作用生产随机。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C04.assert1",
+          "metric": "scheme_secrecy_r1",
+          "expected_decimal": "-10",
+          "description": "持续本人所有计谋隐秘度-10；r1中签20%，秘密真正公开，无秘密则+15压力。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C04.assert2",
+          "metric": "scheme_secrecy_r3",
+          "expected_decimal": "-30",
+          "description": "-30；r3中签50%，真实公开；无秘密+40，年最多2次。卸下不抹已公开事实，不造新秘密。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C04"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_curse_calendar"
+        }
+      ]
+    },
+    {
+      "id": "LW-C05",
+      "requirement_ids": [
+        "LW-C05"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C05Rank1",
+          "owner_alias": "C05Owner1",
+          "slot": "journal",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 10,
+              "rank": 2
+            }
+          ],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 5,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C05Rank3",
+          "owner_alias": "C05Owner3",
+          "slot": "journal",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 10,
+              "rank": 2
+            }
+          ],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 5,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "先经A10实际解锁perk形成墨水+10%，不能seed ink_active；B是主人在世、成年、未监禁真实廷臣。每阶1中签季+无候选1支/6月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C05.action1",
+          "kind": "native_perk",
+          "route": "root_gui",
+          "description": "生产解锁perk形成真实墨水状态。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-C05.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "真实季度固定10%/35%成功分支和合格廷臣；另无候选中签。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C05.assert1",
+          "metric": "positive_passive_factor_r1",
+          "expected_decimal": "0.9",
+          "description": "r1墨水月度增量+9%，中签转原件且旧主+20压力。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C05.assert2",
+          "metric": "positive_passive_factor_r3",
+          "expected_decimal": "0.7",
+          "description": "r3+7%，旧主+60；无候选不转但付压力；真出走3年冷却跟原件，旧墨水不继承，新主真实owner，卸下不新出走。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C05"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_curse_calendar"
+        }
+      ]
+    },
+    {
+      "id": "LW-C06",
+      "requirement_ids": [
+        "LW-C06"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C06Rank1",
+          "owner_alias": "C06Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 6,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C06Rank3",
+          "owner_alias": "C06Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 6,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "r1有1名真实配偶，r3有最多3名不同在世配偶/情人；无对象另支。年度机会未用。最多13月/15分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C06.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "本年首次合格实际装备月自动结算年度怨恨；再穿脱只检查持续光环。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C06.assert1",
+          "metric": "spouse_aura_r1",
+          "expected_decimal": "-15",
+          "description": "r1配偶光环-15，年度最多1人再-15/2年；无对象+20压力。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C06.assert2",
+          "metric": "spouse_aura_r3",
+          "expected_decimal": "-50",
+          "description": "r3配偶光环-50，最多3个真实配偶/情人各-50/2年；情人不假称有光环，无对象+60。卸下撤光环不撤已生怨恨。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C06"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_curse_calendar"
+        }
+      ]
+    },
+    {
+      "id": "LW-C07",
+      "requirement_ids": [
+        "LW-C07"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C07Rank1",
+          "owner_alias": "C07Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 7,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C07Rank3",
+          "owner_alias": "C07Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 7,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "当前耐久/普通衰减后S真实可读，先过真装备月产快照；原生可修复且有费用；另有近0耐久输入。最多各2月+真修复/6月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C07.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "实际装备月生产损耗及快照，S=90时只额外损对应值。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-C07.action2",
+          "kind": "native_repair",
+          "route": "root_gui",
+          "description": "原生修复/同对象重铸真实完成后，下个装备月观察是否高于上次已装备快照。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-C07.action3",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "实际回升触发年度30%/100%反噬；近0原件真正损到<=0由原生destroy_artifact销毁。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C07.assert1",
+          "metric": "monthly_durability_delta_r1",
+          "expected_decimal": "-2",
+          "description": "r1 -2；回升中签额外5金币+15压力，年度一次。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C07.assert2",
+          "metric": "monthly_durability_delta_r3",
+          "expected_decimal": "-7",
+          "description": "r3 -7；回升15金币+40压力，年度一次；不足现金有多少扣多少，压力照付；0耐久原物真实失效，无复活/后续解引用。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C07"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_rust_monthly"
+        }
+      ]
+    },
+    {
+      "id": "LW-C08",
+      "requirement_ids": [
+        "LW-C08"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "C08Rank1",
+          "owner_alias": "C08Owner1",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 8,
+              "rank": 1
+            }
+          ]
+        },
+        {
+          "alias": "C08Rank3",
+          "owner_alias": "C08Owner3",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [],
+          "curses": [
+            {
+              "slot": 1,
+              "id": 8,
+              "rank": 3
+            }
+          ]
+        }
+      ],
+      "fixture_conditions": [
+        "批次CALENDAR_CURSES；输入别名仅在实际run中绑定原生身份。",
+        "两支r1/r3使用不同真实主人/原件、健康充足且原生资源可读；共鸣与镇压不减免诅咒。",
+        "真实直属伯爵领，季结原生S控制力可读，示例80；无地另支。每阶2季+无地1季/12月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-C08.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "经真实1/4/7/10月，生产25%/60%机会中/未中；不fixture设控制力70或45。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-C08.assert1",
+          "metric": "monthly_control_growth_r1",
+          "expected_decimal": "-0.2",
+          "description": "r1增长-0.2，中签控制80->70、民众好感-15/2年；无地+15压力。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-C08.assert2",
+          "metric": "monthly_control_growth_r3",
+          "expected_decimal": "-0.7",
+          "description": "r3增长-0.7，中签80->45、民众-50/2年；无地+40。两件r3增长-1.4但季度仅一份-35，年2次；卸下不回滚旧损失。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-C08"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_curse_calendar"
+        }
+      ]
+    },
+    {
+      "id": "LW-X01",
+      "requirement_ids": [
+        "LW-U03",
+        "LW-X01"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "X01Requiem",
+          "owner_alias": "X01Owner",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 2,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次BATTLE_COMBO；输入别名仅在实际run中绑定原生身份。",
+        "同件血宴r2+丧钟r2且两者实际最高来源均选此件；已观察己方骑士，原冷却/年次数均可用；无血税等额外压力来源。",
+        "单次真实本战获胜且已观察己方骑士死亡；最多3战/24月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-X01.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "战前真实月生成骑士生前观察。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-X01.action2",
+          "kind": "native_battle",
+          "route": "root_gui",
+          "description": "一次真实指挥胜利且本战己方骑士阵亡，组合在同源替换两条基础结算。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-X01.assert1",
+          "metric": "gold_delta",
+          "expected_decimal": "10",
+          "description": "一次仅10金币，不先+20再+10；威望+60、压力合计+10、幸存骑士惩罚0，仍随机存一条死者。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-X01.assert2",
+          "metric": "stress_delta",
+          "expected_decimal": "10",
+          "description": "消费90/180日和两原年额度，共同一次概率门槛失败不退回两基础独立再抽；分装无组合。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-X01"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_knight_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-X02",
+      "requirement_ids": [
+        "LW-X02"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [],
+      "fixture_conditions": [
+        "批次CALENDAR_LOAN_BUILD；输入别名仅在实际run中绑定原生身份。",
+        "复用A06同原件同原借款人的真实本金+10次足额还款检查点：periods=2、instalment=5、arrears=0、credit=0。",
+        "fixture不得写10余额或0终债；最多1真实完工+2真月/额外12月/20分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-X02.action1",
+          "kind": "native_build",
+          "route": "root_gui",
+          "description": "同原件铜胃r2+梦债r2，真实完成直属建设。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-X02.action2",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "以后两个真实月仍由原借款人消费已记抵扣，转赠不挪给新主。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-X02.assert1",
+          "metric": "credit_added",
+          "expected_decimal": "10",
+          "description": "本应20收益只新增10抵扣，有效未覆盖余额10->0，钱包不+20/+10、控制-3，当前periods仍2。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-X02.assert2",
+          "metric": "future_cash_debit",
+          "expected_decimal": "0",
+          "description": "两真月credit10->5->0、periods2->1->0，不再扣5或加缺款压力；超额丢失、同源不再记账。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-X02"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_source_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-X03",
+      "requirement_ids": [
+        "LW-X03"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "X03Item",
+          "owner_alias": "X03Owner",
+          "slot": "regalia",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 3,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 4,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次SOCIAL_COMBO；输入别名仅在实际run中绑定原生身份。",
+        "X03Item同件蹭饭r2+借嗓r2；钱包足付15，X03Guest真实在场成年且无宾客冷却。",
+        "真实宴会->365日内对同宾客真拉拢，最多1宴2拉拢/24月/25分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-X03.action1",
+          "kind": "native_feast",
+          "route": "root_gui",
+          "description": "真实完成宴会，生产选中Guest、扣15并给好感+15，保真实关联。",
+          "required_tools": []
+        },
+        {
+          "id": "LW-X03.action2",
+          "kind": "native_sway",
+          "route": "root_gui",
+          "description": "365日内实际对这个Guest拉拢成功，不把任意目标强写成该宾客。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-X03.assert1",
+          "metric": "sway_prestige_delta",
+          "expected_decimal": "0",
+          "description": "这次借嗓不发50威望，改Guest额外好感+10/2年、恐怖-10、压力+5，不二次收酒账。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-X03.assert2",
+          "metric": "extra_stress",
+          "expected_decimal": "5",
+          "description": "消费365日宾客关联及组合冷却；换目标/过期/分装无组合，原生拉拢效果另外计账。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-X03"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_source_handlers"
+        }
+      ]
+    },
+    {
+      "id": "LW-X04",
+      "requirement_ids": [
+        "LW-X04"
+      ],
+      "status": "NOT_RUN",
+      "artifact_seeds": [
+        {
+          "alias": "X04Prima",
+          "owner_alias": "X04Owner",
+          "slot": "primary_armament",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 11,
+              "rank": 2
+            },
+            {
+              "slot": 2,
+              "id": 12,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        },
+        {
+          "alias": "X04Rival",
+          "owner_alias": "X04Owner",
+          "slot": "regalia",
+          "level": 4,
+          "xp": 0,
+          "resonance": 100,
+          "equipped": true,
+          "affixes": [
+            {
+              "slot": 1,
+              "id": 1,
+              "rank": 2
+            }
+          ],
+          "curses": []
+        }
+      ],
+      "fixture_conditions": [
+        "批次MENTAL_COMBO；输入别名仅在实际run中绑定原生身份。",
+        "同件笑声r2+首席r2及另一件至少1显性异能活物；先真月选到情敌并产生+3勇武/压阶。",
+        "精神崩溃选项必须在首席30日有效期内真正结算；最多1真月1真选项/6月/15分钟。",
+        "冻结初始输入后，不写奖励、胜负、死亡、公开、抵达、完成、连续月或还款终值；缺来源/独立观测则BLOCKED。"
+      ],
+      "production_actions": [
+        {
+          "id": "LW-X04.action1",
+          "kind": "calendar_advance",
+          "route": "existing_mcp",
+          "description": "生产月赋首席3勇武、另一原件压阶；不可seed active或压阶终值。",
+          "required_tools": [
+            "ck3_execute_step"
+          ]
+        },
+        {
+          "id": "LW-X04.action2",
+          "kind": "native_mental_break",
+          "route": "root_gui",
+          "description": "真跨阈值后实际选择原版崩溃选项，在其效果结算后触发组合。",
+          "required_tools": []
+        }
+      ],
+      "independent_assertions": [
+        {
+          "id": "LW-X04.assert1",
+          "metric": "stress_delta",
+          "expected_decimal": "-7",
+          "description": "相对原生S减压7，威望-18；自身+3勇武提前结束、情敌剩余30日压阶解除，不回滚原生后果。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        },
+        {
+          "id": "LW-X04.assert2",
+          "metric": "prestige_delta",
+          "expected_decimal": "-18",
+          "description": "无当前首席/无情敌/分装不走组合；180日/年2次，不能关闭通知停止结算。",
+          "evidence_required": [
+            "native_source_identity",
+            "independent_world_before_after"
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "path": "mod_living_artifacts/docs/content-acceptance-matrix.md",
+          "sha256": "47a3d80968cdaae7505f244c2fc22cc31a4b48a898b4fb041bce1f8c9c75d72f",
+          "anchor": "LW-X04"
+        },
+        {
+          "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "anchor": "_render_secondary_handlers"
+        }
+      ]
+    }
+  ]
+}

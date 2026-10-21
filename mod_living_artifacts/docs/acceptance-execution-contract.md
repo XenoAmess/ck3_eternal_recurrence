@@ -1,12 +1,12 @@
 # 活武器：验收执行与结果合同
 
-2026-10-22。本文配套[总测试方案](test-plan.md)和[内容矩阵](content-acceptance-matrix.md)，用于接入公共验收器和保存可核验结果。**`core_continuous`已接入公共入口并完成plan，尚未实机运行；加载专用用例因fixture启动策略未完成而标为BLOCKED。**
+2026-10-22。本文配套[总测试方案](test-plan.md)和[内容矩阵](content-acceptance-matrix.md)，用于接入公共验收器和保存可核验结果。**`core_continuous` v1 已实际运行 R0002，原 adapter 因错误的固定 runtime 角色身份而 BLOCKED；同场后续独立动作确认装备及两个自然日推进，第三天读回失败。当前 v2 改为当次身份绑定与三次实际保存后验，仍待重新实机运行。** 来源机器、原件、失败清理及真实截图见[R2 记录](runtime-r2-issues.md)。
 
 ## 1. 复用公共入口
 
 后续仅从[公共六模式入口](../../tools/ck3_mod_acceptance.py)执行`plan / prepare / allocate / preflight / run / verify`。产品不复制host、DLL、启动器、屏幕keeper、正常退出或SDK下载。通用协议见[公共说明](../../docs/ck3-mod-upgrade-fast-validation.md)。历史文件中的固定本机路径不作为本产品运行参数。
 
-已登记product key为`living-artifacts`、runtime_mod_key为同一产品身份；Workshop ID保持null。[公共产品清单](../../tools/ck3_mod_acceptance_products.json)的`core_continuous`使用[产品adapter](../tools/acceptance_adapter.py)和[冻结合同](../tools/core_continuous.contract.json)，只覆盖首阶段真实装备、自动月成长、卸下停经验入口。现有MCP没有通用宝物选择通道，生产喂养子项明确BLOCKED；其他矩阵仍未实跑。`static-and-basicload`保留原配置，但空`required_startup`与未绑定`post_start`不能通过共享prepare，状态为BLOCKED，不能凭历史plan把它称为可运行。
+已登记product key为`living-artifacts`、runtime_mod_key为同一产品身份；Workshop ID保持null。[公共产品清单](../../tools/ck3_mod_acceptance_products.json)的`core_continuous`使用[产品adapter](../tools/acceptance_adapter.py)和[v2 合同](../tools/core_continuous.contract.json)，只覆盖首阶段真实装备、自动月成长、卸下停经验入口；保存的原始变量与独立原生 owner/equipped 交叉，不再使用隐藏动态 logger。详见[保存后验合同](checkpoint-observer-contract.md)。现有MCP没有通用宝物选择通道，生产喂养子项明确BLOCKED；其他矩阵仍未实跑。`static-and-basicload`保留原配置，但空`required_startup`与未绑定`post_start`不能通过共享prepare，状态为BLOCKED，不能凭历史plan把它称为可运行。
 
 登记前先实现真实adapter，提供`prepare_case / run_case / verify_case`，可提供`validate_contract`。配置冻结其path/config、initial_plan、startup mode/state_dir、预算、required_mcp_tools、normal_close及实际业务范围；所需工具必须已存在且source_build_ready，不用占位能力或空adapter满足形式检查。
 
@@ -73,7 +73,7 @@ attempt/
 
 ## 5. 单一结果字段合同
 
-未来Python模型使用共享TypedDict/dataclass和Literal分支，实际JSON入口先校验。以下是待实现的结果合同，不是已经存在的类型模块；内容矩阵使用同一状态集合，不另起兼容别名。
+验收目录已在[共享产品类型模型](../tools/living_artifacts_acceptance_model.py)使用 TypedDict/dataclass 和 Literal 分支实现严格 JSON 校验及序列化往返，目录中的63项仍为 `NOT_RUN`。下表描述逐 cell 的 v1 结果合同；核心 adapter 的整场 v2 结果是另一种明确命名的消息，不将旧整场 v1 回执自动迁成 v2。
 
 | 字段 | 类型与语义 |
 | --- | --- |
@@ -103,7 +103,7 @@ EvidenceRef统一包含实际path、SHA-256、producer、所属run/观察时间�
   "case_id": "LW-G03",
   "status": "NOT_RUN",
   "execution": null,
-  "reason": "尚未实现生产脚本与公共adapter，未执行实机",
+  "reason": "尚未执行该子例的实际业务与独立后验",
   "deferred_checks": []
 }
 ```

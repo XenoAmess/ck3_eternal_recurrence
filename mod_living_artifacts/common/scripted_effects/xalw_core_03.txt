@@ -16,7 +16,8 @@ xalw_appease_effect = {
 	        scope:xalw_artifact ?= {
 	            xalw_is_living_trigger = yes artifact_owner = scope:owner
 	            xalw_base_hunger_value > 0
-	            OR = { NOT = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+	            trigger_if = { limit = { has_variable = xalw_appease_available_on } var:xalw_appease_available_on <= current_date }
+	            trigger_else = { always = yes }
 	        }
 	        gold >= scope:xalw_artifact.xalw_appease_cost_value
 	    }
