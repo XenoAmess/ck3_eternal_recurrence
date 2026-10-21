@@ -633,7 +633,7 @@ _R31_EXTRA_SOURCE_ONLY_12004: dict[str, SourceOnlyRecord] = {'pilgrimage_intent.
                                   'migration_review_status': 'source_reviewed_no_occurrence_contract',
                                   'exact_build': '1.20.0.4',
                                   'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-6820-source-analysis.json',
-                                  'source_document_sha256': 'ecf1ccfe6f4f4c16e10a60dc4874dbac23ca4ed571729b20e8822ce93d1158fd',
+                                  'source_document_sha256': 'a2e4bcb902faed6c85858bbf602736f44e0ac41cc666060d18368e1ac2270cc7',
                                   'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0031-events-001-013-index.json',
                                   'title': '朝圣者指南',
                                   'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
