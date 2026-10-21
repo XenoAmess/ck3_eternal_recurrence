@@ -528,6 +528,21 @@ class FailureEpochFixture:
             "history_index": 1, "date_raw": old.frame.date_raw,
             "path": old.refs.save.path, "sha256": old.refs.save.sha256,
         }
+
+        self.checkpoint.update(status="saved",size=old.refs.save.bytes,name="xar_checkpoint.ck3",
+            overwrite_confirmed=True,strategy="native-autosave-command-v1",
+            episode_character_id=old.frame.actor_character_id,episode_run_id=old.frame.episode_run_id,
+            succession_lifecycle=None)
+        seed=r.put("original-seed.json",{"schema":"g2.queue.cumulative-loop/v1","pending_cycle":None,"pending_checkpoint":None,"terminal":None,"completed_cycles":old.completed_cycles,
+            "before":old.frame.to_wire(),"start_date_raw":old.origin.start_date_raw,
+            "campaign_goal_anchor":old.campaign_goal_anchor,"actual_saved_checkpoint":self.checkpoint,
+            "counts":{"checkpoint_saved":old.progress.checkpoint_count_after}})
+        ledger=r.put("original-ledger.json",{"machine_id":MACHINE,
+            "last_settled_cycles":old.progress.ledger_cycles,"last_settled_date_raw":old.progress.ledger_date_raw,
+            "start_date_raw":old.origin.start_date_raw,"target_date_raw":old.origin.target_date_raw,"target_days":old.origin.target_days})
+        placeholders={name:r.put("original-"+name+".json",{}) for name,ref in old.refs.items()
+            if name not in {"save","driver","seed","ledger"}}
+        old=replace(old,refs=replace(old.refs,**placeholders,seed=seed,ledger=ledger))
         original_review = r.put("business-review.json", {
             "Driver": {"recorded_identity": {"bridge_pid": 41}}})
         saved = r.put("saved-response.json", {
@@ -1302,6 +1317,251 @@ class CapPostresponseFailureTests(unittest.TestCase):
             with self.subTest(name=name,key=key),self.assertRaises(ValueError):
                 epoch_api.validate_cap_postresponse_failure_evidence_v3(f.changed(name,row),reader=f.reader)
 
+
+
+class ReadonlyPrefixUnknownFixture:
+    """Synthetic receipts exercise real builders/owner; actual classifier sources are separately qualified."""
+    def __init__(self,*,sidecar_payload:bytes|None=None)->None:
+        import base64,zlib
+        p=CapPostresponseFailureFixture();self.reader=r=p.reader
+        prior=p.validated();pr=r.put("prefix-prior-epoch.json",p.epoch.to_wire())
+        old_sidecars:tuple[ExactRefV1,...]=() if sidecar_payload is None else (r.put("previous-sidecar.json",{"pending":None}),)
+        old=epoch_api.build_cap_postresponse_failure_basis_v3(prior,epoch_ref=pr,
+            observed_at_utc="2026-10-21T08:00:00Z",sidecars=old_sidecars,reader=r)
+        self.previous_basis=old;oldref=r.put("prefix-prior-basis.json",old.to_wire())
+        root="/epoch/prefix";pid=127;birth=134370765451291729
+        def put(name:str,value:object)->ExactRefV1:return r.put("prefix/"+name,value)
+        def source(name:str,value:str)->ExactRefV1:
+            raw=value.encode();path=root+"/"+name;r.raw[path]=raw
+            return ExactRefV1(path,len(raw),hashlib.sha256(raw).hexdigest())
+        launch=epoch_api.evidence(r,p.refs.launch)
+        launch.update(pid=pid,creation_filetime=birth,pipe="pipe-prefix")
+        launchref=put("ROOT-ACTUAL-GAME-LAUNCH-C23.json",launch)
+        oldseed=epoch_api.evidence(r,old.refs.seed);cp=oldseed["actual_saved_checkpoint"]
+        opening=old.frame.to_wire();semseq=old.next_sequence
+        sem=epoch_api.evidence(r,p.refs.semantic_response)
+        sb=object_row(object_row(sem["result"])["structured_content"])
+        sb.update(episode_character_id=old.frame.actor_character_id,episode_run_id=old.frame.episode_run_id,
+            paused=True,map_ready=True,date_raw=old.frame.date_raw)
+        sem["request"]={"sequence":semseq,"tool":"ck3_take_semantic_snapshot_private_v1","arguments":{}}
+        sem["result"]={"is_error":False,"result_type":"complete","structured_content":sb}
+        semref=put(f"p37-responses/{semseq:04d}-1-result.json",sem)
+        cap=epoch_api.evidence(r,p.refs.capability_response)
+        cap["request"]={"sequence":semseq+1,"tool":"ck3_get_capabilities","arguments":{}}
+        capref=put(f"p37-responses/{semseq+1:04d}-1-result.json",cap)
+        bound=put("BOUND.json",{"schema":"xar.c23.normal-checkpoint-cold-bound/v1","machine_id":MACHINE,
+            "opening_frame":opening,"completed_cycles":old.completed_cycles,"T0_date_raw":old.origin.start_date_raw,
+            "checkpoint":cp,"new_ordinary_cycle_credit":0,"AUTO_or_MET_replayed":False,
+            "semantic_response":semref.path})
+        # Fixture classifier has a real executable module and source pin. The independent
+        # actual-data qualification executes the original unmodified Native classifier.
+        cls=source("classifier.py","def classify_auto_result_credit_v1(result,*,state,pending_focus,initial_frame,game_pid):\n return (result['fixture_observation'],state,pending_focus)\n")
+        clspin=put("ROOT-P37C23-CLASSIFIER-PIN.json",{"source":cls.path,"sha256":cls.sha256,"machine_id":MACHINE})
+        queue=source("root_p37c23_sdk_queue.py","def frame(value):\n return value\n")
+        counts=copy.deepcopy(object_row(oldseed["counts"]));entries=[];requests=[]
+        for seq,tool in ((semseq,"ck3_take_semantic_snapshot_private_v1"),(semseq+1,"ck3_get_capabilities")):
+            requests.append(put(f"p37-requests/{seq:04d}-1-result.json",{"sequence":seq,"tool":tool,"arguments":{}}))
+        control=semseq+2
+        fullrequest={"sequence":control,"command":"full_loop","arguments":{"max_turns":30}}
+        requests.append(put(f"p37-requests/{control:04d}-1-result.json",fullrequest))
+        last_metrics=""
+        for offset in (1,2):
+            turn=old.completed_cycles+offset;seq=control+2*offset-1;step="query-war-results-window-v1"
+            observation={"submitted_pending":False,"primitive_accepted":False,"business_success_inferred":False,
+                "replay_allowed":False,"typed_nonmaterial_observation":True}
+            arq={"sequence":seq,"tool":"ck3_auto_turn","arguments":{}}
+            mrq={"sequence":seq+1,"tool":"root_current_runtime_metrics","arguments":{}}
+            requests.extend((put(f"p37-requests/{seq:04d}-1-result.json",arq),put(f"p37-requests/{seq+1:04d}-1-result.json",mrq)))
+            auto=put(f"p37-responses/{seq:04d}-1-result.json",{"request":arq,
+                "result":{"is_error":False,"result_type":"complete","structured_content":{"selected_step":step,"fixture_observation":observation}}})
+            metrics=put(f"p37-responses/{seq+1:04d}-1-result.json",{"request":mrq,
+                "result":{"is_error":False,"result_type":"complete","structured_content":{
+                    **opening,"paused":True,"map_ready":True,"actor_alive":True,"bridge_pid":pid}}})
+            plan=put(f"plan-{seq}.json",{"source":"actual GameplayBridgeService.before_submit callback","game_pid":pid,
+                "request":{"parent_sequence":seq},"result":{"structured_content":{"selected_step":step}}})
+            aa=put(f"after-{seq}.json",{"response":auto.path,"tool":"ck3_auto_turn"})
+            ma=put(f"after-{seq+1}.json",{"response":metrics.path,"tool":"root_current_runtime_metrics"})
+            credit=put(f"credit-{seq}.json",{"source_response":auto.path,"observation":observation})
+            counts["typed_nonmaterial_observation_turns"]=epoch_api.integer(counts.get("typed_nonmaterial_observation_turns",0))+1
+            event=put(f"CUMULATIVE-TURN-{turn:06d}.json",{"observation":observation,"before":opening,"after":opening,
+                "global_turn":turn,"auto_sequence":seq,"stage":"auto_verified","auto_response":auto.path,
+                "after_metrics_response":metrics.path,"business_success_inferred":False,"date_delta_raw":0,
+                "selected_step":step,"cumulative_observation_counts":copy.deepcopy(counts)})
+            entries.append({name:ref.to_wire() for name,ref in {"event":event,"auto":auto,"metrics":metrics,
+                "auto_plan":plan,"auto_after":aa,"metrics_after":ma,"ordinary_credit":credit}.items()}|{"readonly_save_skip":None})
+            last_metrics=metrics.path
+        unknown=control+5;count=old.completed_cycles+2
+        request={"sequence":unknown,"tool":"ck3_auto_turn","arguments":{}}
+        ur=put(f"p37-requests/{unknown:04d}-1-result.json",request);requests.append(ur)
+        response=put(f"p37-responses/{unknown:04d}-1-result.json",{"request":request,"client_error":"JSON integer loses precision","replay_allowed":False})
+        pending={"stage":"auto_unsettled","global_turn":count+1,"before":opening,"before_metrics_response":last_metrics,"auto_sequence":unknown}
+        state=copy.deepcopy(oldseed);state.update(completed_cycles=count,before=opening,before_metrics_response=last_metrics,
+            counts=counts,pending_cycle=pending,checkpoint_dirty_since_save=False)
+        for key in ("pending_checkpoint","terminal","pending_natural_succession","pending_unsafe_route_halt"):state[key]=None
+        state_ref=put("raw-state.json",state);self.raw_state=copy.deepcopy(state)
+        oldgov=epoch_api.evidence(r,old.refs.governance)
+        gov=put("raw-gov.json",{"schema":"g2.queue.governance-sidecar/v1","completed_cycles":count,
+            "pending_cycle":pending,"state":oldgov["governance_result_state"],"pending_focus":oldgov["pending_focus"]})
+        prefix=put("prefix.json",{"schema":"xar.readonly-settled-prefix-evidence/v1","machine_id":MACHINE,
+            "business_basis":oldref.to_wire(),"cold_bound":bound.to_wire(),"semantic_response":semref.to_wire(),
+            "capability_response":capref.to_wire(),"classifier_pin":clspin.to_wire(),"classifier_source":cls.to_wire(),"entries":entries})
+        inf=put("FULL-INFLIGHT.json",{"request":fullrequest,"control_only":True,"original_action_replay_allowed":False})
+        unknown_inf=put("unknown-INFLIGHT.json",{"sequence":unknown,"tool":"ck3_auto_turn","arguments":{},"request_file":ur.path,"replay_allowed":False})
+        fail=put("exception.json",{"stage":"sdk_call","replay_allowed":False,"request_identity":{
+            "sequence":unknown,"tool":"ck3_auto_turn","command":None},"traceback_truncated":False,"locals_captured":False})
+        halt=put("HALT.json",{"original_request":request,"original_response":response.path,"replay_allowed":False,
+            "sdk_kept_alive_for_original_collection":True,"first_exception_receipt":fail.path,"next_sequence":unknown+1})
+        full=put("failed-full.json",{"request":fullrequest,"client_error":"unknown","replay_allowed":False})
+        inv=put("inventory.json",{"machine_id":MACHINE,"all_owned_writers_closed":True,"next_sequence":unknown+1,
+            "unknown_sequence":unknown,"original_unknown_replayed":False,"request_files":[x.to_wire() for x in requests]})
+        nxt=put("next.json",{"next_sequence":unknown+1})
+        sdk=epoch_api.evidence(r,p.refs.sdk_closed);ps=[]
+        for value,newpid in zip(epoch_api.rows(sdk["processes"]),(131,137)):
+            item=object_row(value);item["pid"]=newpid;ps.append(item)
+        sdk["processes"]=ps;sdkref=put("sdkclosed.json",sdk)
+        sup=epoch_api.evidence(r,p.refs.supervisor_closed)
+        sup["sdk_actual_exit"]={k:v for k,v in sdk.items() if k!="launcher_exit_code"}
+        cleanup=object_row(sup["owned_cleanup"]);cleanup["ck3_pid"]=pid;sup["owned_cleanup"]=cleanup
+        supref=put("supervisorclosed.json",sup)
+        gx=epoch_api.evidence(r,p.refs.game_exit);gx.update(pid=pid,creation_filetime=birth);gxref=put("gameexit.json",gx)
+        di=FileStatIdentityV1(31,"9007199254741029","1792606189746283600")
+        dr=ExactRefV1(old.refs.driver.path,31,"e"*64)
+        history=[copy.deepcopy(x) for x in prior.history_rows];restore=copy.deepcopy(history[-1])
+        restore["index"]=prior.history_count+1;res=object_row(restore["result"])
+        res["lifecycle"]={"previous_pid":prior.old_game.pid,"pid":pid};restore["result"]=epoch_api.json_value(res)
+        history.append(restore);history.append({"index":prior.history_count+2,"command":"query-campaign-root-context-v1","ok":True,
+            "result":{"step":"query-campaign-root-context-v1","accepted":True,"date_raw":old.frame.date_raw,"native_uint64":18446744073709551615}})
+        native_raw=json.dumps(history,sort_keys=True,separators=(",",":")).encode()
+        opaque=put("opaque.json",{"schema":"xar.raw-closed-driver-history-opaque/v1","machine_id":MACHINE,
+            "Driver_ref":dr.to_wire(),"Driver_identity":di.to_wire(),"encoding":"zlib+base64",
+            "decoded_bytes":len(native_raw),"decoded_sha256":hashlib.sha256(native_raw).hexdigest(),"row_count":len(history),
+            "checkpoint_history_index":object_row(cp)["history_index"],"command_history_count":prior.history_count+2,
+            "payload":base64.b64encode(zlib.compress(native_raw)).decode()})
+        expectation={"schema":"xar.ck3.succession-expectation/v1","status":"available",
+            "binding":{**opening,"episode_character_id":old.frame.actor_character_id},"expectation_state":"successor_expected",
+            "predecessor_character_id":old.frame.actor_character_id,"expected_successor_character_id":143,
+            "title_expectations":[{"title":{"title_id":2,"tier_raw":2,"tier_key":"county"},"first_heir_character_id":143,"primary":True}],"risk_state":"single_successor","unavailable_reason":None}
+        # Preserve exactly the SDK expectation wire, including its nullable unavailable_reason.
+        expectation["binding"]={key:value for key,value in object_row(expectation["binding"]).items() if key!="actor_character_id"}
+        flags:dict[str,object]={"managed_restore_transaction":None,"rollback_war_failure":None,"succession_expectation":expectation,
+            "rollback_war_failures":[],"session_binding_present":False}
+        oldreview=epoch_api.evidence(r,p.refs.driver_review);driver=object_row(oldreview["Driver"])
+        identity=object_row(driver["recorded_identity"]);identity.update(bridge_pid=pid,pipe_name="pipe-prefix")
+        driver.update(ref=dr.to_wire(),identity=di.to_wire(),command_history_count=prior.history_count+2,
+            recorded_identity=identity,session_binding_present=False,payload_flags={k:v for k,v in flags.items() if k!="session_binding_present"})
+        raw=put("raw.json",{"schema":"xar.raw-closed-driver-observation/v2","machine_id":MACHINE,
+            "Driver_ref":dr.to_wire(),"Driver_identity":di.to_wire(),"SAVE_identity":old.save_identity.to_wire(),
+            "command_history_count":prior.history_count+2,"last_checkpoint":cp,"recorded_identity":identity,
+            "campaign_goal":old.campaign_goal_anchor,"driver_payload_flags":driver["payload_flags"],
+            "post_checkpoint_history_opaque":opaque.to_wire(),"session_binding_present":False,"session_binding_value":None,"payload_top_keys":[]})
+        review=put("review.json",{"schema":"xar.readonly-prefix-unknown-driver-save-review/v1",
+            "status":"CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_WITH_UNKNOWN_REQUEST","machine_id":MACHINE,
+            "Driver":driver,"SAVE":oldreview["SAVE"],"post_checkpoint_history_opaque":opaque.to_wire(),
+            "raw_observation":raw.to_wire(),"raw_Driver_body_read_count":1,"Driver_body_bytes_read":31,"SAVE_full_hash_count":0})
+        reuse=epoch_api.evidence(r,p.refs.canonical_qualification)
+        reuse.update(schema="xar.closed-readonly-prefix-save-identity-reuse/v1",previous_canonical_qualification=p.refs.canonical_qualification.to_wire(),
+            driver_review=review.to_wire(),history_tail=opaque.to_wire(),Driver_identity=di.to_wire(),
+            Driver_full_read_count=1,Driver_full_read_bytes=31)
+        reuse_ref=put("reuse.json",reuse)
+        linked={name:ref.to_wire() for name,ref in {"raw_state":state_ref,"raw_governance":gov,"unknown_request":ur,
+            "unknown_response":response,"first_exception":fail,"inflight":inf,"halt":halt,"failed_full_response":full,
+            "request_inventory":inv,"driver_review":review,"history_tail":opaque,"launch":launchref,"sdk_closed":sdkref,
+            "supervisor_closed":supref,"game_exit":gxref,"next":nxt,"canonical_qualification":reuse_ref,"queue_source":queue}.items()}
+        extra=put("closed-extra.json",{});linked.update({k:extra.to_wire() for k in (
+            "screen_release","recording_shutdown","independent_recording_closed","sdk_pair")})
+        tasks={}
+        for role in ("supervisor","display","record02","feeder"):
+            spec=put(role+"-SPEC.json",{"machine_id":MACHINE,"nonce":role})
+            closed=put(role+"-CLOSED.json",{"machine_id":MACHINE,"nonce":role,"child_exit_code":1})
+            unreg=put(role+"-UNREGISTER.json",{"returncode":0,"stdout":json.dumps({"machine_id":MACHINE,"actual":{"absent_after":True}})})
+            tasks[role]={"spec":spec.to_wire(),"closed":closed.to_wire(),"unregistered":unreg.to_wire(),"child_exit_code":1}
+        index=put("index.json",{"schema":"xar.readonly-prefix-unknown-abort-closure/v1",
+            "status":"CLOSED_READONLY_SETTLED_PREFIX_WITH_UNKNOWN","machine_id":MACHINE,"original_basis_ref":oldref.to_wire(),
+            "original_whole_wall_origin":old.origin.original_wall_origin_utc,"next_sequence":unknown+1,
+            "last_saved_checkpoint_baseline_cycles":old.completed_cycles,"business_completed_cycles":count,
+            "business_date_raw":old.frame.date_raw,"pending_unknown_cycle":pending,"unknown_side_effects_inferred":False,
+            "failed_FULL_claimed_successful":False,"original_requests_replayed":False,"all_owned_Tasks_actual_absent":True,
+            "Game_exit_code":1,"Game_forced":True,"Game_Job_active_final":0,"owned_Task_count":4,"tasks":tasks,"refs":linked,
+            "new_ordinary_cycle_credit":0,"new_game_day_credit":0,"new_checkpoint_credit":0,"new_game_days":0})
+        values={name:epoch_api.parse_ref(value) for name,value in linked.items()}
+        values.update(business_basis=oldref,prefix=prefix,closure_index=index,unknown_inflight=unknown_inf)
+        observations:tuple[epoch_api.ReadonlyUnknownSidecarV1,...]=()
+        if sidecar_payload is not None:
+            path=root+"/current-sidecar.json";r.raw[path]=sidecar_payload
+            current=ExactRefV1(path,len(sidecar_payload),hashlib.sha256(sidecar_payload).hexdigest())
+            observations=(epoch_api.ReadonlyUnknownSidecarV1(old_sidecars[0],current,"/live/formal-sidecar.json"),)
+        self.epoch=epoch_api.ReadonlyPrefixUnknownEpochV1(MACHINE,"2026-10-21T08:01:00Z",
+            epoch_api.ReadonlyPrefixUnknownRefsV1(*(values[k] for k in epoch_api._PREFIX_REF_NAMES)),
+            epoch_api.parse_readonly_prefix_driver_flags_v1(flags),observations)
+        r.identities[dr.path]=di;r.read_paths.clear();r.stat_paths.clear()
+    def validated(self)->epoch_api.ValidatedReadonlyPrefixUnknownEpochV1:
+        return epoch_api.validate_readonly_prefix_unknown_epoch_v1(self.epoch,reader=self.reader)
+    def build(self)->tuple[CurrentSavedBasisV1,ExactRefV1,epoch_api.ReadonlyPrefixUnknownQualificationV1]:
+        checked=self.validated();r=self.reader
+        er=r.put("prefix-epoch.json",self.epoch.to_wire())
+        projections=epoch_api.build_readonly_prefix_unknown_projections_v1(checked,reader=r)
+        sr=r.put("prefix-seed.json",projections.seed);gr=r.put("prefix-governance.json",projections.governance)
+        basis=epoch_api.build_readonly_prefix_unknown_basis_v1(checked,epoch_ref=er,seed_ref=sr,governance_ref=gr,
+            observed_at_utc=self.epoch.observed_at_utc,sidecars=tuple(x.current_snapshot for x in self.epoch.sidecar_observations),reader=r)
+        br=r.put("prefix-basis.json",basis.to_wire())
+        q=epoch_api.build_readonly_prefix_unknown_qualification_v1(checked,basis,basis_ref=br,reader=r,
+            observed_at_utc=self.epoch.observed_at_utc)
+        return basis,br,q
+
+class ReadonlyPrefixUnknownTests(unittest.TestCase):
+    def test_real_builders_to_all_owner_consumers_preserve_unknown(self)->None:
+        from unittest.mock import patch
+        from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
+        f=ReadonlyPrefixUnknownFixture();basis,br,q=f.build();r=f.reader
+        self.assertEqual(basis.completed_cycles,f.previous_basis.completed_cycles+2)
+        self.assertEqual(basis.frame.date_raw,f.previous_basis.frame.date_raw)
+        self.assertEqual([x.sequence for x in basis.unknown_requests],
+            [*(x.sequence for x in f.previous_basis.unknown_requests),basis.next_sequence-1])
+        self.assertEqual(epoch_api.evidence(r,f.epoch.refs.raw_state),f.raw_state)
+        self.assertIsNotNone(f.raw_state["pending_cycle"])
+        self.assertIsNotNone(f.epoch.driver_payload_flags.succession_expectation)
+        qr=r.put("prefix-qualification.json",q.to_wire())
+        parsed=owner.parse_basis_qualification_v1(json.loads(json_bytes(q.to_wire())),expected_machine_id=MACHINE)
+        self.assertIsInstance(parsed,epoch_api.ReadonlyPrefixUnknownQualificationV1)
+        inputs=owner.validate_current_saved_cold_inputs_v1(basis,basis_ref=br,validation_ref=qr,reader=r)
+        with patch.object(owner,"LocalBasisReaderV1",return_value=r):
+            out=owner.validate_current_saved_prepared_sdk_closure_v1(f.epoch.refs.sdk_closed.to_wire(),inputs=inputs)
+        self.assertEqual(out["normal"],False)
+        r.identities[basis.refs.driver.path]=FileStatIdentityV1(basis.driver_identity.bytes,"9007199254741999",basis.driver_identity.mtime_ns)
+        owner._closed_epoch(basis,r) # Historical warm evidence does not assert a mutable live Driver identity.
+        with self.assertRaises(ValueError):f.validated()
+        self.assertNotIn(basis.refs.driver.path,r.read_paths);self.assertNotIn(basis.refs.save.path,r.read_paths)
+    def test_schema_types_unknown_and_opaque_integrity(self)->None:
+        f=ReadonlyPrefixUnknownFixture()
+        for field,bad in (("new_ordinary_cycle_credit",True),("new_game_day_credit",1.0),
+            ("original_unknown_replayed",True),("unknown_side_effects_inferred",True),("schema",epoch_api.CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA)):
+            wire=f.epoch.to_wire();wire[field]=bad
+            with self.subTest(field=field),self.assertRaises(ValueError):
+                epoch_api.parse_readonly_prefix_unknown_epoch_v1(wire,expected_machine_id=MACHINE)
+        opaque=epoch_api.evidence(f.reader,f.epoch.refs.history_tail)
+        decoded=epoch_api.decode_readonly_prefix_history_v1(opaque)
+        self.assertEqual(object_row(decoded[-1]["result"])["native_uint64"],18446744073709551615)
+        for key,bad in (("payload",str(opaque["payload"])+"AAAA"),("decoded_sha256","f"*64),("decoded_bytes",True),("row_count",1.0)):
+            row=copy.deepcopy(opaque);row[key]=bad
+            with self.subTest(key=key),self.assertRaises((ValueError,TypeError)):
+                epoch_api.decode_readonly_prefix_history_v1(row)
+        invalid_epoch=replace(f.epoch,driver_payload_flags=replace(f.epoch.driver_payload_flags,managed_restore_transaction=None))
+        wire=invalid_epoch.to_wire()
+        wire["driver_payload_flags"]=epoch_api.json_object({**object_row(wire["driver_payload_flags"]),"rollback_war_failure":{}})
+        with self.assertRaises(ValueError):epoch_api.parse_readonly_prefix_unknown_epoch_v1(wire,expected_machine_id=MACHINE)
+
+    def test_raw_uint64_sidecar_survives_public_builder(self)->None:
+        raw=b' {\n "pending":null,"source_creation_filetime":134370765451291729}\n'
+        f=ReadonlyPrefixUnknownFixture(sidecar_payload=raw);obs=f.epoch.sidecar_observations[0]
+        self.assertEqual(f.reader.raw[obs.current_snapshot.path],raw)
+        basis,_,_=f.build()
+        self.assertIn(obs.current_snapshot,basis.sidecars)
+        self.assertEqual(f.reader.raw[obs.current_snapshot.path],raw)
+        self.assertEqual(epoch_api.decode_current_saved_basis_v1(
+            epoch_api.encode_current_saved_basis_v1(basis),expected_machine_id=MACHINE),basis)
+        self.assertEqual(obs.to_wire()["attribution"],"UNKNOWN_REQUEST_EFFECT_NOT_INFERRED")
+        with self.assertRaisesRegex(ValueError,"JSON integer loses precision"):
+            epoch_api.json_object(json.loads(raw))
 
 if __name__ == "__main__":
     unittest.main()

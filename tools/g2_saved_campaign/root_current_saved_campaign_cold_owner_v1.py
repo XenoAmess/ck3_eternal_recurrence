@@ -12,6 +12,9 @@ from typing import Literal,Protocol
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
  SavedFrameV1,ValidatedCurrentSavedBasisV1,
+ READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA,READONLY_PREFIX_UNKNOWN_QUALIFICATION_SCHEMA,
+ ReadonlyPrefixUnknownQualificationV1,parse_readonly_prefix_unknown_qualification_v1,
+ parse_readonly_prefix_unknown_epoch_v1,validate_readonly_prefix_unknown_basis_v1,
  CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA,parse_cap_postresponse_failure_epoch_v3,
  validate_cap_postresponse_failure_evidence_v3,
  CAP_POSTRESPONSE_FAILURE_QUALIFICATION_SCHEMA,CapPostresponseFailureQualificationV3,
@@ -151,7 +154,9 @@ class BasisQualificationV1:
    "save_hash_reads":self.save_hash_reads,
    "read_count_scope":"this_additional_qualification_only",
    "power_loss_durability":"not_asserted"}
-def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1|CapPretransportFailureQualificationV2|CapPostresponseFailureQualificationV3:
+def parse_basis_qualification_v1(value:object,*,expected_machine_id:str)->BasisQualificationV1|ReadonlyColdFailureQualificationV1|CapPretransportFailureQualificationV2|CapPostresponseFailureQualificationV3|ReadonlyPrefixUnknownQualificationV1:
+ if record(value).get("schema")==READONLY_PREFIX_UNKNOWN_QUALIFICATION_SCHEMA:
+  return parse_readonly_prefix_unknown_qualification_v1(value,expected_machine_id=expected_machine_id)
  if record(value).get("schema")==CAP_POSTRESPONSE_FAILURE_QUALIFICATION_SCHEMA:
   return parse_cap_postresponse_failure_qualification_v3(value,expected_machine_id=expected_machine_id)
  if record(value).get("schema")==CAP_PRETRANSPORT_FAILURE_QUALIFICATION_SCHEMA:
@@ -281,6 +286,14 @@ def _validate_task_closure(
  need(matching==1,'one exact Task unregiste')
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1)->ClosedEpochV1:
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
+  prefix_checked=validate_readonly_prefix_unknown_basis_v1(basis,reader=reader)
+  prefix_game=prefix_checked.old_game
+  return ClosedEpochV1(basis.refs.closure,
+   CurrentGameIdentityV1(prefix_game.pid,prefix_game.creation_filetime,prefix_game.creation_date),
+   prefix_checked.next_sequence,
+   tuple(ClosedSdkProcessV1(p.role,p.pid,p.creation_filetime,p.executable,p.exit_code)
+    for p in prefix_checked.sdk_processes),prefix_checked.epoch.observed_at_utc,prefix_checked.pipe_name)
  if closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:
   post_epoch=parse_cap_postresponse_failure_epoch_v3(closure,expected_machine_id=basis.machine_id)
   post_checked=validate_cap_postresponse_failure_evidence_v3(post_epoch,reader=reader)
@@ -494,7 +507,13 @@ def _validated_immutable_inputs_v1(
    and qualification.driver_identity_after==basis.driver_identity
    and qualification.save_identity_after==basis.save_identity,
    'actual one-read canonica')
- if isinstance(qualification,CapPostresponseFailureQualificationV3):
+ if isinstance(qualification,ReadonlyPrefixUnknownQualificationV1):
+  prefix_failure=parse_readonly_prefix_unknown_epoch_v1(
+   evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
+  need(qualification.epoch_ref==basis.refs.closure
+   and qualification.canonical_qualification_ref==prefix_failure.refs.canonical_qualification,
+   "prefix qualification binds its independent unknown epoch and canonical identity reuse")
+ elif isinstance(qualification,CapPostresponseFailureQualificationV3):
   post_failure=parse_cap_postresponse_failure_epoch_v3(
    evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
   need(qualification.epoch_ref==basis.refs.closure
@@ -1170,7 +1189,10 @@ def validate_campaign_score_junction_physical_v1(
 def validate_current_saved_prepared_sdk_closure_v1(value:object,*,inputs:CurrentSavedColdInputsV1)->JsonObject:
  reader=LocalBasisReaderV1();reference=parse_ref(value)
  closure=evidence(reader,inputs.basis.refs.closure,65536)
- if closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:
+ if closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
+  prefix_epoch=parse_readonly_prefix_unknown_epoch_v1(closure,expected_machine_id=inputs.basis.machine_id)
+  expected=prefix_epoch.refs.sdk_closed
+ elif closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:
   post_epoch=parse_cap_postresponse_failure_epoch_v3(closure,expected_machine_id=inputs.basis.machine_id)
   expected=post_epoch.refs.sdk_closed
 
