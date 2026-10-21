@@ -36,8 +36,7 @@ class FreshMachineBootstrap(TypedDict):
     maintenance_closures: list[FilePin]
 
 
-class MaintenanceScreenClosure(TypedDict):
-    schema: Literal['ck3-mod-acceptance-maintenance-screen-closure-v1']
+class MaintenanceScreenEvidence(TypedDict):
     machine_id: str
     task_id: str
     maintenance_only: Literal[True]
@@ -47,6 +46,17 @@ class MaintenanceScreenClosure(TypedDict):
     before_inventory: FilePin
     after_inventory: FilePin
     actions_result: FilePin
+
+
+class MaintenanceScreenClosure(MaintenanceScreenEvidence):
+    schema: Literal['ck3-mod-acceptance-maintenance-screen-closure-v1']
+
+
+class MaintenanceScreenDeclaration(MaintenanceScreenEvidence):
+    schema: Literal['ck3-mod-acceptance-maintenance-screen-declaration-v1']
+    observed_at_utc: str
+    raw_observation_identity: Literal['unknown']
+    evidence_scope: Literal['declared-maintenance-not-previous-game-exit']
 
 
 class FreshMachineAdmission(TypedDict):
@@ -149,25 +159,38 @@ def _pinned_object(reference: FilePin) -> JsonObject:
     return json_object(json.loads(path.read_text(encoding='utf-8-sig')))
 
 
-def parse_maintenance_closure(value: object) -> MaintenanceScreenClosure:
+def parse_maintenance_closure(value: object) -> MaintenanceScreenClosure | MaintenanceScreenDeclaration:
     row = json_object(value)
     fields = {'schema', 'machine_id', 'task_id', 'maintenance_only', 'no_game_start',
               'registration', 'release', 'before_inventory', 'after_inventory', 'actions_result'}
-    if (set(row) != fields or row.get('schema') != 'ck3-mod-acceptance-maintenance-screen-closure-v1'
-            or row.get('maintenance_only') is not True or row.get('no_game_start') is not True):
+    declaration = row.get('schema') == 'ck3-mod-acceptance-maintenance-screen-declaration-v1'
+    if declaration:
+        fields |= {'observed_at_utc', 'raw_observation_identity', 'evidence_scope'}
+    if (set(row) != fields or row.get('maintenance_only') is not True or row.get('no_game_start') is not True):
         raise ValueError('Exact maintenance-only/no-game-start closure required')
-    return MaintenanceScreenClosure(
-        schema='ck3-mod-acceptance-maintenance-screen-closure-v1',
+    common = MaintenanceScreenEvidence(
         machine_id=text_field(row, 'machine_id'), task_id=text_field(row, 'task_id'),
         maintenance_only=True, no_game_start=True,
         registration=file_pin(row['registration']), release=file_pin(row['release']),
         before_inventory=file_pin(row['before_inventory']), after_inventory=file_pin(row['after_inventory']),
         actions_result=file_pin(row['actions_result']),
     )
+    if declaration:
+        if (row.get('raw_observation_identity') != 'unknown'
+                or row.get('evidence_scope') != 'declared-maintenance-not-previous-game-exit'):
+            raise ValueError('Maintenance declaration must preserve unknown raw identity and its limited scope')
+        _maintenance_observation(row, common['machine_id'])
+        return MaintenanceScreenDeclaration(
+            **common, schema='ck3-mod-acceptance-maintenance-screen-declaration-v1',
+            observed_at_utc=text_field(row, 'observed_at_utc'), raw_observation_identity='unknown',
+            evidence_scope='declared-maintenance-not-previous-game-exit')
+    if row.get('schema') != 'ck3-mod-acceptance-maintenance-screen-closure-v1':
+        raise ValueError('Exact maintenance-only/no-game-start closure required')
+    return MaintenanceScreenClosure(**common, schema='ck3-mod-acceptance-maintenance-screen-closure-v1')
 
 
-def _maintenance_observation(row: JsonObject, binding: MachineBinding) -> datetime:
-    if row.get('machine_id') != binding['machine_id']:
+def _maintenance_observation(row: JsonObject, machine_id: str) -> datetime:
+    if row.get('machine_id') != machine_id:
         raise ValueError('Maintenance raw observation belongs to another machine')
     stamp = datetime.fromisoformat(text_field(row, 'observed_at_utc').replace('Z', '+00:00'))
     if stamp.utcoffset() != timedelta(0) or stamp > datetime.now(timezone.utc):
@@ -212,15 +235,23 @@ def _maintenance_epochs(refs: list[FilePin], events: list[JsonObject], tasks: li
                 or type(matching[0].get('last_sequence')) is not int
                 or matching[0].get('state') != 'done' or matching[0].get('resources') != []):
             raise ValueError('Actual maintenance task is not the exact released head')
+        if closure['schema'] == 'ck3-mod-acceptance-maintenance-screen-declaration-v1':
+            # These originals retain unknown identity. They prove neither same-machine
+            # process absence nor a previous game exit. Fresh admission still requires
+            # canonical-history absence and actual current machine/process/resource guards.
+            for reference in (closure['before_inventory'], closure['after_inventory'], closure['actions_result']):
+                _pinned_object(reference)
+            epochs[task] = first, last
+            continue
         inventory_times: list[datetime] = []
         for field in ('before_inventory', 'after_inventory'):
             inventory = _pinned_object(closure['before_inventory'] if field == 'before_inventory' else closure['after_inventory'])
-            inventory_times.append(_maintenance_observation(inventory, binding))
+            inventory_times.append(_maintenance_observation(inventory, binding['machine_id']))
             if (type(inventory.get('tasklist_returncode')) is not int or inventory.get('tasklist_returncode') != 0
                     or any(inventory.get(key) != [] for key in ('tasklist_pids', 'wmi_pids', 'processes'))):
                 raise ValueError('Maintenance before/after actual CK3 absence is unavailable')
         actions = _pinned_object(closure['actions_result'])
-        action_time = _maintenance_observation(actions, binding)
+        action_time = _maintenance_observation(actions, binding['machine_id'])
         if not inventory_times[0] <= inventory_times[1] <= action_time:
             raise ValueError('Maintenance before/after/action observations are out of order')
         if (actions.get('machine_id') != binding['machine_id']

@@ -240,6 +240,33 @@ class FreshMachineBootstrapTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'out of order'):
             self.validate()
 
+    def test_declared_released_maintenance_preserves_unknown_raw_identity_without_exit_credit(self) -> None:
+        closure = self.add_maintenance()
+        raw = json.loads(closure.read_text())
+        for field in ('before_inventory', 'after_inventory', 'actions_result'):
+            original = Path(raw[field]['path'])
+            self.save(original, {'historical_machine_id': 'unknown'})
+            raw[field] = exact_pin(original)
+        raw.update(schema='ck3-mod-acceptance-maintenance-screen-declaration-v1',
+                   observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                   raw_observation_identity='unknown',
+                   evidence_scope='declared-maintenance-not-previous-game-exit')
+        self.save(closure, raw)
+        self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+        self.save(self.source, self.bundle)
+        result = self.validate()
+        self.assertIs(result['previous_normal_exit_claimed'], False)
+        self.inventory['blockers'] = [{'pid': 77, 'name': 'ck3.exe'}]
+        with self.assertRaisesRegex(ValueError, 'absence is not proven'):
+            self.validate()
+        self.inventory['blockers'] = []
+        raw['raw_observation_identity'] = 'verified'
+        self.save(closure, raw)
+        self.bundle['maintenance_closures'] = json_object({'refs': [exact_pin(closure)]})['refs']
+        self.save(self.source, self.bundle)
+        with self.assertRaisesRegex(ValueError, 'preserve unknown'):
+            self.validate()
+
     def test_unreleased_maintenance_and_missing_declaration_and_game_history_refused(self) -> None:
         closure = self.add_maintenance()
         self.packet['tasks'] = [{'task_id': 'steam-repair-maintenance', 'last_sequence': 2,
