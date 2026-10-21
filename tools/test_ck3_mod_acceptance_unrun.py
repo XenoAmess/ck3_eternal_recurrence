@@ -53,6 +53,12 @@ def release_stage_checks():
         return subject._release_stages(stop,cas,final,first,last,release,task)
     need(invoke()=='direct-completed','Single canonical completed branch rejected')
     need(invoke(cas=status)=='status-then-completed','Original strict two-stage branch rejected')
+    completed_release=deepcopy(done);completed_release['event']['sequence']=11
+    need(subject._release_stages(keeper,completed_release,done,direct_source,direct_source,done,task,
+         cooperative_pin_refusal=True)=='completed-then-admin-completed','Cooperative actual completed/admin stages rejected')
+    try:invoke(cas=completed_release)
+    except ValueError:pass
+    else:raise AssertionError('Legacy idle release accepted the cooperative-only extension')
     rejected=0
     def refuses(expected,**kwargs):
         nonlocal rejected
@@ -113,7 +119,9 @@ def main():
     keeper_ready=subject._read(bundle['keeper_ready']['path']);keeper_report=subject._read(bundle['keeper']['path'])
     allocator_checks=allocator_original_checks(bundle,bundle['machine_id'],
         [datetime.fromisoformat(keeper_ready['at_utc']),datetime.fromisoformat(keeper_report['at_utc'])])
-    need(verdict['mode']=='previous-shared-allocated-unrun-idle','Allocated-only closure mode differs')
+    expected_mode=('previous-shared-allocated-unrun-launcher-pin-refused' if
+        bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent' else 'previous-shared-allocated-unrun-idle')
+    need(verdict['mode']==expected_mode,'Allocated-only closure mode differs')
     need(verdict['failure_cleanup']['typed_normal_exit_proven'] is False,'Unexpected normal exit credit')
     need(verdict['failure_cleanup']['original_host_exit_code'] is None,'Unexpected host exit code')
     need('counter' in bundle and 'counter' not in verdict['failure_cleanup']['original_evidence'],
