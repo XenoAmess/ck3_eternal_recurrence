@@ -332,7 +332,7 @@ def preflight_current_saved_campaign_v1(
     need(_same_path(core.path, __file__) or any(
         _same_path(item.path, __file__) and (item.bytes, item.sha256) == (core.bytes, core.sha256)
         for item in sources), "executed preflight core source origin")
-    exact_read(reader, core, 114688)
+    exact_read(reader, core, 118784)
     _, replay = _full_historical_replay(replay_ref, plan, quote, core, reader)
     _validate_consumer_probe(consumer_probe_ref, plan_ref, quote_ref, plan, reader)
     result = CurrentSavedCampaignPreflightV1(
@@ -517,14 +517,27 @@ def _inflight_guard(root: Path, queue: object, request: JsonObject,
         if active is not None and number == sequence:
             _, context = _read_actual(path, reader, 16384)
             if context.get("scope") == "cold-start-readiness-only":
-                need(integer(context.get("sequence"), 1) == sequence
+                need(active.phase == "semantic" and request.get("tool") == SEMANTIC_TOOL
+                     and integer(context.get("sequence"), 1) == sequence
                      and context.get("tool") == request.get("tool")
                      and record(context.get("arguments")) == record(request.get("arguments"))
                      and context.get("outer_sequence_consumed") is False,
                      "only this exact active startup request owns its INFLIGHT")
             else:
-                need(_json_bytes(context.get("request")) == active.request_json,
-                     "only this exact active ordinary request owns its INFLIGHT")
+                flat = parse_current_saved_queue_tool_inflight_v1(context)
+                _registered_permit(queue, active)
+                request_file = root / "p37-requests" / f"{sequence:04d}-1-result.json"
+                need(active.request_json == _json_bytes(request)
+                     and flat.sequence == sequence == active.sequence
+                     and flat.tool == request.get("tool")
+                     and _json_bytes(flat.arguments) == _json_bytes(request.get("arguments"))
+                     and Path(flat.request_file).is_absolute()
+                     and _same_path(flat.request_file, request_file)
+                     and path.name == f"INFLIGHT-{sequence:04d}.json",
+                     "only the exact registered active request owns the original flat INFLIGHT")
+                _, original_request = _read_actual(request_file, reader, 16384)
+                need(_json_bytes(_request(original_request)) == active.request_json,
+                     "active Queue INFLIGHT binds the actual immutable original request file")
             continue
         need(number < next_sequence and _settled(number, root, reader),
              "unsettled original INFLIGHT forbids another request")
@@ -1165,7 +1178,7 @@ def _full_historical_replay(
     need(full.execution_machine_id == current_execution_machine_id_v1()
          and (full.core_source_ref.bytes, full.core_source_ref.sha256) ==
          (core_ref.bytes, core_ref.sha256), "full replay executed with these exact core bytes")
-    exact_read(reader, full.core_source_ref, 114688)
+    exact_read(reader, full.core_source_ref, 118784)
     exact_read(reader, full.harness_ref, 131072)
     fixture = _small(reader, full.fixture_ref, 135168)
     need(fixture.get("schema") == "xar.current-saved-historical-sem11373-fixture/v1"
@@ -2109,3 +2122,21 @@ def decode_current_saved_historical_payload_v1(value: object) -> tuple[ExactRefV
          "archived source exact original bytes")
     return ref, raw
 
+
+
+@dataclass(frozen=True)
+class CurrentSavedQueueToolInflightV1:
+    sequence: int
+    tool: str
+    arguments: JsonObject
+    request_file: str
+    at_utc: str
+    replay_allowed: Literal[False] = False
+
+
+def parse_current_saved_queue_tool_inflight_v1(value: object) -> CurrentSavedQueueToolInflightV1:
+    row = record(value, {"sequence", "tool", "arguments", "request_file", "at_utc", "replay_allowed"})
+    need(row["replay_allowed"] is False, "original Queue INFLIGHT forbids replay")
+    return CurrentSavedQueueToolInflightV1(
+        integer(row["sequence"], 1), text(row["tool"]), json_object(row["arguments"]),
+        text(row["request_file"]), utc(row["at_utc"]))

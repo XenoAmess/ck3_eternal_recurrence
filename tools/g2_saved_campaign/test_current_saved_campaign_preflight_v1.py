@@ -45,8 +45,8 @@ from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
 REPO = Path(__file__).resolve().parents[2]
 DATA = Path(__file__).with_name("test_data") / "current_saved_sem11373_postcheck_v1.json"
 DATA_SHA = "083c39f875f6b8f8464971d194decd242257fa6013d15bfccf37d0f2c0567b26"
-HARD = 524288
-SOFT = 458752
+HARD = 1048576
+SOFT = 917504
 SUBJECT = "xenoamess-full-tower-eb9d2c1186"
 FIRST_SEQUENCE = 11373
 CURRENT_SEQUENCE = 11375
@@ -173,7 +173,7 @@ def _fixture_parent() -> Path:
     if configured:
         root = Path(configured).resolve()
         need(root.is_absolute() and root.name ==
-             "2026-10-21-current-saved-preflight-remediation-fixture01",
+             "2026-10-21-current-saved-cap-pretransport-fixture01",
              "coordinator supplied exact owned fixture")
         return root
     need(os.environ.get("GITHUB_ACTIONS") == "true",
@@ -203,7 +203,7 @@ def _allocation_unit(path: Path) -> int:
 def _owned_workspace(*, approved_root: Path | None = None) -> Iterator[_Workspace]:
     root = _fixture_parent() if approved_root is None else approved_root.resolve()
     need(root.is_absolute() and (root.name ==
-         "2026-10-21-current-saved-preflight-remediation-fixture01"
+         "2026-10-21-current-saved-cap-pretransport-fixture01"
          or root == REPO / ".ci-current-saved-preflight-fixture"),
          "exact coordinator-owned local or portable CI fixture")
     need(not root.exists(), "sole fixture coordinator; root must be absent")
@@ -309,7 +309,7 @@ def _module(name: str, path: Path, source: bytes, workspace: _Workspace,
 
 @contextmanager
 def _isolated_modules() -> Iterator[None]:
-    names = ("root_", "startup_readiness_v1", "pending_requests_v1", "xar_autoplayer")
+    names = ("root_", "startup_readiness_v1", "pending_requests_v1", "xar_autoplayer", "owner_response_")
     before = {key: value for key, value in sys.modules.items()
               if any(key.startswith(prefix) for prefix in names)}
     try:
@@ -1342,6 +1342,173 @@ class HistoricalArchiveBoundaryTests(unittest.TestCase):
         noncanonical["encoded"] = encoded[:-3] + alphabet[position + 1] + "=="
         with self.assertRaises(ValueError):
             core.decode_current_saved_historical_payload_v1(noncanonical)
+
+
+_N28_RESPONSE_SOURCE = b'"""Encode the full MCP result once while retaining the owner\'s exact row JSON."""\nfrom __future__ import annotations\n\nimport json\n\n\ndef json_utf8(value: object) -> bytes:\n    return json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")\n\n\ndef prepare_success_response_row_v1(*, started_at_utc: str, ended_at_utc: str,\n                                    elapsed_seconds: float, request: dict,\n                                    result: dict) -> tuple[dict, bytes]:\n    """Return the original row object plus exactly its existing compact UTF-8.\n\n    The full result is neither pruned nor normalized.  The original output-model\n    dump and downstream decoded/check_after functions remain the caller\'s work.\n    A text/JSON encoding error propagates to the caller\'s existing unknown-outcome\n    path, never to an RPC retry.  No file or backend operation occurs here.\n    """\n    encoded_result = json_utf8(result)\n    prefix = {"started_at_utc": started_at_utc, "ended_at_utc": ended_at_utc,\n              "elapsed_seconds": elapsed_seconds, "request": request}\n    count = len(encoded_result)\n    row = {**prefix, "result": result, "mcp_result_projection_json_utf8_bytes": count}\n    encoded_row = b"".join((json_utf8(prefix)[:-1], b\',"result":\', encoded_result,\n                           b\',"mcp_result_projection_json_utf8_bytes":\',\n                           str(count).encode("ascii"), b"}"))\n    return row, encoded_row\n'
+_N28_CLASSIFIER_PROJECTION = """def classify_existing_typed_v1(body, *, state=None, initial_frame=None, game_pid=None):
+    from root_c11_prisoner_cold_epoch_credit import classify
+    return classify(body, state=state, initial_frame=initial_frame, game_pid=game_pid, namespace=globals())
+"""
+
+class OriginalFlatCapProducerTests(unittest.TestCase):
+    def test_original_queue_flat_cap_session_and_bound(self) -> None:
+        corpus = _load_corpus()
+        with _owned_workspace() as workspace, _isolated_modules():
+            harness = _make_harness(workspace, corpus, name="flat-cap", with_anchor=True)
+            env = harness.namespace
+            original_tree = ast.parse(corpus.payload("queue"))
+            queue_class = next(node for node in original_tree.body
+                               if isinstance(node, ast.ClassDef) and node.name == "FreshQueue")
+            call = next(node for node in queue_class.body
+                        if isinstance(node, ast.AsyncFunctionDef) and node.name == "call")
+            self.assertEqual(hashlib.sha256(ast.dump(call, include_attributes=False).encode()).hexdigest(),
+                             "a78999685638b5aaac3feb94e32f3968425d93be456c866fc73626b5f0c125f4")
+            # The archived original Queue and actual frozen N28 call/atomic
+            # producers have identical ASTs. Execute their original bodies.
+            expected = {"atomic": "0d16a738759894f1181745cc9e81f7de2a0b969507b87ae9ddda5fbec61f147d",
+                "atomic_payload_v1": "1f4e0703d0e7fb7021badf8f73401b6c474d6a27c2acb0bc392e5c8f28a7d60c",
+                "persist_loop_state": "9724b320ff071ca0901059aabd74f632eaabed5ba42a0850f8603f807ad320aa"}
+            projection = _selected_source(corpus.payload("queue"), {"atomic", "atomic_payload_v1"},
+                                         {"FreshQueue": {"persist_loop_state"}})
+            for node in ast.parse(projection).body:
+                if isinstance(node, ast.FunctionDef):
+                    self.assertEqual(hashlib.sha256(ast.dump(node, include_attributes=False).encode()).hexdigest(),
+                                     expected[node.name])
+            projection += "\n" + _N28_CLASSIFIER_PROJECTION
+            source_path = harness.root / "n28_original_cap_projection.py"
+            workspace.write(source_path, projection.encode())
+            from contextlib import nullcontext
+            import uuid
+            def before_write(path: object) -> None:
+                need(isinstance(path, Path), "original producer path")
+                if not isinstance(path, Path):
+                    raise ValueError("Path required")
+                need(path.parent.resolve().is_relative_to(workspace.root), "owned original atomic path")
+                workspace.measure()
+            env.update(os=os, uuid=uuid, _control_span_v1=lambda name: nullcontext(),
+                       _before_full_generated_write_v1=before_write)
+            exec(compile(projection, str(source_path), "exec"), env)
+            setattr(type(harness.queue), "persist_loop_state", env["persist_loop_state"])
+            self.assertEqual(hashlib.sha256(_N28_RESPONSE_SOURCE).hexdigest(),
+                             "895519ed2d403f87fa8740252909ca2d4e23d88940eca70833d945f333cc8b2c")
+            response = _module("owner_response_json_once_v1", harness.root / "n28_response_original.py",
+                               _N28_RESPONSE_SOURCE, workspace)
+            env["_owner_response_success_row_once_v1"] = _namespace(response)["prepare_success_response_row_v1"]
+            env["load_cold_result_classifier"] = lambda: env["classify_existing_typed_v1"]
+            reviewed_path = harness.root / "classifier_projection_pin.json"
+            workspace.write(reviewed_path, _wire({"source": str(source_path),
+                "sha256": hashlib.sha256(projection.encode()).hexdigest()}))
+            cold = record(getattr(harness.queue, "_normal_cold"))
+            admission = record(cold["admission"])
+            admission["classifier_pin"] = _pin(reviewed_path).to_wire()
+            cold["admission"] = admission
+            setattr(harness.queue, "_normal_cold", cold)
+            negative_checks = 0
+            original_atomic = env["atomic"]
+            cap_sequence = FIRST_SEQUENCE + 1
+            def atomic_observer(path: Path, value: object, *, replace: bool = False,
+                                limit: int = 65536) -> object:
+                nonlocal negative_checks
+                outcome = _invoke(original_atomic, path, value, replace=replace, limit=limit)
+                workspace.measure()
+                if path.name != f"INFLIGHT-{cap_sequence:04d}.json":
+                    return outcome
+                raw = path.read_bytes()
+                flat = record(parse_json(raw))
+                self.assertEqual(set(flat), {"sequence", "tool", "arguments", "request_file",
+                                            "at_utc", "replay_allowed"})
+                self.assertNotIn("request", flat)
+                parsed = core.parse_current_saved_queue_tool_inflight_v1(flat)
+                self.assertEqual(core.parse_current_saved_queue_tool_inflight_v1(parse_json(_wire(flat))), parsed)
+                active = getattr(harness.queue, "_current_saved_active_permit_v1")
+                need(isinstance(active, core.CurrentSavedRequestPermitV1), "actual CAP permit")
+                if not isinstance(active, core.CurrentSavedRequestPermitV1):
+                    raise TypeError("typed permit required")
+                request = json_object(parse_json(active.request_json))
+                calls = harness.transport.calls
+                def reject() -> None:
+                    nonlocal negative_checks
+                    with self.assertRaises(ValueError):
+                        core.guard_current_saved_request_v1(harness.queue, request,
+                            runtime_root=harness.root, active=active)
+                    negative_checks += 1
+                    self.assertEqual(harness.transport.calls, calls)
+                variants: list[dict[str, object]] = []
+                for key in flat:
+                    changed = dict(flat)
+                    del changed[key]
+                    variants.append(changed)
+                for key, invalid in (("sequence", True), ("sequence", float(cap_sequence)),
+                    ("sequence", cap_sequence + 1), ("tool", core.SEMANTIC_TOOL),
+                    ("arguments", []), ("arguments", {"unexpected": True}),
+                    ("request_file", "relative.json"),
+                    ("request_file", str(harness.root / "wrong-request.json")),
+                    ("at_utc", None), ("replay_allowed", True), ("replay_allowed", 0),
+                    ("request", request)):
+                    changed = dict(flat)
+                    changed[key] = invalid
+                    variants.append(changed)
+                variants.append({"request": request})
+                for changed in variants:
+                    workspace.write(path, _wire(changed), replace_existing=True)
+                    reject()
+                workspace.write(path, raw, replace_existing=True)
+                request_path = Path(text(flat["request_file"]))
+                request_raw = request_path.read_bytes()
+                workspace.write(request_path, _wire({**request, "arguments": {"wrong": 1}}), replace_existing=True)
+                reject()
+                workspace.write(request_path, request_raw, replace_existing=True)
+                # Unknown requests remain unknown across repeated checks. Only
+                # these deliberately planted fixture files are removed.
+                for filename in ("INFLIGHT-99999.json", f"INFLIGHT-0{cap_sequence}.json"):
+                    unknown = path.with_name(filename)
+                    workspace.write(unknown, raw)
+                    before = _pin(unknown)
+                    reject()
+                    reject()
+                    self.assertEqual(_pin(unknown), before)
+                    unknown.unlink()
+                core.guard_current_saved_request_v1(harness.queue, request,
+                    runtime_root=harness.root, active=active)
+                return outcome
+            env["atomic"] = atomic_observer
+            asyncio.run(harness.dispatch(harness.request("SEM")))
+            self.assertEqual(_phase_value(harness), "capabilities")
+            old_inflight = harness.root / "p37-queue" / f"INFLIGHT-{FIRST_SEQUENCE:04d}.json"
+            old_pin = _pin(old_inflight)
+            checkpoint = record(cold["checkpoint"])
+            harness.transport.result = {"is_error": False, "result_type": "complete", "content": [],
+                "structured_content": {"status": "ready",
+                    "episode_run_id": text(checkpoint["episode_run_id"]),
+                    "episode_character_id": integer(checkpoint["episode_character_id"], 1),
+                    "episode_identity_pending": False, "one_life_terminal": False,
+                    "native_session_control": {"driver_state_restored": True,
+                        "driver_state_restore_kind": "cold_checkpoint", "episode_binding_state": "active_resumed",
+                        "driver_state_error": None, "cold_candidate_rejection": None}}}
+            cap = harness.request("CAP")
+            asyncio.run(harness.dispatch(cap))
+            self.assertEqual(harness.transport.calls, 2)
+            self.assertEqual(_phase_value(harness), "ready")
+            self.assertEqual(_pin(old_inflight), old_pin)
+            self.assertIsNone(getattr(harness.queue, "halted"))
+            self.assertTrue(getattr(harness.queue, "checkpoint_bootstrap_verified"))
+            bound_path = harness.root / "p37-queue" / "ROOT-C23-NORMAL-COLD-BOUND.json"
+            bound = record(parse_json(bound_path.read_bytes()))
+            self.assertEqual(integer(bound["completed_cycles"]), integer(corpus.object("seed")["completed_cycles"]))
+            self.assertEqual(bound["new_ordinary_cycle_credit"], 0)
+            self.assertIs(bound["AUTO_or_MET_replayed"], False)
+            before_calls = harness.transport.calls
+            with self.assertRaises(ValueError):
+                core.guard_current_saved_request_v1(harness.queue, cap, runtime_root=harness.root)
+            self.assertEqual(harness.transport.calls, before_calls)
+            self.assertGreaterEqual(negative_checks, 24)
+            print("OFFLINE_ORIGINAL_CAP_BOUND", {"machine_id": core.current_execution_machine_id_v1(),
+                "historical_source_machine_id": SUBJECT, "source_observed_at_utc": "2026-10-21T13:37:22.057697+00:00",
+                "n28_queue_bytes": 279636,
+                "n28_queue_sha256": "c5fc4bfc6eac11dc0d353f709be0cebe0dbf24c45e03ead5de5189b9ab71c7c0",
+                "negative_checks": negative_checks, "recorded_reply_calls": harness.transport.calls,
+                "actual_rpc_calls": 0, "ordinary_cycle_credit": 0,
+                "peak_allocation_upper_bytes": workspace.peak})
 
 if __name__ == "__main__":
     unittest.main()

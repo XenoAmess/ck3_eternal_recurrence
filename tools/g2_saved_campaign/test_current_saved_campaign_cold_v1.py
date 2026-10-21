@@ -304,6 +304,68 @@ def main(args):
             item)
 
 
+
+    def test_cap_pretransport_basis_json_owner_and_sdk_closure_consumers(self) -> None:
+        from tools.g2_saved_campaign import current_saved_basis_v1 as basis_model
+
+        fixture = basis_fixture.CapPretransportFailureFixture()
+        checked = basis_model.validate_cap_pretransport_failure_evidence_v2(
+            fixture.epoch, reader=fixture.reader)
+        epoch_ref = fixture.reader.put("cap-v2-owner-epoch.json", fixture.epoch.to_wire())
+        basis = basis_model.build_cap_pretransport_failure_basis_v2(
+            checked, epoch_ref=epoch_ref, observed_at_utc="2026-10-21T14:01:00Z",
+            sidecars=(), reader=fixture.reader)
+        basis_ref = fixture.reader.put("cap-v2-owner-basis.json", basis.to_wire())
+        qualification = basis_model.build_cap_pretransport_failure_qualification_v2(
+            checked, basis, basis_ref=basis_ref, reader=fixture.reader,
+            observed_at_utc="2026-10-21T14:01:01Z")
+        qualification_ref = fixture.reader.put(
+            "cap-v2-owner-qualification.json", qualification.to_wire())
+        parsed = owner.parse_basis_qualification_v1(
+            json.loads(json.dumps(qualification.to_wire())),
+            expected_machine_id=basis.machine_id)
+        self.assertIsInstance(parsed, basis_model.CapPretransportFailureQualificationV2)
+        self.assertEqual(parsed, qualification)
+        closed = owner._closed_epoch(basis, fixture.reader)
+        self.assertEqual(closed.next_sequence, checked.next_sequence)
+        self.assertEqual(closed.old_game.pid, checked.old_game.pid)
+        self.assertEqual(checked.history_count, checked.previous_history_count + 1)
+        # This is the SDK-closure receiver's narrow input boundary, not a claim
+        # that the synthetic fixture passed the entire immutable runtime graph.
+        inputs = owner.CurrentSavedColdInputsV1(
+            basis, {}, {}, json_object(basis.checkpoint), {}, closed,
+            basis_ref, qualification_ref)
+        with patch.object(owner, "LocalBasisReaderV1", return_value=fixture.reader):
+            sdk = owner.validate_current_saved_prepared_sdk_closure_v1(
+                fixture.epoch.refs.sdk_closed.to_wire(), inputs=inputs)
+            self.assertIs(sdk["normal"], False)
+            with self.assertRaises(ValueError):
+                owner.validate_current_saved_prepared_sdk_closure_v1(
+                    fixture.epoch.refs.first_exception.to_wire(), inputs=inputs)
+
+        historical = basis_fixture.FailureEpochFixture()
+        old_checked = historical.validated()
+        old_epoch_ref = historical.reader.put(
+            "legacy-v1-owner-epoch.json", historical.epoch.to_wire())
+        old_basis = basis_model.build_readonly_cold_failure_basis_v1(
+            old_checked, epoch_ref=old_epoch_ref,
+            observed_at_utc="2026-10-21T14:02:00Z", sidecars=(),
+            reader=historical.reader)
+        old_basis_ref = historical.reader.put(
+            "legacy-v1-owner-basis.json", old_basis.to_wire())
+        old_qualification = basis_model.build_readonly_cold_failure_qualification_v1(
+            old_checked, old_basis, basis_ref=old_basis_ref, reader=historical.reader,
+            observed_at_utc="2026-10-21T14:02:01Z")
+        old_parsed = owner.parse_basis_qualification_v1(
+            json.loads(json.dumps(old_qualification.to_wire())),
+            expected_machine_id=old_basis.machine_id)
+        self.assertIsInstance(old_parsed, basis_model.ReadonlyColdFailureQualificationV1)
+        self.assertNotIsInstance(old_parsed, basis_model.CapPretransportFailureQualificationV2)
+        self.assertEqual(old_parsed, old_qualification)
+        old_closed = owner._closed_epoch(old_basis, historical.reader)
+        self.assertEqual(old_closed.next_sequence, old_checked.next_sequence)
+
+
 class NoTransport:
     """The real SDK constructor is used with an offline transport test boundary."""
     pipe_name = PIPE

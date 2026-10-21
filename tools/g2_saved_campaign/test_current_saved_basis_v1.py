@@ -820,6 +820,308 @@ class ReadonlyFailureEpochTests(unittest.TestCase):
                 epoch_api.parse_readonly_cold_failure_qualification_v1(changed, expected_machine_id=MACHINE)
 
 
+class CapPretransportFailureFixture:
+    """Portable two-epoch evidence; all receipts and source snippets are synthetic."""
+
+    def __init__(self) -> None:
+        base = FailureEpochFixture()
+        self.machine = MACHINE
+        self.reader = r = base.reader
+        prior = base.validated()
+        prior_epoch_ref = r.put("prior-epoch.json", base.epoch.to_wire())
+        self.previous_basis = old = epoch_api.build_readonly_cold_failure_basis_v1(prior,
+            epoch_ref=prior_epoch_ref, observed_at_utc="2026-10-21T06:04:00Z", sidecars=(), reader=r)
+        old_ref = r.put("prior-basis.json", old.to_wire())
+        self.checkpoint = base.checkpoint
+
+        def put(name: str, value: object) -> ExactRefV1:
+            return r.put("cap/"+name, value)
+
+        def put_source(name: str, source: str) -> ExactRefV1:
+            path = "/epoch/cap/"+name
+            raw = source.encode()
+            r.raw[path] = raw
+            return ExactRefV1(path, len(raw), hashlib.sha256(raw).hexdigest())
+
+        def stat_wire(identity: FileStatIdentityV1) -> dict[str, object]:
+            return dict(identity.to_wire())
+
+        launch = put("ROOT-ACTUAL-GAME-LAUNCH-C23.json", {
+            "machine_id": MACHINE, "pid": 61, "creation_filetime": 134370617141148601,
+            "creation_date": "20261021130817.114860+000", "old_save_loaded": True,
+            "load_save_name": "xar_checkpoint", "nonwar_only": False})
+        semseq = old.next_sequence
+        semrequest = {"sequence": semseq, "tool": "ck3_take_semantic_snapshot_private_v1", "arguments": {}}
+        caprequest = {"sequence": semseq+1, "tool": "ck3_get_capabilities", "arguments": {}}
+        sem = put(f"p37-responses/{semseq:04d}-1-result.json", {
+            "request": semrequest, "result": {"is_error": False, "result_type": "complete",
+                "structured_content": {"date_raw": old.frame.date_raw,
+                    "episode_character_id": old.frame.actor_character_id,
+                    "episode_run_id": old.frame.episode_run_id, "paused": True,
+                    "map_ready": True, "one_life_terminal": False, "campaign_goal": old.campaign_goal_anchor}}})
+        cap = put(f"p37-responses/{semseq+1:04d}-1-result.json", {
+            "request": caprequest, "client_error": "ValueError('object')", "replay_allowed": False})
+        semreq = put(f"p37-requests/{semseq:04d}-1-result.json", semrequest)
+        capreq = put(f"p37-requests/{semseq+1:04d}-1-result.json", caprequest)
+        after = put(f"p37-queue/{semseq:04d}-after-result.json", {
+            "at_utc": "2026-10-21T06:05:01Z", "request": semreq.path, "response": sem.path,
+            "tool": semrequest["tool"], "actual_status": "cold_readiness_verified",
+            "loading_attempts": 0, "new_business_credit": 0})
+        flat = {"sequence": semseq+1, "tool": "ck3_get_capabilities", "arguments": {},
+            "request_file": capreq.path, "at_utc": "2026-10-21T06:05:02Z", "replay_allowed": False}
+        inflight = put(f"p37-queue/INFLIGHT-{semseq+1:04d}.json", flat)
+        before = put(f"p37-queue/{semseq+1:04d}-before-action.json", flat)
+        guard = put_source("tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py",
+            'def _json_bytes(value: object) -> bytes:\n'
+            '    return json.dumps(json_object(value)).encode()\n'
+            'def _inflight_guard(context):\n'
+            '    return _json_bytes(context.get("request"))\n'
+            'class OriginalSession:\n'
+            '    async def call_tool(self):\n'
+            '        guard_current_saved_request_v1()\n'
+            '        return await self._call()\n')
+        queue = put_source("root_p37c23_sdk_queue.py", 'async def call():\n    return None\n')
+        failure = put("first-exception.json", {"stage": "sdk_call", "replay_allowed": False,
+            "request_identity": {"sequence": semseq+1, "tool": "ck3_get_capabilities", "command": None},
+            "exception_tree": {"type": "ValueError", "message": "object"},
+            "traceback_truncated": False, "locals_captured": False,
+            "traceback": f'File "{queue.path}", line 1, in call\n'
+                f'File "{guard.path}", line 7, in call_tool\n'
+                f'File "{guard.path}", line 3, in guard_current_saved_request_v1\n'
+                f'File "{guard.path}", line 4, in _inflight_guard\n'
+                '    _json_bytes(context.get("request"))\nValueError: object'})
+        halt = put("HALT.json", {"error_type": "RuntimeError",
+            "message": "client outcome unknown; original request must not be resent",
+            "first_exception_receipt": failure.path, "original_request": caprequest,
+            "original_response": cap.path, "replay_allowed": False,
+            "sdk_kept_alive_for_original_collection": True, "next_sequence": semseq+2})
+        inventory = put("inventory.json", {"schema": "xar.current-saved-closed-request-inventory/v1",
+            "machine_id": MACHINE, "reviewer": "/root", "runtime_root": "/epoch/cap",
+            "observed_at_utc": "2026-10-21T06:06:00Z", "closed_directory_snapshot": True,
+            "epoch_start_sequence": semseq, "unmatched_new_request_files": [], "unmatched_new_response_files": [],
+            "request_refs": [semreq.to_wire(), capreq.to_wire()], "response_refs": [sem.to_wire(), cap.to_wire()]})
+        nxt = put("next.json", {"next_sequence": semseq+2})
+        processes = [{"role": role, "pid": pid, "creation_filetime": birth,
+            "executable": "/base/python.exe", "exit_code": code, "kernel_exit_observed": True,
+            "wait_result": 0, "observation_error": None} for role, pid, birth, code in (
+                ("sdk_queue", 67, 134370617141148602, 1), ("sdk_application", 71, 134370617141148603, 0))]
+        sdk = put("sdk-closed.json", {"machine_id": MACHINE, "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+            "processes": processes, "normal": False, "launcher_exit_code": 1})
+        game = {"pid": 61, "creation_filetime": 134370617141148601}
+        supervisor = put("supervisor-closed.json", {"machine_id": MACHINE,
+            "cleanup_classification": "FORCED_OWNED_GAME_CLEANUP",
+            "sdk_actual_exit": {"status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED", "processes": processes, "normal": False},
+            "known_preload_phase": {"before": game, "after": game},
+            "owned_cleanup": {"ck3_pid": 61, "ck3_exit_code": 1,
+                "ck3_creation_date": "20261021130817.114860+000", "job_active_processes_final": 0,
+                "tree_gone": True, "cleanup_proven": True, "ok": True, "contract_errors": []}})
+        self.driver_id = FileStatIdentityV1(23, "9007199254741001", "1792563000000000011")
+        driver_ref = ExactRefV1(old.refs.driver.path, 23, "c"*64)
+        self.restore = copy.deepcopy(base.restore)
+        self.restore["index"] = prior.history_count+1
+        result = object_row(self.restore["result"])
+        result["lifecycle"] = {"previous_pid": 43, "pid": 61}
+        self.restore["result"] = result
+        raw = put("raw-observation.json", {"schema": "xar.raw-closed-driver-observation/v1",
+            "status": "OBSERVED_NOT_QUALIFIED", "machine_id": MACHINE,
+            "Driver_ref": driver_ref.to_wire(), "Driver_identity": stat_wire(self.driver_id),
+            "SAVE_identity": stat_wire(old.save_identity), "format_version": 2, "command_history_count": 3,
+            "last_checkpoint": self.checkpoint, "post_checkpoint_history": [base.restore, self.restore],
+            "recorded_identity": {"bridge_pid": 61, "episode_character_id": old.frame.actor_character_id,
+                "episode_run_id": old.frame.episode_run_id, "pipe_name": "pipe"},
+            "campaign_goal": old.campaign_goal_anchor, "session_binding_present": False,
+            "session_binding_value": None, "payload_top_keys": ["command_history"],
+            "driver_payload_flags": {"managed_restore_transaction": None, "rollback_war_failure": None,
+                "succession_expectation": None, "rollback_war_failures": []}})
+        review = put("driver-review.json", {"schema": "xar.readonly-cap-pretransport-Driver-SAVE-review/v2",
+            "status": "CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_AFTER_CAP_GUARD_FAILURE", "machine_id": MACHINE,
+            "original_business_review": old.refs.driver_close.to_wire(),
+            "Driver": {"ref": driver_ref.to_wire(), "identity": stat_wire(self.driver_id),
+                "format_version": 2, "command_history_count": 3, "last_checkpoint": self.checkpoint,
+                "recorded_identity": {"bridge_pid": 61, "episode_character_id": old.frame.actor_character_id,
+                    "episode_run_id": old.frame.episode_run_id, "pipe_name": "pipe"},
+                "absent_payload_fields": ["session_binding"]},
+            "SAVE": {"ref": old.refs.save.to_wire(), "identity": stat_wire(old.save_identity)},
+            "raw_Driver_body_read_count": 2, "Driver_body_bytes_read": 46,
+            "raw_observation": raw.to_wire(),
+            "SAVE_full_hash_count": 0, "SAVE_body_bytes_read": 0,
+            "actual_saved_cycles": old.completed_cycles, "actual_saved_days": 2,
+            "unknown10565_replayed": False, "original_whole_wall_origin": old.origin.original_wall_origin_utc})
+        tail = put("history-tail.json", {"schema": "xar.readonly-cap-pretransport-history-tail/v2",
+            "machine_id": MACHINE, "driver_review": review.to_wire(), "driver_identity": stat_wire(self.driver_id),
+            "checkpoint_history_index": 1, "command_history_count": 3,
+            "post_checkpoint_history": [base.restore, self.restore]})
+        reuse = put("canonical-reuse.json", {"schema": "xar.closed-cap-pretransport-save-identity-reuse/v2",
+            "status": "PREVIOUS_CANONICAL_SAVE_IDENTITY_REUSED", "machine_id": MACHINE,
+            "observed_at_utc": "2026-10-21T06:06:01Z",
+            "validation_mode": "previous_canonical_save_identity_reuse", "current_canonical_API_executed": False,
+            "previous_canonical_qualification": base.epoch.refs.canonical_qualification.to_wire(),
+            "driver_review": review.to_wire(), "history_tail": tail.to_wire(), "checkpoint": old.checkpoint,
+            "Driver_identity": stat_wire(self.driver_id), "SAVE_identity": stat_wire(old.save_identity),
+            "Driver_full_read_count": 2, "Driver_full_read_bytes": 46,
+            "SAVE_full_hash_count": 0, "SAVE_full_hash_bytes": 0, "SAVE_hash_reused_by_exact_identity": True,
+            "original_checkpoint_unchanged": True, "validator": old.refs.checkpoint_validator.to_wire(),
+            "new_ordinary_cycle_credit": 0, "new_game_day_credit": 0, "actual_constructor_or_Game_RPC_calls": 0})
+        linked = dict(launch=launch, sdk_closed=sdk, supervisor_closed=supervisor, game_exit=supervisor,
+            first_exception=failure, semantic_response=sem, semantic_after=after, capability_rejection=cap,
+            inflight=inflight, before_action=before, halt=halt, request_inventory=inventory, next=nxt,
+            driver_review=review, history_tail=tail, guard_source=guard, queue_source=queue)
+        for key in ("sdk_pair", "supervisor_sdk_exits", "supervisor_spec", "display_spec", "supervisor_task_closed",
+            "display_task_closed", "supervisor_unregister", "display_unregister", "screen_release", "recording_completed"):
+            linked[key] = put(key+".json", {"synthetic_closed_source": key})
+        index = put("index.json", {"schema": "xar.readonly-cap-pretransport-abort-closure/v2",
+            "status": "CLOSED_CAP_PRETRANSPORT_GUARD_FAILURE", "machine_id": MACHINE,
+            "original_basis_ref": old_ref.to_wire(), "next_sequence": semseq+2,
+            "business_completed_cycles": old.completed_cycles, "business_date_raw": old.frame.date_raw,
+            "original_whole_wall_origin": old.origin.original_wall_origin_utc, "SDK_exit_codes": [1, 0],
+            "SDK_normal": False, "Game_exit_code": 1, "Game_forced": True, "Game_Job_active_final": 0,
+            "all_owned_Tasks_actual_absent": True, "owned_Task_count": 2, "original_requests_replayed": False,
+            "new_ordinary_cycle_credit": 0, "new_game_day_credit": 0, "new_checkpoint_credit": 0,
+            "refs": {key: value.to_wire() for key, value in linked.items()}})
+        self.refs = epoch_api.CapPretransportFailureRefsV2(old_ref, review, tail, index, launch, sem, after,
+            cap, failure, inflight, before, halt, inventory, sdk, supervisor, supervisor, nxt, reuse)
+        self.epoch = epoch_api.CapPretransportFailureEpochV2(MACHINE, "2026-10-21T06:07:00Z", self.refs,
+            epoch_api.ReadonlyClosedDriverFlagsV1(None, None, None, False))
+        r.identities[driver_ref.path] = self.driver_id
+        r.stat_paths.clear()
+        r.read_paths.clear()
+
+    def validated(self) -> epoch_api.ValidatedCapPretransportFailureEpochV2:
+        return epoch_api.validate_cap_pretransport_failure_evidence_v2(self.epoch, reader=self.reader)
+
+    def changed(self, name: str, value: object) -> epoch_api.CapPretransportFailureEpochV2:
+        """Rebind a changed receipt and its closure row, so semantic guards run."""
+        old_ref = dict(self.refs.items())[name]
+        data = json_bytes(value)
+        self.reader.raw[old_ref.path] = data
+        new_ref = ExactRefV1(old_ref.path, len(data), hashlib.sha256(data).hexdigest())
+        refs = replace(self.refs, **{name: new_ref})
+        if name in object_row(epoch_api.evidence(self.reader, self.refs.closure_index)["refs"]):
+            index = epoch_api.evidence(self.reader, self.refs.closure_index)
+            linked = object_row(index["refs"]); linked[name] = new_ref.to_wire(); index["refs"] = linked
+            index_ref = self.reader.put("cap/changed-index.json", index)
+            refs = replace(refs, closure_index=index_ref)
+        return replace(self.epoch, refs=refs)
+
+
+class CapPretransportFailureTests(unittest.TestCase):
+    def test_real_two_epoch_pipeline_and_json(self) -> None:
+        f = CapPretransportFailureFixture()
+        checked = f.validated()
+        self.assertEqual(f.reader.stat_paths, [])
+        self.assertEqual((checked.previous_history_count, checked.history_count, len(checked.history_rows)), (2, 3, 2))
+        self.assertEqual(checked.old_game.creation_filetime, "134370617141148601")
+        self.assertEqual([p.exit_code for p in checked.sdk_processes], [0, 1])
+        er = f.reader.put("cap/new-epoch.json", f.epoch.to_wire())
+        basis = epoch_api.build_cap_pretransport_failure_basis_v2(checked, epoch_ref=er,
+            observed_at_utc="2026-10-21T06:08:00Z", sidecars=(), reader=f.reader)
+        br = f.reader.put("cap/new-basis.json", basis.to_wire())
+        qual = epoch_api.build_cap_pretransport_failure_qualification_v2(checked, basis,
+            basis_ref=br, reader=f.reader, observed_at_utc="2026-10-21T06:08:01Z")
+        self.assertEqual(epoch_api.parse_cap_pretransport_failure_qualification_v2(
+            json.loads(json_bytes(qual.to_wire())), expected_machine_id=MACHINE), qual)
+        self.assertEqual(epoch_api.parse_cap_pretransport_failure_epoch_v2(
+            json.loads(json_bytes(f.epoch.to_wire())), expected_machine_id=MACHINE), f.epoch)
+        for key in ("origin", "frame", "completed_cycles", "checkpoint", "campaign_goal_anchor", "progress", "unknown_requests"):
+            self.assertEqual(getattr(basis, key), getattr(f.previous_basis, key))
+        self.assertEqual((basis.next_sequence, qual.root_driver_body_reads, qual.root_save_hash_reads), (107, 2, 0))
+        self.assertEqual((qual.driver_body_reads, qual.save_hash_reads, qual.canonical_checkpoint_validator_calls), (0, 0, 0))
+        self.assertNotIn(checked.driver_ref.path, f.reader.read_paths)
+        self.assertNotIn(checked.save_ref.path, f.reader.read_paths)
+
+    def test_warm_history_does_not_mistake_sdk_persist_for_tampering(self) -> None:
+        f = CapPretransportFailureFixture(); checked = f.validated()
+        f.reader.identities[checked.driver_ref.path] = replace(checked.driver_identity, file_id="12345")
+        self.assertEqual(f.validated(), checked)
+        with self.assertRaises(ValueError):
+            epoch_api.validate_cap_pretransport_failure_epoch_v2(f.epoch, reader=f.reader)
+
+    def test_exact_fields_wrong_types_and_schema_branches(self) -> None:
+        f = CapPretransportFailureFixture(); wire = f.epoch.to_wire()
+        for key in wire:
+            for bad in (None, True, 1.0):
+                changed: dict[str, object] = dict(wire); changed[key] = bad
+                with self.subTest(key=key, bad=bad), self.assertRaises(ValueError):
+                    epoch_api.parse_cap_pretransport_failure_epoch_v2(changed, expected_machine_id=MACHINE)
+            missing = dict(wire); del missing[key]
+            with self.assertRaises(ValueError):
+                epoch_api.parse_cap_pretransport_failure_epoch_v2(missing, expected_machine_id=MACHINE)
+        for key in epoch_api.record(wire["refs"]):
+            missing_refs = dict(epoch_api.record(wire["refs"])); del missing_refs[key]
+            changed = dict(wire); changed["refs"] = missing_refs
+            with self.assertRaises(ValueError):
+                epoch_api.parse_cap_pretransport_failure_epoch_v2(changed, expected_machine_id=MACHINE)
+        with self.assertRaises(ValueError):
+            epoch_api.parse_readonly_cold_failure_epoch_v1(wire, expected_machine_id=MACHINE)
+        with self.assertRaises(ValueError):
+            epoch_api.parse_cap_pretransport_failure_epoch_v2(FailureEpochFixture().epoch.to_wire(), expected_machine_id=MACHINE)
+
+    def test_sem_cap_unknown_and_source_proofs_are_not_interchangeable(self) -> None:
+        cases: tuple[tuple[str, str, object], ...] = (
+            ("semantic_after", "actual_status", "complete"), ("semantic_after", "new_business_credit", 1),
+            ("capability_rejection", "result", None), ("capability_rejection", "replay_allowed", True),
+            ("first_exception", "stage", "request_dispatch"), ("first_exception", "traceback", "same error no source"),
+            ("inflight", "sequence", True), ("inflight", "arguments", []),
+            ("inflight", "request", {}), ("halt", "replay_allowed", True),
+            ("halt", "next_sequence", 106), ("canonical_qualification", "current_canonical_API_executed", True),
+            ("canonical_qualification", "SAVE_full_hash_count", 1),
+            ("canonical_qualification", "Driver_full_read_count", 1),
+            ("canonical_qualification", "SAVE_hash_reused_by_exact_identity", False))
+        for name, key, bad in cases:
+            f = CapPretransportFailureFixture()
+            value = epoch_api.evidence(f.reader, dict(f.refs.items())[name]); value[key] = bad
+            changed = f.changed(name, value)
+            with self.subTest(name=name, key=key, bad=bad), self.assertRaises(ValueError):
+                epoch_api.validate_cap_pretransport_failure_evidence_v2(changed, reader=f.reader)
+
+    def test_previous_restore_prefix_and_single_new_row_are_mandatory(self) -> None:
+        for kind in ("drop_prefix", "duplicate", "mutate_prefix", "action", "pid", "checkpoint", "float_index"):
+            f = CapPretransportFailureFixture()
+            tail = epoch_api.evidence(f.reader, f.refs.history_tail)
+            history = copy.deepcopy(epoch_api.rows(tail["post_checkpoint_history"]))
+            if kind == "drop_prefix": history = history[1:]
+            elif kind == "duplicate": history.append(history[-1])
+            elif kind == "mutate_prefix":
+                first = object_row(history[0]); first["command"] = "advance-days"; history[0] = first
+            else:
+                last = object_row(history[-1])
+                if kind == "action": last["command"] = "advance-days"
+                elif kind == "float_index": last["index"] = 3.0
+                else:
+                    result = object_row(last["result"])
+                    if kind == "pid": result["lifecycle"] = {"previous_pid": 41, "pid": 61}
+                    else: result["checkpoint"] = {}
+                    last["result"] = result
+                history[-1] = last
+            tail["post_checkpoint_history"] = epoch_api.json_value(history)
+            changed = f.changed("history_tail", tail)
+            with self.subTest(kind=kind), self.assertRaises(ValueError):
+                epoch_api.validate_cap_pretransport_failure_evidence_v2(changed, reader=f.reader)
+
+    def test_full_driver_validation_keeps_all_restore_rows_and_flags(self) -> None:
+        f = CapPretransportFailureFixture(); checked = f.validated()
+        payload: dict[str, object] = {"command_history": [{"prior": True}, *checked.history_rows],
+            "managed_restore_transaction": None, "rollback_war_failure": None, "succession_expectation": None}
+        epoch_api.validate_cap_pretransport_failure_driver_v2(checked, payload)
+        for key in ("managed_restore_transaction", "rollback_war_failure", "succession_expectation"):
+            bad = dict(payload); del bad[key]
+            with self.assertRaises(ValueError):
+                epoch_api.validate_cap_pretransport_failure_driver_v2(checked, bad)
+        bad = dict(payload); bad["session_binding"] = None
+        with self.assertRaises(ValueError): epoch_api.validate_cap_pretransport_failure_driver_v2(checked, bad)
+        bad = dict(payload); bad["command_history"] = [{"prior": True}, checked.history_row, checked.history_row]
+        with self.assertRaises(ValueError): epoch_api.validate_cap_pretransport_failure_driver_v2(checked, bad)
+
+    def test_saved_business_source_references_cannot_be_replaced(self) -> None:
+        f = CapPretransportFailureFixture()
+        forged = replace(f.previous_basis, refs=replace(f.previous_basis.refs,
+            seed=ExactRefV1("/foreign/seed.json", 1, "d"*64)))
+        reference = f.reader.put("cap/forged-prior-basis.json", forged.to_wire())
+        epoch = replace(f.epoch, refs=replace(f.refs, business_basis=reference))
+        with self.assertRaisesRegex(ValueError, "prior immutable business references"):
+            epoch_api.validate_cap_pretransport_failure_evidence_v2(epoch, reader=f.reader)
+
+
 if __name__ == "__main__":
     unittest.main()
 

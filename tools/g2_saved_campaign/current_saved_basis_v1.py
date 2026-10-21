@@ -1222,3 +1222,595 @@ def build_readonly_cold_failure_qualification_v1(
         basis.refs.checkpoint_validator, validated.history_count,
         integer(proof["total_Root_A23_Driver_full_reads"], 1),
         integer(proof["total_Root_A23_SAVE_full_hashes"], 1))
+
+
+# A later CAP guard failure is a different wire contract from the v1 SEM failure.
+CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA = "xar.current-saved-cap-pretransport-failure-epoch/v2"
+CAP_PRETRANSPORT_FAILURE_QUALIFICATION_SCHEMA = "xar.current-saved-cap-pretransport-basis-qualification/v2"
+
+
+@dataclass(frozen=True)
+class CapPretransportFailureRefsV2:
+    business_basis: ExactRefV1
+    driver_review: ExactRefV1
+    history_tail: ExactRefV1
+    closure_index: ExactRefV1
+    launch: ExactRefV1
+    semantic_response: ExactRefV1
+    semantic_after: ExactRefV1
+    capability_rejection: ExactRefV1
+    first_exception: ExactRefV1
+    inflight: ExactRefV1
+    before_action: ExactRefV1
+    halt: ExactRefV1
+    request_inventory: ExactRefV1
+    sdk_closed: ExactRefV1
+    supervisor_closed: ExactRefV1
+    game_exit: ExactRefV1
+    next: ExactRefV1
+    canonical_qualification: ExactRefV1
+
+    def items(self) -> tuple[tuple[str, ExactRefV1], ...]:
+        return (("business_basis", self.business_basis), ("driver_review", self.driver_review),
+            ("history_tail", self.history_tail), ("closure_index", self.closure_index),
+            ("launch", self.launch), ("semantic_response", self.semantic_response),
+            ("semantic_after", self.semantic_after), ("capability_rejection", self.capability_rejection),
+            ("first_exception", self.first_exception), ("inflight", self.inflight),
+            ("before_action", self.before_action), ("halt", self.halt),
+            ("request_inventory", self.request_inventory), ("sdk_closed", self.sdk_closed),
+            ("supervisor_closed", self.supervisor_closed), ("game_exit", self.game_exit),
+            ("next", self.next), ("canonical_qualification", self.canonical_qualification))
+
+    def to_wire(self) -> JsonObject:
+        return {key: ref.to_wire() for key, ref in self.items()}
+
+
+def parse_cap_pretransport_failure_refs_v2(value: object) -> CapPretransportFailureRefsV2:
+    names = {"business_basis", "driver_review", "history_tail", "closure_index", "launch",
+        "semantic_response", "semantic_after", "capability_rejection", "first_exception",
+        "inflight", "before_action", "halt", "request_inventory", "sdk_closed",
+        "supervisor_closed", "game_exit", "next", "canonical_qualification"}
+    row = record(value, names)
+    return CapPretransportFailureRefsV2(parse_ref(row["business_basis"]), parse_ref(row["driver_review"]),
+        parse_ref(row["history_tail"]), parse_ref(row["closure_index"]), parse_ref(row["launch"]),
+        parse_ref(row["semantic_response"]), parse_ref(row["semantic_after"]),
+        parse_ref(row["capability_rejection"]), parse_ref(row["first_exception"]),
+        parse_ref(row["inflight"]), parse_ref(row["before_action"]), parse_ref(row["halt"]),
+        parse_ref(row["request_inventory"]), parse_ref(row["sdk_closed"]),
+        parse_ref(row["supervisor_closed"]), parse_ref(row["game_exit"]), parse_ref(row["next"]),
+        parse_ref(row["canonical_qualification"]))
+
+
+@dataclass(frozen=True)
+class CapPretransportFailureEpochV2:
+    machine_id: str
+    observed_at_utc: str
+    refs: CapPretransportFailureRefsV2
+    driver_payload_flags: ReadonlyClosedDriverFlagsV1
+
+    def __post_init__(self) -> None:
+        text(self.machine_id)
+        utc(self.observed_at_utc)
+
+    def to_wire(self) -> JsonObject:
+        return {"schema": CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA, "machine_id": self.machine_id,
+            "observed_at_utc": self.observed_at_utc, "status": "CLOSED_CAP_PRETRANSPORT_GUARD_FAILURE",
+            "refs": self.refs.to_wire(), "driver_payload_flags": self.driver_payload_flags.to_wire(),
+            "new_ordinary_cycle_credit": 0, "new_game_day_credit": 0,
+            "new_checkpoint_credit": 0, "original_requests_replayed": False}
+
+
+def parse_cap_pretransport_failure_epoch_v2(
+    value: object, *, expected_machine_id: str,
+) -> CapPretransportFailureEpochV2:
+    row = record(value, {"schema", "machine_id", "observed_at_utc", "status", "refs",
+        "driver_payload_flags", "new_ordinary_cycle_credit", "new_game_day_credit",
+        "new_checkpoint_credit", "original_requests_replayed"})
+    need(row["schema"] == CAP_PRETRANSPORT_FAILURE_EPOCH_SCHEMA
+        and row["status"] == "CLOSED_CAP_PRETRANSPORT_GUARD_FAILURE"
+        and row["machine_id"] == expected_machine_id, "explicit CAP pretransport failure epoch")
+    for key in ("new_ordinary_cycle_credit", "new_game_day_credit", "new_checkpoint_credit"):
+        need(integer(row[key]) == 0, "failed cold initialization gives no credit")
+    need(row["original_requests_replayed"] is False, "no replay of failed original requests")
+    return CapPretransportFailureEpochV2(text(row["machine_id"]), utc(row["observed_at_utc"]),
+        parse_cap_pretransport_failure_refs_v2(row["refs"]),
+        parse_readonly_closed_driver_flags_v1(row["driver_payload_flags"]))
+
+
+@dataclass(frozen=True)
+class ValidatedCapPretransportFailureEpochV2:
+    epoch: CapPretransportFailureEpochV2
+    business_basis: CurrentSavedBasisV1
+    driver_ref: ExactRefV1
+    driver_identity: FileStatIdentityV1
+    save_ref: ExactRefV1
+    save_identity: FileStatIdentityV1
+    history_count: int
+    history_row: JsonObject
+    old_game: ReadonlyColdClosedGameV1
+    sdk_processes: tuple[ReadonlyColdClosedSdkV1, ...]
+    next_sequence: int
+    pipe_name: str
+    previous_history_count: int
+    history_rows: tuple[JsonObject, ...]
+
+
+def _cap_restore_row_v2(
+    value: object, *, checkpoint: JsonObject, index: int, previous_pid: int, current_pid: int,
+) -> JsonObject:
+    # Reuse the strict original row consumer with an index-only checkpoint view;
+    # its checkpoint payload still must equal the real saved checkpoint.
+    row = record(value, {"index", "command", "ok", "result"})
+    result = record(row["result"], {"step", "accepted", "status", "backend_id", "source",
+        "checkpoint", "restored_date_raw", "map_ready", "lifecycle"})
+    lifecycle = record(result["lifecycle"], {"previous_pid", "pid"})
+    need(integer(row["index"], 1) == index and row["command"] == "restore-checkpoint"
+        and row["ok"] is True and result["step"] == "restore-checkpoint"
+        and result["accepted"] is True and result["status"] == "restored"
+        and result["backend_id"] == "native-headless" and result["source"] == "native-session-cold-start"
+        and canonical_json_v1(result["checkpoint"]) == canonical_json_v1(checkpoint)
+        and integer(result["restored_date_raw"]) == integer(checkpoint["date_raw"])
+        and result["map_ready"] is True
+        and integer(lifecycle["previous_pid"], 1, 2**32-1) == previous_pid
+        and integer(lifecycle["pid"], 1, 2**32-1) == current_pid,
+        "one exact additional restore bookkeeping row, never a business command")
+    return json_object(row)
+
+
+def _cap_guard_source_v2(
+    index_refs: dict[str, object], failure: dict[str, object], *, reader: BasisReaderV1,
+    root: Path, inflight: dict[str, object],
+) -> None:
+    """Bind the actual exception path to the original guard before its await."""
+    import ast
+    guard_ref = parse_ref(index_refs["guard_source"])
+    queue_ref = parse_ref(index_refs["queue_source"])
+    need(Path(guard_ref.path).resolve() == (root/"tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py").resolve()
+        and Path(queue_ref.path).resolve() == (root/"root_p37c23_sdk_queue.py").resolve(),
+        "original runtime sources, not a repaired public copy")
+    guard = exact_read(reader, guard_ref, 196608).decode("utf-8")
+    queue = exact_read(reader, queue_ref, 1048576).decode("utf-8")
+    tree = ast.parse(guard)
+    guards = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "_inflight_guard"]
+    encoders = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "_json_bytes"]
+    calls = [n for n in ast.walk(tree) if isinstance(n, ast.AsyncFunctionDef) and n.name == "call_tool" and n.body
+        and any(isinstance(a, ast.Await) for a in ast.walk(n))]
+    need(len(guards) == len(encoders) == len(calls) == 1, "unique original guard and transport consumer")
+    body = ast.get_source_segment(guard, guards[0])
+    need(body is not None and '_json_bytes(context.get("request"))' in body,
+        "this failure is the original nested-request guard, not every CAP error")
+    guard_calls = [n for n in ast.walk(calls[0]) if isinstance(n, ast.Call)
+        and isinstance(n.func, ast.Name) and n.func.id == "guard_current_saved_request_v1"]
+    awaits = [n for n in ast.walk(calls[0]) if isinstance(n, ast.Await)
+        and isinstance(n.value, ast.Call) and isinstance(n.value.func, ast.Attribute)
+        and isinstance(n.value.func.value, ast.Name) and n.value.func.value.id == "self"
+        and n.value.func.attr == "_call"]
+    need(len(guard_calls) == len(awaits) == 1 and guard_calls[0].lineno < awaits[0].lineno,
+        "the original guard precedes the only SDK transport await")
+    trace = text(failure.get("traceback"))
+    need(guard_ref.path.replace("\\", "/") in trace.replace("\\", "/")
+        and queue_ref.path.replace("\\", "/") in trace.replace("\\", "/")
+        and "in _inflight_guard" in trace and "in guard_current_saved_request_v1" in trace
+        and "in call_tool" in trace and "in call" in trace
+        and "_json_bytes(context.get(\"request\"))" in trace,
+        "actual traceback reaches the original pretransport guard")
+    need("request" not in inflight, "original Queue INFLIGHT is flat")
+    namespace: dict[str, object] = {"json": json, "json_object": json_object}
+    exec(compile(ast.Module(body=[encoders[0]], type_ignores=[]), "<original CAP encoder>", "exec"), namespace)
+    encoder = namespace["_json_bytes"]
+    need(isinstance(encoder, FunctionType), "original encoder function")
+    if not isinstance(encoder, FunctionType):
+        raise ValueError("original encoder")
+    try:
+        encoder(inflight.get("request"))
+    except ValueError as error:
+        need(str(error) == "object", "exact original pretransport failure")
+    else:
+        raise ValueError("original source no longer reproduces the recorded failure")
+    need(any(isinstance(n, ast.AsyncFunctionDef) and n.name == "call" for n in ast.walk(ast.parse(queue))),
+        "original Queue call consumer exists")
+
+
+def validate_cap_pretransport_failure_evidence_v2(
+    epoch: CapPretransportFailureEpochV2, *, reader: BasisReaderV1,
+) -> ValidatedCapPretransportFailureEpochV2:
+    """Immutable historical evidence; current Driver stat is deliberately separate."""
+    r = epoch.refs
+    old = decode_current_saved_basis_v1(exact_read(reader, r.business_basis, 65536),
+        expected_machine_id=epoch.machine_id)
+    prior_epoch = parse_readonly_cold_failure_epoch_v1(
+        parse_json(exact_read(reader, old.refs.closure, 65536)), expected_machine_id=epoch.machine_id)
+    prior = validate_readonly_cold_failure_evidence_v1(prior_epoch, reader=reader)
+    need(old.refs.driver == prior.driver_ref and old.refs.driver_close == prior.epoch.refs.driver_review
+        and old.driver_identity == prior.driver_identity and old.refs.save == prior.save_ref
+        and old.save_identity == prior.save_identity and old.next_sequence == prior.next_sequence
+        and old.completed_cycles == prior.business_basis.completed_cycles
+        and old.origin == prior.business_basis.origin and old.frame == prior.business_basis.frame
+        and old.progress == prior.business_basis.progress and old.unknown_requests == prior.business_basis.unknown_requests
+        and canonical_json_v1(old.checkpoint) == canonical_json_v1(prior.business_basis.checkpoint)
+        and canonical_json_v1(old.campaign_goal_anchor) == canonical_json_v1(prior.business_basis.campaign_goal_anchor),
+        "prior failed epoch retains the original saved business basis")
+    prior_proof = evidence(reader, prior.epoch.refs.canonical_qualification, 16384)
+    need(old.refs == replace(prior.business_basis.refs, driver=prior.driver_ref,
+        driver_close=prior.epoch.refs.driver_review, closure=old.refs.closure,
+        next=prior.epoch.refs.next, checkpoint_validator=parse_ref(prior_proof["validator"])),
+        "prior immutable business references must remain exact")
+    launch = evidence(reader, r.launch, 32768)
+    pid = integer(launch.get("pid"), 1, 2**32-1)
+    game = ReadonlyColdClosedGameV1(pid, _closed_filetime_v1(launch.get("creation_filetime")),
+        text(launch.get("creation_date")))
+    root = Path(r.launch.path).parent
+    need(Path(r.launch.path).name == "ROOT-ACTUAL-GAME-LAUNCH-C23.json"
+        and launch.get("machine_id") == epoch.machine_id and launch.get("old_save_loaded") is True
+        and launch.get("load_save_name") == "xar_checkpoint" and launch.get("nonwar_only") is False
+        and pid != prior.old_game.pid, "new actual cold Game identity")
+    semseq = old.next_sequence
+    semrequest: JsonObject = {"sequence": semseq, "tool": "ck3_take_semantic_snapshot_private_v1", "arguments": {}}
+    caprequest: JsonObject = {"sequence": semseq+1, "tool": "ck3_get_capabilities", "arguments": {}}
+    semrow = evidence(reader, r.semantic_response, 262144)
+    need(canonical_json_v1(semrow.get("request")) == canonical_json_v1(semrequest), "actual first SEM request")
+    semantic = completed_body(semrow, "ck3_take_semantic_snapshot_private_v1")
+    need(integer(semantic.get("date_raw")) == old.frame.date_raw
+        and integer(semantic.get("episode_character_id"), 1) == old.frame.actor_character_id
+        and semantic.get("episode_run_id") == old.frame.episode_run_id
+        and semantic.get("paused") is True and semantic.get("map_ready") is True
+        and semantic.get("one_life_terminal") is False
+        and canonical_json_v1(semantic.get("campaign_goal")) == canonical_json_v1(old.campaign_goal_anchor),
+        "SEM is a complete paused read of the unchanged saved frontier")
+    after = evidence(reader, r.semantic_after, 16384)
+    need(after.get("tool") == semrequest["tool"] and after.get("actual_status") == "cold_readiness_verified"
+        and integer(after.get("loading_attempts")) == 0 and integer(after.get("new_business_credit")) == 0
+        and after.get("response") == r.semantic_response.path
+        and Path(text(after.get("request"))).resolve() == (root/"p37-requests"/f"{semseq:04d}-1-result.json").resolve(),
+        "actual successful SEM postcheck marker, no business credit")
+    cap = evidence(reader, r.capability_rejection, 16384)
+    need(canonical_json_v1(cap.get("request")) == canonical_json_v1(caprequest)
+        and "result" not in cap and cap.get("client_error") == "ValueError('object')"
+        and cap.get("replay_allowed") is False, "CAP has no native result and must not be replayed")
+    failure = evidence(reader, r.first_exception, 16384)
+    error = record(failure.get("exception_tree"))
+    need(failure.get("stage") == "sdk_call" and failure.get("replay_allowed") is False
+        and canonical_json_v1(failure.get("request_identity")) == canonical_json_v1({
+            "sequence": semseq+1, "tool": "ck3_get_capabilities", "command": None})
+        and error.get("type") == "ValueError" and error.get("message") == "object"
+        and failure.get("traceback_truncated") is False and failure.get("locals_captured") is False,
+        "exact CAP pretransport guard exception, not the older SEM failure")
+    flat = evidence(reader, r.inflight, 16384)
+    record(flat, {"sequence", "tool", "arguments", "request_file", "at_utc", "replay_allowed"})
+    need(integer(flat["sequence"], 1) == semseq+1 and flat["tool"] == "ck3_get_capabilities"
+        and record(flat["arguments"]) == {} and flat["replay_allowed"] is False
+        and Path(text(flat["request_file"])).resolve() == (root/"p37-requests"/f"{semseq+1:04d}-1-result.json").resolve()
+        and canonical_json_v1(evidence(reader, r.before_action, 16384)) == canonical_json_v1(flat),
+        "the exact original flat CAP INFLIGHT and before-action remain retained")
+    utc(flat["at_utc"])
+    need(Path(r.inflight.path).resolve() == (root/"p37-queue"/f"INFLIGHT-{semseq+1:04d}.json").resolve()
+        and Path(r.before_action.path).resolve() == (root/"p37-queue"/f"{semseq+1:04d}-before-action.json").resolve()
+        and Path(r.semantic_after.path).resolve() == (root/"p37-queue"/f"{semseq:04d}-after-result.json").resolve(),
+        "original Queue receipt paths")
+    halt = evidence(reader, r.halt, 16384)
+    need(halt.get("error_type") == "RuntimeError"
+        and halt.get("message") == "client outcome unknown; original request must not be resent"
+        and halt.get("first_exception_receipt") == r.first_exception.path
+        and canonical_json_v1(halt.get("original_request")) == canonical_json_v1(caprequest)
+        and halt.get("original_response") == r.capability_rejection.path
+        and halt.get("replay_allowed") is False and halt.get("sdk_kept_alive_for_original_collection") is True
+        and integer(halt.get("next_sequence"), 1) == semseq+2,
+        "HALT and unknown original outcome remain immutable")
+    inventory = evidence(reader, r.request_inventory, 16384)
+    need(inventory.get("schema") == "xar.current-saved-closed-request-inventory/v1"
+        and inventory.get("machine_id") == epoch.machine_id and inventory.get("reviewer") == "/root"
+        and inventory.get("closed_directory_snapshot") is True
+        and Path(text(inventory.get("runtime_root"))).resolve() == root.resolve()
+        and integer(inventory.get("epoch_start_sequence"), 1) == semseq
+        and rows(inventory.get("unmatched_new_request_files")) == []
+        and rows(inventory.get("unmatched_new_response_files")) == [], "closed query-only request inventory")
+    utc(inventory.get("observed_at_utc"))
+    reqrefs = tuple(parse_ref(v) for v in rows(inventory.get("request_refs")))
+    outrefs = tuple(parse_ref(v) for v in rows(inventory.get("response_refs")))
+    need(len(reqrefs) == len(outrefs) == 2 and outrefs == (r.semantic_response, r.capability_rejection),
+        "only the original SEM and CAP, no action or FULL request")
+    for ref, expected in zip(reqrefs, (semrequest, caprequest)):
+        seq = integer(expected["sequence"], 1)
+        need(Path(ref.path).resolve() == (root/"p37-requests"/f"{seq:04d}-1-result.json").resolve()
+            and canonical_json_v1(evidence(reader, ref, 16384)) == canonical_json_v1(expected), "actual request bytes")
+    for ref, seq in zip(outrefs, (semseq, semseq+1)):
+        need(Path(ref.path).resolve() == (root/"p37-responses"/f"{seq:04d}-1-result.json").resolve(), "response path")
+    nextseq = integer(evidence(reader, r.next, 16384).get("next_sequence"), 1)
+    need(nextseq == semseq+2, "both consumed sequence numbers remain consumed")
+    sdk = evidence(reader, r.sdk_closed, 16384)
+    need(sdk.get("machine_id") == epoch.machine_id and sdk.get("status") == "ACTUAL_BOTH_SDK_EXITS_OBSERVED"
+        and sdk.get("normal") is False and integer(sdk.get("launcher_exit_code")) == 1, "actual abnormal SDK shutdown")
+    processes: list[ReadonlyColdClosedSdkV1] = []
+    for item in rows(sdk.get("processes")):
+        proc = record(item)
+        role = proc.get("role")
+        if role == "sdk_queue":
+            typed_role: Literal["sdk_queue", "sdk_application"] = "sdk_queue"
+            code = 1
+        elif role == "sdk_application":
+            typed_role = "sdk_application"
+            code = 0
+        else:
+            raise ValueError("closed SDK role")
+        need(proc.get("kernel_exit_observed") is True and integer(proc.get("wait_result")) == 0
+            and integer(proc.get("exit_code")) == code and "observation_error" in proc
+            and proc["observation_error"] is None, "actual SDK 1/0 kernel exits")
+        processes.append(ReadonlyColdClosedSdkV1(typed_role, integer(proc.get("pid"), 1, 2**32-1),
+            _closed_filetime_v1(proc.get("creation_filetime")), text(proc.get("executable")), code))
+    need(len(processes) == 2 and {p.role for p in processes} == {"sdk_queue", "sdk_application"}
+        and len({p.pid for p in processes}) == 2 and pid not in {p.pid for p in processes}, "distinct closed processes")
+    supervisor = evidence(reader, r.supervisor_closed, 16384)
+    cleanup = record(supervisor.get("owned_cleanup"))
+    phase = record(supervisor.get("known_preload_phase"))
+    need(r.game_exit == r.supervisor_closed and supervisor.get("machine_id") == epoch.machine_id
+        and supervisor.get("cleanup_classification") == "FORCED_OWNED_GAME_CLEANUP"
+        and canonical_json_v1(sdk_without_launcher_v1(record(supervisor.get("sdk_actual_exit"))))
+        == canonical_json_v1(sdk_without_launcher_v1(sdk))
+        and integer(cleanup.get("ck3_pid"), 1) == pid and integer(cleanup.get("ck3_exit_code")) == 1
+        and integer(cleanup.get("job_active_processes_final")) == 0
+        and cleanup.get("tree_gone") is True and cleanup.get("cleanup_proven") is True
+        and cleanup.get("ok") is True and rows(cleanup.get("contract_errors")) == []
+        and cleanup.get("ck3_creation_date") == game.creation_date, "actual forced owned Game exit, Job0")
+    for name in ("before", "after"):
+        observed = record(phase.get(name))
+        need(integer(observed.get("pid"), 1) == pid
+            and _closed_filetime_v1(observed.get("creation_filetime")) == game.creation_filetime, "closed Game generation")
+    index = evidence(reader, r.closure_index, 32768)
+    need(index.get("schema") == "xar.readonly-cap-pretransport-abort-closure/v2"
+        and index.get("status") == "CLOSED_CAP_PRETRANSPORT_GUARD_FAILURE"
+        and index.get("machine_id") == epoch.machine_id
+        and parse_ref(index.get("original_basis_ref")) == r.business_basis
+        and integer(index.get("next_sequence"), 1) == nextseq
+        and integer(index.get("business_completed_cycles")) == old.completed_cycles
+        and integer(index.get("business_date_raw")) == old.frame.date_raw
+        and index.get("original_whole_wall_origin") == old.origin.original_wall_origin_utc
+        and index.get("SDK_exit_codes") == [1, 0] and all(type(v) is int for v in rows(index["SDK_exit_codes"]))
+        and index.get("SDK_normal") is False and integer(index.get("Game_exit_code")) == 1
+        and index.get("Game_forced") is True and integer(index.get("Game_Job_active_final")) == 0
+        and index.get("all_owned_Tasks_actual_absent") is True and integer(index.get("owned_Task_count")) == 2
+        and index.get("original_requests_replayed") is False, "explicit CAP-only failed epoch closure")
+    for key in ("new_ordinary_cycle_credit", "new_game_day_credit", "new_checkpoint_credit"):
+        need(integer(index.get(key)) == 0, "no failed-epoch gameplay or checkpoint credit")
+    indexrefs = record(index.get("refs"), {"launch", "sdk_pair", "sdk_closed", "supervisor_sdk_exits",
+        "supervisor_closed", "game_exit", "first_exception", "semantic_response", "capability_rejection",
+        "inflight", "next", "driver_review", "history_tail", "supervisor_spec", "display_spec",
+        "supervisor_task_closed", "display_task_closed", "supervisor_unregister", "display_unregister",
+        "screen_release", "recording_completed", "semantic_after", "before_action", "halt",
+        "request_inventory", "guard_source", "queue_source"})
+    for key, value in indexrefs.items():
+        exact_read(reader, parse_ref(value), 1048576 if key in ("guard_source", "queue_source") else 65536)
+    for name in ("launch", "sdk_closed", "supervisor_closed", "game_exit", "first_exception",
+        "semantic_response", "semantic_after", "capability_rejection", "inflight", "before_action", "halt",
+        "request_inventory", "next", "driver_review", "history_tail"):
+        need(parse_ref(indexrefs[name]) == dict(r.items())[name], "closure reference binding: "+name)
+    _cap_guard_source_v2(indexrefs, failure, reader=reader, root=root, inflight=flat)
+    review = evidence(reader, r.driver_review, 16384)
+    need(review.get("schema") == "xar.readonly-cap-pretransport-Driver-SAVE-review/v2"
+        and review.get("status") == "CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_AFTER_CAP_GUARD_FAILURE"
+        and review.get("machine_id") == epoch.machine_id
+        and parse_ref(review.get("original_business_review")) == old.refs.driver_close, "actual changed Driver review")
+    driver = record(review.get("Driver")); saved = record(review.get("SAVE"))
+    driver_ref = parse_ref(driver.get("ref")); save_ref = parse_ref(saved.get("ref"))
+    driver_id = parse_file_stat_identity_v1(driver.get("identity"), schema=STAT_SCHEMA)
+    save_id = parse_file_stat_identity_v1(saved.get("identity"), schema=STAT_SCHEMA)
+    cp = record(completed_body(evidence(reader, old.refs.save_response), "ck3_save_checkpoint")["checkpoint"])
+    identity = record(driver.get("recorded_identity"))
+    need(save_ref == old.refs.save and save_id == old.save_identity
+        and driver_ref.path == old.refs.driver.path and driver_id.bytes == driver_ref.bytes
+        and driver_id != old.driver_identity and integer(driver.get("format_version")) == 2
+        and canonical_json_v1(driver.get("last_checkpoint")) == canonical_json_v1(cp)
+        and integer(identity.get("bridge_pid"), 1) == pid
+        and integer(identity.get("episode_character_id"), 1) == old.frame.actor_character_id
+        and identity.get("episode_run_id") == old.frame.episode_run_id
+        and "session_binding" in rows(driver.get("absent_payload_fields"))
+        and integer(review.get("actual_saved_cycles")) == old.completed_cycles
+        and integer(review.get("actual_saved_days")) == (old.frame.date_raw-old.origin.start_date_raw)//24
+        and review.get("unknown10565_replayed") is False
+        and review.get("original_whole_wall_origin") == old.origin.original_wall_origin_utc,
+        "changed Driver retains the exact saved checkpoint and business state")
+    history_count = integer(driver.get("command_history_count"), 1)
+    tail = evidence(reader, r.history_tail, 32768)
+    need(tail.get("schema") == "xar.readonly-cap-pretransport-history-tail/v2"
+        and tail.get("machine_id") == epoch.machine_id and parse_ref(tail.get("driver_review")) == r.driver_review
+        and parse_file_stat_identity_v1(tail.get("driver_identity"), schema=STAT_SCHEMA) == driver_id
+        and integer(tail.get("checkpoint_history_index"), 1) == integer(cp["history_index"], 1)
+        and integer(tail.get("command_history_count"), 1) == history_count
+        and history_count == prior.history_count+1, "restore lineage is retained plus one row")
+    tailrows = rows(tail.get("post_checkpoint_history"))
+    oldtail = rows(evidence(reader, prior.epoch.refs.history_tail, 16384).get("post_checkpoint_history"))
+    need(len(tailrows) == len(oldtail)+1 and len(tailrows) == history_count-integer(cp["history_index"], 1)
+        and canonical_json_v1(tailrows[:-1]) == canonical_json_v1(oldtail), "all proved previous restore rows remain exact")
+    last = _cap_restore_row_v2(tailrows[-1], checkpoint=json_object(cp), index=history_count,
+        previous_pid=prior.old_game.pid, current_pid=pid)
+    checked = ValidatedCapPretransportFailureEpochV2(epoch, old, driver_ref, driver_id, save_ref, save_id,
+        history_count, last, game, tuple(sorted(processes, key=lambda p:p.role)), nextseq,
+        text(identity.get("pipe_name")), prior.history_count, tuple(json_object(row) for row in tailrows))
+    raw = evidence(reader, parse_ref(review.get("raw_observation")), 16384)
+    flags = record(raw.get("driver_payload_flags"))
+    need(raw.get("schema") == "xar.raw-closed-driver-observation/v1"
+        and raw.get("status") == "OBSERVED_NOT_QUALIFIED" and raw.get("machine_id") == epoch.machine_id
+        and parse_ref(raw.get("Driver_ref")) == driver_ref
+        and parse_file_stat_identity_v1(raw.get("Driver_identity"), schema=STAT_SCHEMA) == driver_id
+        and parse_file_stat_identity_v1(raw.get("SAVE_identity"), schema=STAT_SCHEMA) == save_id
+        and integer(raw.get("format_version")) == 2 and integer(raw.get("command_history_count")) == history_count
+        and canonical_json_v1(raw.get("last_checkpoint")) == canonical_json_v1(cp)
+        and canonical_json_v1(raw.get("post_checkpoint_history")) == canonical_json_v1(tailrows)
+        and canonical_json_v1(raw.get("recorded_identity")) == canonical_json_v1(identity)
+        and canonical_json_v1(raw.get("campaign_goal")) == canonical_json_v1(old.campaign_goal_anchor)
+        and raw.get("session_binding_present") is False and raw.get("session_binding_value") is None
+        and "session_binding_value" in raw and "session_binding" not in rows(raw.get("payload_top_keys"))
+        and rows(flags.get("rollback_war_failures")) == [], "actual closed Driver witness matches the new epoch")
+    for key in ("managed_restore_transaction", "rollback_war_failure", "succession_expectation"):
+        need(key in flags and flags[key] is None, "actual Driver unresolved flag: "+key)
+    validate_cap_pretransport_canonical_reuse_v2(checked, reader=reader)
+    return checked
+
+
+def validate_cap_pretransport_failure_epoch_v2(
+    epoch: CapPretransportFailureEpochV2, *, reader: BasisReaderV1,
+) -> ValidatedCapPretransportFailureEpochV2:
+    checked = validate_cap_pretransport_failure_evidence_v2(epoch, reader=reader)
+    need(reader.stat(checked.driver_ref.path) == checked.driver_identity
+        and reader.stat(checked.save_ref.path) == checked.save_identity, "current closed Driver/SAVE identity")
+    return checked
+
+
+def validate_cap_pretransport_failure_driver_v2(
+    validated: ValidatedCapPretransportFailureEpochV2, payload: object,
+) -> None:
+    row = record(payload)
+    history = rows(row.get("command_history"))
+    need(len(history) == validated.history_count
+        and canonical_json_v1(history[-len(validated.history_rows):]) == canonical_json_v1(list(validated.history_rows)),
+        "actual Driver full history agrees with every retained restore row")
+    for name in ("managed_restore_transaction", "rollback_war_failure", "succession_expectation"):
+        need(name in row and row[name] is None, "closed Driver unresolved transaction: "+name)
+    need("session_binding" not in row, "no invented Driver session binding")
+
+
+def validate_cap_pretransport_canonical_reuse_v2(
+    validated: ValidatedCapPretransportFailureEpochV2, *, reader: BasisReaderV1,
+) -> JsonObject:
+    r = validated.epoch.refs
+    proof = evidence(reader, r.canonical_qualification, 16384)
+    prior_epoch = parse_readonly_cold_failure_epoch_v1(parse_json(exact_read(
+        reader, validated.business_basis.refs.closure, 65536)), expected_machine_id=validated.epoch.machine_id)
+    previous = evidence(reader, prior_epoch.refs.canonical_qualification, 16384)
+    review = evidence(reader, r.driver_review, 16384)
+    root_reads = integer(review.get("raw_Driver_body_read_count"), 1)
+    need(proof.get("schema") == "xar.closed-cap-pretransport-save-identity-reuse/v2"
+        and proof.get("status") == "PREVIOUS_CANONICAL_SAVE_IDENTITY_REUSED"
+        and proof.get("machine_id") == validated.epoch.machine_id
+        and proof.get("validation_mode") == "previous_canonical_save_identity_reuse"
+        and proof.get("current_canonical_API_executed") is False
+        and parse_ref(proof.get("previous_canonical_qualification")) == prior_epoch.refs.canonical_qualification
+        and parse_ref(proof.get("driver_review")) == r.driver_review
+        and parse_ref(proof.get("history_tail")) == r.history_tail
+        and canonical_json_v1(proof.get("checkpoint")) == canonical_json_v1(validated.business_basis.checkpoint)
+        and parse_file_stat_identity_v1(proof.get("Driver_identity"), schema=STAT_SCHEMA) == validated.driver_identity
+        and parse_file_stat_identity_v1(proof.get("SAVE_identity"), schema=STAT_SCHEMA) == validated.save_identity
+        and _readonly_stat_v1(previous.get("SAVE_identity")) == validated.save_identity
+        and integer(proof.get("Driver_full_read_count"), 1) == root_reads
+        and integer(proof.get("Driver_full_read_bytes")) == integer(review.get("Driver_body_bytes_read"))
+        == validated.driver_ref.bytes*root_reads
+        and integer(proof.get("SAVE_full_hash_count")) == 0 and integer(proof.get("SAVE_full_hash_bytes")) == 0
+        and integer(review.get("SAVE_full_hash_count")) == 0 and integer(review.get("SAVE_body_bytes_read")) == 0
+        and proof.get("SAVE_hash_reused_by_exact_identity") is True
+        and proof.get("original_checkpoint_unchanged") is True
+        and parse_ref(proof.get("validator")) == validated.business_basis.refs.checkpoint_validator,
+        "previous canonical SAVE identity reused, no new canonical call or SAVE hash claimed")
+    for key in ("new_ordinary_cycle_credit", "new_game_day_credit", "actual_constructor_or_Game_RPC_calls"):
+        need(integer(proof.get(key)) == 0, "evidence gives no gameplay credit")
+    utc(proof.get("observed_at_utc"))
+    return json_object(proof)
+
+
+def build_cap_pretransport_failure_basis_v2(
+    validated: ValidatedCapPretransportFailureEpochV2, *, epoch_ref: ExactRefV1,
+    observed_at_utc: str, sidecars: tuple[ExactRefV1, ...], reader: BasisReaderV1,
+) -> CurrentSavedBasisV1:
+    checked = validate_cap_pretransport_failure_epoch_v2(validated.epoch, reader=reader)
+    need(checked == validated, "validated v2 evidence must be authentic")
+    need(parse_cap_pretransport_failure_epoch_v2(parse_json(exact_read(reader, epoch_ref, 65536)),
+        expected_machine_id=validated.epoch.machine_id) == validated.epoch, "exact v2 epoch bytes")
+    for ref in sidecars:
+        item = evidence(reader, ref, 65536)
+        need("pending" not in item or item["pending"] is None, "no pending sidecar")
+    old = validated.business_basis
+    refs = replace(old.refs, driver=validated.driver_ref, driver_close=validated.epoch.refs.driver_review,
+        closure=epoch_ref, next=validated.epoch.refs.next)
+    return CurrentSavedBasisV1(old.machine_id, utc(observed_at_utc), old.origin, old.frame,
+        old.completed_cycles, json_object(old.checkpoint), json_object(old.campaign_goal_anchor), refs,
+        validated.driver_identity, validated.save_identity, validated.next_sequence, old.progress,
+        old.unknown_requests, sidecars)
+
+
+@dataclass(frozen=True)
+class CapPretransportFailureQualificationV2:
+    machine_id: str
+    observed_at_utc: str
+    basis_ref: ExactRefV1
+    epoch_ref: ExactRefV1
+    canonical_qualification_ref: ExactRefV1
+    driver_ref: ExactRefV1
+    save_ref: ExactRefV1
+    driver_identity_before: FileStatIdentityV1
+    driver_identity_after: FileStatIdentityV1
+    save_identity_before: FileStatIdentityV1
+    save_identity_after: FileStatIdentityV1
+    validator_source_ref: ExactRefV1
+    driver_history_rows: int
+    root_driver_body_reads: int
+    root_save_hash_reads: int
+    driver_body_reads: int = 0
+    canonical_checkpoint_validator_calls: int = 0
+    save_hash_reads: int = 0
+
+    def __post_init__(self) -> None:
+        text(self.machine_id)
+        utc(self.observed_at_utc)
+        integer(self.driver_history_rows, 1)
+        need(integer(self.root_driver_body_reads, 1) >= 1 and integer(self.root_save_hash_reads) == 0,
+            "actual Root Driver reads and zero SAVE hashes")
+        for count in (self.driver_body_reads, self.canonical_checkpoint_validator_calls, self.save_hash_reads):
+            need(integer(count) == 0, "metadata creates no body read or canonical call")
+        need(self.driver_identity_before == self.driver_identity_after
+            and self.save_identity_before == self.save_identity_after, "stable metadata identity")
+
+    def to_wire(self) -> JsonObject:
+        return {"schema": CAP_PRETRANSPORT_FAILURE_QUALIFICATION_SCHEMA,
+            "machine_id": self.machine_id, "observed_at_utc": self.observed_at_utc,
+            "basis_ref": self.basis_ref.to_wire(), "epoch_ref": self.epoch_ref.to_wire(),
+            "canonical_qualification_ref": self.canonical_qualification_ref.to_wire(),
+            "driver_ref": self.driver_ref.to_wire(), "save_ref": self.save_ref.to_wire(),
+            "driver_identity_before": json_object(self.driver_identity_before.to_wire()),
+            "driver_identity_after": json_object(self.driver_identity_after.to_wire()),
+            "save_identity_before": json_object(self.save_identity_before.to_wire()),
+            "save_identity_after": json_object(self.save_identity_after.to_wire()),
+            "validator_source_ref": self.validator_source_ref.to_wire(),
+            "driver_history_rows": self.driver_history_rows, "root_driver_body_reads": self.root_driver_body_reads,
+            "root_save_hash_reads": self.root_save_hash_reads, "driver_body_reads": self.driver_body_reads,
+            "canonical_checkpoint_validator_calls": self.canonical_checkpoint_validator_calls,
+            "save_hash_reads": self.save_hash_reads,
+            "read_count_scope": "metadata_only_previous_canonical_save_identity_reuse"}
+
+
+def parse_cap_pretransport_failure_qualification_v2(
+    value: object, *, expected_machine_id: str,
+) -> CapPretransportFailureQualificationV2:
+    row = record(value, {"schema", "machine_id", "observed_at_utc", "basis_ref", "epoch_ref",
+        "canonical_qualification_ref", "driver_ref", "save_ref", "driver_identity_before",
+        "driver_identity_after", "save_identity_before", "save_identity_after", "validator_source_ref",
+        "driver_history_rows", "root_driver_body_reads", "root_save_hash_reads", "driver_body_reads",
+        "canonical_checkpoint_validator_calls", "save_hash_reads", "read_count_scope"})
+    need(row["schema"] == CAP_PRETRANSPORT_FAILURE_QUALIFICATION_SCHEMA
+        and row["machine_id"] == expected_machine_id
+        and row["read_count_scope"] == "metadata_only_previous_canonical_save_identity_reuse",
+        "explicit v2 CAP failure qualification")
+    return CapPretransportFailureQualificationV2(text(row["machine_id"]), utc(row["observed_at_utc"]),
+        parse_ref(row["basis_ref"]), parse_ref(row["epoch_ref"]), parse_ref(row["canonical_qualification_ref"]),
+        parse_ref(row["driver_ref"]), parse_ref(row["save_ref"]),
+        parse_file_stat_identity_v1(row["driver_identity_before"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["driver_identity_after"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["save_identity_before"], schema=STAT_SCHEMA),
+        parse_file_stat_identity_v1(row["save_identity_after"], schema=STAT_SCHEMA),
+        parse_ref(row["validator_source_ref"]), integer(row["driver_history_rows"], 1),
+        integer(row["root_driver_body_reads"]), integer(row["root_save_hash_reads"]),
+        integer(row["driver_body_reads"]), integer(row["canonical_checkpoint_validator_calls"]),
+        integer(row["save_hash_reads"]))
+
+
+def build_cap_pretransport_failure_qualification_v2(
+    validated: ValidatedCapPretransportFailureEpochV2, basis: CurrentSavedBasisV1, *,
+    basis_ref: ExactRefV1, reader: BasisReaderV1, observed_at_utc: str,
+) -> CapPretransportFailureQualificationV2:
+    expected = build_cap_pretransport_failure_basis_v2(validated, epoch_ref=basis.refs.closure,
+        observed_at_utc=basis.observed_at_utc, sidecars=basis.sidecars, reader=reader)
+    need(canonical_json_v1(expected.to_wire()) == canonical_json_v1(basis.to_wire())
+        and canonical_json_v1(parse_json(exact_read(reader, basis_ref, 65536))) == canonical_json_v1(basis.to_wire()),
+        "qualification binds the exact new basis without new business credit")
+    proof = validate_cap_pretransport_canonical_reuse_v2(validated, reader=reader)
+    return CapPretransportFailureQualificationV2(basis.machine_id, utc(observed_at_utc), basis_ref,
+        basis.refs.closure, validated.epoch.refs.canonical_qualification, basis.refs.driver, basis.refs.save,
+        basis.driver_identity, basis.driver_identity, basis.save_identity, basis.save_identity,
+        basis.refs.checkpoint_validator, validated.history_count, integer(proof["Driver_full_read_count"], 1), 0)
