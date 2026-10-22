@@ -6,6 +6,7 @@ import ast
 import copy
 from datetime import datetime,timedelta,timezone
 import hashlib
+import importlib
 import json
 from pathlib import Path
 import tempfile
@@ -33,7 +34,7 @@ class InterruptedTests(unittest.TestCase):
         self.keeper=self.root/'keeper';self.state=self.root/'old-state';self.next=self.root/'new-state'
         self.bus=self.root/'bus';self.close=self.root/'close.json'
         self.binding:MachineBinding={'machine_id':'machine','state_root':str(self.root/'ids'),
-                                     'admission_root':str(self.root/'ids/admissions')}
+                                     'admission_root':str(self.root/'ids/machine/.shared-runtime-admissions-v1')}
         self.manifest=self.write(self.root/'manifest.json',{})
         self.frozen:dict[str,object]={'run_id':self.live.name,'screen_task':'screen-old','state_dir':str(self.state),
             'source_root':str(self.root/'source'),'runtime_manifest':self.manifest,'argv':['python','host.py']}
@@ -46,7 +47,8 @@ class InterruptedTests(unittest.TestCase):
         supervisor=self.write(self.live/'host-supervisor-started.json',{'pid':1002,
             'argv':['python','--run-root',str(self.live),'--keeper-root',str(self.keeper)]})
         keeper=self.write(self.live/'keeper-process.json',{'pid':1003,'argv':['python','--task','screen-old',
-            '--root',str(self.keeper),'--bus-dir',str(self.bus)]})
+            '--root',str(self.keeper),'--bus-dir',str(self.bus),'--bus-cli',str(self.root/'cli.py'),
+            '--bus-cli-sha256','A'*64]})
         inputs=self.write(self.keeper/'inputs.json',{'task_id':'screen-old'})
         report=self.write(self.live/'native-report.json',{'status':'RUNNING','state_dir':str(self.state),
             'managed_session_thread_finished':False,'finished_at':None,
@@ -164,7 +166,8 @@ class InterruptedTests(unittest.TestCase):
         def revalidate(*arguments:object) -> JsonObject:
             self.assertTrue(active[0]);calls.append(arguments);return self.validate()
         selection=types.SimpleNamespace(state_dir=self.next,runtime_path=Path(self.manifest['path']),
-            manifest_path=Path(self.manifest['path']),prepared_path=Path(self.bundle['original_evidence']['prepared_case']['path']))
+            manifest_path=Path(self.manifest['path']),prepared_path=Path(self.bundle['original_evidence']['prepared_case']['path']),
+            manifest={'source_root':{}},manifest_path_key=lambda row:self.root/'current-source')
         args=types.SimpleNamespace(previous_live=self.live,previous_keeper=self.keeper,
             previous_failure_close=self.close,previous_release=Path(self.bundle['original_evidence']['release']['path']))
         closure=self.validate()
@@ -178,6 +181,29 @@ class InterruptedTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'remains present'):
                 allocator.claim_machine_admission(self.binding,selection,args,closure)
         self.assertEqual(set(admission.iterdir()),before)
+
+    def test_actual_consumer_uses_current_selected_sdk_after_preflight_import(self) -> None:
+        import ck3_mod_acceptance_allocate as allocator
+        import psutil
+        source=self.root/'current-source'
+        selected=source/'ck3_autonomous_player/src/xar_autoplayer/environment.py'
+        selected.parent.mkdir(parents=True);selected.write_text('# selected provider\n',encoding='utf-8')
+        provider=types.ModuleType('xar_autoplayer.environment')
+        provider.__file__=str(selected)
+        game={'tasklist_returncode':0,'inventory_backend':'tasklist+toolhelp32',
+              'tasklist_pids':[],'wmi_pids':[],'native_pids':[],'processes':[]}
+        setattr(provider,'ck3_process_inventory',lambda:game)
+        with patch.object(importlib,'import_module',return_value=provider),patch.object(psutil,'pids',return_value=[]),\
+                patch.object(allocator,'runtime_process_inventory',return_value={'blockers':[],'process_absence_is_normal_exit_proof':False}),\
+                patch.object(allocator,'actual_machine_binding',return_value=self.binding),\
+                patch.object(allocator.subprocess,'run',return_value=types.SimpleNamespace(stdout=json.dumps(self.packet).encode())):
+            result=allocator.previous_interrupted_owner_closure(self.live,self.frozen,self.close,self.keeper,
+                Path(self.bundle['original_evidence']['release']['path']),self.next,source)
+            self.assertEqual(result['mode'],subject.MODE)
+            provider.__file__=str(self.root/'unselected/environment.py')
+            with self.assertRaisesRegex(ValueError,'selected shared source'):
+                allocator.previous_interrupted_owner_closure(self.live,self.frozen,self.close,self.keeper,
+                    Path(self.bundle['original_evidence']['release']['path']),self.next,source)
 
     def test_actual_allocator_owned_functions_are_type_checked(self) -> None:
         repo=Path(__file__).resolve().parents[1]

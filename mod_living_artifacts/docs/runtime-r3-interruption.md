@@ -17,3 +17,9 @@
 本轮还修正共享 CI 步骤的 `PYTHONPATH`，使其显式包含真正运行时使用的 SDK 源目录；原 CI run `39710147384` 的 `ModuleNotFoundError: xar_autoplayer` 失败保留，不能称为已经通过。
 
 这些结果只允许继续准备独立的新场。完整实机验收、中文产品界面审阅、Workshop 上传、截图上传和缓存加载验收仍未完成。旧场最小关键证据及控制文件用于当前恢复与问题复核，最迟于 2026-10-29 UTC 复核用途，按仓库统一存储策略处理。
+
+## 03:08Z 后继准备中的导入修正
+
+同一机器的 a05 已通过 plan、prepare 和无 context 的 preflight，但 03:08:17Z 公共 allocate 真实拒绝：`Interrupted process provider differs from original shared source`。未生成新 canonical run ID、keeper 或游戏；原拒绝保存于外置 `environment/public-operations/20261022T030817321371Z-allocate/`，不覆盖 R3，也不授予 a05 已分配资格。
+
+实际公共 preflight 已把本次选定的 SDK 导入进程。恢复校验错误地要求缓存中的 provider 位于上场 source root；修复明确传入本次 `Selection` 选定的 shared source，仍验证实际模块路径，旧场 frozen、控制和退出未知事实继续独立保留。新增回归执行真实恢复 consumer，覆盖已导入本次 SDK、拒绝未选定 SDK，以及原 writer 锁内重验。当前为 **12 项通过**，两个模块 strict mypy 通过。测试环境补齐并在 CI 固定 `types-psutil==7.2.2.20260906` 后，完整 allocator 的历史诊断为 32 项（先前 33 项中包含缺失 stub）；本次负责的两函数仍为 0 项，整模块依然未通过。

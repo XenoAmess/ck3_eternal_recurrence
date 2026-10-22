@@ -1417,7 +1417,7 @@ def validate_late_failed_day(diagnostic_raw: object, row_raw: object) -> None:
 
 
 def previous_interrupted_owner_closure(previous: Path, freeze: dict[str, object], close_path: Path,
-        keeper_root: Path, release_path: Path, next_state: Path) -> JsonObject:
+        keeper_root: Path, release_path: Path, next_state: Path, current_source_root: Path) -> JsonObject:
     """Reobserve both providers and the canonical bus; old controls stay quarantined."""
     import importlib
     import psutil
@@ -1426,13 +1426,13 @@ def previous_interrupted_owner_closure(previous: Path, freeze: dict[str, object]
     from ck3_mod_acceptance_background_types import text_field
     from ck3_mod_acceptance_fresh_machine_bootstrap import machine_binding
     frozen=json_object(freeze)
-    source=Path(text_field(frozen,'source_root'))/'ck3_autonomous_player/src'
+    source=current_source_root/'ck3_autonomous_player/src'
     sys.path.insert(0,str(source))
     try:
         provider=importlib.import_module('xar_autoplayer.environment')
         location=getattr(provider,'__file__',None)
         if not isinstance(location,str) or not Path(location).resolve().is_relative_to(source.resolve()):
-            raise ValueError('Interrupted process provider differs from original shared source')
+            raise ValueError('Interrupted process provider differs from selected shared source: '+str(location))
         game=provider.ck3_process_inventory()
     finally:
         sys.path.remove(str(source))
@@ -1911,7 +1911,8 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
         if closure['mode']=='previous-shared-interrupted-owner-quarantined':
             renewed=previous_interrupted_owner_closure(args.previous_live,
                 read_json(args.previous_live/'frozen-argv.json'),args.previous_failure_close,
-                args.previous_keeper,args.previous_release,selection.state_dir)
+                args.previous_keeper,args.previous_release,selection.state_dir,
+                selection.manifest_path_key(selection.manifest['source_root']))
             require(renewed['mode']==closure['mode'],'Interrupted admission changed under original writer lock')
             closure.update(renewed)
         identity=root/'machine.json'
@@ -2148,7 +2149,8 @@ def _allocate_and_keep_impl(selection,args):
             if not isinstance(failure_path,Path):
                 raise ValueError('Actual interrupted closure path required')
             session_closure=previous_interrupted_owner_closure(previous,freeze,failure_path,
-                args.previous_keeper,args.previous_release,selection.state_dir)
+                args.previous_keeper,args.previous_release,selection.state_dir,
+                selection.manifest_path_key(selection.manifest['source_root']))
         elif failed_live:
             session_closure=previous_failed_live_resource_closure(previous,freeze,failure_path,
                             args.previous_keeper,args.previous_release,bus_packet)
