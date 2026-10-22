@@ -1,0 +1,48 @@
+{
+  "id": "cold_persistence",
+  "status": "ready",
+  "implementation_credit": "Offline source candidate; actual public single CLI restore and one new Save/native readback required. Live NOT_RUN; no mutation, timer firing, four independent rarity-imprint or release credit.",
+  "adapter": {
+    "path": "{repo_root}/mod_living_artifacts/tools/cold_persistence_acceptance_adapter.py",
+    "config": "{repo_root}/mod_living_artifacts/tools/cold_persistence.contract.json"
+  },
+  "initial_plan": "{run_dir}/prepared/initial-plan.json",
+  "startup": {
+    "mode": "saved_campaign",
+    "state_dir": "{run_dir}/state",
+    "saved_campaign": {
+      "save": null,
+      "bytes": null,
+      "sha256": null,
+      "player_id": null,
+      "date_raw": null,
+      "product_inventory": null
+    }
+  },
+  "budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 1800,
+    "timeout": 3300,
+    "hold_seconds": 1500,
+    "poll_interval": 0.5
+  },
+  "budget_provenance": "Prospective zero-day single restore: original shared1800s readiness, twelve bounded public calls, one actual Save/strict-melt readback and180s normal-Quit reserve within fixed1500s hold. No measured runtime claim or extension of another scene.",
+  "required_mcp_tools": [
+    "ck3_take_snapshot",
+    "ck3_query_campaign_root_context_v1",
+    "ck3_query_player_artifact_personal_use_v1",
+    "ck3_save_checkpoint",
+    "ck3_query_normal_exit_context_v1",
+    "ck3_request_normal_exit_v1",
+    "ck3_observe_normal_exit_v1"
+  ],
+  "opt_in_read_only_mcp_tools": ["ck3_query_player_artifact_personal_use_v1"],
+  "normal_close": {
+    "owner": "shared entry/CaseClient",
+    "reserve_seconds": 180,
+    "actual_retained_OS0_and_original_native0_required": true
+  },
+  "business_contract_applicable": true,
+  "case_scope": "actual-saved-artifact-zero-day-cold-persistence-only",
+  "whole_product_acceptance_credit": false
+}

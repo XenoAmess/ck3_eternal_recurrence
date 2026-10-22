@@ -91,6 +91,17 @@ class CheckpointReadback:
     source_save: Pin
 
 
+class ActorBinding(Protocol):
+    def validate_frame(self, frame: Frame) -> None: ...
+
+    def to_json(self) -> Object: ...
+
+
+class ActorBindingFactory(Protocol):
+    def __call__(self, report: object, *, frozen: object, run_id: str,
+                 machine_id: str, manifest: object) -> ActorBinding: ...
+
+
 def validate_contract(context: object) -> Contract:
     require(field(context, "product") == "living-artifacts" and field(context, "case") == "core_continuous",
             "Adapter only accepts the selected canonical product/core case")
@@ -257,7 +268,8 @@ def _inputs(raw: bytes) -> dict[str, tuple[str, str]]:
 
 
 class Session:
-    def __init__(self, context: object, client: CasePort, contract: Contract) -> None:
+    def __init__(self, context: object, client: CasePort, contract: Contract, *,
+                 actor_binding_factory: ActorBindingFactory | None = None) -> None:
         self.client = client
         self.contract = contract
         self.context = mapping(context, "public case context")
@@ -268,7 +280,8 @@ class Session:
         self.sequence = 0
         self.interruption_sequence = 0
         self.owner: Frame | None = None
-        self.startup_actor: StartupActorBinding | None = None
+        self.startup_actor: ActorBinding | None = None
+        self.actor_binding_factory = actor_binding_factory
         self.last_frame: object = None
         self.start: Frame | None = None
         self.first_sample: CheckpointSample | None = None
@@ -287,7 +300,8 @@ class Session:
     def bind(self, value: object) -> Frame:
         frame = Frame.parse(value, run_id=self.run_id, machine_id=self.machine_id, manifest=self.client.manifest)
         if self.startup_actor is None:
-            self.startup_actor = StartupActorBinding.parse(self.client.guard(reserve=180), frozen=self.client.frozen,
+            factory: ActorBindingFactory = StartupActorBinding.parse if self.actor_binding_factory is None else self.actor_binding_factory
+            self.startup_actor = factory(self.client.guard(reserve=180), frozen=self.client.frozen,
                 run_id=self.run_id, machine_id=self.machine_id, manifest=self.client.manifest)
             self.refs.append(write_once(self.client.output / "startup-actor-binding.json", self.startup_actor.to_json()))
         self.startup_actor.validate_frame(frame)
