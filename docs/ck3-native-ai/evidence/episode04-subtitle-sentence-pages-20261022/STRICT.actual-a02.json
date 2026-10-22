@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T11:11:46.188657+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--strict",
+    "--follow-imports=silent",
+    "--follow-untyped-imports",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\mechanics_composer.py",
+    "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\check_subtitles.py"
+  ],
+  "exit_code": 0,
+  "stdout": "Success: no issues found in 2 source files\n",
+  "stderr": ""
+}

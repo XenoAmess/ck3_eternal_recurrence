@@ -1351,3 +1351,8 @@ promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a0
 promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/promo-project.mechanics.terms-a03.json -text
 promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/provenance/assets-20261022-0528/CALL-ASSETS-A02-ORIGINAL-WAIT.actual-a01.json -text
 promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/provenance/assets-20261022-0528/OWNER-CLOSED.actual-a01.json -text
+
+# Frozen episode04 subtitle source receipts retain original line endings.
+docs/ck3-native-ai/evidence/episode04-subtitle-sentence-pages-20261022/CHECK.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-subtitle-sentence-pages-20261022/STRICT.actual-a02.json -text
+docs/ck3-native-ai/evidence/episode04-subtitle-sentence-pages-20261022/DELIVERY.actual-a01.json -text

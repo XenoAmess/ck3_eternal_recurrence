@@ -1,0 +1,420 @@
+{
+  "schema": "xar.e04.vacation-handover-closeout.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "user_instruction": "2026-10-22: 平稳收尾手上的工作，编写交接文档，输出到docs。",
+  "task_state": "vacation_closeout_no_new_business",
+  "machine_observation": {
+    "observed_at_utc": "2026-10-22T10:37:48.764970+00:00",
+    "source": "tools/ck3_live_run_id.py machine",
+    "original_root_tool_result": "25bed9"
+  },
+  "handover_markdown": "docs/handover/2026-10-22-war-episode04-vacation-handover.md",
+  "current_review": {
+    "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+    "bytes": 72484128,
+    "sha256": "822963261dad6abdf63c42c66efb13de24f77a04f74e45a987ca0ada18d8792f",
+    "payload_pin_provenance": "original producer, full QA and copy proof; not a new handover movie-body hash",
+    "cues": 47,
+    "frames": 43160,
+    "fps": 30,
+    "duration": "23:58.667",
+    "selected_cards": 35,
+    "palette": "existing series brown/gold",
+    "full_AV_PTS_DTS_CRC_checks": true,
+    "client_InSync_observed_at_utc": "2026-10-22T08:11:16.640668Z",
+    "client_InSync": 1,
+    "independent_cloud_web_readback": false,
+    "human_full_1x": false,
+    "semantic_audio_review_complete": false,
+    "final_signoff": false,
+    "Bilibili_published": false,
+    "retired_work_replica": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r22-mechanics-full-a01/attempt-a02/work/full/E04-MECHANICS-REVIEW.mp4",
+      "availability": "deleted",
+      "same_name_replacement": false
+    }
+  },
+  "progress": {
+    "formal_dynamic_themes": {
+      "numerator": 9,
+      "denominator": 11,
+      "percent": 81.81818181818181,
+      "missing": [
+        "R05 natural stock<10 positive physical supply-attributed debit",
+        "R08 actual maintenance payment attribution"
+      ]
+    },
+    "B_distinct_positive_sites": {
+      "numerator": 2,
+      "denominator": 2
+    },
+    "full_ABC": {
+      "numerator": 0,
+      "denominator": 3
+    },
+    "historical_other_denominators": {
+      "research": "10/14",
+      "business": "7/11",
+      "changed_by_documentation": false
+    },
+    "planner_autoload": false,
+    "new_formal_credit_from_R0237": 0
+  },
+  "R0237": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0237",
+    "scene_root": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01",
+    "historical_game_pid": 16768,
+    "game_created_filetime": "134371374612846158",
+    "raw_date": 53146872,
+    "new_game_days": 0,
+    "observer_Arm": 0,
+    "Film_Start": 0,
+    "Film_prebinder_spawned": false,
+    "actual_Film_manifest_existed": false,
+    "user_cancelled_before_recording": true,
+    "original_public": {
+      "tool_session": 88090,
+      "exit_code": 2,
+      "meaning": "frozen actual Film manifest guard rejected real user-cancel reply; original failure retained"
+    },
+    "original_host": {
+      "historical_pid": 33824,
+      "exit_code": 0,
+      "observed_at_utc": "2026-10-22T10:31:33Z"
+    },
+    "normal_GUI_qualified": true,
+    "retained_Game_OS_exit_code": 0,
+    "native_process_count_after_close": 0,
+    "original_keeper": {
+      "historical_pid": 36848,
+      "exit_code": 0,
+      "thread_count_after_close": 0
+    },
+    "original_allocator": {
+      "tool_session": 35632,
+      "exit_code": 0
+    },
+    "task_bus": {
+      "release_sequence": 8167,
+      "resources": [],
+      "observed_at_utc": "2026-10-22T10:34:47Z"
+    },
+    "new_Save_submitted": false,
+    "Root_metadata_watcher": {
+      "tool_session": 90991,
+      "leaf_pid": 25300,
+      "created_filetime": "134371374045794005",
+      "owned_handle_wait": 0,
+      "original_exit_code": 125,
+      "original_wait_tool_result": "03996b",
+      "meaning": "intentional stop on user vacation instruction",
+      "future_Root_grants": false
+    },
+    "source_of_close_facts": "Original operator exact owner receipt, read back by Root tool e7b0e1; GUI review is operator-authored",
+    "Root_directly_reviewed_close_GUI": false,
+    "close_receipt": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/control-a01/R0237-OWNER-CLOSED.actual-a01.json",
+      "bytes": 5919,
+      "sha256": "a81536efa7e9d7a0bfbc9f5f92dea51909dd8e583fc54a09ce00d9a373bdb6dd",
+      "observed_at_utc": "2026-10-22T10:40:37.686527+00:00"
+    },
+    "independent_close_receipt": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r23-storage-recovery-a01/capacity-a01/VACATION-R0237-INDEPENDENT-CLOSED.actual-a01.json",
+      "bytes": 2628,
+      "sha256": "543f145c40a8f7efbc60164634380e215496ce6085cc14207b78e601d195515d",
+      "observed_at_utc": "2026-10-22T10:42:26.801393+00:00",
+      "ledger_revision": 982
+    }
+  },
+  "canonical_Save": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r21-live-r08-a01/state-a01/profile/save games/xar_checkpoint.ck3",
+    "bytes": 71616553,
+    "sha256": "e044593c6d1399499b37d50dfecb1cd36c8cbb23681635339be694174e236f63",
+    "pin_source": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/prepared-a01/prepared-case.json",
+    "closing_owner_full_payload_SHA_rechecked": true,
+    "Root_handover_payload_rehash": false,
+    "one_life_qualification": false,
+    "missing_or_null_episode_fabricated": false,
+    "original_common_view": {
+      "episode_projection": "native_campaign",
+      "one_life_settlement": null,
+      "native_episode_id_field_present": false
+    }
+  },
+  "git": {
+    "D_main": {
+      "root": "D:/workspace/ck3_eternal_recurrence",
+      "HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "checkout": "detached",
+      "new_changes": "only this handover Markdown and evidence JSON; no commit/push"
+    },
+    "W_publisher": {
+      "root": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/integration-worktree",
+      "branch": "master",
+      "HEAD": "597b81bb3989db0fc04db1be90faa51a5d8df484",
+      "clean": true,
+      "rebase_active": false,
+      "writer_processes": 0,
+      "local_commits": 3,
+      "payload_paths": 45,
+      "payload_bytes": 1559077
+    },
+    "last_remote_observation": {
+      "observed_utc_minute": "2026-10-22T10:04Z",
+      "master": "caf5ff5bf81f102b7b1cf01d7ab074eb2d2943de",
+      "future_freshness_claimed": false
+    },
+    "push": {
+      "result": "non-fast-forward / fetch-first",
+      "original_exit_code": 1,
+      "force": false,
+      "remote_45_payload_delivery_verified": false
+    },
+    "CAF_tail": {
+      "API_needed_blob_read": false,
+      "original_object_import_started": false,
+      "rebase_tail_started": false,
+      "actual_contract_and_card_materialized": false,
+      "old_10_30_card_reusable": false
+    }
+  },
+  "R25_runtime_source": {
+    "final_index": "C:/ck3-e04-resume-20261020-a01/r25-r05-runtime-source-a01/source/RUNTIME-SOURCE-INDEX.actual-a02.json",
+    "final_projector": "C:/ck3-e04-resume-20261020-a01/r25-r05-runtime-source-a01/source/project_runtime_a02.py",
+    "final_public_adapter": "C:/ck3-e04-resume-20261020-a01/r25-r05-runtime-source-a01/source/r05_runtime_public_a02.py",
+    "meaningful_focused_groups_passed": 8,
+    "strict_production_files_passed": 5,
+    "independent_RAM_source_review": "narrow pass",
+    "runtime_projection_materialized": false,
+    "real_prepare_materialized": false,
+    "SDK_transport": false,
+    "Game": false,
+    "Film": false,
+    "native_build": false,
+    "actual_R05_qualified": false,
+    "global_512_ring_retention_guaranteed": false,
+    "operator_handoff_a01_filenames_require_DELIVERY_a02_successors": true
+  },
+  "Git_guard": {
+    "restored_at_utc": "2026-10-22T10:37:23Z",
+    "original_timer_session": 5009,
+    "original_timer_exit_code": 0,
+    "restorer_pid": 28292,
+    "restorer_created_filetime": "134371390427839743",
+    "restorer_original_exit_code": 0,
+    "scope": "repository-only temporary HTTPS guard",
+    "exact_restored_config": {
+      "bytes": 12174,
+      "sha256": "a4a0343ee9360e1786e6fb71c352c9678d254968b9b75b8537a48ed8d2bb2262"
+    },
+    "repository_config_lock_present": false,
+    "pending_11_00_timer": false,
+    "pending_restore": false,
+    "narrow_fetch_settings_in_restored_baseline_preserved": true,
+    "independent_close_receipt": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r23-storage-recovery-a01/capacity-a01/VACATION-GIT-GUARD1100-INDEPENDENT-CLOSED.actual-a01.json",
+      "bytes": 4892,
+      "sha256": "c50a9dc19c7383900fe01b253441c4d8c5448f11acab5b286f0696d9619f3ab2",
+      "ledger_revision": 981
+    }
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "ledger_path": "D:/workspace/.codex-task-bus/e04-capacity-reservations.json",
+    "sole_ledger_writer": "/root/capacity",
+    "final_capacity_snapshot": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r23-storage-recovery-a01/capacity-a01/VACATION-DOCS-HELD-FINAL-CAPACITY-SNAPSHOT.actual-a01.json",
+      "bytes": 5427,
+      "sha256": "2da75c6d5a16623592d83f1d5cbb163df0d51f1ce64abd9135e07cb2fbbae59d",
+      "observed_at_utc": "2026-10-22T10:42:26.823075+00:00",
+      "fresh_volumes": {
+        "C:/": {
+          "volume": "C:/",
+          "observed_at_utc": "2026-10-22T10:42:26.800393+00:00",
+          "total_bytes": 511133945856,
+          "free_bytes": 67394166784,
+          "available_to_caller_bytes": 67394166784,
+          "total_free_bytes": 67394166784,
+          "entire_volume_used_allocation_upper_bound_bytes": 443739779072,
+          "source": "Windows GetDiskFreeSpaceExW"
+        },
+        "D:/": {
+          "volume": "D:/",
+          "observed_at_utc": "2026-10-22T10:42:26.800393+00:00",
+          "total_bytes": 500090007552,
+          "free_bytes": 21383356416,
+          "available_to_caller_bytes": 21383356416,
+          "total_free_bytes": 21383356416,
+          "entire_volume_used_allocation_upper_bound_bytes": 478706651136,
+          "source": "Windows GetDiskFreeSpaceExW"
+        }
+      },
+      "only_remaining_future_bytes_by_volume": {
+        "C:/": 65536,
+        "D:/": 98304
+      },
+      "C_effective_quota_margin_bytes": 1493913600,
+      "D_required_free_bytes": 21609152512,
+      "D_floor_margin_bytes": -225796096,
+      "project_exact_coverage": false,
+      "new_heavy_writes": "BLOCKED",
+      "all_other_production_and_business_futures_zero": true
+    },
+    "independent_final_document_closeout_path": "C:/ck3-e04-resume-20261020-a01/r23-storage-recovery-a01/capacity-a01/VACATION-ALL-WORK-CLOSED.actual-a01.json",
+    "final_document_closeout_is_external_to_avoid_self_hash_cycle": true,
+    "manual_git_pack_deletion": false,
+    "MIDX_maintenance_run": false,
+    "unexecuted_duplicate_pack_credit": 0,
+    "CNEXT_cache_actual_deleted": 0,
+    "actual_R25_obj_recovery": {
+      "files": 150,
+      "allocated_bytes": 258338816,
+      "original_exit_code": 0
+    },
+    "fresh_future_admission_from_old_cards": false,
+    "final_document_closeout_at_this_file_assembly": {
+      "external_receipt_not_yet_created_or_claimed_complete": true,
+      "remaining_purpose": "only Root document two files and capacity final independent closure",
+      "action": "Root pins both final documents; capacity independently verifies, releases final reservations, creates stable external receipt; Root reads it without rewriting these documents"
+    }
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.md",
+    "parameters": "docs/storage-retention-policy.json",
+    "owner": "Root / successor",
+    "next_use_review_utc": "2026-10-24T10:00:00Z",
+    "necessary_input_protection_until_utc": "2026-10-29T10:00:00Z",
+    "auto_renew": false,
+    "protection_scope": "only exact necessary canonical Save/provenance, selected current media/source manifests, W three commits and 45 source payloads, R24/R25 final source, representative R0237 failure/close evidence; not whole B tree",
+    "existing_user_permanent_asset_index_changed": false,
+    "expired_means_unconditional_delete": false
+  },
+  "small_source_files_readback": {
+    "observed_at_utc": "2026-10-22T10:37:48.764970+00:00",
+    "source_payload_bytes_hashed": true,
+    "movie_Save_EXE_DLL_payload_hashed": false,
+    "pins": [
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r22-mechanics-full-qa-a01/qa-a01/QA.actual.json",
+        "exists": true,
+        "bytes": 13704,
+        "sha256": "19d11b79431d065a3c756200b30effc7b080c523e25651d9772f65844b15c067"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r22-mechanics-yellow-assets-a01/ASSETS.actual-a02.json",
+        "exists": true,
+        "bytes": 38902,
+        "sha256": "9b89690382b630a29c1e71bc363c11bf1d6348673e9e353e16b8db64b750e07a"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/root-a01/STEAM-OFFLINE-ROOT-REVIEW.actual-a02.json",
+        "exists": true,
+        "bytes": 1843,
+        "sha256": "74406c1c7e4d155901641baaa7e8f12cc37d6419ad01cc8e08a61ee54b0a0338"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/root-a01/R0237-LOADED-BRIDGE-OS.actual-a01.json",
+        "exists": true,
+        "bytes": 1388,
+        "sha256": "02bd421abce08b696bd75180c7e4903f07484a1abcab95853837166a6a05eb3b"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/root-a01/ROOT-METADATA-WATCHER-STOP.actual-a01.json",
+        "exists": true,
+        "bytes": 805,
+        "sha256": "7c00bf6e175a0f120ab6ecea0ee2c4448e348b5c8e22774890acd22f35963a0f"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/prepared-a01/prepared-case.json",
+        "exists": true,
+        "bytes": 11915,
+        "sha256": "2bc803f54b909edcc850b10f7a85d6a156040a092d706bc7ccf80e7584ef5b8f"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-live-r08-phase23-a01/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0237/case-output/normal-quit-root-result.json",
+        "exists": true,
+        "bytes": 3730,
+        "sha256": "247a1bd05ce3c4145ed22413b746d0c14ea031f4ca780ad2f8d04d72fce72f80"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-storage-recovery-a01/capacity-a01/VACATION-PUB-AND-R05-SOURCES-INDEPENDENT-CLOSED.actual-a01.json",
+        "exists": true,
+        "bytes": 6146,
+        "sha256": "3f0c3652dd420614624334e235075d38ca2abc3b0cb77bdfaef8dd8f384456cc"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-storage-recovery-a01/capacity-a01/VACATION-HANDOVER-DOCS96-CLOSEOUT-RECORD.actual-a01.json",
+        "exists": true,
+        "bytes": 2944,
+        "sha256": "567c8934027c2b7851a132aee0cfd95035cd8a5b11431c0bb5d5d16ac6649ab3"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r25-r05-runtime-source-a01/source/DELIVERY.actual-a02.json",
+        "exists": true,
+        "bytes": 2377,
+        "sha256": "f5e77b6b277047b4ad9187261a96a8ae855e9dc0309d7cad5d4cfb12d2d454c0"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r25-r05-runtime-source-a01/source/SOURCE-FREEZE.actual-a02.json",
+        "exists": true,
+        "bytes": 17463,
+        "sha256": "ec961ec910168288f0d90a5b6aa05a115260a662c2885db2fe8e4e567eb82a66"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r24-r05-natural-source-a01/source-a02/SOURCE-INDEX.actual-a02.json",
+        "exists": true,
+        "bytes": 9032,
+        "sha256": "0fdcbc49459a73fe7c09cb2ecb248f32b9278d6d3b12ec3bf6f1a6da846eb4e4"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r24-portable-final-source-a01/source-a01/DELIVERY.actual-a01.json",
+        "exists": true,
+        "bytes": 1727,
+        "sha256": "dfc5f6f66087aec94a228e0486eefd7fcf63a6a102a22483f80fc61408f09484"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-mechanism-publication-a01/MINIMAL-COPYPLAN.prepared-a03.json",
+        "exists": true,
+        "bytes": 40557,
+        "sha256": "ed038bbb7482b422260b3cb6655b5b3e298ffccd469dfbe4e5dfe7b3f9a7b631"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r23-mechanism-publication-a01/FINAL-FOUR-ADDENDUM.prepared-a01.json",
+        "exists": true,
+        "bytes": 2350,
+        "sha256": "94bdb99451a27fe7a3818127f48cc060dba4dc26d733c8f4574bed4dfa2a2728"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/integration-worktree/docs/ck3-native-ai/episode04-20261022-mechanism-rules-12004.md",
+        "exists": true,
+        "bytes": 20889,
+        "sha256": "e2a4d94cd3633e70f2a599ee12268525ae9bcbb6b5d2f5a947f49cec0ac4e027"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/integration-worktree/docs/ck3-native-ai/evidence/episode04-mechanism-rules-20261022/mechanism-rules.json",
+        "exists": true,
+        "bytes": 41510,
+        "sha256": "d271952ed91528fc418d9d5f9e0dadce8c2d48e2f5287d77b6eb468c8df41512"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/integration-worktree/docs/ck3-native-ai/evidence/episode04-mechanism-final-source-20261022/CURRENT-YELLOW47.json",
+        "exists": true,
+        "bytes": 2981,
+        "sha256": "10cfc6e8b97ad8590cf9abccbeeb6d3e615f3c564e2120ba5e5c3a258ffadc47"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r25-d-obj-recovery-a01/OBJ-DELETE-FINAL.actual-a01.json",
+        "exists": true,
+        "bytes": 2045,
+        "sha256": "a22e86d6ab2b7a0c9f1779fcabc526b6923825e0912e98a6e4a963f82e44a88f"
+      },
+      {
+        "path": "C:/ck3-e04-resume-20261020-a01/r22-mechanics-onedrive-a01/CLIENT-METADATA.actual-a03.json",
+        "exists": true,
+        "bytes": 2092,
+        "sha256": "c4c5e053883f55404f77e76c24f5d42c6eb5dd72f8fb10fae4ab78c17ba1113e"
+      }
+    ]
+  }
+}
+

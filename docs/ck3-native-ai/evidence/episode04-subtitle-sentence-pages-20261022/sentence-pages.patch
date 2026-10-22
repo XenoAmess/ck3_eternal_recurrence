@@ -1,0 +1,75 @@
+--- mechanics_composer.original.py
++++ mechanics_composer.py
+@@ -32,11 +32,69 @@
+     return CueClock(total, raw.frames, total - raw.frames)
+ 
+ 
++def chinese_pages(value: str, font: ImageFont.FreeTypeFont) -> tuple[str, ...]:
++    """Keep each sentence on one screen; wrap its two lines at a readable boundary."""
++    pages: list[str] = []
++    closing = '，。！？；：、,.!?;:）】》”’'
++
++    def fits(line: str) -> bool:
++        return len(line) <= 32 and font.getlength(line) <= 1370
++
++    def wrap(sentence: str) -> str | None:
++        if fits(sentence):
++            return sentence
++        # Chinese numbers and Arabic decimal amounts remain intact on each line.
++        numbers = tuple(re.finditer(r'[零〇一二三四五六七八九十百千万亿两点]+|\d+(?:[.,]\d+)*', sentence))
++        choices: list[tuple[int, int, int]] = []
++        for offset in range(1, len(sentence)):
++            left, right = sentence[:offset], sentence[offset:]
++            if not fits(left) or not fits(right) or right[0] in closing:
++                continue
++            if any(match.start() < offset < match.end() for match in numbers):
++                continue
++            choices.append((0 if left[-1] in closing else 1,
++                            abs(len(left) - len(right)), offset))
++        if not choices:
++            return None
++        offset = min(choices)[2]
++        return sentence[:offset] + '\n' + sentence[offset:]
++
++    # The actual 47-cue corpus fits in two lines per complete sentence. Longer
++    # future sentences may split at a clause boundary, never at an arbitrary word.
++    for match in re.finditer(r'[^。！？；]+[。！？；]?|[。！？；]', value):
++        sentence = match.group().strip()
++        if not sentence:
++            continue
++        page = wrap(sentence)
++        if page is not None:
++            pages.append(page)
++            continue
++        clauses = re.findall(r'[^，、：]+[，、：]?|[，、：]', sentence)
++        current = ''
++        for clause in clauses:
++            if current and wrap(current + clause) is None:
++                current_page = wrap(current)
++                need(current_page is not None, 'Chinese clause exceeds two readable lines')
++                if current_page is None:
++                    raise ValueError('Chinese clause exceeds two readable lines')
++                pages.append(current_page)
++                current = ''
++            current += clause
++        current_page = wrap(current)
++        need(current_page is not None, 'Chinese clause exceeds two readable lines')
++        if current_page is None:
++            raise ValueError('Chinese clause exceeds two readable lines')
++        pages.append(current_page)
++    need(bool(pages), 'Empty subtitle')
++    return tuple(pages)
++
++
+ def readable_groups(value: str, *, chinese: bool, font_path: Path) -> tuple[str, ...]:
+-    """Same short phrase/width basis as the successful captions, explicitly approximate."""
++    """Sentence pages for Chinese; retain the established English word wrapping."""
+     font = ImageFont.truetype(str(font_path), 36 if chinese else 24)
+-    tokens = (re.findall(r'[零〇一二三四五六七八九十百千万亿两点]+|\d[\d,.，]*|[^\s]', value)
+-              if chinese else re.findall(r'\S+\s*', value))
++    if chinese:
++        return chinese_pages(value, font)
++    tokens = re.findall(r'\S+\s*', value)
+     lines: list[str] = []
+     current = ''
+     for token in tokens:

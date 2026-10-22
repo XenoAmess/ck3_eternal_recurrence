@@ -1,0 +1,71 @@
+{
+  "schema": "xar.e04.subtitle-pagination-source-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T11:13:40.258780+00:00",
+  "state": "SOURCE_AND_ACTUAL_ASS_READY_PENDING_NEXT_RENDER",
+  "original_composer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-render-a01\\mechanics_composer.py",
+    "bytes": 9211,
+    "sha256": "6612e11ab7167b05458b696ad73cc541a015e134bcaf7530c8841559a0454a9c"
+  },
+  "candidate_composer": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\mechanics_composer.py",
+    "bytes": 11746,
+    "sha256": "56358fd6ac3dee1f89f52382e3442444bd00dbac099743c9b50e7ea904e3e494"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\sentence-pages.patch",
+    "bytes": 3503,
+    "sha256": "e2ddf2b00280ef9869b1d39320689e5a5f249cd5b87805fbe8a5e18f286d300e"
+  },
+  "actual_corpus_check": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\CHECK.actual-a01.json",
+    "bytes": 29842,
+    "sha256": "71c6a4585da92fa977664e9c176d2fc74196071e9566e16807b369f0a8c919a4"
+  },
+  "strict_check": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\STRICT.actual-a02.json",
+    "bytes": 647,
+    "sha256": "b7dc861b5de4a4386a8e8ec9f6e833c36184e06bd47d16417150e3913111bd2c"
+  },
+  "meaningful_scope": "47 actual current cues through existing runtime-validating Editorial and Voice, measured fonts and actual ASS producer/consumer; original text preserved, every page <=2 lines and every line <=32 Chinese characters/1370px.",
+  "old_Chinese_pages": 153,
+  "new_Chinese_pages": 231,
+  "actual_original_punctuation_only_pages": [
+    {
+      "cue": "N01-07",
+      "local_start": "0:00:27.43",
+      "page": "。",
+      "timeline_start_frame": 7641
+    }
+  ],
+  "fixed_examples": [
+    {
+      "cue": "N01-01",
+      "original_page_boundary": "suppply-capacity phrase split between Chinese supply and limit; local12.90s",
+      "now": "Whole sentence containing supply capacity stays on one screen."
+    },
+    {
+      "cue": "N05-03",
+      "original_page_boundary": "destination split before last two Chinese characters; local23.74s",
+      "now": "Whole sentence stays on one screen."
+    }
+  ],
+  "rendered_MP4_changed": false,
+  "full_movie_reencoded": false,
+  "human_full_1x": false,
+  "final_signoff": false,
+  "new_AV_QA_claimed": false,
+  "formal_dynamic_themes": {
+    "numerator": 9,
+    "denominator": 11
+  },
+  "next_use": "Adopt candidate as a newly frozen composer in the next source/recipe after R08/R05 chapter integration; do not modify historical frozen producer or its pins.",
+  "retention": {
+    "owner": "/root",
+    "review_utc": "2026-10-24T10:00:00Z",
+    "protection_until_utc": "2026-10-29T10:00:00Z",
+    "auto_renew": false
+  },
+  "English_ASS_tracks_exactly_equal": 47
+}
