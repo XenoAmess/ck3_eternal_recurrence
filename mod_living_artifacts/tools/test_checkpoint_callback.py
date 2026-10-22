@@ -14,7 +14,7 @@ def callback_fixture(root: Path) -> tuple[Object, Frame, Pin]:
     raw.write_bytes(b"authored-binary-not-game-evidence")
     melted = root / "melted.ck3"
     artifact_records = ""
-    for reference, name, rarity in ((12, "Living Artifact Under Test", "masterwork"), (13, "Test Food: Common", "common"),
+    for reference, name, rarity in ((12, "★Living Artifact Under Test", "masterwork"), (13, "Test Food: Common", "common"),
                                   (14, "Test Food: Masterwork", "masterwork"), (15, "Test Food: Famed", "famed"), (16, "Test Food: Illustrious", "illustrious")):
         values = ""
         if reference == 12:

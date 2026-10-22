@@ -114,6 +114,23 @@ class CoreGenerationTests(unittest.TestCase):
         self.assertEqual(script.scalar(absent, "exists").value, "scope:xalw_material")
         self.assertEqual(script.scalar(credit, "add").value, "scope:xalw_feed_xp")
 
+    def test_star_name_migrates_only_living_artifacts_and_does_not_repeat(self) -> None:
+        script = self.effects
+        naming = script.named("xalw_ensure_star_name_effect")
+        branch = script.child(naming, "if")
+        condition = script.child(branch, "limit")
+        self.assertEqual(script.scalar(condition, "xalw_is_living_trigger").value, "yes")
+        self.assertEqual(script.scalar(script.child(condition, "NOT"), "has_variable").value, "xalw_star_named")
+        self.assertEqual(script.scalar(branch, "save_scope_as").value, "xalw_named_artifact")
+        self.assertEqual(script.scalar(branch, "set_artifact_name").value, "xalw_star_name")
+        marker = script.variable_actions(naming, "set_variable", "xalw_star_named")
+        self.assertEqual(len(marker), 1)
+        self.assertGreater(marker[0].start, script.scalar(branch, "set_artifact_name").start)
+        for path in ("xalw_refresh_artifact_effect", "xalw_artifact_monthly_effect"):
+            self.assertEqual(script.scalar(script.named(path), "xalw_ensure_star_name_effect").value, "yes")
+        for language in ("simp_chinese", "english"):
+            self.assertEqual(core.render_core_localization(language)["xalw_star_name"], "★[xalw_named_artifact.GetNameNoTooltip]")
+
     def test_feeding_imprint_commits_in_same_success_branch_as_xp(self) -> None:
         script = self.effects
         feed = script.named("xalw_feed_material_effect")

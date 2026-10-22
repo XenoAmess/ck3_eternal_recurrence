@@ -49,7 +49,7 @@ class CheckpointArtifactsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "authored.ck3"
             records = "".join(f'\t\t{index}={{\n\t\t\tname="{name}"\n\t\t\ttype="sword"\n\t\t\trarity={rarity}\n\t\t\towner=91\n\t\t\tdurability=75\n\t\t}}\n'
-                for index, name, rarity in ((12, "Living Artifact Under Test", "masterwork"), (13, "Test Food: Common", "common"),
+                for index, name, rarity in ((12, "★Living Artifact Under Test", "masterwork"), (13, "Test Food: Common", "common"),
                     (14, "Test Food: Masterwork", "masterwork"), (15, "Test Food: Famed", "famed"), (16, "Test Food: Illustrious", "illustrious")))
             path.write_text('date=1066.9.15\nliving={\n\t91={\n\t\talive_data={\n\t\t\tvariables={ data={ { flag="xalw_fixture_target" data={ type=artifact identity=12 } } } }\n\t\t}\n\t}\n}\n'
                 'other={\n\tartifacts={\n\t\t12={\n\t\t\tname="Wrong"\n\t\t}\n\t}\n}\nartifacts={\n\tartifacts={\n' + records + '\t}\n}\n', encoding="utf-8")

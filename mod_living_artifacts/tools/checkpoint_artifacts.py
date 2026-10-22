@@ -14,6 +14,7 @@ from typing import Iterator, TypeAlias
 
 from acceptance_contract import Object, decimal_id, native_id, pin, require
 from living_artifacts_core import render_fixture_localization
+from living_artifacts_model import LIVING_NAME_PREFIX
 
 Value: TypeAlias = str | tuple["Entry", ...]
 TOKEN = re.compile(r'"(?:[^"\\]|\\.)*"|[{}=]|[^\s{}="]+')
@@ -219,7 +220,7 @@ def inspect_inputs(melted: Path, *, player_id: int) -> SavedInputs:
     target_id = player_variables["xalw_fixture_target"].artifact_reference("xalw_fixture_target")
     selected: list[SavedArtifact] = []
     localizations = (render_fixture_localization("english"), render_fixture_localization("simp_chinese"))
-    role_names = {role: frozenset(entries["xalw_test_living_name" if role == "target" else f"xalw_test_material_{role}_name"]
+    role_names = {role: frozenset((LIVING_NAME_PREFIX if role == "target" else "") + entries["xalw_test_living_name" if role == "target" else f"xalw_test_material_{role}_name"]
                                  for entries in localizations)
                   for role in ("target", "common", "masterwork", "famed", "illustrious")}
     wanted = set().union(*role_names.values())

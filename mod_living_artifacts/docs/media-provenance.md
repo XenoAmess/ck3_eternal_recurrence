@@ -16,4 +16,8 @@
 
 新增[中文库存原图](evidence/r6-inventory.png)，1920×1080、2,412,637 字节，SHA `4c2dea1d1d52aee5cae5282258a083181b0d5ef24867233564e61ea28968b2f1`。`machine_id: pc-20260924rtuf-f11af23c08`，原始拍摄时间 `2026-10-22T05:34:38.847608Z`，R0006/PID11856/generation1，实际 CK3 1.20.0.4/build25734779，冻结源码 `f5c9b83d274b3e823b4160a9cc62851cc35becc2`。保存[原 capture](evidence/r6-inventory.capture.json)及[实际来源索引](evidence/r6-observation-index.json)，客户区由 Win32 实际读回为 1800×980。像素逐字节复制，未裁切或重绘。
 
-R6 图显示中文测试夹具的目标与四档材料，拍摄仍在实际装备之前；槽位 3 的后续装备依据来自原生提交 121 与独立读回。该图仍只作开发实机证据，不能当作自然获得、成长或完整功能验收图。该场第五次日推进失败且由运行器终止，正常退出未通过，见[R6 报告](runtime-r6-native-day-failure.md)。GitHub 上传及匿名回读完成后另记精确公开地址；尚未上传 Steam additional previews。
+R6 图显示中文测试夹具的目标与四档材料，拍摄仍在实际装备之前；槽位 3 的后续装备依据来自原生提交 121 与独立读回。该图仍只作开发实机证据，不能当作自然获得、成长或完整功能验收图。该场第五次日推进失败且由运行器终止，正常退出未通过，见[R6 报告](runtime-r6-native-day-failure.md)。
+
+2026-10-22 追加：R6 图片已[上传 GitHub 并可匿名下载](https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/006d22d6e75744b1ab6886119217e2a00372d11c/mod_living_artifacts/docs/evidence/r6-inventory.png)。来源机器 `pc-20260924rtuf-f11af23c08` 于 `2026-10-22T06:30:30.907552Z` 实际匿名下载，HTTP 200，字节数与 SHA 均和原图相同，回执 `D:/workspace/ck3-living-artifacts-20261022/environment/r6-image-public-GitHub-readback-a01.json`。尚未上传 Steam additional previews。
+
+同日归档更正：提交 `006d22d6e75744b1ab6886119217e2a00372d11c` 中 capture JSON 经 Git 文本换行归一化成为 792 字节；原始 capture 是 815 字节，JSON 字段相同。保留[该次归一化副本](evidence/r6-inventory.capture.git-normalized-006d.json)，从仍保留的原始 capture 恢复[815 字节原件](evidence/r6-inventory.capture.json)，并增加 Git 字节保真规则。完整两组 SHA、原始来源和追加时间见[索引的 correction 记录](evidence/r6-observation-index.json)。截图像素未发生变化。

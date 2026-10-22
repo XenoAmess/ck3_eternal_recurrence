@@ -11,7 +11,7 @@ from pathlib import Path
 from textwrap import dedent
 from typing import Literal
 
-from living_artifacts_model import AFFIX_IDS, CURSE_IDS, FEEDING_XP, PERSONAL_TYPES, Language, SourcePatch
+from living_artifacts_model import AFFIX_IDS, CURSE_IDS, FEEDING_XP, LIVING_NAME_PREFIX, PERSONAL_TYPES, Language, SourcePatch
 
 PERSONAL_SLOTS = PERSONAL_TYPES
 AFFIX_COUNT = len(AFFIX_IDS)
@@ -295,6 +295,17 @@ def render_core_effects() -> str:
     effects: list[str] = [_render_affix_effects(), _render_curse_effects()]
     effects.append(_block("xalw_roll_personality_effect", "random_list = {\n" + "\n".join(_block("1", _set("personality", value)) for value in range(1, 7)) + "\n}"))
     effects.append(_block("xalw_roll_diet_effect", "random_list = {\n" + "\n".join(_block("1", _set("diet", f"flag:{slot}")) for slot in PERSONAL_SLOTS) + "\n}"))
+    # Vanilla sanctify_artifact_flavor_effect resolves GetNameNoTooltip before
+    # replacing the stored name. The persisted marker makes refresh/transfer
+    # idempotent and also migrates living artifacts from earlier saves.
+    effects.append(_block("xalw_ensure_star_name_effect", """
+        if = {
+            limit = { xalw_is_living_trigger = yes NOT = { has_variable = xalw_star_named } }
+            save_scope_as = xalw_named_artifact
+            set_artifact_name = xalw_star_name
+            set_variable = { name = xalw_star_named value = yes }
+        }
+    """))
     initial: list[str] = [_set("kind", "flag:living")]
     for key, value in (("level", 1), ("xp_in_level", 0), ("pending_xp", 0), ("growth_sequence", 0), ("last_notified_sequence", 0), ("resonance", 20), ("suppression_chain", 0), ("unsuppressed_equipped_months", 0)):
         initial.append(_set(key, value))
@@ -373,8 +384,9 @@ def render_core_effects() -> str:
     """))
     refresh_hunger = "\n".join(f"remove_artifact_modifier = xalw_hunger_{points}_modifier" for points in range(1, 6))
     refresh_hunger += "\n" + "\n".join(f"if = {{ limit = {{ NOT = {{ has_game_rule = xalw_backlash_mild }} xalw_actual_hunger_value = {points} }} add_artifact_modifier = xalw_hunger_{points}_modifier }}" for points in range(1, 6))
-    effects.append(_block("xalw_refresh_artifact_effect", "xalw_content_refresh_artifact_effect = yes\n" + refresh_hunger))
+    effects.append(_block("xalw_refresh_artifact_effect", "xalw_ensure_star_name_effect = yes\nxalw_content_refresh_artifact_effect = yes\n" + refresh_hunger))
     effects.append(_block("xalw_artifact_monthly_effect", """
+        xalw_ensure_star_name_effect = yes
         if = {
             limit = { xalw_is_living_trigger = yes var:xalw_last_settled_month != xalw_current_month_value }
             set_variable = { name = xalw_last_settled_month value = xalw_current_month_value }
@@ -873,6 +885,7 @@ def render_core_localization(language: Language) -> dict[str, str]:
         raise ValueError(f"unsupported language: {language}")
     chinese = language == "simp_chinese"
     pairs: dict[str, tuple[str, str]] = {
+        "xalw_star_name": (LIVING_NAME_PREFIX + "[xalw_named_artifact.GetNameNoTooltip]", LIVING_NAME_PREFIX + "[xalw_named_artifact.GetNameNoTooltip]"),
         "xalw_manage_decision": ("倾听活武器", "Listen to Living Artifacts"),
         "xalw_manage_decision_desc": ("有些宝物会呼吸、记忆，也会索取代价。查看活武器的状态与培养方法。", "Some treasures breathe, remember, and demand a price. Learn how to inspect and cultivate them."),
         "xalw_manage_decision_tooltip": ("打开活武器管理指引", "Open living artifact management guidance"),

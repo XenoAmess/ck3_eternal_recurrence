@@ -67,7 +67,7 @@ def validate(game: Path, *, release: bool = False) -> list[str]:
     for relative, data in expected.items():
         if relative.endswith(".txt"):
             text = data.decode("utf-8-sig")
-            referenced.update(re.findall(r"(?:title|desc|custom_tooltip|text)\s*=\s*(xalw_[A-Za-z0-9_]+)", text))
+            referenced.update(re.findall(r"(?:title|desc|custom_tooltip|text|set_artifact_name)\s*=\s*(xalw_[A-Za-z0-9_]+)", text))
     for key in sorted(referenced - baseline.keys()):
         errors.append(f"Missing visible localization key: {key}")
     defined: set[str] = set()

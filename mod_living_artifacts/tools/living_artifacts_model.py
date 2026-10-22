@@ -15,6 +15,7 @@ POSITIVE_SLOTS = 6
 CURSE_SLOTS = 2
 MAX_RANK = 3
 MONTHLY_XP = 8
+LIVING_NAME_PREFIX = "★"
 FEEDING_XP: dict[Rarity, int] = {
     "common": 80, "masterwork": 200, "famed": 500, "illustrious": 1200,
 }

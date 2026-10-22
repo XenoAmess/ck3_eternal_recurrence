@@ -699,6 +699,15 @@ xalw_roll_diet_effect = {
 	}
 }
 
+xalw_ensure_star_name_effect = {
+	if = {
+	    limit = { xalw_is_living_trigger = yes NOT = { has_variable = xalw_star_named } }
+	    save_scope_as = xalw_named_artifact
+	    set_artifact_name = xalw_star_name
+	    set_variable = { name = xalw_star_named value = yes }
+	}
+}
+
 xalw_awaken_artifact_effect = {
 	set_variable = { name = xalw_kind value = flag:living }
 	set_variable = { name = xalw_level value = 1 }
@@ -717,16 +726,4 @@ xalw_awaken_artifact_effect = {
 	xalw_refresh_artifact_effect = yes
 	save_scope_as = xalw_artifact
 	artifact_owner ?= { if = { limit = { is_ai = no } send_interface_toast = { type = event_toast_effect_good title = xalw_awakened_title left_icon = this right_icon = scope:xalw_artifact custom_tooltip = xalw_awakened_text } } }
-}
-
-xalw_discover_artifact_effect = {
-	if = {
-	    limit = { xalw_is_personal_trigger = yes NOT = { has_variable = xalw_schema_version } }
-	    set_variable = { name = xalw_schema_version value = 2 }
-	    set_variable = { name = xalw_kind value = flag:ordinary }
-	    if = { limit = { has_game_rule = xalw_awakening_none } }
-	    else_if = { limit = { has_game_rule = xalw_awakening_rare } random = { chance = 1 xalw_awaken_artifact_effect = yes } }
-	    else_if = { limit = { has_game_rule = xalw_awakening_frequent } random = { chance = 15 xalw_awaken_artifact_effect = yes } }
-	    else = { random = { chance = 5 xalw_awaken_artifact_effect = yes } }
-	}
 }

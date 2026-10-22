@@ -203,5 +203,22 @@
   "business_pass": false,
   "workshop_published": false,
   "review_at_utc": "2026-10-29T00:00:00Z",
-  "retention_reason": "Actual source/consumer failure reproduction and next controlled acceptance"
+  "retention_reason": "Actual source/consumer failure reproduction and next controlled acceptance",
+  "capture_archive_repair_20261022": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-22T06:32:32.898412+00:00",
+    "reason": "Git text normalization changed CRLF receipt bytes to LF in commit 006d22d6e; JSON values and screenshot pixels did not change",
+    "preserved_previous_normalized_receipt": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r6-inventory.capture.git-normalized-006d.json",
+      "bytes": 792,
+      "sha256": "add1c0fa10a5419009a4b8a88730f545fd61cd3cc98fc91e3743271813255de2"
+    },
+    "restored_from_actual_original_capture": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T053438847608Z-r6-inventory-opened-a01.json",
+      "bytes": 815,
+      "sha256": "73a9ce10d0d82ef76c255474511372c81cd5fa18d738f886bd1d87f7f4988cc7"
+    },
+    "current_archive_matches_original_recorded_pin": true,
+    "screenshot_changed": false
+  }
 }

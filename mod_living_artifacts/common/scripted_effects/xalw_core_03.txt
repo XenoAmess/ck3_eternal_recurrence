@@ -1,4 +1,34 @@
 ﻿# Generated; edit tools, then run generate.py.
+xalw_suppress_effect = {
+	save_scope_as = owner
+	if = {
+	    limit = {
+	        prestige >= 50
+	        scope:xalw_artifact ?= {
+	            xalw_is_living_trigger = yes artifact_owner = scope:owner
+	            OR = {
+	                NOT = { xalw_is_growth_suppressed_trigger = yes }
+	                xalw_can_renew_suppression_trigger = yes
+	            }
+	        }
+	        gold >= scope:xalw_artifact.xalw_suppression_cost_value
+	    }
+	    add_gold = { value = scope:xalw_artifact.xalw_suppression_cost_value multiply = -1 }
+	    add_prestige = -50
+	    add_stress = 10
+	    scope:xalw_artifact = {
+	        if = {
+	            limit = { xalw_is_growth_suppressed_trigger = yes }
+	            change_variable = { name = xalw_growth_suppressed_until add = 90 }
+	        }
+	        else = { xalw_begin_suppression_timer_effect = yes }
+	        change_variable = { name = xalw_suppression_chain add = 1 }
+	        set_variable = { name = xalw_unsuppressed_equipped_months value = 0 }
+	        xalw_refresh_artifact_effect = yes
+	    }
+	}
+}
+
 xalw_begin_suppression_timer_effect = {
 	# Vanilla 00_custom_loc_effects explicitly states date arithmetic is days.
 	# Keep the single deadline on the artifact; ownership never resets it.

@@ -492,7 +492,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-S01"
         }
       ]
@@ -533,7 +533,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-S02"
         }
       ]
@@ -574,7 +574,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-S03"
         }
       ]
@@ -614,7 +614,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-S04"
         }
       ]
@@ -655,7 +655,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-S05"
         }
       ]
@@ -696,7 +696,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-S06"
         }
       ]
@@ -740,7 +740,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-P01"
         }
       ]
@@ -783,7 +783,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-P02"
         }
       ]
@@ -824,7 +824,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-P03"
         }
       ]
@@ -865,7 +865,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-L01"
         }
       ]
@@ -936,7 +936,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G01"
         }
       ]
@@ -1008,7 +1008,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G02"
         }
       ]
@@ -1078,7 +1078,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G03"
         }
       ]
@@ -1156,7 +1156,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G04"
         }
       ]
@@ -1200,7 +1200,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G05"
         }
       ]
@@ -1251,7 +1251,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G06"
         }
       ]
@@ -1292,7 +1292,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-G07"
         }
       ]
@@ -1362,7 +1362,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-F01"
         }
       ]
@@ -1421,7 +1421,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-F02"
         }
       ]
@@ -1488,7 +1488,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-F03"
         }
       ]
@@ -1529,7 +1529,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-F04"
         }
       ]
@@ -1570,7 +1570,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-F05"
         }
       ]
@@ -1654,7 +1654,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-T01"
         }
       ]
@@ -1704,7 +1704,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-T02"
         }
       ]
@@ -1754,7 +1754,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-T03"
         }
       ]
@@ -1840,7 +1840,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-T04"
         }
       ]
@@ -1909,7 +1909,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-I01"
         }
       ]
@@ -1960,7 +1960,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-I02"
         }
       ]
@@ -2001,7 +2001,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-I03"
         }
       ]
@@ -2042,7 +2042,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-I04"
         }
       ]
@@ -2084,7 +2084,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-R01"
         }
       ]
@@ -2132,7 +2132,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-R02"
         }
       ]
@@ -2173,7 +2173,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-R03"
         }
       ]
@@ -2214,7 +2214,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-R04"
         }
       ]
@@ -2262,7 +2262,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-R05"
         }
       ]
@@ -2303,7 +2303,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-R06"
         }
       ]
@@ -2344,7 +2344,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-U01"
         }
       ]
@@ -2385,7 +2385,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-U02"
         }
       ]
@@ -2426,7 +2426,7 @@
       "source_refs": [
         {
           "path": "mod_living_artifacts/docs/test-plan.md",
-          "sha256": "2fe5b02bb2e902217f9b4a2d8140cf0cec1fed083ed9ca6336d876a0b1574779",
+          "sha256": "e25cbcf9c665fa103d59c9b80ea2767ac1ebeb46fa4c4c4e452460a54b083900",
           "anchor": "LW-U03"
         }
       ]
@@ -2933,7 +2933,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_core.py",
-          "sha256": "9e8ddae7884902e8ceb19743fc704dbdfed8cea4b51f79fc17074a9b22f1e6f3",
+          "sha256": "421228d87a79aa241bb61fa4042a14ad68ed1cea2baeac1570373d043b083bd9",
           "anchor": "xalw_owner_needs_monthly_trigger"
         }
       ]

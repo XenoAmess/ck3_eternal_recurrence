@@ -1,0 +1,101 @@
+{
+  "schema": "xalw.star-name-offline-validation/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T07:23:13.461997+00:00",
+  "actual_suite_completion": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\star-name-a02\\result.json",
+    "bytes": 5028,
+    "sha256": "97890698c28def1c178d62bb2e926c2cb874e5a2b45e6a9a98873739b1c464f8"
+  },
+  "product_tests": 94,
+  "strict_product_modules": 27,
+  "strict_product_check": "Actual root_living_commands.py mypy process returned 0; tool output: Success: no issues found in 27 source files.",
+  "release_structure_check": "Actual root_living_commands.py validate_static --release returned 0, errors=[], live_verified=false.",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+      "bytes": 60808,
+      "sha256": "421228d87a79aa241bb61fa4042a14ad68ed1cea2baeac1570373d043b083bd9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_model.py",
+      "bytes": 3112,
+      "sha256": "178b9649a5fbf3382333b1b3cfeefd346aa094403f6815e3b8ae2da6d0bba144"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+      "bytes": 12073,
+      "sha256": "1627e222806d857228f8b77c0a428edb5af7da2cc5a143043f58a99d49822188"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_core_generation.py",
+      "bytes": 23762,
+      "sha256": "f62afc6d6df0c00e9eeb66b4cdd1d0996342c76e6908572ec9df69c834d48f03"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_artifacts.py",
+      "bytes": 4163,
+      "sha256": "0c243d8394fb1d53d923211c5be477c1aa8303de3b80717c5d3159b540891214"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_callback.py",
+      "bytes": 6471,
+      "sha256": "b083c99683a2dec892aa5e1347752923d82950638545aaa348a834dbaa23cfcd"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\validate_static.py",
+      "bytes": 5488,
+      "sha256": "3439b35c134399902c585069e4c93b64019883e0172207b7cbff966268f1a91f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\english\\xalw_l_english.yml",
+      "bytes": 27664,
+      "sha256": "a43a6d3d1513c00295eaa86a3a1e9bdfb4ce2edbaee1c1f6973d4fba79d8e4c1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\french\\xalw_l_french.yml",
+      "bytes": 29602,
+      "sha256": "96889d2716d2144731909a55df5bb98acd98317a061e7f87cefea55372b97a45"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\german\\xalw_l_german.yml",
+      "bytes": 29310,
+      "sha256": "e78389bc305317177e8f8b82b12147d3e90b5a3abbe2a2e6f61ab3d2b3ccc171"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\japanese\\xalw_l_japanese.yml",
+      "bytes": 29477,
+      "sha256": "445789146ac37ccb78dd271c37b1acda91df07f43ee384b0bbf09509c335dbc2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\korean\\xalw_l_korean.yml",
+      "bytes": 29856,
+      "sha256": "f8e7a5305c25392da9fb47101050a28ff7d7d3ab550a3b36460f4ece808896e1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\polish\\xalw_l_polish.yml",
+      "bytes": 28731,
+      "sha256": "354c41ebeeefc13cdd3d57249aba54c7f48e51ad7ecd3c5c4f3d142c43392c39"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\russian\\xalw_l_russian.yml",
+      "bytes": 36465,
+      "sha256": "ba77329d6335afcc0fea16fde81905073fa13f7950435e8f5c4012aee5f7079f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\simp_chinese\\xalw_l_simp_chinese.yml",
+      "bytes": 26836,
+      "sha256": "9897b2079c0e2bb4fe451656230315e9ebb78c936cc03471f0a69b89bd0e3e83"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\localization\\spanish\\xalw_l_spanish.yml",
+      "bytes": 29383,
+      "sha256": "ce5fb9fe66ea0dcf85c327ae230a81332ec5c54aec6f118b167576ed2dece31a"
+    }
+  ],
+  "live_name_verified": false,
+  "business_pass": false,
+  "initial_failure_preserved": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\star-name-a01\\result.json",
+  "initial_failure_reason": "Wrong Python lacked mcp; acceptance input catalog source pin needed explicit update after reviewed generator change. Retried with the qualified venv and reviewed catalog.",
+  "foreign_localization": "Only invariant star plus protected getter added. Existing seven MiniMax translations unchanged."
+}
