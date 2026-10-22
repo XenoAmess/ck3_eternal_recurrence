@@ -1,0 +1,185 @@
+{
+  "schema": "living-artifacts-prepared-case-preflight-consumer-fix-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T18:36:55.220016+00:00",
+  "source_state": "uncommitted working source; Root owns commit and c17 freeze",
+  "source_files": {
+    "mod_living_artifacts/tools/suppression_timer_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\suppression_timer_acceptance_adapter.py",
+      "bytes": 36261,
+      "sha256": "167e529d3d5392da4b500d898c99c0203afb9781f3bda4aa041aed32ee748f75"
+    },
+    "mod_living_artifacts/tools/curse_representative_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative_acceptance_adapter.py",
+      "bytes": 39537,
+      "sha256": "aecc9c6c13aaa8e86831d0bd50b7c34e237b97f0f2b899ff4ff9a4e8c681e65e"
+    },
+    "mod_living_artifacts/tools/cold_persistence_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\cold_persistence_acceptance_adapter.py",
+      "bytes": 22107,
+      "sha256": "3a252ae59a6363bd65c4d69e51c360f3519e8675661f2b1d8cb869e2d0e3e7d6"
+    },
+    "mod_living_artifacts/tools/curse_representative.registry_stanza.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative.registry_stanza.json",
+      "bytes": 2729,
+      "sha256": "1b622c8b5663bc49bffb86a014ae5976266860537f337fba0249741c641f46e9"
+    },
+    "mod_living_artifacts/tools/test_cold_persistence_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_cold_persistence_acceptance_adapter.py",
+      "bytes": 26557,
+      "sha256": "ddb67c2bcee6eee71fdba3173c61eb92b944602ca1a9199a6f9abd4a131d4ece"
+    },
+    "mod_living_artifacts/tools/test_prepared_case_contract_consumers.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_prepared_case_contract_consumers.py",
+      "bytes": 11273,
+      "sha256": "3debe720fa381d8811168d3b86ecaad3d86edc509f813ac9746e14cb62701679"
+    },
+    "tools/ck3_mod_acceptance_products.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 175007,
+      "sha256": "c9bcd2db02729c99a8175e7d5b5bbc4c771e722f06edbf26868780e066cd626f"
+    },
+    "mod_living_artifacts/docs/prepared-case-preflight-fix.md": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\prepared-case-preflight-fix.md",
+      "bytes": 2747,
+      "sha256": "e3963996865876152864fe8ecf96c2bc312ccf4d3cf1eb718f0770d7fc1fb844"
+    }
+  },
+  "original_c16_chains_retained": {
+    "a18": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\offline-public-prepares-a18-a20-a01\\a18\\result.json",
+      "bytes": 7440,
+      "sha256": "5b9d0e8aabe1f89b9d85a7a8dae5debd9e83d3c929e1d6373d15ed66b53aab02"
+    },
+    "a19": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\offline-public-prepares-a18-a20-a01\\a19\\result.json",
+      "bytes": 7267,
+      "sha256": "0ae5b8193345b89ccf0f920407c7990e0cafef0f6aa43ddc64d3a840802414ff"
+    },
+    "a20": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\offline-public-prepares-a18-a20-a01\\a20\\result.json",
+      "bytes": 2776,
+      "sha256": "cfd87808fd26451e90a7addaa03f11450fc0e9337ebedfaeaddb9989e4871823"
+    }
+  },
+  "additional_cold_not_ready_and_import_failure_retained": [
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\cold\\fixed-result.json",
+      "bytes": 10842,
+      "sha256": "ba349bfe8e54402e0bf45f1b9e5d47103930e30c8037940e0f25bff0452cdf62"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\cold\\fixed-bound-result.json",
+      "bytes": 1689,
+      "sha256": "be604a6ae051cba154809d836ea9daaec7fac766a651c95de3a3c2b55c29aedb"
+    }
+  ],
+  "fixed_actual_public_chains": [
+    {
+      "case": "timer",
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\timer\\fixed-result.json",
+        "bytes": 23112,
+        "sha256": "c659dd28b07aa396f6e9d95c6a886d46f3d77667261218fd4d815516a0c14f12"
+      },
+      "phases": [
+        "plan",
+        "prepare",
+        "preflight"
+      ],
+      "all_actual_waits_zero": true
+    },
+    {
+      "case": "curse",
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\curse\\fixed-result.json",
+        "bytes": 23115,
+        "sha256": "3d78833bcfce5e201dd1a0899d5441b644b1a37f8ba8038119bc1d40eaa06c18"
+      },
+      "phases": [
+        "plan",
+        "prepare",
+        "preflight"
+      ],
+      "all_actual_waits_zero": true
+    },
+    {
+      "case": "cold",
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\cold-a02\\fixed-bound-result.json",
+        "bytes": 21723,
+        "sha256": "38154d257592b0fd34cebc3c3af7fd32f11457cda49467584a2721ec5bf3fc2a"
+      },
+      "phases": [
+        "prepare",
+        "plan",
+        "preflight"
+      ],
+      "all_actual_waits_zero": true
+    }
+  ],
+  "actual_source_closure_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\actual-source-closures.json",
+    "bytes": 114013,
+    "sha256": "43ae679f79c80a0a268650f6bf7fc057825cc681ec746a028e6f82155fce5fb4"
+  },
+  "source_closure_counts": {
+    "suppression_timer": 151,
+    "curse_representative": 162,
+    "cold_persistence": 37
+  },
+  "complete_original_ci_step": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-cold-adapter-a05\\result.json",
+    "bytes": 5687,
+    "sha256": "3592ef1a86cce76ee8b2548341c479f5e6c215d1346bc88df5ca9ea0cf313bf9"
+  },
+  "complete_product_tests": {
+    "count": 214,
+    "seconds": 352.297,
+    "exit_code": 0
+  },
+  "remaining_actual_ci_counts": {
+    "complete_cold_scope_strict_files": 6,
+    "shared_profile_tests": 8,
+    "independent_sdk_profile_tests": 8
+  },
+  "existing_complete_mod_strict": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\whole-mod-strict-a01\\result.json",
+    "bytes": 1474,
+    "sha256": "fd180423bfb588ef639834ccd93402acd8607d949e8efab5a17e7a9d4fdc8e61"
+  },
+  "existing_complete_mod_strict_files": 53,
+  "persistent_new_regression": "test_prepared_case_contract_consumers.py: three tests, included in214; actual Selection prepared application, wrong/missing/type/JSON contracts, and separate Python selected-runtime SDK/v2 producer-consumer",
+  "registry_change_scope": "Only curse_representative optional read-only list drops default registered CampaignRoot; required root query and all other products/cases unchanged",
+  "unchanged_shared_v2_modules": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_saved_profile_v2.py",
+      "bytes": 6639,
+      "sha256": "976aa1bc20f496ea10481263cfb439a543f49044d82cea64ad51a1931f387e6b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\saved_campaign_profile_inventory_v2.py",
+      "bytes": 10609,
+      "sha256": "cf5d99b79969eaf57a7789bf42a442b088ba5d8882a69808fe9028fa51d191a8"
+    }
+  ],
+  "c16_frozen_source_clean": true,
+  "offline_runtime_selection": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-prepared-contract-fix-a01\\offline-source-selection.json",
+    "bytes": 1691,
+    "sha256": "1cb9818fe8edc53eac19f85f0c969959d12ec259c1110077b4d954825ca0d029"
+  },
+  "source_import_scope": "cold defers to existing v2 helper under actual shared_source_root; original same-tree SDK guard retained; no fallback or shared host/helper change",
+  "storage_close": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-prepared-contract-fix-close-a01\\20261022T183530433825Z-task-close.json",
+    "bytes": 1960,
+    "sha256": "e3b25ba7aa45ec66fdec709a41e9b240c2a47e9581d7246e6b685ad41bbc05f8"
+  },
+  "deletions": 0,
+  "qualification_scope": "Actual fixed-source offline public prepare/plan/preflight and unchanged source consumers only. Working-source runtime mappings/profiles forbidden for allocation or launch; Root must freeze c17 and prepare fresh actual cases.",
+  "game_started": false,
+  "allocated": false,
+  "actual_cold_load": "NOT_RUN",
+  "business_pass": false,
+  "product_release_pass": false
+}

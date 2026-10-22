@@ -3,9 +3,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import importlib
+import importlib.util
 from pathlib import Path
 import sys
-from typing import Literal, Protocol, TypedDict, runtime_checkable
+from typing import TYPE_CHECKING, Literal, Protocol, TypedDict, runtime_checkable
 
 TOOLS = Path(__file__).resolve().parent
 REPO = TOOLS.parents[1]
@@ -18,11 +19,13 @@ from acceptance_contract import CasePort, Object, Pin, array, field, integer, ma
 from checkpoint_callback import checked_pin
 from checkpoint_producer import stamp
 from checkpoint_producer import raw_object
-from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 from cold_persistence_observer import ColdCheckpoint, ObservedCheckpoint, PersistenceCheck, compare_persistence, consume_checkpoint
 from independent_mod_release import verify_manifest
 from product import spec
 from saved_campaign_actor_binding import SavedCampaignActorBinding
+
+if TYPE_CHECKING:
+    from ck3_mod_acceptance_saved_profile_v2 import MaterializedSavedProfile
 
 CASE = "cold_persistence"
 CONTRACT_NAME = "cold_persistence.contract.json"
@@ -42,6 +45,25 @@ INPUT_FIELDS = {"product_dir", "formal_manifest", "plain_configuration", "source
 @runtime_checkable
 class FinishPreparation(Protocol):
     def finish_product_profile(self, context: object, profile: object, *, provenance: object) -> object: ...
+
+
+@runtime_checkable
+class SavedPreparation(Protocol):
+    def materialize_saved_profile_v2(self, context: object, product_dir: Path | None, plain_configuration: object,
+            *, source_role: Literal["formal_product"]) -> MaterializedSavedProfile: ...
+
+
+def selected_saved_preparation(context: object) -> SavedPreparation:
+    source = Path(text(field(context, "shared_source_root"), "selected shared source")) / "tools/ck3_mod_acceptance_saved_profile_v2.py"
+    selected = importlib.util.spec_from_file_location("_living_selected_saved_profile_v2", source)
+    require(selected is not None and selected.loader is not None, "Selected shared v2 preparation module unavailable")
+    if selected is None or selected.loader is None:
+        raise ValueError("Selected shared v2 preparation module unavailable")
+    module = importlib.util.module_from_spec(selected)
+    selected.loader.exec_module(module)
+    if not isinstance(module, SavedPreparation):
+        raise ValueError("Selected shared v2 preparation API unavailable")
+    return module
 
 
 @dataclass(frozen=True)
@@ -82,8 +104,8 @@ def validate_contract(context: object) -> core.Contract:
     require(field(context, "product") == "living-artifacts" and field(context, "case") == CASE,
             "Select the actual cold_persistence case")
     config = mapping(field(context, "case_contract"), "cold contract")
-    require(object_value(config) == read(TOOLS / CONTRACT_NAME) and
-            field(context, "case_spec") == read(TOOLS / REGISTRY_NAME), "Exact standalone cold contract/registry required")
+    require(object_value(config) == read(TOOLS / CONTRACT_NAME), "Exact canonical cold contract required")
+    require(field(field(context, "case_spec"), "id") == CASE, "Selected public case spec differs")
     require(config["required_checks"] == list(CHECKS) and config["whole_product_acceptance_credit"] is False,
             "Cold persistence scope differs")
     integer(config["schema_version"], "cold contract version", 1, 1)
@@ -146,7 +168,7 @@ def prepare_case(context: object) -> Object:
     formal = checked_pin(field(values, "formal_manifest"), "formal release manifest")
     product = Path(text(field(values, "product_dir"), "formal product staging")).resolve()
     verify_manifest(spec(), product, Path(formal["path"]))
-    profile = materialize_saved_profile_v2(context, product, field(values, "plain_configuration"), source_role="formal_product")
+    profile = selected_saved_preparation(context).materialize_saved_profile_v2(context, product, field(values, "plain_configuration"), source_role="formal_product")
     module: object = importlib.import_module("ck3_mod_acceptance_prepare")
     if not isinstance(module, FinishPreparation):
         raise ValueError("Actual shared profile finish API unavailable")
