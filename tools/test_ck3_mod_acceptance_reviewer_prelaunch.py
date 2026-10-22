@@ -77,11 +77,12 @@ class Fixture:
         selected.runtime = {'reviewed_launcher': entry.pin(self.launcher)}
         selected.blockers = []
         selected.required_pins = []
-        selected.paths = {'host': self.host}
+        selected.paths = {'host': self.host, 'source_root': root}
         selected.locations = {'python': Path(sys.executable), 'repo_root': root,
                               'game_dir': self.exe.parents[1], 'userdir_root': root}
         selected.values = {'run_id': self.live.name}
-        selected.manifest = {'host': None, 'game': {'exe_sha256': entry.pin(self.exe)['sha256']}}
+        selected.manifest = {'source_root': {'path_key': 'source_root'}, 'host': None,
+                             'game': {'exe_sha256': entry.pin(self.exe)['sha256']}}
         selected.case = {'id': 'synthetic-case', 'status': 'ready'}
         selected.prepared = None
         selected.adapter_path = self.adapter

@@ -149,8 +149,13 @@ class ColdContract(unittest.TestCase):
 
     def test_01_qualified_origin_and_reusable_run_binding_without_seed_read(self):
         from ck3_mod_acceptance import Selection
-        selected = SimpleNamespace(adapter_path=Path(cold.__file__), locations={'repo_root': REPO})
-        self.assertEqual(Selection.load_adapter(selected).contract(), cold.contract())
+        selected = Selection.__new__(Selection)
+        selected.adapter_path = Path(cold.__file__)
+        selected.locations = {'repo_root': REPO}
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        selected.paths = {'source_root': REPO}
+        selected.runtime_environment = {}
+        self.assertEqual(selected.load_adapter().contract(), cold.contract())
         original = Path.read_bytes
         def no_seed(path):
             if path.resolve() == Path(self.seed['save']).resolve():

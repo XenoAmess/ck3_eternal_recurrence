@@ -350,6 +350,8 @@ class WorkshopCacheTests(unittest.TestCase):
         selected.context_path = self.root / 'allocated-context.json'
         selected.argv = ['SYNTHETIC CACHE VERIFY ONLY']
         selected.runtime_environment = {}
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        selected.paths = {'source_root': self.root}
         frozen = selected.run_dir / 'frozen-argv.json'
         self.write(frozen, {'run_id': context['run_id'], 'reviewer': '/root',
             'argv': selected.argv, 'runtime_environment': selected.runtime_environment})
