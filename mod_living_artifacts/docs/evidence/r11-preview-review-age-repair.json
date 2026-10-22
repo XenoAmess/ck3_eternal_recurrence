@@ -1,0 +1,124 @@
+{
+  "original_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-preview-review-age-fix-a01\\result.json",
+    "bytes": 5066,
+    "sha256": "0ec9d5b36300074f890facebadb5192e7af150646b6c56e0e4a265ce1a4ddc86"
+  },
+  "receipt": {
+    "schema": "living-artifacts-human-preview-age-repair-v1",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-22T16:29:22.950315+00:00",
+    "source_pins": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\preview_acceptance_adapter.py",
+        "bytes": 49389,
+        "sha256": "8fa5b7898dda6c8bf86bc4d79b9b4f92d8417f6725e4d4a70e136778613b213f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_preview_acceptance_adapter.py",
+        "bytes": 32558,
+        "sha256": "8cfd37cf88c98a728856ada5ed866aa2b01a74d909165b1a5662a512589659fa"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r11_preview_request02_timing.json",
+        "bytes": 1253,
+        "sha256": "0963da73044e625e0d865af203daf89ee102077637f2bb6fc4ed7f03616c9d2c"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\feeding-preview-runbook.md",
+        "bytes": 10659,
+        "sha256": "98092fde8b7aab82577c63195d088140ff686ea197035e16170857f7d45b9cc1"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 169423,
+        "sha256": "1d148f3b1b32424208a0c5d3455b24fe04d3bd025912b44a1edd5dea4a77dd96"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\_runtime\\living_review_feeding_preview.py",
+        "bytes": 2254,
+        "sha256": "9eeac2ea80744485d9d09eacb8774620672ea230a14f8152ee220ffb9c228e56"
+      }
+    ],
+    "sources_stable": true,
+    "tests": {
+      "count": 10,
+      "exit_code": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-preview-review-age-fix-a01\\tests.result.json",
+        "bytes": 549,
+        "sha256": "3853b9d8f1548fe58a84851b7d78dc132f5a2d0637c73d0824149962c5a280bf"
+      }
+    },
+    "strict": {
+      "complete_modules": 3,
+      "exit_code": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-preview-review-age-fix-a01\\strict.result.json",
+        "bytes": 650,
+        "sha256": "8fef82f3681b66837524520b610ec9fade89e75742ec2c5cad466b583d5719b9"
+      }
+    },
+    "unchanged_fields_and_native_identity_path": {
+      "PreviewFields": true,
+      "PreviewRequest": true,
+      "RootPreviewRequest": true,
+      "PreviewResponse": true,
+      "parse_request": true,
+      "_root_request": true,
+      "_review": true
+    },
+    "policy": {
+      "request_age_limit_seconds": null,
+      "chronology": "requested <= captured <= actual reviewed; review UTC explicit and nonfuture at production",
+      "freshness_authority": "original fixed scene hold/close reserve and independent same-event/PID/generation/actor/date/actual-confirm-option native query",
+      "future_preview_hold_seconds": 7200,
+      "future_preview_timeout_seconds": 8400,
+      "normal_close_reserve_seconds": 180,
+      "existing_run_extension": false
+    },
+    "historical_r11": {
+      "schema": "living-artifacts-r11-preview-request02-timing-regression-v1",
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "extracted_at_utc": "2026-10-22T16:24:51.885014+00:00",
+      "source_request": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\feeding-preview-review-02-awaiting.json",
+        "bytes": 1022,
+        "sha256": "066045407748a18adf916bba58eb694ad04ccff8a011afa74813ecfeb5edfda5"
+      },
+      "source_capture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T154213442942Z-r11-preview-common-feed-review02.json",
+        "bytes": 824,
+        "sha256": "8b2ec8a867511c54de2f3f9e0d30aeacc684930484ea78d530d06cdc37dd8295"
+      },
+      "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "pid": 11696,
+      "actor_character_id": 31254,
+      "event_instance_id": 5,
+      "requested_at_utc": "2026-10-22T15:38:44.256059+00:00",
+      "captured_at_utc": "2026-10-22T15:42:13.442942+00:00",
+      "actual_reviewed_at_utc": null,
+      "original_hold_deadline": 1792684577.9105825,
+      "reserve_seconds": 180,
+      "legacy_request_age_limit_seconds": 180,
+      "historical_business_status": "BLOCKED",
+      "retroactive_gameplay_credit": false
+    },
+    "historical_r11_result_rewritten": false,
+    "frozen_c13_c14_modified_by_package": false,
+    "game_actions_sent": false,
+    "whole_product_suite_rerun": false,
+    "future_runtime_status": "NOT_RUN",
+    "storage_close": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T16:29:22.950315+00:00",
+      "policy": "docs/storage-retention-policy.json",
+      "available_bytes_decimal": "445312888832",
+      "category": "record",
+      "review_at_utc": "2027-04-20T16:29:22.950315+00:00",
+      "protected_until_utc": "2026-10-29T16:29:22.950315+00:00",
+      "reason": "Current prospective preview review repair and original failure boundary pending new scene",
+      "deletions": 0
+    }
+  }
+}

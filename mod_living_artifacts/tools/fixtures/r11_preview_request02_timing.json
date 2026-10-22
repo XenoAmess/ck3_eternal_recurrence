@@ -1,0 +1,27 @@
+{
+  "schema": "living-artifacts-r11-preview-request02-timing-regression-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "extracted_at_utc": "2026-10-22T16:24:51.885014+00:00",
+  "source_request": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\feeding-preview-review-02-awaiting.json",
+    "bytes": 1022,
+    "sha256": "066045407748a18adf916bba58eb694ad04ccff8a011afa74813ecfeb5edfda5"
+  },
+  "source_capture": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T154213442942Z-r11-preview-common-feed-review02.json",
+    "bytes": 824,
+    "sha256": "8b2ec8a867511c54de2f3f9e0d30aeacc684930484ea78d530d06cdc37dd8295"
+  },
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+  "pid": 11696,
+  "actor_character_id": 31254,
+  "event_instance_id": 5,
+  "requested_at_utc": "2026-10-22T15:38:44.256059+00:00",
+  "captured_at_utc": "2026-10-22T15:42:13.442942+00:00",
+  "actual_reviewed_at_utc": null,
+  "original_hold_deadline": 1792684577.9105825,
+  "reserve_seconds": 180,
+  "legacy_request_age_limit_seconds": 180,
+  "historical_business_status": "BLOCKED",
+  "retroactive_gameplay_credit": false
+}

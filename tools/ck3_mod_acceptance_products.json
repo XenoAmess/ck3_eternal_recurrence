@@ -3455,11 +3455,11 @@
           "budgets": {
             "command_timeout": 300,
             "readiness_timeout": 1200,
-            "timeout": 4500,
-            "hold_seconds": 2700,
+            "timeout": 8400,
+            "hold_seconds": 7200,
             "poll_interval": 0.5
           },
-          "budget_provenance": "Prospective independent zero-day preview scene:180 bounded public calls, initial plus four actual saves/strict melts, canceled common review plus four direct original PNG feeding reviews, fixed2700-second hold and180-second normal-Quit reserve; no extension, replay, NPC or suppression-timer credit",
+          "budget_provenance": "Future independent zero-day preview scene:180 bounded public calls, initial plus four actual saves/strict melts, canceled common review plus four direct original PNG feeding reviews, fixed7200-second hold and180-second normal-Quit reserve; human review is bounded by the original scene deadline and same-event native recheck, with no arbitrary request-age timeout. Never extends an old run; no replay, NPC or suppression-timer credit",
           "required_mcp_tools": [
             "ck3_take_snapshot",
             "ck3_execute_step",
