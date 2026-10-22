@@ -1,6 +1,7 @@
 package org.xar.ck3.control.build;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,6 +19,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -137,6 +140,85 @@ final class CiBootstrapTest {
         assertThrows(IOException.class, () -> CiBootstrap.requireDefaultMaven("Apache Maven 3.10.0\nApache Maven 4.0.0\nMaven home: " + home));
         assertThrows(IOException.class, () -> CiBootstrap.requireDefaultMaven("Apache Maven 3.10.0\nMaven home: " + home + "\nMaven home: " + home));
         assertEquals(pin, CiBootstrap.measure(launcher));
+    }
+
+    @Test
+    void actualOldDefaultCommandIsReplacedAtItsHomeThenSameCommandIsReadmitted(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("original-maven/bin")).getParent();
+        Path oldLauncher = home.resolve("bin/mvn.cmd");
+        Files.writeString(oldLauncher, versionCommand("3.9.16", home));
+        Files.createDirectories(home.resolve("lib")); Files.writeString(home.resolve("lib/old.jar"), "old vendor");
+        Files.createDirectories(home.resolve("conf")); Files.writeString(home.resolve("conf/settings.xml"), "active settings");
+        Path staged = Files.createDirectories(temporary.resolve("verified-distribution/bin")).getParent();
+        Files.writeString(staged.resolve("bin/mvn.cmd"), versionCommand("3.10.0", home));
+        Files.createDirectories(staged.resolve("lib")); Files.writeString(staged.resolve("lib/new.jar"), "new vendor");
+        Files.createDirectories(staged.resolve("conf")); Files.writeString(staged.resolve("conf/settings.xml"), "vendor default");
+        Path cwd = Files.createDirectory(temporary.resolve("working"));
+        Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
+        environment.put("PATH", home.resolve("bin") + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
+        environment.put("PATHEXT", ".CMD;.BAT;.EXE;.COM");
+        Path batch = cwd.resolve("version.cmd"); ControlBuild.writeMavenBatch(batch, null, List.of("--version"));
+        AtomicInteger probes = new AtomicInteger(), installations = new AtomicInteger();
+        CiBootstrap.DefaultMaven actual = CiBootstrap.ensureDefaultMaven(
+                () -> actualVersionProbe(batch, cwd, environment, probes.incrementAndGet()), before -> {
+                    installations.incrementAndGet(); assertEquals("3.9.16", before.reportedVersion());
+                    assertEquals(oldLauncher.toRealPath(), CiBootstrap.defaultMavenLauncher(environment, cwd, true));
+                    CiBootstrap.replaceMavenInstallation(before, staged, temporary.resolve("backup"), () -> {});
+                });
+        assertEquals(2, probes.get()); assertEquals(1, installations.get());
+        assertEquals("3.10.0", actual.reportedVersion()); assertEquals(home.toRealPath().toString(), actual.reportedHome());
+        assertEquals("active settings", Files.readString(home.resolve("conf/settings.xml")));
+        assertEquals("old vendor", Files.readString(temporary.resolve("backup/lib/old.jar")));
+        assertFalse(Files.exists(home.resolve("lib/old.jar"))); assertTrue(Files.exists(home.resolve("lib/new.jar")));
+        CiBootstrap.ensureDefaultMaven(() -> actualVersionProbe(batch, cwd, environment, probes.incrementAndGet()),
+                before -> { throw new IOException("compliant default must not be downloaded/replaced"); });
+        assertEquals(3, probes.get());
+    }
+
+    @Test
+    void failedUpgradeAndWrongDefaultForwardingStayRed(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("old/bin")).getParent();
+        Path other = Files.createDirectories(temporary.resolve("other/bin")).getParent();
+        Files.writeString(home.resolve("bin/mvn.cmd"), "old"); Files.writeString(other.resolve("bin/mvn.cmd"), "other");
+        String old = versionOutput("3.9.16", home);
+        assertThrows(IOException.class, () -> CiBootstrap.ensureDefaultMaven(() -> old,
+                before -> { throw new IOException("actual in-place update failed"); }));
+        AtomicInteger probes = new AtomicInteger();
+        assertThrows(IOException.class, () -> CiBootstrap.ensureDefaultMaven(
+                () -> probes.incrementAndGet() == 1 ? old : versionOutput("3.10.0", other), before -> {}));
+        assertEquals(2, probes.get());
+        Path badArchive = temporary.resolve("bad.zip"); Files.writeString(badArchive, "not the official reviewed archive");
+        assertThrows(IOException.class, () -> CiBootstrap.requireMavenArchiveChecksum(badArchive, CiBootstrap.MAVEN_ZIP_SHA512));
+        assertEquals("old", Files.readString(home.resolve("bin/mvn.cmd")));
+    }
+
+    @Test
+    void unixObservationUsesTheActualUnixLauncherAndRejectsUnstableVersion(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("unix-maven/bin")).getParent();
+        Path launcher = home.resolve("bin/mvn"); Files.writeString(launcher, "unix launcher");
+        CiBootstrap.MavenObservation actual = CiBootstrap.observeDefaultMaven(versionOutput("3.9.16", home), false);
+        assertEquals(CiBootstrap.measure(launcher), actual.launcherRef());
+        assertThrows(IOException.class, () -> CiBootstrap.observeDefaultMaven(versionOutput("3.10.0-rc1", home), false));
+    }
+
+    private static String actualVersionProbe(Path batch, Path cwd, Map<String, String> environment, int ordinal)
+            throws IOException, InterruptedException {
+        Path output = cwd.resolve("probe-" + ordinal + ".stdout");
+        try (WindowsJobProcess child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(
+                Path.of(System.getenv("SystemRoot"), "System32/cmd.exe"), List.of("/d", "/c", batch.toString()),
+                cwd, environment, output, cwd.resolve("probe-" + ordinal + ".stderr"), 256L << 20))) {
+            WindowsJobProcess.CommandResult result = child.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+            if (!result.passed() || result.accounting().activeProcesses() != 0) throw new IOException("actual default command failed");
+        }
+        return Files.readString(output);
+    }
+
+    private static String versionCommand(String version, Path home) {
+        return "@echo off\r\necho Apache Maven " + version + "\r\necho Maven home: " + home + "\r\nexit /b 0\r\n";
+    }
+
+    private static String versionOutput(String version, Path home) {
+        return "Apache Maven " + version + "\nMaven home: " + home + "\n";
     }
 
     private static void writeZip(Path archive, String entry) throws IOException {

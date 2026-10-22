@@ -56,6 +56,7 @@ public final class CiBootstrap {
             + "8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337";
     private static final URI MAVEN_ZIP = URI.create("https://downloads.apache.org/maven/maven-3/"
             + MAVEN_VERSION + "/binaries/apache-maven-" + MAVEN_VERSION + "-bin.zip");
+    private static final URI MAVEN_CHECKSUM = URI.create(MAVEN_ZIP + ".sha512");
     private static final long MIB = 1L << 20;
     private static final long GIB = 1L << 30;
     private static final Map<String, Long> PARTS = Map.of(
@@ -129,6 +130,24 @@ public final class CiBootstrap {
             requireStableMinimum(reportedVersion);
         }
     }
+
+    /** Observation precedes admission: an old stable installation can be upgraded, not admitted. */
+    public record MavenObservation(String reportedVersion, String reportedHome, FilePin launcherRef) {
+        public MavenObservation {
+            requireStableVersion(reportedVersion);
+            if (reportedHome == null || !Path.of(reportedHome).isAbsolute() || launcherRef == null) {
+                throw new IllegalArgumentException("actual Maven installation observation required");
+            }
+        }
+    }
+
+    @FunctionalInterface interface MavenProbe { String run() throws IOException, InterruptedException; }
+    @FunctionalInterface interface MavenInstaller { void replace(MavenObservation before) throws IOException, InterruptedException; }
+    @FunctionalInterface interface IoGuard { void check() throws IOException; }
+    private record MavenUpgradePlan(String machineId, String observedAtUtc, String status,
+                                    MavenObservation before, String officialArchiveUrl, String officialChecksumUrl,
+                                    FilePin archiveRef, List<FilePin> originalFiles, List<FilePin> replacementFiles,
+                                    String backupRoot, List<String> preservedConfiguration, VolumeBudget installationVolumeBudget) {}
 
     /** Supported policy is read from the shared versioned file, never a copied retention policy. */
     public record Policy(long safetyFloor, long safetyCeiling, BigDecimal safetyVolumeFraction,
@@ -219,9 +238,19 @@ public final class CiBootstrap {
             Path versionBatch = root.resolve("scratch/maven-version.cmd");
             Files.writeString(versionBatch, "@echo off\r\ncall mvn --version\r\nexit /b %errorlevel%\r\n",
                     StandardOpenOption.CREATE_NEW);
-            runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", versionBatch.toString()),
-                    root.resolve("scratch"), environment, root.resolve("logs/maven-version.log"), Duration.ofSeconds(30), expiry, root, volumes);
-            defaultMaven = requireDefaultMaven(Files.readString(root.resolve("logs/maven-version.log")));
+            int[] probeOrdinal = {0};
+            defaultMaven = ensureDefaultMaven(() -> {
+                Path log = root.resolve("logs/maven-version-" + ++probeOrdinal[0] + ".log");
+                runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", versionBatch.toString()),
+                        root.resolve("scratch"), environment, log, Duration.ofSeconds(30), expiry, root, volumes);
+                String output = Files.readString(log);
+                MavenObservation observedMaven = observeDefaultMaven(output, true);
+                Path selected = defaultMavenLauncher(environment, root.resolve("scratch"), true);
+                if (!selected.equals(Path.of(observedMaven.launcherRef().path()).toRealPath())) {
+                    throw new IOException("selected default Maven launcher differs from its reported installation");
+                }
+                return output;
+            }, observedInstallation -> installOfficialMaven(observedInstallation, root, machine, volumes, () -> guard(root, volumes, expiry)));
             Path maven = Path.of(defaultMaven.distributionLauncherRef().path());
             Path batch = root.resolve("scratch/bootstrap-verify.cmd");
             Files.writeString(batch, "@echo off\r\ncall mvn -B -ntp -e -s \"" + settings
@@ -268,34 +297,194 @@ public final class CiBootstrap {
         if (!completed || failure != null) throw new IllegalStateException(failure);
     }
 
-    /** Existing default command is authoritative. No download, PATH change or installation relocation. */
+    /** Existing default command is authoritative; admission never substitutes a task-local command. */
     public static DefaultMaven requireDefaultMaven(String output) throws IOException {
+        MavenObservation observed = observeDefaultMaven(output, System.getProperty("os.name").startsWith("Windows"));
+        try { requireStableMinimum(observed.reportedVersion()); }
+        catch (IllegalArgumentException error) { throw new IOException("default Maven is below the stable minimum", error); }
+        return new DefaultMaven("mvn", observed.reportedVersion(), MINIMUM_MAVEN_VERSION,
+                observed.reportedHome(), observed.launcherRef());
+    }
+
+    static MavenObservation observeDefaultMaven(String output, boolean windows) throws IOException {
         if (output == null || output.length() > 65536) throw new IOException("bounded actual Maven version output required");
         var versions = Pattern.compile("(?m)^Apache Maven ([^\\r\\n ]+)(?: [^\\r\\n]*)?$").matcher(output);
         if (!versions.find()) throw new IOException("default mvn did not report its version; environment not qualified");
         String version = versions.group(1);
         if (versions.find()) throw new IOException("ambiguous default Maven version");
-        try { requireStableMinimum(version); }
-        catch (IllegalArgumentException error) {
-            throw new IOException("default mvn requires an in-place upgrade to stable >=" + MINIMUM_MAVEN_VERSION
-                    + "; this bootstrap does not replace its installation or PATH", error);
-        }
+        try { requireStableVersion(version); }
+        catch (IllegalArgumentException error) { throw new IOException("stable default Maven version required", error); }
         var homes = Pattern.compile("(?m)^Maven home: ([^\\r\\n]+)$").matcher(output);
         if (!homes.find()) throw new IOException("default mvn did not report its actual installation home");
         Path home = Path.of(homes.group(1).strip()).toRealPath();
         if (homes.find()) throw new IOException("ambiguous default Maven installation home");
-        return new DefaultMaven("mvn", version, MINIMUM_MAVEN_VERSION, home.toString(), measure(home.resolve("bin/mvn.cmd")));
+        return new MavenObservation(version, home.toString(), measure(home.resolve(windows ? "bin/mvn.cmd" : "bin/mvn")));
+    }
+
+    static DefaultMaven ensureDefaultMaven(MavenProbe probe, MavenInstaller installer) throws IOException, InterruptedException {
+        boolean windows = System.getProperty("os.name").startsWith("Windows");
+        String initial = probe.run();
+        MavenObservation before = observeDefaultMaven(initial, windows);
+        try { requireStableMinimum(before.reportedVersion()); return requireDefaultMaven(initial); }
+        catch (IllegalArgumentException belowMinimum) { /* Only a valid old stable installation reaches replacement. */ }
+        installer.replace(before);
+        DefaultMaven after = requireDefaultMaven(probe.run());
+        if (!after.reportedHome().equals(before.reportedHome())
+                || !after.distributionLauncherRef().path().equals(before.launcherRef().path())
+                || !after.reportedVersion().equals(MAVEN_VERSION)) {
+            throw new IOException("default Maven installation identity/version changed during in-place upgrade");
+        }
+        return after;
+    }
+
+    static Path defaultMavenLauncher(Map<String, String> environment, Path cwd, boolean windows) throws IOException {
+        String search = environment.get("PATH");
+        if (search == null) throw new IOException("default Maven PATH unavailable");
+        List<Path> directories = new ArrayList<>();
+        if (windows) directories.add(cwd);
+        for (String directory : search.split(windows ? ";" : ":", -1)) {
+            if (directory.isEmpty()) directories.add(cwd);
+            else directories.add(Path.of(directory.replaceAll("^\"|\"$", "")));
+        }
+        List<String> suffixes = windows
+                ? List.of(environment.getOrDefault("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";")) : List.of("");
+        for (Path directory : directories) {
+            for (String suffix : suffixes) {
+                if (windows && !suffix.matches("(?i)\\.(COM|EXE|BAT|CMD)")) throw new IOException("unsupported default command extension order");
+                Path candidate = directory.resolve("mvn" + suffix);
+                if (Files.isRegularFile(candidate) && (windows || Files.isExecutable(candidate))) return candidate.toRealPath();
+            }
+        }
+        throw new IOException("default Maven launcher is unresolved");
+    }
+
+    private static void installOfficialMaven(MavenObservation before, Path root, String machine,
+                                            Map<String, VolumeBudget> volumes, IoGuard guard)
+            throws IOException, InterruptedException {
+        guard.check();
+        Path home = Path.of(before.reportedHome());
+        VolumeBudget base = volumes.get(home.getRoot().toString());
+        if (base == null) throw new IOException("observed Maven installation volume has no approved capacity basis");
+        long peak = Math.addExact(base.thisWritePeak(), 64 * MIB);
+        long required = Math.addExact(base.requiredFree(), 64 * MIB);
+        long available = Files.getFileStore(home).getUsableSpace();
+        if (available < required || Math.addExact(base.currentProjectUsageConservativeUpper(), peak) > base.effectiveProjectQuota()) {
+            throw new IOException("in-place Maven installation growth exceeds actual approved volume budget");
+        }
+        VolumeBudget installationBudget = new VolumeBudget(base.totalVolumeBytes(), available, peak,
+                base.otherUnspentReservations(), base.systemGrowthReserve(), base.safetyReserve(),
+                base.currentProjectUsageConservativeUpper(), base.effectiveProjectQuota(), required);
+        IoGuard upgradeGuard = () -> {
+            guard.check();
+            if (Files.getFileStore(home).getUsableSpace() < required) throw new IOException("in-place Maven installation reserve became unavailable");
+        };
+        Path tools = Files.createDirectory(root.resolve("tools/default-maven-upgrade"));
+        Path archive = tools.resolve("apache-maven-" + MAVEN_VERSION + "-bin.zip");
+        Path checksum = tools.resolve("official.sha512");
+        download(MAVEN_CHECKSUM, checksum, 1024);
+        if (!Files.readString(checksum, StandardCharsets.US_ASCII).strip().equals(MAVEN_ZIP_SHA512)) {
+            throw new IOException("official Maven checksum differs from the reviewed stable release pin");
+        }
+        download(MAVEN_ZIP, archive, 16 * MIB);
+        requireMavenArchiveChecksum(archive, MAVEN_ZIP_SHA512);
+        upgradeGuard.check();
+        Path extracted = Files.createDirectory(tools.resolve("extracted"));
+        extractMaven(archive, extracted);
+        Path replacement = extracted.resolve("apache-maven-" + MAVEN_VERSION);
+        Path backup = tools.resolve("original-installation");
+        List<FilePin> original = installationFiles(home), vendor = installationFiles(replacement);
+        List<String> preserved = List.of("conf/settings.xml", "conf/toolchains.xml").stream()
+                .filter(name -> Files.isRegularFile(home.resolve(name), LinkOption.NOFOLLOW_LINKS)).toList();
+        publish(root.resolve("logs/maven-upgrade-plan.json"), new MavenUpgradePlan(machine, Instant.now().toString(),
+                "PLANNED_NOT_ADMITTED", before, MAVEN_ZIP.toString(), MAVEN_CHECKSUM.toString(), measure(archive),
+                original, vendor, backup.toString(), preserved, installationBudget));
+        replaceMavenInstallation(before, replacement, backup, upgradeGuard);
+    }
+
+    static void requireMavenArchiveChecksum(Path archive, String expectedSha512) throws IOException {
+        if (!MAVEN_ZIP_SHA512.equals(expectedSha512) || !digest(archive, "SHA-512").equals(expectedSha512)) {
+            throw new IOException("reviewed official Maven archive SHA-512 mismatch");
+        }
+    }
+
+    /** The final installation stays at its observed home; old vendor files are backed up exactly. */
+    static void replaceMavenInstallation(MavenObservation before, Path replacement, Path backup, IoGuard guard)
+            throws IOException {
+        Path home = Path.of(before.reportedHome()).toRealPath(), staged = replacement.toRealPath();
+        if (home.getParent() == null || staged.startsWith(home) || home.startsWith(staged)
+                || backup.toAbsolutePath().normalize().startsWith(home) || Files.exists(backup, LinkOption.NOFOLLOW_LINKS)) {
+            throw new IOException("independent exact Maven home/stage/fresh backup required");
+        }
+        List<FilePin> originals = installationFiles(home), replacements = installationFiles(staged);
+        if (!before.launcherRef().equals(measure(Path.of(before.launcherRef().path()))) || replacements.isEmpty()) {
+            throw new IOException("observed Maven launcher drift or missing replacement");
+        }
+        guard.check(); Files.createDirectory(backup);
+        copyInstallation(originals, home, backup);
+        for (String name : List.of("conf/settings.xml", "conf/toolchains.xml")) {
+            Path active = home.resolve(name);
+            if (Files.isRegularFile(active, LinkOption.NOFOLLOW_LINKS)) {
+                Files.createDirectories(staged.resolve(name).getParent());
+                Files.copy(active, staged.resolve(name), StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+        if (!originals.equals(installationFiles(home))) throw new IOException("Maven installation drift before replacement");
+        guard.check();
+        // Delete only the previously measured regular files; retain the home directory and its ACL/owner.
+        for (FilePin file : originals) Files.delete(Path.of(file.path()));
+        copyInstallation(installationFiles(staged), staged, home);
+        for (String name : List.of("mvn", "mvnDebug")) {
+            Path script = home.resolve("bin/" + name);
+            if (!System.getProperty("os.name").startsWith("Windows") && Files.isRegularFile(script)
+                    && !script.toFile().setExecutable(true, false)) throw new IOException("Unix Maven launcher permission update failed");
+        }
+        for (FilePin file : installationFiles(staged)) {
+            FilePin actual = measure(home.resolve(staged.relativize(Path.of(file.path()))));
+            if (actual.bytes() != file.bytes() || !actual.sha256().equals(file.sha256())) throw new IOException("Maven vendor/configuration postcheck mismatch");
+        }
+        guard.check();
+    }
+
+    private static void copyInstallation(List<FilePin> files, Path source, Path target) throws IOException {
+        for (FilePin file : files) {
+            Path from = Path.of(file.path()), destination = target.resolve(source.relativize(from));
+            if (!file.equals(measure(from))) throw new IOException("Maven source changed during exact copy");
+            Files.createDirectories(destination.getParent());
+            Files.copy(from, destination, StandardCopyOption.COPY_ATTRIBUTES);
+            FilePin copied = measure(destination);
+            if (copied.bytes() != file.bytes() || !copied.sha256().equals(file.sha256())) throw new IOException("Maven backup/install copy mismatch");
+        }
+    }
+
+    private static List<FilePin> installationFiles(Path root) throws IOException {
+        if (Files.isSymbolicLink(root) || !Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS)) throw new IOException("regular Maven installation directory required");
+        List<FilePin> files = new ArrayList<>(); long bytes = 0;
+        try (var paths = Files.walk(root)) {
+            for (Path path : paths.sorted().toList()) {
+                if (Files.isSymbolicLink(path) || (!Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)
+                        && !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS))) throw new IOException("linked/nonregular Maven installation entry refused");
+                if (Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) {
+                    FilePin file = measure(path); files.add(file); bytes = Math.addExact(bytes, file.bytes());
+                    if (files.size() > 5000 || bytes > 48 * MIB) throw new IOException("bounded Maven installation backup required");
+                }
+            }
+        }
+        return List.copyOf(files);
     }
 
     private static void requireStableMinimum(String version) {
-        if (version == null || version.length() > 64 || !version.matches("[0-9]+\\.[0-9]+\\.[0-9]+")) {
-            throw new IllegalArgumentException("bounded stable Maven version required");
-        }
+        requireStableVersion(version);
         String[] actual = version.split("\\."), minimum = MINIMUM_MAVEN_VERSION.split("\\.");
         for (int index = 0; index < 3; index++) {
             int comparison = new BigInteger(actual[index]).compareTo(new BigInteger(minimum[index]));
             if (comparison > 0) return;
             if (comparison < 0) throw new IllegalArgumentException("default Maven version is below the stable minimum");
+        }
+    }
+
+    private static void requireStableVersion(String version) {
+        if (version == null || version.length() > 64 || !version.matches("[0-9]+\\.[0-9]+\\.[0-9]+")) {
+            throw new IllegalArgumentException("bounded stable Maven version required");
         }
     }
 

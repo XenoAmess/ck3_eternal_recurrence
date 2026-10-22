@@ -60,7 +60,7 @@ public final class ControlCi {
         ControlBuild.BuildReceipt tools = ControlBuild.build(config(plan, toolsSource, releasePath, "qualified-tools", ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME));
         if (!tools.status().equals("PASS")) throw new IOException("Native Job tools qualification failed");
         Path toolsReceipt = root.resolve("logs/build-qualified-tools.json");
-        requireJUnit(Path.of(tools.deploymentRoot()).resolve("surefire-reports"), 22);
+        requireJUnit(Path.of(tools.deploymentRoot()).resolve("surefire-reports"), 28);
         List<String> arguments = new ArrayList<>(List.of("-Xms32m", "-Xmx128m", "-XX:MaxMetaspaceSize=96m",
                 "-XX:ReservedCodeCacheSize=48m", "-XX:MaxDirectMemorySize=32m", "-Djava.io.tmpdir=" + root.resolve("scratch"),
                 "-Djna.tmpdir=" + root.resolve("scratch"), "-cp",

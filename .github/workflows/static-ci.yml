@@ -209,6 +209,9 @@ jobs:
           if-no-files-found: ignore
           path: |
             ${{ runner.temp }}/java-control-ci/logs/*.json
+            ${{ runner.temp }}/java-control-ci/logs/maven-version-*.log
+            ${{ runner.temp }}/java-control-ci/logs/bootstrap-verify.log
+            ${{ runner.temp }}/java-control-ci/logs/qualified-pipeline.log
             ${{ runner.temp }}/java-control-ci/artifacts/map-ci/logs/*.json
             ${{ runner.temp }}/java-control-ci/artifacts/map-ci/service/logs/*.json
             ${{ runner.temp }}/java-control-ci/build/bootstrap-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml

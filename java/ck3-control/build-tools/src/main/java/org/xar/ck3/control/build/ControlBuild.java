@@ -69,7 +69,11 @@ public final class ControlBuild {
             } catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
         }
         public void verify() throws IOException {
-            if (!equals(measure(Path.of(path)))) throw new IOException("File reference changed: " + path);
+            FileRef actual = measure(Path.of(path));
+            if (!Path.of(path).toAbsolutePath().normalize().equals(Path.of(actual.path()))
+                    || bytes != actual.bytes() || !sha256.equals(actual.sha256())) {
+                throw new IOException("File reference changed: " + path);
+            }
         }
     }
 
@@ -250,10 +254,7 @@ public final class ControlBuild {
                 throw new IOException("Actual default Maven version probe failed or mismatched");
             }
             toolchain = measuredMavenToolchain(config.mavenCommand(), versionOutput, config.minimumMavenVersion());
-            result = invoke(config, lease, snapshot, environment, logs, "verify", List.of("-B", "-ntp", "-e", "-U",
-                    "-s", settings.toString(), "-gs", settings.toString(), "-f", snapshot.resolve("pom.xml").toString(),
-                    "-Dmaven.repo.local=" + config.workRoot().resolve("m2"), "-Dck3.build.root=" + build,
-                    "-Djava.io.tmpdir=" + config.workRoot().resolve("scratch"), "-DargLine=-Xms32m -Xmx256m", "verify"));
+            result = invoke(config, lease, snapshot, environment, logs, "verify", reactorVerifyArguments(config, settings, snapshot, build));
             interrupted |= Thread.interrupted();
             if (!result.passed()) throw new IOException("Maven failed, timed out, retained children, or exceeded Job memory");
             for (FileRef reference : compiled) reference.verify();
@@ -316,6 +317,14 @@ public final class ControlBuild {
                 try { guard(config, lease); } catch (IOException error) { throw new IllegalStateException(error); }
             });
         }
+    }
+
+    /** Collect independent reactor failures while Maven still returns a failing terminal exit. */
+    static List<String> reactorVerifyArguments(Config config, Path settings, Path snapshot, Path build) {
+        return List.of("--fail-at-end", "-B", "-ntp", "-e", "-U",
+                "-s", settings.toString(), "-gs", settings.toString(), "-f", snapshot.resolve("pom.xml").toString(),
+                "-Dmaven.repo.local=" + config.workRoot().resolve("m2"), "-Dck3.build.root=" + build,
+                "-Djava.io.tmpdir=" + config.workRoot().resolve("scratch"), "-DargLine=-Xms32m -Xmx256m", "verify");
     }
 
     static void writeMavenBatch(Path batch, Path explicitOverride, List<String> args) throws IOException {
@@ -506,10 +515,17 @@ public final class ControlBuild {
     }
 
     private static long totalBytes(Path root) throws IOException {
+        return mutableInventoryBytes(root, path -> {});
+    }
+
+    @FunctionalInterface interface InventoryObserver { void beforeCheck(Path path) throws IOException; }
+
+    /** Mutable output accounting tolerates only entries removed during this observation. */
+    static long mutableInventoryBytes(Path root, InventoryObserver observer) throws IOException {
         AtomicLong total = new AtomicLong();
-        walk(root, false, 100000, path -> {
+        walk(root, false, 100000, true, observer, path -> {
             try { total.set(Math.addExact(total.get(), Files.size(path))); }
-            catch (NoSuchFileException ignored) { /* A mutable Maven cache entry was renamed. */ }
+            catch (NoSuchFileException removedEntry) { /* A concurrent producer removed this output/cache entry. */ }
         });
         return total.get();
     }
@@ -579,25 +595,43 @@ public final class ControlBuild {
     }
 
     private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, FileAction action) throws IOException {
+        walk(root, excludeBuildCaches, maxFiles, false, path -> {}, action);
+    }
+
+    private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, boolean allowVanished,
+                             InventoryObserver observer, FileAction action) throws IOException {
         if (!Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(root)) throw new IOException("Actual plain inventory root required: " + root);
         long deadline = System.nanoTime() + Duration.ofSeconds(120).toNanos(); AtomicLong count = new AtomicLong();
         Path realRoot = root.toRealPath();
         Files.walkFileTree(root, new SimpleFileVisitor<>() {
             @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
                 if (excludeBuildCaches && !directory.equals(root) && EXCLUDED.contains(directory.getFileName().toString())) return FileVisitResult.SKIP_SUBTREE;
-                check(directory, attributes); return FileVisitResult.CONTINUE;
+                return check(directory, attributes) ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
             }
             @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
-                check(file, attributes); if (!attributes.isRegularFile()) throw new IOException("Nonregular inventory file");
+                if (!check(file, attributes)) return FileVisitResult.CONTINUE;
+                if (!attributes.isRegularFile()) throw new IOException("Nonregular inventory file");
                 action.accept(file); return FileVisitResult.CONTINUE;
             }
             @Override public FileVisitResult visitFileFailed(Path file, IOException error) throws IOException {
-                if (!excludeBuildCaches && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                if (allowVanished && !file.equals(root) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
                 throw error;
             }
-            private void check(Path path, BasicFileAttributes attributes) throws IOException {
-                if (attributes.isSymbolicLink() || attributes.isOther() || !path.toRealPath().startsWith(realRoot)
-                        || count.incrementAndGet() > maxFiles || System.nanoTime() >= deadline) throw new IOException("Inventory link, extent or time limit");
+            @Override public FileVisitResult postVisitDirectory(Path directory, IOException error) throws IOException {
+                if (allowVanished && !directory.equals(root) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                return super.postVisitDirectory(directory, error);
+            }
+            private boolean check(Path path, BasicFileAttributes attributes) throws IOException {
+                observer.beforeCheck(path);
+                if (attributes.isSymbolicLink() || attributes.isOther() || count.incrementAndGet() > maxFiles
+                        || System.nanoTime() >= deadline) throw new IOException("Inventory link, extent or time limit");
+                try {
+                    if (!path.toRealPath().startsWith(realRoot)) throw new IOException("Inventory path escaped root");
+                    return true;
+                } catch (NoSuchFileException error) {
+                    if (allowVanished && !path.equals(root)) return false;
+                    throw error;
+                }
             }
         });
     }

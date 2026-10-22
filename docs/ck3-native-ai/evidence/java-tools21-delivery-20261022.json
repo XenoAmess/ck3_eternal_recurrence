@@ -1,0 +1,364 @@
+{
+  "schema" : "xar.java-tools-exact-delivery/v1",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-22T16:08:45.850775500Z",
+  "base_commit" : "1925394eabb11ecc174e9288e9e9e7039eb54afa",
+  "status" : "VERIFIED_TOOLS21_PATCH_READY_WORKFLOW_TEXT_REVIEWED",
+  "actual_build_receipt" : {
+    "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools21.json",
+    "bytes" : 13078,
+    "sha256" : "e9eed029963212cbe72d5191b07f9d1793d0ff2bc5a35defc4d6f7b761b800da"
+  },
+  "accepted_receipt_readback" : {
+    "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/TOOLS21-ACCEPTED-READBACK01.json",
+    "bytes" : 409,
+    "sha256" : "4cf6a59aebe56774061f0c11dd025ffea42e7db5dbfef77a72d912a281a58d9c"
+  },
+  "complete_accepted_source" : [ {
+    "repository_path" : "java/ck3-control/build-tools/pom.xml",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/pom.xml",
+      "bytes" : 2787,
+      "sha256" : "f3190168955f68cb78b0174ce8ab2a18e70e8249b1e4be39d57c768cd32b29d3"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/pom.xml",
+      "bytes" : 2787,
+      "sha256" : "f3190168955f68cb78b0174ce8ab2a18e70e8249b1e4be39d57c768cd32b29d3"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/pom.xml",
+      "bytes" : 2787,
+      "sha256" : "f3190168955f68cb78b0174ce8ab2a18e70e8249b1e4be39d57c768cd32b29d3"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java",
+      "bytes" : 46952,
+      "sha256" : "1ed088f3e0a40abb0e346ba448fa1d269f6e6449acf8690ab8d751d9200f3948"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/CiBootstrap.java",
+      "bytes" : 59666,
+      "sha256" : "ed75f1621ccf3670847e631882632cff5280a4f5c5b7e67a6ac9888851d48c80"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java",
+      "bytes" : 59666,
+      "sha256" : "ed75f1621ccf3670847e631882632cff5280a4f5c5b7e67a6ac9888851d48c80"
+    },
+    "differs_from_remote_base" : true
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlBuild.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlBuild.java",
+      "bytes" : 50298,
+      "sha256" : "aa11331a8cffacbb496b9b996ec55901ee279116fd0cafd159f60cea0cbe3d0b"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/ControlBuild.java",
+      "bytes" : 52276,
+      "sha256" : "7dcf63858dadae02bd8f59615572aadad0f00c4dc212c3428ca5beff90da86c4"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlBuild.java",
+      "bytes" : 52276,
+      "sha256" : "7dcf63858dadae02bd8f59615572aadad0f00c4dc212c3428ca5beff90da86c4"
+    },
+    "differs_from_remote_base" : true
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlCi.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlCi.java",
+      "bytes" : 12355,
+      "sha256" : "bf3db6f32c75124d41eb83ab439130827b97465fd41a2db976a6fd99a11f0957"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/ControlCi.java",
+      "bytes" : 12355,
+      "sha256" : "60641b1d9c9b783449a11dc0b4b2d849f2bb98fe419eacf2d7f5ea895629dd60"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlCi.java",
+      "bytes" : 12355,
+      "sha256" : "60641b1d9c9b783449a11dc0b4b2d849f2bb98fe419eacf2d7f5ea895629dd60"
+    },
+    "differs_from_remote_base" : true
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionCi.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionCi.java",
+      "bytes" : 10710,
+      "sha256" : "50008f905e18ff7b319824947f8692485c5eda4d4fed110a20c44b7cb6d1b3a2"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/MapAdmissionCi.java",
+      "bytes" : 10710,
+      "sha256" : "50008f905e18ff7b319824947f8692485c5eda4d4fed110a20c44b7cb6d1b3a2"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionCi.java",
+      "bytes" : 10710,
+      "sha256" : "50008f905e18ff7b319824947f8692485c5eda4d4fed110a20c44b7cb6d1b3a2"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionServiceOwner.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionServiceOwner.java",
+      "bytes" : 19865,
+      "sha256" : "a34b895c7af48858b1b4cd7d486f00b36100a33b2c00d96b9e8302b40bbcadd1"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/MapAdmissionServiceOwner.java",
+      "bytes" : 19865,
+      "sha256" : "a34b895c7af48858b1b4cd7d486f00b36100a33b2c00d96b9e8302b40bbcadd1"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionServiceOwner.java",
+      "bytes" : 19865,
+      "sha256" : "a34b895c7af48858b1b4cd7d486f00b36100a33b2c00d96b9e8302b40bbcadd1"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/NativeTcpListener.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/NativeTcpListener.java",
+      "bytes" : 6614,
+      "sha256" : "1c179f8e606f01f97557996ecb78c5e9131f762a51547e26311169e07ed03d99"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/NativeTcpListener.java",
+      "bytes" : 6614,
+      "sha256" : "1c179f8e606f01f97557996ecb78c5e9131f762a51547e26311169e07ed03d99"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/NativeTcpListener.java",
+      "bytes" : 6614,
+      "sha256" : "1c179f8e606f01f97557996ecb78c5e9131f762a51547e26311169e07ed03d99"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/WindowsJobProcess.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/WindowsJobProcess.java",
+      "bytes" : 22328,
+      "sha256" : "40103d126d078d6a0ae5ec7f229eda975992f5e61b6fbcf3e2532a7ab316d377"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/main/java/org/xar/ck3/control/build/WindowsJobProcess.java",
+      "bytes" : 22328,
+      "sha256" : "40103d126d078d6a0ae5ec7f229eda975992f5e61b6fbcf3e2532a7ab316d377"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/WindowsJobProcess.java",
+      "bytes" : 22328,
+      "sha256" : "40103d126d078d6a0ae5ec7f229eda975992f5e61b6fbcf3e2532a7ab316d377"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/CiBootstrapTest.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/CiBootstrapTest.java",
+      "bytes" : 9896,
+      "sha256" : "8b7cdcdbbd224b89320d4dd0045e0992214244d6981c097b006f3484d6e6e320"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/test/java/org/xar/ck3/control/build/CiBootstrapTest.java",
+      "bytes" : 16072,
+      "sha256" : "4064fd0ce8e6ab534c780b0aad115b64eb1af71bd43ea7ce5b5574313269c396"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/CiBootstrapTest.java",
+      "bytes" : 16072,
+      "sha256" : "4064fd0ce8e6ab534c780b0aad115b64eb1af71bd43ea7ce5b5574313269c396"
+    },
+    "differs_from_remote_base" : true
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/ControlBuildTest.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/ControlBuildTest.java",
+      "bytes" : 8526,
+      "sha256" : "268ad157921e455e6a4f3f1350b06996ae081401a2df505af0df2685f1ba4663"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/test/java/org/xar/ck3/control/build/ControlBuildTest.java",
+      "bytes" : 13050,
+      "sha256" : "c97b1058f17ebdc858409d477f92bbb709ef04691422acb4d4917c005a65c427"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/ControlBuildTest.java",
+      "bytes" : 13050,
+      "sha256" : "c97b1058f17ebdc858409d477f92bbb709ef04691422acb4d4917c005a65c427"
+    },
+    "differs_from_remote_base" : true
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/MapAdmissionServiceOwnerTest.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/MapAdmissionServiceOwnerTest.java",
+      "bytes" : 3965,
+      "sha256" : "6bb42f20d74f105d050782711868dd6d1ae167eceab96192a7d3eabf5a35df7f"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/test/java/org/xar/ck3/control/build/MapAdmissionServiceOwnerTest.java",
+      "bytes" : 3965,
+      "sha256" : "6bb42f20d74f105d050782711868dd6d1ae167eceab96192a7d3eabf5a35df7f"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/MapAdmissionServiceOwnerTest.java",
+      "bytes" : 3965,
+      "sha256" : "6bb42f20d74f105d050782711868dd6d1ae167eceab96192a7d3eabf5a35df7f"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/NativeTcpListenerTest.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/NativeTcpListenerTest.java",
+      "bytes" : 2694,
+      "sha256" : "767d57b12547e71e6302e86063f8d34ba2fbdaadbdbd7825927c12faab59e0b0"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/test/java/org/xar/ck3/control/build/NativeTcpListenerTest.java",
+      "bytes" : 2694,
+      "sha256" : "767d57b12547e71e6302e86063f8d34ba2fbdaadbdbd7825927c12faab59e0b0"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/NativeTcpListenerTest.java",
+      "bytes" : 2694,
+      "sha256" : "767d57b12547e71e6302e86063f8d34ba2fbdaadbdbd7825927c12faab59e0b0"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/WindowsJobProcessTest.java",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/WindowsJobProcessTest.java",
+      "bytes" : 8278,
+      "sha256" : "d3f5300a20ce0bf2bacda8133bb89ccdb3efe0d64ed59b1e78f5248e3b833eb4"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/test/java/org/xar/ck3/control/build/WindowsJobProcessTest.java",
+      "bytes" : 8278,
+      "sha256" : "d3f5300a20ce0bf2bacda8133bb89ccdb3efe0d64ed59b1e78f5248e3b833eb4"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/WindowsJobProcessTest.java",
+      "bytes" : 8278,
+      "sha256" : "d3f5300a20ce0bf2bacda8133bb89ccdb3efe0d64ed59b1e78f5248e3b833eb4"
+    },
+    "differs_from_remote_base" : false
+  }, {
+    "repository_path" : "java/ck3-control/build-tools/src/test/resources/maven-failure/pom.xml",
+    "remote_base" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01/java/ck3-control/build-tools/src/test/resources/maven-failure/pom.xml",
+      "bytes" : 377,
+      "sha256" : "9e16d95356904ba633bc1c03c70064b05beeeb2d55be9d4a5352e1eef7744793"
+    },
+    "accepted_snapshot" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/source-java-tools21/src/test/resources/maven-failure/pom.xml",
+      "bytes" : 377,
+      "sha256" : "9e16d95356904ba633bc1c03c70064b05beeeb2d55be9d4a5352e1eef7744793"
+    },
+    "root_current" : {
+      "path" : "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/test/resources/maven-failure/pom.xml",
+      "bytes" : 377,
+      "sha256" : "9e16d95356904ba633bc1c03c70064b05beeeb2d55be9d4a5352e1eef7744793"
+    },
+    "differs_from_remote_base" : false
+  } ],
+  "actual_suites" : [ {
+    "name" : "org.xar.ck3.control.build.CiBootstrapTest",
+    "tests" : 9,
+    "failures" : 0,
+    "errors" : 0,
+    "skipped" : 0,
+    "report" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools21/ck3-control-build-tools/surefire-reports/TEST-org.xar.ck3.control.build.CiBootstrapTest.xml",
+      "bytes" : 12274,
+      "sha256" : "2fb3e6657efc778c25bbc9deddf040734469fb4a38d3ac7a68806f2c8bfface0"
+    }
+  }, {
+    "name" : "org.xar.ck3.control.build.ControlBuildTest",
+    "tests" : 9,
+    "failures" : 0,
+    "errors" : 0,
+    "skipped" : 0,
+    "report" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools21/ck3-control-build-tools/surefire-reports/TEST-org.xar.ck3.control.build.ControlBuildTest.xml",
+      "bytes" : 12298,
+      "sha256" : "2cfeed6e98cda65ae4cc9b9b7e83023b97eb858d3fd64423b7da8b762883c930"
+    }
+  }, {
+    "name" : "org.xar.ck3.control.build.MapAdmissionServiceOwnerTest",
+    "tests" : 2,
+    "failures" : 0,
+    "errors" : 0,
+    "skipped" : 0,
+    "report" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools21/ck3-control-build-tools/surefire-reports/TEST-org.xar.ck3.control.build.MapAdmissionServiceOwnerTest.xml",
+      "bytes" : 11235,
+      "sha256" : "3c4dd9370133861185a58a12374d875bf624795dcbd1da9eb2e9d71aa478caa4"
+    }
+  }, {
+    "name" : "org.xar.ck3.control.build.NativeTcpListenerTest",
+    "tests" : 2,
+    "failures" : 0,
+    "errors" : 0,
+    "skipped" : 0,
+    "report" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools21/ck3-control-build-tools/surefire-reports/TEST-org.xar.ck3.control.build.NativeTcpListenerTest.xml",
+      "bytes" : 11191,
+      "sha256" : "fa17a7209c54415fd8d2b77ae0e2f21f4d534634ea55c021c6c3eae92b049ecf"
+    }
+  }, {
+    "name" : "org.xar.ck3.control.build.WindowsJobProcessTest",
+    "tests" : 6,
+    "failures" : 0,
+    "errors" : 0,
+    "skipped" : 0,
+    "report" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools21/ck3-control-build-tools/surefire-reports/TEST-org.xar.ck3.control.build.WindowsJobProcessTest.xml",
+      "bytes" : 11796,
+      "sha256" : "9aa6488ecb1303e348352e883f86cc69290799808553d736363ec0ce2e9c9475"
+    }
+  } ],
+  "actual_junit_count" : 28,
+  "verification_stdout" : {
+    "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools21-verify.stdout.log",
+    "bytes" : 4075,
+    "sha256" : "263ea4cc562113fa8bb374b2af1e2e9919d67121e9a540b67d0be80aecb8df9d"
+  },
+  "final_rootdiff" : {
+    "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/remote-ci-delivery01/TOOLS21-VERIFIED-DELIVERY02.patch",
+    "bytes" : 42154,
+    "sha256" : "f6c10d63cdb0701eb04517f5f73328f3d0621f4ff5562816af20f53c3dbe8756"
+  },
+  "exact_changed_repository_paths" : [ "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java", "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlBuild.java", "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlCi.java", "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/CiBootstrapTest.java", "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/ControlBuildTest.java", ".github/workflows/static-ci.yml" ],
+  "workflow_qualification" : "Three root log-retention paths are textual changes only; hosted verification is still RED.",
+  "held_back_source" : "D admission-bootstrap-observation01 and runtime processcustody patches are not in this verified patch.",
+  "hosted" : {
+    "schema" : "xar.java-hosted-run-final/v1",
+    "observer_machine_id" : "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc" : "2026-10-22T16:01:11.394572400Z",
+    "commit" : "1925394eabb11ecc174e9288e9e9e7039eb54afa",
+    "workflow_url" : "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39803137029",
+    "run_id" : 39803137029,
+    "conclusion" : "failure",
+    "finished_at_utc" : "2026-10-22T15:38:50Z",
+    "artifact_id" : 12436933829,
+    "artifact_zip_sha256" : "f57c11790503309f188536db090ff84c3dddfb7669d1a86fea1c20678796db4a",
+    "retained_bootstrap_actual" : {
+      "path" : "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/remote-ci-delivery01/HOSTED1925394-BOOTSTRAP-ACTUAL01.json",
+      "bytes" : 488,
+      "sha256" : "c8bbc0d81a683a97dc6a18f862d86d5891f52dbed7748aa52fe5a4837839a0ad"
+    },
+    "actual_runner_machine_id" : "runnervm0xl3a-89d3c56171",
+    "actual_observed_at_utc" : "2026-10-22T15:38:37.984999600Z",
+    "actual_maven_version" : null,
+    "actual_maven_home" : null,
+    "maven_fact_gap" : "The retained actual receipt has default_maven=null; the archive omitted maven-version.log. The exact historical version/home cannot be recovered from this artifact.",
+    "reactor_executed" : false,
+    "http_consumer_chain_executed" : false
+  }
+}

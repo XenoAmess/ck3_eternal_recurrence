@@ -27,6 +27,35 @@ final class ControlBuildTest {
         assertThrows(IOException.class, consumed::verify);
     }
 
+    @Test void sameWindowsPathSpellingVerifiesButRealBytesAndDigestDriftStillFail() throws Exception {
+        Path source = temporary.resolve("slash-evidence.txt"); Files.writeString(source, "one");
+        ControlBuild.FileRef nativeRef = ControlBuild.FileRef.measure(source.toAbsolutePath());
+        ControlBuild.FileRef forwardRef = new ControlBuild.FileRef(nativeRef.path().replace('\\', '/'), nativeRef.bytes(), nativeRef.sha256());
+        var json = ControlBuild.strictMapper();
+        ControlBuild.FileRef consumed = json.readValue(json.writeValueAsBytes(forwardRef), ControlBuild.FileRef.class);
+        nativeRef.verify(); consumed.verify();
+        assertThrows(IOException.class, () -> new ControlBuild.FileRef(forwardRef.path(), forwardRef.bytes() + 1, forwardRef.sha256()).verify());
+        assertThrows(IOException.class, () -> new ControlBuild.FileRef(forwardRef.path(), forwardRef.bytes(), "0".repeat(64)).verify());
+        Files.writeString(source, "two");
+        assertThrows(IOException.class, consumed::verify); assertThrows(IOException.class, nativeRef::verify);
+        Files.writeString(source, "longer"); assertThrows(IOException.class, consumed::verify);
+    }
+
+    @Test void mutableInventorySurvivesRealDeletionBeforeRealPathButRejectsOtherIoFailures() throws Exception {
+        Path root = Files.createDirectory(temporary.resolve("mutable-outputs"));
+        Path retained = root.resolve("retained.json"), removed = root.resolve("transient.json.tmp");
+        Files.writeString(retained, "kept"); Files.writeString(removed, "gone");
+        assertEquals(4, ControlBuild.mutableInventoryBytes(root, path -> {
+            if (path.equals(removed)) Files.delete(path);
+        }));
+        assertFalse(Files.exists(removed));
+        assertThrows(java.nio.file.AccessDeniedException.class, () -> ControlBuild.mutableInventoryBytes(root, path -> {
+            if (path.equals(retained)) throw new java.nio.file.AccessDeniedException(path.toString());
+        }));
+        Path missing = root.resolve("missing-root");
+        assertThrows(IOException.class, () -> ControlBuild.mutableInventoryBytes(missing, path -> {}));
+    }
+
     @Test void actualRefParserRejectsTokenCoercionDuplicatesUnknownAndTrailingBodies() throws Exception {
         Path source = temporary.resolve("input.txt"); Files.writeString(source, "x");
         ObjectMapper json = ControlBuild.strictMapper();
@@ -96,6 +125,33 @@ final class ControlBuildTest {
         assertEquals(ControlBuild.MavenSelection.DEFAULT_COMMAND, evidence.selection());
         assertEquals("mvn", evidence.requestedCommand()); assertNull(evidence.explicitOverrideRef());
         assertEquals(ControlBuild.FileRef.measure(bin.resolve("mvn.cmd")), evidence.distributionLauncherRef());
+    }
+
+    @Test void actualDefaultMavenReceivesFailAtEndAndRetainsItsNonzeroTerminalExit() throws Exception {
+        Path bin = Files.createDirectories(temporary.resolve("command-home/bin"));
+        Files.writeString(bin.resolve("mvn.cmd"), "@echo off\r\nif not \"%~1\"==\"--fail-at-end\" exit /b 91\r\n"
+                + "echo FAIL_AT_END_RECEIVED\r\n:arguments\r\nif \"%~1\"==\"\" exit /b 92\r\n"
+                + "if \"%~1\"==\"verify\" goto failed\r\nshift\r\ngoto arguments\r\n:failed\r\n"
+                + "shift\r\nif not \"%~1\"==\"\" exit /b 93\r\necho VERIFY_RETURNED_FAILURE\r\nexit /b 37\r\n");
+        Path working = Files.createDirectory(temporary.resolve("reactor working"));
+        ControlBuild.Config config = new ControlBuild.Config(working, working, working.resolve("release.json"),
+                "command-fixture", "test", null, working, "3.10.0", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR);
+        Path batch = temporary.resolve("reactor.cmd").toAbsolutePath();
+        ControlBuild.writeMavenBatch(batch, null, ControlBuild.reactorVerifyArguments(config,
+                working.resolve("direct settings.xml"), working, working.resolve("output directory")));
+        Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
+        environment.put("PATH", bin + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
+        environment.put("PATHEXT", ".CMD;.BAT;.EXE;.COM");
+        Path output = temporary.resolve("reactor.stdout").toAbsolutePath();
+        try (WindowsJobProcess child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(
+                Path.of(System.getenv("SystemRoot"), "System32/cmd.exe"), List.of("/d", "/c", batch.toString()), working,
+                environment, output, temporary.resolve("reactor.stderr").toAbsolutePath(), 256L << 20))) {
+            WindowsJobProcess.CommandResult actual = child.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+            assertEquals(37, actual.exitCode()); assertFalse(actual.passed()); assertNull(actual.stopReason());
+            assertEquals(0, actual.accounting().activeProcesses());
+        }
+        String actual = Files.readString(output);
+        assertTrue(actual.contains("FAIL_AT_END_RECEIVED")); assertTrue(actual.contains("VERIFY_RETURNED_FAILURE"));
     }
 
     @Test void minimumMavenVersionUsesNumericStableComponentsRatherThanStringEquality() {
