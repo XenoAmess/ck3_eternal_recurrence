@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.curated-source-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T20:54:24.107884+00:00",
+  "archive": {
+    "path": "curated-source-reference.tar.xz",
+    "bytes": 66344,
+    "sha256": "4b433c01430c7b6b9144b270774775518c4be5b2ae6bc3d97794a2c53965ec73",
+    "codec": "deterministic USTAR; XZ/SHA256; LZMA2 dictionary1048576"
+  },
+  "manifest": {
+    "path": "SOURCE-MANIFEST.json",
+    "bytes": 10995,
+    "sha256": "44a67d6129a654970dd5c73737586d064f16ce5b4a5fb11e7260ea2115cc1902"
+  },
+  "archive_full_decode_and_exact_member_hashes": true,
+  "members_checked": 19,
+  "original_copied_records_checked": 11,
+  "Python_AST_parsed_without_import": 17,
+  "source_business_or_strict_tests_reexecuted": false,
+  "new_production_code": false,
+  "Git_diff_check_passed": true,
+  "scope": "reference-source packaging and documentation only; no Game/media/R05 or full-episode qualification"
+}

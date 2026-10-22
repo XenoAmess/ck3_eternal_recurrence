@@ -1,0 +1,41 @@
+{
+  "schema": "xar.r05.ready-once-source-diff-proof.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T19:29:08.848145+00:00",
+  "old_adapter": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-capacity-adapter-a01\\capacity_public.py",
+    "bytes": 11224,
+    "sha256": "e3ba019a1182408346c5ae0d9c717dff8030a83b247b84c3af448195c3153219"
+  },
+  "new_adapter": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\ready_public.py",
+    "bytes": 11349,
+    "sha256": "ae16b7d61403ecc194c79202b0ab0c98fa724914f33dbc02de7554e01a5ccc00"
+  },
+  "only_changed_functions": [
+    "validate_progress_sources",
+    "run_case"
+  ],
+  "run_case_AST_identical_after_single_wait_replaced_by_verified_handoff": true,
+  "validate_sources_only_adds_ready_source_binding": true,
+  "film_AST_identical_except_SCENE_literal": true,
+  "film_old_scene": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-a01",
+  "film_new_scene": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-b01",
+  "original_Selection": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-mcp-registration-fix-a01\\tools\\ck3_mod_acceptance.py",
+    "bytes": 61981,
+    "sha256": "3aaca3cf5c486db0519d1e53b2c7f025fe68bf62ac8d76617ae3d67e6683f25b"
+  },
+  "original_CaseClient": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-mcp-registration-fix-a01\\tools\\ck3_mod_acceptance_client.py",
+    "bytes": 68212,
+    "sha256": "3306d79956827717596671425b11073a5cce4ee79ea9cca14b90cd140037801e"
+  },
+  "complete_registration_peers_rechecked": 53,
+  "registration_integration": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-mcp-registration-fix-a01\\RUNTIME-INTEGRATION.actual-a01.json",
+    "bytes": 13138,
+    "sha256": "b8b92347253ae3d7b0571853545b2a8ae2bea78537e4e98bfcd9f1f55646b35e"
+  },
+  "no_Game_SDK_screen_native_or_business_evidence": true
+}

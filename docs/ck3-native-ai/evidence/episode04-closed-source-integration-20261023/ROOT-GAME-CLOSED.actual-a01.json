@@ -1,0 +1,45 @@
+{
+  "schema": "xar.root.e04.full-working-review-game-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "author": "/root",
+  "observed_at_utc": "2026-10-22T20:41:43.207366+00:00",
+  "Game_closed_actual": true,
+  "current_game_media_processes": [],
+  "current_screen_owners": [],
+  "new_R05_RunID_Game_SDK_Film_started": false,
+  "current_counter": {
+    "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+    "bytes": 282,
+    "sha256": "34621ae29d38058d2a9ce50f45dfbf8fadecf1b455ffb9ede01173bf0493d0e7"
+  },
+  "last_sequence": 243,
+  "old_actual_normal_Game_closure": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-a01\\live-ops-a02\\R0243-OWNER-CLOSED.actual-a01.json",
+    "bytes": 5683,
+    "sha256": "c73965a854ca0027fd8231767165ae4143391d23a2b16493157421fbf2506eb4"
+  },
+  "native_census": {
+    "argv": [
+      "C:\\Windows\\System32\\tasklist.exe",
+      "/fo",
+      "csv",
+      "/nh"
+    ],
+    "pid": 19400,
+    "created_filetime": "134371753020482794",
+    "original_wait": 0,
+    "stdout_bytes": 11712,
+    "stdout_sha256": "8d957dd7ed1d4b628ca33654d309f52a245db8102b58384f29a31f57f84b072c",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "complete_csv_rows": 239,
+    "all_csv_rows_validated": true
+  },
+  "actual_bus_list": {
+    "original_wait": 0,
+    "stdout_bytes": 706306,
+    "stdout_sha256": "8f5ba5f666e415d4917434b95e4d517858924341d06e08a735b160cd811d17eb",
+    "active_screen_owner_count": 0
+  },
+  "scope": "Current Game and media absence plus canonical counter and retained actual R0243 normal closure; no claim of R05 business acceptance or human1x review."
+}

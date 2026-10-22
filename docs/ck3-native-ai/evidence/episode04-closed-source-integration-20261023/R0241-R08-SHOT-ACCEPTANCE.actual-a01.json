@@ -1,0 +1,189 @@
+{
+  "schema": "xar.e04.r08.bounded-original-M-shot-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T16:31:01.443508+00:00",
+  "reviewer": "/root",
+  "status": "accepted_original_M_positive_source_shot",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0241",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\camera-raw-a01\\r08-postload-a01\\raw.mkv",
+    "bytes": 29175414,
+    "sha256": "2093104a5ba12db634617efe9ffaa7c12563559847bf994fb7394b08787a0de1"
+  },
+  "owner_closed": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\live-ops-window18-a01\\R0241-OWNER-CLOSED.actual-a01.json",
+    "bytes": 9300,
+    "sha256": "b76959e7feb533da8084490193a4dbaba5b45131ec09429d623d571a38dfa291"
+  },
+  "owner_27_Pins_independent_check_tool": "7efb31",
+  "owner_Pin_mismatches": 0,
+  "native_audit": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase3\\R0241-ACTUAL-CAUSAL-ROOT-REVIEW.actual-a01.json",
+    "bytes": 3716,
+    "sha256": "016c2f8e768a5205f68b617685899c566e5f1e5fa38f3e0378bc60c9188a8576"
+  },
+  "formal_criteria_review": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase4\\R08-FORMAL-CRITERIA-REVIEW.actual-a01.json",
+    "bytes": 3250,
+    "sha256": "51560b93b424d9c51431889a5c3b983db65d09a9e67d18aaf98ade9330cf73cf"
+  },
+  "claim": "Current military component actually offsets the same original parent net wallet add, once, actor-global",
+  "actual_native_result": {
+    "attribution_kind": "military_component_offset_in_net_add",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "military_component_consumed_raw": "273262",
+    "military_settlement_attribution_qualified": true,
+    "mode": "settlement-operands-wallet-return-once-v1",
+    "net_settlement_raw": "111391",
+    "observed_absolute_day_raw": 389454,
+    "observed_date_raw": 53146896,
+    "paid_military_wallet_debit_raw": null,
+    "payer": null,
+    "recurring_payment_observed": false,
+    "schema": "xar.maintenance.settlement_application.result.v1",
+    "settled_actor_full_id": 31254,
+    "static_actor_phase": 24,
+    "synthetic": false,
+    "wallet_effects": [
+      {
+        "actor_full_id": 31254,
+        "amount_raw": "111391",
+        "balance_after_bits": "25567301",
+        "balance_before_bits": "25455910",
+        "delta_raw": "111391",
+        "original_return_bits": "4294967295",
+        "role": "net_add",
+        "wrapper": "1862863806336"
+      }
+    ]
+  },
+  "operands_raw": {
+    "a": "384653",
+    "b": "0",
+    "c": "273262",
+    "d": "0",
+    "scale": 100000
+  },
+  "thread_created": "134371572936408873",
+  "parent_return_RAX": "1862863806088",
+  "exact_one_day_date_raw": [
+    53146872,
+    53146896
+  ],
+  "accepted_source_frames_half_open": [
+    120,
+    1110
+  ],
+  "source_fps": 30,
+  "selected_duration_seconds": "33",
+  "pre_paused_frames_half_open": [
+    120,
+    360
+  ],
+  "post_paused_frames_half_open": [
+    720,
+    1080
+  ],
+  "edit_871frame_window_half_open": [
+    180,
+    1051
+  ],
+  "visible_change_seconds_open_closed": [
+    20,
+    23
+  ],
+  "visible_gold_labels": [
+    254,
+    255
+  ],
+  "visible_dates": [
+    "1066-12-30",
+    "1066-12-31"
+  ],
+  "exact_native_event_encoded_PTS": null,
+  "frame_index": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r08-film-qa-a01\\FRAME-INDEX.actual-a01.json",
+    "bytes": 14646,
+    "sha256": "1cc0c4de6148c3fa2ad4a50e20e837702e9df6dea6428bc80c5d6fa475d419ab"
+  },
+  "Root_visual_review": {
+    "contacts": [
+      "contact-00.jpg",
+      "contact-24.jpg"
+    ],
+    "actual_contact_cells_viewed": 45,
+    "fullres_source_frames_viewed": [
+      0,
+      360,
+      450,
+      600,
+      690,
+      990,
+      1320
+    ],
+    "observed": "Client map/HUD dates visible; mouse over sea; reviewed images have no hover tooltip, retired panel, episode title, desktop border or occlusion",
+    "every_frame_visual_review": false,
+    "continuous_capture_guard_error": null
+  },
+  "complete_video_decode": {
+    "tool": "bad1fb",
+    "original_wait": 0,
+    "decoded_frames": 1332,
+    "stderr_bytes": 0,
+    "framemd5_bytes": 106775,
+    "framemd5_sha256": "1337dce915c589cad304f792c8dd1b0a2824da1dbccfdf98271cf72be361fb82",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "audio_streams": 0
+  },
+  "timing_QA": {
+    "tool": "bad1fb",
+    "original_ffprobe_wait": 0,
+    "all_1332_PTS_DTS_monotonic": true,
+    "step_ms_range": [
+      33,
+      34
+    ],
+    "first_last_PTS_ms": [
+      0,
+      44367
+    ],
+    "time_base": "1/1000",
+    "stdout_sha256": "8d6ed96e7bb1d35f602bf8645c50039cdfac0ac1de0d4fcfd1c2f8294be7e01f"
+  },
+  "formal_count": {
+    "before": 9,
+    "after": 10,
+    "total": 11,
+    "percentage": 90.9090909090909,
+    "remaining": [
+      "R05"
+    ]
+  },
+  "original_flags_preserved": {
+    "full_R08_qualified": false,
+    "business_pass": false,
+    "opportunity_complete": false
+  },
+  "paid_military_wallet_debit_raw": null,
+  "payer": null,
+  "cadence": null,
+  "recurring_payment_observed": false,
+  "full_original_M_card_qualified": false,
+  "human_1x": false,
+  "human_signoff": false,
+  "finished_film_accepted": false,
+  "original_errors_preserved": [
+    "payment-before-disable: ValueError: sleep length must be non-negative"
+  ],
+  "supervisor_original_wait": null,
+  "normal_close_qualified": true,
+  "screen_release_CAS": 8269,
+  "retention": {
+    "review_at_utc": "2026-10-24T16:30:00Z",
+    "protected_until_utc": "2026-10-29T16:30:00Z",
+    "reason": "Accepted R08 source and active chapter input"
+  }
+}

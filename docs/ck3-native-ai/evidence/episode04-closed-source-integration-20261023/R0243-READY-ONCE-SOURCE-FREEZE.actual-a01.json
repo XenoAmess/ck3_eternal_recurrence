@@ -1,0 +1,163 @@
+{
+  "schema": "xar.r05.ready-once-source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T19:30:52.356553+00:00",
+  "source_root": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01",
+  "source_only": true,
+  "Root_source_purpose": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase7\\ROOT-R05-READY-ONCE-SUCCESSOR-PURPOSE.actual-a01.json",
+    "bytes": 3418,
+    "sha256": "d70077e9409a3d57bdff07c045fb56bbb5502767f60376545c5b42567da933f9"
+  },
+  "capacity_admission": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\CAPACITY-ADMISSION.actual-a01.json",
+    "bytes": 6183,
+    "sha256": "180f7f81279979765fab400011cd7235186a9218c2c5e523890e331926101d39"
+  },
+  "runtime_integration": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\RUNTIME-INTEGRATION.actual-a01.json",
+    "bytes": 19626,
+    "sha256": "fb6e0fb903eba7930b107f2f3c546726ac8c66922f85b9cfb24c9430dc33bae4"
+  },
+  "critical_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\ready_public.py",
+      "bytes": 11349,
+      "sha256": "ae16b7d61403ecc194c79202b0ab0c98fa724914f33dbc02de7554e01a5ccc00"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\ready_contract.py",
+      "bytes": 7395,
+      "sha256": "a970cffaea800325802114b34c41ee42117c11ddee157f09c6461dcd6a75f01e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\ready_bootstrap.py",
+      "bytes": 1888,
+      "sha256": "918b40fa05d7629fb4715cd52284593ecd1680d6be2d5e94814e815f1f1c75e8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\film_handoff.py",
+      "bytes": 17346,
+      "sha256": "c1005f52523c4b72ae16c99eae84d761ffb30dd21e057a3b93eb57b52eb825ba"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\BOUND-SOURCES.json",
+      "bytes": 5921,
+      "sha256": "281f27b39f640bcb3d5ddfc92496f74a91397c5ff109f8710ba617c95f4f9a13"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\test_ready_route.py",
+      "bytes": 21808,
+      "sha256": "2815b9e5843c0772f32bb2562c30ea81375beb71e17e97fa0ada4012e2d39b4e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\run_checks.py",
+      "bytes": 3528,
+      "sha256": "743e2133fd1ba7864be9ce89a25526d328e64f987f349b76b21114fa982417c2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\source_control.py",
+      "bytes": 2660,
+      "sha256": "b19fb45bc08d96b1c90f84f6f92c8cabfbe6eb933500450ae9015f5bbf46476a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\SOURCE-DIFF.actual-a01.json",
+      "bytes": 1858,
+      "sha256": "4c99a6a93198f4f0ec6dac7b360db76115e0fed3362112a4116bb733d7facb1f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\strict-a04.actual.json",
+      "bytes": 863,
+      "sha256": "f27aee339d448b011f252d6ddf1eab4819679046532968284368933ec970b312"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\strict-a04.txt",
+      "bytes": 44,
+      "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\focused-a02.actual.json",
+      "bytes": 709,
+      "sha256": "544e93aac3941e4dd0a868717f3b058d7874c5d4d1fce23675a22c210510e64d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\focused-a02.txt",
+      "bytes": 1080,
+      "sha256": "07b066e74ae79f6bd4e16a095e9ca5b0d9316e50ced7946c32dc0f13ae9b1b9f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\focused-positive-a03.actual.json",
+      "bytes": 818,
+      "sha256": "99af9e79059c454ccd3154d6a0a16cc00cdb736b240c27ed32b38a8096779783"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\focused-positive-a03.txt",
+      "bytes": 479,
+      "sha256": "05583019847829ad6dfb1f307f53447f42ee6462a43b143e16c75bc551df25e3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\clean-import-a01.actual.json",
+      "bytes": 1051,
+      "sha256": "b2dfab266280c1b069b69abf4d1864cef5fdb6917ae4d4a90cd26a876588e53b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\clean-import-a01.txt",
+      "bytes": 45,
+      "sha256": "4e183c840a0dc34ba9b6cf34835cecd5c1d5f14b9f345e9aa72c5f7d6f275bb9"
+    }
+  ],
+  "complete_registration_peers_referenced_and_checked": 53,
+  "runtime_source_references": 81,
+  "source_logical_before_freeze": 367084,
+  "Nativeallocated_before_freeze": 655048,
+  "directories": 62,
+  "pre_freeze_file_count": 179,
+  "pre_freeze_inventory_sha256": "1fe7211e498d35ba31f060cd31a6b412ebae7a39c9e8ad9e269e13a4f85a3288",
+  "actual_verification": {
+    "strict_targets": [
+      "ready_public.py",
+      "ready_contract.py",
+      "ready_bootstrap.py",
+      "test_ready_route.py"
+    ],
+    "strict_original_Popen_PID": 34076,
+    "strict_original_wait": 0,
+    "three_focused_groups_PID": 30532,
+    "three_focused_groups_original_wait": 0,
+    "latest_positive_route_PID": 21972,
+    "latest_positive_original_wait": 0,
+    "isolated_import_PID": 15328,
+    "isolated_import_original_wait": 0,
+    "actual_route": "Original Selection constructor/run/load_adapter -> original CaseClient init/wait_hold/read_report/guard/retain/write_once -> new adapter -> original CapacityPort/RemotePort/Frame/ProgressScope -> first progress mutation refused before transport",
+    "readiness_files_written_once": true,
+    "second_original_wait_still_FileExistsError": true,
+    "Save_once_unknown_no_replay": true,
+    "original_Selection_finally_reached": true,
+    "explicit_testonly_seams": [
+      "preflight admission",
+      "launcher no child",
+      "OS process and retained FILETIME",
+      "capacity Native observation",
+      "control transport no native send",
+      "Root authorization fixture",
+      "GUI normalclose no desktop"
+    ]
+  },
+  "limits": {
+    "Game_launches": 0,
+    "SDK_connections": 0,
+    "native_sends": 0,
+    "screen_actions": 0,
+    "business_credit": false,
+    "no_actual_ready_or_Game_authority_in_fixture": true,
+    "legacy_dependencies_follow_imports_silent_not_new_full_strict": true
+  },
+  "failed_checks_preserved": [
+    "focused-a01",
+    "strict-a01",
+    "strict-a02",
+    "strict-a03"
+  ],
+  "physical_note": "Native plus payload cluster and 8192 reserve before each new source write; directory envelope separate.",
+  "retention_review_at_utc": "2026-10-24T10:00:00Z"
+}

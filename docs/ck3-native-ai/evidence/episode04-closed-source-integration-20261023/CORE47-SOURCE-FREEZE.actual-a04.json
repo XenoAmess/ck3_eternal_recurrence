@@ -1,0 +1,364 @@
+{
+  "schema": "xar.e04.final47.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T19:20:02.512385+00:00",
+  "state": "SOURCE_READY_WAITING_ACTUAL_R05",
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\final47_base.py",
+      "bytes": 21272,
+      "sha256": "0377deb7b47b49cd66beea1797253e8082feabdd708d6727c860e686a6386731"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\final47_products.py",
+      "bytes": 12213,
+      "sha256": "4511e86f90114f61110c781102750db122559da447d5900348b3a80460859572"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\final47_recipe.py",
+      "bytes": 11712,
+      "sha256": "68bb5fea373b72e19641600d618d427c558c003724a36b9c3e1067330541bd3f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\check_final47.py",
+      "bytes": 12063,
+      "sha256": "5c92c958cb11154baf030975f5f2c237b40c8a42e71234112250be73a82c7d1c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\produce_source.py",
+      "bytes": 10788,
+      "sha256": "8ee9c56cfdf72f0faa7a615f2b921713221adacae37aa470c10efaf60d5b28ba"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\README.md",
+      "bytes": 6856,
+      "sha256": "b11f1b9cdef1f89724b10ee0c45ae5e633b8b6c99ca22dc316a26803abdb0220"
+    }
+  ],
+  "dependency_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-render-a01\\mechanics_contract.py",
+      "bytes": 21687,
+      "sha256": "4e6e93c69a02b58a2f94e5893c33ecffe62fb92db6dfee1cccef7dddfc438f28"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-audio-raster-a01\\produce_actual_assets.py",
+      "bytes": 28686,
+      "sha256": "6e12e9235616fefbaf16da2c439297ffb712fc4dc2e1070897e509bf6dde30b0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-edit-source-a01\\two_cue_edit.py",
+      "bytes": 25692,
+      "sha256": "5889e1bd598d8994d71434ab9a4273aaf16e1826d6be7696357d9e26e7f66c58"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-selected-render-source-a01\\selected_contract.py",
+      "bytes": 22101,
+      "sha256": "f5e144227568b006a407fc503698fe3e3ce1d605a7ce4cacc9079ec2f708814d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root\\subtitles\\mechanics_composer.py",
+      "bytes": 11746,
+      "sha256": "56358fd6ac3dee1f89f52382e3442444bd00dbac099743c9b50e7ea904e3e494"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\__init__.py",
+      "bytes": 2122,
+      "sha256": "3fffff8502f4b59ca61d39cce713d55ffef046954262fce1abac3e97f3803734"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_binary.py",
+      "bytes": 2664,
+      "sha256": "ba6dc47fa221e747297ee81afcbdaef2ea9be664c7a4b51f5382563132e0b20b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_deprecate.py",
+      "bytes": 2106,
+      "sha256": "522ac3970b3279feaeeac2ffae51379a72ad45fd666af9a7864b7fd4f03b43c0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_imaging.cp314-win_amd64.pyd",
+      "bytes": 2627072,
+      "sha256": "d823c0e3b54035d08703bb427c553c956c2607b79395f2952e17a5447c5f1105"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_imagingft.cp314-win_amd64.pyd",
+      "bytes": 2171392,
+      "sha256": "93c3ca5a3e7119897be9825a0a4228d485410fc8f1e42257edf7e89052c79bce"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_typing.py",
+      "bytes": 964,
+      "sha256": "b7e3154b97ffa5174bf8cd3bd9866a957141fc3f33d4a3a5f0470ab13fddf6ce"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_util.py",
+      "bytes": 713,
+      "sha256": "78ff087e658999b13f3ea6d425be2a4ea18d2e2e334f44d369daebaa6ca483b6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\_version.py",
+      "bytes": 91,
+      "sha256": "8367607a728dc206da64e3de6b24f826f3030d7f3c053f25c3b3a1fde94fb9d7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\ExifTags.py",
+      "bytes": 10339,
+      "sha256": "362cafb665044fbf41322a248a3313a7fabc75e596ce9c9db5371305f272f0a1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\Image.py",
+      "bytes": 158171,
+      "sha256": "59f1b98ed7bfd7b516b9f13ffd9dd3bc0aa1a495042accdb5ae4609b41c329d5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\ImageFont.py",
+      "bytes": 65080,
+      "sha256": "e9601111f8817e8387fd792b3643e709a5a11febea43cb49de1732e776ba5f60"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\ImageMode.py",
+      "bytes": 2480,
+      "sha256": "50b900fa3b02806c31563af62cf48fe367439a3ea759a424f4be142a3eca7d28"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\PIL\\TiffTags.py",
+      "bytes": 17772,
+      "sha256": "16c76a6c8409388ee2846ecc67f2b8614403678ce8fab6986e28550dee3653d1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\__init__.py",
+      "bytes": 5157,
+      "sha256": "bc92bd249025ff569499919b56c04c2e66aa47922d2cf15e27206d68fa46a7a0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\audio.py",
+      "bytes": 33400,
+      "sha256": "f456e44dfb6f25ba009b5edfe62bc69269494db218c1ac23b92866e401a799c4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\audit.py",
+      "bytes": 12878,
+      "sha256": "a3e90c8ea3bf24c86ee98f8502cf388658a0e8455b603c3aa46499d0f72e9a6c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\capture.py",
+      "bytes": 38376,
+      "sha256": "429387f4fc0781229dcd5e50e75a730c5eae70987a5b0a6e23b4a21c4623e5f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\claims.py",
+      "bytes": 41973,
+      "sha256": "b7694c6d804559d42c767e156939e927deec4c05c05ca36b6f6debf7c4a0e145"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\errors.py",
+      "bytes": 461,
+      "sha256": "c2b953ee305d8c0d660a896d29e45cf2d66083e817fd981541c3384a0d41335b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\evidence.py",
+      "bytes": 48015,
+      "sha256": "ebd9b9c9d9dd523abd8988d040e4ff35347ff0c79acc6604d21012a1b10da98d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\export.py",
+      "bytes": 19413,
+      "sha256": "d4cc6dd0d8ae5c22faa331a7c9a75106f47410c706d387021fc2fc34f0013ca4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\export_commands.py",
+      "bytes": 9650,
+      "sha256": "6677658e9667be69693afa9d2b0ec1f23724397635afecf37b73fbd5ce26916f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\media.py",
+      "bytes": 14297,
+      "sha256": "3f8b1cc5a9f1def0cc4704fe6e2e1fc80f3cb875055cbe48f2a46b2b3ce24f9f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\model.py",
+      "bytes": 22057,
+      "sha256": "91a1a75c7356e3784f1f26ded3e1e93b3142fabf91996ed8eaf7163138fcd1b3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\operations.py",
+      "bytes": 11104,
+      "sha256": "1a55356ad26b4cf566ec3e35001e14b58b4af9c8fcb6d9cfda9c40f75790523e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\pipeline.py",
+      "bytes": 42421,
+      "sha256": "008f889176af6a682118d1c6e63e8b79bdc8ab0f7656f9fa7f461a03c26a0656"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\pipeline_commands.py",
+      "bytes": 24153,
+      "sha256": "1aad1cf2e743631abf8ff1cf153bba602691bdc509ae7c91c90e6c57852b8168"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\process.py",
+      "bytes": 8012,
+      "sha256": "96f56b4ef8397d04fee5d72ca4a41897b453ade49eb13ed23e699901d33387eb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\project.py",
+      "bytes": 8614,
+      "sha256": "e3b1bc309fb3bcfbc6af87ccb8542e83985afa49859e162ba8d70e54956230cf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\registry.py",
+      "bytes": 10585,
+      "sha256": "a54101e43e7f72241751742593d7f2cc02e5a2cf755edc8b454c289086bad794"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\render.py",
+      "bytes": 16124,
+      "sha256": "b3e5be09780881042d268d5af5e42291d6334233f402d05aa0ed1832a414d325"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\review.py",
+      "bytes": 22495,
+      "sha256": "f3d1993cf490780f86f0b9ebd1312a9dd072cf91194971167ddbc8ce8de6a2c3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\review_commands.py",
+      "bytes": 15185,
+      "sha256": "3510bfb72db37589c74c7cb86225ff0655a4dddd8e29fe963d7bd3b89288cf3a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\runlog.py",
+      "bytes": 15383,
+      "sha256": "707f683ef79a13e898e610ed49c608e1f5dd6ae7f04d3a11e84f4d7cc52048b1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\sources.py",
+      "bytes": 14841,
+      "sha256": "1b146e576a912047e01d2a7e3c1e43fa4cae8d9f0092493fb4f88fb6041c7e6b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\subtitles.py",
+      "bytes": 19750,
+      "sha256": "e9d352221358c5382b285ffd26b5e4d07ac4115b1b918a943eb40fe971775ca5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\tts\\__init__.py",
+      "bytes": 837,
+      "sha256": "723375ddadca0973d168848b83eee4ea7e149010fec2cf23425e4febbace699a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\tts\\cache.py",
+      "bytes": 16834,
+      "sha256": "35e7eda75b0ca4d7199d52d83632e7df0712d730ab4ae2e2ab98da2fa0368454"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\tts\\edge.py",
+      "bytes": 2800,
+      "sha256": "5714030002470ba251fa6e85ac75b2c07f75688813d7812b26f052cb64644c80"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\tts\\provider.py",
+      "bytes": 3395,
+      "sha256": "c11db348f5f51d16cc5c89c41040bc99c3e3965fae741ac99cf4a72e23df9484"
+    }
+  ],
+  "Root_source_purpose": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase7\\ROOT-FINAL47-SOURCE-PURPOSE.actual-a01.json",
+    "bytes": 2361,
+    "sha256": "8b0777c16b1440434dfa02a3918240c4fdaa0f7d494da2b1fca45495b3f89f26"
+  },
+  "actual_capacity_card": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\CAPACITY-ADMISSION.actual-a01.json",
+    "bytes": 5194,
+    "sha256": "80a1a19b64459618bc90e6b046ff038034395174007a5718baaada8d61865a6e"
+  },
+  "actual_focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\focused.original-wait.actual.json",
+    "bytes": 1036,
+    "sha256": "5d14bbc03c8fd124ce2bd1cc1149ab53d77d21e76b4cf9d406c87cb864f1316a"
+  },
+  "actual_strict_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\strict.original-wait.actual.json",
+    "bytes": 1490,
+    "sha256": "432818c130fa643f7da61f638c6dc6a5026e141d872ffd6b74ab80aad118f2ff"
+  },
+  "source_recipe": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\FINAL47-PENDING-SOURCE-RECIPE.actual.json",
+    "bytes": 442494,
+    "sha256": "36512ef7aa2d9cdf330b7260fa5a51beb9fdb0a9deb7f9b34d16e9d84cd7146a"
+  },
+  "R05_acceptance_contract": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\R05-ACCEPTANCE-CONTRACT.source.json",
+    "bytes": 1686,
+    "sha256": "34e25cd5743700da2f855d621cc25a78a4c1c4c7ff341f01aad1111105502c21"
+  },
+  "actual_R05_acceptance": null,
+  "retained44_input_signature": {
+    "cue_ids": [
+      "N01-01",
+      "N01-02",
+      "N01-03",
+      "N01-11",
+      "N01-04",
+      "N01-05",
+      "N01-06",
+      "N01-10",
+      "N01-07",
+      "N01-08",
+      "N01-09",
+      "N02-01",
+      "N02-02",
+      "N02-06",
+      "N02-04",
+      "N02-03",
+      "N02-05",
+      "N03-01",
+      "N03-03",
+      "N03-04",
+      "N03-05",
+      "N03-06",
+      "N03-07",
+      "N04-01",
+      "N04-02",
+      "N04-03",
+      "N04-04",
+      "N04-05",
+      "N04-06",
+      "N05-01",
+      "N05-02",
+      "N05-03",
+      "N05-04",
+      "N05-05",
+      "N05-06",
+      "N05-07",
+      "N05-09",
+      "N05-08",
+      "N06-01",
+      "N06-02",
+      "N06-03",
+      "N06-04",
+      "N06-07",
+      "N06-06"
+    ],
+    "source_fields_sha256": "d1f6d5919f3f59c127867d0aec8d06501554d6b3f374ce3487b240d969e71790",
+    "input_signature_sha256": "13c1362e4dc05910d8d709351608a6c0d2e6154772d63a5cafed500fcba2558c",
+    "source_count": 44,
+    "derived_video_unchanged_claim": false
+  },
+  "all47_new_derived_video_contract": true,
+  "media_executed": false,
+  "TTS_raster_FFmpeg_ffprobe_Game_SDK_screen_Git_executed": false,
+  "tool_versions": {
+    "python": "3.14.7",
+    "xar-promo-toolchain": "0.3.0",
+    "Pillow": "12.3.0"
+  },
+  "native_allocated_before_freeze": {
+    "logical_bytes": 539058,
+    "allocated_bytes": 585824,
+    "entries": 32,
+    "payload_bytes_read_for_allocation": 0
+  },
+  "maximum_new_C_allocated_bytes": 2097152,
+  "maximum_new_D_allocated_bytes": 0
+}

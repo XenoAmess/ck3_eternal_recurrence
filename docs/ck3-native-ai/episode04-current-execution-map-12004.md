@@ -1,5 +1,7 @@
 > 2026-10-21 20:47:56 UTC R0232 Root正式裁定；machine_id: desktop-3fevhd2-1c74096080。
 
+> 2026-10-23来源增补（machine_id: `desktop-3fevhd2-1c74096080`）：正式动态主题10/11，R08只接受同次净额中的军费抵扣；R05仍缺自然低补给扣兵正证。新准备链于2026-10-22T20:41:52Z闭场，新Game/SDK/Film/RunID均0。47段只属机制正文，完整片头工作片尚在制作。最新回执和源码参考见[精简入口](episode04-r0241-r0243-and-core47-source-20261023.md)，下文原时点记录保留。
+
 ## 2026-10-22 机制知识快照：源码闭合与运行资格分别读取
 
 当前可显式读取[完整机制规则](episode04-20261022-mechanism-rules-12004.md)、[逐成员便携来源](evidence/episode04-mechanism-rules-20261022/source-index.json)和[视频源项目指针](../../promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/CURRENT-SOURCE.json)。本段记录机器desktop-3fevhd2-1c74096080上的来源整理；版本1.20.0.4/build25734779的知识可参考，不把别机的安装/离线/部署结果迁入当前机器。

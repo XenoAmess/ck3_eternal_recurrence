@@ -1,0 +1,561 @@
+{
+  "schema": "xar.e04.vacation-closeout.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T20:15:28Z",
+  "local_date": "2026-10-23",
+  "timezone": "Asia/Shanghai",
+  "status_at_docs_freeze": "OPERATIONS_STOPPED_FINAL_CAPACITY_RECEIPT_FOLLOWS_DOCS_PIN_FREEZE",
+  "user_request": "温和收尾手上每件事并编写交接文档到docs；停止新Game、录制、回收、源码修复和发布。",
+  "field_contract": {
+    "FilePin": [
+      "path",
+      "bytes",
+      "sha256"
+    ],
+    "native_identity_and_FILETIME": "canonical decimal strings",
+    "counter_sequence": "strict int, never bool or float",
+    "unknown_wait": "null; never infer zero"
+  },
+  "progress": {
+    "formal_dynamic_topics": {
+      "accepted": 10,
+      "total": 11,
+      "display_percent": 90.9,
+      "remaining": [
+        "R05"
+      ],
+      "whole_movie_completion_percentage": false
+    },
+    "new_derived_final47_videos": 0,
+    "total_new_derived_videos_required": 47,
+    "R05_actual_qualification": false,
+    "R05_actual_shot_acceptance": null,
+    "new_movie_QA": false,
+    "human_1x": false,
+    "user_signoff": false
+  },
+  "machine_observation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-22T20:12:20.308158+00:00",
+    "counter": {
+      "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+      "bytes": 282,
+      "sha256": "34621ae29d38058d2a9ce50f45dfbf8fadecf1b455ffb9ede01173bf0493d0e7"
+    },
+    "last_sequence": 243,
+    "last_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0243",
+    "Native_tasklist_original_wait": 0,
+    "Native_tasklist_raw_bytes": 11393,
+    "Native_tasklist_raw_sha256": "421c1144cc51e663c3099d8cd7bf393a463c839ffda2d6e8d5e1b1c3f400fdc2",
+    "Native_tasklist_strict_mbcs_decode": true,
+    "Game_FFmpeg_observer_processes": [],
+    "active_screen_tasks": [],
+    "SDK_owned_Popen_zero_from_actual_owner_and_metadata_closures": true,
+    "SceneB_driver_keeper_liveops_all_absent": true,
+    "a252_submitted": false,
+    "new_RunID_Game_SDK_Film_Save": 0,
+    "readonly48_native_calls": 0,
+    "readonly48_deleted_files": 0,
+    "readonly48_originals_preserved_attrs33": true,
+    "readonly48_control_never_admitted": true,
+    "uniform_policy_json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "uniform_policy_markdown": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+      "bytes": 17121,
+      "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+    },
+    "policy_version": "1.0.0",
+    "quota_max_unchanged_bytes": 449025409024
+  },
+  "actual_sceneB": {
+    "status": "NOT_ALLOCATED",
+    "source": "metadata_a02_and_finite_Steam_only",
+    "actual_new_RunID_Game_SDK_Film_Save": 0,
+    "last_canonical_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0243",
+    "last_canonical_sequence": 243,
+    "public_allocator_a252_submitted": false,
+    "Steam_original_waits": {
+      "owner": 0,
+      "keeper": 0,
+      "release": 0
+    },
+    "Steam_release_CAS": 8303,
+    "Steam_resources": [],
+    "owned_Popen_remaining": 0,
+    "closed_evidence": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-b01\\steam-prelaunch-a01\\CLOSED.actual-a01.json",
+      "bytes": 2508,
+      "sha256": "f83198db22da8e4d33e986d63c0ee68a0acc613848945d82cc4fceff157fba7b"
+    },
+    "metadata_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-runtime-a02\\FINAL-FREEZE-AND-CLOSED.actual-a01.json",
+      "bytes": 7493,
+      "sha256": "f0914d6b1d94e701efc9a04cffd905dcd31445359b62a15b78f55b10443e7e20"
+    },
+    "old_deadlines_reusable_after_vacation": false
+  },
+  "actual_R0243": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0243",
+    "Game_pid": 33292,
+    "Game_created_FILETIME": "134371694124720351",
+    "map_reached": true,
+    "ordinary_days": 0,
+    "ordinary_AUTO": 0,
+    "Film_Starts": 0,
+    "new_business_Save": 0,
+    "blocking_error": "FileExistsError readiness-window.json from duplicate readiness wait before ordinary progress",
+    "source_fixed_and_frozen": true,
+    "original_waits": {
+      "public": 2,
+      "host": 0,
+      "Game": 0,
+      "keeper": 0,
+      "allocator": 0,
+      "release_CLI_not_persisted": null,
+      "supervisor": null
+    },
+    "normal_GUI_closed": true,
+    "actual_release_CAS": 8300,
+    "resources": [],
+    "original_owner_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-a01\\live-ops-a02\\R0243-OWNER-CLOSED.actual-a01.json",
+      "bytes": 5683,
+      "sha256": "c73965a854ca0027fd8231767165ae4143391d23a2b16493157421fbf2506eb4"
+    },
+    "Root_actual_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase7\\ROOT-R0243-ACTUAL-CLOSURE-REVIEW.actual-a01.json",
+      "bytes": 1761,
+      "sha256": "c84414bfedaca5ae47b1e894778f9453b817024563999c91c6f4172ef3eb957f"
+    }
+  },
+  "R08": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0241",
+    "accepted_scope": "military component offsets the same original parent net wallet add, once, actor-global",
+    "actor_id": 31254,
+    "start_date_raw": 53146872,
+    "end_date_raw": 53146896,
+    "operands_raw": {
+      "a": "384653",
+      "b": "0",
+      "c": "273262",
+      "d": "0",
+      "scale": 100000
+    },
+    "net_add_raw": "111391",
+    "wallet_before_raw": "25455910",
+    "wallet_after_raw": "25567301",
+    "paid_military_wallet_debit_raw": null,
+    "payer": null,
+    "cadence": null,
+    "recurring_payment_observed": false,
+    "original_full_R08_qualified": false,
+    "original_business_pass": false,
+    "original_opportunity_complete": false,
+    "acceptance": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-film-qa-a01\\ROOT-R0241-R08-SHOT-ACCEPTANCE.actual-a01.json",
+      "bytes": 5542,
+      "sha256": "8c4ef3c223026f26012220773cd5303383f11332eb9eb4507e867e2756375d98"
+    },
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\camera-raw-a01\\r08-postload-a01\\raw.mkv",
+      "bytes": 29175414,
+      "sha256": "2093104a5ba12db634617efe9ffaa7c12563559847bf994fb7394b08787a0de1"
+    },
+    "fps": 30,
+    "frames": 1332,
+    "accepted_source_interval_half_open": [
+      120,
+      1110
+    ],
+    "current_edit_interval_half_open": [
+      180,
+      1051
+    ],
+    "exact_native_event_encoded_PTS": null,
+    "new_two_voices_and_F13_actual": true,
+    "new_derived_MP4_actual": false
+  },
+  "canonical_Save": {
+    "file": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\state-a03\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 71743357,
+      "sha256": "e8e4a89d1ff5dbea0738a1e0d84e68e3c723aa5af8b3783f70356789e36c6b1f"
+    },
+    "native_FileID128": "281474979304802",
+    "actor_id": 31254,
+    "date_raw": 53146896,
+    "one_life_qualification": false,
+    "restore_replica_R0243_deleted": true
+  },
+  "installed_identity_observed_in_R0243": {
+    "CK3_version": "1.20.0.4",
+    "Steam_build": "25734779",
+    "EXE_bytes": 101040248,
+    "EXE_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "loaded_DLL_bytes": 14397440,
+    "loaded_DLL_sha256": "062b2ae3639c230d2ca4552d5de67c9536605b1fbda2045c040d3fd6f25ca746",
+    "not_future_or_cross_machine_qualification": true
+  },
+  "source_only_checks": {
+    "ready_once": {
+      "strict_files": 4,
+      "actual_groups": 3,
+      "original_waits_all_zero": true,
+      "Game_SDK_sends": 0
+    },
+    "metadata_a02": {
+      "actual_source_pins": 1736,
+      "actual_public_peers": 53,
+      "collector_StopClaim_original_wait": 0,
+      "host_StopCopy_original_wait": 0,
+      "all_six_original_checks_wait": 0,
+      "Root_independently_rehashed_full_frozen_unique": 1736
+    },
+    "final47_recipe": {
+      "safe_subtitle_pages": 232,
+      "pure_checks_original_wait": 0,
+      "strict_files": 5,
+      "strict_original_wait": 0,
+      "actual_new_media_outputs": 0
+    },
+    "final47_executor": {
+      "pure_groups": 8,
+      "strict_files": 3,
+      "original_waits": [
+        0,
+        0
+      ],
+      "Root_independent_Pins": 68,
+      "real_Native_Job_media_Game_SDK": false
+    }
+  },
+  "recovery": {
+    "R0243_shadercache": {
+      "actual_deleted_files": 3856,
+      "actual_deleted_allocated_bytes": 164765152,
+      "original_paths_now_unreadable": true
+    },
+    "R0243_restore_replica": {
+      "actual_deleted_files": 1,
+      "actual_deleted_allocated_bytes": 71745536,
+      "canonical_preserved": true
+    },
+    "R0243_three_JSONL_lossless_NTFS": {
+      "actual_files": 3,
+      "physical_before_bytes": 105218048,
+      "physical_after_bytes": 46657536,
+      "actual_saved_bytes": 58560512,
+      "original_paths_SHA_FileID_preserved": true,
+      "manual_timestamp_restore": 0,
+      "no_additional_quota_deduction": true
+    },
+    "D_MIDX": {
+      "actual_net_freed_bytes": 816656384,
+      "all_unique_objects_retained": true,
+      "already_consumed_do_not_repeat": true
+    },
+    "old48_readonly": {
+      "planned_files": 48,
+      "planned_allocated_bytes": 145133568,
+      "actual_native_disposition_calls": 0,
+      "actual_deleted_files": 0,
+      "actual_released_bytes": 0,
+      "all_original_files_still_present_attrs33": true,
+      "new_control_admitted": false,
+      "last_strict_original_wait": 1,
+      "last_strict_errors": "<string>:61: error: Name \"ref\" already defined on line 45  [no-redef]\n<string>:75: error: \"Handles\" has no attribute \"kernel\"  [attr-defined]\n<string>:117: error: Assignment to variable \"error\" outside except: block  [misc]\nFound 3 errors in 1 file (checked 1 source file)\n",
+      "last_strict_stderr": "nul: No [mypy] section in config file\n",
+      "new_control_root_created": false,
+      "no_fix_or_retry_after_user_stop": true
+    }
+  },
+  "current_historical_review_movie": {
+    "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+    "bytes": 72484128,
+    "sha256": "822963261dad6abdf63c42c66efb13de24f77a04f74e45a987ca0ada18d8792f",
+    "frames": 43160,
+    "fps": 30,
+    "duration_seconds": "1438.667",
+    "new_R08_R05_replacement_included": false,
+    "new_cloud_download_hash_verified": false,
+    "latest_reported_CFAPI_is_historical": "2026-10-22T08:11:16.640668Z",
+    "Bilibili_published": false
+  },
+  "git": {
+    "D_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "D_detached": true,
+    "D_original_tracked_clean": true,
+    "W": "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/integration-worktree",
+    "W_HEAD": "ca58a620c3a6fac67ad814ba346931920ca656ed",
+    "W_clean": true,
+    "new_docs_commit_push": false,
+    "prior_45_docs_nonforce_push_actual": true,
+    "prior_push_readback": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\publication\\PUSH-READBACK.actual.json",
+      "bytes": 336,
+      "sha256": "a2feeca412da754a44550ea204d79a287a0e3e1e50149d9089cce1c4d8efe07b"
+    },
+    "new_R08_R05_final47_sources_all_published": false,
+    "guard_actual_restored": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\publication\\guard-a04\\protocol-state\\GUARD-RESTORED.actual.json",
+      "bytes": 1789,
+      "sha256": "b0dd1ff26c3505759e411eb586c24dc6591b2b268d6dfb40093d0b749ee12b68"
+    },
+    "guard_config_bytes": 12174,
+    "guard_config_sha256": "a4a0343ee9360e1786e6fb71c352c9678d254968b9b75b8537a48ed8d2bb2262",
+    "CI_all_green": false,
+    "CI_execution_machine_id": "unknown",
+    "CI_historical_record": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\publication\\ci-ca58-terminal-a02\\CI-ca58-FINAL.actual-a01.json",
+      "bytes": 3678,
+      "sha256": "f75064f4d3ac1b0c302753deff86e14f55179902454f0f1e4df290749dec8e56"
+    },
+    "CI_watch_remaining": false
+  },
+  "capacity_at_docs_freeze": {
+    "actual_admission": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\capacity\\r05-phase2100-control-a01\\VACATION-CLOSEOUT-AND-TWO-DOCS-ADMISSION.actual-a01.json",
+      "bytes": 9337,
+      "sha256": "6743a7de09b70fe6094216cc33df03492d52b08cb23bc9142c29dbd7e80ac74d"
+    },
+    "ledger_adoption_independently_read": true,
+    "policy_version": "1.0.0",
+    "quota_C_max_bytes": 449025409024,
+    "quota_increased": false,
+    "fresh_budget": {
+      "C:/": {
+        "total_bytes": 511133945856,
+        "free_bytes": 67040788480,
+        "used_whole_volume_conservative_project_upper_bound_bytes": 444093157376,
+        "future_bytes": 65536,
+        "system_growth_bytes": 4294967296,
+        "safety_bytes": 21474836480,
+        "required_free_bytes": 25803423744,
+        "floor_margin_bytes": 41237364736,
+        "quota_projected_whole_volume_upper_bound_bytes": 448388190208,
+        "quota_bytes": 449025409024,
+        "quota_margin_bytes": 1140535296,
+        "measured_nonproject_current_allocated_lower_bound_deduction_bytes": 536870912,
+        "project_current_allocation_upper_bound_bytes": 443556286464,
+        "extra_system_growth_uncertainty_reserve_bytes": 33554432,
+        "quota_projected_project_allocation_upper_bound_bytes": 447884873728,
+        "whole_volume_superset_quota_margin_before_measurement_bytes": 637218816
+      },
+      "D:/": {
+        "total_bytes": 500090007552,
+        "free_bytes": 22495764480,
+        "used_whole_volume_conservative_project_upper_bound_bytes": 477594243072,
+        "future_bytes": 1146880,
+        "system_growth_bytes": 134217728,
+        "safety_bytes": 21474836480,
+        "required_free_bytes": 21610201088,
+        "floor_margin_bytes": 885563392
+      }
+    },
+    "remaining_closing_future_C_bytes": 65536,
+    "remaining_docs_future_D_bytes": 98304,
+    "existing_serial_ledger_peak_D_bytes": 1048576,
+    "no_full_Game_pool_admitted": true,
+    "all_business_recovery_authority_cancelled": true
+  },
+  "final_all_zero_authority": {
+    "path": "C:/ck3-e04-resume-20261022-b01/capacity/r05-phase2100-control-a01/VACATION-ALL-WORK-CLOSED.actual-a01.json",
+    "state_at_docs_freeze": "issued_after_exact_two_docs_pin_readback",
+    "sha256_not_prefilled_to_avoid_cycle": true,
+    "current_ledger_path": "D:/workspace/.codex-task-bus/e04-capacity-reservations.json",
+    "must_read_actual_independent_final_before_reusing_state": true
+  },
+  "sources": {
+    "docs_admission": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\capacity\\r05-phase2100-control-a01\\VACATION-CLOSEOUT-AND-TWO-DOCS-ADMISSION.actual-a01.json",
+      "bytes": 9337,
+      "sha256": "6743a7de09b70fe6094216cc33df03492d52b08cb23bc9142c29dbd7e80ac74d"
+    },
+    "Root_stop": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase9\\VACATION-ROOT-LOCAL-STATE-AND-C-BANK-CLOSED.actual-a01.json",
+      "bytes": 2288,
+      "sha256": "aa257c77bd96e52c57898168bd3aaed392caf6ca0ff8939c338cad12acc914a9"
+    },
+    "R08_acceptance": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-film-qa-a01\\ROOT-R0241-R08-SHOT-ACCEPTANCE.actual-a01.json",
+      "bytes": 5542,
+      "sha256": "8c4ef3c223026f26012220773cd5303383f11332eb9eb4507e867e2756375d98"
+    },
+    "R08_raw": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\camera-raw-a01\\r08-postload-a01\\raw.mkv",
+      "bytes": 29175414,
+      "sha256": "2093104a5ba12db634617efe9ffaa7c12563559847bf994fb7394b08787a0de1"
+    },
+    "canonical_Save": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\state-a03\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 71743357,
+      "sha256": "e8e4a89d1ff5dbea0738a1e0d84e68e3c723aa5af8b3783f70356789e36c6b1f"
+    },
+    "ready_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 6786,
+      "sha256": "7c28c1abb6c824718f2e78a2979ee69fc0eab063018966acfd08f32d1255eb09"
+    },
+    "ready_integration": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-source-a01\\RUNTIME-INTEGRATION.actual-a01.json",
+      "bytes": 19626,
+      "sha256": "fb6e0fb903eba7930b107f2f3c546726ac8c66922f85b9cfb24c9430dc33bae4"
+    },
+    "registration_integration": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-mcp-registration-fix-a01\\RUNTIME-INTEGRATION.actual-a01.json",
+      "bytes": 13138,
+      "sha256": "b8b92347253ae3d7b0571853545b2a8ae2bea78537e4e98bfcd9f1f55646b35e"
+    },
+    "progress_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05\\progress-source-a01\\SOURCE-FREEZE.actual-a01.json",
+      "bytes": 17171,
+      "sha256": "e40f27fcc081f5f1b886e7952905a97a81ccad30472b4eeb919760987448918b"
+    },
+    "metadata_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-runtime-a02\\FINAL-FREEZE-AND-CLOSED.actual-a01.json",
+      "bytes": 7493,
+      "sha256": "f0914d6b1d94e701efc9a04cffd905dcd31445359b62a15b78f55b10443e7e20"
+    },
+    "runtime": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-runtime-a02\\runtime.json",
+      "bytes": 390854,
+      "sha256": "d7b5039ecba458df954461263e0dd1842a1821fde7c58804c4695e1aab266f1e"
+    },
+    "source_index": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-runtime-a02\\source-index.json",
+      "bytes": 31704,
+      "sha256": "e118709bd4b50e87f26c5f5b43f735fb1eb62d95e261dbd80cb4037f6cf7f985"
+    },
+    "commands": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-ready-once-runtime-a02\\COMMANDS.actual-a01.json",
+      "bytes": 2541,
+      "sha256": "2b6c9fd5e3d4394d0d5a4aae7974da9fbeac6cd39ea60ca0080b4ffade1b4794"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-b01\\prepared-a02\\prepared-case.json",
+      "bytes": 15405,
+      "sha256": "620b8661fa0a3fd30886813f89b8c0509d3997c38eb92348c10a3b1b3982f3da"
+    },
+    "Root_runtime_review": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase9\\ROOT-R05-FINAL-RUNTIME-REVIEW.actual-a02.json",
+      "bytes": 2487,
+      "sha256": "0b2fea2084e0b07408d0c671a5fca15afca0cce43982c402e7f7c415230f28f9"
+    },
+    "R0243_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-a01\\live-ops-a02\\R0243-OWNER-CLOSED.actual-a01.json",
+      "bytes": 5683,
+      "sha256": "c73965a854ca0027fd8231767165ae4143391d23a2b16493157421fbf2506eb4"
+    },
+    "Root_R0243_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase7\\ROOT-R0243-ACTUAL-CLOSURE-REVIEW.actual-a01.json",
+      "bytes": 1761,
+      "sha256": "c84414bfedaca5ae47b1e894778f9453b817024563999c91c6f4172ef3eb957f"
+    },
+    "Steam_B_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r05-progress-b01\\steam-prelaunch-a01\\CLOSED.actual-a01.json",
+      "bytes": 2508,
+      "sha256": "f83198db22da8e4d33e986d63c0ee68a0acc613848945d82cc4fceff157fba7b"
+    },
+    "Root_Steam_review": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase9\\STEAM-OFFLINE-ROOT-REVIEW.actual-a08.json",
+      "bytes": 3417,
+      "sha256": "6b085a1e25da2e0ae784ea3cd8c61e6a285f691fc88afe0ac3f88836b68a9e97"
+    },
+    "final47_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\SOURCE-FREEZE.actual.json",
+      "bytes": 14738,
+      "sha256": "ec15ee5a4afb60d6401ddcdd3de8484b4f4e9cc11328b024f948db80da24ea1f"
+    },
+    "R05_acceptance_contract": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\R05-ACCEPTANCE-CONTRACT.source.json",
+      "bytes": 1686,
+      "sha256": "34e25cd5743700da2f855d621cc25a78a4c1c4c7ff341f01aad1111105502c21"
+    },
+    "executor_source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-executor-source-a01\\a02\\SOURCE-FREEZE.actual.json",
+      "bytes": 15117,
+      "sha256": "c24e8c0150d9e31a104f46a77e5243ee71ce2c32eaa6a63c44fe8a3dc06fa982"
+    },
+    "Root_executor_review": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase9\\ROOT-FINAL47-EXECUTOR-SOURCE-REVIEW.actual-a01.json",
+      "bytes": 1368,
+      "sha256": "1aebaf6c62e6407528ec7ff15c0b76d1d926f3c73be111a3ea25a21681af5608"
+    },
+    "cache_actual": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r0243-derived-and-old-video-recovery-a01\\R0243-CACHE-ACTUAL-RECOVERY-FINAL.actual-a01.json",
+      "bytes": 3161,
+      "sha256": "602adcb5b17c1ddff05a7b3e365422ae786b0d1a651eca7c4f653d3022eaf1d9"
+    },
+    "restore_actual": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r0243-derived-and-old-video-recovery-a01\\R0243-RESTORE-ACTUAL-RECOVERY-FINAL.actual-a01.json",
+      "bytes": 1242,
+      "sha256": "577f407226b36b00231244790ca839f9961f84166062a65c73ce6c736bbced44"
+    },
+    "compression_actual": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r0243-log-compression-a01\\NTFS-COMPRESSION-ACTUAL-FINAL.actual-a01.json",
+      "bytes": 1782,
+      "sha256": "919b161dd5cc308c9a40a4aefb25f3172fd92e54cc480d6e184799fd9eda7e6c"
+    },
+    "old48_plan": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r0243-derived-and-old-video-recovery-a01\\OLD47-AND-FULL-EXACT-PLAN.actual-a01.json",
+      "bytes": 28637,
+      "sha256": "97d8d5a213a6440c7651672e03f61014440547ba911f22b39b1376463b332991"
+    },
+    "old48_qualification": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r0243-derived-and-old-video-recovery-a01\\OLD47-AND-FULL-REBUILD-QUALIFICATION.actual-a01.json",
+      "bytes": 79631,
+      "sha256": "258a0e66fc601221f529f5e594e4a300584095b93831164d95b5ccb426ba6522"
+    },
+    "old48_Root_review": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase9\\ROOT-READONLY-OLDMEDIA-EXACT-REVIEW.actual-a01.json",
+      "bytes": 846,
+      "sha256": "9c13ddf33f9cb25e9c2695847eab6356301174ecac4f70145ae718fde656069a"
+    },
+    "old48_source_failed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\capacity\\r05-phase2100-control-a01\\readonly_oldmedia_producer.py",
+      "bytes": 15203,
+      "sha256": "6d21f0c63f81f960d1efbebcaab34cbd6e802269ff34b5c6ceeea12e37a058eb"
+    },
+    "MIDX_Root_actual": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root-phase5\\ROOT-MIDX-ACTUAL-READBACK.actual-a01.json",
+      "bytes": 962,
+      "sha256": "918121efff594e081f70c2c94f0fda45f05c44c71ff188e39208e06ff6d4e0a7"
+    },
+    "publication_push": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\publication\\PUSH-READBACK.actual.json",
+      "bytes": 336,
+      "sha256": "a2feeca412da754a44550ea204d79a287a0e3e1e50149d9089cce1c4d8efe07b"
+    },
+    "guard_closed": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\publication\\guard-a04\\protocol-state\\GUARD-RESTORED.actual.json",
+      "bytes": 1789,
+      "sha256": "b0dd1ff26c3505759e411eb586c24dc6591b2b268d6dfb40093d0b749ee12b68"
+    },
+    "CI_ca58_historical": {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\publication\\ci-ca58-terminal-a02\\CI-ca58-FINAL.actual-a01.json",
+      "bytes": 3678,
+      "sha256": "f75064f4d3ac1b0c302753deff86e14f55179902454f0f1e4df290749dec8e56"
+    }
+  },
+  "retention": {
+    "review_at_utc": "2026-10-24T10:00:00Z",
+    "necessary_inputs_protected_until_utc": "2026-10-29T10:00:00Z",
+    "R08_original_protected_until_utc": "2026-10-29T16:30:00Z",
+    "no_automatic_renewal_or_deletion": true,
+    "permanent_assets_and_five_Workshop_preference_not_revoked": true
+  },
+  "resume_requirements": [
+    "Fresh machine identity and common storage policy audit; no hot reuse of old20Z/21Z cards or pending loops.",
+    "Read actual final closure, then new limited purpose/source/runtime/prepared/financial Scope; preserve frozen old roots.",
+    "Fix only the remaining readonly media boundary if recovery needed; revalidate exact48/current references/permanent assets and new execution admission before any disposition.",
+    "Fresh Steam original pixels, one new allocator identity, actual financial admission and native offline probe within30s of original run.",
+    "Full ordinary planner all capabilities; unknown events native capture/first displayed legal/readback/offline rule analysis.",
+    "Real R05 callback-parent-supplywriter entry stock<10 and positive physical debit plus continuous Film and normal close; Root actual business result and strict19-field shot acceptance.",
+    "Only after Game closure, separate media card for all47 actual encodes, actual QA and human1x/OneDrive/signoff.",
+    "New budget for publication; fresh W/remote, normal integration/nonforce push/readback and exact-head appropriate CI. No new Git maintenance."
+  ]
+}
