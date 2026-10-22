@@ -1,8 +1,10 @@
 # 《CK3：信仰引擎》第二期 V7 休假交接
 
+**最终状态：用户再次要求休假收尾，并明确撤回中间的扩展并发／Java G2／新AI研究要求。** 后继准备已停止，八个子线程全部completed，没有新游戏、新构建或后台作业。恢复期间取得的只读发现保留在第8节；不将被撤回的要求列为接手待办。
+
 本记录对应用户“温和地收尾手上的每件事，然后编写交接文档到docs”的实际闭场：停止拍摄、研究和制作，正常关闭 R0036、释放现场并停止全部八个子线程。**V7 没有成片；最后可播放交付仍是用户已提出修改意见的 V6 黄色版。** 接手时先解决容量与新场次准入，再补核心镜头，不能把作者候选、卡图或软件通过写成新版视频完成。
 
-**随后用户取消休假，要求继续任务。** R0036 的正常退出及无半程存档已实际发生，保留本记录，不重新解释旧场次；Root已恢复后继容量与新场次准备。下文“全部completed／future0”等为20:41:59Z闭场截点，不代表恢复工作后永远没有新任务。后继进度见[用户反馈制作记录](../../promo/ck3_faith_and_power/episode02/docs/review-v6-feedback-2026-10-22.md)。
+期间用户曾取消休假、要求继续；Root有限恢复过容量与新场次只读准备，随后遵照最终收尾指令停止。R0036 的正常退出及无半程存档已实际发生，保留本记录，不重新解释旧场次。下文20:41:59Z事实属于第一次闭场截点，最终观察见第8节。进度入口为[用户反馈制作记录](../../promo/ck3_faith_and_power/episode02/docs/review-v6-feedback-2026-10-22.md)。
 
 本文事实所属机器为 **`machine_id: 4-8e1c2f1861`**；现场闭场观察截至 **2026-10-22T20:41:59Z／北京时间2026-10-23 04:41:59**。`tools/ck3_live_run_id.py machine` 本轮实际返回相同 ID。安装、Steam、磁盘与实机事实不外推到其他机器。小型精确索引见[本次交接证据](../ck3-native-ai/evidence/faith-engine-episode02-v7-vacation-handover-20261023.json)。前次交接保留为[10月22日 V6 历史截点](2026-10-22-faith-engine-episode02-v6-vacation-handover.md)。
 
@@ -152,10 +154,24 @@ R0035 `dummy_gender` 已保存角色缺identity的共享读取／序列化修复
 1. 用户恢复工作后，先读本交接、最新主线AGENTS及机器偏好。核机器／实际版本／磁盘和统一台账；R0036已闭场，a05已释放，不重新启用旧G/H或原请求。核必要原件可读与SHA，重新评估到期／保护。解决全程容量、whole-report双份峰值和新的正式制作预留，再开新场。
 2. 尽可能复用已通过的Native／fixture／wire资格和当前runtime，按新source／实际文件身份重新绑定公共入口。只因文档HEAD变化不重编Native全矩阵；真实依赖变化才做对应检查。若借用对象重新封包，执行已有共享metadata-seal步骤，不篡改旧Q。
 3. 按 `tools/ck3_mod_acceptance.py plan / prepare / allocate / preflight / run / verify` 公共路线建立独立新profile／Prepared／冻结分配，逐步消费实际退出码。启动前fresh后台Steam offline，旧蓝色决策窗继续退役，不能由OCR／鼠标替代原生事件选项。不要把R0035诊断或未保存的R0036当作已获资格的接续输入。
-4. 核心仍从合格母档完成：首次类型限制→麦加报价与Start→抵达受戒→连续仪式→真正hajjaj授予／7000结算→返乡及合格Save。`3101→3010(+20日)→3020(+15)→3030(+15)→3040(+15)→3001(+10)→阶段1周on_end授予→7000` 是来源顺序，不是本轮实测；9001返乡另记。录真实窗口变化，不能用当前静帧冒充这些take。
+4. 核心仍从合格母档完成：首次类型限制→麦加报价与Start→抵达受戒→连续仪式→真正hajjaj授予／7000结算→返乡及合格Save。来源路线为`3101→3010(+20日)→3020(+15)→3030(+15)→3040(+15)→3001(+10)→阶段1周`；on_end内先resolve档位、trigger7000，再由completed_log奖励消费者调用Hajjaj helper，7000第一项只展示奖励，不能说点击才授予。3021是旁支，9001返乡另记。这不是本轮实测。录真实窗口变化，不能用当前静帧冒充这些take。
 5. 再执行H06：同一已返乡人物的普通朝圣解锁、合法目的地、首次pilgrim授予并保留hajjaj。`R/h06-successor-preparation-a01/H06-LAUNCH-RECIPE.R0036.pending.json`只是**pending配方**，缺R0036返乡Save所以不能直接执行。4828才是巴格达，当前adapter只是prefer并可能fallback；Root要在实际destination checkpoint核4828。CanPlan／通用冷却现场查询，不能盲等一／五年。
 6. 属性镜头B01（三级学识／文化勇武）与B02（个人诺斯替信条获得链）仍待实拍。`R/gnostic-filming-preparation/B02-EXISTING-ENTRY-ADDENDUM.md`明确当前没有现成Gnostic prepare命令，不能捏造入口／预授特质。现Native没有特质hover口，当前可用角色特质栏与字段；新能力如确实阻断交付，按共享能力与最新版Java迁移边界施工，不再建attempt专用Python生产模块。未拍到的规则用带原版图标的清楚规则图示。
 7. 复用已经完成的48卡／7新声／26旧声，按七cue提案补真实画面；核一期R25旧图内容、可读性与来源后剪裁。开始新的工具链任务／run前查询独立仓库最新正式GitHub Release，验证wheel／解释器／help；本次0.3.0及wheel SHA `f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c`只重现本次，不能固定当作未来最新。
 8. 新run单worker正式制作；旧129章节文件已回收，不能直接concat缺失文件。完成真实输入绑定后才能把content_ready改为true；按实际新声／片段重算时钟、字幕、阅读停顿，编码后检查AV、PTS、全片可读性与人工听音／1×审阅。最后提供本机实际MP4路径，不自动制造用户签收或平台发布。
 
-本轮中间约60%的百分比只是工作估计，不是交付验收；闭场时没有继续运行中的进度或承诺完成时间。用户随后要求继续，下一轮先报容量、新场实际启动与第一个核心结果的节点，再根据真实推进速度给条件预计，避免把首32天或请求数量外推全程耗时。
+本轮中间约60%的百分比只是工作估计，不是交付验收；最终收尾时没有继续运行中的进度或承诺完成时间。以后用户重新启动任务时，先报容量、新场实际启动与第一个核心结果的节点，再根据真实推进速度给条件预计，避免把首32天或请求数量外推全程耗时。
+
+## 8. 最终收尾补注：有限恢复只读发现
+
+闭场文档第一次已以 **61f005a3857c10de9eb0d7075025643472f9f553** 线性rebase并普通推送。该提交与R0036的036来源分开：同步远端同时取得了新的公共Python源码，不能把当前checkout视为只有文档变化。
+
+- `mcp_server.py` 全局只读 `ToolAnnotations` 四字段camel→snake，并新增opt-in、零参数、8MiB有界sentinel只读MCP；`native_driver.py` 新增默认false的 `allow_private_semantic_snapshot_readonly` 及复用既有route的读方法。faith host所查未见开启该flag，但全局annotation注册仍影响公共路径。**旧critical9／原17的raw等值资格不能直接继承当前两文件。** 新两文件完整消费者步骤、当前seam与source资格尚未执行；命令组进一步定位随收尾指令取消。
+- Native C++／CMake变更清单为空，现DLL／Q／27CL／四fixture可按真实同树输入复用，仍须最终封包绑定。原canonical Python指针可能指向已变化工作树，不能因此声称原036仍可直接消费；选择冻结036路径时也须有真实来源资格。没有启动新runtime生产、测试、prepare、allocate或游戏。
+- R0036三wire共 **219,471,753 B**，原生只读锁下before／after身份一致的RAM gzip量测 **13,476,419 B**，逻辑净候选 **205,995,334 B**。shadercache与母档副本逐文件4KiB约217.25MB，母档副本与保留A母档SHA一致。合计约423MB仅是候选，**未压缩落盘、未删除、未写candidate、未改G/H，不能记为已释放**。旧cache是否被默认prepare作为seed消费仍unknown；不能假定冷载／重建成本为0。`native-report.json`仍是后继cleanup实参，保留原位。单凭这些候选与约249.5MB配额余量，不能声称完整Hajj＋返乡＋H06已获容量资格。
+- R0036的139次native horizon实际17次请求7日、122次请求1日；后段原生策略因war8／enemy27移动路线收窄至1日，`timeline_policy=enemy_route_imminent_or_unknown`。不能强制长步忽略战争。现case没有公开配置跳过每步after_snapshot或七日身份读回；427个公共请求／35次身份读回不是427天。
+- 当前九个目标窗口3101、六仪式、7000、9001的知识查询无专用choice contract；已有Journey先Root录像checkpoint，再fresh核同窗与实际显示顺序，单次第一显示合法项并验旧窗消失。7000／9001另有现成结算／返程判读。入口 `tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_adapter.py::run_case` → `faith_e02_pilgrimage_journey.py::run_journey`；不能将后态判读叫作专用选项策略。
+
+最终本机重新观察：**20:50:21.960838Z** 后台Steam仍offline，见[实际新回执](../ck3-native-ai/evidence/faith-engine-e02-v7-final-steam-20261023.json)；**20:50:53.724834Z** 原范围进程扫描无CK3／包含本R命令行的其他进程，显示仍1024×768／32bpp／60Hz。原exit0证明继续由第2节保留句柄及原等待承担。八子线程再次全部completed，各自确认无未收集exec／session／后台PID。没有为新Steam观察激活窗口或截图，没有修改原闭场R。当前存储头仍rev6 closed／future0。
+
+最终只提交本文、必要小证据与入口状态更新；不处理被撤回的扩展任务，也不修改其他机器的Java迁移交接或生产现场。后续重新开工按第7节从真实新来源／容量资格开始。

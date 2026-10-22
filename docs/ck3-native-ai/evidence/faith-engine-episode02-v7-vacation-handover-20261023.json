@@ -164,7 +164,7 @@
     }
   },
   "closed_scene_observed_at_utc": "2026-10-22T20:41:59.169126+00:00",
-  "current_task": "Resume fresh-capacity and new-run preparation; no resumed game yet",
+  "current_task": "Final vacation closure; all work stopped, ignored expansion request is not pending",
   "scene_result": {
     "status": "PARTIAL_ROOT_CAPTURE_CHECKPOINT_REJECTED",
     "actual_days": 224,
@@ -227,5 +227,49 @@
     "official_runner": "FAILURE",
     "official_native_pilgrimage_shared_after_java": "SKIPPED",
     "live_pilgrimage_2002_fix_verified": false
+  },
+  "latest_instruction": "vacation_handover",
+  "final_close_observation": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-22T20:52:48.321643+00:00",
+    "all_eight_children_completed": true,
+    "owned_scene_or_ck3_processes": [],
+    "display": [
+      1024,
+      768,
+      32,
+      60
+    ],
+    "steam_status": "offline",
+    "steam_offline_mode": true,
+    "steam_observed_at_utc": "2026-10-22T20:50:21.960838+00:00",
+    "steam_receipt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\faith-engine-e02-v7-final-steam-20261023.json",
+      "bytes": 2433,
+      "sha256": "eda2b6fc625facc1e1211bf7042f6c87527be8035ca272371be4968a5ae4482b"
+    },
+    "storage_head_revision": 6,
+    "storage_future_reserved_bytes": 0,
+    "volume_free_bytes": 90242453504,
+    "new_game_started": false,
+    "new_test_or_build_started": false,
+    "new_reclamation_performed": false,
+    "ignored_expansion_request_is_not_pending": true
+  },
+  "limited_resume_readonly_findings": {
+    "inspected_checkout": "61f005a3857c10de9eb0d7075025643472f9f553",
+    "changed_public_python_modules": [
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
+    ],
+    "fresh_python_source_qualification_complete": false,
+    "native_cpp_cmake_diff_empty": true,
+    "three_wire_logical_bytes": 219471753,
+    "ram_gzip_measured_bytes": 13476419,
+    "candidate_wire_net_bytes": 205995334,
+    "cache_and_mother_4k_candidate_approx_bytes": 217250000,
+    "candidate_executed": false,
+    "default_prepare_cache_seed_dependency": "unknown",
+    "new_hajj_return_save_available": false
   }
 }
