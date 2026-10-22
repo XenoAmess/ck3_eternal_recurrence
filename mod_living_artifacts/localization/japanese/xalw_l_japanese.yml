@@ -22,7 +22,7 @@
  xalw.10.train:0 "共鳴訓練（名声50、ストレス10、+25経験）"
  xalw.11.cancel:0 "素材を保持"
  xalw.11.confirm:0 "装備を DEVOUR させる"
- xalw.11.desc:0 "今回の経験値（食性込み）：#V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n#V [xalw_material.GetName]#!を#V [xalw_artifact.GetName]#!に給餌する？\n\n材料の基礎経験値：[xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]；食性に合致すればさらに1.25倍。\n材料が実際に破壊された時点で経験値が即時付与され、複数レベル跨ぎの自動昇級や呪いが生じ得る。給餌にクールダウンはない；この選択は材料消費を許可するものであり、昇級に同意を問う必要はない。"
+ xalw.11.desc:0 "今回の経験値（食性込み）：#V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n#V [xalw_material.GetName]#!を#V [xalw_artifact.GetName]#!に給餌する？\n\n材料の基礎経験値：[xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]；食性に合致すればさらに1.25倍。\n材料が実際に破壊された時点で経験値が即時付与され、複数レベル跨ぎの自動昇級や呪いが生じ得る。給餌にクールダウンはない；この選択は材料消費を許可するものであり、昇級に同意を問う必要はない。"
  xalw.11.t:0 "給餌確認：素材は完全に消費される"
  xalw.12.t:0 "活性武器の管理"
  xalw_affix_10_desc:0 "実際の生活スキルを解放すると、365日間の月次学問ライフスタイル経験値が5/10/15%増加し、40/60/80の威厳が失われる。"

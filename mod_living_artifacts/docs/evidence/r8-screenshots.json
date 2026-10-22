@@ -1,0 +1,116 @@
+{
+  "schema": "xalw.r8-original-gameplay-screenshots/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "prepared_at_utc": "2026-10-22T11:46:40.711682+00:00",
+  "session_label": "R8",
+  "run_id": null,
+  "run_identity_scope": "R8 label supplied by Root; the exact native run_id is absent from these original capture receipts and is not independently inferred here.",
+  "review": "Both selected original screenshots were visually inspected at original resolution and copied without editing. Selection is management guidance plus level-six management UI. The common-material XP-0 confirmation remains external defect evidence. No desktop/game/MCP action, image editing, AI generation, commit or upload was performed.",
+  "images": [
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T11:43:48.056692+00:00",
+      "source": "pyautogui original desktop screenshot and Win32 foreground readback",
+      "original_image": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T114348056692Z-r8-management-current.png",
+        "bytes": 2112224,
+        "sha256": "b7c9c4391f4aafec49cc3b7606620b32b24aac478ee56dae55dcf49937f98403"
+      },
+      "original_capture_receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T114348056692Z-r8-management-current.json",
+        "bytes": 813,
+        "sha256": "2fc62b67119b3e94f57c45744faad87b505d34e229ccba00719746d6024cca02"
+      },
+      "repository_image": "mod_living_artifacts/docs/evidence/r8-management-guidance.png",
+      "bytes": 2112224,
+      "sha256": "b7c9c4391f4aafec49cc3b7606620b32b24aac478ee56dae55dcf49937f98403",
+      "width": 1920,
+      "height": 1080,
+      "foreground": {
+        "hwnd_decimal": "1770670",
+        "pid": 11500,
+        "title": "Crusader Kings III",
+        "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "process_create_time_seconds_decimal": "1792665994.732407"
+      },
+      "displayed_scope": "Actual Chinese management guidance. Visible automatic growth, free unequip stop, AI and unlanded-owner rules, and equipped-item guidance option. This frame establishes visible text only.",
+      "image_modified": false,
+      "gameplay_pass_claimed": false,
+      "uploaded": false,
+      "public_url": null
+    },
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T11:59:22.200570+00:00",
+      "source": "pyautogui original desktop screenshot and Win32 foreground readback",
+      "original_image": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T115922200570Z-r8-illustrious-feeding-current.png",
+        "bytes": 2022583,
+        "sha256": "5ee5d68f9b8b53cc083fda88c4450990f95d211a92a179427b9c7cf60efb1a55"
+      },
+      "original_capture_receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T115922200570Z-r8-illustrious-feeding-current.json",
+        "bytes": 822,
+        "sha256": "fc311978e6775cad0cf47f0724f1ae1784c57bc9099eeb81ccf147afcbfb2c6e"
+      },
+      "repository_image": "mod_living_artifacts/docs/evidence/r8-living-artifact-level-six.png",
+      "bytes": 2022583,
+      "sha256": "5ee5d68f9b8b53cc083fda88c4450990f95d211a92a179427b9c7cf60efb1a55",
+      "width": 1920,
+      "height": 1080,
+      "foreground": {
+        "hwnd_decimal": "1770670",
+        "pid": 11500,
+        "title": "Crusader Kings III",
+        "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "process_create_time_seconds_decimal": "1792665994.732407"
+      },
+      "displayed_scope": "Actual Chinese management page displaying ★待测活武器 at level 6, XP 580/600, resonance 25/100, curious personality and armor diet, and the visible affix labels 蹭饭王(3), 嚼地图(1), 秘密嗅探器(1) on 1066.11.1. No four rarity feed options are visible. This image alone does not prove feeding material destruction, the three affixes' triggers/effects, full business acceptance or release.",
+      "image_modified": false,
+      "gameplay_pass_claimed": false,
+      "uploaded": false,
+      "public_url": null
+    }
+  ],
+  "business_pass": false,
+  "excluded_external_evidence": [
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T11:44:47.451610+00:00",
+      "source": "pyautogui original desktop screenshot and Win32 foreground readback",
+      "original_image": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T114447451610Z-r8-four-rarity-management.png",
+        "bytes": 2364287,
+        "sha256": "b0e859b1ab02bf19d46e2167920fbdb22324200d1e035b528617ecc1222c04d7"
+      },
+      "original_capture_receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T114447451610Z-r8-four-rarity-management.json",
+        "bytes": 817,
+        "sha256": "3a6455c5d2017c69abb5febd576daa279769f96f3a93e42163b0d1dd57698366"
+      },
+      "repository_image": null,
+      "bytes": 2364287,
+      "sha256": "b0e859b1ab02bf19d46e2167920fbdb22324200d1e035b528617ecc1222c04d7",
+      "width": 1920,
+      "height": 1080,
+      "foreground": {
+        "hwnd_decimal": "1770670",
+        "pid": 11500,
+        "title": "Crusader Kings III",
+        "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "process_create_time_seconds_decimal": "1792665994.732407"
+      },
+      "displayed_scope": "Actual Chinese common-material feeding confirmation, with target name beginning with a star, irreversible-material warning, confirm/cancel options and base XP 80. Visible displayed total XP is 0. Despite the original capture filename, this is a confirmation page rather than the four-rarity management menu. It proves neither material destruction nor awarded XP.",
+      "image_modified": false,
+      "gameplay_pass_claimed": false,
+      "uploaded": false,
+      "public_url": null,
+      "selection_status": "external-defect-evidence-only",
+      "selection_reason": "Displayed feeding XP 0 is the original R8 UI defect; its external original and capture receipt remain intact. The untracked repository PNG copy was removed by explicit Root instruction to retain only two distinct selected images. No corrected display outcome is inferred."
+    }
+  ],
+  "selection_revision": 2,
+  "selection_updated_at_utc": "2026-10-22T12:02:04.589548+00:00",
+  "selected_image_count": 2,
+  "release_pass": false
+}

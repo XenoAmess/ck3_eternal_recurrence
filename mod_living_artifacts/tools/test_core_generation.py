@@ -22,6 +22,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ck3_text_projection import Block, blocks, masked, normalize
 import living_artifacts_core as core
+from product import LANGUAGES
+from translate_localization_minimax import parse_ck3_localization
 
 
 @dataclass(frozen=True)
@@ -147,8 +149,17 @@ class CoreGenerationTests(unittest.TestCase):
                         if script.scalar(item, "name").value == "xalw_feed_xp")
         self.assertEqual(len(freezes), 1)
         self.assertEqual(script.scalar(freezes[0], "value").value, "xalw_selected_feed_xp_value")
-        localized = core.render_core_localization("simp_chinese")["xalw.11.desc"]
-        self.assertIn("ScriptValue('xalw_selected_feed_xp_value')", localized)
+        marker = "[SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]"
+        for language in ("simp_chinese", "english"):
+            localized = core.render_core_localization(language)["xalw.11.desc"]
+            self.assertEqual(re.findall(r"\[[^\]]*xalw_selected_feed_xp_value[^\]]*\]", localized), [marker])
+        for language in LANGUAGES:
+            with self.subTest(language=language):
+                path = REPO / f"mod_living_artifacts/localization/{language}/xalw_l_{language}.yml"
+                localized = parse_ck3_localization(path)["xalw.11.desc"]
+                # The selected XP value requires both event-local material and
+                # artifact scopes; rebuilding only owner.MakeScope loses them.
+                self.assertEqual(re.findall(r"\[[^\]]*xalw_selected_feed_xp_value[^\]]*\]", localized), [marker])
 
     def test_rarity_shortcuts_only_select_safe_food_and_leave_destruction_to_confirmation(self) -> None:
         script = self.effects

@@ -27,6 +27,7 @@ import zipfile
 from acceptance_contract import (Frame, Object, Pin, array, decimal_id, field, integer, json_value, mapping,
                                  pin, read, require, text, utc_now, write_once)
 from checkpoint_callback import (BlockedReadbackResponse, CompletedReadbackResponse, FileIdentity, MeltProcessReceipt, ReadbackResponse, RootReadbackRequest, checked_pin)
+from living_artifacts_model import CORE_CHECKPOINT_LIMIT
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -160,7 +161,7 @@ def validate_request(spec: ProducerSpec, *, machine_id: str, now: datetime) -> t
             continue
         actual = request[key]
         require(type(actual) is type(wanted) and actual == wanted, "Root request differs from declared identity: " + key)
-    integer(request["observation_number"], "checkpoint observation number", 1, 3)
+    integer(request["observation_number"], "checkpoint observation number", 1, CORE_CHECKPOINT_LIMIT)
     if request["expected_target_id"] is not None:
         decimal_id(request["expected_target_id"], "expected target", allow_zero=True)
     deadline = deadline_seconds(request["original_hold_deadline"])

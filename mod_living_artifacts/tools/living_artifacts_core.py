@@ -987,9 +987,9 @@ def render_core_localization(language: Language) -> dict[str, str]:
     )
     result["xalw.10.desc"] = detail_line + result["xalw.10.desc"]
     result["xalw.11.desc"] = (
-        "本次经验（已含食性）：#V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\\n\\n"
+        "本次经验（已含食性）：#V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\\n\\n"
         if chinese else
-        "Experience including diet: #V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\\n\\n"
+        "Experience including diet: #V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\\n\\n"
     ) + result["xalw.11.desc"]
     personalities = (("护主", "Protective"), ("嗜战", "Warlike"), ("傲慢", "Proud"), ("贪婪", "Greedy"), ("好奇", "Curious"), ("阴郁", "Gloomy"))
     for number, names in enumerate(personalities, start=1):

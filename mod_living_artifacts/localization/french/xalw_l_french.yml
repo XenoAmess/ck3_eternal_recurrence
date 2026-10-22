@@ -22,7 +22,7 @@
  xalw.10.train:0 "Entraînement de résonance (50 prestige, 10 stress, +25 XP)"
  xalw.11.cancel:0 "Conserver la matière"
  xalw.11.confirm:0 "Le laisser dévorer la matière"
- xalw.11.desc:0 "Expérience totale (alimentation comprise) : #V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\nNourrir #V [xalw_artifact.GetName]#! avec #V [xalw_material.GetName]#! ?\n\nExpérience de base du matériau : [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0] ; multipliée par 1,25 s’il correspond à l’alimentation.\nL’expérience est acquise dès la destruction effective du matériau et peut franchir plusieurs niveaux, ainsi que provoquer des malédictions. L’alimentation n’a aucun délai de recharge ; ce choix vaut consommation du matériau, sans autorisation supplémentaire pour monter de niveau."
+ xalw.11.desc:0 "Expérience totale (alimentation comprise) : #V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\nNourrir #V [xalw_artifact.GetName]#! avec #V [xalw_material.GetName]#! ?\n\nExpérience de base du matériau : [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0] ; multipliée par 1,25 s’il correspond à l’alimentation.\nL’expérience est acquise dès la destruction effective du matériau et peut franchir plusieurs niveaux, ainsi que provoquer des malédictions. L’alimentation n’a aucun délai de recharge ; ce choix vaut consommation du matériau, sans autorisation supplémentaire pour monter de niveau."
  xalw.11.t:0 "Confirmation de nourrissage : la matière disparaîtra à jamais"
  xalw.12.t:0 "Gestion des artefacts vivants"
  xalw_affix_10_desc:0 "Le déverrouillage réel d'une compétence de vie accorde 5/10/15 % d'expérience mensuelle pour le mode de vie Apprentissage pendant 365 jours et coûte 40/60/80 prestige."
