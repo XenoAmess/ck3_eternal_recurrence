@@ -222,6 +222,25 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/build_native_configured_successor.py tools/test_build_native_configured_successor.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test native saved Character scope and registered MCP consumers without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools
+          MYPYPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools
+          PYTHONDONTWRITEBYTECODE: "1"
+          XAR_EVENT_SAVED_SCOPE_NATIVE_WIRE: ${{ runner.temp }}\event-saved-scope-native.log
+        run: |
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-event-saved-scope-ci" --configuration Release --jobs 3 --target xar_ck3_12002_event_window_context_test --cmake-define BUILD_TESTING=ON --configure --build
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          ctest --test-dir "%RUNNER_TEMP%\native-event-saved-scope-ci" -C Release -R "^xar_ck3_12002_event_window_context_test$" -V --output-log "%XAR_EVENT_SAVED_SCOPE_NATIVE_WIRE%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_event_saved_character_scope_native_wire.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_event_window_context_v1_bridge.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_event_numeric_scope_v1.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/tests/unit/test_event_saved_character_scope_native_wire.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test pilgrimage trait native-to-SDK and filming contract
         env:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit
