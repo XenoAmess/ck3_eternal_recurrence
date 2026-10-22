@@ -19,7 +19,9 @@ from xar_autoplayer.bridge.normal_exit_process_observer_v1 import RetainedProces
 from xar_autoplayer.bridge.normal_exit_public_wire_v2 import (
     UINT64_MAX, NormalExitPublicResultV2, normal_exit_public_result_v2,
     parse_normal_exit_public_result_v2, parse_normal_exit_public_revision_v2,
-    normal_exit_public_revision_from_snapshot_v2, is_normal_exit_terminal_plan_result_v2,
+)
+from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import (
+    normal_exit_revision_from_snapshot_v2, terminal_normal_exit_result_v2,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
 
@@ -182,35 +184,36 @@ class PublicWireTests(unittest.TestCase):
 
     def test_snapshot_revision_encoder_rejects_non_integer_and_out_of_range_values(self) -> None:
         for value in (1, 2**53 - 1, 2**53, 2**53 + 1, UINT64_MAX):
-            self.assertEqual(normal_exit_public_revision_from_snapshot_v2(value), str(value))
+            self.assertEqual(normal_exit_revision_from_snapshot_v2(value), str(value))
         for invalid in (None, True, False, 1.0, '1', '', 0, -1, UINT64_MAX + 1):
             with self.subTest(value=invalid), self.assertRaises(ValueError):
-                normal_exit_public_revision_from_snapshot_v2(invalid)
+                normal_exit_revision_from_snapshot_v2(invalid)
 
     def test_terminal_plan_detection_validates_full_receipt_and_preserves_exit_facts(self) -> None:
         wire = normal_exit_public_result_v2(terminal(unknown=True))
-        self.assertTrue(is_normal_exit_terminal_plan_result_v2(
+        self.assertTrue(terminal_normal_exit_result_v2(
             'ck3_request_normal_exit_v1', {'action': 'confirm_desktop'}, wire))
         self.assertFalse(wire['typed_normal_exit_observed'])
         self.assertFalse(wire['retry_authorized'])
-        self.assertFalse(is_normal_exit_terminal_plan_result_v2('other_tool', {}, wire))
-        self.assertFalse(is_normal_exit_terminal_plan_result_v2(
+        self.assertFalse(terminal_normal_exit_result_v2('other_tool', {}, wire))
+        self.assertFalse(terminal_normal_exit_result_v2(
             'ck3_request_normal_exit_v1', {'action': 'prepare_confirmation'}, wire))
         observation = normal_exit_public_result_v2(observed())
-        self.assertTrue(is_normal_exit_terminal_plan_result_v2(
+        self.assertTrue(terminal_normal_exit_result_v2(
             'ck3_observe_normal_exit_v1', {}, observation))
-        self.assertFalse(is_normal_exit_terminal_plan_result_v2(
-            'ck3_observe_normal_exit_v1', {'expected_revision': str(REVISION)}, observation))
+        with self.assertRaises(ValueError):
+            terminal_normal_exit_result_v2(
+                'ck3_observe_normal_exit_v1', {'expected_revision': str(REVISION)}, observation)
         for key, invalid in (('public_revision', REVISION), ('snapshot_after_required', 0),
                              ('typed_normal_exit_observed', False)):
             malformed = copy.deepcopy(observation)
             malformed[key] = invalid
             with self.subTest(key=key), self.assertRaises(ValueError):
-                is_normal_exit_terminal_plan_result_v2('ck3_observe_normal_exit_v1', {}, malformed)
+                terminal_normal_exit_result_v2('ck3_observe_normal_exit_v1', {}, malformed)
         missing = copy.deepcopy(observation)
         del missing['process_observation']
         with self.assertRaises(ValueError):
-            is_normal_exit_terminal_plan_result_v2('ck3_observe_normal_exit_v1', {}, missing)
+            terminal_normal_exit_result_v2('ck3_observe_normal_exit_v1', {}, missing)
 
 
 @runtime_checkable
@@ -305,7 +308,7 @@ class RegisteredMcpTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(requests[1]['arguments']['expected_revision'], str(REVISION))
                 self.assertEqual(requests[2]['arguments'], {})
 
-    async def test_actual_host_preserves_explicit_invalid_revision_and_mcp_rejection(self) -> None:
+    async def test_actual_host_rejects_invalid_revision_before_submission_and_keeps_mcp_failure(self) -> None:
         from mcp import Client
         from xar_autoplayer.bridge.mcp_server import create_server
         driver = MemoryDriver()
@@ -315,7 +318,7 @@ class RegisteredMcpTests(unittest.IsolatedAsyncioTestCase):
                 host = actual_host_client(session, Path(temporary) / 'report.json', report)
                 host.tools = {tool.name: {'inputSchema': tool.input_schema}
                               for tool in (await session.list_tools()).tools}
-                with self.assertRaisesRegex(RuntimeError, 'returned an error'):
+                with self.assertRaisesRegex(ValueError, 'canonical uint64 decimal string'):
                     await host.execute([{'id': 'invalid', 'kind': 'tool',
                         'tool': 'ck3_query_normal_exit_context_v1', 'fresh_revision': False,
                         'args': {'expected_revision': REVISION}}])
@@ -326,6 +329,18 @@ class RegisteredMcpTests(unittest.IsolatedAsyncioTestCase):
                 self.assertFalse(rows[0]['ok'])
                 self.assertNotIn('result', rows[0])
                 self.assertNotIn('after_snapshot', rows[0])
+                self.assertFalse((Path(temporary) / 'report.mcp-calls.jsonl').exists())
+                with self.assertRaisesRegex(RuntimeError, 'returned an error'):
+                    await host.execute([{'id': 'invalid-signature', 'kind': 'tool',
+                        'tool': 'ck3_request_normal_exit_v1', 'fresh_revision': False,
+                        'args': {'action': 'confirm_desktop', 'expected_revision': str(REVISION),
+                                 'expected_exit_context_signature': True}}])
+                self.assertEqual(driver.calls, [])
+                if len(rows) != 2 or not isinstance(rows[1], dict):
+                    raise AssertionError('actual host must retain the MCP rejection row')
+                self.assertFalse(rows[1]['ok'])
+                self.assertNotIn('result', rows[1])
+                self.assertNotIn('after_snapshot', rows[1])
 
     async def test_actual_three_wrappers_validate_inputs_and_emit_safe_v2_json(self) -> None:
         # Import is deliberate: missing MCP is a test failure, never a skipped pass.

@@ -159,7 +159,7 @@ class AuthoredInputs:
 
 
 def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInputsAPI,
-                         *, same_root: bool = False) -> AuthoredInputs:
+                         *, same_root: bool = False, fixture_cmake: bool = False) -> AuthoredInputs:
     """Extracted fixture setup; every path/pin is rebuilt in this scratch."""
     repo = scratch / 'r'
     repo.mkdir()
@@ -174,6 +174,12 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
     contents = {'CMakeLists.txt': b'# authored fixture\n', 'src/body.cpp': b'int n;\n',
                 'include/pin.hpp': b'#pragma once\n', 'research/other.py': b'OTHER = 0\n',
                 host_relative: b'HOST = 0\n'}
+    fixture_name = 'xar_ck3_12004_player_pilgrimage_traits_test' if fixture_cmake else 'authored_finite'
+    if fixture_cmake:
+        contents['cmake/player_pilgrimage_traits_12004.cmake'] = (
+            b'if(BUILD_TESTING)\n  add_executable(xar_ck3_12004_player_pilgrimage_traits_test\n'
+            b'    src/body.cpp)\n  target_link_libraries(xar_ck3_12004_player_pilgrimage_traits_test PRIVATE\n'
+            b'    xar_ck3_12002_runtime)\nendif()\n')
     for relative, raw in contents.items():
         path = native / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -212,12 +218,22 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
     execution: JSONObject = {'machine_id': machine, 'original_wait_returncode': 0, 'stopped_reason': None,
         'started_at_utc': '2026-01-01T00:00:00Z', 'finished_at_utc': '2026-01-01T00:00:01Z',
         'game_started_or_attached': False, 'actual_live_business_qualified': False, 'log': log_ref, 'authored_fixture': True}
+    if fixture_cmake:
+        protocol = build / 'xar_bridge_protocol.lib'
+        protocol.write_bytes(b'AUTHORED archive data; never linked')
+        production_rsp = build / 'production.rsp'
+        production_rsp.write_text(str(protocol), encoding='utf-8')
+        execution['response_files'] = [pin(production_rsp)]
+        fixture_rsp = build / 'fixture.rsp'
+        fixture_rsp.write_text('/OUT:' + str(exe) + ' ' + str(protocol), encoding='utf-8')
+        write(evidence / 'fixture-link.json', dict(execution, source_commit=native_commit,
+            argv=['C:/authored/link.exe', '@' + str(fixture_rsp)], response_files=[pin(fixture_rsp)]))
     build_receipt = write(evidence / 'build-receipt.json', execution)
     finite_receipt = write(evidence / 'finite-receipt.json', dict(execution, argv=[str(exe)]))
-    fixture: JSONObject = {'target': 'authored_finite', 'executable': exe_ref, 'execution': finite_receipt}
+    fixture: JSONObject = {'target': fixture_name, 'executable': exe_ref, 'execution': finite_receipt}
     prod_target: JSONObject = {'id': 'p', 'name': 'xar_ck3_bridge', 'type': 'MODULE_LIBRARY',
         'sources': [{'path': 'src/body.cpp', 'compileGroupIndex': 0}], 'compileGroups': [], 'artifacts': [{'path': dll.name}]}
-    fixture_target: JSONObject = {'id': 'f', 'name': 'authored_finite', 'type': 'EXECUTABLE',
+    fixture_target: JSONObject = {'id': 'f', 'name': fixture_name, 'type': 'EXECUTABLE',
         'sources': [], 'compileGroups': [], 'artifacts': [{'path': exe.name}]}
     api = evidence / 'api'
     api.mkdir()
@@ -231,7 +247,7 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
         'directory': str(build), 'command': 'AUTHORED NOT RUN'}])
     scope: JSONObject = {'machine_id': machine, 'snapshot': snapshot_ref, 'no_fixture_in_production': True,
         'codemodel': model_ref, 'index': index_ref, 'compile_commands': commands_ref,
-        'production_TUs': {'xar_ck3_bridge': 1}, 'requested_EXEs': ['authored_finite'], 'targets': [prod_target, fixture_target]}
+        'production_TUs': {'xar_ck3_bridge': 1}, 'requested_EXEs': [fixture_name], 'targets': [prod_target, fixture_target]}
     scope_ref = write(evidence / 'scope.json', scope)
     defender_manifest = {'files': [{'path': str(exe), 'size': exe_ref['bytes'], 'sha256': exe_ref['sha256']}]}
     dm = write(evidence / 'defender-manifest.json', defender_manifest)
@@ -250,7 +266,7 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
         'all_original_build_and_fixture_Popen_waits_recorded': True, 'authored_fixture': True,
         'snapshot': snapshot_ref, 'profile': profile_ref, 'scope': scope_ref, 'source_verification': verification_ref,
         'production_freeze': freeze_ref, 'published_dll': dll_ref, 'Defender_settings_verified': defender_ref,
-        'finite_tests': [{'name': 'authored_finite', 'execution': finite_receipt, 'exe': exe_ref}]})
+        'finite_tests': [{'name': fixture_name, 'execution': finite_receipt, 'exe': exe_ref}]})
     qualification: JSONObject = {'schema': 'ck3-qualified-native-build-v1', 'machine_id': machine,
         'observed_at_utc': '2026-01-01T00:00:02Z', 'source_commit': native_commit,
         'actual_live_business_qualified': False, 'authored_fixture': True, 'delivery': delivery_ref,

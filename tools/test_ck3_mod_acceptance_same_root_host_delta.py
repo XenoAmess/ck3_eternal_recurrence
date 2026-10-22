@@ -14,7 +14,7 @@ import unittest
 from typing import ClassVar
 from uuid import uuid4
 
-import ck3_mod_acceptance_same_root_host_delta as producer
+import ck3_mod_acceptance_native_source_binding as producer
 import test_ck3_mod_acceptance_native_exact_tree_binding as fixture
 
 
@@ -37,8 +37,8 @@ class SameRootHost(unittest.TestCase):
         cls.data = d = fixture.make_authored_inputs(scratch, cls.public, compiled, same_root=True)
         cls.original = d.evidence / 'original-host.py'
         cls.original.write_bytes(d.contents[producer.HOST_NATIVE_RELATIVE])
-        before = producer.signature(cls.original.read_bytes())
-        after = producer.signature((d.repo / producer.HOST_RELATIVE).read_bytes())
+        before = producer.host_signature(cls.original.read_bytes())
+        after = producer.host_signature((d.repo / producer.HOST_RELATIVE).read_bytes())
         source_delta = fixture.write(d.evidence / 'source-delta.json', {
             'target': producer.HOST_RELATIVE, 'base_source': before,
             'candidate_bytes': after['bytes'], 'candidate_sha256': after['sha256'], 'authored_fixture': True})
@@ -55,10 +55,10 @@ class SameRootHost(unittest.TestCase):
         qualification = fixture.write(d.evidence / 'shared-host-qualification.json', {
             'machine_id': d.machine, 'source_commit': d.runtime_commit, 'result': 'PASS', 'exit_code': 0,
             'skipped': 0, 'tests_run': 1, 'covered_chains': ['shared_host'],
-            'source_pins': [producer.pin(d.repo / producer.HOST_RELATIVE)],
+            'source_pins': [producer.host_pin(d.repo / producer.HOST_RELATIVE)],
             'source_consumer': consumer, 'source_delta': source_delta, 'reviewed_host_change': review,
             'authored_fixture_not_actual_tests': True})
-        cls.delta = {'schema': producer.DELTA_SCHEMA, 'machine_id': d.machine,
+        cls.delta = {'schema': producer.HOST_DELTA_SCHEMA, 'machine_id': d.machine,
             'observed_at_utc': datetime.now(timezone.utc).isoformat(),
             'runtime_source_commit': d.runtime_commit, 'native_source_commit': d.native_commit,
             'canonical_repo_relative': producer.HOST_RELATIVE, 'source_classification': 'shared_host',
@@ -74,7 +74,7 @@ class SameRootHost(unittest.TestCase):
 
     def produce(self) -> Path:
         path = self.data.evidence / ('binding-' + uuid4().hex + '.json')
-        producer.produce_binding(self.data.repo, self.data.qpath, self.delta_path,
+        producer.produce_same_root_host_binding(self.data.repo, self.data.qpath, self.delta_path,
                                  self.original, path, self.data.machine)
         return path
 
@@ -84,15 +84,15 @@ class SameRootHost(unittest.TestCase):
             d.machine, d.dll_ref, d.manifest, path, self.delta_path))
 
     def test_01_actual_producer_to_complete_public_qualifier(self) -> None:
-        before = {path: producer.pin(path) for path in (self.data.qpath, Path(self.data.snapshot_ref['path']),
+        before = {path: producer.host_pin(path) for path in (self.data.qpath, Path(self.data.snapshot_ref['path']),
                   Path(self.data.dll_ref['path']))}
         path = self.produce()
         result = self.consume(path)
         self.assertEqual(result['compile_commit'], self.data.native_commit)
-        self.assertEqual(result['source_checkout_binding'], producer.pin(path))
+        self.assertEqual(result['source_checkout_binding'], producer.host_pin(path))
         self.assertEqual(result['native_files'], {producer.NATIVE_PREFIX + 'src/body.cpp':
-                                                producer.signature(self.data.contents['src/body.cpp'])})
-        self.assertEqual(before, {path: producer.pin(path) for path in before})
+                                                producer.host_signature(self.data.contents['src/body.cpp'])})
+        self.assertEqual(before, {path: producer.host_pin(path) for path in before})
 
     def test_02_same_root_without_opt_in_still_rejects_changed_host(self) -> None:
         d = self.data
@@ -105,10 +105,10 @@ class SameRootHost(unittest.TestCase):
 
     def test_04_original_blob_is_exact_git_content(self) -> None:
         path = self.produce()
-        value = producer.read(path)
+        value = producer.host_read(path)
         wrong = self.data.evidence / 'wrong-original.py'
         wrong.write_bytes(b'HOST = 999\n')
-        value['original_shared_host_blob'] = producer.pin(wrong)
+        value['original_shared_host_blob'] = producer.host_pin(wrong)
         fixture.write(path, value)
         with self.assertRaisesRegex(ValueError, 'actual old Git content'):
             self.consume(path)
@@ -158,7 +158,7 @@ class SameRootHost(unittest.TestCase):
                            ('schema', 'ck3-native-worktree-source-binding-v1')):
             with self.subTest(field=field):
                 path = self.produce()
-                value = producer.read(path)
+                value = producer.host_read(path)
                 if bad is None:
                     del value[field]
                 else:
@@ -187,11 +187,11 @@ class SameRootHost(unittest.TestCase):
         d = self.data
         old_path = d.evidence / 'legacy-worktree-delta.json'
         fixture.write(old_path, dict(self.delta, schema='ck3-exact-shared-python-host-delta-v1'))
-        result = fixture.object_fields(producer.shared_api().qualify_shared_host_delta(old_path,
+        result = fixture.object_fields(producer.host_shared_api().qualify_shared_host_delta(old_path,
             root=d.repo, native_repo=d.worktree, runtime_commit=d.runtime_commit, native_commit=d.native_commit,
             machine=d.machine, qualified_native_ref=d.qref, qualification=d.qualification,
             snapshot_ref=d.snapshot_ref, snapshot=d.snapshot))
-        self.assertEqual(result['runtime_host_pin'], producer.pin(d.repo / producer.HOST_RELATIVE))
+        self.assertEqual(result['runtime_host_pin'], producer.host_pin(d.repo / producer.HOST_RELATIVE))
 
     def test_12_reviewed_consumer_cannot_claim_boolean_zero_wait(self) -> None:
         d = self.data
@@ -202,18 +202,18 @@ class SameRootHost(unittest.TestCase):
         qpath = d.evidence / 'shared-host-qualification.json'
         qbefore = qpath.read_bytes()
         try:
-            consumer = producer.read(consumer_path)
+            consumer = producer.host_read(consumer_path)
             consumer['original_wait_returncode'] = False
             fixture.write(consumer_path, consumer)
-            review = producer.read(review_path)
-            review['source_consumer'] = producer.pin(consumer_path)
+            review = producer.host_read(review_path)
+            review['source_consumer'] = producer.host_pin(consumer_path)
             fixture.write(review_path, review)
-            shared = producer.read(qpath)
-            shared['source_consumer'] = producer.pin(consumer_path)
-            shared['reviewed_host_change'] = producer.pin(review_path)
+            shared = producer.host_read(qpath)
+            shared['source_consumer'] = producer.host_pin(consumer_path)
+            shared['reviewed_host_change'] = producer.host_pin(review_path)
             fixture.write(qpath, shared)
-            delta = dict(self.delta, reviewed_host_change=producer.pin(review_path),
-                         shared_host_qualification=producer.pin(qpath))
+            delta = dict(self.delta, reviewed_host_change=producer.host_pin(review_path),
+                         shared_host_qualification=producer.host_pin(qpath))
             fixture.write(self.delta_path, delta)
             with self.assertRaisesRegex(ValueError, 'original zero wait'):
                 self.produce()
@@ -222,6 +222,78 @@ class SameRootHost(unittest.TestCase):
             review_path.write_bytes(review_before)
             qpath.write_bytes(qbefore)
             fixture.write(self.delta_path, self.delta)
+
+    def fixture_case(self) -> tuple[fixture.AuthoredInputs, Path, Path, Path]:
+        scratch = self.data.evidence / ('fixture-' + uuid4().hex)
+        scratch.mkdir()
+        _, _, compiled = fixture.load_apis()
+        d = fixture.make_authored_inputs(scratch, self.public, compiled, same_root=True, fixture_cmake=True)
+        original = d.evidence / 'old.cmake'
+        original.write_bytes(d.contents[producer.FIXTURE_CMAKE_RELATIVE])
+        current = d.native / producer.FIXTURE_CMAKE_RELATIVE
+        current.write_bytes(original.read_bytes().replace(b'    xar_ck3_12002_runtime)',
+                                                        b'    xar_ck3_12002_runtime xar_bridge_protocol)'))
+        fixture.git(d.repo, 'add', producer.NATIVE_PREFIX + producer.FIXTURE_CMAKE_RELATIVE)
+        fixture.git(d.repo, 'commit', '-m', 'Authored fixture-only link completion')
+        d.runtime_commit = fixture.git(d.repo, 'rev-parse', 'HEAD')
+        shared_ref = producer.host_parse_pin(self.delta['shared_host_qualification'])
+        shared = producer.host_read(Path(shared_ref['path']))
+        shared['source_commit'] = d.runtime_commit
+        shared['source_pins'] = [producer.host_pin(d.repo / producer.HOST_RELATIVE)]
+        shared_new = fixture.write(d.evidence / 'shared-host-qualified.json', shared)
+        delta = dict(self.delta, runtime_source_commit=d.runtime_commit, native_source_commit=d.native_commit, qualified_native=d.qref,
+            snapshot=d.snapshot_ref, shared_host_qualification=shared_new,
+            compiled_inputs=compiled.compiled_inputs(d.qualification, d.snapshot))
+        delta_path = d.evidence / 'host-delta.json'
+        fixture.write(delta_path, delta)
+        old_host = d.evidence / 'old-host.py'
+        old_host.write_bytes(d.contents[producer.HOST_NATIVE_RELATIVE])
+        return d, original, delta_path, old_host
+
+    def test_13_fixture_link_completion_producer_to_public_consumer(self) -> None:
+        d, old_cmake, delta_path, old_host = self.fixture_case()
+        binding = d.evidence / 'binding.json'
+        producer.produce_same_root_host_binding(d.repo, d.qpath, delta_path, old_host, binding, d.machine,
+            original_fixture_cmake_blob=old_cmake, fixture_link_receipt=d.evidence / 'fixture-link.json')
+        result = fixture.object_fields(self.public.qualify_native(d.qpath, d.repo, d.runtime_commit,
+            d.machine, d.dll_ref, d.manifest, binding, delta_path))
+        self.assertEqual(result['compile_commit'], d.native_commit)
+        self.assertEqual(result['native_files'], {producer.NATIVE_PREFIX + 'src/body.cpp':
+                                                producer.host_signature(d.contents['src/body.cpp'])})
+
+    def test_14_other_cmake_edit_is_rejected(self) -> None:
+        d, old_cmake, _, _ = self.fixture_case()
+        current = d.native / producer.FIXTURE_CMAKE_RELATIVE
+        current.write_bytes(current.read_bytes() + b'add_library(injected src/body.cpp)\n')
+        fixture.git(d.repo, 'add', '.')
+        fixture.git(d.repo, 'commit', '-m', 'Authored forbidden CMake edit')
+        proof = {'schema': 'ck3-exact-fixture-cmake-link-completion-v1',
+            'original_blob': producer.host_pin(old_cmake),
+            'fixture_link_receipt': producer.host_pin(d.evidence / 'fixture-link.json')}
+        with self.assertRaisesRegex(ValueError, 'Only the known fixture'):
+            producer.qualify_fixture_cmake_delta(proof, root=d.repo, native_commit=d.native_commit,
+                runtime_commit=fixture.git(d.repo, 'rev-parse', 'HEAD'), machine=d.machine,
+                qualification=d.qualification, snapshot=d.snapshot)
+
+    def test_15_link_response_must_prove_existing_protocol_archive(self) -> None:
+        d, old_cmake, _, _ = self.fixture_case()
+        rsp = d.evidence / 'build/fixture.rsp'
+        rsp.write_text('/OUT:' + str(d.dll_ref['path']), encoding='utf-8')
+        link_path = d.evidence / 'fixture-link.json'
+        link = producer.host_read(link_path)
+        link['response_files'] = [producer.host_pin(rsp)]
+        fixture.write(link_path, link)
+        proof = {'schema': 'ck3-exact-fixture-cmake-link-completion-v1',
+            'original_blob': producer.host_pin(old_cmake), 'fixture_link_receipt': producer.host_pin(link_path)}
+        with self.assertRaisesRegex(ValueError, 'protocol archive'):
+            producer.qualify_fixture_cmake_delta(proof, root=d.repo, native_commit=d.native_commit,
+                runtime_commit=d.runtime_commit, machine=d.machine, qualification=d.qualification, snapshot=d.snapshot)
+
+    def test_16_fixture_delta_requires_actual_link_receipt(self) -> None:
+        d, old_cmake, delta, old_host = self.fixture_case()
+        with self.assertRaisesRegex(ValueError, 'supplied together'):
+            producer.produce_same_root_host_binding(d.repo, d.qpath, delta, old_host,
+                d.evidence / 'refused.json', d.machine, original_fixture_cmake_blob=old_cmake)
 
 
 if __name__ == '__main__':

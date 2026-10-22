@@ -14,7 +14,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
-from ck3_mod_acceptance_case_imports import case_sdk_imports
+from ck3_mod_acceptance import _case_sdk_imports_v1
 
 
 class CaseImportTests(unittest.TestCase):
@@ -37,7 +37,7 @@ class CaseImportTests(unittest.TestCase):
 
     def test_selected_sdk_is_bound_and_path_restored_on_exception(self) -> None:
         with self.assertRaisesRegex(RuntimeError, "case failure"):
-            with case_sdk_imports(self.source, {"PYTHONPATH": str(self.source)}):
+            with _case_sdk_imports_v1(self.source, {"PYTHONPATH": str(self.source)}):
                 module = importlib.import_module("xar_autoplayer")
                 self.assertEqual(Path(str(module.__file__)).parent, self.source / "xar_autoplayer")
                 raise RuntimeError("case failure")
@@ -48,7 +48,7 @@ class CaseImportTests(unittest.TestCase):
         foreign.__file__ = str(Path(self.temporary.name) / "foreign/xar_autoplayer/__init__.py")
         sys.modules["xar_autoplayer"] = foreign
         with self.assertRaisesRegex(ValueError, "escaped selected runtime"):
-            with case_sdk_imports(self.source, {"PYTHONPATH": str(self.source)}):
+            with _case_sdk_imports_v1(self.source, {"PYTHONPATH": str(self.source)}):
                 self.fail("foreign SDK must never reach the case")
         self.assertEqual(sys.path, self.prior_path)
 
@@ -57,11 +57,11 @@ class CaseImportTests(unittest.TestCase):
                             {"PYTHONPATH": str(self.source) + os.pathsep},
                             {"PYTHONPATH": str(self.source.parent)}):
             with self.subTest(environment=environment), self.assertRaises(ValueError):
-                with case_sdk_imports(self.source, environment):
+                with _case_sdk_imports_v1(self.source, environment):
                     self.fail("invalid frozen SDK declaration")
 
     def test_existing_sdk_free_environment_does_not_claim_a_binding(self) -> None:
-        with case_sdk_imports(self.source.parent, {}) as selected:
+        with _case_sdk_imports_v1(self.source.parent, {}) as selected:
             self.assertIsNone(selected)
         self.assertEqual(sys.path, self.prior_path)
 

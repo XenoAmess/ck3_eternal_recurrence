@@ -1,6 +1,7 @@
 """Exact opt-in for one reviewed shared Python host beside unchanged Native inputs."""
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import subprocess
@@ -110,7 +111,8 @@ def compiled_inputs(qualification, snapshot):
 def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runtime_commit: str, native_commit: str,
                               machine: str, qualified_native_ref: object, qualification: dict[str, object],
                               snapshot_ref: object, snapshot: dict[str, object],
-                              same_root_before_blob: object = None) -> dict[str, object]:
+                              same_root_before_blob: object = None,
+                              same_root_fixture_cmake: object = None) -> dict[str, object]:
     ref = pin(path)
     value = read(path)
     schema = "ck3-exact-shared-python-host-delta-v1"
@@ -143,9 +145,21 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
                 and type(row["bytes"]) is int and row["bytes"] > 0,
                 "Exact reviewed shared-host raw signature required")
     require(value["before"] != value["after"], "An explicit shared-host delta must actually change its source")
+    expected_changes = {HOST_RELATIVE}
+    if same_root_fixture_cmake is not None:
+        require(old_blob is not None, "Fixture exception requires the explicit same-root original host blob")
+        source_path = Path(__file__).with_name("ck3_mod_acceptance_native_source_binding.py")
+        spec = importlib.util.spec_from_file_location("shared_delta_exact_fixture_cmake", source_path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Fixture source delta validator unavailable")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        module.qualify_fixture_cmake_delta(same_root_fixture_cmake, root=root, native_commit=native_commit,
+            runtime_commit=runtime_commit, machine=machine, qualification=qualification, snapshot=snapshot)
+        expected_changes.add(NATIVE_PREFIX + "cmake/player_pilgrimage_traits_12004.cmake")
     changed = {name for name in git(root, "diff", "--name-only", "-z", native_commit, runtime_commit,
                                    "--", NATIVE_PREFIX).decode("utf-8").split("\0") if name}
-    require(changed == {HOST_RELATIVE}, "Native Git differences must be exactly the one canonical shared Python host")
+    require(changed == expected_changes, "Native Git differences must match the exact reviewed host and fixture changes")
     for repo, commit, expected in ((native_repo, native_commit, value["before"]),
                                    (root, runtime_commit, value["after"])):
         require(signature(git(repo, "show", commit + ":" + HOST_RELATIVE)) == expected,

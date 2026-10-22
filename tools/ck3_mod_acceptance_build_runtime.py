@@ -724,6 +724,11 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             require({key: snapshot_input[key] for key in ("bytes", "sha256")}
                     == {key: row[key] for key in ("bytes", "sha256")},
                     "Preserved original shared-host blob differs from the original Native snapshot")
+        if relative == "cmake/player_pilgrimage_traits_12004.cmake" and source_checkout.get("original_fixture_cmake_blob"):
+            snapshot_input = source_checkout["original_fixture_cmake_blob"]
+            require({key: snapshot_input[key] for key in ("bytes", "sha256")}
+                    == {key: row[key] for key in ("bytes", "sha256")},
+                    "Preserved fixture CMake blob differs from the original Native snapshot")
         current_snapshot = checked(snapshot_input)
         original = row.get("original_source_pin")
         if original:
@@ -736,6 +741,10 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                 original = source_checkout["runtime_shared_host_pin"]
                 require(Path(original["path"]).resolve() == root / HOST_RELATIVE,
                         "Verified shared-host runtime pin is from another source path")
+            if relative == "cmake/player_pilgrimage_traits_12004.cmake" and source_checkout.get("runtime_fixture_cmake_pin"):
+                original = source_checkout["runtime_fixture_cmake_pin"]
+                require(Path(original["path"]).resolve() == native_root / relative,
+                        "Verified fixture CMake runtime pin is from another source path")
             if relative in source_checkout.get("runtime_research_pins", {}):
                 original = source_checkout["runtime_research_pins"][relative]
                 require(Path(original["path"]).resolve() == native_root / relative,
