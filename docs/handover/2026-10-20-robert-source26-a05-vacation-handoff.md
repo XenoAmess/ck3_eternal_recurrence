@@ -1,5 +1,7 @@
 # 罗贝尔原局：Source26／A05 休假交接（2026-10-20）
 
+最新交接：[Source32／N41恢复后休假交接](2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)。`machine_id: xenoamess-full-tower-eb9d2c1186`；2026-10-22T07:03:51Z真实恢复完成，canonical第236条、当前已保存5628日，未保存的6日已明确回退；新basis和未提交修复、容量待办见新文档。以下各历史截点保留，不作为当前执行资格。
+
 2026-10-22接续入口：[Source32／N39当前检查点与质量整改](2026-10-22-robert-source32-n39-quality-handoff.md)。`machine_id: xenoamess-full-tower-eb9d2c1186`，实际观察截至03:37Z：已推进至1082-02-15／5628日，N39新检查点和通用恢复资格已完成，Game正常闭场仍未通过。以下旧截点保留，不作为当前Driver／SAVE、Steam或容量资格。
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。用户明确要求休假收尾，本轮停止推进；以下现场观察截至2026-10-20T04:25Z。04:22:21Z重新读取kernel进程清单，活动CK3为空；屏幕已经释放。机器身份由`tools/ck3_live_run_id.py machine`重新实读。小型机器可读入口见[闭场回执](2026-10-20-robert-source26-a05-closeout.json)。

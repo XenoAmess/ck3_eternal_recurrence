@@ -12,10 +12,18 @@ from pydantic import AfterValidator, Field
 
 from .confucian_challenger_graph_v1 import validate_faith_ids
 from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
+from .normal_exit_public_wire_v2 import (
+    normal_exit_public_result_v2, parse_normal_exit_public_revision_v2,
+    validate_normal_exit_public_revision_v2,
+)
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
 NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+NormalExitPublicRevisionV2 = Annotated[
+    str, Field(strict=True, min_length=1, max_length=20, pattern=r"^[1-9][0-9]{0,19}$"),
+    AfterValidator(validate_normal_exit_public_revision_v2),
+]
 ConfucianFaithSelectorV1 = Annotated[
     list[Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)]],
     Field(strict=True, min_length=1, max_length=8, json_schema_extra={"uniqueItems": True}),
@@ -4745,22 +4753,24 @@ def create_server(
     @server.tool(annotations=read_only_tool)
     def ck3_observe_normal_exit_v1() -> dict[str, object]:
         """Read the backend-owned pending original process handle; never redispatch."""
-        return service.observe_normal_exit_v1()
+        return normal_exit_public_result_v2(service.observe_normal_exit_v1())
 
     @server.tool(annotations=read_only_tool)
-    def ck3_query_normal_exit_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+    def ck3_query_normal_exit_context_v1(expected_revision: NormalExitPublicRevisionV2) -> dict[str, object]:
         """Observe stock map exit context, supported autosave state and signature; no dispatch."""
-        return service.query_normal_exit_context_v1(expected_revision=expected_revision)
+        return normal_exit_public_result_v2(service.query_normal_exit_context_v1(
+            expected_revision=parse_normal_exit_public_revision_v2(expected_revision)))
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
     def ck3_request_normal_exit_v1(
         action: Literal["prepare_confirmation", "continue_preparation", "disable_exit_autosave", "confirm_desktop"],
-        expected_revision: NormalExitRevisionV1,
+        expected_revision: NormalExitPublicRevisionV2,
         expected_exit_context_signature: NormalExitSignatureV1,
     ) -> dict[str, object]:
         """Claim a stock exit phase or set exit autosave=false; native readback is required."""
-        return service.request_normal_exit_v1(action, expected_revision=expected_revision,
-            expected_exit_context_signature=expected_exit_context_signature)
+        return normal_exit_public_result_v2(service.request_normal_exit_v1(action,
+            expected_revision=parse_normal_exit_public_revision_v2(expected_revision),
+            expected_exit_context_signature=expected_exit_context_signature))
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_current_actor_stress_adjustment_v1(

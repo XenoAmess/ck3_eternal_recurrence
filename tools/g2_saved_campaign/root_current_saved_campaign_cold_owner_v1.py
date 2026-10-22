@@ -37,6 +37,10 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  _cap_restore_row_v2,_exact_native_json_v1,decode_readonly_prefix_history_v1,
  parse_frame,parse_json,parse_ref,record,rows,text,utc,
 )
+from tools.g2_saved_campaign.current_saved_continuity_v1 import (
+ CompletedUnsavedTailV1,OriginalResponseReaderV1,COMPLETED_UNSAVED_TAIL_SCHEMA_V1,
+ validate_completed_unsaved_tail_evidence_v1,parse_completed_unsaved_tail_v1,
+)
 from tools.g2_saved_campaign.file_stat_identity_v1 import SCHEMA as STAT_SCHEMA,FileStatIdentityV1,parse_file_stat_identity_v1,normalize_file_stat_identity_v1
 QUALIFICATION_SCHEMA="xar.current-saved-basis-qualification/v1"
 CURRENT_INPUTS_SCHEMA="xar.current-saved-cold-inputs/v1"
@@ -767,6 +771,8 @@ def _normal_driver_review_v1(
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[str,...]=())->ClosedEpochV1:
  need(len(_trail)<16 and basis.refs.closure.path not in _trail,"bounded acyclic continuity closure lineage")
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==COMPLETED_UNSAVED_TAIL_SCHEMA_V1:
+  return _completed_unsaved_tail_epoch_for_basis_v1(basis,_TailOriginalResponseReaderV1(reader),_trail=_trail)
  if closure.get("schema")==NORMAL_CLOSURE_SCHEMA_V2:
   return validate_normal_closure_evidence_v2(closure,basis=basis,reader=reader,_trail=_trail)
  if closure.get("schema")==SETTLED_PROGRESS_CLOSURE_SCHEMA:
@@ -970,8 +976,6 @@ def _validated_immutable_inputs_v1(
   failure=parse_readonly_cold_failure_epoch_v1(evidence(reader,basis.refs.closure,65536),expected_machine_id=basis.machine_id)
   need(qualification.epoch_ref==basis.refs.closure and qualification.canonical_qualification_ref==failure.refs.canonical_qualification,'readonly failure qualification source')
  exact_read(reader,basis.refs.checkpoint_validator,65536)
- need(reader.stat(basis.refs.save.path)==basis.save_identity,
-   'no Driver or SAVE identi')
  for name,reference in basis.refs.items():
   if name not in {"driver","save","checkpoint_validator"}:
    evidence(reader,reference,1048576)
@@ -979,12 +983,36 @@ def _validated_immutable_inputs_v1(
  governance=_clone(evidence(reader,basis.refs.governance))
  project_current_saved_governance_resume_v1(governance,expected_completed_cycles=basis.completed_cycles)
  ledger=_clone(evidence(reader,basis.refs.ledger))
+ closure_row=evidence(reader,basis.refs.closure,65536)
+ tail_recovered=closure_row.get("schema")==COMPLETED_UNSAVED_TAIL_SCHEMA_V1
+ expected_ledger_cycles=basis.completed_cycles if tail_recovered else basis.progress.ledger_cycles
+ expected_ledger_date=basis.frame.date_raw if tail_recovered else basis.progress.ledger_date_raw
  need(ledger.get("machine_id")==basis.machine_id
-   and integer(ledger.get("last_settled_cycles"))==basis.progress.ledger_cycles
-   and integer(ledger.get("last_settled_date_raw"))==basis.progress.ledger_date_raw
+   and integer(ledger.get("last_settled_cycles"))==expected_ledger_cycles
+   and integer(ledger.get("last_settled_date_raw"))==expected_ledger_date
    and integer(ledger.get("start_date_raw"))==basis.origin.start_date_raw
    and integer(ledger.get("target_date_raw"))==basis.origin.target_date_raw
    and integer(ledger.get("target_days"))==basis.origin.target_days,'explicit original ledger')
+ if tail_recovered:
+  tail=parse_completed_unsaved_tail_v1(closure_row,expected_machine_id=basis.machine_id)
+  historical=_clean(evidence(reader,tail.sources.raw_state,262144))
+  historical_frame=parse_frame(historical.get("before"))
+  recovery=record(ledger.get("unsaved_tail_recovery"))
+  need(recovery.get("phase")=="saved_frontier_restored"
+   and parse_ref(recovery.get("evidence_ref"))==basis.refs.closure
+   and integer(recovery.get("saved_cycles"))==basis.completed_cycles
+   and integer(recovery.get("saved_date_raw"))==basis.frame.date_raw
+   and integer(recovery.get("historical_cycles"))==integer(historical.get("completed_cycles"))
+   and integer(recovery.get("historical_date_raw"))==historical_frame.date_raw
+   and integer(recovery.get("rolled_back_cycles"))==integer(historical.get("completed_cycles"))-basis.completed_cycles
+   and integer(recovery.get("rolled_back_date_raw"))==historical_frame.date_raw-basis.frame.date_raw
+   and integer(recovery.get("ordinary_cycle_credit"),0,0)==0
+   and integer(recovery.get("game_day_credit"),0,0)==0
+   and recovery.get("original_actions_replayed") is False
+   and recovery.get("Driver_history_truncated") is False
+   and parse_frame(recovery.get("saved_target_frame"))==basis.frame
+   and recovery.get("requires_new_cold_binding") is True,
+   "only the actual ordered saved-frontier recovery pair admits new cold inputs")
  closed=_closed_epoch(basis,reader,_trail=_trail)
  return CurrentSavedColdInputsV1(basis,seed,governance,
   _clone(seed["actual_saved_checkpoint"]),ledger,closed,basis_ref,validation_ref)
@@ -1632,7 +1660,11 @@ def resolve_current_saved_closed_sdk_ref_v1(inputs:CurrentSavedColdInputsV1,*,re
   forward=validate_current_saved_continuity_forward_basis_v1(business,reader=reader)
   business=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=inputs.basis.machine_id)
   closure=evidence(reader,business.refs.closure,65536)
- if closure.get("schema")==SETTLED_PROGRESS_CLOSURE_SCHEMA:
+ if closure.get("schema")==COMPLETED_UNSAVED_TAIL_SCHEMA_V1:
+  tail_proof=parse_completed_unsaved_tail_v1(closure,expected_machine_id=inputs.basis.machine_id)
+  abnormal=evidence(reader,tail_proof.sources.abnormal_closed_epoch,65536)
+  expected=parse_ref(record(abnormal.get("refs")).get("sdk_closed"))
+ elif closure.get("schema")==SETTLED_PROGRESS_CLOSURE_SCHEMA:
   expected=parse_settled_progress_closure_v1(closure,expected_machine_id=inputs.basis.machine_id).refs.sdk_closed
  elif closure.get("schema")==NORMAL_CLOSURE_SCHEMA_V2:
   expected=parse_normal_closure_v2(closure,expected_machine_id=inputs.basis.machine_id).refs.sdk_closed
@@ -1681,3 +1713,351 @@ def validate_current_saved_prepared_sdk_closure_v1(value:object,*,inputs:Current
   "wait_result":0,"observation_error":None} for p in inputs.closed_epoch.sdk_processes]
  return {"schema":"xar.current-saved-qualified-sdk-closure/v1","machine_id":inputs.basis.machine_id,
   "source_ref":reference.to_wire(),"status":"ACTUAL_BOTH_SDK_EXITS_OBSERVED","normal":normal,"processes":processes}
+
+class _TailOriginalResponseReaderV1:
+ def __init__(self,reader:BasisReaderV1)->None:self.reader=reader
+ def stat(self,path:str)->FileStatIdentityV1:return self.reader.stat(path)
+ def read(self,reference:ExactRefV1,limit:int)->bytes:return self.reader.read(reference,limit)
+ def read_response(self,reference:ExactRefV1,limit:int)->bytes:
+  integer(limit,1,MAX_ORIGINAL_RESPONSE_BYTES_V1)
+  need(reference.bytes<=limit,"bounded original completed-tail response")
+  return self.reader.read(reference,limit)
+# RAM proposal; requires shared CompletedUnsavedTailV1 and OriginalResponseReaderV1 imports.
+# No existing normal-closure function is changed.
+@dataclass(frozen=True)
+class ObservedSavedRecoveryEpochV1:
+ closed_epoch:ClosedEpochV1
+ driver_ref:ExactRefV1
+ driver_identity:FileStatIdentityV1
+ save_ref:ExactRefV1
+ save_identity:FileStatIdentityV1
+ history_rows:int
+
+def _tail_scope_v1(proof:CompletedUnsavedTailV1,prior:CurrentSavedColdInputsV1)->Path:
+ need(proof.machine_id==prior.basis.machine_id,"tail machine")
+ utc(proof.observed_at_utc)
+ need(proof.sources.prior_basis==prior.basis_ref and proof.sources.prior_validation==prior.validation_ref,
+  "tail retains its exact prior saved qualification")
+ root=Path(proof.runtime_root)
+ need(root.is_absolute(),"absolute observed tail runtime")
+ return root
+
+def _tail_abnormal_sdk_v1(value:object)->tuple[ClosedSdkProcessV1,...]:
+ result:list[ClosedSdkProcessV1]=[]
+ for value_row in rows(value):
+  row=record(value_row);role=row.get("role")
+  if role=="sdk_queue":name:Literal["sdk_queue","sdk_application"]="sdk_queue";expected=1
+  elif role=="sdk_application":name="sdk_application";expected=0
+  else:raise ValueError("actual SDK role")
+  need(row.get("kernel_exit_observed") is True and row.get("observation_error") is None
+   and "observation_error" in row and integer(row.get("wait_result"),0,0)==0
+   and integer(row.get("exit_code"),0,UINT64_MAX)==expected,"observed mixed SDK 1/0 closure")
+  result.append(ClosedSdkProcessV1(name,integer(row.get("pid"),1,PID_MAX),
+   _birth(row.get("creation_filetime"),legacy_python=True),text(row.get("executable")),expected))
+ need(len(result)==2 and {p.role for p in result}=={"sdk_queue","sdk_application"}
+  and len({(p.pid,p.creation_filetime) for p in result})==2,"two distinct actual SDK generations")
+ return tuple(sorted(result,key=lambda p:p.role))
+
+def _tail_actual_game_v1(
+ machine_id:str,*,sdk_ref:ExactRefV1,supervisor_ref:ExactRefV1,game_ref:ExactRefV1,reader:OriginalResponseReaderV1,
+)->tuple[dict[str,object],CurrentGameIdentityV1,tuple[ClosedSdkProcessV1,...]]:
+ sdk=evidence(reader,sdk_ref,16384)
+ need(sdk.get("machine_id")==machine_id and sdk.get("status")=="ACTUAL_BOTH_SDK_EXITS_OBSERVED"
+  and sdk.get("normal") is False,"honest abnormal SDK closure")
+ processes=_tail_abnormal_sdk_v1(sdk.get("processes"))
+ supervisor=evidence(reader,supervisor_ref,16384);exit_row=evidence(reader,game_ref,16384)
+ owned=record(supervisor.get("owned_cleanup"));phase=record(supervisor.get("known_preload_phase"))
+ before=record(phase.get("before"));after=record(phase.get("after"))
+ game=CurrentGameIdentityV1(integer(exit_row.get("pid"),1,PID_MAX),
+  _birth(exit_row.get("creation_filetime"),legacy_python=True),text(owned.get("ck3_creation_date")))
+ need(supervisor.get("machine_id")==machine_id==exit_row.get("machine_id")
+  and exit_row.get("kernel_signaled") is True and exit_row.get("forced_owned_job_cleanup") is True
+  and exit_row.get("normal_wm_close_qualified") is False
+  and integer(owned.get("job_active_processes_final"),0,0)==0
+  and owned.get("tree_gone") is True and owned.get("cleanup_proven") is True and owned.get("ok") is True
+  and rows(owned.get("contract_errors"))==[]
+  and integer(owned.get("ck3_pid"),1,PID_MAX)==game.pid
+  and integer(owned.get("ck3_exit_code"))==integer(exit_row.get("exit_code"))
+  and integer(before.get("pid"),1,PID_MAX)==integer(after.get("pid"),1,PID_MAX)==game.pid
+  and _birth(before.get("creation_filetime"),legacy_python=True)==game.creation_filetime
+  and _birth(after.get("creation_filetime"),legacy_python=True)==game.creation_filetime,
+  "actual forced Game cleanup, stable birth and empty owned Job")
+ again=record(supervisor.get("sdk_actual_exit"))
+ need(again.get("status")==sdk["status"] and _tail_abnormal_sdk_v1(again.get("processes"))==processes,
+  "supervisor and primary SDK exits identify the same processes")
+ return supervisor,game,processes
+
+def validate_completed_unsaved_tail_epoch_evidence_v1(
+ proof:CompletedUnsavedTailV1,*,prior:CurrentSavedColdInputsV1,reader:OriginalResponseReaderV1,
+)->ObservedSavedRecoveryEpochV1:
+ """Validate immutable historical small evidence; never stat or read Driver/SAVE."""
+ root=_tail_scope_v1(proof,prior)
+ row=record(evidence(reader,proof.sources.abnormal_closed_epoch,65536),
+  {"schema","machine_id","observed_at_utc","runtime_root","refs","tasks","sdk_normal"})
+ need(row["schema"]=="xar.current-saved-observed-abnormal-epoch/v1"
+  and row["machine_id"]==proof.machine_id and row["sdk_normal"] is False
+  and _same_path(text(row["runtime_root"]),str(root)),"typed abnormal tail epoch")
+ utc(row["observed_at_utc"])
+ refs=record(row["refs"],{"sdk_closed","supervisor_closed","game_exit","screen_release"})
+ supervisor,game,processes=_tail_actual_game_v1(proof.machine_id,reader=reader,
+  sdk_ref=parse_ref(refs["sdk_closed"]),supervisor_ref=parse_ref(refs["supervisor_closed"]),
+  game_ref=parse_ref(refs["game_exit"]))
+ tasks:list[SettledTaskClosureRefsV1]=[]
+ for value in rows(row["tasks"]):
+  task=record(value,{"role","spec","closed","unregistered"});role=task["role"]
+  if role=="supervisor":name:TaskRoleV1="supervisor"
+  elif role=="display":name="display"
+  elif role=="feeder":name="feeder"
+  else:raise ValueError("observed tail Task role")
+  tasks.append(SettledTaskClosureRefsV1(name,parse_ref(task["spec"]),parse_ref(task["closed"]),parse_ref(task["unregistered"])))
+ roles={t.role for t in tasks}
+ need((len(tasks)==2 and roles=={"supervisor","display"}) or
+  (len(tasks)==3 and roles=={"supervisor","display","feeder"}),"exact actual two or three Task roles")
+ need(len({t.spec.path for t in tasks})==len(tasks) and len({t.closed.path for t in tasks})==len(tasks)
+  and len({t.unregistered.path for t in tasks})==len(tasks),"independent actual Task sources")
+ nonces=[_settled_task_v1(t,reader=reader,machine_id=proof.machine_id) for t in tasks]
+ need(len(set(nonces))==len(tasks),"independent actual Task generations")
+ _normal_screen_release_v1(prior.basis,reader,parse_ref(refs["screen_release"]),supervisor)
+ review=record(evidence(reader,proof.sources.current_driver_review,262144),
+  {"schema","machine_id","observed_at_utc","runtime_root","Driver","SAVE","raw_state_ref",
+   "raw_governance_ref","actual_next_ref","canonical_qualification_performed"})
+ need(review["schema"]=="xar.current-saved-unsaved-tail-driver-review/v1"
+  and review["machine_id"]==proof.machine_id and _same_path(text(review["runtime_root"]),str(root))
+  and parse_ref(review["raw_state_ref"])==proof.sources.raw_state
+  and parse_ref(review["raw_governance_ref"])==proof.sources.raw_governance
+  and parse_ref(review["actual_next_ref"])==proof.sources.actual_next
+  and review["canonical_qualification_performed"] is False,"observed review is not a fresh canonical qualification")
+ utc(review["observed_at_utc"])
+ driver=record(review["Driver"],{"ref","identity","format_version","command_history_count",
+  "last_checkpoint","recorded_identity","history_scope","history_truncated","history_rewritten"})
+ save=record(review["SAVE"],{"ref","identity"})
+ driver_ref=parse_ref(driver["ref"]);save_ref=parse_ref(save["ref"])
+ driver_identity=_identity(driver["identity"]);save_identity=_identity(save["identity"])
+
+ need(ntpath.normcase(ntpath.normpath(driver_ref.path))==ntpath.normcase(ntpath.normpath(prior.basis.refs.driver.path))
+  and driver_ref.bytes==driver_identity.bytes
+  and save_ref==prior.basis.refs.save and save_identity==prior.basis.save_identity
+  and integer(driver["format_version"],2,2)==2 and driver["history_scope"]=="complete_current_file"
+  and driver["history_truncated"] is False and driver["history_rewritten"] is False
+  and _same_json(driver["last_checkpoint"],prior.checkpoint),"unaltered complete Driver and exact prior saved checkpoint")
+ history_rows=integer(driver["command_history_count"],1)
+ previous=evidence(reader,prior.basis.refs.driver_close,262144)
+ need(history_rows>=integer(record(previous.get("Driver")).get("command_history_count"),1),
+  "never discard the previously observed command history")
+ state=_clean(evidence(reader,proof.sources.raw_state,262144))
+ current=parse_frame(state.get("before"));recorded=record(driver["recorded_identity"])
+ pipe=text(recorded.get("pipe_name"))
+ need(integer(recorded.get("bridge_pid"),1,PID_MAX)==game.pid
+  and integer(recorded.get("episode_character_id"),1)==current.actor_character_id
+  and recorded.get("episode_run_id")==current.episode_run_id,"current closed Driver identity matches actual unsaved frame")
+ binding=record(recorded.get("session_binding_observation"),{"present","value"})
+ need(type(binding["present"]) is bool,"exact session-binding presence")
+ if binding["present"] is False:need(binding["value"] is None,"absent binding remains null")
+ else:
+  value=record(binding["value"],{"pipe_name","bridge_pid","episode_character_id","episode_run_id"})
+  need(value["pipe_name"]==pipe and integer(value["bridge_pid"],1,PID_MAX)==game.pid
+   and integer(value["episode_character_id"],1)==current.actor_character_id
+   and value["episode_run_id"]==current.episode_run_id,"actual current optional session binding")
+ next_row=evidence(reader,proof.sources.actual_next,16384)
+ next_sequence=integer(next_row.get("next_sequence"),1)
+ validate_completed_unsaved_tail_inventory_v1(proof,prior=prior,reader=reader,actual_next_sequence=next_sequence)
+
+ return ObservedSavedRecoveryEpochV1(ClosedEpochV1(proof.sources.abnormal_closed_epoch,game,next_sequence,
+  processes,utc(row["observed_at_utc"]),pipe),driver_ref,driver_identity,save_ref,save_identity,history_rows)
+
+def validate_completed_unsaved_tail_inventory_v1(
+ proof:CompletedUnsavedTailV1,*,prior:CurrentSavedColdInputsV1,reader:OriginalResponseReaderV1,
+ actual_next_sequence:int,
+)->None:
+ root=_tail_scope_v1(proof,prior);integer(actual_next_sequence,1)
+ inv=record(evidence(reader,proof.sources.inventory,1048576),
+  {"schema","machine_id","observed_at_utc","runtime_root","entries","other_request_entries",
+   "unknown_native_entries","new_save_entries","next_ref","plan_entries"})
+ need(inv["schema"]=="xar.current-saved-completed-unsaved-tail-inventory/v1"
+  and inv["machine_id"]==proof.machine_id and _same_path(text(inv["runtime_root"]),str(root))
+  and rows(inv["other_request_entries"])==[] and rows(inv["unknown_native_entries"])==[]
+  and rows(inv["new_save_entries"])==[] and parse_ref(inv["next_ref"])==proof.sources.actual_next,
+  "no omitted, unknown Native, or new SAVE inventory")
+ utc(inv["observed_at_utc"])
+ next_row=evidence(reader,proof.sources.actual_next,16384)
+ need(integer(next_row.get("next_sequence"),1)==actual_next_sequence
+  and next_row.get("failed_request_registered_without_readmission") is True,
+  "preserve the real failed NEXT; no readmission or retransmission")
+ stop=record(evidence(reader,proof.sources.interruption,65536),
+  {"schema","machine_id","observed_at_utc","runtime_root","sequence","request_ref","response_ref",
+   "inflight_ref","before_ref","first_exception_ref","halt_ref","rejection_stage",
+   "sdk_rpc_started","native_submission_started"})
+ need(stop["schema"]=="xar.current-saved-local-recording-paused-refusal/v1"
+  and stop["machine_id"]==proof.machine_id and _same_path(text(stop["runtime_root"]),str(root)),
+  "exact local refusal scope")
+ utc(stop["observed_at_utc"])
+ failed=integer(stop["sequence"],1)
+ request_ref=parse_ref(stop["request_ref"]);response_ref=parse_ref(stop["response_ref"])
+ request=evidence(reader,request_ref,16384);response=evidence(reader,response_ref,1048576)
+ first=evidence(reader,parse_ref(stop["first_exception_ref"]),65536)
+ halt=evidence(reader,parse_ref(stop["halt_ref"]),65536)
+ refusal=validate_completed_unsaved_tail_local_refusal_v1(stop,request=request,response=response,
+  first_exception=first,halt=halt,actual_next_sequence=actual_next_sequence,runtime_root=root)
+ need(not (root/"p37-queue"/f"INFLIGHT-{failed:04d}.json").exists()
+  and not (root/"p37-queue"/f"{failed:04d}-before-action.json").exists(),
+  "unsubmitted local refusal has no on-disk Native dispatch context")
+ entries=rows(inv["entries"]);need(0<len(entries)<=4096,"finite complete request inventory")
+ full_refs:list[ExactRefV1]=[];turns=0;refused=0;seen=prior.basis.next_sequence-1
+ requests:set[str]=set();responses:set[str]=set();auto_sequences:set[int]=set();previous_seen=False
+ for value in entries:
+  item=record(value,{"sequence","request_ref","response_ref","after_ref"})
+  sequence=integer(item["sequence"],1);need(sequence==seen+1,"no omitted or duplicate request slot");seen=sequence
+  rref=parse_ref(item["request_ref"]);oref=parse_ref(item["response_ref"])
+  need(_same_path(rref.path,str(root/"p37-requests"/f"{sequence:04d}-1-result.json"))
+   and _same_path(oref.path,str(root/"p37-responses"/f"{sequence:04d}-1-result.json")),"canonical original request and response paths")
+  requests.add(str(Path(rref.path).resolve()));responses.add(str(Path(oref.path).resolve()))
+  req=evidence(reader,rref,16384);out=evidence(reader,oref,MAX_ORIGINAL_RESPONSE_BYTES_V1)
+  need(integer(req.get("sequence"),1)==sequence and _same_json(out.get("request"),req),"original request source binding")
+  if sequence==failed:
+   need(rref==request_ref and oref==response_ref and item["after_ref"] is None,"unique local refusal has no postcheck")
+   refused+=1;continue
+  need(sequence<failed and req.get("tool")!="ck3_save_checkpoint","no new SAVE or request after local refusal")
+  if sequence==failed-1:
+   need(_same_json(req,refusal.previous_request) and _same_path(oref.path,refusal.previous_response),
+    "refusal points to this exact already completed MET")
+   previous_seen=True
+  if req.get("tool")=="ck3_auto_turn":auto_sequences.add(sequence)
+  if req.get("command")=="full_loop":
+   need(req.get("tool") is None and item["after_ref"] is None and "client_error" not in out,"original FULL control completion")
+   result=record(out.get("result"));body=record(result.get("structured_content"))
+   need(result.get("is_error") is False and body.get("status")=="bounded_loop_finished","actual successful FULL response")
+   turns+=integer(body.get("actual_turns"),1,30);full_refs.append(oref)
+  else:
+   tool=text(req.get("tool"));completed_body(out,tool)
+   after_ref=parse_ref(item["after_ref"])
+   need(_same_path(after_ref.path,str(root/"p37-queue"/f"{sequence:04d}-after-result.json")),"actual successful postcheck path")
+   after=evidence(reader,after_ref,16384)
+   need(after.get("tool")==tool and _same_path(text(after.get("request")),rref.path)
+    and _same_path(text(after.get("response")),oref.path),"actual original completed tool postcheck")
+ need(seen==failed and refused==1 and previous_seen and tuple(full_refs)==proof.sources.successful_full_responses and len(full_refs)>0,
+  "all declared successful FULLs and exactly one final local refusal")
+ plan_sequences:set[int]=set()
+ review=record(evidence(reader,proof.sources.current_driver_review,262144))
+ game_pid=integer(record(record(review.get("Driver")).get("recorded_identity")).get("bridge_pid"),1,PID_MAX)
+ for value in rows(inv["plan_entries"]):
+  item=record(value,{"sequence","ref"});sequence=integer(item["sequence"],1);reference=parse_ref(item["ref"])
+  need(sequence in auto_sequences and sequence not in plan_sequences
+   and _same_path(reference.path,str(root/"p37-responses"/f"{sequence:04d}-0-plan.json")),
+   "unique original before-submit plan for an actual AUTO request")
+  plan=evidence(reader,reference,MAX_ORIGINAL_RESPONSE_BYTES_V1)
+  planned=record(plan.get("request"));result=record(plan.get("result"));body=record(result.get("structured_content"))
+  need(plan.get("source")=="actual GameplayBridgeService.before_submit callback"
+   and integer(plan.get("game_pid"),1,PID_MAX)==game_pid
+   and planned.get("tool")=="root_before_auto_turn_submit" and integer(planned.get("parent_sequence"),1)==sequence
+   and planned.get("callback_protocol")=="xar.ck3.decision-subdecision/v1"
+   and integer(planned.get("callback_index"),1)>=1 and result.get("is_error") is False
+   and body.get("status")=="planned" and bool(record(body.get("plan"))),"actual finite decision-plan provenance")
+  digest(planned.get("actual_observation_sha256"))
+  plan_sequences.add(sequence);responses.add(str(Path(reference.path).resolve()))
+ actual_requests={str(p.resolve()) for p in (root/"p37-requests").glob("*.json")}
+ actual_responses={str(p.resolve()) for p in (root/"p37-responses").glob("*.json")}
+ need(actual_requests==requests and actual_responses==responses,"physical inventory has no undeclared request or response")
+ state=_clean(evidence(reader,proof.sources.raw_state,262144))
+ gov=evidence(reader,proof.sources.raw_governance,262144)
+ need(integer(state.get("completed_cycles"))==prior.basis.completed_cycles+turns
+  and integer(gov.get("completed_cycles"))==integer(state.get("completed_cycles"))
+  and "pending_cycle" in gov and gov["pending_cycle"] is None
+  and state.get("checkpoint_dirty_since_save") is True
+  and _same_json(state.get("actual_saved_checkpoint"),prior.checkpoint),
+  "completed unsaved progress is observed separately from the unchanged saved checkpoint")
+
+def validate_completed_unsaved_tail_closed_epoch_v1(
+ proof:CompletedUnsavedTailV1,*,prior:CurrentSavedColdInputsV1,reader:OriginalResponseReaderV1,
+)->ObservedSavedRecoveryEpochV1:
+ """Closed commit gate: actual current Driver/SAVE identities bracket all evidence checks."""
+ _tail_scope_v1(proof,prior)
+ review=evidence(reader,proof.sources.current_driver_review,262144)
+ driver=record(review.get("Driver"));save=record(review.get("SAVE"))
+ driver_ref=parse_ref(driver.get("ref"));save_ref=parse_ref(save.get("ref"))
+ driver_identity=_identity(driver.get("identity"));save_identity=_identity(save.get("identity"))
+ need(_same_path(driver_ref.path,prior.basis.refs.driver.path) and save_ref==prior.basis.refs.save,
+  "closed review points to the exact actual Driver and prior SAVE")
+ need(reader.stat(driver_ref.path)==driver_identity and reader.stat(save_ref.path)==save_identity,
+  "actual closed Driver/SAVE identities before evidence validation")
+ result=validate_completed_unsaved_tail_epoch_evidence_v1(proof,prior=prior,reader=reader)
+ need(result.driver_ref==driver_ref and result.save_ref==save_ref
+  and result.driver_identity==driver_identity and result.save_identity==save_identity,
+  "closed wrapper and evidence retain one exact review")
+ need(reader.stat(driver_ref.path)==driver_identity and reader.stat(save_ref.path)==save_identity,
+  "actual closed Driver/SAVE identities after evidence validation")
+ return result
+
+def _completed_unsaved_tail_epoch_for_basis_v1(
+ basis:CurrentSavedBasisV1,reader:OriginalResponseReaderV1,*,_trail:tuple[str,...]=(),
+)->ClosedEpochV1:
+ checked=validate_completed_unsaved_tail_evidence_v1(
+  basis.refs.closure,expected_machine_id=basis.machine_id,reader=reader)
+ proof=checked.evidence;prior_basis=checked.saved_basis
+ need(basis.origin==prior_basis.origin and basis.frame==prior_basis.frame
+  and basis.progress==prior_basis.progress and basis.completed_cycles==prior_basis.completed_cycles
+  and basis.save_identity==prior_basis.save_identity and basis.next_sequence==checked.actual_next_sequence
+  and _same_json(basis.checkpoint,prior_basis.checkpoint)
+  and _same_json(basis.campaign_goal_anchor,prior_basis.campaign_goal_anchor)
+  and basis.unknown_requests==prior_basis.unknown_requests and basis.sidecars==prior_basis.sidecars,
+  "unsaved-tail recovery preserves the saved business frontier and all unknown lineage")
+ prior_refs=dict(prior_basis.refs.items())
+ need(all(name in {"driver","driver_close","closure","next","ledger"} or reference==prior_refs[name]
+  for name,reference in basis.refs.items()),"unsaved-tail recovery changes only the declared evidence and ledger sources")
+ need(basis.refs.driver==checked.driver_ref and basis.driver_identity==checked.driver_identity
+  and basis.refs.save==checked.save_ref and basis.save_identity==checked.save_identity
+  and basis.refs.driver_close==proof.sources.current_driver_review
+  and basis.refs.next==proof.sources.actual_next,"one exact current closed payload and actual NEXT")
+ prior=_validated_immutable_inputs_v1(prior_basis,basis_ref=proof.sources.prior_basis,
+  validation_ref=proof.sources.prior_validation,reader=reader,_trail=(*_trail,basis.refs.closure.path))
+ observed=validate_completed_unsaved_tail_epoch_evidence_v1(proof,prior=prior,reader=reader)
+ need(observed.driver_ref==checked.driver_ref and observed.driver_identity==checked.driver_identity
+  and observed.save_ref==checked.save_ref and observed.save_identity==checked.save_identity
+  and observed.history_rows==checked.history_rows,"shared and owner tail evidence have one source graph")
+ return replace(observed.closed_epoch,closure_ref=basis.refs.closure)
+
+@dataclass(frozen=True,slots=True)
+class LocalUnsavedTailRefusalV1:
+ previous_request:JsonObject
+ previous_response:str
+
+def validate_completed_unsaved_tail_local_refusal_v1(
+ stop:object,*,request:object,response:object,first_exception:object,halt:object,
+ actual_next_sequence:int,runtime_root:Path,
+)->LocalUnsavedTailRefusalV1:
+ """Original local terminal-evidence refusal; no RPC/result/before-action is invented."""
+ row=record(stop);req=record(request);out=record(response);first=record(first_exception);held=record(halt)
+ failed=integer(row.get("sequence"),1)
+ need(failed+1==integer(actual_next_sequence,1)
+  and row.get("rejection_stage")=="terminal_evidence_before_request_dispatch"
+  and row.get("sdk_rpc_started") is False and row.get("native_submission_started") is False
+  and "inflight_ref" in row and row["inflight_ref"] is None
+  and "before_ref" in row and row["before_ref"] is None,"actual local refusal has no submitted request context")
+ first_ref=parse_ref(row.get("first_exception_ref"))
+ halt_ref=parse_ref(row.get("halt_ref"))
+ need(_same_path(first_ref.path,str(runtime_root/"ROOT-FIRST-QUEUE-EXCEPTION-P37C23.json"))
+  and _same_path(halt_ref.path,str(runtime_root/"p37-queue"/f"ROOT-REQUEST-HALTED-{failed}.json")),
+  "original terminal source paths")
+ message="retained terminal evidence forbids new RPC: ROOT-FIRST-QUEUE-EXCEPTION-P37C23.json"
+ need(integer(req.get("sequence"),1)==failed and req.get("tool")=="ck3_take_semantic_snapshot_private_v1"
+  and record(req.get("arguments"))=={} and _same_json(out.get("request"),req)
+  and "result" not in out and out.get("client_error")==message
+  and out.get("replay_allowed") is False,"the original SEM was refused locally without a successful SDK result")
+ guard=record(first.get("guard_observation"));flags=record(guard.get("terminal_flags"))
+ need(first.get("stage")=="guard" and first.get("replay_allowed") is False
+  and record(first.get("exception_tree")).get("type")=="RecordingPaused"
+  and guard.get("checking")=="recording_terminal_flags" and guard.get("reserve_reply") is False
+  and guard.get("error_type")=="RecordingPaused" and integer(guard.get("next_sequence"),1)==failed
+  and set(flags)=={"failed.json","completed.json","closed-file-probe.json"}
+  and all(type(v) is bool for v in flags.values()) and any(v is True for v in flags.values()),
+  "actual first recording guard stopped dispatch before any new RPC")
+ previous=record(held.get("original_request"))
+ path=text(held.get("original_response"))
+ need(held.get("message")==message and held.get("error_type")=="ValueError"
+  and held.get("replay_allowed") is False and integer(held.get("next_sequence"),1)==actual_next_sequence
+  and _same_path(text(held.get("first_exception_receipt")),first_ref.path)
+  and integer(previous.get("sequence"),1)==failed-1
+  and previous.get("tool")=="root_current_runtime_metrics"
+  and record(previous.get("arguments"))=={}
+  and _same_path(path,str(runtime_root/"p37-responses"/f"{failed-1:04d}-1-result.json"))
+  and _same_path(text(out.get("original_response")),path),"local rejection retains the exact completed previous MET source")
+ return LocalUnsavedTailRefusalV1(_clone(previous),path)

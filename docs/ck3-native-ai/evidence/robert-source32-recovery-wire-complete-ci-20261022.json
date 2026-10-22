@@ -1,0 +1,332 @@
+{
+  "schema": "xar.robert.saved-tail-recovery-wire-complete-ci/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T07:50:25.605396+00:00",
+  "base_head_after_rebase": "10c37fa927e1df033c2d837c96f8d696ed4eadc2",
+  "status": "LOCAL_TWO_COMPLETE_STEPS_PASS",
+  "source_refs": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 94182,
+      "sha256": "56ee53deec4932c565d37141bd3ef2c6affdc9b7a3cef7ab74ec8e0dac189559"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 281305,
+      "sha256": "75c0590e0227c8b4c7efb0dc0fccca956271b2382b7c78f16fed73808feaec13"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_public_wire_v2.py",
+      "bytes": 14287,
+      "sha256": "63f06a97d555fbf6b6ff12012d9d6f297f77de4be54349aed1af93c5b67d564d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_public_wire_v2.py",
+      "bytes": 12040,
+      "sha256": "ad98bf48b9ee72be18e96f890bd96ca9b75009c08ad5aef073576ea090e6dc00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_continuity_v1.py",
+      "bytes": 76871,
+      "sha256": "c06d0a6553f75ac7e193472d81d6fbc2241417362c7496b2fb77b40a73823a3e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\root_current_saved_campaign_cold_owner_v1.py",
+      "bytes": 139195,
+      "sha256": "a86f191c65ccfec7e09ad3561af07e480ea0ad2673e09ba20c6a0568179ef7e9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_continuity_v1.py",
+      "bytes": 103095,
+      "sha256": "71bb74adbbcdf1c950d20095cc62bc0a121617346f15c25373013b9700ec1bf6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_settled_closure_v1.py",
+      "bytes": 71311,
+      "sha256": "0368ccd490f8af7cd9a5df54564802cc0fd573177124920c741b3fa7cb41b80c"
+    }
+  ],
+  "actual_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\CURRENT-CI-ACTUAL01.json",
+    "bytes": 19538,
+    "sha256": "2100ba274458cebf0a1ad8ff4516217b514d4b49337033383d178b534be0cf0e"
+  },
+  "plan_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\CURRENT-CI-COMMAND-PLAN01.json",
+    "bytes": 48673,
+    "sha256": "bb4f889b529fbbe32070c75ad0c55afe2c25f6e70031c10300fa1de23d611f61"
+  },
+  "commands": 32,
+  "all_exit_codes_zero": true,
+  "full_wall_seconds": 299.1577913002111,
+  "source_pins_stable": true,
+  "tests": [
+    {
+      "step": "Check public normal-exit uint64 wire and registered MCP roundtrip without CK3",
+      "command": 2,
+      "suite_test_counts": [
+        5
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-01-02.log",
+        "bytes": 1596,
+        "sha256": "73551ea4fa7498d1e162b33b1a41496f4207130e6e57fb1b7496f8d227c903f0"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 5,
+      "suite_test_counts": [
+        218
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-05.log",
+        "bytes": 40722,
+        "sha256": "252690f3bfe5370273bb194a05c60b70fbef1b9527577f52f8787b07b9742d7a"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 6,
+      "suite_test_counts": [
+        58
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-06.log",
+        "bytes": 15262,
+        "sha256": "5f4594673651d036db468f5f1b191fec3785a786d803f973fe14af0b4d9c10b3"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 7,
+      "suite_test_counts": [
+        79
+      ],
+      "skip_lines": [
+        "Continuity/Prepared/real-SDK/closure discovered/run/skipped: 79 79 0"
+      ],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-07.log",
+        "bytes": 17529,
+        "sha256": "44aeb995f78630c5aa17c3c6c134608f689d385c238c4060c4d09289fe471161"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 8,
+      "suite_test_counts": [
+        1
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-08.log",
+        "bytes": 531,
+        "sha256": "a3e59dbab398508310e8295c779f08069b7906024d164fe6d168b854640b1360"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 9,
+      "suite_test_counts": [
+        13
+      ],
+      "skip_lines": [
+        "Native32 isolated source fixture discovered/run/skipped: 13 13 0"
+      ],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-09.log",
+        "bytes": 2802,
+        "sha256": "95fefd7876e9ec5fdf36afa284871844a52e409c0b319050887b2242896c3fa5"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 11,
+      "suite_test_counts": [
+        20
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-11.log",
+        "bytes": 11665,
+        "sha256": "fd7172081fdaa43c656cfef042e5aa39a6daa4d161cddec205a512826363c9fd"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 13,
+      "suite_test_counts": [
+        8
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-13.log",
+        "bytes": 111,
+        "sha256": "b8bd88d3c6aeec16810a381fa32b41d615655d14847290ea407c6bcd42aa8d4b"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 16,
+      "suite_test_counts": [
+        7
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-16.log",
+        "bytes": 110,
+        "sha256": "085d4566287d59db28b3ca0dd28ad359a96adb88108df9325009b41ae801605b"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 18,
+      "suite_test_counts": [
+        9
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-18.log",
+        "bytes": 112,
+        "sha256": "7c624b5c70905a1ec379c1dc883c3c9ebe69a39ca65201072edfd62b3ab6df78"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 20,
+      "suite_test_counts": [
+        6
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-20.log",
+        "bytes": 109,
+        "sha256": "951e9e3cfcc6d185415e90c424e298ac8416ae465b30e823240fad5945e19545"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 21,
+      "suite_test_counts": [
+        3
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-21.log",
+        "bytes": 106,
+        "sha256": "383a12fba9b5b327054a24ce7e5739569c4f0b6621facd981f2d6a4271063b3c"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 22,
+      "suite_test_counts": [
+        5
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-22.log",
+        "bytes": 108,
+        "sha256": "ad8ba9f0151501c2936ce2b45b1afa77d3290de3d04ad8ad8d2b45d1254c6eeb"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 23,
+      "suite_test_counts": [
+        9
+      ],
+      "skip_lines": [
+        "OK (skipped=1)"
+      ],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-23.log",
+        "bytes": 124,
+        "sha256": "25e1f9ef9b73c49a3bcd05a67f696ceebef03ea4027bf82120c1aa671c94a75f"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 24,
+      "suite_test_counts": [
+        3
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-24.log",
+        "bytes": 488,
+        "sha256": "31ddfea03903f9d95b4a9ce3f3768fb5981aa8ce5f1931b65fd4a995f79b4942"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 25,
+      "suite_test_counts": [
+        9
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-25.log",
+        "bytes": 112,
+        "sha256": "bebeec8dc07b36d248c4bb5996ec507b897821e4459be201e660bbd35cbb86be"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 27,
+      "suite_test_counts": [
+        12
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-27.log",
+        "bytes": 116,
+        "sha256": "7dd4e2967cddd8811364b9b6df51be7e24cd19d1a6e6731ccd7d447eb9598fc6"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 28,
+      "suite_test_counts": [
+        11
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-28.log",
+        "bytes": 115,
+        "sha256": "0343c3bfabf845d6948208b5cd454b5f7ae9efd49410e1b344af28d9593e6a49"
+      }
+    },
+    {
+      "step": "Check strict cold and owner types and boundary contracts",
+      "command": 30,
+      "suite_test_counts": [
+        5
+      ],
+      "skip_lines": [],
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\ci-complete02\\ci-02-30.log",
+        "bytes": 2541,
+        "sha256": "416966587868985af6439da6651b5503fd78b5f8c0b59f0461c44a568fce1011"
+      }
+    }
+  ],
+  "previous_red_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0820-01\\CURRENT-CI-ACTUAL01.json",
+    "bytes": 5951,
+    "sha256": "243856cee58b9a7f31ea1ff4184b5e8ec27d0884b40226297ec9ccbf3d42980c"
+  },
+  "previous_red_reason": "CI command 7 omitted XAR_CONTINUITY_TEST_FIXTURE_ROOT for new physical recovery tests; current workflow creates it before imports and removes exact empty directories afterward",
+  "fixture_and_scratch_children_removed": true,
+  "hosted_CI_for_this_pending_version": "not_yet_started",
+  "qualification_scope": "Software recovery and public wire only. No new Native DLL, Game run, normal exit, saved days, capability or performance credit.",
+  "Driver_SAVE_body_reads": 0,
+  "new_Game_count": 0,
+  "saved_days": 5628,
+  "G2_done": 6,
+  "G2_total": 8
+}

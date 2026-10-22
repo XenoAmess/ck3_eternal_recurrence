@@ -1,5 +1,7 @@
 # 罗贝尔 Source32／N39 接续与质量整改
 
+最新交接：[Source32／N41恢复后休假交接](2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)。`machine_id: xenoamess-full-tower-eb9d2c1186`；2026-10-22T07:03:51Z已完成真实未保存尾段恢复，canonical第236条。当前basis、未提交八叶修复、CI边界和下一批容量方案以新交接为准；本文件以下历史截点保留。
+
 `machine_id: xenoamess-full-tower-eb9d2c1186`；本文开始截点 `2026-10-22T03:37Z`。承接 [Source26旧交接](2026-10-20-robert-source26-a05-vacation-handoff.md)及[质量整改专题](../ck3-native-ai/current-saved-code-quality-correction-20261022.md)。其他机器的安装、Steam、容量或现场结果不能替代本机读回。
 
 **05:00 接续注意：N41 已闭场但首批未保存。FULL11474 实际完成 30 周期／6 日，到 1082-02-21（5212／raw53279544），墙钟35.3458871秒，约5.890981秒/日。SAVE仍是11469、1082-02-15（5182／5628日），新增存档日数为0。Q40 的旧Driver身份已经失效，当前没有可执行的恢复basis；不得拿下文历史包直接重启。**

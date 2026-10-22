@@ -12,7 +12,7 @@ from tools.g2_saved_campaign import current_saved_continuity_v1 as continuity
 from tools.g2_saved_campaign import root_continuity_window as actual_ledger
 from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
-    CampaignOriginV1, ExactRefV1, JsonObject, canonical_json_v1, integer,
+    CampaignOriginV1, ExactRefV1, JsonObject, JsonValue, canonical_json_v1, integer,
     json_object, parse_json, need,
 )
 from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
@@ -848,6 +848,881 @@ class SettledPrefixOutcomeTests(unittest.TestCase):
         self.assertGreater(r.response_reads, 0)
         self.assertNotIn(basis.refs.driver.path, r.read_paths)
         self.assertNotIn(basis.refs.save.path, r.read_paths)
+
+
+
+def _owned_continuity_case_v1(label: str) -> Iterator[Path]:
+    import os
+    root = Path(os.environ["XAR_CONTINUITY_TEST_FIXTURE_ROOT"]).resolve(strict=True)
+    need(root.name == "test-continuity" and root.is_dir(), "explicit owned continuity fixture root")
+    need(not (getattr(root.lstat(), "st_file_attributes", 0) & 1024), "ordinary owned root")
+    need(label.isascii() and label.replace("-", "").isalnum(), "finite case basename")
+    target = root / label
+    need(target.parent == root and not target.exists(), "create-only contained case")
+    target.mkdir()
+    try:
+        yield target
+    finally:
+        need(target.resolve(strict=True).parent == root, "cleanup remains inside owned root")
+        paths = list(target.rglob("*"))
+        for path in paths:
+            need(not (getattr(path.lstat(), "st_file_attributes", 0) & 1024),
+                 "refuse cleanup through reparse point")
+            need(path.resolve(strict=True).is_relative_to(target), "contained cleanup")
+        for path in sorted(paths, key=lambda item: len(item.parts), reverse=True):
+            if path.is_dir():
+                path.rmdir()
+            else:
+                path.unlink()
+        target.rmdir()
+
+
+class _PhysicalCheckpointReader:
+    def __init__(self, driver_path: str) -> None:
+        self.local = owner.LocalBasisReaderV1()
+        self.driver_path = driver_path
+        self.driver_reads = 0
+
+    def read(self, reference: ExactRefV1, limit: int) -> bytes:
+        if reference.path == self.driver_path:
+            self.driver_reads += 1
+        return self.local.read(reference, limit)
+
+    def stat(self, path: str) -> FileStatIdentityV1:
+        return self.local.stat(path)
+
+
+def _physical_ref_v1(path: Path) -> ExactRefV1:
+    payload = path.read_bytes()
+    return ExactRefV1(str(path.resolve()), len(payload), hashlib.sha256(payload).hexdigest())
+
+
+class SavedRecoveryMeasurementTests(unittest.TestCase):
+    def test_original_sdk_measurement_hash_cache_and_rejections(self) -> None:
+        import os
+        from datetime import datetime, timezone
+        from unittest.mock import patch
+        from tools.ck3_live_run_id import current_machine_id
+        from tools.g2_saved_campaign.current_saved_basis_v1 import PinnedCheckpointValidatorV1
+        from xar_autoplayer import cold_checkpoint_validator as sdk
+        from xar_autoplayer import native_session as sdk_session
+        from xar_autoplayer.errors import AgentError
+
+        with contextmanager(_owned_continuity_case_v1)("checkpoint-measurement") as root:
+            profile = root / "profile"
+            saves = profile / "save games"
+            saves.mkdir(parents=True)
+            save = saves / sdk_session.NATIVE_SESSION_CHECKPOINT_FILENAME
+            save.write_bytes(b"x" * 4096)
+            save_ref = _physical_ref_v1(save)
+            checkpoint: JsonObject = {
+                "name": sdk_session.NATIVE_SESSION_CHECKPOINT_FILENAME,
+                "size": save_ref.bytes, "sha256": save_ref.sha256, "date_raw": 53279400,
+                "history_index": 1, "episode_character_id": 31254,
+                "episode_run_id": "fixture-measured-episode",
+            }
+            payload: JsonObject = {
+                "format_version": 2, "pipe_name": "fixture-measured-pipe",
+                "episode_character_id": 31254, "episode_run_id": "fixture-measured-episode",
+                "last_checkpoint": checkpoint, "command_history": [{
+                    "index": 1, "command": "save-checkpoint", "ok": True,
+                    "result": {"checkpoint": {
+                        "size": save_ref.bytes, "sha256": save_ref.sha256, "date_raw": 53279400}},
+                }],
+            }
+            driver = root / "fixture-driver.json"
+            driver.write_bytes(canonical_json_v1(payload))
+            driver_ref = _physical_ref_v1(driver)
+            reader = _PhysicalCheckpointReader(driver_ref.path)
+            driver_identity = reader.stat(driver_ref.path)
+            save_identity = reader.stat(save_ref.path)
+            source_ref = _physical_ref_v1(Path(sdk.__file__))
+            validator = PinnedCheckpointValidatorV1(
+                source_ref, sdk.validate_cold_start_checkpoint_payload_for_pipe)
+            original_hash = sdk_session._sha256_file
+            hashes: list[Path] = []
+
+            def counted_hash(path: Path) -> str:
+                hashes.append(path)
+                return original_hash(path)
+
+            with patch.object(sdk_session, "_sha256_file", counted_hash):
+                measured = continuity.measure_saved_recovery_checkpoint_v1(
+                    driver_ref=driver_ref, driver_identity=driver_identity,
+                    save_ref=save_ref, save_identity=save_identity,
+                    checkpoint_validator=validator, pipe_name="fixture-measured-pipe",
+                    expected_machine_id=current_machine_id(), observed_at_utc=datetime.now(timezone.utc).isoformat(), reader=reader)
+            self.assertIs(sdk_session._sha256_file, original_hash)
+            self.assertEqual(reader.driver_reads, 1)
+            self.assertEqual(hashes, [save])
+            self.assertEqual(measured.receipt.checkpoint, checkpoint)
+            self.assertEqual(set(measured.anchor), {"name", "load_save_name", "path", "size",
+                "sha256", "saved_date_raw", "history_index", "succession_lifecycle"})
+            self.assertIn(measured.token, continuity._MEASURED_RECOVERY_ISSUED)
+            self.assertEqual(driver.read_bytes(), canonical_json_v1(payload))
+            # Exercise the issued-result boundary with a genuine SDK measurement;
+            # this does not claim that the synthetic prior campaign is qualified.
+            cache_fixture = CompletedUnsavedTailFixture()
+            cache_checked = cache_fixture.validated()
+            receipt_ref = cache_fixture.reader.put("measured-cache-receipt.json", measured.receipt.to_wire())
+            cache_checked = replace(cache_checked,
+                saved_basis=replace(cache_checked.saved_basis, machine_id=current_machine_id()),
+                evidence=replace(cache_checked.evidence, sources=replace(cache_checked.evidence.sources,
+                    canonical_checkpoint_qualification=receipt_ref)),
+                driver_ref=driver_ref, driver_identity=driver_identity,
+                save_ref=save_ref, save_identity=save_identity)
+
+            class CacheEvidenceReader:
+                def read(self, reference: ExactRefV1, limit: int) -> bytes:
+                    return cache_fixture.reader.read(reference, limit)
+                def stat(self, path: str) -> FileStatIdentityV1:
+                    if path in (driver_ref.path, save_ref.path):
+                        return reader.stat(path)
+                    return cache_fixture.reader.stat(path)
+
+            cache_reader = CacheEvidenceReader()
+            continuity._check_measured_recovery_v1(measured, cache_checked, reader=cache_reader)
+            for cache_mutation in ("anchor", "checkpoint", "clone"):
+                with self.subTest(cache_mutation=cache_mutation):
+                    original_anchor = deepcopy(measured.anchor)
+                    original_checkpoint = deepcopy(measured.receipt.checkpoint)
+                    suspect = measured
+                    if cache_mutation == "anchor":
+                        measured.anchor["succession_lifecycle"] = {"mutated": True}
+                    elif cache_mutation == "checkpoint":
+                        measured.receipt.checkpoint["history_index"] = 999
+                    else:
+                        suspect = replace(measured, anchor=deepcopy(measured.anchor))
+                    try:
+                        with self.assertRaisesRegex(ValueError, "exact issued canonical cache"):
+                            continuity._check_measured_recovery_v1(suspect, cache_checked, reader=cache_reader)
+                    finally:
+                        measured.anchor.clear(); measured.anchor.update(original_anchor)
+                        measured.receipt.checkpoint.clear()
+                        measured.receipt.checkpoint.update(original_checkpoint)
+                    self.assertEqual(driver.read_bytes(), canonical_json_v1(payload))
+            continuity._check_measured_recovery_v1(measured, cache_checked, reader=cache_reader)
+            original_receipt_bytes = cache_fixture.reader.raw[receipt_ref.path]
+            with patch.object(sdk_session, "_sha256_file", counted_hash):
+                later = continuity.measure_saved_recovery_checkpoint_v1(
+                    driver_ref=driver_ref, driver_identity=driver_identity,
+                    save_ref=save_ref, save_identity=save_identity,
+                    checkpoint_validator=validator, pipe_name="fixture-measured-pipe",
+                    expected_machine_id=current_machine_id(),
+                    observed_at_utc=datetime.now(timezone.utc).isoformat(), reader=reader)
+            continuity._check_measured_recovery_v1(later, cache_checked, reader=cache_reader)
+            self.assertEqual(cache_fixture.reader.raw[receipt_ref.path], original_receipt_bytes)
+            self.assertEqual(hashes, [save, save])
+            self.assertEqual(reader.driver_reads, 2)
+            continuity._MEASURED_RECOVERY_ISSUED.pop(later.token, None)
+            continuity._MEASURED_RECOVERY_ISSUED.pop(measured.token, None)
+
+            for mode in ("history", "save-sha", "driver-identity"):
+                with self.subTest(mode=mode):
+                    driver.write_bytes(canonical_json_v1(payload))
+                    save.write_bytes(b"x" * 4096)
+                    if mode == "history":
+                        bad = json_object(payload)
+                        bad["command_history"] = [{"index": 1, "command": "not-save", "ok": True}]
+                        driver.write_bytes(canonical_json_v1(bad))
+                    actual_driver_ref = _physical_ref_v1(driver)
+                    actual_save_ref = _physical_ref_v1(save)
+                    current_reader = _PhysicalCheckpointReader(actual_driver_ref.path)
+                    before = driver.read_bytes()
+                    before_tokens = set(continuity._MEASURED_RECOVERY_ISSUED)
+                    old_driver_identity = current_reader.stat(actual_driver_ref.path)
+                    old_save_identity = current_reader.stat(actual_save_ref.path)
+                    if mode == "save-sha":
+                        save.write_bytes(b"y" * 4096)
+
+                    def hash_then_external_replace(path: Path) -> str:
+                        digest = original_hash(path)
+                        if mode == "driver-identity":
+                            replacement = root / "external-driver-replacement.json"
+                            replacement.write_bytes(before)
+                            os.replace(replacement, driver)
+                        return digest
+
+                    with patch.object(sdk_session, "_sha256_file", hash_then_external_replace):
+                        with self.assertRaises((ValueError, AgentError)):
+                            continuity.measure_saved_recovery_checkpoint_v1(
+                                driver_ref=actual_driver_ref, driver_identity=old_driver_identity,
+                                save_ref=actual_save_ref, save_identity=old_save_identity,
+                                checkpoint_validator=validator, pipe_name="fixture-measured-pipe",
+                                expected_machine_id=current_machine_id(), observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                                reader=current_reader)
+                    self.assertIs(sdk_session._sha256_file, original_hash)
+                    self.assertEqual(driver.read_bytes(), before)
+                    self.assertEqual(set(continuity._MEASURED_RECOVERY_ISSUED), before_tokens)
+                    self.assertEqual(current_reader.driver_reads, 0 if mode == "save-sha" else 1)
+
+class _RollbackMemoryPowerLoss(Exception):
+    pass
+
+
+class _RollbackMemoryStore:
+    def __init__(self, plan: continuity.RollbackPairPlanV1, reader: MemoryReader,
+                 anchor_ref: ExactRefV1) -> None:
+        self.plan = plan
+        self.anchor_ref = anchor_ref
+        self.reader = reader
+        self.canonical_path = plan.original_view.canonical_path
+        self.path = Path(self.canonical_path)
+        self.events = self.path.with_name("ROOT-CONTINUITY-WINDOW-EVENTS")
+        self.held = False
+        self.lock_entries = 0
+        self.write_log: list[tuple[str, int | str]] = []
+        self.fail_after: int | None = None
+
+    @contextmanager
+    def locked(self) -> Iterator[None]:
+        need(not self.held, "one nonnested transaction lock")
+        self.held = True
+        self.lock_entries += 1
+        try:
+            yield
+        finally:
+            self.held = False
+
+    def read_head(self) -> JsonObject:
+        need(self.held, "transaction read is locked")
+        return continuity.read_continuity_view_v1(
+            canonical_path=self.path, anchor_ref=self.anchor_ref,
+            expected_machine_id=MACHINE, reader=self.reader).head_state
+
+    def _read(self, path: Path) -> JsonObject | None:
+        need(self.held, "transaction read is locked")
+        document = self.reader.probe(str(path.resolve()), 65536)
+        return None if document is None else document.value()
+
+    def read_snapshot(self) -> JsonObject:
+        value = self._read(self.path)
+        need(value is not None, "existing actual snapshot")
+        if value is None:
+            raise ValueError("snapshot")
+        return value
+
+    def read_event(self, sequence: int) -> JsonObject | None:
+        return self._read(self.events / f"{sequence:08d}.json")
+
+    def read_index(self, source_key: str) -> JsonObject | None:
+        return self._read(self.events / ("source-" + source_key + ".json"))
+
+    def _after_write(self, kind: str, key: int | str) -> None:
+        need(self.held, "transaction write is locked")
+        self.write_log.append((kind, key))
+        if self.fail_after is not None and len(self.write_log) == self.fail_after:
+            raise _RollbackMemoryPowerLoss("after original atomic persistence boundary")
+
+    def create_event(self, sequence: int, event: JsonObject) -> None:
+        path = self.events / f"{sequence:08d}.json"
+        need(self._read(path) is None, "event create-only")
+        self.reader.put(path, event)
+        self._after_write("event", sequence)
+
+    def replace_snapshot(self, payload: JsonObject) -> None:
+        need(self.held, "snapshot write is locked")
+        self.reader.put(self.path, payload)
+        self._after_write("snapshot", integer(payload["sequence"]))
+
+    def create_index(self, source_key: str, index: JsonObject) -> None:
+        path = self.events / ("source-" + source_key + ".json")
+        need(self._read(path) is None, "source-index create-only")
+        self.reader.put(path, index)
+        self._after_write("index", source_key)
+
+
+from copy import deepcopy
+from functools import lru_cache
+from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import CompletedUnsavedTailFixture, SavedBusinessPriorV1
+
+
+@lru_cache(maxsize=1)
+def _original_ledger_payload_v1() -> bytes:
+    payload = Path(actual_ledger.__file__).read_bytes()
+    need(0 < len(payload) <= 131072, "bounded actual ledger source")
+    return payload
+
+
+@runtime_checkable
+class _ActualWindowConstructorV1(Protocol):
+    def __call__(self, path: Path) -> continuity.OriginalWindowLedgerV1: ...
+
+
+@runtime_checkable
+class _ActualAtomicV1(continuity.OriginalWindowAtomicV1, Protocol):
+    pass
+
+
+class _ProofLedgerReader:
+    def __init__(self, fixture: CompletedUnsavedTailFixture, memory: MemoryReader,
+                 physical: bool) -> None:
+        self.fixture, self.memory, self.physical = fixture, memory, physical
+        self.local = continuity.LocalContinuityReaderV1()
+
+    def probe(self, path: str, limit: int) -> continuity.PinnedContinuityDocumentV1 | None:
+        reference = self.fixture.basis.refs.ledger
+        if Path(path).resolve() == Path(reference.path).resolve():
+            raw = self.fixture.reader.read(reference, limit)
+            return continuity.PinnedContinuityDocumentV1(
+                reference, self.fixture.reader.stat(reference.path), raw)
+        return self.local.probe(path, limit) if self.physical else self.memory.probe(path, limit)
+
+
+class _QualifiedRollbackCase:
+    def __init__(self, canonical: Path | None = None, *,
+                 fixture: CompletedUnsavedTailFixture | None = None) -> None:
+        self.fixture = CompletedUnsavedTailFixture() if fixture is None else fixture
+        validated = self.fixture.validated()
+        self.memory = MemoryReader()
+        self.path = (ROOT / "managed-rollback" / "ROOT-CONTINUITY-WINDOW.json"
+                     if canonical is None else canonical).resolve()
+        self.events = self.path.with_name("ROOT-CONTINUITY-WINDOW-EVENTS")
+        self.reader = _ProofLedgerReader(self.fixture, self.memory, canonical is not None)
+        anchor = validated.saved_basis.refs.ledger
+        anchor_raw = self.fixture.reader.read(anchor, 65536)
+        self.memory.documents[str(Path(anchor.path).resolve())] = continuity.PinnedContinuityDocumentV1(
+            anchor, self.fixture.reader.stat(anchor.path), anchor_raw)
+        before = json_object(parse_json(anchor_raw))
+        details: JsonObject = {
+            "machine_id": self.fixture.basis.machine_id, "evidence_id": "original-completed-full",
+            "source": self.fixture.proof.sources.successful_full_responses[0].path,
+            "frame": validated.current_frame.to_wire(),
+            "date_raw": validated.current_frame.date_raw,
+            "completed_cycles": validated.current_cycles,
+        }
+        if canonical is None:
+            from unittest.mock import patch
+            self.memory.put(self.path, before)
+            with patch(__name__ + ".EVENTS", self.events):
+                head = commit_memory(self.memory, before, "settled_batch", details, reducer)
+            self.memory.put(self.path, head)
+            event = self.memory.probe(
+                str(self.events / f"{integer(head['sequence']):08d}.json"), 65536)
+        else:
+            constructor: object = actual_ledger.WindowLedger
+            atomic: object = actual_ledger._atomic
+            if not isinstance(constructor, _ActualWindowConstructorV1) or not isinstance(atomic, _ActualAtomicV1):
+                raise TypeError("actual original writer boundary")
+            self.ledger = constructor(self.path)
+            self.atomic = atomic
+            self.events.mkdir()
+            self.path.with_suffix(".lock").write_bytes(b"\0")
+            self.atomic(self.path, before)
+            self.atomic(self.events / f"{integer(before['sequence']):08d}.json", {"kind": "historical_anchor", "details": {"evidence_id": "fixture-prior-anchor"}, "identity": continuity.continuity_digest_v1(before), "after": before})
+            original_writer: object = self.ledger
+            if not isinstance(original_writer, ForwardWriterV1):
+                raise TypeError("actual original apply")
+            head = json_object(original_writer.apply("settled_batch", details))
+            event = self.reader.probe(
+                str(self.events / f"{integer(head['sequence']):08d}.json"), 65536)
+        need(event is not None, "actual original predecessor event")
+        if event is None:
+            raise ValueError("event")
+        self._source(event.reference.path, event.payload)
+        writer = self._source(str(Path(self.fixture.proof.runtime_root) /
+            "root_continuity_window_c23_100.py"), _original_ledger_payload_v1())
+        frontier: JsonObject = {
+            "schema": "xar.current-saved-historical-rollback-frontier/v1",
+            "machine_id": self.fixture.basis.machine_id, "observed_at_utc": AT,
+            "canonical_path": str(self.path), "anchor_ref": anchor.to_wire(),
+            "head_event_ref": event.reference.to_wire(), "writer_source_ref": writer.to_wire(),
+            "head_sequence": integer(head["sequence"]),
+            "head_digest": continuity.continuity_digest_v1(head),
+        }
+        self.frontier_ref = self.fixture.reader.put("rollback-frontier.json", frontier)
+        self.fixture.replace_frontier_v1(self.frontier_ref)
+        self.plan = self.revalidate(self.fixture.proof_ref)
+
+    def _source(self, path: str, raw: bytes) -> ExactRefV1:
+        self.fixture.reader.raw[path] = raw
+        self.fixture.reader.identities[path] = (owner.LocalBasisReaderV1().stat(path)
+            if Path(path).is_file() else FileStatIdentityV1(
+                len(raw), str(100000 + len(self.fixture.reader.raw)), "1"))
+        return ExactRefV1(path, len(raw), hashlib.sha256(raw).hexdigest())
+
+    def revalidate(self, proof_ref: ExactRefV1) -> continuity.RollbackPairPlanV1:
+        need(proof_ref == self.fixture.proof_ref, "actual immutable proof ref")
+        checked = self.fixture.validated(evidence_only=True)
+        frontier = continuity.validate_saved_rollback_frontier_v1(self.frontier_ref,
+            validated=checked, reader=self.fixture.reader, continuity_reader=self.reader)
+        return continuity.build_saved_rollback_pair_plan_v1(checked, frontier)
+
+    def memory_store(self) -> _RollbackMemoryStore:
+        return _RollbackMemoryStore(self.plan, self.memory, self.fixture.basis.refs.ledger)
+
+    def physical_store(self) -> continuity._OriginalRollbackPairStoreV1:
+        return continuity._OriginalRollbackPairStoreV1(
+            canonical_path=self.path, anchor_ref=self.fixture.basis.refs.ledger,
+            machine_id=self.fixture.basis.machine_id, reader=self.reader, ledger=self.ledger, atomic=self.atomic)
+
+    def commit(self, store: continuity.RollbackPairStoreV1,
+               plan: continuity.RollbackPairPlanV1 | None = None) -> continuity.RollbackPairCommitV1:
+        return continuity._commit_saved_rollback_pair_v1(
+            store, self.plan if plan is None else plan, revalidate=self.revalidate, now_utc=AT)
+
+
+class QualifiedRollbackPairTests(unittest.TestCase):
+    def test_actual_proof_and_full_wire_one_lock_zero_credit(self) -> None:
+        case = _QualifiedRollbackCase()
+        store = case.memory_store()
+        result = case.commit(store)
+        self.assertEqual((result.writes, result.created_events, store.lock_entries), (6, 2, 1))
+        self.assertEqual(store.write_log[0][0], "event")
+        self.assertEqual(case.memory.documents[str(case.path)].value(), case.plan.second.committed_state)
+        self.assertEqual(case.plan.first.committed_state["last_settled_cycles"], 22)
+        self.assertEqual(case.plan.second.committed_state["last_settled_cycles"], 20)
+        self.assertEqual(case.plan.second.committed_state["start_date_raw"], 100)
+        self.assertEqual(case.plan.second.committed_state["target_days"], 10958)
+
+    def test_head_and_second_index_drift_have_zero_writes(self) -> None:
+        for mode in ("head", "index", "path"):
+            with self.subTest(mode=mode):
+                case = _QualifiedRollbackCase()
+                store = case.memory_store()
+                if mode == "head":
+                    changed = json_object(case.plan.original_view.head_state)
+                    changed["last_settled_cycles"] = 23
+                    case.memory.put(case.path, changed)
+                elif mode == "index":
+                    key = continuity.continuity_digest_v1({"kind": case.plan.second.kind,
+                        "evidence_id": case.plan.second.details["evidence_id"]})
+                    case.memory.put(case.events / ("source-" + key + ".json"),
+                                    {"sequence": 999, "identity": "b" * 64})
+                else:
+                    store.canonical_path = str(ROOT / "wrong.json")
+                before = dict(case.memory.documents)
+                with self.assertRaises(ValueError):
+                    case.commit(store)
+                self.assertEqual(store.write_log, [])
+                self.assertEqual(case.memory.documents, before)
+
+    def test_six_original_persistence_boundaries_resume_exactly(self) -> None:
+        for boundary in range(1, 7):
+            with self.subTest(boundary=boundary):
+                case = _QualifiedRollbackCase()
+                store = case.memory_store()
+                store.fail_after = boundary
+                with self.assertRaises(_RollbackMemoryPowerLoss):
+                    case.commit(store)
+                originals = {key: value for key, value in case.memory.documents.items()
+                    if key.endswith(".json") and Path(key).parent == case.events}
+                store.fail_after = None
+                result = case.commit(store)
+                for key, value in originals.items():
+                    self.assertEqual(case.memory.documents[key], value)
+                self.assertEqual(sum(kind == "event" for kind, _ in store.write_log), 2)
+                self.assertEqual(case.memory.documents[str(case.path)].value(),
+                                 case.plan.second.committed_state)
+                self.assertTrue(result.recovered_after_first_event)
+
+    def test_completed_retry_zero_writes(self) -> None:
+        case = _QualifiedRollbackCase()
+        store = case.memory_store()
+        case.commit(store)
+        count = len(store.write_log)
+        result = case.commit(store)
+        self.assertEqual((result.writes, result.created_events, len(store.write_log)), (0, 0, count))
+
+    def test_same_evidence_id_changed_content_refused(self) -> None:
+        case = _QualifiedRollbackCase()
+        store = case.memory_store()
+        store.fail_after = 1
+        with self.assertRaises(_RollbackMemoryPowerLoss):
+            case.commit(store)
+        sequence = case.plan.original_view.head_sequence + 1
+        path = case.events / f"{sequence:08d}.json"
+        event = case.memory.documents[str(path)].value()
+        event["details"] = {"evidence_id": case.plan.first.details["evidence_id"], "source": "changed"}
+        case.memory.put(path, event)
+        before = dict(case.memory.documents)
+        store.fail_after = None
+        with self.assertRaises(ValueError):
+            case.commit(store)
+        self.assertEqual(case.memory.documents, before)
+
+    def test_forged_plan_revalidated_from_actual_shared_proof(self) -> None:
+        case = _QualifiedRollbackCase()
+        store = case.memory_store()
+        with self.assertRaisesRegex(ValueError, "stale/forged"):
+            case.commit(store, replace(case.plan, transaction_id="caller-GREEN"))
+        self.assertEqual(store.write_log, [])
+
+    def test_exact_parser_fields_and_bool_float_json_rejections(self) -> None:
+        case = _QualifiedRollbackCase()
+        proof = case.fixture.proof
+        wire = parse_json(canonical_json_v1(proof.to_wire()))
+        self.assertEqual(continuity.parse_completed_unsaved_tail_v1(
+            wire, expected_machine_id=MACHINE), proof)
+        for key, bad in (("new_ordinary_cycle_credit", True), ("new_game_day_credit", 0.0),
+                         ("original_actions_replayed", 0), ("Driver_history_truncated", None)):
+            changed = proof.to_wire()
+            changed[key] = bad
+            with self.assertRaises(ValueError):
+                continuity.parse_completed_unsaved_tail_v1(
+                    parse_json(canonical_json_v1(changed)), expected_machine_id=MACHINE)
+        for mode in ("missing", "extra"):
+            changed = proof.to_wire()
+            if mode == "missing":
+                del changed["sources"]
+            else:
+                changed["unknown_alias"] = None
+            with self.assertRaises(ValueError):
+                continuity.parse_completed_unsaved_tail_v1(changed, expected_machine_id=MACHINE)
+
+    def test_missing_first_index_after_pair_repairs_only_that_index(self) -> None:
+        case = _QualifiedRollbackCase()
+        store = case.memory_store()
+        case.commit(store)
+        key = continuity.continuity_digest_v1({"kind": case.plan.first.kind,
+            "evidence_id": case.plan.first.details["evidence_id"]})
+        del case.memory.documents[str(case.events / ("source-" + key + ".json"))]
+        before = {path: doc for path, doc in case.memory.documents.items()
+                  if Path(path).name[:1].isdigit()}
+        result = case.commit(store)
+        self.assertEqual((result.writes, result.created_events), (1, 0))
+        for path, doc in before.items():
+            self.assertEqual(case.memory.documents[path], doc)
+
+    def test_actual_original_head_fields_binding_and_frame_are_historical(self) -> None:
+        case = _QualifiedRollbackCase()
+        before = case.plan.original_view.head_state
+        self.assertTrue({"sequence", "last_settled_cycles", "last_settled_date_raw",
+                         "last_settled_source", "game_binding"} <= set(before))
+        self.assertNotIn("last_settled_completed_cycles", before)
+        after = case.plan.second.committed_state
+        self.assertEqual(after["game_binding"], before["game_binding"])
+        if "latest_binding" in before:
+            self.assertEqual(after["latest_binding"], before["latest_binding"])
+        self.assertEqual(after["status"], "repair_required")
+        self.assertIs(json_object(after["unsaved_tail_recovery"])["requires_new_cold_binding"], True)
+        store = case.memory_store()
+        case.commit(store)
+        self.assertEqual(case.memory.documents[str(case.path)].value(), after)
+
+
+class OriginalRollbackFilesystemTests(unittest.TestCase):
+    def test_real_atomic_event_snapshot_faults_and_exact_retry(self) -> None:
+        import os
+        from unittest.mock import patch
+        for mode in ("after-event", "after-snapshot"):
+            with self.subTest(mode=mode):
+                with contextmanager(_owned_continuity_case_v1)("rollback-" + mode) as root:
+                    case = _QualifiedRollbackCase(root / "ROOT-CONTINUITY-WINDOW.json")
+                    store = case.physical_store()
+                    real_atomic = case.atomic
+                    calls: list[Path] = []
+                    stopped = False
+
+                    def fault(path: Path, value: JsonObject, replace: bool = False) -> None:
+                        nonlocal stopped
+                        real_atomic(path, value, replace=replace)
+                        calls.append(path)
+                        matched = (path == case.path if mode == "after-snapshot" else
+                                   path == case.events / f"{case.plan.original_view.head_sequence+1:08d}.json")
+                        if matched and not stopped:
+                            stopped = True
+                            raise _RollbackMemoryPowerLoss("after real original atomic operation")
+
+                    with self.assertRaises(_RollbackMemoryPowerLoss):
+                        case.commit(continuity._OriginalRollbackPairStoreV1(
+                            canonical_path=case.path, anchor_ref=case.fixture.basis.refs.ledger,
+                            machine_id=MACHINE, reader=case.reader, ledger=case.ledger, atomic=fault))
+                    first = case.events / f"{case.plan.original_view.head_sequence+1:08d}.json"
+                    before = first.read_bytes()
+                    result = case.commit(store)
+                    self.assertEqual(first.read_bytes(), before)
+                    self.assertEqual(result.created_events, 1)
+                    self.assertEqual(json_object(parse_json(case.path.read_bytes())),
+                                     case.plan.second.committed_state)
+                    self.assertEqual(list(root.rglob("*.pending")), [])
+                    self.assertTrue(calls)
+
+    def test_real_wrong_head_changes_no_event_snapshot_or_index(self) -> None:
+        with contextmanager(_owned_continuity_case_v1)("rollback-wrong-head") as root:
+            case = _QualifiedRollbackCase(root / "ROOT-CONTINUITY-WINDOW.json")
+            changed = json_object(case.plan.original_view.head_state)
+            changed["last_settled_cycles"] = 999
+            case.atomic(case.path, changed, replace=True)
+            before = {str(path.relative_to(root)): path.read_bytes()
+                      for path in root.rglob("*") if path.is_file()}
+            with self.assertRaises(ValueError):
+                case.commit(case.physical_store())
+            after = {str(path.relative_to(root)): path.read_bytes()
+                     for path in root.rglob("*") if path.is_file()}
+            self.assertEqual(after, before)
+
+
+def _complete_saved_business_prior_v1(root: Path) -> SavedBusinessPriorV1:
+    """Reuse the real complete producer; adapt only its fixture origin/resources."""
+    from datetime import datetime, timezone
+    from unittest.mock import patch
+    from tools.ck3_live_run_id import current_machine_id
+    from tools.g2_saved_campaign import test_current_saved_basis_v1 as basis_fixture
+    from tools.g2_saved_campaign.current_saved_basis_v1 import (
+        build_current_saved_basis_v1, qualify_current_saved_basis_v1, record)
+
+    class CompletePriorProducer(basis_fixture.CurrentSavedBasisTests):
+        @classmethod
+        def write(cls, name: str, value: object) -> ExactRefV1:
+            if name in ("stale-ledger.json", "origin-ledger.json", "governance.json", "driver.json"):
+                row = record(value)
+                if name == "driver.json":
+                    row["bridge_pid"] = 10
+                elif name == "governance.json":
+                    row.update(governance_result_state=None, pending_focus=None)
+                else:
+                    row.update(target_days=10958,
+                        target_date_raw=integer(row["start_date_raw"]) + 10958 * 24)
+                    if name == "stale-ledger.json":
+                        full = record(parse_json((cls.root / "full-100.json").read_bytes()))
+                        body = record(record(full["result"])["structured_content"])
+                        row.update(schema="root.ck3.continuity-window/v1",
+                            sequence=1, window_id=1, status="running",
+                            last_settled_cycles=integer(body["cumulative_cycles"]),
+                            last_settled_date_raw=integer(body["actual_end_date_raw"]),
+                            game_binding={"pid": 10, "creation_date": AT},
+                            cold_handoff_count=0, manual_repair_count=0,
+                            automatic_recovery_count=0, binding_lineage_count=0)
+                value = row
+            return super().write(name, value)
+
+    need(root.is_dir(), "owned complete-prior directory")
+    CompletePriorProducer.root = root
+    CompletePriorProducer.reader = basis_fixture.DiskReader()
+    CompletePriorProducer.peak_upper = 4096
+    with patch.object(basis_fixture, "MACHINE", current_machine_id()):
+        CompletePriorProducer.make_inputs()
+    inputs = CompletePriorProducer.inputs
+    inputs = replace(inputs, observed_at_utc=datetime.now(timezone.utc).isoformat(),
+        origin=replace(inputs.origin, target_days=10958,
+            target_date_raw=inputs.origin.start_date_raw + 10958 * 24))
+    built = build_current_saved_basis_v1(inputs, reader=CompletePriorProducer.reader,
+        checkpoint_validator=CompletePriorProducer.validator)
+    qualified = qualify_current_saved_basis_v1(inputs, reader=CompletePriorProducer.reader,
+        checkpoint_validator=CompletePriorProducer.validator)
+    need(built == qualified.basis, "original complete build and qualifier agree")
+    return SavedBusinessPriorV1(qualified, CompletePriorProducer.reader, "test-pipe")
+
+
+class _RecoveryPhysicalEvidenceReader:
+    def __init__(self, fixture: CompletedUnsavedTailFixture) -> None:
+        self.fixture = fixture
+        self.local = owner.LocalBasisReaderV1()
+        self.driver_path = fixture.driver_ref.path
+        self.save_path = fixture.basis.refs.save.path
+        self.driver_payload_reads = 0
+
+    def read(self, reference: ExactRefV1, limit: int) -> bytes:
+        if reference.path in (self.driver_path, self.save_path):
+            if reference.path == self.driver_path:
+                self.driver_payload_reads += 1
+            return self.local.read(reference, limit)
+        return self.fixture.reader.read(reference, limit)
+
+    def stat(self, path: str) -> FileStatIdentityV1:
+        if path in (self.driver_path, self.save_path):
+            return self.local.stat(path)
+        return self.fixture.reader.stat(path)
+
+    def read_response(self, reference: ExactRefV1, limit: int) -> bytes:
+        return self.fixture.reader.read_response(reference, limit)
+
+
+class PublicSavedRecoveryTests(unittest.TestCase):
+    def test_complete_producer_measure_public_commit_retry_and_final_qualification(self) -> None:
+        from datetime import datetime, timezone
+        from unittest.mock import patch
+        from tools.ck3_live_run_id import current_machine_id
+        from tools.g2_saved_campaign.current_saved_basis_v1 import record, rows, PinnedCheckpointValidatorV1
+        from xar_autoplayer.cold_checkpoint_validator import validate_cold_start_checkpoint_payload_for_pipe
+        from xar_autoplayer import native_session as sdk_session
+
+        with contextmanager(_owned_continuity_case_v1)("public-saved-recovery") as root:
+            prior_root = root / "prior"
+            prior_root.mkdir()
+            hash_paths: list[Path] = []
+            original_hash = sdk_session._sha256_file
+
+            def counted_hash(path: Path) -> str:
+                hash_paths.append(path)
+                return original_hash(path)
+
+            with patch.object(sdk_session, "_sha256_file", counted_hash):
+                saved_prior = _complete_saved_business_prior_v1(prior_root)
+                prior = saved_prior.validated.basis
+                self.assertEqual(len(hash_paths), 2)
+                self.assertEqual(prior.origin.target_days, 10958)
+                self.assertEqual(prior.progress.ledger_cycles, prior.completed_cycles)
+                driver = Path(prior.refs.driver.path)
+                payload = record(parse_json(driver.read_bytes()))
+                payload["bridge_pid"] = 30
+                history = rows(payload["command_history"])
+                payload["command_history"] = [*history,
+                    {"index": len(history) + 1, "command": "fixture-readonly-observation", "ok": True}]
+                current_raw = canonical_json_v1(payload)
+                replacement = root / "fixture-next-driver.json"
+                replacement.write_bytes(current_raw)
+                import os
+                os.replace(replacement, driver)
+                current_ref = ExactRefV1(str(driver.resolve()), len(current_raw),
+                    hashlib.sha256(current_raw).hexdigest())
+                local = owner.LocalBasisReaderV1()
+                current_identity = local.stat(current_ref.path)
+                self.assertNotEqual(current_identity.file_id, prior.driver_identity.file_id)
+                f = CompletedUnsavedTailFixture(saved_prior=saved_prior,
+                    metadata_root=root / "tail", current_driver_ref=current_ref,
+                    current_driver_identity=current_identity)
+                review_driver = record(f.review["Driver"])
+                review_driver["command_history_count"] = len(rows(payload["command_history"]))
+                f.review["Driver"] = review_driver
+                reader = _RecoveryPhysicalEvidenceReader(f)
+
+                validator = PinnedCheckpointValidatorV1(prior.refs.checkpoint_validator,
+                    validate_cold_start_checkpoint_payload_for_pipe)
+
+                def measure() -> continuity._MeasuredRecoveryCheckpointV1:
+                    return continuity.measure_saved_recovery_checkpoint_v1(
+                        driver_ref=current_ref, driver_identity=current_identity,
+                        save_ref=prior.refs.save, save_identity=prior.save_identity,
+                        checkpoint_validator=validator,
+                        pipe_name=saved_prior.pipe_name, expected_machine_id=current_machine_id(),
+                        observed_at_utc=datetime.now(timezone.utc).isoformat(), reader=reader)
+
+                first = measure()
+                self.assertEqual(reader.driver_payload_reads, 1)
+                self.assertEqual(len(hash_paths), 3)
+                canonical_ref = f.reader.put("tail-runtime/original-measurement.json", first.receipt.to_wire())
+                f.proof = replace(f.proof, sources=replace(f.proof.sources,
+                    canonical_checkpoint_qualification=canonical_ref))
+                f.reseal()
+                f.root.mkdir(parents=True)
+                (f.root / "root_continuity_window_c23_100.py").write_bytes(_original_ledger_payload_v1())
+                case = _QualifiedRollbackCase(root / "ROOT-CONTINUITY-WINDOW.json", fixture=f)
+                evidence_bytes = f.reader.raw[f.proof_ref.path]
+                canonical_bytes = f.reader.raw[canonical_ref.path]
+
+                def public_commit(measured: continuity._MeasuredRecoveryCheckpointV1) -> continuity.RollbackPairCommitV1:
+                    with f.io_scope():
+                        return continuity.commit_completed_unsaved_tail_recovery_v1(
+                            f.proof_ref, measurement=measured, expected_machine_id=current_machine_id(),
+                            observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                            reader=reader, continuity_reader=case.reader)
+
+                before_rejections = {str(p): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+                for mutation in ("anchor", "checkpoint", "clone"):
+                    with self.subTest(public_cache_mutation=mutation):
+                        old_anchor = deepcopy(first.anchor)
+                        old_checkpoint = deepcopy(first.receipt.checkpoint)
+                        candidate = first
+                        if mutation == "anchor":
+                            first.anchor["succession_lifecycle"] = {"changed": True}
+                        elif mutation == "checkpoint":
+                            first.receipt.checkpoint["history_index"] = 999
+                        else:
+                            candidate = replace(first, anchor=deepcopy(first.anchor))
+                        try:
+                            with self.assertRaisesRegex(ValueError, "exact issued canonical cache"):
+                                public_commit(candidate)
+                        finally:
+                            first.anchor.clear(); first.anchor.update(old_anchor)
+                            first.receipt.checkpoint.clear()
+                            first.receipt.checkpoint.update(old_checkpoint)
+                        self.assertEqual(before_rejections,
+                            {str(p): p.read_bytes() for p in root.rglob("*") if p.is_file()})
+                original_proof = f.proof
+                for mutation in ("validator", "pipe", "checkpoint", "driver_identity", "save_identity", "future_t1"):
+                    with self.subTest(public_canonical_source=mutation):
+                        bad_receipt = deepcopy(first.receipt.to_wire())
+                        if mutation == "validator":
+                            bad_receipt["validator_source_ref"] = replace(
+                                prior.refs.checkpoint_validator, sha256="f" * 64).to_wire()
+                        elif mutation == "pipe":
+                            bad_receipt["pipe_name"] = "wrong-pipe"
+                        elif mutation == "checkpoint":
+                            wrong_checkpoint = json_object(bad_receipt["checkpoint"])
+                            wrong_checkpoint["history_index"] = 999
+                            bad_receipt["checkpoint"] = wrong_checkpoint
+                        elif mutation in ("driver_identity", "save_identity"):
+                            for suffix in ("_before", "_after"):
+                                wrong_identity = json_object(bad_receipt[mutation + suffix])
+                                wrong_identity["file_id"] = "999999999"
+                                bad_receipt[mutation + suffix] = wrong_identity
+                        else:
+                            bad_receipt["observed_at_utc"] = "2099-01-01T00:00:00Z"
+                        bad_ref = f.reader.put("tail-runtime/wrong-measurement.json", bad_receipt)
+                        f.proof = replace(original_proof, sources=replace(original_proof.sources,
+                            canonical_checkpoint_qualification=bad_ref))
+                        f.reseal()
+                        try:
+                            with self.assertRaises(ValueError):
+                                public_commit(first)
+                        finally:
+                            f.proof = original_proof
+                            f.reseal()
+                        self.assertEqual(before_rejections,
+                            {str(p): p.read_bytes() for p in root.rglob("*") if p.is_file()})
+                original_create = continuity._OriginalRollbackPairStoreV1.create_event
+
+                def create_then_interrupt(store: continuity._OriginalRollbackPairStoreV1,
+                                          sequence: int, event: JsonObject) -> None:
+                    original_create(store, sequence, event)
+                    if sequence == case.plan.original_view.head_sequence + 1:
+                        raise _RollbackMemoryPowerLoss("actual first event persisted")
+
+                with f.io_scope(), patch.object(continuity._OriginalRollbackPairStoreV1,
+                                               "create_event", create_then_interrupt):
+                    with self.assertRaises(_RollbackMemoryPowerLoss):
+                        continuity.commit_completed_unsaved_tail_recovery_v1(
+                            f.proof_ref, measurement=first, expected_machine_id=current_machine_id(),
+                            observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                            reader=reader, continuity_reader=case.reader)
+                continuity._MEASURED_RECOVERY_ISSUED.pop(first.token)
+                later = measure()
+                self.assertEqual(reader.driver_payload_reads, 2)
+                self.assertEqual(len(hash_paths), 4)
+                self.assertEqual(f.reader.raw[f.proof_ref.path], evidence_bytes)
+                self.assertEqual(f.reader.raw[canonical_ref.path], canonical_bytes)
+                try:
+                    with f.io_scope():
+                        committed = continuity.commit_completed_unsaved_tail_recovery_v1(
+                            f.proof_ref, measurement=later, expected_machine_id=current_machine_id(),
+                            observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                            reader=reader, continuity_reader=case.reader)
+                    self.assertEqual(committed.phase, "RollbackPairCommitted")
+                    self.assertTrue(committed.recovered_after_first_event)
+                    head_ref = _physical_ref_v1(case.path)
+                    second_key = continuity._source_key(case.plan.second)
+                    second_index = case.events / ("source-" + second_key + ".json")
+                    index_bytes = second_index.read_bytes()
+                    second_index.unlink()
+                    before_missing = {str(p): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+                    with f.io_scope():
+                        with self.assertRaisesRegex(ValueError,
+                                "actual committed rollback head before final basis qualification"):
+                            continuity.qualify_saved_recovery_basis_v1(
+                                f.proof_ref, ledger_ref=head_ref, measurement=later,
+                                expected_machine_id=current_machine_id(),
+                                observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                                reader=reader, continuity_reader=case.reader)
+                    self.assertEqual(before_missing,
+                        {str(p): p.read_bytes() for p in root.rglob("*") if p.is_file()})
+                    second_index.write_bytes(index_bytes)
+                    with f.io_scope():
+                        final = continuity.qualify_saved_recovery_basis_v1(
+                            f.proof_ref, ledger_ref=head_ref, measurement=later,
+                            expected_machine_id=current_machine_id(),
+                            observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                            reader=reader, continuity_reader=case.reader)
+                    self.assertEqual(final.basis.completed_cycles, prior.completed_cycles)
+                    self.assertEqual(final.basis.frame, prior.frame)
+                    self.assertEqual(final.basis.origin, prior.origin)
+                    self.assertEqual(final.basis.next_sequence, f.validated().actual_next_sequence)
+                    self.assertEqual(len(hash_paths), 4, "final qualifier uses actual measured cache")
+                    self.assertEqual(reader.driver_payload_reads, 2)
+                    self.assertEqual(driver.read_bytes(), current_raw)
+                finally:
+                    continuity._MEASURED_RECOVERY_ISSUED.pop(later.token, None)
 
 
 if __name__ == "__main__":

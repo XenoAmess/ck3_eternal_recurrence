@@ -1,0 +1,195 @@
+{
+  "schema": "xar.robert.vacation-handoff/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T07:22:47.406802+00:00",
+  "operation": "user_requested_docs_handover_only",
+  "repo": "Z:\\ck3_mod_rewrite",
+  "head": "a39ee812f96cfd1988f3ad3af03e13dcf78da20c",
+  "public_CI_head": "a39ee812f96cfd1988f3ad3af03e13dcf78da20c",
+  "new_8_leaves_committed": false,
+  "new_8_leaves_pushed": false,
+  "source_refs": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 93363,
+      "sha256": "3164b96ae9845d54dcd950afaf7419fb14d1483cde7bd3bceb758bc8a0232dc0"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 281305,
+      "sha256": "75c0590e0227c8b4c7efb0dc0fccca956271b2382b7c78f16fed73808feaec13"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_public_wire_v2.py",
+      "bytes": 14287,
+      "sha256": "63f06a97d555fbf6b6ff12012d9d6f297f77de4be54349aed1af93c5b67d564d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_public_wire_v2.py",
+      "bytes": 12040,
+      "sha256": "ad98bf48b9ee72be18e96f890bd96ca9b75009c08ad5aef073576ea090e6dc00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_continuity_v1.py",
+      "bytes": 76871,
+      "sha256": "c06d0a6553f75ac7e193472d81d6fbc2241417362c7496b2fb77b40a73823a3e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\root_current_saved_campaign_cold_owner_v1.py",
+      "bytes": 139195,
+      "sha256": "a86f191c65ccfec7e09ad3561af07e480ea0ad2673e09ba20c6a0568179ef7e9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_continuity_v1.py",
+      "bytes": 103095,
+      "sha256": "71bb74adbbcdf1c950d20095cc62bc0a121617346f15c25373013b9700ec1bf6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_settled_closure_v1.py",
+      "bytes": 71311,
+      "sha256": "0368ccd490f8af7cd9a5df54564802cc0fd573177124920c741b3fa7cb41b80c"
+    }
+  ],
+  "roots": {
+    "P": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep",
+    "C": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01",
+    "T": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime",
+    "O": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100",
+    "Q41": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01",
+    "Q0715": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01",
+    "B": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01",
+    "H": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\host-checkout",
+    "SRC32": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src32"
+  },
+  "artifacts": {
+    "ROOT-ACTUAL-SAVED-RECOVERY-COMPLETE01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ROOT-ACTUAL-SAVED-RECOVERY-COMPLETE01.json",
+      "bytes": 2737,
+      "sha256": "ac9026803ee5448a57c8bbbf519ed92d7c4b6ad68128db43d836c2326c1a58b2"
+    },
+    "CURRENT-SAVED-RECOVERED-BASIS01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\CURRENT-SAVED-RECOVERED-BASIS01.json",
+      "bytes": 10430,
+      "sha256": "bb25a2e8ea446cacdff38ade37fb37ee66e81cd1dedde8a8cc2aeeb52155a2f1"
+    },
+    "CURRENT-SAVED-RECOVERED-QUALIFICATION01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\CURRENT-SAVED-RECOVERED-QUALIFICATION01.json",
+      "bytes": 2177,
+      "sha256": "e71ff81c15620aea5f1b14ef1fe244a884ff6a3d2fefff62f5d2195ef1e2f3d8"
+    },
+    "ACTUAL-RECOVERY-CONTINUITY-HEAD01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ACTUAL-RECOVERY-CONTINUITY-HEAD01.json",
+      "bytes": 37369,
+      "sha256": "425b3829cb980bbd8f792878e638b7ce04b5921f583560e1ae0d29dc1bdf13aa"
+    },
+    "ACTUAL-COMPLETED-UNSAVED-TAIL-PROOF01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ACTUAL-COMPLETED-UNSAVED-TAIL-PROOF01.json",
+      "bytes": 4810,
+      "sha256": "9249c4d8d843bc0def8c1eea0eeefcb52d238e21db79f731f214e6a3a9d32e01"
+    },
+    "ACTUAL-RECOVERY-CANONICAL-VALIDATION01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ACTUAL-RECOVERY-CANONICAL-VALIDATION01.json",
+      "bytes": 3082,
+      "sha256": "97dfc4aade52b846ce1b01d8d48d557a7fe7ace783d7fa7f31658ef5358ddf3e"
+    },
+    "ROOT-UNSAVED-RECOVERY-SOFTWARE-QUALIFIED01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ROOT-UNSAVED-RECOVERY-SOFTWARE-QUALIFIED01.json",
+      "bytes": 4630,
+      "sha256": "9e537199db1d61be3236b9bade1f712d662779708406f7d53e0f1965a9a0304e"
+    },
+    "ROOT-UNSAVED-RECOVERY-FINAL-WHOLE4-STRICT01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ROOT-UNSAVED-RECOVERY-FINAL-WHOLE4-STRICT01.json",
+      "bytes": 2597,
+      "sha256": "076571fac64265e48b82dce5288dd2a84178ef61ed602a3c3fc2a3e79130517d"
+    },
+    "NORMAL-EXIT-PUBLIC-WIRE-STRICT-ACTUAL01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\NORMAL-EXIT-PUBLIC-WIRE-STRICT-ACTUAL01.json",
+      "bytes": 3327,
+      "sha256": "62c912f066d8b8b15c0c6e04aa17ce6a2a90c787f245dd97045d99dea8de70be"
+    },
+    "NORMAL-EXIT-PUBLIC-WIRE-WRAPPER-AST-STRICT-ACTUAL01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\NORMAL-EXIT-PUBLIC-WIRE-WRAPPER-AST-STRICT-ACTUAL01.json",
+      "bytes": 5163,
+      "sha256": "249f8cd5c9b53df5319ca15616743d5e73ea3df6fafc4bc8a206312dcb465ba6"
+    },
+    "ROOT-A39-HOSTED-CI-TERMINAL01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ROOT-A39-HOSTED-CI-TERMINAL01.json",
+      "bytes": 3286,
+      "sha256": "c638b353b9824228f54aba0b22a91d8d53222cd0f1d5d3424c8062ad62f36557"
+    },
+    "NEXT-HOUR-NATIVE32-CAPACITY-PROPOSAL01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\NEXT-HOUR-NATIVE32-CAPACITY-PROPOSAL01.json",
+      "bytes": 9611,
+      "sha256": "5a8e030afd6b3d6c6b00dc6da8b0bbc3d30dbbca611c36493bde3de38ec7fede"
+    },
+    "NEXT-HOUR-ATOMIC-FINANCIAL-CALL-PLAN01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\NEXT-HOUR-ATOMIC-FINANCIAL-CALL-PLAN01.json",
+      "bytes": 3785,
+      "sha256": "46c3c6b2e8b114d67ce0e34db7f98adb2de072898fd7facd39d810f53dba28af"
+    }
+  },
+  "canonical_current_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\ROOT-CONTINUITY-WINDOW.json",
+    "bytes": 37369,
+    "sha256": "425b3829cb980bbd8f792878e638b7ce04b5921f583560e1ae0d29dc1bdf13aa"
+  },
+  "canonical_sequence": 236,
+  "driver_current_stat": {
+    "bytes": 43341278,
+    "file_id": "281474989077610",
+    "mtime_ns": "1792644870236042100"
+  },
+  "save_current_stat": {
+    "bytes": 117661285,
+    "file_id": "281474988852756",
+    "mtime_ns": "1792638019516614900"
+  },
+  "fresh_Driver_SAVE_body_reads": 0,
+  "game_process_snapshot": [
+    {
+      "pid": 139512,
+      "kernel_signaled": true,
+      "exit_code": 259
+    },
+    {
+      "pid": 127028,
+      "kernel_signaled": true,
+      "exit_code": 259
+    },
+    {
+      "pid": 188168,
+      "kernel_signaled": true,
+      "exit_code": 259
+    }
+  ],
+  "active_game_count": 0,
+  "recovery_process_exit_code": 0,
+  "all_subagents_completed": true,
+  "Steam_current_status": "not_requeried_last_receipt_stale",
+  "financial": {
+    "ALL_revision": 431,
+    "SHORT_revision": 626,
+    "Root_future_bytes": 595019600,
+    "global_future_forecasts": 33908742032,
+    "new_4GiB_registered": false,
+    "latest_software_review_at_utc": "2026-10-22T07:15:00Z",
+    "latest_scope_expired": true
+  },
+  "goals": {
+    "G2_done": 6,
+    "G2_total": 8,
+    "saved_days": 5628,
+    "goal_days": 10950,
+    "remaining_days": 5322,
+    "one_second_per_day": false,
+    "N41_observed_unsaved_days_discarded": 6
+  },
+  "current_inputs_review_at_utc": "2026-10-23T07:30:00Z",
+  "current_inputs_retention_reason": "active actual qualified recovery baseline and transitive proof/source closure; review is not permission to delete active sole inputs",
+  "disk_free": {
+    "D:/": 804540555264,
+    "Z:/": 137276108800
+  },
+  "large_files_copied_or_deleted": 0,
+  "scope_released_for_future_Game": false
+}
