@@ -23,7 +23,7 @@ from checkpoint_artifacts import SavedArtifact, SavedVariable, one, parse_block,
 from checkpoint_callback import VerifiedCheckpoint, checked_pin, verify_checkpoint
 from checkpoint_producer import declared_pin
 from ck3_text_projection import blocks, masked
-from npc_saved_observer import HEALTHY_ROLES, NpcInitialBaseline, NpcSavedObservation, NpcSavedRole, observe_npc_saved, saved_character_reference
+from npc_saved_observer import HEALTHY_ROLES, NpcInitialBaseline, NpcSavedObservation, NpcSavedRole, initial_owner_lifecycle_issues, observe_npc_saved, saved_character_reference
 from prepare_npc_fixture import SOURCES, NpcFixtureEmission, NpcFixtureSpec, Role, emit_npc_fixture
 
 RESULT_NAME = "living-artifacts-npc-result.json"
@@ -269,7 +269,8 @@ def _target(role: NpcSavedRole) -> SavedArtifact | None:
 
 
 def _complete_roles(initial: NpcSavedObservation) -> tuple[NpcSavedRole, ...]:
-    return tuple(role for role in initial.roles if replace(initial, roles=(role,)).initial_inputs_complete)
+    return tuple(role for role in initial.roles if replace(initial, roles=(role,)).initial_inputs_complete and
+        not initial_owner_lifecycle_issues(role, initial.saved_date))
 
 
 def evaluate(initial: NpcSavedObservation, later: tuple[NpcSavedObservation, ...], bindings: tuple[Candidate, ...], *, refs: list[Pin],
@@ -278,17 +279,26 @@ def evaluate(initial: NpcSavedObservation, later: tuple[NpcSavedObservation, ...
     checks: list[CheckResult] = []
     for candidate in bindings:
         current = next((role for role in initial.roles if role.role == candidate.role), None)
+        lifecycle = initial_owner_lifecycle_issues(current, initial.saved_date) if current is not None else ()
         complete = candidate.status == "bound" and (candidate.role == "fragile" or
-            current is not None and replace(initial, roles=(current,)).initial_inputs_complete)
+            current is not None and replace(initial, roles=(current,)).initial_inputs_complete and not lifecycle)
+        binding_details = candidate.to_json()
+        binding_details["initial_owner_lifecycle_issues"] = list(lifecycle)
+        binding_reason = "Actual initial candidate/input state is " + candidate.status
+        if lifecycle:
+            binding_reason += "; " + "; ".join(lifecycle)
+        elif current is not None:
+            binding_reason += "; healthy inputs incomplete"
         checks.append(core._check("NPC-BIND-" + candidate.role, "PASS" if complete else "BLOCKED", None if complete else
-            "Actual initial candidate/input state is " + candidate.status + ("; healthy inputs incomplete" if current is not None else ""), refs, candidate.to_json()))
+            binding_reason, refs, binding_details))
     for role_name in HEALTHY_ROLES:
         before = next(role for role in initial.roles if role.role == role_name)
         after = tuple(role for observation in later for role in observation.roles if role.role == role_name)
         target_before = _target(before)
-        ready = replace(initial, roles=(before,)).initial_inputs_complete and target_before is not None
+        lifecycle = initial_owner_lifecycle_issues(before, initial.saved_date)
+        ready = replace(initial, roles=(before,)).initial_inputs_complete and target_before is not None and not lifecycle
         observations: Object = {"initial": before.to_json(), "later": [role.to_json() for role in after],
-            "current_native_npc_equipment": False, "health_secret_cost_credit": False}
+            "current_native_npc_equipment": False, "health_secret_cost_credit": False, "initial_owner_lifecycle_issues": list(lifecycle)}
         initial_item = next((item for item in before.items if item.kind == "target"), None)
         later_items = tuple(item for role in after for item in role.items if item.kind == "target" and item.status == "owned")
         equipped = ready and initial_item is not None and initial_item.equipped_slots == () and any(bool(item.equipped_slots) for item in later_items)
@@ -309,7 +319,9 @@ def evaluate(initial: NpcSavedObservation, later: tuple[NpcSavedObservation, ...
         for name, passed, reason in (("EQUIP", equipped, "No initial-unequipped to actual saved equipped transition; existing equipment is not a new action"),
                 ("GROW", grown, "No retained same-owner equipped Oct1-to-Nov1 settled growth increase"), ("TRAIN", trained, "No new exclusive training marker with growth evidence"),
                 ("FEED", fed, "Disappearance/owner change alone cannot prove feeding; require new exclusive feed imprint and growth")):
-            checks.append(core._check("NPC-" + name + "-" + role_name, "PASS" if passed else "BLOCKED", None if passed else reason, refs, observations))
+            unavailable = "Initial production lifecycle scheduling unavailable: " + "; ".join(lifecycle) if lifecycle else reason
+            checks.append(core._check("NPC-" + name + "-" + role_name, "PASS" if passed else "BLOCKED", None if passed else
+                unavailable, refs, observations))
     return checks
 
 
@@ -358,7 +370,7 @@ def run_case(context: object, client: object) -> Object:
                 if complete_roles:
                     baseline = NpcInitialBaseline(replace(observed, roles=complete_roles))
                 else:
-                    errors.append("No healthy role has complete initial inputs; later NPC business observations unavailable")
+                    errors.append("No healthy role has complete initial inputs and actual production lifecycle scheduling; later NPC business observations unavailable")
             observations.append(observed)
             session.refs.extend(verified.evidence)
             record = write_once(client.output / f"npc-observer-checkpoint-{number:02d}.json", {
