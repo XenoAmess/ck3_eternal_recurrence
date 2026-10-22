@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.CompletableFuture;
@@ -117,8 +118,11 @@ public final class CiBootstrap {
     public record BootstrapActual(String schema, String machineId, String startedAtUtc,
                                   String observedAtUtc, String status, String error,
                                    FilePin planRef, DefaultMaven defaultMaven,
+                                   List<FilePin> mavenProbeRefs,
                                    boolean bootstrapNativeJobHardBound,
-                                  boolean bootstrapAloneGrantsPipelineQualification) {}
+                                  boolean bootstrapAloneGrantsPipelineQualification) {
+        public BootstrapActual { mavenProbeRefs = List.copyOf(mavenProbeRefs); }
+    }
 
     public record DefaultMaven(String command, String reportedVersion, String minimumVersion,
                                String reportedHome, FilePin distributionLauncherRef) {
@@ -141,7 +145,38 @@ public final class CiBootstrap {
         }
     }
 
+    public enum MavenProbePhase { BEFORE_ENSURE, AFTER_IN_PLACE_UPGRADE }
+    public enum MavenProbeStatus { OBSERVED, REJECTED }
+
+    /** A durable observation is separate from minimum-version and pipeline admission. */
+    public record MavenProbeActual(String schema, String machineId, String observedAtUtc,
+                                   String command, String minimumVersion, MavenProbePhase phase,
+                                   MavenProbeStatus status, String error, FilePin bootstrapSourceRef,
+                                   FilePin outputRef, FilePin selectedLauncherRef, MavenObservation observation) {
+        public MavenProbeActual {
+            if (!"xar.java-control-default-maven-probe/v1".equals(schema)
+                    || machineId == null || machineId.isBlank() || !"mvn".equals(command)
+                    || !MINIMUM_MAVEN_VERSION.equals(minimumVersion) || phase == null || status == null
+                    || bootstrapSourceRef == null) {
+                throw new IllegalArgumentException("source-bound default Maven observation required");
+            }
+            Instant.parse(observedAtUtc);
+            if ((observation != null && outputRef == null) || (selectedLauncherRef != null && observation == null)) {
+                throw new IllegalArgumentException("observed Maven identity requires its actual output evidence");
+            }
+            if (status == MavenProbeStatus.OBSERVED) {
+                if (error != null || outputRef == null || observation == null
+                        || !observation.launcherRef().equals(selectedLauncherRef)) {
+                    throw new IllegalArgumentException("complete matching launcher observation required");
+                }
+            } else if (error == null || error.isBlank()) {
+                throw new IllegalArgumentException("rejected Maven probe requires its actual error");
+            }
+        }
+    }
+
     @FunctionalInterface interface MavenProbe { String run() throws IOException, InterruptedException; }
+    @FunctionalInterface interface MavenLauncherProbe { Path resolve() throws IOException; }
     @FunctionalInterface interface MavenInstaller { void replace(MavenObservation before) throws IOException, InterruptedException; }
     @FunctionalInterface interface IoGuard { void check() throws IOException; }
     private record MavenUpgradePlan(String machineId, String observedAtUtc, String status,
@@ -166,6 +201,12 @@ public final class CiBootstrap {
     public static void main(String[] arguments) throws Exception {
         if (!System.getProperty("os.name").startsWith("Windows") || Runtime.version().feature() != 21) {
             throw new IllegalStateException("explicit installed Windows JDK21 required; no skip");
+        }
+        if (arguments.length == 2 && arguments[0].equals("--verify-maven-evidence-root")) {
+            String machine = machineId(Path.of(Objects.requireNonNull(System.getenv("SystemRoot"))).toRealPath());
+            int count = verifyMavenEvidence(Path.of(arguments[1]), machine);
+            System.out.println("Verified " + count + " persisted Maven probe records; evidence integrity grants no pipeline qualification");
+            return;
         }
         Map<String, String> values = arguments(arguments);
         Path repo = Path.of(values.get("--repo-root")).toRealPath();
@@ -214,14 +255,18 @@ public final class CiBootstrap {
         String started = Instant.now().toString();
         FilePin planRef = null;
         DefaultMaven defaultMaven = null;
+        List<FilePin> mavenProbeRefs = new ArrayList<>();
         String failure = null;
         boolean completed = false;
         try {
             Path source = repo.resolve("java/ck3-control/build-tools");
             List<FilePin> before = sourcePins(source);
+            FilePin bootstrapSourceRef = measure(source.resolve("src/main/java/org/xar/ck3/control/build/CiBootstrap.java"));
             Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             environment.putAll(System.getenv());
             environment.put("JAVA_HOME", javaHome.toString());
+            environment.put("XAR_ORACLE_PYTHON", python.toString());
+            environment.put("XAR_REPO_ROOT", repo.toString());
             String scratch = root.resolve("scratch").toString();
             String jvm = "-Xms32m -Xmx512m -XX:MaxMetaspaceSize=192m -XX:ReservedCodeCacheSize=64m"
                     + " -XX:MaxDirectMemorySize=64m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;
@@ -240,16 +285,16 @@ public final class CiBootstrap {
                     StandardOpenOption.CREATE_NEW);
             int[] probeOrdinal = {0};
             defaultMaven = ensureDefaultMaven(() -> {
-                Path log = root.resolve("logs/maven-version-" + ++probeOrdinal[0] + ".log");
-                runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", versionBatch.toString()),
-                        root.resolve("scratch"), environment, log, Duration.ofSeconds(30), expiry, root, volumes);
-                String output = Files.readString(log);
-                MavenObservation observedMaven = observeDefaultMaven(output, true);
-                Path selected = defaultMavenLauncher(environment, root.resolve("scratch"), true);
-                if (!selected.equals(Path.of(observedMaven.launcherRef().path()).toRealPath())) {
-                    throw new IOException("selected default Maven launcher differs from its reported installation");
-                }
-                return output;
+                int ordinal = ++probeOrdinal[0];
+                Path log = root.resolve("logs/maven-version-" + ordinal + ".log");
+                return recordedMavenProbe(() -> {
+                    runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", versionBatch.toString()),
+                            root.resolve("scratch"), environment, log, Duration.ofSeconds(30), expiry, root, volumes);
+                    return Files.readString(log);
+                }, () -> defaultMavenLauncher(environment, root.resolve("scratch"), true), log,
+                        root.resolve("logs/maven-observation-" + ordinal + ".json"), machine, bootstrapSourceRef,
+                        ordinal == 1 ? MavenProbePhase.BEFORE_ENSURE : MavenProbePhase.AFTER_IN_PLACE_UPGRADE,
+                        true, mavenProbeRefs);
             }, observedInstallation -> installOfficialMaven(observedInstallation, root, machine, volumes, () -> guard(root, volumes, expiry)));
             Path maven = Path.of(defaultMaven.distributionLauncherRef().path());
             Path batch = root.resolve("scratch/bootstrap-verify.cmd");
@@ -291,8 +336,9 @@ public final class CiBootstrap {
         } finally {
             if (!completed && failure == null) failure = "bootstrap did not reach complete downstream terminal validation";
             publish(root.resolve("logs/bootstrap-actual.json"), new BootstrapActual(
-                    "xar.java-control-CI-bootstrap-actual/v2", machine, started, Instant.now().toString(),
-                    completed && failure == null ? "PIPELINE_EXIT_0" : "RED", failure, planRef, defaultMaven, false, false));
+                    "xar.java-control-CI-bootstrap-actual/v3", machine, started, Instant.now().toString(),
+                    completed && failure == null ? "PIPELINE_EXIT_0" : "RED", failure, planRef, defaultMaven,
+                    mavenProbeRefs, false, false));
         }
         if (!completed || failure != null) throw new IllegalStateException(failure);
     }
@@ -307,6 +353,14 @@ public final class CiBootstrap {
     }
 
     static MavenObservation observeDefaultMaven(String output, boolean windows) throws IOException {
+        MavenReportedIdentity identity = reportedMavenIdentity(output);
+        return new MavenObservation(identity.reportedVersion(), identity.reportedHome(),
+                measure(Path.of(identity.reportedHome()).resolve(windows ? "bin/mvn.cmd" : "bin/mvn")));
+    }
+
+    private record MavenReportedIdentity(String reportedVersion, String reportedHome) {}
+
+    private static MavenReportedIdentity reportedMavenIdentity(String output) throws IOException {
         if (output == null || output.length() > 65536) throw new IOException("bounded actual Maven version output required");
         var versions = Pattern.compile("(?m)^Apache Maven ([^\\r\\n ]+)(?: [^\\r\\n]*)?$").matcher(output);
         if (!versions.find()) throw new IOException("default mvn did not report its version; environment not qualified");
@@ -318,7 +372,201 @@ public final class CiBootstrap {
         if (!homes.find()) throw new IOException("default mvn did not report its actual installation home");
         Path home = Path.of(homes.group(1).strip()).toRealPath();
         if (homes.find()) throw new IOException("ambiguous default Maven installation home");
-        return new MavenObservation(version, home.toString(), measure(home.resolve(windows ? "bin/mvn.cmd" : "bin/mvn")));
+        return new MavenReportedIdentity(version, home.toString());
+    }
+
+    /** Always publish before returning or propagating failure, including an old stable version. */
+    static String recordedMavenProbe(MavenProbe probe, MavenLauncherProbe launcher, Path outputPath,
+                                     Path receiptPath, String machineId, FilePin bootstrapSourceRef,
+                                     MavenProbePhase phase, boolean windows, List<FilePin> publishedRefs)
+            throws IOException, InterruptedException {
+        MavenObservation observation = null;
+        FilePin outputRef = null, selected = null;
+        Exception failure = null;
+        MavenProbeStatus status = MavenProbeStatus.REJECTED;
+        try {
+            String output = probe.run();
+            outputRef = measure(outputPath);
+            if (outputRef.bytes() > 65_536 || !output.equals(Files.readString(outputPath))
+                    || !outputRef.equals(measure(outputPath))) {
+                throw new IOException("bounded unchanged actual Maven stdout required");
+            }
+            observation = observeDefaultMaven(output, windows);
+            selected = measure(launcher.resolve());
+            if (!selected.equals(observation.launcherRef())) {
+                throw new IOException("selected default Maven launcher differs from its reported installation");
+            }
+            status = MavenProbeStatus.OBSERVED;
+            return output;
+        } catch (IOException | InterruptedException | RuntimeException error) {
+            failure = error;
+            throw error;
+        } finally {
+            try {
+                if (outputRef == null && Files.isRegularFile(outputPath, LinkOption.NOFOLLOW_LINKS)) {
+                    outputRef = measure(outputPath);
+                }
+                String error = failure != null ? failure.getClass().getName() + ": " + failure.getMessage()
+                        : status == MavenProbeStatus.REJECTED ? "Maven probe did not complete normally" : null;
+                FilePin receipt = publish(receiptPath, new MavenProbeActual(
+                        "xar.java-control-default-maven-probe/v1", machineId, Instant.now().toString(),
+                        "mvn", MINIMUM_MAVEN_VERSION, phase, status, error, bootstrapSourceRef,
+                        outputRef, selected, observation));
+                publishedRefs.add(receipt);
+            } catch (IOException | RuntimeException publicationFailure) {
+                if (failure == null) throw publicationFailure;
+                failure.addSuppressed(publicationFailure);
+            }
+        }
+    }
+
+    /** JDK-only artifact consumer. RED bootstrap evidence can be intact without granting admission. */
+    static int verifyMavenEvidence(Path workRoot, String expectedMachineId) throws IOException {
+        Path logs = workRoot.toRealPath().resolve("logs");
+        J terminal = readMetadata(logs.resolve("bootstrap-actual.json"));
+        exactFields(terminal, Set.of("schema", "machine_id", "started_at_utc", "observed_at_utc", "status", "error",
+                "plan_ref", "default_maven", "maven_probe_refs", "bootstrap_native_job_hard_bound",
+                "bootstrap_alone_grants_pipeline_qualification"));
+        requireText(terminal, "schema", "xar.java-control-CI-bootstrap-actual/v3");
+        requireText(terminal, "machine_id", expectedMachineId);
+        requireFalse(terminal, "bootstrap_native_job_hard_bound");
+        requireFalse(terminal, "bootstrap_alone_grants_pipeline_qualification");
+        try {
+            nullableFilePin(field(terminal, "plan_ref"));
+            Instant.parse(string(field(terminal, "started_at_utc")));
+            Instant.parse(string(field(terminal, "observed_at_utc")));
+            J refsNode = field(terminal, "maven_probe_refs");
+            if (!(refsNode instanceof JA refs) || refs.values().size() > 2) throw new IOException("at most two actual Maven probes required");
+            List<MavenProbeActual> observations = new ArrayList<>();
+            for (int index = 0; index < refs.values().size(); index++) {
+                FilePin ref = parseFilePin(refs.values().get(index));
+                Path expected = logs.resolve("maven-observation-" + (index + 1) + ".json").toAbsolutePath().normalize();
+                if (!expected.toString().equals(ref.path())) throw new IOException("Maven probe receipt route differs");
+                verifyPin(ref);
+                MavenProbeActual probe = parseMavenProbe(readMetadata(expected));
+                verifyPin(ref);
+                MavenProbePhase phase = index == 0 ? MavenProbePhase.BEFORE_ENSURE : MavenProbePhase.AFTER_IN_PLACE_UPGRADE;
+                if (!expectedMachineId.equals(probe.machineId()) || phase != probe.phase()) {
+                    throw new IOException("Maven probe machine/phase differs from terminal sequence");
+                }
+                verifyPin(probe.bootstrapSourceRef());
+                if (!observations.isEmpty() && !observations.getFirst().bootstrapSourceRef().equals(probe.bootstrapSourceRef())) {
+                    throw new IOException("Maven bootstrap source changed between probes");
+                }
+                if (probe.outputRef() != null) {
+                    Path output = logs.resolve("maven-version-" + (index + 1) + ".log").toAbsolutePath().normalize();
+                    if (!output.toString().equals(probe.outputRef().path())) throw new IOException("Maven stdout route differs");
+                    verifyPin(probe.outputRef());
+                    if (probe.observation() != null) {
+                        if (probe.outputRef().bytes() > 65_536) throw new IOException("observed Maven stdout exceeds parser budget");
+                        MavenReportedIdentity reported = reportedMavenIdentity(Files.readString(output));
+                        if (!reported.reportedVersion().equals(probe.observation().reportedVersion())
+                                || !reported.reportedHome().equals(probe.observation().reportedHome())) {
+                            throw new IOException("persisted Maven version/home differs from its actual stdout");
+                        }
+                        verifyPin(probe.outputRef());
+                    }
+                }
+                // Historical launcher pins are retained evidence: an in-place upgrade changes that same path.
+                observations.add(probe);
+            }
+            DefaultMaven admitted = parseDefaultMaven(field(terminal, "default_maven"));
+            String status = string(field(terminal, "status"));
+            String error = nullableText(field(terminal, "error"));
+            if ((!status.equals("RED") && !status.equals("PIPELINE_EXIT_0"))
+                    || (status.equals("RED") != (error != null))) throw new IOException("terminal bootstrap status/error differs");
+            if (observations.size() == 2) {
+                MavenProbeActual before = observations.getFirst();
+                if (before.status() != MavenProbeStatus.OBSERVED || atMinimum(before.observation().reportedVersion())) {
+                    throw new IOException("post-upgrade observation has no actual old stable before-state");
+                }
+            }
+            if (admitted != null) {
+                if (observations.isEmpty()) throw new IOException("admitted default Maven has no actual probe");
+                MavenProbeActual last = observations.getLast();
+                if (last.status() != MavenProbeStatus.OBSERVED
+                        || !last.observation().reportedVersion().equals(admitted.reportedVersion())
+                        || !last.observation().reportedHome().equals(admitted.reportedHome())
+                        || !last.observation().launcherRef().equals(admitted.distributionLauncherRef())) {
+                    throw new IOException("admitted default Maven differs from its actual final probe");
+                }
+                if (!atMinimum(observations.getFirst().observation().reportedVersion()) && observations.size() != 2) {
+                    throw new IOException("successful in-place upgrade lacks its actual after-state");
+                }
+                if (observations.size() == 2 && (!observations.getFirst().observation().reportedHome().equals(admitted.reportedHome())
+                        || !observations.getFirst().observation().launcherRef().path().equals(admitted.distributionLauncherRef().path())
+                        || !MAVEN_VERSION.equals(admitted.reportedVersion()))) {
+                    throw new IOException("admitted upgrade changed the original default installation");
+                }
+                verifyPin(admitted.distributionLauncherRef());
+            } else if (status.equals("PIPELINE_EXIT_0")) {
+                throw new IOException("successful pipeline has no admitted default Maven");
+            }
+            return observations.size();
+        } catch (IllegalArgumentException error) {
+            throw new IOException("invalid persisted Maven observation contract", error);
+        }
+    }
+
+    private static boolean atMinimum(String version) {
+        try { requireStableMinimum(version); return true; }
+        catch (IllegalArgumentException belowMinimum) { return false; }
+    }
+
+    private static MavenProbeActual parseMavenProbe(J value) throws IOException {
+        exactFields(value, Set.of("schema", "machine_id", "observed_at_utc", "command", "minimum_version", "phase",
+                "status", "error", "bootstrap_source_ref", "output_ref", "selected_launcher_ref", "observation"));
+        J observationNode = field(value, "observation");
+        MavenObservation observation = null;
+        if (!(observationNode instanceof JNull)) {
+            exactFields(observationNode, Set.of("reported_version", "reported_home", "launcher_ref"));
+            observation = new MavenObservation(string(field(observationNode, "reported_version")),
+                    string(field(observationNode, "reported_home")), parseFilePin(field(observationNode, "launcher_ref")));
+        }
+        return new MavenProbeActual(string(field(value, "schema")), string(field(value, "machine_id")),
+                string(field(value, "observed_at_utc")), string(field(value, "command")), string(field(value, "minimum_version")),
+                MavenProbePhase.valueOf(string(field(value, "phase"))), MavenProbeStatus.valueOf(string(field(value, "status"))),
+                nullableText(field(value, "error")), parseFilePin(field(value, "bootstrap_source_ref")),
+                nullableFilePin(field(value, "output_ref")), nullableFilePin(field(value, "selected_launcher_ref")), observation);
+    }
+
+    private static DefaultMaven parseDefaultMaven(J value) throws IOException {
+        if (value instanceof JNull) return null;
+        exactFields(value, Set.of("command", "reported_version", "minimum_version", "reported_home", "distribution_launcher_ref"));
+        return new DefaultMaven(string(field(value, "command")), string(field(value, "reported_version")),
+                string(field(value, "minimum_version")), string(field(value, "reported_home")),
+                parseFilePin(field(value, "distribution_launcher_ref")));
+    }
+
+    private static FilePin nullableFilePin(J value) throws IOException { return value instanceof JNull ? null : parseFilePin(value); }
+    private static String nullableText(J value) throws IOException { return value instanceof JNull ? null : string(value); }
+    private static FilePin parseFilePin(J value) throws IOException {
+        exactFields(value, Set.of("path", "bytes", "sha256"));
+        return new FilePin(string(field(value, "path")), integer(field(value, "bytes")), string(field(value, "sha256")));
+    }
+    private static void verifyPin(FilePin ref) throws IOException {
+        Path path = Path.of(ref.path());
+        if (ref.bytes() > 8 * MIB || Files.size(path) != ref.bytes() || !ref.equals(measure(path))) {
+            throw new IOException("persisted Maven evidence file pin differs: " + ref.path());
+        }
+    }
+    private static J readMetadata(Path path) throws IOException {
+        long bytes = Files.size(path);
+        if (bytes <= 0 || bytes > MIB) throw new IOException("bounded complete Maven metadata required");
+        FilePin before = measure(path);
+        if (before.bytes() <= 0 || before.bytes() > MIB) throw new IOException("bounded complete Maven metadata required");
+        J value = parse(Files.readAllBytes(path));
+        if (!before.equals(measure(path))) throw new IOException("Maven metadata changed during consumption");
+        return value;
+    }
+    private static void exactFields(J value, Set<String> expected) throws IOException {
+        if (!(value instanceof JO object) || !object.values().keySet().equals(expected)) throw new IOException("exact Maven metadata fields required");
+    }
+    private static void requireText(J value, String key, String expected) throws IOException {
+        if (!expected.equals(string(field(value, key)))) throw new IOException("Maven metadata " + key + " differs");
+    }
+    private static void requireFalse(J value, String key) throws IOException {
+        if (!(field(value, key) instanceof JB flag) || flag.value()) throw new IOException("Maven observation cannot grant pipeline/Job qualification");
     }
 
     static DefaultMaven ensureDefaultMaven(MavenProbe probe, MavenInstaller installer) throws IOException, InterruptedException {
@@ -761,7 +1009,7 @@ public final class CiBootstrap {
         return Map.copyOf(result);
     }
 
-    private static FilePin publish(Path path, Record value) throws IOException {
+    static FilePin publish(Path path, Record value) throws IOException {
         byte[] raw = emit(toJson(value)).getBytes(StandardCharsets.UTF_8);
         if (raw.length > MIB) throw new IOException("bounded complete bootstrap metadata required");
         Files.write(path, raw, StandardOpenOption.CREATE_NEW);
@@ -880,6 +1128,7 @@ public final class CiBootstrap {
     private static J toJson(Object value) throws IOException {
         if (value == null) return JNull.VALUE;
         if (value instanceof String text) { validateUnicode(text); return new JS(text); }
+        if (value instanceof Enum<?> branch) return new JS(branch.name());
         if (value instanceof Boolean flag) return new JB(flag);
         if (value instanceof Long number) return new JN(BigDecimal.valueOf(number), true);
         if (value instanceof Integer number) return new JN(BigDecimal.valueOf(number), true);

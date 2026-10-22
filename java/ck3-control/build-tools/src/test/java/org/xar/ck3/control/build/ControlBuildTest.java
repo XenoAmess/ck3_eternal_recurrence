@@ -135,7 +135,7 @@ final class ControlBuildTest {
                 + "shift\r\nif not \"%~1\"==\"\" exit /b 93\r\necho VERIFY_RETURNED_FAILURE\r\nexit /b 37\r\n");
         Path working = Files.createDirectory(temporary.resolve("reactor working"));
         ControlBuild.Config config = new ControlBuild.Config(working, working, working.resolve("release.json"),
-                "command-fixture", "test", null, working, "3.10.0", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR);
+                "command-fixture", "test", null, working, "3.10.0", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
         Path batch = temporary.resolve("reactor.cmd").toAbsolutePath();
         ControlBuild.writeMavenBatch(batch, null, ControlBuild.reactorVerifyArguments(config,
                 working.resolve("direct settings.xml"), working, working.resolve("output directory")));
@@ -163,6 +163,6 @@ final class ControlBuildTest {
         }
         Path root = temporary.toAbsolutePath();
         assertThrows(IllegalArgumentException.class, () -> new ControlBuild.Config(root.resolve("source"), root.resolve("work"),
-                root.resolve("release.json"), "bad-minimum", "test", null, root.resolve("jdk"), "3.9.16", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR));
+                root.resolve("release.json"), "bad-minimum", "test", null, root.resolve("jdk"), "3.9.16", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.STANDARD_8_MIB));
     }
 }

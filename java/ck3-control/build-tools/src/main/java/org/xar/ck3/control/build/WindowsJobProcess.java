@@ -284,6 +284,79 @@ public final class WindowsJobProcess implements AutoCloseable {
         finally { Kernel32.INSTANCE.CloseHandle(handle); }
     }
 
+    /**
+     * Owns one non-inheritable query/synchronize handle for an exact generation.
+     * This type exposes no native handle, process mutation, Job or stdio authority.
+     * Birth and image are measured once from the acquired handle; wait and exit
+     * queries keep using that same handle, including after the process exits.
+     */
+    public static final class ReadOnlyProcessHandle implements AutoCloseable {
+        private final Kernel32 nativeApi;
+        private final HANDLE processHandle;
+        private final ProcessIdentity identity;
+        private boolean closed;
+
+        private ReadOnlyProcessHandle(Kernel32 nativeApi, HANDLE processHandle, long pid) {
+            this.nativeApi = nativeApi;
+            this.processHandle = processHandle;
+            this.identity = WindowsJobProcess.identity(nativeApi, processHandle, pid);
+        }
+
+        /** Cached identity measured from this handle, never a subsequent PID lookup. */
+        public synchronized ProcessIdentity identity() {
+            ensureHandleOpen();
+            return identity;
+        }
+
+        /** Actual unsigned WaitForSingleObject(handle, 0) result; WAIT_FAILED throws. */
+        public synchronized long waitZero() {
+            ensureHandleOpen();
+            int state = nativeApi.WaitForSingleObject(processHandle, 0);
+            if (state == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+            return Integer.toUnsignedLong(state);
+        }
+
+        /** Actual unsigned DWORD; 259 alone does not establish process liveness. */
+        public synchronized long exitCode() {
+            ensureHandleOpen();
+            IntByReference exit = new IntByReference();
+            require(nativeApi.GetExitCodeProcess(processHandle, exit));
+            return Integer.toUnsignedLong(exit.getValue());
+        }
+
+        /** One close attempt, including failures; later queries reject without a native call. */
+        @Override public synchronized void close() {
+            if (closed) return;
+            closed = true;
+            require(nativeApi.CloseHandle(processHandle));
+        }
+
+        private void ensureHandleOpen() {
+            if (closed) throw new IllegalStateException("Read-only process handle is closed");
+        }
+    }
+
+    /**
+     * Retains a single actual generation without requiring it to be currently live.
+     * A successful capture is identity evidence; callers independently inspect wait
+     * and exit status and keep their original creator/stdio/Job ownership.
+     */
+    public static ReadOnlyProcessHandle retainReadOnlyProcess(long pid) {
+        requireWindows();
+        if (pid <= 0 || pid > 0xffff_ffffL) throw new IllegalArgumentException("DWORD PID required");
+        Kernel32 api = Kernel32.INSTANCE;
+        HANDLE handle = requireHandle(api.OpenProcess(0x1000 | 0x100000, false, (int) pid));
+        try {
+            return new ReadOnlyProcessHandle(api, handle, pid);
+        } catch (RuntimeException | Error error) {
+            try { require(api.CloseHandle(handle)); }
+            catch (RuntimeException | Error closeError) {
+                if (closeError != error) error.addSuppressed(closeError);
+            }
+            throw error;
+        }
+    }
+
     /** One held native handle binds both liveness checks, process birth/EXE and monotonic observation. */
     public static LiveProcessObservation observeLiveProcess(long pid) {
         requireWindows();

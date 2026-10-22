@@ -1,0 +1,387 @@
+{
+  "schema": "xar.tools22.qualified-software-delivery/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T16:51:33.132179600Z",
+  "status": "QUALIFIED_BUILD_TOOLS_SOFTWARE",
+  "actual_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java-tools22-03.json",
+    "exists": true,
+    "bytes": 14831,
+    "mtime_ns": "1792687816757128200",
+    "modified_at_utc": "2026-10-22T16:50:16.7571282Z",
+    "sha256": "5b241cfae0bde682282d51256238feb4fc61b4ab0aa951784b69366a7720d0db",
+    "stable_during_observation": true
+  },
+  "old_v4_acceptance_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\TOOLS22-ACCEPTED-V4-READBACK01.json",
+    "exists": true,
+    "bytes": 392,
+    "mtime_ns": "1792687831554898000",
+    "modified_at_utc": "2026-10-22T16:50:31.554898Z",
+    "sha256": "0545ce34c27eaffd17f76cbd5a6513c3a2ba335b05172179b7d764179a6e4261",
+    "stable_during_observation": true
+  },
+  "rootdiff_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\tools22-source-staging01\\TOOLS22-COMBINED-ROOTDIFF01.patch",
+    "exists": true,
+    "bytes": 132017,
+    "mtime_ns": "1792687452230240400",
+    "modified_at_utc": "2026-10-22T16:44:12.2302404Z",
+    "sha256": "406c10e2ceb52ff5058dc82f7d819b0c3251c5ed55153d17fd6965acb0d9c7cb",
+    "stable_during_observation": true
+  },
+  "rootdiff_git_apply_check_exit": 0,
+  "rootdiff_files": 10,
+  "rootdiff_baseline": "Exact immutable qualified source-java-tools21; current Z preimages checked unchanged",
+  "source_ready_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/tools22-source-staging01/TOOLS22-COMBINED-SOURCE-READY01.json",
+    "bytes": 23688,
+    "sha256": "7ac86c0751afd49942b86376c480369c3d0864538be63a0ddfed05baf6ab1405"
+  },
+  "immutable_compiled_source_root": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03",
+  "source_file_count": 17,
+  "source_bytes": 323424,
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\pom.xml",
+      "bytes": 2787,
+      "sha256": "f3190168955f68cb78b0174ce8ab2a18e70e8249b1e4be39d57c768cd32b29d3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\CiBootstrap.java",
+      "bytes": 76438,
+      "sha256": "f86fe0299e0f5ca8b9a3e1f4e18abc2a904068b9cead758c761908f61720e6b1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlBuild.java",
+      "bytes": 56858,
+      "sha256": "8718a4ccc0037c21927cdcdcfe1094ca8e97875caada8c77528e0598f40c0f5f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlCi.java",
+      "bytes": 16220,
+      "sha256": "8be4c01dc8b4a04fa33ecfc9312dd4daeb1f5c82a129f44bb1f27ee3a00be037"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\MapAdmissionCi.java",
+      "bytes": 10710,
+      "sha256": "50008f905e18ff7b319824947f8692485c5eda4d4fed110a20c44b7cb6d1b3a2"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\MapAdmissionServiceOwner.java",
+      "bytes": 19865,
+      "sha256": "a34b895c7af48858b1b4cd7d486f00b36100a33b2c00d96b9e8302b40bbcadd1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\NativeTcpListener.java",
+      "bytes": 6614,
+      "sha256": "1c179f8e606f01f97557996ecb78c5e9131f762a51547e26311169e07ed03d99"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\PythonBoundaryStaticStage.java",
+      "bytes": 27585,
+      "sha256": "9a7f3a91c6b5e117602e70ee67c17c0c54b372d092641cd701353035e44b3bff"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\main\\java\\org\\xar\\ck3\\control\\build\\WindowsJobProcess.java",
+      "bytes": 25568,
+      "sha256": "1ef9078e9efe88ee1066054949542fb37b9951f8e92dfea9122c846b6e943828"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\CiBootstrapTest.java",
+      "bytes": 30173,
+      "sha256": "160ca6ad50be01b2b1cf19f25bfbd54a8ad0df0af980584ed8e1a998d1dd844d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\ControlBuildTest.java",
+      "bytes": 13146,
+      "sha256": "de6f4aec891e130c3f60333aa7960ffb1bdb40a20d8fe24e5314f90fe2253eea"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\MapAdmissionServiceOwnerTest.java",
+      "bytes": 3965,
+      "sha256": "6bb42f20d74f105d050782711868dd6d1ae167eceab96192a7d3eabf5a35df7f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\NativeTcpListenerTest.java",
+      "bytes": 2694,
+      "sha256": "767d57b12547e71e6302e86063f8d34ba2fbdaadbdbd7825927c12faab59e0b0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\PythonBoundaryStaticStageTest.java",
+      "bytes": 8332,
+      "sha256": "5d311741b05a05af3aeb7728330b38b8c14369a14b6aaf228be694a47f72b76b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\SourceLimitProfileTest.java",
+      "bytes": 9324,
+      "sha256": "4ff48bc9313b02b1611d740a0b038c25117ecb21999cea30e0ec3cbbfb31b7d3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\java\\org\\xar\\ck3\\control\\build\\WindowsJobProcessTest.java",
+      "bytes": 12768,
+      "sha256": "9da82edc09a4b84d62e8dbdfe8798b9ec46d035c8cbcc44b19126d1da4214dd5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-tools22-source01\\src\\test\\resources\\maven-failure\\pom.xml",
+      "bytes": 377,
+      "sha256": "9e16d95356904ba633bc1c03c70064b05beeeb2d55be9d4a5352e1eef7744793"
+    }
+  ],
+  "compiled_source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\pom.xml",
+      "bytes": 2787,
+      "sha256": "f3190168955f68cb78b0174ce8ab2a18e70e8249b1e4be39d57c768cd32b29d3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\CiBootstrap.java",
+      "bytes": 76438,
+      "sha256": "f86fe0299e0f5ca8b9a3e1f4e18abc2a904068b9cead758c761908f61720e6b1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlBuild.java",
+      "bytes": 56858,
+      "sha256": "8718a4ccc0037c21927cdcdcfe1094ca8e97875caada8c77528e0598f40c0f5f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlCi.java",
+      "bytes": 16220,
+      "sha256": "8be4c01dc8b4a04fa33ecfc9312dd4daeb1f5c82a129f44bb1f27ee3a00be037"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\MapAdmissionCi.java",
+      "bytes": 10710,
+      "sha256": "50008f905e18ff7b319824947f8692485c5eda4d4fed110a20c44b7cb6d1b3a2"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\MapAdmissionServiceOwner.java",
+      "bytes": 19865,
+      "sha256": "a34b895c7af48858b1b4cd7d486f00b36100a33b2c00d96b9e8302b40bbcadd1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\NativeTcpListener.java",
+      "bytes": 6614,
+      "sha256": "1c179f8e606f01f97557996ecb78c5e9131f762a51547e26311169e07ed03d99"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\PythonBoundaryStaticStage.java",
+      "bytes": 27585,
+      "sha256": "9a7f3a91c6b5e117602e70ee67c17c0c54b372d092641cd701353035e44b3bff"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\main\\java\\org\\xar\\ck3\\control\\build\\WindowsJobProcess.java",
+      "bytes": 25568,
+      "sha256": "1ef9078e9efe88ee1066054949542fb37b9951f8e92dfea9122c846b6e943828"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\CiBootstrapTest.java",
+      "bytes": 30173,
+      "sha256": "160ca6ad50be01b2b1cf19f25bfbd54a8ad0df0af980584ed8e1a998d1dd844d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\ControlBuildTest.java",
+      "bytes": 13146,
+      "sha256": "de6f4aec891e130c3f60333aa7960ffb1bdb40a20d8fe24e5314f90fe2253eea"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\MapAdmissionServiceOwnerTest.java",
+      "bytes": 3965,
+      "sha256": "6bb42f20d74f105d050782711868dd6d1ae167eceab96192a7d3eabf5a35df7f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\NativeTcpListenerTest.java",
+      "bytes": 2694,
+      "sha256": "767d57b12547e71e6302e86063f8d34ba2fbdaadbdbd7825927c12faab59e0b0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\PythonBoundaryStaticStageTest.java",
+      "bytes": 8332,
+      "sha256": "5d311741b05a05af3aeb7728330b38b8c14369a14b6aaf228be694a47f72b76b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\SourceLimitProfileTest.java",
+      "bytes": 9324,
+      "sha256": "4ff48bc9313b02b1611d740a0b038c25117ecb21999cea30e0ec3cbbfb31b7d3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\java\\org\\xar\\ck3\\control\\build\\WindowsJobProcessTest.java",
+      "bytes": 12768,
+      "sha256": "9da82edc09a4b84d62e8dbdfe8798b9ec46d035c8cbcc44b19126d1da4214dd5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\source-java-tools22-03\\src\\test\\resources\\maven-failure\\pom.xml",
+      "bytes": 377,
+      "sha256": "9e16d95356904ba633bc1c03c70064b05beeeb2d55be9d4a5352e1eef7744793"
+    }
+  ],
+  "complete_runtime_closure": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools22-03\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "bytes": 208407,
+      "sha256": "ff61b95f1d15eb17876f7f187636d219350f1730d750b61980c6c7830f85b040"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools22-03\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools22-03\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar",
+      "bytes": 594782,
+      "sha256": "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools22-03\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar",
+      "bytes": 1709095,
+      "sha256": "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools22-03\\ck3-control-build-tools\\lib\\jna-5.19.1.jar",
+      "bytes": 1950853,
+      "sha256": "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools22-03\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar",
+      "bytes": 1416385,
+      "sha256": "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+    }
+  ],
+  "actual_maven_toolchain": {
+    "selection": "DEFAULT_COMMAND",
+    "requested_command": "mvn",
+    "reported_home": "C:\\apache-maven",
+    "reported_version": "3.10.0",
+    "minimum_version": "3.10.0",
+    "distribution_launcher_ref": {
+      "path": "C:\\apache-maven\\bin\\mvn.cmd",
+      "bytes": 7451,
+      "sha256": "b7001067ae1a052a3853bc51df0e1a4c013aadae2005837a1e970c0d51b57fdf"
+    },
+    "explicit_override_ref": null
+  },
+  "maven_result": {
+    "identity": {
+      "pid": 278672,
+      "creation_filetime_decimal": "134371613479947806",
+      "executable": "C:\\Windows\\System32\\cmd.exe"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 36.7840316,
+    "accounting": {
+      "peak_job_memory_bytes": 859885568,
+      "active_processes": 0,
+      "memory_limit_bytes": 2147483648,
+      "limit_flags": 8704
+    },
+    "stop_reason": null
+  },
+  "source_postcheck": {
+    "state": "MATCH",
+    "error": null
+  },
+  "compiled_source_postcheck": {
+    "state": "MATCH",
+    "error": null
+  },
+  "junit": {
+    "tests": 54,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.ControlBuildTest.xml",
+        "suite": "org.xar.ck3.control.build.ControlBuildTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.MapAdmissionServiceOwnerTest.xml",
+        "suite": "org.xar.ck3.control.build.MapAdmissionServiceOwnerTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.CiBootstrapTest.xml",
+        "suite": "org.xar.ck3.control.build.CiBootstrapTest",
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.NativeTcpListenerTest.xml",
+        "suite": "org.xar.ck3.control.build.NativeTcpListenerTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.PythonBoundaryStaticStageTest.xml",
+        "suite": "org.xar.ck3.control.build.PythonBoundaryStaticStageTest",
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.SourceLimitProfileTest.xml",
+        "suite": "org.xar.ck3.control.build.SourceLimitProfileTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools22-03\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.WindowsJobProcessTest.xml",
+        "suite": "org.xar.ck3.control.build.WindowsJobProcessTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "production_changes": [
+    "Typed finite 29-module source profile and v5 receipt, preserved default 8MiB bounds",
+    "Persistent two Python static boundary stages and strict v2 CI actual consumption",
+    "Default-Maven observation/evidence CLI and explicit Python/repository environment",
+    "Retained read-only native process generation handle API with actual gate-controlled Job regressions",
+    "Complete persistent qualification minimum54 and seven required suites"
+  ],
+  "schema_boundary": "This exact artifact was produced by old tools21/v4 and actually accepted by old v4 acceptedReceipt. New jar emits/consumes v5 subsequent build receipts. Never feed this v4 actual to its v5 reader or relabel it.",
+  "historical_attempts": [
+    {
+      "attempt": "tools22 entry01",
+      "status": "Rejected before Maven because source nested in work root",
+      "stderr": "logs/CONTROL-BUILD-TOOLS22.stderr.log"
+    },
+    {
+      "attempt": "java-tools22-02",
+      "software": "54 PASS",
+      "resource_qualification": "REJECTED actual single Maven Job hardlimit6GiB versus authorized2GiB",
+      "actual_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java-tools22-02.json",
+        "exists": true,
+        "bytes": 14831,
+        "mtime_ns": "1792687518102551300",
+        "modified_at_utc": "2026-10-22T16:45:18.1025513Z",
+        "sha256": "fb09255ce3192b2f08e92cd7a7f7e18c4e6d6696752a09e64477474e5fee61db",
+        "stable_during_observation": true
+      }
+    }
+  ],
+  "z_adopted": false,
+  "git_or_index_mutated": false,
+  "limitations": [
+    "No whole 29-module graph qualification yet",
+    "No SDK/Game/native business acceptance, source audit PASS, new RootSession protocol, or qualified finance capture test classes claimed",
+    "Owner-bootstrap three new sources are separate WIP and excluded"
+  ]
+}

@@ -17,13 +17,26 @@ import java.util.TreeMap;
 /** The durable CI route: qualify tools under a native Job, then run the same build and consumers. */
 public final class ControlCi {
     private ControlCi() {}
+    public static final String ACTUAL_SCHEMA = "xar.java-control-CI-actual/v2";
 
     public record Receipt(String schema, String machineId, String startedAtUtc, String observedAtUtc,
             String status, String error, ControlBuild.FileRef planRef, ControlBuild.FileRef capacityReleaseRef,
             ControlBuild.FileRef toolsBuildReceiptRef, WindowsJobProcess.CommandResult qualifiedPipeline,
-            ControlBuild.FileRef reactorBuildReceiptRef, ControlBuild.FileRef consumerReceiptRef) {}
+            ControlBuild.FileRef reactorBuildReceiptRef, ControlBuild.FileRef consumerReceiptRef,
+            List<ControlBuild.FileRef> pythonStaticReceiptRefs) {
+        public Receipt {
+            if (!ACTUAL_SCHEMA.equals(schema)) throw new IllegalArgumentException("Exact CI actual v2 contract required");
+            pythonStaticReceiptRefs = List.copyOf(pythonStaticReceiptRefs);
+        }
+    }
 
     public static void main(String[] arguments) throws Exception {
+        if (arguments.length == 2 && arguments[0].equals("--verify-static-receipts")) {
+            requireCompletedPythonStaticPipeline(Path.of(arguments[1]).toRealPath()); return;
+        }
+        if (arguments.length == 2 && arguments[0].equals("--verify-shared-fixture-junit")) {
+            PythonBoundaryStaticStage.requireSuccessfulPytest(Path.of(arguments[1]).toRealPath()); return;
+        }
         if (arguments.length != 2 && arguments.length != 4) throw new IllegalArgumentException("Exact bootstrap plan and optional qualified tools receipt required");
         if (!arguments[0].equals("--bootstrap-plan") || (arguments.length == 4 && !arguments[2].equals("--qualified-tools-receipt"))) {
             throw new IllegalArgumentException("Unknown CI arguments");
@@ -60,7 +73,7 @@ public final class ControlCi {
         ControlBuild.BuildReceipt tools = ControlBuild.build(config(plan, toolsSource, releasePath, "qualified-tools", ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME));
         if (!tools.status().equals("PASS")) throw new IOException("Native Job tools qualification failed");
         Path toolsReceipt = root.resolve("logs/build-qualified-tools.json");
-        requireJUnit(Path.of(tools.deploymentRoot()).resolve("surefire-reports"), 28);
+        requireJUnit(Path.of(tools.deploymentRoot()).resolve("surefire-reports"), 54);
         List<String> arguments = new ArrayList<>(List.of("-Xms32m", "-Xmx128m", "-XX:MaxMetaspaceSize=96m",
                 "-XX:ReservedCodeCacheSize=48m", "-XX:MaxDirectMemorySize=32m", "-Djava.io.tmpdir=" + root.resolve("scratch"),
                 "-Djna.tmpdir=" + root.resolve("scratch"), "-cp",
@@ -87,6 +100,7 @@ public final class ControlCi {
             throw new IOException("Actual running qualified jar/lib must exactly equal the qualified build closure");
         }
         String failure = null; ControlBuild.FileRef reactorRef = null, consumerRef = null;
+        List<ControlBuild.FileRef> staticRefs = new ArrayList<>();
         boolean complete = false;
         try {
             requireExpectedMavenFailure(plan, releasePath);
@@ -96,13 +110,19 @@ public final class ControlCi {
             if (!reactor.status().equals("PASS")) throw new IOException("Complete reactor failed");
             MapAdmissionCi.run(new MapAdmissionCi.Config(Path.of(plan.repoRoot()), reactorPath, root.resolve("artifacts/map-ci"),
                     Path.of(plan.javaHome()).resolve("bin/java.exe"), Path.of(plan.pythonExecutable()), Instant.parse(plan.reviewAtUtc()), 8089));
-            consumerRef = ControlBuild.FileRef.measure(root.resolve("artifacts/map-ci/logs/actual.json")); complete = true;
+            consumerRef = ControlBuild.FileRef.measure(root.resolve("artifacts/map-ci/logs/actual.json"));
+            for (var kind : PythonBoundaryStaticStage.Kind.values()) {
+                staticRefs.add(PythonBoundaryStaticStage.run(new PythonBoundaryStaticStage.Config(kind,
+                        Path.of(plan.repoRoot()), pythonStaticRoot(root, kind), Path.of(plan.pythonExecutable()),
+                        root.resolve("scratch"), Instant.parse(plan.reviewAtUtc()), plan.machineId())));
+            }
+            requirePythonStaticReceipts(root); complete = true;
         } catch (IOException | RuntimeException error) { failure = error.getClass().getSimpleName() + ": " + error.getMessage(); }
         finally {
             if (!complete && failure == null) failure = "Pipeline did not complete all validation and cleanup";
-            publish(root.resolve("logs/control-ci-actual.json"), new Receipt("xar.java-control-CI-actual/v1", plan.machineId(), started, Instant.now().toString(),
+            publish(root.resolve("logs/control-ci-actual.json"), new Receipt(ACTUAL_SCHEMA, plan.machineId(), started, Instant.now().toString(),
                     complete && failure == null ? "PASS" : "RED", failure, ControlBuild.FileRef.measure(planPath), ControlBuild.FileRef.measure(releasePath),
-                    ControlBuild.FileRef.measure(toolsReceiptPath), null, reactorRef, consumerRef));
+                    ControlBuild.FileRef.measure(toolsReceiptPath), null, reactorRef, consumerRef, List.copyOf(staticRefs)));
         }
         if (!complete || failure != null) throw new IOException(failure);
     }
@@ -121,10 +141,45 @@ public final class ControlCi {
 
     private static ControlBuild.Config config(CiBootstrap.Plan plan, Path source, Path release, String attempt, ControlBuild.TargetKind target) {
         return new ControlBuild.Config(source, Path.of(plan.workRoot()), release, attempt, plan.ownerTask(), null,
-                Path.of(plan.javaHome()), CiBootstrap.MINIMUM_MAVEN_VERSION, 900, target);
+                Path.of(plan.javaHome()), CiBootstrap.MINIMUM_MAVEN_VERSION, 900, target,
+                source.equals(Path.of(plan.repoRoot()).resolve("java/ck3-control"))
+                        ? ControlBuild.SourceLimitProfile.EXISTING_MIGRATION_20261022
+                        : ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
     }
 
     private static ControlBuild.FileRef ref(CiBootstrap.FilePin pin) { return new ControlBuild.FileRef(pin.path(), pin.bytes(), pin.sha256()); }
+
+    private static Path pythonStaticRoot(Path root, PythonBoundaryStaticStage.Kind kind) {
+        return root.resolve("artifacts/python-static").resolve(kind == PythonBoundaryStaticStage.Kind.SDK_SENTINEL_EXTRACTED
+                ? "sdk-sentinel" : "monthly-fixture");
+    }
+
+    private static List<ControlBuild.FileRef> requirePythonStaticReceipts(Path root) throws IOException {
+        String machine = WindowsJobProcess.currentMachineId();
+        List<ControlBuild.FileRef> refs = new ArrayList<>();
+        for (var kind : PythonBoundaryStaticStage.Kind.values()) {
+            ControlBuild.FileRef receipt = PythonBoundaryStaticStage.requireAccepted(pythonStaticRoot(root, kind).resolve("actual.json"), kind, machine);
+            refs.add(receipt);
+            System.out.println("ACCEPTED_PYTHON_STATIC " + kind + " " + receipt);
+        }
+        return List.copyOf(refs);
+    }
+
+    private static void requireCompletedPythonStaticPipeline(Path root) throws IOException {
+        List<ControlBuild.FileRef> refs = requirePythonStaticReceipts(root);
+        Path path = root.resolve("logs/control-ci-actual.json");
+        if (Files.size(path) > 65536) throw new IOException("Bounded completed CI actual required");
+        Receipt actual = ControlBuild.strictMapper().readValue(Files.readAllBytes(path), Receipt.class);
+        if (!actual.machineId().equals(WindowsJobProcess.currentMachineId()) || !actual.status().equals("PASS")
+                || actual.error() != null || !actual.pythonStaticReceiptRefs().equals(refs)
+                || actual.planRef() == null || actual.capacityReleaseRef() == null || actual.toolsBuildReceiptRef() == null
+                || actual.reactorBuildReceiptRef() == null || actual.consumerReceiptRef() == null) {
+            throw new IOException("Complete CI v2 actual must bind both accepted Python static receipts");
+        }
+        actual.planRef().verify(); actual.capacityReleaseRef().verify(); actual.toolsBuildReceiptRef().verify();
+        actual.reactorBuildReceiptRef().verify(); actual.consumerReceiptRef().verify();
+        System.out.println("ACCEPTED_CONTROL_CI_V2 " + ControlBuild.FileRef.measure(path));
+    }
 
     private static void publish(Path path, Record value) throws IOException {
         Files.write(path, ControlBuild.strictMapper().writerWithDefaultPrettyPrinter().writeValueAsBytes(value), StandardOpenOption.CREATE_NEW);
@@ -151,6 +206,7 @@ public final class ControlCi {
         }
         if (files == 0 || tests < minimumTests || !suites.containsAll(Set.of("org.xar.ck3.control.build.ControlBuildTest",
                 "org.xar.ck3.control.build.WindowsJobProcessTest", "org.xar.ck3.control.build.NativeTcpListenerTest",
-                "org.xar.ck3.control.build.CiBootstrapTest", "org.xar.ck3.control.build.MapAdmissionServiceOwnerTest"))) throw new IOException("Complete actual non-skipped JUnit reports missing");
+                "org.xar.ck3.control.build.CiBootstrapTest", "org.xar.ck3.control.build.MapAdmissionServiceOwnerTest",
+                "org.xar.ck3.control.build.SourceLimitProfileTest", "org.xar.ck3.control.build.PythonBoundaryStaticStageTest"))) throw new IOException("Complete actual non-skipped JUnit reports missing");
     }
 }

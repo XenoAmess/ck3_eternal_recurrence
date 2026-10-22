@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
 
 /** The single Maven producer: pinned same-volume inputs, bounded Job and complete output closure. */
 public final class ControlBuild {
-    public static final String SCHEMA = "xar.java-control.actual-build/v4";
+    public static final String SCHEMA = "xar.java-control.actual-build/v5";
     private static final String LOCAL_MACHINE = "xenoamess-full-tower-eb9d2c1186";
     private static final Set<String> EXCLUDED = Set.of("target", ".git", "__pycache__", ".mypy_cache", ".pytest_cache");
     private static final ObjectMapper JSON = createMapper();
@@ -77,6 +77,48 @@ public final class ControlBuild {
         }
     }
 
+    /** Explicit source-only envelopes; deployment, logs, JSON and Job caps are unchanged. */
+    public enum SourceLimitProfile {
+        STANDARD_8_MIB(1000, 8L << 20),
+        EXISTING_MIGRATION_20261022(1536, 24L << 20);
+
+        private final int maxFiles;
+        private final long maxBytes;
+        SourceLimitProfile(int maxFiles, long maxBytes) { this.maxFiles = maxFiles; this.maxBytes = maxBytes; }
+        public int maxFiles() { return maxFiles; }
+        public long maxBytes() { return maxBytes; }
+    }
+    private static final Set<String> EXISTING_MIGRATION_MODULES = Set.of(
+            "contracts",
+            "local-service",
+            "native-diagnostics",
+            "war-policy",
+            "campaign-score",
+            "finance-policy",
+            "event-policy",
+            "military-policy",
+            "late-outcome-reconciliation",
+            "governance-policy",
+            "planning-runtime",
+            "closed-failure-recovery",
+            "admission-contracts",
+            "replenishment-policy",
+            "wave2-military",
+            "build-tools",
+            "wave2-runtime",
+            "war-budget",
+            "wave2-finance",
+            "wave2-governance",
+            "wave3-governance",
+            "wave2-planning",
+            "wave3-planning",
+            "wave2-events",
+            "wave2-development",
+            "wave2-prisoners",
+            "wave3-development",
+            "wave3-runtime",
+            "wave3-military");
+
     public enum SourceState { MATCH, MISMATCH, UNKNOWN }
     public enum TargetKind { SERVICE_FAST_JAR, BUILD_TOOLS_RUNTIME }
     public enum MavenSelection { DEFAULT_COMMAND, EXPLICIT_OVERRIDE }
@@ -100,7 +142,7 @@ public final class ControlBuild {
 
     public record BuildReceipt(String schema, String machineId, String observedAtUtc, String status,
             String sourceRoot, String compiledSourceRoot, String deploymentRoot, SourcePostcheck sourcePostcheck,
-            SourcePostcheck compiledSourcePostcheck, TargetKind targetKind,
+            SourcePostcheck compiledSourcePostcheck, TargetKind targetKind, SourceLimitProfile sourceLimitProfile,
             List<FileRef> sourcePins, List<FileRef> compiledSourcePins, List<FileRef> completeDeployment,
             List<FileRef> producerRuntimePins,
             FileRef capacityReleaseRef, MavenToolchain mavenToolchain, FileRef javaExecutableRef,
@@ -110,13 +152,13 @@ public final class ControlBuild {
             sourcePins = List.copyOf(sourcePins); compiledSourcePins = List.copyOf(compiledSourcePins);
             completeDeployment = List.copyOf(completeDeployment); finalLogicalBytesByPart = Map.copyOf(finalLogicalBytesByPart);
             producerRuntimePins = List.copyOf(producerRuntimePins);
-            if (!SCHEMA.equals(schema) || !Set.of("PASS", "RED").contains(status) || sourcePostcheck == null || compiledSourcePostcheck == null || targetKind == null) throw new IllegalArgumentException("Unknown build receipt contract");
+            if (!SCHEMA.equals(schema) || !Set.of("PASS", "RED").contains(status) || sourcePostcheck == null || compiledSourcePostcheck == null || targetKind == null || sourceLimitProfile == null) throw new IllegalArgumentException("Unknown build receipt contract");
             Instant.parse(observedAtUtc);
         }
     }
 
     public record Config(Path sourceRoot, Path workRoot, Path capacityRelease, String attempt,
-            String ownerTask, Path mavenCommand, Path javaHome, String minimumMavenVersion, int timeoutSeconds, TargetKind targetKind) {
+            String ownerTask, Path mavenCommand, Path javaHome, String minimumMavenVersion, int timeoutSeconds, TargetKind targetKind, SourceLimitProfile sourceLimitProfile) {
         public Config {
             for (Path path : List.of(sourceRoot, workRoot, capacityRelease, javaHome)) {
                 if (!path.isAbsolute()) throw new IllegalArgumentException("Absolute paths required");
@@ -124,7 +166,7 @@ public final class ControlBuild {
             if (mavenCommand != null && !mavenCommand.isAbsolute()) throw new IllegalArgumentException("Explicit Maven override must be absolute");
             if (!attempt.matches("[a-zA-Z0-9][a-zA-Z0-9_-]{0,47}") || ownerTask.isBlank()
                     || !mavenVersionAtLeast(minimumMavenVersion, "3.10.0")
-                    || timeoutSeconds <= 0 || timeoutSeconds > 900 || targetKind == null) throw new IllegalArgumentException("Invalid finite build parameters");
+                    || timeoutSeconds <= 0 || timeoutSeconds > 900 || targetKind == null || sourceLimitProfile == null) throw new IllegalArgumentException("Invalid finite build parameters");
         }
     }
 
@@ -197,8 +239,8 @@ public final class ControlBuild {
         if (receipt.producerRuntimePins().isEmpty()) throw new IOException("Build producer runtime closure missing");
         for (FileRef reference : receipt.producerRuntimePins()) reference.verify();
         requireSameContents(Path.of(receipt.sourceRoot()), Path.of(receipt.compiledSourceRoot()), receipt.sourcePins(), receipt.compiledSourcePins());
-        if (!sourceManifest(Path.of(receipt.sourceRoot())).equals(receipt.sourcePins())
-                || !sourceManifest(Path.of(receipt.compiledSourceRoot())).equals(receipt.compiledSourcePins())) {
+        if (!sourceManifest(Path.of(receipt.sourceRoot()), receipt.sourceLimitProfile()).equals(receipt.sourcePins())
+                || !sourceManifest(Path.of(receipt.compiledSourceRoot()), receipt.sourceLimitProfile()).equals(receipt.compiledSourcePins())) {
             throw new IOException("Source closure grew or changed after build");
         }
         List<FileRef> actual = deploymentManifest(Path.of(receipt.deploymentRoot()), receipt.targetKind());
@@ -226,7 +268,7 @@ public final class ControlBuild {
         Path build = config.workRoot().resolve("build/" + config.attempt());
         Path receiptPath = logs.resolve("build-" + config.attempt() + ".json");
         if (Files.exists(snapshot) || Files.exists(build) || Files.exists(receiptPath)) throw new IOException("Build attempt already exists");
-        List<FileRef> source = sourceManifest(config.sourceRoot());
+        List<FileRef> source = sourceManifest(config.sourceRoot(), config.sourceLimitProfile());
         if (source.isEmpty() || !Files.isRegularFile(config.sourceRoot().resolve("pom.xml"))) throw new IOException("Maven source closure is missing");
         Files.createDirectories(snapshot); Files.createDirectories(build);
         if (!Files.getFileStore(snapshot).equals(Files.getFileStore(build))) throw new IOException("Source snapshot and build output must share a filesystem");
@@ -262,16 +304,16 @@ public final class ControlBuild {
             guard(config, lease);
         } catch (IOException | RuntimeException error) { failure = error.getClass().getSimpleName() + ": " + error.getMessage(); }
         catch (InterruptedException error) { interrupted = true; failure = "InterruptedException: " + error.getMessage(); }
-        SourcePostcheck postcheck = postcheckSource(config.sourceRoot(), source);
+        SourcePostcheck postcheck = postcheckSource(config.sourceRoot(), source, config.sourceLimitProfile());
         if (postcheck.state() != SourceState.MATCH) failure = appendFailure(failure, "Source postcheck " + postcheck.state() + ": " + postcheck.error());
-        SourcePostcheck compiledPostcheck = postcheckSource(snapshot, compiled);
+        SourcePostcheck compiledPostcheck = postcheckSource(snapshot, compiled, config.sourceLimitProfile());
         if (compiledPostcheck.state() != SourceState.MATCH) failure = appendFailure(failure, "Compiled source postcheck " + compiledPostcheck.state() + ": " + compiledPostcheck.error());
         Map<String, Long> finalSizes;
         try { finalSizes = measureSizes(config.workRoot(), lease.caps()); }
         catch (IOException | RuntimeException error) { finalSizes = Map.of(); failure = appendFailure(failure, "Final part accounting unavailable: " + error); }
         for (var part : finalSizes.entrySet()) if (part.getValue() > lease.caps().get(part.getKey())) failure = appendFailure(failure, "Final part cap exceeded: " + part.getKey());
         BuildReceipt receipt = new BuildReceipt(SCHEMA, machine, Instant.now().toString(), failure == null ? "PASS" : "RED",
-                config.sourceRoot().toString(), snapshot.toString(), deployment.toString(), postcheck, compiledPostcheck, config.targetKind(), source, compiled, closure, producerClosure(),
+                config.sourceRoot().toString(), snapshot.toString(), deployment.toString(), postcheck, compiledPostcheck, config.targetKind(), config.sourceLimitProfile(), source, compiled, closure, producerClosure(),
                 FileRef.measure(config.capacityRelease()), toolchain,
                 FileRef.measure(config.javaHome().resolve("bin/java.exe")), probe, result, finalSizes, failure);
         try { Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt), StandardOpenOption.CREATE_NEW); }
@@ -281,7 +323,11 @@ public final class ControlBuild {
 
     /** Always runs after the child terminal result, including a failed Maven command. */
     public static SourcePostcheck postcheckSource(Path sourceRoot, List<FileRef> original) {
-        try { return new SourcePostcheck(original.equals(sourceManifest(sourceRoot)) ? SourceState.MATCH : SourceState.MISMATCH, null); }
+        return postcheckSource(sourceRoot, original, SourceLimitProfile.STANDARD_8_MIB);
+    }
+
+    public static SourcePostcheck postcheckSource(Path sourceRoot, List<FileRef> original, SourceLimitProfile profile) {
+        try { return new SourcePostcheck(original.equals(sourceManifest(sourceRoot, profile)) ? SourceState.MATCH : SourceState.MISMATCH, null); }
         catch (IOException | RuntimeException error) { return new SourcePostcheck(SourceState.UNKNOWN, error.getClass().getSimpleName() + ": " + error.getMessage()); }
     }
 
@@ -543,10 +589,23 @@ public final class ControlBuild {
     }
 
     public static List<FileRef> sourceManifest(Path root) throws IOException {
+        return sourceManifest(root, SourceLimitProfile.STANDARD_8_MIB);
+    }
+
+    public static List<FileRef> sourceManifest(Path root, SourceLimitProfile profile) throws IOException {
+        if (profile == null) throw new IllegalArgumentException("Explicit source limit profile required");
         List<FileRef> result = new ArrayList<>();
-        collectModule(root.toRealPath(), root.toRealPath(), new HashSet<>(), result);
-        if (result.size() > 1000 || result.stream().mapToLong(FileRef::bytes).sum() > 8L * 1024 * 1024) throw new IOException("Maven source closure exceeds finite limit");
+        collectModule(root.toRealPath(), root.toRealPath(), new HashSet<>(), result, profile);
+        requireSourceExtent(result, profile);
         result.sort(Comparator.comparing(FileRef::path)); return List.copyOf(result);
+    }
+
+    private static void requireSourceExtent(List<FileRef> files, SourceLimitProfile profile) throws IOException {
+        long bytes = 0;
+        for (FileRef file : files) bytes = Math.addExact(bytes, file.bytes());
+        if (files.size() > profile.maxFiles() || bytes > profile.maxBytes()) {
+            throw new IOException("Maven source closure exceeds finite " + profile.name() + " limit");
+        }
     }
 
     public static List<FileRef> producerClosure() throws IOException {
@@ -559,12 +618,16 @@ public final class ControlBuild {
         } catch (java.net.URISyntaxException error) { throw new IOException("Build producer runtime URI invalid", error); }
     }
 
-    private static void collectModule(Path module, Path boundary, Set<Path> visited, List<FileRef> result) throws IOException {
+    private static void collectModule(Path module, Path boundary, Set<Path> visited, List<FileRef> result, SourceLimitProfile profile) throws IOException {
         if (!module.startsWith(boundary) || !visited.add(module) || visited.size() > 32) throw new IOException("Module graph escapes, repeats or exceeds limit");
+        if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022 && !module.equals(boundary)
+                && !EXISTING_MIGRATION_MODULES.contains(boundary.relativize(module).toString().replace('\\', '/'))) {
+            throw new IOException("Module is outside the existing finite migration cohort");
+        }
         Path pom = module.resolve("pom.xml"); result.add(FileRef.measure(pom));
         for (String directory : List.of("src", ".mvn")) {
             Path path = module.resolve(directory);
-            if (Files.exists(path)) result.addAll(manifest(path, false, 1000, 8L * 1024 * 1024));
+            if (Files.exists(path)) result.addAll(manifest(path, false, profile.maxFiles(), 8L * 1024 * 1024));
         }
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); factory.setNamespaceAware(true);
@@ -572,6 +635,21 @@ public final class ControlBuild {
             factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             Element project = factory.newDocumentBuilder().parse(pom.toFile()).getDocumentElement();
+            if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022) {
+                if (module.equals(boundary) && !"ck3-control-parent".equals(directText(project, "artifactId"))) {
+                    throw new IOException("Finite migration profile requires the existing control parent");
+                }
+                if (project.getElementsByTagNameNS("*", "sourceDirectory").getLength() != 0
+                        || project.getElementsByTagNameNS("*", "testSourceDirectory").getLength() != 0) {
+                    throw new IOException("Finite migration sources must use canonical module src roots");
+                }
+                var artifacts = project.getElementsByTagNameNS("*", "artifactId");
+                for (int i = 0; i < artifacts.getLength(); i++) {
+                    if ("build-helper-maven-plugin".equals(artifacts.item(i).getTextContent().strip())) {
+                        throw new IOException("External source registration is outside the pinned migration closure");
+                    }
+                }
+            }
             var parents = project.getElementsByTagNameNS("*", "relativePath");
             for (int i = 0; i < parents.getLength(); i++) {
                 String relative = parents.item(i).getTextContent().strip();
@@ -588,10 +666,18 @@ public final class ControlBuild {
                     if (relative.isEmpty() || Path.of(relative).isAbsolute()) throw new IOException("Relative Maven module required");
                     Path next = module.resolve(relative).normalize();
                     if (!next.toRealPath().startsWith(boundary)) throw new IOException("Maven module escapes source root");
-                    collectModule(next, boundary, visited, result);
+                    collectModule(next, boundary, visited, result, profile);
                 }
             }
         } catch (ParserConfigurationException | SAXException error) { throw new IOException("Maven source graph is not safely parseable", error); }
+        requireSourceExtent(result, profile);
+    }
+
+    private static String directText(Element project, String name) {
+        for (Node child = project.getFirstChild(); child != null; child = child.getNextSibling()) {
+            if (child instanceof Element element && name.equals(element.getLocalName())) return element.getTextContent().strip();
+        }
+        return "";
     }
 
     private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, FileAction action) throws IOException {
@@ -662,7 +748,7 @@ public final class ControlBuild {
     private static long positive(JsonNode node, String name) throws IOException { long value = nonnegative(node, name); if (value == 0) throw new IOException("Positive integer required: " + name); return value; }
 
     public static Config parseArguments(String[] args) throws IOException {
-        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind");
+        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile");
         Map<String, String> values = new HashMap<>();
         if (args.length % 2 != 0) throw new IOException("Arguments must be exact key/value pairs");
         for (int i = 0; i < args.length; i += 2) {
@@ -677,7 +763,8 @@ public final class ControlBuild {
                 values.containsKey("--maven-cmd") ? Path.of(values.get("--maven-cmd")).toAbsolutePath().normalize() : null,
                 Path.of(values.getOrDefault("--java-home", "C:/jdk-21")).toAbsolutePath().normalize(),
                 values.getOrDefault("--minimum-maven-version", "3.10.0"), Integer.parseInt(values.getOrDefault("--timeout-seconds", "900")),
-                TargetKind.valueOf(values.getOrDefault("--target-kind", "SERVICE_FAST_JAR")));
+                TargetKind.valueOf(values.getOrDefault("--target-kind", "SERVICE_FAST_JAR")),
+                SourceLimitProfile.valueOf(values.getOrDefault("--source-limit-profile", "STANDARD_8_MIB")));
     }
 
     private static void requireNativeScratch(Path expected) throws IOException {

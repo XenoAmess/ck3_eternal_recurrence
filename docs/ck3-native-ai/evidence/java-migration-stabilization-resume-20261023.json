@@ -1,0 +1,219 @@
+{
+  "schema": "xar.java-migration-progress-increment/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T16:44:57Z",
+  "local_date": "2026-10-23",
+  "time_zone": "Asia/Shanghai",
+  "scope": "Existing Java migration stabilization; software evidence and handoff increment only",
+  "identity": {
+    "source": "Root collaboration message reporting actual tools/ck3_live_run_id.py machine exit=0",
+    "observed_at_utc": "2026-10-22T16:44:19Z",
+    "stdout": "xenoamess-full-tower-eb9d2c1186",
+    "receipt_file_claimed": false
+  },
+  "sources": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA15-SUREFIRE-OBSERVATION01.json",
+      "bytes": 44482,
+      "sha256": "8e37b7be203e359c54185b7509f9be6286c4894fb352f55bd89a2f913daf61da",
+      "observed_at_utc": "2026-10-22T16:36:58.775928900Z"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java15.json",
+      "bytes": 349109,
+      "sha256": "2f737e8754c4913a5228a5de24067a90c282013be586a00ec66820e181b39ed2",
+      "observed_at_utc": "2026-10-22T16:36:24.593869600Z"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA14-SUREFIRE-OBSERVATION01.json",
+      "bytes": 44661,
+      "sha256": "2c413ac47c6fcc48b1e90e1c79811e1bb77e40eb306da60ff7197152867b596d",
+      "observed_at_utc": "2026-10-22T16:26:15.365752900Z"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools21.json",
+      "bytes": 13078,
+      "sha256": "e9eed029963212cbe72d5191b07f9d1793d0ff2bc5a35defc4d6f7b761b800da",
+      "observed_at_utc": "2026-10-22T15:51:44.852340800Z"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/ci-resume03/CI-LIVE-INDEX06-01.json",
+      "bytes": 2263,
+      "sha256": "a1236d4b40c112b22104293609e063dc64e5e4ee7453f14d2154dab2e33c7e9a",
+      "observed_at_utc": "2026-10-22T16:42:49Z"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-ci05/stage-1.actual.json",
+      "bytes": 1278,
+      "sha256": "665aeb3bb8b2fcc7dcb7a9a40ce8729e254c2c49caee396a705229489b59b268",
+      "observed_at_utc": "2026-10-22T16:32:41.811645500Z"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-ci05/stage-2.actual.json",
+      "bytes": 1227,
+      "sha256": "b76547543a2a9bc66baa14c39997a0ee0702b8049ff102ad3a53b7249a9e4871",
+      "observed_at_utc": "2026-10-22T16:33:06.798661600Z"
+    }
+  ],
+  "java15": {
+    "status": "RED",
+    "exit_code": 1,
+    "job_active_processes": 0,
+    "source_postcheck": "MATCH",
+    "compiled_source_postcheck": "MATCH",
+    "tests": 1888,
+    "passed": 1794,
+    "failures": 44,
+    "errors": 50,
+    "skipped": 0,
+    "wave2_runtime": {
+      "tests": 325,
+      "passed": 325,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "wave2_military": {
+      "tests": 754,
+      "passed": 660,
+      "failures": 44,
+      "errors": 50,
+      "skipped": 0,
+      "red_suites": 18
+    },
+    "java14_runtime_failures": 7,
+    "clockreader_actual_receiver_scenarios": 7,
+    "clockreader_tests_passed": 28,
+    "accepted_build_pass": false
+  },
+  "ci05": {
+    "status": "RED",
+    "cold_commands_started": 6,
+    "cold_commands_completed": 5,
+    "source_postcheck": "MATCH",
+    "failure": "historical core source metadata _pin default 135168B rejected actual 143253B source",
+    "independent_sdk_command_8": "NOT_REACHED",
+    "full_27_file_pytest": {
+      "passed": 227,
+      "subtests_passed": 91,
+      "skipped": 0
+    }
+  },
+  "ci06": {
+    "status_at_source_observation": "RUNNING",
+    "source_observed_at_utc": "2026-10-22T16:42:49Z",
+    "session_id": 15945,
+    "change": "Only core source metadata pin call maximum=262144",
+    "final_result_claimed": false
+  },
+  "publication": {
+    "commit": "ee8d0787b14f038d020e1f9a92b39c600c1d3012",
+    "push": "ordinary fast-forward; reported by Root, no Git operation by progress agent",
+    "hosted_source": "Root collaboration message received before report cutoff; exact network observation time not supplied",
+    "official": {
+      "run_id": "39815396090",
+      "status": "RUNNING"
+    },
+    "linear": {
+      "run_id": "39815396065",
+      "status": "SUCCESS"
+    },
+    "all_hosted_green": false
+  },
+  "topology": {
+    "source": "Actual collaboration.list_agents snapshot; clock immediately after snapshot",
+    "observed_at_utc": "2026-10-22T16:44:57Z",
+    "running_child_count": 56,
+    "running_children": [
+      "/root/admission",
+      "/root/build",
+      "/root/ci",
+      "/root/ci/static_routes_audit",
+      "/root/clockreader",
+      "/root/clockreader/consumer_audit",
+      "/root/clockreader/contract_audit",
+      "/root/closedadoption",
+      "/root/closedadoption/source_audit",
+      "/root/closedadoption/transaction_audit",
+      "/root/deadline_custody",
+      "/root/development",
+      "/root/development/development_pins",
+      "/root/development/prisoners",
+      "/root/events",
+      "/root/events/consumer_boundary",
+      "/root/events/sourcecatalog",
+      "/root/finance",
+      "/root/finance/cash_budget",
+      "/root/finance/feast",
+      "/root/finance/feast/terminal_probe",
+      "/root/finance/golden_audit",
+      "/root/governance",
+      "/root/governance/governance_regression",
+      "/root/governance/marriage_fixtures",
+      "/root/governance/preference_skills",
+      "/root/governance/provider_options",
+      "/root/governance/ranking_diagnostic",
+      "/root/military",
+      "/root/military/armies",
+      "/root/military/battle_exit",
+      "/root/military/coalition",
+      "/root/military/combat",
+      "/root/military/contact",
+      "/root/military/stock",
+      "/root/military/supplies",
+      "/root/military/war_queries",
+      "/root/native_fixture_execution",
+      "/root/planning",
+      "/root/planning/assembly_audit",
+      "/root/planning/constructionrelease",
+      "/root/planning/finite_requests",
+      "/root/planning/optional_graph",
+      "/root/planning/realm_codec",
+      "/root/progress_sync",
+      "/root/reactor_integration",
+      "/root/recovery_review",
+      "/root/remote_ci",
+      "/root/runtime",
+      "/root/runtime/creationtime",
+      "/root/runtime/deadlinetransport",
+      "/root/runtime/performancewindows",
+      "/root/runtime/providerchain",
+      "/root/runtime/savedproof",
+      "/root/runtime/stdioidentity",
+      "/root/storage"
+    ],
+    "excluded_root": "/root",
+    "excluded_completed": [
+      "/root/ci/cold_audit",
+      "/root/ci/sdk_audit",
+      "/root/ci/warm_audit",
+      "/root/finance/golden_audit/pendingroute_review",
+      "/root/finance/golden_audit/projection_abi_review",
+      "/root/military/movement"
+    ],
+    "excluded_interrupted": [
+      "/root/development/development_pins/development_consumer_callsites",
+      "/root/development/development_pins/development_java_application"
+    ],
+    "not_os_process_count": true
+  },
+  "game": {
+    "source": "2026-10-22-java-migration-stabilization-vacation-handoff.md frozen history; no new live evidence added",
+    "state": "CLOSED",
+    "unknown_auto_sequence": 11558,
+    "next_sequence": 11559,
+    "pending_cycle": 5190,
+    "saved_days": 5628,
+    "target_days": 10950,
+    "new_saved_days": 0,
+    "g2": "6/8",
+    "replay_unknown": false
+  },
+  "limits": {
+    "no_build_test_or_game_execution_by_progress_agent": true,
+    "no_real_driver_or_save_body_read_by_progress_agent": true,
+    "no_z_write_by_progress_agent": true,
+    "no_frozen_sdk_write": true,
+    "old_failures_rewritten": false
+  }
+}

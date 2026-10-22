@@ -2,6 +2,7 @@ package org.xar.ck3.control.build;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -159,13 +161,32 @@ final class CiBootstrapTest {
         environment.put("PATHEXT", ".CMD;.BAT;.EXE;.COM");
         Path batch = cwd.resolve("version.cmd"); ControlBuild.writeMavenBatch(batch, null, List.of("--version"));
         AtomicInteger probes = new AtomicInteger(), installations = new AtomicInteger();
+        List<CiBootstrap.FilePin> observedRefs = new ArrayList<>();
+        CiBootstrap.FilePin sourceRef = CiBootstrap.measure(batch);
         CiBootstrap.DefaultMaven actual = CiBootstrap.ensureDefaultMaven(
-                () -> actualVersionProbe(batch, cwd, environment, probes.incrementAndGet()), before -> {
+                () -> {
+                    int ordinal = probes.incrementAndGet();
+                    return CiBootstrap.recordedMavenProbe(
+                            () -> actualVersionProbe(batch, cwd, environment, ordinal),
+                            () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true),
+                            cwd.resolve("probe-" + ordinal + ".stdout"), cwd.resolve("maven-observation-" + ordinal + ".json"),
+                            "fixture-only-machine", sourceRef, ordinal == 1 ? CiBootstrap.MavenProbePhase.BEFORE_ENSURE
+                                    : CiBootstrap.MavenProbePhase.AFTER_IN_PLACE_UPGRADE, true, observedRefs);
+                }, before -> {
                     installations.incrementAndGet(); assertEquals("3.9.16", before.reportedVersion());
                     assertEquals(oldLauncher.toRealPath(), CiBootstrap.defaultMavenLauncher(environment, cwd, true));
                     CiBootstrap.replaceMavenInstallation(before, staged, temporary.resolve("backup"), () -> {});
                 });
         assertEquals(2, probes.get()); assertEquals(1, installations.get());
+        assertEquals(2, observedRefs.size());
+        CiBootstrap.MavenProbeActual beforeProbe = readMavenProbe(observedRefs.get(0));
+        CiBootstrap.MavenProbeActual afterProbe = readMavenProbe(observedRefs.get(1));
+        assertEquals("3.9.16", beforeProbe.observation().reportedVersion());
+        assertEquals("3.10.0", afterProbe.observation().reportedVersion());
+        assertEquals(CiBootstrap.MavenProbePhase.BEFORE_ENSURE, beforeProbe.phase());
+        assertEquals(CiBootstrap.MavenProbePhase.AFTER_IN_PLACE_UPGRADE, afterProbe.phase());
+        assertEquals(sourceRef, beforeProbe.bootstrapSourceRef());
+        assertEquals(home.toRealPath().toString(), afterProbe.observation().reportedHome());
         assertEquals("3.10.0", actual.reportedVersion()); assertEquals(home.toRealPath().toString(), actual.reportedHome());
         assertEquals("active settings", Files.readString(home.resolve("conf/settings.xml")));
         assertEquals("old vendor", Files.readString(temporary.resolve("backup/lib/old.jar")));
@@ -199,6 +220,165 @@ final class CiBootstrapTest {
         CiBootstrap.MavenObservation actual = CiBootstrap.observeDefaultMaven(versionOutput("3.9.16", home), false);
         assertEquals(CiBootstrap.measure(launcher), actual.launcherRef());
         assertThrows(IOException.class, () -> CiBootstrap.observeDefaultMaven(versionOutput("3.10.0-rc1", home), false));
+    }
+
+    @Test
+    void failedUpgradeRetainsOldObservationWhenAdmittedDefaultAndPlanRemainNull(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("old/bin")).getParent();
+        Path launcher = home.resolve("bin/mvn.cmd"); Files.writeString(launcher, "old launcher");
+        Path source = temporary.resolve("bootstrap-source.java"); Files.writeString(source, "observed source fixture");
+        CiBootstrap.FilePin sourceRef = CiBootstrap.measure(source);
+        Path logs = Files.createDirectory(temporary.resolve("logs"));
+        Path stdout = logs.resolve("maven-version-1.log");
+        Path receipt = logs.resolve("maven-observation-1.json");
+        List<CiBootstrap.FilePin> refs = new ArrayList<>();
+        String old = versionOutput("3.9.16", home);
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.ensureDefaultMaven(
+                () -> CiBootstrap.recordedMavenProbe(() -> {
+                    Files.writeString(stdout, old); return old;
+                }, () -> launcher, stdout, receipt, "fixture-only-machine", sourceRef,
+                        CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, refs),
+                before -> { throw new IOException("actual update refused before replacement"); }));
+        assertEquals(1, refs.size());
+        CiBootstrap.MavenProbeActual observed = readMavenProbe(refs.getFirst());
+        assertEquals(CiBootstrap.MavenProbeStatus.OBSERVED, observed.status());
+        assertEquals("fixture-only-machine", observed.machineId()); Instant.parse(observed.observedAtUtc());
+        assertEquals(sourceRef, observed.bootstrapSourceRef());
+        assertEquals(CiBootstrap.measure(stdout), observed.outputRef());
+        assertEquals(CiBootstrap.measure(launcher), observed.selectedLauncherRef());
+        assertEquals("3.9.16", observed.observation().reportedVersion());
+        assertEquals(home.toRealPath().toString(), observed.observation().reportedHome());
+        CiBootstrap.BootstrapActual actual = new CiBootstrap.BootstrapActual(
+                "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(),
+                Instant.now().toString(), "RED", failure.getMessage(), null, null, refs, false, false);
+        Path terminal = logs.resolve("bootstrap-actual.json"); CiBootstrap.publish(terminal, actual);
+        CiBootstrap.BootstrapActual readback = ControlBuild.strictMapper().readValue(Files.readAllBytes(terminal),
+                CiBootstrap.BootstrapActual.class);
+        assertEquals(actual, readback); assertNull(readback.defaultMaven()); assertNull(readback.planRef());
+        assertEquals(refs, readback.mavenProbeRefs());
+        assertEquals(1, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+        assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary, "another-machine"));
+        byte[] retained = Files.readAllBytes(receipt);
+        assertThrows(IOException.class, () -> CiBootstrap.publish(receipt, observed));
+        org.junit.jupiter.api.Assertions.assertArrayEquals(retained, Files.readAllBytes(receipt));
+        Files.writeString(stdout, "tampered old stdout");
+        assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+    }
+
+    @Test
+    void rejectedPostUpgradeIdentityKeepsBothBeforeAndAfterObservations(@TempDir Path temporary) throws Exception {
+        Path oldHome = Files.createDirectories(temporary.resolve("old/bin")).getParent();
+        Path newHome = Files.createDirectories(temporary.resolve("unexpected/bin")).getParent();
+        Files.writeString(oldHome.resolve("bin/mvn.cmd"), "old launcher");
+        Files.writeString(newHome.resolve("bin/mvn.cmd"), "unexpected launcher");
+        Path source = temporary.resolve("bootstrap-source.java"); Files.writeString(source, "source fixture");
+        CiBootstrap.FilePin sourceRef = CiBootstrap.measure(source);
+        Path logs = Files.createDirectory(temporary.resolve("logs"));
+        List<CiBootstrap.FilePin> refs = new ArrayList<>(); AtomicInteger probes = new AtomicInteger();
+        assertThrows(IOException.class, () -> CiBootstrap.ensureDefaultMaven(() -> {
+            int ordinal = probes.incrementAndGet(); Path home = ordinal == 1 ? oldHome : newHome;
+            String output = versionOutput(ordinal == 1 ? "3.9.16" : "3.10.0", home);
+            Path stdout = logs.resolve("maven-version-" + ordinal + ".log");
+            return CiBootstrap.recordedMavenProbe(() -> {
+                Files.writeString(stdout, output); return output;
+            }, () -> home.resolve("bin/mvn.cmd"), stdout, logs.resolve("maven-observation-" + ordinal + ".json"),
+                    "fixture-only-machine", sourceRef, ordinal == 1 ? CiBootstrap.MavenProbePhase.BEFORE_ENSURE
+                            : CiBootstrap.MavenProbePhase.AFTER_IN_PLACE_UPGRADE, true, refs);
+        }, before -> {}));
+        assertEquals(2, refs.size());
+        assertEquals(oldHome.toRealPath().toString(), readMavenProbe(refs.get(0)).observation().reportedHome());
+        assertEquals(newHome.toRealPath().toString(), readMavenProbe(refs.get(1)).observation().reportedHome());
+        CiBootstrap.publish(logs.resolve("bootstrap-actual.json"), new CiBootstrap.BootstrapActual(
+                "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(),
+                Instant.now().toString(), "RED", "actual default changed its installation", null, null, refs, false, false));
+        assertEquals(2, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+    }
+
+    @Test
+    void persistedConsumerAcceptsActualUpgradeAndRejectsMissingAfterWrongTokensAndSourceDrift(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("home/bin")).getParent();
+        Path launcher = home.resolve("bin/mvn.cmd"); Files.writeString(launcher, "old launcher bytes");
+        Path source = temporary.resolve("bootstrap-source.java"); Files.writeString(source, "source fixture");
+        CiBootstrap.FilePin sourceRef = CiBootstrap.measure(source);
+        Path logs = Files.createDirectory(temporary.resolve("logs"));
+        List<CiBootstrap.FilePin> refs = new ArrayList<>();
+        for (int ordinal = 1; ordinal <= 2; ordinal++) {
+            int number = ordinal;
+            if (number == 2) Files.writeString(launcher, "new launcher bytes after in-place update");
+            String output = versionOutput(number == 1 ? "3.9.16" : "3.10.0", home);
+            Path stdout = logs.resolve("maven-version-" + number + ".log");
+            CiBootstrap.recordedMavenProbe(() -> {
+                Files.writeString(stdout, output); return output;
+            }, () -> launcher, stdout, logs.resolve("maven-observation-" + number + ".json"), "fixture-only-machine",
+                    sourceRef, number == 1 ? CiBootstrap.MavenProbePhase.BEFORE_ENSURE
+                            : CiBootstrap.MavenProbePhase.AFTER_IN_PLACE_UPGRADE, true, refs);
+        }
+        CiBootstrap.DefaultMaven admitted = CiBootstrap.requireDefaultMaven(versionOutput("3.10.0", home));
+        Path terminal = logs.resolve("bootstrap-actual.json");
+        CiBootstrap.publish(terminal, new CiBootstrap.BootstrapActual(
+                "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(),
+                Instant.now().toString(), "PIPELINE_EXIT_0", null, null, admitted, refs, false, false));
+        assertEquals(2, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+        // The first launcher hash is deliberately historical and differs after the real in-place write.
+        assertFalse(readMavenProbe(refs.getFirst()).selectedLauncherRef().equals(CiBootstrap.measure(launcher)));
+        byte[] valid = Files.readAllBytes(terminal);
+        var mapper = ControlBuild.strictMapper();
+        var missingAfter = mapper.readTree(valid);
+        ((com.fasterxml.jackson.databind.node.ArrayNode) missingAfter.get("maven_probe_refs")).remove(1);
+        Files.write(terminal, mapper.writeValueAsBytes(missingAfter));
+        assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+        String validText = new String(valid, StandardCharsets.UTF_8);
+        String marker = "\"bytes\":" + refs.getFirst().bytes();
+        int tokenAt = validText.indexOf(marker, validText.indexOf("\"maven_probe_refs\""));
+        assertTrue(tokenAt >= 0);
+        for (String token : List.of("true", "1.0", "1e0", "\"1\"", "null")) {
+            String edited = validText.substring(0, tokenAt) + "\"bytes\":" + token
+                    + validText.substring(tokenAt + marker.length());
+            Files.writeString(terminal, edited);
+            assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"), token);
+        }
+        var missingSource = mapper.readTree(valid);
+        ((com.fasterxml.jackson.databind.node.ObjectNode) missingSource).remove("maven_probe_refs");
+        Files.write(terminal, mapper.writeValueAsBytes(missingSource));
+        assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+        Files.write(terminal, valid); Files.writeString(source, "actual bootstrap source drift");
+        assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+        assertThrows(IOException.class, () -> CiBootstrap.verifyMavenEvidence(temporary.resolve("missing-root"), "fixture-only-machine"));
+    }
+
+    @Test
+    void failedCommandAndForwardedLauncherStillPublishRejectedProbeEvidence(@TempDir Path temporary) throws Exception {
+        Path source = temporary.resolve("bootstrap-source.java"); Files.writeString(source, "source fixture");
+        CiBootstrap.FilePin sourceRef = CiBootstrap.measure(source);
+        Path stdout = temporary.resolve("failed.log"); List<CiBootstrap.FilePin> failedRefs = new ArrayList<>();
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.recordedMavenProbe(() -> {
+            Files.writeString(stdout, "actual partial child output"); throw new IOException("actual child exit 7");
+        }, () -> { throw new IOException("launcher must not be resolved after child failure"); }, stdout,
+                temporary.resolve("maven-observation-failed.json"), "fixture-only-machine", sourceRef,
+                CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, failedRefs));
+        assertEquals("actual child exit 7", failure.getMessage());
+        CiBootstrap.MavenProbeActual failed = readMavenProbe(failedRefs.getFirst());
+        assertEquals(CiBootstrap.MavenProbeStatus.REJECTED, failed.status());
+        assertTrue(failed.error().contains("actual child exit 7"));
+        assertEquals(CiBootstrap.measure(stdout), failed.outputRef()); assertNull(failed.observation());
+        Path home = Files.createDirectories(temporary.resolve("home/bin")).getParent();
+        Files.writeString(home.resolve("bin/mvn.cmd"), "reported launcher");
+        Path forwarded = temporary.resolve("forwarded.cmd"); Files.writeString(forwarded, "forwarded launcher");
+        Path forwardedOutput = temporary.resolve("forwarded.log"); List<CiBootstrap.FilePin> forwardedRefs = new ArrayList<>();
+        String output = versionOutput("3.9.16", home);
+        assertThrows(IOException.class, () -> CiBootstrap.recordedMavenProbe(() -> {
+            Files.writeString(forwardedOutput, output); return output;
+        }, () -> forwarded, forwardedOutput, temporary.resolve("maven-observation-forwarded.json"), "fixture-only-machine",
+                sourceRef, CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, forwardedRefs));
+        CiBootstrap.MavenProbeActual forwardedProbe = readMavenProbe(forwardedRefs.getFirst());
+        assertEquals(CiBootstrap.MavenProbeStatus.REJECTED, forwardedProbe.status());
+        assertEquals(CiBootstrap.measure(forwarded), forwardedProbe.selectedLauncherRef());
+        assertEquals("3.9.16", forwardedProbe.observation().reportedVersion());
+    }
+
+    private static CiBootstrap.MavenProbeActual readMavenProbe(CiBootstrap.FilePin ref) throws IOException {
+        assertEquals(ref, CiBootstrap.measure(Path.of(ref.path())));
+        return ControlBuild.strictMapper().readValue(Files.readAllBytes(Path.of(ref.path())), CiBootstrap.MavenProbeActual.class);
     }
 
     private static String actualVersionProbe(Path batch, Path cwd, Map<String, String> environment, int ordinal)

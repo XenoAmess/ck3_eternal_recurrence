@@ -1,0 +1,174 @@
+{
+  "schema": "xar.java-migration-ci08-read-scope-increment/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-22T17:19:41Z",
+  "source_refs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\CI08-COMPLETE-EXECUTION01.json",
+      "bytes": 2756,
+      "sha256": "9f1c039082afaaabecc62041fd9cc9271f54d53c52e8b3598ee6f4e66fb3e03a",
+      "observed_or_recorded_at_utc": "2026-10-22 17:04:43 UTC"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\consumer-prepared\\WAL-SEARCH-INCIDENT01.json",
+      "bytes": 2644,
+      "sha256": "eb861abc7f7db6f433319315e5158ccb06149c9093aec48607229aeb89bb1565",
+      "observed_or_recorded_at_utc": "2026-10-22T17:09:45Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\CI-READ-SCOPE-INCIDENT-ADDENDUM01.json",
+      "bytes": 1898,
+      "sha256": "dab5e383e9970afb927ef4669b19e51ddeb52996ab559a802c3c52fe32b47cf6",
+      "observed_or_recorded_at_utc": "2026-10-22 17:11:33 UTC"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\CI-LIVE-INDEX07-01.json",
+      "bytes": 1848,
+      "sha256": "2c9ef360f3c45a00a3ce37149cb32cf1f49e026a13bce2efbff6d54e4c37049f",
+      "observed_or_recorded_at_utc": "2026-10-22 16:48:55 UTC"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\CI-LIVE-INDEX08-01.json",
+      "bytes": 1969,
+      "sha256": "79e2a83decc07117c403f9cf129964875d2ff674104bca527ddd096d28251d60",
+      "observed_or_recorded_at_utc": "2026-10-22 16:55:47 UTC"
+    }
+  ],
+  "ci08": {
+    "status": "RED_OPTIONAL_ACTUAL_WAL_DIAGNOSTIC_NOT_EXECUTED",
+    "full_30_commands": {
+      "started": 30,
+      "completed": 30,
+      "cmd_exit_code": 0,
+      "cmd_job_active_processes": 0,
+      "elapsed_seconds": 438.8397692,
+      "skipped_tests": 1,
+      "scope": "Complete original cold/warm workflow step, all commands preserved. Current canonical Python only; new D consumer patches not adopted."
+    },
+    "independent_sdk_continuation": {
+      "command": 8,
+      "status": "PASS",
+      "separate_python_process": true,
+      "fixture_before_import": true,
+      "fixture_cleanup_marker_utc": "2026-10-22T17:01:18.116391+00:00",
+      "actual_original_driver_or_save_body_reads": 0
+    },
+    "cold_continuity_compose": {
+      "command": 7,
+      "discovered": 95,
+      "run": 95,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "full_27_file_group": {
+      "status": "PASS",
+      "passed": 227,
+      "subtests_passed": 91,
+      "skipped": 0,
+      "pytest_elapsed_seconds": 19.96
+    },
+    "not_executed_case": {
+      "command": 23,
+      "module": "ck3_autonomous_player/tests/unit/test_driver_state_wal_diagnostics.py",
+      "case": "test_reviewed_actual_small_wal_exact_bytes_in_ram",
+      "reason": "Original optional reviewed actual small-WAL diagnostic requires XAR_WAL_DIAGNOSTIC_ACTUAL_WAL and XAR_WAL_DIAGNOSTIC_ACTUAL_SHA256. No actual WAL supplied. Synthetic input was not substituted and skip was not counted as pass."
+    },
+    "source_postcheck": "MATCH",
+    "outer_tree": {
+      "exit_code": 1,
+      "active_processes": 0,
+      "elapsed_seconds": 465.9443484,
+      "peak_job_memory_bytes": 1231548416,
+      "memory_limit_bytes": 1610612736
+    },
+    "remaining_actual_scope": [
+      "New D cold/Prepared/warm/live-endpoint graph adoption and complete-step rerun",
+      "New typed monthly fixture whole-module strict",
+      "Original 22 plus new 23 reverse dependencies = complete union of 34 military files",
+      "All three new SDK sentinel test methods and actual endpoint fixture exact static scope",
+      "Admitted whole-module finance baseline/candidate static comparisons after sourcefinal"
+    ]
+  },
+  "scope_correction": {
+    "team_driver_body_reads": "UNKNOWN",
+    "team_save_body_reads": "UNKNOWN",
+    "unknown_details": {
+      "opened_file_paths": null,
+      "actual_driver_body_read_count": null,
+      "actual_driver_body_bytes_read": null,
+      "actual_driver_files_opened": null,
+      "complete_search_traversal_order": null,
+      "save_body_read_count": null
+    },
+    "incident_qualification": {
+      "sdk_measurement_authority": false,
+      "recovery_or_restore_authority": false,
+      "protocol_single_read_credit": false,
+      "driver_read_count_may_be_reported_as_zero": false,
+      "does_not_qualify_any_lane_or_whole_round_zero_driver_read_claim": true,
+      "later_signed_ticket_must_report_this_as_unknown_nonqualifying_search": true
+    },
+    "controlled_ci08_zero_read_scope_only": true,
+    "all_round_zero_claim_withdrawn": true
+  },
+  "small_wal_followup": {
+    "actual_bytes_reported_by_root": 42506,
+    "state": "IDENTIFIED_PENDING_DIAGNOSTIC",
+    "body_read_by_progress_agent": false
+  },
+  "reported_progress": {
+    "source": "Root collaboration report, before 17:18:53Z",
+    "software_verified": 16,
+    "first_integration_scope": 29,
+    "software_percent_approx": 55,
+    "java15_passed": 1794,
+    "java15_total": 1888,
+    "java15_percent_approx": 95,
+    "runtime_passed": 325,
+    "runtime_total": 325,
+    "tools_passed": 54,
+    "tools_total": 54,
+    "production_adoption_percent_claimed": false
+  },
+  "targets_are_guarantees": false,
+  "source_preimages": [
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-23.md",
+      "index_sha256": "3b2019f857f977a15e969e26ba6f2a5cf750ae1a069ef112517579dccc11f926",
+      "bytes": 2986
+    },
+    {
+      "path": "docs/handover/2026-10-23-java-migration-stabilization-resume-increment.md",
+      "index_sha256": "c9951b4d91ed5ef459fc5cd9ff641fed6f8bf7a8cf8dbc4a382f1548b1289939",
+      "bytes": 5097
+    },
+    {
+      "path": "docs/autonomous-agent-progress/README.md",
+      "index_sha256": "656d0f3bb9fee9079e7f0dc470454c2bd93a1313eb58ca100cd4aaf28abc7e46",
+      "bytes": 302605
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "index_sha256": "433b82302cd832f9d5fc8a808265f385fd41414e58503d553c378bb977bb43d1",
+      "bytes": 70114
+    }
+  ],
+  "prior_patch_failure": {
+    "source": "Root cached-check feedback",
+    "patch": "progress-ci-terminal02.patch",
+    "failed_at": [
+      "README.md:1",
+      "weekly/2026-W43.md:1"
+    ],
+    "applied": false,
+    "pure_text_check_qualified_git_adoption": false
+  },
+  "game": {
+    "state": "CLOSED",
+    "unknown_auto_sequence": 11558,
+    "replay_unknown": false,
+    "saved_days": 5628,
+    "new_saved_days": 0,
+    "g2": "6/8"
+  }
+}

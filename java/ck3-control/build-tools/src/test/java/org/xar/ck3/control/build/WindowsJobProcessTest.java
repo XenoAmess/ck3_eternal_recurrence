@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -95,14 +96,73 @@ final class WindowsJobProcessTest {
         assertThrows(IllegalArgumentException.class, () -> WindowsJobProcess.observeLiveProcess(0x1_0000_0000L));
     }
 
+    @Test void retainedSelfHandleMeasuresIdentityAndIndependentNativeStateUntilOneClose() throws Exception {
+        long pid = ProcessHandle.current().pid();
+        WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(pid);
+        try (retained) {
+            WindowsJobProcess.ProcessIdentity measured = retained.identity();
+            assertEquals(WindowsJobProcess.exactProcess(pid), measured);
+            assertTrue(new BigInteger(measured.creationFiletimeDecimal()).compareTo(BigInteger.ONE.shiftLeft(53)) > 0);
+            assertEquals(258, retained.waitZero());
+            assertEquals(259, retained.exitCode());
+            assertEquals(measured, retained.identity());
+        }
+        retained.close();
+        assertThrows(IllegalStateException.class, retained::identity);
+        assertThrows(IllegalStateException.class, retained::waitZero);
+        assertThrows(IllegalStateException.class, retained::exitCode);
+        assertThrows(IllegalArgumentException.class, () -> WindowsJobProcess.retainReadOnlyProcess(0));
+        assertThrows(IllegalArgumentException.class, () -> WindowsJobProcess.retainReadOnlyProcess(0x1_0000_0000L));
+    }
+
+    @Test void retainedHandlePreservesExitedJobGenerationAndUnsignedDwordAfterOriginalOwnerCloses() throws Exception {
+        for (String mode : List.of("exit42", "exit259", "exit-1")) {
+            Path releaseGate = temporary.resolve(mode + "-retained.release");
+            WindowsJobProcess.ReadOnlyProcessHandle retained = null;
+            WindowsJobProcess.ProcessIdentity generation;
+            long actualExit;
+            try {
+                try (WindowsJobProcess owner = WindowsJobProcess.start(spec("retained-" + mode,
+                        temporary.resolve(mode + "-retained.stdout"), List.of(releaseGate.toString())))) {
+                    generation = owner.identity();
+                    retained = WindowsJobProcess.retainReadOnlyProcess(generation.pid());
+                    assertEquals(generation, retained.identity());
+                    assertFalse(Files.exists(releaseGate));
+                    assertEquals(258, retained.waitZero(), "child must be retained before its release gate opens");
+                    assertEquals(259, retained.exitCode());
+                    Files.createFile(releaseGate);
+                    WindowsJobProcess.CommandResult terminal = owner.await(
+                            Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+                    assertEquals(0, terminal.accounting().activeProcesses());
+                    actualExit = Integer.toUnsignedLong(terminal.exitCode());
+                    long expectedExit = mode.equals("exit42") ? 42 : mode.equals("exit259") ? 259 : 0xffff_ffffL;
+                    assertEquals(expectedExit, actualExit);
+                }
+                // The independent query handle survives the original Job owner's cleanup.
+                assertEquals(generation, retained.identity());
+                assertEquals(0, retained.waitZero());
+                assertEquals(actualExit, retained.exitCode());
+                assertEquals(0, retained.waitZero());
+            } finally {
+                if (retained != null) retained.close();
+            }
+        }
+    }
+
     private WindowsJobProcess.CommandSpec spec(String mode, Path output) {
+        return spec(mode, output, List.of());
+    }
+
+    private WindowsJobProcess.CommandSpec spec(String mode, Path output, List<String> childArguments) {
         Path java = Path.of(System.getProperty("java.home"), "bin/java.exe");
         String classpath = System.getProperty("surefire.test.class.path", System.getProperty("java.class.path"));
         Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
         String scratch = System.getProperty("java.io.tmpdir");
         environment.put("JAVA_TOOL_OPTIONS", "-Xms16m -Xmx64m -XX:MaxMetaspaceSize=64m -XX:ReservedCodeCacheSize=32m -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch);
-        return new WindowsJobProcess.CommandSpec(java, List.of("-Xms16m", "-Xmx64m", "-cp", classpath,
-                Child.class.getName(), mode), temporary.toAbsolutePath(), environment, output.toAbsolutePath(),
+        List<String> arguments = new ArrayList<>(List.of("-Xms16m", "-Xmx64m", "-cp", classpath,
+                Child.class.getName(), mode));
+        arguments.addAll(childArguments);
+        return new WindowsJobProcess.CommandSpec(java, arguments, temporary.toAbsolutePath(), environment, output.toAbsolutePath(),
                 temporary.resolve(mode + ".stderr").toAbsolutePath(), 256L * 1024 * 1024);
     }
 
@@ -110,6 +170,22 @@ final class WindowsJobProcessTest {
         private Child() {}
         public static void main(String[] args) throws Exception {
             if (args[0].equals("exit42")) { Thread.sleep(1000); System.out.println("EXIT42"); System.exit(42); }
+            if (args[0].startsWith("retained-exit")) {
+                if (args.length != 2) throw new IllegalArgumentException("One explicit release gate required");
+                int exit = switch (args[0]) {
+                    case "retained-exit42" -> 42;
+                    case "retained-exit259" -> 259;
+                    case "retained-exit-1" -> -1;
+                    default -> throw new IllegalArgumentException("Unknown retained child exit mode");
+                };
+                Path releaseGate = Path.of(args[1]);
+                long deadline = System.nanoTime() + Duration.ofSeconds(20).toNanos();
+                while (!Files.isRegularFile(releaseGate)) {
+                    if (System.nanoTime() - deadline >= 0) throw new IllegalStateException("Release gate never opened");
+                    Thread.sleep(10);
+                }
+                System.exit(exit);
+            }
             if (args[0].equals("tree")) {
                 Process grandchild = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin/java.exe").toString(),
                         "-Xms16m", "-Xmx64m", "-cp", System.getProperty("java.class.path"), Child.class.getName(), "wait").inheritIO().start();
