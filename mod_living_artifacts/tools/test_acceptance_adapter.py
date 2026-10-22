@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import copy
+import hashlib
 from pathlib import Path
 import re
 import shutil
@@ -522,6 +523,37 @@ class AcceptanceContractTests(unittest.TestCase):
             script.write_bytes(script.read_bytes() + b"\n# changed after preparation\n")
             with self.assertRaisesRegex(ValueError, "runtime fixture differs"):
                 adapter._prepared_sources(context, root / "allocated")
+
+    def test_optional_initial_imprint_keeps_default_emission_and_typed_provenance(self) -> None:
+        self.assertEqual(hashlib.sha256(prepare_fixture.render_observer_effects().encode("utf-8")).hexdigest(),
+            "534b27131cda07c309c2bb115493c5807e59a68372c9a100c28049567bbcae3b")
+        declaration: Object = {"flag": "primary_armament", "days": 90, "origin": "fixture-initial-state", "feeding_action_credit": False}
+        seed = prepare_fixture.InitialFeedingImprint.parse(json.loads(json.dumps(declaration)))
+        self.assertEqual(seed.to_json(), declaration)
+        invalid: list[object] = [None, {**declaration, "days": True}, {**declaration, "days": 90.0},
+            {**declaration, "days": 89}, {**declaration, "flag": "weapon"}, {**declaration, "origin": "actual-feeding"},
+            {**declaration, "feeding_action_credit": True}, {**declaration, "unknown": None},
+            {key: value for key, value in declaration.items() if key != "days"}]
+        for value in invalid:
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                prepare_fixture.InitialFeedingImprint.parse(value)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            plain = prepare_fixture.emit_fixture(root / "plain")
+            seeded = prepare_fixture.emit_fixture(root / "seeded", feeding_imprint=seed)
+            self.assertEqual(set(plain), set(seeded))
+            self.assertEqual(set(plain["files"]), set(seeded["files"]))
+            for name in plain["files"]:
+                before = Path(plain["files"][name]["path"]).read_bytes()
+                after = Path(seeded["files"][name]["path"]).read_bytes()
+                if name == "common/scripted_effects/xalw_fixture_observer.txt":
+                    self.assertNotIn(b"xalw_feeding_imprint", before)
+                    self.assertIn(b"name = xalw_feeding_imprint value = flag:primary_armament days = 90", after)
+                    self.assertNotIn(b"xalw_feed_material_effect", after)
+                    self.assertIn(b"name = xalw_xp_in_level value = 92", after)
+                    self.assertIn(b"name = xalw_diet value = flag:armor", after)
+                else:
+                    self.assertEqual(after, before, name)
 
     def test_pins_reject_equal_but_wrong_json_types(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

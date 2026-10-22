@@ -6,6 +6,7 @@ day projection and real Root producer/file-validation paths run in these tests.
 from __future__ import annotations
 
 from datetime import date, timedelta
+from dataclasses import replace
 import json
 import os
 from pathlib import Path
@@ -16,7 +17,7 @@ import unittest
 from unittest.mock import patch
 
 import acceptance_adapter as core
-from acceptance_contract import Frame, Object, array, field, integer, mapping, object_value, pin, read, write_once
+from acceptance_contract import Frame, Object, Pin, array, field, integer, mapping, object_value, pin, read, write_once
 from ck3_mod_acceptance_native_day import STEP, project_native_day
 from management_event_contract import source_option_index
 from startup_actor_binding import StartupActorBinding
@@ -24,6 +25,9 @@ from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, authored_checkpoint_te
 from test_npc_saved_observer import variable
 from test_preview_acceptance_adapter import context_fixture as preview_context
 from test_threshold_acceptance_adapter import ThresholdPort
+from cold_persistence_observer import compare_persistence, consume_checkpoint
+from checkpoint_callback import checked_pin
+from prepare_fixture import InitialFeedingImprint
 import suppression_timer_acceptance_adapter as timer
 import threshold_acceptance_adapter as historical
 
@@ -52,6 +56,10 @@ class TimerPort(ThresholdPort):
         self.fault = fault
         self.suppression_intents = 0
         self.renewal_intents = 0
+        # CursePort reuses this authored transport with its own initial fixture.
+        # Only the timer contract declares this persistence seed.
+        self.initial_imprint = (InitialFeedingImprint.parse(field(field(context, "case_contract"), "initial_feeding_imprint"))
+            if field(context, "case") == timer.CASE else None)
 
     def saved_text(self) -> str:
         source = authored_checkpoint_text(AUTHORED_ARTIFACTS)
@@ -66,6 +74,14 @@ class TimerPort(ThresholdPort):
             values += " " + variable("xalw_suppression_timer_sequence", "value", str(self.timer_sequence * 100000))
         if self.deadline is not None:
             values += " " + variable("xalw_growth_suppressed_until", "value", str(self.deadline * 100000))
+        if self.initial_imprint is not None and self.day < self.initial_imprint.days:
+            if self.day == 0 and self.fault == "wrong_initial_imprint_type":
+                values += " " + variable("xalw_feeding_imprint", "value", "100000")
+            elif self.day == 0 and self.fault == "wrong_initial_imprint_flag":
+                values += " " + variable("xalw_feeding_imprint", "flag", flag="weapon")
+            elif not (self.day == 0 and self.fault == "missing_initial_imprint" or
+                    self.renewal_intents == 1 and self.fault == "missing_renewed_imprint"):
+                values += " " + variable("xalw_feeding_imprint", "flag", flag=self.initial_imprint.flag)
         source = source.replace(variable("xalw_level", "value", str(self.level * 100000)), values + " " + variable("xalw_level", "value", str(self.level * 100000)), 1)
         source = source.replace(variable("xalw_fixture_target", "artifact", "12"), variable("xalw_fixture_initial_day", "value", "10000000") + " " + variable("xalw_fixture_target", "artifact", "12"), 1)
         source = source.replace("\t\talive_data={\n", f"\t\talive_data={{\n\t\t\tgold={{ value={self.gold} }}\n\t\t\tprestige={{ currency={self.prestige} accumulated=1000 }}\n\t\t\tstress={self.stress}\n", 1)
@@ -165,6 +181,27 @@ class SuppressionTimerTests(unittest.TestCase):
             self.assertEqual((field(observed, "original_deadline"), field(observed, "renewed_deadline")), (190, 280))
             self.assertEqual(field(observed, "actual_natural_hours"), 198 * 24)
             journal = read(Path(str(field(result["journal"], "path"))))
+            renewed_ref = checked_pin(array(journal["checkpoints"], "checkpoint refs")[3], "renewed timer checkpoint")
+            renewed = read(Path(renewed_ref["path"]))
+            saves: list[Pin] = []
+            for raw in mapping(journal["native_records"], "native closure").values():
+                reference = checked_pin(raw, "original native record")
+                native = array(field(read(Path(reference["path"])), "rows"), "native rows")[0]
+                if field(field(native, "plan"), "tool") == "ck3_save_checkpoint":
+                    checkpoint = field(field(native, "result"), "checkpoint")
+                    if field(checkpoint, "sha256") == field(renewed["source_save"], "sha256"):
+                        saves.append(reference)
+            self.assertEqual(len(saves), 1)
+            actual = consume_checkpoint(renewed, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root", manifest=port.manifest,
+                save_native=saves[0], item_native=renewed["item_native"])
+            imprint = actual.artifact.variables["xalw_feeding_imprint"]
+            self.assertEqual((imprint.kind, imprint.raw_identity, imprint.flag), ("flag", None, "primary_armament"))
+            self.assertEqual(actual.sample.level, 1)
+            self.assertEqual(actual.sample.xp, 92)
+            # Authored cold boundary, not another game Save: the real timer
+            # producer/consumer source now contains all requested cold features.
+            after = replace(actual, run_id="authored-cold-run", load_save={**actual.load_save, "path": str(port.output / "authored-cold-save.ck3")})
+            self.assertTrue(all(check["status"] == "PASS" for check in compare_persistence(actual, after)))
             first = read(Path(str(field(array(journal["checkpoints"], "checkpoints")[0], "path"))))
             for mutation in ({**first, "machine_id": "other"}, {**first, "projection": {}}, {key: value for key, value in first.items() if key != "response"}):
                 with self.assertRaises(ValueError):
@@ -209,6 +246,21 @@ class SuppressionTimerTests(unittest.TestCase):
             self.assertEqual((port.saves, port.day, port.suppression_intents), (1, 0, 0))
             self.assertEqual(timer.verify_case(context), result)
 
+    def test_actual_fixture_imprint_is_required_before_payment_and_at_renewed_source(self) -> None:
+        for fault in ("missing_initial_imprint", "wrong_initial_imprint_type", "wrong_initial_imprint_flag", "missing_renewed_imprint"):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as temporary:
+                context, result, port = run_fixture(Path(temporary), fault=fault)
+                self.assertEqual(result["status"], "BLOCKED", result.get("error"))
+                self.assertIn("fixture imprint", str(result.get("error")))
+                self.assertFalse(result["original_action_unknown"])
+                self.assertEqual(timer.verify_case(context), result)
+                if fault == "missing_renewed_imprint":
+                    self.assertEqual((port.saves, port.day, port.suppression_intents, port.renewal_intents), (4, 60, 1, 1))
+                else:
+                    self.assertEqual((port.saves, port.day, port.suppression_intents, port.renewal_intents), (1, 0, 0, 0))
+                    self.assertNotIn(core.EQUIP, port.tools)
+                self.assertEqual(len(array(result["checks"], "original timer checks")), len(timer.CHECKS))
+
     def test_contract_fields_types_registry_and_json_roundtrip(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             context = context_fixture(Path(temporary))
@@ -229,6 +281,15 @@ class SuppressionTimerTests(unittest.TestCase):
             self.assertNotIn("xalw_growth_suppressed_until", initial)
             self.assertNotIn("xalw_suppress_effect", initial)
             self.assertNotIn("add_gold", initial)
+            self.assertIn("name = xalw_feeding_imprint value = flag:primary_armament days = 90", initial)
+            self.assertNotIn("xalw_feed_material_effect", initial)
+            self.assertEqual(field(manifest["config"], "initial_feeding_imprint"),
+                InitialFeedingImprint.parse(field(config, "initial_feeding_imprint")).to_json())
+            self.assertFalse(field(field(manifest["config"], "initial_feeding_imprint"), "feeding_action_credit"))
+            loaded = Path(str(context["state_dir"])) / "profile/mod-content/fixture/common/scripted_effects/xalw_fixture_observer.txt"
+            loaded.write_bytes(loaded.read_bytes().replace(b"days = 90", b"days = 89"))
+            with self.assertRaises(ValueError):
+                timer.prepared_sources(context, Path(str(context["state_dir"])))
 
     def test_retained_deployment_natural_receipts_and_false_equal_projection_are_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

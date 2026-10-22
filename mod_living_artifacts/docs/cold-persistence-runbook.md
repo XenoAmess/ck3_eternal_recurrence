@@ -34,6 +34,8 @@ flowchart LR
 
 优先选择未来 `suppression_timer` 的真实 renewed checkpoint04：应在合法续期动作完成后，以实际 observer、Save、装备查询与 readback 确认期限、月链和序号，然后取其原件。`xalw.10` 的 renew 选项不会像喂养确认一样返回管理事件，这有利于公共冷载直接恢复。本文尚未读取该未来保存点，期限 `+180`、chain `2`、seq `1` 是 Root 指定的待核来源目标，不能当成已经观测的存档值。若实际种子缺少喂养印记，该项如实 `BLOCKED`，无须为四档印记另开四场。
 
+未来新冻结的 timer v2 在初始夹具中声明一个 `primary_armament`、90日的强类型印记 seed，保留原 L1/XP92、食性、四材料、七保存和全部动作。实际来源名为 `timer-checkpoint-04.json`；它使用共享 `ThresholdCheckpoint` 字段与消费者，并不是 threshold 场次。seed 来源为 `fixture-initial-state`，不执行或授予喂养动作；其后真实保存与新进程恢复才是本冷载用例的被测行为。第60日保存必须实际存在合法的 flag，才能授予这一项持久化信用。旧 timer v1、c18 及旧保存没有该输入，不修改或追认旧证据。缺失状态即使在新旧保存都相同，也只可能通过全变量相等项，不能通过要求有效印记存在的独立功能项。
+
 R8 checkpoint07 已有一项真实来源复核：当前消费者只读重验了旧实际 Save、原官方 strict melt、callback、存档内容与原生装备结果。保留原件为 `observations/pc-20260924rtuf-f11af23c08--living-artifacts--R0008/checkpoint-07/original.ck3`，70,733,402 字节，SHA-256 `6d36a1f34cccf41d3cc31b5218869e957108fe166963690155e1ed23905d28a9`。原目标 402、主人 31254、1066.11.1，6 级 / 580 XP / 成长计数 5 / 共鸣 25，四件材料均已消耗；实际唯一印记为 `type=flag`、`flag=primary_armament`、无 raw identity。此结果证明旧真实来源可以被新消费者消费，没有重新运行 producer、发送游戏动作或冷载游戏。原业务证据及旧回执保持原样。
 
 每个新场次只进行零日恢复和一次实际新 Save。适配器先消费真实 `saved_campaign_restore`，从完整原生帧读取玩家、日期和进程，核对正式 v2 profile、原件 SHA、实际启动 argv、CampaignRoot 与帧的 snapshot/revision/date 对应关系，以及至少两次推进的 owner pump。公共 `Session` 使用显式 typed binding；原 Robert 前台绑定继续由原调用方使用。只写 `ready`、伪造 ACK 或跳过真实 root/pump 不能绑定 cold 会话。
