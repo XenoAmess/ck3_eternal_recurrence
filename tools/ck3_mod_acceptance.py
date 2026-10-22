@@ -17,11 +17,179 @@ import math
 import os
 from pathlib import Path
 from types import ModuleType
+from typing import Literal, TypedDict
 import re
 import subprocess
 import sys
 
-from ck3_mod_acceptance_background_types import wire_evidence_codec
+from ck3_mod_acceptance_background_types import (
+    FilePin, JsonObject, file_pin, json_object, keyed_file_pin, object_field, text_field,
+    wire_evidence_codec,
+)
+
+
+LEGACY_THRESHOLD_ADAPTER_V1 = (35832, "863dfea6abd897a8efe2159f75717108f6b4afd8677e01fa44a6cc48b8c3e2e3")
+LEGACY_THRESHOLD_CONTRACT_V1 = (2769, "3a69f4c485894043b8b91dd900f89eef5f06249b48b0f9d2ebbbc2327705ab51")
+LEGACY_THRESHOLD_CHECKS_V1 = (
+    "THRESHOLD-AUTOMATIC-11", "THRESHOLD-CURSE-HUNGER-PROJECTION", "TRAIN-ACTUAL-XP-WALLET", "TRAIN-ACTUAL-STRESS",
+    "SUPPRESS-ACTUAL-WALLET-90-DAY", "SUPPRESS-ACTUAL-STRESS", "SUPPRESS-EQUIPMENT-PERSISTENCE", "SUPPRESS-MONTHLY-PAUSE",
+)
+
+
+class LegacyThresholdGuiQualificationV1(TypedDict):
+    """A new verification projection; never a replacement for the retained v1 file."""
+    schema: Literal["ck3-mod-acceptance-legacy-threshold-gui-qualification-v1"]
+    run_id: str
+    machine_id: str
+    producer_result_schema: Literal["living-artifacts-threshold-case-result-v1"]
+    retained_result: FilePin
+    producer_adapter: FilePin
+    producer_contract: FilePin
+    prepared_case: FilePin
+    frozen_argv: FilePin
+    runtime_manifest: FilePin
+    normal_close: FilePin
+    verification_consumer: FilePin
+    reverified_check_ids: list[str]
+    original_adapter_recomputed: Literal[True]
+    gui_contract_qualified: Literal[True]
+    original_result_modified: Literal[False]
+
+
+def _verification_file_pin_v1(value: object) -> FilePin:
+    row = json_object(value)
+    if set(row) != {"path", "bytes", "sha256"}:
+        raise ValueError("Closed verification file Pin required")
+    result = file_pin(row)
+    if result["bytes"] <= 0 or not Path(result["path"]).is_absolute():
+        raise ValueError("Nonempty absolute verification source required")
+    return result
+
+
+def _verification_read_object_v1(path: Path) -> JsonObject:
+    value: object = json.loads(path.read_bytes())
+    return json_object(value)
+
+
+def _verification_actual_pin_v1(path: Path) -> FilePin:
+    resolved = path.resolve()
+    if not resolved.is_file() or path.is_symlink():
+        raise ValueError("Ordinary retained verification file required")
+    raw = resolved.read_bytes()
+    return _verification_file_pin_v1({"path": str(resolved), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()})
+
+
+def _verification_checked_pin_v1(path: Path, declared: object) -> FilePin:
+    expected = _verification_file_pin_v1(declared)
+    actual = _verification_actual_pin_v1(path)
+    if Path(expected["path"]).resolve() != Path(actual["path"]) or actual["bytes"] != expected["bytes"] or actual["sha256"] != expected["sha256"]:
+        raise ValueError("Retained verification source Pin differs")
+    return actual
+
+
+def parse_legacy_threshold_gui_qualification_v1(value: object) -> LegacyThresholdGuiQualificationV1:
+    row = json_object(value)
+    if (set(row) != set(LegacyThresholdGuiQualificationV1.__required_keys__)
+            or row["schema"] != "ck3-mod-acceptance-legacy-threshold-gui-qualification-v1"
+            or row["producer_result_schema"] != "living-artifacts-threshold-case-result-v1"
+            or row["original_adapter_recomputed"] is not True or row["gui_contract_qualified"] is not True
+            or row["original_result_modified"] is not False or row["reverified_check_ids"] != list(LEGACY_THRESHOLD_CHECKS_V1)):
+        raise ValueError("Closed versioned legacy GUI qualification required")
+    return LegacyThresholdGuiQualificationV1(
+        schema="ck3-mod-acceptance-legacy-threshold-gui-qualification-v1",
+        run_id=text_field(row, "run_id"), machine_id=text_field(row, "machine_id"),
+        producer_result_schema="living-artifacts-threshold-case-result-v1",
+        retained_result=_verification_file_pin_v1(row["retained_result"]),
+        producer_adapter=_verification_file_pin_v1(row["producer_adapter"]),
+        producer_contract=_verification_file_pin_v1(row["producer_contract"]),
+        prepared_case=_verification_file_pin_v1(row["prepared_case"]), frozen_argv=_verification_file_pin_v1(row["frozen_argv"]),
+        runtime_manifest=_verification_file_pin_v1(row["runtime_manifest"]), normal_close=_verification_file_pin_v1(row["normal_close"]),
+        verification_consumer=_verification_file_pin_v1(row["verification_consumer"]),
+        reverified_check_ids=list(LEGACY_THRESHOLD_CHECKS_V1), original_adapter_recomputed=True,
+        gui_contract_qualified=True, original_result_modified=False,
+    )
+
+
+def _legacy_threshold_gui_qualification_v1(
+    result: object, *, loaded_adapter_source: object, adapter_path: Path, contract_path: Path,
+    prepared_path: Path | None, context_path: Path, runtime_path: Path, products_path: Path,
+    manifest_path: Path, required_pins: list[tuple[Path, object]], expected_argv: object,
+    expected_environment: object, normal_close_path: Path,
+) -> LegacyThresholdGuiQualificationV1 | None:
+    """Called only AFTER the selected original adapter's real retained verify.
+
+    The exact known v1 producer already re-read all seven Save/melt/native/action
+    sources and recomputed eight checks. This derives its missing scoped output;
+    explicit GUI false, unknown sources and other cases retain the ordinary gate.
+    """
+    row = json_object(result)
+    if (row.get("schema") != "living-artifacts-threshold-case-result-v1"
+            or row.get("product") != "living-artifacts" or row.get("case") != "threshold_suppression"
+            or "gui_contract_qualified" in row):
+        return None
+    if (row.get("status") != "PASS" or row.get("case_contract_qualified") is not True
+            or row.get("original_action_unknown") is not False or row.get("error") is not None
+            or row.get("business_pass") is not False or row.get("product_release_pass") is not False
+            or type(row.get("actual_natural_days")) is not int or row["actual_natural_days"] != 47
+            or type(row.get("actual_saved_observations")) is not int or row["actual_saved_observations"] != 7):
+        return None
+    if not normal_close_path.is_file() or _verification_read_object_v1(normal_close_path).get("normal_close_qualified") is not True:
+        return None
+    checks = row.get("checks")
+    if (not isinstance(checks, list) or len(checks) != len(LEGACY_THRESHOLD_CHECKS_V1)
+            or any(json_object(check).get("case_id") != identity or json_object(check).get("status") != "PASS"
+                   for check, identity in zip(checks, LEGACY_THRESHOLD_CHECKS_V1, strict=True))):
+        raise ValueError("Legacy GUI qualification requires all eight original recomputed checks")
+    if prepared_path is None or not isinstance(loaded_adapter_source, str) or Path(loaded_adapter_source).resolve() != adapter_path.resolve():
+        raise ValueError("Actual selected legacy adapter source required")
+    context = _verification_read_object_v1(context_path)
+    prepared_pin = _verification_checked_pin_v1(prepared_path, context.get("prepared_case"))
+    prepared = _verification_read_object_v1(prepared_path)
+    frozen_ref = _verification_file_pin_v1(context.get("frozen_argv"))
+    frozen_pin = _verification_checked_pin_v1(Path(frozen_ref["path"]), frozen_ref)
+    frozen = _verification_read_object_v1(Path(frozen_pin["path"]))
+    runtime = _verification_read_object_v1(runtime_path)
+    manifest_pin = _verification_checked_pin_v1(manifest_path, runtime.get("manifest"))
+    manifest = _verification_read_object_v1(manifest_path)
+    run_id = text_field(row, "run_id")
+    run = Path(text_field(context, "run_dir")).resolve()
+    if (context.get("run_id") != run_id or run.name != run_id or context_path.resolve().parent != run
+            or context.get("product") != "living-artifacts" or context.get("case") != "threshold_suppression"
+            or context.get("case_inputs") != prepared.get("case_inputs") or frozen.get("run_id") != run_id
+            or frozen.get("argv") != expected_argv or frozen.get("runtime_environment", {}) != expected_environment
+            or prepared.get("runtime_manifest") != manifest_pin or frozen.get("runtime_manifest") != manifest_pin
+            or manifest.get("machine_id") != row.get("machine_id")
+            or normal_close_path.resolve() != run / "case-output/normal-close-result.json"):
+        raise ValueError("Legacy verification crossed original allocation/runtime/scope")
+    files = object_field(frozen, "files")
+    def frozen_file(path: Path) -> FilePin:
+        resolved = path.resolve()
+        return _verification_checked_pin_v1(resolved, keyed_file_pin(str(resolved), files.get(str(resolved))))
+    for path in (runtime_path, products_path, prepared_path, manifest_path):
+        frozen_file(path)
+    for path, declared in required_pins:
+        actual = frozen_file(path)
+        expected = json_object(declared)
+        if type(expected.get("bytes")) is not int or expected.get("bytes") != actual["bytes"] or expected.get("sha256") != actual["sha256"]:
+            raise ValueError("Selected original source fingerprint differs")
+    adapter = frozen_file(adapter_path)
+    contract = frozen_file(contract_path)
+    _verification_checked_pin_v1(adapter_path, prepared.get("adapter"))
+    _verification_checked_pin_v1(contract_path, prepared.get("contract"))
+    if (adapter["bytes"], adapter["sha256"]) != LEGACY_THRESHOLD_ADAPTER_V1 or (contract["bytes"], contract["sha256"]) != LEGACY_THRESHOLD_CONTRACT_V1:
+        raise ValueError("Unsupported legacy threshold producer identity")
+    result_path = run / "case-output/living-artifacts-threshold-result.json"
+    if _verification_read_object_v1(result_path) != row:
+        raise ValueError("Original adapter returned a different retained result")
+    return parse_legacy_threshold_gui_qualification_v1({
+        "schema": "ck3-mod-acceptance-legacy-threshold-gui-qualification-v1", "run_id": run_id,
+        "machine_id": text_field(row, "machine_id"), "producer_result_schema": row["schema"],
+        "retained_result": _verification_actual_pin_v1(result_path), "producer_adapter": adapter, "producer_contract": contract,
+        "prepared_case": prepared_pin, "frozen_argv": frozen_pin, "runtime_manifest": manifest_pin,
+        "normal_close": _verification_actual_pin_v1(normal_close_path), "verification_consumer": _verification_actual_pin_v1(Path(__file__)),
+        "reverified_check_ids": list(LEGACY_THRESHOLD_CHECKS_V1), "original_adapter_recomputed": True,
+        "gui_contract_qualified": True, "original_result_modified": False,
+    })
 
 
 def _case_loaded_sdk_sources_v1(package_root: Path) -> None:
@@ -857,14 +1025,32 @@ class Selection:
                 'effective_budgets':self.effective_budgets,'readiness_policy':self.readiness_policy}
 
     def verify(self) -> dict[str, object]:
-        if not self.context:raise ValueError('Verify requires one actual allocated run context')
+        if not self.context or self.context_path is None:raise ValueError('Verify requires one actual allocated run context')
         from ck3_mod_acceptance_client import resolve_operator_reviewer
         context=self.adapter_context()
         context['operator_reviewer']=resolve_operator_reviewer(self)
         with self.case_imports():
-            result=self.load_adapter().verify_case(context)
+            adapter=self.load_adapter()
+            result=adapter.verify_case(context)
         closed_path=Path(context['output'])/'normal-close-result.json'
         close=read_json(closed_path) if closed_path.is_file() else None
+        if result.get('schema') == 'living-artifacts-threshold-case-result-v1':
+            if self.product_key != 'living-artifacts' or self.case['id'] != 'threshold_suppression':
+                raise ValueError('Legacy threshold verification requires its exact selected public case')
+            qualification = _legacy_threshold_gui_qualification_v1(
+                result, loaded_adapter_source=getattr(adapter, '__file__', None),
+                adapter_path=self.adapter_path, contract_path=self.adapter_config,
+                prepared_path=self.prepared_path, context_path=self.context_path,
+                runtime_path=self.runtime_path, products_path=self.products_path, manifest_path=self.manifest_path,
+                required_pins=[(path, reference) for path, reference in self.required_pins],
+                expected_argv=self.argv, expected_environment=self.runtime_environment, normal_close_path=closed_path,
+            )
+            if qualification is not None:
+                # Enrich this new verification output; the producer's write-once
+                # retained v1 result and all original source Pins stay untouched.
+                result=dict(result)
+                result['gui_contract_qualified']=qualification['gui_contract_qualified']
+                result['legacy_gui_qualification']=json_object(qualification)
         result.update(normal_close=close)
         result['case_acceptance_pass']=bool(result.get('case_contract_qualified') is True and
             result.get('gui_contract_qualified') is True and close and close.get('normal_close_qualified') is True)

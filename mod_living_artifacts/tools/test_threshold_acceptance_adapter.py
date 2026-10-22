@@ -6,9 +6,16 @@ exercise the narrower paid-stress scope rather than a hardcoded adjustment formu
 from __future__ import annotations
 
 from dataclasses import replace
+from contextlib import redirect_stdout
+import io
 import json
+import os
 from pathlib import Path
+import shutil
+import subprocess
+import sys
 import tempfile
+from typing import Protocol, runtime_checkable
 import unittest
 from unittest.mock import patch
 
@@ -24,6 +31,156 @@ from test_npc_acceptance_adapter import public_round_trip
 from test_npc_saved_observer import variable
 from test_preview_acceptance_adapter import PreviewPort, context_fixture as preview_context
 import threshold_acceptance_adapter as threshold
+import ck3_mod_acceptance as public_entry
+
+
+@runtime_checkable
+class PublicSelection(Protocol):
+    def prepare(self, inputs_path: Path, output: Path) -> object: ...
+    def adapter_context(self, output: Path | None = None, inputs: object = None) -> object: ...
+    def verify(self) -> object: ...
+    def describe(self) -> object: ...
+
+
+@runtime_checkable
+class PublicSelectionFactory(Protocol):
+    def __call__(self, runtime_path: Path, products_path: Path, product_key: str, case_id: str,
+                 context_path: Path | None = None, prepared_path: Path | None = None) -> PublicSelection: ...
+
+
+def public_selection(runtime: Path, products: Path, context: Path | None = None, prepared: Path | None = None) -> PublicSelection:
+    factory: object = public_entry.Selection
+    if not isinstance(factory, PublicSelectionFactory):
+        raise AssertionError("Actual shared Selection factory required")
+    return factory(runtime, products, "living-artifacts", emitter.CASE, context, prepared)
+
+
+def public_pipeline(root: Path, *, unknown_train: bool = False) -> tuple[PublicSelection, Object, ThresholdPort, list[str], Path]:
+    """Actual public preparation/Session/retained verifier, authored native/close seams."""
+    root.mkdir()
+    provider = root / "provider"
+    provider.mkdir()
+    base = preview_context(provider)
+    repo = Path(__file__).resolve().parents[2]
+    source_root = Path(str(base["shared_source_root"]))
+    paths: dict[str, Path] = {"source_root": source_root}
+    for name in ("host", "source_index", "native_source_index", "dll", "injector"):
+        path = root / (name + ".never-executed")
+        path.write_text("Authored source-only public verification input\n", encoding="utf-8")
+        paths[name] = path
+    manifest = object_value(read(Path(str(field(field(base, "runtime_manifest"), "path")))))
+    manifest.update(schema=public_entry.MANIFEST_SCHEMA, source_root={"path_key": "source_root"},
+        host={"path_key": "host", "bytes": paths["host"].stat().st_size, "sha256": pin(paths["host"])["sha256"]},
+        source_index={"path_key": "source_index", "bytes": paths["source_index"].stat().st_size, "sha256": pin(paths["source_index"])["sha256"]},
+        native_source_index={"path_key": "native_source_index", "bytes": paths["native_source_index"].stat().st_size, "sha256": pin(paths["native_source_index"])["sha256"]},
+        native={name: {"path_key": name, "bytes": paths[name].stat().st_size, "sha256": pin(paths[name])["sha256"]} for name in ("dll", "injector")})
+    manifest_pin = write_once(root / "public-manifest.json", manifest)
+    runtime_path = root / "runtime.json"
+    write_once(runtime_path, {"schema": public_entry.RUNTIME_SCHEMA, "manifest": manifest_pin, "python": sys.executable,
+        "repo_root": str(repo), "game_dir": base["game_dir"], "userdir_root": str(root / "profiles"),
+        "artifacts_root": str(root / "live"), "paths": {name: str(path) for name, path in paths.items()}})
+    registry = object_value(read(repo / "tools/ck3_mod_acceptance_products.json"))
+    product = object_value(field(field(registry, "products"), "living-artifacts"))
+    case = object_value(read(emitter.TOOLS / "threshold_suppression.registry.json"))
+    case["adapter"] = {"path": str(emitter.TOOLS / "threshold_acceptance_adapter.py"), "config": str(emitter.TOOLS / emitter.CONTRACT_NAME)}
+    product["cases"] = [case]
+    registry["products"] = {"living-artifacts": product}
+    products_path = root / "products.json"
+    write_once(products_path, registry)
+    state = root / "public-state"
+    inputs_path = root / "inputs.json"
+    write_once(inputs_path, {"state_dir": str(state), "case_inputs": base["case_inputs"]})
+    prepared = root / "public-prepared"
+    public_selection(runtime_path, products_path).prepare(inputs_path, prepared)
+    prepared_path = prepared / "prepared-case.json"
+    run = root / "live/unit-run"
+    output = run / "case-output"
+    output.mkdir(parents=True)
+    context_path = run / "context.json"
+    context = object_value({"schema": public_entry.CONTEXT_SCHEMA, "run_id": "unit-run", "run_dir": str(run),
+        "product": "living-artifacts", "case": emitter.CASE, "prepared_case": pin(prepared_path),
+        "case_inputs": base["case_inputs"], "reviewer": "unit-root"})
+    write_once(context_path, context)
+    # The actual constructor builds the original argv; no run/allocator/host is called.
+    selected = public_selection(runtime_path, products_path, context_path, prepared_path)
+    described = selected.describe()
+    original_argv = field(described, "host_argv")
+    required = [manifest_pin, pin(prepared_path), *[pin(path) for name, path in paths.items() if name != "source_root"]]
+    required.extend(pin(path) for path in (runtime_path, products_path, emitter.TOOLS / "threshold_acceptance_adapter.py", emitter.TOOLS / emitter.CONTRACT_NAME))
+    for path in prepared.rglob("*"):
+        if path.is_file():
+            required.append(pin(path))
+    files = {reference["path"]: {"bytes": reference["bytes"], "sha256": reference["sha256"]} for reference in required}
+    frozen = write_once(run / "frozen-argv.json", {"run_id": "unit-run", "argv": original_argv, "runtime_environment": {},
+        "runtime_manifest": manifest_pin, "source_root": str(source_root), "files": files})
+    context["frozen_argv"] = object_value(frozen)
+    context_path.write_text(json.dumps(context), encoding="utf-8")
+    selected = public_selection(runtime_path, products_path, context_path, prepared_path)
+    actual_context = object_value(selected.adapter_context())
+    port = ThresholdPort(actual_context, unknown_train=unknown_train)
+    binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
+    with patch.object(StartupActorBinding, "parse", return_value=binding):
+        result = object_value(threshold.run_case(actual_context, port))
+    write_once(output / "normal-close-result.json", {"normal_close_qualified": True, "authored_close_boundary_only": True})
+    args = ["verify", "--runtime", str(runtime_path), "--products", str(products_path), "--product", "living-artifacts",
+        "--case", emitter.CASE, "--prepared-case", str(prepared_path), "--run-context", str(context_path)]
+    return selected, result, port, args, output
+
+
+def public_verify_output(arguments: list[str]) -> tuple[int, Object]:
+    stream = io.StringIO()
+    with redirect_stdout(stream):
+        code = public_entry.main(arguments)
+    return code, object_value(json.loads(stream.getvalue()))
+
+
+def legacy_public_pipeline_worker(root: Path) -> None:
+    """Fresh-process consumer of the byte-pinned historical producer fixture."""
+    check = unittest.TestCase()
+    selected, produced, port, arguments, output = public_pipeline(root / "known")
+    result_path = output / threshold.RESULT_NAME
+    original_bytes = result_path.read_bytes()
+    original = pin(result_path)
+    check.assertEqual(produced["schema"], "living-artifacts-threshold-case-result-v1")
+    check.assertNotIn("gui_contract_qualified", produced)
+    check.assertEqual((port.saves, port.day), (7, 47))
+    verified = object_value(selected.verify())
+    check.assertTrue(verified["case_acceptance_pass"])
+    qualification = public_entry.parse_legacy_threshold_gui_qualification_v1(verified["legacy_gui_qualification"])
+    check.assertEqual(public_entry.parse_legacy_threshold_gui_qualification_v1(json.loads(json.dumps(qualification))), qualification)
+    check.assertEqual(qualification["retained_result"], original)
+    check.assertEqual(public_verify_output(arguments)[0], 0)
+    check.assertEqual(pin(result_path), original)
+    for changed in ({**produced, "schema": "living-artifacts-threshold-case-result-v2"},
+                    {**produced, "gui_contract_qualified": False}, {**produced, "actual_natural_days": 47.0},
+                    {**produced, "case_contract_qualified": 1}, {**produced, "unexpected": True},
+                    {name: value for name, value in produced.items() if name != "journal"}):
+        result_path.write_text(json.dumps(changed), encoding="utf-8")
+        check.assertEqual(public_verify_output(arguments)[0], 2)
+    result_path.write_bytes(original_bytes)
+    check.assertEqual(pin(result_path), original)
+    close_path = output / "normal-close-result.json"
+    close_bytes = close_path.read_bytes()
+    close_path.write_text(json.dumps({"normal_close_qualified": False}), encoding="utf-8")
+    failed_close = public_verify_output(arguments)
+    check.assertEqual(failed_close[0], 2)
+    check.assertNotIn("legacy_gui_qualification", failed_close[1])
+    close_path.write_bytes(close_bytes)
+    _, blocked, _, blocked_args, _ = public_pipeline(root / "unknown-action", unknown_train=True)
+    check.assertTrue(blocked["original_action_unknown"])
+    check.assertEqual(public_verify_output(blocked_args)[0], 2)
+    # A semantically identical but unknown producer is a new source, not v1 credit.
+    source_path = emitter.TOOLS / "threshold_acceptance_adapter.py"
+    with source_path.open("ab") as stream:
+        stream.write(b"\n# Authored unknown producer identity.\n")
+    _, _, _, unknown_args, _ = public_pipeline(root / "unknown-source")
+    unknown_source = public_verify_output(unknown_args)
+    check.assertEqual(unknown_source[0], 2)
+    check.assertIn("Unsupported legacy threshold producer identity", str(unknown_source[1]))
+    print(json.dumps({"known_legacy_cli_exit": 0, "wrong_version_shape_type_false_cli_exit": 2,
+        "failed_close_cli_exit": 2, "unknown_action_cli_exit": 2, "unknown_source_cli_exit": 2,
+        "legacy_producer_saves": port.saves, "legacy_producer_natural_days": port.day, "old_result_unchanged": True,
+        "qualification": qualification}))
 
 
 def context_fixture(root: Path) -> Object:
@@ -168,6 +325,75 @@ def run_fixture(root: Path, **faults: bool | int) -> tuple[Object, Object, Thres
 
 
 class ThresholdAcceptanceTests(unittest.TestCase):
+    def test_legacy_derivation_is_not_a_missing_gui_default_for_other_cases(self) -> None:
+        unused = Path("unused-legacy-verification-source")
+        for result in (
+            {"schema": "living-artifacts-core-case-result-v2", "product": "living-artifacts", "case": "core_continuous", "gui_contract_qualified": False},
+            {"schema": "living-artifacts-npc-case-result-v1", "product": "living-artifacts", "case": "npc_continuous", "gui_contract_qualified": False},
+            {"schema": "unknown", "product": "living-artifacts", "case": emitter.CASE},
+            {"schema": "living-artifacts-threshold-case-result-v1", "product": "another-product", "case": emitter.CASE},
+            {"schema": "living-artifacts-threshold-case-result-v1", "product": "living-artifacts", "case": emitter.CASE, "gui_contract_qualified": False},
+        ):
+            with self.subTest(result=result):
+                self.assertIsNone(public_entry._legacy_threshold_gui_qualification_v1(result,
+                    loaded_adapter_source=None, adapter_path=unused, contract_path=unused, prepared_path=None,
+                    context_path=unused, runtime_path=unused, products_path=unused, manifest_path=unused,
+                    required_pins=[], expected_argv=[], expected_environment={}, normal_close_path=unused))
+
+    def test_actual_v2_producer_public_selection_and_cli_exit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            selected, result, port, arguments, output = public_pipeline(Path(temporary) / "v2")
+            original = pin(output / threshold.RESULT_NAME)
+            self.assertEqual(result["schema"], "living-artifacts-threshold-case-result-v2")
+            self.assertTrue(result["gui_contract_qualified"])
+            self.assertEqual((port.saves, port.day), (7, 47))
+            verified = object_value(selected.verify())
+            self.assertTrue(verified["case_acceptance_pass"])
+            self.assertTrue(verified["qualified_boundary_pass"])
+            self.assertNotIn("legacy_gui_qualification", verified)
+            self.assertFalse(verified["business_pass"])
+            self.assertEqual(public_verify_output(arguments)[0], 0)
+            self.assertEqual(pin(output / threshold.RESULT_NAME), original)
+            for changed in ({**result, "gui_contract_qualified": False}, {**result, "gui_contract_qualified": 1},
+                            {**result, "gui_contract_qualified": None}, {**result, "schema": "living-artifacts-threshold-case-result-v1"},
+                            {name: value for name, value in result.items() if name != "gui_contract_qualified"}):
+                (output / threshold.RESULT_NAME).write_text(json.dumps(changed), encoding="utf-8")
+                self.assertEqual(public_verify_output(arguments)[0], 2)
+
+    def test_actual_frozen_v1_producer_legacy_public_verification_fresh_process(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "historical-source/mod_living_artifacts/tools"
+            source.mkdir(parents=True)
+            for original in emitter.TOOLS.iterdir():
+                if original.is_file() and (original.suffix == ".json" or original.suffix == ".py" and not original.name.startswith("test_")):
+                    shutil.copyfile(original, source / original.name)
+            fixture = emitter.TOOLS / "fixtures/threshold-result-v1-adapter.py.txt"
+            historical = fixture.read_bytes()
+            self.assertEqual((len(historical), pin(fixture)["sha256"]), public_entry.LEGACY_THRESHOLD_ADAPTER_V1)
+            (source / "threshold_acceptance_adapter.py").write_bytes(historical)
+            repo = Path(__file__).resolve().parents[2]
+            environment = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONPATH": os.pathsep.join(map(str, (
+                source, repo / "tools", emitter.TOOLS, repo, repo / "ck3_autonomous_player/src")))}
+            completed = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c",
+                "from pathlib import Path; from test_threshold_acceptance_adapter import legacy_public_pipeline_worker; "
+                "legacy_public_pipeline_worker(Path(" + repr(str(root)) + "))"], cwd=repo, env=environment,
+                capture_output=True, text=True, encoding="utf-8", timeout=180)
+            self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+            # The real Root checkpoint transport emits its retained request paths
+            # before the worker's final structured result.
+            summary = object_value(json.loads(completed.stdout.splitlines()[-1]))
+            self.assertEqual((summary["legacy_producer_saves"], summary["legacy_producer_natural_days"]), (7, 47))
+            self.assertTrue(summary["old_result_unchanged"])
+            qualification = public_entry.parse_legacy_threshold_gui_qualification_v1(summary["qualification"])
+            for changed in ({**qualification, "gui_contract_qualified": 1}, {**qualification, "original_adapter_recomputed": False},
+                            {**qualification, "original_result_modified": True}, {**qualification, "schema": "unknown"},
+                            {**qualification, "extra": True}, {**qualification, "reverified_check_ids": []},
+                            {**qualification, "producer_adapter": {**qualification["producer_adapter"], "bytes": True}},
+                            {name: value for name, value in qualification.items() if name != "normal_close"}):
+                with self.subTest(changed=changed), self.assertRaises(ValueError):
+                    public_entry.parse_legacy_threshold_gui_qualification_v1(changed)
+
     def test_initial_fixture_has_no_tested_terminal_effect_or_success_counter(self) -> None:
         source = emitter.render_initial_inputs()
         for forbidden in ("xalw_settle_xp_effect", "xalw_refresh_artifact_effect", "xalw_train_effect", "xalw_suppress_effect", "xalw_begin_suppression_timer_effect", "xalw_growth_suppressed_until", "PASS", "trigger_event"):

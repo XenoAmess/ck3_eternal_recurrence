@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'mod_living_artifacts/**'
+      - 'tools/ck3_mod_acceptance.py'
       - 'tools/ck3_mod_acceptance_saved_profile_v2.py'
       - 'tools/test_saved_campaign_profile_inventory_v2.py'
       - 'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'
@@ -12,6 +13,7 @@ on:
   pull_request:
     paths:
       - 'mod_living_artifacts/**'
+      - 'tools/ck3_mod_acceptance.py'
       - 'tools/ck3_mod_acceptance_saved_profile_v2.py'
       - 'tools/test_saved_campaign_profile_inventory_v2.py'
       - 'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'

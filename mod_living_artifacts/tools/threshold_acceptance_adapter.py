@@ -387,7 +387,7 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
 
 
 class ThresholdResult(TypedDict):
-    schema: Literal["living-artifacts-threshold-case-result-v1"]
+    schema: Literal["living-artifacts-threshold-case-result-v2"]
     product: Literal["living-artifacts"]
     case: Literal["threshold_suppression"]
     run_id: str
@@ -403,6 +403,7 @@ class ThresholdResult(TypedDict):
     actual_saved_observations: int
     original_action_unknown: bool
     case_contract_qualified: bool
+    gui_contract_qualified: bool
     business_pass: Literal[False]
     product_release_pass: Literal[False]
     normal_close_owner: Literal["shared entry/CaseClient"]
@@ -475,11 +476,11 @@ def run_case(context: object, client: object) -> Object:
             error if check == failed_cell or status != "FAIL" else "Not reached after the recorded original failure: " + str(error), [*session.refs, journal_ref], {}) for check in CHECKS]
     if session.start is not None and session.owner is not None:
         session.days = (session.current().date_raw - session.start.date_raw) // 24
-    result: ThresholdResult = {"schema": "living-artifacts-threshold-case-result-v1", "product": "living-artifacts", "case": "threshold_suppression",
+    result: ThresholdResult = {"schema": "living-artifacts-threshold-case-result-v2", "product": "living-artifacts", "case": "threshold_suppression",
         "run_id": session.run_id, "machine_id": session.machine_id, "reviewer": client.operator_reviewer, "observed_at_utc": utc_now(), "status": status,
         "checks": checks, "journal": journal_ref, "error": error, "actual_natural_days": session.days, "actual_public_calls_budgeted": session.calls,
         "actual_saved_observations": session.checkpoint_observations, "original_action_unknown": session.original_action_unknown,
-        "case_contract_qualified": status == "PASS", "business_pass": False, "product_release_pass": False,
+        "case_contract_qualified": status == "PASS", "gui_contract_qualified": status == "PASS", "business_pass": False, "product_release_pass": False,
         "normal_close_owner": "shared entry/CaseClient", "normal_close_pending": True}
     write_once(client.output / RESULT_NAME, result)
     return object_value(result)
@@ -489,12 +490,12 @@ def verify_case(context: object) -> Object:
     contract = validate_contract(context)
     output = Path(text(field(context, "output"), "output"))
     if not (output / RESULT_NAME).is_file():
-        return {"status": "NOT_RUN", "case_contract_qualified": False, "business_pass": False, "product_release_pass": False}
+        return {"status": "NOT_RUN", "case_contract_qualified": False, "gui_contract_qualified": False, "business_pass": False, "product_release_pass": False}
     result = read(output / RESULT_NAME)
     require(set(result) == set(ThresholdResult.__required_keys__), "Closed threshold result required")
     prepared_sources(context, Path(text(field(context, "state_dir"), "state")))
     runtime = read(Path(checked_pin(field(context, "runtime_manifest"), "runtime manifest")["path"]))
-    require(result["schema"] == "living-artifacts-threshold-case-result-v1" and result["product"] == "living-artifacts" and result["case"] == CASE and
+    require(result["schema"] == "living-artifacts-threshold-case-result-v2" and result["product"] == "living-artifacts" and result["case"] == CASE and
         result["run_id"] == field(context, "run_id") and result["machine_id"] == field(runtime, "machine_id") and
         result["status"] in ("PASS", "FAIL", "BLOCKED") and result["business_pass"] is False and result["product_release_pass"] is False and
         result["normal_close_owner"] == "shared entry/CaseClient" and result["normal_close_pending"] is True, "Retained threshold scene/scope differs")
@@ -520,7 +521,8 @@ def verify_case(context: object) -> Object:
             for reference in array(field(check, "evidence"), "retained incomplete evidence"):
                 checked_pin(reference, "incomplete evidence", allow_empty=True)
         require(result["status"] == ("FAIL" if any(field(check, "status") == "FAIL" for check in checks) else "BLOCKED"), "Incomplete overall status differs from checks")
-    require(result["case_contract_qualified"] is (result["status"] == "PASS"), "Qualification differs")
+    passed = result["status"] == "PASS"
+    require(result["case_contract_qualified"] is passed and result["gui_contract_qualified"] is passed and (not passed or complete), "Qualification differs")
     if result["status"] == "PASS":
         require(result["error"] is None, "PASS cannot carry an error")
     else:

@@ -34,6 +34,12 @@
 
 保存是历史时点，不是当前原生变量接口。首次付费设立90日期限、观察到31日内保持压制，不等于已观察90日到期。合法续期窗口为剩余≤30日，首次最早需付费后60日才进入；**到期和续期必须另设长场**，不得植入人工旧 deadline 来冒充已经付费等待90日。
 
+结果合同 v2 显式输出 `gui_contract_qualified`，由真实 Session 完成这一个案的普通管理选项、装备操作及独立后态，再由 retained verifier 重算原八项结果后核对；未运行、失败、缺证或原动作未知时不能通过。它只表示本个案已走过的通道，不授予全部 GUI、整体产品或发布资格。47自然日、7次保存、480次调用和八项业务断言保持原样。
+
+旧 v1 producer 漏写该公共字段，因此即使八项业务通过且正常退出，旧公共 CLI 的完整 verify 仍返回2。保留这个真实旧结果，不给原文件补字段。新公共消费者仅对来源已核验的 v1 派生一个新的 `ck3-mod-acceptance-legacy-threshold-gui-qualification-v1` 验证投影：必须先调用原冻结 adapter 的实际 `verify_case` 重读保存、strict melt、原生和动作证据，重算全部八项；再核对原 context、Prepared、frozen 文件表、runtime/products、所有已选共享 Pin 和正常退出结果。支持的原 adapter 为35,832字节、SHA `863dfea6abd897a8efe2159f75717108f6b4afd8677e01fa44a6cc48b8c3e2e3`，原 contract 为2,769字节、SHA `3a69f4c485894043b8b91dd900f89eef5f06249b48b0f9d2ebbbc2327705ab51`。未知来源或版本、显式 GUI=false、缺证、未知动作及失败退出不获得兼容资格；core/NPC 的明确延期 false 不受影响。新验证输出保存原结果及生产者 Pin、重算 check IDs 和当前消费者 Pin；不会修改旧场次或声称旧 CLI 曾通过，也不需要重跑47天。
+
+持久回归使用实际 public prepare、Session/Save producer、retained adapter verify、`Selection.verify` 和公共 `main` 退出码。原 v1 adapter 以 SHA 固定的历史测试 fixture 在独立进程中消费，原生与退出边界明确为 authored；这些离线测试不能代替实机业务或退出证据。
+
 ## Root 实机步骤
 
 1. 合并独立 registry 对象，跑实际公共 Selection 冷导入；将新业务源码闭包纳入候选冻结，保持正式 staging 与 source pins 一致。无需新 DLL 或修改共享压力查询。
