@@ -27,6 +27,7 @@ if REPO is None:
         raise ImportError('External candidate needs explicit --repo; repository import is portable')
 sys.path.insert(0, str(REPO / 'tools'))
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(REPO / 'ck3_autonomous_player/src'))
 import ck3_mod_acceptance_cases
 ck3_mod_acceptance_cases.__path__.insert(0, str(HERE / 'ck3_mod_acceptance_cases'))
 from ck3_mod_acceptance_cases import lyd_vanilla_feedback_adapter as case
@@ -154,7 +155,7 @@ class FeedbackContractTests(unittest.TestCase):
 
     def test_real_host_invoke_explicit_revision_route_does_not_refresh(self):
         # Execute the actual repository host method with inert call/fresh only.
-        # This catches stale explicit revision + fresh_revision=true without SDK.
+        # This catches stale explicit revision + fresh_revision=true without native I/O.
         path = REPO / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
         tree = ast.parse(path.read_text(encoding='utf-8-sig'))
         cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'PlanClient')
