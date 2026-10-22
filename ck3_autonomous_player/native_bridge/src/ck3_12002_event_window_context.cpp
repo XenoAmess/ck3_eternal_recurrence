@@ -252,6 +252,8 @@ struct NativeStringView32 {
 struct EventScopeInventoryV1 {
   game::EventScopeV1 root_scope;
   std::vector<game::EventSavedScopeV1> saved_scopes;
+  // Keep the same copied token even when its object identity is unavailable.
+  std::vector<std::array<std::byte, 16>> saved_scope_tokens;
 
   friend bool operator==(const EventScopeInventoryV1 &,
                          const EventScopeInventoryV1 &) = default;
@@ -288,41 +290,36 @@ bool ReadGenericValueTypeKey(const EventWindowBindings &bindings,
          ReadNativeString(native_name, type_key, true, true);
 }
 
-bool ResolveCharacterScopeIdentity(const EventWindowBindings &bindings,
-                                   const void *token,
-                                   std::int32_t &character_id) noexcept {
+enum class CharacterScopeIdentityResolutionV1 {
+  available, identity_unavailable, invalid_layout,
+};
+
+CharacterScopeIdentityResolutionV1 ResolveCharacterScopeIdentity(
+    const EventWindowBindings &bindings, const void *token,
+    std::int32_t &character_id) noexcept {
+  using Result = CharacterScopeIdentityResolutionV1;
   character_id = -1;
-  if (bindings.events.core.character_storage_slot == nullptr || token == nullptr) {
-    return false;
-  }
-  const auto raw_payload = LoadAt<std::uint64_t>(
-      token, kEventScopeTokenPayloadOffset);
+  if (bindings.events.core.character_storage_slot == nullptr || token == nullptr)
+    return Result::invalid_layout;
+  const auto raw_payload = LoadAt<std::uint64_t>(token, kEventScopeTokenPayloadOffset);
   const auto raw_character_id = static_cast<std::uint32_t>(raw_payload);
-  character_id = static_cast<std::int32_t>(raw_character_id);
-  if (raw_payload != static_cast<std::uint64_t>(raw_character_id) ||
-      character_id <= 0) {
-    return false;
-  }
+  if (raw_payload != static_cast<std::uint64_t>(raw_character_id))
+    return Result::invalid_layout;
   void *const storage = *bindings.events.core.character_storage_slot;
-  if (storage == nullptr) {
-    return false;
-  }
-  void *const slots =
-      LoadAt<void *>(storage, kComponentStorageSlotsOffset);
-  const auto capacity = LoadAt<std::int32_t>(
-      storage, kComponentStorageCapacityOffset);
+  if (storage == nullptr) return Result::invalid_layout;
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity = LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  if (slots == nullptr || capacity <= 0 || capacity > kMaximumComponentSlots)
+    return Result::invalid_layout;
+  character_id = static_cast<std::int32_t>(raw_character_id);
   const auto index = raw_character_id & 0x00FFFFFFU;
-  if (slots == nullptr || capacity <= 0 ||
-      capacity > kMaximumComponentSlots ||
-      index >= static_cast<std::uint32_t>(capacity)) {
-    return false;
-  }
-  const auto slot_offset =
-      static_cast<std::size_t>(index) * kComponentStorageSlotStride +
-      kComponentStorageSlotObjectOffset;
-  void *const character = LoadAt<void *>(slots, slot_offset);
-  return character != nullptr &&
-         LoadAt<std::int32_t>(character, kCharacterIdOffset) == character_id;
+  if (character_id <= 0 || index >= static_cast<std::uint32_t>(capacity))
+    return Result::identity_unavailable;
+  const auto offset = static_cast<std::size_t>(index) * kComponentStorageSlotStride +
+                      kComponentStorageSlotObjectOffset;
+  void *const character = LoadAt<void *>(slots, offset);
+  return character != nullptr && LoadAt<std::int32_t>(character, kCharacterIdOffset) == character_id
+             ? Result::available : Result::identity_unavailable;
 }
 
 bool ResolveLandedTitleScopeIdentity(const EventWindowBindings &bindings,
@@ -352,7 +349,8 @@ bool ResolveLandedTitleScopeIdentity(const EventWindowBindings &bindings,
 
 bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
                           const void *token, game::EventScopeV1 &output,
-                          bool named_saved_scope = false) {
+                          bool named_saved_scope = false,
+                          std::array<std::byte, 16> *observed_token = nullptr) {
   output = {};
   if (token == nullptr) {
     return false;
@@ -361,6 +359,7 @@ bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
   // registry validation and interpretation; the outer read still compares two
   // complete observations, including numeric_value.raw_token.
   const auto copied_token = LoadAt<std::array<std::byte, 16>>(token, 0);
+  if (observed_token != nullptr) *observed_token = copied_token;
   token = copied_token.data();
   output.raw_type_index = LoadAt<std::uint16_t>(
       token, kEventScopeTokenTypeIndexOffset);
@@ -400,8 +399,16 @@ bool ReadEventScopeToken(const EventWindowBindings &bindings, void *registry,
       return true;
     }
     std::int32_t character_id = -1;
-    if (!ResolveCharacterScopeIdentity(bindings, token, character_id)) {
-      return false;
+    const auto resolution = ResolveCharacterScopeIdentity(bindings, token, character_id);
+    if (resolution != CharacterScopeIdentityResolutionV1::available) {
+      // Required roots and malformed storage/tokens remain rejected. A named
+      // scope may retain its registered type without inventing a CharacterID.
+      if (!named_saved_scope ||
+          resolution != CharacterScopeIdentityResolutionV1::identity_unavailable ||
+          LoadAt<std::uint64_t>(token, kEventScopeTokenPayloadOffset) ==
+              std::numeric_limits<std::uint32_t>::max()) return false;
+      output.typed_identity.unavailable_reason = "character_scope_identity_unavailable";
+      return true;
     }
     output.typed_identity.available = true;
     output.typed_identity.character_id = character_id;
@@ -527,6 +534,7 @@ bool ReadEventScopeInventory(const EventWindowBindings &bindings,
   }
   try {
     output.saved_scopes.reserve(static_cast<std::size_t>(count));
+    output.saved_scope_tokens.reserve(static_cast<std::size_t>(count));
   } catch (...) {
     failure_reason = "event_saved_scope_vector_invalid";
     return false;
@@ -553,14 +561,16 @@ bool ReadEventScopeInventory(const EventWindowBindings &bindings,
       failure_reason = "event_saved_scope_name_invalid";
       return false;
     }
+    std::array<std::byte, 16> observed_token{};
     if (!ReadEventScopeToken(
             bindings, registry,
-            row + kEventScopeNamedRowTokenOffset, saved.scope, true)) {
+            row + kEventScopeNamedRowTokenOffset, saved.scope, true, &observed_token)) {
       failure_reason = "event_saved_scope_invalid";
       return false;
     }
     try {
       output.saved_scopes.push_back(std::move(saved));
+      output.saved_scope_tokens.push_back(observed_token);
     } catch (...) {
       failure_reason = "event_saved_scope_vector_invalid";
       return false;

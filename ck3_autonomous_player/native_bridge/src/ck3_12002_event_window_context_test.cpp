@@ -49,6 +49,7 @@ enum class EventIdentityDrift {
   instance_id,
   scope_subtype,
   saved_scope_payload,
+  unresolved_saved_scope_payload,
   splash_current_item,
   splash_transition_item,
 };
@@ -192,6 +193,11 @@ void *GetCurrentEvent(void *) {
     case EventIdentityDrift::saved_scope_payload: {
       void *const rows = Load<void *>(g_active_event, 0x18);
       Store<std::uint64_t>(rows, 0x10, kCharacterId);
+      break;
+    }
+    case EventIdentityDrift::unresolved_saved_scope_payload: {
+      void *const rows = Load<void *>(g_active_event, 0x18);
+      Store<std::uint64_t>(rows, 0x10, 44ULL);
       break;
     }
     case EventIdentityDrift::splash_current_item:
@@ -951,8 +957,7 @@ bool TestNullSavedCharacterScope() {
     Store<std::uint64_t>(fixture.active_event.data(), 0x08, null_payload);
     if (read() || output.unavailable_reason != "event_root_scope_invalid") return false;
     Store<std::uint64_t>(fixture.active_event.data(), 0x08, kCharacterId);
-    for (const std::uint64_t invalid : {0ULL, 43ULL, 0x0100002AULL,
-                                      0x1FFFFFFFFULL, 0xFFFFFFFFFFFFFFFFULL}) {
+    for (const std::uint64_t invalid : {0x1FFFFFFFFULL, 0xFFFFFFFFFFFFFFFFULL}) {
       Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, invalid);
       if (read() || output.unavailable_reason != "event_saved_scope_invalid" ||
           !output.options.empty()) return false;
@@ -972,6 +977,68 @@ bool TestNullSavedCharacterScope() {
     g_event_identity_drift = EventIdentityDrift::saved_scope_payload;
     if (read() || output.unavailable_reason != "event_scope_changed") return false;
     g_event_identity_drift = EventIdentityDrift::none;
+  }
+  return true;
+}
+
+bool TestUnavailableSavedCharacterIdentity() {
+  using namespace xar;
+  // Synthetic payload cases exercise missing/unresolved identity, not a claim
+  // that the R0035 save's omitted identity exposed a runtime payload of zero.
+  for (const bool splash : {false, true}) {
+    Fixture fixture;
+    Store<std::int32_t>(fixture.event_definition.data(), 0x1AC, 3);
+    Store<std::int32_t>(fixture.window.data() + 0xB8, 0x1C, 2);
+    fixture.InitializeOption(0, 1, true, false);
+    fixture.InitializeOption(1, 2, false, false);
+    if (splash) fixture.UseSplash();
+    game::EventWindowContextV1 output{};
+    auto read = [&]() {
+      g_current_event_calls = 0;
+      return ck3_12002::ReadEventWindowContextV1(
+          fixture.bindings, kRevision, kEventId, output) ==
+          game::ReadEventWindowContextResultV1::available;
+    };
+    for (const std::uint64_t value : {0ULL, 43ULL, 0x0100002AULL, 0x80000001ULL}) {
+      Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, value);
+      if (!read() || !output.root_scope ||
+          output.root_scope->typed_identity.character_id != kCharacterId ||
+          output.saved_scopes.size() != 2 || output.options.size() != 2 ||
+          output.options[0].native_option_index != 1 || !output.options[0].shown || !output.options[0].enabled ||
+          output.options[1].native_option_index != 2 || !output.options[1].shown || output.options[1].enabled)
+        return false;
+      const auto &saved = output.saved_scopes[0].scope;
+      if (saved.raw_type_index != 4 || saved.type_key != "character" ||
+          saved.typed_identity.available || saved.typed_identity.character_id.has_value() ||
+          saved.typed_identity.unavailable_reason != "character_scope_identity_unavailable") return false;
+      const auto wire = ck3_12002::SerializeEventWindowContextV1(output);
+      if (wire.empty() || wire.find("character_scope_identity_unavailable") == std::string::npos) return false;
+      std::cout << "SAVED_CHARACTER_SCOPE_NATIVE_JSON={\"splash\":"
+                << (splash ? "true" : "false") << ",\"payload\":\"" << value
+                << "\",\"frame\":" << wire << "}\n";
+      auto forged = output;
+      forged.root_scope->typed_identity = saved.typed_identity;
+      if (!ck3_12002::SerializeEventWindowContextV1(forged).empty()) return false;
+      forged = output;
+      forged.saved_scopes[0].scope.typed_identity.character_id = kCharacterId;
+      if (!ck3_12002::SerializeEventWindowContextV1(forged).empty()) return false;
+    }
+    // Both values remain unresolved; comparing only the public reason would
+    // miss this real raw-token change between the two inventory observations.
+    Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, 43ULL);
+    g_event_identity_drift = EventIdentityDrift::unresolved_saved_scope_payload;
+    if (read() || output.unavailable_reason != "event_scope_changed") return false;
+    g_event_identity_drift = EventIdentityDrift::none;
+    for (const std::uint64_t invalid : {0x1FFFFFFFFULL, 0xFFFFFFFFFFFFFFFFULL}) {
+      Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, invalid);
+      if (read() || output.unavailable_reason != "event_saved_scope_invalid") return false;
+    }
+    Store<std::uint64_t>(fixture.saved_scope_rows.data(), 0x10, 43ULL);
+    Store<std::uint64_t>(fixture.active_event.data(), 0x08, 0ULL);
+    if (read() || output.unavailable_reason != "event_root_scope_invalid") return false;
+    Store<std::uint64_t>(fixture.active_event.data(), 0x08, kCharacterId);
+    Store<std::int32_t>(fixture.active_event.data(), 0x24, 3);
+    if (read() || output.unavailable_reason != "event_saved_scope_vector_invalid") return false;
   }
   return true;
 }
@@ -1120,7 +1187,7 @@ int main(int argc, char **argv) {
     std::cout << "CK3 1.20.0.3 activity-insert offline fixture passed\n";
     return 0;
   }
-  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope() || !TestActivityInsert() || !TestNumericSavedScope()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
+  if (!TestMigration() || !TestSplash() || !TestNullSavedCharacterScope() || !TestUnavailableSavedCharacterIdentity() || !TestActivityInsert() || !TestNumericSavedScope()) { std::cerr << "CK3 1.20.0.2/.3 event-window fixture failed\n"; return 1; }
   std::cout << "CK3 1.20.0.2 event-window offline fixture passed\n";
   return 0;
 }

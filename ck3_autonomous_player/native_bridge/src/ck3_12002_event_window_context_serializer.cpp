@@ -184,7 +184,8 @@ void AppendEffectIndicator(std::string &output,
 }
 
 bool ValidScope(const game::EventScopeV1 &scope,
-                bool allow_null_saved_character_scope = false) {
+                bool allow_null_saved_character_scope = false,
+                bool named_saved_scope = false) {
   if (scope.raw_type_index == 0 || scope.type_key.empty() ||
       scope.type_key.size() > kMaximumEventDefinitionKeyBytes ||
       !ValidNumericScope(scope)) {
@@ -218,6 +219,9 @@ bool ValidScope(const game::EventScopeV1 &scope,
     return false;
   }
   if (scope.raw_type_index == kCharacterScopeTypeIndex) {
+    if (named_saved_scope && scope.type_key == kCharacterScopeTypeKey &&
+        !identity.available && !identity.character_id.has_value() &&
+        identity.unavailable_reason == "character_scope_identity_unavailable") return true;
     if (allow_null_saved_character_scope &&
         scope.type_key == kCharacterScopeTypeKey && !identity.available &&
         !identity.character_id.has_value() &&
@@ -289,7 +293,7 @@ bool ValidSavedScopes(const std::vector<game::EventSavedScopeV1> &scopes,
         });
     if (scope.name.empty() ||
         scope.name.size() > kMaximumEventDefinitionKeyBytes || duplicate ||
-        !ValidScope(scope.scope, allow_null_saved_character_scope)) {
+        !ValidScope(scope.scope, allow_null_saved_character_scope, true)) {
       return false;
     }
   }
