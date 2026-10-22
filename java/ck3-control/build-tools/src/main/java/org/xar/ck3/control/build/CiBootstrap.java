@@ -15,9 +15,13 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileStore;
 import java.nio.file.AccessDeniedException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -182,6 +186,7 @@ public final class CiBootstrap {
     @FunctionalInterface interface MavenInstaller { void replace(MavenObservation before) throws IOException, InterruptedException; }
     @FunctionalInterface interface IoGuard { void check() throws IOException; }
     @FunctionalInterface interface AttributeReader { BasicFileAttributes read(Path path) throws IOException; }
+    @FunctionalInterface interface TreeWalker { void walk(Path root, FileVisitor<Path> visitor) throws IOException; }
     private record MavenUpgradePlan(String machineId, String observedAtUtc, String status,
                                     MavenObservation before, String officialArchiveUrl, String officialChecksumUrl,
                                     FilePin archiveRef, List<FilePin> originalFiles, List<FilePin> replacementFiles,
@@ -854,6 +859,11 @@ public final class CiBootstrap {
 
     static void guard(Path root, Map<String, VolumeBudget> volumes, Instant expiry,
                       IoGuard childDeadline, AttributeReader reader) throws IOException {
+        guard(root, volumes, expiry, childDeadline, reader, (part, visitor) -> Files.walkFileTree(part, visitor));
+    }
+
+    static void guard(Path root, Map<String, VolumeBudget> volumes, Instant expiry,
+                      IoGuard childDeadline, AttributeReader reader, TreeWalker walker) throws IOException {
         IoGuard active = () -> {
             if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("bootstrap guard interrupted");
             if (!Instant.now().isBefore(expiry)) throw new IOException("finite hosted capacity authority expired");
@@ -862,19 +872,45 @@ public final class CiBootstrap {
         active.check();
         requireFree(volumes);
         for (String name : List.of("m2", "build", "tools", "scratch", "logs", "artifacts")) {
-            long size = 0;
-            try (var paths = Files.walk(root.resolve(name))) {
-                for (Path path : paths.toList()) {
+            Path part = root.resolve(name);
+            boolean scratch = name.equals("scratch");
+            long limit = PARTS.get(name.equals("logs") ? "metadata_logs" : name);
+            // JUnit can remove a directory during traversal, before an attribute reread.
+            // Continue at that vanished scratch entry, preserving every surviving sibling.
+            walker.walk(part, new SimpleFileVisitor<>() {
+                private long size;
+                @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
+                    return inspect(directory) ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
+                }
+                @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                    inspect(file); return FileVisitResult.CONTINUE;
+                }
+                @Override public FileVisitResult visitFileFailed(Path file, IOException error) throws IOException {
+                    return failed(file, error);
+                }
+                @Override public FileVisitResult postVisitDirectory(Path directory, IOException error) throws IOException {
+                    active.check();
+                    return error == null ? FileVisitResult.CONTINUE : failed(directory, error);
+                }
+                private FileVisitResult failed(Path path, IOException error) throws IOException {
+                    active.check();
+                    if (scratch && !path.equals(part) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                    throw error;
+                }
+                private boolean inspect(Path path) throws IOException {
                     active.check();
                     try {
-                        BasicFileAttributes attributes = guardedAttributes(path, name.equals("scratch"), reader, active);
+                        BasicFileAttributes attributes = guardedAttributes(path, scratch, reader, active);
                         if (attributes.isSymbolicLink()) throw new IOException("linked task output refused");
+                        if (path.equals(part) && !attributes.isDirectory()) throw new IOException("plain task part directory required");
                         if (attributes.isRegularFile()) size = Math.addExact(size, attributes.size());
+                        if (size > limit) throw new IOException("task part budget exceeded: " + name);
+                        return true;
+                    } catch (NoSuchFileException removedTemporary) {
+                        failed(path, removedTemporary); return false;
                     }
-                    catch (java.nio.file.NoSuchFileException removedTemporary) { }
                 }
-            }
-            if (size > PARTS.get(name.equals("logs") ? "metadata_logs" : name)) throw new IOException("task part budget exceeded: " + name);
+            });
         }
     }
 

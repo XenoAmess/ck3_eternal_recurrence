@@ -16,8 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.zip.ZipEntry;
@@ -65,6 +67,92 @@ final class CiBootstrapTest {
         });
         assertEquals(2, reads.get());
         assertTrue(Files.notExists(file));
+    }
+
+    @Test
+    void vanishedScratchDirectoryDuringTraversalStillCountsSurvivingSiblings(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "scratch");
+        Path vanished = Files.createDirectory(sibling.getParent().resolve("junit-removed"));
+        AtomicInteger siblingReads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(sibling)) siblingReads.incrementAndGet();
+            return attributes(path);
+        }, removeBeforeTraversal(vanished));
+        assertTrue(Files.notExists(vanished));
+        assertEquals(1, siblingReads.get());
+        assertEquals("actual file", Files.readString(sibling));
+
+        Files.createDirectory(vanished);
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    // Exercise the existing quota without allocating a half-GiB fixture.
+                    return path.equals(sibling) ? new SizedAttributes(actual, (512L << 20) + 1) : actual;
+                }, removeBeforeTraversal(vanished)));
+        assertEquals("task part budget exceeded: scratch", failure.getMessage());
+    }
+
+    @Test
+    void vanishedPartRootAndNonScratchDescendantsRemainFatal(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "build");
+        Path vanished = Files.createDirectory(file.getParent().resolve("removed-output"));
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(vanished)));
+        Files.delete(temporary.resolve("scratch"));
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes));
+    }
+
+    @Test
+    void traversalFailureCannotHidePermissionErrorsOrOriginalDeadline(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "scratch");
+        for (IOException error : List.of(new AccessDeniedException(file.toString()), new IOException("directory stream failed"))) {
+            IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                    Instant.now().plusSeconds(10), () -> {}, CiBootstrapTest::attributes, (part, visitor) -> {
+                        if (part.equals(file.getParent())) visitor.visitFileFailed(file, error);
+                        else Files.walkFileTree(part, visitor);
+                    }));
+            assertEquals(error, failure);
+        }
+        AtomicInteger traversingScratch = new AtomicInteger();
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {
+                    if (traversingScratch.get() > 0) throw new IOException("original child deadline");
+                }, CiBootstrapTest::attributes, (part, visitor) -> {
+                    if (part.equals(file.getParent())) {
+                        traversingScratch.incrementAndGet();
+                        visitor.visitFileFailed(file, new NoSuchFileException(file.toString()));
+                    } else Files.walkFileTree(part, visitor);
+                }));
+        assertEquals("original child deadline", failure.getMessage());
+    }
+
+    private static CiBootstrap.TreeWalker removeBeforeTraversal(Path vanished) {
+        return (part, visitor) -> {
+            if (!part.equals(vanished.getParent())) {
+                Files.walkFileTree(part, visitor); return;
+            }
+            // Fix the scheduler order around actual JDK traversal: the queued JUnit
+            // directory disappears, then the JDK emits the real visitFileFailed.
+            visitor.preVisitDirectory(part, attributes(part));
+            Files.delete(vanished);
+            Files.walkFileTree(vanished, visitor);
+            try (var siblings = Files.newDirectoryStream(part)) {
+                for (Path sibling : siblings) Files.walkFileTree(sibling, visitor);
+            }
+            visitor.postVisitDirectory(part, null);
+        };
+    }
+
+    private record SizedAttributes(BasicFileAttributes actual, long size) implements BasicFileAttributes {
+        @Override public FileTime lastModifiedTime() { return actual.lastModifiedTime(); }
+        @Override public FileTime lastAccessTime() { return actual.lastAccessTime(); }
+        @Override public FileTime creationTime() { return actual.creationTime(); }
+        @Override public boolean isRegularFile() { return actual.isRegularFile(); }
+        @Override public boolean isDirectory() { return actual.isDirectory(); }
+        @Override public boolean isSymbolicLink() { return actual.isSymbolicLink(); }
+        @Override public boolean isOther() { return actual.isOther(); }
+        @Override public Object fileKey() { return actual.fileKey(); }
     }
 
     @Test
