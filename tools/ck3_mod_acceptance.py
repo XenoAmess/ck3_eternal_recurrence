@@ -99,6 +99,7 @@ CASE_HOLY_SITE_CREATION_UI_MCP_TOOLS = frozenset({
     "ck3_select_holy_site_creation_barony_v1", "ck3_set_holy_site_creation_artifact_selection_v1",
 })
 CASE_READ_ONLY_MCP_TOOLS = frozenset({
+    "ck3_query_campaign_root_context_v1",
     "ck3_query_player_rite_governance_v1",
     "ck3_query_player_pilgrimage_activities_v1",
     "ck3_query_faith_power_ui_v1",

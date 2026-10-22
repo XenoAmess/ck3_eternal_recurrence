@@ -1,5 +1,7 @@
 # 二期V6用户反馈：实机、游戏素材与朝圣者收益漏项
 
+2026-10-23生产更新：45张卡图迁移及3张新机制图已经完成，新增取材仍在继续，完整V7尚未换片。下文1–6节保留10月22日诊断当时的事实；后续进度及勘误见第7节。
+
 用户已经看过黄色样片并提出四项具体问题，随后强调：卡片可以保留，但必须嵌入相关游戏图标和素材图片。当前V6进入内容修订状态，不能再以“用户审阅仍待”概括。这里完成逐段诊断、原版规则复核与三张真实素材卡面；完整视频尚未换片，也没有新增实拍。
 
 `machine_id: 4-8e1c2f1861`；2026-10-22本轮实际读回。来源及准确UTC见[本轮证据](../../../../docs/ck3-native-ai/evidence/faith-engine-e02-v6-feedback-20261022.json)。本机EXE重新读回SHA为`98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。以下静态规则仅限1.20.0.4与机读证据绑定的现存脚本；没有启动游戏，没有证明整棵安装脚本是Steam校验后的净树，也不把源码路径图解当成本轮实机结果。
@@ -102,3 +104,29 @@
 存储沿通用策略1.0.0。本轮是有界静态预览（每个attempt PNG上限8MiB，实际a01约0.85MB、a02约1.18MB），不申请或复用旧的重型视频grant。旧视频及必要输入保持引用，未执行回收。预览按48小时复核，记录按180天复核；具体UTC与实测容量在本轮证据。完整补拍／编码前仍须重新执行共享容量、预留与现场准入。
 
 下一版的方向已经明确：卡片继续负责机制比较，但正式对象必须有原版素材；实机优先补“在哪里看、怎样选择、实际发生什么”；内容优先补“双特质的生命周期”和“朝圣者条件收益”，再做完整新版。
+
+## 7. 2026-10-23：实际图卡交付、名称勘误与取材中断
+
+`machine_id: 4-8e1c2f1861`。本次取材源为`0c552d4cbcf8c2dc0633e9772f75ad7a6ad49a38`，已保存在`archive/faith-engine-e02-v7-r0035-20261023`；关闭现场后线性同步master，重放后的来源为`252f18aeb6e94d6ae87d4558d2d88b363cf6cfbd`。后续修复及其测试不反写旧场次来源。
+
+图卡包已完成45张嵌原版DDS的替换候选、3张新的机制补充图，另10张旧卡仅引用；[闭场索引](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/derived/material_card_candidates/dds-only-a01/CLOSURE.actual.json)绑定当前55卡映射与独立3卡映射。四个完整操作文件类型检查、所选PNG解码、图文边界、字幕留白和JSON往返通过；Root实际看过18个文件、14张所选逻辑卡，这是有限画面审阅，不等于48张全部人工审阅。深色剪影另加浅米底片，素材原色与比例保留；三张旧预览原件不覆盖。
+
+三张新增图为[共存生命周期](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/derived/material_card_candidates/dds-only-a01/SUP-V7-HAJJ-LIFECYCLE.v7-a01.png)、[条件属性](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/derived/material_card_candidates/dds-only-a01/SUP-V7-PILGRIM-ATTRIBUTES.v7-a01.png)和[诺斯替获得触发链](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/derived/material_card_candidates/dds-only-a01/SUP-V7-GNOSTIC-CHAIN.v7-a01.png)。规则图示不充作同一人物实测。
+
+上述旧预览及第3、5节的`lifestyle_scholar`中文名应更正为**宗教学者**；“经文研习者”不是本版该类型的正确名称。`初学者`是本地化分支名称；源码以`has_trait_xp value=20`检查分支，但本轮没有确证其缺省比较运算符，不能把字面值扩写为仅在恰好20经验时显示。新版口播及图卡只使用已核实的类型名，当前等级名称仍以实际UI为准。
+
+冷却及目的地勘误也已补齐：一年`completed_hajj_memory`检查只在朝觐类型的`is_valid`内，五年检查匹配同一圣地；通用活动冷却与当前CanPlan不能据此推定为零。朝觐记忆在目的地阶段完成后的`on_complete`建立，返乡事件另行发生。实际`b_baghdad`为4828巴格达，6223为麦加，6033是图尔，不能将6033误标为巴格达。来源及行号见[补记](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/hajj-cooldown-source-followup/COOLDOWN-AND-ORDER.json)。
+
+四块新正文涉及7条原cue（N06、N07、N25、N29、N30、N31、N32），其余26条声音可复用，须保留N02/N15已经更新的声轨。新稿含34组尚未定时的中英单元；[正文候选a02](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/editorial-v7-preparation/VOICE-SUBTITLE-CANDIDATES.a02.json)不是已配音或已测时字幕，撤回其中编辑注的`exactly20`推断。新音频、实际边界及新版时钟尚待生产。
+
+R0033有已检查的首次朝觐类型受限原片；R0034的25秒片主要为暂停地图与钱包，不能充作仪式或自然旅途动作。R0035从原母档仅提交一次Start，最终报价182金币，钱包同日1398→1216；这只证明该次出发扣款，仍不代表完整旅程成本。随后155次有界日请求实际推进153天，未抵达、未授予朝觐者、未返乡，也未取得双特质新实拍。
+
+中断发生于实例12、`pilgrimage.2002`：当前事件原图实际显示两项，而一般快照仍给三个定义索引；不能据一般快照猜第一显示项。原生作用域读取在遍历GUI之前整帧拒绝。一次诊断保存已由前后原生帧核实同PID5920、generation1、人物15893、日期51398592、事件12；[流式解码片段](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/native-scope-diagnostic-a01/player-event-12.fragment.txt)证实`dummy_gender`为字符作用域且存档中缺少`identity`字段，不能追认为ID0。该诊断不授予半程续档或账本恢复资格；原`driver_state_replace`的`unconfirmed/save_binding_mismatch`保留。实例12没有提交选项。
+
+R0035已通过9条原生映射GUI退出步骤、保留句柄OS退出0与清理；公共run和allocator原调用均实际退出0，keeper停止后CAS13360释放屏幕，17:37:02Z恢复1024×768。17:43:36Z后台重新确认Steam离线，全程未为此抢焦点或截图。[完整闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/FILMING-R0035-CLOSURE.actual.json)仍将业务记录为`PARTIAL_NATIVE_CONTRACT_GAP`，没有新录像take。这不是朝觐成功。
+
+下一轮先修复共享reader/serializer对可用类型但不可解析的已保存角色身份的处理，保留严格root与原有结构守卫；再复用现有会在事件处停下的自然推进能力，继续拍抵达受戒、仪式、真正授予、返乡和普通朝圣共存链。当前V6黄色成片仍是旧版；本段进度不能解释为完整V7已交付。
+
+2026-10-22T18:07Z的软件增量：共享制作器已提交`08ef75ec7`，完整制作CI步骤115项、0跳过通过，六模块严格类型检查和production/runtime两文件普通检查通过。自然推进及R0035四例来源查询已提交`a4aa5df18`，公共case完整步骤及native_day共162项、0跳过通过；旧journey测试范围46项类型债仍在，新增0，不报告整模块全绿。原生reader修复及其真实编译、事件实例读回仍待完成。
+
+复验还发现R0034来源JSON被Git从CRLF转换为LF，65333字节的仓库版本与67148字节原件内容相同，但破坏`ad92aac1…`的精确来源绑定。本次从保留原件恢复字节，为R0034及两份R0035来源文件设置精确路径的`-text`，并实际验证Git clean filter不会再改字节；原SHA不改写。公共case只读注册另补已存在的campaign-root查询，Selection到真实MCP广告回归通过。两完整公共模块的额外普通类型检查仍为原17项错误，新增0，见[原债对照](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261022-a01/source-checks/root-upstream-a02/TYPE-DELTA.actual.json)。
