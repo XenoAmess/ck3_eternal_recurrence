@@ -293,6 +293,69 @@ class CoreGenerationTests(unittest.TestCase):
         self.assertEqual(len(extensions), 1)
         self.assertEqual(script.scalar(extensions[0], "add").value, "90")
 
+    def test_suppression_timer_preview_reads_missing_sequence_lazily(self) -> None:
+        values = self.values
+        safe_value = values.named("xalw_suppression_timer_sequence_value")
+        self.assertEqual(values.scalar(safe_value, "value").value, "0")
+        branches = values.children(safe_value)
+        self.assertEqual(tuple(branch.key for branch in branches), ("if",))
+        guarded = branches[0]
+        condition = values.child(guarded, "limit")
+        self.assertEqual(tuple((item.key, item.value) for item in values.scalars(condition)),
+                         (("has_variable", "xalw_suppression_timer_sequence"),))
+        saved_read = values.scalar(guarded, "add")
+        self.assertEqual(saved_read.value, "var:xalw_suppression_timer_sequence")
+
+        effect = self.effects.named("xalw_begin_suppression_timer_effect")
+        initialization = self.effects.variable_actions(effect, "set_variable", "xalw_suppression_timer_sequence")
+        increment = self.effects.variable_actions(effect, "change_variable", "xalw_suppression_timer_sequence")
+        self.assertEqual((len(initialization), len(increment)), (1, 1))
+        init_parent = max(self.effects.ancestors(initialization[0]), key=lambda item: item.opening)
+        absent = self.effects.child(self.effects.child(init_parent, "limit"), "NOT")
+        self.assertEqual(self.effects.scalar(absent, "has_variable").value, "xalw_suppression_timer_sequence")
+        self.assertEqual(self.effects.scalar(initialization[0], "value").value, "0")
+        self.assertEqual(self.effects.scalar(increment[0], "add").value, "1")
+        save = next(item for item in self.effects.descendants(effect, "save_scope_value_as")
+                    if self.effects.scalar(item, "name").value == "xalw_suppression_timer_sequence")
+        self.assertEqual(self.effects.scalar(save, "value").value, safe_value.key)
+        self.assertLess(initialization[0].start, increment[0].start)
+        self.assertLess(increment[0].start, save.start)
+        scheduled = self.effects.descendants(effect, "trigger_event")
+        self.assertEqual(len(scheduled), 1)
+        self.assertLess(save.start, scheduled[0].start)
+        self.assertEqual(self.effects.scalar(scheduled[0], "id").value, "xalw.4")
+        self.assertEqual(self.effects.scalar(scheduled[0], "days").value, "90")
+        timer = self.events.named("xalw.4")
+        recheck = self.events.child(self.events.child(self.events.child(timer, "immediate"), "if"), "trigger_event")
+        self.assertEqual(self.events.scalar(recheck, "id").value, "xalw.4")
+        self.assertEqual(self.events.scalar(recheck, "days").value, "xalw_suppression_remaining_days_value")
+
+        def preview_from_actual_tree(bindings: dict[str, int]) -> int:
+            # Only evaluate this checked value/has_variable/add tree. This is
+            # an authored tooltip no-write path, not a CK3 effect interpreter.
+            total = int(values.scalar(safe_value, "value").value)
+            presence = values.scalar(condition, "has_variable").value
+            if presence in bindings:
+                total += bindings[saved_read.value.removeprefix("var:")]
+            return total
+
+        cases: tuple[tuple[str, dict[str, int], int], ...] = (
+            ("new item missing sequence", {}, 0),
+            ("legacy item missing sequence", {"xalw_level": 11}, 0),
+            ("existing zero sequence", {"xalw_suppression_timer_sequence": 0}, 0),
+            ("existing nonzero sequence", {"xalw_suppression_timer_sequence": 7}, 7),
+        )
+        for label, before, expected in cases:
+            with self.subTest(case=label):
+                untouched = dict(before)
+                self.assertEqual(preview_from_actual_tree(before), expected)
+                self.assertEqual(before, untouched)
+                executed = dict(before)
+                if self.effects.scalar(absent, "has_variable").value not in executed:
+                    executed["xalw_suppression_timer_sequence"] = int(self.effects.scalar(initialization[0], "value").value)
+                executed["xalw_suppression_timer_sequence"] += int(self.effects.scalar(increment[0], "add").value)
+                self.assertEqual(preview_from_actual_tree(executed), expected + 1)
+
     def test_native_hunger_uses_artifact_modifiers_without_character_residue(self) -> None:
         script = Script(core.render_core_modifiers())
         for points in range(1, 6):

@@ -54,6 +54,11 @@ xalw_suppression_remaining_days_value = {
 	if = { limit = { xalw_is_growth_suppressed_trigger = yes } add = var:xalw_growth_suppressed_until subtract = current_date }
 }
 
+xalw_suppression_timer_sequence_value = {
+	value = 0
+	if = { limit = { has_variable = xalw_suppression_timer_sequence } add = var:xalw_suppression_timer_sequence }
+}
+
 xalw_renewal_window_ends_value = {
 	value = current_date
 	add = 30

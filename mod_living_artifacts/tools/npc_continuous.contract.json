@@ -1,0 +1,41 @@
+{
+  "schema": "living-artifacts-npc-continuous-case-v1",
+  "schema_version": 1,
+  "product": "living-artifacts",
+  "case_id": "npc_continuous",
+  "acceptance_scope": "fixture-live-npc-saved-state-first-stage",
+  "maximum_natural_days": 47,
+  "max_public_calls": 320,
+  "day_timeout_seconds": 60,
+  "maximum_checkpoints": 4,
+  "fixture_spec": {"schema_version": 1, "queue_count": 0},
+  "observation_days": [0, 1, 16, 47],
+  "observation_dates": ["1066.9.15", "1066.9.16", "1066.10.1", "1066.11.1"],
+  "post_start": {"government_key": "feudal_government", "primary_title_tier_key": "duchy", "independent": true},
+  "required_startup": ["XALW_NPC_INITIAL_INPUTS_CREATED_V1"],
+  "forbidden_startup": ["XALW_NPC_INPUT_MISSING_LANDED_V1", "XALW_NPC_INPUT_MISSING_BARON_V1", "XALW_NPC_INPUT_MISSING_COURTIER_V1"],
+  "required_checks": [
+    "NPC-BIND-landed", "NPC-BIND-baron", "NPC-BIND-courtier", "NPC-BIND-fragile",
+    "NPC-EQUIP-landed", "NPC-EQUIP-baron", "NPC-EQUIP-courtier",
+    "NPC-GROW-landed", "NPC-GROW-baron", "NPC-GROW-courtier",
+    "NPC-TRAIN-landed", "NPC-TRAIN-baron", "NPC-TRAIN-courtier",
+    "NPC-FEED-landed", "NPC-FEED-baron", "NPC-FEED-courtier"
+  ],
+  "deferred_checks": ["natural-random-awakening", "fragile-health-secret-cost-behavior", "queue-51-tail", "other-personal-slots-native-calibration", "full-product-release"],
+  "actor_binding_authority": "original-source-bound-frontend-start-and-two-native-root-observations",
+  "observer_authority": "strict-checkpoint-files-and-source-calibrated-historical-npc-native-inventory",
+  "action_authority": "natural-progression-only-and-exclusive-production-marker-writers",
+  "whole_product_acceptance_credit": false,
+  "startup_source_guard": {
+    "bookmark_key": "bm_1066_rags_to_riches",
+    "character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "history_id": "1128",
+    "start_date": "1066.9.15",
+    "post_start_authority": "Source-derived expectation only; bind the runtime actor from this scene's original frontend Start and matching actual native campaign-root observations.",
+    "sources": [
+      {"path": "common/bookmarks/bookmarks/00_bookmarks.txt", "sha256": "fee9519196b964bb3eae364ef459f7bc92edff0a435be14b81a2377ab1db1472", "lines": "1811-1822", "supports": "Robert history1128 and feudal duchy"},
+      {"path": "history/characters/norman.txt", "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b", "lines": "467-488", "supports": "Living Robert at 1066 start"},
+      {"path": "history/titles/k_sicily.txt", "sha256": "62aba587c746c3b85f6e9b4346c89dd3d77d9a110d1989e335e669e7b0995b36", "lines": "2177-2239", "supports": "Independent d_apulia holder1128 at 1066"}
+    ]
+  }
+}

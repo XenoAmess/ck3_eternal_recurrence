@@ -84,6 +84,13 @@ class Contract:
     deferred_checks: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class CheckpointReadback:
+    response: object
+    frame: Frame
+    source_save: Pin
+
+
 def validate_contract(context: object) -> Contract:
     require(field(context, "product") == "living-artifacts" and field(context, "case") == "core_continuous",
             "Adapter only accepts the selected canonical product/core case")
@@ -342,7 +349,8 @@ class Session:
         self.bind(field(row, "after_snapshot"))
         return mapping(field(row, "result"), "actual native tool result")
 
-    def observer(self, target: str | None, *, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> tuple[CheckpointSample, Pin]:
+    def checkpoint_readback(self, target: str | None) -> CheckpointReadback:
+        """One real Save/Root transport shared by player and NPC consumers."""
         if self.checkpoint_observations >= CORE_CHECKPOINT_LIMIT:
             raise CaseBlocked("This core case permits only seven budgeted saved-state observations")
         before = self.current()
@@ -367,8 +375,13 @@ class Session:
             "original_native_frame_record": self.last_native_record, "observation_number": self.checkpoint_observations,
             "storage_policy": "docs/storage-retention-policy.json", "business_pass": False}
         response = self.client.root_checkpoint(f"checkpoint-readback-{self.checkpoint_observations:02d}", object_value(request), reserve=180)
-        inputs, references = verify_readback(response, run_id=self.run_id, machine_id=self.machine_id,
-            reviewer=self.client.operator_reviewer, frame=before, source_save=source,
+        return CheckpointReadback(response, before, source)
+
+    def observer(self, target: str | None, *, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> tuple[CheckpointSample, Pin]:
+        readback = self.checkpoint_readback(target)
+        before = readback.frame
+        inputs, references = verify_readback(readback.response, run_id=self.run_id, machine_id=self.machine_id,
+            reviewer=self.client.operator_reviewer, frame=before, source_save=readback.source_save,
             expected_material_rarities=expected_material_rarities)
         require(target is None or inputs.target_id == target, "Actual saved target reference changed")
         native = self.observe_item(inputs.target_id)
@@ -388,7 +401,7 @@ class Session:
         reference = write_once(self.client.output / f"observer-checkpoint-{self.checkpoint_observations:02d}.json", {
             "schema_version": 2, "run_id": self.run_id, "machine_id": self.machine_id, "observed_at_utc": utc_now(),
             "native_date_raw": before.date_raw, "sample": selected.to_json(), "saved_inputs": inputs.to_json(),
-            "readback_response": json_value(response), "original_native_frame_record": json_value(self.last_native_record),
+            "readback_response": json_value(readback.response), "original_native_frame_record": json_value(self.last_native_record),
             "expected_material_rarities": list(expected_material_rarities),
             "current_native_artifact_variable_query": False})
         self.refs.append(reference)

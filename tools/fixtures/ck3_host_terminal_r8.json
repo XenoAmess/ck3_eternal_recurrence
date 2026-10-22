@@ -1,0 +1,159 @@
+{
+  "schema": "ck3-host-r8-terminal-failure-projection-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T12:29:09.978139+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+  "original_sources": [
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\native-report.json",
+      "bytes": 18389872,
+      "sha256": "be757fd87f7f709b201a2211a11c5614b2dd7eddc39a6c16dbcf84d4ade38044"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\host-original-process-exit.json",
+      "bytes": 253,
+      "sha256": "2cbae4673834750fb62e4d0def8e474c6c0fa688631d23be253d17c7b0d2de7b"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\case-output\\normal-close-result.json",
+      "bytes": 9845,
+      "sha256": "616b47af802c5e5f20c5898b6a040185b21b9f2c3278385c5e5af3ba2d8c039c"
+    }
+  ],
+  "projection_scope": "Actual original failed rows and terminal cleanup only; other successful rows/snapshots omitted. It is not a full business report.",
+  "report": {
+    "fixture_only": false,
+    "error": null,
+    "status": "RED",
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+    "cleanup_ok": true,
+    "managed_session_done": true,
+    "managed_session_thread_finished": true,
+    "hold_finished_by_control_plan": true,
+    "post_exit_finish_hold": {
+      "step_id": "acceptance-normal-exit-finish-hold",
+      "proof": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 11500,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+        "started_at": "2026-10-22T10:46:33.635614+00:00",
+        "finished_at": "2026-10-22T12:10:19.797010+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "08e6e444602f44958a204a799ed88ced",
+          "ck3_pid": 11500,
+          "ck3_creation_date": "20261022104634.732407+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 12104,
+          "watchdog_creation_date": "20261022104633.993521+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\ck3.json": true,
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\watchdog-08e6e444602f44958a204a799ed88ced.ready.json": true,
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\ck3.watchdog_error": true,
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      }
+    },
+    "final_observation_error": "RuntimeError: MCP tool ck3_take_snapshot returned an error: Error executing tool ck3_take_snapshot: native DLL is not connected to \\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+    "finished_at": "2026-10-22T12:10:40.250950+00:00",
+    "session": {
+      "error": null,
+      "report": {
+        "kind": "ck3_native_headless_session",
+        "mode": "native-headless",
+        "format_version": 1,
+        "ok": true,
+        "error": null,
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "pid": 11500,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+        "started_at": "2026-10-22T10:46:33.635614+00:00",
+        "finished_at": "2026-10-22T12:10:19.797010+00:00",
+        "shutdown": {
+          "nonce": "08e6e444602f44958a204a799ed88ced",
+          "ck3_pid": 11500,
+          "ck3_creation_date": "20261022104634.732407+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 12104,
+          "watchdog_creation_date": "20261022104633.993521+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\ck3.json": true,
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\watchdog-08e6e444602f44958a204a799ed88ced.ready.json": true,
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\ck3.watchdog_error": true,
+            "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-core-a10\\state\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      }
+    },
+    "steps": [
+      {
+        "id": "xalw-core-0005",
+        "plan": {
+          "id": "xalw-core-0005",
+          "tool": "ck3_open_player_inventory_window_v1",
+          "args": {},
+          "fresh_revision": true,
+          "continue_on_error": true,
+          "timeout": 30
+        },
+        "started_at": "2026-10-22T10:56:19.020242+00:00",
+        "ok": false,
+        "error": "RuntimeError: MCP tool ck3_open_player_inventory_window_v1 returned an error: Error executing tool ck3_open_player_inventory_window_v1: Inventory opening requires the existing actual managed-source inventory",
+        "finished_at": "2026-10-22T10:56:19.856028+00:00"
+      },
+      {
+        "id": "acceptance-normal-exit-finish-hold",
+        "plan": {
+          "id": "acceptance-normal-exit-finish-hold",
+          "kind": "finish_hold",
+          "expect": {
+            "hold_finished": true
+          }
+        },
+        "started_at": "2026-10-22T12:10:38.302190+00:00",
+        "ok": true,
+        "finished_at": "2026-10-22T12:10:38.766955+00:00"
+      }
+    ]
+  },
+  "business_pass": false,
+  "original_host_failure_preserved": true
+}

@@ -115,8 +115,17 @@ def checked_pin(value: object, label: str, *, allow_empty: bool = False) -> Pin:
     return actual
 
 
-def verify_readback(value: object, *, run_id: str, machine_id: str, reviewer: str, frame: Frame,
-                    source_save: Pin, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> tuple[SavedInputs, tuple[Pin, ...]]:
+@dataclass(frozen=True)
+class VerifiedCheckpoint:
+    """Verified file/provenance boundary; no product-state or native NPC credit."""
+    source_save: Pin
+    melted_save: Pin
+    evidence: tuple[Pin, ...]
+    log_streams: tuple[Pin, Pin]
+
+
+def verify_checkpoint(value: object, *, run_id: str, machine_id: str, reviewer: str,
+                      frame: Frame, source_save: Pin) -> VerifiedCheckpoint:
     row = mapping(value, "Root checkpoint readback")
     status = field(row, "status")
     expected = BlockedReadbackResponse.__required_keys__ if status == "blocked" else CompletedReadbackResponse.__required_keys__
@@ -167,8 +176,14 @@ def verify_readback(value: object, *, run_id: str, machine_id: str, reviewer: st
     require(set(identity) == set(FileIdentity.__required_keys__) and integer(identity["size_bytes"], "original source bytes", 1) == raw["bytes"], "Original source identity is incomplete")
     for name in ("device_id_decimal", "file_id_decimal", "mtime_ns_decimal"):
         decimal_id(identity[name], name, allow_zero=True)
-    result = inspect_inputs(Path(melted["path"]), player_id=frame.player_id, expected_material_rarities=expected_material_rarities)
-    return result, (raw, melted, melter, command, process, *more)
+    return VerifiedCheckpoint(raw, melted, (raw, melted, melter, command, process, *more), (more[0], more[1]))
+
+
+def verify_readback(value: object, *, run_id: str, machine_id: str, reviewer: str, frame: Frame,
+                    source_save: Pin, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> tuple[SavedInputs, tuple[Pin, ...]]:
+    verified = verify_checkpoint(value, run_id=run_id, machine_id=machine_id, reviewer=reviewer, frame=frame, source_save=source_save)
+    result = inspect_inputs(Path(verified.melted_save["path"]), player_id=frame.player_id, expected_material_rarities=expected_material_rarities)
+    return result, verified.evidence
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,285 @@
+{
+  "schema": "living-artifacts-npc-continuous-offline-validation-v1",
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T12:46:55Z",
+  "machine_observation": {
+    "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 tools/ck3_live_run_id.py machine",
+    "shell": "cmd.exe",
+    "tool_chunk_id": "976562",
+    "exit_code": 0,
+    "stdout": "pc-20260924rtuf-f11af23c08\n"
+  },
+  "product": "living-artifacts",
+  "case": "npc_continuous",
+  "runtime_status": "NOT_RUN",
+  "ai_live_pass": false,
+  "business_pass": false,
+  "gui_contract_qualified": false,
+  "product_release_pass": false,
+  "test_started_at_utc": null,
+  "test_finished_at_utc": null,
+  "test_time_note": "Exact test UTC was not separately retained. The record UTC is not a test timestamp.",
+  "working_directory": "D:/workspace/ck3_eternal_recurrence",
+  "python": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe",
+  "shell": "cmd.exe",
+  "output_retention": {
+    "kind": "transcript",
+    "independent_log_files": [],
+    "note": "Original tool output was returned in the agent tool transcript. No standalone test logs were saved and none are reconstructed as originals. Chunk IDs identify the actual returned output, not repository files."
+  },
+  "checks": [
+    {
+      "id": "product-complete-unittest-discovery",
+      "status": "PASS",
+      "test_count": 151,
+      "elapsed_seconds_reported_by_unittest": 18.699,
+      "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 -c __import__('os').environ['PYTHONPATH']='D:/workspace/ck3_eternal_recurrence/tools;D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src;D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools';__import__('sys').path[:0]=__import__('os').environ['PYTHONPATH'].split(';');__import__('sys').argv=['unittest','discover','-s','mod_living_artifacts/tools','-p','test_*.py'];__import__('runpy').run_module('unittest',run_name='__main__')",
+      "exit_code": 0,
+      "initial_tool_chunk_id": "964bb8",
+      "completion_tool_chunk_id": "f592df",
+      "tool_session_id": 53517,
+      "completion_output": "Ran 151 tests in 18.699s\n\nOK",
+      "test_started_at_utc": null,
+      "test_finished_at_utc": null
+    },
+    {
+      "id": "related-shared-complete-test-modules",
+      "status": "PASS",
+      "modules": [
+        "test_ck3_mod_acceptance",
+        "test_ck3_mod_acceptance_product_preparation",
+        "test_ck3_mod_acceptance_control_peer_imports"
+      ],
+      "test_count": 38,
+      "elapsed_seconds_reported_by_unittest": 5.734,
+      "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 -c __import__('os').environ['PYTHONPATH']='D:/workspace/ck3_eternal_recurrence/tools;D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src;D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools';__import__('sys').path[:0]=__import__('os').environ['PYTHONPATH'].split(';');__import__('sys').argv=['unittest','test_ck3_mod_acceptance','test_ck3_mod_acceptance_product_preparation','test_ck3_mod_acceptance_control_peer_imports'];__import__('runpy').run_module('unittest',run_name='__main__')",
+      "exit_code": 0,
+      "tool_chunk_id": "d2f0a2",
+      "completion_output": "Ran 38 tests in 5.734s\n\nOK",
+      "test_started_at_utc": null,
+      "test_finished_at_utc": null
+    },
+    {
+      "id": "product-complete-strict-mypy",
+      "status": "PASS",
+      "complete_source_file_count": 37,
+      "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 _runtime/root_living_commands.py mypy",
+      "helper_expansion": {
+        "python_argv_prefix": [
+          "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent"
+        ],
+        "source_selection": "Every *.py returned by (REPO / 'mod_living_artifacts/tools').glob('*.py')",
+        "MYPYPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools"
+      },
+      "exit_code": 0,
+      "tool_chunk_id": "a5b2da",
+      "completion_output": "Success: no issues found in 37 source files",
+      "helper_is_git_tracked": false,
+      "test_started_at_utc": null,
+      "test_finished_at_utc": null,
+      "scope_note": "Complete product Python files were checked. follow-imports=silent does not qualify all imported shared SDK modules. The local helper command was actually executed; its record-time source pin is retained below."
+    }
+  ],
+  "regression_scope": {
+    "actual_production_paths_executed": [
+      "produce_readback creates its retained raw copy, strict requested argv, result and public response from the actual Root awaiting request",
+      "Actual CaseClient.root_checkpoint file consumer returns that producer response",
+      "The same produced response reaches actual player verify_readback and NPC consume_npc_readback consumers",
+      "Shared Session snapshot/advance/Save/root transport drives four producer/readback/consumer cycles for authored 47 natural days",
+      "Actual NPC emitter and shared profile preparation generate and verify loaded fixture/formal product/source closures",
+      "Actual registry Selection loads the packaged adapter in an independent Python process without product PYTHONPATH",
+      "verify_case re-reads retained raw/melted evidence and recomputes NPC observations/checks, including after the original live save path has been overwritten"
+    ],
+    "authored_or_patched_boundaries": [
+      "Native snapshots, natural game day inputs and checkpoint contents are authored fixtures, not CK3 observations",
+      "External transformation is an explicit authored stand-in preserving requested strict melter argv; this test is not an official melter qualification",
+      "Unit-only machine, official-tool provenance, storage admission and exact game source providers are patched",
+      "Full Session regression patches startup actor source binding; that production path has separate existing tests",
+      "The prepared formal product in the regression is an authored bounded fixture containing actual rendered core effects, not the complete formal release staging"
+    ],
+    "negative_cases": [
+      "Wrong/missing producer fields, bool/float integer inputs and scene mismatch are rejected by both consumers",
+      "Extra/modified deployed fixture or product files, redirected outer mod and incomplete original source tables are rejected",
+      "Extra marker writer or unique feed marker moved outside destruction-success branch is rejected",
+      "Missing fragile candidate is BLOCKED independently of three healthy roles",
+      "Initially equipped target receives no new equipment credit",
+      "Material disappearance without exclusive new imprint does not qualify feeding",
+      "Day-one cultivation cannot substitute for October-to-November growth",
+      "Forged action verdict, scope, reason, missing source evidence, machine, counters and unknown result fields are rejected"
+    ],
+    "authored_result_only": "Three healthy roles have 15 PASS checks and fragile binding is BLOCKED in the authored full-scene regression. This is not an actual NPC AI result.",
+    "source_graph_scope": "These tests cover the named producer/consumers, registration/import and bounded prepare/deploy graph. They do not prove every indirect dependency in a fresh frozen runtime, a complete generated release graph or any live AI execution."
+  },
+  "record_time_source_pins": {
+    "mod_living_artifacts/tools/npc_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+      "bytes": 35756,
+      "sha256": "ccd52c242de52f6c22c9a90cb55ec3e203cacac6bcd8d7e3b7f84160a05a5979"
+    },
+    "mod_living_artifacts/tools/npc_continuous.contract.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_continuous.contract.json",
+      "bytes": 2699,
+      "sha256": "495232bfb0dc70171c74a2921e97249a5affce954746eaf801efa4831af026fe"
+    },
+    "mod_living_artifacts/tools/npc_saved_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+      "bytes": 37665,
+      "sha256": "4a71e51457994d8e33382d7b7bc1f404c2a17a06a9c99bcafa4c0452eced897d"
+    },
+    "mod_living_artifacts/tools/test_npc_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+      "bytes": 31009,
+      "sha256": "2e94dcbcb14abc3738550626f0b5fb18b1be27ba55782537194ba46e5c04d2b4"
+    },
+    "mod_living_artifacts/tools/test_npc_saved_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+      "bytes": 21271,
+      "sha256": "64a792b168de797a6fd14c1500933cf575881041ee32fdc8e23f851484f7c5d5"
+    },
+    "mod_living_artifacts/tools/acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "bytes": 53129,
+      "sha256": "e817f211b2467fa358b0403c79b80c1f3a36e731c669cfb1d6e0a2e32e57e55c"
+    },
+    "mod_living_artifacts/tools/acceptance_contract.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_contract.py",
+      "bytes": 10889,
+      "sha256": "23947ad0252e77b2c8cb271fbcaed3124e7dd4c1f6a185d6feeaa95e27604276"
+    },
+    "mod_living_artifacts/tools/checkpoint_callback.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_callback.py",
+      "bytes": 10916,
+      "sha256": "721ab8c46c7ddf3c635c6045982878c968b0fc6299f1f283cb72e460bdb5b43b"
+    },
+    "mod_living_artifacts/tools/checkpoint_artifacts.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+      "bytes": 12653,
+      "sha256": "4f884376455207694173ce7ba8abf64b417ce901c457a9426be26e3293c21b40"
+    },
+    "mod_living_artifacts/tools/checkpoint_producer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_producer.py",
+      "bytes": 30478,
+      "sha256": "4ed0dd6195d592ceb72159b33f40fc6f37d82d51cffd53887b03635e47243261"
+    },
+    "mod_living_artifacts/tools/prepare_npc_fixture.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+      "bytes": 16100,
+      "sha256": "7d1f18ec612485b3c7cea5e7e73e5c3c1e15fd5ee2ccfb0e62dfb6fb0332bfad"
+    },
+    "mod_living_artifacts/tools/startup_actor_binding.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\startup_actor_binding.py",
+      "bytes": 11830,
+      "sha256": "786aad0e6fd1583e55b93e296e72f62ca7443f0dc667652a0d92a7264eab3af7"
+    },
+    "mod_living_artifacts/tools/native_interruption_contract.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\native_interruption_contract.py",
+      "bytes": 3252,
+      "sha256": "39d209f8f44546f1931b89912928443e82f7bcbde3340808f976f49627707258"
+    },
+    "mod_living_artifacts/tools/test_native_interruption_contract.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_native_interruption_contract.py",
+      "bytes": 4958,
+      "sha256": "389d35e332243eed6b3d98a1b8c8a53580e92c6ec011dd72de66b913c1751913"
+    },
+    "mod_living_artifacts/tools/living_artifacts_core.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+      "bytes": 64512,
+      "sha256": "8265d274716711234fcf66147f885abe61428bf2f8da9074338f50b68dde644c"
+    },
+    "mod_living_artifacts/tools/living_artifacts_model.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_model.py",
+      "bytes": 3156,
+      "sha256": "f899aaf87bc918f94bc54c1e44e210bf9ecf61c8b240341e2fab31085387ae53"
+    },
+    "tools/ck3_mod_acceptance_products.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 158993,
+      "sha256": "b3d87d21998d089f1b8713e430ab35b5205361e899526701993d2eaeaab9276a"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 63598,
+      "sha256": "3a0253af193aca48e46ef8264ab0f2abf6095fd29075a5b957a56d877d02c45d"
+    },
+    "tools/ck3_mod_acceptance_client.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 69218,
+      "sha256": "03f2f50c73aa08888288809d9f7373f70b8d55e55372ee3a98695fb436cee7f9"
+    },
+    "tools/ck3_mod_acceptance_prepare.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    "tools/ck3_text_projection.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_text_projection.py",
+      "bytes": 3677,
+      "sha256": "fb846fd1aacd6a12c48e9308794bc1f2d6a578b5ef7f43b47ec30c0cb19d24ae"
+    },
+    ".github/workflows/static-ci.yml": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 96229,
+      "sha256": "af1a3e26b500cc130326d151a53e3df0a89d0108612ff3d5a40e066277d4bf6a"
+    },
+    "_runtime/root_living_commands.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\_runtime\\root_living_commands.py",
+      "bytes": 939,
+      "sha256": "324fd40b0e03dd7b50f8feeb484b8b9211eeff299c36b0432d8a8c811596d229"
+    },
+    "docs/storage-retention-policy.md": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+      "bytes": 17121,
+      "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+    },
+    "docs/storage-retention-policy.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  },
+  "source_pin_semantics": "Pins are exact current bytes read when writing this record after validation. No immutable full test-time source snapshot was retained; these pins must not be represented as a frozen all-module test graph or as c11 runtime qualification.",
+  "calibration_reference": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "scope": "R8 actual player weapon/native and historical saved inventory representation only; no NPC AI/current equipment qualification",
+    "comparison_path": "D:/workspace/ck3-living-artifacts-20261022/next/npc-equipment-readonly-a01/comparison.v2.json",
+    "comparison_sha256": "4611a3312ada1ad11bafdaad548bc7b2c5ab2449da76b41090731d2dca94c279",
+    "observer_calibration_path": "D:/workspace/ck3-living-artifacts-20261022/next/npc-equipment-readonly-a01/new-observer-r8-calibration-a01.json",
+    "observer_calibration_sha256": "6b644ad1f4d3344028dde5ab170e1394a58b21a61c24151524ca7add33c36cc6",
+    "observer_calibration_recorded_at_utc": "2026-10-22T11:48:00.322452Z",
+    "availability_rechecked_for_this_doc_write": false
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-20T12:46:55Z",
+    "writes": "Two small repository documentation/evidence files only; no raw saves, runtime copies, test reruns or deletion",
+    "estimated_document_write_peak_bytes": 262144,
+    "capacity_observation": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T12:50:41.752000Z",
+      "volume_anchor": "D:\\",
+      "total_bytes": "500105216000",
+      "used_bytes": "48319516672",
+      "free_bytes": "451785699328",
+      "authority": "actual Python shutil.disk_usage; documentation output volume only",
+      "project_quota_or_other_reservation_qualification": false
+    },
+    "heavy_write_admission": "NOT_ASSESSED_NOT_REQUESTED",
+    "note": "This small record does not renew external raw evidence retention or grant heavy-write/global-quota qualification."
+  },
+  "deferred": [
+    "Fresh actual npc_continuous execution and four verified saves",
+    "Fragile health/secret/cost behavior and queue51",
+    "Natural random awakening and other personal slot native calibration",
+    "Separate short player feed-preview UI scene with actual player materials",
+    "Actual screenshots and normal GUI close retained OS0/native0 evidence for the fresh NPC scene",
+    "Whole-product functional acceptance and release"
+  ],
+  "source_pins_observed_at_utc": "2026-10-22T12:50:41.752000Z"
+}
