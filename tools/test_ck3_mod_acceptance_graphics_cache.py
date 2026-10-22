@@ -174,12 +174,16 @@ class GraphicsCacheTests(unittest.TestCase):
     def public_selection(self, state, *, seed_pin=None, enabled=True):
         selection = entry.Selection.__new__(entry.Selection)
         selection.context = {}
-        selection.case = {'id': 'synthetic', 'status': 'ready', 'budgets': {}, 'initial_plan': 'synthetic-plan.json'}
+        selection.case = {'id': 'synthetic', 'status': 'ready',
+                          'budgets': {'readiness_timeout': entry.MINIMUM_READINESS_SECONDS},
+                          'initial_plan': 'synthetic-plan.json'}
         selection.product_key = 'synthetic-product'
         selection.manifest = copy.deepcopy(self.target_manifest)
         selection.manifest['profile_features'] = {cache.FEATURE: enabled}
         selection.manifest_path = self.target_manifest_path
         selection.runtime = copy.deepcopy(self.target_runtime)
+        selection.paths = {key: Path(value) for key, value in self.target_runtime['paths'].items()}
+        selection.runtime_environment = {}
         selection.adapter_path = self.root / 'synthetic-adapter.py'
         selection.adapter_path.write_text('# Synthetic adapter input only\n')
         selection.adapter_config = self.root / 'synthetic-contract.json'

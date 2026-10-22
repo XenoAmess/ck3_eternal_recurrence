@@ -72,6 +72,9 @@ class PublicAdapterEntryTests(unittest.TestCase):
         selection = Selection.__new__(Selection)
         selection.locations = {"repo_root": ROOT}
         selection.adapter_path = ADAPTER_PATH
+        selection.manifest = {'source_root': {'path_key': 'source_root'}}
+        selection.paths = {'source_root': ROOT}
+        selection.runtime_environment = {}
         self.adapter = selection.load_adapter()
 
     @staticmethod
