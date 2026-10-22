@@ -23,7 +23,7 @@ from checkpoint_artifacts import SavedArtifact, SavedVariable, one, parse_block,
 from checkpoint_callback import VerifiedCheckpoint, checked_pin, verify_checkpoint
 from checkpoint_producer import declared_pin
 from ck3_text_projection import blocks, masked
-from npc_saved_observer import HEALTHY_ROLES, NpcInitialBaseline, NpcSavedObservation, NpcSavedRole, observe_npc_saved
+from npc_saved_observer import HEALTHY_ROLES, NpcInitialBaseline, NpcSavedObservation, NpcSavedRole, observe_npc_saved, saved_character_reference
 from prepare_npc_fixture import SOURCES, NpcFixtureEmission, NpcFixtureSpec, Role, emit_npc_fixture
 
 RESULT_NAME = "living-artifacts-npc-result.json"
@@ -194,8 +194,8 @@ def candidates(melted: Path, player_id: str) -> tuple[Candidate, ...]:
         if raw is None:
             pending.append(Candidate(role, "candidate_missing" if marker is not None else "reference_missing", None, None, marker))
         else:
-            require(marker is None and raw.kind == "character" and raw.raw_identity is not None and raw.flag is None, "Actual NPC candidate reference differs")
-            owner = decimal_id(raw.raw_identity, "NPC candidate owner")
+            require(marker is None, "Actual NPC candidate has a conflicting missing marker")
+            owner = saved_character_reference(raw, "NPC candidate owner")
             pending.append(Candidate(role, "bound", owner, raw, None))
     owners = [item.owner_id for item in pending if item.owner_id is not None]
     require(len(set(owners)) == len(owners) and player_id not in owners, "Candidate IDs must be distinct actual NPCs")

@@ -7,9 +7,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from acceptance_contract import Object, array, field, object_value, read, write_once
+from acceptance_contract import Object, array, field, object_value, read, text, write_once
 from checkpoint_artifacts import SavedVariable
-from npc_saved_observer import HEALTHY_ROLES, INPUTS, InputKind, NpcInitialBaseline, NpcSavedObservation, SavedInventory, observe_npc_saved, parse_saved_inventory
+from npc_saved_observer import HEALTHY_ROLES, INPUTS, InputKind, NpcInitialBaseline, NpcSavedObservation, SavedInventory, observe_npc_saved, parse_saved_inventory, saved_character_reference
 from prepare_npc_fixture import NpcFixtureSpec, Role
 
 
@@ -24,6 +24,14 @@ class AuthoredItem:
 OWNERS: dict[Role, str] = {"landed": "100", "baron": "101", "courtier": "102"}
 ITEMS = tuple(AuthoredItem(role, kind, str(1000 + role_index * 10 + kind_index), OWNERS[role])
     for role_index, role in enumerate(HEALTHY_ROLES) for kind_index, kind in enumerate(INPUTS))
+
+
+def r9_excerpt_text() -> str:
+    """Retained actual R9 leaf records with explicitly authored outer wrappers."""
+    value = read(Path(__file__).with_name("fixtures") / "r9_npc_saved_reference_excerpts.json")
+    if value["schema"] != "living-artifacts-r9-saved-reference-excerpts-v1" or value["projection_wrapper_authored"] is not True or value["source_leaf_text_verbatim"] is not True:
+        raise ValueError("Actual R9 excerpt provenance differs")
+    return text(value["saved_text"], "actual saved R9 reference projection")
 
 
 def variable(name: str, kind: str, identity: str | None = None, *, flag: str | None = None) -> str:
@@ -43,7 +51,7 @@ def authored_save(*, items: tuple[AuthoredItem, ...] = ITEMS, missing_owner: tup
                   unresolved_reference: tuple[tuple[Role, InputKind], ...] = (), equipped: bool = False,
                   date: str = "1066.9.15") -> str:
     """Fixture input refs remain fixed even when a post-state item is absent."""
-    player_values = [variable("xalw_npc_fixture_owner_" + role, "character", OWNERS[role])
+    player_values = [variable("xalw_npc_fixture_owner_" + role, "char", OWNERS[role])
         for role in HEALTHY_ROLES if role not in missing_owner]
     player_values.extend(variable("xalw_npc_fixture_missing_" + role, "boolean", "1") for role in missing_marker)
     living = '\t91={\n\t\talive_data={\n\t\t\tvariables={ data={ ' + " ".join(player_values) + ' } }\n\t\t}\n\t}\n'
@@ -123,6 +131,40 @@ class NativeSavedInventoryTests(unittest.TestCase):
 
 
 class NpcSavedObserverTests(unittest.TestCase):
+    def test_actual_r9_char_reference_records_reach_observer_and_json_consumer(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "r9-selected-actual-records.ck3"
+            source.write_text(r9_excerpt_text(), encoding="utf-8")
+            observed = observe_npc_saved(source, player_id="31254", machine_id="pc-20260924rtuf-f11af23c08", spec=NpcFixtureSpec(0))
+            self.assertTrue(observed.initial_inputs_complete)
+            self.assertEqual(tuple(role.owner_id for role in observed.roles), ("37243", "46974", "38570"))
+            self.assertTrue(all(role.raw_owner_reference is not None and role.raw_owner_reference.kind == "char" for role in observed.roles))
+            consumed = NpcSavedObservation.parse(json.loads(json.dumps(observed.to_json())))
+            self.assertEqual(consumed, observed)
+            self.assertEqual(NpcInitialBaseline(consumed).observation, observed)
+            altered = object_value(json.loads(json.dumps(observed.to_json())))
+            role = object_value(array(altered["roles"], "roles")[0])
+            owner = object_value(role["raw_owner_reference"])
+            owner["type"] = "character"
+            role["raw_owner_reference"] = owner
+            rows = array(altered["roles"], "roles"); rows[0] = role
+            altered["roles"] = object_value({"rows": rows})["rows"]
+            with self.assertRaisesRegex(ValueError, "Exact saved char"):
+                NpcSavedObservation.parse(altered)
+
+    def test_character_decoder_rejects_authored_alias_and_unresolved_or_wrong_type(self) -> None:
+        self.assertEqual(saved_character_reference(SavedVariable("char", "37243", None), "R9 landed"), "37243")
+        for value in (SavedVariable("character", "37243", None), SavedVariable("artifact", "37243", None),
+                SavedVariable("value", "37243", None), SavedVariable("char", None, None), SavedVariable("char", "0", None),
+                SavedVariable("char", "37243.0", None), SavedVariable("char", "37243", "unexpected")):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                saved_character_reference(value, "actual saved owner")
+
+    def test_selected_artifact_without_character_owner_is_present_unsupported_not_gone(self) -> None:
+        content = authored_save().replace("\t\t\towner=100\n", "\t\t\tholy_site_owner=191\n", 1)
+        with tempfile.TemporaryDirectory() as temporary, self.assertRaisesRegex(ValueError, "exists without owner.*not gone"):
+            observe(Path(temporary), "selected-ownerless.ck3", content)
+
     def test_actual_producer_json_file_consumer_and_baseline_round_trip(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -133,7 +175,7 @@ class NpcSavedObserverTests(unittest.TestCase):
             self.assertTrue(consumed.initial_inputs_complete)
             self.assertEqual(tuple(role.role for role in consumed.roles), HEALTHY_ROLES)
             self.assertEqual(tuple(item.kind for item in consumed.roles[0].items), INPUTS)
-            self.assertEqual(consumed.roles[0].raw_owner_reference, SavedVariable("character", "100", None))
+            self.assertEqual(consumed.roles[0].raw_owner_reference, SavedVariable("char", "100", None))
             self.assertEqual(consumed.roles[0].items[0].raw_reference, SavedVariable("artifact", "1000", None))
             self.assertEqual(consumed.roles[0].items[0].equipped_slots, ())
             self.assertIs(consumed.to_json()["ai_business_pass"], False)
@@ -212,9 +254,9 @@ class NpcSavedObserverTests(unittest.TestCase):
     def test_binding_type_duplicates_changed_post_identity_and_missing_marker_conflicts_are_rejected(self) -> None:
         base = authored_save()
         invalid = (
-            base.replace('flag="xalw_npc_fixture_owner_landed" data={ type=character identity=100 }', 'flag="xalw_npc_fixture_owner_landed" data={ type=value identity=100 }'),
-            base.replace('flag="xalw_npc_fixture_owner_landed" data={ type=character identity=100 }', 'flag="xalw_npc_fixture_owner_landed" data={ type=character identity=100.0 }'),
-            base.replace('flag="xalw_npc_fixture_owner_baron" data={ type=character identity=101 }', 'flag="xalw_npc_fixture_owner_baron" data={ type=character identity=100 }'),
+            base.replace('flag="xalw_npc_fixture_owner_landed" data={ type=char identity=100 }', 'flag="xalw_npc_fixture_owner_landed" data={ type=value identity=100 }'),
+            base.replace('flag="xalw_npc_fixture_owner_landed" data={ type=char identity=100 }', 'flag="xalw_npc_fixture_owner_landed" data={ type=char identity=100.0 }'),
+            base.replace('flag="xalw_npc_fixture_owner_baron" data={ type=char identity=101 }', 'flag="xalw_npc_fixture_owner_baron" data={ type=char identity=100 }'),
             authored_save(missing_marker=("landed",)),
         )
         with tempfile.TemporaryDirectory() as temporary:
@@ -224,7 +266,7 @@ class NpcSavedObserverTests(unittest.TestCase):
                     observe(root, f"bad-binding-{index}.ck3", content)
             baseline = NpcInitialBaseline(observe(root, "initial.ck3", base))
             with self.assertRaisesRegex(ValueError, "binding changed"):
-                observe(root, "changed-owner.ck3", base.replace('type=character identity=100', 'type=character identity=999', 1), baseline=baseline)
+                observe(root, "changed-owner.ck3", base.replace('type=char identity=100', 'type=char identity=999', 1), baseline=baseline)
             with self.assertRaisesRegex(ValueError, "reference changed"):
                 observe(root, "changed-item.ck3", base.replace('type=artifact identity=1000', 'type=artifact identity=1001', 1), baseline=baseline)
 

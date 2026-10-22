@@ -1,6 +1,6 @@
 # NPC 连续场次验收（第一阶段）
 
-当前实机状态为 **NOT_RUN**。正式入口、保存观察器和离线回归已接入；本文件不授予 NPC AI 实机、GUI、完整产品或发布通过。离线结果、命令、原工具输出位置和源码摘要见 [验证回执](evidence/npc-continuous-offline-validation.json)。记录机器为 `pc-20260924rtuf-f11af23c08`，记录时间为 `2026-10-22T12:46:55Z`；其他机器须重新核实本机环境与实机结果。
+连续 NPC 实机验收尚未完成。R9 已实际取得首份保存，但原消费者因角色引用类型假设错误而 **BLOCKED、推进 0 自然日**；原结果保留，不能写成未曾执行或 AI 通过。修复后的只读保存重处理与字段合同回归见 [R9 修复回执](evidence/r9-npc-reference-consumer-repair.json)，不追认原场次通过。先前离线结果、命令、原工具输出位置和源码摘要仍保留在 [初始验证回执](evidence/npc-continuous-offline-validation.json)。记录机器为 `pc-20260924rtuf-f11af23c08`；其他机器须重新核实本机环境与实机结果。本文件不授予 NPC AI、GUI、完整产品或发布通过。
 
 ## 正式入口与执行方式
 
@@ -39,6 +39,10 @@
 Save 实际回执 → Root 原请求 → [checkpoint_producer.py](../tools/checkpoint_producer.py) 复制原保存并严格 melt → 公开 `CaseClient.root_checkpoint` 文件消费者 → 唯一 [verify_checkpoint](../tools/checkpoint_callback.py) → [npc_saved_observer.py](../tools/npc_saved_observer.py)。原玩家 `verify_readback` 也委托同一文件验证，不复制或放宽来源守卫。
 
 装备来源是 `living.<character id>.alive_data.inventory` 的原生保存字段 `owner`、`artifacts`、`equipped`，并与实际 artifact 的 `owner` 交叉核对。区分整个 inventory 缺失、装备字段缺失、空装备集合、物品不存在、物品转移和引用缺失；不把 mod 的 `xalw_*` 装备变量当原生真值。角色与物品 ID 使用规范十进制字符串，保留原变量编码，入口执行严格类型与 JSON 往返校验。
+
+R9 的实际 `set_variable = { value = scope:<character> }` 保存为 `type=char`，不是先前构造夹具使用的 `character`。唯一 `saved_character_reference` 解码器要求 `char`、无 flag 和完整规范十进制身份；保存观察器、四类候选绑定和 JSON 消费均使用这个合同。构造生产者已同步迁移，旧虚构 `character` 类型明确拒绝，不作为兼容别名。
+
+世界宝物也可能由圣地持有：R9 原件 15 是 `type=pedestal`、`holy_site_owner=191`，没有角色 `owner`。观察器只跳过不在目标、基线或所选角色库存中的这种无关记录；选中物品存在却缺角色 owner 时明确阻断为当前未支持的 ownerless 状态，不能当作物品已消失、转赠或喂养。小型 [R9 实际叶字段摘录](../tools/fixtures/r9_npc_saved_reference_excerpts.json) 保留原文与来源 pins，外层保存包装明确标为构造，CI 不读取机器外置的大保存。
 
 R8 同日期的实际玩家 weapon 查询与两份真实保存已校准“完整 inventory 中 equipped 字段缺失表示当时未装备”及 `equipped.weapon=<id>` 的表示。外置对照 `comparison.v2.json` 的 SHA-256 为 `4611a3312ada1ad11bafdaad548bc7b2c5ab2449da76b41090731d2dca94c279`；新观察器手工校准回执 SHA-256 为 `6b644ad1f4d3344028dde5ab170e1394a58b21a61c24151524ca7add33c36cc6`，机器同上。此校准仅涉及该版本、玩家 weapon 与历史时点，不外推其他装备槽或 NPC AI 通过。
 
