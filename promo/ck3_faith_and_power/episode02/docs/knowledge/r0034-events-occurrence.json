@@ -1,0 +1,320 @@
+{
+  "schema": "faith-e02-r0034-events-occurrence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0034",
+  "ck3_build": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "observed_at_utc": "2026-10-22T15:21:34.147418+00:00",
+  "source_analysis_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-source-analysis-12004.json",
+  "source_analysis_sha256": "ad92aac15c6fc25d9c43c77b36ae6b8555fed7ed099516cf79ded1f320876b35",
+  "historical_evidence_is_current_state": false,
+  "full_occurrence_contract_registered": false,
+  "ordinary_auto_consumes": false,
+  "events": {
+    "historical_char_creation_events.1": {
+      "observed_at_utc": "2026-10-22T15:04:09.091378+00:00",
+      "actual": {
+        "instance": 3,
+        "date_raw": 51394944,
+        "actor_character_id": 15893,
+        "actor_after_character_id": 15893,
+        "selected_native_index": 2,
+        "selected_option_number": 3,
+        "selected_source_option_key": "historical_char_creation_events.1.c",
+        "ack_accepted": true,
+        "independent_old_window_gone": true,
+        "gold_delta_raw": 0,
+        "prestige_delta_raw": 7500000,
+        "piety_delta_raw": 0,
+        "scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_observed": false,
+        "selection_execution_route": "existing_registered_vanilla_event_v1"
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我很好奇他的命运将会如何……"
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "这样的男人对我有大用！"
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "穆尼斯？谁在乎！"
+        }
+      ],
+      "source_evidence": {
+        "offline_input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+          "bytes": 72377,
+          "sha256": "66c60e16814c0b26ef61b9a847c7b3871b394fd878e34056f2cbbb385d8ff4d5"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+          "bytes": 36997,
+          "sha256": "189d14438c061ebe0c7b2086fafba5b5c9c96557d6c483f9e7ddeac8397de694"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0005-event-select-once.actual-results.json",
+          "bytes": 39140,
+          "sha256": "960403dee8a4a27d4c353dc345465abb36bbec4f3855ed1aa269092c7dee665e"
+        }
+      },
+      "reuse_existing_registered_C_policy": true
+    },
+    "travel_start_event.1060": {
+      "observed_at_utc": "2026-10-22T15:03:59.715221+00:00",
+      "actual": {
+        "instance": 4,
+        "date_raw": 51394944,
+        "actor_character_id": 15893,
+        "actor_after_character_id": 15893,
+        "selected_native_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "travel_start_event.1060/option[0]",
+        "ack_accepted": true,
+        "independent_old_window_gone": true,
+        "gold_delta_raw": 0,
+        "prestige_delta_raw": 0,
+        "piety_delta_raw": 0,
+        "scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_observed": false,
+        "selection_execution_route": "native_first_displayed_v1"
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我一生都在等待这一刻。"
+        }
+      ],
+      "source_evidence": {
+        "offline_input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-4-offline-analysis-input.json",
+          "bytes": 68124,
+          "sha256": "123d60d37c05eb50b16b3d8b08cd18d31043376a360a7ba0c9adb0e39270edc5"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+          "bytes": 35796,
+          "sha256": "b294719236cae49dc12b6e639a0b55fa9213479990d7ed3131783ae690205611"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0003-event-select-once.actual-results.json",
+          "bytes": 40321,
+          "sha256": "ea3c466162b15fb47519a03c38122c3d20a403a5ddd45d2228bcf57f6b94b29a"
+        }
+      },
+      "reuse_existing_registered_C_policy": false
+    },
+    "pilgrimage_intent.1030": {
+      "observed_at_utc": "2026-10-22T15:05:11.732272+00:00",
+      "actual": {
+        "instance": 5,
+        "date_raw": 51395088,
+        "actor_character_id": 15893,
+        "actor_after_character_id": 15893,
+        "selected_native_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "pilgrimage_intent.1030.a",
+        "ack_accepted": true,
+        "independent_old_window_gone": true,
+        "gold_delta_raw": 0,
+        "prestige_delta_raw": 0,
+        "piety_delta_raw": 5000000,
+        "scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_observed": false,
+        "selection_execution_route": "native_first_displayed_v1"
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "这是安拉的意志。"
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我们不能拖延！"
+        }
+      ],
+      "source_evidence": {
+        "offline_input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-5-offline-analysis-input.json",
+          "bytes": 70009,
+          "sha256": "bbcc142228c26babf26f47e39b42b00280d223c9d52d67aad7384a9a7405d70c"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-5-selection-observed.json",
+          "bytes": 36109,
+          "sha256": "c8f63014fbf7a8f739e2fcc06cff75e6a2ff6b345c4b0bfd02c5d0aabfafedf6"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0008-event-select-once.actual-results.json",
+          "bytes": 40047,
+          "sha256": "7985cda2ef31a856179c0d18ed48c189bf8c296435c949f0ff62b6f875072f92"
+        }
+      },
+      "reuse_existing_registered_C_policy": false
+    },
+    "pilgrimage.3102": {
+      "observed_at_utc": "2026-10-22T15:08:12.269658+00:00",
+      "actual": {
+        "instance": 6,
+        "date_raw": 51395520,
+        "actor_character_id": 15893,
+        "actor_after_character_id": 15893,
+        "selected_native_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "pilgrimage.3102.a",
+        "ack_accepted": true,
+        "independent_old_window_gone": true,
+        "gold_delta_raw": 0,
+        "prestige_delta_raw": 0,
+        "piety_delta_raw": 2500000,
+        "scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_observed": false,
+        "selection_execution_route": "native_first_displayed_v1"
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我想见识下安拉辉煌创造的全貌。"
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我的热情炽烈如火，我想做的也不仅仅是朝觐而已。"
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我萌生的怀疑驱使我在这片遥远的土地上寻找答案。"
+        }
+      ],
+      "source_evidence": {
+        "offline_input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-6-offline-analysis-input.json",
+          "bytes": 71480,
+          "sha256": "1eeca47afc9e1d7ea98b7a19194bcc90be996a678e96eb01aa6c4e6d9c274595"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-6-selection-observed.json",
+          "bytes": 36078,
+          "sha256": "64d5dab9f9d6d841621fd5fc1e9e59286550a7b3971d6be569a162ef0f0d68d6"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0013-event-select-once.actual-results.json",
+          "bytes": 40025,
+          "sha256": "8d4022dd80d27578454832e1989c17dc416cd76ce527c1c58514e35e07f5b8b6"
+        }
+      },
+      "reuse_existing_registered_C_policy": false
+    },
+    "pilgrimage_intent.1100": {
+      "observed_at_utc": "2026-10-22T15:14:50.795675+00:00",
+      "actual": {
+        "instance": 7,
+        "date_raw": 51395688,
+        "actor_character_id": 15893,
+        "actor_after_character_id": 15893,
+        "selected_native_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "pilgrimage_intent.1100.a",
+        "ack_accepted": true,
+        "independent_old_window_gone": true,
+        "gold_delta_raw": 0,
+        "prestige_delta_raw": 0,
+        "piety_delta_raw": 0,
+        "scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_observed": false,
+        "selection_execution_route": "root_native_first_displayed_once"
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "这当然是我的神圣义务！"
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我真正想要的是享受和体验其他文化。"
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "resolved_name": "我所做的只是我所处的地位所要求的。"
+        }
+      ],
+      "source_evidence": {
+        "query": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\commands\\r0034-failed-event-query.actual.json",
+          "bytes": 44120,
+          "sha256": "cb4fd24e24936aec7e8ea0baf459351cb3bdc5e3589af164b6f048ea6cb629f0"
+        },
+        "screenshot": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\screenshots-a02\\03-pilgrimage-intent-1100.png",
+          "bytes": 5332361,
+          "sha256": "4f3061b8c6b5d190bd1364a62f3805c3209bab01d28004f248b015505aa0e7a4"
+        },
+        "report_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\native-report.json",
+        "select_row_id": "root-r0034-event7-select-once",
+        "select_row_canonical_sha256": "4d9f7a7592f1b1432f3906cc239495c3445ca1412361aeac22a16b20e27290d7",
+        "independent_post_row_id": "root-r0034-event7-independent-post",
+        "independent_post_row_canonical_sha256": "75d80b3270f2d1810747b1f354407ccd0de95620b4d67ce1a570319f5bafa5af",
+        "report_can_grow_without_changing_these_pinned_rows": true
+      },
+      "reuse_existing_registered_C_policy": false
+    }
+  }
+}
