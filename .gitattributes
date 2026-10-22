@@ -7,6 +7,7 @@ mod_living_artifacts/docs/evidence/r13-feeding-preview-and-close.json -text whit
 promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-source-analysis-12004.json -text whitespace=cr-at-eol
 promo/ck3_faith_and_power/episode02/docs/knowledge/r0035-events-source-only-analysis-12004.json -text whitespace=cr-at-eol
 promo/ck3_faith_and_power/episode02/docs/knowledge/r0035-events-occurrence.json -text whitespace=cr-at-eol
+mod_living_artifacts/docs/evidence/r14-negative-add-gold-error.snapshot.log -text whitespace=cr-at-eol
 mod_living_artifacts/tools/fixtures/r10_npc_initial_lifecycle_observation.json -text whitespace=cr-at-eol
 tools/fixtures/ck3_r11_failed_resource_closure.json -text whitespace=cr-at-eol
 

@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ck3_text_projection import Block, blocks, masked
 import living_artifacts_content as content
+from test_core_generation import Script
 
 
 class ContentGenerationTests(unittest.TestCase):
@@ -126,6 +127,55 @@ class ContentGenerationTests(unittest.TestCase):
             for field in fields:
                 if re.search(rf"var:{field}\s*(?:=|>=|<=|>|<)", direct):
                     self.assert_lazy_presence(block, (field,))
+
+    def test_shipped_bounded_payments_debit_actual_wallet_without_negative_grants(self) -> None:
+        # R14's engine rejects negative add_gold. Verify every compiled shared
+        # bounded-payment caller retains its clamp and shortfall accounting but
+        # uses the dedicated debit effect, including the noblegut curse ranks.
+        script = Script(self.source)
+        monthly = script.named("xalw_content_monthly_effect")
+        payments = script.variable_actions(monthly, "set_variable", "xalw_content_payment")
+        quotes: dict[str, int] = {}
+        for payment in payments:
+            value = script.child(payment, "value")
+            self.assertEqual(script.scalar(value, "value").value, "gold")
+            self.assertEqual(script.scalar(value, "min").value, "0")
+            quote = script.scalar(value, "max").value
+            quotes[quote] = quotes.get(quote, 0) + 1
+            parent = script.ancestors(payment)[-1]
+            debit = script.scalar(parent, "remove_short_term_gold")
+            self.assertEqual(debit.value, "var:xalw_content_payment")
+            self.assertLess(payment.start, debit.start)
+            shortfall = tuple(child for child in script.children(parent) if child.key == "if" and
+                any(item.key == "var:xalw_content_payment" and item.operator == "<" and item.value == quote
+                    for item in script.scalars(script.child(child, "limit"))))
+            self.assertEqual(len(shortfall), 1)
+            self.assertLess(debit.start, shortfall[0].start)
+        self.assertEqual(quotes, {"var:xalw_content_loan_due": 1, "var:xalw_content_appetite_quote": 3,
+                                  "var:xalw_content_recovery_quote": 3})
+        # Positive grants remain grants; no compiled add_gold block may recreate
+        # the rejected multiply=-1 debit pattern.
+        for block in self.definitions:
+            direct = self.direct[block.start]
+            self.assertNotRegex(direct, r"\badd_gold\s*=\s*-")
+            if block.key == "add_gold":
+                self.assertNotRegex(direct, r"\bmultiply\s*=\s*-")
+
+    def test_wine_debit_uses_guarded_quote_before_awarding_guest_effects(self) -> None:
+        script = Script(self.source)
+        charges = tuple((block, script.scalar(block, "remove_short_term_gold")) for block in self.definitions
+                        if re.search(r"\bremove_short_term_gold\s*=\s*var:xalw_content_wine_quote\b", self.direct[block.start]))
+        self.assertEqual(len(charges), 1)
+        branch, debit = charges[0]
+        self.assertEqual(script.scalar(script.child(branch, "limit"), "exists").value, "scope:xalw_content_guest")
+        affordability = tuple(item for parent in script.ancestors(branch) for child in script.children(parent) if child.key == "limit"
+                              for item in script.scalars(child) if item.key == "gold")
+        self.assertEqual(tuple((item.operator, item.value) for item in affordability), ((">=", "var:xalw_content_wine_quote"),))
+        for reward in script.descendants(branch, "add_opinion"):
+            self.assertLess(debit.start, reward.start)
+        guest_record = script.variable_actions(branch, "set_variable", "xalw_content_last_wine_host")
+        self.assertEqual(len(guest_record), 1)
+        self.assertLess(debit.start, guest_record[0].start)
 
 
 if __name__ == "__main__":

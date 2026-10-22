@@ -2511,7 +2511,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_knight_handlers"
         }
       ]
@@ -2605,7 +2605,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_knight_handlers"
         }
       ]
@@ -2680,7 +2680,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_secondary_handlers"
         }
       ]
@@ -2755,7 +2755,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_source_handlers"
         }
       ]
@@ -2830,7 +2830,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_source_handlers"
         }
       ]
@@ -2928,12 +2928,12 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_loan_monthly"
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_core.py",
-          "sha256": "8265d274716711234fcf66147f885abe61428bf2f8da9074338f50b68dde644c",
+          "sha256": "848c0abed02183daae4084c9fbc8baa695ac9efa0433467223c91cd0de8225b0",
           "anchor": "xalw_owner_needs_monthly_trigger"
         }
       ]
@@ -3027,7 +3027,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_secret_handlers"
         }
       ]
@@ -3102,7 +3102,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_secondary_handlers"
         }
       ]
@@ -3177,7 +3177,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_source_handlers"
         }
       ]
@@ -3261,7 +3261,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_secondary_handlers"
         }
       ]
@@ -3336,7 +3336,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_secondary_handlers"
         }
       ]
@@ -3451,7 +3451,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_jealous_monthly"
         }
       ]
@@ -3554,7 +3554,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "render_content_modifiers"
         }
       ]
@@ -3648,7 +3648,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "render_content_effects"
         }
       ]
@@ -3798,7 +3798,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_artifact_projection"
         }
       ]
@@ -3892,7 +3892,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_curse_calendar"
         }
       ]
@@ -4005,7 +4005,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_curse_calendar"
         }
       ]
@@ -4099,7 +4099,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_curse_calendar"
         }
       ]
@@ -4209,7 +4209,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_rust_monthly"
         }
       ]
@@ -4303,7 +4303,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_curse_calendar"
         }
       ]
@@ -4393,7 +4393,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_knight_handlers"
         }
       ]
@@ -4459,7 +4459,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_source_handlers"
         }
       ]
@@ -4546,7 +4546,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_source_handlers"
         }
       ]
@@ -4652,7 +4652,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_content.py",
-          "sha256": "126cedc1c65db6b8d93db139aca994c17948623c5e92c83c26080875dec5f64d",
+          "sha256": "1720fbf0150646ccfee248e21b253b2d44b9184d110c115293b67d54f358c3b4",
           "anchor": "_render_secondary_handlers"
         }
       ]

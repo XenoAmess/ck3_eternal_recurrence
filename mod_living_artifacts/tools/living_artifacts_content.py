@@ -444,7 +444,7 @@ else_if = {{ limit = {{ var:xalw_content_jealous_slot ?= {slot} }} change_variab
 def _bounded_payment(quote_variable: str, on_shortfall: str) -> str:
     return (
         f"set_variable = {{ name = xalw_content_payment value = {{ value = gold min = 0 max = var:{quote_variable} }} }}\n"
-        "add_gold = { value = var:xalw_content_payment multiply = -1 }\n"
+        "remove_short_term_gold = var:xalw_content_payment\n"
         f"if = {{ limit = {{ var:xalw_content_payment < var:{quote_variable} }}\n{on_shortfall}\n}}"
     )
 
@@ -465,7 +465,7 @@ if = { limit = { gold >= var:xalw_content_wine_quote }
 clear_saved_scope = xalw_content_guest
 scope:activity = { random_attending_character = { limit = { is_alive = yes is_adult = yes this != scope:xalw_content_actor NOT = { has_variable = xalw_content_wine_guest_cooldown } } save_scope_as = xalw_content_guest } }
 if = { limit = { exists = scope:xalw_content_guest }
-add_gold = { value = var:xalw_content_wine_quote multiply = -1 }
+remove_short_term_gold = var:xalw_content_wine_quote
 """ + _rank_cases(tuple(
         f"scope:xalw_content_guest = {{ add_opinion = {{ target = scope:xalw_content_actor modifier = xalw_content_opinion_plus_{opinion}_2y }} }}"
         for opinion in (10, 15, 20)

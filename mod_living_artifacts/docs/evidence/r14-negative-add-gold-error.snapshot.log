@@ -1,0 +1,35 @@
+[03:16:18][E][jomini_effect.cpp:1162]: Variable 'historical_artifact' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_target' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_masterwork' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_test_fixture_input' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_famed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_illustrious' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_content_loan_bad_debt' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_content_last_wine_host' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_initial_day' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:16:18][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_common' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1162]: Variable 'historical_artifact' is used but is never set. Setting it in an unused scripted trigger or effect does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_target' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_masterwork' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_test_fixture_input' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_famed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_illustrious' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_content_loan_bad_debt' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_content_last_wine_host' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_initial_day' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:17:21][E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_common' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count
+[03:31:22][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:31:24][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:31:24][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:43:07][E][jomini_script_system.cpp:304]: Script system error!
+  Error: add_gold effect [ Trying to add add_gold with negative value to Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)! ]
+  Script location: file: common/scripted_effects/xalw_core_03.txt line: 31 (xalw_suppress_effect)
+    file: events/xalw_core_events.txt line: 111 (xalw.10:option)
+
+[03:53:32][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:53:32][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:53:32][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:53:33][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:53:34][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:53:34][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weakpositive_value'
+[03:56:47][E][ai_activity.cpp:415]: AI tried to create an invalid 'activity_coronation' activity with reason: 'Unknown - enable aiwatch to see.'

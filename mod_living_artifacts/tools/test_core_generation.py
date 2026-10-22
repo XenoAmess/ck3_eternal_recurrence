@@ -116,6 +116,45 @@ class CoreGenerationTests(unittest.TestCase):
         self.assertEqual(script.scalar(absent, "exists").value, "scope:xalw_material")
         self.assertEqual(script.scalar(credit, "add").value, "scope:xalw_feed_xp")
 
+    def test_suppression_debits_the_guarded_artifact_quote_before_state_changes(self) -> None:
+        # R14: CK3 rejected negative add_gold, but still charged prestige/stress
+        # and installed suppression. Vanilla artifact.3040 uses the dedicated
+        # positive debit effect with the same artifact-scoped script-value form.
+        # This is a structural regression; actual wallet/SAVE needs a new load.
+        script = self.effects
+        effect = script.named("xalw_suppress_effect")
+        branch = script.child(effect, "if")
+        quote = "scope:xalw_artifact.xalw_suppression_cost_value"
+        affordability = script.scalar(script.child(branch, "limit"), "gold")
+        self.assertEqual((affordability.operator, affordability.value), (">=", quote))
+        debit = script.scalar(branch, "remove_short_term_gold")
+        self.assertEqual(debit.value, quote)
+        self.assertFalse(script.descendants(effect, "add_gold"))
+        self.assertFalse(any(item.key == "add_gold" for item in script.scalars(branch)))
+        self.assertLess(debit.start, script.scalar(branch, "add_prestige").start)
+        self.assertLess(debit.start, script.scalar(branch, "add_stress").start)
+        self.assertLess(debit.start, script.child(branch, "scope:xalw_artifact").start)
+        management = self.events.named("xalw.10")
+        for action in ("suppress", "renew"):
+            options = tuple(item for item in self.events.children(management) if item.key == "option" and
+                            self.events.scalar(item, "name").value == f"xalw.10.{action}")
+            self.assertEqual(len(options), 1)
+            self.assertEqual(self.events.scalar(options[0], "xalw_suppress_effect").value, "yes")
+
+    def test_appeasement_uses_the_same_positive_quote_for_permission_and_debit(self) -> None:
+        script = self.effects
+        effect = script.named("xalw_appease_effect")
+        branch = script.child(effect, "if")
+        quote = "scope:xalw_artifact.xalw_appease_cost_value"
+        affordability = script.scalar(script.child(branch, "limit"), "gold")
+        self.assertEqual((affordability.operator, affordability.value), (">=", quote))
+        debit = script.scalar(branch, "remove_short_term_gold")
+        self.assertEqual(debit.value, quote)
+        self.assertFalse(script.descendants(effect, "add_gold"))
+        self.assertFalse(any(item.key == "add_gold" for item in script.scalars(branch)))
+        self.assertLess(debit.start, script.scalar(branch, "add_stress").start)
+        self.assertLess(debit.start, script.child(branch, "scope:xalw_artifact").start)
+
     def test_star_name_migrates_only_living_artifacts_and_does_not_repeat(self) -> None:
         script = self.effects
         naming = script.named("xalw_ensure_star_name_effect")
