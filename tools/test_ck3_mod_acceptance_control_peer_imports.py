@@ -113,10 +113,11 @@ class ControlPeerImportTests(unittest.TestCase):
     def test_unrun_release_uses_same_directory_allocator(self) -> None:
         before = list(sys.path)
         module = self.entry().same_directory_control_peer('ck3_mod_acceptance_unrun')
-        keeper = {'last_sequence': 1}
-        cas = {'event': {'task_id': 'synthetic', 'resources': [], 'kind': 'status', 'sequence': 2}}
+        keeper = {'task_id': 'synthetic', 'thread_exited': True, 'last_sequence': 1}
+        cas = {'event': {'task_id': 'synthetic', 'resources': [], 'kind': 'status', 'sequence': 2},
+               'task': {'task_id': 'synthetic', 'resources': [], 'last_sequence': 2, 'state': 'waiting'}}
         done = {'event': {'task_id': 'synthetic', 'resources': [], 'kind': 'completed', 'sequence': 3},
-                'task': {'last_sequence': 3, 'state': 'done'}}
+                'task': {'task_id': 'synthetic', 'resources': [], 'last_sequence': 3, 'state': 'done'}}
         result: object = getattr(module, '_release_stages')(keeper, cas, done, {}, {}, done, 'synthetic')
         self.assertEqual(result, 'status-then-completed')
         self.assertEqual(Path(str(sys.modules['ck3_mod_acceptance_allocate'].__file__)), self.local/'ck3_mod_acceptance_allocate.py')
