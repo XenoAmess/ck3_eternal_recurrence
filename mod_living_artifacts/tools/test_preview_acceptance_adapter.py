@@ -21,11 +21,12 @@ import acceptance_adapter as core
 from acceptance_contract import Frame, Object, Pin, array, field, integer, mapping, object_value, pin, read, write_once
 from living_artifacts_model import FEEDING_XP
 from living_artifacts_core import render_core_effects
+from inventory_gui_contract import REFUSAL
 from management_event_contract import source_option_index
 import preview_acceptance_adapter as preview
 from startup_actor_binding import StartupActorBinding
 from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, authored_checkpoint_text
-from test_inventory_gui_contract import png
+from test_inventory_gui_contract import png, response_fixture as inventory_response
 from test_management_contracts import displayed_option, event_fixture
 from test_native_interruption_contract import PublicCheckpointPort, RootCheckpointConsumer
 from test_npc_acceptance_adapter import AuthoredCasePort
@@ -198,6 +199,64 @@ class PreviewPort(AuthoredCasePort):
         raise AssertionError("Preview scenario cannot advance a natural day")
 
 
+class InventoryFailurePort(PreviewPort):
+    """Actual failure/continuation orchestration; only the game boundary is authored."""
+    def __init__(self, context: Object) -> None:
+        super().__init__(context)
+        self.live = self.output.parent
+        self._seq = 0
+        self.frozen = {"run_id": "unit-run", "lease_anchor": str(REPO), "source_root": str(REPO)}
+        self.inventory_visible = False
+        self.hold = datetime.now(timezone.utc).timestamp() + 7200
+        self.host_steps: list[Object] = []
+
+    def read_report(self, allow_error: bool = False) -> object:
+        return {"hold_until_utc_estimated": self.hold, "steps": self.host_steps}
+
+    def snapshot(self, allow_actor_change: bool = False, require_event_free: bool = True) -> object:
+        self.snapshots += 1
+        self._seq += 1
+        name = f"case-snapshot-{self._seq:04d}"
+        rows = array(self.execute_plan([{"id": name, "tool": "ck3_take_snapshot", "args": {}}], name), "authored snapshot")
+        return field(rows[0], "result")
+
+    def execute_plan(self, steps: list[Object], name: str, timeout: int | float | None = None, reserve: int = 90) -> object:
+        if any(field(row, "id") == name for row in self.host_steps):
+            raise AssertionError("A consumed global control ID was replayed")
+        step = steps[0]
+        tool = str(step["tool"])
+        if tool == "ck3_take_snapshot":
+            rows: object = [{"ok": True, "plan": step, "result": self.frame(), "after_snapshot": self.frame()}]
+            write_once(self.output / (name + ".actual-results.json"), {"rows": rows})
+        elif tool == core.OPEN:
+            self.tools.append(tool)
+            rows = [{"ok": False, "error": REFUSAL, "plan": step, "after_snapshot": self.frame()}]
+            write_once(self.output / (name + ".actual-results.json"), {"rows": rows})
+        else:
+            rows = super().execute_plan(steps, name, timeout, reserve)
+            if tool == core.ITEM:
+                row = mapping(array(rows, "authored native rows")[0], "authored ITEM")
+                result = mapping(row["result"], "authored ITEM result")
+                result["inventory_view_visible"] = self.inventory_visible
+                row["result"] = object_value(result)
+                rows = [row]
+                (self.output / (name + ".actual-results.json")).write_text(json.dumps({"rows": rows}), encoding="utf-8")
+        host_row = object_value(array(rows, "authored controls")[0])
+        host_row["id"], host_row["finished_at"] = name, datetime.now(timezone.utc).isoformat()
+        self.host_steps.append(host_row)
+        return rows
+
+    def root_checkpoint(self, name: str, request: Object, reserve: int = 90) -> object:
+        if request["schema"] != "living-artifacts-inventory-gui-open-request-v1":
+            return super().root_checkpoint(name, request, reserve)
+        write_once(self.output / (name + "-awaiting.json"), {**request, "original_hold_deadline": self.hold})
+        evidence = self.output / "authored-wrong-navigation"
+        evidence.mkdir()
+        response, _, _ = inventory_response(evidence, date_raw=53144328, refusal=pin(Path(str(field(request["original_native_refusal"], "path")))))
+        write_once(self.output / (name + "-root-result.json"), response)
+        return response
+
+
 class ReviewRoot(PublicCheckpointPort):
     """Actual public awaiting file drives the actual Root preview producer."""
     def __init__(self, output: Path, name: str, port: PreviewPort) -> None:
@@ -224,6 +283,63 @@ def run_fixture(root: Path, *, wrong_preview: bool = False, keep_material: bool 
 
 
 class PreviewAcceptanceTests(unittest.TestCase):
+    def test_real_inventory_postcondition_failure_continues_same_sequence_with_only_four_more_saves(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context = context_fixture(Path(temporary))
+            port = InventoryFailurePort(context)
+            binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
+            with patch.object(StartupActorBinding, "parse", return_value=binding):
+                original = preview.run_case(context, port)
+            self.assertEqual(original["status"], "BLOCKED", original.get("error"))
+            self.assertEqual(original["error"], "ValueError: Independent current ITEM did not confirm GUI inventory visibility")
+            self.assertEqual((original["actual_public_calls_budgeted"], port.saves, port.snapshots), (7, 1, 2))
+            predecessor = port.output
+            retained = pin(predecessor / preview.RESULT_NAME)
+            port.inventory_visible = True
+            port.execute_plan([{"id": "corrected-inventory-readonly", "tool": core.ITEM, "args": {"artifact_id": 12}}], "corrected-inventory-readonly")
+            correction = write_once(predecessor / "corrected-item.json", {"rows": [port.host_steps[-1]]})
+            port.output = predecessor.parent / "case-continuation-a01"
+            port.output.mkdir()
+            port._seq = 0
+            context = {**context, "output": str(port.output)}
+            with patch.object(StartupActorBinding, "parse", return_value=binding):
+                result = preview.resume_inventory_open_failure(context, port, predecessor_output=predecessor,
+                    corrected_item=correction, original_source_tools=TOOLS)
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            self.assertEqual((port.saves, port.reviews, result["actual_saved_observations"], result["inherited_public_calls"]), (5, 5, 5, 8))
+            self.assertEqual(pin(predecessor / preview.RESULT_NAME), retained)
+            self.assertFalse(result["original_public_case_PASS"])
+            self.assertTrue((port.output / "xalw-core-0006.actual-results.json").is_file())
+            self.assertTrue((port.output / "case-snapshot-0003.actual-results.json").is_file())
+            self.assertFalse((port.output / "checkpoint-readback-01-awaiting.json").exists())
+            journal = read(Path(str(field(result["journal"], "path"))))
+            self.assertEqual(preview.evaluate(context, manifest=port.manifest, reviewer="unit-root", journal=journal), result["observed"])
+            self.assertEqual(array(journal["checkpoints"], "checkpoints")[0], pin(predecessor / "preview-checkpoint-01.json"))
+
+    def test_inventory_continuation_rejects_wrong_current_scene_before_any_new_action(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context = context_fixture(Path(temporary))
+            port = InventoryFailurePort(context)
+            binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
+            with patch.object(StartupActorBinding, "parse", return_value=binding):
+                original = preview.run_case(context, port)
+            self.assertEqual(original["actual_public_calls_budgeted"], 7)
+            predecessor = port.output
+            port.inventory_visible = True
+            port.execute_plan([{"id": "corrected-inventory-readonly", "tool": core.ITEM, "args": {"artifact_id": 12}}], "corrected-inventory-readonly")
+            wrong = mapping(port.host_steps[-1], "authored wrong native")
+            after = mapping(wrong["after_snapshot"], "authored wrong scene")
+            after["date_raw"] = 53144352
+            wrong["after_snapshot"] = object_value(after)
+            correction = write_once(predecessor / "wrong-corrected-item.json", {"rows": [wrong]})
+            port.output = predecessor.parent / "case-continuation-a01"
+            port.output.mkdir()
+            port._seq = 0
+            with self.assertRaisesRegex(ValueError, "Correction crossed"):
+                preview.resume_inventory_open_failure({**context, "output": str(port.output)}, port,
+                    predecessor_output=predecessor, corrected_item=correction, original_source_tools=TOOLS)
+            self.assertEqual((port.saves, port.reviews), (1, 0))
+
     def test_registered_public_adapter_loads_in_independent_python_without_product_pythonpath(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

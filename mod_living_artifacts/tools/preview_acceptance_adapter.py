@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 import re
 import sys
-from typing import Literal, TypedDict
+from typing import Literal, Protocol, TypedDict, runtime_checkable
 
 TOOLS = Path(__file__).resolve().parent
 if str(TOOLS) not in sys.path:
@@ -23,7 +23,7 @@ from acceptance_contract import CasePort, CheckResult, Frame, Object, Pin, array
 from checkpoint_artifacts import SavedInputs
 from checkpoint_callback import CheckpointSample, checked_pin, verify_readback
 from checkpoint_producer import deadline_seconds, declared_pin, raw_object, stamp
-from inventory_gui_contract import png_size
+from inventory_gui_contract import REFUSAL, png_size
 from living_artifacts_model import FEEDING_XP, Rarity
 from management_event_contract import management_choice, source_option_index
 from prepare_fixture import emit_fixture
@@ -159,8 +159,10 @@ def prepare_case(context: object) -> Object:
         "fixture_emission": fixture, "runtime_status": "NOT_RUN", "business_pass": False, "product_release_pass": False})
 
 
-def prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
+def prepared_sources(context: object, state: Path, *, source_tools: Path | None = None) -> tuple[Pin, ...]:
     validate_contract(context)
+    require(source_tools is None or isinstance(source_tools, Path), "Typed original source tools required")
+    original_tools = TOOLS if source_tools is None else source_tools.resolve()
     require(isinstance(state, Path), "Actual allocated Path required")
     require(state.resolve() == Path(text(field(context, "state_dir"), "state")).resolve(), "Preview crossed allocated state")
     root = state / "profile/mod-content/fixture"
@@ -170,8 +172,8 @@ def prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
         _same_json(manifest["config"], field(context, "case_contract")), "Preview fixture contract differs")
     callers = mapping(manifest["caller_sources"], "caller source table")
     require(set(callers) == set(SOURCES), "Preview caller closure differs")
-    refs = [core._checked_pin(callers[name], "preview caller", TOOLS / name) for name in SOURCES]
-    refs.append(core._checked_pin(manifest["contract_source"], "preview contract", TOOLS / CONTRACT_NAME))
+    refs = [core._checked_pin(callers[name], "preview caller", original_tools / name) for name in SOURCES]
+    refs.append(core._checked_pin(manifest["contract_source"], "preview contract", original_tools / CONTRACT_NAME))
     emission = mapping(manifest["fixture_emission"], "existing fixture emission")
     require(emission["input_origin"] == "fixture_generated" and emission["business_acceptance"] == "NOT_ASSESSED" and emission["game_started"] is False,
         "Initial fixture does not grant gameplay credit")
@@ -395,6 +397,27 @@ def _review(session: core.Session, *, target: str, material: str, rarity: Rarity
     return result
 
 
+def _read_preview_checkpoint(reference: object, *, remaining: tuple[Rarity, ...], context: object, manifest: object,
+                             reviewer: str) -> tuple[Frame, CheckpointSample, SavedInputs, set[str]]:
+    """The existing saved/native consumer, also used for a retained initial Save."""
+    run, machine = text(field(context, "run_id"), "run"), text(field(manifest, "machine_id"), "machine")
+    record = read(Path(checked_pin(reference, "saved observation")["path"]))
+    require(set(record) == {"run_id", "machine_id", "reviewer", "original_save_native", "source_save", "response", "item_native", "sample", "remaining"} and
+        record["run_id"] == run and record["machine_id"] == machine and record["reviewer"] == reviewer, "Saved observation crossed scene/reviewer")
+    frame, _ = _native_record(record["original_save_native"], run_id=run, machine_id=machine, manifest=manifest)
+    require(record["remaining"] == list(remaining), "Remaining rarity observation differs")
+    saved, _ = verify_readback(record["response"], run_id=run, machine_id=machine, reviewer=reviewer, frame=frame,
+        source_save=declared_pin(record["source_save"], "original Save"), expected_material_rarities=remaining)
+    item_frame, row = _native_record(record["item_native"], run_id=run, machine_id=machine, manifest=manifest)
+    require((item_frame.pid, item_frame.player_id, item_frame.generation_decimal, item_frame.date_raw) ==
+        (frame.pid, frame.player_id, frame.generation_decimal, frame.date_raw) and field(field(row, "plan"), "tool") == core.ITEM, "Independent original item read required")
+    native = field(row, "result")
+    require(type(field(native, "equipped")) is bool and native_id(field(native, "requested_artifact_id"), "observed target", allow_zero=True) == int(saved.target_id), "Native target/equipment differs")
+    actual = CheckpointSample.from_saved(next(item for item in saved.artifacts if item.artifact_id == saved.target_id), saved, native_equipped=field(native, "equipped") is True)
+    require(_same_json(record["sample"], actual.to_json()), "Retained projection differs from actual saved input")
+    return frame, actual, saved, _owned(native, frame=item_frame)
+
+
 def evaluate(context: object, *, manifest: object, reviewer: str, journal: object) -> Object:
     """Re-read actual files and recompute; a Root statement never proves feeding."""
     config = validate_contract(context)
@@ -408,25 +431,11 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
     inputs: list[SavedInputs] = []
     first: Frame | None = None
     for index, reference in enumerate(refs):
-        record = read(Path(checked_pin(reference, "saved observation")["path"]))
-        require(set(record) == {"run_id", "machine_id", "reviewer", "original_save_native", "source_save", "response", "item_native", "sample", "remaining"} and
-            record["run_id"] == run and record["machine_id"] == machine and record["reviewer"] == reviewer, "Saved observation crossed scene/reviewer")
-        frame, _ = _native_record(record["original_save_native"], run_id=run, machine_id=machine, manifest=manifest)
+        frame, actual, saved, owned = _read_preview_checkpoint(reference, remaining=tuple(FEEDING_XP)[index:], context=context, manifest=manifest, reviewer=reviewer)
         if first is None:
             first = frame
         require((frame.pid, frame.player_id, frame.generation_decimal, frame.date_raw) == (first.pid, first.player_id, first.generation_decimal, first.date_raw), "Preview must stay on the identical paused scene/date")
-        remaining = tuple(FEEDING_XP)[index:]
-        require(record["remaining"] == list(remaining), "Remaining rarity observation differs")
-        saved, _ = verify_readback(record["response"], run_id=run, machine_id=machine, reviewer=reviewer, frame=frame,
-            source_save=declared_pin(record["source_save"], "original Save"), expected_material_rarities=remaining)
-        item_frame, row = _native_record(record["item_native"], run_id=run, machine_id=machine, manifest=manifest)
-        require((item_frame.pid, item_frame.player_id, item_frame.generation_decimal, item_frame.date_raw) == (frame.pid, frame.player_id, frame.generation_decimal, frame.date_raw) and
-            field(field(row, "plan"), "tool") == core.ITEM, "Independent original item read required")
-        native = field(row, "result")
-        require(type(field(native, "equipped")) is bool and native_id(field(native, "requested_artifact_id"), "observed target", allow_zero=True) == int(saved.target_id), "Native target/equipment differs")
-        actual = CheckpointSample.from_saved(next(item for item in saved.artifacts if item.artifact_id == saved.target_id), saved, native_equipped=field(native, "equipped") is True)
-        require(_same_json(record["sample"], actual.to_json()), "Retained projection differs from actual saved input")
-        samples.append(actual); inputs.append(saved); inventories.append(_owned(native, frame=item_frame))
+        samples.append(actual); inputs.append(saved); inventories.append(owned)
     initial = samples[0]
     if first is None:
         raise ValueError("Initial saved native frame missing")
@@ -506,6 +515,65 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
         "final_sample": samples[-1].to_json(), "log_scan": scan, "suppression_expiry_credit": False, "npc_credit": False}
 
 
+def _preview_sequence(session: core.Session, initial_sample: CheckpointSample, initial: SavedInputs, checkpoint: Pin, initial_owned: set[str], journal: Object) -> Object:
+    """Single production sequence for an initial run and a proved inventory continuation."""
+    client, context = session.client, session.context
+    target = initial.target_id
+    materials = {item.rarity: item.artifact_id for item in initial.artifacts if item.artifact_id != target}
+    target_item = next(item for item in initial.artifacts if item.artifact_id == target)
+    require((initial_sample.level, initial_sample.xp, initial_sample.pending, initial_sample.growth_sequence, initial_sample.equipped, initial_sample.date_literal) ==
+        (1, 92, 0, 0, False, "1066.9.15") and target_item.variables["xalw_diet"].flag == "armor" and
+        set(materials) == set(FEEDING_XP) and {target, *materials.values()} <= initial_owned and
+        all(item.artifact_type == "sword" for item in initial.artifacts if item.artifact_id != target), "Actual initial non-diet fixture precondition differs")
+    saves: list[Pin] = [checkpoint]
+    reviews: list[Pin] = []
+    journal["checkpoints"] = object_value({"items": saves})["items"]
+    session.equip(target, True)
+    session.open_management(target)
+    session.select_management("xalw.10", "xalw.10.feed_common", next_event="xalw.11", next_option="xalw.11.confirm")
+    reviews.append(_review(session, target=target, material=materials["common"], rarity="common", ordinal=1))
+    before_cancel_owned = _owned(session.observe_item(target), frame=session.current())
+    before_item = _last_call_record(session)
+    before_cancel = len(session.refs)
+    session.select_management("xalw.11", "xalw.11.cancel", next_event="xalw.10")
+    action_native = _cancel_action(session.refs[before_cancel:])
+    session.management_choice("xalw.10", "xalw.10.close")
+    management_after = _last_call_record(session)
+    after_cancel_owned = _owned(session.observe_item(target), frame=session.current())
+    journal["cancellation"] = object_value(write_once(client.output / "preview-cancellation.json", {
+        "before_item": before_item, "after_item": _last_call_record(session), "management_after": management_after, "action_native": action_native, "material_id": materials["common"]}))
+    if before_cancel_owned != after_cancel_owned or materials["common"] not in after_cancel_owned:
+        raise core.CaseFailed("Original cancel changed actual inventory; no subsequent feeding permitted")
+    before_feed = initial_sample
+    for index, rarity in enumerate(FEEDING_XP):
+        session.select_management("xalw.10", f"xalw.10.feed_{rarity}", next_event="xalw.11", next_option="xalw.11.confirm")
+        reviews.append(_review(session, target=target, material=materials[rarity], rarity=rarity, ordinal=index + 2))
+        session.select_management("xalw.11", "xalw.11.confirm", next_event="xalw.10")
+        current, _, checkpoint, owned = _observe(session, target, tuple(FEEDING_XP)[index + 1:])
+        saves.append(checkpoint)
+        expected_level, expected_xp, expected_growth = before_feed.level, before_feed.xp + FEEDING_XP[rarity], before_feed.growth_sequence
+        while expected_xp >= 100 * expected_level:
+            expected_xp -= 100 * expected_level; expected_level += 1; expected_growth += 1
+        if not current.equipped or current.pending != 0 or (current.level, current.xp, current.growth_sequence) != (expected_level, expected_xp, expected_growth):
+            raise core.CaseFailed("Actual saved feeding XP differs; no subsequent feeding permitted")
+        if any(materials[eaten] in owned for eaten in tuple(FEEDING_XP)[:index + 1]) or any(materials[remaining] not in owned for remaining in tuple(FEEDING_XP)[index + 1:]):
+            raise core.CaseFailed("Actual material consumption differs; no subsequent feeding permitted")
+        before_feed = current
+    journal["checkpoints"] = object_value({"items": saves})["items"]
+    journal["reviews"] = object_value({"items": reviews})["items"]
+    session.select_management("xalw.10", "xalw.10.close", next_event=None)
+    raw = client.log_bytes("error.log")
+    source = pin(client.state / "profile/logs/error.log")
+    copied = client.output / "preview-error-full.log"
+    require(not copied.exists(), "Full log copy already exists")
+    copied.write_bytes(raw)
+    require((pin(copied)["bytes"], pin(copied)["sha256"]) == (source["bytes"], source["sha256"]), "Actual log changed before full capture")
+    journal["log"] = object_value(write_once(client.output / "preview-error-scan.json", {"machine_id": session.machine_id, "run_id": session.run_id,
+        "observed_at_utc": utc_now(), "original_log": source, "full_log": pin(copied), "scan": scan_error_log(raw)}))
+    observed = evaluate(context, manifest=client.manifest, reviewer=client.operator_reviewer, journal=journal)
+    return observed
+
+
 def run_case(context: object, client: object) -> Object:
     config = validate_contract(context)
     require(isinstance(client, CasePort), "Actual shared CaseClient required")
@@ -520,59 +588,7 @@ def run_case(context: object, client: object) -> Object:
         session.refs.extend(prepared_sources(context, client.state))
         session.snapshot()
         initial_sample, initial, checkpoint, initial_owned = _observe(session, None, tuple(FEEDING_XP))
-        target = initial.target_id
-        materials = {item.rarity: item.artifact_id for item in initial.artifacts if item.artifact_id != target}
-        target_item = next(item for item in initial.artifacts if item.artifact_id == target)
-        require((initial_sample.level, initial_sample.xp, initial_sample.pending, initial_sample.growth_sequence, initial_sample.equipped, initial_sample.date_literal) ==
-            (1, 92, 0, 0, False, "1066.9.15") and target_item.variables["xalw_diet"].flag == "armor" and
-            set(materials) == set(FEEDING_XP) and {target, *materials.values()} <= initial_owned and
-            all(item.artifact_type == "sword" for item in initial.artifacts if item.artifact_id != target), "Actual initial non-diet fixture precondition differs")
-        saves: list[Pin] = [checkpoint]
-        reviews: list[Pin] = []
-        journal["checkpoints"] = object_value({"items": saves})["items"]
-        session.equip(target, True)
-        session.open_management(target)
-        session.select_management("xalw.10", "xalw.10.feed_common", next_event="xalw.11", next_option="xalw.11.confirm")
-        reviews.append(_review(session, target=target, material=materials["common"], rarity="common", ordinal=1))
-        before_cancel_owned = _owned(session.observe_item(target), frame=session.current())
-        before_item = _last_call_record(session)
-        before_cancel = len(session.refs)
-        session.select_management("xalw.11", "xalw.11.cancel", next_event="xalw.10")
-        action_native = _cancel_action(session.refs[before_cancel:])
-        session.management_choice("xalw.10", "xalw.10.close")
-        management_after = _last_call_record(session)
-        after_cancel_owned = _owned(session.observe_item(target), frame=session.current())
-        journal["cancellation"] = object_value(write_once(client.output / "preview-cancellation.json", {
-            "before_item": before_item, "after_item": _last_call_record(session), "management_after": management_after, "action_native": action_native, "material_id": materials["common"]}))
-        if before_cancel_owned != after_cancel_owned or materials["common"] not in after_cancel_owned:
-            raise core.CaseFailed("Original cancel changed actual inventory; no subsequent feeding permitted")
-        before_feed = initial_sample
-        for index, rarity in enumerate(FEEDING_XP):
-            session.select_management("xalw.10", f"xalw.10.feed_{rarity}", next_event="xalw.11", next_option="xalw.11.confirm")
-            reviews.append(_review(session, target=target, material=materials[rarity], rarity=rarity, ordinal=index + 2))
-            session.select_management("xalw.11", "xalw.11.confirm", next_event="xalw.10")
-            current, _, checkpoint, owned = _observe(session, target, tuple(FEEDING_XP)[index + 1:])
-            saves.append(checkpoint)
-            expected_level, expected_xp, expected_growth = before_feed.level, before_feed.xp + FEEDING_XP[rarity], before_feed.growth_sequence
-            while expected_xp >= 100 * expected_level:
-                expected_xp -= 100 * expected_level; expected_level += 1; expected_growth += 1
-            if not current.equipped or current.pending != 0 or (current.level, current.xp, current.growth_sequence) != (expected_level, expected_xp, expected_growth):
-                raise core.CaseFailed("Actual saved feeding XP differs; no subsequent feeding permitted")
-            if any(materials[eaten] in owned for eaten in tuple(FEEDING_XP)[:index + 1]) or any(materials[remaining] not in owned for remaining in tuple(FEEDING_XP)[index + 1:]):
-                raise core.CaseFailed("Actual material consumption differs; no subsequent feeding permitted")
-            before_feed = current
-        journal["checkpoints"] = object_value({"items": saves})["items"]
-        journal["reviews"] = object_value({"items": reviews})["items"]
-        session.select_management("xalw.10", "xalw.10.close", next_event=None)
-        raw = client.log_bytes("error.log")
-        source = pin(client.state / "profile/logs/error.log")
-        copied = client.output / "preview-error-full.log"
-        require(not copied.exists(), "Full log copy already exists")
-        copied.write_bytes(raw)
-        require((pin(copied)["bytes"], pin(copied)["sha256"]) == (source["bytes"], source["sha256"]), "Actual log changed before full capture")
-        journal["log"] = object_value(write_once(client.output / "preview-error-scan.json", {"machine_id": session.machine_id, "run_id": session.run_id,
-            "observed_at_utc": utc_now(), "original_log": source, "full_log": pin(copied), "scan": scan_error_log(raw)}))
-        observed = evaluate(context, manifest=client.manifest, reviewer=client.operator_reviewer, journal=journal)
+        observed = _preview_sequence(session, initial_sample, initial, checkpoint, initial_owned, journal)
         require(session.days == 0 and session.checkpoint_observations == 5, "Preview exceeded declared day/save budget")
         status = "PASS"
     except core.CaseFailed as failure:
@@ -590,6 +606,161 @@ def run_case(context: object, client: object) -> Object:
         "original_action_unknown": session.original_action_unknown, "case_contract_qualified": status == "PASS", "gui_contract_qualified": status == "PASS",
         "business_pass": False, "product_release_pass": False, "normal_close_owner": "shared entry/CaseClient", "normal_close_pending": True}
     write_once(client.output / RESULT_NAME, result)
+    return object_value(result)
+
+
+@runtime_checkable
+class InventoryContinuationPort(CasePort, Protocol):
+    live: Path
+    _seq: int
+
+    def read_report(self, allow_error: bool = False) -> object: ...
+
+
+class InventoryContinuationResult(TypedDict):
+    schema: Literal["living-artifacts-preview-inventory-continuation-v1"]
+    run_id: str
+    machine_id: str
+    observed_at_utc: str
+    status: Literal["PASS", "FAIL", "BLOCKED"]
+    predecessor: Pin
+    initial_checkpoint: Pin
+    corrected_item: Pin
+    overlay_source: Pin
+    original_source_tools: str
+    original_hold_deadline: float
+    inherited_public_calls: int
+    actual_public_calls_budgeted: int
+    actual_saved_observations: int
+    journal: Pin
+    observed: Object
+    error: str | None
+    original_public_case_status: Literal["BLOCKED"]
+    original_public_case_PASS: Literal[False]
+    business_pass: Literal[False]
+    product_release_pass: Literal[False]
+    normal_close_owner: Literal["original public CaseClient"]
+
+
+def resume_inventory_open_failure(context: object, client: object, *, predecessor_output: Path, corrected_item: Pin,
+                                  original_source_tools: Path) -> Object:
+    """Continue only a known failed opening before any equipment/feeding intent.
+
+    The old result is immutable. This returns an independent manual continuation
+    assessment, using the exact same production sequence and final evaluator.
+    """
+    config = validate_contract(context)
+    if not isinstance(client, InventoryContinuationPort):
+        raise ValueError("Original CaseClient with retained snapshot sequence required")
+    require(isinstance(predecessor_output, Path) and isinstance(original_source_tools, Path), "Typed original Paths required")
+    predecessor_output, original_source_tools = predecessor_output.resolve(), original_source_tools.resolve()
+    require(client.output.resolve().parent == predecessor_output.parent == client.live.resolve() and client.output.resolve() != predecessor_output and
+        Path(text(field(context, "output"), "continuation output")).resolve() == client.output.resolve(), "Use a new single-level output in the same live run")
+    require(integer(client._seq, "fresh client snapshot sequence", 0) == 0, "Continuation client already submitted snapshots")
+    require(original_source_tools == Path(text(field(client.frozen, "lease_anchor"), "frozen original tree")).resolve() / "mod_living_artifacts/tools",
+        "Original sources must be the retained allocated product tree")
+    for name in SOURCES:
+        if name == "preview_acceptance_adapter.py":
+            continue
+        module = sys.modules.get(Path(name).stem)
+        require(module is not None and Path(text(getattr(module, "__file__", None), "loaded original module")).resolve() == original_source_tools / name,
+            "Continuation dependencies must already be imported from the unchanged original tree: " + name)
+    # Reading the original report first binds CaseClient's existing hold. No new
+    # readiness wait, extension, normal-close writer or process launch is made.
+    report = mapping(client.read_report(), "original held report")
+    client.guard(reserve=180)
+    predecessor = pin(predecessor_output / RESULT_NAME)
+    old = read(Path(predecessor["path"]))
+    run, machine = text(field(context, "run_id"), "run"), text(field(client.manifest, "machine_id"), "machine")
+    require(set(old) == set(PreviewCaseResult.__required_keys__) and old["status"] == "BLOCKED" and old["run_id"] == run and old["machine_id"] == machine and
+        old["error"] == "ValueError: Independent current ITEM did not confirm GUI inventory visibility" and old["case_contract_qualified"] is False and
+        old["business_pass"] is False and old["product_release_pass"] is False, "Only the retained known inventory-visibility failure can continue")
+    require(integer(old["actual_natural_days"], "prior days", 0, 0) == 0 and integer(old["actual_saved_observations"], "prior Saves", 1, 1) == 1 and
+        integer(old["actual_public_calls_budgeted"], "prior calls", 7, 7) == 7, "Prior budget/result differs from the single initial observation")
+    old_journal = read(Path(checked_pin(old["journal"], "original journal")["path"]))
+    require(set(old_journal) == {"checkpoints", "reviews", "cancellation", "log"} and old_journal["reviews"] == [] and
+        old_journal["cancellation"] is None and old_journal["log"] is None, "Any started preview/transaction forbids this continuation")
+    initial_refs = array(old_journal["checkpoints"], "original initial observation")
+    require(len(initial_refs) == 1, "Reuse the one original Save only")
+    checkpoint = checked_pin(initial_refs[0], "original initial observation")
+    frame, initial_sample, initial, initial_owned = _read_preview_checkpoint(checkpoint, remaining=tuple(FEEDING_XP), context=context,
+        manifest=client.manifest, reviewer=client.operator_reviewer)
+    tools = sorted(predecessor_output.glob("xalw-core-*.actual-results.json"))
+    snapshots = sorted(predecessor_output.glob("case-snapshot-*.actual-results.json"))
+    require(len(tools) == 5 and len(snapshots) == 2, "Original seven native controls must be complete")
+    expected_tools = ("ck3_save_checkpoint", core.ITEM, core.ITEM, core.OPEN, core.ITEM)
+    prior_ids: set[str] = set()
+    for paths, prefix, expected in ((tools, "xalw-core", expected_tools), (snapshots, "case-snapshot", ("ck3_take_snapshot",) * 2)):
+        for index, (path, tool) in enumerate(zip(paths, expected, strict=True), 1):
+            name = f"{prefix}-{index:04d}"
+            require(path.name == name + ".actual-results.json", "Original control sequence has a gap")
+            rows = array(field(raw_object(path), "rows"), "prior original rows")
+            require(len(rows) == 1 and field(field(rows[0], "plan"), "tool") == tool, "Prior action history differs; no replay allowed")
+            prior_ids.add(name)
+            if tool == core.OPEN:
+                require(field(rows[0], "ok") is False and field(rows[0], "error") == REFUSAL and "result" not in mapping(rows[0], "refusal"),
+                    "Original opening must be the known pre-intent native refusal")
+            else:
+                require(field(rows[0], "ok") is True, "Prior native result is unknown")
+    _, failed_item = _native_record(pin(tools[-1]), run_id=run, machine_id=machine, manifest=client.manifest)
+    require(field(field(failed_item, "result"), "inventory_view_visible") is False and field(field(failed_item, "result"), "equipped") is False,
+        "Original failed GUI outcome must be independently known")
+    openings = sorted(predecessor_output.glob("inventory-gui-open-*-awaiting.json"))
+    require(len(openings) == 1, "One retained original GUI request required")
+    opening = read(openings[0])
+    hold = field(opening, "original_hold_deadline")
+    if isinstance(hold, bool) or not isinstance(hold, (int, float)):
+        raise ValueError("Original fixed hold must be a numeric timestamp")
+    require(hold == field(report, "hold_until_utc_estimated"), "Original fixed hold must not change")
+    opened = read(openings[0].with_name(openings[0].name.replace("-awaiting.json", "-root-result.json")))
+    require(opened.get("status") == "completed" and opened.get("submitted") is True, "Previous GUI action must have a known completed response")
+    correction_pin = checked_pin(corrected_item, "independent corrected native item")
+    current, correction = _native_record(correction_pin, run_id=run, machine_id=machine, manifest=client.manifest)
+    require((current.pid, current.player_id, current.generation_decimal, current.date_raw) == (frame.pid, frame.player_id, frame.generation_decimal, frame.date_raw) and
+        field(field(correction, "plan"), "tool") == core.ITEM, "Correction crossed the original process/generation/actor/date")
+    native = field(correction, "result")
+    require(native_id(field(native, "requested_artifact_id"), "corrected target", allow_zero=True) == int(initial.target_id) and
+        field(native, "equipped") is False and field(native, "inventory_view_available") is True and field(native, "inventory_view_visible") is True and
+        field(native, "can_equip_in_effective_slot") is True and _owned(native, frame=current) == initial_owned, "Independent native correction did not restore the unchanged initial inventory")
+    correction_id = text(field(field(correction, "plan"), "id"), "correction control ID")
+    actual_steps = array(field(report, "steps"), "original controls")
+    require({text(field(step, "id"), "actual control") for step in actual_steps} == prior_ids | {correction_id} and len(actual_steps) == 8 and
+        all(field(step, "finished_at") is not None for step in actual_steps), "All eight original controls must be known and completed")
+    corrected_rows = [step for step in actual_steps if field(step, "id") == correction_id]
+    require(len(corrected_rows) == 1 and json.dumps(corrected_rows[0], sort_keys=True, allow_nan=False) == json.dumps(correction, sort_keys=True, allow_nan=False),
+        "Correction is not the exact row retained by the original host")
+    session = core.Session(context, client, config.transport)
+    session.refs.extend(prepared_sources(context, client.state, source_tools=original_source_tools))
+    overlay = pin(Path(__file__))
+    session.refs.extend((predecessor, checkpoint, correction_pin, overlay))
+    session.start = frame
+    session.bind(field(correction, "after_snapshot"))
+    session.calls, session.sequence, session.checkpoint_observations = 8, 5, 1
+    session.first_sample = session.last_sample = initial_sample
+    session.last_saved_inputs = initial
+    session.last_native_record = correction_pin
+    client._seq = 2
+    journal: Object = {"checkpoints": [], "reviews": [], "cancellation": None, "log": None}
+    status: Literal["PASS", "FAIL", "BLOCKED"] = "BLOCKED"
+    observed: Object = {}
+    error: str | None = None
+    try:
+        observed = _preview_sequence(session, initial_sample, initial, checkpoint, initial_owned, journal)
+        require(session.days == 0 and session.checkpoint_observations == 5, "Continuation exceeded the original total Save/day budget")
+        status = "PASS"
+    except core.CaseFailed as failure:
+        status, error = "FAIL", str(failure)
+    except (core.CaseBlocked, ValueError, OSError, TimeoutError, KeyError, StopIteration) as failure:
+        error = type(failure).__name__ + ": " + str(failure)
+    journal_ref = write_once(client.output / "preview-evidence-journal.json", journal)
+    require(pin(Path(predecessor["path"])) == predecessor, "Original public failure changed during manual continuation")
+    result: InventoryContinuationResult = {"schema": "living-artifacts-preview-inventory-continuation-v1", "run_id": run, "machine_id": machine,
+        "observed_at_utc": utc_now(), "status": status, "predecessor": predecessor, "initial_checkpoint": checkpoint, "corrected_item": correction_pin,
+        "overlay_source": overlay, "original_source_tools": str(original_source_tools), "original_hold_deadline": float(hold), "inherited_public_calls": 8,
+        "actual_public_calls_budgeted": session.calls, "actual_saved_observations": session.checkpoint_observations, "journal": journal_ref, "observed": observed,
+        "error": error, "original_public_case_status": "BLOCKED", "original_public_case_PASS": False, "business_pass": False, "product_release_pass": False,
+        "normal_close_owner": "original public CaseClient"}
+    write_once(client.output / "preview-inventory-continuation-result.json", result)
     return object_value(result)
 
 

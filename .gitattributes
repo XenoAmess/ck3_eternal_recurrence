@@ -1,4 +1,5 @@
 * text=auto eol=lf
+mod_living_artifacts/docs/evidence/r13-inventory-continuation-source-ready.json -text whitespace=cr-at-eol
 mod_living_artifacts/docs/evidence/r12-saved-checkpoint-summary.json -text whitespace=cr-at-eol
 mod_living_artifacts/tools/fixtures/r10_npc_initial_lifecycle_observation.json -text whitespace=cr-at-eol
 tools/fixtures/ck3_r11_failed_resource_closure.json -text whitespace=cr-at-eol
