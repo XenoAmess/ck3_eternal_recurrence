@@ -8,6 +8,8 @@
 
 用户随后明确要求继续执行，撤销本交接开头的暂停状态。原度假闭场事实保留；后续恢复、c18 正常冻结和 R15 失败见 [恢复场次记录](../../mod_living_artifacts/docs/runtime-r15-resume-and-inventory-refusal.md)。新进度不把历史离线测试或失败场次追认为产品验收。
 
+恢复后的 R16 已完成47自然日、7次保存、8项阈值检查及75金实际扣款，并在同进程补验安抚25金、正常GUI退出。旧公共验证字段遗漏、修复后重新验证与后继门槛见 [R16实际结果](../../mod_living_artifacts/docs/runtime-r16-gold-debit-and-normal-close.md)。下文度假截点原样保留，不能当作恢复后的当前执行状态。
+
 ## 入口与必要约束
 
 - 仓库：`D:/workspace/ck3_eternal_recurrence`；产品：`mod_living_artifacts/`；外置工作包：`D:/workspace/ck3-living-artifacts-20261022`，下文简称 `EXT`。
