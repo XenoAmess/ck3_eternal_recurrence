@@ -1,0 +1,231 @@
+{
+  "schema": "xar.faith-engine-e02.v7-handover/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T20:46:55.229444+00:00",
+  "source_commit": "036600913ea7d735ceed15fafa6d457ae0fa0892",
+  "handover": "docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md",
+  "user_cancelled_vacation_after_actual_closure": true,
+  "evidence": {
+    "FILMING-R0036-VACATION-CLOSURE.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\FILMING-R0036-VACATION-CLOSURE.actual.json",
+      "bytes": 4347,
+      "sha256": "ea411bf51b97c0d3eeee93702157a1a37fb4afa72bb89f525192d7812b502139",
+      "availability": "readable_at_observation"
+    },
+    "storage-preparation/VACATION-STORAGE-FINAL.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\storage-preparation\\VACATION-STORAGE-FINAL.actual.json",
+      "bytes": 3676,
+      "sha256": "a672b9337446a5a2b1abdea5b7455eafb6cc83ccddeb3ab64faa6797cd4edbc7",
+      "availability": "readable_at_observation"
+    },
+    "live/4-8e1c2f1861--faith-engine--R0036/case-output/normal-close-result.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0036\\case-output\\normal-close-result.json",
+      "bytes": 7829,
+      "sha256": "8e18a90ff6479ade8e70a06d2e7c768dbbd8dbffcbf41ae0eb1e4344318a63b5",
+      "availability": "readable_at_observation"
+    },
+    "live/4-8e1c2f1861--faith-engine--R0036/case-output/ordinary-pilgrimage-result.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0036\\case-output\\ordinary-pilgrimage-result.json",
+      "bytes": 557110,
+      "sha256": "3d842a8037567f66b23daf0354379c5d1c3220f12d5b927061cde6a5dd6f16a6",
+      "availability": "readable_at_observation"
+    },
+    "commands/run-a07.exit.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\commands\\run-a07.exit.json",
+      "bytes": 1135,
+      "sha256": "fa860b3b94686cae4d7680d9495524fee5282cec0315ad5b959c41b63825166c",
+      "availability": "readable_at_observation"
+    },
+    "commands/allocate-a07.exit.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\commands\\allocate-a07.exit.json",
+      "bytes": 1547,
+      "sha256": "2613010389a9c29e948e87084f5e8a067fe215575a548f9092120d82cd2085f3",
+      "availability": "readable_at_observation"
+    },
+    "keepers/a04/report.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\keepers\\a04\\report.json",
+      "bytes": 1457,
+      "sha256": "278d05d170e4e45e6436ec9b1fddee9693afb5f8cb5bc44aaceada12268797bf",
+      "availability": "readable_at_observation"
+    },
+    "SCREEN-RELEASE-a06.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\SCREEN-RELEASE-a06.actual.json",
+      "bytes": 1299,
+      "sha256": "faf965eb0a4db47b90186d42128af0e01224c11abfe6fbbf1bb066008590086f",
+      "availability": "readable_at_observation"
+    },
+    "DISPLAY-RESTORE-R0036.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\DISPLAY-RESTORE-R0036.actual.json",
+      "bytes": 711,
+      "sha256": "a6cee4f55b9b3db093e95b55eef588346a785171349276db57a7062234b44424",
+      "availability": "readable_at_observation"
+    },
+    "STEAM-OFFLINE-FINAL-R0036.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\STEAM-OFFLINE-FINAL-R0036.actual.json",
+      "bytes": 2433,
+      "sha256": "ad433e35651a3bccf971c12369436ad174cf32995afa37911e4f8dbae2923b83",
+      "availability": "readable_at_observation"
+    },
+    "derived/material_card_candidates/dds-only-a01/CLOSURE.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\CLOSURE.actual.json",
+      "bytes": 9289,
+      "sha256": "5e6baffb82844b88106e3bf87740f422ef8e2d3bc630b0a72962a61c66dc9a45",
+      "availability": "readable_at_observation"
+    },
+    "tts-seven-cue-production-a01/OFFLINE-CLOCK-DELIVERY.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\tts-seven-cue-production-a01\\OFFLINE-CLOCK-DELIVERY.actual.json",
+      "bytes": 4040,
+      "sha256": "ae4940b933fe89e9b96b5b7847fd10aef48aea40caaf5bd609233b77d4d7145d",
+      "availability": "readable_at_observation"
+    },
+    "v7-authoring-preparation-a01/V7.REVIEW-INDEX.candidate.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\v7-authoring-preparation-a01\\V7.REVIEW-INDEX.candidate.json",
+      "bytes": 4556,
+      "sha256": "d783dff827c4f3262040168722895b32f141fe24a14bb3d29277f7e6b096c493",
+      "availability": "readable_at_observation"
+    },
+    "v7-authoring-preparation-a01/DELIVERY.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\v7-authoring-preparation-a01\\DELIVERY.actual.json",
+      "bytes": 3113,
+      "sha256": "b32f47e9d873810898ffabef1975ec55ec5d16bdf11dffb17acd7b61149b37c2",
+      "availability": "readable_at_observation"
+    },
+    "traits-observation-checks/V7-SHOT-CUE-INSERTION-PROPOSAL.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\traits-observation-checks\\V7-SHOT-CUE-INSERTION-PROPOSAL.actual.json",
+      "bytes": 13561,
+      "sha256": "5e34a02cfb7eb4edf84f4ebae35d9ecd77b942dc108b80973999d4e47d68ef12",
+      "availability": "readable_at_observation"
+    },
+    "hajj-cooldown-source-followup/COOLDOWN-AND-ORDER.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\hajj-cooldown-source-followup\\COOLDOWN-AND-ORDER.json",
+      "bytes": 12585,
+      "sha256": "4242d2ba820ec46fb0eb84bdcb9ed645d3a188be8d682b8feaed89abf7efded9",
+      "availability": "readable_at_observation"
+    },
+    "storage-preparation/R0036-ACTUAL-32DAY-FULL-WINDOW-FORECAST.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\storage-preparation\\R0036-ACTUAL-32DAY-FULL-WINDOW-FORECAST.actual.json",
+      "bytes": 12191,
+      "sha256": "04b8129b9d5bf78fd92a284bc2a099af706e04e85a158a2c50d9b293174ab2d3",
+      "availability": "readable_at_observation"
+    },
+    "source-checks/native-fixture-resume-a01/RESUME-EXECUTION.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\source-checks\\native-fixture-resume-a01\\RESUME-EXECUTION.actual.json",
+      "bytes": 9971,
+      "sha256": "eca4d60645e2fce795fc4530ffec93c54862ba509d804e03f5ed97f4595f685c",
+      "availability": "readable_at_observation"
+    },
+    "source-checks/native-link-support-a01/COMPLETE-STEP.a02.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\source-checks\\native-link-support-a01\\COMPLETE-STEP.a02.actual.json",
+      "bytes": 13453,
+      "sha256": "a2f6bd73b447aea698818866c1d3b65627abd432c1765341d18b5421f295a2c3",
+      "availability": "readable_at_observation"
+    },
+    "source-checks/fixture-link-consumer-v2-a04/CHECKS.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\source-checks\\fixture-link-consumer-v2-a04\\CHECKS.actual.json",
+      "bytes": 13430,
+      "sha256": "b0c73c56a0bda5b8d9c980f0be26bdba9cc2bec149672729f7b721db6d8ca610",
+      "availability": "readable_at_observation"
+    },
+    "runtime-preparation-a05/RUNTIME-READY.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\runtime-preparation-a05\\RUNTIME-READY.actual.json",
+      "bytes": 10568,
+      "sha256": "e07aeda5f4cfd7a88e688bba932ea15a6e600ee3ed8e36575feb6a554e0caea6",
+      "availability": "readable_at_observation"
+    },
+    "runtime-preparation-a05/OFFICIAL-CI-036600913ea7.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\runtime-preparation-a05\\OFFICIAL-CI-036600913ea7.actual.json",
+      "bytes": 5494,
+      "sha256": "14268dbe3c055182e39c7415d27bb9bc0901d4028eae350196751e500fe51e11",
+      "availability": "readable_at_observation"
+    },
+    "native-build-a05/native-a01/fixture_link_support_a01/PUBLIC-RUNTIME-QUALIFICATION.actual.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\native-build-a05\\native-a01\\fixture_link_support_a01\\PUBLIC-RUNTIME-QUALIFICATION.actual.json",
+      "bytes": 5810,
+      "sha256": "0c61730fec1e6ad37d1d898e1df50ff16c8e6d18d148b9885ff4e61ea49c3a91",
+      "availability": "readable_at_observation"
+    },
+    "runtime-hajj-a04/runtime.local.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\runtime-hajj-a04\\runtime.local.json",
+      "bytes": 13188,
+      "sha256": "2f306391a8baa52857132a798c7ad8bd253d6631d7adfd89d0cb93832ad5195c",
+      "availability": "readable_at_observation"
+    },
+    "h06-successor-preparation-a01/H06-LAUNCH-RECIPE.R0036.pending.json": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\h06-successor-preparation-a01\\H06-LAUNCH-RECIPE.R0036.pending.json",
+      "bytes": 15366,
+      "sha256": "23995fc9c9509da93daaf79af58fb9b89abc3201cb80706744b6f5ee64ac86bc",
+      "availability": "readable_at_observation"
+    },
+    "gnostic-filming-preparation/B02-EXISTING-ENTRY-ADDENDUM.md": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\gnostic-filming-preparation\\B02-EXISTING-ENTRY-ADDENDUM.md",
+      "bytes": 7547,
+      "sha256": "9d6d268ba9b7ed6f34fe498df293625af7844277cd90ff935aac74be7b0fbe07",
+      "availability": "readable_at_observation"
+    }
+  },
+  "closed_scene_observed_at_utc": "2026-10-22T20:41:59.169126+00:00",
+  "current_task": "Resume fresh-capacity and new-run preparation; no resumed game yet",
+  "scene_result": {
+    "status": "PARTIAL_ROOT_CAPTURE_CHECKPOINT_REJECTED",
+    "actual_days": 224,
+    "arrival_event": "pilgrimage.3101",
+    "event_instance_id": 10,
+    "arrival_selected": false,
+    "hajjaj_granted_observed": false,
+    "returned_observed": false,
+    "coexistence_observed": false,
+    "new_raw_takes": 0,
+    "new_game_images": 3,
+    "journey_save_created": false
+  },
+  "media": {
+    "new_selected_cards": 48,
+    "retained_math_cards": 10,
+    "new_voice_cues": 7,
+    "reused_voice_cues": 26,
+    "new_speech_seconds": 242.76,
+    "author_content_ready": false,
+    "new_cue_visual_gaps": 7,
+    "projected_seconds": 1369.6,
+    "actual_final_video_pts": null,
+    "v7_rendered": false,
+    "human_1x_approval": false,
+    "external_upload": false
+  },
+  "storage": {
+    "revision": 6,
+    "state": "closed",
+    "future_reserved_bytes": 0,
+    "future_heavy_write_authorized": false,
+    "expiry_of_old_grant_utc": "2026-10-23T01:00:00Z",
+    "final_consumed_upper_bytes": 1229869056,
+    "final_project_usage_upper_bytes": 64750484959,
+    "old_full_future_projected_bytes": 65231891935,
+    "quota_bytes": 65000000000,
+    "external_deletion_credit_bytes": 0
+  },
+  "storage_receipt_correction": {
+    "field": "known_five_pyc",
+    "actual_list_length": 6,
+    "preexisting_entry": "prepare_storage_candidate.cpython-314.pyc",
+    "preexisting_bytes": 20017,
+    "new_five_total_bytes": 207116,
+    "scan_file_id_and_link_count_zero_are_not_native_identity": true,
+    "deletion_performed": false
+  },
+  "software": {
+    "new_complete_tests": 105,
+    "new_runtime_seam_tests": 25,
+    "skips": 0,
+    "two_independent_isolated_consumers_exit_codes": [
+      0,
+      0
+    ],
+    "whole_builder_strict_green": false,
+    "whole_builder_strict_diagnostics": 314,
+    "official_linear": "SUCCESS",
+    "official_runner": "FAILURE",
+    "official_native_pilgrimage_shared_after_java": "SKIPPED",
+    "live_pilgrimage_2002_fix_verified": false
+  }
+}
