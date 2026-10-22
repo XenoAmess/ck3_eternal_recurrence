@@ -623,6 +623,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --check-untyped-defs --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_adapter.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -c "import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['ck3_autonomous_player.tests.unit.test_r0031_source_only_event_knowledge_mcp']); count=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if count>0 and result.testsRun==count and result.wasSuccessful() and not result.skipped else 1)"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_pilgrimage_travel_source_only_12004.py ck3_autonomous_player/tests/unit/test_r0031_source_only_event_knowledge_mcp.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
 
       - name: Test shared CK3 acceptance without installed CK3
         env:

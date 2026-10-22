@@ -178,7 +178,9 @@ class ModalClient(CaseClient):
             self.install()
         return {"run_id": request["run_id"], "reviewer": self.operator_reviewer, "status": "complete"}
 
-    def advance_day(self, **kwargs):
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> dict[str, object]:
         raise AssertionError("Finite modal regression must not advance game time")
 
 
@@ -343,6 +345,102 @@ class PilgrimageEventPolicyTests(unittest.TestCase):
             self.assertEqual(result["status"], "PARTIAL_KEY_EVENT_CHANGED")
             self.assertEqual(self.selections(client), [])
             self.assertEqual(len(client.root_calls), 1)
+
+    def test_identity_refresh_event_is_drained_before_next_real_day_consumer(self) -> None:
+        from test_ck3_mod_acceptance_native_day import Port
+        from ck3_mod_acceptance_native_day import integer, obj
+
+        class IdentityRefreshClient(ModalClient):
+            def __init__(self, path: Path) -> None:
+                super().__init__(path)
+                self.event_key = "synthetic.identity_refresh_race"
+                self.displayed = [option(0, 2, "first displayed"), option(1, 6, "later")]
+                self.snapshot_count = 2
+                self.install()
+                self.race_event = deepcopy(self.current["active_event"])
+                self.current["active_event"] = None
+                self.initial_date = integer(self.current["date_raw"], "fixture initial date")
+                self.injected = False
+                self.world_dates: list[tuple[int, int]] = []
+                self.order: list[str] = []
+
+            def snapshot(self, **kwargs: bool) -> dict[str, object]:
+                # Reproduce R0034: an ordinary event is first published by the
+                # seven-day identity observer, after the loop's earlier drain.
+                if not self.injected and self.current["date_raw"] == self.initial_date + 7 * 24:
+                    self.current["active_event"] = deepcopy(self.race_event)
+                    self.current["native_revision"] = integer(self.current["native_revision"], "fixture native revision") + 1
+                    self.injected = True
+                return obj(super().snapshot(**kwargs), "identity-refresh fixture snapshot")
+
+            def execute_plan(self, steps: list[dict[str, object]], name: str) -> list[dict[str, object]]:
+                step = steps[0]
+                if step["tool"] != JOURNEY.IDENTITIES:
+                    rows = super().execute_plan(steps, name)
+                    if step["tool"] == JOURNEY.EVENT_SELECT:
+                        self.order.append("event-selected")
+                    return [obj(row, "fixture modal row") for row in rows]
+                self.debit()
+                args = obj(step["args"], "fixture identity args")
+                if args["expected_revision"] != self.current["revision"]:
+                    raise AssertionError("Stale identity observation submitted")
+                value = {"schema": "ck3_12004_player_pilgrimage_activities_v1",
+                    "scope": "currently-hosted-by-current-player", "activity_type_key": "activity_pilgrimage",
+                    "absence_is_completion": False, "read_only": True,
+                    "queried_revision": self.current["revision"], "snapshot_revision": self.current["native_revision"],
+                    "date_raw": self.current["date_raw"], "played_character_id": 101,
+                    "activity_count": 1, "activities": [{"activity_id": 512, "host_character_id": 101,
+                        "type_key": "activity_pilgrimage", "terminal_flags_observed": False}]}
+                row = {"id": name, "ok": True, "result": value, "after_snapshot": self.fresh()}
+                self.checkpoint(name + ".actual-results", {"rows": [row]})
+                return [row]
+
+            def advance_day(self, days: int = 1, timeout: float = 300,
+                            allow_event_boundary: bool = False,
+                            allow_actor_change: bool = False) -> dict[str, object]:
+                before = deepcopy(self.current)
+                after = deepcopy(before)
+                after["date_raw"] = integer(after["date_raw"], "fixture day date") + 24
+                after["revision"] = integer(after["revision"], "fixture day revision") + 1
+                after["native_revision"] = integer(after["native_revision"], "fixture day native revision") + 1
+                raw = {"id": "owned-native-day", "ok": True, "error": None, "after_snapshot": after,
+                    "result": {"step": "life-advance-one-day", "source": "native-composite",
+                        "backend_id": "native-headless", "starting_date_raw": before["date_raw"],
+                        "ending_date_raw": after["date_raw"], "paused": True, "requested_horizon_days": 1,
+                        "active_event": None, "pending_character_interaction": None,
+                        "ordinary_events": [], "actions": [], "progress_status": "postcondition",
+                        "event_resolution": "none"}}
+                port = Port(self.output, raw, before)
+                port._seq = 100 + len(self.world_dates) * 2
+                # This executes the real CaseClient.advance_day and its native
+                # event-free guard. No test implementation selects an event.
+                row = port.advance_day(days, timeout, allow_event_boundary, allow_actor_change)
+                self.assert_single_world_call(port.world_calls())
+                self.current = deepcopy(obj(row["after_snapshot"], "actual fixture day after"))
+                self.world_dates.append((integer(before["date_raw"], "before date"),
+                                         integer(self.current["date_raw"], "after date")))
+                self.order.append("day-completed")
+                return row
+
+            @staticmethod
+            def assert_single_world_call(calls: list[dict[str, object]]) -> None:
+                if len(calls) != 1:
+                    raise AssertionError("Exactly one native world dispatch required")
+
+        with tempfile.TemporaryDirectory() as temp:
+            context, _, binding, identity = self.make(temp)
+            client = IdentityRefreshClient(Path(temp))
+            result = JOURNEY.run_journey(context, client, binding, identity,
+                {"max_days": 9, "max_day_requests": 16})
+            self.assertEqual(result["status"], "PARTIAL_DAY_CAP", result.get("reason"))
+            self.assertEqual(result["observed_days"], 8)
+            self.assertEqual(result["day_requests"], 8)
+            self.assertEqual(client.order, ["day-completed"] * 7 + ["event-selected", "day-completed"])
+            self.assertEqual(client.world_dates, [(1000 + day * 24, 1024 + day * 24) for day in range(8)])
+            self.assertEqual(len(self.selections(client)), 1)
+            self.assertEqual(self.selections(client)[0]["option_number"], 3)
+            self.assertTrue(result["event_receipts"][0]["old_instance_gone_in_independent_snapshot"])
+            self.assertFalse(result["business_pass"])
 
 
 if __name__ == "__main__":
