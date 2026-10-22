@@ -2,6 +2,7 @@ package org.xar.ck3.control.build;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +14,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileStore;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -179,6 +181,7 @@ public final class CiBootstrap {
     @FunctionalInterface interface MavenLauncherProbe { Path resolve() throws IOException; }
     @FunctionalInterface interface MavenInstaller { void replace(MavenObservation before) throws IOException, InterruptedException; }
     @FunctionalInterface interface IoGuard { void check() throws IOException; }
+    @FunctionalInterface interface AttributeReader { BasicFileAttributes read(Path path) throws IOException; }
     private record MavenUpgradePlan(String machineId, String observedAtUtc, String status,
                                     MavenObservation before, String officialArchiveUrl, String officialChecksumUrl,
                                     FilePin archiveRef, List<FilePin> originalFiles, List<FilePin> replacementFiles,
@@ -846,18 +849,52 @@ public final class CiBootstrap {
     }
 
     private static void guard(Path root, Map<String, VolumeBudget> volumes, Instant expiry) throws IOException {
-        if (!Instant.now().isBefore(expiry)) throw new IOException("finite hosted capacity authority expired");
+        guard(root, volumes, expiry, () -> {}, path -> Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS));
+    }
+
+    static void guard(Path root, Map<String, VolumeBudget> volumes, Instant expiry,
+                      IoGuard childDeadline, AttributeReader reader) throws IOException {
+        IoGuard active = () -> {
+            if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("bootstrap guard interrupted");
+            if (!Instant.now().isBefore(expiry)) throw new IOException("finite hosted capacity authority expired");
+            childDeadline.check();
+        };
+        active.check();
         requireFree(volumes);
         for (String name : List.of("m2", "build", "tools", "scratch", "logs", "artifacts")) {
             long size = 0;
             try (var paths = Files.walk(root.resolve(name))) {
                 for (Path path : paths.toList()) {
-                    if (Files.isSymbolicLink(path)) throw new IOException("linked task output refused");
-                    try { if (Files.isRegularFile(path)) size = Math.addExact(size, Files.size(path)); }
+                    active.check();
+                    try {
+                        BasicFileAttributes attributes = guardedAttributes(path, name.equals("scratch"), reader, active);
+                        if (attributes.isSymbolicLink()) throw new IOException("linked task output refused");
+                        if (attributes.isRegularFile()) size = Math.addExact(size, attributes.size());
+                    }
                     catch (java.nio.file.NoSuchFileException removedTemporary) { }
                 }
             }
             if (size > PARTS.get(name.equals("logs") ? "metadata_logs" : name)) throw new IOException("task part budget exceeded: " + name);
+        }
+    }
+
+    private static BasicFileAttributes guardedAttributes(Path path, boolean scratch,
+                                                        AttributeReader reader, IoGuard active) throws IOException {
+        // Windows can briefly deny metadata while a JUnit scratch file is being deleted.
+        // A successful no-follow read or an actual NoSuchFileException resolves that race;
+        // persistent denial, links, and every other I/O failure remain fatal.
+        for (int attempt = 0; ; attempt++) {
+            active.check();
+            try { return reader.read(path); }
+            catch (AccessDeniedException denied) {
+                if (!scratch || attempt == 3) throw denied;
+                active.check();
+                try { Thread.sleep(25); }
+                catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new InterruptedIOException("bootstrap scratch metadata retry interrupted");
+                }
+            }
         }
     }
 
@@ -883,7 +920,9 @@ public final class CiBootstrap {
         long until = System.nanoTime() + timeout.toNanos();
         try {
             while (!child.waitFor(250, TimeUnit.MILLISECONDS)) {
-                guard(root, volumes, expiry);
+                guard(root, volumes, expiry, () -> {
+                    if (System.nanoTime() >= until) throw new IOException("bootstrap child timeout/log budget");
+                }, path -> Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS));
                 if (System.nanoTime() >= until || Files.size(log) > 4 * MIB) throw new IOException("bootstrap child timeout/log budget");
             }
             if (child.exitValue() != 0 || Files.size(log) > 4 * MIB) throw new IOException("bootstrap child failed; see " + log.getFileName());

@@ -10,10 +10,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.zip.ZipEntry;
@@ -35,6 +39,105 @@ final class CiBootstrapTest {
             "default_project_quota_ceiling_bytes":107374182400,"default_project_quota_volume_fraction":0.10,
             "quota_override_max_hours":168}}
             """;
+
+    @Test
+    void scratchMetadataDenialIsRereadThroughTheActualGuard(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "scratch");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(file) && reads.incrementAndGet() == 1) throw new AccessDeniedException(path.toString());
+            return attributes(path);
+        });
+        assertEquals(2, reads.get());
+        assertEquals("actual file", Files.readString(file));
+    }
+
+    @Test
+    void scratchRemovalNeedsActualNoSuchFileNotAnExistenceGuess(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "scratch");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(file) && reads.incrementAndGet() == 1) {
+                Files.delete(file);
+                throw new AccessDeniedException(path.toString());
+            }
+            return attributes(path);
+        });
+        assertEquals(2, reads.get());
+        assertTrue(Files.notExists(file));
+    }
+
+    @Test
+    void persistentScratchDenialRemainsFatalAfterFourReads(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "scratch");
+        AtomicInteger reads = new AtomicInteger();
+        assertThrows(AccessDeniedException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, path -> {
+                    if (path.equals(file)) { reads.incrementAndGet(); throw new AccessDeniedException(path.toString()); }
+                    return attributes(path);
+                }));
+        assertEquals(4, reads.get());
+        assertTrue(Files.isRegularFile(file));
+    }
+
+    @Test
+    void nonScratchDenialAndOtherIoFailuresAreNeverRetried(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "build");
+        AtomicInteger reads = new AtomicInteger();
+        assertThrows(AccessDeniedException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, path -> {
+                    if (path.equals(file)) { reads.incrementAndGet(); throw new AccessDeniedException(path.toString()); }
+                    return attributes(path);
+                }));
+        assertEquals(1, reads.get());
+        Path scratch = temporary.resolve("scratch/other"); Files.writeString(scratch, "actual file");
+        AtomicInteger otherReads = new AtomicInteger();
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, path -> {
+                    if (path.equals(scratch)) { otherReads.incrementAndGet(); throw new IOException("different I/O failure"); }
+                    return attributes(path);
+                }));
+        assertEquals("different I/O failure", failure.getMessage());
+        assertEquals(1, otherReads.get());
+    }
+
+    @Test
+    void scratchRetryCannotOutliveTheOriginalChildDeadline(@TempDir Path temporary) throws Exception {
+        Path file = guardedFile(temporary, "scratch");
+        AtomicInteger reads = new AtomicInteger();
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> { if (reads.get() > 0) throw new IOException("original child deadline"); }, path -> {
+                    if (path.equals(file)) { reads.incrementAndGet(); throw new AccessDeniedException(path.toString()); }
+                    return attributes(path);
+                }));
+        assertEquals("original child deadline", failure.getMessage());
+        assertEquals(1, reads.get());
+    }
+
+    @Test
+    void expiredAuthorityAndCancellationRemainFatal(@TempDir Path temporary) throws Exception {
+        guardedFile(temporary, "scratch");
+        AtomicInteger reads = new AtomicInteger();
+        assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.EPOCH, () -> {}, path -> {
+            reads.incrementAndGet(); return attributes(path);
+        }));
+        assertEquals(0, reads.get());
+        Thread.currentThread().interrupt();
+        try {
+            assertThrows(InterruptedIOException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                    () -> {}, CiBootstrapTest::attributes));
+            assertTrue(Thread.currentThread().isInterrupted());
+        } finally { Thread.interrupted(); }
+    }
+
+    private static Path guardedFile(Path root, String part) throws IOException {
+        for (String name : List.of("m2", "build", "tools", "scratch", "logs", "artifacts")) Files.createDirectory(root.resolve(name));
+        Path file = root.resolve(part).resolve("file-312"); Files.writeString(file, "actual file"); return file;
+    }
+
+    private static BasicFileAttributes attributes(Path path) throws IOException {
+        return Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+    }
 
     @Test
     void policyBoundaryRejectsMissingNullBooleanFloatExponentDuplicateAndTrailingFields() throws Exception {

@@ -1,0 +1,130 @@
+{
+  "schema": "xar.java-ci-bootstrap-scratch-reread-repair/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T20:16:41.166002+00:00",
+  "integration_base": "c0e9070021d758d31b1938e16eb8575e9403f457",
+  "original_hosted_failure": {
+    "run_id": 39838323148,
+    "head": "ab0046f245e2027821fb4cfa9aff88a20a56334d",
+    "machine_id": "runnervm0xl3a-89d3c56171",
+    "observed_at_utc": "2026-10-22T19:38:15.745499300Z",
+    "error": "java.nio.file.AccessDeniedException: D:\\a\\_temp\\java-control-ci\\scratch\\junit-11850429528867755971\\reactor-2546856060148249733\\contracts\\src\\file-312",
+    "summary": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\official-39838323148.failure-summary.json",
+      "bytes": 3229,
+      "sha256": "4273ec32f8488a41656cc7f5a0512eb97df264a2f97ba3efac04059b2af13ea5"
+    },
+    "full_bootstrap_log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\official-39838323148-artifact\\logs\\bootstrap-verify.log",
+      "bytes": 3680,
+      "sha256": "aa1eade5d5859139a784eb3bbd02e8126686b8d399792aa25cf55e7aab0c41b7"
+    },
+    "delete_race_proven": false,
+    "persistent_permission_ruled_out": false
+  },
+  "repair": {
+    "scope": "Only scratch entry metadata AccessDenied; at most 4 no-follow attribute reads, separated by 25ms",
+    "successful_retry": "Read real BasicFileAttributes and account real size; only actual NoSuchFileException establishes removal",
+    "persistent_denial": "Re-throw original AccessDeniedException after finite retry",
+    "other_io_and_links": "Remain fatal; no exists(false) shortcut and no permission changes",
+    "authority_and_cancellation": "Check original authority expiry, interruption and original child deadline before every read/retry. Original runPlain timeout values unchanged.",
+    "walk_enumeration_failures": "Unchanged; no broad UncheckedIOException suppression"
+  },
+  "source_pins": [
+    {
+      "path": "java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\CiBootstrap.java",
+      "bytes": 79510,
+      "sha256": "b9a84e6352e7feaf7ddcc1ce4907fea4d82bd9b5fd7ea27debcbad92a63dab7a",
+      "before_bytes": 77297,
+      "before_sha256": "e7b899a372b88ef38f6ef809e2fef074d0bf4ba6bcb842defae9f2be2c98af10"
+    },
+    {
+      "path": "java\\ck3-control\\build-tools\\src\\test\\java\\org\\xar\\ck3\\control\\build\\CiBootstrapTest.java",
+      "bytes": 41642,
+      "sha256": "3b41103788a8c33b97e509f673797edeee4dd4b43d46bf8d02cc58cb6c7b1c0a",
+      "before_bytes": 36240,
+      "before_sha256": "21893a7e233300adeb83366dff803379999d1c220011f7b1f1b7c7ae7d26a7f0"
+    }
+  ],
+  "local_validation": {
+    "java": "GraalVM Community 25.0.4.1.1",
+    "maven": "3.10.0",
+    "compilation": "All 16 main and 13 test source files, release21, -Xlint:all -Werror",
+    "actual_JDK21_runtime": false,
+    "initial_attempt": {
+      "exit_code": 1,
+      "log": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-maven.log",
+        "bytes": 7748,
+        "sha256": "941e6f522446bd66026c842e305c4f43a97fbe1a750866bc467f5b299d01ef39"
+      },
+      "reason": "Executor omitted required explicit existing jna.tmpdir. Four pre-existing native-command tests errored; original log and JUnit XML retained. Six new guard tests passed."
+    },
+    "corrected_attempt": {
+      "exit_code": 0,
+      "log": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-maven-a02.log",
+        "bytes": 3539,
+        "sha256": "c9d04c5504dc2ed65a57ed015e64ec410d39a6902e6d5f4367ccd231ba51469b"
+      },
+      "finished_at_utc": "2026-10-22T20:15:59Z",
+      "jna_tmpdir": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-jna",
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "name": "org.xar.ck3.control.build.CiBootstrapTest",
+          "tests": 22,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "source": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.CiBootstrapTest.xml",
+            "bytes": 14630,
+            "sha256": "5b94f012f924b121080d7aa1cae47f47554cdc4fbc64af8268b6e6860d785b29"
+          }
+        },
+        {
+          "name": "org.xar.ck3.control.build.ControlBuildTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "source": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.ControlBuildTest.xml",
+            "bytes": 12647,
+            "sha256": "ffdb4ca21279e69980a4b3e04459662d541c5a373ddeec0f7967659517523e8b"
+          }
+        },
+        {
+          "name": "org.xar.ck3.control.build.SourceLimitProfileTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "source": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.SourceLimitProfileTest.xml",
+            "bytes": 12354,
+            "sha256": "537b02a2dbf267e33cc455c7bf35350981eec832f2d523a621694f3c76ebf980"
+          }
+        }
+      ]
+    },
+    "regression_boundary": "Six new tests execute the production guard scan with actual directories and a narrow deterministic metadata-reader fault. Kernel deletion-race occurrence is not claimed.",
+    "git_diff_check_exit": 0
+  },
+  "storage": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\guard-repair-storage-before.json",
+    "bytes": 482,
+    "sha256": "f1d1702f765a85cc6adf319027e2630161e05e6ea951b2c30cc38d141e51d418"
+  },
+  "scope": {
+    "full_458_test_reactor_rerun": false,
+    "hosted_fixed_chain_pass": false,
+    "new_game_or_desktop_action": false,
+    "living_artifacts_files_changed_by_java_commit": false,
+    "future_hosted_CI": "PENDING; do not use local release21 compilation as hosted full-chain qualification"
+  }
+}
