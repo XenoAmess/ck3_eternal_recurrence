@@ -45,7 +45,7 @@ CHECKER = B/strong-types-checker01/site-packages
 BUS   = Z:/.codex-task-bus
 ```
 
-环境默认 shell 显示为 PowerShell，但**本项目禁止任何 PowerShell**；执行工具显式用 `shell=cmd.exe, login=false`。优先 Python subprocess 的 argv 数组。不要把 `JSON.stringify()` 当 shell 转义，长内联命令会超过 Windows cmd 长度限制；本轮实际发生过此类调度失败，不影响已完成的恢复结论。
+Windows 操作统一使用 Python，执行工具显式用 `shell=cmd.exe, login=false`。优先 Python subprocess 的 argv 数组。不要把 `JSON.stringify()` 当 shell 转义，长内联命令会超过 Windows cmd 长度限制；本轮实际发生过此类调度失败，不影响已完成的恢复结论。
 
 仓库源码与冻结 SDK／运行图是不同对象。不能把 master 的新文件直接覆盖 N41、SRC32 或 H。新运行须生成新目录、新 nonce、新 Plan／Quote／来源表。
 

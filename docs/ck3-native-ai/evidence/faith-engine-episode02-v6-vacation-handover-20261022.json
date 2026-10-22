@@ -1,0 +1,218 @@
+{
+  "schema": "faith-engine-episode02-v6-vacation-handover-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_head": "caf5ff5bf81f102b7b1cf01d7ab074eb2d2943de",
+  "machine_identity": {
+    "command": "py tools/ck3_live_run_id.py machine",
+    "exit_code": 0,
+    "stdout": "4-8e1c2f1861",
+    "scope": "Fresh task-start identity confirmation, before09:55:24Z task registration"
+  },
+  "user_instruction": "平稳收尾手上的工作，编写交接文档，输出到docs",
+  "handover_status": "HANDOVER_PREPARED_AND_LOCALLY_VALIDATED",
+  "current_delivery": {
+    "version": "V6 gold palette complete local review",
+    "video_sha256": "a73ead885dc93390a644e6ff65fb2607d3f705a452e7a467c210ff10a276f5d4",
+    "video_bytes": 70102554,
+    "video_frames": 44102,
+    "video_span_seconds": 1470.0666666666666,
+    "human_full_1x": false,
+    "user_content_signoff": false,
+    "external_upload_performed": false
+  },
+  "file_verification": {
+    "at": "2026-10-22T09:57:31.553529+00:00",
+    "machine_id": "4-8e1c2f1861",
+    "observations": [
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\build-a01\\native-run\\derived\\direct\\episode02-review.mp4",
+        "bytes": 70102554,
+        "expected_sha256": "a73ead885dc93390a644e6ff65fb2607d3f705a452e7a467c210ff10a276f5d4",
+        "sha_checked_now": false,
+        "size_matches": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.zh.srt",
+        "bytes": 24829,
+        "expected_sha256": "9b7bea739f94b2c6e29a0b7632b227aca00f07d650682e0ffcff4a66e0cba930",
+        "sha_checked_now": true,
+        "size_matches": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.en.srt",
+        "bytes": 27496,
+        "expected_sha256": "f26e0a17d4036f3bb46a14626721970b89e9e72e287f4cafc1417f2ac3042527",
+        "sha_checked_now": true,
+        "size_matches": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.bilingual.srt",
+        "bytes": 45574,
+        "expected_sha256": "354c2dfac0038502a1882cd4ace53f9fa785567caf03a8a79c245f309f39bb77",
+        "sha_checked_now": true,
+        "size_matches": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02-script.md",
+        "bytes": 39128,
+        "expected_sha256": "6cc7a04d1f11fb4588e212987df532dfcf416651fc78449ef3ee1a3030c03c09",
+        "sha_checked_now": true,
+        "size_matches": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\authoring\\YELLOW.FORMAL-INPUT.actual.json",
+        "bytes": 661697,
+        "sha256": "99894377e440c7c2dfedd2d12e6039c0c9ca7a1d0b520e0a8db1cbcf41f71182"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\authoring\\PROJECTION.actual.json",
+        "bytes": 2582,
+        "sha256": "56729e6825ec7b3011fb83a0b2bdc6a23bc0379b821bb0ec527b23bb264cd8ed"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\graphics\\REPLACEMENTS.actual.json",
+        "bytes": 322994,
+        "sha256": "6d701eea041efb40a17b44aff4841c53b395401c978b5266d3db90c92f68cdfa"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\RENDER-DELIVERY.actual.json",
+        "bytes": 9613,
+        "sha256": "d831130811cce5d4809493ae11960c85e47bcd9d6fd1b828c306d269c24f0bb7"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\sample\\final-palette-review-a01\\VISUAL-REVIEW.actual.json",
+        "bytes": 1281,
+        "sha256": "b446db999aa4b792285e1c24b4ce5d0df9d7d6fae62f17aee4427a3ce16e9385"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\FINAL-STORAGE-CLOSURE.actual.json",
+        "bytes": 70948,
+        "sha256": "9f80a8728294a1bfd8c140c060eeb0188b78f1e8c84e59d3df101af976c44dbc"
+      }
+    ],
+    "large_media_hashed_again": false
+  },
+  "process_observation": {
+    "machine_id": "4-8e1c2f1861",
+    "at": "2026-10-22T09:57:31.580796+00:00",
+    "named_game_media_processes": [],
+    "matching_production_commandlines": [],
+    "scope": "Read-only process enumeration; no termination, screenshot or focus action"
+  },
+  "administrative_closure": {
+    "state": "done",
+    "resources": [],
+    "sequence": 13285,
+    "at": "2026-10-22T09:58:16.297675+00:00"
+  },
+  "production_closure": {
+    "root_task": "faith-e02-v6-production-20261022-root",
+    "root_done_sequence": 13283,
+    "render_task": "faith-v6-full-authoring",
+    "render_done_sequence": 13282,
+    "resources": [],
+    "render_original_pid": 13544,
+    "render_original_wait": 0,
+    "render_finished_at_utc": "2026-10-22T07:46:17.841701+00:00",
+    "keeper_exited": true,
+    "new_game_days": 0,
+    "scope": "Historical actual closure evidence; fresh process observation separately recorded above"
+  },
+  "last_observed_steam": {
+    "observed_at_utc": "2026-10-22T05:57:56.501287+00:00",
+    "status": "offline",
+    "offline_mode": true,
+    "requeried_this_handover": false,
+    "source": "filming/STEAM-OFFLINE-CLOSURE.actual.json"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "observed_at_utc": "2026-10-22T09:56:36.263488+00:00",
+    "volume_total_bytes": 511776722944,
+    "available_bytes": 91869704192,
+    "historical_yellow_scope_allocated_upper_bytes": 159010816,
+    "scope_usage_observed_at_utc": "2026-10-22T07:50:57.216075+00:00",
+    "production_grant_expired_at_utc": "2026-10-22T08:00:00+00:00",
+    "production_future_reservation_bytes": 0,
+    "handover_text_and_Git_write_limit_bytes": 8388608,
+    "heavy_write_admitted": false,
+    "automatic_reservation_or_GC_claimed": false,
+    "media_copied_or_deleted": false,
+    "retention_deadlines": {
+      "derived": "2026-10-24T07:50:57.216075+00:00",
+      "delivered_media": "2026-11-21T07:50:57.216075+00:00",
+      "record_review": "2027-04-20T07:50:57.216075+00:00"
+    }
+  },
+  "historical_delivery_commit_ci": {
+    "commit": "9049701766ee5411b6ec29989c2b4d8315a5ef29",
+    "checks": [
+      {
+        "name": "static",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39743632831/job/119706635580"
+      },
+      {
+        "name": "No new merge commits",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39743632855/job/119706635329"
+      }
+    ]
+  },
+  "ci_followup": {
+    "observed_at_utc": "2026-10-22T09:58:18.044548+00:00",
+    "base_commit": "caf5ff5bf81f102b7b1cf01d7ab074eb2d2943de",
+    "base_static": "in_progress",
+    "base_linear_history": "success",
+    "known_failure_step": "Enforce Python-only Windows automation",
+    "known_failure_file": "docs/handover/2026-10-22-robert-source32-a41-recovery-vacation-handoff.md:48",
+    "scope": "Existing explanatory shell reference; replaced with Python/cmd.exe wording in this documentation-only handover package. Original recovery and runtime facts unchanged."
+  },
+  "no_new_game_or_media_work": true,
+  "validation": {
+    "status": "passed",
+    "source_head": "caf5ff5bf81f102b7b1cf01d7ab074eb2d2943de",
+    "scope": "Documentation-only changes including correction of one observed CI text violation; no new media or runtime tests.",
+    "commands": [
+      {
+        "argv": [
+          "py",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_validate_python_only.py"
+        ],
+        "started_at_utc": "2026-10-22T10:05:18.904089+00:00",
+        "finished_at_utc": "2026-10-22T10:05:19.108976+00:00",
+        "exit_code": 0,
+        "tests_run": 9,
+        "tests_skipped": 0
+      },
+      {
+        "argv": [
+          "py",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_python_only.py"
+        ],
+        "started_at_utc": "2026-10-22T10:05:19.109063+00:00",
+        "finished_at_utc": "2026-10-22T10:07:15.415192+00:00",
+        "exit_code": 0,
+        "stdout": "PYTHON-ONLY GREEN\r\n",
+        "stderr": ""
+      },
+      {
+        "check": "new handover local Markdown targets",
+        "observed_at_utc": "2026-10-22T10:06:23.016691+00:00",
+        "targets": 24,
+        "all_targets_exist": true,
+        "evidence_JSON_roundtrip": true
+      }
+    ],
+    "large_video_decode_or_rehash": false,
+    "fresh_official_CI_pass_claimed": false
+  }
+}
