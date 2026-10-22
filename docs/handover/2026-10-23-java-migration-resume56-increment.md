@@ -49,3 +49,21 @@
 - 20Z后旧qualified24 receipt实际因原lease过期拒绝，两次pre-copy RED均保留且copy0；新25完整资格后更新plan/card完整runtime refs执行，不修改旧lease或旧通过JSON。
 
 面向第一轮实机，恢复20以原Java19精确基线追加scope前后时效/身份复验及BIND正向合成回归，准备重跑原七模块完整verify并产生新鲜部署；SDK三视图随后绑定实际新部署。新source-only候选不能代替这些真实结果。资源同4GiB池重分配与新卡由唯一coordinator记录，不自动续旧20Z许可。
+
+## 20:48Z并发扩展与真实进展
+
+用户再次明确要求56个并发智能体子任务，并同时继续Java迁移、G2八项研究、原版AI策略挖掘与智能体优化。旧任务完成后未及时续派造成实际并发下降，不能以累计任务数解释为56并发。现已重新分派并经 `collaboration.list_agents` 实读：56个子智能体全部running，Root另计；running也不等同56个编译器或56份已完成实现。
+
+G2的M0–M7各配置domain、真实producer迁移、integration/consumer三个owner，共24位；复用已有Java领域模块，共同组合进入单一纯Java `g2-research` Maven模块，由现有唯一Quarkus宿主提供只读研究/提案入口。公共合同、宿主、Java client、验收、持久CI、观测复用、有序候选索引及生命周期另有独立owner。原版AI八题包括战争/CB候选、囚犯赎金、战争退出/白和、后勤补员、军队contact、路线重评估、战争财政与佣兵、Sway/谋略。各题先核原版来源与调用树，再实现有来源绑定的Java候选/策略输入及真实差分；未闭合的原生排名权重继续UNKNOWN。
+
+权威 `g2-requirements-v1.json` 禁止将G2里程碑换算为百分比。历史仍为6/8，M6/M7未完整验收；此次Java链另验，不能重授旧分子。M6已确认真实历史ledger缺完整ordinary terminal；M7需要按原要求分记government_key与adapter family，不能把两者混为一谈或凭新夹具授实机信用。
+
+源码统一卡 `J/logs/RESUME56-SOURCE14-STANDING-GRANT.json` 已CREATE_NEW生效：2870 B / `7f1a3ffbdd28d730536a66d7a84710cad8cfb2fff1d384ebef173a83ea3f6db4`；同机器、到期21:52:17.501144300Z。总source64MiB包含旧10MiB，G2各M2MiB含三owner，AI各题1MiB，其余迁移16/CI8/sourcegraph-native8/Root-common8MiB；组内保留与小版本不再重复申请微卡。仍在原4GiB take内分区为m2 608、build2176、scratch896、logs64、tools128、artifacts128、guard96MiB。fresh原生核验无error，并发RAM扩大至16GiB且保留12GiB系统余量；重型作业须绑定实际执行卡，Maven共享仓库仍单writer、Game仍Root顺序调度。
+
+- 恢复20真实RED为testCompile的unused resource；21修编译后完整53 suites/731 tests为730 PASS、1 FAIL、0 ERROR/skip，219.4209 s、峰998264832 B、Job0。失败是合成lease只用FILE_READ_ATTRIBUTES没有阻止NIO正文open；唯一4 B合成native诊断实际证明0x81/share6会拒读且stat仍可用。原20/21与诊断均保留，v03仅改desired access及注释，全部15测试/断言不变。
+- fresh22已拿新LEASE14实际启动：268 refs/2803055 logical B，19→BIND01→02→03严格链MATCH；完整七模块verify session77629正在执行，尚未授PASS。
+- 原生新CONFIGURE仍真实RED：CMake root0，唯一owned vctip在180 s期限仍活，最终timeout清理后Job0；软件四child已PASS，GRAPH/BUILD/Defender/6+14均NOTRUN。下一步查共享MSVC helper生命周期，禁止忽略helper或盲延deadline。
+- tools25发布后31源比较发现29 MATCH、2不同：CiBootstrap及其测试来自上游rebase的有界scratch metadata retry修复，含6项回归。故25原120测试不能外推该合并图。tools26后继将同时纳入上游二源及共享CI producer，预期138 tests、14 suites，以实际完整verify为准。
+- 共享CI producer源码02曾被独审放行后发现未消费summary的subtests-skipped会false-PASS，旧放行已撤回且保全；03最小delta拒该边界并覆盖原12测试内反例，新独审只授build，不授运行。持久full30 cold/warm及独立SDK continuation的共享入口仍在后继迁移，不能拿旧local harness冒充新producer已完成。
+
+七fixture采用与全36运行、Java29 capture/fullverify、SDK三视图/fresh恢复仍各自进行。Steam20:24 fresh后台offline正例只证当时本机，启动前还须复核新鲜度。当前没有新增实机游戏日、保存日或优化收益信用。
