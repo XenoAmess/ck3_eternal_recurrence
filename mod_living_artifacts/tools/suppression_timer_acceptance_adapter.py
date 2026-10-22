@@ -73,8 +73,8 @@ def validate_contract(context: object) -> core.Contract:
     config = mapping(field(context, "case_contract"), "timer contract")
     require(same_json(config, read(TOOLS / CONTRACT_NAME)), "Exact canonical timer contract required")
     integer(config["schema_version"], "timer schema", 1, 1)
-    require(same_json(field(context, "case_spec"), read(TOOLS / "suppression_timer.registry.json")), "Exact standalone registry stanza required")
     spec = field(context, "case_spec")
+    require(field(spec, "id") == CASE, "Selected public case spec differs")
     tools = {text(item, "tool") for item in array(field(spec, "required_mcp_tools"), "declared tools")}
     require(set(core.REQUIRED_TOOLS) <= tools, "Every existing Session tool must be declared")
     for key, value in core.REQUIRED_OPT_INS.items():

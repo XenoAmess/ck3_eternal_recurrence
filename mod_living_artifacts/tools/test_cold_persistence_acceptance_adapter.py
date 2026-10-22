@@ -122,7 +122,7 @@ def compound_context(root: Path) -> tuple[dict[str, object], ObservedCheckpoint,
             "source_run_context": source_context, "source_runtime_manifest": runtime, "source_checkpoint_observation": observation,
             "source_save_native_record": save_ref, "source_item_native_record": item_ref},
         "saved_campaign": {"save": before.load_save["path"], "bytes": before.load_save["bytes"], "sha256": before.load_save["sha256"], "player_id": 91, "date_raw": 123456},
-        "_selected_engine": (object(), {"game_version": "1.20.0.4", "exe_sha256": EXE_SHA})}
+        "shared_source_root": str(REPO), "_selected_engine": (object(), {"game_version": "1.20.0.4", "exe_sha256": EXE_SHA})}
     prepared = adapter.prepare_case(context)
     seed = field(field(prepared, "startup"), "saved_campaign")
     args = argparse.Namespace(saved_campaign_save=Path(text_value(field(seed, "save"))), saved_campaign_save_bytes=field(seed, "bytes"),
@@ -369,7 +369,7 @@ class ColdPersistenceTests(unittest.TestCase):
                     "source_save_native_record": save_ref, "source_item_native_record": item_ref},
                 "saved_campaign": {"save": before.load_save["path"], "bytes": before.load_save["bytes"], "sha256": before.load_save["sha256"],
                     "player_id": 91, "date_raw": 123456},
-                "_selected_engine": (object(), {"game_version": "1.20.0.4", "exe_sha256": EXE_SHA})}
+                "shared_source_root": str(REPO), "_selected_engine": (object(), {"game_version": "1.20.0.4", "exe_sha256": EXE_SHA})}
             prepared = adapter.prepare_case(context)
             startup = field(prepared, "startup")
             self.assertEqual(field(startup, "mode"), "saved_campaign")

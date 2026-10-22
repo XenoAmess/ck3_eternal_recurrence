@@ -1,4 +1,5 @@
 * text=auto eol=lf
+mod_living_artifacts/docs/evidence/prepared-case-preflight-fix.json -text whitespace=cr-at-eol
 mod_living_artifacts/docs/evidence/r13-inventory-continuation-source-ready.json -text whitespace=cr-at-eol
 mod_living_artifacts/docs/evidence/r12-saved-checkpoint-summary.json -text whitespace=cr-at-eol
 # Source-analysis documents are consumed through exact original SHA-256 pins.

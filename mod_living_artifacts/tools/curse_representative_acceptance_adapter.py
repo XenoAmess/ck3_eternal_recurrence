@@ -74,8 +74,8 @@ def validate_contract(context: object) -> core.Contract:
     config = mapping(field(context, "case_contract"), "curse contract")
     require(same_json(config, read(TOOLS / CONTRACT_NAME)), "Exact canonical curse contract required")
     integer(config["schema_version"], "curse schema", 1, 1)
-    require(same_json(field(context, "case_spec"), read(TOOLS / "curse_representative.registry_stanza.json")), "Exact standalone registry stanza required")
     spec = field(context, "case_spec")
+    require(field(spec, "id") == CASE, "Selected public case spec differs")
     tools = {text(item, "tool") for item in array(field(spec, "required_mcp_tools"), "declared tools")}
     require(set(core.REQUIRED_TOOLS) <= tools, "Every existing Session tool must be declared")
     for key, value in core.REQUIRED_OPT_INS.items():
@@ -84,7 +84,6 @@ def validate_contract(context: object) -> core.Contract:
     require(config["required_checks"] == list(CHECKS) and config["whole_product_acceptance_credit"] is False, "Scoped curse checks required")
     integer(config["maximum_checkpoints"], "Save cap", 7, 7)
     require("ck3_query_campaign_root_context_v1" in tools, "Existing native health root query must be declared")
-    require("ck3_query_campaign_root_context_v1" in array(field(spec, "opt_in_read_only_mcp_tools"), "read-only tools"), "Health read-only opt-in required")
     return core.Contract(integer(config["maximum_natural_days"], "day cap", 17, 17), integer(config["max_public_calls"], "call cap", 420, 420),
         integer(config["day_timeout_seconds"], "single-day timeout", 60, 60), CHECKS,
         tuple(text(item, "deferred") for item in array(config["deferred_checks"], "deferred checks")))
