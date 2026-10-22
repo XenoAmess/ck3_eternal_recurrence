@@ -1,0 +1,180 @@
+{
+  "original_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\curse-representative-a01\\result.json",
+    "bytes": 6599,
+    "sha256": "f5c1191eb25d9c447046138e3b8aa39368ac2e14fca535285a43b9cce0d40815"
+  },
+  "receipt": {
+    "schema": "living-artifacts-curse-representative-offline-regression-v1",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "started_at_utc": "2026-10-22T17:01:00.769923+00:00",
+    "finished_at_utc": "2026-10-22T17:01:52.284822+00:00",
+    "sources_before": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_curse_fixture.py",
+        "bytes": 6684,
+        "sha256": "bcc14a1b587b3c30159cbd6ba1394e99c841059b0d10751cee97d9936521eef7"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative_acceptance_adapter.py",
+        "bytes": 39775,
+        "sha256": "175a825f69f817c11d9e3e2c970f75f2d90d1947d84eff615d54713d89c8c805"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_curse_representative_acceptance_adapter.py",
+        "bytes": 17985,
+        "sha256": "36d37f7cde360deb8f17722dce80010b238760e224916533bce6762942938892"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative.contract.json",
+        "bytes": 1096,
+        "sha256": "c1a8c5b859ce14001c0230ccf4417996c5dc803e1ce987f56cb3a7f7ce434f0f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative.registry_stanza.json",
+        "bytes": 2771,
+        "sha256": "1e0467a9fee4c5e77a4832f434f397ea5b5de6338c112e8310d4b91cbaad8984"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\curse-representative-acceptance.md",
+        "bytes": 5044,
+        "sha256": "8d3cbc8da60d45b5954636f95e632551e4f566ea22eedad4a13d14747ed409d4"
+      }
+    ],
+    "sources_after": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_curse_fixture.py",
+        "bytes": 6684,
+        "sha256": "bcc14a1b587b3c30159cbd6ba1394e99c841059b0d10751cee97d9936521eef7"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative_acceptance_adapter.py",
+        "bytes": 39775,
+        "sha256": "175a825f69f817c11d9e3e2c970f75f2d90d1947d84eff615d54713d89c8c805"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_curse_representative_acceptance_adapter.py",
+        "bytes": 17985,
+        "sha256": "36d37f7cde360deb8f17722dce80010b238760e224916533bce6762942938892"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative.contract.json",
+        "bytes": 1096,
+        "sha256": "c1a8c5b859ce14001c0230ccf4417996c5dc803e1ce987f56cb3a7f7ce434f0f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative.registry_stanza.json",
+        "bytes": 2771,
+        "sha256": "1e0467a9fee4c5e77a4832f434f397ea5b5de6338c112e8310d4b91cbaad8984"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\curse-representative-acceptance.md",
+        "bytes": 5044,
+        "sha256": "8d3cbc8da60d45b5954636f95e632551e4f566ea22eedad4a13d14747ed409d4"
+      }
+    ],
+    "sources_stable": true,
+    "checks": {
+      "tests": {
+        "command": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "mod_living_artifacts/tools",
+          "-p",
+          "test_curse_representative_acceptance_adapter.py",
+          "-v"
+        ],
+        "started_at_utc": "2026-10-22T17:01:00.771723+00:00",
+        "finished_at_utc": "2026-10-22T17:01:51.850436+00:00",
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\curse-representative-a01\\tests.stdout.txt",
+          "bytes": 8125,
+          "sha256": "28d9ad062ea48648d293c8e7da1035687595e164a3fb335645744d6be97680b4"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\curse-representative-a01\\tests.stderr.txt",
+          "bytes": 1860,
+          "sha256": "c0a31ae0c635459d316f7409520c38752c9cc9ab97f615029854042ec59c48ff"
+        }
+      },
+      "strict": {
+        "command": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_curse_fixture.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_curse_representative_acceptance_adapter.py"
+        ],
+        "started_at_utc": "2026-10-22T17:01:00.772190+00:00",
+        "finished_at_utc": "2026-10-22T17:01:10.884818+00:00",
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\curse-representative-a01\\strict.stdout.txt",
+          "bytes": 44,
+          "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\curse-representative-a01\\strict.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "actual_scope": "8 targeted tests and 3 full new modules strict; no whole-product rerun",
+    "runtime_status": "NOT_RUN",
+    "business_pass": false,
+    "release_pass": false,
+    "storage": {
+      "policy": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+        "bytes": 4022,
+        "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+      },
+      "observed_at_utc": "2026-10-22T17:01:00.769923+00:00",
+      "capacity_before": [
+        {
+          "volume": "C:/",
+          "total_bytes": 512109137920,
+          "free_bytes": 237517926400,
+          "safety_bytes": 21474836480
+        },
+        {
+          "volume": "D:/",
+          "total_bytes": 500105216000,
+          "free_bytes": 443653128192,
+          "safety_bytes": 21474836480
+        }
+      ],
+      "estimated_output_bytes": 131072,
+      "deleted_files": 0,
+      "review_due_at_utc": "2027-04-20T17:01:52.285415+00:00"
+    }
+  },
+  "source_normalizations_after_tests": [
+    {
+      "original": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative_acceptance_adapter.py",
+        "bytes": 39775,
+        "sha256": "175a825f69f817c11d9e3e2c970f75f2d90d1947d84eff615d54713d89c8c805"
+      },
+      "final": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\curse_representative_acceptance_adapter.py",
+        "bytes": 39774,
+        "sha256": "b866e659eb7ed702ea9b9f437bbdb6e769ead12b4a1bc41419f1c2de318c8c5e"
+      },
+      "change": "Remove extra blank line at EOF; identical complete Python AST"
+    }
+  ],
+  "public_registration": "Appended the exact standalone stanza; actual public plan/prepare/live remain NOT_RUN"
+}
