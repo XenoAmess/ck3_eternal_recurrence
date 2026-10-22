@@ -1,12 +1,12 @@
 # 喂养预览实机操作说明
 
-2026-10-22。`feeding_preview` 已接入[公共产品入口](../../tools/ck3_mod_acceptance_products.json)，本文是下一独立场次的操作说明，**不是实机通过记录**。规范来自[当前 adapter](../tools/preview_acceptance_adapter.py)与[固定合同](../tools/feeding_preview.contract.json)。此前 R8 的预览显示0、实际仍到账，以及镇压 tooltip 缺序号错误，见[R8记录](runtime-r8-continuous-growth-and-feeding.md)；不能用离线修复直接追认界面通过。
+2026-10-23。`feeding_preview` 已接入[公共产品入口](../../tools/ck3_mod_acceptance_products.json)，本文是下一独立场次的操作说明，**不是实机通过记录**。规范来自[当前 adapter](../tools/preview_acceptance_adapter.py)与[固定合同](../tools/feeding_preview.contract.json)。此前 R8 的预览显示0、实际仍到账，以及镇压 tooltip 缺序号错误，见[R8记录](runtime-r8-continuous-growth-and-feeding.md)；不能用离线修复直接追认界面通过。
 
 ## 场次与自动流程
 
 按[公共执行合同](acceptance-execution-contract.md)准备并选择 `product=living-artifacts`、`case=feeding_preview`。当场绑定实际机器、run、运行时 manifest、冻结产品源码、正式 staging 与初始 fixture。不要改正在运行的 NPC 场次或借用它的通过事实；同机 CK3 继续排他。普通开发和测试保持 Steam 离线，实际启动前使用当场新鲜的后台离线回执。
 
-该 case 固定 **0个自然日、最多180次公共调用、5次实际 Save、5次 Root 原图审阅**；注册预算为 `hold_seconds=2700`、`timeout=4500`、`readiness_timeout=1200`，正常退出保留180秒。沿用已有 core 初始输入：1066.9.15，目标未装备、1级/92经验、`pending=0`、`growth_sequence=0`，食性为盔甲，四件材料均为剑，因此本场没有食性加成。物品和人物 ID 从本场实际读回取得，不能填写旧场次 ID。
+该 case 固定 **0个自然日、最多180次公共调用、5次实际 Save、5次 Root 原图审阅**；未来新场注册预算为 `hold_seconds=7200`、`timeout=8400`、`readiness_timeout=1200`，正常退出保留180秒。这为五次截图/人工审阅、五次保存解析和原生操作预留整场时间；一经启动仍使用原固定hold，不因单次请求延长，也不修改旧场次预算。沿用已有 core 初始输入：1066.9.15，目标未装备、1级/92经验、`pending=0`、`growth_sequence=0`，食性为盔甲，四件材料均为剑，因此本场没有食性加成。物品和人物 ID 从本场实际读回取得，不能填写旧场次 ID。
 
 adapter 使用共享 Session 自动完成：初始 Save/严格 melt 读回 → 原生装备 → 普通管理决议 → `xalw.12` → `xalw.10` → `xalw.11`。Root 审阅期间只取得并直视当前原始 PNG，然后写审阅回执；**不要替 adapter 点击喂养、取消或确认**。
 
@@ -51,6 +51,7 @@ response = produce_preview_review(
     awaiting.resolve(),
     manifest=read(runtime_manifest.resolve()),
     reviewer=actual_reviewer,
+    reviewed_at_utc=actual_direct_review_operation_utc,
     screenshot=original_png.resolve(),
     capture=capture_json.resolve(),
     displayed_base_xp=observed_base,
@@ -86,7 +87,9 @@ Pin 使用规范绝对路径、实际字节数和 SHA-256。数值 ID/序号拒�
 - `image.path/bytes/sha256/width/height`，以及 `desktop.width/height`；宽高从原 PNG 和实际桌面取得，彼此一致，不预设分辨率或缩放比例。
 - `foreground.pid`对应请求中的实际 CK3 PID。
 
-时间须满足 `requested_at_utc ≤ capture.observed_at_utc ≤ reviewed_at_utc`，一次审阅最多180秒。producer 校验图像、capture与请求，消费方再次校验，并通过原生查询确认**同一个事件实例、人物与日期仍在显示**。同一张旧截图不能用于后续新请求。Root 的声明仅证明目视内容，不证明材料已消失或经验已到账。
+时间须满足 `requested_at_utc ≤ capture.observed_at_utc ≤ reviewed_at_utc`。人工审阅没有额外的request-age秒数期限；新鲜度由原固定场次hold/退出预留与消费前的独立原生后验共同决定。`reviewed_at_utc`仍是producer明确必填参数，表达实际目视审阅操作的可核实原始时刻，允许传输或写回晚于该操作；不能拿延迟执行时刻代替，也不能猜测回填或填未来时间。原图工具返回本身只证明图片已返回，仍需Root实际直视内容并明确`direct_reviewed=true`，同时保全原图、查看调用/完成行及审阅声明的真实出处；不把查看完成行改称writer调用。生产执行当下仍检查原hold与退出预留。producer 校验图像、capture与请求，消费方再次校验，并通过原生查询确认**同一个事件实例、PID/连接代次、人物、日期和实际可用确认选项仍在显示**。同一张旧截图不能用于后续新请求。Root 的声明仅证明目视内容，不证明材料已消失或经验已到账。
+
+R11旧失败保留：`machine_id: pc-20260924rtuf-f11af23c08`，实际request02时刻为`2026-10-22T15:38:44.256059+00:00`，PNG捕获为`15:42:13.442942+00:00`，仅等到捕获已过去209.186883秒，因此旧consumer固定180秒规则必然拒绝。两份原件的来源Pin及摘录时间保存在[回归时间样本](../tools/fixtures/r11_preview_request02_timing.json)，其中没有已知的真实review时间就明确保留`null`。R11仍为BLOCKED、未喂养、正常Quit未完成；本修复不修改c13/c14冻结树、不重写旧请求/回执或预算，不把未来消费者通过追认为R11通过。
 
 ## 结束与排除面
 

@@ -264,13 +264,16 @@ def _root_request(path: Path, *, manifest: object, reviewer: str, reviewed_at_ut
     return parse_request({key: raw[key] for key in PreviewRequest.__required_keys__}, manifest=manifest)
 
 
-def produce_preview_review(request_path: Path, *, manifest: object, reviewer: str, screenshot: Path, capture: Path,
+def produce_preview_review(request_path: Path, *, manifest: object, reviewer: str, reviewed_at_utc: str, screenshot: Path, capture: Path,
                            displayed_base_xp: int, displayed_preview_xp: int, displayed_material_name: str, direct_reviewed: bool) -> PreviewResponse:
-    """Root consumes the real awaiting file after directly viewing its PNG."""
-    reviewed = utc_now()
+    """Use the actual direct-review operation time, not later dispatch time."""
+    reviewed, producing = text(reviewed_at_utc, "actual direct-review operation UTC"), utc_now()
+    require(stamp(reviewed) <= stamp(producing), "Actual direct-review UTC cannot be in the future")
     require(direct_reviewed is True, "Root must explicitly attest direct original-PNG review")
     require(isinstance(screenshot, Path) and isinstance(capture, Path) and screenshot.is_file() and capture.is_file(), "Actual original PNG and capture Paths required")
-    body = _root_request(request_path, manifest=manifest, reviewer=text(reviewer, "reviewer"), reviewed_at_utc=reviewed)
+    # The original hold/normal-Quit reserve remains a current production guard.
+    # An earlier review operation cannot authorize writing past that deadline.
+    body = _root_request(request_path, manifest=manifest, reviewer=text(reviewer, "reviewer"), reviewed_at_utc=producing)
     response = PreviewResponse(**_fields(body), schema="living-artifacts-feeding-preview-review-v1", reviewer=text(reviewer, "reviewer"), status="reviewed", reviewed_at_utc=reviewed,
         screenshot=pin(screenshot), capture=pin(capture), displayed_base_xp=integer(displayed_base_xp, "observed base XP"),
         displayed_preview_xp=integer(displayed_preview_xp, "observed preview XP"), displayed_material_name=text(displayed_material_name, "observed material name"), root_request=pin(request_path), direct_reviewed=True)
@@ -289,7 +292,9 @@ def _review_artifacts(row: PreviewResponse) -> None:
     for value in (saved_image, mapping(field(actual, "desktop"), "captured desktop")):
         require((integer(value["width"], "capture width", 1), integer(value["height"], "capture height", 1)) == size, "Original PNG geometry differs")
     requested, captured, reviewed = stamp(row["requested_at_utc"]), stamp(field(actual, "observed_at_utc")), stamp(row["reviewed_at_utc"])
-    require(requested <= captured <= reviewed and (reviewed - requested).total_seconds() <= 180, "PNG is stale or outside this event review")
+    # Human review has no business request-age deadline. The original scene
+    # hold/close reserve and independent same-event native query own freshness.
+    require(requested <= captured <= reviewed, "PNG is outside this event review chronology")
 
 
 def parse_review(value: object, *, request: object, manifest: object, reviewer: str) -> PreviewResponse:

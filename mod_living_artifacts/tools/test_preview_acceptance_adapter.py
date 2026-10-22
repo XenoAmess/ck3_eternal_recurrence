@@ -4,7 +4,7 @@ These offline fixtures are never screenshots, saves or acceptance from CK3.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import sys
@@ -30,6 +30,7 @@ from test_management_contracts import displayed_option, event_fixture
 from test_native_interruption_contract import PublicCheckpointPort, RootCheckpointConsumer
 from test_npc_acceptance_adapter import AuthoredCasePort
 from test_npc_saved_observer import variable
+from checkpoint_producer import stamp
 
 TOOLS = Path(__file__).resolve().parent
 
@@ -82,7 +83,8 @@ def authored_save(feeds: int) -> str:
 class PreviewPort(AuthoredCasePort):
     """Only CK3/native/pixels are authored; Session and file pipeline are real."""
     def __init__(self, context: Object, *, wrong_preview: bool = False, keep_material: bool = False,
-                 error_log: bytes = b"", cancel_consumes: bool = False, drift_after_review: bool = False) -> None:
+                 error_log: bytes = b"", cancel_consumes: bool = False, drift_after_review: bool = False,
+                 review_delay: timedelta = timedelta(0)) -> None:
         super().__init__(context)
         self.feeds = 0
         self.equipped = False
@@ -92,6 +94,7 @@ class PreviewPort(AuthoredCasePort):
         self.wrong_preview, self.keep_material = wrong_preview, keep_material
         self.cancel_consumes, self.drift_after_review = cancel_consumes, drift_after_review
         self.canceled_consumed = False
+        self.review_delay = review_delay
         logs = self.state / "profile/logs"
         logs.mkdir(exist_ok=True)
         (logs / "error.log").write_bytes(error_log)
@@ -178,11 +181,14 @@ class PreviewPort(AuthoredCasePort):
         self.reviews += 1
         screenshot = self.output / (name + ".png")
         png(screenshot, 64, 48)
-        capture = write_once(self.output / (name + ".capture.json"), {"machine_id": "unit-machine", "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+        captured = datetime.now(timezone.utc) + self.review_delay
+        capture = write_once(self.output / (name + ".capture.json"), {"machine_id": "unit-machine", "observed_at_utc": captured.isoformat(),
             "image": {**pin(screenshot), "width": 64, "height": 48}, "desktop": {"width": 64, "height": 48}, "foreground": {"pid": 124}, "gameplay_pass_claimed": False})
-        response = preview.produce_preview_review(awaiting, manifest=self.manifest, reviewer="unit-root", screenshot=screenshot, capture=Path(capture["path"]),
-            displayed_base_xp=integer(request["expected_base_xp"], "expected authored base"),
-            displayed_preview_xp=0 if self.wrong_preview else integer(request["expected_preview_xp"], "expected authored preview"), displayed_material_name="Authored material", direct_reviewed=True)
+        reviewed = max(captured, datetime.now(timezone.utc))
+        with patch.object(preview, "utc_now", return_value=reviewed.isoformat()):
+            response = preview.produce_preview_review(awaiting, manifest=self.manifest, reviewer="unit-root", reviewed_at_utc=reviewed.isoformat(), screenshot=screenshot, capture=Path(capture["path"]),
+                displayed_base_xp=integer(request["expected_base_xp"], "expected authored base"),
+                displayed_preview_xp=0 if self.wrong_preview else integer(request["expected_preview_xp"], "expected authored preview"), displayed_material_name="Authored material", direct_reviewed=True)
         write_once(self.output / (name + "-root-result.json"), response)
 
     def log_bytes(self, name: str = "debug.log", maximum: int = 64 * 1024 * 1024) -> bytes:
@@ -207,10 +213,10 @@ class ReviewRoot(PublicCheckpointPort):
 
 
 def run_fixture(root: Path, *, wrong_preview: bool = False, keep_material: bool = False, error_log: bytes = b"",
-                cancel_consumes: bool = False, drift_after_review: bool = False) -> tuple[Object, Object, PreviewPort]:
+                cancel_consumes: bool = False, drift_after_review: bool = False, review_delay: timedelta = timedelta(0)) -> tuple[Object, Object, PreviewPort]:
     context = context_fixture(root)
     port = PreviewPort(context, wrong_preview=wrong_preview, keep_material=keep_material, error_log=error_log,
-        cancel_consumes=cancel_consumes, drift_after_review=drift_after_review)
+        cancel_consumes=cancel_consumes, drift_after_review=drift_after_review, review_delay=review_delay)
     binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
     with patch.object(StartupActorBinding, "parse", return_value=binding):
         result = preview.run_case(context, port)
@@ -318,22 +324,85 @@ class PreviewAcceptanceTests(unittest.TestCase):
                 changed = port.output / f"changed-{index}-awaiting.json"
                 write_once(changed, {**root_request, **changes})
                 with self.subTest(changes=changes), self.assertRaises(ValueError):
-                    preview.produce_preview_review(changed, manifest=port.manifest, reviewer="unit-root", screenshot=screenshot, capture=capture,
+                    preview.produce_preview_review(changed, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=datetime.now(timezone.utc).isoformat(), screenshot=screenshot, capture=capture,
                         displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
             with self.assertRaises(ValueError):
-                preview.produce_preview_review(request_path, manifest=port.manifest, reviewer="unit-root", screenshot=screenshot, capture=capture,
+                preview.produce_preview_review(request_path, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=datetime.now(timezone.utc).isoformat(), screenshot=screenshot, capture=capture,
                     displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=False)
             later_request = Path(str(field(field(second["response"], "root_request"), "path")))
-            with self.assertRaisesRegex(ValueError, "stale"):
-                preview.produce_preview_review(later_request, manifest=port.manifest, reviewer="unit-root", screenshot=screenshot, capture=capture,
+            with self.assertRaisesRegex(ValueError, "chronology"):
+                preview.produce_preview_review(later_request, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=datetime.now(timezone.utc).isoformat(), screenshot=screenshot, capture=capture,
                     displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
             original_capture = read(capture)
             capture_changes: tuple[Object, ...] = ({"machine_id": "other"}, {"foreground": {"pid": 125}}, {"desktop": {"width": 64.0, "height": 48}})
             for index, change in enumerate(capture_changes):
                 changed_capture = write_once(port.output / f"foreign-capture-{index}.json", {**original_capture, **change})
                 with self.subTest(change=change), self.assertRaises(ValueError):
-                    preview.produce_preview_review(request_path, manifest=port.manifest, reviewer="unit-root", screenshot=screenshot, capture=Path(changed_capture["path"]),
+                    preview.produce_preview_review(request_path, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=datetime.now(timezone.utc).isoformat(), screenshot=screenshot, capture=Path(changed_capture["path"]),
                         displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
+            # R11: a timely direct-review operation was written back much later.
+            # Keep the real earlier time; neither wire nor consumer changes.
+            reviewed = str(response["reviewed_at_utc"])
+            reviewed_time = datetime.fromisoformat(reviewed.replace("Z", "+00:00"))
+            delayed = reviewed_time + timedelta(seconds=240)
+            with patch.object(preview, "utc_now", return_value=delayed.isoformat()):
+                actual = preview.produce_preview_review(request_path, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=reviewed,
+                    screenshot=screenshot, capture=capture, displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
+                self.assertEqual(actual["reviewed_at_utc"], reviewed)
+                self.assertEqual(preview.parse_review(actual, request=first["request"], manifest=port.manifest, reviewer="unit-root"), actual)
+                for invalid in ((delayed + timedelta(seconds=1)).isoformat(), "", "not-a-date",
+                        (datetime.fromisoformat(str(original_capture["observed_at_utc"]).replace("Z", "+00:00")) - timedelta(seconds=1)).isoformat()):
+                    with self.subTest(invalid_review_time=invalid), self.assertRaises(ValueError):
+                        preview.produce_preview_review(request_path, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=invalid, screenshot=screenshot,
+                            capture=capture, displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
+                near_close = port.output / "near-close-awaiting.json"
+                write_once(near_close, {**root_request, "original_hold_deadline": delayed.timestamp() + 100})
+                with self.assertRaisesRegex(ValueError, "reserve"):
+                    preview.produce_preview_review(near_close, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=reviewed, screenshot=screenshot,
+                        capture=capture, displayed_base_xp=80, displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
+
+    def test_r11_actual_request02_age_preserves_same_event_and_real_hold_boundaries(self) -> None:
+        # Only these observed times are historical R11 facts. The following
+        # native/pixel/payment state is authored; it grants no R11 retry or PASS.
+        timing = read(TOOLS / "fixtures/r11_preview_request02_timing.json")
+        self.assertEqual(timing["machine_id"], "pc-20260924rtuf-f11af23c08")
+        self.assertEqual(timing["requested_at_utc"], "2026-10-22T15:38:44.256059+00:00")
+        self.assertEqual(timing["captured_at_utc"], "2026-10-22T15:42:13.442942+00:00")
+        self.assertIsNone(timing["actual_reviewed_at_utc"])
+        self.assertFalse(timing["retroactive_gameplay_credit"])
+        delay = stamp(timing["captured_at_utc"]) - stamp(timing["requested_at_utc"])
+        self.assertEqual(delay, timedelta(seconds=209, microseconds=186883))
+        self.assertGreater(delay.total_seconds(), 180)
+        for drift in (False, True):
+            with self.subTest(event_drift=drift), tempfile.TemporaryDirectory() as temporary:
+                context, result, port = run_fixture(Path(temporary), review_delay=delay, drift_after_review=drift)
+                if drift:
+                    self.assertEqual(result["status"], "BLOCKED")
+                    self.assertEqual(port.feeds, 0)
+                else:
+                    self.assertEqual(result["status"], "PASS", result.get("error"))
+                    self.assertEqual((port.reviews, port.saves, port.feeds, port.day), (5, 5, 4, 0))
+                self.assertEqual(preview.verify_case(context), result)
+        # Use exact original request/capture timestamps in a new authored
+        # producer input. A separately authored review time stays explicit.
+        with tempfile.TemporaryDirectory() as temporary:
+            _, result, port = run_fixture(Path(temporary))
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            envelope = read(port.output / "preview-review-01.json")
+            response = mapping(envelope["response"], "response")
+            original = read(Path(str(field(response["root_request"], "path"))))
+            awaiting = port.output / "r11-timing-authored-awaiting.json"
+            write_once(awaiting, {**original, "requested_at_utc": timing["requested_at_utc"], "original_hold_deadline": timing["original_hold_deadline"]})
+            old_capture = read(Path(str(field(response["capture"], "path"))))
+            capture = write_once(port.output / "r11-timing-authored-capture.json", {**old_capture, "observed_at_utc": timing["captured_at_utc"]})
+            authored_review = stamp(timing["captured_at_utc"]) + timedelta(seconds=1)
+            producing = authored_review + timedelta(minutes=4)
+            with patch.object(preview, "utc_now", return_value=producing.isoformat()):
+                reviewed = preview.produce_preview_review(awaiting, manifest=port.manifest, reviewer="unit-root", reviewed_at_utc=authored_review.isoformat(),
+                    screenshot=Path(str(field(response["screenshot"], "path"))), capture=Path(capture["path"]), displayed_base_xp=80,
+                    displayed_preview_xp=80, displayed_material_name="Authored material", direct_reviewed=True)
+                request = {key: read(awaiting)[key] for key in preview.PreviewRequest.__required_keys__}
+                self.assertEqual(preview.parse_review(reviewed, request=request, manifest=port.manifest, reviewer="unit-root"), reviewed)
 
     def test_saved_projection_rejects_false_equal_numbers_and_pass_needs_journal(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
