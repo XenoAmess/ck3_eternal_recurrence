@@ -527,5 +527,71 @@ class WorkflowTests(unittest.TestCase):
         self.assertFalse(any(row["args"].get("operation") == "confirm" for row in client.calls))
 
 
+    def test_v2_natural_clock_capability_query_precedes_start_and_failed_capability_blocks_start(self) -> None:
+        class CapabilityClient(Client):
+            def __init__(self, output: Path, *, supported: bool) -> None:
+                super().__init__()
+                self.output = output
+                self.supported = supported
+
+            def execute_plan(self, steps: list[dict[str, object]], name: str) -> list[dict[str, object]]:
+                if steps[0]["tool"] != "ck3_get_capabilities":
+                    return super().execute_plan(steps, name)
+                self.calls.append(deepcopy(steps[0]))
+                if self.started:
+                    raise AssertionError("Capability query occurred after the sole Start")
+                value = {"action_steps": ["life-advance"] if self.supported else [],
+                    "composite_action_steps": ["life-advance"] if self.supported else [],
+                    "current_event_window_context_v1_query_supported": True}
+                row = {"id": name, "ok": True, "result": value, "after_snapshot": frame()}
+                (self.output / (name + ".actual-results.json")).write_text(
+                    json.dumps({"rows": [row]}), encoding="utf-8")
+                return [row]
+
+        for supported in (False, True):
+            with self.subTest(supported=supported), tempfile.TemporaryDirectory() as temp:
+                ctx = context()
+                ctx["case"] = ADAPTER.MECHANISM_CASE
+                ctx["case_contract"].update(case=ADAPTER.MECHANISM_CASE,
+                    schema="faith-engine-e02-pilgrimage-mechanism-case-v2", expected_faith_id=13,
+                    expected_rite_id=0, option_key="pilgrimage_type_pious")
+                ctx["case_contract"]["policy"]["natural_advance_mode"] = "native_horizon"
+                ctx["case_spec"]["required_mcp_tools"].extend(["ck3_get_capabilities", "ck3_execute_step"])
+                client = CapabilityClient(Path(temp), supported=supported)
+                received: list[object] = []
+
+                def continuation(*args: object, natural_capabilities: object = None) -> dict[str, object]:
+                    received.append(natural_capabilities)
+                    return {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False}
+
+                ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else
+                    SimpleNamespace(observe_milestone=lambda *args, **kwargs: None, run_journey=continuation))
+                result = ADAPTER.run_case(ctx, client)
+                self.assertEqual(client.calls[0]["tool"], "ck3_get_capabilities")
+                self.assertEqual(len(self.starts(client)), 1 if supported else 0)
+                self.assertEqual(len(received), 1 if supported else 0)
+                if supported:
+                    self.assertEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+                    actual = json.loads((Path(temp) / "ordinary-pilgrimage-natural-clock-capabilities.actual-results.json").read_text())
+                    self.assertEqual(received[0], actual["rows"][0]["result"])
+                else:
+                    self.assertIn("unavailable", result["failure"])
+
+    def test_natural_clock_mode_and_required_tools_are_validated_before_original_work(self) -> None:
+        for mode in (True, 1.0, None, "automatically"):
+            ctx = context()
+            ctx["case_contract"]["policy"]["natural_advance_mode"] = mode
+            with self.subTest(mode=mode), self.assertRaises(ValueError):
+                ADAPTER.validate_contract(ctx)
+        ctx = context()
+        ctx["case"] = ADAPTER.MECHANISM_CASE
+        ctx["case_contract"].update(case=ADAPTER.MECHANISM_CASE,
+            schema="faith-engine-e02-pilgrimage-mechanism-case-v2", expected_faith_id=13,
+            expected_rite_id=0, option_key="pilgrimage_type_pious")
+        ctx["case_contract"]["policy"]["natural_advance_mode"] = "native_horizon"
+        with self.assertRaisesRegex(ValueError, "actual public capability query"):
+            ADAPTER.validate_contract(ctx)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -46,7 +46,8 @@ def sibling(path, name):
 
 
 def validate_contract(context: JSONObject) -> JSONObject:
-    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_identity, pilgrimage_policy_caps
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+        pilgrimage_identity, pilgrimage_policy_caps, pilgrimage_natural_advance_mode)
     c = obj(context["case_contract"], "pilgrimage case contract")
     identity = pilgrimage_identity(c)
     caps = pilgrimage_policy_caps(identity.case)
@@ -70,6 +71,9 @@ def validate_contract(context: JSONObject) -> JSONObject:
                 "Only the v2 mechanism case can explicitly opt in to an original continuation save")
     require(c.get("machine_id") not in {None, "", "unknown"}, "Explicit executing machine required")
     policy = obj(c.get("policy", {}), "pilgrimage finite policy")
+    if pilgrimage_natural_advance_mode(identity.case, policy) == "native_horizon":
+        require({"ck3_get_capabilities", "ck3_execute_step"} <= set(spec.get("required_mcp_tools", [])),
+                "Native horizon requires its actual public capability query and existing execute tool")
     preferred = c.get("preferred_destination_id")
     require(preferred is None or type(preferred) is int and 0 < preferred < 2**32-1,
             "Optional preferred destination must be a positive full province ID")
@@ -332,7 +336,8 @@ def require_planner(value: JSONObject, stage: int, province: int | None = None,
 
 
 def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
-    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_identity
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+        pilgrimage_identity, pilgrimage_natural_advance_mode, require_pilgrimage_natural_capabilities)
     c = validate_contract(context)
     mechanism = pilgrimage_identity(c)
     policy = obj(c["policy"], "finite policy")
@@ -353,7 +358,28 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
         "absence_is_completion": False, "business_pass": False, "product_release_pass": False,
         "milestone_observations": milestone_observations}
     planner = Planner(context, client, binding, before["date_raw"])
+    natural_capabilities: JSONObject | None = None
     try:
+        if pilgrimage_natural_advance_mode(context["case"], policy) == "native_horizon":
+            name = "ordinary-pilgrimage-natural-clock-capabilities"
+            cap_row = client.execute_plan([{"id": name, "tool": "ck3_get_capabilities",
+                "args": {}, "fresh_revision": True}], name)[0]
+            require(cap_row.get("ok") is True and not cap_row.get("error"),
+                    "Original natural-clock capability query failed")
+            natural_capabilities = obj(cap_row.get("result"), "actual natural-clock capabilities")
+            require_pilgrimage_natural_capabilities(natural_capabilities)
+            cap_frame = obj(cap_row.get("after_snapshot"), "actual capability after-frame")
+            require(frame_binding(cap_frame, context, mechanism.actor_character_id) == binding
+                    and cap_frame.get("date_raw") == before["date_raw"],
+                    "Natural-clock capability observation crossed the paused native owner/date")
+            before = cap_frame
+            cap_path = client.output / (name + ".actual-results.json")
+            cap_raw = cap_path.read_bytes()
+            result["natural_clock_capability_observation"] = {
+                "mode": "native_horizon", "life_advance_composite_observed": True,
+                "typed_event_observer_observed": True,
+                "source": {"path": str(cap_path), "bytes": len(cap_raw),
+                    "sha256": hashlib.sha256(cap_raw).hexdigest()}}
         before = drain_if_needed(context, client, binding, before)
         require(frame_binding(before, context, mechanism.actor_character_id) == binding,
                 "Initial interruption changed original actor or native owner")
@@ -512,7 +538,12 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
             "native_ledger_state_reconciled": ledger_reconciled, "next_action": "Finish start take, then natural journey"})
         journey = sibling(Path(__file__).with_name("faith_e02_pilgrimage_journey.py"), "_faith_e02_pilgrimage_journey")
         limits = journey_limits(policy)
-        journey_result = obj(journey.run_journey(context, client, binding, identity, limits), "journey result")
+        if natural_capabilities is None:
+            journey_value = journey.run_journey(context, client, binding, identity, limits)
+        else:
+            journey_value = journey.run_journey(context, client, binding, identity, limits,
+                natural_capabilities=natural_capabilities)
+        journey_result = obj(journey_value, "journey result")
         result["journey"] = journey_result
         result["status"] = journey_result["status"]
         if (context["case"] == MECHANISM_CASE and obj(c.get("scope", {}), "case scope").get("new_save_allowed") is True
