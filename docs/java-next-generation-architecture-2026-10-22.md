@@ -226,7 +226,7 @@ HTTP 客户端断开不代表动作取消；后台动作仍由 authority 结算�
 
 ### 统一 ProcessRunner 与 custody
 
-进程启动使用明确 EXE、参数数组、cwd、环境增量、Job/超时和受限日志；避免拼 shell 字符串。Maven 的 Windows `.cmd` 调用集中在一处经过真实回归的薄 launcher，传递实际 `%errorlevel%`。内存限制覆盖 vendor 的 `java -version` 探测和全部后代，不能仅给 Maven 主 JVM 设置 heap；实际 Job 峰值与命令成功分别验收。项目不新增 PowerShell 入口。
+进程启动使用明确 EXE、参数数组、cwd、环境增量、Job/超时和受限日志；避免拼 shell 字符串。Maven 的 Windows `.cmd` 调用集中在一处经过真实回归的薄 launcher，传递实际 `%errorlevel%`。内存限制覆盖 vendor 的 `java -version` 探测和全部后代，不能仅给 Maven 主 JVM 设置 heap；实际 Job 峰值与命令成功分别验收。项目不新增受禁的脚本引擎入口。
 
 `ProcessResult` 分别记录启动失败、真实 PID/出生/EXE、child exit、超时/终止原因、Job 后态、stdout/stderr 引用；Task registration/run ACK 是另一个字段。只有前一步真实终态满足条件才启动后一步。系统进程、Task、录制、游戏和 SDK 各有唯一 owner，owner 变更需旧持有者真实释放与新 generation。
 
