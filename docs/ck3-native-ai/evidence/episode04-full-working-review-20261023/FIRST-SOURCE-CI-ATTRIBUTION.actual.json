@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.source-CI-narrow-attribution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:21:21.734750+00:00",
+  "HEAD": "06d3102baa5f8f56c9973da24f7f833a8d1011a0",
+  "run": 39853398947,
+  "job": 120085223604,
+  "failed_step": 40,
+  "conclusion": "failure",
+  "exact_error_lines": [
+    "2026-10-22T21:17:14.8589740Z Exception in thread \"main\" java.lang.IllegalStateException: java.io.UncheckedIOException: java.nio.file.NoSuchFileException: D:\\a\\_temp\\java-control-ci\\scratch\\junit-5243502450909180773\\packaged-source-7515136329748147399\\classes\\org\\xar\\ck3\\control\\contracts",
+    "2026-10-22T21:17:14.8591630Z \tat org.xar.ck3.control.build.CiBootstrap.main(CiBootstrap.java:346)",
+    "2026-10-22T21:17:14.8840632Z ##[error]Process completed with exit code 1."
+  ],
+  "bounded_log": {
+    "path": "C:/ck3-e04-resume-20261023-a01/publication/CI-JAVA-TAIL-64K.actual-a01.log",
+    "bytes": 65536,
+    "sha256": "1f1bdd7e75817e542add7d234c00ed7bd30d77665a72bbfb7d096df99fb17422",
+    "range": "bytes185404-250939/250940",
+    "HTTP206": true
+  },
+  "fixture_reference": {
+    "path": "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/ProjectionDeploymentProofTest.java",
+    "line": 197,
+    "blob": "d50aca98cc0382dbdcb324616a72234f77caebf6",
+    "unchanged_from_parent": true,
+    "purpose": "Creates packaged-source-* temporary class fixture"
+  },
+  "package_changed_paths": [
+    "docs/autonomous-agent-progress/daily/2026-10-23.md",
+    "docs/autonomous-agent-progress/weekly/2026-W43.md",
+    "docs/ck3-native-ai/episode04-20261022-mechanism-rules-12004.md",
+    "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+    "docs/ck3-native-ai/episode04-r0241-r0243-and-core47-source-20261023.md",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/CORE47-EXECUTOR-SOURCE-FREEZE.actual-a02.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/CORE47-SOURCE-FREEZE.actual-a04.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/R0241-R08-SHOT-ACCEPTANCE.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/R0242-REGISTRATION-SOURCE-FREEZE.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/R0243-READY-ONCE-SOURCE-DIFF.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/R0243-READY-ONCE-SOURCE-FREEZE.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/R05-PREPARATION-FINAL-FREEZE-AND-CLOSED.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/ROOT-GAME-CLOSED.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/SOURCE-MANIFEST.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/VALIDATION.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-closed-source-integration-20261023/curated-source-reference.tar.xz",
+    "docs/handover/2026-10-23-war-episode04-vacation-handover.md",
+    "docs/handover/evidence/2026-10-23-war-episode04-vacation-closeout.actual.json"
+  ],
+  "Java_code_or_CI_workflow_modified_by_this_package": false,
+  "inference": "Error is in existing Java build-tools CI scratch/fixture area, not the archived source namespace. No direct source-package code change explains it. Exact underlying temp-directory lifecycle cause remains unconfirmed.",
+  "whole_matrix_or_Maven_rerun": false,
+  "full_job_log_downloaded": false
+}

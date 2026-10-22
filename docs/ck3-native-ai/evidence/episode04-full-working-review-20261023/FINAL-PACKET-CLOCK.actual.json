@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:21:52.215976+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\final\\episode04.full-working-review.mp4",
+    "bytes": 95584711,
+    "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb"
+  },
+  "packet_protocol": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\full-working-review-packets.csv",
+    "bytes": 3096775,
+    "sha256": "33963e413f40394ec5b6d171b5550a277263c6d31f8ad2d311bb683a944f2d33"
+  },
+  "original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\audit\\full-working-review-packet-clock\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1877,
+    "sha256": "f4c2eeeb5f5402339389f01307aed756241f7df6f29d830a7b645dc5fa46798b"
+  },
+  "video_packets": 50138,
+  "audio_packets": 78342,
+  "video_exact_frame_PTS": true,
+  "video_DTS_monotonic": true,
+  "audio_PTS_continuous": true,
+  "audio_end_samples": 80220800,
+  "expected_audio_samples": 80220800,
+  "audio_end_tolerance_samples": 1024
+}

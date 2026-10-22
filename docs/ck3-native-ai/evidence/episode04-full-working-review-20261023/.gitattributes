@@ -1,0 +1,6 @@
+# These copied receipts retain their original CRLF bytes and source SHA.
+FIRST-SOURCE-CI-LOG-RANGE.actual.json -text whitespace=cr-at-eol
+FIRST-SOURCE-CI-TERMINAL.actual.json -text whitespace=cr-at-eol
+ONEDRIVE-CLIENT-FAILED-PROBE.actual-a01.txt -text whitespace=cr-at-eol
+SOURCE-VALIDATION.actual-a04.json -text whitespace=cr-at-eol
+SOURCE-VALIDATION.actual-a05.json -text whitespace=cr-at-eol

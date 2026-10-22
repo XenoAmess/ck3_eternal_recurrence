@@ -1,0 +1,28 @@
+{
+  "schema": "xar.root.e04.full-working-review-clock-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:42:33.898581+00:00",
+  "reviewer": "/root",
+  "actual_diagnostic": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-clock-diagnostic-a01\\DIAGNOSTIC-ACTUAL.json",
+    "bytes": 10585,
+    "sha256": "c714c736ef29a81032c0df9d19988fe3ac7e6f12daf71cd46e1aa121428bfb9b"
+  },
+  "actual_closed": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-clock-diagnostic-a01\\EXECUTOR-OWNER-CLOSED.actual.json",
+    "bytes": 1694,
+    "sha256": "d0f6443b2c47f0669ef345f942fdfa2041ce43b3d195ee5a02cda28518d999a7"
+  },
+  "outer_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-CLOCK-CLI-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1033,
+    "sha256": "b5920f723024d22caca56676b8f86c930bd9f7b7922b059051a1658dd4e9cefb"
+  },
+  "actual_same_shared_implementation_passed": true,
+  "video_exact_PTS0": true,
+  "actual_audio_end_samples": 1891200,
+  "actual_peak_max_dB": -6.736794,
+  "original_children_wait0_Job0": 6,
+  "human1x": false,
+  "signoff": false
+}

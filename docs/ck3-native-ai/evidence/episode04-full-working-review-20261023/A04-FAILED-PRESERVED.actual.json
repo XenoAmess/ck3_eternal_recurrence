@@ -1,0 +1,8 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:09:57.822051+00:00",
+  "diagnostic": "SourceError: Whole audio continuous PTS and aligned end",
+  "completed_cues": 62,
+  "partials_retained": true,
+  "no_retry": true
+}

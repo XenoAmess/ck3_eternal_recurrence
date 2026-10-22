@@ -1,0 +1,120 @@
+{
+  "schema": "xar.e04.fullreview-delivery-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:35:07.073596+00:00",
+  "records_preserved_byte_exact": true,
+  "records": [
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\FULL-WORKING-REVIEW-ACTUAL-METADATA.actual.json",
+      "repository_file": "ACTUAL-MEDIA-METADATA.json",
+      "bytes": 22804,
+      "sha256": "e829973fbf2baac77251a528f5270b4a25769dd761a8d4249d3931b4a67d27e8"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\EXECUTOR-OWNER-CLOSED.actual.json",
+      "repository_file": "FINAL-OWNER-CLOSED.actual.json",
+      "bytes": 11937,
+      "sha256": "7c435ece30746cfb63ffdcb0bd48fb67a5250092ba53a7efcbe0a74baebfa344"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\probes\\full-working-review.actual.json",
+      "repository_file": "FINAL-FULL-DECODE.actual.json",
+      "bytes": 4699,
+      "sha256": "9ddc9894f9b7543f3c6a5ecdeda7d837d585dc363a85ef8e9b454c4492a7d2d0"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\full-working-review-ALL-PACKET-CLOCK.actual.json",
+      "repository_file": "FINAL-PACKET-CLOCK.actual.json",
+      "bytes": 1097,
+      "sha256": "99342b3704aaa290699ede5b93498fd260f47d1d4046e1ac9f30dbcf7d24bcec"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\full-working-review-AUDIO-STATISTICS.actual.json",
+      "repository_file": "FINAL-AUDIO-STATISTICS.actual.json",
+      "bytes": 1046,
+      "sha256": "b9d48d5dbd150675102ab763dfcc38ee6bae7065f1191f98f39a93a8fd0c543f"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-MEDIA-CLI-ORIGINAL-WAIT.actual-a05.json",
+      "repository_file": "ROOT-OUTER-WAIT.actual-a05.json",
+      "bytes": 1038,
+      "sha256": "2c1f9301fdc10aa9338b5c86781b79878e0b18aa9794b8948269543b54263e0a"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULL-WORKING-REVIEW-DELIVERY.actual-a01.json",
+      "repository_file": "ROOT-DELIVERY.actual.json",
+      "bytes": 5276,
+      "sha256": "6d75faa7c4c06b40042a3a323fb4c8e1728dbebfa03af511e7b5a279f0d0f863"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-ONEDRIVE-CLIENT-SYNC.actual-a02.json",
+      "repository_file": "ROOT-ONEDRIVE-CLIENT-SYNC.actual-a02.json",
+      "bytes": 2401,
+      "sha256": "cd42724cae68c388a03bcad27c713562f94e0ed1971123b5e25c1e3c30d1d4ce"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-CLOCK-ACCEPTANCE.actual-a01.json",
+      "repository_file": "ROOT-CLOCK-ACCEPTANCE.actual.json",
+      "bytes": 1135,
+      "sha256": "ca2e82da2213929707ea8da730a4482fc7df2aeb36850cc21aa5aee94631a1c5"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-PREVIEW-ACCEPTANCE.actual-a01.json",
+      "repository_file": "ROOT-PREVIEW-ACCEPTANCE.actual.json",
+      "bytes": 1322,
+      "sha256": "ef3f3c3aec05f941b2cccc0d1e1575fe7b4da9b3d21ce56fb0367204e6791658"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-A04-AUDIO-CLOCK-FAILURE.actual-a01.json",
+      "repository_file": "ROOT-A04-AUDIO-FAILURE.actual.json",
+      "bytes": 3918,
+      "sha256": "bf22e63445db8498ec68737a349c4d35277356f32cfa88ca01efb0be604e3a36"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a03\\FAILED-PRESERVED.actual.json",
+      "repository_file": "A03-FAILED-PRESERVED.actual.json",
+      "bytes": 265,
+      "sha256": "cfc61f5fadee09af33304923d92da26a77f8133770f6a25ec1abe000607b9ea2"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\FAILED-PRESERVED.actual.json",
+      "repository_file": "A04-FAILED-PRESERVED.actual.json",
+      "bytes": 254,
+      "sha256": "6ebb1862e8e7da9612a9d2ef5510d92707f8cbc72de1ac454ec6b6f570ff21b6"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-ONEDRIVE-CLIENT.stdout.actual-a01.txt",
+      "repository_file": "ONEDRIVE-CLIENT-FAILED-PROBE.actual-a01.txt",
+      "bytes": 522,
+      "sha256": "010e2b73ccfd04fed8cbb4614dbb052d8de9b21a7c42f1c824282774f3d24942"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\SOURCE-CI-TERMINAL.actual-a01.json",
+      "repository_file": "FIRST-SOURCE-CI-TERMINAL.actual.json",
+      "bytes": 1008,
+      "sha256": "d720a9d5d351bd0bd46a3fb9adec9efc1091488bbe4533aa4cb9c4c640dbd54e"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\SOURCE-CI-ATTRIBUTION.actual-a01.json",
+      "repository_file": "FIRST-SOURCE-CI-ATTRIBUTION.actual.json",
+      "bytes": 3639,
+      "sha256": "0f1db3e30ba6c2d4f96f2df591445ab46ec34339b51639e8513f2b3063e546ef"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\CI-JAVA-TAIL-SOURCE.actual-a01.json",
+      "repository_file": "FIRST-SOURCE-CI-LOG-RANGE.actual.json",
+      "bytes": 895,
+      "sha256": "72b1e4505fca4c9bc2acb34f06a9878cd33dc868e5e3cd1fffebe768111ac54b"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\CI-RUNNER-IDENTITY-NOTE.actual-a01.json",
+      "repository_file": "FIRST-SOURCE-CI-RUNNER-IDENTITY.actual.json",
+      "bytes": 679,
+      "sha256": "c8537af410f76b7bd42d50d6acec70398abdf8a6f5afaab2a59c6fc68484cde6"
+    }
+  ],
+  "movie_and_QA_media_payloads_copied": false,
+  "old_metadata_sync_pending_preserved": true,
+  "latest_client_sync_record": "ROOT-ONEDRIVE-CLIENT-SYNC.actual-a02.json",
+  "independent_remote_download_sha256": null
+}

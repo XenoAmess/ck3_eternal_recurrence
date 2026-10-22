@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.CI-bounded-log-excerpt.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:19:42.792199+00:00",
+  "run": 39853398947,
+  "job": 120085223604,
+  "API_source": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/120085223604/logs",
+  "download_host": "productionresultssa14.blob.core.windows.net",
+  "signed_URL_not_retained": true,
+  "auth_not_forwarded_to_storage": true,
+  "content_type": "text/plain",
+  "total_log_bytes": 250940,
+  "requested_range": "bytes=185404-250939",
+  "HTTP_status": 206,
+  "Content_Range": "bytes 185404-250939/250940",
+  "excerpt": {
+    "path": "C:/ck3-e04-resume-20261023-a01/publication/CI-JAVA-TAIL-64K.actual-a01.log",
+    "bytes": 65536,
+    "sha256": "1f1bdd7e75817e542add7d234c00ed7bd30d77665a72bbfb7d096df99fb17422"
+  },
+  "full_log_downloaded": false
+}

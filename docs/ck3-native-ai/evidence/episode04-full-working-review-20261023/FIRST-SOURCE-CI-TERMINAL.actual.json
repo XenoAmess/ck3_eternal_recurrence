@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.publication-source-CI-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:18:17.590990+00:00",
+  "source_HEAD": "06d3102baa5f8f56c9973da24f7f833a8d1011a0",
+  "Official": {
+    "run": 39853398947,
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39853398947",
+    "status": "completed",
+    "conclusion": "failure",
+    "updated_at": "2026-10-22T21:17:22Z",
+    "jobs": [
+      {
+        "id": 120085223604,
+        "name": "static",
+        "conclusion": "failure",
+        "completed_at": "2026-10-22T21:17:21Z",
+        "failed_steps": [
+          {
+            "number": 40,
+            "name": "Verify Java tools, full reactor and actual HTTP consumer chain"
+          }
+        ]
+      }
+    ]
+  },
+  "Linear": {
+    "run": 39853399164,
+    "conclusion": "success"
+  },
+  "scope": "Hosted terminal; exact error attribution pending bounded log excerpt; no full matrix rerun"
+}

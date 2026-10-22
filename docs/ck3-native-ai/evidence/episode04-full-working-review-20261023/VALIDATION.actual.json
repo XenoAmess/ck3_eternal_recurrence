@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.fullreview-repository-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:38:05.236026+00:00",
+  "copied_records_byte_exact": 26,
+  "JSON_parsed_before_validation_record": 25,
+  "new_entry_relative_links_checked": 25,
+  "tracked_sparse_links_verified_by_tree": [
+    "docs/storage-retention-policy.md"
+  ],
+  "a04_a05_member_SHA_duplicates": 0,
+  "archive_checks_reused": [
+    "SOURCE-VALIDATION.actual-a04.json",
+    "SOURCE-VALIDATION.actual-a05.json"
+  ],
+  "source_business_or_full_matrix_tests_reexecuted": false,
+  "media_payloads_or_new_production_modules": false,
+  "copied_CRLF_receipts_preserved_by_exact_scoped_attributes": 5
+}

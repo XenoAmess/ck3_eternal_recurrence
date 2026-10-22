@@ -1,0 +1,26 @@
+{
+  "schema": "xar.e04.fullreview-source-preparation-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:45:59.707976+00:00",
+  "prepared_source": {
+    "path": "FULLREVIEW-SOURCE-PREPARED.actual-a04.json",
+    "bytes": 6046,
+    "sha256": "e0b38461df8eec03b1f9035cc3957e9bb41adf4dfbd6fe4a62d461e687ca9da2"
+  },
+  "archive": {
+    "path": "fullreview-a04-reference-sources.tar.xz",
+    "bytes": 59528,
+    "sha256": "e03791fa02cda7fd621074e9fef61ec383fd756c08ca64b03faa5212aac248dc",
+    "codec": "deterministic USTAR; XZ/SHA256; LZMA2 dictionary1048576"
+  },
+  "full_decode_and_member_hashes": true,
+  "original_source_bytes_match": true,
+  "members": 16,
+  "archived_Python_AST_parsed": 8,
+  "archived_JSON_parsed": 8,
+  "old19_members_duplicated": 0,
+  "W_written": false,
+  "W_clean": true,
+  "media_claimed": false,
+  "historical_strict_or_business_tests_rerun": false
+}

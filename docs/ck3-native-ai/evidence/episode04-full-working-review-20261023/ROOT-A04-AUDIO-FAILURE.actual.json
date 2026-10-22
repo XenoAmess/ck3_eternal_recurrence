@@ -1,0 +1,148 @@
+{
+  "schema": "xar.root.e04.full-working-review.audio-clock-failure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:15:40.177714+00:00",
+  "reviewer": "/root",
+  "source_packet_protocol": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\qa\\full-working-review-packets.csv",
+    "bytes": 3096775,
+    "sha256": "b5b66867e928413094ea784fbeb97d2964517f818a9bead600f5c170410ddde7"
+  },
+  "actual_failed_owner": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\EXECUTOR-OWNER-CLOSED.actual.json",
+    "bytes": 23700,
+    "sha256": "b72a518057fd77793035ed08d682bb3003ca38fe7f1b1f7358ab5215004b52ef"
+  },
+  "outer_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-MEDIA-CLI-ORIGINAL-WAIT.actual-a04.json",
+    "bytes": 1041,
+    "sha256": "53e189a753cd4a7980fc2f00328b013b4064e51736f4d1eb73d585bf1ac3317a"
+  },
+  "actual_video_packets": 50138,
+  "actual_video_PTS0_and_exact512": true,
+  "actual_audio_packets": 78342,
+  "audio_one_sample_negative_PTS_count": 19,
+  "one_sample_errors": [
+    {
+      "packet_index": 12084,
+      "observed_pts": 12372991,
+      "expected_pts": 12372992,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 12326,
+      "observed_pts": 12620799,
+      "expected_pts": 12620800,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 24151,
+      "observed_pts": 24729599,
+      "expected_pts": 24729600,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 24260,
+      "observed_pts": 24841215,
+      "expected_pts": 24841216,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 24369,
+      "observed_pts": 24952831,
+      "expected_pts": 24952832,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 24635,
+      "observed_pts": 25225215,
+      "expected_pts": 25225216,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 24744,
+      "observed_pts": 25336831,
+      "expected_pts": 25336832,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48019,
+      "observed_pts": 49170431,
+      "expected_pts": 49170432,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48080,
+      "observed_pts": 49232895,
+      "expected_pts": 49232896,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48237,
+      "observed_pts": 49393663,
+      "expected_pts": 49393664,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48394,
+      "observed_pts": 49554431,
+      "expected_pts": 49554432,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48455,
+      "observed_pts": 49616895,
+      "expected_pts": 49616896,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48612,
+      "observed_pts": 49777663,
+      "expected_pts": 49777664,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48830,
+      "observed_pts": 50000895,
+      "expected_pts": 50000896,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 48987,
+      "observed_pts": 50161663,
+      "expected_pts": 50161664,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 49128,
+      "observed_pts": 50306047,
+      "expected_pts": 50306048,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 49268,
+      "observed_pts": 50449407,
+      "expected_pts": 50449408,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 49486,
+      "observed_pts": 50672639,
+      "expected_pts": 50672640,
+      "error_samples": -1
+    },
+    {
+      "packet_index": 49861,
+      "observed_pts": 51056639,
+      "expected_pts": 51056640,
+      "error_samples": -1
+    }
+  ],
+  "audio_next_PTS_matches_previous_duration": true,
+  "audio_end_samples": 80220800,
+  "expected_audio_end_samples": 80220800,
+  "full_movie_accepted": false,
+  "strict1024_audio_gate_passed": false,
+  "no_OneDrive_copy": true,
+  "floating_arithmetic_root_cause": "candidate_pending_actual_integer_clock_successor"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.fullreview-finalizer-delta-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:21:36.749712+00:00",
+  "prepared": {
+    "path": "FULLREVIEW-SOURCE-PREPARED.actual-a05.json",
+    "bytes": 3823,
+    "sha256": "c28cdd3ef597f13804035b061481c4f66f3c457126b57307088fdc9bf164d2d5"
+  },
+  "archive": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\publication\\fullreview-a05-finalizer-delta.tar.xz",
+    "bytes": 8540,
+    "sha256": "9bdb522aeb96a1e53c1c7fb84c412e43e6c1814ab1fde902700abc73f20f2fdd"
+  },
+  "archive_full_decode_and_all5_member_hashes": true,
+  "actual_git_apply": [
+    {
+      "operation": "apply --check --whitespace=error-all",
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "operation": "apply --whitespace=error-all",
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "reconstructed4_targets_exact": true,
+  "Python_AST_count": 4,
+  "JSON_count": 4,
+  "exact_temporary_duplicate_files_removed": [
+    "C:\\ck3-e04-resume-20261023-a01\\publication\\a05-delta-roundtrip\\working\\working_contract.py",
+    "C:\\ck3-e04-resume-20261023-a01\\publication\\a05-delta-roundtrip\\working\\produce_working_review.py",
+    "C:\\ck3-e04-resume-20261023-a01\\publication\\a05-delta-roundtrip\\working\\check_working_review.py",
+    "C:\\ck3-e04-resume-20261023-a01\\publication\\a05-delta-roundtrip\\working\\FULL-WORKING-REVIEW-RECIPE.source.json"
+  ],
+  "original_frozen_sources_changed": false,
+  "W_written": false,
+  "media_claimed": false,
+  "historical_tests_rerun": false
+}

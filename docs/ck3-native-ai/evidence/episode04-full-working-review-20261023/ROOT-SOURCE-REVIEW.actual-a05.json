@@ -1,0 +1,28 @@
+{
+  "schema": "xar.root.e04.full-working-review.source-successor-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-22T22:19:40.969840+00:00",
+  "reviewer": "/root",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\SOURCE-FREEZE.actual.json",
+    "bytes": 41690,
+    "sha256": "69afc78e329bd6438cf22e73c5b72687bb4e5cd2704288db13862b6ea666ffef"
+  },
+  "source_pins_independently_full_SHA": 7,
+  "source_inputs_independently_full_SHA": 21,
+  "focused_original_wait": 0,
+  "strict_original_wait": 0,
+  "directly_reviewed": "Complete typed retained62 producer/consumer and actual original wait/probe/Native two-name SHA guards; exact final48k asettb,asetpts=N and encoder time base; original strict audio1024/video512 gates retained; new owned physical budget320MiB excludes old readonly90MB from deductions; no new cue encodes; unchanged47 content and original Root visual acceptance",
+  "old_audio_failure_preserved": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-A04-AUDIO-CLOCK-FAILURE.actual-a01.json",
+    "bytes": 3918,
+    "sha256": "bf22e63445db8498ec68737a349c4d35277356f32cfa88ca01efb0be604e3a36"
+  },
+  "new_media_purpose": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-MEDIA-PURPOSE.actual-a05.json",
+    "bytes": 1291,
+    "sha256": "1f93b5f39ca50c9f5e65757c6b56c206be32bbbf41dd88f5ffa026a46104f907"
+  },
+  "human1x": false,
+  "signoff": false
+}

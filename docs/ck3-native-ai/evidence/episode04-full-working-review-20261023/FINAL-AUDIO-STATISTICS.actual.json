@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:22:00.481037+00:00",
+  "movie": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\final\\episode04.full-working-review.mp4",
+    "bytes": 95584711,
+    "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb"
+  },
+  "original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\audit\\full-working-review-audio\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1807,
+    "sha256": "2ba5cf1e7ff1ca8a497be1d51bfe0f24f4a01e754a268bc364784f510beba331"
+  },
+  "complete_actual_statistics": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\audit\\full-working-review-audio\\stderr.txt",
+    "bytes": 4846,
+    "sha256": "dc23a3102bb042c778fb819b2bb5bd7fb9dbc556e7ea6e65b17fe111f225f071"
+  },
+  "peak_levels_dB": [
+    -3.90493,
+    -3.87772,
+    -3.87772
+  ],
+  "RMS_levels_dB": [
+    -22.975665,
+    -22.977175,
+    -22.97642
+  ],
+  "sample_clipping_observed": false,
+  "human1x": false
+}

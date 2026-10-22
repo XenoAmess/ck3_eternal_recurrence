@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.CI-observation-machine-scope.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:21:55.520959+00:00",
+  "observer_role": "GitHub API/log readback only",
+  "CI_runner": {
+    "machine_id": "unknown",
+    "run": 39853398947,
+    "job": 120085223604,
+    "provider": "GitHub-hosted Windows runner",
+    "not_observer_machine": true
+  },
+  "applies_to": [
+    "SOURCE-CI-TERMINAL.actual-a01.json",
+    "CI-JAVA-TAIL-SOURCE.actual-a01.json",
+    "SOURCE-CI-ATTRIBUTION.actual-a01.json"
+  ],
+  "scope": "Observer machine_id does not identify the hosted runner. Hosted paths and exception do not prove local runtime failure."
+}

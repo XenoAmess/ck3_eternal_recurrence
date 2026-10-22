@@ -1,0 +1,22 @@
+{
+  "schema": "xar.root.e04.full-working-review.source-successor-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-22T21:41:00.076110+00:00",
+  "reviewer": "/root",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\SOURCE-FREEZE.actual.json",
+    "bytes": 40534,
+    "sha256": "544ef2e779aca46a822a7c9268ad523597f61689dcb7e8ee47b4c84f998841db"
+  },
+  "source_pins_independently_full_SHA": 6,
+  "source_inputs_independently_full_SHA": 17,
+  "focused_original_wait": 0,
+  "strict_original_wait": 0,
+  "directly_reviewed": "Full frozen clock_diagnostic typed consumer; shared owner.budget.root destinations; exact copyts with no start_at_zero and avoid_negative_ts disabled; readonly actual four Product native identity/SHA/original waits; 16MiB diagnostic with8MiB output and7MiB fs; original Native Job custody retained",
+  "strict_video_zero_PTS_and_BT709_gates_unchanged": true,
+  "actual_clock_diagnostic_yet_passed": false,
+  "Root_fresh_canonical_active_claim_check_required_before_each_unique_Popen": true,
+  "same_62cue_editorial_and_103_immutable_assets": true,
+  "human1x": false,
+  "signoff": false
+}

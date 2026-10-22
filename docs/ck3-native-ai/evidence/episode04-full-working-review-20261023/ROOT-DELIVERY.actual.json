@@ -1,0 +1,120 @@
+{
+  "schema": "xar.root.e04.full-working-review.delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:30:49.939851+00:00",
+  "reviewer": "/root",
+  "full_working_review_ready_for_user_review": true,
+  "artifact": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+    "bytes": 95584711,
+    "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb"
+  },
+  "duration_frames": 50138,
+  "fps": 30,
+  "duration_seconds_rational": "50138/30",
+  "display_duration": "27:51.267",
+  "width": 1920,
+  "height": 1080,
+  "actual_timeline_cues": 62,
+  "actual_new_mechanics_cue_encodes": 47,
+  "cue_render_attempt": "fullreview-media-a04",
+  "final_mix_attempt": "fullreview-media-a05",
+  "complete_brand_opening_dynamic_Robert_opening_six_chapters_and_closing": true,
+  "full_decode": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\probes\\full-working-review.actual.json",
+    "bytes": 4699,
+    "sha256": "9ddc9894f9b7543f3c6a5ecdeda7d837d585dc363a85ef8e9b454c4492a7d2d0"
+  },
+  "all_packet_clock": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\full-working-review-ALL-PACKET-CLOCK.actual.json",
+    "bytes": 1097,
+    "sha256": "99342b3704aaa290699ede5b93498fd260f47d1d4046e1ac9f30dbcf7d24bcec"
+  },
+  "all_audio_statistics": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\full-working-review-AUDIO-STATISTICS.actual.json",
+    "bytes": 1046,
+    "sha256": "b9d48d5dbd150675102ab763dfcc38ee6bae7065f1191f98f39a93a8fd0c543f"
+  },
+  "actual_metadata": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\FULL-WORKING-REVIEW-ACTUAL-METADATA.actual.json",
+    "bytes": 22804,
+    "sha256": "e829973fbf2baac77251a528f5270b4a25769dd761a8d4249d3931b4a67d27e8"
+  },
+  "owner_closed": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\EXECUTOR-OWNER-CLOSED.actual.json",
+    "bytes": 11937,
+    "sha256": "7c435ece30746cfb63ffdcb0bd48fb67a5250092ba53a7efcbe0a74baebfa344"
+  },
+  "outer_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-MEDIA-CLI-ORIGINAL-WAIT.actual-a05.json",
+    "bytes": 1038,
+    "sha256": "2c1f9301fdc10aa9338b5c86781b79878e0b18aa9794b8948269543b54263e0a"
+  },
+  "original_children_wait0_Job0": 68,
+  "all_actual_sampled_cut_frames_SHA_verified": 62,
+  "Root_directly_reviewed_final_movie_images": [
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\contact-01.jpg",
+      "bytes": 746054,
+      "sha256": "76447337e363faa1dd0c37e2df3963690c415cd495aa469cab18e56a559d837e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\contact-02.jpg",
+      "bytes": 718004,
+      "sha256": "4f78001e19a5a55e7c4034d2773d87ca32140caf10b5e6bc838a14d00ac45331"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\frame-movie-C01-01.jpg",
+      "bytes": 224897,
+      "sha256": "7dffdb2198e27fd800fbb48e33cdc46fae2c2d248f3f8e2cbdb8341acdc9a5f5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a05\\qa\\frame-movie-END.jpg",
+      "bytes": 306239,
+      "sha256": "9a613c61e07ac70c4ffec346f323e4b75a64641d3b408c8e3413de117752d977"
+    }
+  ],
+  "Root_prior_four_cue_visual_review": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-PREVIEW-ACCEPTANCE.actual-a01.json",
+    "bytes": 1322,
+    "sha256": "ef3f3c3aec05f941b2cccc0d1e1575fe7b4da9b3d21ce56fb0367204e6791658"
+  },
+  "Root_directly_reviewed_R05_rule_and_R08_limited_samples": [
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\qa\\frame-N03-02.jpg",
+      "bytes": 90386,
+      "sha256": "ad6cbae47149bd0b5b0d5ada8c953c459e7079a7a7819072a97376f706fc4d68"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\qa\\frame-N06-08.jpg",
+      "bytes": 203982,
+      "sha256": "29135122335ed6d6ee98d412eb571fe7fba5c1a3c5d4313dd37ef453a679b5a3"
+    }
+  ],
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\SOURCE-FREEZE.actual.json",
+    "bytes": 41690,
+    "sha256": "69afc78e329bd6438cf22e73c5b72687bb4e5cd2704288db13862b6ea666ffef"
+  },
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-SOURCE-REVIEW.actual-a05.json",
+    "bytes": 1471,
+    "sha256": "069c9b03f4c28d62d7e5003da7fa406d37e74a554b3200df83a35f280f851caf"
+  },
+  "onedrive_client_sync": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-ONEDRIVE-CLIENT-SYNC.actual-a02.json",
+    "bytes": 2401,
+    "sha256": "cd42724cae68c388a03bcad27c713562f94e0ed1971123b5e25c1e3c30d1d4ce"
+  },
+  "independent_remote_download_sha256": null,
+  "only_new_requested_MP4_added_to_OneDrive": true,
+  "R05_actual_acceptance": null,
+  "formal_dynamic_topics_qualified": 10,
+  "formal_dynamic_topics_total": 11,
+  "R08_scope": "same-settlement military cost offset within net credit, no independent recurring payment qualification",
+  "review_only": true,
+  "human1x": false,
+  "user_signoff": false,
+  "next_retention_review_at_utc": "2026-10-24T10:00:00Z",
+  "necessary_active_inputs_protected_until_utc": "2026-10-29T10:00:00Z"
+}

@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:25:11.191053+00:00",
+  "pid": 18560,
+  "created_filetime": "134371812453103542",
+  "actual_original_Popen": true,
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\finalize_working_review.py",
+    "execute",
+    "C:\\ck3-e04-resume-20261023-a01\\capacity\\FULL-WORKING-REVIEW-MEDIA-ADMISSION.actual-a05.json",
+    "72ac3324dc67af9c578ac96ac4e80034ce0e917a061ce3bb8ee51a277fdc7d48"
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-MEDIA-CLI.stdout.actual-a05.txt",
+    "bytes": 463,
+    "sha256": "166f44437d39cfdaee024d03941fb9129393da23182792454ad214e2ba188838"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-MEDIA-CLI.stderr.actual-a05.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_wait": 0
+}

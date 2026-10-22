@@ -1,0 +1,253 @@
+{
+  "schema": "xar.e04.fullreview-curated-source-reference.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:34:36.800514+00:00",
+  "source_only": true,
+  "standalone_deployable": false,
+  "repository_runtime_or_CI_imports_added": false,
+  "a04_cue_production": {
+    "source_freeze": {
+      "path": "C:/ck3-e04-resume-20261023-a01/fullreview-source-a04/SOURCE-FREEZE.actual.json",
+      "bytes": 40534,
+      "sha256": "544ef2e779aca46a822a7c9268ad523597f61689dcb7e8ee47b4c84f998841db"
+    },
+    "archive_file": "a04-reference-sources.tar.xz",
+    "members": [
+      {
+        "member": "working/working_fields.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\working_fields.py",
+        "bytes": 1668,
+        "sha256": "fc7d833ca4f552e6c04181cd6751e7bf32976625f308adaffe7f2adc75cb837f"
+      },
+      {
+        "member": "working/working_contract.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\working_contract.py",
+        "bytes": 14335,
+        "sha256": "5f6db1e772846acd9913e52dafd8e1f79e9131e852e51f3af424caa41a545958"
+      },
+      {
+        "member": "working/working_recipe.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\working_recipe.py",
+        "bytes": 16691,
+        "sha256": "a9b9c00fbdbbca1fa9b800a8eb56c2a37233389588b1fa2ac5f4575b5aa85855"
+      },
+      {
+        "member": "working/produce_working_review.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\produce_working_review.py",
+        "bytes": 29134,
+        "sha256": "1e82495413908a07da093a703b54e67591c7b3beac666b235496552028900c77"
+      },
+      {
+        "member": "working/check_working_review.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\check_working_review.py",
+        "bytes": 7344,
+        "sha256": "9bdf1a6f445e507e131a12840ab09a3fd3ac5bed3fd417bb2ca2a26d39dd408a"
+      },
+      {
+        "member": "working/clock_diagnostic.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\clock_diagnostic.py",
+        "bytes": 12619,
+        "sha256": "0ef6295867c19a4aea84430d3340221c20af0f28c4344c7ee666754b0a967582"
+      },
+      {
+        "member": "intro-source/EDITORIAL-SOURCE-INPUTS.actual-a01.json",
+        "path": "C:/ck3-e04-resume-20261023-a01/intro-source/EDITORIAL-SOURCE-INPUTS.actual-a01.json",
+        "bytes": 21892,
+        "sha256": "3f64a52255530c4ebdd4be33b7ccfc98c63d09fcb5e90f0a03db30dfb3205718"
+      },
+      {
+        "member": "intro-source/EDITORIAL-STRUCTURE.source-a02.json",
+        "path": "C:/ck3-e04-resume-20261023-a01/intro-source/EDITORIAL-STRUCTURE.source-a02.json",
+        "bytes": 24657,
+        "sha256": "49496ee3845c9cb9a667b74c469459fdbc784c161cc7f45bf87397142831c2ca"
+      },
+      {
+        "member": "intro-source/DYNAMIC-OPENING-VISUAL.source-a03.json",
+        "path": "C:/ck3-e04-resume-20261023-a01/intro-source/DYNAMIC-OPENING-VISUAL.source-a03.json",
+        "bytes": 5878,
+        "sha256": "b57fc0ad21a17acaacc0e8700dc06a283a334f49cc4111cfe83af3df088d62bb"
+      },
+      {
+        "member": "intro-source/OUTER-VOICE-PROBES.actual-a01.json",
+        "path": "C:/ck3-e04-resume-20261023-a01/intro-source/OUTER-VOICE-PROBES.actual-a01.json",
+        "bytes": 7501,
+        "sha256": "a472766efa55a1979e0b77082dba79829c3c371f708337fbe074534f58218830"
+      },
+      {
+        "member": "working/FULL-WORKING-REVIEW-RECIPE.source.json",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\FULL-WORKING-REVIEW-RECIPE.source.json",
+        "bytes": 164798,
+        "sha256": "612851a922004f9ad0a32f29e4bb1b11e37678cef28ea39d90dfc7fa22d62840"
+      },
+      {
+        "member": "capacity/source_successor_fields.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\capacity\\source_successor_fields.py",
+        "bytes": 855,
+        "sha256": "7b2cc4e1f5f5fa1e9d6082e1f51bf6cfaea8942d2af9b07ecb5e2197fac193ca"
+      },
+      {
+        "member": "capacity/clock_diagnostic_fields.py",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\capacity\\clock_diagnostic_fields.py",
+        "bytes": 811,
+        "sha256": "c008b7aa2ca350fb9a3173f06d7130c1e1eebfea5c7aff6ddd69fbc2fd813b5d"
+      },
+      {
+        "member": "working/NATIVE-IDENTITY-REGRESSION.a03.actual.json",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\NATIVE-IDENTITY-REGRESSION.a03.actual.json",
+        "bytes": 1240,
+        "sha256": "457f553f1fc78f299df7ae6d6548abc6187d69777187460d1350ee5dd6097b22"
+      },
+      {
+        "member": "checks/focused/ORIGINAL-WAIT.actual.json",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\checks\\a03\\focused\\ORIGINAL-WAIT.actual.json",
+        "bytes": 920,
+        "sha256": "79afb88c5dd87a9a68d55531aa1a0dbcd76e1d08f9e9689ff852c547527c2cad"
+      },
+      {
+        "member": "checks/strict/ORIGINAL-WAIT.actual.json",
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\checks\\a03\\strict\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1447,
+        "sha256": "0df63143b3e8bade49e39d4839c4f7ebbea32c3707a4dc96ca17657b9f7b23a5"
+      }
+    ],
+    "member_count": 16,
+    "source_bytes": 311790
+  },
+  "a05_finalization_delta": {
+    "source_freeze": {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\SOURCE-FREEZE.actual.json",
+      "bytes": 41690,
+      "sha256": "69afc78e329bd6438cf22e73c5b72687bb4e5cd2704288db13862b6ea666ffef"
+    },
+    "archive_file": "a05-finalizer-delta.tar.xz",
+    "members": [
+      {
+        "member": "delta/a04-to-a05.patch",
+        "bytes": 9162,
+        "sha256": "1ddfcb6f90f00c2657ef38945c4bb6978d721e8dca37256563bdca2140f23eb0"
+      },
+      {
+        "member": "working/finalize_working_review.py",
+        "bytes": 13170,
+        "sha256": "69f63f20115e5e3de5d979613595d0701e2123fccc1fabef4fdc126550868663"
+      },
+      {
+        "member": "checks/NATIVE-IDENTITY-REGRESSION.actual.json",
+        "bytes": 1240,
+        "sha256": "4581f3ff57797912791edc4c765af5ab25a91c96baa1185fa4f037c46aa65c39"
+      },
+      {
+        "member": "checks/focused/ORIGINAL-WAIT.actual.json",
+        "bytes": 920,
+        "sha256": "51bbeaaffd5d9f2c0c258d2e4923df39d836ead98da715954db59dabb1f6c4ee"
+      },
+      {
+        "member": "checks/strict/ORIGINAL-WAIT.actual.json",
+        "bytes": 1537,
+        "sha256": "1ee50e8daeecfcf792097de84d35583dd4474853b82148655f8c0a8443e9ea87"
+      }
+    ],
+    "changes": [
+      {
+        "member": "working/working_contract.py",
+        "base_bytes": 14335,
+        "base_sha256": "5f6db1e772846acd9913e52dafd8e1f79e9131e852e51f3af424caa41a545958",
+        "target_bytes": 14335,
+        "target_sha256": "b5f37680da932526baf1f5c294594ee8d7fc63a06b4cd04f3d4c4151ab1557e7",
+        "target_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\working_contract.py"
+      },
+      {
+        "member": "working/produce_working_review.py",
+        "base_bytes": 29134,
+        "base_sha256": "1e82495413908a07da093a703b54e67591c7b3beac666b235496552028900c77",
+        "target_bytes": 29422,
+        "target_sha256": "e551cfc0d755249086bb6ae1158ab96ce7a95e637387a2681efb62ef9ae7329e",
+        "target_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\produce_working_review.py"
+      },
+      {
+        "member": "working/check_working_review.py",
+        "base_bytes": 7344,
+        "base_sha256": "9bdf1a6f445e507e131a12840ab09a3fd3ac5bed3fd417bb2ca2a26d39dd408a",
+        "target_bytes": 8872,
+        "target_sha256": "9f6127683c99dfc56011d90e75b347bf62555f3b389f78bbb14fbc0263c567e7",
+        "target_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\check_working_review.py"
+      },
+      {
+        "member": "working/FULL-WORKING-REVIEW-RECIPE.source.json",
+        "base_bytes": 164798,
+        "base_sha256": "612851a922004f9ad0a32f29e4bb1b11e37678cef28ea39d90dfc7fa22d62840",
+        "target_bytes": 164868,
+        "target_sha256": "3d6ae55f25cd8314c423076068ac8ddd5edc4ccd81e5467f7feb4b4891bb74f1",
+        "target_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\FULL-WORKING-REVIEW-RECIPE.source.json"
+      }
+    ],
+    "unchanged_source_files_not_duplicated": [
+      "working_fields.py",
+      "working_recipe.py",
+      "clock_diagnostic.py"
+    ],
+    "cue_reencodes": 0,
+    "apply_to": "a04 working/ tree",
+    "member_count": 5,
+    "source_bytes": 26029
+  },
+  "copied_sources_and_validations": [
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\SOURCE-FREEZE.actual.json",
+      "repository_file": "A04-SOURCE-FREEZE.actual.json",
+      "bytes": 40534,
+      "sha256": "544ef2e779aca46a822a7c9268ad523597f61689dcb7e8ee47b4c84f998841db"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a05\\SOURCE-FREEZE.actual.json",
+      "repository_file": "A05-SOURCE-FREEZE.actual.json",
+      "bytes": 41690,
+      "sha256": "69afc78e329bd6438cf22e73c5b72687bb4e5cd2704288db13862b6ea666ffef"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-SOURCE-REVIEW.actual-a04.json",
+      "repository_file": "ROOT-SOURCE-REVIEW.actual-a04.json",
+      "bytes": 1188,
+      "sha256": "366c912d013f8d5fcf1955d374acf555861fa4886cccd9c4582c95f030a3f917"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-SOURCE-REVIEW.actual-a05.json",
+      "repository_file": "ROOT-SOURCE-REVIEW.actual-a05.json",
+      "bytes": 1471,
+      "sha256": "069c9b03f4c28d62d7e5003da7fa406d37e74a554b3200df83a35f280f851caf"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\fullreview-a04-reference-sources.tar.xz",
+      "repository_file": "a04-reference-sources.tar.xz",
+      "bytes": 59528,
+      "sha256": "e03791fa02cda7fd621074e9fef61ec383fd756c08ca64b03faa5212aac248dc"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\fullreview-a05-finalizer-delta.tar.xz",
+      "repository_file": "a05-finalizer-delta.tar.xz",
+      "bytes": 8540,
+      "sha256": "9bdb522aeb96a1e53c1c7fb84c412e43e6c1814ab1fde902700abc73f20f2fdd"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\FULLREVIEW-SOURCE-VALIDATION.actual-a04.json",
+      "repository_file": "SOURCE-VALIDATION.actual-a04.json",
+      "bytes": 948,
+      "sha256": "47d587786fd175c55162c11fc7b1fc8057f14297fa67ff757db6a4769fe9248a"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261023-a01\\publication\\FULLREVIEW-SOURCE-VALIDATION.actual-a05.json",
+      "repository_file": "SOURCE-VALIDATION.actual-a05.json",
+      "bytes": 1602,
+      "sha256": "fea9101ac4e326244f87af94d764e7f5484f836f6a5637bb84d67f62eea02ca9"
+    }
+  ],
+  "excluded": [
+    "all media payloads",
+    "103 asset payloads",
+    "near-identical a05 expanded recipe full copy",
+    "a03 predecessor source tree",
+    "third-party dependencies",
+    "CAP active_claim_contract.py"
+  ],
+  "old19_source_members_not_duplicated": true
+}

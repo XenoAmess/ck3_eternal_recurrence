@@ -1,0 +1,568 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:25:10.756786+00:00",
+  "failed": false,
+  "owner_error": null,
+  "owned_Popen_remaining": 0,
+  "actual_original_waits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "actual_custodies": [
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    },
+    {
+      "original_wait": 0,
+      "job_active_processes": 0,
+      "job_handle_closed": true,
+      "job_closed": true,
+      "custody_errors": []
+    }
+  ],
+  "all_original_children_wait0_Job0": true,
+  "native_allocation_before_receipt": {
+    "logical_bytes": 206479028,
+    "allocated_bytes": 207027288,
+    "entries": 493,
+    "hardlink_aliases": 1,
+    "unique_files": 413,
+    "payload_bytes_read_for_allocation": 0,
+    "onedrive_allocated_bytes": 95588352,
+    "onedrive_exact_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4"
+  },
+  "human1x": false,
+  "signoff": false
+}

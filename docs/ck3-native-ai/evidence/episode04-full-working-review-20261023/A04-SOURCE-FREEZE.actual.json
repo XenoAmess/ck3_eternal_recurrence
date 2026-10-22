@@ -1,0 +1,684 @@
+{
+  "schema": "xar.e04.full-working-review.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T21:40:18.891409+00:00",
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\working_fields.py",
+      "bytes": 1668,
+      "sha256": "fc7d833ca4f552e6c04181cd6751e7bf32976625f308adaffe7f2adc75cb837f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\working_contract.py",
+      "bytes": 14335,
+      "sha256": "5f6db1e772846acd9913e52dafd8e1f79e9131e852e51f3af424caa41a545958"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\working_recipe.py",
+      "bytes": 16691,
+      "sha256": "a9b9c00fbdbbca1fa9b800a8eb56c2a37233389588b1fa2ac5f4575b5aa85855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\produce_working_review.py",
+      "bytes": 29134,
+      "sha256": "1e82495413908a07da093a703b54e67591c7b3beac666b235496552028900c77"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\check_working_review.py",
+      "bytes": 7344,
+      "sha256": "9bdf1a6f445e507e131a12840ab09a3fd3ac5bed3fd417bb2ca2a26d39dd408a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\clock_diagnostic.py",
+      "bytes": 12619,
+      "sha256": "0ef6295867c19a4aea84430d3340221c20af0f28c4344c7ee666754b0a967582"
+    }
+  ],
+  "input_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\final47-source-a01\\a04\\FINAL47-PENDING-SOURCE-RECIPE.actual.json",
+      "bytes": 442494,
+      "sha256": "36512ef7aa2d9cdf330b7260fa5a51beb9fdb0a9deb7f9b34d16e9d84cd7146a"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261023-a01/intro-source/EDITORIAL-SOURCE-INPUTS.actual-a01.json",
+      "bytes": 21892,
+      "sha256": "3f64a52255530c4ebdd4be33b7ccfc98c63d09fcb5e90f0a03db30dfb3205718"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261023-a01/intro-source/EDITORIAL-STRUCTURE.source-a02.json",
+      "bytes": 24657,
+      "sha256": "49496ee3845c9cb9a667b74c469459fdbc784c161cc7f45bf87397142831c2ca"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261023-a01/intro-source/DYNAMIC-OPENING-VISUAL.source-a03.json",
+      "bytes": 5878,
+      "sha256": "b57fc0ad21a17acaacc0e8700dc06a283a334f49cc4111cfe83af3df088d62bb"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261023-a01/intro-source/OUTER-VOICE-PROBES.actual-a01.json",
+      "bytes": 7501,
+      "sha256": "a472766efa55a1979e0b77082dba79829c3c371f708337fbe074534f58218830"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\r05-runtime\\ACTUAL-PROMO-ENVIRONMENT.actual-a01.json",
+      "bytes": 3168,
+      "sha256": "817710b682661d5555c43ed5f02bd72d807af4138f3a5249e566137e10918c7a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\FULL-WORKING-REVIEW-RECIPE.source.json",
+      "bytes": 164798,
+      "sha256": "612851a922004f9ad0a32f29e4bb1b11e37678cef28ea39d90dfc7fa22d62840"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\capacity\\source_successor_fields.py",
+      "bytes": 855,
+      "sha256": "7b2cc4e1f5f5fa1e9d6082e1f51bf6cfaea8942d2af9b07ecb5e2197fac193ca"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a03\\SOURCE-FREEZE.actual.json",
+      "bytes": 38796,
+      "sha256": "a06dacdda7f6619ae727bf27ee5e1871c5f4ab4baf0a590b4dd0d7a276e5e325"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\NATIVE-IDENTITY-REGRESSION.a03.actual.json",
+      "bytes": 1240,
+      "sha256": "457f553f1fc78f299df7ae6d6548abc6187d69777187460d1350ee5dd6097b22"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\capacity\\clock_diagnostic_fields.py",
+      "bytes": 811,
+      "sha256": "c008b7aa2ca350fb9a3173f06d7130c1e1eebfea5c7aff6ddd69fbc2fd813b5d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-FULLREVIEW-CLOCK-DIAGNOSTIC-PURPOSE.actual-a01.json",
+      "bytes": 1072,
+      "sha256": "f3726cf575305dca508cfc4bf6cdfecddb848abf498511ec8e2d878fcf877120"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a03\\products\\BRAND.actual.json",
+      "bytes": 1737,
+      "sha256": "3bf82c99bd93f42050ae7ba66200c912d7802afc7fb2a1835f4c61a725e7a14e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a03\\products\\C01-01.actual.json",
+      "bytes": 2893,
+      "sha256": "06439ca6e846d2de81c770284d0441bf9a266d5ae2520e3cc67ab3171562aa22"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a03\\products\\CHAPTER01.actual.json",
+      "bytes": 1704,
+      "sha256": "3fd57ee2a16230b1b69aa955881926e8877b76a6ec0bf3025a0de50a59d69346"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a03\\products\\END.actual.json",
+      "bytes": 1694,
+      "sha256": "5606d7b42a9d41ebce1a94877124a06e72fcc80dd30b5c1a0decfc92008de370"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a03\\EXECUTOR-OWNER-CLOSED.actual.json",
+      "bytes": 3576,
+      "sha256": "acab76aa19ac5ca9b465e7837562615a40631ec8a741c80625e937696c9f9c7e"
+    }
+  ],
+  "asset_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\B5\\B509EAC19D567392697CE5D7880A37B7D6508FA8C8D22AB1D3C5469D0D0A5F0E.mp3",
+      "bytes": 159552,
+      "sha256": "b509eac19d567392697ce5d7880a37b7d6508fa8c8d22ab1d3c5469d0d0a5f0e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\9A\\9A419B70626EF29DCBA7186987A91588A00FF1DBC169A03514DDCAEEE91DD50D.png",
+      "bytes": 68958,
+      "sha256": "9a419b70626ef29dcba7186987a91588a00ff1dbc169a03514ddcaeee91dd50d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\92\\92B2083312271A46E957A4892F67A1921817975A4990C0F35C0F7E8BE8A49FB9.mp3",
+      "bytes": 191664,
+      "sha256": "92b2083312271a46e957a4892f67a1921817975a4990c0f35c0f7e8be8a49fb9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\24\\244607EDB31D50F2D019CF9E5A5334BCFB05F043FC3F8AA3FB07461E75BABBB5.png",
+      "bytes": 99849,
+      "sha256": "244607edb31d50f2d019cf9e5a5334bcfb05f043fc3f8aa3fb07461e75babbb5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\81\\8176CCBB714412312CF68184A2B6C26FC60BE9B2C1D1E49F5EC2775522EFDA07.mp3",
+      "bytes": 222768,
+      "sha256": "8176ccbb714412312cf68184a2b6c26fc60be9b2c1d1e49f5ec2775522efda07"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\24\\246D5580CDEA65A862A49C104E696C6888666B6FF2C31F50CC7F3922341D795F.png",
+      "bytes": 93946,
+      "sha256": "246d5580cdea65a862a49c104e696c6888666b6ff2c31f50cc7f3922341d795f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\3C\\3CCB686C5C3A47A3123E238D0C351A96FAB3F7EEF0B5452DAA19403402DAC87C.mp3",
+      "bytes": 183744,
+      "sha256": "3ccb686c5c3a47a3123e238d0c351a96fab3f7eef0b5452daa19403402dac87c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\56\\563A2522CAFB15F04C4A31A75FFC9E204BC77EF2778CF13EE20D5EB7370E3780.png",
+      "bytes": 102276,
+      "sha256": "563a2522cafb15f04c4a31a75ffc9e204bc77ef2778cf13ee20d5eb7370e3780"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\97\\9773A21C60B118D63CEDA15DB431AB10C3300A9B7B44F5696EE9FB2B0582DD9C.mp3",
+      "bytes": 140688,
+      "sha256": "9773a21c60b118d63ceda15db431ab10c3300a9b7b44f5696ee9fb2b0582dd9c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\CD\\CD3F6E8720C9925CFB3B04D0CC784555847A529AA9299DE888B10D121A21177B.png",
+      "bytes": 82092,
+      "sha256": "cd3f6e8720c9925cfb3b04d0cc784555847a529aa9299de888b10d121a21177b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r18-live-scene-b-a01\\camera-raw-a01\\b-site01-a01\\raw.mkv",
+      "bytes": 27827945,
+      "sha256": "c3045b79b7ed3c8222077cdbec7dcd0cf2182360141b15976f7612920b0eb2f0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\31\\313AB0061A64E3417FBF14919020CC10212ACCD4F8A64E50CCAE24C6EA99E246.mp3",
+      "bytes": 143856,
+      "sha256": "313ab0061a64e3417fbf14919020cc10212accd4f8a64e50ccae24c6ea99e246"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\camera-raw-a01\\b-site02-a01\\raw.mkv",
+      "bytes": 28244901,
+      "sha256": "abe581febbe81218c27a974004fc6b20db762e69769ff642ab8bd15906bfc89b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\7F\\7F0C28DE6B034F49456B5438A24CF691684C86ACAFA861566CCA5D410E33D3AD.mp3",
+      "bytes": 228384,
+      "sha256": "7f0c28de6b034f49456b5438a24cf691684c86acafa861566cca5d410e33d3ad"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\04\\0404AA0CB95915429A7719966C10BA51E0C40C5A2C46FA5C4A9D1619365B915A.png",
+      "bytes": 84237,
+      "sha256": "0404aa0cb95915429a7719966c10ba51e0c40c5a2c46fa5c4a9d1619365b915a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\5F\\5F8F46D1826EB653CBAD1BDB8176B985578FFA4CBEED6FCE09B030E99BCC4B73.mp3",
+      "bytes": 192240,
+      "sha256": "5f8f46d1826eb653cbad1bdb8176b985578ffa4cbeed6fce09b030e99bcc4b73"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\EA\\EAE8ABBBF9FCC1DA224914DE34289192AA2071750AA6605D53A81EDAA9B26E9E.png",
+      "bytes": 94440,
+      "sha256": "eae8abbbf9fcc1da224914de34289192aa2071750aa6605d53a81edaa9b26e9e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\5B\\5BF5CEDE06047B01114F6927C77C82B20DB9026A0DC49C6F936A00246E7C9791.mp3",
+      "bytes": 166032,
+      "sha256": "5bf5cede06047b01114f6927c77c82b20db9026a0dc49c6f936a00246e7c9791"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\6F\\6F271E3E870CB64EDA24158D8CD48397AA2AC79B2EC44B8B606DC815ED810E3A.png",
+      "bytes": 72884,
+      "sha256": "6f271e3e870cb64eda24158d8cd48397aa2ac79b2ec44b8b606dc815ed810e3a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\E6\\E6B8654057F9F7F5BF8ECDC7D4DB2410D939F36BEDD73BA61AB48FC680DCCA27.mp3",
+      "bytes": 157392,
+      "sha256": "e6b8654057f9f7f5bf8ecdc7d4db2410d939f36bedd73ba61ab48fc680dcca27"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\2C\\2C75420707987ECA5E7AEB7EB028568A58A6532483339CB8353718F4B487CD90.png",
+      "bytes": 92109,
+      "sha256": "2c75420707987eca5e7aeb7eb028568a58a6532483339cb8353718f4b487cd90"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\FA\\FA37188D850620BB61F856B07DB82385E9EAD6667992653822921D6F2499EA47.mp3",
+      "bytes": 176544,
+      "sha256": "fa37188d850620bb61f856b07db82385e9ead6667992653822921d6f2499ea47"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\4E\\4E1ED09EE677D6A72B1C8D7826FE143E59272B5038988F8246A770DDFDA89EF6.png",
+      "bytes": 101434,
+      "sha256": "4e1ed09ee677d6a72b1c8d7826fe143e59272b5038988f8246a770ddfda89ef6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\DF\\DF915E5547359F1A6D1389449F1185F47B0D204F7AA869D144F693D0B5EDF08C.mp3",
+      "bytes": 156096,
+      "sha256": "df915e5547359f1a6d1389449f1185f47b0d204f7aa869d144f693d0b5edf08c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\11\\11DEFC5667E82A8F5E7AC7A471FF3705EFE24C64909A139F71FD0BFAAC1D482B.png",
+      "bytes": 107983,
+      "sha256": "11defc5667e82a8f5e7ac7a471ff3705efe24c64909a139f71fd0bfaac1d482b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\7B\\7B9B56FC4B6C15777200EB773C7BD8672994714E87509DAD3C778DBA29E20E21.mp3",
+      "bytes": 167328,
+      "sha256": "7b9b56fc4b6c15777200eb773c7bd8672994714e87509dad3c778dba29e20e21"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\FE\\FEDDB3FE10C61CDDD9956DD98640A34BDD2E9BFF27B2533A58299F36B0ECE9E9.png",
+      "bytes": 91252,
+      "sha256": "feddb3fe10c61cddd9956dd98640a34bdd2e9bff27b2533a58299f36b0ece9e9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\1E\\1EFB495322E69476535BE5E4DFB3D9F54FFAD07CF1C07F0194F7FE9629986B14.mp3",
+      "bytes": 124272,
+      "sha256": "1efb495322e69476535be5e4dfb3d9f54ffad07cf1c07f0194f7fe9629986b14"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\6F\\6F1C3ABE7E242BF3A00EA8F86192FC53D1A861A230706FFE1398AC843546A6CC.png",
+      "bytes": 97254,
+      "sha256": "6f1c3abe7e242bf3a00ea8f86192fc53d1a861a230706ffe1398ac843546a6cc"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\78\\780517BB64BA761B75E1546CABBCC59134C4DC96C2376FEA42B964A57D4A4A2C.mp3",
+      "bytes": 224352,
+      "sha256": "780517bb64ba761b75e1546cabbcc59134c4dc96c2376fea42b964a57d4a4a2c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\49\\491EA04D1F00541DE3D5F4A629971A4142D0A3E8B2B8A0B65E5975CD8F5594C7.png",
+      "bytes": 90700,
+      "sha256": "491ea04d1f00541de3d5f4a629971a4142d0a3e8b2b8a0b65e5975cd8f5594c7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\6D\\6D040EEE9E609253B6220E5D0B8A7E090573EC8A6FF8BDB3A6A1AC10EC0ADB30.mp3",
+      "bytes": 160416,
+      "sha256": "6d040eee9e609253b6220e5d0b8a7e090573ec8a6ff8bdb3a6a1ac10ec0adb30"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\E4\\E4ABE0ABC2FC264066ABD06C23266289D5D7F709858FE15E7585D887F0380FBD.png",
+      "bytes": 77157,
+      "sha256": "e4abe0abc2fc264066abd06c23266289d5d7f709858fe15e7585d887f0380fbd"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\raw.mkv",
+      "bytes": 20403313,
+      "sha256": "5280a139b1f1b1fb54b432e824ab4786c030668efe71465435f7f99aeb75912e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\F4\\F409A36A75F26C46514932376E9128DC5E4A258D40DA30F79AF0424BBBA01F25.mp3",
+      "bytes": 207936,
+      "sha256": "f409a36a75f26c46514932376e9128dc5e4a258d40da30f79af0424bbba01f25"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\11\\11FF240AF660015708434F1873BB56F699F41CD4305BEEE12B5E3FAA5BE31FC7.png",
+      "bytes": 92354,
+      "sha256": "11ff240af660015708434f1873bb56f699f41cd4305beee12b5e3faa5be31fc7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\91\\91EBD96C5483BFD5C7E1619465FDDC47C46ABBC27F999041B2347D82D6305E22.mp3",
+      "bytes": 155952,
+      "sha256": "91ebd96c5483bfd5c7e1619465fddc47c46abbc27f999041b2347d82d6305e22"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\06\\067108FF6F875AC43965FB40FD061F90EDA94C1BA426CB6CE1BD9A58B53E31FF.png",
+      "bytes": 80417,
+      "sha256": "067108ff6f875ac43965fb40fd061f90eda94c1ba426cb6ce1bd9a58b53e31ff"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "bytes": 66574010,
+      "sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\5D\\5D49D7749E358E3521C6FD5F961771DB2E1935EFA2FFB2D7158C59D726B15ED6.mp3",
+      "bytes": 187344,
+      "sha256": "5d49d7749e358e3521c6fd5f961771db2e1935efa2ffb2d7158c59d726b15ed6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\3F\\3F9BB316554584C475169D266C7F91DFF6D062ADE3E5CFE64F97A2D14FE16E50.mp3",
+      "bytes": 160992,
+      "sha256": "3f9bb316554584c475169d266c7f91dff6d062ade3e5cfe64f97a2d14fe16e50"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\ED\\ED9A2CE18EF68757FEA5B83DFBB3EDE7E73240965E0113813B960988C22C5D9A.mp3",
+      "bytes": 169344,
+      "sha256": "ed9a2ce18ef68757fea5b83dfbb3ede7e73240965e0113813b960988c22c5d9a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\58\\58B12AED1DE7315D9C1F4D968D2764F8309FEE9EB3447C06C3B3CCF49DB220DF.readablea02.png",
+      "bytes": 114273,
+      "sha256": "58b12aed1de7315d9c1f4d968d2764f8309fee9eb3447c06c3b3ccf49db220df"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\raw-a01\\take01\\raw.mkv",
+      "bytes": 57159155,
+      "sha256": "6b505f8a4bf6002b2348268c7bf19c618e6c69c844643e4c8e78ea95fa62b4cf"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\FA\\FA8A4F0D53C0E14822427595827ADC666597E27EF8A82616C61814120DD22E85.mp3",
+      "bytes": 172512,
+      "sha256": "fa8a4f0d53c0e14822427595827adc666597e27ef8a82616c61814120dd22e85"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\90\\90FC674C17ED6D9D45185567B4A8BE04FDCE878B2F1987E277D9A2DEF71443A4.png",
+      "bytes": 74815,
+      "sha256": "90fc674c17ed6d9d45185567b4a8be04fdce878b2f1987e277d9a2def71443a4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\44\\44BF446422DD8E7B6E9BDA7346EAB440CD0C9827EADB31F76FE05ABC858E2369.mp3",
+      "bytes": 167472,
+      "sha256": "44bf446422dd8e7b6e9bda7346eab440cd0c9827eadb31f76fe05abc858e2369"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\00\\0076F8CA9F5B66CD3782CAFAC3F80560534A383BAC055C82A199CB4E4D389C0A.mp3",
+      "bytes": 152640,
+      "sha256": "0076f8ca9f5b66cd3782cafac3f80560534a383bac055c82a199cb4e4d389c0a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\E5\\E5CA18798E270FFC7D93E968FB081F4F96141A16204EFA7F27BDB4F2214300B2.png",
+      "bytes": 91737,
+      "sha256": "e5ca18798e270ffc7d93e968fb081f4f96141a16204efa7f27bdb4f2214300b2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+      "bytes": 71202833,
+      "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\1C\\1C1E86F14CB230FA3363B47C32388EF28F41FF0281C07F999C9981D6047D3DFF.mp3",
+      "bytes": 161280,
+      "sha256": "1c1e86f14cb230fa3363b47c32388ef28f41ff0281c07f999c9981d6047d3dff"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\63\\633259193A853F449EEE52DB4EC65C129167AB1694F80F2D3FA77057A6D4EC8C.png",
+      "bytes": 98234,
+      "sha256": "633259193a853f449eee52db4ec65c129167ab1694f80f2d3fa77057a6d4ec8c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\E9\\E94994A60FB0F4E1223177EB6F15E4E9421055C356EE596C0E2198AA89FD7915.mp3",
+      "bytes": 162576,
+      "sha256": "e94994a60fb0f4e1223177eb6f15e4e9421055c356ee596c0e2198aa89fd7915"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\C1\\C1CC7478EB95F9EE72FFBADC793C495A85A46AA7089C8BC9AF20E8C8C944E253.mp3",
+      "bytes": 186768,
+      "sha256": "c1cc7478eb95f9ee72ffbadc793c495a85a46aa7089c8bc9af20e8c8c944e253"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\87\\87AA7B044C69CF2383F72D614417626F617014A19087D4282C013FFC7E9CD7C0.png",
+      "bytes": 95274,
+      "sha256": "87aa7b044c69cf2383f72d614417626f617014a19087d4282c013ffc7e9cd7c0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\20\\20DDD48E7F1728EE4CFABF39796E4827382450CC5F13D3069095B6B3B220DBB6.mp3",
+      "bytes": 190224,
+      "sha256": "20ddd48e7f1728ee4cfabf39796e4827382450cc5f13d3069095b6b3b220dbb6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\80\\80356FC0883EA3FC2C7FEB2F22D13285520EDF711422D3767691EC5A9DCE30DA.mp3",
+      "bytes": 155952,
+      "sha256": "80356fc0883ea3fc2c7feb2f22d13285520edf711422d3767691ec5a9dce30da"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\13\\135285C2ECB47FF03D57DBDFB95E524B2E415C54437D691FD5766610ED211B33.png",
+      "bytes": 81740,
+      "sha256": "135285c2ecb47ff03d57dbdfb95e524b2e415c54437d691fd5766610ed211b33"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-n05-weight-explainer-a01\\native\\runs\\n05-weights-assets-a01\\artifacts\\derived\\sha256\\4E\\4E8139060989100401B3A485E1430C1DEADEDFFE9BA275AE6663AAD6D64DB01E.mp3",
+      "bytes": 313344,
+      "sha256": "4e8139060989100401b3a485e1430c1deadedffe9ba275ae6663aad6d64db01e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-n05-weight-explainer-a01\\native\\runs\\n05-weights-assets-a01\\artifacts\\derived\\sha256\\7C\\7CB50DF4003CECF7CA020972BFF47E8B5437736CA4169E936B4653C0A510AB77.png",
+      "bytes": 133836,
+      "sha256": "7cb50df4003cecf7ca020972bff47e8b5437736ca4169e936b4653c0a510ab77"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\3A\\3A0D64CEEF888D2BAF36A6F198D251B0330A26DA7F08B5305E3F8C07501A1D04.mp3",
+      "bytes": 177696,
+      "sha256": "3a0d64ceef888d2baf36a6f198d251b0330a26da7f08b5305e3f8c07501a1d04"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\8B\\8B21FEBEE72A61BCB036600BD8FCE7BCA5E6FB9425BDC59D3E56F5242212A870.png",
+      "bytes": 87032,
+      "sha256": "8b21febee72a61bcb036600bd8fce7bca5e6fb9425bdc59d3e56f5242212a870"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\D7\\D7910F12D8F77AB76FD3EE461385DC278D4D8D0F04F5483183B5EE0213C62EE3.mp3",
+      "bytes": 146448,
+      "sha256": "d7910f12d8f77ab76fd3ee461385dc278d4d8d0f04f5483183b5ee0213c62ee3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\4D\\4D99A9E1ECA1EB520A96AA9EFCECCF1B55D66198FE693BE6FCE7DFCDC8EA7153.png",
+      "bytes": 80019,
+      "sha256": "4d99a9e1eca1eb520a96aa9efceccf1b55d66198fe693be6fce7dfcdc8ea7153"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\raw.mkv",
+      "bytes": 56479663,
+      "sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\9D\\9D78307A22934C67F0F8C33300A21847AA5220A48213CC185089310DEF3CF06A.mp3",
+      "bytes": 124704,
+      "sha256": "9d78307a22934c67f0f8c33300a21847aa5220a48213cc185089310def3cf06a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\raw-locked-halt-a01\\raw.mkv",
+      "bytes": 59537290,
+      "sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\15\\1560A0E2017331EC81B177590A9201606758F430EC5D4531CB0A79A646C6F138.mp3",
+      "bytes": 150192,
+      "sha256": "1560a0e2017331ec81b177590a9201606758f430ec5d4531cb0a79a646c6f138"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\raw-locked-reroute-a01\\raw.mkv",
+      "bytes": 60656946,
+      "sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\21\\21B89CBF0439911E317C731CDA55F2DFC452ED64F904071574506203134FCCCD.mp3",
+      "bytes": 183168,
+      "sha256": "21b89cbf0439911e317c731cda55f2dfc452ed64f904071574506203134fcccd"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\57\\573191E59762E34E4E9C0566D0542EE634BB85A517DC2797199466A1B657FE09.png",
+      "bytes": 77096,
+      "sha256": "573191e59762e34e4e9c0566d0542ee634bb85a517dc2797199466a1b657fe09"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\EE\\EEE0A381904CE06022AE8D0E9AFA7FF99EBE4F03E30723E54D9345B2767B72A4.mp3",
+      "bytes": 214416,
+      "sha256": "eee0a381904ce06022ae8d0e9afa7ff99ebe4f03e30723e54d9345b2767b72a4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\67\\67A4EB55DE0046F59A883EBB8C3111599A5E727FD287760228729AB782A7A7DB.png",
+      "bytes": 86696,
+      "sha256": "67a4eb55de0046f59a883ebb8c3111599a5e727fd287760228729ab782a7a7db"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+      "bytes": 49062501,
+      "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\87\\872615B6C287C515F4D5292F1DCE4F6AB099ECEA0214C99BC826387FA31CB312.mp3",
+      "bytes": 206784,
+      "sha256": "872615b6c287c515f4d5292f1dce4f6ab099ecea0214c99bc826387fa31cb312"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\16\\163D8DE70515DE79565970F6C440146F325185C53FEFA116F8DCF05F09C8FC03.mp3",
+      "bytes": 156384,
+      "sha256": "163d8de70515de79565970f6c440146f325185c53fefa116f8dcf05f09c8fc03"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\15\\15083225AF54810C69FD8D440C254D72E3CA4FE2CF7C9275572DBBB2D3B6B47A.png",
+      "bytes": 90249,
+      "sha256": "15083225af54810c69fd8d440c254d72e3ca4fe2cf7c9275572dbbb2d3b6b47a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\CC\\CC533848BB9862FF7AE422A586450388C61C42B047458552638988613C3379E4.mp3",
+      "bytes": 158400,
+      "sha256": "cc533848bb9862ff7ae422a586450388c61c42b047458552638988613c3379e4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\F3\\F39BADC5C369E8462A995426FF35126F03D09BA72B779439DE3C99D5B584BA63.png",
+      "bytes": 92987,
+      "sha256": "f39badc5c369e8462a995426ff35126f03d09ba72b779439de3c99d5b584ba63"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\86\\86D87169222E26B5F7A7ED25982B89EFC88E91FBBAB14C8AFDD7C5704A84F81B.mp3",
+      "bytes": 171648,
+      "sha256": "86d87169222e26b5f7a7ed25982b89efc88e91fbbab14c8afdd7c5704a84f81b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\1C\\1C4B7EF8DB00F2FAD6F665B29304C8B4D6CE63D01F7F8D59B78213E5672B08B9.png",
+      "bytes": 77170,
+      "sha256": "1c4b7ef8db00f2fad6f665b29304c8b4d6ce63d01f7f8d59b78213e5672b08b9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\27\\273F359E48ABEA97987B5E23734AD98C569DECAF1AF0DA84383B5EF00072C145.mp3",
+      "bytes": 164448,
+      "sha256": "273f359e48abea97987b5e23734ad98c569decaf1af0da84383b5ef00072c145"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\CB\\CB5EF25591067882B2351B52E46B74CC251C361FE62E6EAE57FF95537993909E.mp3",
+      "bytes": 171504,
+      "sha256": "cb5ef25591067882b2351b52e46b74cc251c361fe62e6eae57ff95537993909e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\D1\\D1D6569B50C13AEDF8C58B5812964804284B733006EB5387B8636DC82DF5A268.png",
+      "bytes": 88271,
+      "sha256": "d1d6569b50c13aedf8c58b5812964804284b733006eb5387b8636dc82df5a268"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-audio-raster-a01\\native\\artifacts\\derived\\sha256\\D5\\D598BFE79B3EC37D23776F79C74B3A26B43E8C2584C1493ACF82E86363406412.mp3",
+      "bytes": 136224,
+      "sha256": "d598bfe79b3ec37d23776f79c74b3a26b43e8c2584c1493acf82e86363406412"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-audio-raster-a01\\native\\artifacts\\derived\\sha256\\F9\\F98AB3B5DECE2E65EF05F791C58998B82808777A9F1DD5F943AA4275D41806DF.png",
+      "bytes": 125286,
+      "sha256": "f98ab3b5dece2e65ef05f791c58998b82808777a9f1dd5f943aa4275d41806df"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-settlement-a01\\camera-raw-a01\\r08-postload-a01\\raw.mkv",
+      "bytes": 29175414,
+      "sha256": "2093104a5ba12db634617efe9ffaa7c12563559847bf994fb7394b08787a0de1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08-audio-raster-a01\\native\\artifacts\\derived\\sha256\\5B\\5B2E1C0BC50425E298FFF6C8780E4F0E04B6260BD53955E9872AFCE237662DD6.mp3",
+      "bytes": 155376,
+      "sha256": "5b2e1c0bc50425e298fff6c8780e4f0e04b6260bd53955e9872afce237662dd6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\0D\\0D2DEB5F1419DD053F216258C24CC940DD58BB35A019C69027E51EA4B8E4BA08.mp3",
+      "bytes": 176256,
+      "sha256": "0d2deb5f1419dd053f216258c24cc940dd58bb35a019c69027e51ea4b8e4ba08"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\A5\\A5B945ABB67877C12386BA642B96FB7557E8FD38151EEA9A2B241EEA7BBEC996.png",
+      "bytes": 90143,
+      "sha256": "a5b945abb67877c12386ba642b96fb7557e8fd38151eea9a2b241eea7bbec996"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\native\\runs\\mechanics-voice-assets-a01\\artifacts\\derived\\sha256\\43\\4353BF3EB5C11A5967C959D02D0B19314C16E8FD65D9A37DE835A61DB9616693.mp3",
+      "bytes": 66096,
+      "sha256": "4353bf3eb5c11a5967c959d02d0b19314c16e8fd65d9a37de835a61db9616693"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-yellow-assets-a01\\native\\runs\\yellow35-a01\\artifacts\\derived\\sha256\\7D\\7D4351DFE3D349AC3F9DEFCFB3C11913E606001C4504C87C3D657841C81A2819.png",
+      "bytes": 95017,
+      "sha256": "7d4351dfe3d349ac3f9defcfb3c11913e606001c4504c87c3d657841c81a2819"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\1C\\1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B.mp3",
+      "bytes": 119088,
+      "sha256": "1cca8c798679e0b5affc0bd1590b873c6dcd8b939cc834e008617a71f06bef9b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\FF\\FF4A18AF932D33D0E129766378D9BBA1E7DBAFE221AAAEB20271BA62CFFC5DC8.mp3",
+      "bytes": 169056,
+      "sha256": "ff4a18af932d33d0e129766378d9bba1e7dbafe221aaaeb20271ba62cffc5dc8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\99\\9920DB84777586E3E40640CFAA253C88FEC2CCC2FF32753681A35270E1EF4ECF.mp3",
+      "bytes": 167760,
+      "sha256": "9920db84777586e3e40640cfaa253c88fec2ccc2ff32753681a35270e1ef4ecf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\D7\\D75C1BB895A40AE53411D539CBBCE1CF70ACD9621A13D0FA825869A149E70585.mp3",
+      "bytes": 186192,
+      "sha256": "d75c1bb895a40ae53411d539cbbce1cf70acd9621a13d0fa825869a149e70585"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\51\\515F7E16BE10C474DBCF96199B82BC5FAE37352EC1847CD6E883B502718D4BE3.mp3",
+      "bytes": 169776,
+      "sha256": "515f7e16be10c474dbcf96199b82bc5fae37352ec1847cd6e883b502718d4be3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\99\\994DA80B10551F94DCC943AD733691839D06E8B51CEA52D335641AC8034246AC.mp3",
+      "bytes": 167040,
+      "sha256": "994da80b10551f94dcc943ad733691839d06e8b51cea52d335641ac8034246ac"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\95\\9530119C3CC4A45FECE0CC24147E3D320FD90904A926C3CB5DB6AEF947A265F8.mp3",
+      "bytes": 180288,
+      "sha256": "9530119c3cc4a45fece0cc24147e3d320fd90904a926c3cb5db6aef947a265f8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\DF\\DF5D7989A187F0A41A93E41DA5C65E01B544778EECEBE6AB2A1D9B9A2F8E7717.mp3",
+      "bytes": 165168,
+      "sha256": "df5d7989a187f0a41a93e41da5c65e01b544778eecebe6ab2a1d9b9a2f8e7717"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\assets\\covers\\war-machine-v2\\war-machine-16x9.jpg",
+      "bytes": 683494,
+      "sha256": "e2788cb8968846011cb1a8ab310798d9bdb6fecdd43f2c7696691fa1920a1e5b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\assets\\music\\quiet-courtly-tension.wav",
+      "bytes": 30726160,
+      "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\raw-r204-battle-a01\\raw.mkv",
+      "bytes": 15441657,
+      "sha256": "665fe47cdcd6600cc526460818a9aaeae149857bb5505153510361e8c4000ab2"
+    }
+  ],
+  "predecessor_source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a03\\SOURCE-FREEZE.actual.json",
+    "bytes": 38796,
+    "sha256": "a06dacdda7f6619ae727bf27ee5e1871c5f4ab4baf0a590b4dd0d7a276e5e325"
+  },
+  "actual_Native_identity_regression": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\NATIVE-IDENTITY-REGRESSION.a03.actual.json",
+    "bytes": 1240,
+    "sha256": "457f553f1fc78f299df7ae6d6548abc6187d69777187460d1350ee5dd6097b22"
+  },
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\checks\\a03\\focused\\ORIGINAL-WAIT.actual.json",
+    "bytes": 920,
+    "sha256": "79afb88c5dd87a9a68d55531aa1a0dbcd76e1d08f9e9689ff852c547527c2cad"
+  },
+  "strict_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\checks\\a03\\strict\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1447,
+    "sha256": "0df63143b3e8bade49e39d4839c4f7ebbea32c3707a4dc96ca17657b9f7b23a5"
+  },
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-source-a04\\FULL-WORKING-REVIEW-RECIPE.source.json",
+    "bytes": 164798,
+    "sha256": "612851a922004f9ad0a32f29e4bb1b11e37678cef28ea39d90dfc7fa22d62840"
+  },
+  "old_formal_gates_changed": false,
+  "actual_media_execution": false,
+  "maximum_new_C_allocated_bytes": 524288000,
+  "cue_media_cap": 150994944,
+  "whole_media_cap": 150994944,
+  "onedrive_copy_cap": 150994944,
+  "QA_TEMP_protocol_cap": 33554432,
+  "hard_peak_upper_bound_bytes": 486539264,
+  "source_native_allocation_before_freeze": {
+    "logical_bytes": 315242,
+    "allocated_bytes": 341064,
+    "entries": 51,
+    "hardlink_aliases": 3,
+    "unique_files": 29,
+    "payload_bytes_read_for_allocation": 0,
+    "onedrive_allocated_bytes": 0,
+    "onedrive_exact_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4"
+  }
+}

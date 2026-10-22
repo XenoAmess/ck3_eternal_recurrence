@@ -1,0 +1,65 @@
+{
+  "schema": "xar.root.e04.full-working-review.onedrive-client.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T22:29:07.707548+00:00",
+  "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+  "bytes": 95584711,
+  "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb",
+  "native_identity": {
+    "st_dev": "13886423844274364792",
+    "st_ino": "562949956005471",
+    "mtime_ns": "1792707909800588500",
+    "nlink": 1
+  },
+  "cfapi": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+    "sample_utc": "2026-10-22T22:29:07.401776+00:00",
+    "size": 95584711,
+    "mtime_ns": "1792707909800588500",
+    "attributes_hex": "0x00000020",
+    "sync_root_hresult": "0x00000000",
+    "handle_attributes_hex": "0x00000020",
+    "reparse_tag_hex": "0x00000000",
+    "cf_placeholder_state_hex": "0x00000000",
+    "cf_placeholder_state_flags": [],
+    "placeholder_hresult": "0x00000000",
+    "placeholder_returned_bytes": 412,
+    "in_sync_state": 1,
+    "on_disk": 95584711,
+    "validated": 95584711,
+    "modified": 0,
+    "pin_state": 0,
+    "file_id": "562949956005471",
+    "sync_root_file_id": "5910974510929700",
+    "stable_size_mtime": true
+  },
+  "client_in_sync": true,
+  "metadata_query_no_recall": true,
+  "only_new_review_target_queried": true,
+  "independent_remote_download_sha256": null,
+  "original_process": {
+    "argv": [
+      "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:/ck3-research-artifacts/onedrive-cloud-status-probe-20260930-a01/probe.py",
+      "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4"
+    ],
+    "pid": 31728,
+    "created_filetime": "134371817472319058",
+    "original_wait": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-ONEDRIVE-CLIENT.stdout.actual-a02.txt",
+      "bytes": 686,
+      "sha256": "f4a10bb53a777b9e10d027aab6dd08be4160c0b9d5377834d97d6fa57366ccaa"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261023-a01\\root\\ROOT-ONEDRIVE-CLIENT.stderr.actual-a02.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "human1x": false,
+  "signoff": false
+}
