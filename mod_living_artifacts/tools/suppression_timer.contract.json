@@ -1,0 +1,32 @@
+{
+  "schema": "living-artifacts-suppression-timer-case-v1",
+  "schema_version": 1,
+  "product": "living-artifacts",
+  "case_id": "suppression_timer",
+  "maximum_natural_days": 212,
+  "max_public_calls": 1200,
+  "day_timeout_seconds": 60,
+  "maximum_checkpoints": 7,
+  "suppression_days": 90,
+  "renewal_day": 60,
+  "checkpoint_days": [0, 0, 60, 60, 90, 180],
+  "last_checkpoint": "first-calendar-month-after-actual-expiry",
+  "initial_fixture": "unchanged-core-level1-xp92-four-materials",
+  "required_startup": ["XALW_FIXTURE_READY_V1"],
+  "forbidden_startup": ["XALW_FIXTURE_INIT_ERROR_V1"],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_checks": [
+    "TIMER-FIRST-PAID-90-DAYS",
+    "TIMER-RENEW-ADDS-90-DAYS",
+    "TIMER-OLD-EVENT-KEEPS-RENEWED-DEADLINE",
+    "TIMER-NATURAL-EXPIRY",
+    "TIMER-NEXT-MONTH-GROWTH"
+  ],
+  "deferred_checks": ["cold_reload", "gift_or_inheritance", "NPC", "all_curses", "whole_product_release"],
+  "whole_product_acceptance_credit": false,
+  "runtime_status": "NOT_RUN"
+}

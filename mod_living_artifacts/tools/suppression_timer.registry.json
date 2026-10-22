@@ -1,0 +1,52 @@
+{
+  "id": "suppression_timer",
+  "status": "ready",
+  "implementation_credit": "Independent seven-save natural suppression renewal/expiry package; live NOT_RUN; no cold reload, transfer, NPC or release credit",
+  "adapter": {
+    "path": "{repo_root}/mod_living_artifacts/tools/suppression_timer_acceptance_adapter.py",
+    "config": "{repo_root}/mod_living_artifacts/tools/suppression_timer.contract.json"
+  },
+  "initial_plan": "{run_dir}/prepared/initial-plan.json",
+  "startup": {
+    "mode": "fixture",
+    "state_dir": "{run_dir}/state",
+    "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+  },
+  "budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 1800,
+    "timeout": 8400,
+    "hold_seconds": 7200,
+    "poll_interval": 0.5
+  },
+  "budget_provenance": "Prospective <=212 ordinary natural days (15 seconds/day planning estimate=3180s), seven real Save/strict-melt readbacks (7x180s=1260s planning allowance), 1800s for existing Root/interruption work, and 180s normal-Quit reserve; 6420s within a fixed 7200s hold. 1200 bounded public calls. These are future allowances, not measured performance or permission to extend an old run.",
+  "required_mcp_tools": [
+    "ck3_take_snapshot", "ck3_execute_step",
+    "ck3_query_player_artifact_personal_use_v1", "ck3_submit_player_artifact_personal_use_v1",
+    "ck3_query_player_artifact_personal_use_action_post_v1", "ck3_open_player_inventory_window_v1",
+    "ck3_query_player_inventory_window_open_post_v1", "ck3_query_ingame_ui_window_v1",
+    "ck3_open_ingame_decisions_v1", "ck3_select_ingame_decision_item_v1",
+    "ck3_confirm_ingame_decision_outcome_v1", "ck3_query_character_interaction_ordinary_v1",
+    "ck3_query_current_event_window_context_v1", "ck3_select_event_option",
+    "ck3_query_pending_character_interaction_context_v1", "ck3_reply_pending_character_interaction",
+    "ck3_save_checkpoint", "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1",
+    "ck3_observe_normal_exit_v1"
+  ],
+  "opt_in_read_only_mcp_tools": ["ck3_query_player_artifact_personal_use_v1"],
+  "opt_in_player_inventory_window_open": true,
+  "opt_in_player_artifact_personal_use_actions": true,
+  "normal_close": {
+    "owner": "shared entry/CaseClient",
+    "reserve_seconds": 180,
+    "actual_retained_OS0_and_original_native0_required": true
+  },
+  "business_contract_applicable": true,
+  "case_scope": "fixture-live-player-paid-suppression-renewal-natural-expiry-only",
+  "whole_product_acceptance_credit": false,
+  "build_route": {
+    "directory": "mod_living_artifacts",
+    "builder": "mod_living_artifacts/tools/build_release.py",
+    "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
+    "workshop_item_id": null
+  }
+}
