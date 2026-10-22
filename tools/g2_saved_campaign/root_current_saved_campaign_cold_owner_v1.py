@@ -8,7 +8,7 @@ import ntpath
 import os
 from pathlib import Path
 import re
-from typing import Literal,Protocol
+from typing import Literal,Protocol,runtime_checkable
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
  MAX_ORIGINAL_RESPONSE_BYTES_V1,
@@ -466,8 +466,12 @@ def _qualified_history_suffix_v2(basis:CurrentSavedBasisV1,reader:BasisReaderV1,
   if parsed.phase=="saved_settled_progress":return []
   proof=parsed.readiness
   if proof is None:raise ValueError("readiness proof required")
+  history_document=evidence(reader,proof.history_tail_ref,65536)
+  if history_document.get("schema")==READINESS_RESTORE_PROJECTION_SCHEMA_V2:
+   projected=parse_readiness_restore_projection_tail_v2(history_document,expected_machine_id=basis.machine_id)
+   return decode_readonly_prefix_history_v1(projected.physical_history)
   prior=decode_current_saved_basis_v1(exact_read(reader,proof.prior_basis_ref,65536),expected_machine_id=basis.machine_id)
-  newrows=rows(evidence(reader,proof.history_tail_ref,65536).get("post_prior_history"))
+  newrows=rows(history_document.get("post_prior_history"))
   return [*_qualified_history_suffix_v2(prior,reader,trail),*(record(v) for v in newrows)]
  if schema in (SETTLED_PROGRESS_CLOSURE_SCHEMA,"xar.A20-actual-saved-progress-closure/v1"):
   review=evidence(reader,basis.refs.driver_close,16384)
@@ -484,6 +488,175 @@ def _qualified_history_suffix_v2(basis:CurrentSavedBasisV1,reader:BasisReaderV1,
   tail=parse_readonly_cold_failure_epoch_v1(closure,expected_machine_id=basis.machine_id).refs.history_tail
  else:raise ValueError("qualified historical Driver history source")
  return [record(v) for v in rows(evidence(reader,tail,32768).get("post_checkpoint_history"))]
+
+READINESS_RESTORE_PROJECTION_SCHEMA_V2="xar.current-saved-readiness-driver-tail/v2"
+
+@dataclass(frozen=True,slots=True)
+class ReadinessRestoreProjectionTailV2:
+ machine_id:str
+ observed_at_utc:str
+ prior_basis_ref:ExactRefV1
+ prior_validation_ref:ExactRefV1
+ recovery_proof_ref:ExactRefV1
+ inventory_ref:ExactRefV1
+ prior_driver_ref:ExactRefV1
+ driver_ref:ExactRefV1
+ driver_identity:FileStatIdentityV1
+ sdk_native_driver_ref:ExactRefV1
+ prior_readiness_sources:WarmSourceRefsV1
+ current_readiness_sources:WarmSourceRefsV1
+ checkpoint_history_index:int
+ prior_history_count:int
+ command_history_count:int
+ retained_restore_count:int
+ physical_history:JsonObject
+ def to_wire(self)->JsonObject:
+  return {"schema":READINESS_RESTORE_PROJECTION_SCHEMA_V2,
+   "projection_kind":"sdk_cold_restore_projection","machine_id":self.machine_id,
+   "observed_at_utc":self.observed_at_utc,"prior_basis_ref":self.prior_basis_ref.to_wire(),
+   "prior_validation_ref":self.prior_validation_ref.to_wire(),"recovery_proof_ref":self.recovery_proof_ref.to_wire(),
+   "inventory_ref":self.inventory_ref.to_wire(),"prior_driver_ref":self.prior_driver_ref.to_wire(),
+   "driver_ref":self.driver_ref.to_wire(),"driver_identity":json_object(self.driver_identity.to_wire()),
+   "sdk_native_driver_ref":self.sdk_native_driver_ref.to_wire(),
+   "prior_readiness_sources":self.prior_readiness_sources.to_wire(),
+   "current_readiness_sources":self.current_readiness_sources.to_wire(),
+   "checkpoint_history_index":self.checkpoint_history_index,"prior_history_count":self.prior_history_count,
+   "historical_post_checkpoint_count":self.prior_history_count-self.checkpoint_history_index,
+   "command_history_count":self.command_history_count,"retained_restore_count":self.retained_restore_count,
+   "filtered_historical_count":self.prior_history_count-self.checkpoint_history_index-self.retained_restore_count,
+   "new_restore_count":1,"physical_history":self.physical_history,
+   "original_driver_body_available":False,"historical_rows_reconstructed":False,
+   "historical_evidence_scope":"original_recovery_proof_and_inventory",
+   "new_ordinary_cycle_credit":0,"new_game_day_credit":0}
+
+def _warm_source_refs_v2(value:object)->WarmSourceRefsV1:
+ names=("actual_game_ref","sdk_pair_ref","semantic_response_ref","capabilities_response_ref","cold_bound_ref","cold_admission_ref")
+ row=record(value,set(names))
+ return WarmSourceRefsV1(*(parse_ref(row[name]) for name in names))
+
+def parse_readiness_restore_projection_tail_v2(value:object,*,expected_machine_id:str)->ReadinessRestoreProjectionTailV2:
+ fields={"schema","projection_kind","machine_id","observed_at_utc","prior_basis_ref","prior_validation_ref",
+  "recovery_proof_ref","inventory_ref","prior_driver_ref","driver_ref","driver_identity","sdk_native_driver_ref",
+  "prior_readiness_sources","current_readiness_sources","checkpoint_history_index","prior_history_count",
+  "historical_post_checkpoint_count","command_history_count","retained_restore_count","filtered_historical_count",
+  "new_restore_count","physical_history","original_driver_body_available","historical_rows_reconstructed",
+  "historical_evidence_scope","new_ordinary_cycle_credit","new_game_day_credit"}
+ row=record(value,fields)
+ need(row["schema"]==READINESS_RESTORE_PROJECTION_SCHEMA_V2 and row["projection_kind"]=="sdk_cold_restore_projection"
+  and row["machine_id"]==expected_machine_id and row["original_driver_body_available"] is False
+  and row["historical_rows_reconstructed"] is False
+  and row["historical_evidence_scope"]=="original_recovery_proof_and_inventory","explicit historical and physical history domains")
+ checkpoint=integer(row["checkpoint_history_index"],1);previous=integer(row["prior_history_count"],checkpoint)
+ retained=integer(row["retained_restore_count"],1);count=integer(row["command_history_count"],1)
+ need(integer(row["historical_post_checkpoint_count"],1)==previous-checkpoint
+  and integer(row["filtered_historical_count"],0)==previous-checkpoint-retained
+  and integer(row["new_restore_count"],1,1)==1 and count==checkpoint+retained+1,"exact projection history counts")
+ integer(row["new_ordinary_cycle_credit"],0,0);integer(row["new_game_day_credit"],0,0)
+ physical=json_object(row["physical_history"])
+ need(len(decode_readonly_prefix_history_v1(physical))==retained+1,"complete physical restore suffix")
+ return ReadinessRestoreProjectionTailV2(text(row["machine_id"]),utc(row["observed_at_utc"]),
+  parse_ref(row["prior_basis_ref"]),parse_ref(row["prior_validation_ref"]),parse_ref(row["recovery_proof_ref"]),
+  parse_ref(row["inventory_ref"]),parse_ref(row["prior_driver_ref"]),parse_ref(row["driver_ref"]),
+  _identity(row["driver_identity"]),parse_ref(row["sdk_native_driver_ref"]),
+  _warm_source_refs_v2(row["prior_readiness_sources"]),_warm_source_refs_v2(row["current_readiness_sources"]),
+  checkpoint,previous,count,retained,physical)
+
+@runtime_checkable
+class _NativeRestorePredicateV2(Protocol):
+ def __call__(self,row:object,checkpoint:object)->bool:...
+
+def _sdk_restore_predicate_v2(reference:ExactRefV1,sources:WarmSourceRefsV1,*,reader:BasisReaderV1)->_NativeRestorePredicateV2:
+ """A separate <=2MiB SDK-source boundary; neither generic metadata nor RPC I/O."""
+ import ast
+ import __future__
+ cold=evidence(reader,sources.cold_admission_ref,65536)
+ base=evidence(reader,parse_ref(cold.get("sdk_base_ref")),1048576)
+ root=Path(text(base.get("source_root")))
+ need(integer(cold.get("business_source_generation"),32,32)==32 and _same_path(reference.path,str(root/"xar_autoplayer/bridge/native_driver.py")),"actual Source32 SDK Native module")
+ anchor_ref=parse_ref(cold.get("sdk_anchor_ref"));anchor=evidence(reader,anchor_ref,65536)
+ need(anchor.get("schema")=="xar.source32.canonical-git-anchor/v1"
+  and anchor.get("machine_id")==cold.get("machine_id") and anchor.get("commit")==base.get("business_source_commit")
+  and parse_ref(base.get("source32_canonical_anchor"))==anchor_ref,"original Source32 SDK source inventory authority")
+ matches=[record(item) for item in rows(base.get("files")) if record(item).get("relative")=="xar_autoplayer/bridge/native_driver.py"]
+ need(len(matches)==1 and integer(matches[0].get("bytes"),1)==reference.bytes
+  and digest(matches[0].get("sha256"))==reference.sha256,"complete frozen SDK inventory source pin")
+ raw=exact_read(reader,reference,2097152)
+ tree=ast.parse(raw,filename=reference.path)
+ names={"_RESTORE_CHECKPOINT_STEP","_COLD_RESTORE_SOURCE"}
+ functions={"_positive_native_id","_proven_restore_lineage_row"}
+ nodes:list[ast.stmt]=[];seen:set[str]=set()
+ for node in tree.body:
+  if isinstance(node,ast.Assign) and len(node.targets)==1 and isinstance(node.targets[0],ast.Name) and node.targets[0].id in names:
+   nodes.append(node);seen.add(node.targets[0].id)
+  elif isinstance(node,ast.FunctionDef) and node.name in functions:
+   nodes.append(node);seen.add(node.name)
+ need(seen==names|functions and len(nodes)==len(seen)
+  and any(isinstance(node,ast.FunctionDef) and node.name=="_checkpoint_history_with_restore_lineage" for node in tree.body),"original SDK restore projection and complete predicate dependency scope")
+ namespace:dict[str,object]={"__name__":"_verified_sdk_restore_predicate","__file__":reference.path}
+ exec(compile(ast.Module(body=nodes,type_ignores=[]),reference.path,"exec",flags=__future__.annotations.compiler_flag),namespace)
+ function=namespace.get("_proven_restore_lineage_row")
+ need(isinstance(function,_NativeRestorePredicateV2),"actual original SDK restore predicate")
+ if not isinstance(function,_NativeRestorePredicateV2):raise ValueError("SDK restore predicate")
+ return function
+
+def validate_readiness_restore_projection_tail_v2(
+ value:object,*,prior:CurrentSavedColdInputsV1,basis:CurrentSavedBasisV1,game:CurrentGameIdentityV1,reader:BasisReaderV1,
+)->int:
+ tail=parse_readiness_restore_projection_tail_v2(value,expected_machine_id=basis.machine_id)
+ need(tail.prior_basis_ref==prior.basis_ref and tail.prior_validation_ref==prior.validation_ref
+  and tail.recovery_proof_ref==prior.basis.refs.closure and tail.prior_driver_ref==prior.basis.refs.driver
+  and tail.driver_ref==basis.refs.driver and tail.driver_identity==basis.driver_identity,"one exact historical basis and actual current Driver")
+ checked=validate_completed_unsaved_tail_evidence_v1(tail.recovery_proof_ref,expected_machine_id=basis.machine_id,reader=_TailOriginalResponseReaderV1(reader))
+ proof=checked.evidence
+ need(proof.sources.inventory==tail.inventory_ref and checked.driver_ref==tail.prior_driver_ref
+  and checked.history_rows==tail.prior_history_count and integer(prior.checkpoint.get("history_index"),1)==tail.checkpoint_history_index,"original complete unsaved history provenance remains intact")
+ old_basis=decode_current_saved_basis_v1(exact_read(reader,proof.sources.prior_basis,65536),expected_machine_id=basis.machine_id)
+ old=_validated_immutable_inputs_v1(old_basis,basis_ref=proof.sources.prior_basis,validation_ref=proof.sources.prior_validation,reader=reader)
+ historical=validate_current_saved_readiness_evidence_v1(old,sources=tail.prior_readiness_sources,reader=reader,runtime_root=Path(proof.runtime_root))
+ current=validate_current_saved_readiness_evidence_v1(prior,sources=tail.current_readiness_sources,reader=reader,runtime_root=Path(tail.current_readiness_sources.actual_game_ref.path).parent)
+ need(historical.game==prior.closed_epoch.old_game and current.game==game,"original and current restore physical generations")
+ predicate=_sdk_restore_predicate_v2(tail.sdk_native_driver_ref,tail.current_readiness_sources,reader=reader)
+ original_rows=_qualified_history_suffix_v2(old.basis,reader)
+ retained=[record(row) for row in original_rows if predicate(row,prior.checkpoint)]
+ physical=decode_readonly_prefix_history_v1(tail.physical_history)
+ need(tail.retained_restore_count==len(retained)+1,"retain all qualified prior restore rows and the actual recovery-epoch restore")
+ for index,(expected,actual) in enumerate(zip(retained,physical[:len(retained)],strict=True),tail.checkpoint_history_index+1):
+  need(_exact_native_json_v1({**expected,"index":index})==_exact_native_json_v1(actual),"retained SDK restore result or order changed")
+ for offset,(previous_pid,current_pid) in enumerate(((old.closed_epoch.old_game.pid,historical.game.pid),(historical.game.pid,game.pid)),len(retained)):
+  row=physical[offset]
+  _cap_restore_row_v2(row,checkpoint=prior.checkpoint,index=tail.checkpoint_history_index+offset+1,previous_pid=previous_pid,current_pid=current_pid)
+ need(all(predicate(row,prior.checkpoint) for row in physical),"physical suffix contains only original SDK-proven restore lineage")
+ return tail.command_history_count
+
+def build_readiness_restore_projection_tail_v2(
+ *,prior:CurrentSavedColdInputsV1,prior_readiness_sources:WarmSourceRefsV1,current_readiness_sources:WarmSourceRefsV1,
+ driver_ref:ExactRefV1,driver_identity:FileStatIdentityV1,driver_bytes:bytes,sdk_native_driver_ref:ExactRefV1,
+ reader:BasisReaderV1,observed_at_utc:str,
+)->ReadinessRestoreProjectionTailV2:
+ """Consume caller's one measured closed RAM payload; never read/write Driver or SAVE."""
+ import base64,zlib
+ need(type(driver_bytes) is bytes and len(driver_bytes)==driver_ref.bytes==driver_identity.bytes
+  and hashlib.sha256(driver_bytes).hexdigest()==driver_ref.sha256 and reader.stat(driver_ref.path)==driver_identity,"exact closed current RAM Driver bytes and identity")
+ payload=record(parse_json(driver_bytes));history=rows(payload.get("command_history"))
+ checkpoint=integer(prior.checkpoint.get("history_index"),1)
+ need(_same_json(payload.get("last_checkpoint"),prior.checkpoint) and integer(payload.get("format_version"),2,2)==2,"actual current saved checkpoint")
+ checked=validate_completed_unsaved_tail_evidence_v1(prior.basis.refs.closure,expected_machine_id=prior.basis.machine_id,reader=_TailOriginalResponseReaderV1(reader))
+ raw=_exact_native_json_v1(history[checkpoint:])
+ physical:JsonObject={"schema":"xar.raw-closed-driver-history-opaque/v1","encoding":"zlib+base64",
+  "decoded_bytes":len(raw),"decoded_sha256":hashlib.sha256(raw).hexdigest(),"row_count":len(history)-checkpoint,
+  "payload":base64.b64encode(zlib.compress(raw)).decode("ascii")}
+ result=ReadinessRestoreProjectionTailV2(prior.basis.machine_id,utc(observed_at_utc),prior.basis_ref,prior.validation_ref,
+  prior.basis.refs.closure,checked.evidence.sources.inventory,prior.basis.refs.driver,driver_ref,driver_identity,
+  sdk_native_driver_ref,prior_readiness_sources,current_readiness_sources,checkpoint,checked.history_rows,len(history),len(history)-checkpoint-1,physical)
+ current=validate_current_saved_readiness_evidence_v1(prior,sources=current_readiness_sources,reader=reader,runtime_root=Path(current_readiness_sources.actual_game_ref.path).parent)
+ need(payload.get("pipe_name")==prior.closed_epoch.pipe_name
+  and integer(payload.get("bridge_pid"),1)==current.game.pid
+  and integer(payload.get("episode_character_id"),1)==prior.basis.frame.actor_character_id
+  and payload.get("episode_run_id")==prior.basis.frame.episode_run_id,"actual RAM Driver current native identity")
+ candidate=replace(prior.basis,driver_identity=driver_identity,refs=replace(prior.basis.refs,driver=driver_ref))
+ validate_readiness_restore_projection_tail_v2(result.to_wire(),prior=prior,basis=candidate,game=current.game,reader=reader)
+ need(reader.stat(driver_ref.path)==driver_identity and reader.stat(prior.basis.refs.save.path)==prior.basis.save_identity,"closed current identities remain stable through projection")
+ return parse_readiness_restore_projection_tail_v2(parse_json(json.dumps(result.to_wire(),ensure_ascii=False,sort_keys=True,allow_nan=False).encode()),expected_machine_id=prior.basis.machine_id)
 
 def _validate_readiness_inventory_v2(
  proof:ReadinessClosureProofV2,prior:CurrentSavedColdInputsV1,basis:CurrentSavedBasisV1,
@@ -528,7 +701,12 @@ def _validate_readiness_history_v2(
  proof:ReadinessClosureProofV2,prior:CurrentSavedColdInputsV1,basis:CurrentSavedBasisV1,game:CurrentGameIdentityV1,
  *,reader:BasisReaderV1,
 )->int:
- tail=record(evidence(reader,proof.history_tail_ref,65536),{"schema","machine_id","observed_at_utc","prior_driver_ref",
+ document=evidence(reader,proof.history_tail_ref,65536)
+ if document.get("schema")==READINESS_RESTORE_PROJECTION_SCHEMA_V2:
+  projected=parse_readiness_restore_projection_tail_v2(document,expected_machine_id=basis.machine_id)
+  need(projected.current_readiness_sources==proof.sources,"projection and normal closure use the same actual readiness sources")
+  return validate_readiness_restore_projection_tail_v2(document,prior=prior,basis=basis,game=game,reader=reader)
+ tail=record(document,{"schema","machine_id","observed_at_utc","prior_driver_ref",
   "driver_ref","prior_history_count","command_history_count","prior_post_checkpoint_sha256","post_prior_history"})
  need(tail["schema"]=="xar.current-saved-readiness-driver-tail/v1" and tail["machine_id"]==basis.machine_id
   and parse_ref(tail["prior_driver_ref"])==prior.basis.refs.driver and parse_ref(tail["driver_ref"])==basis.refs.driver,"current and prior Driver tail sources")
@@ -711,6 +889,30 @@ def _normal_game_evidence_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,sdk_
   need(type(actual_exit.get(flag)) is bool,'Game closure classificat')
  return sdk,supervisor,actual_exit,old_game,processes
 
+@dataclass(frozen=True,slots=True)
+class ScreenReleaseCasProofV1:
+ task_id:str
+ expected_sequence:int
+ actual_sequence:int
+ event_id:str
+
+def parse_screen_release_cas_proof_v1(value:object,*,expected_task_id:str,expected_sequence:int)->ScreenReleaseCasProofV1:
+ release=record(value)
+ expected=integer(release.get("release_expected_sequence"),1)
+ actual=integer(release.get("release_actual_sequence"),1)
+ need(expected==integer(expected_sequence,1) and actual>expected,"screen release exact task CAS predecessor")
+ result=record(parse_json(text(release.get("stdout")).encode("utf-8")))
+ task=record(result.get("task"));event=record(result.get("event"))
+ need(result.get("schema")=="codex.task_bus.v1" and result.get("ok") is True
+  and task.get("schema")=="codex.task_bus.v1" and event.get("schema")=="codex.task_bus.v1"
+  and task.get("task_id")==event.get("task_id")==expected_task_id
+  and task.get("state")==event.get("state")=="done" and event.get("kind")=="completed"
+  and rows(task.get("resources"))==rows(event.get("resources"))==[]
+  and integer(task.get("last_sequence"),1)==integer(event.get("sequence"),1)==actual,
+  "exact successful screen CAS completion task and global event")
+ utc(event.get("timestamp_utc"))
+ return ScreenReleaseCasProofV1(text(expected_task_id),expected,actual,text(event.get("event_id")))
+
 def _normal_screen_release_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,release_ref:ExactRefV1,supervisor:dict[str,object])->None:
  release=evidence(reader,release_ref,16384)
  need(release.get("machine_id")==basis.machine_id and type(release.get("returncode")) is int
@@ -720,9 +922,14 @@ def _normal_screen_release_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,rel
  keeper=record(supervisor.get("keeper"))
  need(released.get("ok") is True and task.get("state")=="done"
    and rows(task.get("resources"))==[] and task.get("task_id")==keeper.get("task_id")
-   and keeper.get("thread_exited") is True and keeper.get("failure") is None
-   and integer(task.get("last_sequence"),1)==integer(keeper.get("last_sequence"),1)+1,
+   and keeper.get("thread_exited") is True and keeper.get("failure") is None,
    'actual stopped Keeper an')
+ if "release_expected_sequence" in release or "release_actual_sequence" in release:
+  parse_screen_release_cas_proof_v1(release,expected_task_id=text(keeper.get("task_id")),
+   expected_sequence=integer(keeper.get("last_sequence"),1))
+ else:
+  need(integer(task.get("last_sequence"),1)==integer(keeper.get("last_sequence"),1)+1,
+   "legacy adjacent screen release sequence")
 
 def _normal_driver_review_v1(
  basis:CurrentSavedBasisV1,reader:BasisReaderV1,old_game:CurrentGameIdentityV1,*,generic:bool,
@@ -985,7 +1192,15 @@ def _validated_immutable_inputs_v1(
  project_current_saved_governance_resume_v1(governance,expected_completed_cycles=basis.completed_cycles)
  ledger=_clone(evidence(reader,basis.refs.ledger))
  closure_row=evidence(reader,basis.refs.closure,65536)
- tail_recovered=closure_row.get("schema")==COMPLETED_UNSAVED_TAIL_SCHEMA_V1
+ recovery_ref:ExactRefV1|None=basis.refs.closure if closure_row.get("schema")==COMPLETED_UNSAVED_TAIL_SCHEMA_V1 else None
+ if closure_row.get("schema")==NORMAL_CLOSURE_SCHEMA_V2 and closure_row.get("phase")=="readiness_only":
+  ready=parse_normal_closure_v2(closure_row,expected_machine_id=basis.machine_id)
+  if ready.readiness is not None:
+   history=evidence(reader,ready.readiness.history_tail_ref,65536)
+   if history.get("schema")==READINESS_RESTORE_PROJECTION_SCHEMA_V2:
+    projection=parse_readiness_restore_projection_tail_v2(history,expected_machine_id=basis.machine_id)
+    recovery_ref=projection.recovery_proof_ref
+ tail_recovered=recovery_ref is not None
  expected_ledger_cycles=basis.completed_cycles if tail_recovered else basis.progress.ledger_cycles
  expected_ledger_date=basis.frame.date_raw if tail_recovered else basis.progress.ledger_date_raw
  need(ledger.get("machine_id")==basis.machine_id
@@ -995,12 +1210,13 @@ def _validated_immutable_inputs_v1(
    and integer(ledger.get("target_date_raw"))==basis.origin.target_date_raw
    and integer(ledger.get("target_days"))==basis.origin.target_days,'explicit original ledger')
  if tail_recovered:
-  tail=parse_completed_unsaved_tail_v1(closure_row,expected_machine_id=basis.machine_id)
+  if recovery_ref is None:raise ValueError("exact recovered ledger provenance")
+  tail=parse_completed_unsaved_tail_v1(evidence(reader,recovery_ref,65536),expected_machine_id=basis.machine_id)
   historical=_clean(evidence(reader,tail.sources.raw_state,262144))
   historical_frame=parse_frame(historical.get("before"))
   recovery=record(ledger.get("unsaved_tail_recovery"))
   need(recovery.get("phase")=="saved_frontier_restored"
-   and parse_ref(recovery.get("evidence_ref"))==basis.refs.closure
+   and parse_ref(recovery.get("evidence_ref"))==recovery_ref
    and integer(recovery.get("saved_cycles"))==basis.completed_cycles
    and integer(recovery.get("saved_date_raw"))==basis.frame.date_raw
    and integer(recovery.get("historical_cycles"))==integer(historical.get("completed_cycles"))

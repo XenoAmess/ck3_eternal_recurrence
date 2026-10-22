@@ -219,13 +219,13 @@ def _qualify_current_saved_feeder_for_entry_v1(
     need(budget.get("machine_id") == checked.machine_id
          and _at(checked.review_deadline_utc) <= _at(utc(budget.get("review_at_utc"))),
          "actual budget machine/deadline")
-    for reference, path in (
-        (checked.feeder_source_ref, actual_stage),
-        (checked.loop_source_ref, actual_loop),
-        (checked.owner_source_ref, actual_owner),
+    for reference, path, limit in (
+        (checked.feeder_source_ref, actual_stage, 131072),
+        (checked.loop_source_ref, actual_loop, 131072),
+        (checked.owner_source_ref, actual_owner, 262144),
     ):
         need(_same_path(reference.path, path), "actual feeder source path")
-        exact_read(reader, reference, 131072)
+        exact_read(reader, reference, limit)
     spec = _checked(reader, checked.feeder_task_spec_ref, 16384)
     need(spec.get("schema") == "xar.interactive-task-owner/v1"
          and spec.get("role") == "feeder" and spec.get("machine_id") == checked.machine_id

@@ -24,7 +24,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, SavedFrameV1,
     encode_current_saved_basis_v1, exact_read, evidence,
     original_response_evidence_v1, OriginalResponseReaderV1,
-    parse_json, parse_ref, record, rows, json_object, json_value, integer, text, utc, qualify_current_saved_basis_v1,
+    parse_json, parse_ref, record, rows, json_object, json_value, integer, need, text, utc, qualify_current_saved_basis_v1,
 )
 from tools.g2_saved_campaign import test_current_saved_basis_v1 as basis_fixture
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
@@ -120,6 +120,197 @@ class ScreenParserV1(Protocol):
 @runtime_checkable
 class ColdProfileVerifierV1(Protocol):
     def __call__(self, spec: environment.EnvironmentSpec) -> JsonObject: ...
+
+
+class _FeederSourceClosureReaderV1(feeder.LocalCurrentSavedFeederReaderV1):
+    def __init__(self, identities: dict[str, FileStatIdentityV1]) -> None:
+        self.identities = identities
+        self.reads: list[tuple[ExactRefV1, int]] = []
+
+    def read(self, reference: ExactRefV1, limit: int) -> bytes:
+        self.reads.append((reference, limit))
+        return super().read(reference, limit)
+
+    def stat(self, path: str) -> FileStatIdentityV1:
+        return self.identities[path]
+
+
+class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
+    """Actual emitted qualify, source reads and reducer; external state stays in RAM."""
+
+    def test_emitted_qualify_accepts_actual_owner_and_keeps_role_caps(self) -> None:
+        from tools.g2_saved_campaign.first_full_checkpoint_v1 import FirstFullCheckpointPolicyV1
+        from tools.g2_saved_campaign import root_continuity_window as actual_ledger
+        root = (Path(__file__).parent / "FEEDER-SOURCE-CLOSURE-NO-IO").resolve()
+        self.assertFalse(root.exists())
+        memory = continuity_fixture.MemoryReader()
+        documents: dict[str, bytes] = {}
+
+        def put_raw(path: Path, raw: bytes) -> ExactRefV1:
+            reference = producer.ref_for_bytes_v1(str(path.resolve()), raw)
+            documents[reference.path] = raw
+            memory.documents[reference.path] = continuity.PinnedContinuityDocumentV1(
+                reference, FileStatIdentityV1(len(raw), str(len(documents)), "1"), raw)
+            return reference
+
+        def put(name: str, value: object) -> ExactRefV1:
+            return put_raw(root / name, producer.encode_v1(value))
+
+        predecessor = continuity_fixture.state()
+        anchor = put("frozen-ledger.json", predecessor)
+        put("ROOT-CONTINUITY-WINDOW.json", predecessor)
+        initial = continuity_fixture.verified(predecessor)
+        basis = replace(initial.inputs.basis, refs=replace(initial.inputs.basis.refs,
+            driver=replace(initial.inputs.basis.refs.driver, path=str(root / "driver.json")),
+            save=replace(initial.inputs.basis.refs.save, path=str(root / "save.ck3")),
+            ledger=anchor), checkpoint={**initial.inputs.basis.checkpoint,
+                                       "path": str(root / "save.ck3")})
+        basis_ref = put("basis.json", basis.to_wire())
+        validation_ref = put("qualification.json", {})
+        game = initial.game
+        game_row: JsonObject = {"machine_id": MACHINE, "pid": game.pid,
+            "creation_filetime": int(game.creation_filetime), "creation_date": game.creation_date,
+            "old_save_loaded": True, "load_save_name": "xar_checkpoint"}
+        game_ref = put("game.json", game_row)
+        cold_ref = put("cold.json", {"machine_id": MACHINE, "basis_ref": basis_ref.to_wire(),
+            "validation_ref": validation_ref.to_wire(), "new_Game": game_row})
+        bound_ref = put("bound.json", {"schema": "xar.c23.normal-checkpoint-cold-bound/v1",
+            "machine_id": MACHINE, "opening_frame": basis.frame.to_wire(),
+            "completed_cycles": basis.completed_cycles, "T0_date_raw": basis.origin.start_date_raw,
+            "checkpoint": basis.checkpoint, "new_ordinary_cycle_credit": 0, "AUTO_or_MET_replayed": False})
+        map_ref = put("map.json", {"status": "GREEN", "reviewer": "/root", "machine_id": MACHINE,
+            "game_pid": game.pid, "game_creation_filetime": int(game.creation_filetime),
+            "actual_initial_frame": basis.frame.to_wire()})
+        active = seed()
+        active.update(before=basis.frame.to_wire(), actual_saved_checkpoint=basis.checkpoint,
+                      campaign_goal_anchor=basis.campaign_goal_anchor)
+        active_ref = put("active.json", active)
+        job_root = root / "recordings/session"
+        first: JsonObject = {"schema": "xar.ck3.decision-text-first-frame/v1", "machine_id": MACHINE,
+            "status": "GREEN", "stage": "saved_map", "reviewer": "/root",
+            "at_utc": "2026-10-21T06:00:00Z", "reviewed_at_utc": "2026-10-21T06:01:00Z",
+            "game_pid": game.pid, "game_creation_filetime": int(game.creation_filetime),
+            "game_creation_date": game.creation_date, "recorder_session_id": "session",
+            "recording_job_root": str(job_root), "publisher_started": ref("publisher.json").to_wire(),
+            "frame": {"label": "fixture", "at_utc": "2026-10-21T06:00:00Z",
+                "game": replace(ref("game.png"), path=str(job_root / "game.png")).to_wire(),
+                "scene": replace(ref("scene.png"), path=str(job_root / "scene.png")).to_wire(),
+                "mutable_latest_frame": False}, "before_selection_game_pixels_reviewed": True,
+            "before_selection_decision_pixels_reviewed": True, "decision_text_visible": True,
+            "legacy_blue_window_visible": False, "Game_map_visible": True, "film_title_visible": False,
+            "observed_map_date": "fixture", "observed_pause_banner": True,
+            "native_source_dimensions": [2560, 1440], "native_capture_scale": [1, 1],
+            "rich_actual_plan_visible": False, "initial_waiting_text_is_not_planner_output": True}
+        first_ref = put("first.json", first)
+        stage_path = root / "launch_current_saved_feeder_v1.py"
+        stage_raw = feeder.emit_current_saved_feeder_launcher_v1()
+        stage_ref = put_raw(stage_path, stage_raw)
+        # A real repository source is the portable loop-source fixture. Local
+        # qualification also consumes the real frozen ordinary source when supplied.
+        material = os.environ.get("XAR_CURRENT_SAVED_SUPERVISOR_MATERIAL")
+        loop_path = (Path(material).with_name("root_p37c23_same_game_loop_feeder100.py")
+                     if material is not None else Path(feeder.__file__)).resolve()
+        loop_ref = put_raw(loop_path, loop_path.read_bytes())
+        owner_path = Path(owner.__file__).resolve()
+        owner_raw = owner_path.read_bytes()
+        self.assertGreater(len(owner_raw), 131072)
+        self.assertLessEqual(len(owner_raw), 262144)
+        owner_ref = put_raw(owner_path, owner_raw)
+        ledger_filename = actual_ledger.__file__
+        if ledger_filename is None:
+            raise TypeError("actual continuity reducer source required")
+        ledger_path = Path(ledger_filename).resolve()
+        put_raw(ledger_path, ledger_path.read_bytes())
+        first_sequence = basis.next_sequence + 2
+        deadline = "2026-10-21T07:30:00Z"
+        budget_ref = put("budget.json", {"machine_id": MACHINE, "review_at_utc": deadline,
+            "first_full_checkpoint_reserve": {"admissible": True, "seconds": 30,
+                "bytes": 1048576, "reservation_mode": "explicit_operator_admitted"}})
+        policy = FirstFullCheckpointPolicyV1(MACHINE, first_sequence, basis.completed_cycles,
+                                            deadline, budget_ref, 30, 1048576)
+        put("ROOT-P37C23-COLD-RESUME-ADMISSION.json", {"first_full_checkpoint": policy.to_wire()})
+        stop = root / "STOP-CURRENT-SAVED-FEEDER"
+        spec_ref = put("task.json", {"schema": "xar.interactive-task-owner/v1", "role": "feeder",
+            "machine_id": MACHINE, "nonce": "4" * 32, "task_name": "XARG2ManagedOwner-" + "4" * 32,
+            "stage": str(stage_path), "stage_sha256": stage_ref.sha256,
+            "stage_args": ["--first-control-sequence", str(first_sequence)],
+            "stop_path": str(stop), "env": {}})
+        admission = feeder.CurrentSavedFeederAdmissionV1(MACHINE, basis_ref, cold_ref, bound_ref,
+            game_ref, map_ref, first_ref, active_ref, stage_ref, loop_ref, owner_ref, spec_ref, budget_ref,
+            "4" * 32, first_sequence, deadline, str(root / "CURRENT-SAVED-FIRST-FULL-CONTINUE.json"), str(stop))
+        sources = replace(initial.warm_proof.sources, actual_game_ref=game_ref,
+                          cold_bound_ref=bound_ref, cold_admission_ref=cold_ref)
+        proof = replace(initial.warm_proof, basis_ref=basis_ref, validation_ref=validation_ref,
+                        sources=sources, game=game, opening=basis.frame)
+        inputs = replace(initial.inputs, basis=basis, basis_ref=basis_ref, validation_ref=validation_ref,
+                         seed=active, checkpoint=basis.checkpoint, old_ledger=predecessor)
+        warm = owner.WarmCurrentSavedFeederInputsV1(inputs, proof)
+        reader = _FeederSourceClosureReaderV1({basis.refs.driver.path: proof.driver_identity,
+                                               basis.refs.save.path: basis.save_identity})
+        ordinary = ModuleType("source_closure_ordinary")
+        ordinary.__file__ = str(loop_path)
+        setattr(ordinary, "CONTINUITY_WINDOW", root / "ROOT-CONTINUITY-WINDOW.json")
+        setattr(ordinary, "next_sequence", lambda: first_sequence)
+        setattr(ordinary, "read", lambda path: parse_json(documents[str(path.resolve())]))
+        segment = ModuleType("root_continuous_segment_auto_c23")
+        # This external recording boundary has separate actual segment tests;
+        # the feeder qualifier, source reader and attachment reducer stay real.
+        setattr(segment, "verify_segment", lambda *args: ({"session_id": "session"}, {}, first))
+        output: list[str] = []
+        namespace: dict[str, object] = {"N": root, "Path": Path, "JsonObject": JsonObject,
+            "json": json, "__file__": str(stage_path), "owner": owner,
+            "load_current_saved_feeder_inputs_v1": lambda: warm,
+            "decode_current_saved_feeder_admission_v1": feeder.decode_current_saved_feeder_admission_v1,
+            "LocalCurrentSavedFeederReaderV1": lambda: reader,
+            "qualify_current_saved_feeder_v1": feeder.qualify_current_saved_feeder_v1,
+            "ordinary": ordinary, "ledger": actual_ledger,
+            "integer": integer, "json_object": json_object, "need": need,
+            "utc_now_v1": lambda: "2026-10-21T06:10:00Z",
+            "make_current_saved_transition_v1": feeder.make_current_saved_transition_v1,
+            "LocalContinuityReaderV1": lambda: memory,
+            "read_continuity_view_v1": continuity.read_continuity_view_v1,
+            "dry_run_attachment_v1": continuity.dry_run_attachment_v1,
+            "print": lambda value: output.append(str(value))}
+        nodes: list[ast.stmt] = [node for node in ast.parse(stage_raw).body
+                               if isinstance(node, ast.FunctionDef) and node.name == "main"]
+        self.assertEqual(len(nodes), 1)
+        exec(compile(ast.Module(body=nodes, type_ignores=[]), "<actual emitted feeder main>", "exec"), namespace)
+        main = namespace["main"]
+        if not isinstance(main, continuity_fixture.EmittedMainV1):
+            raise TypeError("actual emitted feeder entry required")
+
+        def opened(path: Path, *args: object, **kwargs: object) -> io.BytesIO:
+            self.assertEqual(args, ("rb",))
+            self.assertFalse(kwargs)
+            return io.BytesIO(documents[str(path.resolve())])
+
+        admission_path = root / "CURRENT-SAVED-FEEDER-ADMISSION.json"
+        with patch.object(Path, "open", opened), patch.dict(sys.modules, {segment.__name__: segment}):
+            documents[str(admission_path)] = feeder.encode_current_saved_feeder_admission_v1(admission)
+            main(first_sequence, qualify=True)
+            self.assertEqual(len(output), 1)
+            result = record(json.loads(output.pop()))
+            self.assertEqual(result["status"], "READONLY_QUALIFIED")
+            attachment = record(result["attachment"])
+            self.assertNotEqual(attachment["after_digest"], attachment["predecessor_digest"])
+            self.assertEqual(attachment["ledger_writes"], 0)
+            self.assertEqual(rows(attachment["reducer_sources"])[1], owner_ref.to_wire())
+            self.assertIn((owner_ref, 262144), reader.reads)
+            self.assertIn((stage_ref, 131072), reader.reads)
+            self.assertIn((loop_ref, 131072), reader.reads)
+            for field, reference in (("owner_source_ref", owner_ref), ("feeder_source_ref", stage_ref),
+                                     ("loop_source_ref", loop_ref)):
+                for wrong in (replace(reference, sha256="0" * 64),
+                              replace(reference, path=str(root / "wrong-source.py")),
+                              replace(reference, bytes=262145 if field == "owner_source_ref" else 131073)):
+                    with self.subTest(field=field, wrong=wrong), self.assertRaises(ValueError):
+                        changed = (replace(admission, owner_source_ref=wrong) if field == "owner_source_ref"
+                                   else replace(admission, feeder_source_ref=wrong) if field == "feeder_source_ref"
+                                   else replace(admission, loop_source_ref=wrong))
+                        documents[str(admission_path)] = feeder.encode_current_saved_feeder_admission_v1(changed)
+                        main(first_sequence, qualify=True)
+                    self.assertEqual(output, [])
+        self.assertFalse(root.exists())
 
 
 class TypedColdContractTests(unittest.TestCase):

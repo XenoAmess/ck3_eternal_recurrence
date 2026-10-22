@@ -16,6 +16,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
     ExactRefV1, JsonObject, JsonValue, CurrentSavedBasisV1, MAX_ORIGINAL_RESPONSE_BYTES_V1,
     BasisReaderV1, ValidatedCurrentSavedBasisV1, text,
     evidence, parse_ref, record, rows, json_object, integer, encode_current_saved_basis_v1,
+    decode_readonly_prefix_history_v1, _exact_native_json_v1,
 )
 from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import pure_basis
@@ -483,8 +484,8 @@ class NormalClosureWarmTests(unittest.TestCase):
 
 class ReadinessOnlyFixture:
     """A saved normal epoch, a closed readiness epoch, then a fresh warm epoch."""
-    def __init__(self) -> None:
-        self.prior = f = NormalWarmFixture()
+    def __init__(self, prior: NormalWarmFixture | None = None) -> None:
+        self.prior = f = NormalWarmFixture() if prior is None else prior
         self.reader = r = f.runtime_reader
         old = f.basis
         cp = record(evidence(r, old.refs.seed)["actual_saved_checkpoint"])
@@ -505,14 +506,14 @@ class ReadinessOnlyFixture:
         sdk = {"machine_id": old.machine_id, "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED", "normal": True,
             "processes": [{**process, "exit_code": 0, "kernel_exit_observed": True,
                 "wait_result": 0, "observation_error": None}
-                for process in (r.processes[31], r.processes[32])]}
+                for process in (record(v) for v in rows(evidence(r, f.sources.sdk_pair_ref)["processes"]))]}
         sdk_ref = r.put("ready-sdk.json", sdk)
         game_ref = r.put("ready-game.json", {"machine_id": old.machine_id, **f.game_identity.to_wire(),
             "kernel_signaled": True, "exit_code": 1, "forced_owned_job_cleanup": True,
             "normal_wm_close_qualified": False})
         supervisor = evidence(r, f.supervisor)
         supervisor["known_preload_phase"] = {"before": f.game_identity.to_wire(), "after": f.game_identity.to_wire()}
-        owned = record(supervisor["owned_cleanup"]); owned["ck3_pid"] = 30
+        owned = record(supervisor["owned_cleanup"]); owned["ck3_pid"] = f.game_identity.pid
         supervisor["owned_cleanup"] = owned; supervisor["sdk_actual_exit"] = sdk
         supervisor_ref = r.put("ready-supervisor.json", supervisor)
         tasks: list[owner.SettledTaskClosureRefsV1] = []
@@ -558,10 +559,11 @@ class ReadinessOnlyFixture:
         self.proof = owner.ReadinessClosureProofV2(f.basis_ref, f.validation_ref, f.sources,
             r.put("readiness-state.json", state), r.put("inventory.json", self.inventory), r.put("tail.json", self.tail))
         self.review = f.review_value(owner.NORMAL_REVIEW_SCHEMA_V2)
-        self.review.update(status="CLOSED_DRIVER_SAVED_CHECKPOINT_VALIDATED", phase="readiness_only")
+        self.review.update(machine_id=old.machine_id,
+            status="CLOSED_DRIVER_SAVED_CHECKPOINT_VALIDATED", phase="readiness_only")
         d = record(self.review["Driver"])
         d.update(ref=self.driver_ref.to_wire(), identity=driver_identity.to_wire(), command_history_count=2,
-            last_checkpoint=cp, recorded_identity={"pipe_name": "pipe", "bridge_pid": 30,
+            last_checkpoint=cp, recorded_identity={"pipe_name": f.pipe_name, "bridge_pid": f.game_identity.pid,
                 "episode_character_id": old.frame.actor_character_id, "episode_run_id": old.frame.episode_run_id,
                 "session_binding_observation": {"present": False, "value": None}})
         self.review["Driver"] = d
@@ -597,16 +599,16 @@ class ReadinessOnlyFixture:
         return owner.validate_current_saved_cold_inputs_v1(self.basis, basis_ref=self.basis_ref,
             validation_ref=self.validation_ref, reader=self.reader)
 
-    def next_warm(self) -> owner.WarmCurrentSavedFeederInputsV1:
+    def next_warm(self, game_pid: int = 40) -> owner.WarmCurrentSavedFeederInputsV1:
         r = self.reader
         root = self.prior.root / "next-runtime"
-        game = replace(self.prior.game_identity, pid=40, creation_filetime=str(BIRTH + 200))
+        game = replace(self.prior.game_identity, pid=game_pid, creation_filetime=str(BIRTH + game_pid + 200))
         game_ref = r.put("next-runtime/ROOT-ACTUAL-GAME-LAUNCH-C23.json", {
             "machine_id": self.basis.machine_id, **game.to_wire(), "command": ["/game/ck3.exe"]})
-        r.processes[40] = {"pid": 40, "creation_filetime": game.creation_filetime, "executable": "/game/ck3.exe"}
+        r.processes[game_pid] = {"pid": game_pid, "creation_filetime": game.creation_filetime, "executable": "/game/ck3.exe"}
         pair = evidence(r, self.prior.sources.sdk_pair_ref)
         processes: list[JsonObject] = []
-        for role, pid in (("sdk_queue", 41), ("sdk_application", 42)):
+        for role, pid in (("sdk_queue", game_pid + 1), ("sdk_application", game_pid + 2)):
             process: JsonObject = {"role": role, "pid": pid, "creation_filetime": str(BIRTH + pid), "executable": "/sdk/python.exe"}
             processes.append(process); r.processes[pid] = process
         pair["processes"] = processes
@@ -617,8 +619,8 @@ class ReadinessOnlyFixture:
             request = record(row["request"]); request["sequence"] = self.basis.next_sequence + index; row["request"] = request
             result = record(row["result"]); body = record(result["structured_content"])
             diag = record(body["diagnostics"]); hello = record(diag["hello"])
-            diag["bridge_pid"] = 40; diag["connection_generation"] = 2
-            hello["pid"] = 40; hello["connection_generation"] = 2
+            diag["bridge_pid"] = game_pid; diag["connection_generation"] = 2
+            hello["pid"] = game_pid; hello["connection_generation"] = 2
             diag["hello"] = hello; body["diagnostics"] = diag
             result["structured_content"] = body; row["result"] = result
             responses.append(r.put(f"next-runtime/p37-responses/{self.basis.next_sequence + index:04d}-1-result.json", row))
@@ -629,7 +631,7 @@ class ReadinessOnlyFixture:
             "machine_id": self.basis.machine_id, "basis_ref": self.basis_ref.to_wire(),
             "validation_ref": self.validation_ref.to_wire(), "new_Game": game.to_wire()})
         sources = owner.WarmSourceRefsV1(game_ref, pair_ref, responses[0], responses[1], bound_ref, cold_ref)
-        payload = record(json.loads(r.headers[self.basis.refs.driver.path])); payload["bridge_pid"] = 40
+        payload = record(json.loads(r.headers[self.basis.refs.driver.path])); payload["bridge_pid"] = game_pid
         raw = json.dumps(payload, separators=(",", ":")).encode()
         r.headers[self.basis.refs.driver.path] = raw
         r.identities[self.basis.refs.driver.path] = FileStatIdentityV1(len(raw), "1000000", "3")
@@ -638,6 +640,40 @@ class ReadinessOnlyFixture:
 
 
 class ReadinessOnlyClosureTests(unittest.TestCase):
+    def test_screen_cas_with_unrelated_global_event_and_exact_receipt_binding(self) -> None:
+        f = ReadinessOnlyFixture()
+        result: JsonObject = {"schema": "codex.task_bus.v1", "ok": True,
+            "task": {"schema": "codex.task_bus.v1", "task_id": "screen", "state": "done",
+                "resources": [], "last_sequence": 22},
+            "event": {"schema": "codex.task_bus.v1", "task_id": "screen", "state": "done",
+                "resources": [], "sequence": 22, "kind": "completed", "event_id": "actual-event",
+                "timestamp_utc": UTC}}
+        release: JsonObject = {"machine_id": f.basis.machine_id, "returncode": 0,
+            "release_expected_sequence": 20, "release_actual_sequence": 22, "stdout": json.dumps(result)}
+        proof = owner.parse_screen_release_cas_proof_v1(json.loads(json.dumps(release)),
+            expected_task_id="screen", expected_sequence=20)
+        self.assertEqual((proof.expected_sequence, proof.actual_sequence), (20, 22))
+        ref = f.reader.put("screen-release-with-gap.json", release)
+        f.closure = replace(f.closure, refs=replace(f.closure.refs, screen_release=ref))
+        f.reseal()
+        self.assertEqual(f.cold().closed_epoch.old_game.pid, 30)
+        for mutation in ("expected", "bool", "float", "partial", "actual", "event_sequence", "event_task", "event_kind", "event_resources"):
+            bad = json_object(json.loads(json.dumps(release)))
+            response = json_object(json.loads(text(bad["stdout"])))
+            event = record(response["event"])
+            if mutation == "expected": bad["release_expected_sequence"] = 21
+            elif mutation == "bool": bad["release_expected_sequence"] = True
+            elif mutation == "float": bad["release_actual_sequence"] = 22.0
+            elif mutation == "partial": del bad["release_actual_sequence"]
+            elif mutation == "actual": bad["release_actual_sequence"] = 23
+            elif mutation == "event_sequence": event["sequence"] = 21
+            elif mutation == "event_task": event["task_id"] = "unrelated"
+            elif mutation == "event_kind": event["kind"] = "status"
+            else: event["resources"] = ["screen"]
+            response["event"] = json_object(event); bad["stdout"] = json.dumps(response)
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                owner.parse_screen_release_cas_proof_v1(bad, expected_task_id="screen", expected_sequence=20)
+
     def test_v2_producer_json_public_cold_and_sdk_consumers(self) -> None:
         f = ReadinessOnlyFixture()
         self.assertEqual(owner.parse_normal_closure_v2(json.loads(json.dumps(f.closure.to_wire())),
@@ -690,7 +726,8 @@ class CompletedUnsavedTailFixture:
     def __init__(self, *, initial_basis: CurrentSavedBasisV1 | None = None,
                  metadata_root: Path | None = None, current_driver_ref: ExactRefV1 | None = None,
                  current_driver_identity: FileStatIdentityV1 | None = None,
-                 saved_prior: SavedBusinessPriorV1 | None = None) -> None:
+                 saved_prior: SavedBusinessPriorV1 | None = None,
+                 readiness_prefix: bool = False) -> None:
         if initial_basis is not None and saved_prior is not None:
             raise ValueError("one complete saved prior provider")
         if saved_prior is not None:
@@ -718,7 +755,31 @@ class CompletedUnsavedTailFixture:
             before=self.current_frame.to_wire(), checkpoint_dirty_since_save=True)
         self.raw_state = r.put("tail-runtime/raw-state.json", self.state)
         self.raw_governance = r.put("tail-runtime/raw-governance.json", self.state)
+        self.readiness_sources: owner.WarmSourceRefsV1 | None = None
         first = b.next_sequence
+        if readiness_prefix:
+            references: list[ExactRefV1] = []
+            for offset, source in enumerate((f.sources.semantic_response_ref, f.sources.capabilities_response_ref)):
+                row = evidence(r, source); ready_request = record(row["request"])
+                sequence = b.next_sequence + offset
+                ready_request["sequence"] = sequence; row["request"] = ready_request
+                ready_after: dict[str, object] = {"at_utc": UTC, "tool": ready_request["tool"],
+                    "request": str(self.root / "p37-requests" / f"{sequence:04d}-1-result.json"),
+                    "response": str(self.root / "p37-responses" / f"{sequence:04d}-1-result.json")}
+                if offset == 0:
+                    ready_after.update(actual_status="cold_readiness_verified", loading_attempts=0, new_business_credit=0)
+                else:
+                    ready_after.update(actual_status=None, selected_step=None, checkpoint_status=None)
+                references.append(self._entry(sequence, ready_request, row, ready_after))
+            marker = evidence(r, f.sources.cold_bound_ref)
+            marker["semantic_response"] = references[0].path
+            self.readiness_sources = owner.WarmSourceRefsV1(
+                r.put("tail-runtime/ROOT-ACTUAL-GAME-LAUNCH-C23.json", evidence(r, f.sources.actual_game_ref)),
+                r.put("tail-runtime/ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C23.json", evidence(r, f.sources.sdk_pair_ref)),
+                references[0], references[1],
+                r.put("tail-runtime/p37-queue/ROOT-C23-NORMAL-COLD-BOUND.json", marker),
+                r.put("tail-runtime/ROOT-P37C23-COLD-RESUME-ADMISSION.json", evidence(r, f.sources.cold_admission_ref)))
+            first += 2
         full_request: dict[str, object] = {"sequence": first, "command": "full_loop",
             "arguments": {"max_turns": 2}}
         tools = {key: {"count": count, "error_count": 0, "client_error_count": 0}
@@ -946,6 +1007,191 @@ class CompletedUnsavedTailFixture:
         carrier.validation_ref = validation_ref
         with self.io_scope():
             return carrier.next_warm()
+
+
+class ReadinessRestoreProjectionFixture:
+    """Nonempty historical business tail and a physically projected new Driver."""
+    def __init__(self, saved_prior: SavedBusinessPriorV1 | None = None) -> None:
+        import subprocess
+        self.tail = tail = CompletedUnsavedTailFixture(readiness_prefix=True, saved_prior=saved_prior)
+        self.reader = r = tail.reader
+        self.prior = prior = tail.cold()
+        current = tail.next_warm()
+        f = object.__new__(NormalWarmFixture)
+        f.__dict__.update(tail.prior.__dict__)
+        f.basis = prior.basis; f.basis_ref = prior.basis_ref; f.validation_ref = prior.validation_ref
+        f.sources = current.warm_proof.sources; f.game_identity = current.warm_proof.game
+        f.root = Path(f.sources.actual_game_ref.path).parent
+        r.metadata_root = f.root
+        with tail.io_scope():
+            self.ready = ready = ReadinessOnlyFixture(f)
+        cp = prior.checkpoint
+        def restore(index: int, previous: int, pid: int) -> JsonObject:
+            return {"index": index, "command": "restore-checkpoint", "ok": True,
+                "result": {"step": "restore-checkpoint", "accepted": True, "status": "restored",
+                    "backend_id": "native-headless", "source": "native-session-cold-start",
+                    "checkpoint": cp, "restored_date_raw": prior.basis.frame.date_raw, "map_ready": True,
+                    "lifecycle": {"previous_pid": previous, "pid": pid}}}
+        payload = record(json.loads(r.headers[prior.basis.refs.driver.path]))
+        payload["succession_lifecycle"] = cp["succession_lifecycle"]
+        payload["command_history"] = [{"index": 1, "command": "save-checkpoint", "ok": True,
+            "result": {"checkpoint": cp}}, restore(2, 10, 30), restore(3, 30, 40)]
+        payload["bridge_pid"] = 40
+        raw = json.dumps(payload, separators=(",", ":")).encode()
+        self.raw = raw
+        self.driver_ref = ExactRefV1(prior.basis.refs.driver.path, len(raw), hashlib.sha256(raw).hexdigest())
+        self.driver_identity = FileStatIdentityV1(len(raw), "900010", "10")
+        r.raw[self.driver_ref.path] = raw; r.headers[self.driver_ref.path] = raw
+        r.identities[self.driver_ref.path] = self.driver_identity
+        origin = "6f58f72a8ff29d85f8751d3bfb1667b38f9497df:ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
+        with subprocess.Popen(["git", "show", origin], cwd=Path(__file__).resolve().parents[2],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as process:
+            if process.stdout is None: raise ValueError("bounded original Git source pipe")
+            native = process.stdout.read(2097153)
+            if len(native) > 2097152:
+                process.kill(); process.wait()
+                raise ValueError("bounded complete original Source32 source")
+            if process.wait(timeout=30) != 0:
+                raise ValueError("original Source32 Git object required; never skip")
+        if len(native) != 1648649 or hashlib.sha256(native).hexdigest() != "15a1eca3cee4f79be51a4144258650822e49146c93b7a87257319f848928d06b":
+            raise ValueError("exact complete original Source32 source pin")
+        native_path = str(r.metadata_root / "sdk/xar_autoplayer/bridge/native_driver.py")
+        self.sdk_ref = ExactRefV1(native_path, len(native), hashlib.sha256(native).hexdigest())
+        r.raw[native_path] = native
+        anchor = r.put("sdk-anchor.json", {"schema": "xar.source32.canonical-git-anchor/v1",
+            "machine_id": prior.basis.machine_id, "commit": origin.split(":", 1)[0]})
+        base = r.put("sdk-base.json", {"source_root": str(r.metadata_root / "sdk"),
+            "business_source_commit": origin.split(":", 1)[0], "source32_canonical_anchor": anchor.to_wire(),
+            "files": [{"relative": "xar_autoplayer/bridge/native_driver.py", "bytes": len(native),
+                "sha256": self.sdk_ref.sha256}]})
+        cold = evidence(r, f.sources.cold_admission_ref)
+        cold.update(sdk_base_ref=base.to_wire(), sdk_anchor_ref=anchor.to_wire(), business_source_generation=32)
+        f.sources = replace(f.sources, cold_admission_ref=r.put("ROOT-P37C23-COLD-RESUME-ADMISSION.json", cold))
+        if tail.readiness_sources is None: raise ValueError("explicit original readiness source")
+        with tail.io_scope():
+            self.card = owner.build_readiness_restore_projection_tail_v2(prior=prior,
+                prior_readiness_sources=tail.readiness_sources, current_readiness_sources=f.sources,
+                driver_ref=self.driver_ref, driver_identity=self.driver_identity, driver_bytes=raw,
+                sdk_native_driver_ref=self.sdk_ref, reader=r, observed_at_utc=UTC)
+        ready.tail = dict(self.card.to_wire())
+        ready.proof = replace(ready.proof, sources=f.sources)
+        ready.driver_ref = self.driver_ref
+        driver = record(ready.review["Driver"])
+        driver.update(ref=self.driver_ref.to_wire(), identity=self.driver_identity.to_wire(), command_history_count=3)
+        ready.review["Driver"] = driver
+        ready.basis = replace(ready.basis, driver_identity=self.driver_identity,
+            refs=replace(ready.basis.refs, driver=self.driver_ref))
+        ready.reseal()
+        q = owner.BasisQualificationV1(ready.basis.machine_id, UTC, ready.basis_ref,
+            ready.basis.refs.driver, ready.basis.refs.save, self.driver_identity, self.driver_identity,
+            ready.basis.save_identity, ready.basis.save_identity, ready.basis.refs.checkpoint_validator, 3, 1, 1, 1)
+        ready.validation_ref = r.put("ready-qualification.json", q.to_wire())
+
+
+class ReadinessRestoreProjectionTests(unittest.TestCase):
+    def test_complete_saved_producer_actual_native_qualification_and_new_cold(self) -> None:
+        from datetime import datetime, timezone
+        from tools.ck3_live_run_id import current_machine_id
+        from tools.g2_saved_campaign import test_current_saved_basis_v1 as bf
+        from tools.g2_saved_campaign.test_current_saved_continuity_v1 import _owned_continuity_case_v1
+        from tools.g2_saved_campaign.current_saved_basis_v1 import (
+            PinnedCheckpointValidatorV1, parse_json, qualify_current_saved_basis_v1,
+            validate_current_saved_basis_files_v1)
+        from xar_autoplayer.cold_checkpoint_validator import validate_cold_start_checkpoint_payload_for_pipe
+        life: JsonObject = {"schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "ordinary_campaign_succession", "xar_enabled": None,
+            "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+            "source": "absent_by_verified_xar_mod_not_loaded", "environment_sha256": "e" * 64}
+        class Producer(bf.CurrentSavedBasisTests):
+            @classmethod
+            def write(cls, name: str, value: object) -> ExactRefV1:
+                row = record(json.loads(json.dumps(value).replace('"succession_lifecycle": null',
+                    '"succession_lifecycle": ' + json.dumps(life))))
+                if name == "driver.json":
+                    row["bridge_pid"] = 10
+                    cp = record(row["last_checkpoint"]); row["succession_lifecycle"] = cp["succession_lifecycle"]
+                elif name == "governance.json": row.update(governance_result_state=None, pending_focus=None)
+                elif name in ("stale-ledger.json", "origin-ledger.json"):
+                    row.update(target_days=10958, target_date_raw=integer(row["start_date_raw"]) + 10958 * 24)
+                    if name == "stale-ledger.json":
+                        body = record(record(record(parse_json((cls.root / "full-100.json").read_bytes()))["result"])["structured_content"])
+                        row.update(schema="root.ck3.continuity-window/v1", sequence=1, window_id=1,
+                            status="running", last_settled_cycles=integer(body["cumulative_cycles"]),
+                            last_settled_date_raw=integer(body["actual_end_date_raw"]),
+                            game_binding={"pid": 10, "creation_date": UTC}, cold_handoff_count=0,
+                            manual_repair_count=0, automatic_recovery_count=0, binding_lineage_count=0)
+                return super().write(name, row)
+        with contextmanager(_owned_continuity_case_v1)("readiness-projection") as root:
+            Producer.root = root; Producer.reader = bf.DiskReader(); Producer.peak_upper = 4096
+            with patch.object(bf, "MACHINE", current_machine_id()): Producer.make_inputs()
+            inputs = replace(Producer.inputs, observed_at_utc=datetime.now(timezone.utc).isoformat(),
+                origin=replace(Producer.inputs.origin, target_days=10958,
+                    target_date_raw=Producer.inputs.origin.start_date_raw + 10958 * 24))
+            original = qualify_current_saved_basis_v1(inputs, reader=Producer.reader,
+                checkpoint_validator=Producer.validator)
+            f = ReadinessRestoreProjectionFixture(SavedBusinessPriorV1(original, Producer.reader, "test-pipe"))
+            validator = PinnedCheckpointValidatorV1(f.ready.basis.refs.checkpoint_validator,
+                validate_cold_start_checkpoint_payload_for_pipe)
+            with f.tail.io_scope():
+                measured = validate_current_saved_basis_files_v1(f.ready.basis, reader=f.reader,
+                    checkpoint_validator=validator)
+                self.assertEqual(measured.driver_body_reads, 1)
+                self.assertEqual(measured.canonical_checkpoint_validator_calls, 1)
+                self.assertEqual(measured.driver_history_rows, 3)
+                qualification = owner.build_basis_qualification_v1(measured, basis_ref=f.ready.basis_ref,
+                    reader=f.reader, observed_at_utc=datetime.now(timezone.utc).isoformat())
+                f.ready.validation_ref = f.reader.put("actual-new-qualification.json", qualification.to_wire())
+                self.assertEqual(f.ready.cold().basis, f.ready.basis)
+
+    def test_original_nonempty_tail_to_json_closed_basis_cold_sdk_and_next_warm(self) -> None:
+        f = ReadinessRestoreProjectionFixture()
+        wire = json.loads(json.dumps(f.card.to_wire()))
+        self.assertEqual(owner.parse_readiness_restore_projection_tail_v2(wire,
+            expected_machine_id=f.prior.basis.machine_id), f.card)
+        self.assertEqual(wire["historical_post_checkpoint_count"], 6)
+        self.assertEqual(wire["filtered_historical_count"], 5)
+        self.assertFalse(wire["original_driver_body_available"])
+        with f.tail.io_scope():
+            cold = f.ready.cold()
+            self.assertEqual(cold.closed_epoch.old_game.pid, 40)
+            self.assertEqual(cold.basis.completed_cycles, f.prior.basis.completed_cycles)
+            self.assertEqual(cold.basis.frame, f.prior.basis.frame)
+            with patch.object(owner, "LocalBasisReaderV1", return_value=f.reader):
+                sdk = owner.validate_current_saved_prepared_sdk_closure_v1(f.ready.closure.refs.sdk_closed.to_wire(), inputs=cold)
+            self.assertIs(sdk["normal"], True)
+            warm = f.ready.next_warm(50)
+            self.assertEqual(warm.warm_proof.game.pid, 50)
+            self.assertTrue(warm.warm_proof.closed_driver_identity_replaced)
+        self.assertNotIn(f.driver_ref.path, f.reader.reads)
+        self.assertNotIn(f.prior.basis.refs.save.path, f.reader.reads)
+
+    def test_exact_contract_counts_types_and_actual_restore_mutations_rejected(self) -> None:
+        f = ReadinessRestoreProjectionFixture()
+        for field, value in (("command_history_count", True), ("prior_history_count", 7.0),
+                ("historical_rows_reconstructed", True), ("original_driver_body_available", True),
+                ("new_game_day_credit", 1), ("physical_history", None), ("extra", None)):
+            row = dict(f.card.to_wire()); row[field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                owner.parse_readiness_restore_projection_tail_v2(row, expected_machine_id=f.prior.basis.machine_id)
+        for mutation in ("business", "missing", "result", "prior", "sdk_pin", "sdk_path"):
+            row = dict(f.card.to_wire())
+            physical = decode_readonly_prefix_history_v1(row["physical_history"])
+            if mutation == "business": physical[0]["command"] = "do-business"
+            elif mutation == "missing": physical.pop()
+            elif mutation == "result":
+                result = record(physical[0]["result"]); result["map_ready"] = False; physical[0]["result"] = result
+            elif mutation == "prior": row["prior_validation_ref"] = f.prior.basis_ref.to_wire()
+            elif mutation == "sdk_pin": row["sdk_native_driver_ref"] = replace(f.sdk_ref, sha256="f" * 64).to_wire()
+            else: row["sdk_native_driver_ref"] = replace(f.sdk_ref, path=f.sdk_ref.path + "-other").to_wire()
+            if mutation in ("business", "missing", "result"):
+                import base64, zlib
+                raw = _exact_native_json_v1(physical)
+                row["physical_history"] = {"schema": "xar.raw-closed-driver-history-opaque/v1",
+                    "encoding": "zlib+base64", "decoded_bytes": len(raw), "decoded_sha256": hashlib.sha256(raw).hexdigest(),
+                    "row_count": len(physical), "payload": base64.b64encode(zlib.compress(raw)).decode("ascii")}
+            with self.subTest(mutation=mutation), f.tail.io_scope(), self.assertRaises(ValueError):
+                owner.validate_readiness_restore_projection_tail_v2(row, prior=f.prior,
+                    basis=f.ready.basis, game=f.ready.prior.game_identity, reader=f.reader)
 
 
 class CompletedUnsavedTailTests(unittest.TestCase):

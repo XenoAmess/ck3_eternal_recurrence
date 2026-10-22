@@ -1017,7 +1017,7 @@ class SavedRecoveryMeasurementTests(unittest.TestCase):
             continuity._MEASURED_RECOVERY_ISSUED.pop(later.token, None)
             continuity._MEASURED_RECOVERY_ISSUED.pop(measured.token, None)
 
-            for mode in ("history", "save-sha", "driver-identity"):
+            for mode in ("history", "save-identity", "save-sha", "driver-identity"):
                 with self.subTest(mode=mode):
                     driver.write_bytes(canonical_json_v1(payload))
                     save.write_bytes(b"x" * 4096)
@@ -1032,10 +1032,30 @@ class SavedRecoveryMeasurementTests(unittest.TestCase):
                     before_tokens = set(continuity._MEASURED_RECOVERY_ISSUED)
                     old_driver_identity = current_reader.stat(actual_driver_ref.path)
                     old_save_identity = current_reader.stat(actual_save_ref.path)
-                    if mode == "save-sha":
+                    if mode in ("save-identity", "save-sha"):
+                        original_save_stat = save.stat()
                         save.write_bytes(b"y" * 4096)
+                        # Same-size in-place writes can retain the original
+                        # timestamp on a fast filesystem. Exercise the two
+                        # guards independently, without relying on wall time.
+                        target_mtime = int(old_save_identity.mtime_ns)
+                        if mode == "save-identity":
+                            target_mtime += 2_000_000_000
+                        os.utime(save, ns=(original_save_stat.st_atime_ns, target_mtime))
+                        changed_save_identity = current_reader.stat(actual_save_ref.path)
+                        self.assertEqual(changed_save_identity.file_id, old_save_identity.file_id)
+                        self.assertEqual(changed_save_identity.bytes, old_save_identity.bytes)
+                        if mode == "save-sha":
+                            self.assertEqual(changed_save_identity, old_save_identity)
+                        else:
+                            self.assertNotEqual(changed_save_identity, old_save_identity)
+                        self.assertNotEqual(hashlib.sha256(save.read_bytes()).hexdigest(),
+                                            actual_save_ref.sha256)
+
+                    hash_calls: list[Path] = []
 
                     def hash_then_external_replace(path: Path) -> str:
+                        hash_calls.append(path)
                         digest = original_hash(path)
                         if mode == "driver-identity":
                             replacement = root / "external-driver-replacement.json"
@@ -1044,7 +1064,7 @@ class SavedRecoveryMeasurementTests(unittest.TestCase):
                         return digest
 
                     with patch.object(sdk_session, "_sha256_file", hash_then_external_replace):
-                        with self.assertRaises((ValueError, AgentError)):
+                        with self.assertRaises((ValueError, AgentError)) as rejected:
                             continuity.measure_saved_recovery_checkpoint_v1(
                                 driver_ref=actual_driver_ref, driver_identity=old_driver_identity,
                                 save_ref=actual_save_ref, save_identity=old_save_identity,
@@ -1054,7 +1074,12 @@ class SavedRecoveryMeasurementTests(unittest.TestCase):
                     self.assertIs(sdk_session._sha256_file, original_hash)
                     self.assertEqual(driver.read_bytes(), before)
                     self.assertEqual(set(continuity._MEASURED_RECOVERY_ISSUED), before_tokens)
-                    self.assertEqual(current_reader.driver_reads, 0 if mode == "save-sha" else 1)
+                    self.assertEqual(current_reader.driver_reads, 0 if mode == "save-identity" else 1)
+                    self.assertEqual(hash_calls, [save] if mode in ("save-sha", "driver-identity") else [])
+                    if mode == "save-sha":
+                        self.assertIsInstance(rejected.exception, AgentError)
+                        self.assertIn("cold checkpoint bytes differ from the v2 driver state",
+                                      str(rejected.exception))
 
 class _RollbackMemoryPowerLoss(Exception):
     pass

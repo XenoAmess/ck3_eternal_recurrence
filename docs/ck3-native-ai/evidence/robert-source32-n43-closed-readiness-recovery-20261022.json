@@ -1,0 +1,408 @@
+{
+  "actual_N43_runtime": {
+    "BOUND_completed": true,
+    "FULL_requests": 0,
+    "G2": "6/8 unchanged",
+    "Game_creation_filetime": "134371313236742411",
+    "Game_exit_code": 1,
+    "Game_exit_observed_at_utc": "2026-10-22T08:52:13.680812+00:00",
+    "Game_exit_receipt_ref": {
+      "bytes": 358,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a43\\ROOT-ACTUAL-GAME-EXIT-C23.json",
+      "sha256": "0091192704ea8b9159c545a1dde24c17062f0f216a5db889c1d81e9e2b44807d"
+    },
+    "Game_forced_owned_job_cleanup": true,
+    "Game_normal_close_qualified": false,
+    "Game_pid": 187996,
+    "Prepared": true,
+    "SDK_closed_receipt_ref": {
+      "bytes": 864,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a43\\ROOT-P37C23-OWNER-CLOSED.json",
+      "sha256": "01bb04db339c8a59fd9efeb7a9ffde66cc4439de288173c5559795a5fd55941b"
+    },
+    "SDK_exit_codes": [
+      0,
+      0
+    ],
+    "SDK_normal": true,
+    "canonical_head_sequence": 236,
+    "canonical_head_written_this_fix": false,
+    "completed_cycles": 5182,
+    "new_Game_admission": false,
+    "new_game_days": 0,
+    "new_ordinary_cycles": 0,
+    "next_sequence": 11538,
+    "performance_or_strategy_improvement_credit": false,
+    "requests": [
+      "SEM11536",
+      "CAP11537"
+    ],
+    "saved_date_raw": 53279400,
+    "saved_game_days": 5628,
+    "target_days": 10950,
+    "Prepared_scope": "Original N43 graph public Prepared passed before its Game launch; successor basis is not Prepared yet"
+  },
+  "actual_canonical_capture_receipt_ref": {
+    "bytes": 3431,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-CANONICAL-CAPTURE01.json",
+    "sha256": "270c07be0c430ec8aae3c776f1bea4d60fe24463048cec2ff6802a3f0f3805e8"
+  },
+  "actual_final_cold": {
+    "Driver_physical_reads_total": 1,
+    "Prepared": false,
+    "basis_ref": {
+      "bytes": 8956,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\CURRENT-SAVED-A43-BASIS01.json",
+      "sha256": "75ce154f17eabdbd36e2ad29019a5db2659dd7e7f0df25658fee7aa7aa41713c"
+    },
+    "game_days": 0,
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "new_financial_take": 0,
+    "new_ordinary_cycles": 0,
+    "next_sequence": 11538,
+    "observed_at_utc": "2026-10-22T09:34:24.582169+00:00",
+    "original_SDK_canonical_SAVE_hash_calls_total": 1,
+    "owner_source_ref": {
+      "bytes": 156256,
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\root_current_saved_campaign_cold_owner_v1.py",
+      "sha256": "f6167af8f91cf90cce0e2c0356470b43ef60bc07a0cc235e9f7b8986b81cf59e"
+    },
+    "qualification_ref": {
+      "bytes": 1933,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\CURRENT-SAVED-A43-QUALIFICATION01.json",
+      "sha256": "7ee8bc7d451c52e38eec2caeaed2cba678c6592d297560a8e6f60e286a205368"
+    },
+    "status": "ACTUAL_CLOSED_DRIVER_SAVE_QUALIFICATION_AND_FINAL_COLD_VALIDATED",
+    "this_final_cold_Driver_SAVE_body_reads": 0,
+    "protected_RAM_session_close": {
+      "unified_session_id": 38356,
+      "actual_exit_code": 0,
+      "observed_by": "Root write_stdin tool completion after explicit close; actual handles closed by finally",
+      "pid": 185100
+    }
+  },
+  "actual_final_cold_receipt_ref": {
+    "bytes": 1307,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-FINAL-COLD-ACTUAL01.json",
+    "sha256": "0e98c2d57cf2998b854d3d6019e0f035a2df54a32a36cdc04e42a6023e97f931"
+  },
+  "candidate_honesty": {
+    "Driver_SAVE_body_read_by_documentation_lane": false,
+    "RAM_session38356_closed_normally_exit0": "Root reported; final receipt proves closed validation scope, no separate process-exit receipt invented",
+    "only_metadata_receipts_and_source_read": true,
+    "original_failures_and_frozen_N43_retained": true,
+    "repo_modified_by_documentation_lane": false
+  },
+  "deterministic_fixture_fix": {
+    "deterministic_cases": {
+      "all_cases_assert_no_issued_token_or_Driver_byte_mutation": true,
+      "existing_cases_retained": [
+        "bad history",
+        "external same-content Driver replacement after SDK hash"
+      ],
+      "save-identity": {
+        "SDK_SAVE_hash_calls": 0,
+        "driver_reads": 0,
+        "expected_rejection": "stable original files before canonical read",
+        "explicit_mtime_delta_ns": "2000000000",
+        "same_file_id": true,
+        "same_size": true
+      },
+      "save-sha": {
+        "FileStatIdentity_explicitly_equal": true,
+        "SDK_SAVE_hash_calls": 1,
+        "actual_content_SHA_explicitly_differs": true,
+        "driver_reads": 1,
+        "expected_rejection": "AgentError: cold checkpoint bytes differ from the v2 driver state",
+        "mtime_restored_to_exact_original": true,
+        "same_file_id": true,
+        "same_size": true
+      }
+    },
+    "production_source_modified": false,
+    "receipt_ref": {
+      "bytes": 3399,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\CONTINUITY-DETERMINISTIC-SAVE-STAT-RESULT01.json",
+      "sha256": "d04a06b902b93bb4a0c809e6abdf2cc34c1c894ea51b28c8c684e25e2e7f43d1"
+    },
+    "whole_leaf_types": {
+      "exit_code": 0,
+      "explicit_package_bases": true,
+      "files": [
+        "tools/g2_saved_campaign/test_current_saved_continuity_v1.py"
+      ],
+      "follow_imports": "silent",
+      "no_incremental": true,
+      "result": "Success: no issues found in 1 source file",
+      "strict": true,
+      "strict_equality": true
+    },
+    "whole_test_module": {
+      "discovered": 29,
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "log_ref": {
+        "bytes": 6170,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\CONTINUITY-DETERMINISTIC-SAVE-STAT-WHOLE01.log",
+        "sha256": "364273e2b3ba2211bf83c1801e73858a304c7c13008cc07cb9ba1b119c5fd77a"
+      },
+      "name": "tools.g2_saved_campaign.test_current_saved_continuity_v1",
+      "run": 29,
+      "skipped": 0
+    }
+  },
+  "failure_cell_provenance": [
+    {
+      "bytes": 14440,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-CELL01.py",
+      "sha256": "33d488a95ccbd7a6067e5a4a2a44d2f214ee2adfebade749da406c6141ad6bca"
+    },
+    {
+      "bytes": 14370,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-CELL02.py",
+      "sha256": "934dbeab059e87dca36033ed8f0e19ca548abe795ed18e699284f2b63f986ba2"
+    },
+    {
+      "bytes": 14415,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-CELL03.py",
+      "sha256": "146c129cc4a560b21c8bc791721f0200a8c6cdcca1d792e896ac0922e7405734"
+    },
+    {
+      "bytes": 2596,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-FINAL-COLD01.py",
+      "sha256": "b60249cd356966675395069286077ee3d2031c6a31c4e57323a5b10de9d0a6ca"
+    },
+    {
+      "bytes": 2602,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-FINAL-COLD02.py",
+      "sha256": "3dfa1c512b692e05e4270c6117128f6a044da9991408be5433b097d173b2f74f"
+    }
+  ],
+  "initial_actual_failures": [
+    {
+      "cause": "Owner source 139469 bytes exceeded shared 131072-byte feeder source cap; qualification rejected before FULL",
+      "original_N43_runtime_unchanged": true,
+      "phase": "N43 pre-FULL qualification",
+      "sourcecap_regression_receipt_ref": {
+        "bytes": 3471,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\SOURCECAP-QUALIFICATION-REGRESSION01.json",
+        "sha256": "15c0def511f46619a907f2aad2796fb3812c2edf9becb8ede13fffa365a62e82"
+      }
+    },
+    {
+      "cause": "Qualified historical suffix route did not support completed-unsaved-tail and physical SDK cold-restore filtering",
+      "historical_rows_reconstructed": false,
+      "old_original_driver_body_now_unavailable": true,
+      "phase": "New readiness closure after recovered basis"
+    },
+    {
+      "canonical_SAVE_hash_calls_already_consumed": 1,
+      "canonical_capture_ref": {
+        "bytes": 3431,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-CANONICAL-CAPTURE01.json",
+        "sha256": "270c07be0c430ec8aae3c776f1bea4d60fe24463048cec2ff6802a3f0f3805e8"
+      },
+      "failed_path": "validate_current_saved_cold_inputs_v1/_normal_screen_release_v1",
+      "phase": "CELL03 final cold after actual canonical validation and qualification builder",
+      "reason": "Global bus sequence 8168 after keeper8166 includes unrelated Root event8167; no Game admission",
+      "source_cell_sha256": "146c129cc4a560b21c8bc791721f0200a8c6cdcca1d792e896ac0922e7405734",
+      "status": "CANONICAL_DRIVER_SAVE_VALIDATION_AND_QUALIFICATION_BUILDER_PASSED_COLD_CLOSURE_REJECTED"
+    },
+    {
+      "hosted_RED_ref": {
+        "bytes": 142925,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\F4-HOSTED-FAILED-STEP01.log",
+        "sha256": "1efffab6f7f42e27b95872861cc576bdecb9334df51cc9a809210f1d2cc4c9cc"
+      },
+      "original_failure": {
+        "assertion": "driver_reads 1 != expected0",
+        "bad_SAVE_was_rejected": true,
+        "cause": "Same-size in-place rewrite did not deterministically change the FileStatIdentity(size,FileID,mtime). Old test assumed it always did; actual SDK SHA rejection occurs after one Driver read when identity remains equal.",
+        "hosted_skipped": 0,
+        "hosted_tests_run": 80,
+        "mode": "save-sha",
+        "test": "SavedRecoveryMeasurementTests.test_original_sdk_measurement_hash_cache_and_rejections"
+      },
+      "phase": "Hosted software recovery fixture"
+    }
+  ],
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T09:40:42.361805+00:00",
+  "planned_repository_path": "docs/ck3-native-ai/evidence/robert-source32-n43-closed-readiness-recovery-20261022.json",
+  "projection_fix": {
+    "actual_current_history_count": 5947,
+    "actual_physical_suffix_count": 3,
+    "checkpoint_history_index": 5944,
+    "complete_original_source_read_limit": 2097152,
+    "filtered_historical_count": 43,
+    "historical_history_count": 5989,
+    "historical_post_checkpoint_count": 45,
+    "historical_rows_reconstructed": false,
+    "historical_scope": "original_recovery_proof_and_inventory",
+    "new_restore_count": 1,
+    "original_Source32_sdk_module_ref": {
+      "bytes": 1648649,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src32\\xar_autoplayer\\bridge\\native_driver.py",
+      "sha256": "15a1eca3cee4f79be51a4144258650822e49146c93b7a87257319f848928d06b"
+    },
+    "original_Source32_sdk_module_unchanged": true,
+    "original_driver_body_available": false,
+    "original_inventory_ref": {
+      "bytes": 72163,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ACTUAL-RECOVERY-INVENTORY01.json",
+      "sha256": "7c3f5bbad50bb73c1b7840ba3acef0c92ef70122d3af0a08c8cdce84dae48709"
+    },
+    "physical_prefix_claimed_unchanged_from_old_driver": false,
+    "preserved": [
+      "original business frame and cycles",
+      "original unknown requests",
+      "original wall origin",
+      "original recovery proof and inventory",
+      "current Native Driver/SAVE identity guards"
+    ],
+    "projection_kind": "sdk_cold_restore_projection",
+    "projection_ref": {
+      "bytes": 7437,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ROOT-A43-READINESS-DRIVER-TAIL01.json",
+      "sha256": "6b100579f446d74ba2276e8abf0dcc7415bd88136c658d025ba7dee9f93ae9ea"
+    },
+    "recovery_proof_ref": {
+      "bytes": 4810,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a41-runtime-prep01\\new-software-0715-01\\ACTUAL-COMPLETED-UNSAVED-TAIL-PROOF01.json",
+      "sha256": "9249c4d8d843bc0def8c1eea0eeefcb52d238e21db79f731f214e6a3a9d32e01"
+    },
+    "rejected": [
+      "additional physical business action",
+      "missing restore",
+      "changed retained restore result",
+      "prior qualification drift",
+      "SDK origin/path/SHA drift",
+      "bad counts and scalar types"
+    ],
+    "retained_historical_restore_count": 2,
+    "schema": "xar.current-saved-readiness-driver-tail/v2"
+  },
+  "schema": "xar.source32.n43-closed-readiness-recovery-evidence/v1",
+  "scope": "Shared source caps, Source32 restore projection, exact screen CAS proof and deterministic software fixture; actual closed qualification and cold validation only",
+  "screen_CAS_fix": {
+    "actual_release_sequence": 8168,
+    "contract": "Expected predecessor equals keeper last_sequence; actual is greater; successful task and same completed event bind task_id, actual sequence, done state and empty resources. Legacy adjacent receipts retain their prior rule.",
+    "keeper_expected_sequence": 8166,
+    "receipt_ref": {
+      "bytes": 1683,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\ROOT-A43-SCREEN-RELEASE01.json",
+      "sha256": "a27c63318d48475f4cb7c112ae1ce83ea686a1733830bd191ec44ab1e0e111f8"
+    },
+    "synthetic_sequence_8167_substitution": false,
+    "unrelated_Root_global_event_sequence": 8167
+  },
+  "software_verification": {
+    "CI04": {
+      "actual_commands": 32,
+      "all_exit_codes_zero": true,
+      "is_final_version_acceptance": false,
+      "observed_at_utc": "2026-10-22T09:28:47.031024+00:00",
+      "reason": "Deterministic SAVE stat fixture and screen CAS shared source changed after this completed run",
+      "receipt_ref": {
+        "bytes": 19537,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\ci-complete04\\CURRENT-CI-ACTUAL01.json",
+        "sha256": "91d1196ec8c94f3fa67f7f329742878f2fb27e1497340f83601f0146e025b759"
+      },
+      "source_pins_stable_during_run": true
+    },
+    "after_CAS": {
+      "elapsed_seconds_reported": 7.194,
+      "excluded_from_that_run": "One canonical saved-producer case requiring an exclusive disk fixture",
+      "pure_RAM_cases_pass": 17,
+      "whole_two_modules_strict_and_strict_equality": true
+    },
+    "final_complete_CI05": {
+      "status": "PASS",
+      "receipt_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0950-01\\ci-complete05\\CURRENT-CI-ACTUAL01.json",
+        "bytes": 19538,
+        "sha256": "22729ce4f2bc0cc495e93d513e5eef18b0eaeb252ee642676a9ea54c525d1380"
+      },
+      "actual_commands": 32,
+      "all_exit_codes_zero": true,
+      "source_pins_stable": true,
+      "critical_discovered_run_skipped": [
+        85,
+        85,
+        0
+      ],
+      "independent_SDK_continuation_passed": true,
+      "optional_WAL_existing_skip": 1,
+      "scope": "Both entire named workflow steps, complete32 commands; no Hosted success inferred"
+    },
+    "projection_before_CAS": {
+      "actual_canonical_fixture": {
+        "Driver_body_reads": 1,
+        "canonical_calls": 1,
+        "history_rows": 3
+      },
+      "new_projection_cases": 3,
+      "receipt_ref": {
+        "bytes": 2816,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\READINESS-PROJECTION-TARGETED-RESULT01.json",
+        "sha256": "36903d69bd4e7712fc88909634b143604c2e8ffb994df703938e2aa5984026ea"
+      },
+      "whole_test_module_pass": 17,
+      "whole_two_modules_strict_and_strict_equality": true
+    },
+    "after_upstream_rebase_CI06": {
+      "receipt_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0950-01\\ci-complete06\\CURRENT-CI-ACTUAL01.json",
+        "bytes": 19538,
+        "sha256": "d3197740d8c6b8e873872be16d2319205f5fc97b8a165bdcb1bb07a9f65cfd3a"
+      },
+      "actual_commands": 32,
+      "all_exit_codes_zero": true,
+      "source_pins_stable": true,
+      "critical_discovered_run_skipped": [
+        85,
+        85,
+        0
+      ],
+      "independent_SDK_continuation_discovered_run_skipped": [
+        1,
+        1,
+        0
+      ],
+      "optional_WAL_existing_skip": 1,
+      "full_wall_seconds": 294.7830510002095,
+      "upstream": "a96a76848",
+      "status": "PASS",
+      "reason": "Complete rerun after normal rebase including upstream SDK managed pause change"
+    }
+  },
+  "sourcecap_fix": {
+    "closure_executed": [
+      "actual emitted launcher main",
+      "unstubbed qualify_current_saved_feeder_v1",
+      "production LocalCurrentSavedFeederReaderV1.read",
+      "all exact role source path/length/SHA checks including actual current owner above131072",
+      "unstubbed owner.validate_current_saved_feeder_v1",
+      "real continuity dry_run_attachment_v1 and attachment reducer"
+    ],
+    "generic_limits_broadly_widened": false,
+    "negative_cases": "each role wrong SHA, wrong actual path, and bytes above its own cap rejected",
+    "receipt_ref": {
+      "bytes": 3471,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-0935-01\\SOURCECAP-QUALIFICATION-REGRESSION01.json",
+      "sha256": "15c0def511f46619a907f2aad2796fb3812c2edf9becb8ede13fffa365a62e82"
+    },
+    "role_limits": {
+      "local_reader_upper_unchanged": 262144,
+      "loop": 131072,
+      "owner": 262144,
+      "stage": 131072
+    }
+  },
+  "retention_review": {
+    "review_at_utc": "2026-10-23T07:30:00Z",
+    "policy": "docs/storage-retention-policy.json",
+    "reason": "Current cold basis and unresolved failure ancestors remain required; media and derived files require size/use review, not permanent blanket retention"
+  }
+}
