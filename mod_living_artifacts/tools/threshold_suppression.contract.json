@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "case": "threshold_suppression",
+  "maximum_natural_days": 47,
+  "max_public_calls": 480,
+  "maximum_checkpoints": 7,
+  "initial_date": "1066.9.15",
+  "action_date": "1066.10.1",
+  "final_date": "1066.11.1",
+  "required_checks": [
+    "THRESHOLD-AUTOMATIC-11",
+    "THRESHOLD-CURSE-HUNGER-PROJECTION",
+    "TRAIN-ACTUAL-XP-WALLET",
+    "TRAIN-ACTUAL-STRESS",
+    "SUPPRESS-ACTUAL-WALLET-90-DAY",
+    "SUPPRESS-ACTUAL-STRESS",
+    "SUPPRESS-EQUIPMENT-PERSISTENCE",
+    "SUPPRESS-MONTHLY-PAUSE"
+  ],
+  "deferred_checks": [
+    "90-day-expiry",
+    "renewal-window-and-cost",
+    "stress-adjustment-formula",
+    "effective-health-aggregate",
+    "multiple-item-additivity",
+    "repair",
+    "transfer",
+    "inheritance",
+    "NPC-AI"
+  ],
+  "whole_product_acceptance_credit": false,
+  "initial_fixture_is_business_pass": false,
+  "stress_scope": "same-paused-date saved and native actual before/after; no hardcoded adjusted cost or formula credit",
+  "schema": "living-artifacts-threshold-suppression-case-v1",
+  "product": "living-artifacts",
+  "case_id": "threshold_suppression",
+  "day_timeout_seconds": 60,
+  "required_startup": [
+    "XALW_THRESHOLD_INPUTS_READY_V1"
+  ],
+  "forbidden_startup": [
+    "XALW_THRESHOLD_INPUTS_ERROR_V1"
+  ],
+  "actor_binding_authority": "original-source-bound-frontend-start-and-two-native-root-observations",
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "startup_source_guard": {
+    "bookmark_key": "bm_1066_rags_to_riches",
+    "character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "history_id": "1128",
+    "start_date": "1066.9.15",
+    "post_start_authority": "Source-derived expectation only; runtime actor is bound from this run's original Robert frontend Start and two matching actual native campaign-root observations. History1128 is not a runtime ID.",
+    "sources": [
+      {
+        "path": "common/bookmarks/bookmarks/00_bookmarks.txt",
+        "sha256": "fee9519196b964bb3eae364ef459f7bc92edff0a435be14b81a2377ab1db1472",
+        "lines": "1811-1822",
+        "supports": "Robert history1128, d_apulia and feudal_government"
+      },
+      {
+        "path": "history/characters/norman.txt",
+        "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b",
+        "lines": "467-488",
+        "supports": "history1128 is living Robert Guiscard at 1066 start"
+      },
+      {
+        "path": "history/titles/k_sicily.txt",
+        "sha256": "62aba587c746c3b85f6e9b4346c89dd3d77d9a110d1989e335e669e7b0995b36",
+        "lines": "2177-2239",
+        "supports": "d_apulia holder1128 from1057; no de facto liege until1130, yielding independent duke at1066"
+      }
+    ]
+  }
+}
