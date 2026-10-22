@@ -1,0 +1,195 @@
+{
+  "schema": "xar.java-control-build-owner-actual-software-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T13:14:22.388884800Z",
+  "status": "ACTUAL_SOFTWARE_PASS",
+  "actual_operational_report_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-CI-VERIFICATION01.json",
+    "bytes": 3264,
+    "sha256": "a5b5241b60dbb9841ebac5cac58d694d37364ad67c4a129b43f404702d8dba9f"
+  },
+  "Java_shared_production_build_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java01.json",
+    "bytes": 49111,
+    "sha256": "125dff625024432347319c838aedb398fcbe1dad9c1c4ac09cb44a72a8ab6aea"
+  },
+  "Java_build_tools_full_verification_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-tools-java12.json",
+    "bytes": 5138,
+    "sha256": "b1819a20ef12f27b24bc176a963de13ae174121e2d7d03f2183a2451ab27d32d"
+  },
+  "Java_owner_and_all_consumers_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci01/logs/actual.json",
+    "bytes": 3286,
+    "sha256": "42e7905908a860ad8245a529eae204ac2412ba27af36c542c6e1f5c62e79690d"
+  },
+  "Java_service_actual_closure_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci01/service/logs/service-closed.json",
+    "bytes": 910,
+    "sha256": "5afda39c4dea18079c29a0a1300368274510ec9098c587c2cacebfaad975f9c5"
+  },
+  "stages": {
+    "legacy_adapter_bootstrap11": "7 JUnit / 0 skip; bootstrap-only, not the production reactor qualification",
+    "Java_ControlBuild_formal_reactor_java01": {
+      "JUnit_tests": 11,
+      "JUnit_skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 30.61,
+      "job_active_final": 0,
+      "peak_job_memory_bytes": 630468608,
+      "source_compiled_source_and_full_deployment_remeasured": true
+    },
+    "Java_build_tools12": {
+      "JUnit_tests": 7,
+      "JUnit_skipped": 0,
+      "real_Job_tests": 2,
+      "real_native_TCP_and_layout_tests": 2,
+      "JSON_field_domains_and_file_ref_tests": 3,
+      "compiler_checks": "-Xlint:all -Werror",
+      "exit_code": 0,
+      "elapsed_seconds": 10.0827321,
+      "job_active_final": 0,
+      "peak_job_memory_bytes": 923832320,
+      "source_unchanged": true
+    },
+    "Java_MapAdmissionCi_complete_group": {
+      "started_at_utc": "2026-10-22T13:13:00.041656700Z",
+      "finished_at_utc": "2026-10-22T13:14:22.388884800Z",
+      "whole_Python_modules_strict_and_strict_equality": 2,
+      "static_elapsed_seconds": 23.2011626,
+      "static_peak_job_memory_bytes": 246996992,
+      "actual_HTTP_test_methods": 6,
+      "actual_HTTP_skipped": 0,
+      "nested_original_Queue_feeder_reducer_lineages": 3,
+      "HTTP_elapsed_seconds": 55.8973175,
+      "HTTP_peak_job_memory_bytes": 186605568,
+      "each_child_job_memory_limit_bytes": 536870912,
+      "each_child_job_active_final": 0,
+      "outer_exit_code": 0,
+      "outer_elapsed_seconds": 81.3255415,
+      "outer_whole_tree_peak_job_memory_bytes": 584998912,
+      "outer_whole_tree_job_limit_bytes": 2147483648,
+      "outer_whole_tree_job_active_final": 0
+    },
+    "new_Java_service_owner_closure": {
+      "observed_at_utc": "2026-10-22T13:14:21.806801500Z",
+      "original_pid": 182552,
+      "original_creation_filetime": "134371484045794444",
+      "original_executable": "C:/jdk-21/bin/java.exe",
+      "original_exit_code": 75,
+      "stop_reason": null,
+      "job_active_final": 0,
+      "peak_job_memory_bytes": 212230144,
+      "job_memory_limit_bytes": 536870912
+    }
+  },
+  "scope": {
+    "all_new_production_and_CI_owner_logic": "Java; JDK21 stable APIs and pinned JNA5.19.1",
+    "source_and_runtime_closures": "all exact pins are retained in the referenced build-tools, formal reactor and operational reports",
+    "Python_client_and_regression": "unchanged accepted bc2bb724... and 8383bcf5... source refs, recorded fully in the CI receipt",
+    "Python_import_route": "repository production consumers; this is distinct from the earlier frozen N46 software regression",
+    "HTTP_transport_and_kernel_identity": "actual; negative injected transports are separately tagged",
+    "legacy_07_and_05_not_used_to_qualify_new_Java_owner": true,
+    "Game_native_RPC_or_campaign_ledger_writes": 0,
+    "all_test_services_closed": true
+  },
+  "followup_v2_and_tools15": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-22T13:46:23.881240900Z",
+    "status": "ACTUAL_SOFTWARE_PASS_FOR_REFERENCED_SOURCE_PINS",
+    "operational_report_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-CI-VERIFICATION02.json",
+      "bytes": 3503,
+      "sha256": "d4fce9663aab0045edad26dd2d8d609912cd2121ef5df583ed67612604b3faaa"
+    },
+    "formal_reactor_v2_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java04.json",
+      "bytes": 61210,
+      "sha256": "d4ebdb688c22806cdf3a8734bf5ce82a2e8b346f488c66114546998d0a9eeaab"
+    },
+    "tools_full_verify_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-tools-java15.json",
+      "bytes": 6127,
+      "sha256": "cad5e6a1fc9554fcc8a9e13d1564f2c8535fe9d2fbf4b2282beeef9950fe337d"
+    },
+    "owner_and_consumers_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci02/logs/actual.json",
+      "bytes": 3284,
+      "sha256": "103d5fac70412514c746aa243abf8f82ce4e7d36a456b81b8aa1cc4ce6e9f8b4"
+    },
+    "actual_service_closure_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci02/service/logs/service-closed.json",
+      "bytes": 910,
+      "sha256": "57731be1e61b107ceaaf088c2c6981c3c8d3ec85ba74d8d7419c4eddc4807ac5"
+    },
+    "tools": {
+      "JUnit_tests": 15,
+      "JUnit_skipped": 0,
+      "compiler_checks": "-Xlint:all -Werror",
+      "bootstrap_parser_capacity_archive_stream_and_roundtrip_methods": 5,
+      "exit_code": 0,
+      "elapsed_seconds": 11.8737458,
+      "peak_job_memory_bytes": 944881664,
+      "job_active_final": 0,
+      "source_unchanged": true
+    },
+    "reactor": {
+      "JUnit_tests": 102,
+      "JUnit_skipped": 0,
+      "source_postcheck": "MATCH",
+      "compiled_source_postcheck": "MATCH",
+      "target_kind": "SERVICE_FAST_JAR",
+      "exit_code": 0,
+      "elapsed_seconds": 39.2308395,
+      "peak_job_memory_bytes": 868220928,
+      "job_active_final": 0
+    },
+    "all_consumers": {
+      "complete_Python_modules_strict_and_strict_equality": 2,
+      "static_elapsed_seconds": 25.4553349,
+      "static_peak_job_memory_bytes": 246857728,
+      "actual_HTTP_methods": 6,
+      "actual_HTTP_skipped": 0,
+      "nested_original_Queue_feeder_reducer_lineages": 3,
+      "HTTP_elapsed_seconds": 59.7039928,
+      "HTTP_peak_job_memory_bytes": 185200640,
+      "each_child_job_limit_bytes": 536870912,
+      "each_child_job_active_final": 0,
+      "outer_exit_code": 0,
+      "outer_elapsed_seconds": 88.243844,
+      "outer_peak_job_memory_bytes": 582692864,
+      "outer_job_limit_bytes": 2147483648,
+      "outer_job_active_final": 0,
+      "tool_session_11621_actual_exit_code": 0
+    },
+    "service_closure": {
+      "observed_at_utc": "2026-10-22T13:46:22.718264800Z",
+      "pid": 266112,
+      "creation_filetime": "134371503214649598",
+      "executable": "C:/jdk-21/bin/java.exe",
+      "exit_code": 75,
+      "stop_reason": null,
+      "job_active_final": 0,
+      "peak_job_memory_bytes": 211165184,
+      "job_limit_bytes": 536870912
+    },
+    "scope": "Actual local Java shared owner and repository Python consumers, no Game/RPC/campaign-ledger writes. Hosted ControlCi was compiled but its hosted-only pipeline was not run. Historical source pins remain exact; subsequent default-mvn/v3 changes and new parent modules require fresh verification.",
+    "subsequent_default_mvn_rule": "Consume default PATH command mvn and verify its reported version/home. Update user-machine installations at their existing location. CI may explicitly configure its own downloaded tool bin as runner PATH. The historical exact paths in these receipts are unchanged."
+  },
+  "remaining": {
+    "hosted_workflow_execution": "NOT_RUN",
+    "hosted_toolchain_and_capacity_bootstrap": "Java implementation and independent workflow step prepared; hosted execution NOT_RUN",
+    "parent_reactor_new_modules": "requires complete group again after Root integrates them"
+  },
+  "claims_not_granted": [
+    "hosted CI green",
+    "current Native32/67 FULL or SAVE acceptance",
+    "G2 milestones complete",
+    "new saved game days, 30 years complete, or one second per game day"
+  ],
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "raw_local_evidence_review_at_utc": "2026-11-21T13:14:22.388884800Z",
+    "raw_evidence_is_not_indefinitely_protected": true
+  }
+}

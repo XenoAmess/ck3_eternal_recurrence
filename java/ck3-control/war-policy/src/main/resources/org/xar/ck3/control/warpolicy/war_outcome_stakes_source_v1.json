@@ -1,0 +1,66 @@
+{
+  "schema": "g2.war-outcome-stakes-source/v1",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "review": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-22T11:13:55Z",
+    "source": "Actual installed game/common leaves; certutil SHA256 and exact line reads. Existing native producer: war_contract.normalize_war_termination_options -> NativeHeadlessGameplayDriver._war_termination_cache_for_snapshot. No Game, RPC or executable read.",
+    "scope": "Source effects and current native CB identity only; installed leaves do not independently prove loaded definitions or evaluated war outcomes."
+  },
+  "sources": [
+    {
+      "path": "common/casus_belli_types/00_claim.txt",
+      "sha256": "887bf0197401cb17cb4588978add556ab6b429bf55cb482e3e5f2d0e8351cfd4",
+      "definition": "claim_cb.on_victory: create conquest_claim -> setup_claim_cb -> resolve; conditional target expansion and additional claimant liege branches",
+      "line_start": 377,
+      "line_end": 597
+    },
+    {
+      "path": "common/casus_belli_types/00_civil_war.txt",
+      "sha256": "a9f5d844413bd7acfd4d4b1611877ac34e78eb293f309c0e7a41f27aca3a0047",
+      "definition": "refused_liege_demand_war.on_defeat -> on_lost_request_revolt_war",
+      "line_start": 1595,
+      "line_end": 1630
+    },
+    {
+      "path": "common/scripted_effects/00_war_effects.txt",
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b",
+      "definition": "on_lost_request_revolt_war: still in defender liege chain -> conditional imprisonment and defeat opinion",
+      "line_start": 1190,
+      "line_end": 1216
+    },
+    {
+      "path": "common/opinion_modifiers/00_war_opinions.txt",
+      "sha256": "750864482d2d6c5d268424a1e03cba24301dedf853722d7fc12cb6f9fbcc68dc",
+      "definition": "vassal_lost_faction_revolt_war: revoke/imprison/banish/execute reasons; does not execute those actions",
+      "line_start": 27,
+      "line_end": 35
+    }
+  ],
+  "profiles": [
+    {
+      "profile_id": "claim-primary-defender-conditional-title-vassal-exposure-v1",
+      "canonical_key": "claim_cb",
+      "player_side": "defender",
+      "require_observed_defender_liege": false,
+      "exposures": ["conditional_title_and_vassal_change"],
+      "source_paths": ["common/casus_belli_types/00_claim.txt"]
+    },
+    {
+      "profile_id": "refused-liege-demand-primary-rebel-political-exposure-v1",
+      "canonical_key": "refused_liege_demand_war",
+      "player_side": "attacker",
+      "require_observed_defender_liege": true,
+      "exposures": ["conditional_imprisonment", "liege_revoke_imprison_banish_execute_reasons"],
+      "source_paths": ["common/casus_belli_types/00_civil_war.txt", "common/scripted_effects/00_war_effects.txt", "common/opinion_modifiers/00_war_opinions.txt"]
+    }
+  ],
+  "source_tree_mermaid": "flowchart TD\n  W[Current active war] --> Q[Native termination-options producer]\n  Q --> N[Production normalizer and exact-frame cache]\n  N --> CB[Actual CB key and player side]\n  S[Exact reviewed source SHA] --> P[Conditional source profile]\n  CB --> P\n  P --> C[Conditional title or political exposure]\n  C --> K[Preserve existing legal war processing]\n  P -. setup/resolve execution not evaluated .-> U[Actual title and liege operations unknown]\n  P -. conditional effects not evaluated .-> R[Resource deltas and penalties unknown]\n  U -. no complete terms .-> A[Surrender remains unqualified]\n  R -. no actual outcome .-> A",
+  "boundaries": [
+    "The claim effect may expand target_titles and perform additional conditional liege changes; observed targeted_title_ids is not the final transfer list.",
+    "Native terms_observable remains false. Resource deltas, resolved title changes, actual penalties and war result remain unknown.",
+    "Profiles do not authorize surrender or procurement; existing legal war processing continues unchanged.",
+    "Source32 runtime and existing dispatcher are not modified or hot patched."
+  ]
+}

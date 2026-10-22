@@ -1,0 +1,1121 @@
+{
+  "schema": "xar.ck3.vanilla-option-projection-golden/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "captured_at": "2026-10-22T13:34:27.368392+00:00",
+  "evidence_scope": "real-registry-producer-and-shared-option-projection-leaf; synthetic-current-options; no-game-no-action",
+  "producer_refs": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/policy.py",
+      "sha256": "ae4b7db00f385cd3634aee48cab23c99926e12ae167b2b42c8bad99c6d2b5bf9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/registry.py",
+      "sha256": "02610bfbf313233f08a375eb50409f50ad5383f7e812d965010d8ae0525f066b"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/builds.py",
+      "sha256": "afd7f9fb5abf7ea91fb4888767135027db9f9390151e5df6edaa719d19e73712"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/source_index.py",
+      "sha256": "f2a0afc16e3f69598802bf2e5a8ee999cf7c1b196413b65c26dd0bbe0c0ddfd3"
+    }
+  ],
+  "cases": [
+    {
+      "name": "tgp_travel_events.0030:1.19.0.6:actual-registry-contract",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.19.0.6",
+          "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37",
+              "indexed_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.19.0.6:display-order-reversed",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.19.0.6",
+          "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37",
+              "indexed_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": false,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": false,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.19.0.6:selected-disabled",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.19.0.6",
+          "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37",
+              "indexed_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": false,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": false,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": false
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": false,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.19.0.6:cancel-substitution",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.19.0.6",
+          "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37",
+              "indexed_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": true
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.19.0.6:snapshot-drift",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.19.0.6",
+          "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37",
+              "indexed_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 31
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": false,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.20.0.4:actual-registry-contract",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+              "indexed_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.20.0.4:display-order-reversed",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+              "indexed_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": false,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": false,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.20.0.4:selected-disabled",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+              "indexed_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": false,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": false,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": false
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": false,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.20.0.4:cancel-substitution",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+              "indexed_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": true
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "tgp_travel_events.0030:1.20.0.4:snapshot-drift",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "tgp_travel_events.0030",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/travel_events/tgp_travel_events.txt",
+              "registry_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24",
+              "indexed_sha256": "66EDD7736E2FCD9979D59E6390EE6D83126FF54146BC610D00BB14313D4FDF24"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 1,
+          "selected_option_number": 2,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 31
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": false,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "head_of_faith.0100:1.20.0.4:actual-registry-contract",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "head_of_faith.0100",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/religion_events/head_of_faith_events.txt",
+              "registry_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF",
+              "indexed_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 0,
+          "selected_option_number": 1,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "head_of_faith.0100:1.20.0.4:display-order-reversed",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "head_of_faith.0100",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/religion_events/head_of_faith_events.txt",
+              "registry_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF",
+              "indexed_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 0,
+          "selected_option_number": 1,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": false,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": false,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "head_of_faith.0100:1.20.0.4:selected-disabled",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "head_of_faith.0100",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/religion_events/head_of_faith_events.txt",
+              "registry_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF",
+              "indexed_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 0,
+          "selected_option_number": 1,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": false,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": false
+        },
+        "selected_option": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": false,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    },
+    {
+      "name": "head_of_faith.0100:1.20.0.4:cancel-substitution",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "head_of_faith.0100",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/religion_events/head_of_faith_events.txt",
+              "registry_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF",
+              "indexed_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 0,
+          "selected_option_number": 1,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": true
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 2
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": true,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": false,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": true
+        }
+      }
+    },
+    {
+      "name": "head_of_faith.0100:1.20.0.4:snapshot-drift",
+      "request": {
+        "schema": "xar.ck3.vanilla-option-projection-request",
+        "schema_version": 1,
+        "binding": {
+          "event_definition_key": "head_of_faith.0100",
+          "ck3_build": "1.20.0.4",
+          "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "registry_state": "available",
+          "source_anchors": [
+            {
+              "relative_path": "events/religion_events/head_of_faith_events.txt",
+              "registry_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF",
+              "indexed_sha256": "3B3817EB662206FB58FB67CEF76DEE5F70CC577F857BDFEB8705D9F1C92E5CBF"
+            }
+          ]
+        },
+        "contract": {
+          "option_count": 2,
+          "native_option_indices": [
+            0,
+            1
+          ],
+          "selected_native_option_index": 0,
+          "selected_option_number": 1,
+          "disabled_native_option_indices": [],
+          "snapshot_option_counts": [
+            2
+          ]
+        },
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false
+          }
+        ],
+        "snapshot_option_count": 31
+      },
+      "expected": {
+        "checks": {
+          "snapshot_option_count": false,
+          "rendered_option_count": true,
+          "native_option_indices_exact": true,
+          "disabled_option_contract": true,
+          "selected_option_mapping": true,
+          "option:0:projection": true,
+          "option:1:projection": true,
+          "selected_native_option_unique": true,
+          "selected_native_option_enabled": true
+        },
+        "selected_option": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false
+        }
+      }
+    }
+  ]
+}

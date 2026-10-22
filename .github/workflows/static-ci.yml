@@ -186,6 +186,33 @@ jobs:
         run: |
           python -B -X utf8 -c "import pathlib, subprocess, sys, tomllib; requirements = tomllib.loads(pathlib.Path('ck3_autonomous_player/pyproject.toml').read_text(encoding='utf-8-sig'))['project']['optional-dependencies']['typecheck']; subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-cache-dir', *requirements], check=True)"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Verify Java tools, full reactor and actual HTTP consumer chain
+        timeout-minutes: 45
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          if not defined JAVA_HOME_21_X64 exit /b 1
+          if not exist "%JAVA_HOME_21_X64%\bin\java.exe" exit /b 1
+          if not exist "%RUNNER_TEMP%\g2-static-venv\Scripts\python.exe" exit /b 1
+          set "JAVA_TOOL_OPTIONS="
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          set "JDK_JAVA_OPTIONS="
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          "%JAVA_HOME_21_X64%\bin\java.exe" -Xms32m -Xmx128m -XX:MaxMetaspaceSize=96m -XX:ReservedCodeCacheSize=48m -XX:MaxDirectMemorySize=32m "-Djava.io.tmpdir=%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --repo-root "%GITHUB_WORKSPACE%" --work-root "%RUNNER_TEMP%\java-control-ci" --python-executable "%RUNNER_TEMP%\g2-static-venv\Scripts\python.exe" --system-growth-reserve-bytes 2147483648 --max-project-bytes 8589934592
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Retain Java pipeline evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-control-ci-evidence
+          retention-days: 7
+          if-no-files-found: ignore
+          path: |
+            ${{ runner.temp }}/java-control-ci/logs/*.json
+            ${{ runner.temp }}/java-control-ci/artifacts/map-ci/logs/*.json
+            ${{ runner.temp }}/java-control-ci/artifacts/map-ci/service/logs/*.json
+            ${{ runner.temp }}/java-control-ci/build/bootstrap-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml
+            ${{ runner.temp }}/java-control-ci/build/qualified-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml
       - name: Test configured native successor admission and process exits
         run: |
           python -B -X utf8 -m unittest discover -s tools -p test_build_native_configured_successor.py

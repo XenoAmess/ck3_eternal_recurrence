@@ -1,0 +1,3051 @@
+{
+  "cases": [
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "native_wire_fixture",
+      "output": {
+        "action_token": "abcdef0123456789abcdef0123456789",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1:option_one",
+            "2:option_two"
+          ],
+          "sort_order": "native_bounds_top_then_left",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by native_bounds_top_then_left; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "bounds": {
+            "height": 40.0,
+            "left": 10.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "1:option_one",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "1:option_one",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "geometry_over_input_order",
+      "output": {
+        "action_token": "abcdef0123456789abcdef0123456789",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1:option_one",
+            "2:option_two"
+          ],
+          "sort_order": "native_bounds_top_then_left",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by native_bounds_top_then_left; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "bounds": {
+            "height": 40.0,
+            "left": 10.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "1:option_one",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "1:option_one",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "missing_geometry_two",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "sort_order": null,
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "native_choice_geometry_or_authorized_presentation_order_unavailable",
+        "selected_choice_id": null,
+        "status": "mechanism_unavailable"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "single_no_geometry",
+      "output": {
+        "action_token": "abcdef0123456789abcdef0123456789",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1:option_one"
+          ],
+          "sort_order": "single_visible_enabled_native_choice_no_geometry_needed",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by single_visible_enabled_native_choice_no_geometry_needed; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "choice_id": "1:option_one",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "1:option_one",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": false,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "disabled_first",
+      "output": {
+        "action_token": "fedcba9876543210fedcba9876543210",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": false,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [
+            {
+              "choice_id": "1:option_one",
+              "index": 0,
+              "reason": "disabled"
+            }
+          ],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "2:option_two"
+          ],
+          "sort_order": "single_visible_enabled_native_choice_no_geometry_needed",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by single_visible_enabled_native_choice_no_geometry_needed; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "fedcba9876543210fedcba9876543210",
+          "bounds": {
+            "height": 40.0,
+            "left": 120.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "2:option_two",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_two",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "2:option_two",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "role": "close_x",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "close_role_filtered",
+      "output": {
+        "action_token": "fedcba9876543210fedcba9876543210",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "role": "close_x",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [
+            {
+              "choice_id": "1:option_one",
+              "index": 0,
+              "reason": "nonchoice_role"
+            }
+          ],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "2:option_two"
+          ],
+          "sort_order": "single_visible_enabled_native_choice_no_geometry_needed",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by single_visible_enabled_native_choice_no_geometry_needed; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "fedcba9876543210fedcba9876543210",
+          "bounds": {
+            "height": 40.0,
+            "left": 120.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "2:option_two",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_two",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "2:option_two",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "identical_duplicate",
+      "output": {
+        "action_token": "abcdef0123456789abcdef0123456789",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [
+            {
+              "choice_id": "1:option_one",
+              "index": 2
+            }
+          ],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1:option_one",
+            "2:option_two"
+          ],
+          "sort_order": "native_bounds_top_then_left",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by native_bounds_top_then_left; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "bounds": {
+            "height": 40.0,
+            "left": 10.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "1:option_one",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "1:option_one",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "conflicting",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "conflicting_duplicate",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "conflicting",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "sort_order": null,
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "conflicting_duplicate_native_choice_identity",
+        "selected_choice_id": null,
+        "status": "mechanism_unavailable"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": null,
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "no_blocking_proof",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": null,
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "sort_order": null,
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "native_simulation_or_exclusive_input_blocking_proof_unavailable",
+        "selected_choice_id": null,
+        "status": "not_mandatory"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": false,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "incomplete_catalogue",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "sort_order": null,
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "native_complete_choice_list_unavailable",
+        "selected_choice_id": null,
+        "status": "mechanism_unavailable"
+      }
+    },
+    {
+      "expected_frame": {
+        "actor_character_id": 1128,
+        "connection_generation": 13,
+        "date_raw": 53169792,
+        "episode_run_id": "native-1128-offline",
+        "game_pid": 12345,
+        "native_revision": 618,
+        "revision": 617,
+        "snapshot_id": "fixture-snapshot-1"
+      },
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "stale_frame",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "sort_order": null,
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "native_frame_binding_changed",
+        "selected_choice_id": null,
+        "status": "stale_frame"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": null,
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "selected_action_unavailable",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": null,
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1:option_one",
+            "2:option_two"
+          ],
+          "sort_order": "native_bounds_top_then_left",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "selected_native_choice_action_unavailable",
+        "selected_choice_id": null,
+        "status": "mechanism_unavailable"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": null,
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": null,
+            "choice_id": 6,
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "native_index": 6,
+            "rendered_index": 0,
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": null,
+            "choice_id": 0,
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "native_index": 0,
+            "rendered_index": 1,
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "presentation_order_proof": {
+          "kind": "native_event_rendered_order"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "event"
+      },
+      "mode": "existing",
+      "name": "event_native6_public7",
+      "output": {
+        "action_token": "abcdef0123456789abcdef0123456789",
+        "evidence": {
+          "blocking_proof": null,
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": null,
+              "choice_id": 6,
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "native_index": 6,
+              "rendered_index": 0,
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": null,
+              "choice_id": 0,
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "native_index": 0,
+              "rendered_index": 1,
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            6,
+            0
+          ],
+          "sort_order": "native_event_rendered_order",
+          "window_id": "unknown_modal",
+          "window_type": "event"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": 6,
+        "public_option_number": 7,
+        "reason": "Select the first visible enabled native choice by native_event_rendered_order; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "bounds": null,
+          "choice_id": 6,
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "native_index": 6,
+          "rendered_index": 0,
+          "visible": true
+        },
+        "selected_choice_id": 6,
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": null,
+        "choices": [
+          {
+            "bounds": null,
+            "choice_id": 6,
+            "enabled": true,
+            "existing_typed_action": {
+              "available": true,
+              "step": "select-event-option-7"
+            },
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "native_index": 6,
+            "rendered_index": 0,
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": null,
+            "choice_id": 0,
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "native_index": 0,
+            "rendered_index": 1,
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "presentation_order_proof": {
+          "kind": "native_event_rendered_order"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "event"
+      },
+      "mode": "existing",
+      "name": "existing_typed_action_no_token",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": null,
+          "choices": [
+            {
+              "bounds": null,
+              "choice_id": 6,
+              "enabled": true,
+              "existing_typed_action": {
+                "available": true,
+                "step": "select-event-option-7"
+              },
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "native_index": 6,
+              "rendered_index": 0,
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": null,
+              "choice_id": 0,
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "native_index": 0,
+              "rendered_index": 1,
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            6,
+            0
+          ],
+          "sort_order": "native_event_rendered_order",
+          "window_id": "unknown_modal",
+          "window_type": "event"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": 6,
+        "public_option_number": 7,
+        "reason": "Select the first visible enabled native choice by native_event_rendered_order; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "bounds": null,
+          "choice_id": 6,
+          "enabled": true,
+          "existing_typed_action": {
+            "available": true,
+            "step": "select-event-option-7"
+          },
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "native_index": 6,
+          "rendered_index": 0,
+          "visible": true
+        },
+        "selected_choice_id": 6,
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "empty_choices",
+      "output": {
+        "action_token": null,
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "sort_order": null,
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "reason": "no_visible_enabled_native_choice",
+        "selected_choice_id": null,
+        "status": "mechanism_unavailable"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": null,
+        "blocks_simulation": true,
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1:option_one",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 120.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "2:option_two",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "legacy_blocking_flag",
+      "output": {
+        "action_token": "abcdef0123456789abcdef0123456789",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "blocks_simulation",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1:option_one",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 120.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "2:option_two",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1:option_one",
+            "2:option_two"
+          ],
+          "sort_order": "native_bounds_top_then_left",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by native_bounds_top_then_left; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "abcdef0123456789abcdef0123456789",
+          "bounds": {
+            "height": 40.0,
+            "left": 10.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "1:option_one",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_one",
+          "label_source": "native_runtime_name",
+          "visible": true
+        },
+        "selected_choice_id": "1:option_one",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    },
+    {
+      "expected_frame": null,
+      "input": {
+        "blocking_proof": {
+          "kind": "exclusive_modal_blocks_input",
+          "receiver_identity": "0xabcd",
+          "source": "exact_stock_top_modal_receiver_input_capture",
+          "verified": true
+        },
+        "choices": [
+          {
+            "action_token": "abcdef0123456789abcdef0123456789",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": 1,
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_one",
+            "label_source": "native_runtime_name",
+            "rendered_index": 0,
+            "visible": true
+          },
+          {
+            "action_token": "fedcba9876543210fedcba9876543210",
+            "bounds": {
+              "height": 40.0,
+              "left": 10.0,
+              "top": 20.0,
+              "width": 100.0
+            },
+            "choice_id": "1",
+            "enabled": true,
+            "is_choice": true,
+            "label": "option_two",
+            "label_source": "native_runtime_name",
+            "rendered_index": 0,
+            "visible": true
+          }
+        ],
+        "choices_complete": true,
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "query_id": "0123456789abcdef0123456789abcdef",
+        "schema": "xar.native-mandatory-choice-window/v1",
+        "source_identity": {
+          "backend_sha256": null,
+          "choice_catalogue": [
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214375,
+                  "vtable_module_rva": 144470
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_one",
+              "widget_vtable_module_rva": 74565
+            },
+            {
+              "callback_identities": [
+                {
+                  "function_module_rva": 214376,
+                  "vtable_module_rva": 144471
+                }
+              ],
+              "role": "modal_button_candidate",
+              "runtime_name": "option_two",
+              "widget_vtable_module_rva": 74566
+            }
+          ],
+          "game_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "native_adapter_id": "ck3-1.20.0.4-exact-native-gui",
+          "root_runtime_name": "unknown_modal",
+          "root_type": "exclusive_modal_receiver",
+          "root_vtable_module_rva": 1193046
+        },
+        "typed_window_relation": {
+          "owner_verified": true,
+          "source": "fresh_snapshot_has_no_typed_event_or_interaction",
+          "status": "not_applicable",
+          "top_opaque_root_id": "0xabcd",
+          "typed_domain": null,
+          "typed_opaque_root_id": null,
+          "typed_window_instance_id": null
+        },
+        "window_id": "unknown_modal",
+        "window_instance_id": "0xabcd",
+        "window_type": "exclusive_modal_receiver"
+      },
+      "mode": "unknown",
+      "name": "numeric_text_identity_distinct",
+      "output": {
+        "action_token": "fedcba9876543210fedcba9876543210",
+        "evidence": {
+          "blocking_proof": {
+            "kind": "exclusive_modal_blocks_input",
+            "receiver_identity": "0xabcd",
+            "source": "exact_stock_top_modal_receiver_input_capture",
+            "verified": true
+          },
+          "choices": [
+            {
+              "action_token": "abcdef0123456789abcdef0123456789",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": 1,
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_one",
+              "label_source": "native_runtime_name",
+              "rendered_index": 0,
+              "visible": true
+            },
+            {
+              "action_token": "fedcba9876543210fedcba9876543210",
+              "bounds": {
+                "height": 40.0,
+                "left": 10.0,
+                "top": 20.0,
+                "width": 100.0
+              },
+              "choice_id": "1",
+              "enabled": true,
+              "is_choice": true,
+              "label": "option_two",
+              "label_source": "native_runtime_name",
+              "rendered_index": 0,
+              "visible": true
+            }
+          ],
+          "duplicates_removed": [],
+          "excluded": [],
+          "frame_binding": {
+            "actor_character_id": 1128,
+            "connection_generation": 13,
+            "date_raw": 53169792,
+            "episode_run_id": "native-1128-offline",
+            "game_pid": 12345,
+            "native_revision": 617,
+            "revision": 617,
+            "snapshot_id": "fixture-snapshot-1"
+          },
+          "material_effects_verified": false,
+          "ordered_eligible_choice_ids": [
+            "1",
+            1
+          ],
+          "sort_order": "native_bounds_top_then_left",
+          "window_id": "unknown_modal",
+          "window_type": "exclusive_modal_receiver"
+        },
+        "frame_binding": {
+          "actor_character_id": 1128,
+          "connection_generation": 13,
+          "date_raw": 53169792,
+          "episode_run_id": "native-1128-offline",
+          "game_pid": 12345,
+          "native_revision": 617,
+          "revision": 617,
+          "snapshot_id": "fixture-snapshot-1"
+        },
+        "material_effects_verified": false,
+        "native_index": null,
+        "public_option_number": null,
+        "reason": "Select the first visible enabled native choice by native_bounds_top_then_left; label semantics do not block the user's continuation policy.",
+        "selected_choice": {
+          "action_token": "fedcba9876543210fedcba9876543210",
+          "bounds": {
+            "height": 40.0,
+            "left": 10.0,
+            "top": 20.0,
+            "width": 100.0
+          },
+          "choice_id": "1",
+          "enabled": true,
+          "is_choice": true,
+          "label": "option_two",
+          "label_source": "native_runtime_name",
+          "rendered_index": 0,
+          "visible": true
+        },
+        "selected_choice_id": "1",
+        "semantic_optimal": false,
+        "status": "recommended",
+        "window_id": "unknown_modal"
+      }
+    }
+  ],
+  "provenance": {
+    "capture": "actual unmodified Python producer function calls; offline native wire fixture, no live qualification",
+    "captured_at_utc": "2026-10-22T13:37:49.791540+00:00",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "native_fixture_path": "ck3_autonomous_player/tests/fixtures/mandatory_choice_v1/native-query.json",
+    "native_fixture_sha256": "11fb770d115355c16af6e40330b0a6ba9aa7e51e2dc60ea0311ef65dcd5b88be",
+    "producer_path": "ck3_autonomous_player/src/xar_autoplayer/mandatory_choice_policy_v1.py",
+    "producer_sha256": "e78a9b2a80f2dc08137546868ebd2350af11c987aaf8db9b434b5485cd1e6fd7"
+  },
+  "schema": "xar.java-mandatory-choice-golden/v1"
+}

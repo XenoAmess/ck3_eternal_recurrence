@@ -1,0 +1,9 @@
+{
+  "schema": "xar.java-control-CI-profile/v1",
+  "owner": "repository-owner",
+  "task": "github-actions-java-ci",
+  "reason": "Root authorized a finite 8 GiB project quota for this isolated Windows Java CI pipeline on 2026-10-22. The shared safety reserve, actual free-space calculation and system growth reserve remain mandatory.",
+  "max_project_bytes": 8589934592,
+  "review_minutes": 90,
+  "authorization_source": "Root delegation to /root/ci_portability on 2026-10-22; each run measures this profile and records the actual machine, volumes, owner, task, reason and expiry. The override expires at that run's review time."
+}

@@ -1,8 +1,10 @@
 # Python → Java：渐进迁移执行方向（2026-10-22）
 
-用户已选择按组件逐项迁到 Maven + Quarkus + Java。**一期以 Java contracts + 单个 loopback Quarkus map composer 为首个实际切换目标**；读取资格、预算/评分及 continuity 纯 reducer 是后续候选，尚未实现。自动游玩沿现有合格链推进，迁移工作并行。
+用户已选择按组件逐项迁到 Maven + Quarkus + Java。**一期以 Java contracts + 单个 loopback Quarkus map composer 为首条实际切换链**；该链已在 N46 使用，完整游戏批次和 SAVE 尚未通过。读取资格、预算/评分及 continuity 纯 reducer 按下述边界逐项接管，不能统称已迁移。自动游玩与独立迁移工作并行。
 
-[2026-10-19 评估](python-java-migration-assessment-2026-10-19.md)保留历史，本次渐进方向优先。不承诺工期/速度；源码已有，尚无编译/JUnit/调用/切换通过信用。
+[2026-10-19 评估](python-java-migration-assessment-2026-10-19.md)保留历史，本次渐进方向和用户追加的 [Java 开发规范](../AGENTS.md)优先。后续新模块、新构建与 CI 编排使用 Java；一期范围内的旧 Python 实现修改进入 Java，范围外允许维护旧模块。既有 Python 消费者在兼容期继续验证真实链。
+
+截至 `2026-10-22T14:45Z`，本机 `machine_id: xenoamess-full-tower-eb9d2c1186` 已完成 map 的真实 HTTP 全消费者链和 N46 实际发布；N46 完整游戏批失败，新增保存仍为 0。新增九模块完整 reactor 已有 458 项 JUnit 通过，独立 Java 构建工具有 22 项通过，修复后的完整 map CI 再次通过；见[共享 manifest 修复及完整验收](ck3-native-ai/evidence/java-control-owner-manifest-repair-20261022.json)。十五模块扩展图的 java08 实测因治理三项测试失败而 RED，后续模块未执行，原 owner 正在修复，未据源码就绪记作通过。迟到结果核对已有纯 Java 实现，原 writer 接续及实际 SDK 单读链仍未验收，不据纯核对或设计文档启动下一场。
 
 ## 为什么从合同开始
 
@@ -24,7 +26,7 @@ Java 先减少合同漂移与失败周转。查询、推进、保存、Root 等�
 | 4. `continuity-core` | [current_saved_continuity_v1.py](../tools/g2_saved_campaign/current_saved_continuity_v1.py) 纯 reducer/预演 | 影子重放小事件；原 Python writer 唯一持锁提交，文件锁/事务后迁 |
 | 5. 扩展 `control-host` | [current_saved_campaign_feeder_v1.py](../tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py) 与原监督调度接口 | 一期宿主仅 map composer；未来协调既有 Python runner，消费真实退出/超时/终态。Game/SDK/Task/录制 custody 暂不迁 |
 
-以上是施工顺序，未授资格。native_driver、service、owner、basis、feeder 混有 Python AST、原生证据、恢复与 Windows 身份，不整包直译。
+以上是施工顺序，各条分别授予实际验证范围。native_driver、service、owner、basis、feeder 混有 Python AST、原生证据、恢复与 Windows 身份，不整包直译。
 
 ## 一期实际范围与切换闭环
 
@@ -39,6 +41,8 @@ Java 先减少合同漂移与失败周转。查询、推进、保存、Root 等�
 不将整份 Driver/SAVE 跨 HTTP 往返或为 shadow 重读大正文。大 JSON 热点将来按解析、复制与 IPC 总成本实测；旧 SHA 绑定原字节，“值相同”不替代字节证据。
 
 ### Maven 环境与真实 RED
+
+执行命令统一为各机器命令行默认的 `mvn`，最低版本 3.10.0；已满足时无需升级，低于最低版本才原位更新，不锁定绝对路径、不为迁移更换位置。下列 Maven home 仅是该机器该时刻的实际安装证据。
 
 `machine_id` 同上；`J=D:/codex-ck3-demos/2026-10-22-java-phase1`。实读 `J/DEFAULT-MAVEN-3100-ACTUAL01.json`（12:20:12.065470Z）：官方 SHA-512、113 vendor file SHA-256 已核；fresh cmd exit 0，默认 Maven 3.10.0、home `C:/apache-maven`、Java 21.0.10；where 两项原 C 路径、PATH 未改。
 
@@ -70,9 +74,9 @@ Java 先减少合同漂移与失败周转。查询、推进、保存、Root 等�
 - 下载环境未先核实：首个真实 Maven 请求同时核有效 settings/代理路由、目标卷余量和指定安装路径；失败先读内层终态，不反复空跑重试，不把 HEAD 200 当构建通过。
 - 合同分散：以 map composer 一个真实切换链检验共享模型；不扩为重写大 owner/全仓整改。以上复用现有校验和回执，不新增无限门禁。
 
-实施包固定 JDK/Quarkus/依赖与产物，不按网页 latest 自动更新。[Quarkus Maven](https://quarkus.io/guides/maven-tooling/#working-with-multi-module-projects)规定多模块/CDI 索引接法。
+实施包记录实际默认 Maven/JDK，固定 Quarkus/依赖与产物；不在构建中隐式更新依赖，Maven 按最低 3.10.0 校验，低版本原位升级并验证。[Quarkus Maven](https://quarkus.io/guides/maven-tooling/#working-with-multi-module-projects)规定多模块/CDI 索引接法。
 
-本叶仅改本文，未执行构建/测试/Game/外部仓库操作。
+本文的早期“未执行”描述仅指当时的文档编辑，不覆盖后续带实际回执的构建与发布记录。
 
 ## 12:36–12:38Z 软件与发布实证（追加）
 

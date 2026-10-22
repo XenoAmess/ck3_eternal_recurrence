@@ -1,0 +1,2408 @@
+{
+  "schema": "ck3.feast-stage5-value.producer-golden.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T13:34:20.175915+00:00",
+  "source_path": "ck3_autonomous_player/src/xar_autoplayer/activity_feast_stage5_value_policy.py",
+  "source_sha256": "833d2503ef944d8a46516a94fbf3342379c50a32bfef769e9e27463094b2ba0e",
+  "capture_scope": "actual unchanged Python leaf invoked for every fixture row; no native/Game/ledger calls",
+  "cases": [
+    {
+      "name": "baseline",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          9000000,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "other-activity",
+      "input": {
+        "activity_key": "activity_hunt",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "unsupported_activity_or_type",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "other-option",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_murder",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "unsupported_activity_or_type",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "wrong-stage",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 4,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "not_final_planning_stage",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "negative-stage",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": -1,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "not_final_planning_stage",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "final-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": null,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "native_final_start_unavailable",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "final-denied",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": false,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "native_final_start_unavailable",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "guest-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": null,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "guest_route_unproven",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "guest-zero",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 0,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "guest_route_unproven",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "gold-cost-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          null,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "configured_cost_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          null,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "treasury-cost-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          null,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "configured_cost_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          null,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "spend-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": null,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "peaceful_spend_unapproved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "spend-denied",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": false,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "peaceful_spend_unapproved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "gold-unobserved",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "gold_balance_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "gold-floor-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": null,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "gold_reserve_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "war-count-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": null,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "gold_reserve_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "war-cash-unknown",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": null
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "war_cash_reserve_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "gold-over-budget",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          9999999,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "gold_budget_exceeded",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "gold-exact-budget",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          10000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          9000000,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "no-war-unknown-war-cash",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          6000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 0,
+        "war_cash_reserve_raw": null
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          5000000,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "treasury-unobserved",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "treasury_balance_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "piety-unobserved",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          500000,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "piety_balance_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          500000,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "barter-unobserved",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          500000
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "barter_goods_balance_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          500000
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "treasury-over-budget",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "balance_available": [
+          false,
+          true,
+          false,
+          false
+        ],
+        "balance_raw": [
+          0,
+          750000,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          0,
+          250001,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "treasury_budget_exceeded",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "piety-over-budget",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          500000,
+          0
+        ],
+        "balance_available": [
+          false,
+          false,
+          true,
+          false
+        ],
+        "balance_raw": [
+          0,
+          0,
+          750000,
+          0
+        ],
+        "reserved_raw": [
+          0,
+          0,
+          250001,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "piety_budget_exceeded",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          500000,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "barter-over-budget",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          500000
+        ],
+        "balance_available": [
+          false,
+          false,
+          false,
+          true
+        ],
+        "balance_raw": [
+          0,
+          0,
+          0,
+          750000
+        ],
+        "reserved_raw": [
+          0,
+          0,
+          0,
+          250001
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "barter_goods_budget_exceeded",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          500000
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "treasury-exact-budget",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "balance_available": [
+          false,
+          true,
+          false,
+          false
+        ],
+        "balance_raw": [
+          0,
+          750000,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          0,
+          250000,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": null,
+        "active_war_count": null,
+        "war_cash_reserve_raw": null
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          0,
+          500000,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          0,
+          250000,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "all-resources-exact",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          500000,
+          600000,
+          700000
+        ],
+        "balance_available": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "balance_raw": [
+          10000000,
+          750000,
+          950000,
+          1150000
+        ],
+        "reserved_raw": [
+          2000000,
+          250000,
+          350000,
+          450000
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          500000,
+          600000,
+          700000
+        ],
+        "resource_commitment_raw": [
+          1000000,
+          500000,
+          600000,
+          700000
+        ],
+        "submit_reserve_raw": [
+          9000000,
+          250000,
+          350000,
+          450000
+        ]
+      }
+    },
+    {
+      "name": "free-unknown-balances-reserves",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": null,
+        "active_war_count": null,
+        "war_cash_reserve_raw": null
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "free-denied-spend",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": false,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "peaceful_spend_unapproved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "free-guests-unobserved",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": null,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "guest_route_unproven",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "unknown-cost-before-spend",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          null,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": null,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "missing_input",
+        "reason": "configured_cost_unobserved",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          null,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "guest-before-unknown-cost",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          null,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 0,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "guest_route_unproven",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          null,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "native-before-guest",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": false,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": null,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "native_final_start_unavailable",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "activity-before-native",
+      "input": {
+        "activity_key": "activity_hunt",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": null,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "unsupported_activity_or_type",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "zero-gold-ignores-gold-reserve",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "balance_available": [
+          false,
+          true,
+          false,
+          false
+        ],
+        "balance_raw": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          9,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": null,
+        "active_war_count": null,
+        "war_cash_reserve_raw": null
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          9,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "unicode-unsupported",
+      "input": {
+        "activity_key": "宴会🔥",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          12000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          2000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 3000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 4000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "hold",
+        "status": "not_actionable",
+        "reason": "unsupported_activity_or_type",
+        "positive_value_supported": false,
+        "benefit_if_successful": null,
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          1000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": null,
+        "submit_reserve_raw": null
+      }
+    },
+    {
+      "name": "arbitrary-precision-no-long-overflow",
+      "input": {
+        "activity_key": "activity_feast",
+        "selected_option_key": "feast_type_generic",
+        "planning_stage": 5,
+        "final_can_start": true,
+        "configured_cost_raw": [
+          10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          0,
+          0,
+          0
+        ],
+        "balance_available": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "balance_raw": [
+          100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          0,
+          0,
+          0
+        ],
+        "reserved_raw": [
+          20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          0,
+          0,
+          0
+        ],
+        "expected_nonhost_guest_count": 3,
+        "peaceful_spend_allowed": true,
+        "gold_floor_raw": 30000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+        "active_war_count": 1,
+        "war_cash_reserve_raw": 40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      },
+      "expected": {
+        "policy": "g2-feast-stage5-value-policy-v1",
+        "decision": "start",
+        "status": "ready",
+        "reason": "positive_feast_within_observed_budget",
+        "positive_value_supported": true,
+        "benefit_if_successful": "scripted_prestige_and_reveler_progress_or_xp",
+        "resource_keys": [
+          "gold",
+          "treasury",
+          "piety",
+          "barter_goods"
+        ],
+        "scale": 100000,
+        "configured_cost_raw": [
+          10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          0,
+          0,
+          0
+        ],
+        "resource_commitment_raw": [
+          10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          0,
+          0,
+          0
+        ],
+        "submit_reserve_raw": [
+          90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  ]
+}

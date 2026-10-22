@@ -13,6 +13,13 @@
   <modules>
     <module>contracts</module>
     <module>local-service</module>
+    <module>native-diagnostics</module>
+    <module>war-policy</module>
+    <module>campaign-score</module>
+    <module>finance-policy</module>
+    <module>event-policy</module>
+    <module>military-policy</module>
+    <module>late-outcome-reconciliation</module>
   </modules>
 
   <properties>

@@ -4,7 +4,7 @@
 
 ## 1. 架构决定与要解决的问题
 
-采用 **Java 21 + Maven 3.10.0 + 单个常驻 Quarkus 宿主 + 进程内领域模块**。现有 C++ 原生桥继续负责 CK3 内部访问；迁移期用窄 Python 适配器接入现有合格链，逐条替换。每个游戏实例只有一个动作提交者和一个权威持久化写者。并发用于观测计算、规划候选、离线分析与独立研发，不用于重复提交游戏动作。
+采用 **Java 21 + 默认命令行 `mvn`（至少 3.10.0）+ 单个常驻 Quarkus 宿主 + 进程内领域模块**。Maven 低于最低版本才在各机器原位置更新，已满足时无需追逐最新版；版本记录不锁定安装目录。现有 C++ 原生桥继续负责 CK3 内部访问；迁移期用窄 Python 适配器接入现有合格链，逐条替换。每个游戏实例只有一个动作提交者和一个权威持久化写者。并发用于观测计算、规划候选、离线分析与独立研发，不用于重复提交游戏动作。
 
 优先解决合同漂移、生成源码膨胀、权威分散、恢复重放不明、现场等待和测试范围混淆。不能把 Python 大模块逐个翻译成 Java 大类，也不能把每个旧脚本变成一个 HTTP 服务。初期不引入 Kubernetes、消息中间件、远程数据库或每次请求新 JVM。
 
@@ -55,7 +55,7 @@ flowchart LR
 | `adapters-storage` | 本地事务、事件/索引、检查点及证据引用，限额与保留适配 | 将 ACK 写成业务成功、根据过期直接删永久资产 |
 | `local-service` | Quarkus 生命周期、REST/MCP 边界、配置、健康与依赖注入 | 将各领域逻辑堆进 resource/service 大类 |
 
-这是目标拆分，**当前仅有 `contracts` 与 `local-service` 两模块**，见[父 POM](../java/ck3-control/pom.xml)。先保持两个模块完成真实 map 链；出现实际第二个领域用例时提取 `model`，随后按依赖增长拆模块，不预建一批空工程。ArchUnit/构建依赖检查将禁止 domain→adapter、跨模块绕过端口和模块循环。
+这是目标拆分。首条实际 map 链由 `contracts` 与 `local-service` 完成；已验证的九模块另含 `native-diagnostics`、`war-policy`、`campaign-score`、`finance-policy`、`event-policy`、`military-policy` 与 `late-outcome-reconciliation`。后续组件按真实依赖加入[父 POM](../java/ck3-control/pom.xml)，分别记录构建与接管范围，不能继承 map 链的实机资格。`build-tools` 独立构建，承载 Java 进程、构建和 CI 支持；不会作为游戏 HTTP 服务启动。随后按实际依赖提取共享 `model` 等模块，不预建一批空工程。ArchUnit/构建依赖检查将禁止 domain→adapter、跨模块绕过端口和模块循环。
 
 `coat_of_arms_editer_of_ck3` 的正式 Pages 继续保持纯前端；此架构不成为它的线上依赖。Workshop 发布也继续走自己的发布合同，不因语言迁移重跑缓存业务矩阵。
 
@@ -250,7 +250,7 @@ Steam 离线状态继续使用后台原生查询，不激活窗口；未确认�
 
 配置使用版本化 typed config，路径必须显式给出；禁止 import 时冻结 cwd/环境。机器适配只有 machine ID、获准根、卷映射、依赖位置和系统预留，策略规则在仓库保持单一版本。工作包参数是数据，不携带另一套生产函数。
 
-发行固定 JDK major、Maven、Quarkus BOM 与插件，不用动态 latest。Maven Enforcer 检查 Java/Maven 范围与依赖收敛；依赖升级另提交并跑对应完整 CI。默认 Maven 本机已切 `C:/apache-maven` 3.10.0，其他机器重新核读，不能据此声称全机群已部署。
+发行记录实际 JDK major、Maven 版本和来源，固定 Quarkus BOM 与插件，不在构建时盲目追逐动态依赖。Maven 使用该机器命令行默认 `mvn`，要求至少 3.10.0；已达标时不强制升级，低版本在原安装位置更新，不设本机或跨机器的绝对安装路径要求。Maven Enforcer 检查 Java/Maven 范围与依赖收敛；工具链或依赖升级跑对应完整 CI。本机默认 Maven 已核验 3.10.0，其他机器分别核读，不能据此声称全机群已部署。
 
 ## 10. 本地 API 与错误模型
 
@@ -346,6 +346,20 @@ Writer/提交权威转换必须验证旧进程身份与真实退出、Job 后态
 ### 2026-10-22 用户追加开发规范
 
 后续新任务、新模块全部 Java 开发；一期范围内的旧 Python 生产逻辑修改进入 Java，范围外暂可维护旧 Python。[AGENTS.md](../AGENTS.md)已记录。新构建/CI 生产模块也遵守这条规则，本轮未交付的新 Python CI 草稿不作为正式入口；既有跨语言消费者测试只验证兼容链。C++ 原生桥、前端和 CK3 脚本保持各自实现语言，不因本条整体重写。
+
+### 2026-10-22T13:14Z Java 构建与故障恢复进展
+
+同机器的 [Java 构建与 owner 全组实证](ck3-native-ai/evidence/java-control-build-and-owner-http-20261022.json)已记录：Java `ControlBuild` 实际构建原两模块并执行 11 项 JUnit；`build-tools` 执行 7 项测试，包含真实 Win32 Job、出生时间、后代超时回收和 TCP 所属进程读回；Java 服务 owner 下的完整 strict 与 6 项 HTTP 测试、三条原消费者链通过。新服务已关闭，Job 最终为 0。Hosted bootstrap/工作流与新增纯叶必须另行验收，不能将这份本地结果外推。
+
+N46 于 12:44Z 已闭场，原 Game 为强制退出；原保存前沿仍为 5628/10950 日，没有后继成功 SAVE。当前失败批留有 pending 周期，旧“完整成功 FULL 但未保存”的恢复流程要求 pending 为空，不能直接套用。原 writer 接续资格和回到已有存档的实际共享路径是下一场的阻塞，不能手清 pending 或重放 AUTO11558。
+
+[迟到时钟核对提案](java-clock-late-outcome-reconciliation-proposal-2026-10-22.md)服务于下一次仍持有原 Game/SDK 的超时现场：Java 有界安排 STATUS→SEM→STATUS，只输出核对提案；原 writer 锁内真实 reducer 与后态重验另行授予接续。取消 sentinel 仍须先证明已暂停；不在 timeout 的 finally 中解除可能仍会暂停游戏的守卫。N46 的迟到画面不是新鲜原生资格，不能据其补回成功或保存信用。
+
+### 2026-10-22T14:44Z 九模块整合与并发原则
+
+同机器 `xenoamess-full-tower-eb9d2c1186`：[共享 manifest 修复及完整验收](ck3-native-ai/evidence/java-control-owner-manifest-repair-20261022.json)保留两次真实 RED。合法 program manifest 实际 66,728 B，现按原 producer 合同独立限制为 1 MiB；运行/启动/闭场回执仍为 64 KiB，没有放宽全部文件上限。`build-java07.json` 完整九模块 verify 为 **458 项 JUnit、零失败/错误/跳过**；`build-java-tools19.json` 为 **22 项、零失败/错误/跳过**；`JAVA-MAP-CI-VERIFICATION05.json` 包含两个完整 Python 兼容叶、六项真实 HTTP 测试和三条原消费者 lineage，实际 Job 终态为 0。原件位于本机 `D:/codex-ck3-demos/2026-10-22-java-phase1/logs/`。这些结果不授予新增模块的游戏接管或保存信用。
+
+今晚按用户最新要求，以 **56 条并行实现线为原则目标**，不强行拆分或凑任务；等待采样、依赖或构建不计活跃实现。[调度与所有权](java-overnight-migration-dispatch-2026-10-22.md)记录自然组件和域负责人。完整源码、真实 producer 差分、完整 Java 验证、实际消费者接管和游戏保存分别记录。已冻结的有限批次先整合验收，后续自然组件进入下一批目录，避免持续加源码使构建永远不能闭场。十五模块 `build-java08.json` 于 14:44:16.784778600Z 真实 RED：治理 132 项中三项失败，后续六模块尚未执行；原九模块仍通过。失败已回派原 owner 修复，不外推九模块结果。
 
 ## 15. 维护规则
 

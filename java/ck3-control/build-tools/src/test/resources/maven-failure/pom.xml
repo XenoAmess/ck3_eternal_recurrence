@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Deliberately malformed Maven model; XML/source inventory is valid. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.xar.ck3.control.test</groupId>
+  <artifactId>expected-model-failure</artifactId>
+  <!-- Missing version must produce a real Maven model error. -->
+</project>

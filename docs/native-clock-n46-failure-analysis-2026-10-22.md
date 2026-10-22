@@ -52,3 +52,25 @@
 - 负例覆盖错误类型（bool/浮点冒充序号）、缺必填字段、错 schema、来源 SHA 不符、连接变化、heartbeat 停止、observer 仍在读取、pump 计数回退以及不同阶段独立采样。不能将非原子观测伪装成同一瞬间的快照。
 - C++ host fixture 直接运行实际生产 hook，使用确定时钟验证入口/出口与状态更新；覆盖原函数阻塞、原函数抛出、非核准调用位置、observer 不可用及恢复后再次推进。必须验证原函数原有转发/异常语义和无额外 Game 调用。局部计数器单测不能替代这个闭环。
 - 最后对完整新来源闭包完成构建、全部消费者和持久 CI，再在实际 Game 运行。实机分别记录 ACK、native pause/date 后态、完整批耗时与真正新增且保存的游戏日。本分析阶段未执行这些新回归或编译。
+
+## 13:10 UTC 补充：迟到完成线索与最短修复路径
+
+仍为同一 `machine_id`。以下追加不覆盖原 `11558` 失败帧、UNKNOWN 或零成绩。
+
+保留录制元数据 `recording-latest.json` 的帧时间为 **12:43:03.316555 UTC**，SHA-256 为 `146246a12a17689a279aa8d35b6b52d3aad7ddcf5ffb6703776bfefe5289e928`。人工查看其绑定的 `recording-latest-game.png`，画面显示“暂停”和 **1082 年 2 月 16 日**；图片 SHA-256 为 `e2fca40ad8ddf2003d418f8b277500a244894f08e7b319bf70bb053da67118d0`。原 `ROOT-POSTSTART02-game.png` 显示 2 月 15 日，SHA 为 `f50633f64ea1d9bbc51fc5f64fd550919efa3862fb6240cdc4181e61658424c4`。没有 OCR、视频导出或新 Game 查询。录制明确 `hidden_Game_freshness_qualified=false`，所以这是支持迟到推进并暂停的视觉线索，不能追认 native 成功或保存成绩，也不能确定完成的准确时刻。
+
+原 `ordinary-stage-timings.jsonl`（SHA `a4af62b3098b5698f3d16134a6c2380dbad2d1c1e12cd44054c726c7a7687335`）还保留 Game `GetProcessTimes`：从 12:38:42.181964 到 12:39:12.521941 UTC，30.3401168 秒内进程 CPU 增加 **2.953125 秒**；两次 PID/出生时间绑定相同。它证明进程仍有 CPU 活动，不支持“整个窗口一直满载计算”的说法；不能区分原生等待、长任务或具体线程。读取器是冻结 `clock_observation_timing_v1.py`，SHA `34ffbd45381675db60faeb0e36146508cd6234465690d48d7a507ef40e29bda0`。
+
+预检 SEM/CAP 的完整 heartbeat 显示 PeekMessage hook 已安装、SDL hook 未安装，direct-control wake 计数均为零。这只证明预检时刻；故障摘要未保留其后的 wake 计数、mailbox state 或 active calls。owner/current TID 在故障缓存中均为 `247596`，failure 为零、stop=false，不能据此推断主线程未等待。SDK stderr 为空也不能代替这些缺失字段。
+
+源码解释现在更具体：
+
+1. 冻结 `native_driver.py:1897` 将 life-advance 等待默认设为 30 秒。`mcp_server.py:515` 的 native-headless factory 没有覆盖该参数，exact-day 路径使用这个默认值；它适用于所有这类等待，没有“首 unpause”专用宽限。原日志实际等待 30.0034584 秒。该 `mcp_server.py` SHA 为 `3dec1f1f8d78bf1ed546fac429bf8f0e4f025448accbb4608094211a56f45632`。
+2. `native_driver.py:25979` 清理先等待暂停，返回后才在 25985 取消原 generation。原日志暂停等待失败，走到外层异常处理，**没有执行取消**。原 `armed_reply` 仍只是先前 generation `1` 的 ACK，不能冒充失败后的 slot 查询。
+3. 共享 `tactical_daily_sentinel_v1.cpp` 没有 wall-clock TTL。arm 后保持 armed，直到 cancel 或 native trigger。`XarTacticalDailySentinelHookV1:1013` 在原 final-stage 函数返回后执行 `ProcessTacticalDailySentinelAfterTickV1:795`；到达 target 后在 873 触发 `PublishTerminalState`，经 `PauseAtStableBoundary` 暂停并转 triggered。故“SDK 超时后原 generation 迟到达 target 并自动暂停”在机制上成立。该共享文件与 Native30 构建输入中的同名保留文件 SHA 均为 `25f16c2d21bba1a040abff4bc2876366109dcfdcb70aa9307d7ecc9cbde889a5`；这不补造本场缺失的终态读回。
+
+**下一版优先实现 Java 的迟到结果核对，阶段计数后置。** 已有只读 native step `research-query-tactical-daily-sentinel-v1` 直接读取 slot；已有 MCP `ck3_execute_step` 和 `ck3_take_semantic_snapshot_private_v1` 可承载 status 与新鲜语义帧。需要原 Queue 在 HALT 后提供严格限定的 reader port，由原连接与单一序号/owner 执行；Java 不得另连单客户端 native pipe，也不得重放 AUTO、arm、resume、pause 或 cancel。
+
+Java 在有界、来源绑定的 reconciliation 窗口内核对同一 Game 出生身份、连接、actor/episode、原 arm generation、start/target/speed/mode、triggered 终态及暂停和日期后态。未满足仍 UNKNOWN；满足只产生迟到观测证据，原请求仍零 credit、不可重放。接续必须调用实际共享 reducer 预演，并在原 writer 锁内重验、去重提交；不能由纯分类器授予继续资格。首 tick 的合理宽限尚未实测，不能凭这张晚帧给出准确耗时或无限等待。这样可在同一 Game 内收集迟到结果，不必先重编 DLL 或反复冷启动。
+
+暂停失败后保留 armed 是安全边界，不能直接改成 finally cancel。现有 C++ 回归 `TestGenerationBoundPausedCancelDisarmsAndAllowsNextArm` 明确要求：unpaused 时 cancel 返回 `requires_paused` 且继续 armed，确认 paused 且 generation 匹配后才能取消。迟到查询也只证明新观测，不补证旧 ACK；Java 不取消结果未知的 armed。

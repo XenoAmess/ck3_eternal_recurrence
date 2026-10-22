@@ -1,0 +1,665 @@
+package org.xar.ck3.control.build;
+
+import com.fasterxml.jackson.core.StreamReadFeature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.type.LogicalType;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HexFormat;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+/** The single Maven producer: pinned same-volume inputs, bounded Job and complete output closure. */
+public final class ControlBuild {
+    public static final String SCHEMA = "xar.java-control.actual-build/v4";
+    private static final String LOCAL_MACHINE = "xenoamess-full-tower-eb9d2c1186";
+    private static final Set<String> EXCLUDED = Set.of("target", ".git", "__pycache__", ".mypy_cache", ".pytest_cache");
+    private static final ObjectMapper JSON = createMapper();
+    private ControlBuild() {}
+
+    public record FileRef(String path, long bytes, String sha256) {
+        public FileRef {
+            if (path == null || !Path.of(path).isAbsolute() || bytes < 0 || sha256 == null
+                    || !sha256.matches("[0-9a-f]{64}")) throw new IllegalArgumentException("Invalid exact file reference");
+        }
+        public static FileRef measure(Path path) throws IOException {
+            requireRegular(path);
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256"); long count = 0;
+                try (InputStream input = Files.newInputStream(path)) {
+                    byte[] buffer = new byte[65536]; int length;
+                    while ((length = input.read(buffer)) != -1) { digest.update(buffer, 0, length); count = Math.addExact(count, length); }
+                }
+                return new FileRef(path.toAbsolutePath().normalize().toString(), count, HexFormat.of().formatHex(digest.digest()));
+            } catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
+        }
+        public void verify() throws IOException {
+            if (!equals(measure(Path.of(path)))) throw new IOException("File reference changed: " + path);
+        }
+    }
+
+    public enum SourceState { MATCH, MISMATCH, UNKNOWN }
+    public enum TargetKind { SERVICE_FAST_JAR, BUILD_TOOLS_RUNTIME }
+    public enum MavenSelection { DEFAULT_COMMAND, EXPLICIT_OVERRIDE }
+    public record MavenToolchain(MavenSelection selection, String requestedCommand, String reportedHome,
+            String reportedVersion, String minimumVersion, FileRef distributionLauncherRef, FileRef explicitOverrideRef) {
+        public MavenToolchain {
+            if (selection == null || requestedCommand == null || reportedHome == null || !Path.of(reportedHome).isAbsolute()
+                    || !mavenVersionAtLeast(minimumVersion, "3.10.0") || !mavenVersionAtLeast(reportedVersion, minimumVersion) || distributionLauncherRef == null
+                    || (selection == MavenSelection.DEFAULT_COMMAND && (!requestedCommand.equals("mvn") || explicitOverrideRef != null))
+                    || (selection == MavenSelection.EXPLICIT_OVERRIDE && (explicitOverrideRef == null || !requestedCommand.equals(explicitOverrideRef.path())))) {
+                throw new IllegalArgumentException("Invalid actual Maven toolchain evidence");
+            }
+        }
+    }
+    public record SourcePostcheck(SourceState state, String error) {
+        public SourcePostcheck {
+            if (state == null || (state == SourceState.UNKNOWN) != (error != null)
+                    || (error != null && error.isBlank())) throw new IllegalArgumentException("Invalid source postcheck");
+        }
+    }
+
+    public record BuildReceipt(String schema, String machineId, String observedAtUtc, String status,
+            String sourceRoot, String compiledSourceRoot, String deploymentRoot, SourcePostcheck sourcePostcheck,
+            SourcePostcheck compiledSourcePostcheck, TargetKind targetKind,
+            List<FileRef> sourcePins, List<FileRef> compiledSourcePins, List<FileRef> completeDeployment,
+            List<FileRef> producerRuntimePins,
+            FileRef capacityReleaseRef, MavenToolchain mavenToolchain, FileRef javaExecutableRef,
+            WindowsJobProcess.CommandResult toolchainProbe, WindowsJobProcess.CommandResult mavenResult,
+            Map<String, Long> finalLogicalBytesByPart, String error) {
+        public BuildReceipt {
+            sourcePins = List.copyOf(sourcePins); compiledSourcePins = List.copyOf(compiledSourcePins);
+            completeDeployment = List.copyOf(completeDeployment); finalLogicalBytesByPart = Map.copyOf(finalLogicalBytesByPart);
+            producerRuntimePins = List.copyOf(producerRuntimePins);
+            if (!SCHEMA.equals(schema) || !Set.of("PASS", "RED").contains(status) || sourcePostcheck == null || compiledSourcePostcheck == null || targetKind == null) throw new IllegalArgumentException("Unknown build receipt contract");
+            Instant.parse(observedAtUtc);
+        }
+    }
+
+    public record Config(Path sourceRoot, Path workRoot, Path capacityRelease, String attempt,
+            String ownerTask, Path mavenCommand, Path javaHome, String minimumMavenVersion, int timeoutSeconds, TargetKind targetKind) {
+        public Config {
+            for (Path path : List.of(sourceRoot, workRoot, capacityRelease, javaHome)) {
+                if (!path.isAbsolute()) throw new IllegalArgumentException("Absolute paths required");
+            }
+            if (mavenCommand != null && !mavenCommand.isAbsolute()) throw new IllegalArgumentException("Explicit Maven override must be absolute");
+            if (!attempt.matches("[a-zA-Z0-9][a-zA-Z0-9_-]{0,47}") || ownerTask.isBlank()
+                    || !mavenVersionAtLeast(minimumMavenVersion, "3.10.0")
+                    || timeoutSeconds <= 0 || timeoutSeconds > 900 || targetKind == null) throw new IllegalArgumentException("Invalid finite build parameters");
+        }
+    }
+
+    private record Lease(String machineId, Instant deadline, Map<String, Long> caps, long memoryLimitBytes,
+            long mavenHeapBytes, Map<Path, Long> minimumFreeByVolume) {}
+    public record CapacityRelease(String schema, String machineId, String observedAtUtc, String reviewAtUtc,
+            String status, String ownerTask, FileRef policyRef, List<String> approvedOutputRoots,
+            String temporaryRoot, Map<String, Long> parts, Map<String, CiBootstrap.VolumeBudget> volumes,
+            Map<String, CiBootstrap.QuotaOverride> quotaOverrides,
+            long memoryLimitBytes, long mavenHeapBytes) {
+        public CapacityRelease {
+            if (!"xar.java-control.capacity-release/v1".equals(schema) || !"RELEASED".equals(status)
+                    || machineId == null || machineId.isBlank() || ownerTask == null || ownerTask.isBlank()
+                    || policyRef == null || temporaryRoot == null || !Path.of(temporaryRoot).isAbsolute()
+                    || memoryLimitBytes <= 0 || mavenHeapBytes <= 0 || mavenHeapBytes >= memoryLimitBytes) {
+                throw new IllegalArgumentException("Invalid typed capacity release");
+            }
+            if (!Instant.parse(observedAtUtc).isBefore(Instant.parse(reviewAtUtc))) throw new IllegalArgumentException("Finite authority required");
+            approvedOutputRoots = List.copyOf(approvedOutputRoots); parts = Map.copyOf(parts); volumes = Map.copyOf(volumes); quotaOverrides = Map.copyOf(quotaOverrides);
+            if (approvedOutputRoots.isEmpty() || approvedOutputRoots.size() > 16 || volumes.isEmpty()
+                    || approvedOutputRoots.stream().anyMatch(path -> !Path.of(path).isAbsolute())
+                    || parts.values().stream().anyMatch(value -> value <= 0)) throw new IllegalArgumentException("Finite roots and part caps required");
+        }
+    }
+    private record Failure(String schema, String status, String observedAtUtc, String error) {}
+
+    public static ObjectMapper strictMapper() { return JSON.copy(); }
+
+    private static ObjectMapper createMapper() {
+        ObjectMapper mapper = JsonMapper.builder().enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION)
+                .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, DeserializationFeature.FAIL_ON_TRAILING_TOKENS,
+                        DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES,
+                        DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
+                .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE).build();
+        for (LogicalType type : List.of(LogicalType.Integer, LogicalType.Boolean)) {
+            for (CoercionInputShape shape : List.of(CoercionInputShape.String, CoercionInputShape.Float,
+                    CoercionInputShape.Boolean, CoercionInputShape.Integer)) {
+                if ((type == LogicalType.Integer && shape == CoercionInputShape.Integer)
+                        || (type == LogicalType.Boolean && shape == CoercionInputShape.Boolean)) continue;
+                mapper.coercionConfigFor(type).setCoercion(shape, CoercionAction.Fail);
+            }
+        }
+        for (CoercionInputShape shape : List.of(CoercionInputShape.Integer, CoercionInputShape.Float, CoercionInputShape.Boolean)) {
+            mapper.coercionConfigFor(LogicalType.Textual).setCoercion(shape, CoercionAction.Fail);
+        }
+        for (CoercionInputShape shape : List.of(CoercionInputShape.String, CoercionInputShape.Boolean)) {
+            mapper.coercionConfigFor(LogicalType.Float).setCoercion(shape, CoercionAction.Fail);
+        }
+        return mapper;
+    }
+
+    public static BuildReceipt acceptedReceipt(Path path) throws IOException {
+        BuildReceipt receipt = JSON.readValue(readLimited(path, 1024 * 1024), BuildReceipt.class);
+        JsonNode release = readObject(Path.of(receipt.capacityReleaseRef().path()));
+        requireNativeScratch(Path.of(text(release, "temporary_root")));
+        if (!receipt.machineId().equals(WindowsJobProcess.currentMachineId()) || !receipt.status().equals("PASS")
+                || receipt.sourcePostcheck().state() != SourceState.MATCH || receipt.compiledSourcePostcheck().state() != SourceState.MATCH || receipt.error() != null
+                || receipt.toolchainProbe() == null || !receipt.toolchainProbe().passed()
+                || receipt.mavenToolchain() == null
+                || receipt.mavenResult() == null || !receipt.mavenResult().passed()
+                || receipt.sourcePins().isEmpty() || receipt.completeDeployment().isEmpty()) {
+            throw new IOException("Build receipt did not establish current-machine complete qualification");
+        }
+        receipt.capacityReleaseRef().verify(); receipt.mavenToolchain().distributionLauncherRef().verify(); receipt.javaExecutableRef().verify();
+        if (receipt.mavenToolchain().explicitOverrideRef() != null) receipt.mavenToolchain().explicitOverrideRef().verify();
+        if (!Instant.now().isBefore(Instant.parse(text(release, "review_at_utc")))) throw new IOException("Build capacity release expired");
+        for (FileRef reference : receipt.sourcePins()) reference.verify();
+        for (FileRef reference : receipt.compiledSourcePins()) reference.verify();
+        for (FileRef reference : receipt.completeDeployment()) reference.verify();
+        if (receipt.producerRuntimePins().isEmpty()) throw new IOException("Build producer runtime closure missing");
+        for (FileRef reference : receipt.producerRuntimePins()) reference.verify();
+        requireSameContents(Path.of(receipt.sourceRoot()), Path.of(receipt.compiledSourceRoot()), receipt.sourcePins(), receipt.compiledSourcePins());
+        if (!sourceManifest(Path.of(receipt.sourceRoot())).equals(receipt.sourcePins())
+                || !sourceManifest(Path.of(receipt.compiledSourceRoot())).equals(receipt.compiledSourcePins())) {
+            throw new IOException("Source closure grew or changed after build");
+        }
+        List<FileRef> actual = deploymentManifest(Path.of(receipt.deploymentRoot()), receipt.targetKind());
+        if (!actual.equals(receipt.completeDeployment())) throw new IOException("Deployment closure grew or changed");
+        return receipt;
+    }
+
+    public static BuildReceipt build(Config config) throws IOException, InterruptedException {
+        requireNativeScratch(config.workRoot().resolve("scratch"));
+        String machine = WindowsJobProcess.currentMachineId();
+        Lease lease = readLease(config, machine);
+        requireToolPaths(config, machine);
+        guard(config, lease);
+        Path logs = config.workRoot().resolve("logs"); Files.createDirectories(logs);
+        try (FileChannel channel = FileChannel.open(config.workRoot().resolve(".java-control-build.lock"),
+                StandardOpenOption.CREATE, StandardOpenOption.WRITE); FileLock lock = channel.tryLock()) {
+            if (lock == null || !lock.isValid()) throw new IOException("Another Maven writer owns this workpackage");
+            return buildLocked(config, lease, machine, logs);
+        }
+    }
+
+    private static BuildReceipt buildLocked(Config config, Lease lease, String machine, Path logs)
+            throws IOException, InterruptedException {
+        Path snapshot = config.workRoot().resolve("scratch/source-" + config.attempt());
+        Path build = config.workRoot().resolve("build/" + config.attempt());
+        Path receiptPath = logs.resolve("build-" + config.attempt() + ".json");
+        if (Files.exists(snapshot) || Files.exists(build) || Files.exists(receiptPath)) throw new IOException("Build attempt already exists");
+        List<FileRef> source = sourceManifest(config.sourceRoot());
+        if (source.isEmpty() || !Files.isRegularFile(config.sourceRoot().resolve("pom.xml"))) throw new IOException("Maven source closure is missing");
+        Files.createDirectories(snapshot); Files.createDirectories(build);
+        if (!Files.getFileStore(snapshot).equals(Files.getFileStore(build))) throw new IOException("Source snapshot and build output must share a filesystem");
+        List<FileRef> compiled = new ArrayList<>();
+        for (FileRef original : source) {
+            Path relative = config.sourceRoot().relativize(Path.of(original.path()));
+            Path destination = snapshot.resolve(relative).normalize();
+            if (!destination.startsWith(snapshot)) throw new IOException("Source path escaped snapshot");
+            Files.createDirectories(destination.getParent()); Files.copy(Path.of(original.path()), destination);
+            compiled.add(FileRef.measure(destination));
+        }
+        requireSameContents(config.sourceRoot(), snapshot, source, compiled);
+        Path settings = logs.resolve("build-" + config.attempt() + "-settings.xml");
+        Files.writeString(settings, "<?xml version=\"1.0\"?><settings xmlns=\"http://maven.apache.org/SETTINGS/1.2.0\"><interactiveMode>false</interactiveMode></settings>", StandardOpenOption.CREATE_NEW);
+        Map<String, String> environment = buildEnvironment(config, snapshot, lease);
+        WindowsJobProcess.CommandResult probe = null, result = null; MavenToolchain toolchain = null;
+        List<FileRef> closure = List.of(); String failure = null; boolean interrupted = false;
+        Path deployment = config.targetKind() == TargetKind.SERVICE_FAST_JAR
+                ? build.resolve("ck3-control-local-service/quarkus-app") : build.resolve("ck3-control-build-tools");
+        try {
+            probe = invoke(config, lease, snapshot, environment, logs, "version", List.of("-version"));
+            interrupted |= Thread.interrupted();
+            String versionOutput = Files.readString(logs.resolve("build-" + config.attempt() + "-version.stdout.log"));
+            if (!probe.passed()) {
+                throw new IOException("Actual default Maven version probe failed or mismatched");
+            }
+            toolchain = measuredMavenToolchain(config.mavenCommand(), versionOutput, config.minimumMavenVersion());
+            result = invoke(config, lease, snapshot, environment, logs, "verify", List.of("-B", "-ntp", "-e", "-U",
+                    "-s", settings.toString(), "-gs", settings.toString(), "-f", snapshot.resolve("pom.xml").toString(),
+                    "-Dmaven.repo.local=" + config.workRoot().resolve("m2"), "-Dck3.build.root=" + build,
+                    "-Djava.io.tmpdir=" + config.workRoot().resolve("scratch"), "-DargLine=-Xms32m -Xmx256m", "verify"));
+            interrupted |= Thread.interrupted();
+            if (!result.passed()) throw new IOException("Maven failed, timed out, retained children, or exceeded Job memory");
+            for (FileRef reference : compiled) reference.verify();
+            closure = deploymentManifest(deployment, config.targetKind());
+            guard(config, lease);
+        } catch (IOException | RuntimeException error) { failure = error.getClass().getSimpleName() + ": " + error.getMessage(); }
+        catch (InterruptedException error) { interrupted = true; failure = "InterruptedException: " + error.getMessage(); }
+        SourcePostcheck postcheck = postcheckSource(config.sourceRoot(), source);
+        if (postcheck.state() != SourceState.MATCH) failure = appendFailure(failure, "Source postcheck " + postcheck.state() + ": " + postcheck.error());
+        SourcePostcheck compiledPostcheck = postcheckSource(snapshot, compiled);
+        if (compiledPostcheck.state() != SourceState.MATCH) failure = appendFailure(failure, "Compiled source postcheck " + compiledPostcheck.state() + ": " + compiledPostcheck.error());
+        Map<String, Long> finalSizes;
+        try { finalSizes = measureSizes(config.workRoot(), lease.caps()); }
+        catch (IOException | RuntimeException error) { finalSizes = Map.of(); failure = appendFailure(failure, "Final part accounting unavailable: " + error); }
+        for (var part : finalSizes.entrySet()) if (part.getValue() > lease.caps().get(part.getKey())) failure = appendFailure(failure, "Final part cap exceeded: " + part.getKey());
+        BuildReceipt receipt = new BuildReceipt(SCHEMA, machine, Instant.now().toString(), failure == null ? "PASS" : "RED",
+                config.sourceRoot().toString(), snapshot.toString(), deployment.toString(), postcheck, compiledPostcheck, config.targetKind(), source, compiled, closure, producerClosure(),
+                FileRef.measure(config.capacityRelease()), toolchain,
+                FileRef.measure(config.javaHome().resolve("bin/java.exe")), probe, result, finalSizes, failure);
+        try { Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt), StandardOpenOption.CREATE_NEW); }
+        finally { if (interrupted) Thread.currentThread().interrupt(); }
+        return receipt;
+    }
+
+    /** Always runs after the child terminal result, including a failed Maven command. */
+    public static SourcePostcheck postcheckSource(Path sourceRoot, List<FileRef> original) {
+        try { return new SourcePostcheck(original.equals(sourceManifest(sourceRoot)) ? SourceState.MATCH : SourceState.MISMATCH, null); }
+        catch (IOException | RuntimeException error) { return new SourcePostcheck(SourceState.UNKNOWN, error.getClass().getSimpleName() + ": " + error.getMessage()); }
+    }
+
+    private static String appendFailure(String previous, String next) { return previous == null ? next : previous + "; " + next; }
+
+    private static List<FileRef> deploymentManifest(Path deployment, TargetKind targetKind) throws IOException {
+        if (targetKind == TargetKind.SERVICE_FAST_JAR) {
+            List<FileRef> closure = manifest(deployment, false, 10000, 512L * 1024 * 1024);
+            if (closure.isEmpty() || !Files.isRegularFile(deployment.resolve("quarkus-run.jar"))) throw new IOException("Complete fast-jar output is missing");
+            return closure;
+        }
+        List<FileRef> closure = new ArrayList<>();
+        closure.add(FileRef.measure(deployment.resolve("ck3-control-build-tools-0.1.0-SNAPSHOT.jar")));
+        closure.addAll(manifest(deployment.resolve("lib"), false, 100, 64L * 1024 * 1024));
+        closure.sort(Comparator.comparing(FileRef::path));
+        return List.copyOf(closure);
+    }
+
+    private static WindowsJobProcess.CommandResult invoke(Config config, Lease lease, Path snapshot,
+            Map<String, String> environment, Path logs, String phase, List<String> args) throws IOException, InterruptedException {
+        String label = "build-" + config.attempt() + "-" + phase;
+        Path batch = logs.resolve(label + ".cmd");
+        writeMavenBatch(batch, config.mavenCommand(), args);
+        Path cmd = Path.of(System.getenv("SystemRoot"), "System32/cmd.exe");
+        WindowsJobProcess.CommandSpec spec = new WindowsJobProcess.CommandSpec(cmd, List.of("/d", "/c", batch.toString()),
+                snapshot, environment, logs.resolve(label + ".stdout.log"), logs.resolve(label + ".stderr.log"), lease.memoryLimitBytes());
+        try (WindowsJobProcess child = WindowsJobProcess.start(spec)) {
+            AtomicLong lastGuard = new AtomicLong();
+            return child.await(Duration.ofSeconds(config.timeoutSeconds()), lease.deadline(), () -> {
+                long now = System.nanoTime();
+                if (now - lastGuard.get() < Duration.ofSeconds(5).toNanos()) return;
+                lastGuard.set(now);
+                try { guard(config, lease); } catch (IOException error) { throw new IllegalStateException(error); }
+            });
+        }
+    }
+
+    static void writeMavenBatch(Path batch, Path explicitOverride, List<String> args) throws IOException {
+        List<String> words = new ArrayList<>(); words.add(explicitOverride == null ? "mvn" : explicitOverride.toString()); words.addAll(args);
+        for (String word : words) {
+            if (word.isEmpty() || word.matches(".*[\\r\\n\"&|<>^%!].*")) throw new IllegalArgumentException("Unsafe CMD token");
+        }
+        String command = words.stream().map(word -> word.contains(" ") ? "\"" + word + "\"" : word)
+                .reduce((a, b) -> a + " " + b).orElseThrow();
+        Files.writeString(batch, "@echo off\r\ncall " + command + "\r\nexit /b %errorlevel%\r\n", StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+    }
+
+    static MavenToolchain measuredMavenToolchain(Path explicitOverride, String actualVersionOutput, String minimumVersion) throws IOException {
+        var home = java.util.regex.Pattern.compile("(?m)^Maven home: ([^\\r\\n]+)$").matcher(actualVersionOutput);
+        if (!home.find()) throw new IOException("Actual Maven home was not reported");
+        Path actualHome = Path.of(home.group(1).strip()).toRealPath();
+        if (home.find()) throw new IOException("Ambiguous actual Maven home");
+        var version = java.util.regex.Pattern.compile("(?m)^Apache Maven ([0-9]+\\.[0-9]+\\.[0-9]+)(?: [^\\r\\n]*)?$").matcher(actualVersionOutput);
+        if (!version.find() || !mavenVersionAtLeast(version.group(1), minimumVersion)) throw new IOException("Actual Maven is below the required stable minimum");
+        String reportedVersion = version.group(1);
+        if (version.find()) throw new IOException("Ambiguous actual Maven version");
+        FileRef entry = FileRef.measure(actualHome.resolve("bin/mvn.cmd"));
+        FileRef override = explicitOverride == null ? null : FileRef.measure(explicitOverride);
+        return new MavenToolchain(explicitOverride == null ? MavenSelection.DEFAULT_COMMAND : MavenSelection.EXPLICIT_OVERRIDE,
+                override == null ? "mvn" : override.path(), actualHome.toString(), reportedVersion, minimumVersion, entry, override);
+    }
+
+    public static boolean mavenVersionAtLeast(String actual, String minimum) {
+        if (actual == null || minimum == null || !actual.matches("[0-9]+\\.[0-9]+\\.[0-9]+")
+                || !minimum.matches("[0-9]+\\.[0-9]+\\.[0-9]+") || actual.length() > 64 || minimum.length() > 64) return false;
+        String[] left = actual.split("\\."); String[] right = minimum.split("\\.");
+        for (int i = 0; i < 3; i++) {
+            int comparison = new java.math.BigInteger(left[i]).compareTo(new java.math.BigInteger(right[i]));
+            if (comparison != 0) return comparison > 0;
+        }
+        return true;
+    }
+
+    private static Map<String, String> buildEnvironment(Config config, Path snapshot, Lease lease) {
+        Map<String, String> env = new TreeInsensitiveMap(System.getenv()).values();
+        for (String key : List.of("MAVEN_ARGS", "MAVEN_DEBUG_OPTS", "MAVEN_BATCH_ECHO", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "JDK_JAVA_OPTIONS")) env.remove(key);
+        String scratch = config.workRoot().resolve("scratch").toString();
+        long heapMiB = Math.min(768, lease.mavenHeapBytes() / (1024 * 1024));
+        if (heapMiB < 64) throw new IllegalArgumentException("Released Maven heap is insufficient");
+        String jvm = "-Xms32m -Xmx" + heapMiB + "m -XX:MaxMetaspaceSize=256m -XX:ReservedCodeCacheSize=64m -XX:MaxDirectMemorySize=128m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;
+        env.put("JAVA_HOME", config.javaHome().toString()); env.put("JAVA_TOOL_OPTIONS", jvm); env.put("MAVEN_OPTS", jvm);
+        env.put("MAVEN_SKIP_RC", "1"); env.put("MAVEN_BASEDIR", snapshot.toString());
+        env.put("MAVEN_USER_HOME", config.workRoot().resolve("m2").toString()); env.put("TEMP", scratch); env.put("TMP", scratch);
+        return Map.copyOf(env);
+    }
+    private record TreeInsensitiveMap(Map<String, String> values) {
+        TreeInsensitiveMap { Map<String, String> copy = new java.util.TreeMap<>(String.CASE_INSENSITIVE_ORDER); copy.putAll(values); values = copy; }
+    }
+
+    private static Lease readLease(Config config, String machine) throws IOException {
+        JsonNode data = readObject(config.capacityRelease());
+        if (text(data, "schema").equals("xar.java-control.capacity-release/v1")) {
+            return readTypedLease(config, machine, JSON.treeToValue(data, CapacityRelease.class));
+        }
+        if (!text(data, "schema").equals("xar.java-phase1.manual-capacity-release/v1")
+                || !text(data, "status").equals("RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE")
+                || !text(data, "machine_id").equals(machine) || !text(data, "single_Maven_writer").equals(config.ownerTask())) {
+            throw new IOException("Capacity release schema, machine, state or writer mismatch");
+        }
+        Instant deadline = Instant.parse(text(data, "review_at_utc"));
+        if (!Instant.now().isBefore(deadline)) throw new IOException("Capacity release expired");
+        JsonNode approved = data.get("approved_output_roots");
+        if (approved == null || !approved.isArray() || approved.isEmpty() || approved.size() > 16) throw new IOException("Approved roots are unavailable");
+        boolean allowed = false, sourceAllowed = false;
+        for (JsonNode root : approved) {
+            if (!root.isTextual()) throw new IOException("Root must be text");
+            if (config.workRoot().toRealPath().startsWith(Path.of(root.textValue()).toRealPath())) allowed = true;
+            if (config.sourceRoot().toRealPath().startsWith(Path.of(root.textValue()).toRealPath())) sourceAllowed = true;
+        }
+        if (!allowed || !sourceAllowed || config.sourceRoot().startsWith(config.workRoot()) || config.workRoot().startsWith(config.sourceRoot())) throw new IOException("Source and approved work roots must be independent");
+        if (!Path.of(text(data, "Maven_repository")).equals(config.workRoot().resolve("m2"))
+                || !Path.of(text(data, "build_root")).equals(config.workRoot().resolve("build"))
+                || !Path.of(text(data, "temporary_root")).equals(config.workRoot().resolve("scratch"))) throw new IOException("Released path mapping differs");
+        JsonNode parts = object(data.get("parts")); Map<String, Long> caps = new LinkedHashMap<>();
+        for (String name : List.of("m2", "build", "tools", "scratch", "artifacts")) caps.put(name, positive(parts, name));
+        caps.put("logs", positive(parts, "metadata_logs"));
+        JsonNode policyRef = object(data.get("policy_ref"));
+        new FileRef(text(policyRef, "path"), nonnegative(policyRef, "bytes"), text(policyRef, "sha256")).verify();
+        JsonNode policy = readObject(Path.of(text(policyRef, "path")));
+        if (!text(policy, "schema").equals("xar-storage-retention-policy-v1")) throw new IOException("Unknown storage policy");
+        JsonNode volumes = object(data.get("volumes")); Map<Path, Long> minimum = new HashMap<>();
+        for (var field : volumes.properties()) {
+            JsonNode volume = object(field.getValue());
+            long required = positive(volume, "required_free");
+            long calculated = Math.addExact(Math.addExact(positive(volume, "this_write_peak"), nonnegative(volume, "other_unspent_reservations")),
+                    Math.addExact(positive(volume, "system_growth_reserve"), positive(volume, "safety_reserve")));
+            if (required != calculated) throw new IOException("Capacity formula mismatch");
+            if (positive(volume, "current_project_usage_conservative_upper") + positive(volume, "this_write_peak")
+                    > positive(volume, "effective_project_quota")) throw new IOException("Project quota exceeded");
+            minimum.put(Path.of(field.getKey()), required);
+        }
+        if (minimum.isEmpty()) throw new IOException("Volume reservations unavailable");
+        return new Lease(machine, deadline, Map.copyOf(caps), positive(data, "test_RAM_joint_hard_bytes"), positive(data, "Maven_heap_bytes"), Map.copyOf(minimum));
+    }
+
+    private static Lease readTypedLease(Config config, String machine, CapacityRelease release) throws IOException {
+        Instant deadline = Instant.parse(release.reviewAtUtc());
+        if (!machine.equals(release.machineId()) || !config.ownerTask().equals(release.ownerTask())
+                || !Instant.now().isBefore(deadline)) throw new IOException("Capacity machine, writer or deadline rejected");
+        boolean work = false, source = false;
+        for (String root : release.approvedOutputRoots()) {
+            Path approved = Path.of(root).toRealPath();
+            work |= config.workRoot().toRealPath().startsWith(approved);
+            source |= config.sourceRoot().toRealPath().startsWith(approved);
+        }
+        if (!work || !source || config.sourceRoot().startsWith(config.workRoot()) || config.workRoot().startsWith(config.sourceRoot())
+                || !Path.of(release.temporaryRoot()).equals(config.workRoot().resolve("scratch"))) throw new IOException("Independent approved roots required");
+        release.policyRef().verify();
+        CiBootstrap.Policy policy = CiBootstrap.readPolicy(readLimited(Path.of(release.policyRef().path()), 128 * 1024));
+        Map<Path, Long> minimum = new HashMap<>();
+        for (var field : release.volumes().entrySet()) {
+            CiBootstrap.VolumeBudget volume = field.getValue();
+            long defaultQuota = Math.min(policy.quotaCeiling(), java.math.BigDecimal.valueOf(volume.totalVolumeBytes()).multiply(policy.quotaVolumeFraction())
+                    .setScale(0, java.math.RoundingMode.FLOOR).longValueExact());
+            CiBootstrap.QuotaOverride override = release.quotaOverrides().get(field.getKey());
+            if (volume.effectiveProjectQuota() != defaultQuota) {
+                if (override == null || override.owner() == null || override.owner().isBlank() || !override.task().equals(release.ownerTask())
+                        || override.reason() == null || override.reason().isBlank() || override.maxProjectBytes() != (8L << 30)
+                        || override.maxProjectBytes() != volume.effectiveProjectQuota() || !Instant.now().isBefore(Instant.parse(override.reviewAtUtc()))
+                        || Instant.parse(override.reviewAtUtc()).isAfter(deadline)
+                        || Math.addExact(volume.currentProjectUsageConservativeUpper(), volume.thisWritePeak()) <= defaultQuota) {
+                    throw new IOException("Explicit finite CI quota override required only for an insufficient default quota");
+                }
+                new FileRef(override.sourceRef().path(), override.sourceRef().bytes(), override.sourceRef().sha256()).verify();
+            } else if (override != null) throw new IOException("Unnecessary quota override rejected");
+            CiBootstrap.VolumeBudget calculated = CiBootstrap.calculate(policy, volume.totalVolumeBytes(), volume.availableBytes(),
+                    volume.thisWritePeak(), volume.otherUnspentReservations(), volume.systemGrowthReserve(), volume.currentProjectUsageConservativeUpper(),
+                    override, Instant.parse(release.observedAtUtc()), deadline);
+            if (!volume.equals(calculated)) throw new IOException("Shared policy volume calculation mismatch");
+            minimum.put(Path.of(field.getKey()), volume.requiredFree());
+        }
+        Map<String, Long> caps = new LinkedHashMap<>();
+        for (String key : List.of("m2", "build", "tools", "scratch", "artifacts")) {
+            Long value = release.parts().get(key); if (value == null || value <= 0) throw new IOException("Missing part cap: " + key); caps.put(key, value);
+        }
+        Long logs = release.parts().get("metadata_logs"); if (logs == null || logs <= 0) throw new IOException("Missing metadata cap"); caps.put("logs", logs);
+        return new Lease(machine, deadline, Map.copyOf(caps), release.memoryLimitBytes(), release.mavenHeapBytes(), Map.copyOf(minimum));
+    }
+
+    public static CapacityRelease ciCapacityRelease(CiBootstrap.Plan plan) throws IOException {
+        if (!"true".equals(System.getenv("GITHUB_ACTIONS")) || !"github-actions-java-ci".equals(plan.ownerTask())
+                || !plan.machineId().equals(WindowsJobProcess.currentMachineId())) throw new IOException("Isolated hosted runner authority required");
+        return new CapacityRelease("xar.java-control.capacity-release/v1", plan.machineId(), plan.observedAtUtc(), plan.reviewAtUtc(),
+                "RELEASED", plan.ownerTask(), new FileRef(plan.policyRef().path(), plan.policyRef().bytes(), plan.policyRef().sha256()),
+                List.of(plan.workRoot(), Path.of(plan.repoRoot()).resolve("java/ck3-control").toString()),
+                Path.of(plan.workRoot()).resolve("scratch").toString(), plan.parts(), plan.volumes(), plan.quotaOverrides(), 2L << 30, 768L << 20);
+    }
+
+    private static void requireToolPaths(Config config, String machine) throws IOException {
+        requireRegular(config.javaHome().resolve("bin/java.exe"));
+        if (config.mavenCommand() != null) requireRegular(config.mavenCommand());
+        Path scratch = config.workRoot().resolve("scratch").toRealPath();
+        if (!Path.of(System.getProperty("jna.tmpdir", "")).toAbsolutePath().normalize().equals(scratch)) throw new IOException("Launch build-tools with approved -Djna.tmpdir");
+        List<Path> paths = new ArrayList<>(List.of(config.workRoot(), config.javaHome()));
+        if (config.mavenCommand() != null) paths.add(config.mavenCommand());
+        for (Path path : paths) {
+            if (path.toString().matches(".*[\\s\"&|<>^%!].*")) throw new IOException("Current exact CMD build route requires plain task/tool paths");
+        }
+    }
+
+    private static void guard(Config config, Lease lease) throws IOException {
+        if (!Instant.now().isBefore(lease.deadline())) throw new IOException("Capacity release expired");
+        for (var volume : lease.minimumFreeByVolume().entrySet()) {
+            if (Files.getFileStore(volume.getKey()).getUsableSpace() < volume.getValue()) throw new IOException("Current volume free space is insufficient: " + volume.getKey());
+        }
+        sizes(config.workRoot(), lease.caps());
+    }
+
+    private static Map<String, Long> sizes(Path root, Map<String, Long> caps) throws IOException {
+        Map<String, Long> result = measureSizes(root, caps);
+        for (var cap : caps.entrySet()) if (result.get(cap.getKey()) > cap.getValue()) throw new IOException("Workpackage cap exceeded: " + cap.getKey());
+        return result;
+    }
+
+    private static Map<String, Long> measureSizes(Path root, Map<String, Long> caps) throws IOException {
+        Map<String, Long> result = new LinkedHashMap<>();
+        for (var cap : caps.entrySet()) {
+            Path part = root.resolve(cap.getKey());
+            long size = Files.exists(part) ? totalBytes(part) : 0;
+            result.put(cap.getKey(), size);
+        }
+        return Map.copyOf(result);
+    }
+
+    private static long totalBytes(Path root) throws IOException {
+        AtomicLong total = new AtomicLong();
+        walk(root, false, 100000, path -> {
+            try { total.set(Math.addExact(total.get(), Files.size(path))); }
+            catch (NoSuchFileException ignored) { /* A mutable Maven cache entry was renamed. */ }
+        });
+        return total.get();
+    }
+
+    private interface FileAction { void accept(Path path) throws IOException; }
+
+    private static List<FileRef> manifest(Path root, boolean excludeBuildCaches, int maxFiles, long maxBytes) throws IOException {
+        List<FileRef> references = new ArrayList<>(); AtomicLong total = new AtomicLong();
+        walk(root, excludeBuildCaches, maxFiles, path -> {
+            FileRef reference = FileRef.measure(path); total.set(Math.addExact(total.get(), reference.bytes()));
+            if (total.get() > maxBytes) throw new IOException("Manifest content limit exceeded");
+            references.add(reference);
+        });
+        references.sort(Comparator.comparing(FileRef::path)); return List.copyOf(references);
+    }
+
+    public static List<FileRef> sourceManifest(Path root) throws IOException {
+        List<FileRef> result = new ArrayList<>();
+        collectModule(root.toRealPath(), root.toRealPath(), new HashSet<>(), result);
+        if (result.size() > 1000 || result.stream().mapToLong(FileRef::bytes).sum() > 8L * 1024 * 1024) throw new IOException("Maven source closure exceeds finite limit");
+        result.sort(Comparator.comparing(FileRef::path)); return List.copyOf(result);
+    }
+
+    public static List<FileRef> producerClosure() throws IOException {
+        try {
+            Path archive = Path.of(ControlBuild.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            requireRegular(archive);
+            List<FileRef> result = new ArrayList<>(); result.add(FileRef.measure(archive));
+            result.addAll(manifest(archive.getParent().resolve("lib"), false, 100, 64L * 1024 * 1024));
+            result.sort(Comparator.comparing(FileRef::path)); return List.copyOf(result);
+        } catch (java.net.URISyntaxException error) { throw new IOException("Build producer runtime URI invalid", error); }
+    }
+
+    private static void collectModule(Path module, Path boundary, Set<Path> visited, List<FileRef> result) throws IOException {
+        if (!module.startsWith(boundary) || !visited.add(module) || visited.size() > 32) throw new IOException("Module graph escapes, repeats or exceeds limit");
+        Path pom = module.resolve("pom.xml"); result.add(FileRef.measure(pom));
+        for (String directory : List.of("src", ".mvn")) {
+            Path path = module.resolve(directory);
+            if (Files.exists(path)) result.addAll(manifest(path, false, 1000, 8L * 1024 * 1024));
+        }
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); factory.setNamespaceAware(true);
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            Element project = factory.newDocumentBuilder().parse(pom.toFile()).getDocumentElement();
+            var parents = project.getElementsByTagNameNS("*", "relativePath");
+            for (int i = 0; i < parents.getLength(); i++) {
+                String relative = parents.item(i).getTextContent().strip();
+                if (!relative.isEmpty() && !module.resolve(relative).normalize().startsWith(boundary)) throw new IOException("External source parent is outside the pinned closure");
+            }
+            var modules = project.getElementsByTagNameNS("*", "modules");
+            for (int i = 0; i < modules.getLength(); i++) {
+                Node container = modules.item(i);
+                if (container.getParentNode() != project) throw new IOException("Profile-dependent module graphs require separate qualification");
+                for (Node child = container.getFirstChild(); child != null; child = child.getNextSibling()) {
+                    if (!(child instanceof Element element)) continue;
+                    if (!"module".equals(element.getLocalName())) throw new IOException("Unknown module graph element");
+                    String relative = element.getTextContent().strip();
+                    if (relative.isEmpty() || Path.of(relative).isAbsolute()) throw new IOException("Relative Maven module required");
+                    Path next = module.resolve(relative).normalize();
+                    if (!next.toRealPath().startsWith(boundary)) throw new IOException("Maven module escapes source root");
+                    collectModule(next, boundary, visited, result);
+                }
+            }
+        } catch (ParserConfigurationException | SAXException error) { throw new IOException("Maven source graph is not safely parseable", error); }
+    }
+
+    private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, FileAction action) throws IOException {
+        if (!Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(root)) throw new IOException("Actual plain inventory root required: " + root);
+        long deadline = System.nanoTime() + Duration.ofSeconds(120).toNanos(); AtomicLong count = new AtomicLong();
+        Path realRoot = root.toRealPath();
+        Files.walkFileTree(root, new SimpleFileVisitor<>() {
+            @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
+                if (excludeBuildCaches && !directory.equals(root) && EXCLUDED.contains(directory.getFileName().toString())) return FileVisitResult.SKIP_SUBTREE;
+                check(directory, attributes); return FileVisitResult.CONTINUE;
+            }
+            @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                check(file, attributes); if (!attributes.isRegularFile()) throw new IOException("Nonregular inventory file");
+                action.accept(file); return FileVisitResult.CONTINUE;
+            }
+            @Override public FileVisitResult visitFileFailed(Path file, IOException error) throws IOException {
+                if (!excludeBuildCaches && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                throw error;
+            }
+            private void check(Path path, BasicFileAttributes attributes) throws IOException {
+                if (attributes.isSymbolicLink() || attributes.isOther() || !path.toRealPath().startsWith(realRoot)
+                        || count.incrementAndGet() > maxFiles || System.nanoTime() >= deadline) throw new IOException("Inventory link, extent or time limit");
+            }
+        });
+    }
+
+    private static void requireSameContents(Path sourceRoot, Path compiledRoot, List<FileRef> source, List<FileRef> compiled) throws IOException {
+        if (source.size() != compiled.size()) throw new IOException("Source snapshot inventory differs");
+        for (int i = 0; i < source.size(); i++) {
+            if (!sourceRoot.relativize(Path.of(source.get(i).path())).equals(compiledRoot.relativize(Path.of(compiled.get(i).path())))
+                    || source.get(i).bytes() != compiled.get(i).bytes() || !source.get(i).sha256().equals(compiled.get(i).sha256())) throw new IOException("Source snapshot content differs");
+        }
+    }
+    private static void requireRegular(Path path) throws IOException {
+        BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        if (!attributes.isRegularFile() || attributes.isSymbolicLink() || attributes.isOther()) throw new IOException("Plain regular file required: " + path);
+    }
+    private static byte[] readLimited(Path path, int maximum) throws IOException {
+        requireRegular(path); if (Files.size(path) > maximum) throw new IOException("JSON input exceeds limit");
+        byte[] data = Files.readAllBytes(path); if (data.length > maximum) throw new IOException("JSON input grew beyond limit"); return data;
+    }
+    private static JsonNode readObject(Path path) throws IOException { return object(JSON.readTree(readLimited(path, 128 * 1024))); }
+    private static JsonNode object(JsonNode node) throws IOException { if (node == null || !node.isObject()) throw new IOException("JSON object required"); return node; }
+    private static String text(JsonNode node, String name) throws IOException {
+        JsonNode value = node.get(name); if (value == null || !value.isTextual() || value.textValue().isBlank()) throw new IOException("Nonempty text required: " + name); return value.textValue();
+    }
+    private static long nonnegative(JsonNode node, String name) throws IOException {
+        JsonNode value = node.get(name); if (value == null || !value.isIntegralNumber() || !value.canConvertToLong() || value.longValue() < 0) throw new IOException("Exact nonnegative integer required: " + name); return value.longValue();
+    }
+    private static long positive(JsonNode node, String name) throws IOException { long value = nonnegative(node, name); if (value == 0) throw new IOException("Positive integer required: " + name); return value; }
+
+    public static Config parseArguments(String[] args) throws IOException {
+        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind");
+        Map<String, String> values = new HashMap<>();
+        if (args.length % 2 != 0) throw new IOException("Arguments must be exact key/value pairs");
+        for (int i = 0; i < args.length; i += 2) {
+            if (!allowed.contains(args[i]) || args[i + 1].isBlank() || values.putIfAbsent(args[i], args[i + 1]) != null) throw new IOException("Unknown, empty or duplicate argument");
+        }
+        for (String key : List.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task")) if (!values.containsKey(key)) throw new IOException("Missing " + key);
+        requireNativeScratch(Path.of(values.get("--work-root")).resolve("scratch"));
+        String machine = WindowsJobProcess.currentMachineId();
+        if (!machine.equals(LOCAL_MACHINE) && !values.containsKey("--java-home")) throw new IOException("Other machines require an explicit Java home");
+        return new Config(Path.of(values.get("--source-root")).toRealPath(), Path.of(values.get("--work-root")).toRealPath(),
+                Path.of(values.get("--capacity-release")).toRealPath(), values.get("--attempt"), values.get("--owner-task"),
+                values.containsKey("--maven-cmd") ? Path.of(values.get("--maven-cmd")).toAbsolutePath().normalize() : null,
+                Path.of(values.getOrDefault("--java-home", "C:/jdk-21")).toAbsolutePath().normalize(),
+                values.getOrDefault("--minimum-maven-version", "3.10.0"), Integer.parseInt(values.getOrDefault("--timeout-seconds", "900")),
+                TargetKind.valueOf(values.getOrDefault("--target-kind", "SERVICE_FAST_JAR")));
+    }
+
+    private static void requireNativeScratch(Path expected) throws IOException {
+        String configured = System.getProperty("jna.tmpdir", "");
+        if (configured.isEmpty() || !Path.of(configured).isAbsolute()
+                || !Path.of(configured).toRealPath().equals(expected.toRealPath())) throw new IOException("Explicit approved -Djna.tmpdir required before loading JNA");
+    }
+
+    public static void main(String[] args) {
+        try {
+            BuildReceipt receipt = build(parseArguments(args));
+            System.out.println(JSON.writeValueAsString(receipt)); System.exit(receipt.status().equals("PASS") ? 0 : 1);
+        } catch (Exception error) {
+            try { System.err.println(JSON.writeValueAsString(new Failure("xar.java-control.build-rejected/v1", "RED", Instant.now().toString(), error.getClass().getSimpleName() + ": " + error.getMessage()))); }
+            catch (IOException outputError) { System.err.println(outputError.getClass().getSimpleName()); }
+            System.exit(1);
+        }
+    }
+}

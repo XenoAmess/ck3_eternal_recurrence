@@ -25,6 +25,7 @@ import java.util.TreeSet;
 public final class StrictJson {
     public static final int INPUT_MAX_BYTES = 65_536;
     public static final int OUTPUT_MAX_BYTES = 16_384;
+    public static final int EXPLICIT_MAX_BYTES = 1_048_576;
     public static final long MAX_SAFE_INTEGER = 9_007_199_254_740_991L;
     public static final BigInteger UINT64_MAX = new BigInteger("18446744073709551615");
     private static final ObjectMapper MAPPER = new ObjectMapper(JsonFactory.builder()
@@ -36,7 +37,13 @@ public final class StrictJson {
     private StrictJson() { }
 
     public static JsonNode parse(byte[] raw) {
-        require(raw != null && raw.length > 0 && raw.length <= INPUT_MAX_BYTES, "bounded nonempty UTF-8 JSON required");
+        return parse(raw, INPUT_MAX_BYTES);
+    }
+
+    /** Explicit leaf budget; the default map input limit remains unchanged. */
+    public static JsonNode parse(byte[] raw, int maximumBytes) {
+        require(maximumBytes > 0 && maximumBytes <= EXPLICIT_MAX_BYTES, "explicit JSON input byte budget");
+        require(raw != null && raw.length > 0 && raw.length <= maximumBytes, "bounded nonempty UTF-8 JSON required");
         try {
             String text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(raw)).toString();
@@ -137,7 +144,7 @@ public final class StrictJson {
     }
 
     public static byte[] canonical(JsonNode value, int maximumBytes) {
-        require(maximumBytes > 0 && maximumBytes <= INPUT_MAX_BYTES, "explicit JSON output byte budget");
+        require(maximumBytes > 0 && maximumBytes <= EXPLICIT_MAX_BYTES, "explicit JSON output byte budget");
         StringBuilder output = new StringBuilder();
         append(value, output);
         byte[] raw = output.toString().getBytes(StandardCharsets.UTF_8);

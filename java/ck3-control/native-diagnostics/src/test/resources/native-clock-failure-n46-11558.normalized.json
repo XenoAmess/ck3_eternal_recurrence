@@ -1,0 +1,55 @@
+{
+  "schema": "xar.native-clock-failure-observation/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T12:39:22.706907+00:00",
+  "source": {
+    "schema": "xar.exact-day-clock-failure.v2",
+    "sha256": "a29abe49623a8da965af385526b2b9a22ad0ed30d321d0ac340d4149fc74d9de",
+    "control_sequence": 11558,
+    "projection_notice": "normalized_projection_not_original"
+  },
+  "wait_identity": {
+    "bridge": {"bridge_pid": 50688, "connection_generation": 1},
+    "episode_character_id": 40526,
+    "episode_id": "native-40526-1bec95182886"
+  },
+  "target_date_raw": 53279424,
+  "credit": 0,
+  "never_replay": true,
+  "starting": {
+    "date_raw": 53279400, "revision": 2, "native_revision": 1, "speed": 3, "paused": true,
+    "bridge": {"bridge_pid": 50688, "connection_generation": 1},
+    "episode_character_id": 40526,
+    "heartbeat": {"sequence": "11148", "monotonic_ms": "1898399312"},
+    "owner": {"pump_epochs": "371716", "verified_pump_epochs": "371716"},
+    "observer": {"started_ms": "1898399281", "completed_ms": "1898399281", "read_in_progress": false, "last_read_available": true}
+  },
+  "wait_final": {
+    "date_raw": 53279400, "revision": 3, "native_revision": 2, "speed": 3, "paused": false,
+    "bridge": {"bridge_pid": 50688, "connection_generation": 1},
+    "episode_character_id": 40526,
+    "heartbeat": {"sequence": "11270", "monotonic_ms": "1898429812"},
+    "owner": {"pump_epochs": "371768", "verified_pump_epochs": "371768"},
+    "observer": {"started_ms": "1898406187", "completed_ms": "1898406187", "read_in_progress": false, "last_read_available": true}
+  },
+  "progress": {
+    "arm_generation": "1", "flags": "0", "elapsed_ms": 30340,
+    "heartbeat_events": 122, "maximum_heartbeat_gap_ms": 379,
+    "owner": {"first": "371716", "last": "371768", "last_change_ms": 6817, "changes": 9, "delta": "52", "missing": 0, "resets": 0},
+    "verified": {"first": "371716", "last": "371768", "last_change_ms": 6817, "changes": 8, "delta": "52", "missing": 0, "resets": 0},
+    "heartbeat": {"first": "11148", "last": "11270", "last_change_ms": 30306, "changes": 122, "delta": "122", "missing": 0, "resets": 0},
+    "observer": {"first": "1898399281", "last": "1898406187", "last_change_ms": 6817, "changes": 6, "delta": "6906", "missing": 0, "resets": 0},
+    "native_event_time_verified": false,
+    "atomic_observation": false
+  },
+  "cleanup_attempts": [
+    {"native_request_id": "step-11-abe7b6ba6b09", "status": "submitted", "accepted": true},
+    {"native_request_id": "step-12-ba527b44ea76", "status": "submitted", "accepted": true}
+  ],
+  "cleanup_tail": {
+    "heartbeat": {"sequence": "11310", "monotonic_ms": "1898439812"},
+    "owner": {"pump_epochs": "371770", "verified_pump_epochs": "371770"},
+    "observer_completed_ms": "1898434734",
+    "paused_after_cleanup": null
+  }
+}

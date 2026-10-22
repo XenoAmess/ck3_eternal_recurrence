@@ -1,0 +1,29 @@
+{
+  "projection_schema": "xar.clock-original-failure-projection/v1",
+  "projection_notice": "selected_original_fields_not_original_bytes_incomplete",
+  "source_sha256": "a29abe49623a8da965af385526b2b9a22ad0ed30d321d0ac340d4149fc74d9de",
+  "source_json_pointer": "/result/structured_content/diagnostics/exact_day_clock_failure_v1",
+  "auto_sequence": 11558,
+  "payload": {
+    "schema": "xar.exact-day-clock-failure.v2",
+    "credit": 0,
+    "never_replay": true,
+    "starting_date_raw": 53279400,
+    "target_date_raw": 53279424,
+    "requested_speed": 3,
+    "armed_reply": {
+      "state": "armed", "generation": 1, "starting_date_raw": 53279400,
+      "target_date_raw": 53279424, "last_observed_date_raw": 53279400,
+      "trigger_date_raw": 0, "speed": 3, "mode": "terminal_or_sentinel",
+      "army_count": 0, "combat_count": 0, "completed_daily_ticks": 0,
+      "intermediate_pause_count": 0, "trigger_flags": 0,
+      "signed_date_delta_from_target_raw": 0, "overshoot_days": -1,
+      "pause_wrapper_called": false, "pause_observed": false,
+      "terminal_observed": false, "abnormal": false
+    },
+    "normal_status_query_attempted": false,
+    "stop_validation_attempted": false,
+    "stopped_status": null,
+    "stop_credit": false
+  }
+}

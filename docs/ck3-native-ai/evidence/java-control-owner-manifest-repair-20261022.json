@@ -1,0 +1,155 @@
+{
+  "schema": "xar.java-control-owner-manifest-repair-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T14:19:09.984671200Z",
+  "status": "ACTUAL_LOCAL_SOFTWARE_PASS",
+  "actual_operational_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-CI-VERIFICATION05.json",
+    "bytes": 3750,
+    "sha256": "d99e868202003f36ccad5d742b03cf0e9410d303bce1e9aa3ea4860351bdaa41"
+  },
+  "formal_tools_build_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools19.json",
+    "bytes": 13073,
+    "sha256": "4e91026a2d2210eccf103cb1c60456434890727f571a1077e05c63ec1a35ff1c"
+  },
+  "qualified_nine_module_build_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java07.json",
+    "bytes": 103479,
+    "sha256": "d4f275ea906a5e787eb1db15b810889f3a7345fa0f04464015a6a1f616148e45"
+  },
+  "all_consumers_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci05/logs/actual.json",
+    "bytes": 3287,
+    "sha256": "e0c7d22fd072bb3e5bdcb0e1141cf726978b90e9547e58c70a80929c077855f5"
+  },
+  "service_closed_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci05/service/logs/service-closed.json",
+    "bytes": 908,
+    "sha256": "b345bb5b4aba3c8eed8668070648ec967798bece21413f31edbae7433297953c"
+  },
+  "program_manifest_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci05/service/logs/program-manifest.json",
+    "bytes": 66728,
+    "sha256": "cc05f0ffc29710dcbb19fc1d042e169bd4495a65f41bdd06303cdb209cd34ea6"
+  },
+  "capacity_release_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/ROOT-JAVA-PHASE1-CAPACITY-RELEASE02.json",
+    "bytes": 6227,
+    "sha256": "382e8e4d6dfe44e60ec07acc45d2bbccbd482e8f2f394aea824ad9410787b662"
+  },
+  "preserved_failures": [
+    {
+      "operational_ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-CI-VERIFICATION03.json",
+        "bytes": 3379,
+        "sha256": "ab2a9707531d12296690f3afd9e534d0dd00e7878b6ab79ec7be6996c41c1cf0"
+      },
+      "actual_exit_code": 1,
+      "job_active_final": 0,
+      "actual_HTTP_methods": 0,
+      "cause": "Invocation passed the whole package review time 20:00 as the service deadline; the existing two-hour service authority bound correctly rejected it. A bounded 90-minute sublease fixed the invocation; the guard was not changed."
+    },
+    {
+      "operational_ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-CI-VERIFICATION04.json",
+        "bytes": 3379,
+        "sha256": "fff7d9093a7e86fc1120940ca831b5d766bfa1cf13c3e76fe733dd33799cd88b"
+      },
+      "actual_exit_code": 1,
+      "job_active_final": 0,
+      "actual_HTTP_methods": 0,
+      "cause": "The shared owner applied the 65536-byte small-receipt limit to the complete program manifest. Its existing frozen Python consumer already allows 1048576 bytes for program_ref."
+    }
+  ],
+  "shared_repair": {
+    "production_module": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MapAdmissionServiceOwner.java",
+    "regression_module": "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/MapAdmissionServiceOwnerTest.java",
+    "program_manifest_max_bytes": 1048576,
+    "running_started_closed_receipt_max_bytes": 65536,
+    "actual_running_evidence_bytes": 30709,
+    "complete_source_refs_and_deployment_refs_retained": true,
+    "regressions": "512 actual unique measured source refs roundtrip above 64 KiB with every ref reverified; a running receipt above 64 KiB and program manifest above 1 MiB are rejected before writing.",
+    "Python_or_frozen_module_changes": 0
+  },
+  "formal_tools": {
+    "receipt_schema": "xar.java-control.actual-build/v4",
+    "JUnit_tests": 22,
+    "JUnit_skipped": 0,
+    "JUnit_suite_counts": {
+      "ControlBuildTest": 6,
+      "WindowsJobProcessTest": 6,
+      "NativeTcpListenerTest": 2,
+      "CiBootstrapTest": 6,
+      "MapAdmissionServiceOwnerTest": 2
+    },
+    "counts_source": "Actual TEST-*.xml under build/java-tools19/ck3-control-build-tools/surefire-reports",
+    "compiler_checks": "-Xlint:all -Werror",
+    "source_postcheck": "MATCH",
+    "compiled_source_postcheck": "MATCH",
+    "maven_exit_code": 0,
+    "maven_elapsed_seconds": 19.7145986,
+    "peak_job_memory_bytes": 806424576,
+    "job_active_final": 0
+  },
+  "default_maven": {
+    "requested_command": "mvn",
+    "reported_version": "3.10.0",
+    "minimum_version": "3.10.0",
+    "reported_home_on_this_machine": "C:/apache-maven",
+    "path_semantics": "The reported home is a historical observation on the named machine, not a required installation location. Future builds consume default PATH mvn, accept newer stable versions >=3.10.0, and keep qualified existing installations and PATH unchanged.",
+    "bootstrap_downloads_when_default_is_qualified": false
+  },
+  "qualified_reactor": {
+    "modules": 9,
+    "JUnit_tests": 458,
+    "JUnit_skipped": 0,
+    "source_postcheck": "MATCH",
+    "compiled_source_postcheck": "MATCH",
+    "maven_elapsed_seconds": 50.5321694,
+    "peak_job_memory_bytes": 949215232,
+    "job_active_final": 0,
+    "reuse_scope": "Business sources, parent, deployment and producer18 runtime closure were unchanged and accepted by the actual current receipt reader. The owner repair was compiled into tools19, then tested against this qualified deployment."
+  },
+  "actual_consumer_chain": {
+    "complete_Python_modules_strict_and_strict_equality": 2,
+    "static_elapsed_seconds": 35.889631,
+    "static_peak_job_memory_bytes": 247341056,
+    "actual_HTTP_methods": 6,
+    "actual_HTTP_skipped": 0,
+    "nested_original_Queue_feeder_reducer_lineages": 3,
+    "HTTP_elapsed_seconds": 59.9871166,
+    "HTTP_peak_job_memory_bytes": 188186624,
+    "each_child_job_limit_bytes": 536870912,
+    "each_child_job_active_final": 0,
+    "outer_job_elapsed_seconds": 101.3866276,
+    "outer_job_peak_memory_bytes": 590344192,
+    "outer_job_limit_bytes": 2147483648,
+    "outer_job_active_final": 0,
+    "tool_session_70575_actual_exit_code": 0
+  },
+  "service_closed": {
+    "observed_at_utc": "2026-10-22T14:19:07.971352700Z",
+    "pid": 78628,
+    "creation_filetime": "134371522864432729",
+    "executable": "C:/jdk-21/bin/java.exe",
+    "bounded_sublease_deadline_utc": "2026-10-22T15:47:25.667713800Z",
+    "exit_code": 75,
+    "stop_reason": null,
+    "job_active_final": 0,
+    "peak_job_memory_bytes": 212328448,
+    "job_limit_bytes": 536870912
+  },
+  "not_granted": [
+    "Hosted ControlCi pipeline or hosted CI green: NOT_RUN",
+    "Qualification of unintegrated wave2 migration families",
+    "Current Game Native32/67 FULL/SAVE or new saved game days",
+    "G2 completion, 30 years completion, or one second per game day"
+  ],
+  "Game_native_RPC_or_campaign_ledger_writes": 0,
+  "retention": {
+    "shared_policy": "docs/storage-retention-policy.json",
+    "raw_local_evidence_review_at_utc": "2026-11-21T14:19:09.984671200Z",
+    "raw_assets_not_indefinitely_protected": true
+  }
+}
