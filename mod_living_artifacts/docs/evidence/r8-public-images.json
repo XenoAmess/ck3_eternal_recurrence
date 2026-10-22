@@ -1,0 +1,55 @@
+{
+  "schema": "living-artifacts-public-original-images-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "original_capture_manifest": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r8-screenshots.json",
+    "bytes": 6522,
+    "sha256": "173470ca56e7f4f0de85bb5f8ceb90f862b7ce0f3db64d4c2e4635c15aa03a62"
+  },
+  "anonymous_readbacks": [
+    {
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r8-management-guidance.png.public-readback-a01.json",
+        "bytes": 621,
+        "sha256": "2dde9ce512af426d743e86c4a651ea48b552218e2e0553e36491dc657cd2a5e5"
+      },
+      "result": {
+        "machine_id": "pc-20260924rtuf-f11af23c08",
+        "observed_at_utc": "2026-10-22T13:16:41.751273+00:00",
+        "scope": "anonymous-public-GitHub-image-readback",
+        "url": "https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/fe0e8a9e0127456b5ef908bb17572a40d61e528b/mod_living_artifacts/docs/evidence/r8-management-guidance.png",
+        "http_status": 200,
+        "bytes": 2112224,
+        "sha256": "b7c9c4391f4aafec49cc3b7606620b32b24aac478ee56dae55dcf49937f98403",
+        "matches_original": true,
+        "workshop_uploaded": false,
+        "business_pass": false,
+        "source_commit": "fe0e8a9e0127456b5ef908bb17572a40d61e528b"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r8-living-artifact-level-six.png.public-readback-a01.json",
+        "bytes": 627,
+        "sha256": "fed0ba88b729f90a41dae0697c4708d70e4298781fad7a5861f548ba776ef05e"
+      },
+      "result": {
+        "machine_id": "pc-20260924rtuf-f11af23c08",
+        "observed_at_utc": "2026-10-22T13:16:48.819948+00:00",
+        "scope": "anonymous-public-GitHub-image-readback",
+        "url": "https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/fe0e8a9e0127456b5ef908bb17572a40d61e528b/mod_living_artifacts/docs/evidence/r8-living-artifact-level-six.png",
+        "http_status": 200,
+        "bytes": 2022583,
+        "sha256": "5ee5d68f9b8b53cc083fda88c4450990f95d211a92a179427b9c7cf60efb1a55",
+        "matches_original": true,
+        "workshop_uploaded": false,
+        "business_pass": false,
+        "source_commit": "fe0e8a9e0127456b5ef908bb17572a40d61e528b"
+      }
+    }
+  ],
+  "upload_scope": "GitHub repository; original bytes; anonymous exact readback",
+  "workshop_uploaded": false,
+  "business_pass": false,
+  "product_release_pass": false
+}
