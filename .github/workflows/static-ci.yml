@@ -218,17 +218,20 @@ jobs:
           MYPYPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\tools
           PYTHONDONTWRITEBYTECODE: "1"
           XAR_PILGRIMAGE_EXECUTION_NATIVE_WIRE_DIR: ${{ runner.temp }}\pilgrimage-execution-wire-ci
+          XAR_PILGRIMAGE_NATIVE_WIRE_DIR: ${{ runner.temp }}\pilgrimage-readonly-wire-ci
           P3_MILESTONE_TEST_TMP: ${{ runner.temp }}\pilgrimage-options-python
         run: |
-          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-pilgrimage-options-ci" --configuration Release --jobs 3 --target xar_ck3_12004_pilgrimage_execution_wire_fixture --cmake-define BUILD_TESTING=ON --cmake-define XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1=ON --cmake-define XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1=ON --configure --build
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-pilgrimage-options-ci" --configuration Release --jobs 3 --target xar_ck3_12004_pilgrimage_execution_wire_fixture --target xar_ck3_12004_player_pilgrimage_serializer_whole_fixture --cmake-define BUILD_TESTING=ON --cmake-define XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1=ON --cmake-define XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1=ON --configure --build
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           "%RUNNER_TEMP%\native-pilgrimage-options-ci\xar_ck3_12004_pilgrimage_execution_wire_fixture.exe" "%XAR_PILGRIMAGE_EXECUTION_NATIVE_WIRE_DIR%"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m unittest -v ck3_autonomous_player.tests.test_player_pilgrimage_planner_private_transport ck3_autonomous_player.tests.test_player_pilgrimage_activities_private_transport tools.test_faith_e02_pilgrimage_workflow tools.test_faith_e02_pilgrimage_event_policy tools.test_faith_e02_pilgrimage_milestone_observations
+          "%RUNNER_TEMP%\native-pilgrimage-options-ci\xar_ck3_12004_player_pilgrimage_serializer_whole_fixture.exe" "%XAR_PILGRIMAGE_NATIVE_WIRE_DIR%"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m unittest -v ck3_autonomous_player.tests.test_native_pilgrimage_execution_seam
+          python -B -X utf8 -c "import sys, unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['ck3_autonomous_player.tests.test_player_pilgrimage_planner_private_transport','ck3_autonomous_player.tests.test_player_pilgrimage_activities_private_transport','tools.test_faith_e02_pilgrimage_workflow','tools.test_faith_e02_pilgrimage_event_policy','tools.test_faith_e02_pilgrimage_milestone_observations']); expected=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if expected>0 and result.testsRun==expected and result.wasSuccessful() and not result.skipped else 1)"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m unittest -v ck3_autonomous_player.tests.test_player_pilgrimage_activities_private_transport
+          python -B -X utf8 -c "import sys, unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['ck3_autonomous_player.tests.test_native_pilgrimage_execution_seam']); expected=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if expected>0 and result.testsRun==expected and result.wasSuccessful() and not result.skipped else 1)"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -c "import sys, unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['ck3_autonomous_player.tests.test_player_pilgrimage_activities_private_transport']); expected=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if expected>0 and result.testsRun==expected and result.wasSuccessful() and not result.skipped else 1)"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/bridge/player_pilgrimage_planner_contract.py tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

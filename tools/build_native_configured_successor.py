@@ -79,6 +79,7 @@ class Config:
     wire_source: str
     wire_directory: str
     wire_packets: tuple[str, ...]
+    compiled_seed: Pin | None = None
 
 
 @dataclass(frozen=True)
@@ -87,6 +88,13 @@ class Compile:
     source: Path
     output: Path
     argv: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class SeedCompile:
+    source: Pin
+    object: Pin
+    execution: Pin
 
 
 @runtime_checkable
@@ -218,7 +226,7 @@ def parse_config(value: object) -> Config:
     row = obj(value)
     expected = {"schema", "machine_id", "source_commit", "output_dir", "storage_admission",
                 "budget_bytes", "baseline_qualification", "complete_build_dir",
-                "incremental_inputs", "profile_cmake", "fixtures", "qualification_targets", "wire"}
+                "incremental_inputs", "profile_cmake", "fixtures", "qualification_targets", "wire", "compiled_seed"}
     require(set(row) == expected and row["schema"] == "ck3-configured-native-successor-v1",
             "Exact configured successor contract required")
     commit = string(row["source_commit"])
@@ -255,7 +263,8 @@ def parse_config(value: object) -> Config:
         budget, parse_pin(row["baseline_qualification"]), complete.resolve(),
         parse_pin(row["incremental_inputs"]), parse_pin(row["profile_cmake"]), tuple(fixtures), qualified,
         wire_target, relative(wire["source"]), relative(wire["directory"]),
-        tuple(relative(path) for path in arr(wire["packets"])))
+        tuple(relative(path) for path in arr(wire["packets"])),
+        None if row["compiled_seed"] is None else parse_pin(row["compiled_seed"]))
 
 
 def config_json(config: Config) -> dict[str, object]:
@@ -266,6 +275,7 @@ def config_json(config: Config) -> dict[str, object]:
         "baseline_qualification": config.baseline, "complete_build_dir": str(config.complete_build),
         "incremental_inputs": config.incremental_inputs, "profile_cmake": config.profile_cmake,
         "qualification_targets": list(config.qualification_targets),
+        "compiled_seed": config.compiled_seed,
         "fixtures": [{"target": item.target, "arguments": list(item.arguments),
                       "runtime_override_sources": list(item.runtime_override_sources),
                       "runtime_override_definitions": list(item.runtime_override_definitions)}
@@ -430,7 +440,7 @@ class Producer:
         source_text, build_text = source.as_posix().lower(), build.as_posix().lower()
         require(command, "Actual compiler command must be nonempty")
         return ["compiler:" + compiler_signature(command[0]), *[
-            token.replace("\\", "/").lower().replace(source_text, "@native@").replace(build_text, "@build@")
+            ("/c" if token == "-c" else token).replace("\\", "/").lower().replace(source_text, "@native@").replace(build_text, "@build@")
             for token in command[1:]]]
 
     def plan(self, rows: list[Compile]) -> tuple[list[Compile], dict[str, Path], Pin]:
@@ -452,11 +462,18 @@ class Producer:
         changed_names = {name for name in old_files.keys() | current.keys()
                          if name not in old_files or name not in current
                          or old_files[name] != (current[name]["bytes"], current[name]["sha256"])}
-        dependency_query = subprocess.run([self.tools["ninja"], "-C", str(c.complete_build), "-t", "deps"],
-            env=self.env, capture_output=True, check=True, text=True, encoding="utf-8")
-        dependency_file = self.config.output / "original-ninja-dependencies.txt"
-        dependency_file.write_text(dependency_query.stdout, encoding="utf-8")
-        dependencies = self.dependencies(dependency_query.stdout, c.complete_build)
+        if c.compiled_seed is None:
+            dependency_query = subprocess.run([self.tools["ninja"], "-C", str(c.complete_build), "-t", "deps"],
+                env=self.env, capture_output=True, check=True, text=True, encoding="utf-8")
+            dependency_file = self.config.output / "original-ninja-dependencies.txt"
+            dependency_file.write_text(dependency_query.stdout, encoding="utf-8")
+            dependency_ref = pin(dependency_file)
+            dependency_text = dependency_query.stdout
+        else:
+            seed_declaration = read(Path(checked(c.compiled_seed)["path"]))
+            dependency_ref = checked(seed_declaration["original_dependencies"])
+            dependency_text = Path(dependency_ref["path"]).read_text(encoding="utf-8")
+        dependencies = self.dependencies(dependency_text, c.complete_build)
         baseline_scope = read(Path(checked(baseline["configured_scope"])["path"]))
         old_commands_raw: object = json.loads(Path(checked(baseline_scope["compile_commands"])["path"])
                                             .read_text(encoding="utf-8-sig"))
@@ -520,7 +537,7 @@ class Producer:
         report = self.save("native-a01/PLAN.actual.json", {"machine_id": c.machine_id,
             "observed_at_utc": now(), "source_commit": c.source_commit,
             "baseline_qualification": baseline_ref, "baseline_incremental_inputs": c.incremental_inputs,
-            "original_dependencies": pin(dependency_file), "changed_native_paths": sorted(changed_names),
+            "original_dependencies": dependency_ref, "changed_native_paths": sorted(changed_names),
             "production_selections": selection, "retained_link_inputs": retained,
             "retained_incremental_object": new_object, "archive_copies": 0})
         return selected, borrowed, report
@@ -530,6 +547,84 @@ class Producer:
         argv = ["/c" if token == "-c" else token for token in row.argv]
         argv.extend("/D" + definition for definition in definitions)
         return self.execute(label, argv, self.build)
+
+    def successful_seeds(self, rows: list[Compile]) -> dict[str, SeedCompile]:
+        """A failed link may retain independently successful, exactly bound CL outputs."""
+        if self.config.compiled_seed is None:
+            return {}
+        seed_ref = checked(self.config.compiled_seed)
+        seed = read(Path(seed_ref["path"]))
+        require(set(seed) == {"schema", "machine_id", "observed_at_utc", "source_commit", "native_source_base",
+            "native_subtree_tree_id", "source_manifest", "production_compiles", "failed_link", "original_dependencies"},
+            "Exact successful-compile seed contract required")
+        require(seed["schema"] == "ck3-native-successful-compile-seed-v1"
+                and seed["machine_id"] == self.config.machine_id, "Compile seed schema/machine differs")
+        string(seed["observed_at_utc"])
+        checked(seed["original_dependencies"])
+        commit = string(seed["source_commit"])
+        require(re.fullmatch(r"[0-9a-f]{40}", commit), "Compile seed commit invalid")
+        old_source = Path(string(seed["native_source_base"])).resolve()
+        tree = string(seed["native_subtree_tree_id"])
+        require(git("rev-parse", commit + ":" + PREFIX.rstrip("/")) == tree
+                == git("rev-parse", self.config.source_commit + ":" + PREFIX.rstrip("/")),
+                "Compile seed and runtime Native Git trees differ")
+        declared: set[str] = set()
+        for raw in arr(seed["source_manifest"]):
+            item = obj(raw)
+            require(set(item) == {"native_relative", "bytes", "sha256"}, "Compile seed source row differs")
+            name = relative(item["native_relative"])
+            require(name not in declared, "Duplicate seed source")
+            declared.add(name)
+            actual = pin(self.native / name)
+            require(actual["bytes"] == integer(item["bytes"]) and actual["sha256"] == string(item["sha256"]),
+                    "Compile seed dependency bytes changed: " + name)
+        tracked = {name.removeprefix(PREFIX) for name in git("ls-files", "--", PREFIX).splitlines()}
+        require(declared == tracked, "Compile seed omits Native input paths")
+        failed_link = read(Path(checked(seed["failed_link"])["path"]))
+        require(failed_link.get("machine_id") == self.config.machine_id
+                and failed_link.get("source_commit") == commit
+                and integer(failed_link.get("original_wait_returncode"), 1) > 0,
+                "Seed must preserve the actual failed link rather than relabel it successful")
+        by_name = {row.output.relative_to(self.build).as_posix(): row for row in rows if row.target in PRODUCTION}
+        result: dict[str, SeedCompile] = {}
+        for raw in arr(seed["production_compiles"]):
+            item = obj(raw)
+            require(set(item) == {"target", "original_output", "source", "object", "execution"},
+                    "Exact successful compile fields required")
+            name = relative(item["original_output"])
+            require(name not in result and name in by_name, "Duplicate or unknown compile seed output")
+            row = by_name[name]
+            require(item["target"] == row.target, "Compile seed target differs")
+            source, output, execution = checked(item["source"]), checked(item["object"]), checked(item["execution"])
+            actual_execution = read(Path(execution["path"]))
+            require(actual_execution.get("machine_id") == self.config.machine_id
+                    and actual_execution.get("source_commit") == commit
+                    and type(actual_execution.get("original_wait_returncode")) is int
+                    and actual_execution["original_wait_returncode"] == 0
+                    and actual_execution.get("stopped_reason") is None
+                    and actual_execution.get("game_started_or_attached") is False,
+                    "Compile seed lacks its actual successful original execution")
+            previous_argv = strings(actual_execution["argv"])
+            previous_build = Path(string(actual_execution["cwd"])).resolve()
+            require(self.normalize(row.argv, self.native, self.build)
+                    == self.normalize(previous_argv, old_source, previous_build)
+                    and source == pin(row.source), "Compile seed command/source differs from fresh CMake")
+            require(Path(output["path"]).resolve() == previous_build / name,
+                    "Compile seed output does not match its actual command directory")
+            result[name] = SeedCompile(source, output, execution)
+        require(result, "Successful compile seed is empty")
+        return result
+
+    def archive_runtime(self, objects: list[Path]) -> tuple[Path | None, Pin | None]:
+        """Keep changed members lazy; direct objects force unused OFF transports into link."""
+        if not objects:
+            return None, None
+        destination = self.build / "changed-runtime.lib"
+        response = self.build / "changed-runtime.rsp"
+        response.write_text(subprocess.list2cmdline(list(map(str, objects))), encoding="utf-8")
+        execution = self.execute("archive-changed-runtime", [str(Path(self.tools["cl"]).parent / "lib.exe"),
+            "/nologo", "/machine:x64", "/OUT:" + str(destination), "@" + str(response)], self.build)
+        return destination, execution
 
     def fixture_link_objects(self, fixture: Fixture) -> list[Path]:
         """Read the actual Ninja link edge, including generated ON/OFF objects."""
@@ -560,28 +655,42 @@ class Producer:
         self.configure()
         rows = self.commands()
         selected, borrowed, plan = self.plan(rows)
+        seeds = self.successful_seeds(rows)
         compiled: dict[Path, Pin] = {}
+        object_paths: dict[Path, Path] = {}
         production_compiles: list[dict[str, object]] = []
         for index, row in enumerate(selected):
-            compiled[row.output] = self.compile(row, "production-compile-" + str(index))
+            seed = seeds.get(row.output.relative_to(self.build).as_posix())
+            if seed is None:
+                compiled[row.output] = self.compile(row, "production-compile-" + str(index))
+                object_paths[row.output] = row.output
+            else:
+                compiled[row.output] = seed.execution
+                object_paths[row.output] = Path(seed.object["path"])
             production_compiles.append({"target": row.target, "source": pin(row.source),
-                "object": pin(row.output), "actual_compile": compiled[row.output]})
-        runtime_objects = [row.output for row in selected if row.target == "xar_ck3_12002_runtime"]
-        bridge_objects = [row.output if row.output in compiled else borrowed[row.output.relative_to(self.build).as_posix()]
+                "object": pin(object_paths[row.output]), "actual_compile": compiled[row.output],
+                "compile_reused": seed is not None})
+        runtime_objects = [object_paths[row.output] for row in selected if row.target == "xar_ck3_12002_runtime"]
+        bridge_objects = [object_paths[row.output] if row.output in compiled else borrowed[row.output.relative_to(self.build).as_posix()]
                           for row in rows if row.target == "xar_ck3_bridge"]
-        libraries = [self.config.complete_build / "xar_bridge_protocol.lib",
-                     self.config.complete_build / "xar_ck3_12002_runtime.lib"]
+        retained_libraries = [self.config.complete_build / "xar_bridge_protocol.lib",
+                              self.config.complete_build / "xar_ck3_12002_runtime.lib"]
         plan_value = read(Path(plan["path"]))
         retained_refs = [parse_pin(item) for item in arr(plan_value["retained_link_inputs"])]
         retained_paths = {Path(item["path"]).resolve() for item in retained_refs}
-        require(set(libraries) <= retained_paths, "Production libraries lack predecessor link provenance")
+        require(set(retained_libraries) <= retained_paths, "Production libraries lack predecessor link provenance")
+        delta, archive_execution = self.archive_runtime(runtime_objects)
+        libraries = [retained_libraries[0], *([delta] if delta is not None else []), retained_libraries[1]]
         dll = self.build / "xar_ck3_bridge.dll"
-        production_execution = self.link("link-production", bridge_objects + runtime_objects, libraries, dll, True)
+        production_execution = self.link("link-production", bridge_objects, libraries, dll, True)
         self.save("native-a01/INCREMENTAL-RESULT.actual.json", {"machine_id": self.config.machine_id,
             "observed_at_utc": now(), "source_commit": self.config.source_commit,
             "production_plan": plan, "production_compiles": production_compiles,
             "actual_link": production_execution, "dll": pin(dll), "archive_copies": 0,
-            "retained_archive_mode": "Changed complete runtime objects precede unchanged original archive",
+            "changed_runtime_archive": None if delta is None else pin(delta),
+            "changed_runtime_archive_execution": archive_execution,
+            "compiled_seed": self.config.compiled_seed,
+            "retained_archive_mode": "Small changed-member archive precedes unchanged original archive; both are selected lazily",
             "game_started_or_attached": False})
         fixture_results: list[dict[str, object]] = []
         by_output = {row.output: row for row in rows}
@@ -594,12 +703,13 @@ class Producer:
             for index, row in enumerate(own_rows):
                 if row.output not in compiled:
                     compiled[row.output] = self.compile(row, fixture.target + "-compile-" + str(index))
+                    object_paths[row.output] = row.output
                 own.append(row.output)
             for path in actual_objects:
                 if path not in by_output or by_output[path].target not in PRODUCTION:
                     continue
                 if path in compiled:
-                    own.append(path)
+                    own.append(object_paths[path])
                 else:
                     own.append(borrowed[path.relative_to(self.build).as_posix()])
             overrides: list[Path] = []
@@ -617,10 +727,8 @@ class Producer:
             override_sources = {self.native / name for name in fixture.runtime_override_sources}
             for row in own_rows:
                 override_sources.update(self.closure(row.source, self.native, {}))
-            runtime = [row.output for row in selected if row.target == "xar_ck3_12002_runtime"
-                       and row.source not in override_sources]
             executable = self.build / (fixture.target + ".exe")
-            self.link(fixture.target + "-link", own + overrides + runtime, libraries, executable)
+            self.link(fixture.target + "-link", own + overrides, libraries, executable)
             fixture_results.append({"target": fixture.target, "executable": pin(executable)})
         all_defender_binding = self.defender(fixture_results, "all-fixtures")
         for fixture, result in zip(self.config.fixtures, fixture_results, strict=True):

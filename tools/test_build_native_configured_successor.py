@@ -10,7 +10,8 @@ import tempfile
 import unittest
 
 from build_native_configured_successor import (
-    Config, Fixture, Pin, Producer, config_json, parse_config, parse_pin, read,
+    ChildEnvironment, Config, Fixture, MsvcInitializer, MsvcInstallation,
+    Pin, Producer, ROOT, config_json, load_shared, parse_config, parse_pin, read,
 )
 
 
@@ -116,6 +117,41 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         self.assertEqual(result["original_wait_returncode"], 7)
         self.assertIsNone(result["stopped_reason"])
         self.assertFalse(result["game_started_or_attached"])
+
+    def test_actual_unused_off_transport_fails_direct_link_but_lazy_archive_passes(self) -> None:
+        """Exercise the actual LNK2019 path that stopped the production successor."""
+        producer = UngatedProducer(self.config)
+        producer.build.mkdir(parents=True)
+        shared = load_shared(ROOT / "tools/run_native_msvc.py", "lazy_link_regression_msvc")
+        child: object = getattr(shared, "child_environment", None)
+        install: object = getattr(shared, "visual_studio_installation", None)
+        initialize: object = getattr(shared, "initialize_msvc", None)
+        if not isinstance(child, ChildEnvironment) or not isinstance(install, MsvcInstallation) or not isinstance(initialize, MsvcInitializer):
+            self.fail("Actual MSVC toolchain unavailable; this regression must not skip")
+        producer.env = child(producer.build)
+        producer.env, producer.tools = initialize(install(None, producer.env), producer.build, producer.env)
+        bodies = {"main": "int wanted(); int main(){return wanted()==7?0:1;}\n",
+                  "wanted": "int wanted(){return 7;}\n",
+                  "unused_off_transport": "int missing_off_helper(); int unused(){return missing_off_helper();}\n"}
+        objects: list[Path] = []
+        for name, body in bodies.items():
+            source = producer.build / (name + ".cpp")
+            output = producer.build / (name + ".obj")
+            source.write_text(body, encoding="utf-8")
+            producer.execute("compile-" + name, [producer.tools["cl"], "/nologo", "/c", "/O2",
+                "/Fo" + str(output), str(source)], producer.build)
+            objects.append(output)
+        with self.assertRaisesRegex(ValueError, "Actual command failed"):
+            producer.link("direct-link-must-fail", objects, [], producer.build / "direct.exe")
+        failed = read(self.config.output / "direct-link-must-fail.actual.json")
+        self.assertNotEqual(failed["original_wait_returncode"], 0)
+        archive, archive_execution = producer.archive_runtime(objects[1:])
+        self.assertIsNotNone(archive_execution)
+        if archive is None:
+            self.fail("Changed runtime archive was not produced")
+        producer.link("lazy-link", objects[:1], [archive], producer.build / "lazy.exe")
+        producer.execute("lazy-run", [str(producer.build / "lazy.exe")], producer.build)
+        self.assertEqual(read(self.config.output / "lazy-run.actual.json")["original_wait_returncode"], 0)
 
 
 if __name__ == "__main__":
