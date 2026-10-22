@@ -21,7 +21,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, SavedFrameV1,
     encode_current_saved_basis_v1, exact_read,
     original_response_evidence_v1, OriginalResponseReaderV1,
-    parse_json, parse_ref, record, rows, json_object, json_value, integer, text, qualify_current_saved_basis_v1,
+    parse_json, parse_ref, record, rows, json_object, json_value, integer, text, utc, qualify_current_saved_basis_v1,
 )
 from tools.g2_saved_campaign import test_current_saved_basis_v1 as basis_fixture
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
@@ -1112,7 +1112,8 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
         # public loader still executes its real immutable inputs, qualification,
         # seed/ledger, SAVE identity and warm native-header/kernel validators.
         def fixture_closed_epoch(actual_basis: CurrentSavedBasisV1,
-                actual_reader: BasisReaderV1) -> owner.ClosedEpochV1:
+                actual_reader: BasisReaderV1, *, _trail: tuple[str, ...] = ()) -> owner.ClosedEpochV1:
+            self.assertEqual(_trail, ())
             self.assertEqual(actual_basis, basis)
             self.assertIs(actual_reader, reader)
             return closed
@@ -1237,7 +1238,8 @@ class CurrentSavedSdkPersistenceTests(unittest.TestCase):
                 raise ValueError("original bound Queue producer")
             result: object = value(*args)
             self.assertIsNone(result)
-        self.fixture.write("ROOT-LAUNCH-CONFIG-C23-A15.json", {"cold_attempt": {
+        review = utc(os.environ.get("XAR_CURRENT_SAVED_BASIS_TEST_REVIEW_UTC"))
+        self.fixture.write("ROOT-LAUNCH-CONFIG-C23-A15.json", {"review_at_utc": review, "cold_attempt": {
             "machine_id": MACHINE, "runtime_root": str(root), "attempt_nonce": "1" * 32,
             "task_nonce": "2" * 32}})
         pair = parse_json(reader.read(warm.warm_proof.sources.sdk_pair_ref, 65536))

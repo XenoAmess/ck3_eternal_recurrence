@@ -2,7 +2,7 @@
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`；本文开始截点 `2026-10-22T03:37Z`。承接 [Source26旧交接](2026-10-20-robert-source26-a05-vacation-handoff.md)及[质量整改专题](../ck3-native-ai/current-saved-code-quality-correction-20261022.md)。其他机器的安装、Steam、容量或现场结果不能替代本机读回。
 
-**04:11 接续注意：N40 仅 readiness 批次已闭场，未提交 FULL11472，仍为 1082-02-15／5628 日。SDK 正常 persist 已改变当前 Driver；下文 Q39 basis 现在只是上一保存资格，不能直接冒充当前冷启动输入。新的 readiness-only 闭场恢复资格尚在实现，禁止伪造 feeder Task 或套用失败／unknown schema。**
+**04:27 接续注意：N40 仅 readiness 批次已闭场，未提交 FULL11472，仍为 1082-02-15／5628 日。SDK 正常 persist 已改变当前 Driver；当前恢复输入改为下文 Q40 新 basis／qualification，已经真实原生校验。Q39 仅保留上一保存资格，不能直接冒充当前冷启动输入。新的运行配额、Steam、整图和首帧门禁仍须重新执行。**
 
 ## 当前实际状态
 
@@ -80,3 +80,24 @@ Root STOP 实际为04:02:21.806185Z，在04:15前收场。两 SDK 0/0、OBS与�
 Q40 为同一 O 下 `current-saved-a40-runtime-prep01`：`ROOT-A40-ACTUAL-CLOSEOUT01.json`7035B／`b3859180815075a4b167bc87e53e8606b8a334f999ec8609a3b19d363257420f`；`ROOT-A40-MANDATORY-SOFTWARE-FIX01.json`1409B／`efa9928adb3524a06aa9f7ef13c00724032a48ba01aa39e390b2d01391da88fe`；`ROOT-A40-JOINT20-STRICT-FIX01.json`6183B／`0a23153e9b1b7e1dd5b7f242d8bc1449ae9ca2155ce530bedca2f9d6b2788ac7`。当前 Driver 仅 stat 为43057250B、FileID字符串 `281474989076443`，还没有新的完整内容资格；SAVE 的原 FileID仍为 `281474988852756`。
 
 正在以独立有限软件范围实现明确的 readiness-only 正常闭场合同：仅两 Task，绑定实际只读请求、BOUND、unused NEXT、新 Driver 与原 SAVE，保留全部旧业务帧、CP、seed、ledger、T0和unknown。现有三个 Task 的正常闭场、continuity-forward及失败 schema 均不能冒充此状态。新合同及恢复资格完成前不再启动游戏。
+
+## 04:27 当前恢复资格与 CI 真正失败原因
+
+正常闭场 v2 已明确区分 `saved_settled_progress`／`readiness_only`，保留历史 v1。Root 对当前 Driver 仅物理读一次，原件43057250B／`5a15846ab6d2a0f53cd34722875ee993c562155db86b97474fc4a04c868d883ca`；实际 history5945，仅在原 CP5944 后追加一条合法 `restore-checkpoint`，生命周期259436→85076，原 raw checkpoint、日期和存档完全保留。解析和SHA各两次均使用同一RAM原字节（检查一次、原资格入口一次）。原 Source32 canonical checkpoint API 实际调用一次，含原 SAVE 验证路径；未另造零读复用特例。
+
+新 normal/v2 闭场、公共 cold inputs、prepared SDK closure 消费者实际通过，业务 FULL11407／SEM11468／SAVE11469、seed、ledger、T0和unknown均未改。Driver／SAVE句柄已关闭，RAM取证进程271256实际exit0。Q40当前输入为：
+
+| 文件 | 字节 | SHA-256 |
+| --- | ---: | --- |
+| CURRENT-SAVED-BASIS01.json | 10364 | `fb7cf75adde16fe7717283cfb629f91869f09b25e1cd48a050745826c252ab13` |
+| CANONICAL-SAVED-BASIS-QUALIFICATION01.json | 2145 | `a6537bc3ff5b02bfbedb1787d181196e619df4e1104d04164fee955d3a9b31c7` |
+| CURRENT-SAVED-READINESS-CLOSURE01.json | 8111 | `98ddb7829c4958c83bd77cf86d008cd6d3f96cf10da50410a50e45a2ec004029` |
+| ROOT-A40-CANONICAL-READINESS-RECOVERY-ACTUAL01.json | 3117 | `f4abe808e0f27b8920c9b4b845d900d9db53e9ab72921de833b9052788fe8461` |
+
+unused NEXT仍11472；下一批正常启动应使用SEM11472、CAP11473，首FULL由公共计时builder派生11474。没有重放旧unknown或为维护资格增加ordinary／日期信用。新共享闭场 SDK ref resolver用于后继Gate，禁止再按某个attempt的schema私猜；新运行必须新scope，不续用已过期04:15 Full。
+
+远端144f Official run39718671223/job119626797621实际RED：mypy和57项关键测试已过，随后独立 `CurrentSavedSdkPersistenceTests.test_sdk_persist_closed_rejection_warm_binding_and_wrong_generations` 的配置夹具漏必填 `review_at_utc`。不能称严格类型报错，也不能用本地20模块通过外推整step通过。testcold已同步唯一review字段与新版typed `_trail` fixture签名，完整单例1/1、零跳过及整叶strict通过；没有放松生产截止守卫。后续本地mandatory必须执行这条独立SDK用例，不能只跑选择列表。
+
+新软件范围到04:45仅许恢复和检查，不授Game资格。原32KiB两叶源码子帽曾实际超2883B，已停止写入并前向重分配为36KiB，保留此前超限事实。原256MiB范围内取证的peak private为261812224B，但peak working set为276344832B，超过原working set帽7909376B；独立补注前向改为384MiB，不追认旧阶段合规。实际容量、来源账和用途分别见Q40的 `ROOT-SOFTWARE-SCOPE0445-01.json`、`ROOT-SOFTWARE-SCOPE0445-RAM384-SOURCE-AMEND01.json`、`ROOT-SOFTWARE-SCOPE0445-OWNER36K-FORWARD01.json`。
+
+04:38软件终验：完整CI step40的28条命令均实际exit0，454项含1项既有optional actual-WAL跳过；critical62与独立SDK1均零跳过，fixture已清空。Q40回执 `ROOT-A40-FULL-STEP40-ACTUAL01.json`25926B／`c963628f80d9c69c406a426b011c5cbf2b51e66c23ea6dc0a0fdacd9a1e7784d`。此为本机离线结果，不能冒远端CI通过或新实机信用。

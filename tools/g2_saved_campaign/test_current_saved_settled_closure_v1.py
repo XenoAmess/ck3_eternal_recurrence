@@ -168,6 +168,7 @@ class SettledProgressClosureTests(unittest.TestCase):
                          {"sdk_queue": 0, "sdk_application": 0})
         inputs = owner.CurrentSavedColdInputsV1(f.basis, {}, {}, {}, {}, checked,
                                                f.basis.refs.closure, f.basis.refs.closure)
+        self.assertEqual(owner.resolve_current_saved_closed_sdk_ref_v1(inputs, reader=f.reader), f.sdk)
         with patch.object(owner, "LocalBasisReaderV1", return_value=f.reader):
             result = owner.validate_current_saved_prepared_sdk_closure_v1(f.sdk.to_wire(), inputs=inputs)
         self.assertIs(result["normal"], True)
@@ -258,7 +259,11 @@ class SettledProgressClosureTests(unittest.TestCase):
             "Game_exit_code": 1, "Game_forced": True, "Game_normal_close_qualified": False,
             "Game_Job_active_final": 0}
         f.basis = replace(f.basis, refs=replace(f.basis.refs, closure=f.reader.put("legacy.json", legacy)))
-        self.assertEqual(owner._closed_epoch(f.basis, f.reader).old_game.pid, 10)
+        checked = owner._closed_epoch(f.basis, f.reader)
+        self.assertEqual(checked.old_game.pid, 10)
+        inputs = owner.CurrentSavedColdInputsV1(f.basis, {}, {}, {}, {}, checked,
+                                               f.basis.refs.closure, f.basis.refs.closure)
+        self.assertEqual(owner.resolve_current_saved_closed_sdk_ref_v1(inputs, reader=f.reader), f.sdk)
         recorded["session_binding"] = None; driver["recorded_identity"] = recorded
         f.review["Driver"] = driver
         review_ref = f.reader.put("review.json", f.review)
@@ -371,7 +376,7 @@ class NormalWarmFixture(SettledFixture):
 
     def response(self, sequence: int, tool: str, body: JsonObject) -> ExactRefV1:
         return self.reader.put(f"p37-responses/{sequence:04d}-1-result.json", {
-            "request": {"sequence": sequence, "tool": tool}, "started_at_utc": UTC,
+            "request": {"sequence": sequence, "tool": tool, "arguments": {}}, "started_at_utc": UTC,
             "ended_at_utc": UTC, "result": {"is_error": False, "result_type": "complete", "structured_content": body}})
 
     def warm(self) -> owner.WarmCurrentSavedFeederInputsV1:
@@ -421,6 +426,209 @@ class NormalClosureWarmTests(unittest.TestCase):
                 else:
                     f.runtime_reader.headers[f.basis.refs.driver.path] = f.runtime_reader.headers[f.basis.refs.driver.path].replace(b'"bridge_pid":30', b'"bridge_pid":31')
                 with self.assertRaises(ValueError): f.warm()
+
+
+class ReadinessOnlyFixture:
+    """A saved normal epoch, a closed readiness epoch, then a fresh warm epoch."""
+    def __init__(self) -> None:
+        self.prior = f = NormalWarmFixture()
+        self.reader = r = f.runtime_reader
+        old = f.basis
+        cp = record(evidence(r, old.refs.seed)["actual_saved_checkpoint"])
+        self.restore: dict[str, object] = {"index": 2, "command": "restore-checkpoint", "ok": True,
+            "result": {"step": "restore-checkpoint", "accepted": True, "status": "restored",
+                "backend_id": "native-headless", "source": "native-session-cold-start",
+                "checkpoint": cp, "restored_date_raw": old.frame.date_raw, "map_ready": True,
+                "lifecycle": {"previous_pid": 10, "pid": 30}}}
+        payload = record(json.loads(r.headers[old.refs.driver.path]))
+        payload["command_history"] = [{"index": 1, "command": "save-checkpoint", "ok": True,
+            "result": {"checkpoint": cp}}, self.restore]
+        raw = json.dumps(payload, sort_keys=False, separators=(",", ":")).encode()
+        self.driver_ref = ExactRefV1(old.refs.driver.path, len(raw), hashlib.sha256(raw).hexdigest())
+        r.raw[self.driver_ref.path] = raw
+        r.headers[self.driver_ref.path] = raw
+        driver_identity = FileStatIdentityV1(len(raw), "999999", "2")
+        r.identities[self.driver_ref.path] = driver_identity
+        sdk = {"machine_id": old.machine_id, "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED", "normal": True,
+            "processes": [{**process, "exit_code": 0, "kernel_exit_observed": True,
+                "wait_result": 0, "observation_error": None}
+                for process in (r.processes[31], r.processes[32])]}
+        sdk_ref = r.put("ready-sdk.json", sdk)
+        game_ref = r.put("ready-game.json", {"machine_id": old.machine_id, **f.game_identity.to_wire(),
+            "kernel_signaled": True, "exit_code": 1, "forced_owned_job_cleanup": True,
+            "normal_wm_close_qualified": False})
+        supervisor = evidence(r, f.supervisor)
+        supervisor["known_preload_phase"] = {"before": f.game_identity.to_wire(), "after": f.game_identity.to_wire()}
+        owned = record(supervisor["owned_cleanup"]); owned["ck3_pid"] = 30
+        supervisor["owned_cleanup"] = owned; supervisor["sdk_actual_exit"] = sdk
+        supervisor_ref = r.put("ready-supervisor.json", supervisor)
+        tasks: list[owner.SettledTaskClosureRefsV1] = []
+        for task in f.tasks[:2]:
+            nonce = "ready-" + task.role
+            spec = r.put(nonce + "-spec.json", {"machine_id": old.machine_id,
+                "nonce": nonce, "task_name": "XARG2ManagedOwner-" + nonce})
+            closed = r.put(nonce + "-closed.json", {"machine_id": old.machine_id,
+                "nonce": nonce, "spec_sha256": spec.sha256, "job_active_after_stage": 0,
+                "forced_remaining_cleanup": False, "bootstrap_exit_code": 0, "child_exit_code": 0})
+            unregistered = r.put(nonce + "-unregistered.json", {"machine_id": old.machine_id,
+                "utc": UTC, "task_name": "XARG2ManagedOwner-" + nonce, "operation": "unregister",
+                "actual": {"instances": 0, "arguments": "--spec-sha " + spec.sha256, "absent_after": True}})
+            tasks.append(owner.SettledTaskClosureRefsV1(task.role, spec, closed, unregistered))
+        next_ref = r.put("ready-NEXT.json", {"next_sequence": old.next_sequence + 2})
+        entries: list[dict[str, object]] = []
+        for sequence, tool, response_ref in (
+                (old.next_sequence, "ck3_take_semantic_snapshot_private_v1", f.sources.semantic_response_ref),
+                (old.next_sequence + 1, "ck3_get_capabilities", f.sources.capabilities_response_ref)):
+            request_ref = r.put(f"p37-requests/{sequence:04d}-1-result.json", evidence(r, response_ref)["request"])
+            after: dict[str, object] = {"at_utc": UTC, "request": request_ref.path,
+                "response": response_ref.path, "tool": tool}
+            if sequence == old.next_sequence:
+                after.update(actual_status="cold_readiness_verified", loading_attempts=0, new_business_credit=0)
+            else:
+                after.update(actual_status=None, selected_step=None, checkpoint_status=None)
+            after_ref = r.put(f"p37-queue/{sequence:04d}-after-result.json", after)
+            entries.append({"sequence": sequence, "tool": tool, "request_ref": request_ref.to_wire(),
+                "response_ref": response_ref.to_wire(), "after_ref": after_ref.to_wire()})
+        self.inventory: dict[str, object] = {"schema": "xar.current-saved-readiness-request-inventory/v1",
+            "machine_id": old.machine_id, "observed_at_utc": UTC, "runtime_root": str(f.root),
+            "entries": entries, "unused_next": {"ref": next_ref.to_wire(), "sequence": old.next_sequence + 2,
+                "request_absent": True, "response_absent": True}, "other_request_entries": [],
+            "failure_flags": {"failed_flag_present": False, "halt_present": False, "first_exception_present": False}}
+        self.tail: dict[str, object] = {"schema": "xar.current-saved-readiness-driver-tail/v1",
+            "machine_id": old.machine_id, "observed_at_utc": UTC, "prior_driver_ref": old.refs.driver.to_wire(),
+            "driver_ref": self.driver_ref.to_wire(), "prior_history_count": 1, "command_history_count": 2,
+            "prior_post_checkpoint_sha256": hashlib.sha256(b"[]").hexdigest(), "post_prior_history": [self.restore]}
+        prior_inputs = owner.validate_current_saved_warm_inputs_v1(old, basis_ref=f.basis_ref,
+            validation_ref=f.validation_ref, sources=f.sources, reader=r, runtime_root=f.root).inputs
+        state = owner.project_current_saved_opening_v1(prior_inputs, old.frame,
+            semantic_response=f.sources.semantic_response_ref)
+        self.proof = owner.ReadinessClosureProofV2(f.basis_ref, f.validation_ref, f.sources,
+            r.put("readiness-state.json", state), r.put("inventory.json", self.inventory), r.put("tail.json", self.tail))
+        self.review = f.review_value(owner.NORMAL_REVIEW_SCHEMA_V2)
+        self.review.update(status="CLOSED_DRIVER_SAVED_CHECKPOINT_VALIDATED", phase="readiness_only")
+        d = record(self.review["Driver"])
+        d.update(ref=self.driver_ref.to_wire(), identity=driver_identity.to_wire(), command_history_count=2,
+            last_checkpoint=cp, recorded_identity={"pipe_name": "pipe", "bridge_pid": 30,
+                "episode_character_id": old.frame.actor_character_id, "episode_run_id": old.frame.episode_run_id,
+                "session_binding_observation": {"present": False, "value": None}})
+        self.review["Driver"] = d
+        self.review["SAVE"] = {"ref": old.refs.save.to_wire(), "identity": old.save_identity.to_wire()}
+        self.review["frozen_settled_Queue"] = self.proof.loop_state_ref.to_wire()
+        self.review["frozen_continuity_ledger"] = old.refs.ledger.to_wire()
+        self.review["actual_next"] = {"next_sequence": old.next_sequence + 2}
+        self.closure = owner.NormalClosureV2(old.machine_id, UTC, old.completed_cycles,
+            old.frame.date_raw, old.next_sequence + 2, old.origin.original_wall_origin_utc,
+            owner.SettledProgressClosureRefsV1(sdk_ref, supervisor_ref, game_ref, f.release,
+                r.put("ready-review.json", self.review)), tuple(tasks), 1, True, False, "readiness_only", self.proof)
+        self.basis = replace(old, observed_at_utc=UTC, driver_identity=driver_identity,
+            next_sequence=old.next_sequence + 2, refs=replace(old.refs, driver=self.driver_ref,
+                driver_close=self.closure.refs.driver_review, closure=r.put("ready-closure.json", self.closure.to_wire()), next=next_ref))
+        self.reseal()
+
+    def reseal(self) -> None:
+        r = self.reader
+        self.proof = replace(self.proof, inventory_ref=r.put("inventory.json", self.inventory),
+                             history_tail_ref=r.put("tail.json", self.tail))
+        self.closure = replace(self.closure, readiness=self.proof,
+            refs=replace(self.closure.refs, driver_review=r.put("ready-review.json", self.review)))
+        self.basis = replace(self.basis, refs=replace(self.basis.refs,
+            driver_close=self.closure.refs.driver_review, closure=r.put("ready-closure.json", self.closure.to_wire())))
+        self.basis_ref = r.put("ready-basis.json", json.loads(encode_current_saved_basis_v1(self.basis)))
+        b = self.basis
+        qualification = owner.BasisQualificationV1(b.machine_id, UTC, self.basis_ref,
+            b.refs.driver, b.refs.save, b.driver_identity, b.driver_identity, b.save_identity,
+            b.save_identity, b.refs.checkpoint_validator, 2, 1, 1, 1)
+        self.validation_ref = r.put("ready-qualification.json", qualification.to_wire())
+
+    def cold(self) -> owner.CurrentSavedColdInputsV1:
+        return owner.validate_current_saved_cold_inputs_v1(self.basis, basis_ref=self.basis_ref,
+            validation_ref=self.validation_ref, reader=self.reader)
+
+    def next_warm(self) -> owner.WarmCurrentSavedFeederInputsV1:
+        r = self.reader
+        root = self.prior.root / "next-runtime"
+        game = replace(self.prior.game_identity, pid=40, creation_filetime=str(BIRTH + 200))
+        game_ref = r.put("next-runtime/ROOT-ACTUAL-GAME-LAUNCH-C23.json", {
+            "machine_id": self.basis.machine_id, **game.to_wire(), "command": ["/game/ck3.exe"]})
+        r.processes[40] = {"pid": 40, "creation_filetime": game.creation_filetime, "executable": "/game/ck3.exe"}
+        pair = evidence(r, self.prior.sources.sdk_pair_ref)
+        processes: list[JsonObject] = []
+        for role, pid in (("sdk_queue", 41), ("sdk_application", 42)):
+            process: JsonObject = {"role": role, "pid": pid, "creation_filetime": str(BIRTH + pid), "executable": "/sdk/python.exe"}
+            processes.append(process); r.processes[pid] = process
+        pair["processes"] = processes
+        pair_ref = r.put("next-runtime/ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C23.json", pair)
+        responses: list[ExactRefV1] = []
+        for index, source in enumerate((self.prior.sources.semantic_response_ref, self.prior.sources.capabilities_response_ref)):
+            row = evidence(r, source)
+            request = record(row["request"]); request["sequence"] = self.basis.next_sequence + index; row["request"] = request
+            result = record(row["result"]); body = record(result["structured_content"])
+            diag = record(body["diagnostics"]); hello = record(diag["hello"])
+            diag["bridge_pid"] = 40; diag["connection_generation"] = 2
+            hello["pid"] = 40; hello["connection_generation"] = 2
+            diag["hello"] = hello; body["diagnostics"] = diag
+            result["structured_content"] = body; row["result"] = result
+            responses.append(r.put(f"next-runtime/p37-responses/{self.basis.next_sequence + index:04d}-1-result.json", row))
+        marker = evidence(r, self.prior.sources.cold_bound_ref)
+        marker["semantic_response"] = responses[0].path
+        bound_ref = r.put("next-runtime/p37-queue/ROOT-C23-NORMAL-COLD-BOUND.json", marker)
+        cold_ref = r.put("next-runtime/ROOT-P37C23-COLD-RESUME-ADMISSION.json", {
+            "machine_id": self.basis.machine_id, "basis_ref": self.basis_ref.to_wire(),
+            "validation_ref": self.validation_ref.to_wire(), "new_Game": game.to_wire()})
+        sources = owner.WarmSourceRefsV1(game_ref, pair_ref, responses[0], responses[1], bound_ref, cold_ref)
+        payload = record(json.loads(r.headers[self.basis.refs.driver.path])); payload["bridge_pid"] = 40
+        raw = json.dumps(payload, separators=(",", ":")).encode()
+        r.headers[self.basis.refs.driver.path] = raw
+        r.identities[self.basis.refs.driver.path] = FileStatIdentityV1(len(raw), "1000000", "3")
+        return owner.validate_current_saved_warm_inputs_v1(self.basis, basis_ref=self.basis_ref,
+            validation_ref=self.validation_ref, sources=sources, reader=r, runtime_root=root)
+
+
+class ReadinessOnlyClosureTests(unittest.TestCase):
+    def test_v2_producer_json_public_cold_and_sdk_consumers(self) -> None:
+        f = ReadinessOnlyFixture()
+        self.assertEqual(owner.parse_normal_closure_v2(json.loads(json.dumps(f.closure.to_wire())),
+            expected_machine_id=f.basis.machine_id), f.closure)
+        inputs = f.cold()
+        self.assertEqual(inputs.closed_epoch.old_game.pid, 30)
+        self.assertEqual(inputs.basis.frame, f.prior.basis.frame)
+        self.assertEqual(inputs.basis.unknown_requests, f.prior.basis.unknown_requests)
+        self.assertEqual(inputs.basis.completed_cycles, f.prior.basis.completed_cycles)
+        self.assertEqual(owner.resolve_current_saved_closed_sdk_ref_v1(inputs, reader=f.reader), f.closure.refs.sdk_closed)
+        with patch.object(owner, "LocalBasisReaderV1", return_value=f.reader):
+            sdk = owner.validate_current_saved_prepared_sdk_closure_v1(f.closure.refs.sdk_closed.to_wire(), inputs=inputs)
+        self.assertIs(sdk["normal"], True)
+        self.assertNotIn(f.basis.refs.driver.path, f.reader.reads)
+        self.assertNotIn(f.basis.refs.save.path, f.reader.reads)
+        warm = f.next_warm()
+        self.assertEqual(warm.warm_proof.game.pid, 40)
+        self.assertTrue(warm.warm_proof.closed_driver_identity_replaced)
+        self.assertEqual(warm.inputs.basis, f.basis)
+        with self.assertRaisesRegex(ValueError, "closed Driver"):
+            f.cold()
+
+    def test_bad_phase_tail_request_binding_and_task_are_rejected(self) -> None:
+        for mutation in ("command", "checkpoint", "prefix", "count", "request", "next", "bound", "task", "prior"):
+            with self.subTest(mutation=mutation):
+                f = ReadinessOnlyFixture()
+                if mutation == "command": f.restore["command"] = "do-business"
+                elif mutation == "checkpoint":
+                    result = record(f.restore["result"]); result["checkpoint"] = {}; f.restore["result"] = result
+                elif mutation == "prefix": f.tail["prior_post_checkpoint_sha256"] = "f" * 64
+                elif mutation == "count": f.tail["command_history_count"] = True
+                elif mutation == "request": f.inventory["other_request_entries"] = ["FULL"]
+                elif mutation == "next":
+                    unused = record(f.inventory["unused_next"]); unused["request_absent"] = False; f.inventory["unused_next"] = unused
+                elif mutation == "bound":
+                    row = evidence(f.reader, f.proof.sources.cold_bound_ref); row["completed_cycles"] = 999
+                    bad = f.reader.put("bad-bound.json", row)
+                    f.proof = replace(f.proof, sources=replace(f.proof.sources, cold_bound_ref=bad))
+                elif mutation == "task":
+                    with self.assertRaises(ValueError): replace(f.closure, tasks=f.prior.tasks)
+                    continue
+                else: f.proof = replace(f.proof, prior_validation_ref=f.prior.basis_ref)
+                f.reseal()
+                with self.assertRaises(ValueError): f.cold()
 
 
 if __name__ == "__main__":
