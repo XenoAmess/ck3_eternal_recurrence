@@ -1,5 +1,6 @@
 ﻿"""Two actual managed C2 scenes; one equip or one enshrine, never replay unknown."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 from datetime import datetime, timezone
 import importlib
 import subprocess
@@ -20,7 +21,6 @@ FLAGS = {'opt_in_player_artifact_personal_use_actions': True, 'opt_in_player_inv
 
 @runtime_checkable
 class Preparation(Protocol):
-    def materialize_product_profile(self, context: object, release: None, configuration: object) -> object: ...
     def finish_product_profile(self, context: object, profile: object, *, provenance: Object) -> object: ...
 
 
@@ -74,7 +74,7 @@ def prepare_case(context: object) -> Object:
             (before.st_size, before.st_mtime_ns) == (after.st_size, after.st_mtime_ns), 'C2 original bytes changed')
     module = importlib.import_module('ck3_mod_acceptance_prepare')
     require(isinstance(module, Preparation), 'Shared public preparation API unavailable')
-    profile = module.materialize_product_profile(context, None, field(inputs, 'configuration'))
+    profile = materialize_saved_profile_v2(context, None, field(inputs, 'configuration'), source_role=None)
     profile = module.finish_product_profile(context, profile, provenance={
         'machine_id': c.machine_id, 'kind': 'C2-artifact-paired-independent-' + c.arm,
         'saved_input': saved, 'storage_admission': json_value(admission), 'world_actions_performed': False,

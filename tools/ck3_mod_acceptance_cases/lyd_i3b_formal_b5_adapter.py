@@ -176,8 +176,10 @@ def prepare_case(context):
         stream.write(_outer_from_inner(target / 'descriptor.mod', target))
     write_json(profile / 'dlc_load.json', {'enabled_mods': ['mod/product.mod'], 'disabled_dlcs': []})
     inventory = output / 'saved-product-inventory.json'
-    write_json(inventory, {'schema': 'ck3-saved-campaign-product-only-profile-v1', 'profile_path': str(profile),
-        'enabled_mods': ['mod/product.mod'], 'product_files': [pin(outer), *[pin(p) for p in sorted(target.rglob('*')) if p.is_file()]]})
+    from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
+    write_saved_profile_inventory_v2(inventory, profile=profile, mode='enabled', enabled_mods=['mod/product.mod'],
+        product_files=[pin(outer), *[pin(p) for p in sorted(target.rglob('*')) if p.is_file()]],
+        roles={'mod/product.mod': 'formal_product'})
     files = {p.relative_to(profile).as_posix(): pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
     preparation = state / 'preparation.json'
     write_json(preparation, {'schema': 'ck3-mod-acceptance-profile-startup-evidence-v1', 'profile_dir': str(profile),

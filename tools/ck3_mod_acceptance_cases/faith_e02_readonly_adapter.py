@@ -6,6 +6,7 @@ restricted by tools/faith_e02_capture_queue.py. Neither completion nor query ACK
 awards mechanism, GUI, beneficiary or product acceptance.
 """
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from datetime import datetime, timezone
 import hashlib
@@ -102,7 +103,7 @@ def _admission(context, machine):
 
 
 def prepare_case(context):
-    from ck3_mod_acceptance_prepare import materialize_product_profile, finish_product_profile
+    from ck3_mod_acceptance_prepare import finish_product_profile
     contract = validate_contract(context)
     from ck3_live_run_id import current_machine_id
     require(current_machine_id() == contract['machine_id'], 'B1 executing machine differs')
@@ -118,7 +119,7 @@ def prepare_case(context):
     require(actual['bytes'] == saved['bytes'] and actual['sha256'] == saved['sha256']
             and before.st_size == after.st_size and before.st_mtime_ns == after.st_mtime_ns,
             'Original C2 checkpoint bytes/SHA changed while preparing')
-    profile = materialize_product_profile(context, None, context['case_inputs']['configuration'])
+    profile = materialize_saved_profile_v2(context, None, context['case_inputs']['configuration'], source_role=None)
     profile = finish_product_profile(context, profile, provenance={
         'machine_id': contract['machine_id'], 'kind': 'faith-e02-actual-C2-readonly-capture',
         'saved_input': saved, 'storage_admission': admission,

@@ -4,6 +4,7 @@ This is a partial existing-cooldown observation, never a fresh 365-day cycle.
 Only the public CaseClient controls the shared runtime and normal shutdown.
 """
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 import hashlib
 from pathlib import Path
@@ -48,7 +49,7 @@ def validate_origin(origin, seed, data):
 
 
 def prepare_case(context):
-    from ck3_mod_acceptance_prepare import materialize_product_profile, pin, write_json
+    from ck3_mod_acceptance_prepare import pin, write_json
     validate_contract(context)
     data, inputs, seed = context['case_contract'], context['case_inputs'], context['saved_campaign']
     require(set(inputs) == {'product_dir', 'product_inventory', 'plain_configuration', 'origin_metadata'},
@@ -68,7 +69,7 @@ def prepare_case(context):
     for row in rows:
         raw = Path(row['path']).read_bytes()
         require(len(raw) == row['bytes'] and hashlib.sha256(raw).hexdigest() == row['sha256'], 'Production bytes differ')
-    profile = materialize_product_profile(context, product, inputs['plain_configuration'])
+    profile = materialize_saved_profile_v2(context, product, inputs['plain_configuration'], source_role="formal_product")
     preparation = output / 'profile-preparation.json'
     write_json(preparation, {'schema': 'ck3-mod-acceptance-prepared-i4-natural-expiry-v1',
         **profile, 'saved_campaign': seed, 'source_head': inventory['source_head'],

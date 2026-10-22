@@ -1,5 +1,6 @@
 ﻿"""Explicit major H1 -> one original H2 -> same-world read-only H3 product caller."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from collections.abc import Mapping
 from datetime import datetime, timezone
@@ -131,7 +132,7 @@ def prepare_case(value: object) -> Q.Obj:
     module: object = importlib.import_module("ck3_mod_acceptance_prepare")
     if not isinstance(module, H1.Prepare):
         raise ValueError("Standard public preparation unavailable")
-    profile = Q.obj(module.materialize_product_profile(context, None, inputs.get("configuration")))
+    profile = Q.obj(materialize_saved_profile_v2(context, None, inputs.get("configuration"), source_role=None))
     profile = Q.obj(module.finish_product_profile(context, profile, provenance={
         "machine_id": c["machine_id"], "kind": C.CASE, "saved_input": saved,
         "fresh_restore_observed": False, "preparation_mod_mounted": False,

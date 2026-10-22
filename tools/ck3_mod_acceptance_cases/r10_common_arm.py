@@ -134,8 +134,10 @@ def validate_normal_common_source(context, prepared, frozen, profile, inventory,
     seed = startup.get('saved_campaign', {})
     need(startup.get('mode') == 'saved_campaign' and Path(startup['state_dir']).resolve() == Path(frozen['state_dir']).resolve(),
          'Actual common prepared state/mode differs')
-    need(inventory.get('schema') == 'ck3-saved-campaign-vanilla-profile-v1'
-         and inventory.get('enabled_mods') == [] and inventory.get('product_files') == []
+    from ck3_mod_acceptance_saved_profile_v2 import parse_inventory
+    saved_profile = parse_inventory(inventory)
+    need(saved_profile.mode == 'vanilla'
+         and not saved_profile.enabled_mods and not saved_profile.files and not saved_profile.projections
          and profile.get('fixture_mounted') is False,
          'Normal vanilla must be proved by actual empty-mod profile, not mod_key')
     need(Path(inventory['profile_path']).resolve() == Path(profile['profile_dir']).resolve()

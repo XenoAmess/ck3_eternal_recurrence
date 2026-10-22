@@ -1,5 +1,6 @@
 """C2 dynamic first-four scout on public profile/CaseClient; no world commits."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 from datetime import datetime,timezone
 from pathlib import Path
 import hashlib,json
@@ -61,7 +62,7 @@ def validate_contract(context):
  return c
 
 def prepare_case(context):
- from ck3_mod_acceptance_prepare import materialize_product_profile,finish_product_profile
+ from ck3_mod_acceptance_prepare import finish_product_profile
  from ck3_live_run_id import current_machine_id
  c=validate_contract(context);require(current_machine_id()==c["machine_id"],"Executing machine differs")
  ref=context["case_inputs"]["storage_admission"]
@@ -75,7 +76,7 @@ def prepare_case(context):
  before=p.stat();actual=pin(p);after=p.stat()
  require(actual["bytes"]==saved["bytes"]and actual["sha256"]==saved["sha256"]
   and(before.st_size,before.st_mtime_ns)==(after.st_size,after.st_mtime_ns),"Original C2 bytes changed")
- profile=materialize_product_profile(context,None,context["case_inputs"]["configuration"])
+ profile=materialize_saved_profile_v2(context,None,context["case_inputs"]["configuration"], source_role=None)
  profile=finish_product_profile(context,profile,provenance={"machine_id":c["machine_id"],
   "kind":"C2-first-four-readonly-scout","saved_input":saved,"storage_admission":ref,
   "preparation_mod_mounted":False,"world_actions_performed":False,"actual_restore_observed":False})

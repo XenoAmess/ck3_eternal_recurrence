@@ -4,6 +4,7 @@ No native bridge is loaded. GUI/business qualification needs a separate direct
 review; process exit and STOP/WM_CLOSE never supply that qualification.
 """
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from datetime import datetime, timezone
 import importlib.util
@@ -21,7 +22,7 @@ import uuid
 
 from ck3_mod_acceptance_keeper import check_pin, pin, read_json, require, utc, write_new
 from ck3_mod_acceptance_launcher import check_fresh_frame, recent
-from ck3_mod_acceptance_prepare import _outer_from_inner, checked_copy, materialize_product_profile
+from ck3_mod_acceptance_prepare import _outer_from_inner, checked_copy
 
 
 def load_module(path, name):
@@ -194,7 +195,7 @@ def prepare(selection):
     if inputs.get('plain_configuration'):
         configuration = dict(inputs['plain_configuration'])
         configuration['pdx_settings.txt'] = inputs['settings']
-        result = materialize_product_profile({'state_dir': str(state), 'output': str(out)}, staging, configuration)
+        result = materialize_saved_profile_v2({'state_dir': str(state), 'output': str(out)}, staging, configuration, source_role="formal_product")
         profile = Path(result['profile'])
     else:
         # Product-only helper requires four legacy plain files. This route has
