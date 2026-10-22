@@ -1,0 +1,238 @@
+{
+  "schema": "living-artifacts-r11-error-log-summary-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+  "observed_at_utc": "2026-10-22T16:37:51.274222+00:00",
+  "audit_source": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-error-log-audit-a01.py",
+    "bytes": 7033,
+    "sha256": "aeba0684ff15fccb23aeeef7a30a9f60d2c281322e3946f85b116780583f6caa"
+  },
+  "source": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\logs\\error.log",
+    "bytes": 5350,
+    "sha256": "10e307fa604d1c428b1aa5578833cd9054298fa05356f90eb01f6b2fde1b88d5"
+  },
+  "exact_retained_capture": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-error-log-audit-a01\\error-log.original.log",
+    "bytes": 5350,
+    "sha256": "10e307fa604d1c428b1aa5578833cd9054298fa05356f90eb01f6b2fde1b88d5"
+  },
+  "stat_mtime_ns_decimal": "1792681656163907200",
+  "unchanged_during_full_read": true,
+  "all_bytes_read": true,
+  "line_count": 24,
+  "header_record_count": 24,
+  "unique_signature_count": 12,
+  "classifications": {
+    "stock_marker_presence_guard_static": 2,
+    "unused_product_auxiliary": 4,
+    "unused_fixture_input": 14,
+    "unused_fixture_helper_target": 4
+  },
+  "signatures": [
+    {
+      "category": "stock_marker_presence_guard_static",
+      "message_without_clock": "[E][jomini_effect.cpp:1162]: Variable 'historical_artifact' is used but is never set. Setting it in an unused scripted trigger or effect does not count",
+      "count": 2,
+      "start_lines": [
+        1,
+        13
+      ]
+    },
+    {
+      "category": "unused_fixture_helper_target",
+      "message_without_clock": "[E][jomini_effect.cpp:1162]: Event target 'xalw_test_baron' is used but is never set. Setting it in an unused scripted trigger or effect does not count",
+      "count": 2,
+      "start_lines": [
+        11,
+        23
+      ]
+    },
+    {
+      "category": "unused_fixture_helper_target",
+      "message_without_clock": "[E][jomini_effect.cpp:1162]: Event target 'xalw_test_courtier' is used but is never set. Setting it in an unused scripted trigger or effect does not count",
+      "count": 2,
+      "start_lines": [
+        12,
+        24
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_initial_day' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        5,
+        17
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_common' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        3,
+        15
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_famed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        10,
+        22
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_illustrious' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        7,
+        19
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_material_masterwork' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        6,
+        18
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_fixture_target' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        8,
+        20
+      ]
+    },
+    {
+      "category": "unused_fixture_input",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_test_fixture_input' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        9,
+        21
+      ]
+    },
+    {
+      "category": "unused_product_auxiliary",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_content_last_wine_host' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        4,
+        16
+      ]
+    },
+    {
+      "category": "unused_product_auxiliary",
+      "message_without_clock": "[E][jomini_effect.cpp:1146]: Variable 'xalw_content_loan_bad_debt' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "start_lines": [
+        2,
+        14
+      ]
+    }
+  ],
+  "runtime_or_unclassified_records": [],
+  "suppression_sequence_missing_records": 0,
+  "xalw_material_scope_records": 0,
+  "tooltip_build_error_records": 0,
+  "other_base_game_runtime_records": 0,
+  "raw_header_clocks": [
+    "23:06:32",
+    "23:07:36"
+  ],
+  "raw_clock_timezone_inferred": false,
+  "actual_management_event_queries": {
+    "xalw.12": 2,
+    "xalw.10": 5,
+    "xalw.11": 6
+  },
+  "actual_management_event_instances": {
+    "xalw.12": [
+      1
+    ],
+    "xalw.10": [
+      2,
+      4
+    ],
+    "xalw.11": [
+      3,
+      5
+    ]
+  },
+  "representative_native_query_pins": {
+    "xalw.12": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\xalw-core-0014.actual-results.json",
+      "bytes": 30416,
+      "sha256": "ce7ffe29fa10ec4d448b23805726adf0486dea739d638e4717ceb96a669a846b"
+    },
+    "xalw.10": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\xalw-core-0028.actual-results.json",
+      "bytes": 44533,
+      "sha256": "934fef184eb3f48625bb82e0adfc8a48b7723097809cad04a39cdab210917d29"
+    },
+    "xalw.11": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\xalw-core-0031.actual-results.json",
+      "bytes": 31153,
+      "sha256": "c6392482d43e3b4e1e68ad801ad48b5fac4618005ef62dba97c820f513094f64"
+    }
+  },
+  "deployed_fix_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\script_values\\xalw_values.txt",
+      "bytes": 5736,
+      "sha256": "9413c0c56e7f7f8f6b103e9af2c996545d6db2439ba530ca8635c0bf10dafa32"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_core_03.txt",
+      "bytes": 15436,
+      "sha256": "5395479ed1390c6b449ce3ba51f5288248034a6be7bf7b5e7f89de3cd0cd0356"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\xalw_triggers.txt",
+      "bytes": 2324,
+      "sha256": "b0491b7f943043a9be4c79163a3c4777ff08c49a218d08296b678401e3d6b90a"
+    }
+  ],
+  "deployed_fix_matches_frozen_c13": {
+    "common/script_values/xalw_values.txt": true,
+    "common/scripted_effects/xalw_core_03.txt": true,
+    "common/scripted_triggers/xalw_triggers.txt": true
+  },
+  "source_explanation": {
+    "xalw_values.txt": "Lines57-60: default0, read sequence only under has_variable",
+    "xalw_core_03.txt": "Lines47-54: begin timer captures safe script value, not naked missing variable",
+    "xalw_triggers.txt": "Lines63-85: historical_artifact occurs in protected-feed has_none_of_variables presence guard"
+  },
+  "comparison_to_r10": {
+    "source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-error-log-read-a01\\result.json",
+      "bytes": 5938,
+      "sha256": "afc94fd4282d19d10be7e150a833421a7fde7c2247968761893004c0f939211b"
+    },
+    "historical_xalw_unused_variable_records": 28,
+    "historical_fixture": "NPC",
+    "current_fixture": "core player preview",
+    "current_xalw_unused_variable_records": 18,
+    "not_a_same_fixture_error_delta": true
+  },
+  "conclusion": "No new xalw runtime/scope/tooltip error in this entire pinned R11 log; five actual xalw.10 queries cover two management instances. This supports absence of the former missing-sequence tooltip error in the observed UI path only.",
+  "limits": [
+    "Not a claim that suppression was actually executed or that90-day expiry passed.",
+    "No feeding/NPC/full-product/publication PASS is granted.",
+    "Absence is for this pinned log at observation time; no process exit or normal-Quit inference."
+  ],
+  "business_pass": false,
+  "whole_log_audit_only": true,
+  "game_commands_sent": false,
+  "storage_policy": "docs/storage-retention-policy.json",
+  "review_at_utc": "2027-04-20T16:37:51.274222+00:00"
+}
