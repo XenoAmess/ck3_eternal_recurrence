@@ -19,6 +19,7 @@ LIVING_NAME_PREFIX = "★"
 FEEDING_XP: dict[Rarity, int] = {
     "common": 80, "masterwork": 200, "famed": 500, "illustrious": 1200,
 }
+CORE_CHECKPOINT_LIMIT = 3 + len(FEEDING_XP)
 AFFIX_IDS = tuple(range(1, 13))
 CURSE_IDS = tuple(range(1, 9))
 PERSONAL_TYPES = (

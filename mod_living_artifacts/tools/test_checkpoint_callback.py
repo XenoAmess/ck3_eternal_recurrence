@@ -5,23 +5,17 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from acceptance_contract import Frame, Object, Pin, json_value, pin, write_once
+from acceptance_contract import Frame, Object, Pin, json_value, pin, read, write_once
 from checkpoint_callback import CheckpointSample, verify_readback
+from living_artifacts_model import FEEDING_XP, Rarity
+from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, AuthoredArtifact, authored_checkpoint_text, authored_survivors
 
 
-def callback_fixture(root: Path) -> tuple[Object, Frame, Pin]:
+def callback_fixture(root: Path, *, artifacts: tuple[AuthoredArtifact, ...] = AUTHORED_ARTIFACTS) -> tuple[Object, Frame, Pin]:
     raw = root / "original.ck3"
     raw.write_bytes(b"authored-binary-not-game-evidence")
     melted = root / "melted.ck3"
-    artifact_records = ""
-    for reference, name, rarity in ((12, "★Living Artifact Under Test", "masterwork"), (13, "Test Food: Common", "common"),
-                                  (14, "Test Food: Masterwork", "masterwork"), (15, "Test Food: Famed", "famed"), (16, "Test Food: Illustrious", "illustrious")):
-        values = ""
-        if reference == 12:
-            for key, number in (("level", 1), ("xp_in_level", 92), ("pending_xp", 0), ("growth_sequence", 0), ("last_settled_month", 12801), ("resonance", 20)):
-                values += '{ flag="xalw_' + key + '" data={ type=value identity=' + str(number * 100000) + ' } } '
-        artifact_records += f'\t\t{reference}={{\n\t\t\tname="{name}"\n\t\t\ttype="sword"\n\t\t\trarity={rarity}\n\t\t\towner=91\n\t\t\tdurability=75\n\t\t\tvariables={{ data={{ {values} }} }}\n\t\t}}\n'
-    melted.write_text('date=1066.9.15\nliving={\n\t91={\n\t\talive_data={\n\t\t\tvariables={ data={ { flag="xalw_fixture_target" data={ type=artifact identity=12 } } } }\n\t\t}\n\t}\n}\nartifacts={\n\tartifacts={\n' + artifact_records + '\t}\n}\n', encoding="utf-8")
+    melted.write_text(authored_checkpoint_text(artifacts), encoding="utf-8")
     melter = root / "not-an-executable.txt"
     melter.write_text("Authored boundary fixture; never executed", encoding="utf-8")
     raw_pin, melted_pin, melter_pin = pin(raw), pin(melted), pin(melter)
@@ -55,6 +49,76 @@ class CheckpointCallbackTests(unittest.TestCase):
             self.assertTrue(sample.equipped)
             self.assertEqual(len(refs), 10)
             self.assertFalse(sample.to_json()["current_native_artifact_variable_query"])
+
+    def test_surviving_rarities_cross_serialized_callback_and_strict_melt_evidence(self) -> None:
+        rarities = tuple(FEEDING_XP)
+        for consumed_count in range(len(rarities) + 1):
+            remaining = rarities[consumed_count:]
+            artifacts = authored_survivors(remaining)
+            with self.subTest(consumed_count=consumed_count), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                response, frame, source_save = callback_fixture(root, artifacts=artifacts)
+                response_pin = write_once(root / "serialized-root-response.json", response)
+                decoded = read(Path(response_pin["path"]))
+                inputs, refs = verify_readback(decoded, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
+                    frame=frame, source_save=source_save, expected_material_rarities=remaining)
+                self.assertEqual(tuple(item.artifact_id for item in inputs.artifacts), tuple(item.reference for item in artifacts))
+                self.assertEqual(len(refs), 10)
+                self.assertEqual(refs[0], source_save)
+                self.assertEqual(refs[1], pin(root / "melted.ck3"))
+                command = read(root / "command.json")
+                self.assertEqual(command["argv"], [str((root / "not-an-executable.txt").resolve()), "melt", source_save["path"],
+                    "--format", "ck3", "--unknown-key", "error", "-o", refs[1]["path"]])
+                sample = CheckpointSample.from_saved(inputs.artifacts[0], inputs, native_equipped=True)
+                self.assertEqual((sample.artifact_id, sample.level, sample.xp), ("12", 1, 92))
+                if consumed_count:
+                    with self.assertRaisesRegex(ValueError, "surviving material roles"):
+                        verify_readback(decoded, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
+                            frame=frame, source_save=source_save)
+
+    def test_survivor_expectation_never_waives_wrong_consumption_or_missing_target(self) -> None:
+        remaining: tuple[Rarity, ...] = ("masterwork", "famed", "illustrious")
+        wrong_consumed = tuple(item for item in AUTHORED_ARTIFACTS if item.reference != "14")
+        absent_target = tuple(item for item in authored_survivors(remaining) if item.reference != "12")
+        for artifacts in (AUTHORED_ARTIFACTS, wrong_consumed, absent_target):
+            with self.subTest(references=tuple(item.reference for item in artifacts)), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                response, frame, source_save = callback_fixture(root, artifacts=artifacts)
+                with self.assertRaisesRegex(ValueError, "surviving material roles"):
+                    verify_readback(response, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
+                        frame=frame, source_save=source_save, expected_material_rarities=remaining)
+
+    def test_callback_propagates_invalid_survivor_contract_to_real_saved_parser(self) -> None:
+        malformed: tuple[object, ...] = (None, True, False, 1, 1.0, "common", ["common"],
+            (True,), (False,), (1,), (1.0,), (["common"],), ("common", "common"), ("legendary",), (None,))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            response, frame, source_save = callback_fixture(root)
+            for value in malformed:
+                with self.subTest(value=value):
+                    # This deliberate malformed runtime call still traverses the
+                    # callback's real pinned-file and strict argv checks first.
+                    self.assertRaisesRegex(ValueError, "Explicit unique native material rarities", verify_readback,
+                        response, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
+                        frame=frame, source_save=source_save, expected_material_rarities=value)
+
+    def test_consumed_materials_do_not_waive_strict_melt_unknown_token_policy(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            response, frame, source_save = callback_fixture(root, artifacts=authored_survivors(()))
+            argv: list[str] = [str((root / "not-an-executable.txt").resolve()), "melt", source_save["path"],
+                "--format", "ck3", "--unknown-key", "ignore", "-o", str((root / "melted.ck3").resolve())]
+            # Re-pin a coherent authored receipt chain. A pin mismatch must not
+            # hide the actual strict-policy rejection being exercised here.
+            command = write_once(root / "nonstrict-command.json", {"argv": argv})
+            process = read(root / "process.json")
+            process["command"] = json_value(command)
+            receipt = write_once(root / "nonstrict-process.json", process)
+            response["command"] = json_value(command)
+            response["process_receipt"] = json_value(receipt)
+            with self.assertRaisesRegex(ValueError, "strict unknown-token policy"):
+                verify_readback(response, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
+                    frame=frame, source_save=source_save, expected_material_rarities=())
 
     def test_false_equal_types_missing_extra_cross_identity_and_ack_rejected(self) -> None:
         mutations: tuple[tuple[str, object], ...] = (("schema_version", True), ("schema_version", 1.0), ("pid", 124.0),

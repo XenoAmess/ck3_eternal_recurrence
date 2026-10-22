@@ -1,9 +1,9 @@
 """One public CaseClient scene for actual core growth/equipment observations.
 
 The public host owns launch, progression transport, normal Quit and resources.
-An unsupported artifact picker blocks feeding instead of invoking a fixture
-effect or crediting an ACK. Scope-variable logs are auxiliary fixture evidence,
-paired with actual native owner/equipment reads, never a generic native getter.
+Feeding uses the ordinary management decision and native event choices. Seven
+actual saved checkpoints are paired with native owner/equipment/material reads;
+fixture effects and navigation ACKs cannot grant business credit.
 """
 from __future__ import annotations
 
@@ -28,6 +28,8 @@ from checkpoint_artifacts import SavedInputs
 from checkpoint_callback import CheckpointSample, ReadbackRequestBody, verify_readback
 from inventory_gui_contract import InventoryOpenRequest, REFUSAL, parse_opening, pre_intent_source
 from native_interruption_contract import NativeInterruptionRequest, parse_completed_interruption
+from living_artifacts_model import CORE_CHECKPOINT_LIMIT, FEEDING_XP, Rarity
+from management_event_contract import ManagementChoice, management_choice
 
 ITEM = "ck3_query_player_artifact_personal_use_v1"
 EQUIP = "ck3_submit_player_artifact_personal_use_v1"
@@ -36,10 +38,14 @@ OPEN = "ck3_open_player_inventory_window_v1"
 OPEN_POST = "ck3_query_player_inventory_window_open_post_v1"
 WINDOW = "ck3_query_ingame_ui_window_v1"
 INTERACTION_QUERY = "ck3_query_character_interaction_ordinary_v1"
+DECISIONS_OPEN = "ck3_open_ingame_decisions_v1"
+DECISION_SELECT = "ck3_select_ingame_decision_item_v1"
+DECISION_CONFIRM = "ck3_confirm_ingame_decision_outcome_v1"
 REQUIRED_TOOLS: tuple[str, ...] = (
     "ck3_take_snapshot", "ck3_execute_step", ITEM, EQUIP, EQUIP_POST, OPEN, OPEN_POST, WINDOW,
     INTERACTION_QUERY, "ck3_query_current_event_window_context_v1", "ck3_select_event_option",
     "ck3_query_pending_character_interaction_context_v1", "ck3_reply_pending_character_interaction", "ck3_save_checkpoint",
+    DECISIONS_OPEN, DECISION_SELECT, DECISION_CONFIRM,
 )
 REQUIRED_OPT_INS: dict[str, bool] = {
     "opt_in_player_artifact_personal_use_actions": True,
@@ -85,8 +91,8 @@ def validate_contract(context: object) -> Contract:
     expected = {"schema", "schema_version", "product", "case_id", "acceptance_scope", "maximum_natural_days", "max_public_calls",
                 "day_timeout_seconds", "post_start", "required_startup", "forbidden_startup", "required_checks", "deferred_checks",
                 "observer_authority", "artifact_picker_boundary", "whole_product_acceptance_credit", "actor_binding_authority", "startup_source_guard"}
-    require(set(config) == expected and config["schema"] == "living-artifacts-core-continuous-case-v2" and
-            integer(config["schema_version"], "schema version") == 2 and config["product"] == "living-artifacts" and
+    require(set(config) == expected and config["schema"] == "living-artifacts-core-continuous-case-v3" and
+            integer(config["schema_version"], "schema version") == 3 and config["product"] == "living-artifacts" and
             config["case_id"] == "core_continuous" and config["whole_product_acceptance_credit"] is False,
             "Core contract fields/version/credit differ")
     required = tuple(text(item, "required check") for item in array(config["required_checks"], "required checks"))
@@ -102,8 +108,8 @@ def validate_contract(context: object) -> Contract:
     require(ITEM in readers, "Explicit original personal-artifact read-only opt-in required")
     require(config["actor_binding_authority"] == "original-source-bound-frontend-start-and-two-native-root-observations",
             "Runtime actor must be bound from this scene's original frontend Start and native root")
-    require(config["observer_authority"] == "three-actual-checkpoints-strict-melt-and-independent-native-owner-equipment-crosscheck",
-            "V2 requires actual checkpoint/native observation; hidden dynamic logs cannot qualify")
+    require(config["observer_authority"] == "seven-actual-checkpoints-strict-melt-and-independent-native-owner-equipment-crosscheck",
+            "V3 requires actual checkpoint/native observation; hidden dynamic logs cannot qualify")
     source_guard = mapping(config["startup_source_guard"], "source-derived startup guard")
     require(set(source_guard) == {"bookmark_key", "character_name_key", "history_id", "start_date", "post_start_authority", "sources"} and
             source_guard["bookmark_key"] == "bm_1066_rags_to_riches" and source_guard["character_name_key"] == "bookmark_rags_to_riches_duke_robert" and
@@ -144,7 +150,7 @@ def _write_fixture_contract(fixture_root: Path, config: dict[str, object], fixtu
     return write_once(fixture_root / "_case_contract.json", {"product": "living-artifacts", "case": "core_continuous",
                "config": config, "fixture_emission": fixture, "business_pass": False,
                "caller_sources": [pin(PRODUCT_TOOLS / name) for name in (
-                    "acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py", "native_interruption_contract.py")],
+                    "acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py", "native_interruption_contract.py", "management_event_contract.py")],
                "contract_source": pin(PRODUCT_TOOLS / "core_continuous.contract.json")})
 
 
@@ -170,7 +176,7 @@ def _prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
     require(set(frozen) == {"product", "case", "config", "fixture_emission", "business_pass", "caller_sources", "contract_source"} and
             frozen["product"] == "living-artifacts" and frozen["case"] == "core_continuous" and frozen["business_pass"] is False and
             frozen["config"] == json_value(_bound_config(context)), "Prepared fixture contract differs from the allocated case")
-    expected_sources = ("acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py", "native_interruption_contract.py")
+    expected_sources = ("acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py", "native_interruption_contract.py", "management_event_contract.py")
     sources = array(frozen["caller_sources"], "frozen caller sources")
     require(len(sources) == len(expected_sources), "Prepared caller source set differs")
     refs = [_checked_pin(value, "prepared caller source", PRODUCT_TOOLS / name) for name, value in zip(expected_sources, sources)]
@@ -336,9 +342,9 @@ class Session:
         self.bind(field(row, "after_snapshot"))
         return mapping(field(row, "result"), "actual native tool result")
 
-    def observer(self, target: str | None) -> tuple[CheckpointSample, Pin]:
-        if self.checkpoint_observations >= 3:
-            raise CaseBlocked("This core case permits only three budgeted saved-state observations")
+    def observer(self, target: str | None, *, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> tuple[CheckpointSample, Pin]:
+        if self.checkpoint_observations >= CORE_CHECKPOINT_LIMIT:
+            raise CaseBlocked("This core case permits only seven budgeted saved-state observations")
         before = self.current()
         result = self.call("ck3_save_checkpoint")
         checkpoint = field(result, "checkpoint")
@@ -362,7 +368,8 @@ class Session:
             "storage_policy": "docs/storage-retention-policy.json", "business_pass": False}
         response = self.client.root_checkpoint(f"checkpoint-readback-{self.checkpoint_observations:02d}", object_value(request), reserve=180)
         inputs, references = verify_readback(response, run_id=self.run_id, machine_id=self.machine_id,
-            reviewer=self.client.operator_reviewer, frame=before, source_save=source)
+            reviewer=self.client.operator_reviewer, frame=before, source_save=source,
+            expected_material_rarities=expected_material_rarities)
         require(target is None or inputs.target_id == target, "Actual saved target reference changed")
         native = self.observe_item(inputs.target_id)
         require(self.current().date_raw == before.date_raw and type(native.get("equipped")) is bool,
@@ -382,6 +389,7 @@ class Session:
             "schema_version": 2, "run_id": self.run_id, "machine_id": self.machine_id, "observed_at_utc": utc_now(),
             "native_date_raw": before.date_raw, "sample": selected.to_json(), "saved_inputs": inputs.to_json(),
             "readback_response": json_value(response), "original_native_frame_record": json_value(self.last_native_record),
+            "expected_material_rarities": list(expected_material_rarities),
             "current_native_artifact_variable_query": False})
         self.refs.append(reference)
         return selected, reference
@@ -511,6 +519,63 @@ class Session:
             require(self.current().date_raw == before.date_raw, "Root interruption handling changed the paused date")
         raise CaseBlocked("Finite native interruption handling budget reached")
 
+    def management_choice(self, event_key: str, option_key: str) -> ManagementChoice:
+        active = field(self.last_frame, "active_event")
+        if active is None:
+            raise CaseBlocked("The expected real management event is absent")
+        instance = integer(field(active, "instance_id"), "actual management instance", 1, 2**31 - 1)
+        context = self.call("ck3_query_current_event_window_context_v1", {"event_instance_id": instance})
+        require(integer(field(field(self.last_frame, "active_event"), "instance_id"), "retained management instance", 1) == instance,
+                "Actual management window changed during the native query")
+        return management_choice(context, frame=self.current(), instance_id=instance, event_key=event_key, option_key=option_key)
+
+    def select_management(self, event_key: str, option_key: str, *, next_event: str | None, next_option: str = "xalw.10.close") -> None:
+        if self.original_action_unknown:
+            raise CaseBlocked("An original management action remains unknown; never replay")
+        choice = self.management_choice(event_key, option_key)
+        before = self.current()
+        self.refs.append(write_once(self.client.output / f"management-choice-{self.sequence:04d}.json", {
+            "run_id": self.run_id, "machine_id": self.machine_id, "event_key": choice.event_key,
+            "option_key": choice.option_key, "instance_id": choice.instance_id, "native_option_index": choice.native_option_index,
+            "rendered_index": choice.rendered_index, "resolved_name": choice.resolved_name, "date_raw": before.date_raw,
+            "source_option_derived_from_frozen_generator": True, "business_pass": False}))
+        self.original_action_unknown = True
+        self.call("ck3_select_event_option", choice.arguments())
+        self.snapshot()
+        require(self.current().date_raw == before.date_raw, "Management choice changed the paused date")
+        if next_event is None:
+            require(field(self.last_frame, "active_event") is None, "Original management event is still present")
+        else:
+            require(next_event != event_key, "Next management definition must independently replace the original")
+            self.management_choice(next_event, next_option)
+        self.original_action_unknown = False
+
+    def open_management(self, target: str) -> None:
+        if self.original_action_unknown:
+            raise CaseBlocked("Original action unknown; management cannot be opened")
+        self.snapshot()
+        self.continue_native_interruption()
+        before = self.current()
+        decimal_id(target, "management target", allow_zero=True)
+        self.original_action_unknown = True
+        opened = self.call(DECISIONS_OPEN)
+        require(opened.get("schema") == "ck3-ingame-decisions-open-v1" and opened.get("postcondition_verified") is True and
+                opened.get("verification_pending") is False, "Actual Decisions visibility was not independently confirmed")
+        selected = self.call(DECISION_SELECT, {"decision_key": "xalw_manage_decision"})
+        require(selected.get("schema") == "ck3-ingame-decision-item-action-v1" and selected.get("action") == "select" and
+                selected.get("decision_key") == "xalw_manage_decision" and selected.get("postcondition_verified") is True,
+                "Actual player management decision detail was not independently confirmed")
+        confirmed = self.call(DECISION_CONFIRM, {"decision_key": "xalw_manage_decision", "expected_outcome": "event_window",
+                                               "expected_event_definition_key": "xalw.12"})
+        require(confirmed.get("schema") == "ck3-ingame-decision-outcome-confirm-v1" and confirmed.get("postcondition_verified") is True and
+                confirmed.get("verification_pending") is False and confirmed.get("expected_event_definition_key") == "xalw.12",
+                "Original management confirmation lacks its actual event outcome")
+        self.snapshot()
+        require(self.current().date_raw == before.date_raw, "Management opening changed the paused date")
+        self.management_choice("xalw.12", "xalw.12.open")
+        self.original_action_unknown = False
+        self.select_management("xalw.12", "xalw.12.open", next_event="xalw.10")
+
     def advance_one(self) -> None:
         if self.days >= self.contract.maximum_days:
             raise CaseBlocked("Finite declared natural-day budget reached")
@@ -558,6 +623,10 @@ def run_case(context: object, client: object) -> Object:
         require(set(input_bindings) == {"target", "common", "masterwork", "famed", "illustrious"} and
                 target_owner == str(session.current().player_id) and all(owner == target_owner for owner, _ in input_bindings.values()),
                 "Actual saved fixture inputs do not belong to the native player")
+        target_item = next(item for item in inputs.artifacts if item.artifact_id == target)
+        require("xalw_diet" in target_item.variables and target_item.variables["xalw_diet"].flag == "armor" and
+                all(item.artifact_type == "sword" for item in inputs.artifacts if item.artifact_id != target),
+                "The actual target diet and four material types must prove the non-diet feeding precondition")
         require(not initial.equipped and (initial.level, initial.xp, initial.growth_sequence) == (1, 92, 0),
                 "Observed initial inputs differ from frozen G01 precondition")
         require(initial.date_literal == "1066.9.15", "This source-bound Robert case must start at actual saved 1066.9.15")
@@ -600,14 +669,37 @@ def run_case(context: object, client: object) -> Object:
         checks.append(_check(active_check, "PASS", None, session.refs, {"native_unequip": unequip, "before": frozen.to_json(),
                               "after": current.to_json(), "scope": "monthly-XP-and-evolution-stop-only; aggregate modifiers require separate evidence"}))
         active_check = "CORE-FEED-01"
-        # Real query exposes whether the production artifact-target interaction
-        # is supported. There is no fixture button or fallback effect invocation.
-        query = session.call(INTERACTION_QUERY, {"interaction_key": "xalw_manage_interaction", "recipient_id": session.current().player_id})
-        payload = mapping(field(query, "character_interaction_ordinary_context"), "actual interaction support")
-        checks.append(_check(active_check, "BLOCKED", "Existing ordinary MCP interaction accepts no artifact target/picker; native source-bound picker action is required before real feeding can be credited",
-                             session.refs, {"ordinary_context_supported": json_value(payload.get("ordinary_context_supported")),
-                             "unsupported_reason": json_value(payload.get("unsupported_reason")), "production_feed_submitted": False,
-                             "fixture_feed_submitted": False, "required_actual_material_ids": [input_bindings[rarity][1] for rarity in ("common", "masterwork", "famed", "illustrious")]}))
+        session.equip(target, True)
+        session.open_management(target)
+        feeding_date = session.current().date_raw
+        before_feed = current
+        consumed: set[Rarity] = set()
+        feed_rows: list[Object] = []
+        for rarity, experience in FEEDING_XP.items():
+            session.select_management("xalw.10", f"xalw.10.feed_{rarity}", next_event="xalw.11", next_option="xalw.11.confirm")
+            session.select_management("xalw.11", "xalw.11.confirm", next_event="xalw.10")
+            native = session.observe_item(target)
+            owned = {str(native_id(item, "post-feed owned artifact", allow_zero=True)) for item in array(field(native, "owned_ids"), "post-feed inventory")}
+            consumed.add(rarity)
+            require(all(input_bindings[eaten][1] not in owned for eaten in consumed), "A supposedly consumed material remains in actual native inventory")
+            require(all(input_bindings[remaining][1] in owned for remaining in FEEDING_XP if remaining not in consumed),
+                    "A different material disappeared during feeding")
+            expected_level, expected_xp = before_feed.level, before_feed.xp + experience
+            expected_growth = before_feed.growth_sequence
+            while expected_xp >= 100 * expected_level:
+                expected_xp -= 100 * expected_level
+                expected_level += 1
+                expected_growth += 1
+            current, _ = session.observer(target, expected_material_rarities=tuple(item for item in FEEDING_XP if item not in consumed))
+            require(session.current().date_raw == feeding_date and current.equipped and
+                    (current.level, current.xp, current.growth_sequence) == (expected_level, expected_xp, expected_growth),
+                    "Actual saved feeding XP/automatic level sequence differs at the same paused date")
+            feed_rows.append({"rarity": rarity, "material_id": input_bindings[rarity][1], "base_experience": experience,
+                              "before": before_feed.to_json(), "after": current.to_json(), "native_material_absent": True})
+            before_feed = current
+        session.select_management("xalw.10", "xalw.10.close", next_event=None)
+        checks.append(_check(active_check, "PASS", None, session.refs, {"feedings": json_value(feed_rows), "same_paused_date": feeding_date,
+            "four_actual_native_rarities": True, "no_game_day_or_cooldown_wait": True, "fixture_feed_submitted": False}))
     except CaseFailed as failure:
         error = str(failure)
         checks.append(_check(active_check, "FAIL", error, session.refs, {}))

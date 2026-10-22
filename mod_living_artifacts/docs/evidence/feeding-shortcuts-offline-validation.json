@@ -1,0 +1,146 @@
+{
+  "schema": "xalw.native-feeding-with-unchanged-shared-runtime/v5",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T10:42:04.224919+00:00",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 322681,
+      "sha256": "f25af27d0221260a95b45fc5dcf417d25d733c8dbbdba7be866146643b75f1ee"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1657668,
+      "sha256": "06fc7eba6ea521f4e331c8f0c99aebdac73d587da4932abbb4fdc147d48ace46"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\campaign_interaction_boundary_v1.py",
+      "bytes": 4711,
+      "sha256": "60c4a4ff19651603a3f3f31648ea7b59636a628f9cf675301dc5ccaff48c2eb9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\managed_pause_owner_v1.py",
+      "bytes": 3987,
+      "sha256": "d1558daab8338421a13da881cfc10673120394b9bb3e1a6852d808a0e237f78a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 69218,
+      "sha256": "03f2f50c73aa08888288809d9f7373f70b8d55e55372ee3a98695fb436cee7f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_day.py",
+      "bytes": 13040,
+      "sha256": "c6b5e4fec8bdb9895a9e73506d56d748417af7c6403c07ed2863ab1d55d2ee54"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "bytes": 52685,
+      "sha256": "49b68504629e55cd75a598365c4b86a89ee1017f6f116184eadb461a755d841b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\inventory_gui_contract.py",
+      "bytes": 8051,
+      "sha256": "0691627fe27360b74034fb1190b6b5ae68c62c4e3afc0a6421c97332be85d8ff"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\native_interruption_contract.py",
+      "bytes": 3252,
+      "sha256": "39d209f8f44546f1931b89912928443e82f7bcbde3340808f976f49627707258"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\management_event_contract.py",
+      "bytes": 4724,
+      "sha256": "a473e0301084a320924d0cb23a45180b7e50e8d6f6c84a22bce7b9e1a51e5d7a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_callback.py",
+      "bytes": 10280,
+      "sha256": "57c0ad9432e0064984eb95e38a64a5f094d0e32301c4884e71b8488c34975a54"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+      "bytes": 12653,
+      "sha256": "4f884376455207694173ce7ba8abf64b417ce901c457a9426be26e3293c21b40"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+      "bytes": 64349,
+      "sha256": "c88fac4b5d781364c5eb8307c6e489d609b19f87c4a35cd3b64bf36d7bad30df"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_model.py",
+      "bytes": 3156,
+      "sha256": "f899aaf87bc918f94bc54c1e44e210bf9ecf61c8b240341e2fab31085387ae53"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_management_contracts.py",
+      "bytes": 9752,
+      "sha256": "2545bc6e44c91bcd9ff003964a10ad16a9b0b56d810e860b971441f9018cd840"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_artifacts.py",
+      "bytes": 10014,
+      "sha256": "da8f064d0b53ee903fa93acdd2183b7945fbf1c95c8a79ad8d72df011d522953"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_callback.py",
+      "bytes": 11009,
+      "sha256": "1974a356029ff34fbd827b3b2961ea43ba5bb1bd6335b3968c9528492e1ea963"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_acceptance_adapter.py",
+      "bytes": 33315,
+      "sha256": "5e5b69bf8c1b40ea3568a1bd52b2c4f60b49e9858c832b27492c928375e4a6ed"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_core_generation.py",
+      "bytes": 26617,
+      "sha256": "2eb479019413a75da1abbc612ff18ad26a9bae944906090f89ecdb4b949b3c3f"
+    }
+  ],
+  "behavior_completion": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\feeding-flow-final-a02\\result.json",
+    "bytes": 5033,
+    "sha256": "ba5711ca80d525a61c0d310f28d6e8271ca321bf7ad4ccd374088a9d20c3b81b"
+  },
+  "behavior_exit_code": 0,
+  "behavior_tests": 195,
+  "unchanged_shared_previous_validation": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r7-repair-validation.json",
+    "bytes": 3895,
+    "sha256": "2b6d9bad517c54f11389a8f6077a0f376a48189b253a0897682ed352f3a68b04"
+  },
+  "shared_ci_group": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-envelope-and-pause-ci-a01\\result.json",
+    "bytes": 37534,
+    "sha256": "61cf341468dbc1c45a0cf757c26b2138847d39dc9cf1dc7bd986c10ff770d3a0"
+  },
+  "driver_scope_comparison": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-pause-owner-type-scope-a01\\comparison.json",
+    "bytes": 1128,
+    "sha256": "a21ecdeb35c5a86ab9285d9cc1e9469eabaed198bb90f68ae04ac6e3d638fba0"
+  },
+  "unchanged_host_previous_validation": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r6-repair-validation.json",
+    "bytes": 2835,
+    "sha256": "ddc80fbaf650dc4b4acfd141066f131bb83d6f89be0aeee212862d6f2e4c3869"
+  },
+  "shared_ci_original_commands": 77,
+  "shared_ci_reuse_scope": "All six shared source pins are byte-identical to R7 v4. Current product has its own new complete 117-test suite; old product tests are not reused as current product proof.",
+  "strict_product_tools_files": 31,
+  "strict_product_check": {
+    "tool_chunk_id": "f00043",
+    "actual_exit_code": 0,
+    "command": "root_living_commands.py mypy",
+    "stdout": "Success: no issues found in 31 source files"
+  },
+  "whole_legacy_modules_strict_pass": false,
+  "game_started": false,
+  "business_pass": false,
+  "translation_format_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\localization\\feeding-shortcuts-retry-20261022T102459Z\\result.json",
+    "bytes": 374,
+    "sha256": "08945bc5bb1364466a313a2c4ba5087b3f212964b186b656763ce975843781e4"
+  }
+}

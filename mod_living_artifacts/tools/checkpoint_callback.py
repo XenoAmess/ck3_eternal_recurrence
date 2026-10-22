@@ -12,6 +12,7 @@ from typing import Literal, TypeAlias, TypedDict
 
 from acceptance_contract import Frame, Object, Pin, decimal_id, field, integer, mapping, pin, read, require, text
 from checkpoint_artifacts import SavedArtifact, SavedInputs, inspect_inputs
+from living_artifacts_model import FEEDING_XP, Rarity
 
 
 class ReadbackRequestBody(TypedDict):
@@ -115,7 +116,7 @@ def checked_pin(value: object, label: str, *, allow_empty: bool = False) -> Pin:
 
 
 def verify_readback(value: object, *, run_id: str, machine_id: str, reviewer: str, frame: Frame,
-                    source_save: Pin) -> tuple[SavedInputs, tuple[Pin, ...]]:
+                    source_save: Pin, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> tuple[SavedInputs, tuple[Pin, ...]]:
     row = mapping(value, "Root checkpoint readback")
     status = field(row, "status")
     expected = BlockedReadbackResponse.__required_keys__ if status == "blocked" else CompletedReadbackResponse.__required_keys__
@@ -166,7 +167,7 @@ def verify_readback(value: object, *, run_id: str, machine_id: str, reviewer: st
     require(set(identity) == set(FileIdentity.__required_keys__) and integer(identity["size_bytes"], "original source bytes", 1) == raw["bytes"], "Original source identity is incomplete")
     for name in ("device_id_decimal", "file_id_decimal", "mtime_ns_decimal"):
         decimal_id(identity[name], name, allow_zero=True)
-    result = inspect_inputs(Path(melted["path"]), player_id=frame.player_id)
+    result = inspect_inputs(Path(melted["path"]), player_id=frame.player_id, expected_material_rarities=expected_material_rarities)
     return result, (raw, melted, melter, command, process, *more)
 
 

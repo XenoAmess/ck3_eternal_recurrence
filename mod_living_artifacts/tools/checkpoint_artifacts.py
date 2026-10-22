@@ -14,7 +14,7 @@ from typing import Iterator, TypeAlias
 
 from acceptance_contract import Object, decimal_id, native_id, pin, require
 from living_artifacts_core import render_fixture_localization
-from living_artifacts_model import LIVING_NAME_PREFIX
+from living_artifacts_model import FEEDING_XP, LIVING_NAME_PREFIX, Rarity
 
 Value: TypeAlias = str | tuple["Entry", ...]
 TOKEN = re.compile(r'"(?:[^"\\]|\\.)*"|[{}=]|[^\s{}="]+')
@@ -209,7 +209,11 @@ class SavedInputs:
                 "artifacts": [item.to_json() for item in self.artifacts]}
 
 
-def inspect_inputs(melted: Path, *, player_id: int) -> SavedInputs:
+def inspect_inputs(melted: Path, *, player_id: int, expected_material_rarities: tuple[Rarity, ...] = tuple(FEEDING_XP)) -> SavedInputs:
+    require(type(expected_material_rarities) is tuple and
+            all(type(rarity) is str and rarity in FEEDING_XP for rarity in expected_material_rarities) and
+            len(set(expected_material_rarities)) == len(expected_material_rarities),
+            "Explicit unique native material rarities required")
     actor = str(native_id(player_id, "selected actual player"))
     player = [body for identity, body in records(melted, ("living",)) if identity == actor]
     require(len(player) == 1, "Exactly one actual living player record required")
@@ -230,9 +234,11 @@ def inspect_inputs(melted: Path, *, player_id: int) -> SavedInputs:
         item = SavedArtifact.parse(identity, body)
         if item.owner_id == actor:
             selected.append(item)
-    require(len(selected) == 5 and len({item.artifact_id for item in selected}) == 5 and
-            all(sum(item.name in names for item in selected) == 1 for names in role_names.values()),
-            "Actual saved player must own five distinct named fixture inputs")
+    expected_roles = {"target", *expected_material_rarities}
+    require(len(selected) == len(expected_roles) and len({item.artifact_id for item in selected}) == len(expected_roles) and
+            all(sum(item.name in names for item in selected) == (1 if role in expected_roles else 0)
+                for role, names in role_names.items()),
+            "Actual saved player inputs differ from the explicitly expected surviving material roles")
     target = [item for item in selected if item.artifact_id == target_id]
     require(len(target) == 1 and target[0].name in role_names["target"], "Saved target variable and actual named artifact disagree")
     for role in ("common", "masterwork", "famed", "illustrious"):

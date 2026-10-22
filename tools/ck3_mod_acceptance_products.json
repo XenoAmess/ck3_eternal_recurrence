@@ -3321,7 +3321,7 @@
         {
           "id": "core_continuous",
           "status": "ready",
-          "implementation_credit": "First-stage real equip/monthly-growth/unequip adapter; actual observations NOT_RUN and production feeding remains picker-BLOCKED",
+          "implementation_credit": "V3 equip/monthly-growth/unequip and four normal-management feedings with seven actual saved/native checkpoints; expanded case live NOT_RUN; previous R7 growth proof remains separately scoped",
           "adapter": {
             "path": "{repo_root}/mod_living_artifacts/tools/acceptance_adapter.py",
             "config": "{repo_root}/mod_living_artifacts/tools/core_continuous.contract.json"
@@ -3335,11 +3335,11 @@
           "budgets": {
             "command_timeout": 300,
             "readiness_timeout": 900,
-            "timeout": 4800,
-            "hold_seconds": 2700,
+            "timeout": 7200,
+            "hold_seconds": 5400,
             "poll_interval": 0.5
           },
-          "budget_provenance": "Bounded first-stage prototype; shared readiness floor remains separately effective; no content-matrix or release acceptance credit",
+          "budget_provenance": "Prospective V3 scene: seven actual saves/strict melts, four same-date ordinary player feedings, at most 72 actual days and 420 calls; 5400-second fixed hold and 180-second close reserve, no extension or replay. Previous failed scenes retain their original budgets; no content-matrix or release acceptance credit",
           "required_mcp_tools": [
             "ck3_take_snapshot",
             "ck3_execute_step",
@@ -3349,6 +3349,9 @@
             "ck3_open_player_inventory_window_v1",
             "ck3_query_player_inventory_window_open_post_v1",
             "ck3_query_ingame_ui_window_v1",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
             "ck3_query_character_interaction_ordinary_v1",
             "ck3_query_current_event_window_context_v1",
             "ck3_select_event_option",

@@ -1,6 +1,6 @@
 {
-  "schema": "living-artifacts-core-continuous-case-v2",
-  "schema_version": 2,
+  "schema": "living-artifacts-core-continuous-case-v3",
+  "schema_version": 3,
   "product": "living-artifacts",
   "case_id": "core_continuous",
   "acceptance_scope": "fixture_live_core_first_stage",
@@ -30,7 +30,7 @@
     "all-twelve-abilities", "all-eight-curses", "AI-baron-unlanded-cultivation", "inheritance-and-transfer",
     "Chinese-screenshot-review", "Workshop-upload-and-public-readback"
   ],
-  "observer_authority": "three-actual-checkpoints-strict-melt-and-independent-native-owner-equipment-crosscheck",
-  "artifact_picker_boundary": "ordinary interaction tools accept no artifact target; no generic ScriptedGUI route is registered",
+  "observer_authority": "seven-actual-checkpoints-strict-melt-and-independent-native-owner-equipment-crosscheck",
+  "artifact_picker_boundary": "normal player guidance decision and native event choices select rarity candidates; original artifact picker remains available; no fixture business mutation",
   "whole_product_acceptance_credit": false
 }

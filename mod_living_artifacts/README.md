@@ -13,7 +13,8 @@
 - [实现与验收方案](docs/implementation-plan.md)：脚本落点、持久化字段合同、兼容性、待验证接口与开发顺序。
 - [测试验收总方案](docs/test-plan.md)：分层流程、夹具、核心机制/AI/冷载用例、运行安排和通过标准。
 - [内容验收矩阵](docs/content-acceptance-matrix.md)：12异能、8重诅咒、4代表联动逐条前置、真实触发、数字后验与负例，全部NOT_RUN。
-- [验收执行与结果合同](docs/acceptance-execution-contract.md)：连续核心 v1 已实际运行并保留失败；当前 v2 使用当次角色身份与保存状态后验，待重新实测。
+- [验收执行与结果合同](docs/acceptance-execution-contract.md)：当次角色身份、实际保存状态后验与结果判定；历史失败按原场次保留。
+- [四档喂养入口与连续核心 v3](docs/feeding-shortcuts-and-core-v3.md)：正常管理页选择候选、确认消费与自动升级规则；七个真实保存检查点、新场次预算及待实机范围。
 - [R2 运行记录](docs/runtime-r2-issues.md)：真实装备、两天推进、第三天读回失败、修复及资源清理；附[真实库存截图](docs/evidence/r2-inventory.png)。
 - [实现调整](docs/implementation-adjustments.md)：90日镇压、每件饥渴叠加和真实原版触发的最终期望。
 - [图片来源](docs/media-provenance.md)：原创宣传封面；实机截图与公开上传单独记录。

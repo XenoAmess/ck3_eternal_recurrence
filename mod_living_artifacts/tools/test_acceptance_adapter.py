@@ -11,7 +11,7 @@ import sys
 import unittest
 
 import acceptance_adapter as adapter
-from acceptance_contract import ArtifactSample, Object, array, exact_getter_integer, field, integer, json_value, mapping, object_value, pin, read, write_once
+from acceptance_contract import ArtifactSample, Frame, Object, array, exact_getter_integer, field, integer, json_value, mapping, object_value, pin, read, write_once
 import prepare_fixture
 from living_artifacts_core import render_core_localization
 from inventory_gui_contract import REFUSAL
@@ -22,6 +22,8 @@ from startup_actor_binding import StartupActorBinding
 from ck3_mod_acceptance_client import CaseClient
 from native_interruption_contract import completed_interruption_response
 from test_native_interruption_contract import PublicCheckpointPort, RootCheckpointConsumer
+from test_management_contracts import displayed_option, event_fixture
+from living_artifacts_model import FEEDING_XP
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'ck3_autonomous_player/src'))
 
@@ -228,7 +230,120 @@ class NativeRouteNotificationPort(NotificationPort):
         return row
 
 
+class ManagementPort(GuiPort):
+    """Actual product controller with authored transport and event observations."""
+
+    def __init__(self, output: Path, *, unknown_choice: bool = False, failed_open: bool = False) -> None:
+        super().__init__(output)
+        self.event_key: str | None = None
+        self.instance = 80
+        self.unknown_choice = unknown_choice
+        self.failed_open = failed_open
+        self.choices: list[Object] = []
+
+    def show_event(self, key: str | None) -> None:
+        self.instance += 1
+        self.event_key = key
+        self.frame["active_event"] = None if key is None else {"instance_id": self.instance}
+
+    def execute_plan(self, steps: list[Object], name: str, timeout: int | float | None = None, reserve: int = 90) -> object:
+        tool = steps[0]["tool"]
+        if not isinstance(tool, str):
+            raise AssertionError("Explicit tool required")
+        self.calls.append(tool)
+        args = mapping(steps[0]["args"], "authored command args")
+        result: Object
+        if tool == adapter.DECISIONS_OPEN:
+            result = {"schema": "ck3-ingame-decisions-open-v1", "postcondition_verified": not self.failed_open,
+                      "verification_pending": self.failed_open}
+        elif tool == adapter.DECISION_SELECT:
+            self.assert_decision(args)
+            result = {"schema": "ck3-ingame-decision-item-action-v1", "action": "select",
+                      "decision_key": "xalw_manage_decision", "postcondition_verified": True}
+        elif tool == adapter.DECISION_CONFIRM:
+            self.assert_decision(args)
+            if args.get("expected_outcome") != "event_window" or args.get("expected_event_definition_key") != "xalw.12":
+                raise AssertionError("Expected original guidance event required")
+            self.show_event("xalw.12")
+            result = {"schema": "ck3-ingame-decision-outcome-confirm-v1", "postcondition_verified": True,
+                      "verification_pending": False, "expected_event_definition_key": "xalw.12"}
+        elif tool == "ck3_query_current_event_window_context_v1":
+            if self.event_key is None:
+                raise AssertionError("No authored event exists")
+            frame = Frame.parse(self.frame, run_id="unit-run", machine_id="unit-machine", manifest=self.manifest)
+            count = 10 if self.event_key == "xalw.10" else 2
+            result, _ = event_fixture(event=self.event_key, instance=self.instance, frame=frame,
+                                      options=[displayed_option(index, index) for index in range(count)])
+        elif tool == "ck3_select_event_option":
+            self.choices.append(object_value(args))
+            if args.get("event_instance_id") != self.instance:
+                raise AssertionError("Original instance required")
+            if not self.unknown_choice:
+                if self.event_key == "xalw.12":
+                    self.show_event("xalw.10")
+                elif self.event_key == "xalw.11":
+                    self.show_event("xalw.10")
+                elif self.event_key == "xalw.10":
+                    self.show_event(None if args.get("option_number") == 10 else "xalw.11")
+                else:
+                    raise AssertionError("Unexpected original event")
+            result = {"submitted": True}  # ACK alone is never the product postcondition.
+        else:
+            raise AssertionError("Unexpected management test tool: " + tool)
+        row: Object = {"ok": True, "result": result, "after_snapshot": self.frame}
+        write_once(self.output / (name + ".actual-results.json"), {"rows": [row], "unit_test_data": True})
+        return [row]
+
+    @staticmethod
+    def assert_decision(args: dict[str, object]) -> None:
+        if args.get("decision_key") != "xalw_manage_decision":
+            raise AssertionError("Actual ordinary management decision required")
+
+
 class AcceptanceContractTests(unittest.TestCase):
+    def test_native_management_producer_reaches_all_four_original_event_confirmations(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            port = ManagementPort(Path(temporary))
+            session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+            session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
+            session.open_management("16777217")
+            self.assertEqual(port.calls[:3], [adapter.DECISIONS_OPEN, adapter.DECISION_SELECT, adapter.DECISION_CONFIRM])
+            for rarity in FEEDING_XP:
+                session.select_management("xalw.10", "xalw.10.feed_" + rarity, next_event="xalw.11", next_option="xalw.11.confirm")
+                session.select_management("xalw.11", "xalw.11.confirm", next_event="xalw.10")
+            session.select_management("xalw.10", "xalw.10.close", next_event=None)
+            self.assertEqual([choice["option_number"] for choice in port.choices], [1, 2, 1, 3, 1, 4, 1, 5, 1, 10])
+            self.assertFalse(session.original_action_unknown)
+            self.assertEqual(session.current().date_raw, 24000)
+            self.assertEqual(session.days, 0)
+            self.assertEqual(port.gui_requests, [])
+
+    def test_unknown_management_choice_is_not_replayed_after_unchanged_native_event(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            port = ManagementPort(Path(temporary), unknown_choice=True)
+            port.show_event("xalw.11")
+            session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+            session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
+            session.snapshot()
+            with self.assertRaisesRegex(ValueError, "identity/date/window"):
+                session.select_management("xalw.11", "xalw.11.confirm", next_event="xalw.10")
+            with self.assertRaisesRegex(adapter.CaseBlocked, "never replay"):
+                session.select_management("xalw.11", "xalw.11.confirm", next_event="xalw.10")
+            self.assertEqual(len(port.choices), 1)
+            self.assertTrue(session.original_action_unknown)
+
+    def test_unknown_decisions_open_cannot_trigger_selection_confirmation_or_gui_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            port = ManagementPort(Path(temporary), failed_open=True)
+            session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))
+            session.startup_actor = StartupActorBinding(29829, 123, "1", 24000, 25, "a" * 64, "b" * 64)
+            with self.assertRaisesRegex(ValueError, "Decisions visibility"):
+                session.open_management("16777217")
+            with self.assertRaisesRegex(adapter.CaseBlocked, "unknown"):
+                session.open_management("16777217")
+            self.assertEqual(port.calls, [adapter.DECISIONS_OPEN])
+            self.assertEqual(port.gui_requests, [])
+
     def test_actual_public_native_day_reaches_product_interruption_consumer(self) -> None:
         for early in (True,False):
             with self.subTest(early=early),tempfile.TemporaryDirectory() as temporary:

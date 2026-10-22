@@ -454,6 +454,22 @@ def render_core_effects() -> str:
 
 def _render_management_effects() -> list[str]:
     effects: list[str] = []
+    effects.append(_block("xalw_choose_feed_rarity_effect", """
+        save_scope_as = owner
+        if = {
+            limit = {
+                scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = root }
+                any_character_artifact = { xalw_is_safe_feed_material_trigger = yes rarity = $RARITY$ }
+            }
+            ordered_character_artifact = {
+                limit = { xalw_is_safe_feed_material_trigger = yes rarity = $RARITY$ }
+                order_by = { value = artifact_durability multiply = -1 }
+                max = 1
+                save_scope_as = xalw_material
+            }
+            trigger_event = xalw.11
+        }
+    """))
     ai_equipment: list[str] = []
     for slot in PERSONAL_SLOTS:
         ai_equipment.append(f"""
@@ -665,6 +681,14 @@ def render_core_on_actions() -> str:
 
 def render_core_events() -> str:
     """Return monthly timers and the native, read-after-commit management page."""
+    feeding_options = "\n".join(_block("option", f"""
+        name = xalw.10.feed_{rarity}
+        trigger = {{
+            scope:xalw_artifact = {{ xalw_can_gain_xp_trigger = yes }}
+            any_character_artifact = {{ xalw_is_safe_feed_material_trigger = yes rarity = {rarity} }}
+        }}
+        xalw_choose_feed_rarity_effect = {{ RARITY = {rarity} }}
+    """) for rarity in FEEDING_XP)
     return dedent("""
         namespace = xalw
         xalw.1 = {
@@ -731,6 +755,7 @@ def render_core_events() -> str:
                 name = xalw.10.feed
                 custom_tooltip = xalw_feed_selector_help
             }
+            __XALW_FEED_RARITY_OPTIONS__
             option = {
                 name = xalw.10.train
                 trigger = { scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes } }
@@ -770,17 +795,37 @@ def render_core_events() -> str:
                 scope:xalw_material ?= { xalw_is_safe_feed_material_trigger = yes artifact_owner = root }
             }
             immediate = { save_scope_as = owner }
-            option = { name = xalw.11.confirm xalw_feed_material_effect = yes }
-            option = { name = xalw.11.cancel }
+            option = {
+                name = xalw.11.confirm
+                xalw_feed_material_effect = yes
+                if = { limit = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes artifact_owner = root } } trigger_event = xalw.10 }
+            }
+            option = {
+                name = xalw.11.cancel
+                if = { limit = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes artifact_owner = root } } trigger_event = xalw.10 }
+            }
         }
         xalw.12 = {
             type = character_event
             title = xalw.12.t
             desc = xalw.12.desc
             theme = learning
+            immediate = {
+                ordered_character_artifact = {
+                    limit = { xalw_is_living_trigger = yes is_equipped = yes }
+                    order_by = var:xalw_level
+                    max = 1
+                    save_scope_as = xalw_artifact
+                }
+            }
+            option = {
+                name = xalw.12.open
+                trigger = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes is_equipped = yes artifact_owner = root } }
+                trigger_event = xalw.10
+            }
             option = { name = xalw.10.close }
         }
-    """).strip() + "\n"
+    """).strip().replace("__XALW_FEED_RARITY_OPTIONS__", feeding_options) + "\n"
 
 
 def render_core_decisions() -> str:
@@ -903,6 +948,11 @@ def render_core_localization(language: Language) -> dict[str, str]:
         "xalw.10.t": ("[xalw_artifact.GetName]：活物的低语", "[xalw_artifact.GetName]: A Living Whisper"),
         "xalw.10.desc": ("等级：#V [xalw_artifact.MakeScope.Var('xalw_level').GetValue|0]#!　经验：#V [xalw_artifact.MakeScope.Var('xalw_xp_in_level').GetValue|0]#! / [xalw_artifact.MakeScope.ScriptValue('xalw_next_level_xp_value')|0]\\n共鸣：#V [xalw_artifact.MakeScope.Var('xalw_resonance').GetValue|0]#!/100\\n\\n[xalw_artifact.Custom('XalwAffixes')]\\n[xalw_artifact.Custom('XalwCurses')]\\n\\n装备时每月自动获得8经验。达到门槛就升级，无须确认。卸下免费停级，同时停止活武器持续效果。喂养无冷却。\\n镇压报价：[xalw_artifact.MakeScope.ScriptValue('xalw_suppression_cost_value')|0]金币、50威望、10压力；安抚报价：[xalw_artifact.MakeScope.ScriptValue('xalw_appease_cost_value')|0]金币、10压力。", "Level: #V [xalw_artifact.MakeScope.Var('xalw_level').GetValue|0]#!  XP: #V [xalw_artifact.MakeScope.Var('xalw_xp_in_level').GetValue|0]#! / [xalw_artifact.MakeScope.ScriptValue('xalw_next_level_xp_value')|0]\\nResonance: #V [xalw_artifact.MakeScope.Var('xalw_resonance').GetValue|0]#!/100\\n\\n[xalw_artifact.Custom('XalwAffixes')]\\n[xalw_artifact.Custom('XalwCurses')]\\n\\nEquipped artifacts gain 8 XP monthly and level automatically. Unequipping stops growth and ongoing effects. Feeding has no cooldown.\\nSuppression: [xalw_artifact.MakeScope.ScriptValue('xalw_suppression_cost_value')|0] gold, 50 prestige, 10 stress. Appeasement: [xalw_artifact.MakeScope.ScriptValue('xalw_appease_cost_value')|0] gold, 10 stress."),
         "xalw.10.feed": ("把它设为喂养目标", "Select it as the Feeding Target"),
+        "xalw.10.feed_common": ("挑选一件普通装备喂养", "Choose Common Equipment as Food"),
+        "xalw.10.feed_masterwork": ("挑选一件大师级装备喂养", "Choose Masterwork Equipment as Food"),
+        "xalw.10.feed_famed": ("挑选一件名作级装备喂养", "Choose Famed Equipment as Food"),
+        "xalw.10.feed_illustrious": ("挑选一件卓越级装备喂养", "Choose Illustrious Equipment as Food"),
+        "xalw.12.open": ("倾听[xalw_artifact.GetName]", "Listen to [xalw_artifact.GetName]"),
         "xalw_feed_selector_help": ("已选定此物。右键自己的头像，使用“喂养选定的活武器”，再选择材料。材料销毁前可取消。", "Target selected. Right-click your portrait, choose Feed Selected Living Artifact, then choose its food. You may cancel before destruction."),
         "xalw.10.train": ("共鸣训练（50威望，10压力，+25经验）", "Resonance Training (50 prestige, 10 stress, +25 XP)"),
         "xalw.10.suppress": ("付费镇压成长三个月", "Pay to Suppress Growth for Three Months"),
@@ -919,6 +969,16 @@ def render_core_localization(language: Language) -> dict[str, str]:
         "xalw_empty_curses": ("诅咒：无", "Curses: none"),
     }
     result = {key: pair[0 if chinese else 1] for key, pair in pairs.items()}
+    result["xalw.10.desc"] += (
+        "\\n\\n下方四档喂养会挑选同稀有度中耐久最低的安全材料，先显示具体物品，再由你确认销毁。可取消并将不愿喂掉的物品设为保留；也可通过宝物自选交互精确挑选。"
+        if chinese else
+        "\\n\\nRarity feeding picks the safe material with the least durability in that rarity. Review the exact item before confirming destruction. Cancel and protect anything you want to keep, or use the artifact picker for a specific choice."
+    )
+    result["xalw.12.desc"] += (
+        "\\n\\n下方可直接倾听一件已装备的活武器（优先等级最高者）；若要指定其他物品，仍可使用自己的宝物选择交互。"
+        if chinese else
+        "\\n\\nBelow, listen directly to an equipped living artifact, prioritizing the highest level. Use your artifact interaction to select another specific item."
+    )
     result["xalw.10.suppress"] = "付费镇压成长90日" if chinese else "Pay to Suppress Growth for 90 Days"
     detail_line = (
         "性格：[xalw_artifact.Custom('XalwPersonality')]　食性：[xalw_artifact.Custom('XalwDiet')]\\n镇压剩余：[xalw_artifact.MakeScope.ScriptValue('xalw_suppression_remaining_days_value')|0]日\\n\\n"

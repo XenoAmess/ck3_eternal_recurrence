@@ -1,4 +1,19 @@
 ﻿# Generated; edit tools, then run generate.py.
+xalw_train_effect = {
+	save_scope_as = owner
+	if = {
+	    limit = {
+	        prestige >= 50
+	        NOT = { has_variable = xalw_training_cooldown }
+	        scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = scope:owner }
+	    }
+	    add_prestige = -50
+	    add_stress = 10
+	    set_variable = { name = xalw_training_cooldown value = yes days = 365 }
+	    scope:xalw_artifact = { change_variable = { name = xalw_pending_xp add = 25 } xalw_settle_xp_effect = yes }
+	}
+}
+
 xalw_suppress_effect = {
 	save_scope_as = owner
 	if = {

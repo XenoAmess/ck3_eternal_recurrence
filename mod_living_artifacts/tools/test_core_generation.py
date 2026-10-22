@@ -150,6 +150,48 @@ class CoreGenerationTests(unittest.TestCase):
         localized = core.render_core_localization("simp_chinese")["xalw.11.desc"]
         self.assertIn("ScriptValue('xalw_selected_feed_xp_value')", localized)
 
+    def test_rarity_shortcuts_only_select_safe_food_and_leave_destruction_to_confirmation(self) -> None:
+        script = self.effects
+        chooser = script.named("xalw_choose_feed_rarity_effect")
+        branch = script.child(chooser, "if")
+        eligible = script.child(script.child(branch, "limit"), "any_character_artifact")
+        chosen = script.child(branch, "ordered_character_artifact")
+        selected_limit = script.child(chosen, "limit")
+        for condition in (eligible, selected_limit):
+            self.assertEqual(script.scalar(condition, "xalw_is_safe_feed_material_trigger").value, "yes")
+            self.assertEqual(script.scalar(condition, "rarity").value, "$RARITY$")
+        self.assertEqual(script.scalar(chosen, "max").value, "1")
+        self.assertEqual(script.scalar(chosen, "save_scope_as").value, "xalw_material")
+        text = script.mask[chooser.opening:chooser.end]
+        self.assertNotIn("destroy_artifact", text)
+        self.assertNotIn("change_variable", text)
+        self.assertNotIn("cooldown", text)
+        self.assertEqual(script.scalar(branch, "trigger_event").value, "xalw.11")
+        menu = self.events.named("xalw.10")
+        for rarity in ("common", "masterwork", "famed", "illustrious"):
+            option = next(item for item in self.events.children(menu) if item.key == "option" and
+                          self.events.scalar(item, "name").value == f"xalw.10.feed_{rarity}")
+            call = self.events.child(option, "xalw_choose_feed_rarity_effect")
+            self.assertEqual(self.events.scalar(call, "RARITY").value, rarity)
+
+    def test_guidance_shortcut_requires_an_owned_equipped_living_target(self) -> None:
+        script = self.events
+        menu = script.named("xalw.12")
+        candidate = script.child(script.child(menu, "immediate"), "ordered_character_artifact")
+        limit = script.child(candidate, "limit")
+        self.assertEqual(script.scalar(limit, "xalw_is_living_trigger").value, "yes")
+        self.assertEqual(script.scalar(limit, "is_equipped").value, "yes")
+        self.assertEqual(script.scalar(candidate, "max").value, "1")
+        self.assertEqual(script.scalar(candidate, "save_scope_as").value, "xalw_artifact")
+        open_option = next(item for item in script.children(menu) if item.key == "option" and
+                           script.scalar(item, "name").value == "xalw.12.open")
+        # The shared block scanner intentionally recognizes '=' assignments;
+        # inspect this optional '?=' scope guard in its original masked text.
+        trigger = script.child(open_option, "trigger")
+        self.assertRegex(script.mask[trigger.opening:trigger.end],
+                         r"scope:xalw_artifact\s*\?=\s*\{[^{}]*artifact_owner\s*=\s*root\b")
+        self.assertEqual(script.scalar(open_option, "trigger_event").value, "xalw.10")
+
     def test_four_native_rarity_inputs_have_exact_distinct_rewards(self) -> None:
         script = self.values
         source = script.named("xalw_feed_base_xp_value")

@@ -2933,7 +2933,7 @@
         },
         {
           "path": "mod_living_artifacts/tools/living_artifacts_core.py",
-          "sha256": "421228d87a79aa241bb61fa4042a14ad68ed1cea2baeac1570373d043b083bd9",
+          "sha256": "c88fac4b5d781364c5eb8307c6e489d609b19f87c4a35cd3b64bf36d7bad30df",
           "anchor": "xalw_owner_needs_monthly_trigger"
         }
       ]

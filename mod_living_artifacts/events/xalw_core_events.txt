@@ -64,6 +64,42 @@ xalw.10 = {
         custom_tooltip = xalw_feed_selector_help
     }
     option = {
+	name = xalw.10.feed_common
+	trigger = {
+	    scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes }
+	    any_character_artifact = { xalw_is_safe_feed_material_trigger = yes rarity = common }
+	}
+	xalw_choose_feed_rarity_effect = { RARITY = common }
+}
+
+option = {
+	name = xalw.10.feed_masterwork
+	trigger = {
+	    scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes }
+	    any_character_artifact = { xalw_is_safe_feed_material_trigger = yes rarity = masterwork }
+	}
+	xalw_choose_feed_rarity_effect = { RARITY = masterwork }
+}
+
+option = {
+	name = xalw.10.feed_famed
+	trigger = {
+	    scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes }
+	    any_character_artifact = { xalw_is_safe_feed_material_trigger = yes rarity = famed }
+	}
+	xalw_choose_feed_rarity_effect = { RARITY = famed }
+}
+
+option = {
+	name = xalw.10.feed_illustrious
+	trigger = {
+	    scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes }
+	    any_character_artifact = { xalw_is_safe_feed_material_trigger = yes rarity = illustrious }
+	}
+	xalw_choose_feed_rarity_effect = { RARITY = illustrious }
+}
+
+    option = {
         name = xalw.10.train
         trigger = { scope:xalw_artifact = { xalw_can_gain_xp_trigger = yes } }
         show_as_unavailable = { OR = { prestige < 50 has_variable = xalw_training_cooldown } }
@@ -102,13 +138,33 @@ xalw.11 = {
         scope:xalw_material ?= { xalw_is_safe_feed_material_trigger = yes artifact_owner = root }
     }
     immediate = { save_scope_as = owner }
-    option = { name = xalw.11.confirm xalw_feed_material_effect = yes }
-    option = { name = xalw.11.cancel }
+    option = {
+        name = xalw.11.confirm
+        xalw_feed_material_effect = yes
+        if = { limit = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes artifact_owner = root } } trigger_event = xalw.10 }
+    }
+    option = {
+        name = xalw.11.cancel
+        if = { limit = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes artifact_owner = root } } trigger_event = xalw.10 }
+    }
 }
 xalw.12 = {
     type = character_event
     title = xalw.12.t
     desc = xalw.12.desc
     theme = learning
+    immediate = {
+        ordered_character_artifact = {
+            limit = { xalw_is_living_trigger = yes is_equipped = yes }
+            order_by = var:xalw_level
+            max = 1
+            save_scope_as = xalw_artifact
+        }
+    }
+    option = {
+        name = xalw.12.open
+        trigger = { scope:xalw_artifact ?= { xalw_is_living_trigger = yes is_equipped = yes artifact_owner = root } }
+        trigger_event = xalw.10
+    }
     option = { name = xalw.10.close }
 }

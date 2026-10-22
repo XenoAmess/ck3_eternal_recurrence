@@ -188,6 +188,23 @@ xalw_owner_changed_effect = {
 	}
 }
 
+xalw_choose_feed_rarity_effect = {
+	save_scope_as = owner
+	if = {
+	    limit = {
+	        scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = root }
+	        any_character_artifact = { xalw_is_safe_feed_material_trigger = yes rarity = $RARITY$ }
+	    }
+	    ordered_character_artifact = {
+	        limit = { xalw_is_safe_feed_material_trigger = yes rarity = $RARITY$ }
+	        order_by = { value = artifact_durability multiply = -1 }
+	        max = 1
+	        save_scope_as = xalw_material
+	    }
+	    trigger_event = xalw.11
+	}
+}
+
 xalw_feed_material_effect = {
 	if = {
 	            limit = {
@@ -214,19 +231,4 @@ xalw_feed_material_effect = {
 	            }
 	            scope:xalw_artifact = { remove_variable = xalw_pending_feed_imprint }
 	        }
-}
-
-xalw_train_effect = {
-	save_scope_as = owner
-	if = {
-	    limit = {
-	        prestige >= 50
-	        NOT = { has_variable = xalw_training_cooldown }
-	        scope:xalw_artifact ?= { xalw_can_gain_xp_trigger = yes artifact_owner = scope:owner }
-	    }
-	    add_prestige = -50
-	    add_stress = 10
-	    set_variable = { name = xalw_training_cooldown value = yes days = 365 }
-	    scope:xalw_artifact = { change_variable = { name = xalw_pending_xp add = 25 } xalw_settle_xp_effect = yes }
-	}
 }
