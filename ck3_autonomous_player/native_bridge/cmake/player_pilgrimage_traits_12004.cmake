@@ -4,7 +4,7 @@ if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE
   add_executable(xar_ck3_12004_player_pilgrimage_traits_test
     src/ck3_12004_religion_adopted_addons_whole_test.cpp)
   target_link_libraries(xar_ck3_12004_player_pilgrimage_traits_test PRIVATE
-    xar_ck3_12002_runtime)
+    xar_ck3_12002_runtime xar_bridge_protocol)
   target_include_directories(xar_ck3_12004_player_pilgrimage_traits_test PRIVATE include)
   target_compile_features(xar_ck3_12004_player_pilgrimage_traits_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12004_player_pilgrimage_traits_test PRIVATE
