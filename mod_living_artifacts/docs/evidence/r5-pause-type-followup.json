@@ -1,0 +1,56 @@
+{
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T05:30:12.670623+00:00",
+  "baseline_commit": "85c98145e",
+  "functions": [
+    "PlanClient.advance_campaign_event_boundary",
+    "PlanClient.pause_campaign_after_advance",
+    "PlanClient.wait_campaign_running_successor",
+    "require_campaign_pause_successor"
+  ],
+  "whole_host_strict_pass": false,
+  "baseline_owned_errors": 70,
+  "current_owned_errors": 54,
+  "added": [],
+  "removed_count": 16,
+  "recorded_at_utc": "2026-10-22T05:31:31.858188+00:00",
+  "exact_host_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 323131,
+    "sha256": "233f9e89d0a525617fa8bdb4ff553511b048cb8dc8f0e196e5e50fd726963f35"
+  },
+  "complete_host_checker": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\interaction-host-scope-a03\\current\\result.json",
+    "bytes": 27266,
+    "sha256": "b6a40638143741644653a847b2e755bc390e986c0a8398b505d6b21ada4b00df"
+  },
+  "pause_regressions": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\pause-type-guard-a01\\result.json",
+    "bytes": 448,
+    "sha256": "9b51d2184183a1b139bf2f7de2999563f5019e5d697c81ab26c0c4b9863e912b"
+  },
+  "prior_missed_function_diagnostic": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\interaction-host-scope-a02\\four-function-comparison.json",
+    "bytes": 1038,
+    "sha256": "baf7f45349b6a6fc99f5b651e41d38fb41c1a7281a3e917a1dad8c700675887d"
+  },
+  "active_R6_frozen_source_modified": false,
+  "business_pass": false,
+  "source_reconstruction": {
+    "source_is_reconstruction": true,
+    "original_mutable_path_has_subsequently_changed": true,
+    "retained_frozen_input": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c08\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 322990,
+      "sha256": "27d4e5f19f455872db9418f78791d151ccb9d5b216f91ea221cc95d26c441515"
+    },
+    "exact_checked_source_reconstruction": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-type-narrowing-reconstruction-a01.py",
+      "bytes": 323131,
+      "sha256": "233f9e89d0a525617fa8bdb4ff553511b048cb8dc8f0e196e5e50fd726963f35"
+    },
+    "replace_before": "                current = await bounded(self.fresh)\n                if allow_event_boundary is True:\n",
+    "replace_after": "                current = await bounded(self.fresh)\n                if not isinstance(current,dict):\n                    raise ValueError(\"Campaign pause readback lacks its full native frame\")\n                if allow_event_boundary is True:\n",
+    "matches_original_recorded_checker_source_sha256": true
+  }
+}

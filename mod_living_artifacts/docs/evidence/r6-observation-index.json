@@ -1,0 +1,207 @@
+{
+  "schema": "living-artifacts-r6-observation-index-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T06:17:28.586041+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0006",
+  "source_commit": "f5c9b83d274b3e823b4160a9cc62851cc35becc2",
+  "actual_controlled_natural_days": 4,
+  "fifth_day_outcome": "FAILED_NOT_CREDITED",
+  "day_route": "actual-life-advance-one-day",
+  "fifth_day_original_step_source": {
+    "report": "native-report.json",
+    "step_id": "case-natural-day-0016",
+    "actual_results_file_produced": false
+  },
+  "host_campaign_advance_notification_fix_live_qualified": false,
+  "actual_equipment": {
+    "artifact_id": "402",
+    "actor_character_id": "31254",
+    "intent_sequence_decimal": "121",
+    "equipped_slot_index": 3
+  },
+  "normal_close_qualified": false,
+  "normal_gui_quit_attempted": false,
+  "retained_ck3_exit": 1,
+  "host_wait": 1,
+  "public_wait": 2,
+  "keeper_wait": 0,
+  "allocator_wait": 0,
+  "native_job_active_before_termination": 1,
+  "native_job_active_final": 0,
+  "release_expected_sequence": 381,
+  "release_actual_sequence": 383,
+  "screen_resources": [],
+  "original_pixel_source": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T053438847608Z-r6-inventory-opened-a01.png",
+    "bytes": 2412637,
+    "sha256": "4c2dea1d1d52aee5cae5282258a083181b0d5ef24867233564e61ea28968b2f1"
+  },
+  "archived_pixel_copy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r6-inventory.png",
+    "bytes": 2412637,
+    "sha256": "4c2dea1d1d52aee5cae5282258a083181b0d5ef24867233564e61ea28968b2f1"
+  },
+  "capture_metadata": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r6-inventory.capture.json",
+    "bytes": 815,
+    "sha256": "73a9ce10d0d82ef76c255474511372c81cd5fa18d738f886bd1d87f7f4988cc7"
+  },
+  "image_scope": "Chinese authored test inputs, before actual equip; no growth/feeding/natural acquisition credit",
+  "days": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\case-natural-day-0004.native-day-projection.json",
+        "bytes": 62175,
+        "sha256": "2dbb8b39625ff06c93ce335ce722f05e34f926d6cc26263adab14893d0b2b668"
+      },
+      "before_date_raw": 53144328,
+      "after_date_raw": 53144352,
+      "elapsed_hours": 24,
+      "requested_interval_complete": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\case-natural-day-0007.native-day-projection.json",
+        "bytes": 62450,
+        "sha256": "ffe9b6b56297539064d019f75bef32291ffa4aa29bceaf673b895711f80cd4e0"
+      },
+      "before_date_raw": 53144352,
+      "after_date_raw": 53144376,
+      "elapsed_hours": 24,
+      "requested_interval_complete": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\case-natural-day-0010.native-day-projection.json",
+        "bytes": 62460,
+        "sha256": "80f5876b6da955a4cf5a3cf6a1b436ad8312a94b79a88a46f7d4338567662573"
+      },
+      "before_date_raw": 53144376,
+      "after_date_raw": 53144400,
+      "elapsed_hours": 24,
+      "requested_interval_complete": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\case-natural-day-0013.native-day-projection.json",
+        "bytes": 62462,
+        "sha256": "9b88abf56f209dce0ede082b1b8c1986db317525418ec8eedb238b793585a352"
+      },
+      "before_date_raw": 53144400,
+      "after_date_raw": 53144424,
+      "elapsed_hours": 24,
+      "requested_interval_complete": true
+    }
+  ],
+  "files": {
+    "frozen-argv.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\frozen-argv.json",
+      "bytes": 62365,
+      "sha256": "308001e3bc8fbdd2c53ccea090803be24c64808dff6f6e5bf78ea65a4c15a272"
+    },
+    "native-report.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\native-report.json",
+      "bytes": 9721157,
+      "sha256": "d040fa965725d227b4f47eac469c39ef6a26e6cc7878dfb2a9c435eb21e594ac"
+    },
+    "native-report.session.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\native-report.session.log",
+      "bytes": 7491,
+      "sha256": "e73fb6130ab86fccb77e983da71f37e3e66d8a988d38511cd449cb3bea586061"
+    },
+    "host-original-process-exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\host-original-process-exit.json",
+      "bytes": 253,
+      "sha256": "f514b8f3705204b818a801165cbee1acee9ed919113967def9856b80437b586e"
+    },
+    "keeper-actual-parent-exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\keeper-actual-parent-exit.json",
+      "bytes": 637,
+      "sha256": "e52b508e547f6dd15f6e2c0e10336b644393e105a6a4a3a7d7d02273d0a9cc3f"
+    },
+    "case-output/living-artifacts-core-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\living-artifacts-core-result.json",
+      "bytes": 31919,
+      "sha256": "2dd2147aecb95037d038f6f5e133e33649135f66e8de40b4e5811ce58746ab3b"
+    },
+    "case-output/observer-checkpoint-01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\observer-checkpoint-01.json",
+      "bytes": 10932,
+      "sha256": "22978c168359b4bcbaf8a3030cb4075accc28e346cb0fafacf5f0dfb34da365a"
+    },
+    "case-output/inventory-gui-open-0005-root-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\inventory-gui-open-0005-root-result.json",
+      "bytes": 1453,
+      "sha256": "6a118c7b1373a232423acecbbc26e7b3ac9f026c999fc09f43a19d56a421f53f"
+    },
+    "case-output/xalw-core-0008.actual-results.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\xalw-core-0008.actual-results.json",
+      "bytes": 27459,
+      "sha256": "3fa91b698e4d79b2d72f18c4d10a4f4ba7116ff125ed12f8fff95c093bfcd1a2"
+    },
+    "case-output/xalw-core-0009.actual-results.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\xalw-core-0009.actual-results.json",
+      "bytes": 32933,
+      "sha256": "5e3271d1cdef0645b11d10537d46ecc79914157b1edb2767fa5b7a409a063e99"
+    },
+    "case-output/xalw-core-0010.actual-results.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\xalw-core-0010.actual-results.json",
+      "bytes": 25566,
+      "sha256": "9408e7440bf1d9c1151e54726399e94026867ef53caf47358ae870fb5d5738df"
+    },
+    "case-output/case-natural-day-0016.queue-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\case-natural-day-0016.queue-result.json",
+      "bytes": 767,
+      "sha256": "b09a1b1172b02c6af5b41651b9b9d7fd4b592bdf6a18224faa127a6dd1d993b0"
+    },
+    "case-output/actual-retained-handle-os-exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 180,
+      "sha256": "cbcdfbd6a6ca2e29720e959fcd7847b2ff499e4e2e2d4c8eb3cda19840faca6b"
+    },
+    "case-output/normal-close-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0006\\case-output\\normal-close-result.json",
+      "bytes": 1039,
+      "sha256": "51a508429384bcbad988ec8a7c4564cf90a5108b3f57a6022697893fc226a1f3"
+    },
+    "environment/r6-terminal-observation-a01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r6-terminal-observation-a01.json",
+      "bytes": 2146,
+      "sha256": "0e70e016b683f4d29e78817940fc5ee2bce4b356cb4f820411f18513c6489d55"
+    },
+    "environment/r6-window-geometry-a01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r6-window-geometry-a01.json",
+      "bytes": 452,
+      "sha256": "46d0f62df911678ceec1d680db2fafc2126cfd8a03bff207cc0893c8cf4534bb"
+    },
+    "environment/r6-screen-resource-close-a01/release.stdout.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r6-screen-resource-close-a01\\release.stdout.json",
+      "bytes": 1451,
+      "sha256": "447f3fa674fea5cd3f10cf76ec54132f8d721e8e03e9193fc4ed03da7e7b2214"
+    },
+    "environment/steam-after-r6-close-a01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-after-r6-close-a01.json",
+      "bytes": 2332,
+      "sha256": "9a1a1ee811ec970c23f8b02263c022a45aa3b124322ce279e09655c3810b5afd"
+    },
+    "environment/storage-after-r6-a01/20261022T054153914788Z-task-close.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-after-r6-a01\\20261022T054153914788Z-task-close.json",
+      "bytes": 1960,
+      "sha256": "118e42dbeefbc393efdccfb07a685cab02c01aeed65a21f577571598a77e2f16"
+    },
+    "environment/public-operations/20261022T052357450461Z-run/exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T052357450461Z-run\\exit.json",
+      "bytes": 185,
+      "sha256": "c4ff559c9294e1cafa52be48e7b351d7df54d3fea80c66aaa1aad6d6868b0268"
+    },
+    "environment/public-operations/20261022T052238019015Z-allocate/exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T052238019015Z-allocate\\exit.json",
+      "bytes": 184,
+      "sha256": "0aae681083ab8d7eb3e1d1766b4839a12b7d8e0c07811b81cb0f335210cd6158"
+    }
+  },
+  "business_pass": false,
+  "workshop_published": false,
+  "review_at_utc": "2026-10-29T00:00:00Z",
+  "retention_reason": "Actual source/consumer failure reproduction and next controlled acceptance"
+}

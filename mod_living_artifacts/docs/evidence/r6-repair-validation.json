@@ -1,0 +1,65 @@
+{
+  "schema": "xalw.shared-native-day-fix-final/v3",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T06:23:59.300344+00:00",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 322681,
+      "sha256": "f25af27d0221260a95b45fc5dcf417d25d733c8dbbdba7be866146643b75f1ee"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1657329,
+      "sha256": "82876d9372e0a15408acf8d5af5a33f6a20451532bc0937300d9dc0bcca55912"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\campaign_interaction_boundary_v1.py",
+      "bytes": 4711,
+      "sha256": "60c4a4ff19651603a3f3f31648ea7b59636a628f9cf675301dc5ccaff48c2eb9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 69218,
+      "sha256": "03f2f50c73aa08888288809d9f7373f70b8d55e55372ee3a98695fb436cee7f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_day.py",
+      "bytes": 13040,
+      "sha256": "c6b5e4fec8bdb9895a9e73506d56d748417af7c6403c07ed2863ab1d55d2ee54"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "bytes": 46304,
+      "sha256": "ceeaa26e6c29becd1cd4296701419467059c2e8845653e6229ed81af12dd74b4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\inventory_gui_contract.py",
+      "bytes": 8051,
+      "sha256": "0691627fe27360b74034fb1190b6b5ae68c62c4e3afc0a6421c97332be85d8ff"
+    }
+  ],
+  "behavior_completion": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r6-product-and-shared-final-a01\\result.json",
+    "bytes": 5027,
+    "sha256": "0566bab61a16fd79b3ad8464556e64b19c6fac3656af71fd7c473bb09e7a55fa"
+  },
+  "behavior_exit_code": 0,
+  "behavior_tests": 170,
+  "shared_ci_group": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r6-shared-ci-a01\\result.json",
+    "bytes": 36813,
+    "sha256": "0c1f9acc1828f1dde46fad1a2935d8395db0c34ed7c9ac1758678f13d7c479d7"
+  },
+  "shared_ci_original_commands": 76,
+  "host_scope_comparison": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r6-runtime-type-scope-a01\\comparison-cwd-corrected.json",
+    "bytes": 3763,
+    "sha256": "be98e90f485477f1302ca7497e0e502b2cbd0d9ebdce3e4252ab70f53a2b6bff"
+  },
+  "strict_native_day_and_notification_modules": true,
+  "whole_legacy_modules_strict_pass": false,
+  "strict_product_tools_files": 27,
+  "game_started": false,
+  "business_pass": false
+}

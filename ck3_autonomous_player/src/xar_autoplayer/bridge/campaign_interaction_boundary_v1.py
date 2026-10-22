@@ -1,6 +1,7 @@
 """Typed native notification boundary; never chooses or clears an interaction."""
 from __future__ import annotations
 from dataclasses import dataclass
+import math
 from typing import Literal,NotRequired,TypedDict
 
 class FailedAdvancePauseV1(TypedDict):
@@ -13,6 +14,28 @@ class FailedAdvancePauseV1(TypedDict):
     date_raw: NotRequired[int]
     pause_error_type: NotRequired[str]
     pause_error: NotRequired[str]
+
+class ControlPlanFailureHoldV1(TypedDict):
+    schema: Literal['ck3-control-plan-failure-hold-v1']
+    control_plan: str
+    original_error_type: str
+    original_error: str
+    original_hold_deadline: float
+    consumed_control_plan_preserved: Literal[True]
+    mutation_replayed: Literal[False]
+    business_pass: Literal[False]
+    normal_close_qualified: Literal[False]
+
+def control_plan_failure_hold_v1(control_plan: str,error: Exception,deadline: float) -> ControlPlanFailureHoldV1:
+    if type(control_plan) is not str or not control_plan or '\0' in control_plan:
+        raise ValueError('Actual consumed control path required')
+    if not isinstance(error,Exception):raise ValueError('Original ordinary control exception required')
+    if type(deadline) not in (int,float) or not math.isfinite(deadline) or deadline<=0:
+        raise ValueError('Original finite hold deadline required')
+    return {'schema':'ck3-control-plan-failure-hold-v1','control_plan':control_plan,
+            'original_error_type':type(error).__name__,'original_error':str(error),'original_hold_deadline':float(deadline),
+            'consumed_control_plan_preserved':True,'mutation_replayed':False,'business_pass':False,
+            'normal_close_qualified':False}
 
 def integer(value: object, minimum: int=1, maximum: int=2**64-1) -> int:
     if type(value) is not int or not isinstance(value,int) or not minimum<=value<=maximum:

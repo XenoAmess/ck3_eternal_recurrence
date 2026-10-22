@@ -106,6 +106,13 @@ class NotificationBoundaryTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(subject.owner_identities_match_v1(wrong,wrong))
             self.assertFalse(subject.owner_identities_match_v1(wrong,after,allowed_interaction_instance=33554443))
 
+    def test_held_control_failure_contract_rejects_wrong_types_and_round_trips(self) -> None:
+        record=subject.control_plan_failure_hold_v1('owned-once.json',RuntimeError('original failure'),101.0)
+        self.assertEqual(json.loads(json.dumps(record)),record)
+        self.assertEqual(record['original_hold_deadline'],101.0)
+        for value in (True,None,'101',float('nan'),float('inf'),-1):
+            with self.assertRaises(ValueError):legacy_call(subject,'control_plan_failure_hold_v1','owned-once.json',RuntimeError('original'),value)
+
     async def test_original_read_failure_attempts_pause_once_and_preserves_error(self) -> None:
         port=client(self,[frame(112),frame(112,paused=True,revision=10)])
         original=RuntimeError('synthetic observation failed after native resume')

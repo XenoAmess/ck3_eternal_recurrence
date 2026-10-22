@@ -15418,7 +15418,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["ending_date_raw"], 53_171_448)
         self.assertTrue(result["paused"])
 
-    def test_resume_life_advance_retries_once_after_ack_without_running(
+    def test_resume_life_advance_observes_late_running_without_replaying_ack(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -15456,8 +15456,6 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     },
                 }
             )
-            if submissions == 2:
-                endpoint.publish(_snapshot(2, speed=1, paused=False))
 
         endpoint.send_hook = answer
         actions: list[dict[str, object]] = []
@@ -15472,8 +15470,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         ) -> dict[str, object]:
             nonlocal waits
             waits += 1
-            if waits == 1:
-                return paused
+            self.assertEqual(snapshot,paused)
+            self.assertGreater(timeout_seconds,1)
+            endpoint.publish(_snapshot(2, speed=1, paused=False))
             return driver.take_internal_semantic_snapshot()
 
         with mock.patch.object(
@@ -15486,7 +15485,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(running["paused"])
         self.assertEqual(
             [action["result"]["status"] for action in actions],
-            ["submitted", "already_running"],
+            ["submitted"],
         )
         resume_frames = [
             frame
@@ -15494,13 +15493,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             if frame.get("type") == "execute_step"
             and frame.get("step") == "resume-map"
         ]
-        self.assertEqual(len(resume_frames), 2)
+        self.assertEqual(len(resume_frames), 1)
+        self.assertEqual(waits,1)
         self.assertEqual(
             [frame.get("expected_revision") for frame in resume_frames],
-            [1, 1],
+            [1],
         )
 
-    def test_resume_life_advance_retries_at_most_once_within_deadline(
+    def test_resume_life_advance_observes_once_within_original_deadline(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -15551,15 +15551,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(
                 BridgeUnavailableError,
-                "resume_attempts=2",
+                "resume_attempts=1",
             ):
                 driver._resume_life_advance(observed, [])
 
-        self.assertEqual(execute.call_count, 2)
-        self.assertEqual(wait.call_count, 2)
+        self.assertEqual(execute.call_count, 1)
+        self.assertEqual(wait.call_count, 1)
         self.assertEqual(
             [call.kwargs["timeout_seconds"] for call in wait.call_args_list],
-            [1.0, 1.5],
+            [2.5],
         )
 
     def test_resume_life_advance_does_not_retry_after_owner_change(
@@ -15602,7 +15602,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         execute.assert_called_once()
 
-    def test_resume_life_advance_preserves_first_ack_when_retry_fails(
+    def test_resume_life_advance_preserves_first_ack_without_second_dispatch(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -15627,7 +15627,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     },
                     BridgeUnavailableError("second ACK timed out"),
                 ),
-            ),
+            ) as execute,
             mock.patch.object(
                 driver,
                 "_wait_for_life_advance_snapshot",
@@ -15636,9 +15636,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(
                 BridgeUnavailableError,
-                "resume_ack_statuses=\\['submitted'\\].*second ACK timed out",
+                "resume_attempts=1.*resume_ack_statuses=\\['submitted'\\].*ack_returned_no_replay",
             ):
                 driver._resume_life_advance(observed, [])
+        execute.assert_called_once()
 
     def test_pause_life_advance_adopts_fresh_auto_paused_frame(self) -> None:
         endpoint = FakeEndpoint()

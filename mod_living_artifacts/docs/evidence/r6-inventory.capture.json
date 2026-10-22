@@ -1,0 +1,24 @@
+{
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T05:34:38.847608+00:00",
+  "source": "pyautogui original desktop screenshot and Win32 foreground readback",
+  "image": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T053438847608Z-r6-inventory-opened-a01.png",
+    "bytes": 2412637,
+    "sha256": "4c2dea1d1d52aee5cae5282258a083181b0d5ef24867233564e61ea28968b2f1",
+    "width": 1920,
+    "height": 1080
+  },
+  "desktop": {
+    "width": 1920,
+    "height": 1080
+  },
+  "foreground": {
+    "hwnd": "721908",
+    "pid": 11856,
+    "title": "Crusader Kings III",
+    "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "process_create_time": 1792646650.9803796
+  },
+  "gameplay_pass_claimed": false
+}

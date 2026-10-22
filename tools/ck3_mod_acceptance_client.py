@@ -528,7 +528,7 @@ class CaseClient:
             before = fresh_native_day_before(
                 previous, obj(self.snapshot(require_event_free=False), 'fresh paused before'),
                 allow_event_boundary=allow_event_boundary)
-            if before.get('active_event') is not None:
+            if before.get('active_event') is not None or before.get('pending_character_interaction') is not None:
                 snapshot_name = 'case-snapshot-' + str(self._seq).zfill(4)
                 boundary = project_pre_day_event_boundary(previous, before, snapshot_step_id=snapshot_name)
                 self.checkpoint(snapshot_name + '.native-day-boundary', {

@@ -2,14 +2,16 @@
 from __future__ import annotations
 
 import json
+import copy
 from pathlib import Path
 import re
 import shutil
 import tempfile
+import sys
 import unittest
 
 import acceptance_adapter as adapter
-from acceptance_contract import ArtifactSample, Object, array, exact_getter_integer, json_value, mapping, pin, read, write_once
+from acceptance_contract import ArtifactSample, Object, array, exact_getter_integer, field, integer, json_value, mapping, object_value, pin, read, write_once
 import prepare_fixture
 from living_artifacts_core import render_core_localization
 from inventory_gui_contract import REFUSAL
@@ -17,6 +19,9 @@ from checkpoint_callback import checked_pin
 from test_core_generation import Script
 from test_inventory_gui_contract import response_fixture
 from startup_actor_binding import StartupActorBinding
+from ck3_mod_acceptance_client import CaseClient
+
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'ck3_autonomous_player/src'))
 
 
 def sample_line(*, equipped: bool = True) -> str:
@@ -169,7 +174,68 @@ class NotificationPort(GuiPort):
         return {"native_interruption_continued":True,"original_instance_independently_absent":True}
 
 
+class NativePublicPort(CaseClient):
+    """Actual public route, snapshot validation and projection; authored transport only."""
+    def __init__(self,output: Path,before: Object,*,early: bool) -> None:
+        self.output=output;self._seq=0;self._binding=None
+        self.manifest={"game":{"version":"1.20.0.4","exe_sha256":"a"*64}}
+        self.current=copy.deepcopy(before);self.early=early;self.dispatches=0
+        self.report={"readiness":before,"steps":[],"capabilities":{
+            "action_steps":["life-advance-one-day"],"bridge_capabilities":[
+                "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                "game.command.research-query-tactical-daily-sentinel-v1",
+                "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+                "game.command.query-current-event-window-context-v1"]}}
+
+    def guard(self,reserve: int=90,*,failure_shutdown: bool=False) -> dict[str,object]:
+        return self.report
+
+    def execute_plan(self,steps: list[dict[str,object]],name: str,timeout: float | None=None,
+                     reserve: int=90) -> list[object]:
+        pending: Object={"instance_id":33554443,"sender_character_id":31408,
+                        "auto_accept_notification":False,"source":"native"}
+        if steps[0].get("tool")=="ck3_take_snapshot":
+            if self.early and self._seq==2:self.current["pending_character_interaction"]=pending
+            return [{"ok":True,"result":copy.deepcopy(self.current)}]
+        self.dispatches+=1
+        start=integer(self.current["date_raw"],"authored start")
+        self.current["date_raw"]=start+24;self.current["revision"]=2;self.current["native_revision"]=2
+        self.current["pending_character_interaction"]=pending
+        return [{"id":name,"ok":True,"error":None,"after_snapshot":copy.deepcopy(self.current),"result":{
+            "step":"life-advance-one-day","source":"native-composite","backend_id":"native-headless",
+            "starting_date_raw":start,"ending_date_raw":start+24,"paused":True,"requested_horizon_days":1,
+            "active_event":None,"pending_character_interaction":pending,"ordinary_events":[],"actions":[],
+            "progress_status":"postcondition","event_resolution":"none"}}]
+
+
+class NativeRouteNotificationPort(NotificationPort):
+    def __init__(self,output: Path,*,early: bool) -> None:
+        super().__init__(output);self.native=NativePublicPort(output,self.frame,early=early)
+
+    def advance_day(self,days: int=1,timeout: float=300,allow_event_boundary: bool=False,
+                    allow_actor_change: bool=False) -> object:
+        # Synchronize the initial public snapshot sequence with the real outer
+        # saved-source consumer; the next actual public snapshot gets a new name.
+        self.native._seq=self.snapshot_count
+        row=self.native.advance_day(days,timeout,allow_event_boundary,allow_actor_change)
+        self.snapshot_count=self.native._seq
+        self.frame=object_value(field(field(row,"result"),"after"))
+        return row
+
+
 class AcceptanceContractTests(unittest.TestCase):
+    def test_actual_public_native_day_reaches_product_interruption_consumer(self) -> None:
+        for early in (True,False):
+            with self.subTest(early=early),tempfile.TemporaryDirectory() as temporary:
+                port=NativeRouteNotificationPort(Path(temporary),early=early)
+                session=adapter.Session({"run_id":"unit-run"},port,adapter.Contract(72,420,60,(),()))
+                session.startup_actor=StartupActorBinding(29829,123,"1",24000,25,"a"*64,"b"*64)
+                session.snapshot();session.advance_one()
+                self.assertEqual(port.native.dispatches,0 if early else 1)
+                self.assertEqual(session.days,0 if early else 1)
+                self.assertEqual(port.native_requests,["xalw-native-interruption-0001"])
+                self.assertIsNone(mapping(session.last_frame,"actual consumed frame")["pending_character_interaction"])
+
     def test_pending_notification_is_handled_before_any_later_business_call(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             port=NotificationPort(Path(temporary))

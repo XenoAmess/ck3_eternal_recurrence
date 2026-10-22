@@ -18,7 +18,7 @@ def load_host(path):
     nodes = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in names]
     client = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'PlanClient')
     methods = [n for n in client.body if isinstance(n, ast.AsyncFunctionDef)
-               and n.name in {'pause_campaign_after_advance', 'hold'}]
+                and n.name in {'pause_campaign_after_advance', 'hold', 'execute'}]
     nodes.append(ast.ClassDef(name='PlanClient', bases=[], keywords=[], body=methods, decorator_list=[]))
     space = {'now': lambda: 'synthetic-test-time'}
     exec(compile(ast.fix_missing_locations(ast.Module(body=nodes, type_ignores=[])), str(path), 'exec'), space)
@@ -83,7 +83,46 @@ class PauseReadyConvergenceTests(unittest.IsolatedAsyncioTestCase):
     def assert_one_pause(self, h):
         self.assertEqual(h.mutations, [('ck3_execute_step', {'step': 'pause-map'})])
 
-    async def test_hold_retains_diagnosed_failed_plan_only_until_original_deadline(self):
+    async def test_actual_execute_failure_is_retained_without_tearing_down_or_replay(self) -> None:
+        space=load_host(HOST);clock=[100.0];sent=[]
+        path=SimpleNamespace(stat=lambda:SimpleNamespace(st_mtime_ns=1))
+        original=RuntimeError('native life-advance second resume-map request failed; resume_attempts=2')
+        client=space['PlanClient']();client.report={'error':None,'steps':[]}
+        client.args=SimpleNamespace(control_plan_dir=SimpleNamespace(glob=lambda pattern:[path]))
+        client.managed_done=asyncio.Event();client.write=lambda:None
+        client.control_plan_execution_depth=0;client.consumed_control_plans=set()
+        async def invoke(name,arguments,**kwargs):
+            sent.append((name,arguments,kwargs));raise original
+        async def sleep(seconds):
+            self.assertFalse(client.managed_done.is_set());clock[0]+=seconds
+        client.invoke=invoke
+        space.update(time=SimpleNamespace(monotonic=lambda:clock[0],time=lambda:2000.0),
+                     asyncio=SimpleNamespace(sleep=sleep),
+                     load_plan=lambda path:[{'id':'original-native-day','tool':'ck3_execute_step',
+                                            'args':{'step':'life-advance-one-day'},'fresh_revision':False}])
+        await client.hold(1.0)
+        self.assertEqual(clock[0],101.0)
+        self.assertEqual(sent,[('ck3_execute_step',{'step':'life-advance-one-day'},{'fresh_revision':False})])
+        self.assertEqual(len(client.report['steps']),1)
+        self.assertFalse(client.report['steps'][0]['ok'])
+        self.assertEqual(client.report['steps'][0]['error'],'RuntimeError: '+str(original))
+        self.assertTrue(client.report['steps'][0]['finished_at'])
+        self.assertEqual(client.report['control_plan_failures_held'][0]['original_hold_deadline'],101.0)
+        self.assertFalse(client.report['control_plan_failures_held'][0]['mutation_replayed'])
+        self.assertFalse(client.managed_done.is_set())
+
+    async def test_cancellation_does_not_become_a_retained_ordinary_failure(self) -> None:
+        space=load_host(HOST);path=SimpleNamespace(stat=lambda:SimpleNamespace(st_mtime_ns=1))
+        client=space['PlanClient']();client.report={'error':None,'steps':[]};client.write=lambda:None
+        client.args=SimpleNamespace(control_plan_dir=SimpleNamespace(glob=lambda pattern:[path]))
+        client.control_plan_execution_depth=0;client.consumed_control_plans=set();client.managed_done=asyncio.Event()
+        async def cancelled(plan):raise asyncio.CancelledError()
+        client.execute=cancelled;space.update(time=SimpleNamespace(monotonic=lambda:100.0,time=lambda:2000.0),load_plan=lambda path:[])
+        with self.assertRaises(asyncio.CancelledError):await client.hold(1.0)
+        self.assertNotIn('control_plan_failures_held',client.report)
+        self.assertEqual(client.control_plan_execution_depth,0)
+
+    async def test_hold_retains_each_ordinary_failed_plan_until_original_deadline(self) -> None:
         space = load_host(HOST)
         rejected = frame(11, paused=True)
         with self.assertRaises(RuntimeError) as actual_rejection:
@@ -142,24 +181,17 @@ class PauseReadyConvergenceTests(unittest.IsolatedAsyncioTestCase):
                 client.execute = execute
                 space.update(time=SimpleNamespace(monotonic=lambda: clock[0], time=lambda: 2000.0),
                              asyncio=SimpleNamespace(sleep=sleep), copy=copy, load_plan=load_plan)
-                if error is matching:
-                    await client.hold(1.0)
-                    self.assertEqual(clock[0], 101.0)
-                    self.assertAlmostEqual(sum(sleeps), 0.875)
-                    self.assertEqual(client.report['hold_until_utc_estimated'], 2001.0)
-                    self.assertEqual(client.report['error'], f'RuntimeError: {matching}')
-                    retained = client.report['control_plan_pause_readback_failures']
-                    self.assertEqual(len(retained), 1)
-                    self.assertEqual(retained[0]['diagnostic'], matching.ck3_campaign_pause_frame_diagnostic)
-                    self.assertFalse(retained[0]['business_pass'])
-                    self.assertFalse(retained[0]['normal_close_qualified'])
-                else:
-                    with self.assertRaises(type(error)) as caught:
-                        await client.hold(1.0)
-                    self.assertIs(caught.exception, error)
-                    self.assertEqual(clock[0], 100.125)
-                    self.assertEqual(sleeps, [])
-                    self.assertNotIn('control_plan_pause_readback_failures', client.report)
+                await client.hold(1.0)
+                self.assertEqual(clock[0], 101.0)
+                self.assertAlmostEqual(sum(sleeps), 0.875)
+                self.assertEqual(client.report['hold_until_utc_estimated'], 2001.0)
+                self.assertEqual(client.report['error'], f'{type(error).__name__}: {error}')
+                retained = client.report['control_plan_failures_held']
+                self.assertEqual(len(retained), 1)
+                self.assertEqual(retained[0]['original_error'], str(error))
+                self.assertEqual(retained[0]['original_hold_deadline'],101.0)
+                self.assertFalse(retained[0]['business_pass'])
+                self.assertFalse(retained[0]['normal_close_qualified'])
                 self.assertEqual(len(loads), 1)
                 self.assertEqual(mutations, ['advance', 'pause'])
                 self.assertEqual(client.consumed_control_plans, {(str(path), 1)})

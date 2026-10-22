@@ -13,3 +13,7 @@
 已取得并逐字节归档一张[真实库存原图](evidence/r2-inventory.png)，1920×1080、2,520,629字节，SHA `48abbf50c049b99ffcd39e9df50b9f8716eafb76e2cd1f4c0e6b8ace8a25b020`。来源机器 `pc-20260924rtuf-f11af23c08`，实际拍摄时间 `2026-10-21T21:44:43.973072Z`，R0002/PID10924/generation1，CK3 1.20.0.4/build25734779。保存了[原 capture 回执](evidence/r2-inventory.capture.json)和[加载来源、归档及直接审阅记录](evidence/r2-inventory.provenance.json)。没有裁切、重绘或修改像素。
 
 该图显示英语测试夹具创建的活武器目标与四档喂养材料，拍摄时武器槽仍为空。它只作为开发测试证据；不能宣传为自然获得、成长通过、正式中文版界面或完整验收通过。R2 后续装备的通过结论来自独立原生读回，见[运行记录](runtime-r2-issues.md)。
+
+新增[中文库存原图](evidence/r6-inventory.png)，1920×1080、2,412,637 字节，SHA `4c2dea1d1d52aee5cae5282258a083181b0d5ef24867233564e61ea28968b2f1`。`machine_id: pc-20260924rtuf-f11af23c08`，原始拍摄时间 `2026-10-22T05:34:38.847608Z`，R0006/PID11856/generation1，实际 CK3 1.20.0.4/build25734779，冻结源码 `f5c9b83d274b3e823b4160a9cc62851cc35becc2`。保存[原 capture](evidence/r6-inventory.capture.json)及[实际来源索引](evidence/r6-observation-index.json)，客户区由 Win32 实际读回为 1800×980。像素逐字节复制，未裁切或重绘。
+
+R6 图显示中文测试夹具的目标与四档材料，拍摄仍在实际装备之前；槽位 3 的后续装备依据来自原生提交 121 与独立读回。该图仍只作开发实机证据，不能当作自然获得、成长或完整功能验收图。该场第五次日推进失败且由运行器终止，正常退出未通过，见[R6 报告](runtime-r6-native-day-failure.md)。GitHub 上传及匿名回读完成后另记精确公开地址；尚未上传 Steam additional previews。

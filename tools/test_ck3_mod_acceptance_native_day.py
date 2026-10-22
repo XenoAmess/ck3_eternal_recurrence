@@ -16,7 +16,7 @@ from ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter import BudgetedClient
 
 def example_frame(date: int, revision: int) -> dict[str, object]:
     return {"date_raw": date, "revision": revision, "native_revision": revision,
-        "paused": True, "map_ready": True, "active_event": None,
+        "paused": True, "map_ready": True, "active_event": None, "pending_character_interaction": None,
         "episode_projection": "native_campaign", "backend_id": "native-headless",
         "source": "injected-dll-named-pipe", "played_character": {
             "character_id": 31254, "alive": True, "source": "native"},
@@ -35,7 +35,7 @@ def retained_inputs() -> tuple[dict[str, object], dict[str, object]]:
     return {"id": "authored-day", "ok": True, "error": None, "after_snapshot": after,
         "result": {"step": "life-advance-one-day", "source": "native-composite",
             "backend_id": "native-headless", "starting_date_raw": 100, "ending_date_raw": 124,
-            "paused": True, "requested_horizon_days": 1, "active_event": None,
+            "paused": True, "requested_horizon_days": 1, "active_event": None, "pending_character_interaction": None,
             "ordinary_events": [], "actions": [], "progress_status": "postcondition",
             "event_resolution": "none"}}, first
 
@@ -168,6 +168,48 @@ class NativeDayTest(unittest.TestCase):
         projected = self.port.advance_day(allow_event_boundary=True)
         self.assertEqual(projected["result"]["event_boundary"], row["after_snapshot"])
         self.assertEqual(projected["result"]["selected_event_options"], 0)
+
+    def test_notification_boundary_preserves_exact_native_after_without_selection(self) -> None:
+        pending={"instance_id":33554443,"sender_character_id":31408,
+                 "auto_accept_notification":False,"source":"native"}
+        for hours in (12,24):
+            with self.subTest(hours=hours):
+                row=copy.deepcopy(self.raw)
+                ending=self.before['date_raw']+hours
+                row['after_snapshot']['date_raw']=ending
+                row['after_snapshot']['pending_character_interaction']=pending
+                row['result']['ending_date_raw']=ending
+                row['result']['pending_character_interaction']=pending
+                output=Path(self.temp.name)/str(hours);output.mkdir()
+                port=Port(output,row,self.before)
+                result=port.advance_day(allow_event_boundary=True)['result']
+                self.assertEqual(result['event_boundary'],row['after_snapshot'])
+                self.assertEqual(result['requested_interval_complete'],hours==24)
+                self.assertEqual(result['selected_event_options'],0)
+                self.assertEqual(len(port.world_calls()),1)
+
+    def test_new_pre_dispatch_notification_returns_zero_hour_boundary(self) -> None:
+        pending={"instance_id":33554443,"sender_character_id":31408,
+                 "auto_accept_notification":False,"source":"native"}
+        self.port.fresh_before['pending_character_interaction']=pending
+        result=self.port.advance_day(allow_event_boundary=True)['result']
+        self.assertEqual(result['elapsed_hours'],0)
+        self.assertFalse(result['requested_interval_complete'])
+        self.assertEqual(result['event_boundary']['pending_character_interaction'],pending)
+        self.assertEqual(self.port.world_calls(),[])
+
+    def test_wrong_missing_or_unadmitted_notification_never_passes(self) -> None:
+        pending={"instance_id":33554443,"sender_character_id":31408,
+                 "auto_accept_notification":False,"source":"native"}
+        for mutation in ('missing','different','bool','unadmitted'):
+            with self.subTest(mutation=mutation):
+                row=copy.deepcopy(self.raw)
+                row['after_snapshot']['pending_character_interaction']=pending
+                row['result']['pending_character_interaction']=copy.deepcopy(pending)
+                if mutation=='missing':row['result'].pop('pending_character_interaction')
+                if mutation=='different':row['result']['pending_character_interaction']['instance_id']+=1
+                if mutation=='bool':row['after_snapshot']['pending_character_interaction']={**pending,'instance_id':True}
+                with self.assertRaises(ValueError):project_native_day(row,self.before,allow_event_boundary=mutation!='unadmitted')
 
 
     def test_retained_229_report_binds_fresh_230_before_single_dispatch(self) -> None:

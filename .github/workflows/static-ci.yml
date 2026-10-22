@@ -499,7 +499,11 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_research_delta.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_native_bridge_driver.py -k resume_life_advance
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_day.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=silent tools/ck3_mod_acceptance_native_day.py ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_interaction_boundary_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_late_native_cleanup.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

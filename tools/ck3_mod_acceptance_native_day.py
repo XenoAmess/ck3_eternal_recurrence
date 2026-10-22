@@ -70,6 +70,13 @@ def integer(value: object, label: str) -> int:
     return value
 
 
+def pending_instance(value: object) -> int | None:
+    # Preparation imports this pure public module before selecting an SDK.
+    # Only actual native-frame consumption needs the selected SDK contract.
+    from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import pending_instance_v1
+    return pending_instance_v1(value)
+
+
 def strings(value: object, label: str) -> set[str]:
     if not isinstance(value, list) or any(not isinstance(v, str) for v in value):
         raise ValueError(label + " must be a string list")
@@ -139,6 +146,8 @@ def fresh_native_day_before(previous: Object, fresh: Object, *,
     if fresh.get("active_event") is not None:
         need(allow_event_boundary, "Native day begins event-free; observe the new event first")
         obj(fresh.get("active_event"), "actual fresh event")
+    if pending_instance(fresh.get("pending_character_interaction")) is not None:
+        need(allow_event_boundary, "Native day begins notification-free; observe the new notification first")
     for key in ("revision", "native_revision"):
         need(integer(fresh.get(key), "fresh " + key) >= integer(previous.get(key), "previous " + key),
              "Fresh native day revisions regressed")
@@ -149,8 +158,10 @@ def project_pre_day_event_boundary(previous: Object, fresh: Object, *,
                                    snapshot_step_id: str) -> Object:
     """Expose a real readonly event boundary without claiming a native day call."""
     fresh_native_day_before(previous, fresh, allow_event_boundary=True)
-    need(previous.get("active_event") is None, "Original native day begins event-free")
-    obj(fresh.get("active_event"), "actual fresh event")
+    need(previous.get("active_event") is None and previous.get("pending_character_interaction") is None,
+         "Original native day begins without an unresolved interruption")
+    need(fresh.get("active_event") is not None or pending_instance(fresh.get("pending_character_interaction")) is not None,
+         "Actual new native interruption required")
     need(isinstance(snapshot_step_id, str) and snapshot_step_id.startswith("case-snapshot-") and
          snapshot_step_id.removeprefix("case-snapshot-").isdigit(), "Actual snapshot step ID required")
     source = "actual-pre-day-snapshot-event-boundary"
@@ -189,19 +200,28 @@ def project_native_day(row: Object, before: Object, *, allow_event_boundary: boo
          value.get("backend_id") == "native-headless" and value.get("paused") is True and
          integer(value.get("requested_horizon_days"), "native horizon") == 1,
          "Actual native exact-day producer contract missing")
-    need(before.get("active_event") is None, "Original native day begins event-free")
+    need(before.get("active_event") is None and before.get("pending_character_interaction") is None,
+         "Original native day begins without an unresolved interruption")
     hours = end - start
     need(0 <= hours <= 24, "Native exact-day interval is outside its single intent")
     boundary: Object | None = None
     event = after.get("active_event")
+    pending = after.get("pending_character_interaction")
+    notification_id = pending_instance(pending)
     if event is not None:
         need(allow_event_boundary, "Actual event requires the caller's original boundary branch")
         obj(event, "actual current event")
+        boundary = after
+    if notification_id is not None:
+        need(allow_event_boundary, "Actual notification requires the caller's original boundary branch")
         boundary = after
     need(hours == 24 or boundary is not None,
          "Native day neither completed 24h nor observed an allowed event boundary")
     need(value.get("active_event") == event,
          "Native result and independent actual after event differ")
+    need("pending_character_interaction" in value and "pending_character_interaction" in after
+         and value["pending_character_interaction"] == pending,
+         "Native result and independent actual notification differ or are missing")
     ordinary = value.get("ordinary_events")
     need(isinstance(ordinary, list) and not ordinary,
          "Public native day must preserve events for the existing typed caller")

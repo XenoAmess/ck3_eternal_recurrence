@@ -1926,6 +1926,8 @@ class PlanClient:
             previous = source
             while True:
                 current = await bounded(self.fresh)
+                if not isinstance(current,dict):
+                    raise ValueError("Campaign pause readback lacks its full native frame")
                 if allow_event_boundary is True:
                     current_event = campaign_event_instance(current)
                     if event_instance is not None and current_event != event_instance:
@@ -2674,6 +2676,7 @@ class PlanClient:
 
 
     async def hold(self, seconds: float) -> None:
+        from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import control_plan_failure_hold_v1
         deadline = time.monotonic() + seconds
         self.report["phase"] = "hold"
         self.report["hold_until_utc_estimated"] = time.time() + seconds
@@ -2695,23 +2698,16 @@ class PlanClient:
                         self.control_plan_execution_depth += 1
                         try:
                             await self.execute(plan)
-                        except RuntimeError as error:
-                            diagnostic = getattr(error, "ck3_campaign_pause_frame_diagnostic", None)
-                            if (str(error) != "campaign pause readback lost the complete same-owner frame"
-                                    or not isinstance(diagnostic, dict)
-                                    or diagnostic.get("schema") != "ck3-campaign-pause-same-owner-frame-diagnostic-v1"):
-                                raise
-                            # The failed plan stays consumed and RED. Keep this
-                            # client/game only for the remainder of the same hold.
+                        except Exception as error:
+                            # A failed once plan stays consumed and failed. Keep
+                            # the original owned scene for bounded Root normal Quit;
+                            # neither repeat mutations nor extend its original hold.
                             if self.report.get("error") is None:
                                 self.report["error"] = f"{type(error).__name__}: {error}"
-                            self.report.setdefault("control_plan_pause_readback_failures", []).append({
-                                "control_plan": str(path), "original_error": str(error),
-                                "diagnostic": copy.deepcopy(diagnostic),
-                                "consumed_control_plan_preserved": True,
-                                "original_hold_deadline_preserved": True,
-                                "mutation_replayed": False, "business_pass": False,
-                                "normal_close_qualified": False})
+                            failures=self.report.setdefault("control_plan_failures_held",[])
+                            if not isinstance(failures,list):
+                                raise RuntimeError("Original held failure history is malformed") from error
+                            failures.append(control_plan_failure_hold_v1(str(path),error,deadline))
                             self.write()
                         finally:
                             self.control_plan_execution_depth -= 1

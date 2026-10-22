@@ -26206,42 +26206,15 @@ class NativeHeadlessGameplayDriver:
         current = self._wait_for_life_advance_snapshot(
             self.take_internal_semantic_snapshot(),
             running_or_native_stop,
-            timeout_seconds=min(
-                remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS
-            ),
+            timeout_seconds=remaining,
         )
         if running_or_native_stop(current):
             return current
 
-        retry_suppressed = None
-        if not _retryable_life_advance_resume_owner(snapshot, current):
-            retry_suppressed = "owner_changed"
-        else:
-            remaining = deadline - time.monotonic()
-            if remaining > 0:
-                resume_attempt_count = 2
-                try:
-                    result = self._execute_primitive_step(
-                        "resume-map",
-                        expected_revision=None,
-                        timeout_seconds=remaining,
-                        internal_semantic_snapshot=True,
-                    )
-                except (BridgeUnavailableError, UnsupportedStepError) as error:
-                    raise BridgeUnavailableError(
-                        "native life-advance second resume-map request failed; "
-                        f"resume_attempts={resume_attempt_count}, "
-                        f"resume_ack_statuses={resume_ack_statuses}, "
-                        f"second_error={type(error).__name__}: {error}"
-                    ) from error
-                actions.append({"step": "resume-map", "result": result})
-                resume_ack_statuses.append(_timeline_ack_status(result))
-                remaining = max(0.0, deadline - time.monotonic())
-                current = self._wait_for_life_advance_snapshot(
-                    self.take_internal_semantic_snapshot(),
-                    running_or_native_stop,
-                    timeout_seconds=remaining,
-                )
+        # A returned ACK is an original submitted intent. A stale paused frame
+        # cannot authorize another resume, even when its owner still matches.
+        retry_suppressed = ("owner_changed" if not _retryable_life_advance_resume_owner(snapshot,current)
+                            else "ack_returned_no_replay")
         if not running_or_native_stop(current):
             raise BridgeUnavailableError(
                 "native life-advance did not observe the running map; "
@@ -31718,7 +31691,7 @@ def _same_life_advance_popup_pause_owner(
 def _retryable_life_advance_resume_owner(
     previous: dict[str, object], refreshed: dict[str, object]
 ) -> bool:
-    """Keep one idempotent resume retry bound to the same paused episode."""
+    """Bind the initial resume submission to the same paused episode."""
     return _retryable_life_advance_timeline_owner(
         previous, refreshed, expected_paused=True
     )
