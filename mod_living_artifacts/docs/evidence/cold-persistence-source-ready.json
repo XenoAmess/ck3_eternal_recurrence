@@ -1,0 +1,194 @@
+{
+  "schema": "living-artifacts-cold-persistence-source-ready-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T17:10:19.975752+00:00",
+  "source_ready": true,
+  "actual_cold_load": "NOT_RUN",
+  "case_contract_qualified": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "source_files": {
+    ".github/workflows/living-artifacts-cold-persistence.yml": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\living-artifacts-cold-persistence.yml",
+      "bytes": 2731,
+      "sha256": "e7bacde6117a7899c091c4206abf2de14ddfb69e3600fe84dba80055ba184ee4"
+    },
+    "mod_living_artifacts/tools/acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "bytes": 53689,
+      "sha256": "433987df7e29a540b7d8630d63632f6d2b02f72b403647be0b41fb11352e7866"
+    },
+    "mod_living_artifacts/tools/saved_campaign_actor_binding.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\saved_campaign_actor_binding.py",
+      "bytes": 11040,
+      "sha256": "65e5ed47dc29db6c91efbdafac4d4397d4bf0a4c3930a5d949e886f4ab5e903d"
+    },
+    "mod_living_artifacts/tools/cold_persistence_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\cold_persistence_observer.py",
+      "bytes": 13025,
+      "sha256": "52e4734ce8a40a36627be965e294644d1f07257662dae4d1f469aa903ddaeb3d"
+    },
+    "mod_living_artifacts/tools/cold_persistence_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\cold_persistence_acceptance_adapter.py",
+      "bytes": 20950,
+      "sha256": "3e1b75b8e6a3b8b08926f6917e804d30dea55d46b02c72867ee10bc628f2e0d1"
+    },
+    "mod_living_artifacts/tools/test_saved_campaign_actor_binding.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_saved_campaign_actor_binding.py",
+      "bytes": 11772,
+      "sha256": "8cf60b649ccb4b328f66798ab1f3bb3dcaceaf428801dc01ab091c91f5f2a186"
+    },
+    "mod_living_artifacts/tools/test_cold_persistence_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_cold_persistence_acceptance_adapter.py",
+      "bytes": 26491,
+      "sha256": "5f561d4414e0f2958a445bc7e9e40e7c2c31d788e62b9d591bb004284ba8dc16"
+    },
+    "mod_living_artifacts/tools/cold_persistence.contract.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\cold_persistence.contract.json",
+      "bytes": 1061,
+      "sha256": "87078f45bea694246f79b40a3001ca396133f09582e680673985184a51df4eea"
+    },
+    "mod_living_artifacts/tools/cold_persistence.registry_stanza.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\cold_persistence.registry_stanza.json",
+      "bytes": 1885,
+      "sha256": "925f6a301fb0e6e6eb76ac2f51f9ed1d16fec4fefa5080bfc437d05fcf68ce00"
+    },
+    "mod_living_artifacts/docs/cold-persistence-runbook.md": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\cold-persistence-runbook.md",
+      "bytes": 9412,
+      "sha256": "08a64786147c7b689ff40bb4e79b0392a0bc0771e245923c38888731d9f7330e"
+    }
+  },
+  "checks": {
+    "complete_product_tests": {
+      "index": 1,
+      "original": "python -B -X utf8 -m unittest discover -s mod_living_artifacts/tools -p test_*.py",
+      "actual": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe -B -X utf8 -m unittest discover -s mod_living_artifacts/tools -p test_*.py",
+      "started_at": "2026-10-22T17:00:57.894119+00:00",
+      "finished_at": "2026-10-22T17:05:49.183493+00:00",
+      "elapsed_seconds": 291.28938,
+      "exit_code": 0,
+      "log": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-cold-adapter-a04\\01.log",
+      "bytes": 50650,
+      "sha256": "2730d8d38a5c1a479446c9fc618d8a9bc37c33c50178615ca89d74058a9c597a"
+    },
+    "post_import_fix_13_tests_and_remaining_original_ci_commands": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-adapter-final-checks-a01\\result.json",
+      "bytes": 5735,
+      "sha256": "10d4f4f3cd57a00dc0d813633688644b95353af495878400576cdbd31ff74992"
+    },
+    "complete_52_file_mod_strict": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-existing-mod-strict-a03\\result.json",
+      "bytes": 1441,
+      "sha256": "19f483e0a03393c6fe99c56e233161618a41654c4a05582847d43a8662cb2db2"
+    },
+    "scope": "209 product tests passed before import-only strict fixes; 13 affected tests rerun after fixes; six complete files strict plus remaining two original CI test commands exit0; separate whole-mod strict checks52 files with SDK src migration in MYPYPATH and no PYTHONPATH",
+    "failed_attempts_preserved": [
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-cold-adapter-a04\\result.json",
+        "bytes": 4207,
+        "sha256": "f2f7a1e9493c05aa4108c6ca661e98830aab8a1c425be50999421a7a2a482d53"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-existing-mod-strict-a01\\result.json",
+        "bytes": 1442,
+        "sha256": "f372ff8fe9a2650f26f6fc5ff5a7841843234764563396be2ef5add4a133e6c5"
+      },
+      {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-existing-mod-strict-a02\\result.json",
+        "bytes": 1442,
+        "sha256": "388cab9cdf2b9adfcfbc7ec357a91d77e55de1bbee9a740832232dec6efbb9e2"
+      }
+    ]
+  },
+  "actual_retained_source_replay": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-r8-real-source-consumer-a02\\result.json",
+    "bytes": 16646,
+    "sha256": "64265578ea26c008d4c17afc61d295594067d009283a139b992327ed07d9774b"
+  },
+  "source_replay_scope": "read-only replay of retained actual R8 successful official producer and original Save/item rows through all new cold source consumers; no producer reexecution or game reload",
+  "source_seed": {
+    "source_run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+    "source_context": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\run-context-r8-a01.json",
+      "bytes": 2513,
+      "sha256": "ba4449f6b670cef5474d54911e6925fbab812c5b0dbe57cae7eff2a6973e84cd"
+    },
+    "source_runtime_manifest": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\common-manifest.cc673f79d.json",
+      "bytes": 26033,
+      "sha256": "a3f75c292b45207d7f908309c3c2fd16580d709c718074429b064bf20fc4fc8e"
+    },
+    "source_observation": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\case-output\\observer-checkpoint-07.json",
+      "bytes": 10568,
+      "sha256": "6971c73e1660a157359c219bf0cf88dae3c18ba7d3a9f7b2cb12b7cf9db8dac9"
+    },
+    "source_save_native_record": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\case-output\\xalw-core-0113.actual-results.json",
+      "bytes": 25430,
+      "sha256": "6639fdf1c520a4181ad84f0e91f14f57888ad068012cf860f15b6d2265aaa540"
+    },
+    "source_item_native_record": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\case-output\\xalw-core-0114.actual-results.json",
+      "bytes": 27655,
+      "sha256": "d54aaa4bfb627e4bd525eafca73bd31540c454a0fabdc7d3d85c06cf084f3527"
+    },
+    "load_save": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\checkpoint-07\\original.ck3",
+      "bytes": 70733402,
+      "sha256": "6d36a1f34cccf41d3cc31b5218869e957108fe166963690155e1ed23905d28a9"
+    },
+    "remaining_rarities": []
+  },
+  "source_sample": {
+    "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+    "artifact_id": "402",
+    "owner_id": "31254",
+    "saved_date": "1066.11.1",
+    "month": 12803,
+    "equipped": true,
+    "level": 6,
+    "xp": 580,
+    "pending": 0,
+    "growth_sequence": 5,
+    "last_month": 12803,
+    "resonance": 25,
+    "durability_decimal": "75.00000",
+    "current_native_artifact_variable_query": false
+  },
+  "official_melter_authored_input_failure": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-official-producer-authored-a02\\result.json",
+    "bytes": 4659,
+    "sha256": "2851223dd418e16d70f11ce2a6af613c5c788ac6107097505f2836d92086ef19"
+  },
+  "official_melter_failure_scope": "real official CLI Invalid header exit2 on authored plaintext; preserved FAILED; no game or cold-load failure claimed",
+  "source_selection": "prefer future actual suppression_timer renewed checkpoint04 once its real native Save/item and strict consumer observations exist; source missing imprint yields BLOCKED for that item; no four extra cold scenes required",
+  "feeding_scope": "one actual xalw_feeding_imprint type/identity/flag; no four independent rarity imprints or expiry/timer-firing credit",
+  "pending_integration": [
+    "Root merge standalone registry stanza into future public case selection",
+    "Root add ck3_autonomous_player/src to existing static-ci strict Living Artifacts MYPYPATH",
+    "freeze new runtime and perform actual public saved_campaign cold scene, normal close and independent verify"
+  ],
+  "event_source_scope": "no new event-free input gate; existing shared saved_campaign startup event admission remains unchanged",
+  "storage_close": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-cold-adapter-close-a01\\20261022T170910417962Z-task-close.json",
+    "bytes": 1960,
+    "sha256": "6fa684bb66bd66d5beb3c7f9f7c244b923430a4c4531e0719d40cda3ae5e0ca2"
+  },
+  "storage_policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "deletions": 0,
+  "retention": {
+    "review_at_utc": "2026-10-29T17:10:19.975752+00:00",
+    "protection_reason": "active pending cold acceptance source and source-ready trace; review then release superseded derived logs according to shared policy",
+    "raw_originals_duplicated": false
+  },
+  "game_started": false,
+  "game_commands_sent": false,
+  "frozen_runtime_trees_modified": false,
+  "git_commit_or_push_performed": false
+}

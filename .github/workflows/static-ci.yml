@@ -596,7 +596,7 @@ jobs:
         run: python -B -X utf8 -m unittest discover -s mod_living_artifacts/tools -p test_*.py
       - name: Check strict Living Artifacts types without installed CK3
         env:
-          MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\mod_living_artifacts\tools
+          MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\mod_living_artifacts\tools;${{ github.workspace }}\ck3_autonomous_player\src
         run: python -B -X utf8 -m mypy --strict --follow-imports=silent mod_living_artifacts/tools
       - name: Test first-machine acceptance without CK3 or Steam
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_fresh_machine_bootstrap.py

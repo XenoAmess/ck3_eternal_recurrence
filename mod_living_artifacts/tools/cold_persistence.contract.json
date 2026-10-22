@@ -1,0 +1,23 @@
+{
+  "schema": "living-artifacts-cold-persistence-case-v1",
+  "schema_version": 1,
+  "product": "living-artifacts",
+  "case_id": "cold_persistence",
+  "maximum_natural_days": 0,
+  "max_public_calls": 12,
+  "maximum_checkpoints": 1,
+  "required_checks": [
+    "COLD-GROWTH-STATE",
+    "COLD-ALL-ARTIFACT-VARIABLES",
+    "COLD-SUPPRESSION-DEADLINE",
+    "COLD-SUPPRESSION-TIMER-SEQUENCE",
+    "COLD-FEEDING-IMPRINT",
+    "COLD-SURVIVING-MATERIALS"
+  ],
+  "whole_product_acceptance_credit": false,
+  "actor_binding_authority": "actual-shared-saved-campaign-restore-and-native-root",
+  "observer_authority": "actual-new-MCP-Save-through-existing-checkpoint-producer-and-closed-readback-consumers",
+  "feeding_scope": "One actual xalw_feeding_imprint presence/type/raw identity/flag; a final Save after four feeds does not qualify four independent rarity-specific imprints.",
+  "missing_source_feature_policy": "BLOCKED; absent or invalid typed source feature cannot qualify persistence; its saved representation is still compared",
+  "actual_cold_load": "NOT_RUN"
+}
