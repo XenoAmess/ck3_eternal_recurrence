@@ -4,6 +4,10 @@
 
 本交接的执行机器为 `machine_id: pc-20260924rtuf-f11af23c08`，Windows 名称 `PC-20260924RTUF`。时间采用 UTC；本地为 Asia/Shanghai。以下安装、桌面、路径、Steam、容量和实机事实仅属于这台机器，换机器必须重新观察。
 
+## 恢复执行补注（2026-10-23）
+
+用户随后明确要求继续执行，撤销本交接开头的暂停状态。原度假闭场事实保留；后续恢复、c18 正常冻结和 R15 失败见 [恢复场次记录](../../mod_living_artifacts/docs/runtime-r15-resume-and-inventory-refusal.md)。新进度不把历史离线测试或失败场次追认为产品验收。
+
 ## 入口与必要约束
 
 - 仓库：`D:/workspace/ck3_eternal_recurrence`；产品：`mod_living_artifacts/`；外置工作包：`D:/workspace/ck3-living-artifacts-20261022`，下文简称 `EXT`。
