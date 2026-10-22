@@ -478,6 +478,8 @@ jobs:
       - name: Test unconsumed launcher source pin refusal without CK3 or Steam
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_launcher_pin_refusal.py
       - name: Test shared CK3 acceptance without installed CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\tools
         run: |
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_exact_tree_binding.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
@@ -486,6 +488,10 @@ jobs:
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_day.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_late_native_cleanup.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_interrupted.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_interrupted.py tools/test_ck3_mod_acceptance_interrupted.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_hof_shared_terms_typing_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

@@ -1416,6 +1416,42 @@ def validate_late_failed_day(diagnostic_raw: object, row_raw: object) -> None:
         'Late-cleanup source-bound failed natural day differs')
 
 
+def previous_interrupted_owner_closure(previous: Path, freeze: dict[str, object], close_path: Path,
+        keeper_root: Path, release_path: Path, next_state: Path) -> JsonObject:
+    """Reobserve both providers and the canonical bus; old controls stay quarantined."""
+    import importlib
+    import psutil
+    import ck3_live_run_id as ids
+    from ck3_mod_acceptance_interrupted import validate_interrupted_owner
+    from ck3_mod_acceptance_background_types import text_field
+    from ck3_mod_acceptance_fresh_machine_bootstrap import machine_binding
+    frozen=json_object(freeze)
+    source=Path(text_field(frozen,'source_root'))/'ck3_autonomous_player/src'
+    sys.path.insert(0,str(source))
+    try:
+        provider=importlib.import_module('xar_autoplayer.environment')
+        location=getattr(provider,'__file__',None)
+        if not isinstance(location,str) or not Path(location).resolve().is_relative_to(source.resolve()):
+            raise ValueError('Interrupted process provider differs from original shared source')
+        game=provider.ck3_process_inventory()
+    finally:
+        sys.path.remove(str(source))
+    binding=machine_binding(actual_machine_binding(ids))
+    current=create_current_process_observation(binding=binding,
+        runtime_inventory=runtime_process_inventory(psutil,os.getpid()),ck3_inventory=game)
+    keeper=json_object(read_json(previous/'keeper-process.json'))
+    from ck3_mod_acceptance_interrupted import argument
+    cli=Path(argument(keeper.get('argv'),'--bus-cli'))
+    bus_dir=Path(argument(keeper.get('argv'),'--bus-dir'))
+    cli_sha=argument(keeper.get('argv'),'--bus-cli-sha256')
+    packet=subprocess.run([sys.executable,str(cli),'--bus-dir',str(bus_dir),
+        '--expected-cli-sha256',cli_sha,'list'],capture_output=True,check=True,timeout=20)
+    return validate_interrupted_owner(previous=previous,frozen=frozen,close_path=close_path,
+        keeper_root=keeper_root,release=read_failed_runtime_release(release_path),
+        bus_packet=json.loads(packet.stdout),binding=binding,current_processes=current,
+        present_pids=set(psutil.pids()),next_state=next_state)
+
+
 def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, object], close_path: Path,
         keeper_root: Path, release_path: Path, bus_packet: dict[str, object]) -> dict[str, object]:
     """Admit an ended failed live attempt's resources; never grant normal-exit credit."""
@@ -1872,6 +1908,12 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
     from ck3_mod_acceptance_keeper import write_new
     root=Path(binding['admission_root']);root.mkdir(parents=True,exist_ok=True)
     with ids._exclusive_file_lock(root/'chain.lock'):
+        if closure['mode']=='previous-shared-interrupted-owner-quarantined':
+            renewed=previous_interrupted_owner_closure(args.previous_live,
+                read_json(args.previous_live/'frozen-argv.json'),args.previous_failure_close,
+                args.previous_keeper,args.previous_release,selection.state_dir)
+            require(renewed['mode']==closure['mode'],'Interrupted admission changed under original writer lock')
+            closure.update(renewed)
         identity=root/'machine.json'
         if identity.exists():require(read_json(identity)==binding,'Existing machine admission identity changed')
         else:write_new(identity,binding)
@@ -2077,13 +2119,14 @@ def _allocate_and_keep_impl(selection,args):
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
         expired_keeper=(failed_live and failure_bundle.get('closure_kind')=='expired-keeper-missing-final-report')
+        interrupted_owner=(failed_live and failure_bundle.get('closure_kind')=='interrupted-owner-without-terminal-receipts')
         if allocated_unused or allocated_unrun or never_launched or prelaunch_host or supervisor_refused or pre_ready or failed_resource or failed_live:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
         else:
             report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
-        prior_keeper=read_json(args.previous_keeper/'report.json') if not (pre_ready or expired_keeper) else None
+        prior_keeper=read_json(args.previous_keeper/'report.json') if not (pre_ready or expired_keeper or interrupted_owner) else None
         # The canonical bus event/task reconstruction is valid for a successful
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
@@ -2101,6 +2144,11 @@ def _allocate_and_keep_impl(selection,args):
         elif allocated_unused:
             session_closure=previous_allocated_unused_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
+        elif interrupted_owner:
+            if not isinstance(failure_path,Path):
+                raise ValueError('Actual interrupted closure path required')
+            session_closure=previous_interrupted_owner_closure(previous,freeze,failure_path,
+                args.previous_keeper,args.previous_release,selection.state_dir)
         elif failed_live:
             session_closure=previous_failed_live_resource_closure(previous,freeze,failure_path,
                             args.previous_keeper,args.previous_release,bus_packet)
@@ -2122,7 +2170,7 @@ def _allocate_and_keep_impl(selection,args):
                              previous_session_closure(previous,freeze,report,report_reference))
         if report_projection is not None:
             session_closure['native_cleanup_projection']=report_projection
-        if not (pre_ready or expired_keeper):
+        if not (pre_ready or expired_keeper or interrupted_owner):
             require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
         require_latest_screen_release(release,args.latest_screen_release)
         closure={**session_closure,'run_id':freeze['run_id'],
@@ -2199,6 +2247,11 @@ def _allocate_and_keep_impl(selection,args):
         proof=closure['failure_cleanup']
         for row in [proof['close'],*proof['original_evidence'].values()]:
             files[Path(row['path']).resolve()]=row
+        if closure['mode']=='previous-shared-interrupted-owner-quarantined':
+            for row in proof['quarantined_controls'].values():
+                files[Path(row['path']).resolve()]=row
+            helper=Path(__file__).with_name('ck3_mod_acceptance_interrupted.py')
+            files[helper]=pin(helper)
     machine_admission=claim_machine_admission(binding,selection,args,closure)
     ledger.mkdir()
     write_json(ledger/'allocation-intent.json',{'status':'CONSUMED_ALLOCATION_INTENT_NOT_RUN','attempt':args.attempt,
