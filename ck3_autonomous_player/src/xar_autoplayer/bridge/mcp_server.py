@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .player_pilgrimage_planner_contract import PilgrimageOptionKey
+
 import argparse
 import importlib
 import json
@@ -2782,12 +2784,13 @@ def create_server(
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_pilgrimage_planner_v1(
             expected_revision: int, operation: Literal["read", "can_select", "quote", "post"] = "read",
-            province_id: int = 0, read_stage: int = 0, timeout_seconds: float = 30.0,
+            province_id: int = 0, read_stage: int = 0,
+            option_key: PilgrimageOptionKey = "pilgrimage_type_pious", timeout_seconds: float = 30.0,
         ) -> dict[str, object]:
             """Read the default-OFF current-player ordinary pilgrimage planner."""
             return driver.query_player_pilgrimage_planner_private_v1(
                 expected_revision=expected_revision, operation=operation, province_id=province_id,
-                read_stage=read_stage, timeout_seconds=timeout_seconds,
+                read_stage=read_stage, option_key=option_key, timeout_seconds=timeout_seconds,
             )
 
         @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
@@ -2795,12 +2798,13 @@ def create_server(
             expected_revision: int, operation: Literal["open", "confirm", "select", "start"],
             province_id: int = 0, policy_positive: bool = False, reserve_gold_raw: int = 0,
             reserve_treasury_raw: int = 0, reserve_piety_raw: int = 0,
-            reserve_barter_goods_raw: int = 0, timeout_seconds: float = 30.0,
+            reserve_barter_goods_raw: int = 0, option_key: PilgrimageOptionKey = "pilgrimage_type_pious",
+            timeout_seconds: float = 30.0,
         ) -> dict[str, object]:
             """Submit once; native ledger/independent postread still decide the outcome."""
             return driver.submit_player_pilgrimage_planner_private_v1(
                 expected_revision=expected_revision, operation=operation, province_id=province_id,
-                policy_positive=policy_positive, reserve_gold_raw=reserve_gold_raw,
+                policy_positive=policy_positive, option_key=option_key, reserve_gold_raw=reserve_gold_raw,
                 reserve_treasury_raw=reserve_treasury_raw, reserve_piety_raw=reserve_piety_raw,
                 reserve_barter_goods_raw=reserve_barter_goods_raw, timeout_seconds=timeout_seconds,
             )

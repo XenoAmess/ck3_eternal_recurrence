@@ -39,8 +39,15 @@ bool CaptureActivityPilgrimageStage5V1(
   ActivityPlannerDiagFrameV1 initial{};
   if (!diagnostic.read_frame(diagnostic.context, initial) || initial != expected)
     return false;
+  ActivityTypedPlannerSelectionV1 selected{};
+  if (sources.cost.read_selection == nullptr ||
+      !sources.cost.read_selection(sources.cost.selection_context, expected, 5, selected) ||
+      selected.option_key_size >= selected.option_key.size()) return false;
+  const auto *contract = PilgrimageContractForKeyV1(std::string_view(
+      selected.option_key.data(), selected.option_key_size));
+  if (contract == nullptr) return false;
   const auto quote = ReadActivityTypedPlannerFullCostV1(
-      sources.cost, expected, kOrdinaryPilgrimagePiousContractV1);
+      sources.cost, expected, *contract);
   if (quote.status != ActivityTypedFullCostStatusV1::observed) return false;
   ActivityPilgrimageDestinationStateV1 before{}, after{};
   if (!sources.read_destination(sources.destination_context, before) ||
@@ -51,7 +58,7 @@ bool CaptureActivityPilgrimageStage5V1(
       before.selection != quote.quote.selection ||
       !MatchesActivityTypedPlannerSelectionV1(before.selection, expected,
           before.planner, before.activity_type, 5,
-          kOrdinaryPilgrimagePiousContractV1)) return false;
+          *contract)) return false;
   const ActivityHostedIdentityFrameV1 hosted_frame{expected.revision,
       expected.date_raw, expected.actor_character_id,
       expected.application_main_thread, expected.paused,

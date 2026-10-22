@@ -1,4 +1,4 @@
-﻿"""Portable authored-state tests; no native output, process or game is created."""
+"""Portable authored-state tests; no native output, process or game is created."""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -54,6 +54,7 @@ def context():
         "case_contract": {"schema": "faith-engine-e02-d1-ordinary-pilgrimage-case-v1",
             "case": ADAPTER.CASE, "product": "faith-engine", "machine_id": "fixture-machine",
             "profile": {"enabled_mods": [], "product_files": []}, "expected_actor_character_id": 31254,
+            "prior_scene_date_raw": 53144328, "saved_input": {"player_id": 31254, "date_raw": 53144328},
             "policy": {"reserve_gold_raw": 10000000, "max_journey_days": 240, "max_day_requests": 480,
                 "max_public_requests": 480,
                 "max_events": 128, "one_day_timeout": 60, "quit_reserve_seconds": 120}},
@@ -82,6 +83,9 @@ class Client:
         self.stage1_rejected = False
         self.change_selection_after_review = False
         self.open_invoked = True
+        self.option_key = "pilgrimage_type_pious"
+        self.faith_id, self.rite_id = 13, 0
+        self.bad_save_size = False
 
     def snapshot(self, **kwargs):
         return frame()
@@ -112,7 +116,7 @@ class Client:
             response.update(self.review_overrides.get(request["approval_key"], {}))
         if "stage1-before-confirm" in name:
             assert self.stage == 1
-            assert request["native_observation"]["planner"]["selected_pious"] is True
+            assert request["native_observation"]["planner"]["selected_option_key"] == self.option_key
             assert not any(row["args"].get("operation") == "confirm" for row in self.calls)
             if self.change_selection_after_review:
                 self.stage1_selected = False
@@ -127,8 +131,17 @@ class Client:
         step = steps[0]
         self.calls.append(deepcopy(step))
         tool, args = step["tool"], step["args"]
-        if tool == ADAPTER.RELIGION:
+        if tool == "ck3_save_checkpoint":
+            raw = b"owned synthetic continuation save; no game queried"
+            Path(self.save_path).write_bytes(raw)
+            value = {"accepted": True, "step": "save-checkpoint", "checkpoint": {
+                "status": "saved", "date_raw": 53144328, "episode_projection": "native_campaign",
+                "path": str(self.save_path), "size": True if self.bad_save_size else len(raw),
+                "sha256": hashlib.sha256(raw).hexdigest()}}
+        elif tool == ADAPTER.RELIGION:
             value = offers()
+            value["player_pilgrimage_headless_activity_terms"].update(
+                faith_id=self.faith_id, rite_id=self.rite_id)
         elif tool == ADAPTER.IDENTITIES:
             rows = [self.identity()] if (self.started and not self.hosted_missing_after_start) or self.existing_identity else []
             value = {"activity_count": len(rows), "activities": rows}
@@ -147,21 +160,21 @@ class Client:
             elif op == "start":
                 self.started = True
             value = {"operation_status": "observed", "needs_recovery": False, "ledger_state": "idle",
-                "invoked": tool == ADAPTER.SUBMIT, "planner": {"stage": self.stage, "selected_pious": True,
+                "invoked": tool == ADAPTER.SUBMIT, "planner": {"stage": self.stage, "selected_option_key": self.option_key,
                     "destination_province_id": 200 if self.stage == 5 else 0, "can_select": self.can_select,
                     "can_progress": True}}
             if op == "open":
                 # Actual Open reports invocation/stage/readiness, not selection.
-                value["planner"]["selected_pious"] = None
+                value["planner"]["selected_option_key"] = None
                 value["invoked"] = self.open_invoked
             if op == "read" and args.get("read_stage") == 1:
-                value["planner"]["selected_pious"] = self.stage1_selected
+                value["planner"]["selected_option_key"] = self.option_key if self.stage1_selected is True else self.stage1_selected
                 if self.stage1_rejected:
                     value["operation_status"] = "rejected"
             if op == "quote":
                 value["quote"] = {"observed": True, "planning_stage": 5, "final_can_start_observed": True,
                     "final_can_start": self.can_start, "unknown_positive_configured_cost": self.unknown_positive,
-                    "selected_option": {"key": "pilgrimage_type_pious"}}
+                    "selected_option": {"key": self.option_key}}
             elif op == "post":
                 pending = self.post_pending or not self.started
                 value.update(operation_status="post_pending" if pending else "identity_observed",
@@ -176,6 +189,7 @@ class WorkflowTests(unittest.TestCase):
         Client.review_image = Path(cls.images.name) / "authored-synthetic-not-game.png"
         Client.review_image.write_bytes(base64.b64decode(
             "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII="))
+        Client.save_path = Path(cls.images.name) / "owned-continuation.ck3"
 
     @classmethod
     def tearDownClass(cls):
@@ -184,11 +198,83 @@ class WorkflowTests(unittest.TestCase):
     def setUp(self):
         self.original_sibling = ADAPTER.sibling
         ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else
-            SimpleNamespace(run_journey=lambda *args: {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False}))
+            SimpleNamespace(observe_milestone=lambda *args, **kwargs: None,
+                run_journey=lambda *args: {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False}))
         self.addCleanup(setattr, ADAPTER, "sibling", self.original_sibling)
 
     def starts(self, client):
         return [s for s in client.calls if s["tool"] == ADAPTER.SUBMIT and s["args"]["operation"] == "start"]
+
+    def test_v2_hajj_and_worldly_use_same_producer_adapter_and_all_planner_consumers(self):
+        for key in ("pilgrimage_type_hajj", "pilgrimage_type_worldly"):
+            ctx = context()
+            ctx["case"] = ADAPTER.MECHANISM_CASE
+            ctx["case_contract"].update(case=ADAPTER.MECHANISM_CASE,
+                schema="faith-engine-e02-pilgrimage-mechanism-case-v2",
+                expected_faith_id=50, expected_rite_id=13, option_key=key)
+            client = Client()
+            client.option_key, client.faith_id, client.rite_id = key, 50, 13
+            result = ADAPTER.run_case(ctx, client)
+            self.assertEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+            self.assertEqual(len(self.starts(client)), 1)
+            planner_calls = [row for row in client.calls if row["tool"] in {ADAPTER.QUERY, ADAPTER.SUBMIT}]
+            self.assertTrue(planner_calls)
+            self.assertTrue(all(row["args"]["option_key"] == key for row in planner_calls))
+
+    def test_v2_wrong_faith_or_selected_option_cannot_reach_start(self):
+        ctx = context()
+        ctx["case"] = ADAPTER.MECHANISM_CASE
+        ctx["case_contract"].update(case=ADAPTER.MECHANISM_CASE,
+            schema="faith-engine-e02-pilgrimage-mechanism-case-v2",
+            expected_faith_id=50, expected_rite_id=13, option_key="pilgrimage_type_hajj")
+        for matching_faith in (False, True):
+            client = Client()
+            if matching_faith:
+                client.faith_id, client.rite_id = 50, 13
+            result = ADAPTER.run_case(ctx, client)
+            self.assertEqual(result["status"], "capability_or_legality_blocked")
+            self.assertEqual(self.starts(client), [])
+
+    def test_v2_return_save_reads_actual_file_and_never_retries_invalid_metadata(self):
+        ctx = context()
+        ctx["case"] = ADAPTER.MECHANISM_CASE
+        ctx["case_contract"].update(case=ADAPTER.MECHANISM_CASE,
+            schema="faith-engine-e02-pilgrimage-mechanism-case-v2",
+            expected_faith_id=13, expected_rite_id=0, option_key="pilgrimage_type_pious",
+            scope={"new_save_allowed": True})
+        ctx["case_contract"]["saved_input"]["save"] = str(Path(Client.save_path).with_name("immutable-source.ck3"))
+        ctx["case_spec"]["required_mcp_tools"].append("ck3_save_checkpoint")
+        ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else
+            SimpleNamespace(observe_milestone=lambda *args, **kwargs: None,
+                run_journey=lambda *args: {"status": "AUTHORED_RETURN", "return_observed": True,
+                                          "return_event_chain_complete": True}))
+        for bad_size in (False, True):
+            client = Client(); client.bad_save_size = bad_size
+            result = ADAPTER.run_case(ctx, client)
+            self.assertEqual(sum(row["tool"] == "ck3_save_checkpoint" for row in client.calls), 1)
+            if bad_size:
+                self.assertNotIn("continuation_save", result)
+                self.assertIn("file differs", result["failure"])
+            else:
+                self.assertTrue(result["continuation_save"]["file_bytes_verified"])
+                self.assertFalse(result["continuation_save"]["reload_business_qualified"])
+
+    def test_v2_identity_runtime_types_and_json_roundtrip(self):
+        import json
+        from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_identity
+        data = context()["case_contract"]
+        data.update(case=ADAPTER.MECHANISM_CASE, schema="faith-engine-e02-pilgrimage-mechanism-case-v2",
+            expected_faith_id=50, expected_rite_id=None, option_key="pilgrimage_type_hajj")
+        self.assertEqual(pilgrimage_identity(data), pilgrimage_identity(json.loads(json.dumps(data))))
+        for key, wrong in (("expected_faith_id", True), ("expected_actor_character_id", 31254.0),
+                           ("prior_scene_date_raw", True), ("expected_rite_id", False), ("option_key", None)):
+            bad = deepcopy(data); bad[key] = wrong
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                pilgrimage_identity(bad)
+        for key in ("expected_rite_id", "expected_faith_id", "option_key"):
+            bad = deepcopy(data); del bad[key]
+            with self.subTest(missing=key), self.assertRaises(ValueError):
+                pilgrimage_identity(bad)
 
     def test_successful_finite_plan_has_single_start_intent_independent_identity_and_journey(self):
         client = Client()
@@ -250,6 +336,7 @@ class WorkflowTests(unittest.TestCase):
         client.snapshot = snapshot
         ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else SimpleNamespace(
             drain_interruptions=drain,
+            observe_milestone=lambda *args, **kwargs: None,
             run_journey=lambda *args: {"status": "AUTHORED_JOURNEY_RESULT"}))
         result = ADAPTER.run_case(context(), client)
         self.assertEqual(calls, ["drain"])

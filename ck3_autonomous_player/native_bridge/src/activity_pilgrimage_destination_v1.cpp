@@ -46,6 +46,10 @@ bool SameFrame(const ActivityPlannerDiagFrameV1 &current,
 
 bool Ready(const ActivityPilgrimageDestinationStateV1 &state,
            const ActivityPlannerDiagFrameV1 &expected) noexcept {
+  if (state.selection.option_key_size >= state.selection.option_key.size()) return false;
+  const auto *contract = PilgrimageContractForKeyV1(std::string_view(
+      state.selection.option_key.data(), state.selection.option_key_size));
+  if (contract == nullptr) return false;
   return SameFrame(state.frame, expected) && state.stage == 2 &&
       state.previous_stage == 1 && state.single_location_flag == 1 &&
       state.configuration_rows != 0 &&
@@ -55,7 +59,7 @@ bool Ready(const ActivityPilgrimageDestinationStateV1 &state,
       state.phase_auto_raw == 1 && state.province_id == 0 &&
       MatchesActivityTypedPlannerSelectionV1(
           state.selection, expected, state.planner, state.activity_type, 2,
-          kOrdinaryPilgrimagePiousContractV1);
+          *contract);
 }
 
 bool Resolve(const ActivityPilgrimageDestinationEnvironmentV1 &env,
@@ -137,17 +141,20 @@ ActivityPilgrimageDestinationResultV1 SelectActivityPilgrimageDestinationV1(
   }
   const auto &before = result.before;
   const auto &after = result.after;
+  if (before.selection.option_key_size >= before.selection.option_key.size()) return result;
+  const auto *contract = PilgrimageContractForKeyV1(std::string_view(
+      before.selection.option_key.data(), before.selection.option_key_size));
   result.frame_unchanged = SameFrame(after.frame, frozen_expected);
   result.planning_stage_after = after.stage;
   result.row_filled = after.configuration_row_count == 1 &&
       after.configuration_rows == before.configuration_rows &&
       after.phase == before.phase && after.province_id == id &&
       after.single_location_flag == 1;
-  result.selected_option_retained = after.planner == before.planner &&
+  result.selected_option_retained = contract != nullptr && after.planner == before.planner &&
       after.activity_type == before.activity_type && after.stage >= 2 && after.stage <= 5 &&
       MatchesActivityTypedPlannerSelectionV1(
           after.selection, frozen_expected, after.planner, after.activity_type, after.stage,
-          kOrdinaryPilgrimagePiousContractV1) &&
+          *contract) &&
       after.selection.native_selected_option == before.selection.native_selected_option &&
       after.selection.native_option_id == before.selection.native_option_id;
   result.gold_unchanged = after.gold_raw == before.gold_raw;

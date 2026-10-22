@@ -166,7 +166,7 @@ bool VerifyActivityCostSlot12ExactAbiV1(
     return false;
   if (environment.typed_contract != nullptr &&
       (!IsActivity12004BuildV1(environment.executable_sha256) ||
-       !IsOrdinaryPilgrimagePiousContractV1(*environment.typed_contract)))
+       !IsPilgrimageContractV1(*environment.typed_contract)))
     return false;
   std::array<std::uint8_t, kActivityCostPatchBytesV1> prologue{};
   std::array<std::uint8_t, 5> call{};

@@ -394,9 +394,11 @@ def qualified_execution_packets(ref, fixtures, snapshot_root, machine):
     execution = zero_execution(value["execution"], machine, value["executable"])
     packets = value.get("packets", [])
     names = {"read.json", "can-select-false.json", "quote-dynamic-index.json", "start-pending.json",
-             "start-unknown.json", "post-pending.json", "post-full-generation.json", "quote-unavailable.json"}
-    require(len(packets) == 8 and {Path(row["path"]).name for row in packets} == names,
-            "All eight actual production-serializer output packets are required")
+             "start-unknown.json", "post-pending.json", "post-full-generation.json", "quote-unavailable.json",
+             "hajj-read.json", "hajj-quote.json", "hajj-start.json",
+             "worldly-read.json", "worldly-quote.json", "worldly-start.json"}
+    require(len(packets) == len(names) and {Path(row["path"]).name for row in packets} == names,
+            "All fourteen actual production-serializer output packets are required")
     folder = Path(value["provenance"]["path"]).resolve().parent
     require(Path(value["provenance"]["path"]).name == "PROVENANCE.json"
             and len(execution["argv"]) == 2 and Path(execution["argv"][1]).resolve() == folder,

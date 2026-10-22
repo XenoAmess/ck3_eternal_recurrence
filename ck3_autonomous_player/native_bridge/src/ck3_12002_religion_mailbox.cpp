@@ -246,6 +246,11 @@ bool ExecutePlayerReligionMailbox12002(
     // Three independent read-only religion inputs share the actual owner frame.
     auto *religion_actor = ResolveReligionCharacter(query,
         static_cast<std::int32_t>(frame.played_character_id));
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+      SetCaptureStage("pilgrimage_traits");
+      (void)ck3_12004::religion::pilgrimage_traits::ReadPlayerPilgrimageTraits12004(
+          query.pilgrimage_trait_bindings, religion_actor, out, query.pilgrimage_traits);
+    }
     SetCaptureStage("piety_devotion_profile");
     (void)religion::devotion_profile12003::ReadPlayerDevotionProfile12003(
         query.devotion_bindings, religion_actor, out, query.devotion_profile);
@@ -302,6 +307,11 @@ std::string SerializePlayerReligionResult12002(
         ck3_12003::religion::pilgrimage_route::SerializePlayerPilgrimageCandidateRoute12003(route);
   }
   pilgrimage_routes += ']';
+  const std::string pilgrimage_traits = query.envelope.game &&
+      game::IsCk3_12004Descriptor(query.envelope.game->descriptor())
+      ? ",\"player_pilgrimage_traits\":" +
+          ck3_12004::religion::pilgrimage_traits::SerializePlayerPilgrimageTraits12004(query.pilgrimage_traits)
+      : "";
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerReligionPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -344,7 +354,7 @@ std::string SerializePlayerReligionResult12002(
       ",\"player_rite_virtue_sin_profile\":" +
       religion::rite_virtue_sin_profile12003::SerializePlayerRiteVirtueSinProfile12003(query.rite_virtue_sin_profile) +
       ",\"player_vow_of_poverty_terms\":" +
-      ck3_12003::religion::vow_of_poverty_terms12003::SerializeVowOfPovertyTerms12003(query.vow_of_poverty_terms) + "}}";
+      ck3_12003::religion::vow_of_poverty_terms12003::SerializeVowOfPovertyTerms12003(query.vow_of_poverty_terms) + pilgrimage_traits + "}}";
 }
 
 bool RunPlayerReligionMailbox12002(PlayerReligionMailboxContext12002 &query,
@@ -510,6 +520,7 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
         return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
       }
       const auto addons = ck3_12004::religion::BindReligionContextAddonsImage12004(image_base, sha);
+      query.pilgrimage_trait_bindings = addons.pilgrimage_trait_bindings;
       query.progress_bindings = addons.progress_bindings;
       query.mystical_communion_bindings = addons.mystical_communion_bindings;
       query.pilgrimage_bindings = addons.pilgrimage_bindings;

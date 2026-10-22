@@ -32,6 +32,7 @@ ROUTES = {
     "query-player-religion-conversion-outcome-v1": ("ck3_query_player_religion_conversion_outcome_v1", "player_religion_conversion_outcome", True),
 }
 CONTEXT_ADDONS = (
+    "player_pilgrimage_traits",
     "player_spiritual_fulfillment_progress",
     "player_mystical_communion_decision_terms",
     "player_pilgrimage_activity_type_terms",
@@ -199,7 +200,8 @@ def main() -> int:
                     for native_component in components:
                         check(isinstance(native_component, dict) and native_component["available"] is True,
                               "new complete native sibling component is observed: " + key)
-                        check(native_component["capture_epoch"] == primary["capture_epoch"]
+                        check(native_component["capture_epoch"] == (str(primary["capture_epoch"])
+                              if key == "player_pilgrimage_traits" else primary["capture_epoch"])
                               and native_component["date_raw"] == primary["date_raw"]
                               and native_component["played_character_id"] == primary["played_character_id"],
                               "native sibling remains in its original owner-pump player frame: " + key)

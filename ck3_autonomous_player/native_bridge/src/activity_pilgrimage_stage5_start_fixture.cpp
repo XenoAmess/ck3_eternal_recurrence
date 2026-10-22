@@ -57,12 +57,12 @@ bool Commit(void *opaque, std::uintptr_t module,
   return f.commit_return;
 }
 
-Fixture Make() {
+Fixture Make(std::string_view option_key = "pilgrimage_type_pious") {
   Fixture f{};
   const ActivityPlannerDiagFrameV1 frame{5, 100, 77, true, true, true, true};
   auto &q = f.value.quote;
   q.observed = true;
-  q.kind = ActivityTypedPlannerKindV1::ordinary_pilgrimage_pious;
+  q.kind = ActivityTypedPlannerKindV1::pilgrimage;
   q.frame = frame;
   q.planner = 0x1000; q.owner = 0x2000; q.activity_type = 0x3000;
   q.planning_stage = 5; q.normal_refresh_sequence = 7;
@@ -76,7 +76,7 @@ Fixture Make() {
   selected.planner = q.planner; selected.activity_type = q.activity_type;
   selected.planning_stage = 5; selected.native_selected_option = 0x4000;
   selected.native_option_id = 0;
-  const auto key = kOrdinaryPilgrimagePiousContractV1.special_option_key;
+  const auto key = option_key;
   std::memcpy(selected.option_key.data(), key.data(), key.size());
   selected.option_key_size = static_cast<std::uint16_t>(key.size());
   f.value.destination = {true, q.kind, frame, q.planner, q.activity_type, 5, 1, 10};
@@ -140,8 +140,8 @@ ActivityHostedIdentityV1 Identity(std::uint32_t id) {
   return out;
 }
 
-void SubmissionAndReconciliation(bool returned) {
-  auto f = Make(); f.commit_return = returned;
+void SubmissionAndReconciliation(bool returned, std::string_view option_key) {
+  auto f = Make(option_key); f.commit_return = returned;
   // A prior terminal identity occupies the same low slot with old generation.
   f.value.hosted.hosted_count = 1;
   f.value.hosted.hosted[0] = Identity(0x02000005);
@@ -175,7 +175,9 @@ void SubmissionAndReconciliation(bool returned) {
 
 int main() {
   RejectCases();
-  SubmissionAndReconciliation(true);
-  SubmissionAndReconciliation(false);
+  for (const auto key : {"pilgrimage_type_pious", "pilgrimage_type_worldly", "pilgrimage_type_hajj"}) {
+    SubmissionAndReconciliation(true, key);
+    SubmissionAndReconciliation(false, key);
+  }
   std::cout << "owned typed Start safety fixture PASS (not native/live qualification)\n";
 }

@@ -265,7 +265,7 @@ int main() {
   const auto expected = fake.frame;
   auto result = xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected);
   Expect(result.status == ActivityPilgrimageStage1OptionReadStatusV1::observed);
-  Expect(result.pious_pilgrimage_confirm_ready && result.shown && result.valid &&
+  Expect(result.pilgrimage_confirm_ready && result.shown && result.valid &&
          result.can_progress);
   Expect(std::string_view(result.option_key.data(), result.option_key_size) ==
          "pilgrimage_type_pious");
@@ -273,17 +273,21 @@ int main() {
   fake.shown = false;
   result = xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected);
   Expect(result.status == ActivityPilgrimageStage1OptionReadStatusV1::observed &&
-         !result.pious_pilgrimage_confirm_ready && !result.shown);
+         !result.pilgrimage_confirm_ready && !result.shown);
   fake.shown = true;
   fake.valid = false;
   result = xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected);
   Expect(result.status == ActivityPilgrimageStage1OptionReadStatusV1::observed &&
-         !result.pious_pilgrimage_confirm_ready && !result.valid);
+         !result.pilgrimage_confirm_ready && !result.valid);
   fake.valid = true;
-  fake.key = "pilgrimage_type_hajj";
-  result = xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected);
-  Expect(result.status == ActivityPilgrimageStage1OptionReadStatusV1::observed &&
-         !result.pious_pilgrimage_confirm_ready);
+  for (const auto key : {"pilgrimage_type_hajj", "pilgrimage_type_worldly"}) {
+    fake.key = key;
+    result = xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected);
+    Expect(result.status == ActivityPilgrimageStage1OptionReadStatusV1::observed &&
+           result.pilgrimage_confirm_ready);
+  }
+  fake.key = "pilgrimage_type_unknown";
+  Expect(!xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected).pilgrimage_confirm_ready);
   fake.key = "pilgrimage_type_pious";
   fake.drift_on_valid = true;
   result = xar::bridge::ReadActivityPilgrimageStage1OptionV1(Env(fake), expected);
@@ -356,7 +360,7 @@ int main() {
       xar::bridge::ReadActivityPilgrimageStage2OptionV1(Env(fake), expected);
   Expect(stage_two.status ==
              xar::bridge::ActivityPilgrimageStage2OptionReadStatusV1::observed &&
-         stage_two.pious_pilgrimage_selected &&
+         stage_two.pilgrimage_selected &&
          std::string_view(stage_two.option_key.data(),
                           stage_two.option_key_size) ==
              "pilgrimage_type_pious");
@@ -391,6 +395,11 @@ int main() {
   Expect(selected_receipt.observed && selected_receipt.planning_stage == 5 &&
          selected_receipt.native_option_id == 42);
   selected_stage5.key = "pilgrimage_type_hajj";
+  Expect(xar::bridge::ReadActivityPilgrimageSelectedOptionV1(
+      Env(selected_stage5), selected_stage5.frame, 5, selected_receipt));
+  Expect(std::string_view(selected_receipt.option_key.data(), selected_receipt.option_key_size) ==
+         "pilgrimage_type_hajj");
+  selected_stage5.key = "pilgrimage_type_unknown";
   Expect(!xar::bridge::ReadActivityPilgrimageSelectedOptionV1(
       Env(selected_stage5), selected_stage5.frame, 5, selected_receipt));
   Expect(!selected_receipt.observed);

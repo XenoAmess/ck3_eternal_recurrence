@@ -49,9 +49,13 @@ def validate(plan, report=None):
             continue
         require(tool in {QUERY, SUBMIT}, "Unlisted planner tool")
         submit = tool == SUBMIT
-        allowed = {"operation", "expected_revision", "province_id", "timeout_seconds"}
+        allowed = {"operation", "expected_revision", "province_id", "timeout_seconds", "option_key"}
         allowed |= {"policy_positive"} | RESERVES if submit else {"read_stage"}
         require(set(args) <= allowed, "Unlisted planner argument")
+        require(type(args.get("option_key", "pilgrimage_type_pious")) is str
+                and args.get("option_key", "pilgrimage_type_pious") in {
+            "pilgrimage_type_pious", "pilgrimage_type_worldly", "pilgrimage_type_hajj"
+        }, "Unsupported pilgrimage option identity")
         operation = args.get("operation", "read" if not submit else None)
         require(operation in ({"open", "confirm", "select", "start"} if submit
                               else {"read", "can_select", "quote", "post"}), "Unlisted planner operation")

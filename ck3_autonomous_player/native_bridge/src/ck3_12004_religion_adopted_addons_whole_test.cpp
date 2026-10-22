@@ -139,6 +139,12 @@ struct World {
   Bytes<0x40> contract{}; // Expanded rule storage lives separately below.
   Bytes<0x380> lease_contract{};
   Bytes<0x40> trait_database{}, trait_a{}, trait_b{}, trait_c{};
+  Bytes<0x70> pilgrimage_trait_database{};
+  std::array<Bytes<0x300>, 4> pilgrimage_definitions{};
+  std::array<void *, 4> pilgrimage_definition_rows{};
+  std::array<bool, 4> pilgrimage_presence{true, true, false, true};
+  std::array<std::int64_t, 4> pilgrimage_xp{5'000'000, 0, 0, 1'000'000};
+  bool pilgrimage_xp_failure = false;
   Bytes<0x30> virtue_record{}, sin_record{};
   std::array<std::int32_t, 3> traits{10, 11, 12};
   Bytes<0x30> atom_pool{}, flags{};
@@ -258,6 +264,13 @@ struct World {
     Put(flags, 0x28, std::int32_t{100});
     Put(flag_rows, 8, std::uint32_t{2}); Put(flag_rows, 0xC, std::int32_t{-1});
     Put(flag_rows, 0x20 + 8, std::uint32_t{3}); Put(flag_rows, 0x20 + 0xC, std::int32_t{115});
+    for (std::size_t index = 0; index < pilgrimage_definitions.size(); ++index) {
+      pilgrimage_definition_rows[index] = pilgrimage_definitions[index].data();
+      NativeString(pilgrimage_definitions[index].data(), 0x18,
+          fourth::pilgrimage_traits::kTraitKeys[index].data());
+      Put(pilgrimage_definitions[index], 0x29C, std::int32_t{index == 1 ? 0 : 1});
+    }
+    Collection(pilgrimage_trait_database, 0x50, pilgrimage_definition_rows);
   }
 };
 World *world = nullptr;
@@ -275,6 +288,30 @@ void RecordCallback(const char *name, int line, const char *predicate,
         << " owner_thread_matches=" << owner_thread_matches
         << " actual_thread=" << actual_thread << " owner_thread=" << world->owner << '\n';
   }
+}
+void *PilgrimageTraitDatabase() {
+  RecordCallback(__func__, __LINE__, "fixed pilgrimage trait database");
+  return world->pilgrimage_trait_database.data();
+}
+bool PilgrimageHasTrait(void *actor, const void *definition) {
+  RecordCallback(__func__, __LINE__, "current character", actor == world->character.data());
+  for (std::size_t index = 0; index < world->pilgrimage_definitions.size(); ++index)
+    if (definition == world->pilgrimage_definitions[index].data()) return world->pilgrimage_presence[index];
+  throw std::runtime_error("unexpected pilgrimage trait definition");
+}
+void *PilgrimageTracks(void *actor, void *output, const void *definition) {
+  RecordCallback(__func__, __LINE__, "current character", actor == world->character.data());
+  if (world->pilgrimage_xp_failure) return nullptr;
+  auto *span = static_cast<old::phase_character::NativeTraitXpSpan *>(output);
+  for (std::size_t index = 0; index < world->pilgrimage_definitions.size(); ++index) {
+    if (definition != world->pilgrimage_definitions[index].data()) continue;
+    Require(index != 1 && world->pilgrimage_presence[index], "only present tracked traits query XP");
+    span->data = &world->pilgrimage_xp[index]; span->count = 1; return span;
+  }
+  throw std::runtime_error("unexpected pilgrimage XP definition");
+}
+std::int32_t PilgrimageTrackIndex(const void *, const std::string *) {
+  throw std::runtime_error("single-track pilgrimage observations need no track-name lookup");
 }
 void *Player(void *owner) { RecordCallback(__func__, __LINE__, "owner == world->jomini.data()", owner == world->jomini.data()); return world->player.data(); }
 void *CharacterRite(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return world->rite.data(); }
@@ -485,6 +522,10 @@ old::ProvinceBindings Provinces(World &w) {
 }
 fourth::ContextAddonBindings Addons(World &w) {
   auto b = fourth::BindReligionContextAddonsImage12004(World::image_base, actual::kExecutableSha256);
+  b.pilgrimage_trait_bindings.get_trait_database = &PilgrimageTraitDatabase;
+  b.pilgrimage_trait_bindings.character_has_trait = &PilgrimageHasTrait;
+  b.pilgrimage_trait_bindings.character_trait_tracks = &PilgrimageTracks;
+  b.pilgrimage_trait_bindings.trait_track_index = &PilgrimageTrackIndex;
   auto &progress = b.progress_bindings;
   progress.database_slot = &w.fulfillment_database_ptr;
   progress.type_for_character = &FulfillmentType; progress.level_for_value = &FulfillmentLevel;
@@ -649,6 +690,7 @@ std::string Whole(World &w, const game::GameAdapter &adapter, const game::Snapsh
 }
 
 void InstallAddons(old::PlayerReligionMailboxContext12002 &q, const fourth::ContextAddonBindings &b) {
+  q.pilgrimage_trait_bindings = b.pilgrimage_trait_bindings;
   q.progress_bindings = b.progress_bindings;
   q.mystical_communion_bindings = b.mystical_communion_bindings;
   q.pilgrimage_bindings = b.pilgrimage_bindings;
@@ -667,19 +709,23 @@ std::vector<std::string> Produce(World &w, const game::GameAdapter &adapter, con
   std::vector<std::string> samples;
   auto context = Context(w);
   auto addons = Addons(w);
+#if !defined(XAR_CK3_PILGRIMAGE_TRAITS_ONLY_FIXTURE_V1)
   auto conversion = Conversion(w);
+#endif
   old::PlayerReligionMailboxContext12002 q_context{};
   q_context.bindings = context; InstallAddons(q_context, addons);
   samples.push_back(Whole(w, adapter, snapshot, q_context, &old::ExecutePlayerReligionMailbox12002,
       &old::SerializePlayerReligionResult12002, "g2-read-religion-context-12004"));
   Require(q_context.observation.available && q_context.progress.available &&
+      q_context.pilgrimage_traits.available &&
       q_context.spiritual_fulfillment_type.available && q_context.mystical_communion_terms.available &&
       q_context.pilgrimage_terms.available && q_context.pilgrimage_activity_terms.available &&
       q_context.pilgrimage_candidate_routes.size() == 1 && q_context.pilgrimage_candidate_routes[0].available &&
       q_context.confession_terms.available && q_context.confession_rite_permission.available &&
       q_context.church_income_terms.available && q_context.church_tax_inputs.available &&
       q_context.devotion_profile.available && q_context.rite_virtue_sin_profile.available && q_context.vow_of_poverty_terms.available,
-      "all thirteen adopted context sibling domains are genuinely observed");
+      "all fourteen adopted context sibling domains are genuinely observed");
+#if !defined(XAR_CK3_PILGRIMAGE_TRAITS_ONLY_FIXTURE_V1)
   old::PlayerReligionHostilityMailboxContext12002 q_hostility{};
   q_hostility.bindings = fourth::BindHostilityImage12004(World::image_base, actual::kExecutableSha256);
   q_hostility.bindings.context = context; q_hostility.bindings.rite_storage_slot = &w.rite_storage_ptr;
@@ -743,7 +789,51 @@ std::vector<std::string> Produce(World &w, const game::GameAdapter &adapter, con
       q_outcome.observation.actor.gold_raw == -200'000 && q_outcome.observation.actor.prestige_raw == 0 &&
       q_outcome.observation.state.target_rite_id == World::target_id,
       "independent conversion current state preserves signed resources, zero and full target ID");
+#endif
   return samples;
+}
+
+std::vector<std::string> ProduceTraitCases(World &w, const game::GameAdapter &adapter,
+    const game::Snapshot &snapshot) {
+  std::vector<std::string> cases;
+  const auto presence = w.pilgrimage_presence;
+  const auto xp = w.pilgrimage_xp;
+  for (unsigned mode = 0; mode < 8; ++mode) {
+    w.pilgrimage_presence = presence; w.pilgrimage_xp = xp;
+    auto addons = Addons(w);
+    if (mode == 0) w.pilgrimage_presence.fill(false);
+    if (mode == 1) { w.pilgrimage_presence = {true, false, false, false}; w.pilgrimage_xp[0] = 0; }
+    if (mode == 2) { w.pilgrimage_presence.fill(true); w.pilgrimage_xp = {10'000'000, 0, 1'000'000, 5'000'000}; }
+    if (mode == 3) w.pilgrimage_definition_rows[0] = w.pilgrimage_definitions[1].data();
+    if (mode == 4) Put(w.pilgrimage_definitions[0], 0x29C, std::int32_t{2});
+    if (mode == 5) w.pilgrimage_xp[0] = -1;
+    if (mode == 6) w.pilgrimage_xp_failure = true;
+    if (mode == 7) addons.pilgrimage_trait_bindings.enabled = false;
+    old::PlayerReligionMailboxContext12002 query{};
+    query.bindings = Context(w); InstallAddons(query, addons);
+    const auto name = "g2-read-pilgrimage-traits-case-" + std::to_string(mode);
+    cases.push_back(Whole(w, adapter, snapshot, query, &old::ExecutePlayerReligionMailbox12002,
+        &old::SerializePlayerReligionResult12002, name.c_str()));
+    Require(query.pilgrimage_traits.available == (mode < 3), "actual reader failure remains unavailable");
+    if (mode == 0) {
+      auto wrong_owner = query.observation;
+      ++wrong_owner.played_character_id;
+      fourth::pilgrimage_traits::Snapshot rejected{};
+      Require(!fourth::pilgrimage_traits::ReadPlayerPilgrimageTraits12004(
+          addons.pilgrimage_trait_bindings, w.character.data(), wrong_owner, rejected) &&
+          rejected.unavailable_reason == "played_character_identity_mismatch",
+          "reader refuses a foreign character pointer even with a valid available context");
+    }
+    if (mode >= 3) {
+      for (const auto &row : query.pilgrimage_traits.traits)
+        Require(!row.present && !row.experience_raw, "failed reads discard partial observations");
+    }
+    w.pilgrimage_definition_rows[0] = w.pilgrimage_definitions[0].data();
+    Put(w.pilgrimage_definitions[0], 0x29C, std::int32_t{1});
+    w.pilgrimage_xp_failure = false;
+  }
+  w.pilgrimage_presence = presence; w.pilgrimage_xp = xp;
+  return cases;
 }
 } // namespace
 
@@ -763,7 +853,12 @@ int main(int argc, char **argv) {
         snapshot.map_ready && snapshot.played_character_alive && snapshot.played_character_id == World::actor_id &&
         snapshot.date_raw == World::date, "actual4 Core produces the common current paused player frame");
     const auto samples = Produce(memory, *adapter, snapshot);
+    const auto trait_cases = ProduceTraitCases(memory, *adapter, snapshot);
+#if defined(XAR_CK3_PILGRIMAGE_TRAITS_ONLY_FIXTURE_V1)
+    Require(samples.size() == 1, "one complete context packet is produced by the narrow trait fixture");
+#else
     Require(samples.size() == 10, "ten original complete command_result packets are produced");
+#endif
     std::filesystem::create_directories(output_path.parent_path());
     std::ofstream output(output_path, std::ios::binary);
     output << "{\"fixture_provenance\":{\"kind\":\"synthetic_native_world_and_callbacks\","
@@ -775,9 +870,15 @@ int main(int argc, char **argv) {
       if (index) output << ',';
       output << samples[index]; // Original complete producer packet, unchanged.
     }
+    output << "],\"pilgrimage_trait_cases\":[";
+    for (std::size_t index = 0; index < trait_cases.size(); ++index) {
+      if (index) output << ',';
+      output << trait_cases[index];
+    }
     output << "]}\n";
-    Require(static_cast<bool>(output), "new native document writes all ten original whole packets");
-    std::cout << "ten fresh actual4 whole religion addon packets written\n";
+    Require(static_cast<bool>(output), "new native document writes every original whole packet");
+    std::cout << samples.size() << " fresh actual4 whole religion addon packets and "
+        << trait_cases.size() << " trait cases written\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n'; return 1;

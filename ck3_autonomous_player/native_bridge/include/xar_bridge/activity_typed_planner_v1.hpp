@@ -15,7 +15,7 @@ namespace xar::bridge {
 // A finite NEW software contract. Existing Feast entry points and their
 // authorization do not acquire this activity by including this header.
 enum class ActivityTypedPlannerKindV1 : std::uint8_t {
-  ordinary_pilgrimage_pious = 1,
+  pilgrimage = 1,
 };
 
 struct ActivityTypedPlannerContractV1 {
@@ -27,16 +27,31 @@ struct ActivityTypedPlannerContractV1 {
 
 inline constexpr ActivityTypedPlannerContractV1
     kOrdinaryPilgrimagePiousContractV1{
-        ActivityTypedPlannerKindV1::ordinary_pilgrimage_pious,
+        ActivityTypedPlannerKindV1::pilgrimage,
         "activity_pilgrimage", "pilgrimage_type_pious", 1};
 
-inline bool IsOrdinaryPilgrimagePiousContractV1(
+inline constexpr ActivityTypedPlannerContractV1 kPilgrimageWorldlyContractV1{
+    ActivityTypedPlannerKindV1::pilgrimage,
+    "activity_pilgrimage", "pilgrimage_type_worldly", 1};
+inline constexpr ActivityTypedPlannerContractV1 kPilgrimageHajjContractV1{
+    ActivityTypedPlannerKindV1::pilgrimage,
+    "activity_pilgrimage", "pilgrimage_type_hajj", 1};
+
+inline const ActivityTypedPlannerContractV1 *PilgrimageContractForKeyV1(
+    std::string_view key) noexcept {
+  for (const auto *contract : {&kOrdinaryPilgrimagePiousContractV1,
+                              &kPilgrimageWorldlyContractV1,
+                              &kPilgrimageHajjContractV1})
+    if (contract->special_option_key == key) return contract;
+  return nullptr;
+}
+
+inline bool IsPilgrimageContractV1(
     const ActivityTypedPlannerContractV1 &contract) noexcept {
-  const auto &allowed = kOrdinaryPilgrimagePiousContractV1;
-  return contract.kind == allowed.kind &&
-         contract.activity_key == allowed.activity_key &&
-         contract.special_option_key == allowed.special_option_key &&
-         contract.predefined_phase_count == allowed.predefined_phase_count;
+  const auto *allowed = PilgrimageContractForKeyV1(contract.special_option_key);
+  return allowed != nullptr && contract.kind == allowed->kind &&
+         contract.activity_key == allowed->activity_key &&
+         contract.predefined_phase_count == allowed->predefined_phase_count;
 }
 
 namespace activity_typed_planner_detail_v1 {
@@ -62,7 +77,7 @@ inline bool MatchesActivityTypedPlannerTypeV1(
   using activity_typed_planner_detail_v1::ReadAt;
   if (!environment.enabled ||
       !IsActivity12004BuildV1(environment.admitted_executable_sha256) ||
-      !IsOrdinaryPilgrimagePiousContractV1(contract) ||
+      !IsPilgrimageContractV1(contract) ||
       environment.module_base == 0 || expected_type_vtable_rva != 0x48BFE60 ||
       expected_type_vtable_rva >
           (std::numeric_limits<std::uintptr_t>::max)() - environment.module_base)
@@ -93,7 +108,7 @@ inline bool MatchesActivityTypedPlannerTypeV1(
 inline bool MatchesActivityTypedPlannerHostKeyV1(
     const ActivityPlannerDiagValueV1 &value,
     const ActivityTypedPlannerContractV1 &contract) noexcept {
-  return IsOrdinaryPilgrimagePiousContractV1(contract) &&
+  return IsPilgrimageContractV1(contract) &&
          value.host_view_activity_key_known &&
          value.host_view_activity_key_size < value.host_view_activity_key.size() &&
          std::string_view(value.host_view_activity_key.data(),
@@ -125,7 +140,7 @@ inline bool MatchesActivityTypedPlannerSelectionV1(
     const ActivityPlannerDiagFrameV1 &frame, std::uintptr_t planner,
     std::uintptr_t activity_type, std::int32_t required_stage,
     const ActivityTypedPlannerContractV1 &contract) noexcept {
-  return IsOrdinaryPilgrimagePiousContractV1(contract) && selection.observed &&
+  return IsPilgrimageContractV1(contract) && selection.observed &&
          selection.kind == contract.kind && selection.frame == frame &&
          planner != 0 && selection.planner == planner && activity_type != 0 &&
          selection.activity_type == activity_type &&

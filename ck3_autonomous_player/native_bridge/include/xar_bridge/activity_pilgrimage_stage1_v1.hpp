@@ -10,9 +10,6 @@
 
 namespace xar::bridge {
 
-inline constexpr std::string_view kActivityPilgrimageStage1OptionKeyV1 =
-    kOrdinaryPilgrimagePiousContractV1.special_option_key;
-
 enum class ActivityPilgrimageStage1OptionReadStatusV1 {
   observed,
   exact_build_rejected,
@@ -62,7 +59,7 @@ struct ActivityPilgrimageStage1OptionReadResultV1 {
   bool shown = false;
   bool valid = false;
   bool can_progress = false;
-  bool pious_pilgrimage_confirm_ready = false;
+  bool pilgrimage_confirm_ready = false;
 };
 
 ActivityPilgrimageStage1OptionReadResultV1 ReadActivityPilgrimageStage1OptionV1(
@@ -86,7 +83,7 @@ struct ActivityPilgrimageStage2OptionReadResultV1 {
   ActivityPlannerDiagFrameV1 frame{};
   std::array<char, 96> option_key{};
   std::uint16_t option_key_size = 0;
-  bool pious_pilgrimage_selected = false;
+  bool pilgrimage_selected = false;
 };
 
 ActivityPilgrimageStage2OptionReadResultV1 ReadActivityPilgrimageStage2OptionV1(
@@ -147,7 +144,7 @@ std::string_view ActivityPilgrimageStage1ConfirmRejectReasonKeyV1(
 std::string_view ActivityPilgrimageStage1OptionReadStatusKeyV1(
     ActivityPilgrimageStage1OptionReadStatusV1 status) noexcept;
 
-// Actual selected option producer for the fixed pious contract. Read-only.
+// Actual selected option producer for the three finite pilgrimage contracts. Read-only.
 // required_stage is observed, not advanced; cost/Start request stage 5.
 bool ReadActivityPilgrimageSelectedOptionV1(
     const ActivityPilgrimageStage1OptionEnvironmentV1 &environment,

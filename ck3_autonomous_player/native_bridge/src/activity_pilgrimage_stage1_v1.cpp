@@ -273,9 +273,9 @@ ActivityPilgrimageStage1OptionReadResultV1 ReadActivityPilgrimageStage1OptionV1(
     result.status = ActivityPilgrimageStage1OptionReadStatusV1::frame_changed;
     return result;
   }
-  result.pious_pilgrimage_confirm_ready =
-      std::string_view(result.option_key.data(), result.option_key_size) ==
-          kActivityPilgrimageStage1OptionKeyV1 &&
+  result.pilgrimage_confirm_ready =
+      PilgrimageContractForKeyV1(std::string_view(
+          result.option_key.data(), result.option_key_size)) != nullptr &&
       result.shown && result.valid && result.can_progress;
   result.status = ActivityPilgrimageStage1OptionReadStatusV1::observed;
   return result;
@@ -330,9 +330,9 @@ ActivityPilgrimageStage2OptionReadResultV1 ReadActivityPilgrimageStage2OptionV1(
     result.status = ActivityPilgrimageStage2OptionReadStatusV1::frame_changed;
     return result;
   }
-  result.pious_pilgrimage_selected =
-      std::string_view(result.option_key.data(), result.option_key_size) ==
-      kActivityPilgrimageStage1OptionKeyV1;
+  result.pilgrimage_selected =
+      PilgrimageContractForKeyV1(std::string_view(
+          result.option_key.data(), result.option_key_size)) != nullptr;
   result.status = ActivityPilgrimageStage2OptionReadStatusV1::observed;
   return result;
 }
@@ -371,7 +371,7 @@ ActivityPilgrimageStage1ConfirmResultV1 ConfirmActivityPilgrimageStage1V1(
   result.precondition = ReadActivityPilgrimageStage1OptionV1(env, expected);
   if (result.precondition.status !=
           ActivityPilgrimageStage1OptionReadStatusV1::observed ||
-      !result.precondition.pious_pilgrimage_confirm_ready) {
+      !result.precondition.pilgrimage_confirm_ready) {
     result.reject_reason = ActivityPilgrimageStage1ConfirmRejectReasonV1::option_not_ready;
     return result;
   }
@@ -614,10 +614,11 @@ bool ReadActivityPilgrimageSelectedOptionV1(
   ActivityTypedPlannerSelectionV1 candidate{};
   if (!env.resolve_key(env.diagnostic.context, first.option_id,
                        candidate.option_key, candidate.option_key_size) ||
-      candidate.option_key_size >= candidate.option_key.size() ||
-      std::string_view(candidate.option_key.data(), candidate.option_key_size) !=
-          kOrdinaryPilgrimagePiousContractV1.special_option_key)
+      candidate.option_key_size >= candidate.option_key.size())
     return false;
+  const auto *contract = PilgrimageContractForKeyV1(std::string_view(
+      candidate.option_key.data(), candidate.option_key_size));
+  if (contract == nullptr) return false;
   ActivityPlannerIdentityV1 identity{};
   if (!ResolveActivityPlannerIdentityV1(env.diagnostic, expected, identity) ||
       identity.planner != first.planner || identity.stage != required_stage ||
@@ -636,7 +637,7 @@ bool ReadActivityPilgrimageSelectedOptionV1(
       final_frame != expected)
     return false;
   candidate.observed = true;
-  candidate.kind = kOrdinaryPilgrimagePiousContractV1.kind;
+  candidate.kind = contract->kind;
   candidate.frame = expected;
   candidate.planner = first.planner;
   candidate.activity_type = identity.activity_type;
@@ -645,7 +646,7 @@ bool ReadActivityPilgrimageSelectedOptionV1(
   candidate.native_option_id = first.option_id;
   if (!MatchesActivityTypedPlannerSelectionV1(
           candidate, expected, first.planner, identity.activity_type,
-          required_stage, kOrdinaryPilgrimagePiousContractV1))
+          required_stage, *contract))
     return false;
   output = candidate;
   return true;

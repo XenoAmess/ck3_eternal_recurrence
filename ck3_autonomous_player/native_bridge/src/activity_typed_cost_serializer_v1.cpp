@@ -5,7 +5,11 @@
 namespace xar::bridge {
 namespace {
 bool ValidQuote(const ActivityTypedPlannerCostQuoteV1 &quote) noexcept {
-  const auto &contract = kOrdinaryPilgrimagePiousContractV1;
+  if (quote.selection.option_key_size >= quote.selection.option_key.size()) return false;
+  const auto *selected_contract = PilgrimageContractForKeyV1(std::string_view(
+      quote.selection.option_key.data(), quote.selection.option_key_size));
+  if (selected_contract == nullptr) return false;
+  const auto &contract = *selected_contract;
   if (!quote.observed || quote.kind != contract.kind ||
       quote.frame.revision == 0 || !quote.frame.application_main_thread ||
       !quote.frame.paused || !quote.frame.map_ready || !quote.frame.actor_alive ||
@@ -31,6 +35,7 @@ std::string SerializeActivityTypedPlannerFullCostV1(
   if (result.status != ActivityTypedFullCostStatusV1::observed ||
       !ValidQuote(result.quote)) return {};
   const auto &quote = result.quote;
+  const std::string option(quote.selection.option_key.data(), quote.selection.option_key_size);
   bool computed_unknown_positive = false;
   for (std::size_t index = 0; index < quote.configured_cost_raw.size(); ++index)
     if (quote.configured_cost_raw[index] > 0 && !quote.named_cost_verified[index])
@@ -41,7 +46,7 @@ std::string SerializeActivityTypedPlannerFullCostV1(
   std::string text =
       "{\"schema\":\"activity-pilgrimage-configured-full10-cost-v1\","
       "\"activity_key\":\"activity_pilgrimage\","
-      "\"special_option_key\":\"pilgrimage_type_pious\","
+      "\"special_option_key\":\"" + option + "\","
       "\"observed\":true,\"read_only\":true,\"raw_pointer_fields_persisted\":false,"
       "\"snapshot_revision\":" + std::to_string(quote.frame.revision) +
       ",\"date_raw\":" + std::to_string(quote.frame.date_raw) +
@@ -52,7 +57,7 @@ std::string SerializeActivityTypedPlannerFullCostV1(
       ",\"configuration_fingerprint\":" + std::to_string(quote.configuration_fingerprint) +
       ",\"selected_option\":{\"native_option_id\":" +
       std::to_string(quote.selection.native_option_id) +
-      ",\"key\":\"pilgrimage_type_pious\"},\"known_cost_names\":[";
+      ",\"key\":\"" + option + "\"},\"known_cost_names\":[";
   for (std::size_t name = 0; name < kActivityTypedPlannerKnownCostNamesV1.size(); ++name) {
     if (name != 0) text += ',';
     text += "\"" + std::string(kActivityTypedPlannerKnownCostNamesV1[name]) + "\"";

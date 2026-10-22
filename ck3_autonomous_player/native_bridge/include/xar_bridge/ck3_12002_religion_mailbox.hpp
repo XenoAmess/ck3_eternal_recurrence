@@ -23,6 +23,7 @@
 #include "xar_bridge/ck3_12004_holy_site_relic_action_context.hpp"
 
 #include "xar_bridge/holy_site_creation12004_mailbox.hpp"
+#include "xar_bridge/player_pilgrimage_traits12004.hpp"
 
 #include <vector>
 
@@ -39,6 +40,8 @@ struct PlayerReligionMailboxContext12002 {
   QueryMailboxEnvelope envelope{};
   religion::Bindings bindings{};
   religion::Context observation{};
+  ck3_12004::phase_character::Bindings pilgrimage_trait_bindings{};
+  ck3_12004::religion::pilgrimage_traits::Snapshot pilgrimage_traits{};
   religion::fulfillment_progress12003::Bindings progress_bindings{};
   religion::fulfillment_progress12003::Progress progress{};
   ck3_12003::religion::fulfillment_type::Type spiritual_fulfillment_type{};

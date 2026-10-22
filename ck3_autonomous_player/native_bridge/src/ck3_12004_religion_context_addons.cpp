@@ -98,6 +98,7 @@ ContextAddonBindings BindReligionContextAddonsImage12004(
   ContextAddonBindings out{};
   if (!Admitted(base, sha)) return out;
   const auto core = ck3_12004::BindCoreImage(base, sha);
+  out.pilgrimage_trait_bindings = phase_character::BindImage(base, sha);
 
   auto &progress = out.progress_bindings;
   progress.enabled = true;
@@ -469,3 +470,113 @@ bool ReadPlayedConversionOutcome12004(const outcome::Bindings &b,
   return read;
 }
 } // namespace xar::ck3_12004::religion
+
+namespace xar::ck3_12004::religion::pilgrimage_traits {
+namespace {
+bool ReadValuesImpl(const phase_character::Bindings &bindings, void *character,
+    std::array<Row, 4> &rows, const char *&reason) {
+  namespace shared = ck3_12002::phase_character;
+  if (!bindings.enabled || !bindings.get_trait_database ||
+      !bindings.character_has_trait || !bindings.character_trait_tracks ||
+      !bindings.trait_track_index) {
+    reason = "bindings_unavailable"; return false;
+  }
+  if (!character) { reason = "played_character_unavailable"; return false; }
+  const auto *database = bindings.get_trait_database();
+  if (!database) { reason = "trait_database_unavailable"; return false; }
+  for (std::size_t index = 0; index < kTraitKeys.size(); ++index) {
+    void *definition = shared::FindUniqueTraitDefinition(database, kTraitKeys[index]);
+    if (!definition) { reason = "trait_definition_unavailable"; return false; }
+    std::int32_t track_count = -1;
+    if (!ReadLocalMemory(nullptr, reinterpret_cast<std::uintptr_t>(definition) +
+        shared::kTraitTrackDefinitionCountOffset, &track_count, sizeof(track_count)) ||
+        track_count != (index == 1 ? 0 : 1)) {
+      reason = "trait_track_definition_mismatch"; return false;
+    }
+    bool present = false;
+    std::array<void *, 1> definitions{definition};
+    if (!shared::ReadTraitPresence(bindings, character, definitions, present)) {
+      reason = "trait_presence_unavailable"; return false;
+    }
+    rows[index].present = present;
+    if (present && index != 1) {
+      std::int64_t raw = 0;
+      if (!shared::ReadTraitTrackXp(bindings, character, definition, "", raw) ||
+          raw < 0 || raw > 100 * kExperienceScale) {
+        reason = "trait_experience_unavailable"; return false;
+      }
+      rows[index].experience_raw = raw;
+    }
+  }
+  return true;
+}
+bool ReadValues(const phase_character::Bindings &bindings, void *character,
+    std::array<Row, 4> &rows, const char *&reason) {
+#if defined(_WIN32) && defined(_MSC_VER)
+  __try {
+#endif
+    return ReadValuesImpl(bindings, character, rows, reason);
+#if defined(_WIN32) && defined(_MSC_VER)
+  } __except (1) { reason = "native_memory_unavailable"; return false; }
+#endif
+}
+} // namespace
+
+bool ReadPlayerPilgrimageTraits12004(const phase_character::Bindings &bindings,
+    void *character, const ck3_12002::religion::Context &context,
+    Snapshot &out) noexcept {
+  out = {};
+  out.capture_epoch = context.capture_epoch;
+  out.date_raw = context.date_raw;
+  out.played_character_id = context.played_character_id;
+  if (!context.available || !context.capture_epoch || context.played_character_id <= 0) {
+    out.unavailable_reason = "religion_context_unavailable"; return false;
+  }
+  std::int32_t actual_id = -1;
+  std::uint32_t actual_kind = 0;
+  const auto actor = reinterpret_cast<std::uintptr_t>(character);
+  if (!actor || !ReadLocalMemory(nullptr, actor + ck3_12002::phase_character::kCharacterIdentityOffset,
+      &actual_id, sizeof(actual_id)) ||
+      !ReadLocalMemory(nullptr, actor + ck3_12002::phase_character::kCharacterKindOffset,
+      &actual_kind, sizeof(actual_kind)) || actual_id != context.played_character_id ||
+      actual_kind != 0x43686172) {
+    out.unavailable_reason = "played_character_identity_mismatch"; return false;
+  }
+  try {
+    const char *reason = "native_reader_failed";
+    std::array<Row, 4> rows{};
+    if (!ReadValues(bindings, character, rows, reason)) {
+      out.unavailable_reason = reason; return false;
+    }
+    out.traits = rows;
+    out.available = true;
+    out.unavailable_reason.clear();
+    return true;
+  } catch (...) { out.unavailable_reason = "native_reader_exception"; return false; }
+}
+
+std::string SerializePlayerPilgrimageTraits12004(const Snapshot &value) {
+  std::string out = "{\"schema\":\"ck3_12004_player_pilgrimage_traits_v1\","
+      "\"read_only\":true,\"available\":";
+  out += value.available ? "true" : "false";
+  out += ",\"unavailable_reason\":";
+  out += value.available ? "null" : "\"" + value.unavailable_reason + "\"";
+  // Epoch is a uint64 identity; never round-trip it through a JS Number.
+  out += ",\"capture_epoch\":\"" + std::to_string(value.capture_epoch) + "\"";
+  out += ",\"date_raw\":" + std::to_string(value.date_raw);
+  out += ",\"played_character_id\":" + std::to_string(value.played_character_id);
+  out += ",\"raw_scale\":100000,\"traits\":[";
+  for (std::size_t index = 0; index < kTraitKeys.size(); ++index) {
+    if (index) out += ',';
+    const auto &row = value.traits[index];
+    out += "{\"trait_key\":\"" + std::string(kTraitKeys[index]) + "\",\"has_track\":";
+    out += index == 1 ? "false" : "true";
+    out += ",\"present\":";
+    out += value.available && row.present ? (*row.present ? "true" : "false") : "null";
+    out += ",\"experience_raw\":";
+    out += value.available && row.experience_raw ? std::to_string(*row.experience_raw) : "null";
+    out += '}';
+  }
+  return out + "]}";
+}
+} // namespace xar::ck3_12004::religion::pilgrimage_traits

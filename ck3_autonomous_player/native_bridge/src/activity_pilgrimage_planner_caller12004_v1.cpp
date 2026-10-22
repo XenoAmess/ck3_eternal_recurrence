@@ -6,6 +6,7 @@ using Operation = ActivityPilgrimagePlannerOperation12004V1;
 using Status = ActivityPilgrimagePlannerStatus12004V1;
 
 bool ValidOperation(const ActivityPilgrimagePlannerRequest12004V1 &request) noexcept {
+  if (bridge::PilgrimageContractForKeyV1(request.option_key) == nullptr) return false;
   switch (request.operation) {
   case Operation::read:
     return request.province_id == 0 && request.read_stage >= 0 && request.read_stage <= 5;
@@ -100,6 +101,17 @@ bool ExecuteActivityPilgrimagePlannerOperation12004V1(
   }
 #endif
   result.status = Status::native_result_unavailable;
+  // The requested option is a guard, never evidence of the current selection.
+  // Read the original selected option before any confirmation/destination action.
+  if (request.operation != Operation::open && request.operation != Operation::read) {
+    ReadCurrent(native, frame, result);
+    if (!result.selection_observed ||
+        std::string_view(result.selection.option_key.data(),
+                         result.selection.option_key_size) != request.option_key) {
+      result.status = Status::operation_rejected;
+      return true;
+    }
+  }
   switch (request.operation) {
   case Operation::read:
     ReadCurrent(native, frame, result);

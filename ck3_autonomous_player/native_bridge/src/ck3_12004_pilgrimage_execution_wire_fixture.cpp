@@ -9,7 +9,8 @@ using namespace xar::ck3_12002;
 using namespace xar::bridge;
 #define REQUIRE(x) do { if (!(x)) { std::cerr << "failed " << __LINE__ << ": " #x "\n"; std::abort(); } } while(false)
 
-PlayerPilgrimageExecutionQuery12004V1 Base(PilgrimageExecutionOperation12004V1 op) {
+PlayerPilgrimageExecutionQuery12004V1 Base(PilgrimageExecutionOperation12004V1 op,
+    std::string_view option = "pilgrimage_type_pious") {
   PlayerPilgrimageExecutionQuery12004V1 q{};
   q.executable_sha256 = xar::ck3_12004::kExecutableSha256;
   q.expected_revision = 77; q.expected_snapshot.date_raw = 500;
@@ -20,12 +21,15 @@ PlayerPilgrimageExecutionQuery12004V1 Base(PilgrimageExecutionOperation12004V1 o
   q.ledger_state = ActivityPilgrimageStartStateV1::idle;
   q.planner.diagnostic.status = ActivityPlannerDiagStatusV1::observed;
   q.planner.diagnostic.value.stage = 1; q.planner.selection_observed = true;
+  q.option_key = option;
+  std::memcpy(q.planner.selection.option_key.data(), option.data(), option.size());
+  q.planner.selection.option_key_size = static_cast<std::uint16_t>(option.size());
   return q;
 }
 void Quote(PlayerPilgrimageExecutionQuery12004V1 &q) {
   q.cost.status = ActivityTypedFullCostStatusV1::observed;
   auto &v = q.cost.quote;
-  v.observed = true; v.kind = ActivityTypedPlannerKindV1::ordinary_pilgrimage_pious;
+  v.observed = true; v.kind = ActivityTypedPlannerKindV1::pilgrimage;
   v.frame = {77, 500, 100, true, true, true, true};
   v.planner = 0x1100; v.owner = 0x2200; v.activity_type = 0x3300;
   v.planning_stage = 5; v.normal_refresh_sequence = 9; v.configuration_fingerprint = 0xFE1122;
@@ -38,10 +42,11 @@ void Quote(PlayerPilgrimageExecutionQuery12004V1 &q) {
   v.selection.planner = v.planner; v.selection.activity_type = v.activity_type;
   v.selection.planning_stage = 5; v.selection.native_selected_option = 0x4400;
   v.selection.native_option_id = 12;
-  const auto key = kOrdinaryPilgrimagePiousContractV1.special_option_key;
+  const std::string_view key = q.option_key;
   std::memcpy(v.selection.option_key.data(), key.data(), key.size());
   v.selection.option_key_size = static_cast<std::uint16_t>(key.size());
   q.planner.diagnostic.value.stage = 5;
+  q.planner.selection = v.selection;
 }
 void Write(const std::filesystem::path &root, std::string_view name,
            const PlayerPilgrimageExecutionQuery12004V1 &q, bool submit = false) {
@@ -98,10 +103,22 @@ int main(int argc, char **argv) {
   q = Base(PilgrimageExecutionOperation12004V1::quote);
   q.operation_status = "unavailable"; q.failure = "normal_refresh_not_observed";
   Write(root, "quote-unavailable", q);
+  for (const auto &name : {std::string{"hajj"}, std::string{"worldly"}}) {
+    const auto option = "pilgrimage_type_" + name;
+    q = Base(PilgrimageExecutionOperation12004V1::read, option);
+    Write(root, name + "-read", q);
+    q = Base(PilgrimageExecutionOperation12004V1::quote, option); Quote(q);
+    Write(root, name + "-quote", q);
+    q = Base(PilgrimageExecutionOperation12004V1::start, option); Quote(q);
+    q.operation_status = "submitted_pending";
+    q.start.accepted = q.start.invoked = true;
+    q.start.state = q.ledger_state = ActivityPilgrimageStartStateV1::submitted_pending;
+    Write(root, name + "-start", q, true);
+  }
   std::ofstream provenance(root / "PROVENANCE.json", std::ios::binary);
   provenance << "{\"producer\":\"actual production execution command-result and cost serializers\","
       "\"owned_result_dtos\":true,\"game_queried\":false,\"native_runtime_qualified\":false,"
-      "\"scope\":\"eight real serializer packets; fixture-owned semantic results and envelope nonce\"}\n";
+      "\"scope\":\"fourteen real serializer packets; fixture-owned semantic results and envelope nonce\"}\n";
   REQUIRE(provenance.good());
-  std::cout << "8 real execution serializer packets; owned DTOs only\n";
+  std::cout << "14 real execution serializer packets; owned DTOs only\n";
 }

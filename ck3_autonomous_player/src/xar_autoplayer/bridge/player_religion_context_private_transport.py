@@ -11,6 +11,7 @@ from .player_spiritual_fulfillment_type import (
     normalize_player_spiritual_fulfillment_type_v1,
 )
 from .player_church_tax_inputs import normalize_player_church_tax_inputs_v1
+from .player_pilgrimage_traits import normalize_player_pilgrimage_traits_v1
 from .player_pilgrimage_headless_activity_terms import (
     normalize_player_pilgrimage_candidate_routes_v1,
     normalize_player_pilgrimage_headless_activity_terms_v1,
@@ -334,7 +335,11 @@ def query_player_religion_context_private_v1(
                     result["player_mystical_communion_decision_terms"], current_context=value,
                 )
             )
-        pilgrimage_fields = {}
+        pilgrimage_fields: dict[str, object] = {}
+        if "player_pilgrimage_traits" in result:
+            pilgrimage_fields["player_pilgrimage_traits"] = normalize_player_pilgrimage_traits_v1(
+                result["player_pilgrimage_traits"], current_context=value,
+            )
         if "player_pilgrimage_activity_type_terms" in result:
             pilgrimage_fields["player_pilgrimage_activity_type_terms"] = (
                 normalize_player_pilgrimage_activity_type_terms_v1(

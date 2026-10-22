@@ -7,6 +7,9 @@ import hashlib
 import math
 from pathlib import Path
 from typing import Literal, NamedTuple, NotRequired, Protocol, TypeAlias, TypedDict
+from xar_autoplayer.bridge.player_pilgrimage_traits import (
+    PlayerPilgrimageTraits, normalize_player_pilgrimage_traits_v1,
+)
 
 JSONValue: TypeAlias = None | bool | int | float | str | list["JSONValue"] | dict[str, "JSONValue"]
 JSONObject: TypeAlias = dict[str, JSONValue]
@@ -15,8 +18,12 @@ Status: TypeAlias = Literal["not_attempted", "observed", "unavailable_source_bin
     "skipped_original_budget_or_quit_reserve", "skipped_foreign_or_unavailable_native_event",
     "original_read_failed_or_unavailable"]
 RELIGION = "ck3_query_player_religion_context_v1"
-KEY_EVENTS = frozenset({"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001"})
-LIMIT = 8
+KEY_EVENTS = frozenset({"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001",
+    "pilgrimage.3101", "hajj.3010", "hajj.3020", "hajj.3021", "hajj.3030", "hajj.3040", "hajj.3001"})
+# Ten supported destination/return definitions can each produce a window and a
+# consumed observation. Leave room for those 20 reads and the actual terminal
+# identity, while retaining a finite ceiling when event instances repeat.
+LIMIT = 24
 
 
 class MilestoneBinding(TypedDict):
@@ -52,10 +59,10 @@ class PietyObservation(TypedDict):
     after: ResourceRaw | None
 
 
-class UnboundTraitExperience(TypedDict):
-    observed: Literal[False]
-    raw: None
-    unknown_reason: Literal["native_trait_experience_reader_unbound"]
+class TraitExperience(TypedDict):
+    observed: bool
+    raw: PlayerPilgrimageTraits | None
+    unknown_reason: str | None
 
 
 class UnboundLocation(TypedDict):
@@ -73,7 +80,7 @@ class MilestoneMetrics(TypedDict):
     fulfillment_progress_raw: JSONObject | None
     fulfillment_observed: bool
     field_presence: dict[str, Presence]
-    trait_experience: UnboundTraitExperience
+    trait_experience: TraitExperience
     current_location: UnboundLocation
 
 
@@ -306,6 +313,18 @@ def project_observation(binding: object, before: object, value: object, after: o
             result["field_presence"][key] = _presence(context, key)
         result["field_presence"]["piety_before"] = _presence(first.raw, "played_character_piety")
         result["field_presence"]["piety_after"] = _presence(last.raw, "played_character_piety")
+        result["field_presence"]["player_pilgrimage_traits"] = _presence(context, "player_pilgrimage_traits")
+        if "player_pilgrimage_traits" in context:
+            try:
+                traits = normalize_player_pilgrimage_traits_v1(
+                    context["player_pilgrimage_traits"], current_context=context,
+                )
+                result["trait_experience"] = {"observed": traits is not None and traits["available"],
+                    "raw": traits, "unknown_reason": (
+                        "native_trait_observation_null" if traits is None else traits["unavailable_reason"])}
+            except ValueError:
+                result["trait_experience"] = {"observed": False, "raw": None,
+                    "unknown_reason": "native_trait_observation_invalid"}
         p_before, p_after = _resource(first.raw.get("played_character_piety")), _resource(last.raw.get("played_character_piety"))
         if p_before is not None and p_after is not None:
             result["piety"] = {"observed": True, "before": p_before, "after": p_after}
@@ -333,6 +352,13 @@ def _pin(path: str | Path) -> EvidencePin:
     return {"path": str(actual), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
 
+def _terminal_identity(identity: JSONObject | None) -> bool:
+    return (identity is not None and identity.get("terminal_flags_observed") is True
+        and type(identity.get("native_completed")) is bool
+        and type(identity.get("native_invalidated")) is bool
+        and (identity.get("native_completed") is True or identity.get("native_invalidated") is True))
+
+
 def observe_milestone(context: object, client: MilestoneClient, binding: object,
         observations: list[MilestoneObservation], label: str, *, event: object = None,
         identity: object = None) -> tuple[MilestoneObservation | None, JSONObject | None]:
@@ -345,7 +371,11 @@ def observe_milestone(context: object, client: MilestoneClient, binding: object,
         _integer(identity_raw.get("activity_id"), 0, 2**32 - 2)
         if _integer(identity_raw.get("host_character_id"), 1, 2**32 - 2) != owner["actor_character_id"]:
             raise ValueError("Activity identity owner differs")
-    if label in {row["milestone"] for row in observations} or len(observations) >= LIMIT:
+    # Repeated windows cannot consume the last slot reserved for the native
+    # completed/invalidated identity. Time and the shared request cap still gate
+    # the two actual controls; reserving a slot grants neither budget nor credit.
+    limit = LIMIT if _terminal_identity(identity_raw) else LIMIT - 1
+    if label in {row["milestone"] for row in observations} or len(observations) >= limit:
         return None, None
     event_ref: EventReference | None = None
     if event_raw is not None:

@@ -32,7 +32,7 @@ ActivityPilgrimageCostLifecycleStatusV1 InstallActivityPilgrimageCostColdV1(
                                                    : &InstallActivityCostSlot12PassiveV1;
   if (!install(state.observer, environment) || !state.observer.installed ||
       state.observer.environment.typed_contract == nullptr ||
-      !IsOrdinaryPilgrimagePiousContractV1(
+      !IsPilgrimageContractV1(
           *state.observer.environment.typed_contract))
     return reject(Status::install_failed);
   auto expected_status = Status::untouched;

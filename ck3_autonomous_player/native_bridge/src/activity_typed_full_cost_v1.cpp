@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/activity_typed_full_cost_v1.hpp"
+#include "xar_bridge/activity_typed_full_cost_v1.hpp"
 #include "xar_bridge/ck3_12002_activity_feast_costs.hpp"
 #include "xar_bridge/ck3_12002_activity_feast_start.hpp"
 #include "xar_bridge/ck3_12002_feast_planner.hpp"
@@ -188,7 +188,7 @@ ActivityTypedFullCostResultV1 ReadActivityTypedPlannerFullCostV1(
     const ActivityTypedPlannerContractV1 &contract) noexcept {
   ActivityTypedFullCostResultV1 result{};
   const auto &d = environment.diagnostic;
-  if (!environment.enabled || !IsOrdinaryPilgrimagePiousContractV1(contract) ||
+  if (!environment.enabled || !IsPilgrimageContractV1(contract) ||
       !VerifyExistingAbi(d)) return result;
   if (expected.revision == 0 || !expected.application_main_thread ||
       !expected.paused || !expected.map_ready || !expected.actor_alive ||
@@ -204,7 +204,7 @@ ActivityTypedFullCostResultV1 ReadActivityTypedPlannerFullCostV1(
       observer->environment.module_base != d.module_base ||
       observer->environment.executable_sha256 != d.admitted_executable_sha256 ||
       observer->environment.typed_contract == nullptr ||
-      !IsOrdinaryPilgrimagePiousContractV1(
+      !IsPilgrimageContractV1(
           *observer->environment.typed_contract)) {
     result.status = ActivityTypedFullCostStatusV1::passive_observer_contract_mismatch;
     return result;

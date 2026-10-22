@@ -79,6 +79,107 @@ class Client:
 
 
 class TypedMilestoneConsumers(unittest.TestCase):
+    def test_real_journey_producer_preserves_more_than_eight_key_milestones_and_terminal(self) -> None:
+        class EventClient(Client):
+            active_instance: int | None = None
+
+            def snapshot(self, *, require_event_free: bool) -> object:
+                current = super().snapshot(require_event_free=require_event_free)
+                assert isinstance(current, dict)
+                current["active_event"] = (None if self.active_instance is None else
+                                            {"instance_id": self.active_instance})
+                return current
+
+        configured = os.environ.get("P3_MILESTONE_TEST_TMP")
+        parent = Path(configured) if configured else None
+        with tempfile.TemporaryDirectory(dir=parent) as directory:
+            concrete = EventClient(Path(directory))
+            controller = journey._Journey.__new__(journey._Journey)
+            controller.context = {"run_id": "test-run", "case_contract": {
+                "machine_id": "test-machine", "policy": {"quit_reserve_seconds": 120}}}
+            controller.client = concrete
+            controller.binding = binding()
+            controller.prefix = "actual-hajj-producer-"
+            controller.last_frame = frame()
+            controller.result = {"milestone_observations": []}
+
+            def accept(value: object, previous: object, *, same_date: bool) -> object:
+                self.assertTrue(same_date)
+                return value
+
+            controller.frame = accept
+            for instance, key in enumerate(sorted(journey.KEY_EVENTS), start=1):
+                typed: m.JSONObject = {"schema": "current-event-window-context-v1", "status": "available",
+                    "event_definition_key": key, "current_event_instance_id": instance,
+                    "root_scope": {"status": "available", "raw_type_index": 4, "type_key": "character",
+                        "typed_identity": {"status": "available", "kind": "character", "character_id": 1}}}
+                concrete.active_instance = instance
+                self.assertIsNotNone(controller.observe_milestone(key + "-" + str(instance) + "-window", event=typed))
+                concrete.active_instance = None
+                self.assertIsNotNone(controller.observe_milestone(key + "-" + str(instance) + "-consumed", event=typed))
+            self.assertIsNotNone(controller.observe_milestone("terminal-91", identity={
+                "activity_id": 91, "host_character_id": 1, "terminal_flags_observed": True,
+                "native_completed": True, "native_invalidated": False}))
+            rows = controller.result["milestone_observations"]
+            self.assertEqual(len(rows), 21)
+            self.assertTrue(all(row["status"] == "observed" for row in rows))
+            self.assertTrue(rows[-1]["milestone"].endswith("terminal-91"))
+            self.assertEqual(concrete.public_requests_used, 42)
+            self.assertEqual(concrete.query_count, 21)
+            for row in rows:
+                persisted = json.loads(Path(row["evidence"]["path"]).read_text(encoding="utf-8"))
+                self.assertEqual(persisted["status"], "observed")
+
+    def test_repeated_windows_leave_one_bounded_slot_for_actual_terminal_identity(self) -> None:
+        configured = os.environ.get("P3_MILESTONE_TEST_TMP")
+        parent = Path(configured) if configured else None
+        with tempfile.TemporaryDirectory(dir=parent) as directory:
+            concrete = Client(Path(directory))
+            context: m.JSONObject = {"run_id": "test-run", "case_contract": {
+                "machine_id": "test-machine", "policy": {"quit_reserve_seconds": 120}}}
+            rows: list[m.MilestoneObservation] = []
+            for index in range(30):
+                m.observe_milestone(context, concrete, binding(), rows, "repeated-" + str(index))
+            self.assertEqual(len(rows), 23)
+            fake_terminal: m.JSONObject = {"activity_id": 91, "host_character_id": 1,
+                "terminal_flags_observed": True, "native_completed": 1, "native_invalidated": False}
+            self.assertEqual(m.observe_milestone(context, concrete, binding(), rows,
+                "wrong-terminal", identity=fake_terminal), (None, None))
+            self.assertEqual(concrete.public_requests_used, 46)
+            terminal: m.JSONObject = {**fake_terminal, "native_completed": True}
+            observed, latest = m.observe_milestone(context, concrete, binding(), rows,
+                "terminal-91", identity=terminal)
+            assert observed is not None and latest is not None
+            self.assertEqual(observed["status"], "observed")
+            self.assertEqual(len(rows), 24)
+            self.assertEqual(concrete.public_requests_used, 48)
+            self.assertEqual(m.observe_milestone(context, concrete, binding(), rows,
+                "second-terminal", identity=terminal), (None, None))
+
+    def test_four_trait_observation_reaches_filming_and_preserves_json(self) -> None:
+        from ck3_autonomous_player.tests.unit.test_player_pilgrimage_traits import observation
+        value = query()
+        value.update(schema="ck3_12004_religion_context_v1", capture_epoch=2**53 + 1)
+        value["player_pilgrimage_traits"] = m.json_value(observation())
+        metrics = m.project_observation(binding(), frame(), value, frame(2))
+        self.assertTrue(metrics["trait_experience"]["observed"])
+        self.assertEqual(metrics["trait_experience"]["raw"], value["player_pilgrimage_traits"])
+        self.assertEqual(m.json_value(json.loads(json.dumps(metrics))), m.json_value(metrics))
+        raw = value["player_pilgrimage_traits"]
+        assert isinstance(raw, dict)
+        raw["played_character_id"] = True
+        invalid = m.project_observation(binding(), frame(), value, frame(2))
+        self.assertTrue(invalid["source_frame_bound"])
+        self.assertFalse(invalid["trait_experience"]["observed"])
+        self.assertEqual(invalid["trait_experience"]["unknown_reason"], "native_trait_observation_invalid")
+        value["player_pilgrimage_traits"] = None
+        null = m.project_observation(binding(), frame(), value, frame(2))
+        self.assertEqual(null["field_presence"]["player_pilgrimage_traits"], "null")
+        self.assertFalse(null["trait_experience"]["observed"])
+        del value["player_pilgrimage_traits"]
+        absent = m.project_observation(binding(), frame(), value, frame(2))
+        self.assertEqual(absent["field_presence"]["player_pilgrimage_traits"], "missing")
+
     def test_actual_adapter_sibling_loader_imports_and_projects_typed_model(self) -> None:
         loaded = adapter.sibling(Path(m.__file__), "_test_actual_p3_milestone_sibling")
         metrics = loaded.project_observation(binding(), frame(), query(), frame(2))

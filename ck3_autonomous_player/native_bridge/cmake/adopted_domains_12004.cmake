@@ -317,3 +317,5 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1 OR
     src/religion_rite_governance12002_state_rite.cpp
   )
 endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/player_pilgrimage_traits_12004.cmake")

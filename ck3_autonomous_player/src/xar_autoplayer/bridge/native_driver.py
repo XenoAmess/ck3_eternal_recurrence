@@ -7,6 +7,8 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
+from .player_pilgrimage_planner_contract import PilgrimageOptionKey
+
 from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
 
 from .route_contact_window_contract import (
@@ -4359,26 +4361,29 @@ class NativeHeadlessGameplayDriver:
 
     def query_player_pilgrimage_planner_private_v1(
         self, *, expected_revision: int, operation: str = "read", province_id: int = 0,
-        read_stage: int = 0, timeout_seconds: float = 30.0,
+        read_stage: int = 0, option_key: PilgrimageOptionKey = "pilgrimage_type_pious",
+        timeout_seconds: float = 30.0,
     ) -> dict[str, object]:
         """Read the explicitly gated ordinary pilgrimage planner; never submit."""
         from .player_pilgrimage_planner_private_transport import query_player_pilgrimage_planner_private_v1
         return query_player_pilgrimage_planner_private_v1(
             self, expected_revision=expected_revision, operation=operation,
-            province_id=province_id, read_stage=read_stage, timeout_seconds=timeout_seconds,
+            province_id=province_id, read_stage=read_stage, option_key=option_key,
+            timeout_seconds=timeout_seconds,
         )
 
     def submit_player_pilgrimage_planner_private_v1(
         self, *, expected_revision: int, operation: str, province_id: int = 0,
         policy_positive: bool = False, reserve_gold_raw: int = 0,
         reserve_treasury_raw: int = 0, reserve_piety_raw: int = 0,
-        reserve_barter_goods_raw: int = 0, timeout_seconds: float = 30.0,
+        reserve_barter_goods_raw: int = 0, option_key: PilgrimageOptionKey = "pilgrimage_type_pious",
+        timeout_seconds: float = 30.0,
     ) -> dict[str, object]:
         """Send one gated original planner operation; ACK is not a world result."""
         from .player_pilgrimage_planner_private_transport import submit_player_pilgrimage_planner_private_v1
         return submit_player_pilgrimage_planner_private_v1(
             self, expected_revision=expected_revision, operation=operation, province_id=province_id,
-            policy_positive=policy_positive, reserve_gold_raw=reserve_gold_raw,
+            policy_positive=policy_positive, option_key=option_key, reserve_gold_raw=reserve_gold_raw,
             reserve_treasury_raw=reserve_treasury_raw, reserve_piety_raw=reserve_piety_raw,
             reserve_barter_goods_raw=reserve_barter_goods_raw, timeout_seconds=timeout_seconds,
         )

@@ -66,7 +66,11 @@ bool Same(const ActivityPilgrimageStage5SnapshotV1 &a,
 bool Valid(const ActivityPilgrimageStage5SnapshotV1 &s,
            const ActivityPilgrimageStage5StartRequestV1 &request) noexcept {
   const auto &q = s.quote;
-  const auto &c = kOrdinaryPilgrimagePiousContractV1;
+  if (q.selection.option_key_size >= q.selection.option_key.size()) return false;
+  const auto *contract = PilgrimageContractForKeyV1(std::string_view(
+      q.selection.option_key.data(), q.selection.option_key_size));
+  if (contract == nullptr) return false;
+  const auto &c = *contract;
   if (!q.observed || q.kind != c.kind || q.frame != request.expected ||
       q.planner == 0 || q.owner == 0 || q.activity_type == 0 || q.planning_stage != 5 ||
       q.normal_refresh_sequence == 0 || !q.final_can_start_observed ||

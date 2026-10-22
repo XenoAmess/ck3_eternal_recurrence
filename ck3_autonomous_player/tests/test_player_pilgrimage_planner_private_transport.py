@@ -1,8 +1,9 @@
-﻿"""Strict frozen pilgrimage wire through transport, Driver and registered MCP."""
+"""Strict frozen pilgrimage wire through transport, Driver and registered MCP."""
 from __future__ import annotations
 
 from copy import deepcopy
 import inspect
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -53,7 +54,7 @@ def body(operation="read", submit=False):
             "activity_type_key": "activity_pilgrimage", "special_option_key": "pilgrimage_type_pious",
             "operation": operation, "operation_status": "observed", "invoked": False,
             "needs_recovery": False, "ledger_state": "idle", "failure": "",
-            "planner": {"stage": 5, "selected_pious": True, "destination_province_id": 0x80001234,
+            "planner": {"stage": 5, "selected_option_key": "pilgrimage_type_pious", "destination_province_id": 0x80001234,
                         "can_select": None, "can_progress": True},
             "quote": None, "new_identity": None,
             "absence_is_completion": False, "raw_pointer_fields_persisted": False}
@@ -88,6 +89,37 @@ class Driver:
 
 
 class TransportTests(unittest.TestCase):
+    def test_all_three_options_roundtrip_through_real_driver_without_identity_relabeling(self):
+        for key in ("pilgrimage_type_pious", "pilgrimage_type_worldly", "pilgrimage_type_hajj"):
+            value = body("quote")
+            value["special_option_key"] = value["planner"]["selected_option_key"] = key
+            value["quote"] = quote()
+            value["quote"]["special_option_key"] = value["quote"]["selected_option"]["key"] = key
+            d = Driver(json.loads(json.dumps(value)))
+            result = d.query_player_pilgrimage_planner_private_v1(
+                expected_revision=5, operation="quote", option_key=key)
+            self.assertEqual(d.sent[0]["expected_option_key"], key)
+            self.assertEqual(result["planner"]["selected_option_key"], key)
+            self.assertEqual(result["quote"]["selected_option"]["key"], key)
+            wrong = "pilgrimage_type_hajj" if key != "pilgrimage_type_hajj" else "pilgrimage_type_pious"
+            with self.assertRaises(BridgeUnavailableError):
+                Driver(value).query_player_pilgrimage_planner_private_v1(
+                    expected_revision=5, operation="quote", option_key=wrong)
+
+    def test_old_selected_boolean_and_missing_wrong_typed_selection_are_rejected(self):
+        for raw in ({"selected_pious": True}, {"selected_option_key": True},
+                    {"selected_option_key": "unknown"}, {}):
+            value = body()
+            del value["planner"]["selected_option_key"]
+            value["planner"].update(raw)
+            with self.subTest(raw=raw), self.assertRaises(BridgeUnavailableError):
+                Driver(value).query_player_pilgrimage_planner_private_v1(expected_revision=5)
+        for key in (True, None, 1, [], "unknown"):
+            d = Driver()
+            with self.subTest(option_key=key), self.assertRaises(ValueError):
+                d.query_player_pilgrimage_planner_private_v1(expected_revision=5, option_key=key)
+            self.assertEqual(d.sent, [])
+
     def test_identity_read_permission_and_case_declaration_never_enable_execution(self):
         d = Driver(enabled=False)
         d.allow_private_player_pilgrimage_activities_query = True
@@ -306,6 +338,27 @@ class TransportTests(unittest.TestCase):
 
 
 class RegisteredMcpTests(unittest.IsolatedAsyncioTestCase):
+    async def test_registered_option_enum_drives_real_transport_for_hajj_and_worldly(self):
+        from mcp import Client
+        for key in ("pilgrimage_type_hajj", "pilgrimage_type_worldly"):
+            value = body("start", True)
+            value.update(special_option_key=key, invoked=True, operation_status="submitted_pending",
+                         ledger_state="submitted_pending")
+            value["planner"]["selected_option_key"] = key
+            d = Driver(value)
+            async with Client(create_server(d)) as client:
+                result = await client.call_tool("ck3_submit_player_pilgrimage_planner_v1", {
+                    "expected_revision": 5, "operation": "start", "province_id": 3,
+                    "option_key": key, "policy_positive": True})
+                self.assertFalse(result.is_error)
+                self.assertEqual(result.structured_content["planner"]["selected_option_key"], key)
+                self.assertEqual(d.sent[0]["expected_option_key"], key)
+                bad = await client.call_tool("ck3_submit_player_pilgrimage_planner_v1", {
+                    "expected_revision": 5, "operation": "start", "province_id": 3,
+                    "option_key": "pilgrimage_type_other", "policy_positive": True})
+                self.assertTrue(bad.is_error)
+                self.assertEqual(len(d.sent), 1)
+
     async def test_identity_declared_does_not_register_execution_and_explicit_flag_adds_exactly_two(self):
         from mcp import Client
         disabled = Driver(enabled=False)

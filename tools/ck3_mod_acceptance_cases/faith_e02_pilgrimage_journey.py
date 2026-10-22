@@ -13,6 +13,10 @@ if TYPE_CHECKING:
     from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_observations import JSONObject, MilestoneObservation
 
 CASE = "faith-engine-e02-d1-ordinary-pilgrimage-v1"
+MECHANISM_CASE = "faith-engine-e02-pilgrimage-mechanism-v2"
+KEY_EVENTS = frozenset({"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001",
+    "pilgrimage.3101", "hajj.3010", "hajj.3020", "hajj.3021", "hajj.3030",
+    "hajj.3040", "hajj.3001"})
 IDENTITIES = "ck3_query_player_pilgrimage_activities_v1"
 EVENT_CONTEXT = "ck3_query_current_event_window_context_v1"
 EVENT_SELECT = "ck3_select_event_option"
@@ -103,7 +107,8 @@ class _Journey:
         self.binding = dict(binding)
         self.identity = dict(initial_identity) if initial_identity is not None else None
         self.limits = _limits(limits)
-        _need(context.get("case") == CASE and context.get("product") == "faith-engine", "Foreign pilgrimage case")
+        _need(context.get("case") in {CASE, MECHANISM_CASE}
+              and context.get("product") == "faith-engine", "Foreign pilgrimage case")
         _need(set(self.binding) == {"run_id", "machine_id", "actor_character_id", "bridge_pid",
                                    "connection_generation", "episode_run_id"}, "Exact journey binding required")
         _need(self.binding["run_id"] == context.get("run_id") and
@@ -124,7 +129,7 @@ class _Journey:
         self.last_identity_date = None
         self.consumed_events = set()
         self.consumed_interactions = set()
-        self.result = {"schema": "faith-e02-pilgrimage-bounded-journey-v1", "case": CASE,
+        self.result = {"schema": "faith-e02-pilgrimage-bounded-journey-v1", "case": context["case"],
             "binding": self.binding, "machine_id": self.binding["machine_id"], "run_id": context["run_id"],
             "started_at_utc": datetime.now(timezone.utc).isoformat(), "limits": self.limits,
             "initial_activity_identity": self.identity, "opening_binding_sources": self.sources,
@@ -418,7 +423,7 @@ class _Journey:
         _need(receipt["ack_accepted"], "Option ACK unavailable; no replay", "PARTIAL_EVENT_ACK_UNKNOWN")
         _need(receipt["old_instance_gone_in_independent_snapshot"], "Original event remains active; no replay", "PARTIAL_EVENT_NOT_CONSUMED")
         self.accept_source_bound_phase_event(typed, receipt, frame)
-        if typed["event_definition_key"] in {"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001"}:
+        if typed["event_definition_key"] in KEY_EVENTS:
             latest = self.observe_milestone(typed["event_definition_key"] + "-" + str(instance) + "-consumed", event=typed)
             if latest is not None:
                 after = latest
@@ -461,7 +466,7 @@ class _Journey:
 
     def capture_key_window(self, typed, options, frame):
         key = typed["event_definition_key"]
-        if key not in {"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001"}:
+        if key not in KEY_EVENTS:
             return None
         self.observe_milestone(key + "-" + str(typed["current_event_instance_id"]) + "-window", event=typed)
         self.guard()

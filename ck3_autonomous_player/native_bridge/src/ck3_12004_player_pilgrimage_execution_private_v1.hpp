@@ -39,6 +39,7 @@ struct PlayerPilgrimageExecutionQuery12004V1 {
   PilgrimageExecutionOperation12004V1 operation{};
   std::uint32_t province_id = 0;
   std::int32_t read_stage = 0;
+  std::string option_key = "pilgrimage_type_pious";
   bool policy_positive = false;
   std::array<std::int64_t, 4> reserve_by_name_raw{};
   ActivityPilgrimagePlannerResult12004V1 planner{};

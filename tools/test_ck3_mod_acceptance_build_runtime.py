@@ -224,7 +224,7 @@ class QualifiedNativeConsumer(unittest.TestCase):
     def test_profile_expansion_rejected(self):
         self.profile['flags'][builder.FORBIDDEN_OLD_FLAGS[0]] = 'ON'
         self.flush()
-        with self.assertRaisesRegex(ValueError, 'preserves the prior reviewed full feature profile'):
+        with self.assertRaisesRegex(ValueError, 'Old feast Start and unqualified cost helpers must stay OFF'):
             self.consume()
 
     def test_missing_tracked_source_rejected(self):
@@ -278,7 +278,9 @@ class QualifiedNativeConsumer(unittest.TestCase):
         folder = self.base / 'wire'
         folder.mkdir()
         names = ['read.json', 'can-select-false.json', 'quote-dynamic-index.json', 'start-pending.json',
-                 'start-unknown.json', 'post-pending.json', 'post-full-generation.json', 'quote-unavailable.json']
+                 'start-unknown.json', 'post-pending.json', 'post-full-generation.json', 'quote-unavailable.json',
+                 'hajj-read.json', 'hajj-quote.json', 'hajj-start.json',
+                 'worldly-read.json', 'worldly-quote.json', 'worldly-start.json']
         for name in names:
             (folder / name).write_bytes(b'{"owned_synthetic_packet":true}\n')
         provenance = folder / 'PROVENANCE.json'
@@ -293,7 +295,7 @@ class QualifiedNativeConsumer(unittest.TestCase):
         ref = self.put('wire-packets', value)
         return ref, value, folder
 
-    def test_eight_actual_pinned_packet_contract(self):
+    def test_fourteen_actual_pinned_packet_contract(self):
         ref, _value, folder = self.wire_fixture()
         result = builder.qualified_execution_packets(ref, self.qualification['fixture_results'], self.snapshot_root, MACHINE)
         self.assertEqual(result['folder'], str(folder))

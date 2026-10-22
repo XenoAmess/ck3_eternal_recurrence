@@ -83,7 +83,7 @@ bool Select(void *opaque, std::uintptr_t planner, std::uintptr_t province) noexc
   return true;
 }
 
-void Populate(Fake &f) {
+void Populate(Fake &f, std::string_view option_key = "pilgrimage_type_pious") {
   f.Put(kBase + 0x11B6F30, std::array<std::uint8_t, 8>{
       0x48,0x89,0x5C,0x24,0x10,0x55,0x56,0x57});
   f.Put(kBase + 0x11B6C60, std::array<std::uint8_t, 9>{
@@ -109,7 +109,7 @@ void Populate(Fake &f) {
   selected.frame = s.frame; selected.planner = s.planner;
   selected.activity_type = s.activity_type; selected.planning_stage = 2;
   selected.native_selected_option = 0x1000B000; selected.native_option_id = 42;
-  const auto key = kOrdinaryPilgrimagePiousContractV1.special_option_key;
+  const auto key = option_key;
   std::memcpy(selected.option_key.data(), key.data(), key.size());
   selected.option_key_size = static_cast<std::uint16_t>(key.size());
 }
@@ -122,6 +122,15 @@ ActivityPilgrimageDestinationEnvironmentV1 Env(Fake &f) {
 
 int main() {
   using S = ActivityPilgrimageDestinationStatusV1;
+  for (const auto key : {"pilgrimage_type_hajj", "pilgrimage_type_worldly"}) {
+    Fake variant{}; Populate(variant, key);
+    const auto selected = SelectActivityPilgrimageDestinationV1(
+        Env(variant), variant.state.frame, kProvinceId);
+    Expect(selected.status == S::selection_verified && selected.selected_option_retained &&
+           variant.actions == 1);
+    Expect(std::string_view(selected.after.selection.option_key.data(),
+        selected.after.selection.option_key_size) == key);
+  }
   Fake good{}; Populate(good);
   auto r = ReadActivityPilgrimageDestinationCanSelectV1(Env(good), good.state.frame, kProvinceId);
   Expect(r.status == S::can_select_observed && r.can_select && !r.submitted && good.actions == 0);

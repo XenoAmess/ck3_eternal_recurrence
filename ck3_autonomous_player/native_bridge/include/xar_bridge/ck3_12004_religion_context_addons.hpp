@@ -10,12 +10,14 @@
 #include "xar_bridge/ck3_12002_religion_conversion_ai_inputs.hpp"
 #include "xar_bridge/ck3_12003_conversion_fervor_inputs.hpp"
 #include "xar_bridge/conversion_outcome12002_query.hpp"
+#include "xar_bridge/player_pilgrimage_traits12004.hpp"
 
 namespace xar::ck3_12004::religion {
 
 // Software DTOs/readers are reused only with independently proved .4 image
 // pointers. Each existing addon retains its own availability and native result.
 struct ContextAddonBindings {
+  phase_character::Bindings pilgrimage_trait_bindings{};
   ck3_12002::religion::fulfillment_progress12003::Bindings progress_bindings{};
   ck3_12003::religion::mystical_communion::Bindings mystical_communion_bindings{};
   ck3_12003::religion::pilgrimage::Bindings pilgrimage_bindings{};

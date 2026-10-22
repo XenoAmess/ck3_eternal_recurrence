@@ -20,6 +20,7 @@ struct ActivityPilgrimagePlannerRequest12004V1 {
   std::uint32_t province_id = 0;
   // Read-only stage filter. 0 uses the currently observed stage; no navigation.
   std::int32_t read_stage = 0;
+  std::string_view option_key = "pilgrimage_type_pious";
 };
 
 enum class ActivityPilgrimagePlannerStatus12004V1 : std::uint8_t {

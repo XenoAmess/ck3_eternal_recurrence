@@ -1,4 +1,4 @@
-﻿#include "ck3_12004_player_pilgrimage_execution_private_v1.hpp"
+#include "ck3_12004_player_pilgrimage_execution_private_v1.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/activity_typed_cost_serializer_v1.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
@@ -167,7 +167,8 @@ bool ParseRequest(std::string_view payload, bool write,
       date != static_cast<std::uint64_t>(q.expected_snapshot.date_raw) ||
       !bridge::JsonUnsignedField(payload, "expected_revision", revision) || revision != q.expected_revision ||
       !bridge::JsonStringField(payload, "expected_activity_key", activity, 96) || activity != "activity_pilgrimage" ||
-      !bridge::JsonStringField(payload, "expected_option_key", option, 96) || option != "pilgrimage_type_pious" ||
+      !bridge::JsonStringField(payload, "expected_option_key", option, 96) ||
+      bridge::PilgrimageContractForKeyV1(option) == nullptr ||
       !bridge::JsonStringField(payload, "operation", operation, 24) ||
       !bridge::JsonUnsignedField(payload, "province_id", province) || province >= UINT32_MAX ||
       !bridge::JsonUnsignedField(payload, "read_stage", stage) || stage > 5) return false;
@@ -176,6 +177,7 @@ bool ParseRequest(std::string_view payload, bool write,
     if (OperationName(op) == operation) { q.operation = op; found = true; }
   if (!found || IsWrite(q.operation) != write) return false;
   q.province_id = static_cast<std::uint32_t>(province);
+  q.option_key = option;
   q.read_stage = static_cast<std::int32_t>(stage);
   const bool destination = q.operation == Op::can_select || q.operation == Op::select || q.operation == Op::start;
   if ((destination && province == 0) || (!destination && province != 0) ||
@@ -242,6 +244,7 @@ bool ExecutePlayerPilgrimageExecutionPrivate12004V1(
       q->frame_changed = true; q->failure = "published_frame_changed";
     } else if (!q->enabled || q->module_base == 0 ||
                !bridge::IsActivity12004BuildV1(q->executable_sha256) ||
+                bridge::PilgrimageContractForKeyV1(q->option_key) == nullptr ||
                (IsWrite(q->operation) && !q->policy_positive)) {
       q->failure = "exact4_or_private_policy_rejected";
     } else if (!BindActivityPlanner12002V1(context.native, q->module_base,
@@ -262,6 +265,7 @@ bool ExecutePlayerPilgrimageExecutionPrivate12004V1(
       ActivityPilgrimagePlannerRequest12004V1 request{};
       request.expected_frame = frame; request.province_id = q->province_id;
       request.read_stage = q->read_stage;
+      request.option_key = q->option_key;
       bool planner_operation = true;
       switch (q->operation) {
       case Op::read: request.operation = PlannerOp::read; break;
@@ -287,7 +291,7 @@ bool ExecutePlayerPilgrimageExecutionPrivate12004V1(
           q->operation_status = "rejected"; q->failure = "process_start_ledger_not_idle";
         } else {
           q->cost = bridge::ReadActivityTypedPlannerFullCostV1(
-              context.sources.cost, frame, bridge::kOrdinaryPilgrimagePiousContractV1);
+              context.sources.cost, frame, *bridge::PilgrimageContractForKeyV1(q->option_key));
           if (q->cost.status != bridge::ActivityTypedFullCostStatusV1::observed ||
               bridge::SerializeActivityTypedPlannerFullCostV1(q->cost).empty()) {
             q->operation_status = "unavailable";
@@ -317,6 +321,16 @@ bool ExecutePlayerPilgrimageExecutionPrivate12004V1(
           }
         }
       } else {
+        const auto &prior = q->ledger->before.quote.selection;
+        if (q->ledger->state != bridge::ActivityPilgrimageStartStateV1::idle &&
+            (prior.option_key_size >= prior.option_key.size() ||
+             std::string_view(prior.option_key.data(), prior.option_key_size) != q->option_key)) {
+          q->failure = "post_requested_option_differs_from_original_start";
+          q->operation_status = "rejected";
+          q->ledger_state = q->ledger->state;
+          q->completed = true;
+          return true;
+        }
         bridge::ActivityHostedIdentityFrameV1 hosted_frame{};
         if (!HostedFrame(&context, hosted_frame)) q->failure = "post_frame_unavailable";
         else {
@@ -346,12 +360,14 @@ bool ExecutePlayerPilgrimageExecutionPrivate12004V1(
 std::string SerializePlayerPilgrimageExecutionPrivate12004V1(
     const PlayerPilgrimageExecutionQuery12004V1 &q) {
   if (!q.completed || q.frame_changed || !bridge::IsActivity12004BuildV1(q.executable_sha256) ||
+      bridge::PilgrimageContractForKeyV1(q.option_key) == nullptr ||
       q.expected_revision == 0 || q.expected_snapshot.played_character_id <= 0) return {};
   std::string out = "{\"schema\":\"ck3_12004_player_pilgrimage_planner_v1\",\"read_only\":" + Bool(!IsWrite(q.operation));
   out += ",\"snapshot_revision\":" + std::to_string(q.expected_revision) +
       ",\"date_raw\":" + std::to_string(q.expected_snapshot.date_raw) +
       ",\"played_character_id\":" + std::to_string(q.expected_snapshot.played_character_id) +
-      ",\"activity_type_key\":\"activity_pilgrimage\",\"special_option_key\":\"pilgrimage_type_pious\",\"operation\":";
+      ",\"activity_type_key\":\"activity_pilgrimage\",\"special_option_key\":";
+  AppendString(out, q.option_key); out += ",\"operation\":";
   AppendString(out, OperationName(q.operation)); out += ",\"operation_status\":"; AppendString(out, q.operation_status);
   out += ",\"invoked\":" + Bool(q.start.invoked || q.planner.invoked) +
       ",\"needs_recovery\":" + Bool(q.planner.needs_recovery ||
@@ -359,6 +375,10 @@ std::string SerializePlayerPilgrimageExecutionPrivate12004V1(
           q.ledger_state == bridge::ActivityPilgrimageStartStateV1::submission_outcome_unknown);
   out += ",\"ledger_state\":"; AppendString(out, LedgerName(q.ledger_state));
   const auto &p = q.planner;
+  if (p.selection_observed &&
+      (p.selection.option_key_size >= p.selection.option_key.size() ||
+       bridge::PilgrimageContractForKeyV1(std::string_view(
+           p.selection.option_key.data(), p.selection.option_key_size)) == nullptr)) return {};
   auto failure = q.failure;
   // Preserve the strict public DTO schema. Describe observed reader state in
   // the existing failure string; never promote UI appearance into selection.
@@ -383,7 +403,7 @@ std::string SerializePlayerPilgrimageExecutionPrivate12004V1(
         failure += ";stage1_option=";
         failure.append(p.stage1.option_key.data(), p.stage1.option_key_size);
         failure += ";stage1_confirm_ready=";
-        failure += p.stage1.pious_pilgrimage_confirm_ready ? "true" : "false";
+        failure += p.stage1.pilgrimage_confirm_ready ? "true" : "false";
       }
     }
   }
@@ -391,8 +411,10 @@ std::string SerializePlayerPilgrimageExecutionPrivate12004V1(
   if (p.diagnostic.status != bridge::ActivityPlannerDiagStatusV1::observed ||
       p.diagnostic.value.stage < 0 || p.diagnostic.value.stage > 5) out += "null";
   else {
-    out += "{\"stage\":" + std::to_string(p.diagnostic.value.stage) + ",\"selected_pious\":";
-    out += p.selection_observed ? "true" : "null";
+    out += "{\"stage\":" + std::to_string(p.diagnostic.value.stage) + ",\"selected_option_key\":";
+    if (p.selection_observed) AppendString(out, std::string_view(
+        p.selection.option_key.data(), p.selection.option_key_size));
+    else out += "null";
     out += ",\"destination_province_id\":";
     out += p.destination_observed && p.destination.province_id != 0 ? std::to_string(p.destination.province_id) : "null";
     out += ",\"can_select\":";

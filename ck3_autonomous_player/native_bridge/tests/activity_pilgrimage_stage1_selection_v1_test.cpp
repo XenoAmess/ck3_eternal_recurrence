@@ -283,7 +283,7 @@ int main() {
   Expect(diagnostic.status == ActivityPlannerDiagStatusV1::observed);
   Expect(!diagnostic.value.host_view_activity_key_known);
   Expect(stage1.status == ActivityPilgrimageStage1OptionReadStatusV1::observed);
-  Expect(stage1.can_progress && stage1.pious_pilgrimage_confirm_ready);
+  Expect(stage1.can_progress && stage1.pilgrimage_confirm_ready);
 #if defined(XAR_B8_EXPECT_BASELINE_HOST_GATE)
   Expect(!read() && !selected.observed);
 #else
@@ -319,7 +319,18 @@ int main() {
   fake.Put(kType + 0x28, std::uint64_t{18});
   Expect(!read() && !selected.observed);
   fake.Put(kType + 0x28, std::uint64_t{19});
-  fake.key = "pilgrimage_type_hajj";
+  for (const auto key : {"pilgrimage_type_hajj", "pilgrimage_type_worldly"}) {
+    fake.key = key;
+#if defined(XAR_B8_EXPECT_BASELINE_HOST_GATE)
+    Expect(!read() && !selected.observed);
+#else
+    Expect(read() && selected.observed);
+    Expect(std::string_view(selected.option_key.data(), selected.option_key_size) == key);
+    stage1 = ReadActivityPilgrimageStage1OptionV1(env, frame);
+    Expect(stage1.pilgrimage_confirm_ready);
+#endif
+  }
+  fake.key = "pilgrimage_type_unknown";
   Expect(!read() && !selected.observed);
   fake.key = "pilgrimage_type_pious";
   fake.Put(kPlanner + 0x1B00, std::uintptr_t{0});
