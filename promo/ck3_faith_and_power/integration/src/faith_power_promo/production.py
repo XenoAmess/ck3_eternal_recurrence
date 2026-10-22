@@ -25,6 +25,10 @@ from xar_promo.process import CommandSpec, run_command
 from xar_promo.project import sha256_file
 
 from .context_composer import ADAPTER, PRESET, compose, registry
+from .narration_alignment import (
+    SentenceBoundaryCapture, SynthesisSummary, boundary_fields, checked_file_pin,
+    subtitle_units, validate_wire_text,
+)
 
 LATEST = "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest"
 
@@ -236,7 +240,9 @@ def open_attempt(args):
     return runtime, fresh, destination
 
 
-def run_synthesize(args):
+def run_synthesize(args: argparse.Namespace, *, sentence_boundaries: bool = False) -> SynthesisSummary:
+    if type(sentence_boundaries) is not bool:
+        raise ValueError('sentence_boundaries requires an exact bool')
     runtime, fresh, destination = open_attempt(args)
     script, recipe = read(args.script), read(args.recipe)
     # Optional provider installation is selected explicitly, not a machine path
@@ -247,7 +253,11 @@ def run_synthesize(args):
     from xar_promo.tts.provider import TtsRequest
     from xar_promo.tts.cache import tts_fingerprint
     import edge_tts
-    provider = EdgeTtsProvider()
+    capture = (SentenceBoundaryCapture(edge_tts, destination=destination,
+        machine_id=fresh['machine_id'], communicate_source=runtime['boundary_communicate_source'],
+        tool_version=metadata.version('edge-tts'), limits=recipe['sentence_boundary_limits'])
+        if sentence_boundaries else None)
+    provider = EdgeTtsProvider(module=capture) if capture is not None else EdgeTtsProvider()
     if asdict(provider.identity) != recipe["provider_identity_for_frozen_fingerprints"]:
         raise ValueError("Provider version differs from the frozen voice recipe; freeze a new recipe")
     provider_receipt = bound(runtime["tts_runtime_receipt"])
@@ -262,6 +272,12 @@ def run_synthesize(args):
     cues = script["cues"]
     entries = {r["cue_id"]: r for r in recipe["entries"]}
     defaults = recipe["request_defaults"]
+    if capture is not None:
+        for cue in cues:
+            subtitle_units(cue.get('subtitle_units'), cue['zh'], cue['en'])
+            validate_wire_text(cue['zh'])
+        if type(args.peak_bytes) is not int or args.peak_bytes < 8388608 + len(cues) * capture.peak_bytes_per_cue:
+            raise ValueError('Declared peak budget does not cover bounded audio/metadata and preserved copies')
     project_path = write(destination / "project-config.json", project(script))
     run = start_run(project_path, run_id=destination.name, run_directory=destination / "native-run")
     for path, identifier, role in (
@@ -274,7 +290,12 @@ def run_synthesize(args):
         (Path(__file__), "producer-source-v1", "producer-source"),
     ):
         preserve(run, path, identifier, role)
-    completed, failures = [], []
+    if capture is not None:
+        preserve(run, Path(capture.source['path']), 'boundary-runtime-source-v1', 'runtime-dependencies')
+        preserve(run, Path(capture.producer_source['path']), 'boundary-producer-source-v1', 'producer-source')
+    completed: list[dict[str, object]] = []
+    failures: list[dict[str, object]] = []
+    speech_total_seconds: float | int = 0
     for cue in cues:
         request = TtsRequest(cue["zh"], **defaults)
         if tts_fingerprint(request, provider.identity) != entries[cue["id"]]["tts_fingerprint"]:
@@ -288,35 +309,55 @@ def run_synthesize(args):
         target = destination / (cue["id"] + ".mp3")
         try:
             provider.synthesize(request, target)
+            captured = capture.finish(target, cue_id=cue['id'], request=checked_file_pin(request_path)) if capture is not None else None
             measured = json.loads(command([bound(runtime["ffprobe"]), "-v", "error",
                 "-show_streams", "-show_format", "-of", "json", target], destination,
                 cue["id"] + "-probe").stdout)
             duration = float(measured["format"]["duration"])
             cue_duration(duration)
-            row = {"id": cue["id"], "audio": pin(target), "request": pin(request_path),
+            if capture is not None:
+                command([bound(runtime['ffmpeg']), '-v', 'error', '-xerror', '-i', target,
+                         '-f', 'null', '-'], destination, cue['id'] + '-strict-audio-decode')
+            row: dict[str, object] = {"id": cue["id"], "audio": pin(target), "request": pin(request_path),
                    "speech_duration_seconds": duration, "status": "SYNTHESIZED_UNLISTENED",
                    "human_listening_performed": False, "pronunciation_approved": False}
+            if capture is not None:
+                fields = boundary_fields(captured, machine_id=fresh['machine_id'], cue_id=cue['id'],
+                    audio=row['audio'], request=row['request'],
+                    units=subtitle_units(cue['subtitle_units'], cue['zh'], cue['en']), speech_seconds=duration)
+                row.update(fields)
             completed.append(row)
+            speech_total_seconds += duration
             preserve(run, target, "audio." + cue["id"], "narration", "raw", "audio/mpeg")
         except Exception as error:
             row = {"id": cue["id"], "error": repr(error), "traceback": traceback.format_exc(),
                    "status": "RED_PRESERVED_NO_AUTOMATIC_REPLAY", "request": pin(request_path),
                    "partial_audio": pin(target) if target.is_file() else None}
+            if capture is not None:
+                row['provider_boundaries'] = capture.finish(target, cue_id=cue['id'], request=checked_file_pin(request_path))
+                if target.is_file():
+                    preserve(run, target, 'partial-audio.' + cue['id'], 'failure-material', 'raw', 'audio/mpeg')
             failure = write(destination / (cue["id"] + ".failure.json"), row)
             preserve(run, failure, "failure." + cue["id"], "failure-material")
             failures.append(row)
         preserve(run, request_path, "request." + cue["id"], "provider-request")
+        if capture is not None:
+            envelope = capture.finish(target, cue_id=cue['id'], request=checked_file_pin(request_path))
+            preserve(run, Path(envelope['path']), 'boundaries.' + cue['id'], 'provider-boundaries')
+            raw = target.with_suffix('.stream.jsonl')
+            if raw.is_file():
+                preserve(run, raw, 'boundary-stream.' + cue['id'], 'provider-stream', 'raw', 'application/x-ndjson')
     result = {"schema": "ck3-faith-power-measured-narration-v1", "machine_id": fresh["machine_id"],
               "observed_at_utc": now(), "evidence_source": "actual provider requests and MP3 ffprobe durations",
               "script": pin(args.script), "provider": asdict(provider.identity),
               "cues": completed, "failures": failures,
-              "speech_total_seconds": sum(r["speech_duration_seconds"] for r in completed),
+              "speech_total_seconds": speech_total_seconds,
               "unvoiced_result_slots": script.get("live_result_slots", []),
               "human_listening_performed": False, "video_render_performed": False}
     measured_path = write(destination / "measured-narration.json", result)
     preserve(run, measured_path, "narration-measurement-v1", "audio-duration-audit")
     write(destination / "storage-close.json", admission(args, fresh["machine_id"], closed=True))
-    return {"measured_narration": pin(measured_path), "failed": len(failures)}
+    return {"measured_narration": checked_file_pin(measured_path), "failed": len(failures)}
 
 
 def select_context(script, measured, selection):
@@ -518,6 +559,7 @@ def main(argv=None):
         child.add_argument("--peak-bytes", type=int, required=True)
         if name == "synthesize":
             child.add_argument("--recipe", type=Path, required=True)
+            child.add_argument('--sentence-boundaries', action='store_true')
         else:
             child.add_argument("--measured", type=Path, required=True)
             child.add_argument("--selection", type=Path, required=True)
@@ -526,7 +568,8 @@ def main(argv=None):
         if args.operation == "project":
             result = {"project_config": pin(write(args.output, project(read(args.script))))}
         else:
-            result = run_synthesize(args) if args.operation == "synthesize" else run_context(args)
+            result = (run_synthesize(args, sentence_boundaries=args.sentence_boundaries)
+                      if args.operation == 'synthesize' else run_context(args))
         print(json.dumps(result, ensure_ascii=False))
         return 2 if result.get("failed") else 0
     except Exception as error:
