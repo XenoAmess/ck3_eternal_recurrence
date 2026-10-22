@@ -646,6 +646,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_late_native_cleanup.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_ck3_mod_acceptance_split_public_closure.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_interrupted.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_campaign_interaction_boundary.py

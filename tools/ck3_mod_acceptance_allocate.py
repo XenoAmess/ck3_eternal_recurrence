@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ck3_mod_acceptance import Selection
 from datetime import datetime,timezone
 import hashlib,json,os,platform,re,subprocess,sys,time
+import math
 from pathlib import Path
 from types import ModuleType
 from typing import Literal, TypedDict
@@ -1318,7 +1319,7 @@ def _late_check(condition: bool, message: str) -> None:
 
 def validate_late_native_cleanup(normal_value: object, retained_value: object,
         game_value: object, native_value: object, report_value: object,
-        normal_written_ns: int) -> LateNativeCleanupFacts:
+        normal_written_ns: int, failed_query_value: object = None) -> LateNativeCleanupFacts:
     """Keep an unsignaled original wait distinct from later native Job cleanup."""
     normal = _late_object(normal_value, 'Original normal-close result')
     retained = _late_object(retained_value, 'Original retained wait')
@@ -1340,11 +1341,16 @@ def validate_late_native_cleanup(normal_value: object, retained_value: object,
         retained['exit_code'] is None and retained.get('actual_retained_os0') is False and
         retained == normal.get('retained_handle'),
         'Late cleanup requires the original unsignaled/null retained wait')
+    error = report.get('error')
+    failure_known = isinstance(error, str) and bool(error)
+    if 'error' in report and error is None and failed_query_value is not None:
+        validate_failed_live_diagnostic(report, failed_query_value)
+        failure_known = True
     _late_check(normal.get('normal_close_qualified') is False and normal.get('business_pass') is False and
         normal.get('failure_lifecycle_completed') is False and normal.get('managed_thread_finished') is False and
         normal.get('host_finished_at') is None and normal.get('cleanup_ok') is None and
-        normal.get('host_error') == report.get('error') and isinstance(report.get('error'), str) and
-        bool(report['error']), 'Late cleanup must preserve the failed original close')
+        'host_error' in normal and normal['host_error'] == error and failure_known,
+        'Late cleanup must preserve the failed original close')
     code = _late_integer(shutdown.get('ck3_exit_code'), 'Native-reported cleanup exit')
     _late_check(code != 0 and native.get('process_exit_code') is None and
         native.get('exit_reason') == 'stop' and shutdown.get('ok') is True and
@@ -1416,6 +1422,103 @@ def validate_late_failed_day(diagnostic_raw: object, row_raw: object) -> None:
         'Late-cleanup source-bound failed natural day differs')
 
 
+def validate_failed_live_diagnostic(report_raw: object, diagnostic_raw: object) -> None:
+    """Bind a failed step even when a continue-on-error host has null top-level error."""
+    report = _late_object(report_raw, 'Original failed host report')
+    diagnostic = _late_object(diagnostic_raw, 'Original failed-step selection')
+    steps = report.get('steps')
+    _late_check(isinstance(steps, list), 'Original failed steps must be a list')
+    if not isinstance(steps, list):
+        raise ValueError('Original failed steps missing')
+    rows = [_late_object(item, 'Original host step') for item in steps]
+    selected = [row for row in rows if row.get('id') == diagnostic.get('step_id')]
+    _late_check(isinstance(diagnostic.get('step_id'), str) and bool(diagnostic['step_id']) and
+        len(selected) == 1, 'Failed-live source-bound failed query is missing')
+    row = selected[0]
+    plan = _late_object(row.get('plan'), 'Original failed step plan')
+    _late_check(row.get('ok') is False and isinstance(row.get('error'), str) and bool(row['error']) and
+        isinstance(row.get('finished_at'), str) and bool(row['finished_at']),
+        'Failed-live source-bound failed query is missing')
+    if diagnostic.get('kind') == 'advance_day':
+        _late_check(set(diagnostic) == {'step_id', 'kind'}, 'Failed-day selection fields differ')
+        validate_late_failed_day(diagnostic, row)
+    else:
+        _late_check(set(diagnostic) == {'step_id', 'tool'} and
+            isinstance(diagnostic.get('tool'), str) and bool(diagnostic['tool']) and
+            plan.get('tool') == diagnostic['tool'], 'Failed-live selected failed tool differs')
+
+
+class SplitPublicWaitFacts(TypedDict):
+    argv: list[str]
+    pid: int
+
+
+def validate_split_public_wait(wait_raw: object, command_raw: object, intent_raw: object,
+        process_raw: object, completion_raw: object, command_path: Path, machine: str,
+        mode: Literal['run', 'allocate'], code: int) -> SplitPublicWaitFacts:
+    """Consume the actual command/intent/process/exit/completion producer without aliases."""
+    waited = _late_object(wait_raw, 'Original split public exit')
+    command = _late_object(command_raw, 'Original split public command')
+    intent = _late_object(intent_raw, 'Original split public intent')
+    process = _late_object(process_raw, 'Original split public process')
+    completion = _late_object(completion_raw, 'Original split public completion')
+    required = (
+        (waited, {'machine_id', 'pid', 'returncode', 'actual_original_popen_wait', 'completed_at_utc'}),
+        (command, {'machine_id', 'observed_at_utc', 'argv'}),
+        (intent, {'machine_id', 'at_utc', 'stage', 'argv'}),
+        (process, {'machine_id', 'pid', 'create_time', 'argv'}),
+        (completion, {'machine_id', 'observed_at_utc', 'exit_code', 'command',
+                      'original_subprocess_wait_observed'}),
+    )
+    _late_check(all(set(row) == fields and row.get('machine_id') == machine for row, fields in required),
+        'Split public fields/machine differ')
+    raw_argv = command['argv']
+    _late_check(isinstance(raw_argv, list) and bool(raw_argv) and
+        all(isinstance(arg, str) and bool(arg) for arg in raw_argv), 'Split public argv must be strings')
+    if not isinstance(raw_argv, list):
+        raise ValueError('Split public argv missing')
+    argv = [arg for arg in raw_argv if isinstance(arg, str)]
+    pid = _late_integer(waited['pid'], 'Original split public PID')
+    _late_check(pid > 0 and _late_integer(process['pid'], 'Original split process PID') == pid and
+        command['argv'] == intent['argv'] == process['argv'] and intent['stage'] == mode and
+        waited['actual_original_popen_wait'] is True and
+        completion['original_subprocess_wait_observed'] is True and
+        _late_integer(waited['returncode'], 'Original split public wait') == code and
+        _late_integer(completion['exit_code'], 'Original split completion exit') == code,
+        'Split public original Popen identity/argv/wait differs: ' + mode)
+    completion_command = completion['command']
+    _late_check(isinstance(completion_command, str) and bool(completion_command),
+        'Split public completion command path missing')
+    if not isinstance(completion_command, str):
+        raise ValueError('Split public completion command path missing')
+    _late_check(Path(completion_command).resolve() == command_path.resolve(),
+        'Split public completion crossed command')
+    stamps: list[datetime] = []
+    for raw in (command['observed_at_utc'], intent['at_utc'], waited['completed_at_utc'],
+                completion['observed_at_utc']):
+        _late_check(isinstance(raw, str), 'Split public timestamp must be text')
+        if not isinstance(raw, str):
+            raise ValueError('Split public timestamp missing')
+        stamp = datetime.fromisoformat(raw)
+        _late_check(stamp.tzinfo is not None, 'Split public timestamp lacks timezone')
+        stamps.append(stamp)
+    created = process['create_time']
+    _late_check(type(created) in (int, float), 'Split public process birth must be numeric')
+    if not isinstance(created, (int, float)) or isinstance(created, bool):
+        raise ValueError('Split public process birth must be numeric')
+    _late_check(math.isfinite(created) and stamps == sorted(stamps) and
+        stamps[0].timestamp() <= created <= stamps[2].timestamp(),
+        'Split public process/time ordering differs')
+    return {'argv': argv, 'pid': pid}
+
+
+def is_frozen_host_argument(argument: str, selected_host: Path) -> bool:
+    """Windows named pipes are IPC arguments, never the selected disk script."""
+    if argument.startswith(('\\\\.\\pipe\\', '\\\\?\\pipe\\')):
+        return False
+    return Path(argument).resolve() == selected_host
+
+
 def previous_interrupted_owner_closure(previous: Path, freeze: dict[str, object], close_path: Path,
         keeper_root: Path, release_path: Path, next_state: Path, current_source_root: Path) -> JsonObject:
     """Reobserve both providers and the canonical bus; old controls stay quarantined."""
@@ -1474,6 +1577,10 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         return previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path,
                                                        keeper_root, release_path, bus_packet)
     late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
+    split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
+    require('public_wait_format' not in bundle or split_public,
+            'Failed-live public wait format is unknown')
+    require(not split_public or late_cleanup, 'Split public wait requires original expired retained wait')
     public_pids = []
     refs, evidence = bundle.get('original_evidence'), {}
     require(isinstance(refs, dict), 'Original failed-live evidence pins required')
@@ -1516,7 +1623,17 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     def public_wait(mode, code):
         value = original(mode + '_wait')
         parent = Path(refs[mode + '_wait']['path']).resolve().parent
-        if late_cleanup:
+        if split_public:
+            facts = validate_split_public_wait(value,
+                original(mode + '_command', parent/'command.json'),
+                original(mode + '_intent', parent/'intent.json'),
+                original(mode + '_process', parent/'process.json'),
+                original(mode + '_completion', parent/'completion.json'), parent/'command.json',
+                bundle['machine_id'], mode, code)
+            require(Path(refs[mode + '_wait']['path']).resolve() == parent/'exit.json',
+                    'Split public original exit path differs')
+            argv = facts['argv']; public_pids.append(facts['pid'])
+        elif late_cleanup:
             argv = validate_late_public_wait(value,
                 original(mode + '_started', parent/'STARTED.actual.json'),
                 original(mode + '_process', parent/'ORIGINAL-PROCESS.actual.json'),
@@ -1548,12 +1665,19 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             intent = original(mode + '_intent', parent/'intent.json')
             require(intent.get('argv') == argv and intent.get('phase') == mode,
                     'Failed-live original command intent differs')
-        original(mode + '_stdout', parent/('stdout.txt' if late_cleanup else 'stdout.log'), decode=False, max_bytes=16777216)
-        original(mode + '_stderr', parent/('stderr.txt' if late_cleanup else 'stderr.log'), decode=False, max_bytes=16777216)
+        stdout_name = 'stdout.json' if split_public else ('stdout.txt' if late_cleanup else 'stdout.log')
+        original(mode + '_stdout', parent/stdout_name, decode=False, max_bytes=16777216)
+        stderr_name = 'stderr.txt' if late_cleanup and not split_public else 'stderr.log'
+        original(mode + '_stderr', parent/stderr_name, decode=False, max_bytes=16777216)
         return Path(argument('--runtime')).resolve()
     require(public_wait('run', 2) == public_wait('allocate', 0), 'Failed-live public runtime differs')
     report = original('native_report', previous/'native-report.json', max_bytes=67108864)
-    require(report.get('status') == 'RED' and report.get('error') and report.get('finished_at') and
+    diagnostic = bundle.get('failed_query')
+    validate_failed_live_diagnostic(report, diagnostic)
+    original_error = report.get('error')
+    require(report.get('status') == 'RED' and
+            ((isinstance(original_error, str) and bool(original_error)) or
+             (late_cleanup and 'error' in report and original_error is None)) and report.get('finished_at') and
             report.get('managed_session_done') is True and report.get('managed_session_thread_finished') is True and
             report.get('cleanup_ok') is True and Path(report['state_dir']).resolve() == state and
             Path(report['agent_source_root']).resolve() == Path(freeze['source_root']).resolve() and
@@ -1576,7 +1700,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     late_facts = None
     if late_cleanup:
         late_facts = validate_late_native_cleanup(normal, retained, game, native, report,
-            (previous/'case-output/normal-close-result.json').stat().st_mtime_ns)
+            (previous/'case-output/normal-close-result.json').stat().st_mtime_ns, diagnostic)
     else:
         require(game.get('retained_synchronize_query_handle_acquired') is True and
             retained.get('retained_synchronize_query_handle_acquired') is True and
@@ -1586,15 +1710,11 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             retained.get('actual_retained_os0') is False and retained == normal.get('retained_handle') and
             shutdown.get('ck3_exit_code') == retained['exit_code'],
                 'Failed-live original retained nonzero CK3 exit differs')
-    diagnostic = bundle.get('failed_query', {})
-    rows = [row for row in report.get('steps', []) if row.get('id') == diagnostic.get('step_id')]
-    require(len(rows) == 1 and rows[0].get('ok') is False and rows[0].get('error') and
-            rows[0].get('finished_at') and rows[0].get('plan', {}).get('tool') == diagnostic.get('tool'),
-            'Failed-live source-bound failed query is missing')
-    if late_cleanup:
-        validate_late_failed_day(diagnostic, rows[0])
     original('server_stderr', report['server_stderr'], decode=False, max_bytes=16777216)
     keeper = original('keeper_report', keeper_root/'report.json')
+    if split_public:
+        require(bool(original('keeper_stop', keeper_root/'STOP', decode=False)),
+                'Failed-live original cooperative keeper STOP is missing')
     waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
     require(waited.get('run_id') == freeze['run_id'] and waited.get('keeper_actual_exit_code') == 0 and
             waited.get('keeper_report') == keeper and keeper.get('task_id') == freeze['screen_task'] and
@@ -1626,7 +1746,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         if (process.info.get('name') or '').lower().startswith(('python', 'pypy')):
             try: arguments = process.cmdline()
             except psutil.NoSuchProcess: continue
-            require(not any(Path(arg).resolve() == selected_host for arg in arguments if arg),
+            require(not any(is_frozen_host_argument(arg, selected_host) for arg in arguments if arg),
                     'Failed-live frozen host interpreter or redirector still present')
     absent = {name:not (state/'control'/name).exists() for name in ('ck3.json', 'unsafe-cleanup.json')}
     absent['watchdog-*.ready.json'] = not list((state/'control').glob('watchdog-*.ready.json'))

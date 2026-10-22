@@ -1,0 +1,519 @@
+{
+  "original_validation": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\offline-validation.result.json",
+    "bytes": 9900,
+    "sha256": "e5dd466a4b074435ecc8433458788a07d94b56c8ff97d54f5f1a38b9ba7abe5d"
+  },
+  "validation": {
+    "schema": "r11-failed-resource-closure-offline-validation-v1",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "recorded_at_utc": "2026-10-22T16:35:20.642739+00:00",
+    "commands": [
+      {
+        "label": "failed-resource",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_ck3_mod_acceptance_failed_resource_closure.py"
+        ],
+        "started_at_utc": "2026-10-22T16:34:59.184630+00:00",
+        "finished_at_utc": "2026-10-22T16:34:59.656831+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\failed-resource.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\failed-resource.stderr.txt",
+          "bytes": 114,
+          "sha256": "b8986c55951d1fe4e1a80eedbac8b20f5a21dbf3c738b9b57b3ef867f08fe439"
+        }
+      },
+      {
+        "label": "expired-keeper",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_ck3_mod_acceptance_expired_keeper.py"
+        ],
+        "started_at_utc": "2026-10-22T16:34:59.657545+00:00",
+        "finished_at_utc": "2026-10-22T16:35:00.344195+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\expired-keeper.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\expired-keeper.stderr.txt",
+          "bytes": 2201,
+          "sha256": "4dafb3ee5f53e7bbebb37421c4036209bd85cbfdd1f8d16cc06a2cd0d88106dd"
+        }
+      },
+      {
+        "label": "missing-normal",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_ck3_mod_acceptance_missing_normal_closure.py"
+        ],
+        "started_at_utc": "2026-10-22T16:35:00.344916+00:00",
+        "finished_at_utc": "2026-10-22T16:35:01.129848+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\missing-normal.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\missing-normal.stderr.txt",
+          "bytes": 1966,
+          "sha256": "b0ee641d2a1cb3f4a2232bdd05231dac02aca5f9de5247559d0255fb12144f81"
+        }
+      },
+      {
+        "label": "late-native",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-O",
+          "-X",
+          "utf8",
+          "tools/test_ck3_mod_acceptance_late_native_cleanup.py"
+        ],
+        "started_at_utc": "2026-10-22T16:35:01.130558+00:00",
+        "finished_at_utc": "2026-10-22T16:35:01.744966+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\late-native.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\late-native.stderr.txt",
+          "bytes": 933,
+          "sha256": "362d7b979b85c72db23c6307bc864325edbacef8a7fe709ca4b51952c209ff7b"
+        }
+      },
+      {
+        "label": "split-r11",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-O",
+          "-X",
+          "utf8",
+          "tools/test_ck3_mod_acceptance_split_public_closure.py"
+        ],
+        "started_at_utc": "2026-10-22T16:35:01.745724+00:00",
+        "finished_at_utc": "2026-10-22T16:35:03.659079+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\split-r11.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\split-r11.stderr.txt",
+          "bytes": 1347,
+          "sha256": "564daa6d82e156aaa21fb4c8d957ce7bb0e6f0a76a25800ad76362474eb6a10b"
+        }
+      },
+      {
+        "label": "strict-scope",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--no-incremental",
+          "--cache-dir",
+          "nul",
+          "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\allocator-late-closure-exact-scope.py"
+        ],
+        "started_at_utc": "2026-10-22T16:35:03.659789+00:00",
+        "finished_at_utc": "2026-10-22T16:35:05.725506+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\strict-scope.stdout.txt",
+          "bytes": 43,
+          "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\strict-scope.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "strict-new-test",
+        "argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "--no-incremental",
+          "--cache-dir",
+          "nul",
+          "tools/test_ck3_mod_acceptance_split_public_closure.py"
+        ],
+        "started_at_utc": "2026-10-22T16:35:05.726203+00:00",
+        "finished_at_utc": "2026-10-22T16:35:20.639627+00:00",
+        "exit_code": 0,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\strict-new-test.stdout.txt",
+          "bytes": 43,
+          "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\strict-new-test.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "source_pins_before": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 178368,
+        "sha256": "f0dce535f8c212fee4641c9ce17336a86d4cdae5c26f94a1897a0acdfd2c6476"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_split_public_closure.py",
+        "bytes": 13917,
+        "sha256": "506a34e0dcdd04307041510634f293aa0ec576eb87f3b34ecd2f1db45b059112"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\ck3_r11_failed_resource_closure.json",
+        "bytes": 74203,
+        "sha256": "675161720ba681dfc89589fce1f3e588b51e73a83d88dd18a7e17edff85624f6"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+        "bytes": 108161,
+        "sha256": "0fcb0a009adf46d00f23f0251e8046df90db1d6fd8b5ccd9716901ced1f3716d"
+      }
+    ],
+    "source_pins_after": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 178368,
+        "sha256": "f0dce535f8c212fee4641c9ce17336a86d4cdae5c26f94a1897a0acdfd2c6476"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_split_public_closure.py",
+        "bytes": 13917,
+        "sha256": "506a34e0dcdd04307041510634f293aa0ec576eb87f3b34ecd2f1db45b059112"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\ck3_r11_failed_resource_closure.json",
+        "bytes": 74203,
+        "sha256": "675161720ba681dfc89589fce1f3e588b51e73a83d88dd18a7e17edff85624f6"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+        "bytes": 108161,
+        "sha256": "0fcb0a009adf46d00f23f0251e8046df90db1d6fd8b5ccd9716901ced1f3716d"
+      }
+    ],
+    "sources_stable": true,
+    "strict_function_and_class_names": [
+      "LateNativeCleanupFacts",
+      "SplitPublicWaitFacts",
+      "_late_check",
+      "_late_integer",
+      "_late_object",
+      "is_frozen_host_argument",
+      "validate_failed_live_diagnostic",
+      "validate_late_failed_day",
+      "validate_late_native_cleanup",
+      "validate_late_public_wait",
+      "validate_split_public_wait"
+    ],
+    "strict_scope": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\allocator-late-closure-exact-scope.py",
+      "bytes": 14261,
+      "sha256": "9f3a8460f9d7c2c5c6779faca996255210876997a47d1f4b06d9f4af5ad69602"
+    },
+    "full_allocator_strict_claimed": false,
+    "scope": "Affected complete CI steps plus exact unchanged-source typed helper extraction and whole new regression file; no full cold/warm SDK step or game operation."
+  },
+  "actual_shared_verifier": {
+    "schema": "r11-shared-failed-resource-closure-validation-v1",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "started_at_utc": "2026-10-22T16:34:06.128901+00:00",
+    "finished_at_utc": "2026-10-22T16:34:06.504268+00:00",
+    "shared_verifier_source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 178368,
+      "sha256": "f0dce535f8c212fee4641c9ce17336a86d4cdae5c26f94a1897a0acdfd2c6476"
+    },
+    "closure": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\closure.json",
+      "bytes": 8943,
+      "sha256": "5f99c44f1449c0a9b8ee7de70084692648898d38906042ba1adc160ba2e375c9"
+    },
+    "fresh_bus_argv": [
+      "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\codex_task_bus.py",
+      "--bus-dir",
+      "D:\\workspace\\.codex-task-bus",
+      "--expected-cli-sha256",
+      "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+      "list"
+    ],
+    "fresh_bus_exit_code": 0,
+    "fresh_bus_snapshot": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\fresh-bus-list-a04.stdout.json",
+      "bytes": 12384,
+      "sha256": "826cdcc693b90fe436b5242d148bc6a88e2a1720ce04ba61b01fa2f6af82d33e"
+    },
+    "result": {
+      "mode": "previous-shared-failed-live-resource-closed",
+      "failure_cleanup": {
+        "close": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-failed-resource-closure-a01\\closure.json",
+          "bytes": 8943,
+          "sha256": "5f99c44f1449c0a9b8ee7de70084692648898d38906042ba1adc160ba2e375c9"
+        },
+        "original_evidence": {
+          "frozen_argv": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\frozen-argv.json",
+            "bytes": 65937,
+            "sha256": "aa0f2c9ad49b0841473ee3eee3b5fd030c6ed888644c49d7573581c05a426dc8"
+          },
+          "ready_context": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\ready-context.json",
+            "bytes": 2287,
+            "sha256": "9c427c42a8ec310ec682548bc811e0d0665256d63dcd05768089eb2b76607acf"
+          },
+          "prepared_case": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+            "bytes": 35125,
+            "sha256": "4022f781e40e8e3df68ecf02bd3166f626fe32f23100b11666415c004d997baf"
+          },
+          "host_started": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\host-started.json",
+            "bytes": 3617,
+            "sha256": "e55aebbd01d6540b3a53635661afd1604453738b2b3bec2096bd5accd79ad852"
+          },
+          "host_exit": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\host-original-process-exit.json",
+            "bytes": 253,
+            "sha256": "ef93ec60eb35dd457a5721348c0be277ed6f67ad8786a91026a93d760dd47d71"
+          },
+          "host_supervisor": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\host-supervisor-started.json",
+            "bytes": 1021,
+            "sha256": "25b363238129a6bd334fc0399c144aa62bf5bb80d0dcdaeddf589d1b9a389830"
+          },
+          "run_wait": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\exit.json",
+            "bytes": 184,
+            "sha256": "8d80b428efb8524b15e14d776f02cd72aa68bb2f45e48902559a32083b8dcc72"
+          },
+          "run_command": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\command.json",
+            "bytes": 963,
+            "sha256": "9eab165a5049eecc0a9bfbc43d4b9f6f2deb733dccb138d38eb55ade29bd13b2"
+          },
+          "run_intent": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\intent.json",
+            "bytes": 973,
+            "sha256": "a2a5326e9df64a7b3073df39b0a92fe25162f6073e146848570aac6e81123f90"
+          },
+          "run_process": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\process.json",
+            "bytes": 958,
+            "sha256": "78c541a9396a2827dd8d025c0ef4d71085683f46596cd4e25b674ea42e6c98cd"
+          },
+          "run_completion": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\completion.json",
+            "bytes": 309,
+            "sha256": "24f6bc9c8b717c44e913c4e1d6157a079b40b85d49388599f25bbee20b036451"
+          },
+          "run_stdout": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\stdout.json",
+            "bytes": 307472,
+            "sha256": "06cb765a27ed2fdf51f6660f30a86c15b0b52021b0ec1297916bbc4ea0d63816"
+          },
+          "run_stderr": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "allocate_wait": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\exit.json",
+            "bytes": 185,
+            "sha256": "aa246b383e4303156bc2e4e9870ebc490bc2db05834275c373237633019b25e7"
+          },
+          "allocate_command": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\command.json",
+            "bytes": 1352,
+            "sha256": "20378a79aacf5467e4f62bf7ee54fee3da6307d2c73cf4945db09f8db0fa24c6"
+          },
+          "allocate_intent": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\intent.json",
+            "bytes": 1367,
+            "sha256": "03e7c11e90de684b6b677f219bac6abfc6cba67d39a22b3e35d98c40d0108f54"
+          },
+          "allocate_process": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\process.json",
+            "bytes": 1349,
+            "sha256": "69333622ff8673b307587d6af3db8af5914016eae631ac79e3f6de350b225fa6"
+          },
+          "allocate_completion": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\completion.json",
+            "bytes": 314,
+            "sha256": "38af0e23e51d8889e1850e2259055e56737f8234082de0b8db408352c47506ae"
+          },
+          "allocate_stdout": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\stdout.json",
+            "bytes": 4610,
+            "sha256": "5451b8f1c94da899a9f38ff045d171f5a5d543f28222f0f9500091780a3c0496"
+          },
+          "allocate_stderr": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "native_report": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.json",
+            "bytes": 10229714,
+            "sha256": "81af24625e74ec6a38c385adf2221e941d8febaaf118dec2a66451901945a500"
+          },
+          "normal_close": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\normal-close-result.json",
+            "bytes": 710,
+            "sha256": "4795f928c6e9b2bdf8fe27acf5053725f5a9ccd23ecb84f7a8f292f96c2a6faf"
+          },
+          "retained_identity": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\retained-current-process-identity.json",
+            "bytes": 109,
+            "sha256": "700f3524017a41476fc93e02e3d625df7a52e18d7fc1d8c72b434e48919e96ff"
+          },
+          "retained_exit": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\actual-retained-handle-os-exit.json",
+            "bytes": 183,
+            "sha256": "9585ea370f4b3eeed278ed67e051d02660241c9b9d1f284226381db6980e365a"
+          },
+          "server_stderr": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.server-stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "keeper_report": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14\\report.json",
+            "bytes": 468,
+            "sha256": "5ae898a9738d423e24d99a5ee6b8400b5d9417771f1a7786709feb60f4a3d4ae"
+          },
+          "keeper_stop": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14\\STOP",
+            "bytes": 143,
+            "sha256": "99f870e763a74ae1faaa06efe419a1fbb0f597ce1a9cb4e66f0ec6dd07f9947f"
+          },
+          "keeper_exit": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\keeper-actual-parent-exit.json",
+            "bytes": 640,
+            "sha256": "a83a5877b0d7430f7513eb6de0522b383b407f9203cea217cb4facfe8683fdda"
+          },
+          "release": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-screen-resource-close-a01\\release.stdout.json",
+            "bytes": 1328,
+            "sha256": "a83cf49b32d22b23c4d780114a70ca9a88d5e740aa66c750ed4fac8bd005ad09"
+          },
+          "keeper_process": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\keeper-process.json",
+            "bytes": 840,
+            "sha256": "ae8a97f6b0cd91ce01645acb71d5200ca69866eb2cc1d54b1d1d4ee3fcd463eb"
+          }
+        },
+        "original_host_exit_code": 1,
+        "original_host_wait_proven": true,
+        "original_ck3_exit_code": null,
+        "actual_retained_os0": false,
+        "original_report_status": "RED",
+        "original_host_error": null,
+        "native_job_cleanup_observed": true,
+        "normal_close_qualified": false,
+        "typed_normal_exit_proven": false,
+        "business_pass": false,
+        "release_pass": false,
+        "control_files_absent": {
+          "ck3.json": true,
+          "unsafe-cleanup.json": true,
+          "watchdog-*.ready.json": true
+        },
+        "administrative_resource_admission_only": true,
+        "closure_kind": "retained-wait-expired-then-native-cleanup",
+        "original_retained_wait_signaled": false,
+        "native_reported_ck3_exit_code": 1,
+        "native_process_exit_code": null,
+        "failure_lifecycle_completed": false,
+        "native_cleanup_qualified": null
+      },
+      "actual_process_inventory": {
+        "at_utc": "2026-10-22T16:34:06.477721+00:00",
+        "scanned_process_count": 170,
+        "python_controllers_inspected": [
+          {
+            "pid": 5448,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          },
+          {
+            "pid": 9128,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          },
+          {
+            "pid": 10996,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          },
+          {
+            "pid": 11756,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          },
+          {
+            "pid": 12624,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          },
+          {
+            "pid": 13008,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          },
+          {
+            "pid": 13216,
+            "name": "python.exe",
+            "runtime_controller_match": false
+          }
+        ],
+        "blockers": [],
+        "process_absence_is_normal_exit_proof": false
+      }
+    },
+    "ck3_launched": false,
+    "new_allocation_performed": false
+  }
+}

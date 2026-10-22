@@ -1,5 +1,6 @@
 * text=auto eol=lf
 mod_living_artifacts/tools/fixtures/r10_npc_initial_lifecycle_observation.json -text whitespace=cr-at-eol
+tools/fixtures/ck3_r11_failed_resource_closure.json -text whitespace=cr-at-eol
 
 # Preserve original, machine-bound Java migration vacation handoff receipts.
 docs/handover/java-migration-stabilization-20261022/** -text whitespace=cr-at-eol
