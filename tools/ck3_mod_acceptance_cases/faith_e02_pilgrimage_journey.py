@@ -616,6 +616,10 @@ class _Journey:
                 frame = self.observe_identity(frame, "after_actual_interruption")
             elif not self.result["return_observed"] and frame["date_raw"] - self.last_identity_date >= 7 * 24:
                 frame = self.observe_identity(frame, "seven_actual_days")
+            # A readonly identity/milestone refresh can publish a new modal at
+            # the same date after drain. Handle it before attempting any day.
+            if frame.get("active_event") is not None or frame.get("pending_character_interaction") is not None:
+                continue
             if self.result["return_observed"]:
                 self.result["status"] = ("JOURNEY_CONCLUSION_AND_RETURN_EVENT_OBSERVED"
                     if self.result["return_event_chain_complete"] else "PARTIAL_RETURN_EVENT_WITHOUT_CONCLUSION")

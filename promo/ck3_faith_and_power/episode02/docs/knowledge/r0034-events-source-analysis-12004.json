@@ -1,0 +1,1815 @@
+{
+  "schema": "faith-e02-r0034-source-bound-event-analysis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0034",
+  "ck3_build": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "qualification": "current_source_review_plus_historical_occurrence_poststates",
+  "source_analysis_completed": true,
+  "new_game_or_native_calls": 0,
+  "tracked_files_changed": [],
+  "source_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "sources": {
+    "HIST": {
+      "game_relative_path": "events/historical_character_events.txt",
+      "lines": [
+        [
+          4,
+          18
+        ],
+        [
+          270,
+          408
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\historical_character_events.txt",
+      "bytes": 8875,
+      "sha256": "1e40fdb1ea99393b45743514180700d623befeb09f88b71f811ba09d56b43567"
+    },
+    "START": {
+      "game_relative_path": "events/travel_events/travel_start_events.txt",
+      "lines": [
+        [
+          2158,
+          2304
+        ],
+        [
+          2307,
+          2601
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_start_events.txt",
+      "bytes": 95408,
+      "sha256": "4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9"
+    },
+    "INTENT": {
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_intent_events.txt",
+      "lines": [
+        [
+          781,
+          875
+        ],
+        [
+          1782,
+          1878
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_intent_events.txt",
+      "bytes": 57928,
+      "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878"
+    },
+    "PILG": {
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "lines": [
+        [
+          7285,
+          7401
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    "HELP": {
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "lines": [
+        [
+          1225,
+          1249
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    "ACT": {
+      "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+      "lines": [
+        [
+          4357,
+          4365
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38"
+    },
+    "BASIC": {
+      "game_relative_path": "common/script_values/00_basic_values.txt",
+      "lines": [
+        [
+          1001,
+          1001
+        ],
+        [
+          1034,
+          1034
+        ],
+        [
+          1131,
+          1136
+        ],
+        [
+          1164,
+          1166
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    "STRESS": {
+      "game_relative_path": "common/script_values/00_stress_values.txt",
+      "lines": [
+        [
+          5,
+          17
+        ],
+        [
+          25,
+          35
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4"
+    },
+    "LIFE": {
+      "game_relative_path": "common/script_values/00_lifestyle_values.txt",
+      "lines": [
+        [
+          5,
+          11
+        ],
+        [
+          889,
+          891
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_lifestyle_values.txt",
+      "bytes": 22192,
+      "sha256": "4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0"
+    },
+    "MOD": {
+      "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "lines": [
+        [
+          57,
+          71
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580"
+    },
+    "MP": {
+      "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+      "lines": [
+        [
+          9,
+          31
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_travel_effects.txt",
+      "bytes": 1867,
+      "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e"
+    },
+    "OA": {
+      "game_relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+      "lines": [
+        [
+          4,
+          17
+        ],
+        [
+          32,
+          37
+        ],
+        [
+          74,
+          91
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    },
+    "TRAVELOA": {
+      "game_relative_path": "common/on_action/travel_on_actions.txt",
+      "lines": [
+        [
+          1172,
+          1178
+        ],
+        [
+          1441,
+          1453
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+    },
+    "HISTLOC": {
+      "game_relative_path": "localization/simp_chinese/historical_characters_l_simp_chinese.yml",
+      "lines": [
+        [
+          8,
+          10
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\historical_characters_l_simp_chinese.yml",
+      "bytes": 81403,
+      "sha256": "e513205e37873c0a6e32f25cb3db297ad3c6b592c82ff69f67843d006b18b239"
+    },
+    "STARTLOC": {
+      "game_relative_path": "localization/simp_chinese/event_localization/travel_events/travel_start_events_l_simp_chinese.yml",
+      "lines": [
+        [
+          15,
+          19
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_start_events_l_simp_chinese.yml",
+      "bytes": 33689,
+      "sha256": "7c6146fc235866430d1fa2667afe2610b703830ef74d181cfae4a952b1372e78"
+    },
+    "INTENTLOC": {
+      "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml",
+      "lines": [
+        [
+          47,
+          51
+        ],
+        [
+          123,
+          127
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_intent_events_l_simp_chinese.yml",
+      "bytes": 18043,
+      "sha256": "7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a"
+    },
+    "PILGLOC": {
+      "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "lines": [
+        [
+          574,
+          579
+        ]
+      ],
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+    }
+  },
+  "events": [
+    {
+      "instance_id": 3,
+      "event_definition_key": "historical_char_creation_events.1",
+      "definition_refs": [
+        "HIST:4-408",
+        "HISTLOC:8-10"
+      ],
+      "entry": "Existing historical-character generation/arrival event; actual root15893, historical_character41436. Reuse existing exact-build registry policy; no new strategy.",
+      "immediate_source": "Saves background scopes only, HIST:270-277.",
+      "after_source": "Remove need_military_outfit flag, HIST:405-407.",
+      "options": [
+        {
+          "native_index_in_observed_occurrence": 0,
+          "source_option_key": "historical_char_creation_events.1.a",
+          "source_refs": [
+            "HIST:279-326"
+          ],
+          "effects_source_only": [
+            "Marks dangerous; human-player achievement bookkeeping.",
+            "Creates historical_character landless adventurer title; set_player_character=historical_character.",
+            "Hidden conditional contract population; optional historical_character_2 courtier."
+          ],
+          "visibility_source": "has_ep3_dlc_trigger"
+        },
+        {
+          "native_index_in_observed_occurrence": 1,
+          "source_option_key": "historical_char_creation_events.1.b",
+          "source_refs": [
+            "HIST:328-352"
+          ],
+          "effects_source_only": [
+            "Adds historical_character as courtier and obligation hook.",
+            "If historical_character_2 exists, also adds that courtier and hook."
+          ],
+          "visibility_source": "unconditional source option"
+        },
+        {
+          "native_index_in_observed_occurrence": 2,
+          "source_option_key": "historical_char_creation_events.1.c",
+          "source_refs": [
+            "HIST:354-386",
+            "BASIC:1001,1034"
+          ],
+          "effects_source_only": [
+            "Requests75 prestige.",
+            "If EP3 and explorer scope exists: historical_character becomes adventurer; else-if EP3 and rootAI:15percent creation chance.",
+            "Observed human/no-explorer projection reaches neither adventurer branch; does not switch player."
+          ],
+          "visibility_source": "unconditional source option"
+        }
+      ],
+      "integration": {
+        "disposition": "reuse_existing_registered_policy",
+        "selected_native_index": 2,
+        "do_not_create_second_policy": true
+      },
+      "correction": "Delegation said all four initial events chose first displayed. Original event3 selection-observed instead proves existing registry selected native2/option3; actor15893 remained. Preserve this correction.",
+      "source_analysis_completed": true,
+      "historical_occurrence": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-22T15:04:09.091378+00:00",
+        "date_raw": 51394944,
+        "event_instance_id": 3,
+        "actor_character_id": 15893,
+        "source_evidence": {
+          "offline_input": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+            "bytes": 72377,
+            "sha256": "66c60e16814c0b26ef61b9a847c7b3871b394fd878e34056f2cbbb385d8ff4d5"
+          },
+          "selection_observed": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+            "bytes": 36997,
+            "sha256": "189d14438c061ebe0c7b2086fafba5b5c9c96557d6c483f9e7ddeac8397de694"
+          },
+          "selection_source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0005-event-select-once.actual-results.json",
+            "bytes": 39140,
+            "sha256": "960403dee8a4a27d4c353dc345465abb36bbec4f3855ed1aa269092c7dee665e"
+          }
+        },
+        "typed_scope_projection": {
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 15893
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "birth_location",
+              "name_identifier": 16024,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 5,
+                "type_key": "landed_title",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "landed_title",
+                  "title_id": 6687
+                }
+              }
+            },
+            {
+              "name": "historical_character",
+              "name_identifier": 12447,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 41436
+                }
+              }
+            },
+            {
+              "name": "county_scope",
+              "name_identifier": 16443,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 5,
+                "type_key": "landed_title",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "landed_title",
+                  "title_id": 6686
+                }
+              }
+            },
+            {
+              "name": "inspiration_owner",
+              "name_identifier": 184,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 41435
+                }
+              }
+            },
+            {
+              "name": "new_inspiration",
+              "name_identifier": 182,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 32,
+                "type_key": "inspiration",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "background_terrain_scope",
+              "name_identifier": 10948,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 5,
+                "type_key": "landed_title",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "landed_title",
+                  "title_id": 6687
+                }
+              }
+            },
+            {
+              "name": "background_market_scope",
+              "name_identifier": 11120,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 8,
+                "type_key": "province",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "background_university_scope",
+              "name_identifier": 11370,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 8,
+                "type_key": "province",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "holy_site_scope",
+              "name_identifier": 11300,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 8,
+                "type_key": "province",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            }
+          ]
+        },
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我很好奇他的命运将会如何……"
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "这样的男人对我有大用！"
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "穆尼斯？谁在乎！"
+          }
+        ],
+        "selected_native_option_index": 2,
+        "selected_option_number": 3,
+        "selected_source_option_key": "historical_char_creation_events.1.c",
+        "policy_actually_used": {
+          "policy": "existing_registered_vanilla_event_v1",
+          "registry_knowledge_status": "available",
+          "registry_analysis_available": true,
+          "source_sha256": {
+            "events/historical_character_events.txt": "1E40FDB1EA99393B45743514180700D623BEFEB09F88B71F811BA09D56B43567",
+            "common/scripted_effects/00_historical_characters_scripted_effects.txt": "BB95C92120B74D80AC6C28F455ECE4E8FCD9D9D6E620EE408989B05B291840FD"
+          },
+          "gap": null,
+          "registry_recommendation": {
+            "status": "recommended",
+            "selected_native_option_index": 2,
+            "selected_option_number": 3,
+            "reason": null,
+            "unavailable_reason": null
+          }
+        },
+        "ack_accepted": true,
+        "original_window_gone_in_independent_snapshot": true,
+        "before": {
+          "date_raw": 51394944,
+          "revision": 10,
+          "native_revision": 9,
+          "active_event": {
+            "source": "native",
+            "instance_id": 3,
+            "option_count": 3,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 9,
+              "date_raw": 51394944,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 3600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "independent_after": {
+          "date_raw": 51394944,
+          "revision": 11,
+          "native_revision": 10,
+          "active_event": null,
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 10,
+              "date_raw": 51394944,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11100000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "observed_wallet_delta_raw": {
+          "played_character_gold": 0,
+          "played_character_prestige": 7500000,
+          "played_character_piety": 0
+        },
+        "wallet_raw_scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_poststate_observed": false
+      }
+    },
+    {
+      "instance_id": 4,
+      "event_definition_key": "travel_start_event.1060",
+      "definition_refs": [
+        "START:2307-2601",
+        "STARTLOC:15-19"
+      ],
+      "entry": "on_travel_plan_start events list TRAVELOA:1172,1449; event requires available travelling landed actor and pilgrimage activity, START:2405-2409.",
+      "immediate_source": "Plays start music; saves travel leader; builds eligible sameFaith local/neighbor-duchy candidates excluding cynical/nonbeliever; chooses/adds companions up to pomp cap; player-only generates additional companions if still short. Protected holy-place modifier may request+20 activity progression. START:2410-2533; helper details2158-2304.",
+      "after_source": "Removes rando_pilgrim_counter, START:2597-2600.",
+      "options": [
+        {
+          "native_index_in_observed_occurrence": 0,
+          "source_option_key": "travel_start_event.1060/option[0]",
+          "source_refs": [
+            "START:2535-2595",
+            "STARTLOC:17"
+          ],
+          "effects_source_only": [
+            "One source option with conditional name; actual firstHajj name key travel_start_event.1000.a_hajj.",
+            "Only shows conditional companion-count tooltip; no new direct wallet/trait/XP effect in option body.",
+            "Companion assembly happened in immediate, not because option selection awarded companions."
+          ],
+          "visibility_source": "unconditional source option"
+        }
+      ],
+      "integration": {
+        "disposition": "source_reviewed_observed_projection_ready_for_owner_import",
+        "action_contract_registered": false,
+        "selection_policy_changed": false
+      },
+      "source_analysis_completed": true,
+      "historical_occurrence": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-22T15:03:59.715221+00:00",
+        "date_raw": 51394944,
+        "event_instance_id": 4,
+        "actor_character_id": 15893,
+        "source_evidence": {
+          "offline_input": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-4-offline-analysis-input.json",
+            "bytes": 68124,
+            "sha256": "123d60d37c05eb50b16b3d8b08cd18d31043376a360a7ba0c9adb0e39270edc5"
+          },
+          "selection_observed": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+            "bytes": 35796,
+            "sha256": "b294719236cae49dc12b6e639a0b55fa9213479990d7ed3131783ae690205611"
+          },
+          "selection_source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0003-event-select-once.actual-results.json",
+            "bytes": 40321,
+            "sha256": "ea3c466162b15fb47519a03c38122c3d20a403a5ddd45d2228bcf57f6b94b29a"
+          }
+        },
+        "typed_scope_projection": {
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 15893
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "travel_plan",
+              "name_identifier": 211,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 35,
+                "type_key": "travel_plan",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "pilgrim_net",
+              "name_identifier": 13673,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 5,
+                "type_key": "landed_title",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "landed_title",
+                  "title_id": 6621
+                }
+              }
+            },
+            {
+              "name": "province_temp",
+              "name_identifier": 5247,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 8,
+                "type_key": "province",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "char_temp",
+              "name_identifier": 7162,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 19281
+                }
+              }
+            }
+          ]
+        },
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我一生都在等待这一刻。"
+          }
+        ],
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "travel_start_event.1060/option[0]",
+        "policy_actually_used": {
+          "policy": "native_first_displayed_v1",
+          "registry_knowledge_status": "unavailable",
+          "registry_analysis_available": true,
+          "source_sha256": null,
+          "gap": "registry did not recommend: not_registered",
+          "registry_recommendation": {
+            "status": "not_registered",
+            "selected_native_option_index": null,
+            "selected_option_number": null,
+            "reason": null,
+            "unavailable_reason": "event_definition_key_not_registered"
+          }
+        },
+        "ack_accepted": true,
+        "original_window_gone_in_independent_snapshot": true,
+        "before": {
+          "date_raw": 51394944,
+          "revision": 9,
+          "native_revision": 8,
+          "active_event": {
+            "source": "native",
+            "instance_id": 4,
+            "option_count": 1,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 8,
+              "date_raw": 51394944,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 3600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "independent_after": {
+          "date_raw": 51394944,
+          "revision": 10,
+          "native_revision": 9,
+          "active_event": {
+            "source": "native",
+            "instance_id": 3,
+            "option_count": 3,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 9,
+              "date_raw": 51394944,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 3600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "observed_wallet_delta_raw": {
+          "played_character_gold": 0,
+          "played_character_prestige": 0,
+          "played_character_piety": 0
+        },
+        "wallet_raw_scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_poststate_observed": false
+      }
+    },
+    {
+      "instance_id": 5,
+      "event_definition_key": "pilgrimage_intent.1030",
+      "definition_refs": [
+        "INTENT:781-875",
+        "INTENTLOC:47-51"
+      ],
+      "entry": "Shared pilgrimage_travel_events weight50 at OA:74; reflection_intent required; event cooldown2years, not activity-global cooldown.",
+      "immediate_source": "mp_delay_travel_plan90days only if has_multiple_players=yes (MP:20-31); not an unconditional90day singleplayer delay.",
+      "after_source": "mp_resume_travel_plan only for multiplayer, INTENT:872-874; MP:9-17.",
+      "options": [
+        {
+          "native_index_in_observed_occurrence": 0,
+          "source_option_key": "pilgrimage_intent.1030.a",
+          "source_refs": [
+            "INTENT:807-857",
+            "HELP:1225-1239",
+            "ACT:4357-4365",
+            "BASIC:1131-1133,1164-1166",
+            "LIFE:889-891",
+            "STRESS:25-35"
+          ],
+          "effects_source_only": [
+            "Pious/Hajj type helper requests+10 activity progression only if progression variable exists.",
+            "Unconditional current travel-plan delay10days.",
+            "NoPilgrim:piety50; existingPilgrim below100XP:baseXP10; otherwise:piety100.",
+            "If mystic held:random base mysticXP3..5.",
+            "Stress/fulfillment inputs base-15,zealous-15,impatient+20,cynical+20 before character/system processing."
+          ],
+          "visibility_source": "unconditional source option"
+        },
+        {
+          "native_index_in_observed_occurrence": 1,
+          "source_option_key": "pilgrimage_intent.1030.b",
+          "source_refs": [
+            "INTENT:858-871",
+            "STRESS:25-35"
+          ],
+          "effects_source_only": [
+            "Stress/fulfillment inputs lazy+20,zealous+40,patient+40; no10day option delay, piety, PilgrimXP or type-progress helper."
+          ],
+          "visibility_source": "unconditional source option"
+        }
+      ],
+      "integration": {
+        "disposition": "source_reviewed_observed_projection_ready_for_owner_import",
+        "action_contract_registered": false,
+        "selection_policy_changed": false
+      },
+      "source_analysis_completed": true,
+      "historical_occurrence": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-22T15:05:11.732272+00:00",
+        "date_raw": 51395088,
+        "event_instance_id": 5,
+        "actor_character_id": 15893,
+        "source_evidence": {
+          "offline_input": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-5-offline-analysis-input.json",
+            "bytes": 70009,
+            "sha256": "bbcc142228c26babf26f47e39b42b00280d223c9d52d67aad7384a9a7405d70c"
+          },
+          "selection_observed": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-5-selection-observed.json",
+            "bytes": 36109,
+            "sha256": "c8f63014fbf7a8f739e2fcc06cff75e6a2ff6b345c4b0bfd02c5d0aabfafedf6"
+          },
+          "selection_source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0008-event-select-once.actual-results.json",
+            "bytes": 40047,
+            "sha256": "7985cda2ef31a856179c0d18ed48c189bf8c296435c949f0ff62b6f875072f92"
+          }
+        },
+        "typed_scope_projection": {
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 15893
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "travel_plan",
+              "name_identifier": 211,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 35,
+                "type_key": "travel_plan",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            }
+          ]
+        },
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "这是安拉的意志。"
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我们不能拖延！"
+          }
+        ],
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "pilgrimage_intent.1030.a",
+        "policy_actually_used": {
+          "policy": "native_first_displayed_v1",
+          "registry_knowledge_status": "unavailable",
+          "registry_analysis_available": true,
+          "source_sha256": null,
+          "gap": "registry did not recommend: not_registered",
+          "registry_recommendation": {
+            "status": "not_registered",
+            "selected_native_option_index": null,
+            "selected_option_number": null,
+            "reason": null,
+            "unavailable_reason": "event_definition_key_not_registered"
+          }
+        },
+        "ack_accepted": true,
+        "original_window_gone_in_independent_snapshot": true,
+        "before": {
+          "date_raw": 51395088,
+          "revision": 31,
+          "native_revision": 30,
+          "active_event": {
+            "source": "native",
+            "instance_id": 5,
+            "option_count": 2,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 30,
+              "date_raw": 51395088,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11100000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "independent_after": {
+          "date_raw": 51395088,
+          "revision": 32,
+          "native_revision": 31,
+          "active_event": null,
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 31,
+              "date_raw": 51395088,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11100000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 230000000,
+            "scale": 100000
+          }
+        },
+        "observed_wallet_delta_raw": {
+          "played_character_gold": 0,
+          "played_character_prestige": 0,
+          "played_character_piety": 5000000
+        },
+        "wallet_raw_scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_poststate_observed": false,
+        "prior_source_analysis": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-intent-1030-source-analysis.json",
+          "sha256": "9b9e28ee6e63cf1497f2a33911396903d3d50f3344be0fdee9d3faa3c71a8c84",
+          "relationship": "new_occurrence_for_existing_source_analysis; not first-ever mechanism discovery"
+        }
+      }
+    },
+    {
+      "instance_id": 6,
+      "event_definition_key": "pilgrimage.3102",
+      "definition_refs": [
+        "PILG:7285-7401",
+        "PILGLOC:574-579"
+      ],
+      "entry": "Shared pilgrimage_travel_events weight100 at OA:91; Islam and legal land travel location required; event cooldown2years.",
+      "immediate_source": "No immediate effect block.",
+      "after_source": "No after effect block.",
+      "options": [
+        {
+          "native_index_in_observed_occurrence": 0,
+          "source_option_key": "pilgrimage.3102.a",
+          "source_refs": [
+            "PILG:7299-7340",
+            "HELP:1242-1249",
+            "MOD:68-71",
+            "LIFE:889-891",
+            "STRESS:12-14",
+            "BASIC:1131,1164"
+          ],
+          "effects_source_only": [
+            "Worldly helper gives+10 progression only for worldly type; on Hajj it does not match.",
+            "If traveller held and travel-track below100:baseXP5.",
+            "Stress request-10 and piety25.",
+            "If mystic held:random base mysticXP3..5.",
+            "Ten-year pilgrimage_worldly_modifier:owned_personal_scheme_success_chance_add15."
+          ],
+          "visibility_source": "unconditional source option"
+        },
+        {
+          "native_index_in_observed_occurrence": 1,
+          "source_option_key": "pilgrimage.3102.b",
+          "source_refs": [
+            "PILG:7341-7375",
+            "HELP:1225-1239",
+            "MOD:57-60",
+            "BASIC:1132,1165"
+          ],
+          "effects_source_only": [
+            "Pious/Hajj helper requests+10progression if variable exists.",
+            "If existingPilgrim below100:baseXP5; no trait creation.",
+            "Piety50; ten-year dedicated_to_pilgrimage_modifier monthly_piety_gain_mult+0.1."
+          ],
+          "visibility_source": "not cynical; source also has show_as_unavailable cynical"
+        },
+        {
+          "native_index_in_observed_occurrence": 2,
+          "source_option_key": "pilgrimage.3102.c",
+          "source_refs": [
+            "PILG:7376-7400",
+            "HELP:1225-1239",
+            "LIFE:10",
+            "STRESS:25-35"
+          ],
+          "effects_source_only": [
+            "Pious/Hajj helper requests+10progression if variable exists.",
+            "Stress/fulfillment inputs base+20,cynical-15,stubborn+20,arrogant+20.",
+            "Requests500 learning lifestyleXP."
+          ],
+          "visibility_source": "not zealous; source also has show_as_unavailable zealous"
+        }
+      ],
+      "integration": {
+        "disposition": "source_reviewed_observed_projection_ready_for_owner_import",
+        "action_contract_registered": false,
+        "selection_policy_changed": false
+      },
+      "source_analysis_completed": true,
+      "historical_occurrence": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-22T15:08:12.269658+00:00",
+        "date_raw": 51395520,
+        "event_instance_id": 6,
+        "actor_character_id": 15893,
+        "source_evidence": {
+          "offline_input": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-6-offline-analysis-input.json",
+            "bytes": 71480,
+            "sha256": "1eeca47afc9e1d7ea98b7a19194bcc90be996a678e96eb01aa6c4e6d9c274595"
+          },
+          "selection_observed": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-event-6-selection-observed.json",
+            "bytes": 36078,
+            "sha256": "64d5dab9f9d6d841621fd5fc1e9e59286550a7b3971d6be569a162ef0f0d68d6"
+          },
+          "selection_source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\case-output\\faith-e02-journey-001-0013-event-select-once.actual-results.json",
+            "bytes": 40025,
+            "sha256": "8d4022dd80d27578454832e1989c17dc416cd76ce527c1c58514e35e07f5b8b6"
+          }
+        },
+        "typed_scope_projection": {
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 15893
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "travel_plan",
+              "name_identifier": 211,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 35,
+                "type_key": "travel_plan",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            }
+          ]
+        },
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我想见识下安拉辉煌创造的全貌。"
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我的热情炽烈如火，我想做的也不仅仅是朝觐而已。"
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我萌生的怀疑驱使我在这片遥远的土地上寻找答案。"
+          }
+        ],
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "pilgrimage.3102.a",
+        "policy_actually_used": {
+          "policy": "native_first_displayed_v1",
+          "registry_knowledge_status": "unavailable",
+          "registry_analysis_available": true,
+          "source_sha256": null,
+          "gap": "registry did not recommend: not_registered",
+          "registry_recommendation": {
+            "status": "not_registered",
+            "selected_native_option_index": null,
+            "selected_option_number": null,
+            "reason": null,
+            "unavailable_reason": "event_definition_key_not_registered"
+          }
+        },
+        "ack_accepted": true,
+        "original_window_gone_in_independent_snapshot": true,
+        "before": {
+          "date_raw": 51395520,
+          "revision": 86,
+          "native_revision": 85,
+          "active_event": {
+            "source": "native",
+            "instance_id": 6,
+            "option_count": 3,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 85,
+              "date_raw": 51395520,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121786805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 230194250,
+            "scale": 100000
+          }
+        },
+        "independent_after": {
+          "date_raw": 51395520,
+          "revision": 87,
+          "native_revision": 86,
+          "active_event": null,
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 86,
+              "date_raw": 51395520,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121786805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 232694250,
+            "scale": 100000
+          }
+        },
+        "observed_wallet_delta_raw": {
+          "played_character_gold": 0,
+          "played_character_prestige": 0,
+          "played_character_piety": 2500000
+        },
+        "wallet_raw_scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_poststate_observed": false
+      }
+    },
+    {
+      "instance_id": 7,
+      "event_definition_key": "pilgrimage_intent.1100",
+      "definition_refs": [
+        "INTENT:1782-1878",
+        "INTENTLOC:123-127"
+      ],
+      "entry": "Shared pilgrimage_travel_events weight100 OA:78; reflection_intent; event cooldown2years.",
+      "immediate_source": "No immediate effect block.",
+      "after_source": "No after effect block.",
+      "options": [
+        {
+          "native_index_in_observed_occurrence": 0,
+          "source_option_key": "pilgrimage_intent.1100.a",
+          "source_refs": [
+            "INTENT:1796-1839",
+            "HELP:1225-1239",
+            "MOD:57-60",
+            "LIFE:889-891",
+            "STRESS:25-35"
+          ],
+          "effects_source_only": [
+            "Pious/Hajj helper requests+10progression if variable exists.",
+            "Ten-year dedicated_to_pilgrimage_modifier:monthly_piety_gain_mult+0.1.",
+            "Only if existingPilgrim below100:baseXP5; never awards Pilgrim from XP.",
+            "If mystic held:random base mysticXP3..5.",
+            "Cynical stress/fulfillment input+20. No direct piety grant."
+          ],
+          "visibility_source": "unconditional source option"
+        },
+        {
+          "native_index_in_observed_occurrence": 1,
+          "source_option_key": "pilgrimage_intent.1100.b",
+          "source_refs": [
+            "INTENT:1840-1856",
+            "HELP:1242-1249",
+            "MOD:68-71",
+            "STRESS:14"
+          ],
+          "effects_source_only": [
+            "Worldly helper matches worldly only, not Hajj.",
+            "Stress request-20; ten-year pilgrimage_worldly_modifier personal scheme success chance+15."
+          ],
+          "visibility_source": "unconditional source option"
+        },
+        {
+          "native_index_in_observed_occurrence": 2,
+          "source_option_key": "pilgrimage_intent.1100.c",
+          "source_refs": [
+            "INTENT:1857-1877",
+            "MOD:62-66",
+            "STRESS:27"
+          ],
+          "effects_source_only": [
+            "Ten-year showy_about_pilgrimage_modifier zealot_opinion+5,clergy_opinion+10.",
+            "Zealous stress/fulfillment input+20; no type-progress helper."
+          ],
+          "visibility_source": "unconditional source option"
+        }
+      ],
+      "integration": {
+        "disposition": "source_reviewed_observed_projection_ready_for_owner_import",
+        "action_contract_registered": false,
+        "selection_policy_changed": false
+      },
+      "source_analysis_completed": true,
+      "historical_occurrence": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-22T15:14:50.795675+00:00",
+        "date_raw": 51395688,
+        "event_instance_id": 7,
+        "actor_character_id": 15893,
+        "source_evidence": {
+          "query": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\commands\\r0034-failed-event-query.actual.json",
+            "bytes": 44120,
+            "sha256": "cb4fd24e24936aec7e8ea0baf459351cb3bdc5e3589af164b6f048ea6cb629f0"
+          },
+          "screenshot": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\screenshots-a02\\03-pilgrimage-intent-1100.png",
+            "bytes": 5332361,
+            "sha256": "4f3061b8c6b5d190bd1364a62f3805c3209bab01d28004f248b015505aa0e7a4"
+          },
+          "report_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0034\\native-report.json",
+          "select_row_id": "root-r0034-event7-select-once",
+          "select_row_canonical_sha256": "4d9f7a7592f1b1432f3906cc239495c3445ca1412361aeac22a16b20e27290d7",
+          "independent_post_row_id": "root-r0034-event7-independent-post",
+          "independent_post_row_canonical_sha256": "75d80b3270f2d1810747b1f354407ccd0de95620b4d67ce1a570319f5bafa5af",
+          "report_can_grow_without_changing_these_pinned_rows": true
+        },
+        "typed_scope_projection": {
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 15893
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "travel_plan",
+              "name_identifier": 211,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 35,
+                "type_key": "travel_plan",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            }
+          ]
+        },
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "这当然是我的神圣义务！"
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我真正想要的是享受和体验其他文化。"
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "resolved_name": "我所做的只是我所处的地位所要求的。"
+          }
+        ],
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "selected_source_option_key": "pilgrimage_intent.1100.a",
+        "policy_actually_used": {
+          "policy": "root_native_first_displayed_once",
+          "registry_knowledge_status": null,
+          "registry_analysis_available": null,
+          "source_sha256": null,
+          "gap": null,
+          "registry_recommendation": {
+            "status": null,
+            "selected_native_option_index": null,
+            "selected_option_number": null,
+            "reason": null,
+            "unavailable_reason": null
+          }
+        },
+        "ack_accepted": true,
+        "original_window_gone_in_independent_snapshot": true,
+        "before": {
+          "date_raw": 51395688,
+          "revision": 109,
+          "native_revision": 108,
+          "active_event": {
+            "source": "native",
+            "instance_id": 7,
+            "option_count": 3,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 108,
+              "date_raw": 51395688,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121786805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 232694250,
+            "scale": 100000
+          }
+        },
+        "independent_after": {
+          "date_raw": 51395688,
+          "revision": 110,
+          "native_revision": 109,
+          "active_event": null,
+          "played_character": {
+            "character_id": 15893,
+            "alive": true,
+            "source": "native",
+            "stress_points": 0,
+            "event_trait_membership": {
+              "schema": "xar.ck3.player-event-trait-membership/v1",
+              "game_version": "1.20.0.4",
+              "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+              "status": "available",
+              "snapshot_revision": 109,
+              "date_raw": 51395688,
+              "played_character_id": 15893,
+              "traits": {
+                "lifestyle_poet": true,
+                "journaller": false
+              },
+              "unavailable_reason": null
+            },
+            "betrothed_id": null,
+            "primary_spouse_id": 14921,
+            "spouse_ids": [
+              14921
+            ]
+          },
+          "played_character_gold": {
+            "raw": 121786805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 232694250,
+            "scale": 100000
+          }
+        },
+        "observed_wallet_delta_raw": {
+          "played_character_gold": 0,
+          "played_character_prestige": 0,
+          "played_character_piety": 0
+        },
+        "wallet_raw_scale": 100000,
+        "stress_before_after": [
+          0,
+          0
+        ],
+        "activity_progression_trait_xp_modifier_or_eta_poststate_observed": false,
+        "prior_source_analysis": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-intent-1100-source-analysis.json",
+          "sha256": "4a4a32e38c359402143973c13b485f6a70e304420a1fe93b271aab3117d83d58",
+          "relationship": "new_occurrence_for_existing_source_analysis; not first-ever mechanism discovery"
+        }
+      }
+    }
+  ],
+  "consumer_boundary": {
+    "historical_observations_are_fresh_action_permission": false,
+    "source_review_is_live_effect_readback": false,
+    "full_effect_set_native_preview_available": false,
+    "semantic_optimal_policy_claimed": false,
+    "ordinary_auto_consumes": false,
+    "required_next": "Owner persist source-bound knowledge or scoped occurrence contract in existing shared registry; fresh event identity, shown/native option mapping and legality still required. Historical3 reuses existing dedicated C policy.",
+    "same_modifier_reapplication_stacking_claimed": false,
+    "analysis_availability_is_distinct_from_registry_action_recommendation": true
+  },
+  "analyzed_at_utc": "2026-10-22T15:21:34.147418+00:00",
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-20T15:21:34.147418+00:00",
+    "small_json_only": true,
+    "delete_operations": 0,
+    "heavy_write_performed": false,
+    "disk_available_bytes_at_start": 90584883200
+  }
+}

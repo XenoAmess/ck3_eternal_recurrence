@@ -794,3 +794,538 @@ _R31_EXTRA_SOURCE_ONLY_12004: dict[str, SourceOnlyRecord] = {'pilgrimage_intent.
                                       'policy_actually_used': 'native_first_displayed_v1',
                                       'registry_consumption_succeeded_live': False}}}
 PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R31_EXTRA_SOURCE_ONLY_12004)
+
+
+# R0034 source analysis and historical occurrence metadata only.
+# historical_R31_selected remains false; R0034 selections live in observations.actual.
+_R0034_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'travel_start_event.1060': {'analysis': {'source_analysis_completed': True,
+                                          'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                          'exact_build': '1.20.0.4',
+                                          'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json',
+                                          'source_document_sha256': '50d844aa0fbf036b974fb0cd22fc7a340c374d8264f9ad6c1506ef9ef3066540',
+                                          'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-occurrence.json',
+                                          'title': '朝觐（源码题键 travel_start_event.1060.t_hajj）',
+                                          'source_pins': [{'game_relative_path': 'events/travel_events/travel_start_events.txt',
+                                                           'bytes': 95408,
+                                                           'sha256': '4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9',
+                                                           'relevant_lines': [[2158, 2304],
+                                                                              [2307, 2601]]},
+                                                          {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                           'bytes': 40713,
+                                                           'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                           'relevant_lines': [[1225, 1249]]},
+                                                          {'game_relative_path': 'common/scripted_effects/00_activity_effects.txt',
+                                                           'bytes': 116295,
+                                                           'sha256': 'd5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38',
+                                                           'relevant_lines': [[4357, 4365]]},
+                                                          {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                           'bytes': 50566,
+                                                           'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                           'relevant_lines': [[1001, 1001],
+                                                                              [1034, 1034],
+                                                                              [1131, 1136],
+                                                                              [1164, 1166]]},
+                                                          {'game_relative_path': 'common/script_values/00_stress_values.txt',
+                                                           'bytes': 3852,
+                                                           'sha256': '821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4',
+                                                           'relevant_lines': [[5, 17], [25, 35]]},
+                                                          {'game_relative_path': 'common/script_values/00_lifestyle_values.txt',
+                                                           'bytes': 22192,
+                                                           'sha256': '4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0',
+                                                           'relevant_lines': [[5, 11], [889, 891]]},
+                                                          {'game_relative_path': 'common/modifiers/00_activity_pilgrimage_modifiers.txt',
+                                                           'bytes': 8263,
+                                                           'sha256': 'b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580',
+                                                           'relevant_lines': [[57, 71]]},
+                                                          {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                           'bytes': 1867,
+                                                           'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                           'relevant_lines': [[9, 31]]},
+                                                          {'game_relative_path': 'common/on_action/activities/pilgrimage_on_actions.txt',
+                                                           'bytes': 11904,
+                                                           'sha256': 'fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354',
+                                                           'relevant_lines': [[4, 17],
+                                                                              [32, 37],
+                                                                              [74, 91]]},
+                                                          {'game_relative_path': 'common/on_action/travel_on_actions.txt',
+                                                           'bytes': 71526,
+                                                           'sha256': 'cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70',
+                                                           'relevant_lines': [[1172, 1178],
+                                                                              [1441, 1453]]},
+                                                          {'game_relative_path': 'localization/simp_chinese/event_localization/travel_events/travel_start_events_l_simp_chinese.yml',
+                                                           'bytes': 33689,
+                                                           'sha256': '7c6146fc235866430d1fa2667afe2610b703830ef74d181cfae4a952b1372e78',
+                                                           'relevant_lines': [[15, 19]]}],
+                                          'source_options': [{'source_key': 'travel_start_event.1060/option[0]',
+                                                              'historical_native_index': 0,
+                                                              'historical_label': '我一生都在等待这一刻。',
+                                                              'effects': ['One source option with '
+                                                                          'conditional name; '
+                                                                          'actual firstHajj name '
+                                                                          'key '
+                                                                          'travel_start_event.1000.a_hajj.',
+                                                                          'Only shows conditional '
+                                                                          'companion-count '
+                                                                          'tooltip; no new direct '
+                                                                          'wallet/trait/XP effect '
+                                                                          'in option body.',
+                                                                          'Companion assembly '
+                                                                          'happened in immediate, '
+                                                                          'not because option '
+                                                                          'selection awarded '
+                                                                          'companions.'],
+                                                              'visibility': 'unconditional source '
+                                                                            'option',
+                                                              'historical_R31_selected': False}],
+                                          'agent_reference': 'on_travel_plan_start events list '
+                                                             'TRAVELOA:1172,1449; event requires '
+                                                             'available travelling landed actor '
+                                                             'and pilgrimage activity, '
+                                                             'START:2405-2409. Plays start music; '
+                                                             'saves travel leader; builds eligible '
+                                                             'sameFaith local/neighbor-duchy '
+                                                             'candidates excluding '
+                                                             'cynical/nonbeliever; chooses/adds '
+                                                             'companions up to pomp cap; '
+                                                             'player-only generates additional '
+                                                             'companions if still short. Protected '
+                                                             'holy-place modifier may request+20 '
+                                                             'activity progression. '
+                                                             'START:2410-2533; helper '
+                                                             'details2158-2304. Removes '
+                                                             'rando_pilgrim_counter, '
+                                                             'START:2597-2600. R0034 indices and '
+                                                             'labels describe one historical '
+                                                             'occurrence; fresh native '
+                                                             'shown/enabled mapping is required. '
+                                                             'R31 selection fields remain false '
+                                                             'because this is R0034.',
+                                          'current_native_legality': None,
+                                          'action_ready': False,
+                                          'ordinary_auto_consumes': False,
+                                          'full_occurrence_contract_registered': False,
+                                          'selection_policy_changed': False,
+                                          'historical_index_is_current_selection_permission': False,
+                                          'historical_evidence_is_current_state': False},
+                             'observations': {'machine_id': '4-8e1c2f1861',
+                                              'observed_at_utc': '2026-10-22T15:03:59.715221+00:00',
+                                              'run_id': '4-8e1c2f1861--faith-engine--R0034',
+                                              'actual': {'instance': 4,
+                                                         'date_raw': 51394944,
+                                                         'actor_character_id': 15893,
+                                                         'actor_after_character_id': 15893,
+                                                         'selected_native_index': 0,
+                                                         'selected_option_number': 1,
+                                                         'selected_source_option_key': 'travel_start_event.1060/option[0]',
+                                                         'ack_accepted': True,
+                                                         'independent_old_window_gone': True,
+                                                         'gold_delta_raw': 0,
+                                                         'prestige_delta_raw': 0,
+                                                         'piety_delta_raw': 0,
+                                                         'scale': 100000,
+                                                         'stress_before_after': [0, 0],
+                                                         'activity_progression_trait_xp_modifier_or_eta_observed': False,
+                                                         'selection_execution_route': 'native_first_displayed_v1'},
+                                              'policy_actually_used': 'native_first_displayed_v1',
+                                              'registry_consumption_succeeded_live': False}},
+ 'pilgrimage_intent.1030': {'analysis': {'source_analysis_completed': True,
+                                         'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                         'exact_build': '1.20.0.4',
+                                         'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1030-source-analysis.json',
+                                         'source_document_sha256': '9b9e28ee6e63cf1497f2a33911396903d3d50f3344be0fdee9d3faa3c71a8c84',
+                                         'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-occurrence.json',
+                                         'title': '宁静的空地（源码题键 pilgrimage_intent.1030.t）',
+                                         'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_intent_events.txt',
+                                                          'bytes': 57928,
+                                                          'sha256': '3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878',
+                                                          'relevant_lines': [[781, 875],
+                                                                             [1782, 1878]]},
+                                                         {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                          'bytes': 40713,
+                                                          'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                          'relevant_lines': [[1225, 1249]]},
+                                                         {'game_relative_path': 'common/scripted_effects/00_activity_effects.txt',
+                                                          'bytes': 116295,
+                                                          'sha256': 'd5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38',
+                                                          'relevant_lines': [[4357, 4365]]},
+                                                         {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                          'bytes': 50566,
+                                                          'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                          'relevant_lines': [[1001, 1001],
+                                                                             [1034, 1034],
+                                                                             [1131, 1136],
+                                                                             [1164, 1166]]},
+                                                         {'game_relative_path': 'common/script_values/00_stress_values.txt',
+                                                          'bytes': 3852,
+                                                          'sha256': '821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4',
+                                                          'relevant_lines': [[5, 17], [25, 35]]},
+                                                         {'game_relative_path': 'common/script_values/00_lifestyle_values.txt',
+                                                          'bytes': 22192,
+                                                          'sha256': '4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0',
+                                                          'relevant_lines': [[5, 11], [889, 891]]},
+                                                         {'game_relative_path': 'common/modifiers/00_activity_pilgrimage_modifiers.txt',
+                                                          'bytes': 8263,
+                                                          'sha256': 'b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580',
+                                                          'relevant_lines': [[57, 71]]},
+                                                         {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                          'bytes': 1867,
+                                                          'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                          'relevant_lines': [[9, 31]]},
+                                                         {'game_relative_path': 'common/on_action/activities/pilgrimage_on_actions.txt',
+                                                          'bytes': 11904,
+                                                          'sha256': 'fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354',
+                                                          'relevant_lines': [[4, 17],
+                                                                             [32, 37],
+                                                                             [74, 91]]},
+                                                         {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml',
+                                                          'bytes': 18043,
+                                                          'sha256': '7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a',
+                                                          'relevant_lines': [[47, 51],
+                                                                             [123, 127]]}],
+                                         'source_options': [{'source_key': 'pilgrimage_intent.1030.a',
+                                                             'historical_native_index': 0,
+                                                             'historical_label': '这是安拉的意志。',
+                                                             'effects': ['Pious/Hajj type helper '
+                                                                         'requests+10 activity '
+                                                                         'progression only if '
+                                                                         'progression variable '
+                                                                         'exists.',
+                                                                         'Unconditional current '
+                                                                         'travel-plan delay10days.',
+                                                                         'NoPilgrim:piety50; '
+                                                                         'existingPilgrim '
+                                                                         'below100XP:baseXP10; '
+                                                                         'otherwise:piety100.',
+                                                                         'If mystic held:random '
+                                                                         'base mysticXP3..5.',
+                                                                         'Stress/fulfillment '
+                                                                         'inputs '
+                                                                         'base-15,zealous-15,impatient+20,cynical+20 '
+                                                                         'before character/system '
+                                                                         'processing.'],
+                                                             'visibility': 'unconditional source '
+                                                                           'option',
+                                                             'historical_R31_selected': False},
+                                                            {'source_key': 'pilgrimage_intent.1030.b',
+                                                             'historical_native_index': 1,
+                                                             'historical_label': '我们不能拖延！',
+                                                             'effects': ['Stress/fulfillment '
+                                                                         'inputs '
+                                                                         'lazy+20,zealous+40,patient+40; '
+                                                                         'no10day option delay, '
+                                                                         'piety, PilgrimXP or '
+                                                                         'type-progress helper.'],
+                                                             'visibility': 'unconditional source '
+                                                                           'option',
+                                                             'historical_R31_selected': False}],
+                                         'agent_reference': 'Shared pilgrimage_travel_events '
+                                                            'weight50 at OA:74; reflection_intent '
+                                                            'required; event cooldown2years, not '
+                                                            'activity-global cooldown. '
+                                                            'mp_delay_travel_plan90days only if '
+                                                            'has_multiple_players=yes (MP:20-31); '
+                                                            'not an unconditional90day '
+                                                            'singleplayer delay. '
+                                                            'mp_resume_travel_plan only for '
+                                                            'multiplayer, INTENT:872-874; MP:9-17. '
+                                                            'R0034 indices and labels describe one '
+                                                            'historical occurrence; fresh native '
+                                                            'shown/enabled mapping is required. '
+                                                            'R31 selection fields remain false '
+                                                            'because this is R0034.',
+                                         'current_native_legality': None,
+                                         'action_ready': False,
+                                         'ordinary_auto_consumes': False,
+                                         'full_occurrence_contract_registered': False,
+                                         'selection_policy_changed': False,
+                                         'historical_index_is_current_selection_permission': False,
+                                         'historical_evidence_is_current_state': False},
+                            'observations': {'machine_id': '4-8e1c2f1861',
+                                             'observed_at_utc': '2026-10-22T15:05:11.732272+00:00',
+                                             'run_id': '4-8e1c2f1861--faith-engine--R0034',
+                                             'actual': {'instance': 5,
+                                                        'date_raw': 51395088,
+                                                        'actor_character_id': 15893,
+                                                        'actor_after_character_id': 15893,
+                                                        'selected_native_index': 0,
+                                                        'selected_option_number': 1,
+                                                        'selected_source_option_key': 'pilgrimage_intent.1030.a',
+                                                        'ack_accepted': True,
+                                                        'independent_old_window_gone': True,
+                                                        'gold_delta_raw': 0,
+                                                        'prestige_delta_raw': 0,
+                                                        'piety_delta_raw': 5000000,
+                                                        'scale': 100000,
+                                                        'stress_before_after': [0, 0],
+                                                        'activity_progression_trait_xp_modifier_or_eta_observed': False,
+                                                        'selection_execution_route': 'native_first_displayed_v1'},
+                                             'policy_actually_used': 'native_first_displayed_v1',
+                                             'registry_consumption_succeeded_live': False}},
+ 'pilgrimage.3102': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-source-analysis-12004.json',
+                                  'source_document_sha256': 'ad92aac15c6fc25d9c43c77b36ae6b8555fed7ed099516cf79ded1f320876b35',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-occurrence.json',
+                                  'title': '拜谒（源码题键 pilgrimage.3102.t）',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[7285, 7401]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                   'bytes': 40713,
+                                                   'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                   'relevant_lines': [[1225, 1249]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_activity_effects.txt',
+                                                   'bytes': 116295,
+                                                   'sha256': 'd5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38',
+                                                   'relevant_lines': [[4357, 4365]]},
+                                                  {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                   'bytes': 50566,
+                                                   'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                   'relevant_lines': [[1001, 1001],
+                                                                      [1034, 1034],
+                                                                      [1131, 1136],
+                                                                      [1164, 1166]]},
+                                                  {'game_relative_path': 'common/script_values/00_stress_values.txt',
+                                                   'bytes': 3852,
+                                                   'sha256': '821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4',
+                                                   'relevant_lines': [[5, 17], [25, 35]]},
+                                                  {'game_relative_path': 'common/script_values/00_lifestyle_values.txt',
+                                                   'bytes': 22192,
+                                                   'sha256': '4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0',
+                                                   'relevant_lines': [[5, 11], [889, 891]]},
+                                                  {'game_relative_path': 'common/modifiers/00_activity_pilgrimage_modifiers.txt',
+                                                   'bytes': 8263,
+                                                   'sha256': 'b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580',
+                                                   'relevant_lines': [[57, 71]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                   'bytes': 1867,
+                                                   'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                   'relevant_lines': [[9, 31]]},
+                                                  {'game_relative_path': 'common/on_action/activities/pilgrimage_on_actions.txt',
+                                                   'bytes': 11904,
+                                                   'sha256': 'fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354',
+                                                   'relevant_lines': [[4, 17], [32, 37], [74, 91]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[574, 579]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.3102.a',
+                                                      'historical_native_index': 0,
+                                                      'historical_label': '我想见识下安拉辉煌创造的全貌。',
+                                                      'effects': ['Worldly helper gives+10 '
+                                                                  'progression only for worldly '
+                                                                  'type; on Hajj it does not '
+                                                                  'match.',
+                                                                  'If traveller held and '
+                                                                  'travel-track below100:baseXP5.',
+                                                                  'Stress request-10 and piety25.',
+                                                                  'If mystic held:random base '
+                                                                  'mysticXP3..5.',
+                                                                  'Ten-year '
+                                                                  'pilgrimage_worldly_modifier:owned_personal_scheme_success_chance_add15.'],
+                                                      'visibility': 'unconditional source option',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.3102.b',
+                                                      'historical_native_index': 1,
+                                                      'historical_label': '我的热情炽烈如火，我想做的也不仅仅是朝觐而已。',
+                                                      'effects': ['Pious/Hajj helper '
+                                                                  'requests+10progression if '
+                                                                  'variable exists.',
+                                                                  'If existingPilgrim '
+                                                                  'below100:baseXP5; no trait '
+                                                                  'creation.',
+                                                                  'Piety50; ten-year '
+                                                                  'dedicated_to_pilgrimage_modifier '
+                                                                  'monthly_piety_gain_mult+0.1.'],
+                                                      'visibility': 'not cynical; source also has '
+                                                                    'show_as_unavailable cynical',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.3102.c',
+                                                      'historical_native_index': 2,
+                                                      'historical_label': '我萌生的怀疑驱使我在这片遥远的土地上寻找答案。',
+                                                      'effects': ['Pious/Hajj helper '
+                                                                  'requests+10progression if '
+                                                                  'variable exists.',
+                                                                  'Stress/fulfillment inputs '
+                                                                  'base+20,cynical-15,stubborn+20,arrogant+20.',
+                                                                  'Requests500 learning '
+                                                                  'lifestyleXP.'],
+                                                      'visibility': 'not zealous; source also has '
+                                                                    'show_as_unavailable zealous',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'Shared pilgrimage_travel_events weight100 at '
+                                                     'OA:91; Islam and legal land travel location '
+                                                     'required; event cooldown2years. No immediate '
+                                                     'effect block. No after effect block. R0034 '
+                                                     'indices and labels describe one historical '
+                                                     'occurrence; fresh native shown/enabled '
+                                                     'mapping is required. R31 selection fields '
+                                                     'remain false because this is R0034.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-22T15:08:12.269658+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0034',
+                                      'actual': {'instance': 6,
+                                                 'date_raw': 51395520,
+                                                 'actor_character_id': 15893,
+                                                 'actor_after_character_id': 15893,
+                                                 'selected_native_index': 0,
+                                                 'selected_option_number': 1,
+                                                 'selected_source_option_key': 'pilgrimage.3102.a',
+                                                 'ack_accepted': True,
+                                                 'independent_old_window_gone': True,
+                                                 'gold_delta_raw': 0,
+                                                 'prestige_delta_raw': 0,
+                                                 'piety_delta_raw': 2500000,
+                                                 'scale': 100000,
+                                                 'stress_before_after': [0, 0],
+                                                 'activity_progression_trait_xp_modifier_or_eta_observed': False,
+                                                 'selection_execution_route': 'native_first_displayed_v1'},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}},
+ 'pilgrimage_intent.1100': {'analysis': {'source_analysis_completed': True,
+                                         'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                         'exact_build': '1.20.0.4',
+                                         'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1100-source-analysis.json',
+                                         'source_document_sha256': '4a4a32e38c359402143973c13b485f6a70e304420a1fe93b271aab3117d83d58',
+                                         'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-occurrence.json',
+                                         'title': '星空（源码题键 pilgrimage_intent.1100.t）',
+                                         'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_intent_events.txt',
+                                                          'bytes': 57928,
+                                                          'sha256': '3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878',
+                                                          'relevant_lines': [[781, 875],
+                                                                             [1782, 1878]]},
+                                                         {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                          'bytes': 40713,
+                                                          'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                          'relevant_lines': [[1225, 1249]]},
+                                                         {'game_relative_path': 'common/scripted_effects/00_activity_effects.txt',
+                                                          'bytes': 116295,
+                                                          'sha256': 'd5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38',
+                                                          'relevant_lines': [[4357, 4365]]},
+                                                         {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                          'bytes': 50566,
+                                                          'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                          'relevant_lines': [[1001, 1001],
+                                                                             [1034, 1034],
+                                                                             [1131, 1136],
+                                                                             [1164, 1166]]},
+                                                         {'game_relative_path': 'common/script_values/00_stress_values.txt',
+                                                          'bytes': 3852,
+                                                          'sha256': '821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4',
+                                                          'relevant_lines': [[5, 17], [25, 35]]},
+                                                         {'game_relative_path': 'common/script_values/00_lifestyle_values.txt',
+                                                          'bytes': 22192,
+                                                          'sha256': '4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0',
+                                                          'relevant_lines': [[5, 11], [889, 891]]},
+                                                         {'game_relative_path': 'common/modifiers/00_activity_pilgrimage_modifiers.txt',
+                                                          'bytes': 8263,
+                                                          'sha256': 'b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580',
+                                                          'relevant_lines': [[57, 71]]},
+                                                         {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                          'bytes': 1867,
+                                                          'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                          'relevant_lines': [[9, 31]]},
+                                                         {'game_relative_path': 'common/on_action/activities/pilgrimage_on_actions.txt',
+                                                          'bytes': 11904,
+                                                          'sha256': 'fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354',
+                                                          'relevant_lines': [[4, 17],
+                                                                             [32, 37],
+                                                                             [74, 91]]},
+                                                         {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml',
+                                                          'bytes': 18043,
+                                                          'sha256': '7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a',
+                                                          'relevant_lines': [[47, 51],
+                                                                             [123, 127]]}],
+                                         'source_options': [{'source_key': 'pilgrimage_intent.1100.a',
+                                                             'historical_native_index': 0,
+                                                             'historical_label': '这当然是我的神圣义务！',
+                                                             'effects': ['Pious/Hajj helper '
+                                                                         'requests+10progression '
+                                                                         'if variable exists.',
+                                                                         'Ten-year '
+                                                                         'dedicated_to_pilgrimage_modifier:monthly_piety_gain_mult+0.1.',
+                                                                         'Only if existingPilgrim '
+                                                                         'below100:baseXP5; never '
+                                                                         'awards Pilgrim from XP.',
+                                                                         'If mystic held:random '
+                                                                         'base mysticXP3..5.',
+                                                                         'Cynical '
+                                                                         'stress/fulfillment '
+                                                                         'input+20. No direct '
+                                                                         'piety grant.'],
+                                                             'visibility': 'unconditional source '
+                                                                           'option',
+                                                             'historical_R31_selected': False},
+                                                            {'source_key': 'pilgrimage_intent.1100.b',
+                                                             'historical_native_index': 1,
+                                                             'historical_label': '我真正想要的是享受和体验其他文化。',
+                                                             'effects': ['Worldly helper matches '
+                                                                         'worldly only, not Hajj.',
+                                                                         'Stress request-20; '
+                                                                         'ten-year '
+                                                                         'pilgrimage_worldly_modifier '
+                                                                         'personal scheme success '
+                                                                         'chance+15.'],
+                                                             'visibility': 'unconditional source '
+                                                                           'option',
+                                                             'historical_R31_selected': False},
+                                                            {'source_key': 'pilgrimage_intent.1100.c',
+                                                             'historical_native_index': 2,
+                                                             'historical_label': '我所做的只是我所处的地位所要求的。',
+                                                             'effects': ['Ten-year '
+                                                                         'showy_about_pilgrimage_modifier '
+                                                                         'zealot_opinion+5,clergy_opinion+10.',
+                                                                         'Zealous '
+                                                                         'stress/fulfillment '
+                                                                         'input+20; no '
+                                                                         'type-progress helper.'],
+                                                             'visibility': 'unconditional source '
+                                                                           'option',
+                                                             'historical_R31_selected': False}],
+                                         'agent_reference': 'Shared pilgrimage_travel_events '
+                                                            'weight100 OA:78; reflection_intent; '
+                                                            'event cooldown2years. No immediate '
+                                                            'effect block. No after effect block. '
+                                                            'R0034 indices and labels describe one '
+                                                            'historical occurrence; fresh native '
+                                                            'shown/enabled mapping is required. '
+                                                            'R31 selection fields remain false '
+                                                            'because this is R0034.',
+                                         'current_native_legality': None,
+                                         'action_ready': False,
+                                         'ordinary_auto_consumes': False,
+                                         'full_occurrence_contract_registered': False,
+                                         'selection_policy_changed': False,
+                                         'historical_index_is_current_selection_permission': False,
+                                         'historical_evidence_is_current_state': False},
+                            'observations': {'machine_id': '4-8e1c2f1861',
+                                             'observed_at_utc': '2026-10-22T15:14:50.795675+00:00',
+                                             'run_id': '4-8e1c2f1861--faith-engine--R0034',
+                                             'actual': {'instance': 7,
+                                                        'date_raw': 51395688,
+                                                        'actor_character_id': 15893,
+                                                        'actor_after_character_id': 15893,
+                                                        'selected_native_index': 0,
+                                                        'selected_option_number': 1,
+                                                        'selected_source_option_key': 'pilgrimage_intent.1100.a',
+                                                        'ack_accepted': True,
+                                                        'independent_old_window_gone': True,
+                                                        'gold_delta_raw': 0,
+                                                        'prestige_delta_raw': 0,
+                                                        'piety_delta_raw': 0,
+                                                        'scale': 100000,
+                                                        'stress_before_after': [0, 0],
+                                                        'activity_progression_trait_xp_modifier_or_eta_observed': False,
+                                                        'selection_execution_route': 'root_native_first_displayed_once'},
+                                             'policy_actually_used': 'native_first_displayed_v1',
+                                             'registry_consumption_succeeded_live': False}}}
+PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0034_SOURCE_ONLY)
