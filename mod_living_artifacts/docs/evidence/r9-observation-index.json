@@ -1,0 +1,268 @@
+{
+  "schema": "living-artifacts-r9-observation-index-v1",
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T14:29:30.943723+00:00",
+  "machine_identity_readback": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "actual_exit_code": 0,
+    "tool_chunk": "8fc879",
+    "observed_machine_id": "pc-20260924rtuf-f11af23c08"
+  },
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0009",
+  "frozen_runtime": {
+    "checkout": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c12",
+    "commit": "3a7b1c1dda1eaf33dc8625fa1835c9ab1f766114",
+    "shared_source": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-3a7b1c1dd",
+    "changed_during_documentation": false
+  },
+  "pins": {
+    "original_npc_result": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\case-output\\living-artifacts-npc-result.json",
+      "bytes": 821626,
+      "sha256": "551f2bc0e23af9afe221afcb4f12b291424593ae4b3c98a5ce5207421a5aa853"
+    },
+    "original_checkpoint_root_result": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\case-output\\checkpoint-readback-01-root-result.json",
+      "bytes": 1698,
+      "sha256": "e6945d25762345989dc2ec3bcb595c778333e9451f0b90d7a0d1cd81e1608546"
+    },
+    "normal_close_result": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\case-output\\normal-close-result.json",
+      "bytes": 9827,
+      "sha256": "be0e24c10cec3a346cdcd2700f6d76d5c64339d0640007fa14d22b11198d283b"
+    },
+    "native_report": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\native-report.json",
+      "bytes": 9404205,
+      "sha256": "b657cb7a214ea2c66cb182788630a3a43709011e39cdd5e7373885eaaa2d7512"
+    },
+    "original_host_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\host-original-process-exit.json",
+      "bytes": 253,
+      "sha256": "eecbbeece6ce20bca4e8fd57296c06fe3506eee6774b17e30158c036a46bf96d"
+    },
+    "original_keeper_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\keeper-actual-parent-exit.json",
+      "bytes": 636,
+      "sha256": "337f93fcf37ead115e22277a80e8dc16fe81b5ca560aec021cb25627bf466e1c"
+    },
+    "cooperative_stop": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-npc-a12\\STOP",
+      "bytes": 216,
+      "sha256": "f9b8ec42b186e103cd9df4de2a468df3a068f06a3b8def418c3cc2865c1cc80b"
+    },
+    "screen_release": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r9-screen-resource-close-a01\\release.stdout.json",
+      "bytes": 1279,
+      "sha256": "51b4b5e91c6c0f3ee3a6d3da64a8ee9febe6c3c532b993c455ab1974d40df7b8"
+    },
+    "background_steam_offline_close": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-offline-r9-close-a01.json",
+      "bytes": 2332,
+      "sha256": "8b23ebd81b846b0e13384a87e5e010d274c6240f624d8a51ca8f2f0f6fbcab9e"
+    },
+    "storage_close": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-r9-close-a01\\20261022T141328406552Z-task-close.json",
+      "bytes": 1960,
+      "sha256": "f2eac9271eb21d2efdacc329280353e87cb15b93a09c5b2fc4fe4cf41361c156"
+    },
+    "offline_consumer_repair": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r9-npc-reference-consumer-repair.json",
+      "bytes": 8640,
+      "sha256": "c44e672edbb46f04d1341eb32ca2e3870634cb5b0e1241890a270f7d7efe5e69"
+    },
+    "actual_leaf_excerpt_with_authored_wrappers": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r9_npc_saved_reference_excerpts.json",
+      "bytes": 66954,
+      "sha256": "5438adb4fa1e0a6e60917757971b214398087375f49ddc071e2e185f13707d4a"
+    },
+    "current_lf_fixture_revalidation": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r9-lf-fixture-verification-a01\\result.json",
+      "bytes": 4738,
+      "sha256": "566e4241e27f48c2350d65ce2038339df6f2b746d61428b4fa0f4c29cf96c929"
+    }
+  },
+  "original_business": {
+    "observed_at_utc": "2026-10-22T13:41:12.169307+00:00",
+    "status": "BLOCKED",
+    "actual_natural_days": 0,
+    "actual_public_calls_budgeted": 2,
+    "actual_saved_observations": 0,
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "current_native_npc_equipment": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "normal_close_pending": true
+  },
+  "block_reason": "Exact saved character reference required: NPC owner landed",
+  "checkpoint_scope": "The first actual save and strict melt completed. Zero accepted NPC saved observations describes the failed consumer, not absence of a saved file.",
+  "normal_close": {
+    "normal_close_qualified": true,
+    "retained_os_exit_code": 0,
+    "native_process_exit_code": 0,
+    "native_finished_at_utc": "2026-10-22T14:10:46.618384+00:00",
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "host_pid": 9376,
+    "host_actual_original_wait": true,
+    "host_exit_code": 0,
+    "host_wait_observed_at_utc": "2026-10-22T14:10:50.199607+00:00",
+    "host_status": "GREEN",
+    "host_cleanup_ok": true,
+    "final_observation": {
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "after_finish_hold_step_id": "acceptance-normal-exit-finish-hold",
+      "alive_or_business_credit": false
+    },
+    "final_observation_error": null,
+    "business_pass": false
+  },
+  "original_public_wait": {
+    "session_id": "73737",
+    "actual_exit_code": 0,
+    "source": "Root actual original session wait tool transcript, corroborated by cooperative STOP text; no standalone public wait JSON was retained.",
+    "exact_wait_observed_at_utc": null
+  },
+  "keeper_and_release": {
+    "original_session_id": "96839",
+    "actual_keeper_exit_code": 0,
+    "keeper_last_sequence": 476,
+    "keeper_thread_exited": true,
+    "keeper_failure": null,
+    "keeper_screen_released": false,
+    "keeper_reported_at_utc": "2026-10-22T14:12:08.545845+00:00",
+    "later_root_release_sequence": 477,
+    "later_root_release_state": "done",
+    "later_root_release_resources": [],
+    "later_root_release_at_utc": "2026-10-22T14:12:56.681464+00:00"
+  },
+  "close_environment": {
+    "steam_observed_at_utc": "2026-10-22T14:12:57.385699+00:00",
+    "steam_status": "offline",
+    "steam_offline_mode": true,
+    "storage_observed_at_utc": "2026-10-22T14:13:28.406552+00:00",
+    "storage_deletions": 0,
+    "storage_scope": "Explicit ledger groups only; no automatic GC or heavy-write admission is claimed."
+  },
+  "offline_repair": {
+    "commit": "de99f4d38c6693feb0f0a081efac36a8e9b1991f",
+    "previous_pre_rebase_commit": "00588760b",
+    "scope": "The actual retained R9 Root response passes the unchanged common checkpoint source verifier and the corrected consumer reads the original full melted save. Three healthy initial inputs are complete and four saved candidate references bind. This is historical file reprocessing after the original live consumer failed, not a replay of game actions or an AI PASS.",
+    "actual_excerpt_scope": "Verbatim R9 owner/input variable records, NPC inventories, selected artifact records and unrelated holy-site artifact15; outer saved-text wrappers are explicitly authored. CI reads this small retained fixture and never requires local full-save paths.",
+    "historical_test_time_excerpt_pin": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r9_npc_saved_reference_excerpts.json",
+      "bytes": 67258,
+      "sha256": "a5f339689441daf08765c50489293e80adb3581c75c7e6ab5aca04aa35875ddb"
+    },
+    "current_excerpt_lf_normalized_sha256": "5438adb4fa1e0a6e60917757971b214398087375f49ddc071e2e185f13707d4a",
+    "current_excerpt_lf_matches_historical_raw_pin": false,
+    "current_excerpt_crlf_encoded_sha256": "a5f339689441daf08765c50489293e80adb3581c75c7e6ab5aca04aa35875ddb",
+    "current_excerpt_crlf_encoding_matches_historical_raw_pin": true,
+    "newline_note": "The current fixture has LF line endings. Re-encoding only its LF newlines to CRLF matches the historical test-time raw SHA-256 exactly; the two raw-file pins remain distinct.",
+    "current_lf_validation": {
+      "started_at_utc": "2026-10-22T14:27:46.491586+00:00",
+      "finished_at_utc": "2026-10-22T14:28:39.519194+00:00",
+      "git_blob": {
+        "source": "HEAD:mod_living_artifacts/tools/fixtures/r9_npc_saved_reference_excerpts.json",
+        "actual_git_exit_code": 0,
+        "bytes": 66954,
+        "sha256": "5438adb4fa1e0a6e60917757971b214398087375f49ddc071e2e185f13707d4a",
+        "equals_current_raw": true
+      },
+      "c13_fixture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\mod_living_artifacts\\tools\\fixtures\\r9_npc_saved_reference_excerpts.json",
+        "bytes": 66954,
+        "sha256": "5438adb4fa1e0a6e60917757971b214398087375f49ddc071e2e185f13707d4a"
+      },
+      "old_raw_json_copy": {
+        "identified_in_inspected_directory": false,
+        "inspected_directory": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r9-npc-char-reference-a01",
+        "observed_entries": [
+          "project.py",
+          "result.json",
+          "selected-projection.ck3"
+        ],
+        "scope": "No independently retained historical raw JSON copy was identified in this exact original extraction directory. The old working copy has been normalized by Git; no same-name replacement or fabricated original was created."
+      },
+      "full_save_leaf_comparison": {
+        "character_variable_and_inventory_fields": 41,
+        "selected_artifact_blocks_including_unrelated_15": 21,
+        "all_exact_text_equal": true,
+        "projection_wrapper_authored": true
+      },
+      "fixture_json_round_trip_equal": true,
+      "tests": {
+        "command_argv": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "-v",
+          "test_npc_saved_observer.NpcSavedObserverTests.test_actual_r9_char_reference_records_reach_observer_and_json_consumer",
+          "test_npc_acceptance_adapter.NpcReadbackIntegrationTests.test_r9_actual_reference_excerpt_through_producer_public_root_and_both_npc_consumers"
+        ],
+        "pythonpath": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools;D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src",
+        "started_at_utc": "2026-10-22T14:28:37.735405+00:00",
+        "finished_at_utc": "2026-10-22T14:28:39.518394+00:00",
+        "elapsed_wall_seconds": 1.7829625000013039,
+        "actual_exit_code": 0,
+        "test_count": 2,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r9-lf-fixture-verification-a01\\unittest.stdout.log",
+          "bytes": 112,
+          "sha256": "b178eeda0095706876526a4e97e7aa7a7c498fe358ed559d03ba7a2e2e39b340"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r9-lf-fixture-verification-a01\\unittest.stderr.log",
+          "bytes": 537,
+          "sha256": "354b09656b5f87aecd005dafd9232833171ee50919fbac74583023c7461559ef"
+        },
+        "scope": "Only the two actual R9 excerpt consumer regressions, including actual observer/JSON consumer and producer/public CaseClient/root verifier/both NPC consumers; not the entire 165-test product suite."
+      },
+      "business_pass": false
+    },
+    "fresh_npc_runtime_status": "NOT_RUN",
+    "ai_business_pass": false,
+    "original_complete_module_suite_and_static_repeated_for_documentation": false
+  },
+  "record_time_npc_source_pins": {
+    "npc_saved_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+      "bytes": 38339,
+      "sha256": "ce15cd02612426925f328a257361b6f58f33a954d744aae67d54e785bc3afd59"
+    },
+    "npc_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+      "bytes": 35718,
+      "sha256": "9def6148fb3a34cdbda343f67c4440012a62a7e659ba1a36ac954e179a187a59"
+    },
+    "test_npc_saved_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+      "bytes": 24397,
+      "sha256": "61009c996416f4342f73bf70a1738f0cfff55e767d839422e09451cbb29622c5"
+    },
+    "test_npc_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+      "bytes": 32576,
+      "sha256": "05bc7dbe4bbe0a211f3149d43cc212d1ed87eb6ed23991b7a7a9fab8e328bb29"
+    }
+  },
+  "source_pin_scope": "Current exact bytes at document recording, not a reconstruction of every test-time dependency or a fresh frozen-runtime qualification. Offline validation scope and original tool chunks remain in the repair receipt.",
+  "limitations": [
+    "Normal close and shared host GREEN do not grant AI or product business qualification.",
+    "R9 successful host rows do not cover the R8 prior-row-failure branch or prove native V2 quit submission was used.",
+    "The current parser reprocesses historical saved files; it neither replays world actions nor adds natural days to R9.",
+    "Future management preview runbooks are NOT_RUN, not R9 evidence."
+  ],
+  "business_pass": false,
+  "ai_business_pass": false,
+  "product_release_pass": false,
+  "storage_policy": "docs/storage-retention-policy.json",
+  "storage_category": "record",
+  "review_at_utc": "2027-04-20T14:29:30.943723+00:00"
+}
