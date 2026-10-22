@@ -8,13 +8,16 @@ import json
 import gc
 import warnings
 from pathlib import Path
+import sys
 import threading
 from types import SimpleNamespace
 import unittest
 
 from test_ck3_mod_acceptance_pause import frame
 
-HOST = Path(__file__).resolve().parents[1] / "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "ck3_autonomous_player/src"))
+HOST = ROOT / "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
 
 
 def campaign_frame(date, *, paused=False, event=None, actor=22, revision=9):
