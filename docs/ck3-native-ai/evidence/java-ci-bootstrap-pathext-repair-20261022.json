@@ -1,0 +1,145 @@
+{
+  "schema": "xar.java-ci-bootstrap-pathext-repair/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T17:43:45.796951+00:00",
+  "review_due_at_utc": "2027-04-20T17:43:45.796951+00:00",
+  "github_failure": {
+    "run_id": "39817521552",
+    "head_sha": "5e5bcfe7c19d84f0b27f313655f1616288fc3584",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39817521552",
+    "artifact_id": "12442839831",
+    "machine_id": "runnervm0xl3a-89d3c56171",
+    "observed_at_utc": "2026-10-22T17:08:05.036546800Z",
+    "error": "java.io.IOException: unsupported default command extension order",
+    "full_PATHEXT_value": null,
+    "full_PATHEXT_value_status": "not recorded by original CI; not reconstructed",
+    "default_Maven_observed": "3.9.16",
+    "jdk_observed": "21.0.12.1",
+    "bootstrap_artifact": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\failed-ci-artifact\\logs\\bootstrap-actual.json",
+      "bytes": 414,
+      "sha256": "87ed3454bae4e068b4a72df9523ed9b4f2f158b6329631eec48d09c58ae0700b"
+    },
+    "default_maven_log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\failed-ci-artifact\\logs\\maven-version-1.log",
+      "bytes": 635,
+      "sha256": "3965369c6035f625f3390a1662c5b9d8304b8f5c42f98e605211b7f6049e97be"
+    }
+  },
+  "root_cause": "Resolver rejected an unused non-COM/EXE/BAT/CMD PATHEXT entry in an earlier empty directory before reaching the real mvn.cmd in PATH. The exact extra CI suffix is not recorded.",
+  "fix": "Preserve directory/PATHEXT order; reject an unsupported suffix only when its actual candidate exists. Do not skip an existing unsupported launcher to admit a later cmd; reported Maven home/launcher checks unchanged.",
+  "sources_after": {
+    "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\CiBootstrap.java",
+      "bytes": 59899,
+      "sha256": "46a66784343c59c302b73b37a11fc6a2731f6aad757cf8f46de0a5c6ce9b09c5"
+    },
+    "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/CiBootstrapTest.java": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\test\\java\\org\\xar\\ck3\\control\\build\\CiBootstrapTest.java",
+      "bytes": 19278,
+      "sha256": "cc6a54f600faa27b8d7c49ab4d7708571d994b7d794c562503f6595e401da674"
+    }
+  },
+  "logs": {
+    "github-failed-step.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\github-failed-step.log",
+      "bytes": 4922,
+      "sha256": "4988c10cadc9e60caed3b6b166256099b2617d859e3208f7bcb35dbd482e60b2"
+    },
+    "before-fix.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\before-fix.log",
+      "bytes": 4727,
+      "sha256": "53e66f5c5cddee402d9c53a5faee3fa74bbe281db1caaea69763c4faaae66c32"
+    },
+    "before-fix-pathext.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\before-fix-pathext.log",
+      "bytes": 4355,
+      "sha256": "b67fa55e132763480aa4b02511b742595c0e1cb603cfc301b59adbaa1891aafc"
+    },
+    "before-fix-pathext-a03.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\before-fix-pathext-a03.log",
+      "bytes": 5019,
+      "sha256": "0978e845d756095ab6f6e354375e74ccc43ffe1dc09197d5cf76f774780b2b49"
+    },
+    "after-fix-verify.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\after-fix-verify.log",
+      "bytes": 5976,
+      "sha256": "0e947084d55b2c907720ec3007f6f61b9d84c101910c6215f35bc603b8fedc76"
+    },
+    "after-fix-bootstrap-verify.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\after-fix-bootstrap-verify.log",
+      "bytes": 3571,
+      "sha256": "ecd81881429709cc4280091ad88dba89eca1970806a9af9aad52046fe7691059"
+    },
+    "java-version.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\java-version.log",
+      "bytes": 241,
+      "sha256": "df1d9f924d3f66e5becfbb7fd80df3acfb3d0a7f9a31dec4cfc0468f3a7d39b3"
+    },
+    "maven-version.log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\maven-version.log",
+      "bytes": 348,
+      "sha256": "6aacebbb899c6d5cb48de20d396af2165636ae6c852aaed46c6ef501ce62b0be"
+    }
+  },
+  "verification": {
+    "original_function_regression": {
+      "log": "before-fix-pathext-a03.log",
+      "exit_code": 1,
+      "actual_failure": "same IOException from actual CMD version probe through production resolver"
+    },
+    "two_earlier_precondition_failures": "before-fix.log and before-fix-pathext.log lacked effective explicit JNA scratch; not counted as PATHEXT reproductions",
+    "full_standalone_verify": {
+      "log": "after-fix-verify.log",
+      "exit_code": 1,
+      "tests": 30,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "CiBootstrapTest": 11,
+      "ControlBuildTest": 9,
+      "unmodified_failure": "WindowsJobProcessTest.timeoutKillsTheActualGrandchildAndLeavesNoJobMember:43 Win32 exact grandchild identity error under local Java25"
+    },
+    "focused_bootstrap_verify": {
+      "log": "after-fix-bootstrap-verify.log",
+      "exit_code": 0,
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "package_and_runtime_jars_built": true
+    },
+    "compiler_release": 21,
+    "compiler_flags": [
+      "-Xlint:all",
+      "-Werror"
+    ],
+    "local_runtime": "GraalVM Community 25.0.4.1.1",
+    "default_maven": "3.10.0",
+    "hosted_JDK21_main": "NOT_RUN",
+    "full_reactor_and_HTTP_consumer_chain_after_fix": "NOT_RUN",
+    "no_unrelated_Job_source_or_test_modified": true
+  },
+  "local_PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
+  "storage": {
+    "policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "system_growth_reserve_bytes": 2147483648,
+    "estimated_peak_bytes": 268435456,
+    "free_bytes_after": 442644660224,
+    "deletions": 0
+  },
+  "documentation": [
+    "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmd",
+    "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/where"
+  ],
+  "not_claimed": [
+    "whole-CI pass",
+    "whole standalone verify pass",
+    "new GitHub runner JDK21 pass",
+    "CK3 business pass"
+  ]
+}

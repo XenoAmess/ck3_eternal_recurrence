@@ -598,9 +598,13 @@ public final class CiBootstrap {
                 ? List.of(environment.getOrDefault("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";")) : List.of("");
         for (Path directory : directories) {
             for (String suffix : suffixes) {
-                if (windows && !suffix.matches("(?i)\\.(COM|EXE|BAT|CMD)")) throw new IOException("unsupported default command extension order");
                 Path candidate = directory.resolve("mvn" + suffix);
-                if (Files.isRegularFile(candidate) && (windows || Files.isExecutable(candidate))) return candidate.toRealPath();
+                if (Files.isRegularFile(candidate) && (windows || Files.isExecutable(candidate))) {
+                    // PATHEXT also lists script associations. Only an actual selected
+                    // unsupported launcher must refuse admission; absent files do not.
+                    if (windows && !suffix.matches("(?i)\\.(COM|EXE|BAT|CMD)")) throw new IOException("unsupported selected default command extension: " + suffix);
+                    return candidate.toRealPath();
+                }
             }
         }
         throw new IOException("default Maven launcher is unresolved");

@@ -197,6 +197,51 @@ final class CiBootstrapTest {
     }
 
     @Test
+    void actualDefaultCommandSurvivesUnusedWindowsPathextEntriesInEarlierDirectories(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("default-maven/bin")).getParent();
+        Path launcher = home.resolve("bin/mvn.cmd");
+        Files.writeString(launcher, versionCommand("3.10.0", home));
+        Files.writeString(home.resolve("bin/mvn"), "extensionless file must not be selected");
+        Path cwd = Files.createDirectory(temporary.resolve("working"));
+        Path earlier = Files.createDirectory(temporary.resolve("earlier-empty-path-entry"));
+        Path batch = cwd.resolve("version.cmd");
+        ControlBuild.writeMavenBatch(batch, null, List.of("--version"));
+        AtomicInteger probes = new AtomicInteger();
+        for (String extensions : List.of(".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC", ".VBS;.CMD;.EXE")) {
+            Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            environment.putAll(System.getenv());
+            environment.put("PATH", earlier + ";" + home.resolve("bin") + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
+            environment.put("PATHEXT", extensions);
+            CiBootstrap.DefaultMaven actual = CiBootstrap.ensureDefaultMaven(() -> {
+                String output = actualVersionProbe(batch, cwd, environment, probes.incrementAndGet());
+                CiBootstrap.MavenObservation observed = CiBootstrap.observeDefaultMaven(output, true);
+                assertEquals(Path.of(observed.launcherRef().path()), CiBootstrap.defaultMavenLauncher(environment, cwd, true));
+                return output;
+            }, before -> { throw new IOException("current stable default must not be replaced"); });
+            assertEquals(launcher.toRealPath().toString(), actual.distributionLauncherRef().path());
+            assertEquals("3.10.0", actual.reportedVersion());
+            assertEquals(extensions, environment.get("PATHEXT"));
+        }
+        assertEquals(2, probes.get());
+    }
+
+    @Test
+    void existingUnsupportedPathextCandidateCannotBeSkippedToAdmitAnotherMaven(@TempDir Path temporary) throws Exception {
+        Path cwd = Files.createDirectory(temporary.resolve("working"));
+        Path first = Files.createDirectory(temporary.resolve("first-bin"));
+        Path second = Files.createDirectory(temporary.resolve("second-bin"));
+        Files.writeString(first.resolve("mvn.js"), "never execute this unsupported launcher");
+        Files.writeString(second.resolve("mvn.cmd"), "later installation");
+        Map<String, String> environment = Map.of("PATH", first + ";" + second, "PATHEXT", ".JS;.CMD");
+        assertThrows(IOException.class, () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true));
+        Path preferred = first.resolve("mvn.cmd");
+        Files.writeString(preferred, "first supported command");
+        assertThrows(IOException.class, () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true));
+        assertEquals(preferred.toRealPath(), CiBootstrap.defaultMavenLauncher(
+                Map.of("PATH", first + ";" + second, "PATHEXT", ".CMD;.JS"), cwd, true));
+    }
+
+    @Test
     void failedUpgradeAndWrongDefaultForwardingStayRed(@TempDir Path temporary) throws Exception {
         Path home = Files.createDirectories(temporary.resolve("old/bin")).getParent();
         Path other = Files.createDirectories(temporary.resolve("other/bin")).getParent();
