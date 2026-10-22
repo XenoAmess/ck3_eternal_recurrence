@@ -5,6 +5,7 @@ from dataclasses import replace
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -12,8 +13,8 @@ from unittest.mock import patch
 from typing import Protocol, runtime_checkable
 
 from build_native_configured_successor import (
-    ChildEnvironment, Config, Fixture, MsvcInitializer, MsvcInstallation,
-    Pin, Producer, ROOT, allocated, cmake_boolean_flags, config_json, load_shared, obj, parse_config, parse_pin, read,
+    ChildEnvironment, Compile, Config, Fixture, MsvcInitializer, MsvcInstallation,
+    Pin, Producer, ROOT, allocated, cmake_boolean_flags, config_json, git, load_shared, obj, parse_config, parse_pin, pin, read,
     same_metadata_content,
 )
 
@@ -34,6 +35,18 @@ class UngatedProducer(Producer):
     """Only process execution is exercised; no storage or game admission exists."""
     def gate(self) -> None:
         return None
+
+
+class ProcessFixtureProducer(UngatedProducer):
+    """Real CL/link/process regression; OS registration and public Q are separate tests."""
+    def defender(self, fixtures: list[dict[str, object]], label: str) -> Pin:
+        return self.save(label + "-test-only-admin-boundary.json", {
+            "test_only": True, "actual_administrative_readback_qualified": False})
+
+    def seal(self, rows: list[Compile], fixtures: list[dict[str, object]], build_execution: Pin,
+             defender: Pin, plan: Pin, dll: Path, *, resume: bool = False) -> Pin:
+        return self.save("TEST-ONLY-COMPLETE.json", {"test_only": True, "fixture_results": fixtures,
+            "production_execution": build_execution, "public_runtime_qualified": False})
 
 
 @runtime_checkable
@@ -180,6 +193,164 @@ class ConfiguredSuccessorTests(unittest.TestCase):
             with self.subTest(error=error_type.__name__), patch.object(Path, "stat", reject_stat):
                 with self.assertRaisesRegex(error_type, "fixture stat rejected"):
                     allocated(self.root)
+
+    def partial_fixture(self) -> ProcessFixtureProducer:
+        """Produce the real pre-execution failure, including an unknown old EXE."""
+        machine = subprocess.check_output([sys.executable, "-B", "-X", "utf8",
+            str(ROOT / "tools/ck3_live_run_id.py"), "machine"], cwd=ROOT).decode().strip()
+        references: list[Pin] = []
+        for name in ("baseline.json", "inputs.json", "profile.cmake"):
+            path = self.root / name
+            path.write_text("" if name.endswith("cmake") else "{}", encoding="utf-8")
+            references.append(pin(path))
+        self.config = replace(self.config, machine_id=machine, source_commit=git("rev-parse", "HEAD"),
+            baseline=references[0], incremental_inputs=references[1], profile_cmake=references[2],
+            fixtures=(Fixture("wire_fixture", (), (), ()),))
+        producer = ProcessFixtureProducer(self.config)
+        producer.native = self.root / "native"
+        producer.native.mkdir()
+        bodies = {"protocol.cpp": "int protocol(){return 1;}\n",
+            "runtime.cpp": "int wanted(){return 7;}\n", "bridge.cpp": "int bridge(){return 2;}\n",
+            "main.cpp": "int wanted(); int main(){return wanted()==7?0:1;}\n"}
+        for name, body in bodies.items():
+            (producer.native / name).write_text(body, encoding="utf-8")
+        (producer.native / "CMakeLists.txt").write_text("cmake_minimum_required(VERSION 3.20)\n"
+            "project(FixtureResume LANGUAGES CXX)\n"
+            "add_library(xar_bridge_protocol STATIC protocol.cpp)\n"
+            "add_library(xar_ck3_12002_runtime STATIC runtime.cpp)\n"
+            "add_library(xar_ck3_bridge SHARED bridge.cpp)\n"
+            "add_executable(wire_fixture main.cpp)\n"
+            "target_link_libraries(wire_fixture PRIVATE xar_ck3_12002_runtime)\n", encoding="utf-8")
+        producer.initialize()
+        producer.configure()
+        rows = producer.commands()
+        production_compiles: list[dict[str, object]] = []
+        selection: list[dict[str, object]] = []
+        self.config.complete_build.mkdir()
+        for row in rows:
+            if row.target == "wire_fixture":
+                continue
+            actual = producer.compile(row, "original-" + row.target)
+            production_compiles.append({"target": row.target, "source": pin(row.source), "object": pin(row.output),
+                "actual_compile": actual, "compile_reused": False})
+            selection.append({"target": row.target, "source": row.source.relative_to(producer.native).as_posix(),
+                "output": row.output.relative_to(producer.build).as_posix(), "compiled": True})
+            if row.target != "xar_ck3_bridge":
+                producer.execute("original-archive-" + row.target, [str(Path(producer.tools["cl"]).parent / "lib.exe"),
+                    "/nologo", "/OUT:" + str(self.config.complete_build / (row.target + ".lib")), str(row.output)], producer.build)
+        libraries = [self.config.complete_build / "xar_bridge_protocol.lib",
+                     self.config.complete_build / "xar_ck3_12002_runtime.lib"]
+        dependencies = producer.save("dependencies.json", {"test_only": True})
+        bridge = next(row for row in rows if row.target == "xar_ck3_bridge")
+        plan = producer.save("native-a01/PLAN.actual.json", {"machine_id": self.config.machine_id,
+            "source_commit": self.config.source_commit, "baseline_qualification": self.config.baseline,
+            "baseline_incremental_inputs": self.config.incremental_inputs, "original_dependencies": dependencies,
+            "production_selections": selection, "retained_link_inputs": [pin(path) for path in libraries],
+            "retained_incremental_object": pin(bridge.output)})
+        dll = producer.build / "xar_ck3_bridge.dll"
+        link = producer.link("link-production", [bridge.output], libraries, dll, True)
+        producer.save("native-a01/INCREMENTAL-RESULT.actual.json", {"machine_id": self.config.machine_id,
+            "observed_at_utc": "test-only", "retained_archive_mode": "test-only actual small archives",
+            "source_commit": self.config.source_commit, "game_started_or_attached": False, "archive_copies": 0,
+            "compiled_seed": None, "production_plan": plan, "production_compiles": production_compiles,
+            "actual_link": link, "dll": pin(dll), "changed_runtime_archive": None,
+            "changed_runtime_archive_execution": None})
+        own = next(row for row in rows if row.target == "wire_fixture")
+        producer.compile(own, "wire_fixture-compile-0")
+        original_save = producer.save
+
+        def fail_after_actual_link(name: str, value: object) -> Pin:
+            if name == "wire_fixture-link.actual.json":
+                raise ValueError("Native metadata budget exhausted")
+            return original_save(name, value)
+
+        with patch.object(producer, "save", fail_after_actual_link):
+            with self.assertRaisesRegex(ValueError, "Native metadata budget exhausted"):
+                producer.link("wire_fixture-link", [own.output], libraries, producer.build / "wire_fixture.exe")
+        self.assertFalse((producer.meta / "ALL-FIXTURES.actual.json").exists())
+        self.assertFalse((producer.config.output / "wire_fixture-link.actual.json").exists())
+        self.assertTrue((producer.config.output / "wire_fixture-link.log").is_file())
+        self.assertTrue((producer.build / "wire_fixture.exe").is_file())
+        return producer
+
+    def test_real_partial_fixture_resume_preserves_unknown_exe_and_relinks_without_production(self) -> None:
+        producer = self.partial_fixture()
+        executable = producer.build / "wire_fixture.exe"
+        old_pin, old_id = pin(executable), executable.stat().st_ino
+        unchanged = [producer.config.output / "link-production.actual.json", producer.build / "xar_ck3_bridge.dll",
+            producer.config.output / "wire_fixture-link.log", producer.build / "wire_fixture-link.rsp"]
+        old_inputs = [pin(path) for path in unchanged]
+        with patch.object(producer, "configure", side_effect=AssertionError("Production must not reconfigure")), \
+             patch.object(producer, "archive_runtime", side_effect=AssertionError("Production must not rearchive")):
+            result = producer.resume_fixtures("fresh-a01")
+        archived = producer.config.output / "fresh-a01-preserved/wire_fixture.exe"
+        self.assertEqual(archived.stat().st_ino, old_id)
+        self.assertEqual(pin(archived)["sha256"], old_pin["sha256"])
+        self.assertNotEqual(executable.stat().st_ino, old_id)
+        self.assertEqual([pin(path) for path in unchanged], old_inputs)
+        self.assertEqual(read(Path(result["path"]))["production_execution"], pin(unchanged[0]))
+        for label in ("fresh-a01-wire_fixture-link", "fresh-a01-test-wire_fixture"):
+            self.assertEqual(read(producer.config.output / (label + ".actual.json"))["original_wait_returncode"], 0)
+        self.assertFalse(list(producer.config.output.glob("fresh-a01-production*")))
+
+    def test_partial_resume_rejects_wrong_missing_and_bool_original_execution_before_mutation(self) -> None:
+        producer = self.partial_fixture()
+        original = producer.meta / "INCREMENTAL-RESULT.actual.json"
+        saved = original.read_bytes()
+        executable = pin(producer.build / "wire_fixture.exe")
+        for field, value in (("source_commit", "b" * 40), ("compiled_seed", reference("seed")),
+                             ("archive_copies", True), ("production_compiles", [])):
+            data = read(original)
+            data[field] = value
+            original.write_text(json.dumps(data), encoding="utf-8")
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                producer.resume_fixtures("reject-" + field)
+            self.assertEqual(pin(Path(executable["path"])), executable)
+            self.assertFalse(list(producer.config.output.glob("reject-*-preserved")))
+            original.write_bytes(saved)
+        data = read(original)
+        del data["actual_link"]
+        original.write_text(json.dumps(data), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "Exact original production result"):
+            producer.resume_fixtures("reject-missing")
+        self.assertEqual(pin(Path(executable["path"])), executable)
+        original.write_bytes(saved)
+        execution = producer.config.output / "link-production.actual.json"
+        data = read(execution)
+        data["original_wait_returncode"] = True
+        execution.write_text(json.dumps(data), encoding="utf-8")
+        data = read(original)
+        data["actual_link"] = pin(execution)
+        original.write_text(json.dumps(data), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "successful command"):
+            producer.resume_fixtures("reject-bool")
+        self.assertEqual(pin(Path(executable["path"])), executable)
+
+    def test_partial_resume_refuses_completed_or_already_executed_fixtures(self) -> None:
+        producer = UngatedProducer(self.config)
+        producer.meta.mkdir(parents=True)
+        # Refusal precedes all compiler/rename activity; machine is the only boundary stub.
+        with patch("build_native_configured_successor.subprocess.check_output", return_value=b"fixture-machine"):
+            complete = producer.meta / "ALL-FIXTURES.actual.json"
+            complete.write_text("{}", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "metadata-only"):
+                producer.resume_fixtures("fresh")
+            complete.unlink()
+            (self.config.output / "earlier-test-wire_fixture.log").write_text("started", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "before any original fixture execution"):
+                producer.resume_fixtures("fresh")
+
+    def test_link_refuses_an_existing_response_without_overwriting_or_starting(self) -> None:
+        producer = UngatedProducer(self.config)
+        producer.build.mkdir(parents=True)
+        producer.tools = {"cl": "unused/cl.exe"}
+        response = producer.build / "existing.rsp"
+        response.write_text("immutable unknown original", encoding="utf-8")
+        before = pin(response)
+        with patch.object(producer, "execute", side_effect=AssertionError("Must not start")):
+            with self.assertRaises(FileExistsError):
+                producer.link("existing", [], [], producer.build / "unused.exe")
+        self.assertEqual(pin(response), before)
 
     def test_actual_unused_off_transport_fails_direct_link_but_lazy_archive_passes(self) -> None:
         """Exercise the actual LNK2019 path that stopped the production successor."""

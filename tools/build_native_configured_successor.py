@@ -23,7 +23,7 @@ import shutil
 import subprocess
 import sys
 import time
-from typing import Protocol, TypedDict, runtime_checkable
+from typing import NotRequired, Protocol, TypedDict, runtime_checkable
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +52,20 @@ class Execution(TypedDict):
     sampled_allocated_peak_bytes: int
     game_started_or_attached: bool
     actual_live_business_qualified: bool
+
+
+class PreservedOutput(TypedDict):
+    original: Pin
+    preserved_path: str
+    file_id: str
+    device_id: str
+    preserved: NotRequired[Pin]
+
+
+class FixtureLinkResult(TypedDict):
+    target: str
+    executable: Pin
+    actual_link: Pin
 
 
 @dataclass(frozen=True)
@@ -95,6 +109,18 @@ class SeedCompile:
     source: Pin
     object: Pin
     execution: Pin
+
+
+@dataclass(frozen=True)
+class FixtureInputs:
+    compiled: dict[Path, Pin]
+    object_paths: dict[Path, Path]
+    borrowed: dict[str, Path]
+    libraries: list[Path]
+    retained: list[Pin]
+    plan: Pin
+    production_execution: Pin
+    dll: Path
 
 
 @runtime_checkable
@@ -447,6 +473,10 @@ class Producer:
         self.gate()
         self.config.output.mkdir(exist_ok=False)
         self.build.mkdir()
+        self.initialize_tools()
+
+    def initialize_tools(self) -> None:
+        """Use the same toolchain initialization for fresh and partial builds."""
         shared = load_shared(ROOT / "tools/run_native_msvc.py", "shared_native_msvc")
         child: object = getattr(shared, "child_environment", None)
         install: object = getattr(shared, "visual_studio_installation", None)
@@ -693,7 +723,8 @@ class Producer:
         if dll:
             arguments.extend(["/DLL", "/IMPLIB:" + str(destination.with_suffix(".lib"))])
         response = self.build / (label + ".rsp")
-        response.write_text(subprocess.list2cmdline(arguments), encoding="utf-8")
+        with response.open("x", encoding="utf-8") as stream:
+            stream.write(subprocess.list2cmdline(arguments))
         return self.execute(label, [str(linker), "@" + str(response)], self.build)
 
     def run(self) -> Pin:
@@ -738,7 +769,14 @@ class Producer:
             "compiled_seed": self.config.compiled_seed,
             "retained_archive_mode": "Small changed-member archive precedes unchanged original archive; both are selected lazily",
             "game_started_or_attached": False})
+        return self.finish_fixtures(rows, FixtureInputs(compiled, object_paths, borrowed,
+            libraries, retained_refs, plan, production_execution, dll))
+
+    def finish_fixtures(self, rows: list[Compile], inputs: FixtureInputs, *, label: str = "") -> Pin:
+        """Compile, link and execute the configured fixtures through one path."""
+        compiled, object_paths, borrowed = inputs.compiled, inputs.object_paths, inputs.borrowed
         fixture_results: list[dict[str, object]] = []
+        links: list[FixtureLinkResult] = []
         by_output = {row.output: row for row in rows}
         for fixture in self.config.fixtures:
             actual_objects = self.fixture_link_objects(fixture)
@@ -748,7 +786,7 @@ class Producer:
             own: list[Path] = []
             for index, row in enumerate(own_rows):
                 if row.output not in compiled:
-                    compiled[row.output] = self.compile(row, fixture.target + "-compile-" + str(index))
+                    compiled[row.output] = self.compile(row, label + fixture.target + "-compile-" + str(index))
                     object_paths[row.output] = row.output
                 own.append(row.output)
             for path in actual_objects:
@@ -768,31 +806,211 @@ class Producer:
                 output = self.build / "fixture-overrides" / fixture.target / (Path(name).name + ".obj")
                 argv = tuple("/Fo" + str(output) if item.startswith("/Fo") else item for item in original.argv)
                 replacement = Compile(fixture.target, original.source, output, argv)
-                self.compile(replacement, fixture.target + "-override-" + str(index), fixture.runtime_override_definitions)
+                self.compile(replacement, label + fixture.target + "-override-" + str(index), fixture.runtime_override_definitions)
                 overrides.append(output)
-            override_sources = {self.native / name for name in fixture.runtime_override_sources}
-            for row in own_rows:
-                override_sources.update(self.closure(row.source, self.native, {}))
             executable = self.build / (fixture.target + ".exe")
-            self.link(fixture.target + "-link", own + overrides, libraries, executable)
+            execution = self.link(label + fixture.target + "-link", own + overrides, inputs.libraries, executable)
+            links.append({"target": fixture.target, "executable": pin(executable), "actual_link": execution})
             fixture_results.append({"target": fixture.target, "executable": pin(executable)})
-        all_defender_binding = self.defender(fixture_results, "all-fixtures")
+        self.save("native-a01/" + label + "FIXTURE-LINKS.actual.json", {"machine_id": self.config.machine_id,
+            "observed_at_utc": now(), "source_commit": self.config.source_commit, "fixtures": links})
+        all_defender_binding = self.defender(fixture_results, label + "all-fixtures")
         for fixture, result in zip(self.config.fixtures, fixture_results, strict=True):
             arguments = [value.replace("{output}", str(self.config.output)).replace("{build}", str(self.build))
                          for value in fixture.arguments]
-            result["execution"] = self.execute("test-" + fixture.target,
+            result["execution"] = self.execute(label + "test-" + fixture.target,
                 [str(self.build / (fixture.target + ".exe")), *arguments], self.build)
         self.gate()
-        for retained in retained_refs:
+        for retained in inputs.retained:
             checked(retained)
-        checked(plan_value["retained_incremental_object"])
+        checked(read(Path(inputs.plan["path"]))["retained_incremental_object"])
         self.save("native-a01/ALL-FIXTURES.actual.json", {"machine_id": self.config.machine_id,
             "observed_at_utc": now(), "source_commit": self.config.source_commit,
             "fixture_results": fixture_results, "defender_binding": all_defender_binding,
             "actual_live_business_qualified": False})
         qualified = [item for item in fixture_results if item["target"] in self.config.qualification_targets]
-        defender_binding = self.defender(qualified, "qualification-subset")
-        return self.seal(rows, qualified, production_execution, defender_binding, plan, dll)
+        defender_binding = self.defender(qualified, label + "qualification-subset")
+        if label:
+            defender_binding = self.save("native-a01/qualification-subset-defender-binding.actual.json",
+                read(Path(defender_binding["path"])))
+        return self.seal(rows, qualified, inputs.production_execution, defender_binding, inputs.plan, inputs.dll)
+
+    def successful_execution(self, value: object) -> tuple[Pin, dict[str, object]]:
+        reference = checked(value)
+        execution = read(Path(reference["path"]))
+        require(execution.get("machine_id") == self.config.machine_id
+                and execution.get("source_commit") == self.config.source_commit
+                and type(execution.get("original_wait_returncode")) is int
+                and execution["original_wait_returncode"] == 0 and execution.get("stopped_reason") is None
+                and execution.get("game_started_or_attached") is False
+                and execution.get("actual_live_business_qualified") is False,
+                "Original successful command execution required")
+        checked(execution["log"])
+        for response in arr(execution["response_files"]):
+            checked(response)
+        return reference, execution
+
+    def original_fixture_inputs(self, rows: list[Compile]) -> FixtureInputs:
+        """Verify the completed production graph before any partial-build mutation."""
+        c = self.config
+        require(c.compiled_seed is None, "Fixture resume requires original, unseeded production commands")
+        checked(c.baseline)
+        checked(c.incremental_inputs)
+        checked(c.profile_cmake)
+        _, configured = self.successful_execution(pin(c.output / "configure.actual.json"))
+        arguments = strings(configured["argv"])
+        for flag, value in (("-S", str(self.native)), ("-B", str(self.build)), ("-G", "Ninja")):
+            require(arguments.count(flag) == 1 and arguments.index(flag) + 1 < len(arguments)
+                    and arguments[arguments.index(flag) + 1] == value, "Original configured source/build graph differs")
+        require("-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=" + c.profile_cmake["path"] in arguments
+                and "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON" in arguments,
+                "Original configured profile/compile graph differs")
+        incremental = read(self.meta / "INCREMENTAL-RESULT.actual.json")
+        require(set(incremental) == {"machine_id", "observed_at_utc", "source_commit", "production_plan",
+            "production_compiles", "actual_link", "dll", "archive_copies", "changed_runtime_archive",
+            "changed_runtime_archive_execution", "compiled_seed", "retained_archive_mode", "game_started_or_attached"},
+            "Exact original production result fields required")
+        require(incremental.get("machine_id") == c.machine_id and incremental.get("source_commit") == c.source_commit
+                and incremental.get("game_started_or_attached") is False
+                and type(incremental.get("archive_copies")) is int and incremental["archive_copies"] == 0
+                and incremental.get("compiled_seed") is None, "Original unseeded production identity required")
+        production, _ = self.successful_execution(incremental["actual_link"])
+        require(Path(production["path"]) == c.output / "link-production.actual.json",
+                "Original production link path differs")
+        dll = checked(incremental["dll"])
+        require(Path(dll["path"]) == self.build / "xar_ck3_bridge.dll", "Original configured DLL path differs")
+        plan = checked(incremental["production_plan"])
+        require(Path(plan["path"]) == self.meta / "PLAN.actual.json", "Original production plan path differs")
+        original = read(Path(plan["path"]))
+        require(original.get("machine_id") == c.machine_id and original.get("source_commit") == c.source_commit
+                and original.get("baseline_qualification") == c.baseline
+                and original.get("baseline_incremental_inputs") == c.incremental_inputs,
+                "Original production plan provenance differs")
+        checked(original["original_dependencies"])
+        production_rows = {row.output.relative_to(self.build).as_posix(): row for row in rows if row.target in PRODUCTION}
+        declared: set[str] = set()
+        selected: set[str] = set()
+        for raw in arr(original["production_selections"]):
+            item = obj(raw)
+            name = relative(item["output"])
+            require(name in production_rows and name not in declared, "Original production graph differs")
+            row = production_rows[name]
+            require(item["target"] == row.target and item["source"] == row.source.relative_to(self.native).as_posix()
+                    and type(item["compiled"]) is bool, "Original production source/selection differs")
+            declared.add(name)
+            if item["compiled"]:
+                selected.add(name)
+        require(declared == set(production_rows), "Original production graph is incomplete")
+        compiled: dict[Path, Pin] = {}
+        object_paths: dict[Path, Path] = {}
+        for raw in arr(incremental["production_compiles"]):
+            item = obj(raw)
+            source, output = checked(item["source"]), checked(item["object"])
+            name = Path(output["path"]).relative_to(self.build).as_posix()
+            require(name in selected and Path(output["path"]) not in compiled and item.get("compile_reused") is False,
+                    "Original production compile set differs")
+            row = production_rows[name]
+            execution, actual = self.successful_execution(item["actual_compile"])
+            require(item["target"] == row.target and source == pin(row.source)
+                    and Path(string(actual["cwd"])) == self.build
+                    and self.normalize(strings(actual["argv"]), self.native, self.build)
+                    == self.normalize(row.argv, self.native, self.build), "Original production compiler inputs differ")
+            compiled[row.output], object_paths[row.output] = execution, Path(output["path"])
+        require({path.relative_to(self.build).as_posix() for path in compiled} == selected,
+                "Original production compiles are incomplete")
+        retained = [checked(value) for value in arr(original["retained_link_inputs"])]
+        replacement = checked(original["retained_incremental_object"])
+        retained.append(replacement)
+        retained_paths = {Path(value["path"]) for value in retained}
+        borrowed: dict[str, Path] = {}
+        for name, row in production_rows.items():
+            if row.target != "xar_ck3_bridge" or row.output in compiled:
+                continue
+            candidates = [path for path in retained_paths if path.parts[-len(Path(name).parts):] == Path(name).parts]
+            require(len(candidates) == 1, "Original retained bridge object is ambiguous or missing")
+            borrowed[name] = candidates[0]
+        libraries = [c.complete_build / "xar_bridge_protocol.lib", c.complete_build / "xar_ck3_12002_runtime.lib"]
+        require(set(libraries) <= retained_paths, "Original runtime library provenance differs")
+        if incremental["changed_runtime_archive"] is not None:
+            archive = checked(incremental["changed_runtime_archive"])
+            require(Path(archive["path"]) == self.build / "changed-runtime.lib", "Original changed archive path differs")
+            self.successful_execution(incremental["changed_runtime_archive_execution"])
+            libraries.insert(1, Path(archive["path"]))
+        else:
+            require(incremental["changed_runtime_archive_execution"] is None, "Missing archive has an execution")
+        return FixtureInputs(compiled, object_paths, borrowed, libraries, retained, plan, production, Path(dll["path"]))
+
+    def preserve_fixture_outputs(self, rows: list[Compile], label: str) -> Pin:
+        """Rename unknown outputs; preserve exact bytes and native file identity."""
+        paths: set[Path] = set()
+        by_output = {row.output: row for row in rows}
+        for fixture in self.config.fixtures:
+            for path in self.fixture_link_objects(fixture):
+                if path in by_output and by_output[path].target not in PRODUCTION:
+                    paths.add(path)
+            paths.update(self.build / (fixture.target + suffix) for suffix in (".exe", ".lib", ".exp", ".pdb", ".ilk"))
+            paths.update(self.build / "fixture-overrides" / fixture.target / (Path(name).name + ".obj")
+                         for name in fixture.runtime_override_sources)
+        originals: list[PreservedOutput] = []
+        for path in sorted(paths):
+            if not path.exists():
+                continue
+            require(path.is_relative_to(self.build) and path.is_file() and not path.is_symlink(),
+                    "Unknown fixture output is not a regular configured file")
+            identity = path.stat()
+            destination = self.config.output / (label + "preserved") / path.relative_to(self.build)
+            require(not destination.exists(), "Preserved original destination already exists")
+            originals.append({"original": pin(path), "preserved_path": str(destination),
+                "file_id": str(identity.st_ino), "device_id": str(identity.st_dev)})
+        intent = self.save("native-a01/" + label + "PRESERVATION-INTENT.actual.json", {
+            "machine_id": self.config.machine_id, "observed_at_utc": now(), "source_commit": self.config.source_commit,
+            "unknown_originals": originals, "old_link_success_inferred": False})
+        for item in originals:
+            original = checked(item["original"])
+            path, destination = Path(original["path"]), Path(string(item["preserved_path"]))
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            require(not destination.exists(), "Preserved original destination appeared")
+            path.rename(destination)
+            identity = destination.stat()
+            preserved = pin(destination)
+            require(preserved["sha256"] == original["sha256"] and preserved["bytes"] == original["bytes"]
+                    and str(identity.st_ino) == item["file_id"] and str(identity.st_dev) == item["device_id"],
+                    "Renamed original bytes or native file identity changed")
+            item["preserved"] = preserved
+        return self.save("native-a01/" + label + "PRESERVED.actual.json", {"machine_id": self.config.machine_id,
+            "observed_at_utc": now(), "source_commit": self.config.source_commit, "intent": intent,
+            "unknown_originals": originals, "old_link_success_inferred": False})
+
+    def resume_fixtures(self, label: str) -> Pin:
+        """Resume a pre-execution fixture failure without configure or production work."""
+        require(isinstance(label, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]{0,100}", label),
+                "A finite unique continuation label is required")
+        label += "-"
+        self.metadata_continuation = True
+        actual_machine = subprocess.check_output([sys.executable, "-B", "-X", "utf8",
+            str(ROOT / "tools/ck3_live_run_id.py"), "machine"], cwd=ROOT).decode("utf-8").strip()
+        require(actual_machine == self.config.machine_id, "Actual continuation machine differs")
+        self.gate()
+        require(not (self.meta / "ALL-FIXTURES.actual.json").exists(), "Completed fixtures require metadata-only continuation")
+        for fixture in self.config.fixtures:
+            require(not list(self.config.output.glob("*test-" + fixture.target + ".log")),
+                    "Fixture resume is only available before any original fixture execution")
+            for value in fixture.arguments:
+                argument = Path(value.replace("{output}", str(self.config.output)).replace("{build}", str(self.build)))
+                if argument.is_absolute() and argument.is_relative_to(self.config.output):
+                    require(not argument.exists(), "Original fixture argument output already exists")
+        rows = self.commands()
+        inputs = self.original_fixture_inputs(rows)
+        self.initialize_tools()
+        preserved = self.preserve_fixture_outputs(rows, label)
+        self.save("native-a01/" + label + "RESUME-FIXTURES.actual.json", {"machine_id": self.config.machine_id,
+            "observed_at_utc": now(), "native_source_commit": self.config.source_commit,
+            "metadata_source_commit": git("rev-parse", "HEAD"), "producer": pin(Path(__file__)),
+            "compile_commands": pin(self.build / "compile_commands.json"), "ninja": pin(self.build / "build.ninja"),
+            "original_incremental_result": pin(self.meta / "INCREMENTAL-RESULT.actual.json"),
+            "preserved_unknown_outputs": preserved, "new_production_compilation_performed": False,
+            "new_production_link_performed": False, "actual_live_business_qualified": False})
+        return self.finish_fixtures(rows, inputs, label=label)
 
     def defender(self, fixtures: list[dict[str, object]], label: str) -> Pin:
         manifest = self.config.output / (label + "-defender-manifest.json")
@@ -989,11 +1207,17 @@ def main() -> int:
     sys.dont_write_bytecode = True
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
-    parser.add_argument("--seal-existing", action="store_true", help="Validate completed original commands and continue missing metadata only")
+    continuation = parser.add_mutually_exclusive_group()
+    continuation.add_argument("--seal-existing", action="store_true", help="Validate completed original commands and continue missing metadata only")
+    continuation.add_argument("--resume-fixtures", metavar="UNIQUE_LABEL",
+        help="Validate completed production, preserve unknown outputs and actually rebuild/run fixtures")
     args = parser.parse_args()
     config = parse_config(read(args.config))
     producer = Producer(config)
-    result = producer.resume_seal() if args.seal_existing else producer.run()
+    if args.resume_fixtures is not None:
+        result = producer.resume_fixtures(args.resume_fixtures)
+    else:
+        result = producer.resume_seal() if args.seal_existing else producer.run()
     print(json.dumps({"qualified_native": result, "game_started": False}))
     return 0
 
