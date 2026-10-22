@@ -1,0 +1,66 @@
+{
+  "schema": "living-artifacts-feeding-preview-case-v1",
+  "schema_version": 1,
+  "product": "living-artifacts",
+  "case_id": "feeding_preview",
+  "maximum_natural_days": 0,
+  "max_public_calls": 180,
+  "day_timeout_seconds": 60,
+  "maximum_checkpoints": 5,
+  "maximum_direct_reviews": 5,
+  "required_checks": [
+    "PREVIEW-FOUR-RARITIES",
+    "PREVIEW-CANCEL-01",
+    "PREVIEW-TRANSACTIONS-01",
+    "PREVIEW-MOD-SCRIPT-LOG-01"
+  ],
+  "deferred_checks": [
+    "matching-diet-preview",
+    "all-other-locales-runtime",
+    "actual-suppression-renewal-and-expiry",
+    "NPC-acquisition-equipment-cultivation",
+    "full-content-matrix",
+    "Workshop-release"
+  ],
+  "whole_product_acceptance_credit": false,
+  "acceptance_scope": "Zero-day normal player four-rarity non-diet preview; one canceled common review followed by four actual feeding reviews. Five real Saves maximum. Direct original PNG review, never OCR.",
+  "required_startup": [
+    "XALW_FIXTURE_READY_V1"
+  ],
+  "forbidden_startup": [
+    "XALW_FIXTURE_INIT_ERROR_V1"
+  ],
+  "actor_binding_authority": "original-source-bound-frontend-start-and-two-native-root-observations",
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "startup_source_guard": {
+    "bookmark_key": "bm_1066_rags_to_riches",
+    "character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "history_id": "1128",
+    "start_date": "1066.9.15",
+    "post_start_authority": "Source-derived expectation only; runtime actor is bound from this run's original Robert frontend Start and two matching actual native campaign-root observations. History1128 is not a runtime ID.",
+    "sources": [
+      {
+        "path": "common/bookmarks/bookmarks/00_bookmarks.txt",
+        "sha256": "fee9519196b964bb3eae364ef459f7bc92edff0a435be14b81a2377ab1db1472",
+        "lines": "1811-1822",
+        "supports": "Robert history1128, d_apulia and feudal_government"
+      },
+      {
+        "path": "history/characters/norman.txt",
+        "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b",
+        "lines": "467-488",
+        "supports": "history1128 is living Robert Guiscard at 1066 start"
+      },
+      {
+        "path": "history/titles/k_sicily.txt",
+        "sha256": "62aba587c746c3b85f6e9b4346c89dd3d77d9a110d1989e335e669e7b0995b36",
+        "lines": "2177-2239",
+        "supports": "d_apulia holder1128 from1057; no de facto liege until1130, yielding independent duke at1066"
+      }
+    ]
+  }
+}
