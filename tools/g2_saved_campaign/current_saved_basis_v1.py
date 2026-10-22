@@ -411,6 +411,26 @@ class BasisReaderV1(Protocol):
 
 
 MAX_ORIGINAL_RESPONSE_BYTES_V1 = 2 * 1024 * 1024
+MAX_SDK_SOURCE_BYTES_V1 = 2 * 1024 * 1024
+
+
+@runtime_checkable
+class SdkSourceReaderV1(BasisReaderV1, Protocol):
+    def read_sdk_source(self, reference: ExactRefV1, limit: int) -> bytes: ...
+
+
+def exact_sdk_source_bytes_v1(reader: BasisReaderV1, reference: ExactRefV1) -> bytes:
+    """Read an independently authorized SDK source, never generic/RPC fallback."""
+    need(isinstance(reference, ExactRefV1), "SDK source exact reference contract")
+    parse_ref(reference.to_wire())
+    need(reference.bytes <= MAX_SDK_SOURCE_BYTES_V1, "bounded original SDK source")
+    need(isinstance(reader, SdkSourceReaderV1), "explicit SDK-source reader required")
+    if not isinstance(reader, SdkSourceReaderV1):
+        raise ValueError("explicit SDK-source reader required")
+    raw = reader.read_sdk_source(reference, MAX_SDK_SOURCE_BYTES_V1)
+    need(type(raw) is bytes and len(raw) == reference.bytes
+         and hashlib.sha256(raw).hexdigest() == reference.sha256, "exact original SDK source")
+    return raw
 
 
 @runtime_checkable

@@ -36,6 +36,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  completed_body,evidence,exact_read,integer,json_object,need,original_response_evidence_v1,
  validate_current_saved_closed_task_absence_v1,
  _cap_restore_row_v2,_exact_native_json_v1,decode_readonly_prefix_history_v1,
+ MAX_SDK_SOURCE_BYTES_V1,SdkSourceReaderV1,exact_sdk_source_bytes_v1,
  parse_frame,parse_json,parse_ref,record,rows,text,utc,
 )
 from tools.g2_saved_campaign.current_saved_continuity_v1 import (
@@ -99,6 +100,17 @@ class LocalBasisReaderV1:
   integer(limit,1,MAX_ORIGINAL_RESPONSE_BYTES_V1)
   need(reference.bytes<=limit,"bounded original RPC response")
   return self.read(reference,limit)
+
+ def read_sdk_source(self,reference:ExactRefV1,limit:int)->bytes:
+  integer(limit,1,MAX_SDK_SOURCE_BYTES_V1)
+  need(isinstance(reference,ExactRefV1),"SDK source exact reference contract")
+  parse_ref(reference.to_wire())
+  need(reference.bytes<=limit,"bounded original SDK source")
+  before=self.stat(reference.path)
+  with Path(reference.path).open("rb") as stream:raw=stream.read(limit+1)
+  need(len(raw)==reference.bytes and self.stat(reference.path)==before
+   and hashlib.sha256(raw).hexdigest()==reference.sha256,"stable exact original SDK source")
+  return raw
 
  def read_driver_header(self,path:str,limit:int)->bytes:
   need(type(limit) is int and 0<limit<=16384,"bounded current header")
@@ -580,7 +592,7 @@ def _sdk_restore_predicate_v2(reference:ExactRefV1,sources:WarmSourceRefsV1,*,re
  matches=[record(item) for item in rows(base.get("files")) if record(item).get("relative")=="xar_autoplayer/bridge/native_driver.py"]
  need(len(matches)==1 and integer(matches[0].get("bytes"),1)==reference.bytes
   and digest(matches[0].get("sha256"))==reference.sha256,"complete frozen SDK inventory source pin")
- raw=exact_read(reader,reference,2097152)
+ raw=exact_sdk_source_bytes_v1(reader,reference)
  tree=ast.parse(raw,filename=reference.path)
  names={"_RESTORE_CHECKPOINT_STEP","_COLD_RESTORE_SOURCE"}
  functions={"_positive_native_id","_proven_restore_lineage_row"}
@@ -1935,6 +1947,13 @@ class _TailOriginalResponseReaderV1:
  def __init__(self,reader:BasisReaderV1)->None:self.reader=reader
  def stat(self,path:str)->FileStatIdentityV1:return self.reader.stat(path)
  def read(self,reference:ExactRefV1,limit:int)->bytes:return self.reader.read(reference,limit)
+ def read_sdk_source(self,reference:ExactRefV1,limit:int)->bytes:
+  integer(limit,1,MAX_SDK_SOURCE_BYTES_V1)
+  need(isinstance(reference,ExactRefV1),"SDK source exact reference contract")
+  parse_ref(reference.to_wire())
+  need(reference.bytes<=limit and isinstance(self.reader,SdkSourceReaderV1),"explicit delegated SDK-source reader required")
+  if not isinstance(self.reader,SdkSourceReaderV1):raise ValueError("explicit delegated SDK-source reader required")
+  return self.reader.read_sdk_source(reference,limit)
  def read_response(self,reference:ExactRefV1,limit:int)->bytes:
   integer(limit,1,MAX_ORIGINAL_RESPONSE_BYTES_V1)
   need(reference.bytes<=limit,"bounded original completed-tail response")

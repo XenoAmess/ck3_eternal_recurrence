@@ -1008,6 +1008,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   def read(self,reference:ExactRefV1,limit:int)->bytes:return load(reference,limit)
   def read_response(self,reference:ExactRefV1,limit:int)->bytes:
    return LocalBasisReaderV1().read_response(reference,limit)
+  def read_sdk_source(self,reference:ExactRefV1,limit:int)->bytes:
+   return LocalBasisReaderV1().read_sdk_source(reference,limit)
   def stat(self,path:str)->FileStatIdentityV1:return LocalBasisReaderV1().stat(path)
  current_inputs=validate_current_saved_cold_inputs_v1(basis,basis_ref=p.basis_ref,
   validation_ref=p.validation_ref,reader=ComposeReaderV1())

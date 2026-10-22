@@ -502,6 +502,10 @@ class LocalCurrentSavedFeederReaderV1:
     def stat(self, path: str) -> FileStatIdentityV1:
         return normalize_file_stat_identity_v1(Path(path).stat())
 
+    def read_sdk_source(self, reference: ExactRefV1, limit: int) -> bytes:
+        from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import LocalBasisReaderV1
+        return LocalBasisReaderV1().read_sdk_source(reference, limit)
+
 
 def utc_now_v1() -> str:
     return datetime.now(timezone.utc).isoformat()

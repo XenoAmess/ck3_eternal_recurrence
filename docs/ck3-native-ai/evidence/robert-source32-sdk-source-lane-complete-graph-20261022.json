@@ -1,0 +1,114 @@
+{
+  "schema": "xar.source32.sdk-source-lane-complete-graph/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T10:10:25.340750+00:00",
+  "problem": "The public composer generic1MiB reader rejected the authorized1648649B original Source32 Native module; A44 stopped before runtime/Plan/Quote publication, with only its fresh Steam receipt retained",
+  "actual_failure_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1005-01\\ROOT-A44-COMPOSE-RED-ACTUAL01.json",
+    "bytes": 1561,
+    "sha256": "45bbf3986e90f60e46dfc6ac5b0be147ed7355e5fbc51e887dcdd1b955c7c124"
+  },
+  "fix": "Dedicated typed SDK-source read capability after original manifest and anchor validation; exact length/SHA and stable file identity; no generic metadata or original RPC limit widening",
+  "contract": {
+    "SDK_source_max_bytes": 2097152,
+    "generic_composer_MAX_FILE_unchanged": 1048576,
+    "no_generic_or_RPC_fallback": true,
+    "wrong_reference_and_limit_scalars_rejected": true
+  },
+  "cancelled_CI07_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1015-01\\CI07-CANCELLED-ACTUAL01.json",
+    "bytes": 3057,
+    "sha256": "02316b38d6c1442394f212aa4ffba1a2f0fcb5366bc39e26295db6f9dc772cdf"
+  },
+  "CI": {
+    "receipt_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1015-01\\ci-complete08\\CURRENT-CI-ACTUAL01.json",
+      "bytes": 19536,
+      "sha256": "e40676d8c3e67ba8c5f54638bb060adf56067c12a37760676030e462d13d77fa"
+    },
+    "actual_complete_commands": 32,
+    "all_exit_codes_zero": true,
+    "source_pins_stable": true,
+    "critical_discovered_run_skipped": [
+      89,
+      89,
+      0
+    ],
+    "independent_SDK_continuation_discovered_run_skipped": [
+      1,
+      1,
+      0
+    ],
+    "full_wall_seconds": 312.30327160004526,
+    "optional_WAL_existing_skip": 1
+  },
+  "source_refs": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 94696,
+      "sha256": "3d155b3d6d8ef39cd4680b3845782bc5e295b6446eda80f86a024fa25380abfe"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 281305,
+      "sha256": "75c0590e0227c8b4c7efb0dc0fccca956271b2382b7c78f16fed73808feaec13"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_public_wire_v2.py",
+      "bytes": 14287,
+      "sha256": "63f06a97d555fbf6b6ff12012d9d6f297f77de4be54349aed1af93c5b67d564d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_public_wire_v2.py",
+      "bytes": 12040,
+      "sha256": "ad98bf48b9ee72be18e96f890bd96ca9b75009c08ad5aef073576ea090e6dc00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_continuity_v1.py",
+      "bytes": 76871,
+      "sha256": "c06d0a6553f75ac7e193472d81d6fbc2241417362c7496b2fb77b40a73823a3e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\root_current_saved_campaign_cold_owner_v1.py",
+      "bytes": 157419,
+      "sha256": "555369aba8efc9c771abadd374b4b916826c7e486835f3bc64125183be956eac"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_continuity_v1.py",
+      "bytes": 104886,
+      "sha256": "634c669396763c310c903df4cedd31089ff99d8214f16459583f26f9ff14be37"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_settled_closure_v1.py",
+      "bytes": 94041,
+      "sha256": "271b343d97e4cf61125ec5a800c35b3a62ed86bf354823516f087bffedc82037"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_campaign_cold_v1.py",
+      "bytes": 181580,
+      "sha256": "3d5762fe4daa251ebf8a2b21032d1587b6b3ac7ba3c213af1d1ebe82bc3a2ae7"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_campaign_feeder_v1.py",
+      "bytes": 55577,
+      "sha256": "e91b2f7cccc393be90cd44afdef46e197da632f7bd991bea82f8964d949da5bf"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_basis_v1.py",
+      "bytes": 216510,
+      "sha256": "709959e6f5e59bbc860b1b584cb4c9da3b78e466476519dc020a27244e3af245"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_current_saved_campaign_cold_v1.py",
+      "bytes": 111916,
+      "sha256": "2a1ba256b0f676b57a8ea8012cb45fb425e1eabee0e94308aa7697eb10dbf171"
+    }
+  ],
+  "Driver_SAVE_body_reads_this_fix": 0,
+  "Game_Task_SDK_OBS_started_this_fix": false,
+  "new_financial_take": 0,
+  "new_game_days": 0,
+  "canonical_sequence": 236,
+  "test_scope": "Readiness-v2 producer with original1648649B Source32 SDK source through complete software fixture compose/fixed-point65closure8canonical and15 actual shared module package imports; its presentation/state emitters remain test replacements and plan usesSource31/null Native override. Emitted feeder qualification and real reducer also exercised. Actual Native32/67 graph and runtime separately required; no CK3 gameplay credit",
+  "retention_review_at_utc": "2026-10-23T07:30:00Z"
+}

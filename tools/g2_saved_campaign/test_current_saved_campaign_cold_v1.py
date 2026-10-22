@@ -17,7 +17,7 @@ import subprocess
 import sys
 import unittest
 from unittest.mock import patch
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 from typing import Callable, Protocol, runtime_checkable
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
@@ -139,8 +139,15 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
     """Actual emitted qualify, source reads and reducer; external state stays in RAM."""
 
     def test_emitted_qualify_accepts_actual_owner_and_keeps_role_caps(self) -> None:
+        self._emitted_qualify_case_v1(readiness_projection=False)
+
+    def test_emitted_qualify_readiness_projection_to_actual_reducer(self) -> None:
+        self._emitted_qualify_case_v1(readiness_projection=True)
+
+    def _emitted_qualify_case_v1(self, *, readiness_projection: bool) -> None:
         from tools.g2_saved_campaign.first_full_checkpoint_v1 import FirstFullCheckpointPolicyV1
         from tools.g2_saved_campaign import root_continuity_window as actual_ledger
+        from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import ReadinessRestoreProjectionFixture
         root = (Path(__file__).parent / "FEEDER-SOURCE-CLOSURE-NO-IO").resolve()
         self.assertFalse(root.exists())
         memory = continuity_fixture.MemoryReader()
@@ -154,19 +161,43 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
             return reference
 
         def put(name: str, value: object) -> ExactRefV1:
-            return put_raw(root / name, producer.encode_v1(value))
+            # Existing Python-only Game/first-frame receipts preserve integer
+            # FILETIME exactly; public admission still uses its canonical codec.
+            raw = (json.dumps(value, sort_keys=True, allow_nan=False).encode()
+                if readiness_projection else producer.encode_v1(value))
+            return put_raw(root / name, raw)
 
-        predecessor = continuity_fixture.state()
-        anchor = put("frozen-ledger.json", predecessor)
+        projected = None
+        if readiness_projection:
+            projected_basis = pure_basis()
+            validator_raw = b'# synthetic checkpoint validator source\n'
+            projected_basis = replace(projected_basis,
+                progress=replace(projected_basis.progress, ledger_cycles=projected_basis.completed_cycles,
+                    ledger_date_raw=projected_basis.frame.date_raw),
+                refs=replace(projected_basis.refs, checkpoint_validator=producer.ref_for_bytes_v1(
+                    str(root / 'projection-validator.py'), validator_raw)))
+            projected = ReadinessRestoreProjectionFixture(initial_basis=projected_basis,
+                metadata_root=root / 'projection', validator_bytes=validator_raw)
+        projected_warm = None
+        if projected is not None:
+            with projected.tail.io_scope(): projected_warm = projected.ready.next_warm(50)
+            documents.update(projected.reader.raw)
+        predecessor = continuity_fixture.state() if projected_warm is None else projected_warm.inputs.old_ledger
+        anchor = (put("frozen-ledger.json", predecessor) if projected_warm is None
+            else put_raw(Path(projected_warm.inputs.basis.refs.ledger.path),
+                documents[projected_warm.inputs.basis.refs.ledger.path]))
         put("ROOT-CONTINUITY-WINDOW.json", predecessor)
         initial = continuity_fixture.verified(predecessor)
-        basis = replace(initial.inputs.basis, refs=replace(initial.inputs.basis.refs,
+        if projected_warm is not None:
+            initial = replace(initial, inputs=projected_warm.inputs, warm_proof=projected_warm.warm_proof,
+                game=projected_warm.warm_proof.game, opening=projected_warm.warm_proof.opening)
+        basis = (replace(initial.inputs.basis, refs=replace(initial.inputs.basis.refs,
             driver=replace(initial.inputs.basis.refs.driver, path=str(root / "driver.json")),
             save=replace(initial.inputs.basis.refs.save, path=str(root / "save.ck3")),
             ledger=anchor), checkpoint={**initial.inputs.basis.checkpoint,
-                                       "path": str(root / "save.ck3")})
-        basis_ref = put("basis.json", basis.to_wire())
-        validation_ref = put("qualification.json", {})
+                                       "path": str(root / "save.ck3")}) if projected_warm is None else initial.inputs.basis)
+        basis_ref = put("basis.json", basis.to_wire()) if projected_warm is None else initial.inputs.basis_ref
+        validation_ref = put("qualification.json", {}) if projected_warm is None else initial.inputs.validation_ref
         game = initial.game
         game_row: JsonObject = {"machine_id": MACHINE, "pid": game.pid,
             "creation_filetime": int(game.creation_filetime), "creation_date": game.creation_date,
@@ -181,7 +212,8 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
         map_ref = put("map.json", {"status": "GREEN", "reviewer": "/root", "machine_id": MACHINE,
             "game_pid": game.pid, "game_creation_filetime": int(game.creation_filetime),
             "actual_initial_frame": basis.frame.to_wire()})
-        active = seed()
+        active = seed() if projected_warm is None else owner.project_current_saved_opening_v1(projected_warm.inputs,
+            projected_warm.warm_proof.opening, semantic_response=projected_warm.warm_proof.sources.semantic_response_ref)
         active.update(before=basis.frame.to_wire(), actual_saved_checkpoint=basis.checkpoint,
                       campaign_goal_anchor=basis.campaign_goal_anchor)
         active_ref = put("active.json", active)
@@ -245,6 +277,13 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
         inputs = replace(initial.inputs, basis=basis, basis_ref=basis_ref, validation_ref=validation_ref,
                          seed=active, checkpoint=basis.checkpoint, old_ledger=predecessor)
         warm = owner.WarmCurrentSavedFeederInputsV1(inputs, proof)
+        def warm_loader() -> owner.WarmCurrentSavedFeederInputsV1:
+            if projected is not None:
+                with projected.tail.io_scope():
+                    actual = projected.ready.next_warm(50)
+                self.assertEqual(actual.inputs.basis, warm.inputs.basis)
+                self.assertEqual(actual.warm_proof.game, warm.warm_proof.game)
+            return warm
         reader = _FeederSourceClosureReaderV1({basis.refs.driver.path: proof.driver_identity,
                                                basis.refs.save.path: basis.save_identity})
         ordinary = ModuleType("source_closure_ordinary")
@@ -259,7 +298,7 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
         output: list[str] = []
         namespace: dict[str, object] = {"N": root, "Path": Path, "JsonObject": JsonObject,
             "json": json, "__file__": str(stage_path), "owner": owner,
-            "load_current_saved_feeder_inputs_v1": lambda: warm,
+            "load_current_saved_feeder_inputs_v1": warm_loader,
             "decode_current_saved_feeder_admission_v1": feeder.decode_current_saved_feeder_admission_v1,
             "LocalCurrentSavedFeederReaderV1": lambda: reader,
             "qualify_current_saved_feeder_v1": feeder.qualify_current_saved_feeder_v1,
@@ -2276,6 +2315,15 @@ class _ArtifactArgvMainV1(Protocol):
 
 class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
     def test_real_compose_recovered_inventory_uses_response_domain_and_keeps_source_cap(self) -> None:
+        self._compose_recovery_case_v1(projection=False)
+
+    def test_real_compose_readiness_projection_uses_sdk_source_domain(self) -> None:
+        self._compose_recovery_case_v1(projection=True)
+
+    def test_real_compose_projection_final_packet_and_current_package_imports(self) -> None:
+        self._compose_recovery_case_v1(projection=True, complete_packet=True)
+
+    def _compose_recovery_case_v1(self, *, projection: bool, complete_packet: bool = False) -> None:
         """Execute the real compose entry and its full recovered owner validation.
 
         Unrelated source emitters are identity seams. The test stops at the next
@@ -2283,7 +2331,8 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
         The nested ComposeReader, recovery reducer/closure and inventory consumers
         are the original production functions, including both response leaf kinds.
         """
-        from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import CompletedUnsavedTailFixture
+        from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import (
+            CompletedUnsavedTailFixture, ReadinessRestoreProjectionFixture)
         from tools.g2_saved_campaign import current_saved_background_display_v1 as background
         from tools.g2_saved_campaign import first_full_checkpoint_v1 as first_checkpoint
         from tools.g2_saved_campaign import current_saved_campaign_replay_v1 as replay
@@ -2316,7 +2365,7 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
         def old_generic_response(reader: BasisReaderV1, reference: ExactRefV1) -> dict[str, object]:
             return evidence(reader, reference, 2097152)
 
-        for large_leaves in (False, True):
+        for large_leaves in ((False,) if projection else (False, True)):
             with self.subTest(large_response_and_plan=large_leaves):
                 initial = pure_basis()
                 state = r"D:\synthetic-current-saved\shared\state"
@@ -2328,8 +2377,10 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                     driver=replace(initial.refs.driver, path=driver_path),
                     save=replace(initial.refs.save, path=save_path), checkpoint_validator=validator_ref),
                     checkpoint={**initial.checkpoint, "path": save_path})
-                f = CompletedUnsavedTailFixture(initial_basis=initial,
-                    metadata_root=Path(r"D:\synthetic-current-saved\settled"))
+                projected = (ReadinessRestoreProjectionFixture(initial_basis=initial,
+                    metadata_root=Path(r"D:\synthetic-current-saved\settled"), validator_bytes=validator_raw) if projection else None)
+                f = (CompletedUnsavedTailFixture(initial_basis=initial,
+                    metadata_root=Path(r"D:\synthetic-current-saved\settled")) if projected is None else projected.tail)
                 f.reader.raw[validator_ref.path] = validator_raw
                 large_refs: list[ExactRefV1] = []
                 if large_leaves:
@@ -2344,7 +2395,10 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                         entry[key] = updated.to_wire()
                         large_refs.append(updated)
                     f.reseal()
-                basis, basis_ref, validation_ref = f.recovered()
+                if projected is None:
+                    basis, basis_ref, validation_ref = f.recovered()
+                else:
+                    basis, basis_ref, validation_ref = projected.ready.basis, projected.ready.basis_ref, projected.ready.validation_ref
                 metadata = dict(f.reader.raw)
                 stub = b"from pathlib import Path\nPLACEMENT_SHA = ''\nSPEC = {}\n"
 
@@ -2354,7 +2408,9 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
 
                 configured = replace(plan(), machine_id=basis.machine_id, basis_ref=basis_ref,
                     validation_ref=validation_ref)
-                source_rows = tuple(producer.SourceRowV1(put(row.source_ref.path, stub), row.relative_path)
+                source_rows = tuple(producer.SourceRowV1(put(row.source_ref.path,
+                    (Path(producer.__file__).resolve().parents[2] / row.relative_path).read_bytes()
+                    if complete_packet else stub), row.relative_path)
                     for row in configured.source_rows)
                 current_producer = next(row.source_ref for row in source_rows
                     if row.relative_path.endswith("/prepare_current_saved_campaign_cold_v1.py"))
@@ -2379,6 +2435,29 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                 material_files[producer.child_v1(OLD, "ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")] = producer.encode_v1({
                     "entry_source_pins": [[producer.child_v1(OLD, name), "a" * 64] for name in sorted(inherited)]})
                 material_files[r"D:\synthetic-current-saved\external\SPEC.json"] = b"{}\n"
+                if complete_packet:
+                    for name in ("ROOT-FINAL-SDK-FREEZE-P37C23-A15.json", "ROOT-C23-COLD-PRELAUNCH.json",
+                            "ROOT-NATIVE30-SDK-BINDING-C23-A15.json", "ROOT-LAUNCH-CONFIG-C23-A15.json",
+                            "ROOT-CLEAN-SOURCE-FROZEN-C23-A15.json", "ROOT-PROMO-KEEPER-SOURCE-READY-C23-A15.json"):
+                        material_files[producer.child_v1(OLD, name)] = b"{}\n"
+                    material_files[producer.child_v1(OLD, "ROOT-C23-COLD-PRELAUNCH.json")] = producer.encode_v1({
+                        "environment_sha256": "e" * 64, "pipe_name": "pipe"})
+                    material_files[producer.child_v1(OLD, "ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")] = producer.encode_v1({
+                        "entry_source_pins": [[producer.child_v1(OLD, name), "a" * 64] for name in sorted(inherited)],
+                        "runtime_import_source_pins": []})
+                    material_files[producer.child_v1(OLD, "root_c23_canonical_outer.py")] = (
+                        b"from pathlib import Path\nimport json,hashlib,sys,site\n" + N37_CLOSURE_CONSUMER_SOURCE_V1.encode())
+                    material_files[r"D:\synthetic-current-saved\external\SPEC.json"] = producer.encode_v1({"stage_args": []})
+                    full_ref = put(configured.full_storage_ref.path, producer.encode_v1({"status": "ADMITTED",
+                        "review_at_utc": configured.review_at_utc, "approved_output_roots": [ROOT], "disk_reserve_bytes": 0}))
+                    anchor = {"schema": "xar.source31.canonical-git-anchor/v1", "machine_id": basis.machine_id,
+                        "commit": "b" * 40}
+                    anchor_ref = put(configured.sdk_anchor_ref.path, producer.encode_v1(anchor))
+                    base_ref = put(configured.sdk_base_ref.path, producer.encode_v1({"schema": "root.ck3.final-sdk-freeze/v1",
+                        "status": "FINAL_SOURCE_FROZEN", "machine_id": basis.machine_id, "sdk_generation": "P37C23",
+                        "business_source_commit": "b" * 40, "source31_canonical_anchor": anchor_ref.to_wire(),
+                        "source_root": r"D:\synthetic-current-saved\sdk"}))
+                    configured = replace(configured, full_storage_ref=full_ref, sdk_base_ref=base_ref, sdk_anchor_ref=anchor_ref)
                 material_files.update({producer.child_v1(OLD, f"unused-{index}.txt"): b"fixture\n"
                     for index in range(145 - len(material_files))})
                 inventory = [put(path, raw).to_wire() for path, raw in material_files.items()]
@@ -2393,6 +2472,7 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                 put(archive_path, archive)
                 plan_ref = put(ref("whole-compose-plan.json").path, producer.encode_v1(configured.to_wire()))
                 response_calls: list[tuple[ExactRefV1, int]] = []
+                sdk_calls: list[tuple[ExactRefV1, int]] = []
 
                 class LocalReader:
                     def read_response(self, reference: ExactRefV1, limit: int) -> bytes:
@@ -2401,6 +2481,10 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
 
                     def stat(self, path: str) -> FileStatIdentityV1:
                         return f.reader.stat(path)
+
+                    def read_sdk_source(self, reference: ExactRefV1, limit: int) -> bytes:
+                        sdk_calls.append((reference, limit))
+                        return f.reader.read_sdk_source(reference, limit)
 
                 state_root = owner.derive_current_saved_state_paths_v1(basis).state_root
 
@@ -2417,14 +2501,28 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                         stack.enter_context(patch.object(producer, name, side_effect=identity))
                     stack.enter_context(patch.object(feeder, "transform_current_saved_feeder_v1", side_effect=identity))
                     stack.enter_context(patch.object(first_checkpoint, "render_first_full_checkpoint_queue_v1", side_effect=identity))
-                    reached = stack.enter_context(patch.object(background, "render_current_saved_background_display_v1",
-                        side_effect=ValidatedBeforeBackground))
-                    with self.assertRaises(ValidatedBeforeBackground):
-                        producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
-                    self.assertEqual(reached.call_count, 1)
-                    with patch.object(owner, "original_response_evidence_v1", side_effect=old_generic_response):
-                        with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
+                    if complete_packet:
+                        reached = stack.enter_context(patch.object(background, "render_current_saved_background_display_v1",
+                            return_value=background.BackgroundDisplaySourcesV1(stub, stub, stub)))
+                        stack.enter_context(patch.object(producer, "bind_current_saved_state_source_v1",
+                            side_effect=lambda name, raw, basis: raw))
+                        packet = producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
+                    else:
+                        reached = stack.enter_context(patch.object(background, "render_current_saved_background_display_v1",
+                            side_effect=ValidatedBeforeBackground))
+                        with self.assertRaises(ValidatedBeforeBackground):
                             producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
+                    self.assertEqual(reached.call_count, 1)
+                    if projected is None:
+                        with patch.object(owner, "original_response_evidence_v1", side_effect=old_generic_response):
+                            with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
+                                producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
+                    else:
+                        with patch.object(owner, "exact_sdk_source_bytes_v1", side_effect=lambda reader, reference: reader.read(reference, 2097152)):
+                            with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
+                                producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
+                        self.assertIn((projected.sdk_ref, 2097152), sdk_calls)
+                        self.assertNotIn((projected.sdk_ref, 2097152), response_calls)
                     self.assertEqual(reached.call_count, 1)
                     oversized = replace(source_rows[0], source_ref=replace(source_rows[0].source_ref,
                         bytes=producer.MAX_FILE + 1))
@@ -2436,6 +2534,52 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                 self.assertEqual(producer.MAX_FILE, 1048576)
                 self.assertNotIn(basis.refs.driver.path, f.reader.reads)
                 self.assertNotIn(basis.refs.save.path, f.reader.reads)
+                if complete_packet:
+                    self._assert_complete_packet_imports_v1(packet, projected)
+
+    def _assert_complete_packet_imports_v1(self, packet: producer.ColdComposeV1, projected: object) -> None:
+        """Real fixed-point graph and all 15 packaged shared module imports.
+
+        Original presentation/state emitters remain explicit identity fixtures;
+        this grants package/graph transport coverage, not their runtime behavior.
+        """
+        from tools.g2_saved_campaign.test_current_saved_continuity_v1 import _owned_continuity_case_v1
+        quote = producer.parse_quote_v1(json.loads(json.dumps(packet.quote.to_wire())))
+        self.assertEqual(len(quote.canonical_entry_paths), 8)
+        self.assertEqual(len(quote.closure_entry_paths), 65)
+        for row in quote.files:
+            self.assertEqual(producer.ref_for_bytes_v1(row.path, packet.files[row.path]),
+                ExactRefV1(row.path, row.bytes, row.sha256))
+        policy_path = producer.child_v1(ROOT, "ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")
+        policy = record(parse_json(packet.files[policy_path]))
+        pins = rows(policy["entry_source_pins"])
+        self.assertEqual(len(pins), 65)
+        for value in pins:
+            pair = rows(value)
+            self.assertEqual(hashlib.sha256(packet.files[text(pair[0])]).hexdigest(), pair[1])
+        # No original Native module is persisted. The full source stays in the
+        # earlier producer's RAM and the SDK-source capability test owns file I/O.
+        with contextmanager(_owned_continuity_case_v1)("compose-projection-package") as root:
+            payloads: dict[str, bytes] = {}
+            for path, raw in packet.files.items():
+                if ntpath.commonpath((path, ROOT)).casefold() != ROOT.casefold():
+                    continue
+                relative = ntpath.relpath(path, ROOT).replace("\\", "/")
+                payloads[relative] = raw
+            peak = sum(((len(raw) + 4095) // 4096) * 4096 for raw in payloads.values()) + 262144
+            self.assertLessEqual(peak, 4194304, "finite complete package fixture allocation upper")
+            for relative, raw in payloads.items():
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(raw)
+            modules = sorted(name[:-3].replace("/", ".") for name in producer.GENERIC_SOURCE_PATHS)
+            code = "import importlib,json,pathlib; root=pathlib.Path.cwd().resolve(); names=json.loads(input()); mods=[importlib.import_module(n) for n in names]; assert all(pathlib.Path(m.__file__).resolve().is_relative_to(root) for m in mods); from tools.g2_saved_campaign.current_saved_basis_v1 import SdkSourceReaderV1,exact_sdk_source_bytes_v1; from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import LocalBasisReaderV1; assert isinstance(LocalBasisReaderV1(),SdkSourceReaderV1); print('CURRENT_SHARED_PACKAGE_IMPORTS',len(mods))"
+            env = dict(os.environ)
+            env['PYTHONPATH'] = os.pathsep.join((str(root), str(Path(producer.__file__).resolve().parents[2] / 'ck3_autonomous_player/src')))
+            result = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-c', code],
+                cwd=root, env=env, input=json.dumps(modules).encode(), capture_output=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8', errors='replace'))
+            self.assertIn(b'CURRENT_SHARED_PACKAGE_IMPORTS 15', result.stdout)
 
 
 class CurrentSavedArtifactBudgetTests(unittest.TestCase):

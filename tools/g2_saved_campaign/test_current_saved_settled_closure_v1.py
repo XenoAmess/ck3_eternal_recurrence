@@ -8,7 +8,7 @@ from pathlib import Path
 import unittest
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager, nullcontext
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
 from tools.g2_saved_campaign import current_saved_continuity_v1 as continuity
@@ -16,7 +16,8 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
     ExactRefV1, JsonObject, JsonValue, CurrentSavedBasisV1, MAX_ORIGINAL_RESPONSE_BYTES_V1,
     BasisReaderV1, ValidatedCurrentSavedBasisV1, text,
     evidence, parse_ref, record, rows, json_object, integer, encode_current_saved_basis_v1,
-    decode_readonly_prefix_history_v1, _exact_native_json_v1,
+    decode_readonly_prefix_history_v1, _exact_native_json_v1, MAX_SDK_SOURCE_BYTES_V1,
+    exact_sdk_source_bytes_v1,
 )
 from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import pure_basis
@@ -68,6 +69,12 @@ class MemoryReader:
     def read_response(self, reference: ExactRefV1, limit: int) -> bytes:
         if type(limit) is not int or not 0 < limit <= MAX_ORIGINAL_RESPONSE_BYTES_V1:
             raise ValueError("bounded original response")
+        return self.read(reference, limit)
+
+    def read_sdk_source(self, reference: ExactRefV1, limit: int) -> bytes:
+        integer(limit, 1, MAX_SDK_SOURCE_BYTES_V1)
+        if reference.bytes > limit:
+            raise ValueError("bounded original SDK source")
         return self.read(reference, limit)
 
     def stat(self, path: str) -> FileStatIdentityV1:
@@ -1011,10 +1018,18 @@ class CompletedUnsavedTailFixture:
 
 class ReadinessRestoreProjectionFixture:
     """Nonempty historical business tail and a physically projected new Driver."""
-    def __init__(self, saved_prior: SavedBusinessPriorV1 | None = None) -> None:
+    def __init__(self, saved_prior: SavedBusinessPriorV1 | None = None, *,
+                 initial_basis: CurrentSavedBasisV1 | None = None, metadata_root: Path | None = None,
+                 validator_bytes: bytes | None = None) -> None:
         import subprocess
-        self.tail = tail = CompletedUnsavedTailFixture(readiness_prefix=True, saved_prior=saved_prior)
+        self.tail = tail = CompletedUnsavedTailFixture(readiness_prefix=True, saved_prior=saved_prior,
+            initial_basis=initial_basis, metadata_root=metadata_root)
         self.reader = r = tail.reader
+        if validator_bytes is not None:
+            reference = tail.basis.refs.checkpoint_validator
+            if (len(validator_bytes), hashlib.sha256(validator_bytes).hexdigest()) != (reference.bytes, reference.sha256):
+                raise ValueError("exact fixture validator source")
+            r.raw[reference.path] = validator_bytes
         self.prior = prior = tail.cold()
         current = tail.next_warm()
         f = object.__new__(NormalWarmFixture)
@@ -1089,6 +1104,50 @@ class ReadinessRestoreProjectionFixture:
 
 
 class ReadinessRestoreProjectionTests(unittest.TestCase):
+    def test_explicit_sdk_source_capability_local_file_and_strict_boundaries(self) -> None:
+        from tools.g2_saved_campaign.test_current_saved_continuity_v1 import _owned_continuity_case_v1
+        f = ReadinessRestoreProjectionFixture()
+        raw = f.reader.raw[f.sdk_ref.path]
+        with contextmanager(_owned_continuity_case_v1)("sdk-source-capability") as root:
+            path = root / "native_driver.py"
+            path.write_bytes(raw)
+            reference = replace(f.sdk_ref, path=str(path))
+            reader = owner.LocalBasisReaderV1()
+            with patch.object(reader, "read", side_effect=AssertionError("generic lane forbidden")), \
+                    patch.object(reader, "read_response", side_effect=AssertionError("RPC lane forbidden")):
+                self.assertEqual(exact_sdk_source_bytes_v1(reader, reference), raw)
+                for wrong in (replace(reference, bytes=reference.bytes + 1),
+                        replace(reference, sha256="f" * 64), replace(reference, bytes=2097153)):
+                    with self.subTest(wrong=wrong), self.assertRaises(ValueError):
+                        exact_sdk_source_bytes_v1(reader, wrong)
+                for limit in (True, 0, 2097153):
+                    with self.subTest(limit=limit), self.assertRaises(ValueError):
+                        reader.read_sdk_source(reference, limit)
+                with self.assertRaises(ValueError):
+                    Mock(wraps=reader.read_sdk_source)(reference, 2097152.0)
+                for wrong_scalar in (True, 1.0):
+                    malformed = object.__new__(ExactRefV1)
+                    object.__setattr__(malformed, "path", reference.path)
+                    object.__setattr__(malformed, "sha256", reference.sha256)
+                    object.__setattr__(malformed, "bytes", wrong_scalar)
+                    with self.subTest(bytes=wrong_scalar), self.assertRaises(ValueError):
+                        exact_sdk_source_bytes_v1(reader, malformed)
+            from tools.g2_saved_campaign.current_saved_campaign_feeder_v1 import LocalCurrentSavedFeederReaderV1
+            feeder_reader = LocalCurrentSavedFeederReaderV1()
+            with patch.object(feeder_reader, "read", side_effect=AssertionError("feeder generic SDK fallback forbidden")):
+                self.assertEqual(exact_sdk_source_bytes_v1(feeder_reader, reference), raw)
+                with self.assertRaises(ValueError):
+                    Mock(wraps=feeder_reader.read_sdk_source)(reference, 2097152.0)
+            class GenericOnly:
+                def read(self, reference: ExactRefV1, limit: int) -> bytes:
+                    raise AssertionError("generic SDK fallback forbidden")
+                def read_response(self, reference: ExactRefV1, limit: int) -> bytes:
+                    raise AssertionError("RPC SDK alias forbidden")
+                def stat(self, path: str) -> FileStatIdentityV1:
+                    raise AssertionError("missing capability must reject before I/O")
+            with self.assertRaisesRegex(ValueError, "explicit SDK-source reader required"):
+                exact_sdk_source_bytes_v1(GenericOnly(), reference)
+
     def test_complete_saved_producer_actual_native_qualification_and_new_cold(self) -> None:
         from datetime import datetime, timezone
         from tools.ck3_live_run_id import current_machine_id
@@ -1153,6 +1212,10 @@ class ReadinessRestoreProjectionTests(unittest.TestCase):
         self.assertFalse(wire["original_driver_body_available"])
         with f.tail.io_scope():
             cold = f.ready.cold()
+            through_adapter = owner.validate_current_saved_cold_inputs_v1(f.ready.basis,
+                basis_ref=f.ready.basis_ref, validation_ref=f.ready.validation_ref,
+                reader=owner._TailOriginalResponseReaderV1(f.reader))
+            self.assertEqual(through_adapter, cold)
             self.assertEqual(cold.closed_epoch.old_game.pid, 40)
             self.assertEqual(cold.basis.completed_cycles, f.prior.basis.completed_cycles)
             self.assertEqual(cold.basis.frame, f.prior.basis.frame)
