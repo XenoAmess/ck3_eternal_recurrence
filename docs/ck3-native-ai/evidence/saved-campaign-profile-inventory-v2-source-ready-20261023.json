@@ -1,0 +1,342 @@
+{
+  "schema": "cold-profile-inventory-v2-source-ready-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at": "2026-10-22T16:15:10.926584+00:00",
+  "head_at_receipt": "64fde3a4d7c755658dcc6c670bfdc5dcc3c483ff",
+  "source_state": "uncommitted working source; Root owns Git operations",
+  "source_files": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 108018,
+      "sha256": "8bfa22723342f0b0063e32a0f7e74353ca7784bda8afc0a10d8178d2315cb2c5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 321070,
+      "sha256": "a89775acc73ac9819ebb39022711e5058cdfe433d78b333104674af8c5855d84"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\saved_campaign_profile_inventory_v2.py",
+      "bytes": 10609,
+      "sha256": "cf5d99b79969eaf57a7789bf42a442b088ba5d8882a69808fe9028fa51d191a8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_saved_campaign_vanilla_profile.py",
+      "bytes": 6390,
+      "sha256": "adba9e0df2797294acf9b74c7e59f45bb90e0978c3e0afc74ee190ec66f4cc9e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\saved-campaign-profile-inventory-v2.md",
+      "bytes": 4034,
+      "sha256": "bff9705fbcc5cbe9e3ab7da131568ed985b1476afd098cba1cc7becd799866e3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_a1_controlled_adapter.py",
+      "bytes": 36083,
+      "sha256": "af04ca51f7d9c5d4ffce13cc88447335aeb5b244af2165232f2f524c2156e3a3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_artifact_pair_adapter.py",
+      "bytes": 35969,
+      "sha256": "592a296e57d18390f968cbd3b3b539d43e82370e7dcd2893dbf808fbcb139cf8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_d1_readonly_adapter.py",
+      "bytes": 14146,
+      "sha256": "dadaa2044d49c98967efc93c21295f88043dc82966ddf116365c916bbd679abe"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_demote_preparation_adapter.py",
+      "bytes": 19041,
+      "sha256": "23581f050f1fd13000d33a2143ad7865a21e53597975ecaa6dac96f965ef4fa4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_first_four_scout_adapter.py",
+      "bytes": 22391,
+      "sha256": "be27dc6dc2f76f863e44e5def6973c561dc93b3155a38acd33695d7881e5d0d1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_h1_comparison_adapter.py",
+      "bytes": 29475,
+      "sha256": "b126e65b2d62d746bb64bc748fdd9847cc49fc2405ef77eeca505a44bcaa0729"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_h1_h2_composite_adapter.py",
+      "bytes": 29386,
+      "sha256": "2764427f92c42e0a61755022c77761ffe23d8c76a0ee85fe13900087680cf92b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_h1_new_mother_adapter.py",
+      "bytes": 32814,
+      "sha256": "d8377d150cbca2e5b8449ba8fa6aaf11fce2a87d3b097db2c46ed83a9d66fc9d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_mecca_knight_controlled_adapter.py",
+      "bytes": 49984,
+      "sha256": "72e58d47c6c69345d3ef9230f6f425cd3d5d6ba3177dab102f8eafb1df1fe8a8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_pilgrimage_adapter.py",
+      "bytes": 38365,
+      "sha256": "da0a7347ae9074dddbafd853106a7e1e95c970bd026bbeb95a591cbb4cf142c9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_r19_ghw_adapter.py",
+      "bytes": 34713,
+      "sha256": "bf9814bac85299434b0ede26e71ef43d1cf0f3688bea54a93cfc5dbfb95598a5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_r19_hof_adapter.py",
+      "bytes": 21197,
+      "sha256": "33959b31bb8e723748e5044dfec10d69307e39e92b5e8bee745aef135713e18e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\faith_e02_readonly_adapter.py",
+      "bytes": 9845,
+      "sha256": "3761a9901a98a2858793342d235ebd991e23bdeaaa21ef9a61934c2c03199300"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_holder_stage_diagnostic_adapter.py",
+      "bytes": 18474,
+      "sha256": "3936889dbf5165e10bec2b9d3dac4309cfc57d7c372e24a28ac9d73dfeaf17fb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i3b_formal_adapter.py",
+      "bytes": 38241,
+      "sha256": "8865472ea7f8427a5c08028ae27f1ce2a715d31e2cebe7c4f81b3a2ce6181f3b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i3b_formal_b5_adapter.py",
+      "bytes": 25007,
+      "sha256": "9b65eaf06d508025a566b5c0eb3b7827d2cec72718b3bf3870729d4abb514595"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_expiry_cold_reload_adapter.py",
+      "bytes": 21263,
+      "sha256": "7c22f27a6e6832a51fff5e3e973cf323a0349c2ee5687b3fe4aca3689a7530d6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_i4_natural_expiry_adapter.py",
+      "bytes": 27067,
+      "sha256": "93d18489542cdc400bc382716792eaa54bd913ce3b26680fba062823da646572"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_release012_headship_resume_adapter.py",
+      "bytes": 9237,
+      "sha256": "cb7d518c74b34856252060d00409ba324c085dfbaa2a537bdca32f8c4315bd85"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\lyd_transaction_control_adapter.py",
+      "bytes": 24527,
+      "sha256": "7ac14c30c7a1494fa8d936ba92a51a167b577b744cc2ad1e7d9b8f79257b3eb4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r05_low_supply_adapter.py",
+      "bytes": 14202,
+      "sha256": "195dc2136a95059c47ab4cfa8c98f6a2c1e0459c25c486a4dc08bfecc945642c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_common_arm.py",
+      "bytes": 40014,
+      "sha256": "d933c77683388ee8b6fea4c3de051ad36b08d13e6793a779053298a62773489e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 18099,
+      "sha256": "5361056868e221d192f1ea451d422c468622e9a73a879576d7183d440c7ec0ae"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\ted_adapter.py",
+      "bytes": 12766,
+      "sha256": "9ad972f171da9c0acd27a478c7af8867cad4258aefd38324261252712bd1c92d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\test_lyd_i4_expiry_cold_reload.py",
+      "bytes": 20476,
+      "sha256": "32474dd8f225d3261126db47174c60cf574d0291976cc2cddc97c343290ac638"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_gui.py",
+      "bytes": 34004,
+      "sha256": "3c9a4c9c642e03f98dc92fa9e8daa5034ca73e331acf61d9c594bb931740c629"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 169288,
+      "sha256": "e548283c3bed4cf60ae12019bb5ffbe84b3d95856fa4a34d0135ba60e6effb53"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_saved_profile_v2.py",
+      "bytes": 6639,
+      "sha256": "976aa1bc20f496ea10481263cfb439a543f49044d82cea64ad51a1931f387e6b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_business_reviewer.py",
+      "bytes": 8583,
+      "sha256": "c218ce50e8e4db7e6e2b05a18ea391697e5ba6815464f29efba8e260ee509482"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_holder_stage_diagnostic.py",
+      "bytes": 23939,
+      "sha256": "729e52bd7e97ed9f1a91204188e2e321c3e0abc8c01f4256ea86cbaf0ce7333b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_product_preparation.py",
+      "bytes": 6522,
+      "sha256": "e1b7b366d796d1e70c188c680461bc2537848aef739a3e47b8b28aa69fb283f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_reviewer_prelaunch.py",
+      "bytes": 12748,
+      "sha256": "4b72ad303ab48ecf11944501280cff864c0e3d95e0013ae60d64c9a5aecd3309"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_vanilla_profile.py",
+      "bytes": 4494,
+      "sha256": "e2df7c734346d80880f48bb846c39936c33f603884bb86384e108af818ce3ab5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_workshop_cache.py",
+      "bytes": 23830,
+      "sha256": "cdf88153f03918dc76435ed4c4a3a6e7e68243e104a2de38010dbe1069fd729c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_lyd_transaction_control_adapter.py",
+      "bytes": 19300,
+      "sha256": "ef299de5ec78d93c5999ad5d98ec2de292a5a235ca2af4b989c5be383e4d54f8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_r10_common_arm_context.py",
+      "bytes": 5920,
+      "sha256": "e7376d7cc6a56e1b295f2973ce598fb2a2dc259c5e26265eeb7d38f87753720e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_r10_normal_origin_modal_clock.py",
+      "bytes": 9131,
+      "sha256": "3b33644e7b2d4c11b18f51be2af882bd0dedc97546f22a64fbcdb4d479b1c0d5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_saved_campaign_profile_inventory_v2.py",
+      "bytes": 14231,
+      "sha256": "f0f12e00716190c8d77053453fcda891019034e218a600cea8dcce43d738bed5"
+    }
+  ],
+  "pinned_backend_unchanged": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+    "bytes": 14430,
+    "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+  },
+  "historical_review_unchanged": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_prepare_compatibility_review_v2.json",
+    "bytes": 3606,
+    "sha256": "e895e8503af5a24f23d1ad3e25f7bddc0848c89bcb1c7654713bd77d8c1c5c1f"
+  },
+  "original_failure": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-formal-bootstrap-refusal-a01\\result.json",
+    "bytes": 2395,
+    "sha256": "eafbb3a77bc33e094299c51ce4098a7b44e3542d4f116ec2b57036aa82ef1e1b"
+  },
+  "complete_ci_steps": [
+    {
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-imports-a02\\result.json",
+        "bytes": 7689,
+        "sha256": "7e72c88e7e0e08aef6053922cb91f06ffee11ecc453084c7f40f862d0e1989cf"
+      },
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "commands": 5,
+      "all_exit_zero": true,
+      "scope_note": null
+    },
+    {
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-shared-a03\\result.json",
+        "bytes": 63702,
+        "sha256": "4716f2a19996e485c99dabd4831b732fcb3a3eda5c0ca008032a34e6292386ec"
+      },
+      "step": "Test shared CK3 acceptance without installed CK3",
+      "commands": 86,
+      "all_exit_zero": true,
+      "scope_note": "shared count includes one original standalone errorlevel guard; 85 Python commands plus that guard"
+    },
+    {
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-lyd-a01\\result.json",
+        "bytes": 14794,
+        "sha256": "59cb62d9c64967e9e54eb29a79ba7f8720e1bab206e97f04c004d24bd3e0269f"
+      },
+      "step": "Check product and builder",
+      "commands": 20,
+      "all_exit_zero": true,
+      "scope_note": null
+    }
+  ],
+  "static_scope": {
+    "new_complete_modules_strict": "shared step command 57: all three new complete modules, --strict --follow-imports=silent; exit0",
+    "actual_host_functions_strict": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-host-scope-a01\\result.json",
+      "bytes": 2009,
+      "sha256": "b53863ae0c0cd221ae80a829fb3171fa76e69ae19a58d78e227df9ed1398fc89"
+    },
+    "actual_24_consumer_call_scopes_strict": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-call-scopes-a04\\result.json",
+      "bytes": 18448,
+      "sha256": "24b2efd402d3b21c546232141eed577f18fb696ddb79ad41e0dbc7c5417e85f4"
+    },
+    "legacy_full_batch_diagnostic": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-legacy-types-a01\\result.json",
+      "bytes": 9369,
+      "sha256": "b8e8f99e9fe90934040a420607f95c955a94ab2f99a2c7d61324c855db82901b"
+    },
+    "limits": "AST scopes preserve actual source nodes with explicit boundary types. Not entire legacy host/adapters strict-clean. Full batch diagnostic stopped on existing untyped PyAutoGUI and duplicate legacy module names; not counted as PASS."
+  },
+  "additional_related_tests": {
+    "tests_run": 59,
+    "failed": 0,
+    "exit_code": 0,
+    "reported_test_seconds": 3.506,
+    "source": "actual exec_command tool transcript chunk 8b072e; raw file log was not saved",
+    "command": "python -B -X utf8 -m unittest -v tools.test_ck3_mod_acceptance_vanilla_profile tools.test_ck3_mod_acceptance_product_preparation tools.test_lyd_transaction_control_adapter tools.test_lyd_i3b_formal_adapter tools.test_lyd_i3b_formal_b5_adapter tools.test_ck3_mod_acceptance_holder_stage_diagnostic tools.ck3_mod_acceptance_cases.test_lyd_release012_headship_resume tools.test_r10_normal_origin_modal_clock tools.test_r10_common_arm_context",
+    "execution_utc_not_retained": true
+  },
+  "retained_real_failed_ci_attempts": [
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-shared-a01\\result.json",
+      "bytes": 22457,
+      "sha256": "18a20abd6705500a15c5f24d427c7ff83362c1d0c50fc358e347511c81d440f4"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\cold-profile-v2-shared-a02\\result.json",
+      "bytes": 34673,
+      "sha256": "ba5ce242812315166e2be666f662683b1ed898eb0910f51a3e8268f57f97cc21"
+    }
+  ],
+  "changes": [
+    "explicit v2 role contract, closed runtime JSON parsing, exact complete file closure before role guard",
+    "formal bootstrap accepted, fixture/overlay bootstrap refused by actual host",
+    "19 materializer callers and 5 handwritten producers migrated without host v1 fallback",
+    "R10 vanilla consumer and TED contract field migrated",
+    "four stale actual Selection fixtures given real import-context fields, no production loader relaxation"
+  ],
+  "qualifications": {
+    "source_ready_offline": true,
+    "game_started_by_this_task": false,
+    "actual_cold_load": "NOT_RUN",
+    "business_pass": false,
+    "product_release_pass": false,
+    "frozen_runtime_modified": false,
+    "git_commit_or_push_performed": false
+  },
+  "storage": {
+    "checked_at": "2026-10-22T16:15:10.971601+00:00",
+    "free_bytes": 445337055232,
+    "total_bytes": 500105216000,
+    "deletions": 0,
+    "scope": "small offline logs, source AST scopes and receipts; active native/game/frozen inputs untouched",
+    "policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  }
+}

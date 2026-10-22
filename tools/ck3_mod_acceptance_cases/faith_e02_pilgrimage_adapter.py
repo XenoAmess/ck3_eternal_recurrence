@@ -1,5 +1,6 @@
 ﻿"""Managed ordinary pilgrimage: native offers, finite planner, one Start, journey."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from datetime import datetime, timezone
 import importlib.util
@@ -117,7 +118,7 @@ class BudgetedClient:
 
 def prepare_case(context):
     from ck3_mod_acceptance import check_pin, pin
-    from ck3_mod_acceptance_prepare import materialize_product_profile, finish_product_profile
+    from ck3_mod_acceptance_prepare import finish_product_profile
     from ck3_live_run_id import current_machine_id
     c = validate_contract(context)
     require(current_machine_id() == c["machine_id"], "Executing machine differs")
@@ -131,7 +132,7 @@ def prepare_case(context):
     require(saved == c["saved_input"], "Original saved input differs")
     actual = pin(Path(saved["save"]))
     require(actual["bytes"] == saved["bytes"] and actual["sha256"] == saved["sha256"], "Original save bytes differ")
-    profile = materialize_product_profile(context, None, context["case_inputs"]["configuration"])
+    profile = materialize_saved_profile_v2(context, None, context["case_inputs"]["configuration"], source_role=None)
     profile = finish_product_profile(context, profile, provenance={
         "machine_id": c["machine_id"], "kind": "ordinary-pilgrimage-execution-preparation",
         "saved_input": saved, "storage_admission": admission, "preparation_mod_mounted": False,

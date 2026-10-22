@@ -35,7 +35,8 @@ class ActualCommonShape(unittest.TestCase):
         normal={'is_error':False,'body':{'accepted':True,'checkpoint':saved}}
         profile={'profile_dir':str(state/'profile'),'fixture_mounted':False,'provenance':{'normal_checkpoint':{
             'save':{'sha256':sha,'bytes':1},'actor_id':33388,'date_raw':53147376}}}
-        inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','enabled_mods':[],'product_files':[],
+        inventory={'schema':'ck3-saved-campaign-profile-inventory-v2','profile_mode':'vanilla',
+                   'enabled_mods':[],'product_files':[],'projections':[],
                    'profile_path':str(state/'profile')}
         prepared={'schema':'ck3-mod-acceptance-prepared-case-v1','product':'war-episode04-r10','case':'r10-common-arm',
             'startup':{'mode':'saved_campaign','state_dir':str(state),'saved_campaign':{
@@ -51,7 +52,7 @@ class ActualCommonShape(unittest.TestCase):
         self.assertNotIn('identity',context)
         self.assertEqual(actual['actor'],33388)
         changed=deepcopy(inventory); changed['enabled_mods']=['fixture.mod']
-        with self.assertRaisesRegex(ValueError,'actual empty-mod profile'):
+        with self.assertRaisesRegex(ValueError,'exactly empty'):
             validate_normal_common_source(context,prepared,frozen,profile,changed,normal,
                 machine=machine,source_head=head,plan=plan)
         bad=deepcopy(normal); bad['body']['checkpoint']['succession_lifecycle']['source']='controlled-fixture'

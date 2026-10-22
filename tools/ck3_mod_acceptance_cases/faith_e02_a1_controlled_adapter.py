@@ -1,5 +1,6 @@
 """One C2/native-only controlled Demote27. No site attribution is inferred."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 from datetime import datetime,timezone
 import hashlib,json,os
 from pathlib import Path
@@ -65,7 +66,7 @@ def validate_contract(context):
     return c
 
 def prepare_case(context):
-    from ck3_mod_acceptance_prepare import materialize_product_profile,finish_product_profile
+    from ck3_mod_acceptance_prepare import finish_product_profile
     from ck3_live_run_id import current_machine_id
     c=validate_contract(context);require(current_machine_id()==c['machine_id'],'Executing machine differs')
     ref=context['case_inputs']['storage_admission'];require(pin(ref['path'])==ref,'Fresh admission pin changed')
@@ -76,7 +77,7 @@ def prepare_case(context):
     p=Path(saved['save']);require(p.is_file() and not p.is_symlink() and p.suffix.lower()=='.ck3','Immutable original C2 required')
     before=p.stat();actual=pin(p);after=p.stat()
     require(all(actual[k]==saved[k]for k in ('bytes','sha256')) and (before.st_size,before.st_mtime_ns)==(after.st_size,after.st_mtime_ns),'Original C2 bytes changed')
-    profile=materialize_product_profile(context,None,context['case_inputs']['configuration'])
+    profile=materialize_saved_profile_v2(context,None,context['case_inputs']['configuration'], source_role=None)
     profile=finish_product_profile(context,profile,provenance={'machine_id':c['machine_id'],'kind':'A1-one-Demote27-original-C2',
         'saved_input':saved,'storage_admission':ref,'preparation_mod_mounted':False,'actual_restore_observed':False,'world_actions_performed':False})
     return {'startup':{'mode':'saved_campaign','state_dir':profile['state_dir'],'saved_campaign':{**saved,'product_inventory':profile['product_inventory']['path']}},

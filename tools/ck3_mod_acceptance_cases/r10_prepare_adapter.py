@@ -7,6 +7,7 @@ full-wire views retain their original public control rows. The shared entry
 owns the host, SDK session and normal game closure.
 """
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 from collections.abc import Mapping
 from typing import TYPE_CHECKING
 from ck3_mod_acceptance_background_types import JsonObject, json_object
@@ -125,7 +126,7 @@ def _validate_contract_impl(context):
 
 def prepare_case(context):
     from ck3_live_run_id import current_machine_id
-    from ck3_mod_acceptance_prepare import materialize_product_profile, finish_product_profile, write_json
+    from ck3_mod_acceptance_prepare import finish_product_profile, write_json
     validate_contract(context)
     values, seed = context['case_inputs'], context['saved_campaign']
     for name in ('normal_checkpoint_receipt', 'normal_checkpoint_build_receipt'):
@@ -139,7 +140,7 @@ def prepare_case(context):
          and qualified['date_raw'] == seed['date_raw'] and qualified['save']['bytes'] == seed['bytes']
          and qualified['save']['sha256'] == seed['sha256'], 'Normal source does not match selected saved campaign')
     # Existing shared primitive explicitly supports None => no enabled mods.
-    profile = materialize_product_profile(context, None, values['plain_configuration'])
+    profile = materialize_saved_profile_v2(context, None, values['plain_configuration'], source_role=None)
     finished = finish_product_profile(context, profile, provenance={
         'kind': 'R10-normal-preparation-readiness-only', 'normal_checkpoint': qualified,
         'common_T0_frozen': False, 'formal_ABC_arm': False,

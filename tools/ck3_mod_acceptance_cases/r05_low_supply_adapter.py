@@ -3,6 +3,7 @@
 No host/DLL selection and no launch here. The sole mod occupies the generic
 common 'product' carrier slot but is explicitly a controlled research fixture.
 """
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 from pathlib import Path
 import importlib.util,json,re,sys
 
@@ -67,7 +68,7 @@ def script_preflight_scope(preflight,package,m,current_machine):
 
 def prepare_case(context):
     from ck3_live_run_id import current_machine_id
-    from ck3_mod_acceptance_prepare import materialize_product_profile,finish_product_profile,write_json,pin,checked_copy
+    from ck3_mod_acceptance_prepare import finish_product_profile,write_json,pin,checked_copy
     from xar_autoplayer.bridge import r05_low_supply_fixture as m
     inputs=context['case_inputs'];output=Path(context['output']);seed=context['saved_campaign']
     # Reuse the existing pure-vanilla checkpoint reader as a library, never its
@@ -94,7 +95,7 @@ def prepare_case(context):
             if not path.is_absolute():path=Path(inputs['open_kaishek_preflight']['path']).parent/path
             preflight[field]={**ref,'path':str(path.resolve())}
     offline_scope=script_preflight_scope(preflight,package,m,current_machine)
-    profile=materialize_product_profile(context,fixture,inputs['plain_configuration'])
+    profile=materialize_saved_profile_v2(context,fixture,inputs['plain_configuration'], source_role="case_fixture")
     mounted=m.common_mount_receipt(profile['profile'])
     finished=finish_product_profile(context,profile,provenance={
         'kind':'controlled-mechanism-research-fixture-in-common-content-carrier','research_fixture_mounted':True,

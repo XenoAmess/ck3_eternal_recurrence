@@ -3,8 +3,11 @@ from __future__ import annotations
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 SOURCE=Path(__file__).with_name('ck3_mod_acceptance_prepare.py')
 spec=importlib.util.spec_from_file_location('vanilla_saved_profile_prepare_test',SOURCE)
@@ -23,11 +26,11 @@ class VanillaSavedProfileTests(unittest.TestCase):
     def test_explicit_none_builds_empty_mod_inventory_without_placeholder_mod(self):
         with tempfile.TemporaryDirectory() as directory:
             context,configs=self.inputs(Path(directory))
-            profile=module.materialize_product_profile(context,None,configs)
+            profile=materialize_saved_profile_v2(context,None,configs,source_role=None)
             path=Path(profile['profile'])
             inventory=json.loads(Path(profile['product_inventory']['path']).read_text())
-            self.assertEqual(inventory,{'schema':'ck3-saved-campaign-vanilla-profile-v1',
-                'profile_path':str(path.resolve()),'enabled_mods':[],'product_files':[]})
+            self.assertEqual(inventory,{'schema':'ck3-saved-campaign-profile-inventory-v2','profile_mode':'vanilla',
+                 'profile_path':str(path.resolve()),'enabled_mods':[],'product_files':[],'projections':[]})
             self.assertEqual(json.loads((path/'dlc_load.json').read_text())['enabled_mods'],[])
             self.assertEqual(set(profile['files']),{*module.CONFIG_NAMES,'dlc_load.json'})
             self.assertFalse((path/'mod').exists())
@@ -42,9 +45,12 @@ class VanillaSavedProfileTests(unittest.TestCase):
             product=root/'product';product.mkdir()
             (product/'descriptor.mod').write_text('name="Existing product"\nsupported_version="1.20.*"\n')
             (product/'example.txt').write_text('source unchanged')
-            profile=module.materialize_product_profile(context,product,configs)
+            profile=materialize_saved_profile_v2(context,product,configs,source_role='formal_product')
             inventory=json.loads(Path(profile['product_inventory']['path']).read_text())
-            self.assertEqual(inventory['schema'],'ck3-saved-campaign-product-only-profile-v1')
+            self.assertEqual(inventory['schema'],'ck3-saved-campaign-profile-inventory-v2')
+            self.assertEqual(inventory['profile_mode'],'enabled')
+            self.assertEqual(inventory['projections'],[{'descriptor':'mod/product.mod',
+                'root_path':str(Path(profile['profile'])/'mod-content/product'),'source_role':'formal_product'}])
             self.assertEqual(inventory['enabled_mods'],['mod/product.mod'])
             self.assertEqual(len(inventory['product_files']),3)
             self.assertNotIn('vanilla_profile',profile)
@@ -58,7 +64,7 @@ class VanillaSavedProfileTests(unittest.TestCase):
     def test_common_finish_records_vanilla_preparation_without_fixture_policy(self):
         with tempfile.TemporaryDirectory() as directory:
             context,configs=self.inputs(Path(directory))
-            profile=module.materialize_product_profile(context,None,configs)
+            profile=materialize_saved_profile_v2(context,None,configs,source_role=None)
             context['_selected_engine']=(None,{'game_version':'1.20.0.4','exe_sha256':'a'*64})
             finished=module.finish_product_profile(context,profile,provenance={'kind':'explicit-vanilla-coldload'})
             receipt=json.loads(Path(finished['preparation']['path']).read_text())

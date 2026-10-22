@@ -160,7 +160,9 @@ class PreparationTests(unittest.TestCase):
             inventory = adapter.read_json(prepared['startup']['saved_campaign']['product_inventory'])
             self.assertEqual(inventory['enabled_mods'], ['mod/product.mod', 'mod/transaction_control.mod'])
             self.assertEqual(len(inventory['product_files']), 79)
-            self.assertEqual(set(inventory), {'schema', 'profile_path', 'enabled_mods', 'product_files'})
+            self.assertEqual(set(inventory), {'schema', 'profile_mode', 'profile_path', 'enabled_mods', 'product_files', 'projections'})
+            self.assertEqual({row['descriptor']: row['source_role'] for row in inventory['projections']},
+                             {'mod/product.mod':'formal_product','mod/transaction_control.mod':'case_overlay'})
             self.assertTrue(all(Path(row['path']).read_bytes() is not None for row in inventory['product_files']))
             for directory in ('save games', 'logs', 'run'):
                 self.assertFalse((root / 'state/profile' / directory).exists())

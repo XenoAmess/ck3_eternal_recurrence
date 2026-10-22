@@ -105,8 +105,9 @@ def prepare_case(context):
         enabled.append('mod/' + name + '.mod')
     write_json(profile / 'dlc_load.json', {'enabled_mods': enabled, 'disabled_dlcs': []})
     inventory_path = output / 'saved-product-inventory.json'
-    write_json(inventory_path, {'schema': 'ck3-saved-campaign-product-only-profile-v1',
-        'profile_path': str(profile), 'enabled_mods': enabled, 'product_files': products})
+    from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
+    write_saved_profile_inventory_v2(inventory_path, profile=profile, mode='enabled', enabled_mods=enabled,
+        product_files=products, roles={'mod/product.mod': 'formal_product', 'mod/transaction_control.mod': 'case_overlay'})
     # Complete profile inventory includes both mods, both outer descriptors,
     # all four configurations and dlc_load. Saves/logs/run remain absent.
     files = {p.relative_to(profile).as_posix(): pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}

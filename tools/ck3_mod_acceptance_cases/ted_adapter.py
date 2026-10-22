@@ -1,5 +1,6 @@
 """TED core and immutable-save GUI tails on the single common runtime."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 import json
 from pathlib import Path
@@ -9,8 +10,7 @@ from ._business import (case_config, check_evidence, final_root_evidence, litera
 
 
 def prepare_case(context):
-    from tools.ck3_mod_acceptance_prepare import (invoke_fixture_prepare, materialize_fixture_profile,
-                                                  materialize_product_profile)
+    from tools.ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile
     repo = Path(context["repo_root"])
     inputs = context["case_inputs"]
     if context["case"] == "saved_gui_tail":
@@ -18,7 +18,7 @@ def prepare_case(context):
         # fixture registrar, source setup, war, or Save/Load replay.
         for key in ("prior_source13_evidence", "prior_save_load_evidence", "prior_s_contract_gui_evidence"):
             check_evidence(inputs[key])
-        prepared = materialize_product_profile(context, inputs["product_dir"], inputs["plain_configuration"])
+        prepared = materialize_saved_profile_v2(context, Path(inputs["product_dir"]), inputs["plain_configuration"], source_role="formal_product")
         require(prepared["product_file_count"] == 17 and prepared["fixture_mounted"] is False,
                 "TED exact formal16 plus one outer descriptor required")
         reference = inputs["input_provenance"]["prior_consumer"]

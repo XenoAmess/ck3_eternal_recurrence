@@ -1860,7 +1860,7 @@
             ],
             "startup_CLI_restore_is_not_GUI_SaveLoad_credit": true,
             "no_fixture_registrar": true,
-            "exact_product_inventory_schema": "ck3-saved-campaign-product-only-profile-v1",
+            "exact_product_inventory_schema": "ck3-saved-campaign-profile-inventory-v2",
             "formal_product_file_count": 16,
             "outer_plus_formal_inventory_rows": 17,
             "not_repeated": [

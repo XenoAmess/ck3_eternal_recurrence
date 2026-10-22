@@ -61,8 +61,9 @@ def prepare_case(context):
         enabled.append('mod/' + name + '.mod')
     write_json(profile / 'dlc_load.json', {'enabled_mods': enabled, 'disabled_dlcs': []})
     inventory_path = output / 'saved-product-inventory.json'
-    write_json(inventory_path, {'schema': 'ck3-saved-campaign-product-only-profile-v1',
-        'profile_path': str(profile), 'enabled_mods': enabled, 'product_files': products})
+    from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
+    write_saved_profile_inventory_v2(inventory_path, profile=profile, mode='enabled', enabled_mods=enabled,
+        product_files=products, roles={'mod/product.mod': 'formal_product', 'mod/holder_stage_diagnostic.mod': 'case_overlay'})
     files = {path.relative_to(profile).as_posix(): pin(path) for path in sorted(profile.rglob('*')) if path.is_file()}
     preparation = output / 'profile-preparation.json'
     write_json(preparation, {'schema': 'ck3-mod-acceptance-prepared-holder-stage-diagnostic-v1',

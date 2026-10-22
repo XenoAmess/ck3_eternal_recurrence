@@ -1,5 +1,6 @@
 ﻿"""One legal demotion and one materialized checkpoint; no HoF or promotion Confirm."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from datetime import datetime, timezone
 import hashlib
@@ -73,7 +74,7 @@ def prepare_case(context_value: object) -> Q.Obj:
     module: object = importlib.import_module("ck3_mod_acceptance_prepare")
     if not isinstance(module, H.Prepare):
         raise ValueError("Actual public preparation functions unavailable")
-    profile = Q.obj(module.materialize_product_profile(context, None, inputs.get("configuration")))
+    profile = Q.obj(materialize_saved_profile_v2(context, None, inputs.get("configuration"), source_role=None))
     profile = Q.obj(module.finish_product_profile(context, profile, provenance={
         "machine_id": D.MACHINE, "kind": D.CASE, "saved_input": saved,
         "h2_case_contract": c["h2_case_contract"], "prior_setup_disclosure": c["prior_setup_disclosure"],

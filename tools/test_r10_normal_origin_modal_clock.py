@@ -38,7 +38,8 @@ def portable(root,machine):
     source={'save':{'sha256':sha,'bytes':1},'actor_id':actor,'date_raw':date}
     prepared={'startup':{'mode':'saved_campaign','state_dir':str(state),'saved_campaign':{'sha256':sha,'bytes':1,'player_id':actor,'date_raw':date}}}
     profile_info={'profile_dir':str(profile),'fixture_mounted':False,'provenance':{'normal_checkpoint':source}}
-    inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','enabled_mods':[],'product_files':[],'profile_path':str(profile)}
+    inventory={'schema':'ck3-saved-campaign-profile-inventory-v2','profile_mode':'vanilla',
+               'enabled_mods':[],'product_files':[],'projections':[],'profile_path':str(profile)}
     return proof,prepared,profile_info,inventory
 
 class Compound(unittest.TestCase):

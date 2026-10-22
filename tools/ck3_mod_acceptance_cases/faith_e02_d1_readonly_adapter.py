@@ -1,5 +1,6 @@
 ﻿"""Original D1 save, fresh native identity, finite queries and UI selection only."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from datetime import datetime, timezone
 import hashlib
@@ -106,7 +107,7 @@ def validate_contract(context):
 
 
 def prepare_case(context):
-    from ck3_mod_acceptance_prepare import materialize_product_profile, finish_product_profile
+    from ck3_mod_acceptance_prepare import finish_product_profile
     from ck3_live_run_id import current_machine_id
     c = validate_contract(context)
     require(current_machine_id() == c["machine_id"], "D1 machine identity differs")
@@ -131,7 +132,7 @@ def prepare_case(context):
     require(actual["bytes"] == saved["bytes"] and actual["sha256"] == saved["sha256"]
             and before.st_size == after.st_size and before.st_mtime_ns == after.st_mtime_ns,
             "D1 original save bytes changed")
-    profile = materialize_product_profile(context, None, context["case_inputs"]["configuration"])
+    profile = materialize_saved_profile_v2(context, None, context["case_inputs"]["configuration"], source_role=None)
     profile = finish_product_profile(context, profile, provenance={
         "machine_id": c["machine_id"], "kind": "faith-e02-D1-readonly-capture",
         "saved_input": saved, "storage_admission": admission,
