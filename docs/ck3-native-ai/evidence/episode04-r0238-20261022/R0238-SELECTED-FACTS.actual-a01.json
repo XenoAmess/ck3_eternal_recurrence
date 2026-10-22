@@ -1,0 +1,140 @@
+{
+  "schema": "xar.e04.r0238.selected-observed-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T12:06:36.981232+00:00",
+  "reviewer": "/root",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0238",
+  "game_pid": 27900,
+  "process_create_time_100ns": "134371426163720257",
+  "ordinary_campaign": true,
+  "one_life_qualification": false,
+  "actual_days": 1,
+  "starting_date_raw": 53146872,
+  "ending_date_raw": 53146896,
+  "target_postload_qualified": true,
+  "entryExact": false,
+  "parent_return_observed": false,
+  "full_R08_qualified": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "wallet": {
+    "actor_full_id": 31254,
+    "before_raw": 25455910,
+    "after_raw": 25567301,
+    "net_add_raw": 111391,
+    "context_a_raw": 384653,
+    "context_b_raw": 0,
+    "context_c_raw": 273262,
+    "context_d_raw": 0,
+    "maintenance_attribution": "unclosed",
+    "net_change_is_not_independent_gross_military_debit": true
+  },
+  "film": {
+    "duration_seconds": "49.000000",
+    "bytes": 31448241,
+    "sha256": "eabbccf197bb47d989ba27221d1687b504c67087c9702a73fb37a1b77e828da5",
+    "video_size": [
+      1280,
+      720
+    ],
+    "ffmpeg_original_wait": 0,
+    "complete_decode_original_wait": 0,
+    "root_sampled_pts_seconds": [
+      0,
+      8,
+      18,
+      28,
+      40,
+      48
+    ],
+    "full_1x_review": false,
+    "exact_mark_to_frame_PTS_calibration": false,
+    "continuous_clean_spans_certified": false
+  },
+  "normal_close": {
+    "qualified": true,
+    "retained_os_exit_code": 0,
+    "host_original_wait": 0,
+    "public_original_wait": 0,
+    "keeper_original_wait": 0,
+    "allocator_original_wait": 0,
+    "root_metadata_watcher_original_wait": 0,
+    "screen_release_sequence": 8195,
+    "resources": [],
+    "GUI_direct_reviewer": "/root/r08_resume",
+    "Root_reviewed_receipts": true
+  },
+  "save": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r08\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 71743160,
+    "sha256": "6f2c63ce0969ca33e46badee46a2ecc27d2e341b4dcc1ecc8eb7b68fbb9f6e52",
+    "date_raw": 53146896,
+    "rehash_source": "original owner complete post-close streaming hash"
+  },
+  "capacity": {
+    "original_profile_cap_bytes": 402653184,
+    "observed_profile_logical_bytes": 442230719,
+    "profile_overrun_lower_bound_bytes": 39577535,
+    "aggregate_unique_allocated_bytes": 657691144,
+    "original_aggregate_cap_bytes": 905969664,
+    "true_instantaneous_peak_bytes": null,
+    "no_retroactive_admission": true
+  },
+  "formal_dynamic_topics": {
+    "accepted": 9,
+    "total": 11
+  },
+  "provenance": [
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0238\\case-output\\R08-POSTLOAD-RESULT.json",
+      "bytes": 50558,
+      "sha256": "59562658799807b0ffbf53bf668a6ddd83f65cfa0cb42ca86d064d89e6b795e8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0238\\case-output\\normal-close-result.json",
+      "bytes": 9434,
+      "sha256": "b4335578e98dbfad872cb3e5260dbb3cacda1f38631c30bfa4bfee3fdaabc945"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08\\control-a01\\R0238-OWNER-CLOSED.actual-a01.json",
+      "bytes": 5934,
+      "sha256": "ef149b8c7f1b45c5e61975e9bbb313f0a9f78ef6cfe7b605d886c51260e12d7d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0238\\case-output\\r08-postload-control\\parent.raw.ndjson",
+      "bytes": 45427,
+      "sha256": "1af68fd4c5897885be108b9122f6f15882e36ffa600283369838443be2b4c354"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\r08\\camera-raw-a01\\r08-postload-a01\\R08-CONTINUOUS-TAKE.actual.json",
+      "bytes": 4135,
+      "sha256": "828298af23aef2a1b1569f1bdb1974548b0e3291865bb614019fd91124463871"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root\\R08-METADATA-WATCHER-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 969,
+      "sha256": "8ab1f12cd141930733bf18952ef2de2c56f421e1777f1b923ecb2ddeca2b4f09"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root\\R0238-RAW-DECODE.actual-a01.json",
+      "bytes": 737,
+      "sha256": "f0c3b98909c8bdc6085eee708c59299d4a20b32a560edfb087bb84444e9f1aee"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\root\\r0238-frame-samples-a01\\ROOT-SAMPLE-REVIEW.actual-a01.json",
+      "bytes": 1077,
+      "sha256": "5ccccfcd7ed5cd4d46c0761d1f89173e7ecbeabe278c6dd6194b554cbbfb7192"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261022-b01\\capacity\\R08-CLOSED-CAPACITY-OVERRUN.actual-a01.json",
+      "bytes": 8198,
+      "sha256": "12e1dfcdbb30e88021d9a0ee60462764db90b273c1b73216fe75e6670d6c8856"
+    }
+  ],
+  "retention": {
+    "next_review_at_utc": "2026-10-24T12:00:00Z",
+    "protected_until_utc": "2026-10-29T12:00:00Z",
+    "automatic_extension": false
+  }
+}
