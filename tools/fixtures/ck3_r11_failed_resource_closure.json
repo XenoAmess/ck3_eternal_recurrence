@@ -1,0 +1,1311 @@
+{
+  "schema": "ck3-r11-failed-resource-closure-source-excerpt-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T16:29:56.668732+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+  "source_pins": {
+    "frozen_argv": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\frozen-argv.json",
+      "bytes": 65937,
+      "sha256": "aa0f2c9ad49b0841473ee3eee3b5fd030c6ed888644c49d7573581c05a426dc8"
+    },
+    "ready_context": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\ready-context.json",
+      "bytes": 2287,
+      "sha256": "9c427c42a8ec310ec682548bc811e0d0665256d63dcd05768089eb2b76607acf"
+    },
+    "prepared_case": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+      "bytes": 35125,
+      "sha256": "4022f781e40e8e3df68ecf02bd3166f626fe32f23100b11666415c004d997baf"
+    },
+    "host_started": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\host-started.json",
+      "bytes": 3617,
+      "sha256": "e55aebbd01d6540b3a53635661afd1604453738b2b3bec2096bd5accd79ad852"
+    },
+    "host_exit": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\host-original-process-exit.json",
+      "bytes": 253,
+      "sha256": "ef93ec60eb35dd457a5721348c0be277ed6f67ad8786a91026a93d760dd47d71"
+    },
+    "host_supervisor": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\host-supervisor-started.json",
+      "bytes": 1021,
+      "sha256": "25b363238129a6bd334fc0399c144aa62bf5bb80d0dcdaeddf589d1b9a389830"
+    },
+    "native_report": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.json",
+      "bytes": 10229714,
+      "sha256": "81af24625e74ec6a38c385adf2221e941d8febaaf118dec2a66451901945a500"
+    },
+    "normal_close": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\normal-close-result.json",
+      "bytes": 710,
+      "sha256": "4795f928c6e9b2bdf8fe27acf5053725f5a9ccd23ecb84f7a8f292f96c2a6faf"
+    },
+    "retained_identity": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\retained-current-process-identity.json",
+      "bytes": 109,
+      "sha256": "700f3524017a41476fc93e02e3d625df7a52e18d7fc1d8c72b434e48919e96ff"
+    },
+    "retained_exit": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 183,
+      "sha256": "9585ea370f4b3eeed278ed67e051d02660241c9b9d1f284226381db6980e365a"
+    },
+    "keeper_report": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14\\report.json",
+      "bytes": 468,
+      "sha256": "5ae898a9738d423e24d99a5ee6b8400b5d9417771f1a7786709feb60f4a3d4ae"
+    },
+    "keeper_stop": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14\\STOP",
+      "bytes": 143,
+      "sha256": "99f870e763a74ae1faaa06efe419a1fbb0f597ce1a9cb4e66f0ec6dd07f9947f"
+    },
+    "keeper_exit": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\keeper-actual-parent-exit.json",
+      "bytes": 640,
+      "sha256": "a83a5877b0d7430f7513eb6de0522b383b407f9203cea217cb4facfe8683fdda"
+    },
+    "keeper_process": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\keeper-process.json",
+      "bytes": 840,
+      "sha256": "ae8a97f6b0cd91ce01645acb71d5200ca69866eb2cc1d54b1d1d4ee3fcd463eb"
+    },
+    "release": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r11-screen-resource-close-a01\\release.stdout.json",
+      "bytes": 1328,
+      "sha256": "a83cf49b32d22b23c4d780114a70ca9a88d5e740aa66c750ed4fac8bd005ad09"
+    },
+    "server_stderr": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.server-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\exit.json",
+      "bytes": 184,
+      "sha256": "8d80b428efb8524b15e14d776f02cd72aa68bb2f45e48902559a32083b8dcc72"
+    },
+    "run_command": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\command.json",
+      "bytes": 963,
+      "sha256": "9eab165a5049eecc0a9bfbc43d4b9f6f2deb733dccb138d38eb55ade29bd13b2"
+    },
+    "run_intent": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\intent.json",
+      "bytes": 973,
+      "sha256": "a2a5326e9df64a7b3073df39b0a92fe25162f6073e146848570aac6e81123f90"
+    },
+    "run_process": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\process.json",
+      "bytes": 958,
+      "sha256": "78c541a9396a2827dd8d025c0ef4d71085683f46596cd4e25b674ea42e6c98cd"
+    },
+    "run_completion": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\completion.json",
+      "bytes": 309,
+      "sha256": "24f6bc9c8b717c44e913c4e1d6157a079b40b85d49388599f25bbee20b036451"
+    },
+    "run_stdout": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\stdout.json",
+      "bytes": 307472,
+      "sha256": "06cb765a27ed2fdf51f6660f30a86c15b0b52021b0ec1297916bbc4ea0d63816"
+    },
+    "run_stderr": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "allocate_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\exit.json",
+      "bytes": 185,
+      "sha256": "aa246b383e4303156bc2e4e9870ebc490bc2db05834275c373237633019b25e7"
+    },
+    "allocate_command": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\command.json",
+      "bytes": 1352,
+      "sha256": "20378a79aacf5467e4f62bf7ee54fee3da6307d2c73cf4945db09f8db0fa24c6"
+    },
+    "allocate_intent": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\intent.json",
+      "bytes": 1367,
+      "sha256": "03e7c11e90de684b6b677f219bac6abfc6cba67d39a22b3e35d98c40d0108f54"
+    },
+    "allocate_process": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\process.json",
+      "bytes": 1349,
+      "sha256": "69333622ff8673b307587d6af3db8af5914016eae631ac79e3f6de350b225fa6"
+    },
+    "allocate_completion": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\completion.json",
+      "bytes": 314,
+      "sha256": "38af0e23e51d8889e1850e2259055e56737f8234082de0b8db408352c47506ae"
+    },
+    "allocate_stdout": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\stdout.json",
+      "bytes": 4610,
+      "sha256": "5451b8f1c94da899a9f38ff045d171f5a5d543f28222f0f9500091780a3c0496"
+    },
+    "allocate_stderr": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "producer_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\_runtime\\living_public_next.py",
+    "bytes": 3757,
+    "sha256": "1b45f6e0081eda88b80e580033ae907509b97414a6c89af3dc68196b5f6af647"
+  },
+  "normal_close_mtime_ns_decimal": "1792684577925948300",
+  "field_domain": "Python JSON integers preserved; no JavaScript numeric conversion",
+  "scope": "Actual R11 source excerpts; tests use authored relocated files/process inventory, not live observation or AI/business PASS.",
+  "projections": {
+    "frozen_argv": "Only listed contract input fields, unchanged values",
+    "native_report_projection": "Listed top/session fields plus exact original failed step; other large report fields omitted"
+  },
+  "leaves": {
+    "frozen_argv": {
+      "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "screen_task": "ck3-living-artifacts-screen-a14",
+      "cell": "feeding_preview",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "--agent-source-root",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda",
+        "--game-dir",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "--bridge-dll",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\native-build\\xar_ck3_bridge.dll",
+        "--bridge-injector",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\native-build\\xar_ck3_bridge_injector.exe",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+        "--output",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.json",
+        "--state-dir",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+        "--plan",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\initial-plan.json",
+        "--control-plan-dir",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\controls",
+        "--command-timeout",
+        "300",
+        "--readiness-timeout",
+        "1800",
+        "--timeout",
+        "4500",
+        "--poll-interval",
+        "0.5",
+        "--hold-seconds",
+        "2700",
+        "--fixture-profile",
+        "--frontend-robert-bootstrap",
+        "--frontend-fixture-start-policy",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\frontend-fixture-start-policy.json",
+        "--allow-private-player-inventory-window-open",
+        "--allow-private-player-artifact-personal-use-actions",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_artifact_personal_use_v1"
+      ],
+      "state_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+      "source_root": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda",
+      "runtime_manifest": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\common-manifest.abcfefeda.json",
+        "bytes": 26033,
+        "sha256": "2cc0aab1c1aff3bed1f5f19d9365ec7d3b9ca0207768125ddcd64ffb46499db8"
+      },
+      "identity_allocation": {
+        "machine_id": "pc-20260924rtuf-f11af23c08",
+        "state_root": "C:\\Users\\Administrator\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1"
+      }
+    },
+    "ready_context": {
+      "schema": "ck3-mod-acceptance-run-context-v1",
+      "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "run_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "keeper_root": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14",
+      "prepared_case": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "bytes": 35125,
+        "sha256": "4022f781e40e8e3df68ecf02bd3166f626fe32f23100b11666415c004d997baf"
+      },
+      "case_inputs": {
+        "product_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\builds\\candidate-abcfefeda",
+        "plain_configuration": {
+          "pdx_settings.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\pdx_settings.txt",
+            "bytes": 7604,
+            "sha256": "8b7ae76e67df07b8524845b533b4b3b3865f61769eb31f4cd233a176969b4771"
+          },
+          "tutorial.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\tutorial.txt",
+            "bytes": 61,
+            "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+          },
+          "presets.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\presets.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "player/game_rules/presets.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\player\\game_rules\\presets.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "post_start": {
+          "government_key": "feudal_government",
+          "primary_title_tier_key": "duchy",
+          "independent": true
+        }
+      },
+      "product": "living-artifacts",
+      "case": "feeding_preview",
+      "frozen_argv": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\frozen-argv.json",
+        "bytes": 65937,
+        "sha256": "aa0f2c9ad49b0841473ee3eee3b5fd030c6ed888644c49d7573581c05a426dc8"
+      }
+    },
+    "prepared_case": {
+      "schema": "ck3-mod-acceptance-prepared-case-v1",
+      "product": "living-artifacts",
+      "case": "feeding_preview",
+      "runtime_manifest": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\common-manifest.abcfefeda.json",
+        "bytes": 26033,
+        "sha256": "2cc0aab1c1aff3bed1f5f19d9365ec7d3b9ca0207768125ddcd64ffb46499db8"
+      },
+      "case_inputs": {
+        "product_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\builds\\candidate-abcfefeda",
+        "plain_configuration": {
+          "pdx_settings.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\pdx_settings.txt",
+            "bytes": 7604,
+            "sha256": "8b7ae76e67df07b8524845b533b4b3b3865f61769eb31f4cd233a176969b4771"
+          },
+          "tutorial.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\tutorial.txt",
+            "bytes": 61,
+            "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+          },
+          "presets.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\presets.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "player/game_rules/presets.txt": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\plain-config-cn-large-window-a01\\player\\game_rules\\presets.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "post_start": {
+          "government_key": "feudal_government",
+          "primary_title_tier_key": "duchy",
+          "independent": true
+        }
+      },
+      "startup": {
+        "mode": "fixture",
+        "state_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+        "fixture_start_policy": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\frontend-fixture-start-policy.json",
+          "bytes": 10359,
+          "sha256": "0eb5c3c882d10458568e72b9f4b29b375f2b5597dcdd28174008cd52743ee0ec"
+        }
+      },
+      "initial_plan": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\initial-plan.json",
+        "bytes": 18,
+        "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+      },
+      "adapter": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\mod_living_artifacts\\tools\\preview_acceptance_adapter.py",
+        "bytes": 48925,
+        "sha256": "6985160d8ee0cb1740717db3a6850b1588d46694d02c2868cc2de0d26931f836"
+      },
+      "contract": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\mod_living_artifacts\\tools\\feeding_preview.contract.json",
+        "bytes": 2537,
+        "sha256": "31e0d4b8f2b060620c8507e3bb7c3c701c9a0ffe8a2112680918995131ab70c3"
+      },
+      "preparation": {
+        "startup": {
+          "mode": "fixture",
+          "state_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+          "fixture_start_policy": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\frontend-fixture-start-policy.json",
+            "bytes": 10359,
+            "sha256": "0eb5c3c882d10458568e72b9f4b29b375f2b5597dcdd28174008cd52743ee0ec"
+          }
+        },
+        "initial_plan": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\initial-plan.json",
+          "bytes": 18,
+          "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+        },
+        "profile_preparation": {
+          "state_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+          "profile": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile",
+          "preparation": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\profile-preparation.json",
+            "bytes": 26842,
+            "sha256": "cd3bf0dcfbb7911a610673952d54fb264d7d5515660ba5b150be7fb9c55e9eef"
+          },
+          "fixture_start_policy": {
+            "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\frontend-fixture-start-policy.json",
+            "bytes": 10359,
+            "sha256": "0eb5c3c882d10458568e72b9f4b29b375f2b5597dcdd28174008cd52743ee0ec"
+          },
+          "files": {
+            "dlc_load.json": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\dlc_load.json",
+              "bytes": 96,
+              "sha256": "6465381bd34cc52e1203389a53e192ed96e93d3fde4b558c84ac3cabbc04a624"
+            },
+            "mod/fixture.mod": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod\\fixture.mod",
+              "bytes": 205,
+              "sha256": "bfd44d1cffff39bcb16bb2dc460f9686cb2b89e49e726a930e9803ded22ff74a"
+            },
+            "mod/product.mod": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod\\product.mod",
+              "bytes": 305,
+              "sha256": "0575f264ebbcf4d1544e1f2af331ad9d510c177cc15f1cb0393c114333c75f22"
+            },
+            "mod-content/fixture/_case_contract.json": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\_case_contract.json",
+              "bytes": 26804,
+              "sha256": "15afebc80e2c5112281919f97391cd36671c7a5f52c51a58d7577ea3977d08a6"
+            },
+            "mod-content/fixture/common/on_action/xalw_fixture_bootstrap.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\common\\on_action\\xalw_fixture_bootstrap.txt",
+              "bytes": 173,
+              "sha256": "53acd2da42e7483f719f11495e1333356fc218cdad2dbfc8d6bd37ed0597619d"
+            },
+            "mod-content/fixture/common/scripted_effects/xalw_fixture_inputs.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\common\\scripted_effects\\xalw_fixture_inputs.txt",
+              "bytes": 3702,
+              "sha256": "f05f19b4b61c44eaf25a83f57ea84dfd67da7c9ef38218dd66fc88b1c20e747a"
+            },
+            "mod-content/fixture/common/scripted_effects/xalw_fixture_observer.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\common\\scripted_effects\\xalw_fixture_observer.txt",
+              "bytes": 1010,
+              "sha256": "211f47a8d2a7533f06781d5d420c9ce4ee52cb31e472b188e832928a38a01e1a"
+            },
+            "mod-content/fixture/descriptor.mod": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\descriptor.mod",
+              "bytes": 88,
+              "sha256": "8bb09c87c2a2e739ef2f8b0882dc48cd3ebebc59c9dc8021b436a5738945c666"
+            },
+            "mod-content/fixture/localization/english/xalw_fixture_l_english.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\localization\\english\\xalw_fixture_l_english.yml",
+              "bytes": 489,
+              "sha256": "1de477c841f4b4c05448b1f26b402834bdb385382e7c93217b7518ec2c03e398"
+            },
+            "mod-content/fixture/localization/simp_chinese/xalw_fixture_l_simp_chinese.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\fixture\\localization\\simp_chinese\\xalw_fixture_l_simp_chinese.yml",
+              "bytes": 491,
+              "sha256": "20caf87d353ec212c6c8a64b3006c3657d4e96f71e93f0f96c3ade30d4420ac9"
+            },
+            "mod-content/product/common/activities/activity_types/feast.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\activities\\activity_types\\feast.txt",
+              "bytes": 131771,
+              "sha256": "3c54f179073a966c549a60c1927369c0c4d0f2ddf4ccf9e32f449b41d635af43"
+            },
+            "mod-content/product/common/character_interactions/xalw_interactions.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\character_interactions\\xalw_interactions.txt",
+              "bytes": 2216,
+              "sha256": "9b09bc6fb84a766cbeaa6b6409ec40f45edb2f9b24e7cb015eb7d53b4e32d9f8"
+            },
+            "mod-content/product/common/customizable_localization/xalw_artifacts.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\customizable_localization\\xalw_artifacts.txt",
+              "bytes": 9951,
+              "sha256": "0633563b9b4be94969f6975472c4ec8412546f58e6a494e6bcfb41830e281ff4"
+            },
+            "mod-content/product/common/decisions/xalw_decisions.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\decisions\\xalw_decisions.txt",
+              "bytes": 441,
+              "sha256": "71aafa66791c33ae9fcf6f9c586601495776e34fc915ed7ffd86c0ac000933f1"
+            },
+            "mod-content/product/common/game_rules/xalw_rules.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\game_rules\\xalw_rules.txt",
+              "bytes": 340,
+              "sha256": "e6cd71e6600b509bc1eb8cf40e2f4e56130fa1ebf2fb99b23d94011c93998e16"
+            },
+            "mod-content/product/common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_diplomacy_1_foreign_affairs_tree_perks.txt",
+              "bytes": 8645,
+              "sha256": "c0cfbc44288c84ab7c1396b9341c6579aff7108d5ed4b4fbafc351df00dd5081"
+            },
+            "mod-content/product/common/lifestyle_perks/00_diplomacy_2_majesty_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_diplomacy_2_majesty_tree_perks.txt",
+              "bytes": 9313,
+              "sha256": "6544183894d3c1ad7911243aab5c76aa43d668790b86835f129dce4b35ceb467"
+            },
+            "mod-content/product/common/lifestyle_perks/00_diplomacy_3_family_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_diplomacy_3_family_tree_perks.txt",
+              "bytes": 7516,
+              "sha256": "b76f2bbb1267aca5fa7ee310a0ead2dcb450db51e2c3ed6b4e06567bbc3289c2"
+            },
+            "mod-content/product/common/lifestyle_perks/00_intrigue_1_skulduggery_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_intrigue_1_skulduggery_tree_perks.txt",
+              "bytes": 5548,
+              "sha256": "8a446ca0827ad0d8308211e28d7210357fd911410c513d751a47b84058fa13bf"
+            },
+            "mod-content/product/common/lifestyle_perks/00_intrigue_2_temptation_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_intrigue_2_temptation_tree_perks.txt",
+              "bytes": 4431,
+              "sha256": "8c93571c10665e364670854c6e277356493d0174744826505f8defe43c43de9b"
+            },
+            "mod-content/product/common/lifestyle_perks/00_intrigue_3_intimidation_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_intrigue_3_intimidation_tree_perks.txt",
+              "bytes": 5899,
+              "sha256": "35ea1fa00cabc19f5e3d365bbbd911197b7d9bfd22adaaee92d91932944c5838"
+            },
+            "mod-content/product/common/lifestyle_perks/00_learning_1_medicine_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_learning_1_medicine_tree_perks.txt",
+              "bytes": 4001,
+              "sha256": "34ad8c5c77ff6d3dee074a51566145656aa3433ac82eae42d7525611dc84bc0d"
+            },
+            "mod-content/product/common/lifestyle_perks/00_learning_2_scholarship_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_learning_2_scholarship_tree_perks.txt",
+              "bytes": 9102,
+              "sha256": "ad5b76b3f6fd946d085cd7308949d7cf015616e84680980c1cff08373537fa66"
+            },
+            "mod-content/product/common/lifestyle_perks/00_learning_3_theology_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_learning_3_theology_tree_perks.txt",
+              "bytes": 9851,
+              "sha256": "2a7209047fe341582af475724cfc4e665b46e46bf900e4c36591ea7bd58112ce"
+            },
+            "mod-content/product/common/lifestyle_perks/00_martial_1_strategy_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_martial_1_strategy_tree_perks.txt",
+              "bytes": 4497,
+              "sha256": "584965d8a281799d9cfd51878a258b92869071c4b255becdb0134220d4bf321e"
+            },
+            "mod-content/product/common/lifestyle_perks/00_martial_2_authority_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_martial_2_authority_tree_perks.txt",
+              "bytes": 7273,
+              "sha256": "2d5d9601405be5933200bce26ecffc4e5aade5045ba0c7fbf41e26911a7b7777"
+            },
+            "mod-content/product/common/lifestyle_perks/00_martial_3_chivalry_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_martial_3_chivalry_tree_perks.txt",
+              "bytes": 6071,
+              "sha256": "c8008476d39dfb4981ce715dbf685c8e3c3c10045b3ad32bc929c5d0a5d889f1"
+            },
+            "mod-content/product/common/lifestyle_perks/00_stewardship_1_wealth_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_stewardship_1_wealth_tree_perks.txt",
+              "bytes": 7713,
+              "sha256": "142f571df5be349c2f5b5e9f876cfaf1619b684ca8e92d77e82b020a969923dc"
+            },
+            "mod-content/product/common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_stewardship_2_domain_tree_perks.txt",
+              "bytes": 9358,
+              "sha256": "ff3a6001519c4155dd298aff886233018cff487417d35c971b31a92eaeaaee79"
+            },
+            "mod-content/product/common/lifestyle_perks/00_stewardship_3_duty_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_stewardship_3_duty_tree_perks.txt",
+              "bytes": 9016,
+              "sha256": "576bd3ddcdd546724854234ad57c5f71ff3e7b49f17e0e762e2b9ab5fabe0ff5"
+            },
+            "mod-content/product/common/lifestyle_perks/00_wanderer_1_surveyor_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_wanderer_1_surveyor_tree_perks.txt",
+              "bytes": 9357,
+              "sha256": "4f9c8591f3411118fdc29622104a6650a97b0a138cf9fb6454cef577363e18eb"
+            },
+            "mod-content/product/common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_wanderer_2_wayfarer_tree_perks.txt",
+              "bytes": 3954,
+              "sha256": "7eed12021750cf6657dc69afc55e1cba24bd200cec050f1ddcd3b809587c3e66"
+            },
+            "mod-content/product/common/lifestyle_perks/00_wanderer_3_voyager_tree_perks.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\lifestyle_perks\\00_wanderer_3_voyager_tree_perks.txt",
+              "bytes": 5607,
+              "sha256": "975701fb2b830d3c14e5b8ad4179bd3382a362e1deed62a57e1eb691d07fa5f6"
+            },
+            "mod-content/product/common/modifiers/xalw_content_modifiers.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\modifiers\\xalw_content_modifiers.txt",
+              "bytes": 5070,
+              "sha256": "fd8e761a9078a5091fcefdc0ce8d2ddc38841e4e45731a1abf130734ac7236aa"
+            },
+            "mod-content/product/common/modifiers/xalw_core_modifiers.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\modifiers\\xalw_core_modifiers.txt",
+              "bytes": 227,
+              "sha256": "8a2a0495b066cdbe914a0ecc7e90efd285918bcc02787b9e297cb6742a246012"
+            },
+            "mod-content/product/common/on_action/xalw_content.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\on_action\\xalw_content.txt",
+              "bytes": 937,
+              "sha256": "e35c199554cefa6faa689431f2f490aff605b8b993bc2280f59273c177ebd27c"
+            },
+            "mod-content/product/common/on_action/xalw_core.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\on_action\\xalw_core.txt",
+              "bytes": 654,
+              "sha256": "aa4ea3f1d858ec8a4f6369ccbc44ec4d01648ee95b1e839a7eb09c86436b6de1"
+            },
+            "mod-content/product/common/opinion_modifiers/xalw_content_opinions.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\opinion_modifiers\\xalw_content_opinions.txt",
+              "bytes": 1365,
+              "sha256": "e4733a14eaa81b6e013dc7d5768c9f347385eb9da17fd726db64c2493207bd26"
+            },
+            "mod-content/product/common/script_values/xalw_values.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\script_values\\xalw_values.txt",
+              "bytes": 5736,
+              "sha256": "9413c0c56e7f7f8f6b103e9af2c996545d6db2439ba530ca8635c0bf10dafa32"
+            },
+            "mod-content/product/common/scripted_effects/00_single_combat_effects.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\00_single_combat_effects.txt",
+              "bytes": 107,
+              "sha256": "6117321d425c168cf0fd7eeb2ff9486c237d794caf3049d0ec6533ee58c16419"
+            },
+            "mod-content/product/common/scripted_effects/xalw_content_01.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_content_01.txt",
+              "bytes": 357531,
+              "sha256": "e3abda8b375fff112d3f6bf448fb9ed174c16995cfb9776d35a3db0d8172e722"
+            },
+            "mod-content/product/common/scripted_effects/xalw_content_02.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_content_02.txt",
+              "bytes": 103211,
+              "sha256": "8db192879509a6e825419a4471ea240c414f1355a728bfbe8a6c9f8446c5586a"
+            },
+            "mod-content/product/common/scripted_effects/xalw_core_01.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_core_01.txt",
+              "bytes": 19242,
+              "sha256": "c72fee7b4a7a9d89d28a8dfd078d87a3f3ae38bb56b675a4f99ada9d9715c67c"
+            },
+            "mod-content/product/common/scripted_effects/xalw_core_02.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_core_02.txt",
+              "bytes": 10124,
+              "sha256": "572e0e4231ac43fee4e423270ee584eb5db1492828cf6eae0af3f7ad358ca966"
+            },
+            "mod-content/product/common/scripted_effects/xalw_core_03.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_core_03.txt",
+              "bytes": 15436,
+              "sha256": "5395479ed1390c6b449ce3ba51f5288248034a6be7bf7b5e7f89de3cd0cd0356"
+            },
+            "mod-content/product/common/scripted_effects/xalw_native_00_single_combat_effects_01.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_native_00_single_combat_effects_01.txt",
+              "bytes": 15131,
+              "sha256": "9e13ae32829e88fba87dac28653ac5cae2e049c436aef33c94bc9795ef068471"
+            },
+            "mod-content/product/common/scripted_effects/xalw_native_00_single_combat_effects_02.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xalw_native_00_single_combat_effects_02.txt",
+              "bytes": 2043,
+              "sha256": "3f271e5b06edce9a11324dd4659a7bde6b5308ee814042941fc65585b407519f"
+            },
+            "mod-content/product/common/scripted_triggers/xalw_triggers.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\xalw_triggers.txt",
+              "bytes": 2324,
+              "sha256": "b0491b7f943043a9be4c79163a3c4777ff08c49a218d08296b678401e3d6b90a"
+            },
+            "mod-content/product/common/secret_types/00_bastard_secrets.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\secret_types\\00_bastard_secrets.txt",
+              "bytes": 10286,
+              "sha256": "69a511aca0ec1ed926a03d6afb72780240174696f25bbf485c7775af16d85f37"
+            },
+            "mod-content/product/common/secret_types/00_secret_types.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\secret_types\\00_secret_types.txt",
+              "bytes": 16964,
+              "sha256": "22a58e7c4cbc375d495e9f16623686b7ea8d3aeda22fc75ca2b0a2977b964394"
+            },
+            "mod-content/product/common/secret_types/dynastic_cycle_secrets.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\common\\secret_types\\dynastic_cycle_secrets.txt",
+              "bytes": 5273,
+              "sha256": "01f8c3959e58be430793512f930497fff6d16a2705dcf778796e4ff042c22b41"
+            },
+            "mod-content/product/descriptor.mod": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\descriptor.mod",
+              "bytes": 185,
+              "sha256": "d13af036e4f01a2e39692aeb30d99f41f2b95e1cd2d90e9c212616273cab4736"
+            },
+            "mod-content/product/events/stress_events/stress_threshold_events.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\events\\stress_events\\stress_threshold_events.txt",
+              "bytes": 434319,
+              "sha256": "9031e1140c7c7ccf0cdb0d36709c7525401c6bee5ef48f073a48da6cdb173934"
+            },
+            "mod-content/product/events/stress_events/stress_threshold_prison_events.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\events\\stress_events\\stress_threshold_prison_events.txt",
+              "bytes": 33497,
+              "sha256": "1a0bc84a1b2a6c7c47c3f66752a200cd7c1254d385f4be739f76a75fe17f6b30"
+            },
+            "mod-content/product/events/stress_events/stress_threshold_special_events.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\events\\stress_events\\stress_threshold_special_events.txt",
+              "bytes": 19447,
+              "sha256": "a0d9295f9fa99826b1d341c230057e88fc2add5c26d2f9108a8b8a3aff83d642"
+            },
+            "mod-content/product/events/xalw_content_events.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\events\\xalw_content_events.txt",
+              "bytes": 311,
+              "sha256": "b3abf8c1531a9232b8785f9ffd6deb0645807180ba1c31e8ee8238e535cba561"
+            },
+            "mod-content/product/events/xalw_core_events.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\events\\xalw_core_events.txt",
+              "bytes": 5831,
+              "sha256": "48192081595a658eb3a6f5090a52baed92473d2a06bcffd99812e8ae3e7d66a3"
+            },
+            "mod-content/product/localization/english/xalw_l_english.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\english\\xalw_l_english.yml",
+              "bytes": 28336,
+              "sha256": "1f47b2d6e6a3b15be3f19c6af68546bfa4b95527e05699ab4523b903e0fb1128"
+            },
+            "mod-content/product/localization/french/xalw_l_french.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\french\\xalw_l_french.yml",
+              "bytes": 30589,
+              "sha256": "0117d139c60b6f30248aaf75efd79f136273631f0ec0db57b93398b91515adc0"
+            },
+            "mod-content/product/localization/german/xalw_l_german.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\german\\xalw_l_german.yml",
+              "bytes": 30056,
+              "sha256": "1847034f76c64cbe93f5724d3931aca1fd3131f7164a4c770d3180c36bffdac9"
+            },
+            "mod-content/product/localization/japanese/xalw_l_japanese.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\japanese\\xalw_l_japanese.yml",
+              "bytes": 30375,
+              "sha256": "5345941456782111284abb6d823a2e1add250aef59b715318bb95c949e6a600d"
+            },
+            "mod-content/product/localization/korean/xalw_l_korean.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\korean\\xalw_l_korean.yml",
+              "bytes": 30802,
+              "sha256": "d8dfbf917b257a8dddc3a771e9e97ec7a126f3c639eea1bcbf213c042c524040"
+            },
+            "mod-content/product/localization/polish/xalw_l_polish.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\polish\\xalw_l_polish.yml",
+              "bytes": 29701,
+              "sha256": "092a78921e8a37dea99e82e1f01cfa0cdf110dffb269d0a3692f74bbfbb5359e"
+            },
+            "mod-content/product/localization/russian/xalw_l_russian.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\russian\\xalw_l_russian.yml",
+              "bytes": 37957,
+              "sha256": "6e7ff3a5a73ed53090bbf9845866cef181ca35449738ed1e776d20d432abb94f"
+            },
+            "mod-content/product/localization/simp_chinese/xalw_l_simp_chinese.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\xalw_l_simp_chinese.yml",
+              "bytes": 27486,
+              "sha256": "9e9b77eb4c4b4d029c599f11a5a942a484da4716ff1fb1374b6563830e22672d"
+            },
+            "mod-content/product/localization/spanish/xalw_l_spanish.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\localization\\spanish\\xalw_l_spanish.yml",
+              "bytes": 30300,
+              "sha256": "d9c392414c635e50452b3cf9c5a274f59052d598b7a7f7599acfa29ea2efee30"
+            },
+            "mod-content/product/thumbnail.png": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\mod-content\\product\\thumbnail.png",
+              "bytes": 458517,
+              "sha256": "84bdafacfef39c6fc4c9819401da70e1bacf70dc6eaf2dc6c0a866c32815dde3"
+            },
+            "pdx_settings.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\pdx_settings.txt",
+              "bytes": 7604,
+              "sha256": "8b7ae76e67df07b8524845b533b4b3b3865f61769eb31f4cd233a176969b4771"
+            },
+            "player/game_rules/presets.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\player\\game_rules\\presets.txt",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "presets.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\presets.txt",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "tutorial.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\profile\\tutorial.txt",
+              "bytes": 61,
+              "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+            }
+          },
+          "runtime_status": "NOT_RUN"
+        },
+        "fixture_emission": {
+          "schema_version": 2,
+          "fixture_root": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture",
+          "files": {
+            "common/on_action/xalw_fixture_bootstrap.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture\\common\\on_action\\xalw_fixture_bootstrap.txt",
+              "bytes": 173,
+              "sha256": "53acd2da42e7483f719f11495e1333356fc218cdad2dbfc8d6bd37ed0597619d"
+            },
+            "common/scripted_effects/xalw_fixture_inputs.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture\\common\\scripted_effects\\xalw_fixture_inputs.txt",
+              "bytes": 3702,
+              "sha256": "f05f19b4b61c44eaf25a83f57ea84dfd67da7c9ef38218dd66fc88b1c20e747a"
+            },
+            "common/scripted_effects/xalw_fixture_observer.txt": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture\\common\\scripted_effects\\xalw_fixture_observer.txt",
+              "bytes": 1010,
+              "sha256": "211f47a8d2a7533f06781d5d420c9ce4ee52cb31e472b188e832928a38a01e1a"
+            },
+            "descriptor.mod": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture\\descriptor.mod",
+              "bytes": 88,
+              "sha256": "8bb09c87c2a2e739ef2f8b0882dc48cd3ebebc59c9dc8021b436a5738945c666"
+            },
+            "localization/english/xalw_fixture_l_english.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture\\localization\\english\\xalw_fixture_l_english.yml",
+              "bytes": 489,
+              "sha256": "1de477c841f4b4c05448b1f26b402834bdb385382e7c93217b7518ec2c03e398"
+            },
+            "localization/simp_chinese/xalw_fixture_l_simp_chinese.yml": {
+              "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\external-preview-fixture\\localization\\simp_chinese\\xalw_fixture_l_simp_chinese.yml",
+              "bytes": 491,
+              "sha256": "20caf87d353ec212c6c8a64b3006c3657d4e96f71e93f0f96c3ade30d4420ac9"
+            }
+          },
+          "input_origin": "fixture_generated",
+          "business_acceptance": "NOT_ASSESSED",
+          "game_started": false
+        },
+        "runtime_status": "NOT_RUN",
+        "business_pass": false,
+        "product_release_pass": false
+      },
+      "effective_budgets": {
+        "command_timeout": 300,
+        "readiness_timeout": 1800,
+        "timeout": 4500,
+        "hold_seconds": 2700,
+        "poll_interval": 0.5
+      },
+      "readiness_policy": {
+        "schema": "ck3-mod-acceptance-readiness-policy-v1",
+        "policy_id": "future-readiness-minimum-2026-10-15",
+        "source": "explicit-user-instruction-2026-10-15",
+        "minimum_seconds": 1800,
+        "requested_seconds": 1200,
+        "effective_seconds": 1800,
+        "floor_applied": true,
+        "historical_receipts_reclassified": false
+      },
+      "runtime_status": "NOT_RUN",
+      "business_acceptance": "NOT_ASSESSED"
+    },
+    "host_started": {
+      "at_utc": "2026-10-22T15:05:09.348367+00:00",
+      "pid": 3256,
+      "create_time": 1792681509.3477347,
+      "supervisor_pid": 7436,
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "--agent-source-root",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda",
+        "--game-dir",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "--bridge-dll",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\native-build\\xar_ck3_bridge.dll",
+        "--bridge-injector",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\native-build\\xar_ck3_bridge_injector.exe",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+        "--output",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.json",
+        "--state-dir",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+        "--plan",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\initial-plan.json",
+        "--control-plan-dir",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\controls",
+        "--command-timeout",
+        "300",
+        "--readiness-timeout",
+        "1800",
+        "--timeout",
+        "4500",
+        "--poll-interval",
+        "0.5",
+        "--hold-seconds",
+        "2700",
+        "--fixture-profile",
+        "--frontend-robert-bootstrap",
+        "--frontend-fixture-start-policy",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\frontend-fixture-start-policy.json",
+        "--allow-private-player-inventory-window-open",
+        "--allow-private-player-artifact-personal-use-actions",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_artifact_personal_use_v1"
+      ],
+      "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "admitted_lease": {
+        "checkout_head": "abcfefeda3f2d140a80b6c161e15f9215c859938",
+        "cli_sha256": "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+        "event_id": "b619861b317b4375ac21fb2f4c99d6a2",
+        "expected_sequence": 497,
+        "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+        "repo": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13",
+        "schema": "xar.promo.screen-lease-cas/v1",
+        "screen_resource": "ck3-screen:acquired",
+        "sequence": 498,
+        "source_cli": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\codex_task_bus.py",
+        "task_id": "ck3-living-artifacts-screen-a14",
+        "updated_at_utc": "2026-10-22T15:04:18.733873+00:00"
+      },
+      "background_offline_admission": {
+        "schema": "ck3-mod-acceptance-background-offline-admission-v1",
+        "machine_id": "pc-20260924rtuf-f11af23c08",
+        "observed_at_utc": "2026-10-22T15:05:04.549751+00:00",
+        "receipt": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\steam-offline-r11-a01.json",
+          "bytes": 2332,
+          "sha256": "4180ad51b5eca0403b3f1e56c39fa2ba772c4035c93b7677f44853b3f8fa4393"
+        },
+        "steam_pid": 8580,
+        "steam_birth_filetime": "134371126587222837",
+        "observation_method": "native_current_user_byte",
+        "background_only": true
+      },
+      "actual_popen_retained": true,
+      "business_pass": false
+    },
+    "host_exit": {
+      "at_utc": "2026-10-22T15:56:21.600203+00:00",
+      "pid": 3256,
+      "returncode": 1,
+      "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "host_supervisor": {
+      "at_utc": "2026-10-22T15:05:08.238797+00:00",
+      "pid": 12592,
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda\\tools\\ck3_mod_acceptance_launcher.py",
+        "--run-root",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+        "--keeper-root",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14",
+        "--steam-offline-receipt",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\steam-offline-r11-a01.json",
+        "--supervise",
+        "--launch-ticket",
+        "a4d533dbaea7c78b9c23f97c63bf6c05f4a67119c37b1ec2395278c8e1f8cee9"
+      ],
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "original_popen_identity": {
+        "pid": 12592,
+        "birth_filetime": "134371551082380655"
+      },
+      "business_pass": false
+    },
+    "normal_close": {
+      "root_normal_gui_review": null,
+      "operator_normal_gui_review": null,
+      "normal_quit_automation": null,
+      "normal_quit_automation_failure_preserved": null,
+      "retained_handle": {
+        "signaled": false,
+        "exit_code": null,
+        "actual_retained_os0": false,
+        "pid": 11696,
+        "create_time": 1792681518.678866,
+        "retained_synchronize_query_handle_acquired": true
+      },
+      "native_zero_proof": null,
+      "finish_hold_rows": null,
+      "host_finished_at": null,
+      "managed_thread_finished": false,
+      "cleanup_ok": null,
+      "host_error": null,
+      "failure_shutdown_proof": null,
+      "failure_preserved": false,
+      "failure_lifecycle_completed": false,
+      "business_pass": false,
+      "normal_close_qualified": false
+    },
+    "retained_identity": {
+      "pid": 11696,
+      "create_time": 1792681518.678866,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "retained_exit": {
+      "signaled": false,
+      "exit_code": null,
+      "actual_retained_os0": false,
+      "pid": 11696,
+      "create_time": 1792681518.678866,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "keeper_report": {
+      "schema": "xar.promo.screen-lease-keeper/v1",
+      "task_id": "ck3-living-artifacts-screen-a14",
+      "last_sequence": 519,
+      "failure": null,
+      "thread_exited": true,
+      "journal": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14\\journal.jsonl",
+      "at_utc": "2026-10-22T16:08:30.204342+00:00",
+      "entry_error": null,
+      "checkout_head": "abcfefeda3f2d140a80b6c161e15f9215c859938",
+      "screen_released": false,
+      "game_actions": false
+    },
+    "keeper_exit": {
+      "keeper_actual_exit_code": 0,
+      "keeper_report": {
+        "schema": "xar.promo.screen-lease-keeper/v1",
+        "task_id": "ck3-living-artifacts-screen-a14",
+        "last_sequence": 519,
+        "failure": null,
+        "thread_exited": true,
+        "journal": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14\\journal.jsonl",
+        "at_utc": "2026-10-22T16:08:30.204342+00:00",
+        "entry_error": null,
+        "checkout_head": "abcfefeda3f2d140a80b6c161e15f9215c859938",
+        "screen_released": false,
+        "game_actions": false
+      },
+      "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "business_pass": false
+    },
+    "keeper_process": {
+      "pid": 5752,
+      "create_time": 1792681457.8075864,
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda\\tools\\ck3_mod_acceptance_keeper.py",
+        "--repo",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13",
+        "--root",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14",
+        "--task",
+        "ck3-living-artifacts-screen-a14",
+        "--sequence",
+        "497",
+        "--bus-dir",
+        "D:\\workspace\\.codex-task-bus",
+        "--bus-cli",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\codex_task_bus.py",
+        "--bus-cli-sha256",
+        "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F"
+      ]
+    },
+    "release": {
+      "schema": "codex.task_bus.v1",
+      "ok": true,
+      "task": {
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "abcfefeda3f2d140a80b6c161e15f9215c859938"
+        },
+        "last_sequence": 520,
+        "next_step": "",
+        "pid": 3676,
+        "repo": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "done",
+        "summary": "R11-preview-stale-0-days-1-save-no-feed-host1-public2-forced-cleanup-normal-close-unqualified",
+        "task_id": "ck3-living-artifacts-screen-a14",
+        "updated_at_utc": "2026-10-22T16:08:51.779560+00:00"
+      },
+      "event": {
+        "schema": "codex.task_bus.v1",
+        "sequence": 520,
+        "event_id": "6d53714d9580422b93bdc015529aa6b6",
+        "timestamp_utc": "2026-10-22T16:08:51.780271+00:00",
+        "kind": "completed",
+        "task_id": "ck3-living-artifacts-screen-a14",
+        "to": [
+          "*"
+        ],
+        "state": "done",
+        "summary": "R11-preview-stale-0-days-1-save-no-feed-host1-public2-forced-cleanup-normal-close-unqualified",
+        "next_step": "",
+        "resources": [],
+        "repo": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "abcfefeda3f2d140a80b6c161e15f9215c859938"
+        }
+      }
+    },
+    "run_wait": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "pid": 2844,
+      "returncode": 2,
+      "actual_original_popen_wait": true,
+      "completed_at_utc": "2026-10-22T15:56:18.063460+00:00"
+    },
+    "run_command": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T15:05:04.926763+00:00",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\runtime.abcfefeda.json",
+        "--products",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "living-artifacts",
+        "--case",
+        "feeding_preview",
+        "--prepared-case",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "--run-context",
+        "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0011/run-context-r11-a01.json"
+      ]
+    },
+    "run_intent": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "at_utc": "2026-10-22T15:05:04.927133+00:00",
+      "stage": "run",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\runtime.abcfefeda.json",
+        "--products",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "living-artifacts",
+        "--case",
+        "feeding_preview",
+        "--prepared-case",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "--run-context",
+        "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0011/run-context-r11-a01.json"
+      ]
+    },
+    "run_process": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "pid": 2844,
+      "create_time": 1792681504.928538,
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\runtime.abcfefeda.json",
+        "--products",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "living-artifacts",
+        "--case",
+        "feeding_preview",
+        "--prepared-case",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "--run-context",
+        "D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0011/run-context-r11-a01.json"
+      ]
+    },
+    "run_completion": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T15:56:18.064327+00:00",
+      "exit_code": 2,
+      "command": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150504926376Z-run\\command.json",
+      "original_subprocess_wait_observed": true
+    },
+    "allocate_wait": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "pid": 12092,
+      "returncode": 0,
+      "actual_original_popen_wait": true,
+      "completed_at_utc": "2026-10-22T16:08:30.331641+00:00"
+    },
+    "allocate_command": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T15:04:14.727356+00:00",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance.py",
+        "allocate",
+        "--runtime",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\runtime.abcfefeda.json",
+        "--products",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "living-artifacts",
+        "--case",
+        "feeding_preview",
+        "--prepared-case",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "--attempt",
+        "a14",
+        "--keeper-output",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14",
+        "--previous-live",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+        "--previous-keeper",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-npc-a13",
+        "--previous-release",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-screen-resource-close-a01\\release.stdout.json"
+      ]
+    },
+    "allocate_intent": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "at_utc": "2026-10-22T15:04:14.727765+00:00",
+      "stage": "allocate",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance.py",
+        "allocate",
+        "--runtime",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\runtime.abcfefeda.json",
+        "--products",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "living-artifacts",
+        "--case",
+        "feeding_preview",
+        "--prepared-case",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "--attempt",
+        "a14",
+        "--keeper-output",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14",
+        "--previous-live",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+        "--previous-keeper",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-npc-a13",
+        "--previous-release",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-screen-resource-close-a01\\release.stdout.json"
+      ]
+    },
+    "allocate_process": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "pid": 12092,
+      "create_time": 1792681454.7292316,
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance.py",
+        "allocate",
+        "--runtime",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\runtime.abcfefeda.json",
+        "--products",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "living-artifacts",
+        "--case",
+        "feeding_preview",
+        "--prepared-case",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\prepared\\living-preview-a14\\prepared-case.json",
+        "--attempt",
+        "a14",
+        "--keeper-output",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-preview-a14",
+        "--previous-live",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+        "--previous-keeper",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-npc-a13",
+        "--previous-release",
+        "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-screen-resource-close-a01\\release.stdout.json"
+      ]
+    },
+    "allocate_completion": {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-22T16:08:30.343027+00:00",
+      "exit_code": 0,
+      "command": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T150414726961Z-allocate\\command.json",
+      "original_subprocess_wait_observed": true
+    },
+    "native_report_projection": {
+      "status": "RED",
+      "error": null,
+      "finished_at": "2026-10-22T15:56:21.050439+00:00",
+      "managed_session_done": true,
+      "managed_session_thread_finished": true,
+      "cleanup_ok": true,
+      "state_dir": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state",
+      "agent_source_root": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\shared-source-abcfefeda",
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0011",
+      "server_stderr": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0011\\native-report.server-stderr.log",
+      "steps": [
+        {
+          "id": "xalw-core-0004",
+          "plan": {
+            "id": "xalw-core-0004",
+            "tool": "ck3_open_player_inventory_window_v1",
+            "args": {},
+            "fresh_revision": true,
+            "continue_on_error": true,
+            "timeout": 30
+          },
+          "started_at": "2026-10-22T15:13:54.785855+00:00",
+          "ok": false,
+          "error": "RuntimeError: MCP tool ck3_open_player_inventory_window_v1 returned an error: Error executing tool ck3_open_player_inventory_window_v1: Inventory opening requires the existing actual managed-source inventory",
+          "finished_at": "2026-10-22T15:13:55.289550+00:00"
+        }
+      ],
+      "session": {
+        "error": null,
+        "report": {
+          "pid": 11696,
+          "finished_at": "2026-10-22T15:56:20.413674+00:00",
+          "process_exit_code": null,
+          "exit_reason": "stop",
+          "shutdown": {
+            "nonce": "0fca5edc51234b3fb8c3ff837ae17fdc",
+            "ck3_pid": 11696,
+            "ck3_creation_date": "20261022150518.678865+000",
+            "ck3_exit_code": 1,
+            "job_active_processes_before_termination": 1,
+            "job_active_processes_final": 0,
+            "tree_gone": true,
+            "cleanup_proven": true,
+            "final_ck3_inventory": {
+              "tasklist_returncode": 0,
+              "tasklist_pids": [],
+              "wmi_pids": [],
+              "native_pids": [],
+              "inventory_backend": "tasklist+toolhelp32",
+              "processes": []
+            },
+            "watchdog_pid": 12996,
+            "watchdog_creation_date": "20261022150517.936979+000",
+            "watchdog_state_before": "running",
+            "watchdog_state_after": "absent",
+            "control_files_absent": {
+              "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\control\\ck3.json": true,
+              "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\control\\watchdog-0fca5edc51234b3fb8c3ff837ae17fdc.ready.json": true,
+              "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\control\\ck3.watchdog_error": true,
+              "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a14\\state\\control\\unsafe-cleanup.json": true
+            },
+            "contract_errors": [],
+            "ok": true
+          }
+        }
+      }
+    }
+  }
+}
