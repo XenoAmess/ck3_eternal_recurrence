@@ -1,5 +1,6 @@
 """Two fresh successor-mother arms; only promoted arm continues once to H2/H3."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from collections.abc import Mapping
 from datetime import datetime, timezone
@@ -108,7 +109,7 @@ def prepare_case(context_value: object) -> Q.Obj:
     module: object = importlib.import_module("ck3_mod_acceptance_prepare")
     if not isinstance(module, H.Prepare):
         raise ValueError("Actual public preparation entry points unavailable")
-    profile = Q.obj(module.materialize_product_profile(context, None, inputs.get("configuration")))
+    profile = Q.obj(materialize_saved_profile_v2(context, None, inputs.get("configuration"), source_role=None))
     profile = Q.obj(module.finish_product_profile(context, profile, provenance={
         "machine_id": N.MACHINE, "kind": c["case"], "saved_input": saved,
         "new_common_mother": c["new_common_mother"], "preparation_result": c["preparation_result"],

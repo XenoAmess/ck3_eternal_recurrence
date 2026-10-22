@@ -21,6 +21,10 @@ import threading
 import time
 import traceback
 import uuid
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from xar_autoplayer.saved_campaign_profile_inventory_v2 import ProfileDirectories
 
 
 def now() -> str:
@@ -541,11 +545,16 @@ def saved_campaign_expected(args: argparse.Namespace) -> dict[str, object] | Non
         "actor_character_id": args.saved_campaign_player_id, "date_raw": args.saved_campaign_date_raw}
 
 
-def prepare_saved_campaign(args: argparse.Namespace, spec: object) -> dict[str, object]:
+def prepare_saved_campaign(args: argparse.Namespace, spec: ProfileDirectories) -> dict[str, object]:
+    from xar_autoplayer.saved_campaign_profile_inventory_v2 import SCHEMA, parse_inventory, verify_inventory
+
     expected = saved_campaign_expected(args)
     if expected is None:
         raise ValueError("saved campaign preparation requires its explicit input")
-    source = Path(expected["source_path"])
+    source_path = expected["source_path"]
+    if not isinstance(source_path, str):
+        raise ValueError("saved campaign source path must be explicit text")
+    source = Path(source_path)
     if source.suffix.casefold() != ".ck3" or not source.is_file() or source.is_symlink():
         raise ValueError("immutable saved campaign must be an ordinary .ck3 file")
     profile = spec.profile_dir.resolve()
@@ -561,55 +570,9 @@ def prepare_saved_campaign(args: argparse.Namespace, spec: object) -> dict[str, 
     # profile. Product projections may never reuse a cold fixture registrar.
     inventory_path = args.saved_campaign_product_inventory.expanduser().resolve()
     inventory_bytes = inventory_path.read_bytes()
-    inventory = json.loads(inventory_bytes)
-    if (not isinstance(inventory, dict) or set(inventory) != {"schema", "profile_path", "enabled_mods", "product_files"}
-            or inventory["schema"] not in {"ck3-saved-campaign-product-only-profile-v1",
-                "ck3-saved-campaign-vanilla-profile-v1"}
-            or Path(inventory["profile_path"]).resolve() != profile
-            or inventory["enabled_mods"] != dlc["enabled_mods"]
-            or not isinstance(inventory["product_files"], list)):
-        raise ValueError("saved campaign inventory does not bind the prepared profile")
-    vanilla = inventory["schema"] == "ck3-saved-campaign-vanilla-profile-v1"
-    if vanilla:
-        if inventory["enabled_mods"] != [] or inventory["product_files"] != []:
-            raise ValueError("saved campaign vanilla inventory must have exactly empty enabled_mods and product_files")
-    elif not inventory["enabled_mods"] or not inventory["product_files"]:
-        raise ValueError("saved campaign product-only inventory requires nonempty enabled_mods and product_files")
-    seen = set()
-    for row in inventory["product_files"]:
-        if not isinstance(row, dict) or set(row) != {"path", "bytes", "sha256"}:
-            raise ValueError("invalid saved campaign product file inventory row")
-        path = Path(row["path"]).resolve()
-        if (str(path) in seen or path.is_symlink() or not path.is_file()
-                or type(row["bytes"]) is not int or not 0 <= row["bytes"] <= 2**63-1
-                or not isinstance(row["sha256"], str) or re.fullmatch(r"[0-9a-fA-F]{64}", row["sha256"]) is None):
-            raise ValueError("invalid or repeated saved campaign product file identity")
-        seen.add(str(path))
-        if path.stat().st_size != row["bytes"] or file_sha(path).lower() != row["sha256"].lower():
-            raise ValueError("saved campaign product inventory file changed: " + str(path))
-        if path.suffix.casefold() == ".txt" and "on_game_start_after_lobby" in path.read_text(encoding="utf-8-sig"):
-            raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))
-    actual_files = set()
-    for enabled in dlc["enabled_mods"]:
-        if not isinstance(enabled, str) or not enabled:
-            raise ValueError("saved campaign enabled_mods entries must be explicit descriptor paths")
-        descriptor = (profile / enabled).resolve()
-        if not descriptor.is_relative_to(profile) or not descriptor.is_file() or descriptor.is_symlink():
-            raise ValueError("saved campaign descriptor must be an ordinary file in the fresh profile")
-        paths = re.findall(r'(?m)^\s*path\s*=\s*"([^"\r\n]+)"\s*(?:#.*)?$', descriptor.read_text(encoding="utf-8-sig"))
-        if len(paths) != 1:
-            raise ValueError("saved campaign descriptor must resolve exactly one directory product projection")
-        product = Path(paths[0]).resolve()
-        if not product.is_dir() or product.is_symlink():
-            raise ValueError("saved campaign product projection must be an ordinary frozen directory")
-        actual_files.add(str(descriptor))
-        for path in product.rglob("*"):
-            if path.is_symlink():
-                raise ValueError("saved campaign product projection contains a symbolic link")
-            if path.is_file():
-                actual_files.add(str(path.resolve()))
-    if actual_files != seen:
-        raise ValueError("saved campaign inventory is not the complete exact enabled product projection plus outer descriptors")
+    inventory_value: object = json.loads(inventory_bytes)
+    inventory = verify_inventory(parse_inventory(inventory_value), profile=profile, actual_enabled_mods=dlc["enabled_mods"])
+    vanilla = inventory.mode == "vanilla"
     save_dir.mkdir(parents=True, exist_ok=True)
     target = save_dir / "restored_campaign.ck3"
     digest = hashlib.sha256()
@@ -626,7 +589,7 @@ def prepare_saved_campaign(args: argparse.Namespace, spec: object) -> dict[str, 
     return {**expected, "profile_path": str(profile), "copied_save_path": str(target),
         "load_save_name": target.stem, "product_inventory_path": str(inventory_path),
         "product_inventory_sha256": hashlib.sha256(inventory_bytes).hexdigest(),
-        "profile_inventory_schema": inventory["schema"],
+        "profile_inventory_schema": SCHEMA,
         "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_VANILLA_PROFILE" if vanilla else "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE",
         "source_game_state_claimed": False, "product_acceptance_proven": False}
 

@@ -16,8 +16,7 @@ SPEC = importlib.util.spec_from_file_location("vanilla_saved_host_tests",
     PACKAGE / "native_bridge/research/run_ck3_12002_mcp_live.py")
 HOST = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(HOST)
-VANILLA = "ck3-saved-campaign-vanilla-profile-v1"
-PRODUCT = "ck3-saved-campaign-product-only-profile-v1"
+from xar_autoplayer.saved_campaign_profile_inventory_v2 import SCHEMA
 
 
 class SavedVanillaProfileTests(unittest.TestCase):
@@ -30,8 +29,8 @@ class SavedVanillaProfileTests(unittest.TestCase):
         self.source = self.root / "checkpoint.ck3"
         self.source.write_bytes(b"immutable checkpoint input")
         self.inventory_path = self.root / "inventory.json"
-        self.inventory = {"schema": VANILLA, "profile_path": str(self.profile),
-            "enabled_mods": [], "product_files": []}
+        self.inventory = {"schema": SCHEMA, "profile_mode": "vanilla", "profile_path": str(self.profile),
+            "enabled_mods": [], "product_files": [], "projections": []}
         self.enabled_mods = []
         self.args = SimpleNamespace(saved_campaign_save=self.source,
             saved_campaign_save_bytes=self.source.stat().st_size,
@@ -49,18 +48,18 @@ class SavedVanillaProfileTests(unittest.TestCase):
         receipt = self.prepare()
         self.assertEqual(Path(receipt["copied_save_path"]).read_bytes(), self.source.read_bytes())
         self.assertEqual(receipt["status"], "IMMUTABLE_SAVE_COPIED_TO_FRESH_VANILLA_PROFILE")
-        self.assertEqual(receipt["profile_inventory_schema"], VANILLA)
+        self.assertEqual(receipt["profile_inventory_schema"], SCHEMA)
         self.assertFalse(receipt["source_game_state_claimed"])
         self.assertFalse(receipt["product_acceptance_proven"])
 
     def test_product_schema_cannot_masquerade_as_empty_vanilla(self):
-        self.inventory["schema"] = PRODUCT
+        self.inventory["profile_mode"] = "enabled"
         with self.assertRaisesRegex(ValueError, "requires nonempty"):
             self.prepare()
         self.assertFalse((self.profile / "save games").exists())
 
     def test_vanilla_schema_requires_both_lists_exactly_empty(self):
-        for key in ("enabled_mods", "product_files"):
+        for key in ("enabled_mods", "product_files", "projections"):
             with self.subTest(key=key):
                 self.inventory[key] = ["unadmitted"]
                 self.enabled_mods = self.inventory["enabled_mods"]
@@ -80,12 +79,12 @@ class SavedVanillaProfileTests(unittest.TestCase):
                     self.enabled_mods = ["mod/fixture.mod"]
                 else:
                     self.inventory["schema"] = "unqualified-empty-profile"
-                with self.assertRaisesRegex(ValueError, "does not bind"):
+                with self.assertRaises(ValueError):
                     self.prepare()
                 self.inventory = original
                 self.enabled_mods = []
 
-    def product(self, *, registrar=False):
+    def product(self, *, registrar=False, role="formal_product"):
         product = self.root / "frozen-product"
         product.mkdir()
         script = product / "events.txt"
@@ -94,9 +93,10 @@ class SavedVanillaProfileTests(unittest.TestCase):
         descriptor.parent.mkdir()
         descriptor.write_text('path="' + product.as_posix() + '"\n', encoding="utf-8")
         self.enabled_mods = ["mod/test.mod"]
-        self.inventory.update(schema=PRODUCT, enabled_mods=list(self.enabled_mods),
+        self.inventory.update(profile_mode="enabled", enabled_mods=list(self.enabled_mods),
             product_files=[{"path":str(path), "bytes":path.stat().st_size,
-                "sha256":hashlib.sha256(path.read_bytes()).hexdigest()} for path in (descriptor, script)])
+                "sha256":hashlib.sha256(path.read_bytes()).hexdigest()} for path in (descriptor, script)],
+            projections=[{"descriptor":"mod/test.mod", "root_path":str(product), "source_role":role}])
         return script
 
     def test_original_product_projection_still_admitted(self):
@@ -104,13 +104,19 @@ class SavedVanillaProfileTests(unittest.TestCase):
         self.assertEqual(self.prepare()["status"], "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE")
 
     def test_product_hash_and_cold_registrar_guards_are_preserved(self):
-        script = self.product(registrar=True)
+        script = self.product(registrar=True, role="case_fixture")
         with self.assertRaisesRegex(ValueError, "cold-start registrar"):
             self.prepare()
         script.write_text("mutated", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "file changed"):
             self.prepare()
         self.assertFalse((self.profile / "save games").exists())
+
+    def test_formal_bootstrap_is_allowed_by_actual_host(self) -> None:
+        script = self.product(registrar=True, role="formal_product")
+        before = script.read_bytes()
+        self.assertEqual(self.prepare()["status"], "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE")
+        self.assertEqual(script.read_bytes(), before)
 
     def test_vanilla_does_not_relax_exact_save_hash_or_freshness(self):
         self.args.saved_campaign_save_sha256 = "0" * 64

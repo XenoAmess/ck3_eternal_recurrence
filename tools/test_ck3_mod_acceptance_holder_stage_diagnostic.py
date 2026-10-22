@@ -182,6 +182,12 @@ class HolderDiagnosticTests(unittest.TestCase):
         fixed = "    proof['baseline_saved_campaign'] = data['saved_campaign']\n    proof['production_source_head'] = data['production_source_head']\n    return {**context['expected'], 'proof': proof, 'business_pass': False}\n"
         original = "    return {**context['expected'], 'proof': proof, 'business_pass': False,\n            'baseline_saved_campaign': data['saved_campaign']}\n"
         source = MODULE.read_text(encoding='utf-8')
+        # Undo only the new inventory publication to reconstruct the retained
+        # R48 adapter byte-for-byte. The historical evidence pin stays fixed.
+        v2_inventory = "    from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2\n    write_saved_profile_inventory_v2(inventory_path, profile=profile, mode='enabled', enabled_mods=enabled,\n        product_files=products, roles={'mod/product.mod': 'formal_product', 'mod/holder_stage_diagnostic.mod': 'case_overlay'})\n"
+        v1_inventory = "    write_json(inventory_path, {'schema': 'ck3-saved-campaign-product-only-profile-v1',\n        'profile_path': str(profile), 'enabled_mods': enabled, 'product_files': products})\n"
+        self.assertEqual(source.count(v2_inventory), 1)
+        source = source.replace(v2_inventory, v1_inventory)
         self.assertEqual(source.count(fixed), 1)
         source = source.replace(fixed, original)
         self.assertEqual(hashlib.sha256(source.encode('utf-8')).hexdigest(),

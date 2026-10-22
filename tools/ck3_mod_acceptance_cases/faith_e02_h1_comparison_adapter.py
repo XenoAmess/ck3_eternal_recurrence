@@ -1,5 +1,6 @@
 ﻿"""Two independent restores, one ordinary arm or one legal promotion; no HoF creation."""
 from __future__ import annotations
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
 from datetime import datetime, timezone
 import hashlib
@@ -44,7 +45,6 @@ class Opening(Protocol):
 
 @runtime_checkable
 class Prepare(Protocol):
-    def materialize_product_profile(self, context: Q.Obj, unused: None, configuration: object) -> object: ...
     def finish_product_profile(self, context: Q.Obj, profile: Q.Obj, *, provenance: Q.Obj) -> object: ...
 
 
@@ -171,7 +171,7 @@ def prepare_case(context_value: object) -> Q.Obj:
     module: object = importlib.import_module("ck3_mod_acceptance_prepare")
     if not isinstance(module, Prepare):
         raise ValueError("Public preparation functions unavailable")
-    profile = Q.obj(module.materialize_product_profile(context, None, inputs.get("configuration")))
+    profile = Q.obj(materialize_saved_profile_v2(context, None, inputs.get("configuration"), source_role=None))
     profile = Q.obj(module.finish_product_profile(context, profile, provenance={
         "machine_id": c["machine_id"], "kind": "H1-independent-" + Q.arm(c["arm"]),
         "saved_input": saved, "fresh_restore_observed": False, "preparation_mod_mounted": False,

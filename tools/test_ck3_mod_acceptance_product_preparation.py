@@ -32,7 +32,8 @@ class ProductPreparationTests(unittest.TestCase):
         self.context={'state_dir':str(self.state),'output':str(self.output),
             'shared_source_root':str(source.parents[1]),'game_dir':str(self.game),'case_inputs':{},
             'shared_game':{'version':'offline-product-build','exe_sha256':self.executable['sha256']}}
-        self.profile=prepare.materialize_product_profile(self.context,self.product,configs)
+        from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
+        self.profile=materialize_saved_profile_v2(self.context,self.product,configs,source_role='formal_product')
         self.args=SimpleNamespace(state_dir=self.state,game_dir=self.game,
             bridge_dll=self.root/'native.dll',bridge_injector=self.root/'injector.exe',
             output=self.root/'run/native-report.json')

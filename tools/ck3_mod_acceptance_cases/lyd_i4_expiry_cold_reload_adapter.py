@@ -5,6 +5,7 @@ never opens the expiry seed; ordinary public saved-input SHA admission remains.
 One new cold SAVE is read once to observe the actually reloaded serialization,
 including HoR which the upstream final observation did not explicitly qualify.
 """
+from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 import hashlib
 import json
 import os
@@ -171,7 +172,7 @@ def upstream(context):
 
 
 def prepare_case(context):
-    from ck3_mod_acceptance_prepare import materialize_product_profile, pin, write_json
+    from ck3_mod_acceptance_prepare import pin, write_json
     origin = upstream(context)  # No writes before actual expiry/verify/normal-close qualification.
     inputs, seed = origin['prepared']['case_inputs'], origin['seed']
     source = Path(seed['save']).resolve()
@@ -184,7 +185,7 @@ def prepare_case(context):
     for row in rows:
         raw = Path(row['path']).read_bytes()
         require(len(raw) == row['bytes'] and hashlib.sha256(raw).hexdigest() == row['sha256'], 'Original formal product bytes differ')
-    profile = materialize_product_profile(context, product, inputs['plain_configuration'])
+    profile = materialize_saved_profile_v2(context, product, inputs['plain_configuration'], source_role="formal_product")
     preparation = output / 'profile-preparation.json'
     write_json(preparation, {'schema': 'ck3-mod-acceptance-prepared-i4-expiry-cold-v1', **profile,
         'saved_campaign': seed, 'source_inventory': inputs['product_inventory'],
