@@ -1,0 +1,538 @@
+{
+  "schema": "living-artifacts-r13-feeding-preview-and-close-summary-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T19:09:51.810938+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0013",
+  "source_scope": "Read-only extraction of actual completed R13 files; no rerun, no full-save reparse, no original mutation.",
+  "frozen_argv": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\frozen-argv.json",
+    "bytes": 71100,
+    "sha256": "1ba1f0a490bba0521a785f79bbaf767e473368db9f3c04f9962733639c6b0282"
+  },
+  "original_case": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-output\\living-artifacts-preview-result.json",
+    "bytes": 219232,
+    "sha256": "4900e4ecc009e023c743666612026709edbd912f4958e6491ce1ab4cee2a7191"
+  },
+  "original_case_status": "BLOCKED",
+  "original_case_failure": "ValueError: Independent current ITEM did not confirm GUI inventory visibility",
+  "continuation": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-inventory-continuation-result.json",
+    "bytes": 3396,
+    "sha256": "27c2fb3edcee0856667874ac83dddab3d91a2b34e48b86dbaaede72e793ded91"
+  },
+  "continuation_status": "PASS",
+  "continuation_overlay_source_declared_at_run": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\preview_acceptance_adapter.py",
+    "bytes": 62035,
+    "sha256": "44fe45060f87ac37631fbfc79575fab7113ddd03be07484c8342e446c947517a"
+  },
+  "cumulative_budgeted_calls": 87,
+  "saved_observations": 5,
+  "natural_days": 0,
+  "checkpoints": [
+    {
+      "number": 1,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-output\\preview-checkpoint-01.json",
+        "bytes": 3319,
+        "sha256": "0d5d80c89e056ce7ef925419facc0f0a34ac0c45d31a850bbe3133e8e116b628"
+      },
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.9.15",
+        "month": 12801,
+        "equipped": false,
+        "level": 1,
+        "xp": 92,
+        "pending": 0,
+        "growth_sequence": 0,
+        "last_month": 12801,
+        "resonance": 20,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      },
+      "remaining_rarities": [
+        "common",
+        "masterwork",
+        "famed",
+        "illustrious"
+      ],
+      "retained_save_declared_by_verified_checkpoint": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\checkpoint-01\\original.ck3",
+        "bytes": 70862348,
+        "sha256": "0c6991da93c7c80ceea995c9b0e94d34a6eaa249d5cd2f517c18810fbd556f37"
+      }
+    },
+    {
+      "number": 2,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-checkpoint-02.json",
+        "bytes": 3324,
+        "sha256": "812c1cf4bf5c056304ec5a7e67bf978cf2c455f47bcbfa63345489a3c9ecf8b2"
+      },
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.9.15",
+        "month": 12801,
+        "equipped": true,
+        "level": 2,
+        "xp": 72,
+        "pending": 0,
+        "growth_sequence": 1,
+        "last_month": 12801,
+        "resonance": 20,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      },
+      "remaining_rarities": [
+        "masterwork",
+        "famed",
+        "illustrious"
+      ],
+      "retained_save_declared_by_verified_checkpoint": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\checkpoint-02\\original.ck3",
+        "bytes": 70862823,
+        "sha256": "cd4b9f86926e8511f8986f2c14ad1b619441faa3fb04750d7089c6d9ab3ea7b1"
+      }
+    },
+    {
+      "number": 3,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-checkpoint-03.json",
+        "bytes": 3306,
+        "sha256": "7143c1d5354b49d7be93533faf3e8422e9fe419825d6ee8934fa68c1ba959295"
+      },
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.9.15",
+        "month": 12801,
+        "equipped": true,
+        "level": 3,
+        "xp": 72,
+        "pending": 0,
+        "growth_sequence": 2,
+        "last_month": 12801,
+        "resonance": 20,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      },
+      "remaining_rarities": [
+        "famed",
+        "illustrious"
+      ],
+      "retained_save_declared_by_verified_checkpoint": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\checkpoint-03\\original.ck3",
+        "bytes": 70862218,
+        "sha256": "b30760b1b39102c116b879077a46a87f10cce50dc634c93958777d44e222f790"
+      }
+    },
+    {
+      "number": 4,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-checkpoint-04.json",
+        "bytes": 3294,
+        "sha256": "d690dc965273b844304ac97b9b3345ab4abd0a29f625ca104d734a33e3b87814"
+      },
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.9.15",
+        "month": 12801,
+        "equipped": true,
+        "level": 4,
+        "xp": 272,
+        "pending": 0,
+        "growth_sequence": 3,
+        "last_month": 12801,
+        "resonance": 20,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      },
+      "remaining_rarities": [
+        "illustrious"
+      ],
+      "retained_save_declared_by_verified_checkpoint": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\checkpoint-04\\original.ck3",
+        "bytes": 70861468,
+        "sha256": "2600ce8e43a78dd4ae27058c134152e71d03b7af930fad6810c4afe09dba3ef4"
+      }
+    },
+    {
+      "number": 5,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-checkpoint-05.json",
+        "bytes": 3273,
+        "sha256": "5e857ca5c31a4d33f3eabde9c78975497eba983de6cb40474ba6d29a24eeaacb"
+      },
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.9.15",
+        "month": 12801,
+        "equipped": true,
+        "level": 6,
+        "xp": 572,
+        "pending": 0,
+        "growth_sequence": 5,
+        "last_month": 12801,
+        "resonance": 20,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      },
+      "remaining_rarities": [],
+      "retained_save_declared_by_verified_checkpoint": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\checkpoint-05\\original.ck3",
+        "bytes": 70860718,
+        "sha256": "e72a5b4fd6874af36112b4b277f558e5cbca2ec6366a4045f53e07eab42d3019"
+      }
+    }
+  ],
+  "previews": [
+    {
+      "number": 1,
+      "review": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-review-01.json",
+        "bytes": 3355,
+        "sha256": "e19fdea5550d4739682e95694b1dac6661c665535babaee4ca55ecc63b8be802"
+      },
+      "root_response": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\feeding-preview-review-01-root-result.json",
+        "bytes": 1958,
+        "sha256": "3318f9e27921b3c4d342cf8da0f574dbccd67dbe18972c2bcdb27ebfb5aad7d6"
+      },
+      "screenshot": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T182426355490Z-r13-common-cancel-preview-a01.png",
+        "bytes": 2083824,
+        "sha256": "e2d66abedeb8a31cef0879dfd21997fa0a1b45ab386d3a6de17e87e5e380fef7"
+      },
+      "capture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T182426355490Z-r13-common-cancel-preview-a01.json",
+        "bytes": 821,
+        "sha256": "cf5b692303088ee10375e0a32c84440ddf154a6730b4781f4ff94a0262a197b2"
+      },
+      "event_instance_id": 3,
+      "material_id": "403",
+      "rarity": "common",
+      "displayed_base_xp": 80,
+      "displayed_preview_xp": 80,
+      "displayed_material_name": "待测食材：普通",
+      "reviewed_at_utc": "2026-10-22T18:24:59Z",
+      "review_method": "direct-original-png-no-ocr"
+    },
+    {
+      "number": 2,
+      "review": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-review-02.json",
+        "bytes": 3357,
+        "sha256": "83c98d40d9ff16bbfccc3b48bcfa97b49a3fd2ac4bcb3f216ab34f4cf93eee33"
+      },
+      "root_response": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\feeding-preview-review-02-root-result.json",
+        "bytes": 1960,
+        "sha256": "c0dca5a141bc8ca3d6508d7a326966fd3c02d800fee50124c5d2929ea34f4c04"
+      },
+      "screenshot": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T182804721646Z-r13-common-feeding-preview-a01.png",
+        "bytes": 2377227,
+        "sha256": "e2a78b52e571be4f208164ba9d2cb51da2e52d129075a097cdf98587e363f1bf"
+      },
+      "capture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T182804721646Z-r13-common-feeding-preview-a01.json",
+        "bytes": 822,
+        "sha256": "a4a0ef48816c613a6947889bb04ed30dd62e3a91f695950eda753253d9d2ffed"
+      },
+      "event_instance_id": 5,
+      "material_id": "403",
+      "rarity": "common",
+      "displayed_base_xp": 80,
+      "displayed_preview_xp": 80,
+      "displayed_material_name": "待测食材：普通",
+      "reviewed_at_utc": "2026-10-22T18:28:31Z",
+      "review_method": "direct-original-png-no-ocr"
+    },
+    {
+      "number": 3,
+      "review": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-review-03.json",
+        "bytes": 3382,
+        "sha256": "53e3d98d80e7d807a01352b224816a017755a08c44e52c1a99cc3f58306bb305"
+      },
+      "root_response": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\feeding-preview-review-03-root-result.json",
+        "bytes": 1979,
+        "sha256": "f9807fd64fdacd06e351f30a7bf3fc974e10edaca7d6e8e5bfa353f21a9f808d"
+      },
+      "screenshot": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T183517321699Z-r13-masterwork-feeding-preview-a01.png",
+        "bytes": 2061937,
+        "sha256": "2b7bde4e9d1def608192d927cf6349d3576c1fbefadede0cce3583fda0724d00"
+      },
+      "capture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T183517321699Z-r13-masterwork-feeding-preview-a01.json",
+        "bytes": 826,
+        "sha256": "b7897c78b26dfde32f958fb6473c46960905bbd07cd33e3073137e395307ad38"
+      },
+      "event_instance_id": 7,
+      "material_id": "404",
+      "rarity": "masterwork",
+      "displayed_base_xp": 200,
+      "displayed_preview_xp": 200,
+      "displayed_material_name": "待测食材：大师级",
+      "reviewed_at_utc": "2026-10-22T18:35:32Z",
+      "review_method": "direct-original-png-no-ocr"
+    },
+    {
+      "number": 4,
+      "review": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-review-04.json",
+        "bytes": 3362,
+        "sha256": "87b1a4b7c5374de45886b626eceb00dfebbec098e0ab2f24edcd0cc84fc14599"
+      },
+      "root_response": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\feeding-preview-review-04-root-result.json",
+        "bytes": 1964,
+        "sha256": "97c89943a275fa684edd8cce75112f962185cff92324a9ff275a993bd243f914"
+      },
+      "screenshot": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T183835641682Z-r13-famed-feeding-preview-a01.png",
+        "bytes": 2031936,
+        "sha256": "e4091e485b3eb0aa49562aed31baf759fde63c1925e5c09011691b2538d3087c"
+      },
+      "capture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T183835641682Z-r13-famed-feeding-preview-a01.json",
+        "bytes": 821,
+        "sha256": "539632085e471af34cd953d6baa1a045c62a4d5f63bf70b7d6b5a18e3a207509"
+      },
+      "event_instance_id": 9,
+      "material_id": "405",
+      "rarity": "famed",
+      "displayed_base_xp": 500,
+      "displayed_preview_xp": 500,
+      "displayed_material_name": "待测食材：名作级",
+      "reviewed_at_utc": "2026-10-22T18:38:51Z",
+      "review_method": "direct-original-png-no-ocr"
+    },
+    {
+      "number": 5,
+      "review": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-review-05.json",
+        "bytes": 3394,
+        "sha256": "4da4e239c46ddf8ef7e162ec5a5b47f267468ce083db2e40617b7c4b438871de"
+      },
+      "root_response": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\feeding-preview-review-05-root-result.json",
+        "bytes": 1987,
+        "sha256": "e6bfbbc8fd7a28eb1220c790b38561b3eac519170280b805df81df5a1d7c7807"
+      },
+      "screenshot": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T184302765469Z-r13-illustrious-feeding-preview-a01.png",
+        "bytes": 2299541,
+        "sha256": "7d82ddadffcc2b36204e7690bf457148546448eed284ab7416e869194b7e6d06"
+      },
+      "capture": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T184302765469Z-r13-illustrious-feeding-preview-a01.json",
+        "bytes": 827,
+        "sha256": "915560d175cf4019d819263894d76f38b340534b29c43e2efd48dc1ecb1df0e2"
+      },
+      "event_instance_id": 11,
+      "material_id": "406",
+      "rarity": "illustrious",
+      "displayed_base_xp": 1200,
+      "displayed_preview_xp": 1200,
+      "displayed_material_name": "待测食材：卓越级",
+      "reviewed_at_utc": "2026-10-22T18:44:01Z",
+      "review_method": "direct-original-png-no-ocr"
+    }
+  ],
+  "cancellation": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-cancellation.json",
+    "bytes": 1245,
+    "sha256": "d260960af11d812887744079221f6c45946710b73db22419dd92a59c54b22a3b"
+  },
+  "cancel_native_material_preserved": true,
+  "cancel_xp_scope": "Included in exact first-feed saved XP; no separate native dynamic-XP query",
+  "log_scan": {
+    "full_bytes": 5350,
+    "record_count": 24,
+    "static_diagnostic_count": 24,
+    "mod_runtime_error_count": 0,
+    "mod_runtime_errors": [],
+    "unattributed_record_count": 0,
+    "scope": "All current scene mod script/UI errors; unrelated/unattributed diagnostics do not become whole-log-clean credit"
+  },
+  "log_scan_source": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-continuation-a01\\preview-error-scan.json",
+    "bytes": 1044,
+    "sha256": "ea3d53bb059f99f2a50501ccf64acaa5594b16f89baf8f4a5c42136813efb230"
+  },
+  "normal_close": {
+    "source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\case-output\\normal-close-result.json",
+      "bytes": 8791,
+      "sha256": "dac1a7a30d2acea9acd4a205225ad022f76069eddffaf53fb9e7b6a2f72b3c1f"
+    },
+    "normal_close_qualified": true,
+    "retained_os_exit": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 7108,
+      "create_time": 1792690850.5543785,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "native_zero_proof": {
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "alive_or_business_credit": false,
+      "managed_session_done": true,
+      "pid": 7108,
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_pc-20260924rtuf-f11af23c08--living-artifacts--R0013",
+      "started_at": "2026-10-22T17:40:49.584026+00:00",
+      "finished_at": "2026-10-22T19:03:59.252897+00:00",
+      "exit_reason": "process_exit",
+      "process_exit_code": 0,
+      "shutdown": {
+        "nonce": "e0bfa118c04f4714b937117ba0babcbf",
+        "ck3_pid": 7108,
+        "ck3_creation_date": "20261022174050.554378+000",
+        "ck3_exit_code": 0,
+        "job_active_processes_before_termination": 0,
+        "job_active_processes_final": 0,
+        "tree_gone": true,
+        "cleanup_proven": true,
+        "final_ck3_inventory": {
+          "tasklist_returncode": 0,
+          "tasklist_pids": [],
+          "wmi_pids": [],
+          "native_pids": [],
+          "inventory_backend": "tasklist+toolhelp32",
+          "processes": []
+        },
+        "watchdog_pid": 12164,
+        "watchdog_creation_date": "20261022174049.918919+000",
+        "watchdog_state_before": "running",
+        "watchdog_state_after": "absent",
+        "control_files_absent": {
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a17\\state\\control\\ck3.json": true,
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a17\\state\\control\\watchdog-e0bfa118c04f4714b937117ba0babcbf.ready.json": true,
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a17\\state\\control\\ck3.watchdog_error": true,
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-preview-a17\\state\\control\\unsafe-cleanup.json": true
+        },
+        "contract_errors": [],
+        "ok": true
+      }
+    }
+  },
+  "host": {
+    "source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\native-report.json",
+      "bytes": 11597373,
+      "sha256": "dd5f02eb5ccd744159d65e3821a53206332c0cfc9d2bf157e7abbe6e722516ea"
+    },
+    "status": "RED",
+    "failed_steps": [
+      {
+        "id": "xalw-core-0004",
+        "started_at": "2026-10-22T17:48:26.731562+00:00",
+        "finished_at": "2026-10-22T17:48:27.312051+00:00",
+        "ok": false,
+        "error": "RuntimeError: MCP tool ck3_open_player_inventory_window_v1 returned an error: Error executing tool ck3_open_player_inventory_window_v1: Inventory opening requires the existing actual managed-source inventory"
+      }
+    ],
+    "final_observation": {
+      "schema": "ck3-host-terminal-final-observation-v1",
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "pid": 7108,
+      "process_exit_code": 0,
+      "failed_step_ids": [
+        "xalw-core-0004"
+      ],
+      "host_error": null,
+      "failure_preserved": true,
+      "alive_or_business_credit": false,
+      "business_pass": false,
+      "normal_close_qualified": false
+    },
+    "original_wait_source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\host-original-process-exit.json",
+      "bytes": 253,
+      "sha256": "ab991998a9652f8e3497c84fbb115ce2be09b4eee92e368c432a0015bab9834d"
+    },
+    "actual_original_wait_exit_code": 1
+  },
+  "public": {
+    "original_wait_source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T174036987576Z-run\\exit.json",
+      "bytes": 184,
+      "sha256": "52aab73c8f224b34e19cda5d46ba2201e6bccfdcf46442e801eb0312898a3c29"
+    },
+    "actual_original_wait_exit_code": 0
+  },
+  "keeper": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0013\\keeper-actual-parent-exit.json",
+    "bytes": 640,
+    "sha256": "507cea33593bdc3da655ed341d383878d93c67c6c052305b9f6fcba3c5efdaee"
+  },
+  "screen_release": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r13-screen-resource-close-a01\\release.stdout.json",
+    "bytes": 1283,
+    "sha256": "35a2e5746356f850ef1e37d1c40edb76ea8c3222c21c3dff349d5348371b3e4d"
+  },
+  "screen_release_sequence": 574,
+  "screen_state": "done",
+  "screen_resources": [],
+  "steam_close": {
+    "source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-offline-r13-close-a01.json",
+      "bytes": 2332,
+      "sha256": "3b2d014e691785759fc6e22cea9babde4be6963133ece5ed40c333226b1b671d"
+    },
+    "observed_at_utc": "2026-10-22T19:05:55.258458+00:00",
+    "status": "offline",
+    "offline_mode": true
+  },
+  "stale_readonly_scheduler": {
+    "before": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r13-docs-and-scheduler-close-a01\\processes-before.json",
+      "bytes": 1844,
+      "sha256": "05de9a2966763ddc41e54be3a65fab68038bd9f1c2aca2a31da540f0ffdfb13f"
+    },
+    "intent": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r13-docs-and-scheduler-close-a01\\scheduler-stop-intent.json",
+      "bytes": 2010,
+      "sha256": "afa56c00f5a85c3af855398ec4e99febdf9698ad2cce67bf3ea5b7dd6b34c360"
+    },
+    "actual_windows_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r13-docs-and-scheduler-close-a01\\scheduler-stop-result.json",
+      "bytes": 821,
+      "sha256": "012f580badc61c192c51b509be757d851e23afcb4f907eea74b53e74a9de24ff"
+    },
+    "root_original_tool_wait": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r13-docs-and-scheduler-close-a01\\scheduler-original-tool-wait.json",
+      "bytes": 435,
+      "sha256": "0b8ce41d875fe11f45c956da48550941eef9b86420b313cbf21448de9a9ada38"
+    },
+    "actual_original_tool_exit_code": 15,
+    "os_zero_credit": false
+  },
+  "business_pass": false,
+  "product_release_pass": false,
+  "npc_credit": false,
+  "suppression_expiry_credit": false,
+  "limits": [
+    "Original public case remains BLOCKED; continuation-specific PASS only.",
+    "Original host remains RED/exit1 for its historical inventory guard refusal; public exit0 is separate.",
+    "Saved variable samples plus independent native owner/equipment, not current-native artifact variable queries.",
+    "No NPC, suppression expiry, cold-load, threshold, curse or whole-product release qualification."
+  ]
+}
