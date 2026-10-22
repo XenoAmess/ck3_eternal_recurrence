@@ -326,7 +326,13 @@ def allocated(root: Path) -> int:
         for name in files:
             path = Path(parent) / name
             require(not path.is_symlink(), "Native output contains a symbolic link")
-            total += ((path.stat().st_size + 4095) // 4096) * 4096
+            try:
+                size = path.stat().st_size
+            except FileNotFoundError:
+                # CMake atomically replaces FileAPI temporaries after os.walk.
+                # A removed entry occupies no current bytes; other errors fail.
+                continue
+            total += ((size + 4095) // 4096) * 4096
     return total
 
 

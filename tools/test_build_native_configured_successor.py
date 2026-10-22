@@ -8,11 +8,12 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from typing import Protocol, runtime_checkable
 
 from build_native_configured_successor import (
     ChildEnvironment, Config, Fixture, MsvcInitializer, MsvcInstallation,
-    Pin, Producer, ROOT, cmake_boolean_flags, config_json, load_shared, obj, parse_config, parse_pin, read,
+    Pin, Producer, ROOT, allocated, cmake_boolean_flags, config_json, load_shared, obj, parse_config, parse_pin, read,
     same_metadata_content,
 )
 
@@ -144,6 +145,41 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         self.assertEqual(result["original_wait_returncode"], 7)
         self.assertIsNone(result["stopped_reason"])
         self.assertFalse(result["game_started_or_attached"])
+
+    def test_capacity_scan_accepts_only_an_actual_deleted_walk_entry(self) -> None:
+        kept = self.root / "kept.bin"
+        temporary = self.root / "tmp.json"
+        kept.write_bytes(b"x" * 4097)
+        temporary.write_bytes(b"transient CMake FileAPI output")
+        original_stat = Path.stat
+        deleted = False
+
+        def remove_before_stat(path: Path, *, follow_symlinks: bool = True) -> os.stat_result:
+            nonlocal deleted
+            if path == temporary and follow_symlinks and not deleted:
+                temporary.unlink()
+                deleted = True
+            return original_stat(path, follow_symlinks=follow_symlinks)
+
+        with patch.object(Path, "stat", remove_before_stat):
+            self.assertEqual(allocated(self.root), 4096 + 8192)
+        self.assertTrue(deleted)
+        self.assertFalse(temporary.exists())
+        self.assertEqual(kept.stat().st_size, 4097)
+
+    def test_capacity_scan_keeps_permission_and_unknown_stat_errors(self) -> None:
+        present = self.root / "present.bin"
+        present.write_bytes(b"present")
+        original_stat = Path.stat
+        for error_type in (PermissionError, OSError):
+            def reject_stat(path: Path, *, follow_symlinks: bool = True) -> os.stat_result:
+                if path == present and follow_symlinks:
+                    raise error_type("fixture stat rejected")
+                return original_stat(path, follow_symlinks=follow_symlinks)
+
+            with self.subTest(error=error_type.__name__), patch.object(Path, "stat", reject_stat):
+                with self.assertRaisesRegex(error_type, "fixture stat rejected"):
+                    allocated(self.root)
 
     def test_actual_unused_off_transport_fails_direct_link_but_lazy_archive_passes(self) -> None:
         """Exercise the actual LNK2019 path that stopped the production successor."""
