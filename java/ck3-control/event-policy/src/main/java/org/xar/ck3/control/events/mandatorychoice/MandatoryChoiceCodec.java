@@ -33,7 +33,7 @@ public final class MandatoryChoiceCodec {
             .enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
             .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
     private static final Set<String> WINDOW_FIELDS = Set.of("schema", "query_id", "frame_binding", "window_id",
-            "window_instance_id", "window_type", "source_identity", "typed_window_relation", "blocking_proof",
+            "window_instance_id", "window_type", "source_identity", "stable_source_identity", "typed_window_relation", "blocking_proof",
             "blocks_simulation", "exclusive_modal", "blocks_input", "choices_complete", "complete", "choices",
             "presentation_order_proof");
     private static final Set<String> FRAME_FIELDS = Set.of("game_pid", "connection_generation", "revision",
@@ -55,6 +55,7 @@ public final class MandatoryChoiceCodec {
         Field<String> queryId = field(row, "query_id", value -> text(value, false));
         Field<ChoiceIdentity> instance = field(row, "window_instance_id", MandatoryChoiceCodec::identity);
         Field<EvidenceDocument> source = field(row, "source_identity", value -> document(object(value)));
+        Field<EvidenceDocument> stableSource = field(row, "stable_source_identity", value -> document(object(value)));
         if (row.hasNonNull("typed_window_relation")) { object(row.get("typed_window_relation")); }
         field(row, "blocks_simulation", MandatoryChoiceCodec::bool);
         field(row, "exclusive_modal", MandatoryChoiceCodec::bool);
@@ -77,7 +78,7 @@ public final class MandatoryChoiceCodec {
             JsonNode choice = choices.get(index);
             entries.add(choice.isObject() ? choice(object(choice), index) : new NonChoiceRow(index));
         }
-        return new NativeWindow(frame, windowId, windowType, queryId, instance, source, blockingProof,
+        return new NativeWindow(frame, windowId, windowType, queryId, instance, source, stableSource, blockingProof,
                 complete.hasValue() && complete.value(), presentation, entries, document(choices), document(row));
     }
 

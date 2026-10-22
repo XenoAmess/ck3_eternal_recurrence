@@ -150,6 +150,49 @@ final class MandatoryChoicePolicyTest {
     }
 
     @Test
+    void stableAndRuntimeSourceEvidenceRemainSeparateAndRoundTripWithoutAuthority() throws IOException {
+        ObjectNode input = base();
+        ObjectNode stable = JSON.createObjectNode().put("historical_callback", "ck3.exe+0xab");
+        input.set("stable_source_identity", stable);
+        NativeWindow window = MandatoryChoiceCodec.decode(bytes(input));
+        assertEquals(input.get("source_identity"), JSON.readTree(window.sourceIdentity().value().json()));
+        assertEquals(stable, JSON.readTree(window.stableSourceIdentity().value().json()));
+        assertNotEquals(window.sourceIdentity(), window.stableSourceIdentity());
+        assertEquals(input, JSON.readTree(MandatoryChoiceCodec.encodeWindow(window)));
+        Decision decision = MandatoryChoicePolicy.selectUnknownMandatory(window, Optional.of(window.frame()));
+        assertEquals(Status.RECOMMENDED, decision.status());
+        assertFalse(decision.dispatchAttempted()); assertFalse(decision.commandAcknowledged());
+        assertFalse(decision.originalWindowAdvancedVerified()); assertFalse(decision.materialEffectsVerified());
+        assertFalse(decision.replayAllowed());
+
+        ObjectNode stableOnly = input.deepCopy(); stableOnly.remove("source_identity");
+        NativeWindow stableOnlyWindow = MandatoryChoiceCodec.decode(bytes(stableOnly));
+        assertEquals(Presence.MISSING, stableOnlyWindow.sourceIdentity().presence());
+        assertEquals(stable, JSON.readTree(stableOnlyWindow.stableSourceIdentity().value().json()));
+        assertEquals(stableOnly, JSON.readTree(MandatoryChoiceCodec.encodeWindow(stableOnlyWindow)));
+        ObjectNode absent = input.deepCopy(); absent.remove("stable_source_identity");
+        NativeWindow absentWindow = MandatoryChoiceCodec.decode(bytes(absent));
+        assertEquals(Presence.MISSING, absentWindow.stableSourceIdentity().presence());
+        assertEquals(window.sourceIdentity(), absentWindow.sourceIdentity());
+        ObjectNode nullable = input.deepCopy(); nullable.putNull("stable_source_identity");
+        NativeWindow nullWindow = MandatoryChoiceCodec.decode(bytes(nullable));
+        assertEquals(Presence.NULL, nullWindow.stableSourceIdentity().presence());
+        assertEquals(window.sourceIdentity(), nullWindow.sourceIdentity());
+        assertEquals(nullable, JSON.readTree(MandatoryChoiceCodec.encodeWindow(nullWindow)));
+        ObjectNode empty = input.deepCopy(); empty.set("stable_source_identity", JSON.createObjectNode());
+        NativeWindow emptyWindow = MandatoryChoiceCodec.decode(bytes(empty));
+        assertEquals(Presence.VALUE, emptyWindow.stableSourceIdentity().presence());
+        assertEquals(JSON.createObjectNode(), JSON.readTree(emptyWindow.stableSourceIdentity().value().json()));
+        assertEquals(window.sourceIdentity(), emptyWindow.sourceIdentity());
+        assertEquals(empty, JSON.readTree(MandatoryChoiceCodec.encodeWindow(emptyWindow)));
+        for (JsonNode invalid : new JsonNode[] {JSON.getNodeFactory().booleanNode(true),
+                JSON.getNodeFactory().numberNode(1), JSON.getNodeFactory().textNode("source"), JSON.createArrayNode()}) {
+            ObjectNode wrong = input.deepCopy(); wrong.set("stable_source_identity", invalid);
+            assertThrows(IllegalArgumentException.class, () -> MandatoryChoiceCodec.decode(bytes(wrong)));
+        }
+    }
+
+    @Test
     void utf32TieOrderMatchesPythonInsteadOfJavaUtf16() throws IOException {
         ObjectNode input = base(); ObjectNode first = choice(input, 0); ObjectNode second = choice(input, 1);
         first.put("choice_id", "😀"); second.put("choice_id", "\ue000");

@@ -108,12 +108,14 @@ public final class MandatoryChoiceModel {
     }
     public record NativeWindow(FrameBinding frame, Field<ChoiceIdentity> windowId, String windowType,
             Field<String> queryId, Field<ChoiceIdentity> windowInstanceId,
-            Field<EvidenceDocument> sourceIdentity, Optional<EvidenceDocument> blockingProof,
+            Field<EvidenceDocument> sourceIdentity, Field<EvidenceDocument> stableSourceIdentity,
+            Optional<EvidenceDocument> blockingProof,
             boolean choicesComplete, Field<String> presentationOrderKind,
             List<ChoiceEntry> choices, EvidenceDocument originalChoices, EvidenceDocument original) {
         public NativeWindow {
             Objects.requireNonNull(frame); Objects.requireNonNull(windowId); Objects.requireNonNull(windowType);
             Objects.requireNonNull(queryId); Objects.requireNonNull(windowInstanceId); Objects.requireNonNull(sourceIdentity);
+            Objects.requireNonNull(stableSourceIdentity);
             Objects.requireNonNull(blockingProof); Objects.requireNonNull(presentationOrderKind);
             choices = List.copyOf(choices); Objects.requireNonNull(originalChoices); Objects.requireNonNull(original);
         }
