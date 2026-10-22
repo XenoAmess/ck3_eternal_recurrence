@@ -17,6 +17,7 @@ import subprocess
 import sys
 
 from .mechanism_contract import parse_mechanism_full
+from .reading_clock import selected_reading_clock, checked_reading_hold_total
 
 SCHEMA = 'ck3-faith-power-formal-edit-v1'
 VALUE_V3_SCHEMA = 'ck3-faith-power-value-v3-formal-edit-v1'
@@ -252,16 +253,19 @@ class FormalInputs:
         for check in checks.values():
             if pointer(self.load(check['file']), check['json_pointer']) != check['equals']:
                 raise ValueError('Actual native observation differs: ' + check['id'])
+        reading_clocks=[]
         for row in rows:
             source = inventory[row['id']]
-            for key in ('zh', 'en', 'claim_ids', 'shot_ids', 'audio', 'provider_request', 'speech_duration_seconds', 'duration_seconds'):
+            clock=selected_reading_clock(row,source,enabled=getattr(self,'mechanism_full_contract',None) is not None)
+            reading_clocks.append(clock)
+            for key in ('zh', 'en', 'claim_ids', 'shot_ids', 'audio', 'provider_request', 'speech_duration_seconds'):
                 if row[key] != source[key]:
                     raise ValueError('Selected measured source field changed: ' + row['id'] + '/' + key)
             self.bound(row['audio'])
             request = self.load(row['provider_request'])
             if request['request']['text'] != row['zh']:
                 raise ValueError('Audio request text differs')
-            if abs(common.cue_duration(row['speech_duration_seconds']) - row['duration_seconds']) > 1e-6:
+            if abs(common.cue_duration(row['speech_duration_seconds']) - clock.source_base_duration_seconds) > 1e-6:
                 raise ValueError('Measured voice clock differs')
             if not 0 <= float(row.get('subtitle_start_seconds', 0)) < row['speech_duration_seconds']:
                 raise ValueError('Subtitle onset must precede the unchanged measured speech end')
@@ -390,6 +394,7 @@ class FormalInputs:
             spans.sort()
             if any(right[0] < left[1] - 1e-7 for left, right in zip(spans, spans[1:])):
                 raise ValueError('Actual raw intervals repeat or overlap')
+        reading_hold_total=checked_reading_hold_total(reading_clocks)
         total = sum(row['duration_seconds'] for row in rows)
         profile=common.render_profile(doc,self.bound)
         music=common.background_music(doc,self.bound)
@@ -426,7 +431,7 @@ class FormalInputs:
         if value_v3 and doc.get('storage_reservation') is not None:self.load(doc['storage_reservation'])
         media_stats=list(self.bindings.media_stats.values()) if self.metadata_only else []
         metadata_checked=list(self.bindings.checked.values()) if self.metadata_only else []
-        return {'rows': rows, 'seconds': total, 'gaps': gaps, 'ready_to_build': not gaps and not self.metadata_only,
+        return {'rows': rows, 'seconds': total, 'reading_hold_seconds':reading_hold_total, 'gaps': gaps, 'ready_to_build': not gaps and not self.metadata_only,
             'content_ready':not gaps,'metadata_only':self.metadata_only,'fullrender_admitted':False,
             'media_bytes_revalidated':not self.metadata_only,'media_stat_observations':media_stats,
             'composition_source_checks':composition_checks,'composition_coverage':common.gui_composition.coverage(rows),

@@ -280,7 +280,7 @@ jobs:
         run: |
           python -B -X utf8 -m unittest discover -s promo/ck3_faith_and_power/integration/tests -p "test_*.py" -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul promo/ck3_faith_and_power/integration/src/faith_power_promo/mechanism_contract.py promo/ck3_faith_and_power/integration/src/faith_power_promo/record_validation.py promo/ck3_faith_and_power/integration/tests/test_record_validation.py
+          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul promo/ck3_faith_and_power/integration/src/faith_power_promo/mechanism_contract.py promo/ck3_faith_and_power/integration/src/faith_power_promo/reading_clock.py promo/ck3_faith_and_power/integration/src/faith_power_promo/record_validation.py promo/ck3_faith_and_power/integration/tests/test_record_validation.py promo/ck3_faith_and_power/integration/src/faith_power_promo/narration_alignment.py promo/ck3_faith_and_power/integration/tests/test_narration_alignment.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test complete metadata runtime-source byte budget without CK3
         env:

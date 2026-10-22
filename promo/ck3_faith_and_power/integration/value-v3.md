@@ -84,3 +84,9 @@ python -B -m faith_power_promo.formal_episode plan --metadata-only --repo <仓�
 制作保持最多31分钟、168个语音段、2560×1440 / 30fps、视频 maxrate/bufsize 3Mbps，直接产物模式，不无意义复制大媒体或另入 CAS。一个语音段可含多个视觉部分，视觉部分数不是语音段数。具体准入用实际新音频时长、段数与既有已用增长加剩余写入峰值；已完成的语音、图解和 QA 不再整额重复计入未来，也不重置原点或补满额度。
 
 完成后交付实际 MP4、中英字幕、最终逐句稿、章节、claims 与 raw/final PTS 索引，以及解码、声轨、字幕和来源 QA。完整人耳听审及1倍速签核未完成时应继续标 pending。第一期最终稿入口为同目录上级的 `../episode01/narration-v3-final.zh.md`，英文为 `narration-v3-final.en.md`，原始 `narration-v3.zh.md` 保留其既有字节与语音来源身份。
+
+## Authored reading time and provider text boundaries
+
+In source-mechanism-full mode, a selected cue may declare reading_hold_seconds. Its rendered duration must equal the unchanged measured voice-catalog base duration plus that hold. Speech, request text and audio remain unchanged; subtitles stop within the original speech interval. Holds must align to 30 fps, be finite non-boolean numbers within 0 to 20 seconds per cue, and total at most 120 seconds. The renderer reports authored reading time separately from measured speech.
+
+The shared narration_alignment helper preserves original SentenceBoundary metadata. It accepts either exact sentence text or a single omitted opening U+201C at source index zero, reporting LEADING_OPEN_QUOTE_OMITTED explicitly. It rejects other punctuation, word, number, spacing and sentence-count differences. Recovery measurements preserve the original failed attempt and reuse its completed audio without another provider request.
