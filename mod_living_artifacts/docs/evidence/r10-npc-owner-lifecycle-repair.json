@@ -1,0 +1,436 @@
+{
+  "schema": "living-artifacts-r10-npc-owner-lifecycle-repair/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T15:16:31.065339+00:00",
+  "defect": "Actual R10 initial healthy owners have complete inventory inputs but no monthly chain, month cursor or queued AI review; external inputs were created after product bootstrap without a production lifecycle handoff.",
+  "historical_failure": {
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+    "observed_at_utc": "2026-10-22T14:29:48.566565+00:00",
+    "source_observer": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\npc-observer-checkpoint-01.json",
+      "bytes": 37625,
+      "sha256": "b0eb5c03af867f12b5322d79f363e2b7ea8c03b2655a3ec8a1a0566c5f0772f2"
+    },
+    "original_save": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-npc-a13\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 70095538,
+      "sha256": "48de23657bca1052f7e88c17638918c66c57a60dca584d8773be7819a5b10f5f"
+    },
+    "source_melted": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+      "bytes": 102707488,
+      "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+    },
+    "owners": [
+      {
+        "role": "landed",
+        "owner_id": "36893",
+        "missing": [
+          "xalw_monthly_chain",
+          "xalw_last_owner_month",
+          "xalw_ai_review_queued"
+        ]
+      },
+      {
+        "role": "baron",
+        "owner_id": "45602",
+        "missing": [
+          "xalw_monthly_chain",
+          "xalw_last_owner_month",
+          "xalw_ai_review_queued"
+        ]
+      },
+      {
+        "role": "courtier",
+        "owner_id": "37986",
+        "missing": [
+          "xalw_monthly_chain",
+          "xalw_last_owner_month",
+          "xalw_ai_review_queued"
+        ]
+      }
+    ],
+    "new_small_excerpt": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r10_npc_initial_lifecycle_observation.json",
+      "bytes": 38469,
+      "sha256": "2da192e93222bcc86c22076e7868f0d61bde41682eab7924a6ba9ef7ebf25f5f"
+    },
+    "old_run_or_results_rewritten": false
+  },
+  "fix": {
+    "producer": "One production xalw_discover_owner_effect call per finished role, after all item/reference creation, in the selected owner scope.",
+    "consumer": "Shared typed initial_owner_lifecycle_issues reads original saved variables; adapter requires input completeness and valid initial scheduling independently per healthy role.",
+    "json_contract": "Existing raw saved_variables contract and inventory initial_inputs_complete meaning preserved. initial_lifecycle_ready is computed, not a persisted alias or AI success field.",
+    "direct_AI_equip_feed_train_or_monthly_action_added": false
+  },
+  "own_complete_product_validation": {
+    "receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-npc-owner-lifecycle-a01\\result.json",
+      "bytes": 12078,
+      "sha256": "132d507ee8e83f3619dc8d91894b209a41be9a1435d95e5a86e7ac19849e4e37"
+    },
+    "tests": 187,
+    "strict_complete_modules": 44,
+    "commands": [
+      {
+        "name": "full-product-unittest",
+        "command": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "mod_living_artifacts/tools",
+          "-p",
+          "test_*.py"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "environment": {
+          "PYTHONPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools",
+          "MYPYPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools"
+        },
+        "started_at_utc": "2026-10-22T15:08:10.356408+00:00",
+        "finished_at_utc": "2026-10-22T15:09:42.021897+00:00",
+        "wall_seconds": 91.66550260000076,
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-npc-owner-lifecycle-a01\\full-product-unittest.stdout.log",
+          "bytes": 24932,
+          "sha256": "35751110772604253e59d4365ecbadf88654d876f193d5bac139710d543e535b"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-npc-owner-lifecycle-a01\\full-product-unittest.stderr.log",
+          "bytes": 293,
+          "sha256": "00c98d6c35aa08483dec754a36e8e506233c3d086d304f5146ea0af663485458"
+        }
+      },
+      {
+        "name": "full-product-strict",
+        "command": [
+          "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_contract.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\build_release.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_callback.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_producer.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\generate.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\inventory_gui_contract.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_acceptance_model.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_content.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_model.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\management_event_contract.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\native_interruption_contract.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_fixture.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_threshold_fixture.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\preview_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\product.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\startup_actor_binding.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\suppression_timer_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_acceptance_catalog.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_artifacts.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_callback.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_producer.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_content_generation.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_contracts.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_core_generation.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_inventory_gui_contract.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_inventory_mcp_refusal.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_management_contracts.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_native_interruption_contract.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_fixture.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_preview_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_startup_actor_binding.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_suppression_timer_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_threshold_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_acceptance_adapter.py",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\validate_static.py"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "environment": {
+          "PYTHONPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools",
+          "MYPYPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools"
+        },
+        "started_at_utc": "2026-10-22T15:09:42.023117+00:00",
+        "finished_at_utc": "2026-10-22T15:09:46.494288+00:00",
+        "wall_seconds": 4.4711815000046045,
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-npc-owner-lifecycle-a01\\full-product-strict.stdout.log",
+          "bytes": 45,
+          "sha256": "73cc387dbefa102cdfc7d7db87d6c95c795a4f8d220916a50712bbe6567a758e"
+        },
+        "stderr": {
+          "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-npc-owner-lifecycle-a01\\full-product-strict.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "source_before": {
+      "prepare_npc_fixture.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+        "bytes": 16716,
+        "sha256": "48faa376024b28c34f4846085e298bb3cfee0987b9a282c39944b570c8849e9c"
+      },
+      "npc_saved_observer.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+        "bytes": 40196,
+        "sha256": "cbbaef8471dbc7a4f0626d10b18c898bead286dcf3de1f636a4da6b2673f34be"
+      },
+      "npc_acceptance_adapter.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+        "bytes": 36561,
+        "sha256": "d5987c5d046c06471f7c5861e55cb65182f303281abc2a4d126234cb7158a4fc"
+      },
+      "test_npc_fixture.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_fixture.py",
+        "bytes": 12267,
+        "sha256": "92bd4b401d95ea12a235f4e670bc7756ee4758cff12abb100c95eecc3e32005e"
+      },
+      "test_npc_saved_observer.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+        "bytes": 30318,
+        "sha256": "ac2ee9e52fad995fc4cde115de01e428e3a21599349dd2fcc9eb508a4faf82ac"
+      },
+      "test_npc_acceptance_adapter.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+        "bytes": 35214,
+        "sha256": "8da9a2b04d8bfd29355c70f4ab5f4d88b075a6ce96c98e6fe366a8c5da6efa43"
+      },
+      "fixtures/r10_npc_initial_lifecycle_observation.json": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r10_npc_initial_lifecycle_observation.json",
+        "bytes": 38469,
+        "sha256": "2da192e93222bcc86c22076e7868f0d61bde41682eab7924a6ba9ef7ebf25f5f"
+      }
+    },
+    "source_after": {
+      "prepare_npc_fixture.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+        "bytes": 16716,
+        "sha256": "48faa376024b28c34f4846085e298bb3cfee0987b9a282c39944b570c8849e9c"
+      },
+      "npc_saved_observer.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+        "bytes": 40196,
+        "sha256": "cbbaef8471dbc7a4f0626d10b18c898bead286dcf3de1f636a4da6b2673f34be"
+      },
+      "npc_acceptance_adapter.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+        "bytes": 36561,
+        "sha256": "d5987c5d046c06471f7c5861e55cb65182f303281abc2a4d126234cb7158a4fc"
+      },
+      "test_npc_fixture.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_fixture.py",
+        "bytes": 12267,
+        "sha256": "92bd4b401d95ea12a235f4e670bc7756ee4758cff12abb100c95eecc3e32005e"
+      },
+      "test_npc_saved_observer.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+        "bytes": 30318,
+        "sha256": "ac2ee9e52fad995fc4cde115de01e428e3a21599349dd2fcc9eb508a4faf82ac"
+      },
+      "test_npc_acceptance_adapter.py": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+        "bytes": 35214,
+        "sha256": "8da9a2b04d8bfd29355c70f4ab5f4d88b075a6ce96c98e6fe366a8c5da6efa43"
+      },
+      "fixtures/r10_npc_initial_lifecycle_observation.json": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r10_npc_initial_lifecycle_observation.json",
+        "bytes": 38469,
+        "sha256": "2da192e93222bcc86c22076e7868f0d61bde41682eab7924a6ba9ef7ebf25f5f"
+      }
+    },
+    "source_unchanged": true,
+    "tool_chunks": [
+      "2109ab",
+      "84514b",
+      "3587dc",
+      "709318"
+    ]
+  },
+  "own_related_module_validation_before_last_actual_excerpt_test": {
+    "complete_modules": [
+      "test_npc_fixture",
+      "test_npc_saved_observer",
+      "test_npc_acceptance_adapter"
+    ],
+    "tests": 40,
+    "unittest_seconds": 16.138,
+    "tool_chunks": [
+      "a7ff91",
+      "a8ee7b"
+    ],
+    "test_utc": null,
+    "final_last_excerpt_test_included_in_full_187": true
+  },
+  "own_changed_six_module_strict": {
+    "passed": true,
+    "tool_chunk": "e8120d",
+    "test_utc": null
+  },
+  "coordinated_final_stable_product_validation": {
+    "receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\suppression-timer-a02\\result.json",
+      "bytes": 3266,
+      "sha256": "3906e5f1ee43ab1780961addcb3d37fb54074699593844caa583ccd87421ab43"
+    },
+    "tests_receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\suppression-timer-a02\\product-tests.result.json",
+      "bytes": 13082,
+      "sha256": "3a8c5a931fc9a2919c5132f798cb53075f5a8db24357c351e701c3c8c5de0cac"
+    },
+    "strict_receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\suppression-timer-a02\\product-strict.result.json",
+      "bytes": 736,
+      "sha256": "5ea8428c94971790a851f3518c5999a2e36354b57e5f8e7307ba4c61f6b485b3"
+    },
+    "tests": 187,
+    "strict_complete_modules": 44,
+    "whole_top_level_py_json_sources_stable": true,
+    "tests_started_at_utc": "2026-10-22T15:09:58.490400+00:00",
+    "tests_finished_at_utc": "2026-10-22T15:11:42.444223+00:00",
+    "strict_started_at_utc": "2026-10-22T15:10:20.164625+00:00",
+    "strict_finished_at_utc": "2026-10-22T15:10:21.099395+00:00",
+    "six_NPC_source_comparisons": [
+      {
+        "name": "prepare_npc_fixture.py",
+        "own_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+          "bytes": 16716,
+          "sha256": "48faa376024b28c34f4846085e298bb3cfee0987b9a282c39944b570c8849e9c"
+        },
+        "coordinated_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+          "bytes": 16716,
+          "sha256": "48faa376024b28c34f4846085e298bb3cfee0987b9a282c39944b570c8849e9c"
+        },
+        "same_resolved_source_path_and_bytes_and_sha": true
+      },
+      {
+        "name": "npc_saved_observer.py",
+        "own_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+          "bytes": 40196,
+          "sha256": "cbbaef8471dbc7a4f0626d10b18c898bead286dcf3de1f636a4da6b2673f34be"
+        },
+        "coordinated_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+          "bytes": 40196,
+          "sha256": "cbbaef8471dbc7a4f0626d10b18c898bead286dcf3de1f636a4da6b2673f34be"
+        },
+        "same_resolved_source_path_and_bytes_and_sha": true
+      },
+      {
+        "name": "npc_acceptance_adapter.py",
+        "own_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+          "bytes": 36561,
+          "sha256": "d5987c5d046c06471f7c5861e55cb65182f303281abc2a4d126234cb7158a4fc"
+        },
+        "coordinated_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+          "bytes": 36561,
+          "sha256": "d5987c5d046c06471f7c5861e55cb65182f303281abc2a4d126234cb7158a4fc"
+        },
+        "same_resolved_source_path_and_bytes_and_sha": true
+      },
+      {
+        "name": "test_npc_fixture.py",
+        "own_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_fixture.py",
+          "bytes": 12267,
+          "sha256": "92bd4b401d95ea12a235f4e670bc7756ee4758cff12abb100c95eecc3e32005e"
+        },
+        "coordinated_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_fixture.py",
+          "bytes": 12267,
+          "sha256": "92bd4b401d95ea12a235f4e670bc7756ee4758cff12abb100c95eecc3e32005e"
+        },
+        "same_resolved_source_path_and_bytes_and_sha": true
+      },
+      {
+        "name": "test_npc_saved_observer.py",
+        "own_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+          "bytes": 30318,
+          "sha256": "ac2ee9e52fad995fc4cde115de01e428e3a21599349dd2fcc9eb508a4faf82ac"
+        },
+        "coordinated_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+          "bytes": 30318,
+          "sha256": "ac2ee9e52fad995fc4cde115de01e428e3a21599349dd2fcc9eb508a4faf82ac"
+        },
+        "same_resolved_source_path_and_bytes_and_sha": true
+      },
+      {
+        "name": "test_npc_acceptance_adapter.py",
+        "own_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+          "bytes": 35214,
+          "sha256": "8da9a2b04d8bfd29355c70f4ab5f4d88b075a6ce96c98e6fe366a8c5da6efa43"
+        },
+        "coordinated_original_pin": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+          "bytes": 35214,
+          "sha256": "8da9a2b04d8bfd29355c70f4ab5f4d88b075a6ce96c98e6fe366a8c5da6efa43"
+        },
+        "same_resolved_source_path_and_bytes_and_sha": true
+      }
+    ],
+    "comparison_basis": "Resolve actual Windows source paths, then exact bytes and SHA. Both original receipts/pins retained unchanged; no FileID, FILETIME or native identity is normalized or inferred."
+  },
+  "actual_installed_source_qualification": {
+    "receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-npc-owner-lifecycle-a01\\source-qualification.json",
+      "bytes": 4541,
+      "sha256": "477bec5eeacac4f2f71c33cdde7945c5a620129d00b87c9ea91a0c1909684174"
+    },
+    "observed_at_utc": "2026-10-22T15:08:57.544367+00:00",
+    "source_count": 14,
+    "inventory_callback": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+      "bytes": 13630,
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67"
+    },
+    "scope": "actual installed 1.20.0.4 executable and primary script hashes plus current product input producer; source only, no game or AI result",
+    "tool_chunk": "34ea26"
+  },
+  "source_callback_review": "Actual inventory_on_actions.txt identifies on_artifact_changed_owner root=artifact and scope:owner=new holder. Existing shared generator owner-change path already discovers the owner and queues review. No unverified on_artifact_created callback or production ownership implementation was added from external-fixture bootstrap timing alone.",
+  "regression_boundary": "Real product emitter/shared preparation/source-closure/Session/Save producer/public CaseClient consumers and retained re-verifier execute with authored external environment/native progression. Actual R10 JSON payload regression uses an explicitly authored file-pin provider and does not authenticate a raw save in CI.",
+  "storage_close": {
+    "policy_version": "1.0.0",
+    "observed_at_utc": "2026-10-22T15:16:31.065339+00:00",
+    "workspace_free_bytes": 445675634688,
+    "system_free_bytes": 237574426624,
+    "heavy_write_admission_claimed": false,
+    "game_or_raw_save_writes": false,
+    "deletions": false,
+    "external_derived_logs_review_at_utc": "2026-10-24T15:16:31.065339+00:00",
+    "automatic_gc_claimed": false
+  },
+  "fresh_corrected_fixture_runtime_status": "NOT_RUN",
+  "game_commands_sent": false,
+  "AI_pass": false,
+  "business_pass": false,
+  "product_release_pass": false
+}

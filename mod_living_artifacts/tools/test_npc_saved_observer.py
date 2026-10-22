@@ -7,9 +7,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from acceptance_contract import Object, array, field, object_value, read, text, write_once
+from acceptance_contract import Object, array, field, object_value, pin, read, text, write_once
 from checkpoint_artifacts import SavedVariable
-from npc_saved_observer import HEALTHY_ROLES, INPUTS, InputKind, NpcInitialBaseline, NpcSavedObservation, SavedInventory, observe_npc_saved, parse_saved_inventory, saved_character_reference
+from npc_saved_observer import HEALTHY_ROLES, INPUTS, InputKind, NpcInitialBaseline, NpcSavedObservation, SavedInventory, initial_owner_lifecycle_issues, observe_npc_saved, parse_saved_inventory, saved_character_reference
 from prepare_npc_fixture import NpcFixtureSpec, Role
 
 
@@ -49,7 +49,7 @@ def authored_save(*, items: tuple[AuthoredItem, ...] = ITEMS, missing_owner: tup
                   missing_marker: tuple[Role, ...] = (), missing_actor: tuple[Role, ...] = (),
                   missing_inventory: tuple[Role, ...] = (), missing_reference: tuple[tuple[Role, InputKind], ...] = (),
                   unresolved_reference: tuple[tuple[Role, InputKind], ...] = (), equipped: bool = False,
-                  date: str = "1066.9.15") -> str:
+                  date: str = "1066.9.15", unscheduled_roles: tuple[Role, ...] = ()) -> str:
     """Fixture input refs remain fixed even when a post-state item is absent."""
     player_values = [variable("xalw_npc_fixture_owner_" + role, "char", OWNERS[role])
         for role in HEALTHY_ROLES if role not in missing_owner]
@@ -59,6 +59,11 @@ def authored_save(*, items: tuple[AuthoredItem, ...] = ITEMS, missing_owner: tup
         if role in missing_actor:
             continue
         values: list[str] = []
+        if role not in unscheduled_roles:
+            year, month, _ = (int(part) for part in date.split("."))
+            values.extend((variable("xalw_monthly_chain", "boolean", "1"), variable("xalw_last_owner_month", "value", str((year * 12 + month) * 100000))))
+            if date == "1066.9.15":
+                values.append(variable("xalw_ai_review_queued", "boolean", "1"))
         for item in ITEMS:
             if item.role != role or (role, item.kind) in missing_reference:
                 continue
@@ -131,12 +136,38 @@ class NativeSavedInventoryTests(unittest.TestCase):
 
 
 class NpcSavedObserverTests(unittest.TestCase):
+    def test_actual_r10_saved_observation_missing_lifecycle_reaches_real_json_consumer(self) -> None:
+        fixture = read(Path(__file__).with_name("fixtures") / "r10_npc_initial_lifecycle_observation.json")
+        self.assertEqual(fixture["schema"], "living-artifacts-r10-initial-lifecycle-observation-excerpt-v1")
+        self.assertIs(fixture["projection_payload_verbatim"], True)
+        original = object_value(fixture["observation"])
+        with tempfile.TemporaryDirectory() as temporary:
+            # The original historical payload/source pin remains in the fixture.
+            # Only its file-identity provider is authored for this JSON parser
+            # regression; this does not authenticate a raw CK3 save in CI.
+            placeholder = Path(temporary) / "authored-file-pin-provider.txt"
+            placeholder.write_text("Authored parser boundary; no game-state or native evidence", encoding="utf-8")
+            parsed = NpcSavedObservation.parse({**original, "melted_source": pin(placeholder)})
+            self.assertEqual(tuple(role.owner_id for role in parsed.roles), ("36893", "45602", "37986"))
+            self.assertTrue(parsed.initial_inputs_complete)
+            self.assertFalse(parsed.initial_lifecycle_ready)
+            self.assertFalse(parsed.to_json()["ai_business_pass"])
+            for role in parsed.roles:
+                self.assertIn("xalw_npc_fixture_initial_inputs_created", dict(role.saved_variables))
+                issues = initial_owner_lifecycle_issues(role, parsed.saved_date)
+                self.assertEqual(tuple(issue.split(":", 1)[0] for issue in issues), tuple(text(item, "actual missing field") for item in array(fixture["missing_fields"], "actual missing fields")))
+            consumed = NpcSavedObservation.parse(json.loads(json.dumps(parsed.to_json())))
+            self.assertEqual(consumed, parsed)
+            self.assertFalse(consumed.initial_lifecycle_ready)
+
     def test_actual_r9_char_reference_records_reach_observer_and_json_consumer(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             source = Path(temporary) / "r9-selected-actual-records.ck3"
             source.write_text(r9_excerpt_text(), encoding="utf-8")
             observed = observe_npc_saved(source, player_id="31254", machine_id="pc-20260924rtuf-f11af23c08", spec=NpcFixtureSpec(0))
             self.assertTrue(observed.initial_inputs_complete)
+            self.assertFalse(observed.initial_lifecycle_ready)
+            self.assertTrue(all(len(initial_owner_lifecycle_issues(role, observed.saved_date)) == 3 for role in observed.roles))
             self.assertEqual(tuple(role.owner_id for role in observed.roles), ("37243", "46974", "38570"))
             self.assertTrue(all(role.raw_owner_reference is not None and role.raw_owner_reference.kind == "char" for role in observed.roles))
             consumed = NpcSavedObservation.parse(json.loads(json.dumps(observed.to_json())))
@@ -159,6 +190,52 @@ class NpcSavedObserverTests(unittest.TestCase):
                 SavedVariable("char", "37243.0", None), SavedVariable("char", "37243", "unexpected")):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 saved_character_reference(value, "actual saved owner")
+
+    def test_initial_lifecycle_is_separate_from_inventory_and_survives_json_without_ai_credit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            ready = observe(root, "ready.ck3", authored_save())
+            missing = observe(root, "not-started.ck3", authored_save(unscheduled_roles=("landed",)))
+            self.assertTrue(ready.initial_inputs_complete and ready.initial_lifecycle_ready)
+            self.assertTrue(missing.initial_inputs_complete)
+            self.assertFalse(missing.initial_lifecycle_ready)
+            self.assertEqual(initial_owner_lifecycle_issues(ready.roles[0], ready.saved_date), ())
+            self.assertEqual(len(initial_owner_lifecycle_issues(missing.roles[0], missing.saved_date)), 3)
+            for role in missing.roles[1:]:
+                self.assertEqual(initial_owner_lifecycle_issues(role, missing.saved_date), ())
+            parsed = NpcSavedObservation.parse(json.loads(json.dumps(missing.to_json())))
+            self.assertEqual(parsed, missing)
+            self.assertFalse(parsed.initial_lifecycle_ready)
+            self.assertFalse(parsed.to_json()["ai_business_pass"])
+            # This remains an inventory reference baseline, not AI qualification.
+            self.assertEqual(NpcInitialBaseline(parsed).observation, missing)
+
+    def test_lifecycle_fields_require_exact_boolean_value_month_and_raw_json_types(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            initial = observe(Path(temporary), "initial.ck3", authored_save())
+            role = initial.roles[0]
+            for name, value in (("xalw_monthly_chain", SavedVariable("value", "100000", None)),
+                    ("xalw_monthly_chain", SavedVariable("boolean", None, None)),
+                    ("xalw_ai_review_queued", SavedVariable("boolean", "0", None)),
+                    ("xalw_ai_review_queued", SavedVariable("boolean", "1", "unexpected")),
+                    ("xalw_last_owner_month", SavedVariable("value", "1280000000", None)),
+                    ("xalw_last_owner_month", SavedVariable("value", "1280100001", None)),
+                    ("xalw_last_owner_month", SavedVariable("flag", "1280100000", None))):
+                altered = dict(role.saved_variables)
+                altered[name] = value
+                with self.subTest(name=name, value=value):
+                    changed = replace(role, saved_variables=tuple(altered.items()))
+                    self.assertTrue(any(name in issue for issue in initial_owner_lifecycle_issues(changed, initial.saved_date)))
+            original = initial.to_json()
+            for raw in (True, 1280100000.0, 1280100000):
+                mutated = object_value(json.loads(json.dumps(original)))
+                roles = array(mutated["roles"], "roles")
+                selected = object_value(roles[0]); values = object_value(selected["saved_variables"])
+                values["xalw_last_owner_month"] = {"type": "value", "raw_identity_decimal": raw, "flag": None}
+                selected["saved_variables"] = values; roles[0] = selected
+                mutated["roles"] = object_value({"roles": roles})["roles"]
+                with self.subTest(raw=raw), self.assertRaises(ValueError):
+                    NpcSavedObservation.parse(mutated)
 
     def test_selected_artifact_without_character_owner_is_present_unsupported_not_gone(self) -> None:
         content = authored_save().replace("\t\t\towner=100\n", "\t\t\tholy_site_owner=191\n", 1)

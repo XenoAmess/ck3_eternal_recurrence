@@ -1,4 +1,5 @@
 * text=auto eol=lf
+mod_living_artifacts/tools/fixtures/r10_npc_initial_lifecycle_observation.json -text whitespace=cr-at-eol
 
 # Living Artifacts preserves SHA-bound vanilla source around literal hook inserts.
 # Keep inherited whitespace rather than rewriting unrelated game definitions.
