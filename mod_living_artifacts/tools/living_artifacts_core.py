@@ -571,7 +571,7 @@ def _render_management_effects() -> list[str]:
                 }
                 gold >= scope:xalw_artifact.xalw_suppression_cost_value
             }
-            add_gold = { value = scope:xalw_artifact.xalw_suppression_cost_value multiply = -1 }
+            remove_short_term_gold = scope:xalw_artifact.xalw_suppression_cost_value
             add_prestige = -50
             add_stress = 10
             scope:xalw_artifact = {
@@ -607,7 +607,7 @@ def _render_management_effects() -> list[str]:
                 }
                 gold >= scope:xalw_artifact.xalw_appease_cost_value
             }
-            add_gold = { value = scope:xalw_artifact.xalw_appease_cost_value multiply = -1 }
+            remove_short_term_gold = scope:xalw_artifact.xalw_appease_cost_value
             add_stress = 10
             scope:xalw_artifact = {
                 set_variable = { name = xalw_appeased_until value = { value = current_date add = 365 } }

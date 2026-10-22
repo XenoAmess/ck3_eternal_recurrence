@@ -2220,7 +2220,7 @@ set_variable = { name = xalw_content_loan_credit_used value = { value = var:xalw
 change_variable = { name = xalw_content_loan_credit subtract = var:xalw_content_loan_credit_used }
 change_variable = { name = xalw_content_loan_due subtract = var:xalw_content_loan_credit_used }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_loan_due } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_loan_due }
 add_stress = 5
 }
@@ -2335,7 +2335,7 @@ scope:xalw_content_actor = { set_variable = { name = xalw_content_rank value = s
 if = { limit = { var:xalw_content_rank = 1 }
 set_variable = { name = xalw_content_appetite_quote value = { value = monthly_character_income min = 0 multiply = 0.20 min = 15 round = yes } }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_appetite_quote } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_appetite_quote }
 add_stress = 15
 }
@@ -2343,7 +2343,7 @@ add_stress = 15
 if = { limit = { var:xalw_content_rank = 2 }
 set_variable = { name = xalw_content_appetite_quote value = { value = monthly_character_income min = 0 multiply = 0.35 min = 30 round = yes } }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_appetite_quote } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_appetite_quote }
 add_stress = 25
 }
@@ -2351,7 +2351,7 @@ add_stress = 25
 if = { limit = { var:xalw_content_rank = 3 }
 set_variable = { name = xalw_content_appetite_quote value = { value = monthly_character_income min = 0 multiply = 0.50 min = 50 round = yes } }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_appetite_quote } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_appetite_quote }
 add_stress = 40
 }
@@ -2757,7 +2757,7 @@ random = { chance = 30
 set_variable = { name = xalw_content_recovery_year value = current_year }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_recovery_quote value = 5 }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_recovery_quote } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_recovery_quote }
 
 }
@@ -2770,7 +2770,7 @@ random = { chance = 60
 set_variable = { name = xalw_content_recovery_year value = current_year }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_recovery_quote value = 10 }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_recovery_quote } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_recovery_quote }
 
 }
@@ -2783,7 +2783,7 @@ random = { chance = 100
 set_variable = { name = xalw_content_recovery_year value = current_year }
 scope:xalw_content_actor = { set_variable = { name = xalw_content_recovery_quote value = 15 }
 set_variable = { name = xalw_content_payment value = { value = gold min = 0 max = var:xalw_content_recovery_quote } }
-add_gold = { value = var:xalw_content_payment multiply = -1 }
+remove_short_term_gold = var:xalw_content_payment
 if = { limit = { var:xalw_content_payment < var:xalw_content_recovery_quote }
 
 }
@@ -3496,7 +3496,7 @@ if = { limit = { gold >= var:xalw_content_wine_quote }
 clear_saved_scope = xalw_content_guest
 scope:activity = { random_attending_character = { limit = { is_alive = yes is_adult = yes this != scope:xalw_content_actor NOT = { has_variable = xalw_content_wine_guest_cooldown } } save_scope_as = xalw_content_guest } }
 if = { limit = { exists = scope:xalw_content_guest }
-add_gold = { value = var:xalw_content_wine_quote multiply = -1 }
+remove_short_term_gold = var:xalw_content_wine_quote
 if = { limit = { var:xalw_content_effective_rank = 1 }
 scope:xalw_content_guest = { add_opinion = { target = scope:xalw_content_actor modifier = xalw_content_opinion_plus_10_2y } }
 }
