@@ -27,7 +27,7 @@
  xalw.10.train:0 "共鸣训练（50威望，10压力，+25经验）"
  xalw.11.cancel:0 "保留材料"
  xalw.11.confirm:0 "让它吞下这件装备"
- xalw.11.desc:0 "本次经验（已含食性）：#V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n将#V [xalw_material.GetName]#!喂给#V [xalw_artifact.GetName]#!？\n\n材料基础经验：[xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]；符合食性再乘1.25。\n材料真实销毁后经验立即到账，可能自动跨越多个等级并产生诅咒。喂养没有冷却；材料消费才是此处的选择，升级不会征求许可。"
+ xalw.11.desc:0 "本次经验（已含食性）：#V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n将#V [xalw_material.GetName]#!喂给#V [xalw_artifact.GetName]#!？\n\n材料基础经验：[xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]；符合食性再乘1.25。\n材料真实销毁后经验立即到账，可能自动跨越多个等级并产生诅咒。喂养没有冷却；材料消费才是此处的选择，升级不会征求许可。"
  xalw.11.t:0 "喂养确认：材料将永久消失"
  xalw.12.desc:0 "右键自己的头像，选择#V 管理活武器#!，使用原生宝物选择器挑选物品。\n选定目标后可训练、付费镇压、安抚，也可用#V 喂养选定的活武器#!选择材料。\n所有在世持有者，包括AI、男爵、无地廷臣与骑士，遵守相同成长与代价。\n#warning 活武器装备时会自行成长；不查看通知也照常升级。卸下免费停级，同时失去活武器效果。#!\n\n下方可直接倾听一件已装备的活武器（优先等级最高者）；若要指定其他物品，仍可使用自己的宝物选择交互。"
  xalw.12.open:0 "倾听[xalw_artifact.GetName]"

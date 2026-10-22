@@ -22,7 +22,7 @@
  xalw.10.train:0 "Resonanztraining (50 Prestige, 10 Stress, +25 EP)"
  xalw.11.cancel:0 "Material behalten"
  xalw.11.confirm:0 "Es das Material verschlingen lassen"
- xalw.11.desc:0 "Erfahrung inklusive Nahrung:#V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n#V [xalw_material.GetName]#! an #V [xalw_artifact.GetName]#! füttern?\n\nBasiserfahrung des Materials:[xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]; bei Übereinstimmung mit der Nahrung mit 1,25 multipliziert.\nDie Erfahrung wird gutgeschrieben, sobald das Material tatsächlich zerstört wurde, und kann automatisch mehrere Stufen überspringen sowie Flüche verursachen. Füttern hat keine Abklingzeit; durch diese Wahl wird Material verbraucht, und ein Stufenaufstieg erfordert keine Zustimmung."
+ xalw.11.desc:0 "Erfahrung inklusive Nahrung:#V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n#V [xalw_material.GetName]#! an #V [xalw_artifact.GetName]#! füttern?\n\nBasiserfahrung des Materials:[xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]; bei Übereinstimmung mit der Nahrung mit 1,25 multipliziert.\nDie Erfahrung wird gutgeschrieben, sobald das Material tatsächlich zerstört wurde, und kann automatisch mehrere Stufen überspringen sowie Flüche verursachen. Füttern hat keine Abklingzeit; durch diese Wahl wird Material verbraucht, und ein Stufenaufstieg erfordert keine Zustimmung."
  xalw.11.t:0 "Fütterungsbestätigung: Das Material wird dauerhaft verschwinden"
  xalw.12.t:0 "Verwaltung lebender Artefakte"
  xalw_affix_10_desc:0 "Ein echter Bonusvorteil gewährt 365 Tage lang +5/10/15% monatliche Lernerfahrung und kostet 40/60/80 Prestige."

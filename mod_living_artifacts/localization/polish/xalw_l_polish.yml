@@ -22,7 +22,7 @@
  xalw.10.train:0 "Trening rezonansu (50 prestiżu, 10 stresu, +25 PD)"
  xalw.11.cancel:0 "Zatrzymaj materiał"
  xalw.11.confirm:0 "Pozwól mu pochłonąć ten ekwipunek"
- xalw.11.desc:0 "Doświadczenie (z uwzględnieniem diety): #V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\nNakarmić #V [xalw_material.GetName]#! przedmiot #V [xalw_artifact.GetName]#!?\n\nPodstawowe PD materiału: [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]; zgodność z dietą zwiększa wartość 1,25 razy.\nPD trafiają natychmiast po rzeczywistym zniszczeniu materiału, co może spowodować automatyczny awans o kilka poziomów i wywołanie klątw. Karmienie nie ma czasu odnowienia; wybór dotyczy zużycia materiału, a poziomowanie nie wymaga zgody."
+ xalw.11.desc:0 "Doświadczenie (z uwzględnieniem diety): #V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\nNakarmić #V [xalw_material.GetName]#! przedmiot #V [xalw_artifact.GetName]#!?\n\nPodstawowe PD materiału: [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]; zgodność z dietą zwiększa wartość 1,25 razy.\nPD trafiają natychmiast po rzeczywistym zniszczeniu materiału, co może spowodować automatyczny awans o kilka poziomów i wywołanie klątw. Karmienie nie ma czasu odnowienia; wybór dotyczy zużycia materiału, a poziomowanie nie wymaga zgody."
  xalw.11.t:0 "Karmienie: materiał zostanie zniszczony"
  xalw.12.t:0 "Zarządzanie żywym artefaktem"
  xalw_affix_10_desc:0 "Po faktycznym odblokowaniu zalet生活方式 zwiększa miesięczne doświadczenie stylu życia nauki o 5/10/15% na 365 dni, kosztem 40/60/80 prestiżu."

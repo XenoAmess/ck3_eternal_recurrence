@@ -22,7 +22,7 @@
  xalw.10.train:0 "Entrenamiento de resonancia (50 de prestigio, 10 de estrés, +25 XP)"
  xalw.11.cancel:0 "Conservar el material"
  xalw.11.confirm:0 "Dejar que lo devore"
- xalw.11.desc:0 "Experiencia incluida la dieta: #V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n¿Alimentar a #V [xalw_artifact.GetName]#! con #V [xalw_material.GetName]#!?\n\nExperiencia base del material: [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]; se multiplica por 1,25 si coincide con la dieta.\nTras destruirse realmente el material, la experiencia se otorga inmediatamente, lo que puede superar varios niveles y provocar maldiciones. La alimentación no tiene tiempo de espera; esta elección autoriza el consumo del material y la subida de nivel no requiere permiso."
+ xalw.11.desc:0 "Experiencia incluida la dieta: #V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n¿Alimentar a #V [xalw_artifact.GetName]#! con #V [xalw_material.GetName]#!?\n\nExperiencia base del material: [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]; se multiplica por 1,25 si coincide con la dieta.\nTras destruirse realmente el material, la experiencia se otorga inmediatamente, lo que puede superar varios niveles y provocar maldiciones. La alimentación no tiene tiempo de espera; esta elección autoriza el consumo del material y la subida de nivel no requiere permiso."
  xalw.11.t:0 "Confirmación de alimentación: el material será destruido permanentemente"
  xalw.12.t:0 "Gestión de artefactos vivientes"
  xalw_affix_10_desc:0 "Una desbloqueo real de una perk otorga un 5/10/15% más de experiencia de aprendizaje durante 365 días y cuesta 40/60/80 de prestigio."

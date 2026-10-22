@@ -22,7 +22,7 @@
  xalw.10.train:0 "공명 훈련 (명성 50, 스트레스 10, 경험치 +25)"
  xalw.11.cancel:0 "재료 유지"
  xalw.11.confirm:0 "이 장비를 삼키게 하기"
- xalw.11.desc:0 "이번 경험치(식성 반영): #V [owner.MakeScope.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n#V [xalw_material.GetName]#!을(를) #V [xalw_artifact.GetName]#!에게(에게) 먹일까?\n\n재료 기본 경험치: [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]. 식성과 맞으면 1.25배를 적용합니다.\n재료가 실제로 소멸된 즉시 경험치가 지급되며 여러 레벨을 한 번에 넘거나 저주가 발생할 수 있습니다. 급여에는 쿨타임이 없으며, 선택은 재료 소비에 대한 승인뿐이고 레벨업에는 승인이 필요하지 않습니다."
+ xalw.11.desc:0 "이번 경험치(식성 반영): #V [SCOPE.ScriptValue('xalw_selected_feed_xp_value')|0]#!\n\n#V [xalw_material.GetName]#!을(를) #V [xalw_artifact.GetName]#!에게(에게) 먹일까?\n\n재료 기본 경험치: [xalw_material.MakeScope.ScriptValue('xalw_feed_base_xp_value')|0]. 식성과 맞으면 1.25배를 적용합니다.\n재료가 실제로 소멸된 즉시 경험치가 지급되며 여러 레벨을 한 번에 넘거나 저주가 발생할 수 있습니다. 급여에는 쿨타임이 없으며, 선택은 재료 소비에 대한 승인뿐이고 레벨업에는 승인이 필요하지 않습니다."
  xalw.11.t:0 "급여 확인: 재료는 영구히 사라집니다"
  xalw.12.t:0 "산성 무기 관리"
  xalw_affix_10_desc:0 "실제로 생활 기술을 해제하면 365일간 월간 학식 생활방식 경험치 5/10/15% 증가, 권위 40/60/80 소모."

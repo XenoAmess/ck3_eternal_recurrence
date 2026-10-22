@@ -25,7 +25,7 @@ def subject_python() -> str:
     return candidate
 
 
-def fixture_spec(root: Path) -> ProducerSpec:
+def fixture_spec(root: Path, *, observation_number: object = 1) -> ProducerSpec:
     identity = Identity("unit-run", "unit-machine", "unit-root", 124, "9", 91, 123456)
     manifest = write_once(root / "manifest.json", {"machine_id": identity.machine_id, "game": {"version": "unit-version", "exe_sha256": "a" * 64}})
     frame: Object = {"paused": True, "map_ready": True, "source": "injected-dll-named-pipe", "backend_id": "native-headless",
@@ -40,7 +40,7 @@ def fixture_spec(root: Path) -> ProducerSpec:
     request = write_once(root / "checkpoint-readback-01-awaiting.json", {"schema": "living-artifacts-checkpoint-readback-request-v1",
         **{key: value for key, value in identity.to_json().items() if key != "reviewer"}, "operator_reviewer": identity.reviewer,
         "actual_source_save": pin(source), "expected_target_id": None, "required_response_schema": "living-artifacts-checkpoint-readback-v1",
-        "required_unknown_token_policy": "error", "original_native_frame_record": snapshot, "observation_number": 1,
+        "required_unknown_token_policy": "error", "original_native_frame_record": snapshot, "observation_number": observation_number,
         "storage_policy": "docs/storage-retention-policy.json", "business_pass": False,
         "original_hold_deadline": 4102444800.0, "reserve_seconds": 180})
     harmless = write_once(root / "not-official.json", {"authored_data": True})
@@ -107,6 +107,45 @@ class ProducerTests(unittest.TestCase):
             self.assertIsNone(request["expected_target_id"])
             with self.assertRaisesRegex(ValueError, "another machine"):
                 validate_request(spec, machine_id="another-machine", now=datetime(2026, 1, 1, tzinfo=timezone.utc))
+
+    def test_fourth_and_seventh_observations_reach_actual_request_validator(self) -> None:
+        for number in (1, 3, 4, 7):
+            with self.subTest(observation_number=number), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                spec = fixture_spec(root, observation_number=number)
+                request, source, response = validate_request(spec, machine_id="unit-machine", now=datetime(2026, 1, 1, tzinfo=timezone.utc))
+                self.assertEqual(request["observation_number"], number)
+                self.assertEqual(source, pin(root / "source.ck3"))
+                self.assertEqual(response.name, "checkpoint-readback-01-root-result.json")
+                self.assertFalse(response.exists())
+                self.assertFalse(spec.output.exists())
+
+    def test_observation_number_limits_and_false_equal_types_fail_actual_request_validator(self) -> None:
+        for number in (0, 8, True, False, 1.0, 4.0, 7.0):
+            with self.subTest(observation_number=number), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                spec = fixture_spec(root, observation_number=number)
+                with self.assertRaisesRegex(ValueError, "checkpoint observation number"):
+                    validate_request(spec, machine_id="unit-machine", now=datetime(2026, 1, 1, tzinfo=timezone.utc))
+                self.assertFalse((root / "checkpoint-readback-01-root-result.json").exists())
+                self.assertFalse(spec.output.exists())
+
+    def test_later_observation_never_waives_original_scene_identity_guards(self) -> None:
+        changes: tuple[tuple[str, object], ...] = (("run_id", "another-run"), ("machine_id", "another-machine"),
+            ("operator_reviewer", "another-reviewer"), ("pid", 125), ("pid", True),
+            ("connection_generation", "10"), ("actor_character_id", 92), ("date_raw", 123457))
+        for key, value in changes:
+            with self.subTest(key=key, value=value), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                spec = fixture_spec(root, observation_number=7)
+                request = read(Path(spec.request["path"]))
+                request[key] = json_value(value)
+                retained = write_once(root / "changed-scene-awaiting.json", request)
+                spec = replace(spec, request=retained)
+                with self.assertRaisesRegex(ValueError, "another machine/reviewer|declared identity"):
+                    validate_request(spec, machine_id="unit-machine", now=datetime(2026, 1, 1, tzinfo=timezone.utc))
+                self.assertFalse((root / "changed-scene-root-result.json").exists())
+                self.assertFalse(spec.output.exists())
 
     def test_identity_rejects_float_bool_noncanonical_64_bit_strings(self) -> None:
         original = Identity("unit-run", "unit-machine", "unit-root", 124, "9", 91, 123456).to_json()
