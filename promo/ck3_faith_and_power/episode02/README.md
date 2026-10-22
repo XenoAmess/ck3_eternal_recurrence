@@ -1,6 +1,8 @@
 # CK3:信仰引擎 第二期
 
-**当前工作：[V6连续导演稿《朝圣在奖励什么？》](docs/director-v6-pilgrimage.md)，[修订自审](docs/director-v6-self-audit.md)。** 已按六项审计意见重写连续讲解、冻结共同条件卡、移除结尾新增系统，并用实际简中本地化key校对名称。[实际图表分页](docs/director-v6-screen-tables.md)给出完整内容及展示安排；文字时长估算方法见主稿文末，不称已配音实测。本轮只交文档，没有继续拍摄、配音或渲染。
+**当前交付：[V6完整审阅版《朝圣在奖励什么？》——24分30秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 已按[连续导演稿](docs/director-v6-pilgrimage.md)完成33段讲解、196组双语字幕、28页主表与四段实机界面取材。主线是分别理解支出、活动评价、虔诚奖励和人物成长。[制作与验片记录](docs/production-v6-local-review-2026-10-22.md)保存实际媒体结果、来源和未闭研究；完整解码、全帧时间戳与16张关键画面抽查通过，完整人工观看和用户内容审阅仍待。
+
+配套：[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)、[配套讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02-script.md)、[导演稿修订自审](docs/director-v6-self-audit.md)、[图表内容与分页](docs/director-v6-screen-tables.md)。实际成片时长继任原27–31分钟文字估算，旧估算及失败版本保留各自历史身份。
 
 [V5研究整合提纲](docs/director-v5-comprehensive-pilgrimage.md)及[V4约18分钟的收窄方案](docs/director-v4-mechanism.md)保留各自历史身份。游玩智能体先读[当前知识索引](docs/pilgrimage-current-knowledge.md)，再查其七包精确来源及三份术语JSON，避免把旧包已被继任的unknown误作当前结论。[智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)已更新；没有新增普通auto消费或当前动作资格。
 
@@ -22,7 +24,7 @@ V3教学价值未通过（`REJECTED_TEACHING_VALUE`），用户指出其缺少�
 - [新增三句后的73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)：实测时间轴24:59.733，尚未重新渲染；按配方先执行来源投影，不能直接套旧装配器。
 - [Q21与本轮朝圣实拍](docs/production-b21-and-p3-20261020.md)：已录普通出发和罗马抵达，完整归返待补；原失败退出和预算超额保持，新增四个历史事件知识可供智能体查询。
 
-初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；18:16.533重剪仍被用户否定。当前V3已生成14:03.733画面时长的审看文件，但教学未通过；实际文件和本次否定见V3记录，新导演结构尚未完成。下列旧七章案、V2和过程数字保留各自历史时点。
+初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；18:16.533重剪仍被用户否定。历史V3生成14:03.733的审看文件，但教学未通过；实际文件和否定见V3记录。当前交付为页首V6，下列旧七章案、V2和过程数字保留各自历史时点。
 
 - [导演案](docs/director-plan.md)：章节、讲解路线、镜头和研究依赖。
 - [研究缺口与执行计划](docs/research-and-production-plan.md)：工作量、并发分工、拍摄批次、相对节点和风险。

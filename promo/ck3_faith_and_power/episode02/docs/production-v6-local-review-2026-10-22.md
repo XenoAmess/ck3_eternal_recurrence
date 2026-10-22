@@ -1,10 +1,10 @@
 # 信仰引擎二期 V6 本地审阅版制作记录
 
-machine_id: 4-8e1c2f1861。记录整理时间：2026-10-22T06:02:21.441631+00:00；原生宗教实际观察时间：2026-10-22T03:57:31.598338Z。
+machine_id: 4-8e1c2f1861。制作终态实际时间：2026-10-22T06:18:36.152059+00:00；Root有限画面审阅完成时间：2026-10-22T06:22:24.314803+00:00；原生宗教实际观察时间：2026-10-22T03:57:31.598338Z。
 
-当前状态：完整审阅版正在渲染，尚未交付整片。原合成进程 PID14212 于05:51:31.248Z启动；正式计划实际通过，内容缺口为空，没有另起重复编码。
+当前状态：完整本地审阅版已经生成并通过下述技术检查和有限画面审阅，待用户内容审阅。原合成进程 PID14212 于05:51:31.248Z启动，06:18:36.152Z原等待返回0，总耗时1624.904秒；33段与拼接全部返回0，没有重试或重复编码。正式计划内容缺口为空。
 
-本期主题是「朝圣在奖励什么？」：分别计算支出、活动评价、虔诚奖励和人物成长，再用固定条件的算例解释它们的关联。时间轴44102帧、24:30.067；33段旁白、196组双语字幕。仅N02、N15为实拍后新配，31段原声保留。以上为作者时钟，成片探测结果将在交付后补入。
+本期主题是「朝圣在奖励什么？」：分别计算支出、活动评价、虔诚奖励和人物成长，再用固定条件的算例解释它们的关联。实际视频44102帧、24:30.067；33段旁白、196组双语字幕。仅N02、N15为实拍后新配，31段原声保留。作者时钟与实际视频帧数相符；101秒额外静读时间已计入总长。
 
 主片保留28页主表，另补8条当前事件／初始化路径。169条来源条目按118条主片处理、51条历史／角色生成／调试资料处理；不能宣称169条逐项全部进入主片。
 
@@ -30,4 +30,22 @@ machine_id: 4-8e1c2f1861。记录整理时间：2026-10-22T06:02:21.441631+00:00
 - 工作根：C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01。原生宗教来源位于filming/live/4-8e1c2f1861--faith-engine--R0032/case-output/ordinary-pilgrimage-0002-receipt.json；四镜头来源、实际PTS及画面审阅在full-grant/native-media-a01/SOURCE-INDEX.actual.json和DELIVERY.actual.json。
 - 自动验证、解码和有限抽帧不代替人工完整观看，未制造人工签核。原片、派生物和交付按通用存储策略分别限期保留。
 
-本机器按本地交付例外提供实际文件。最终路径、媒体SHA、技术结果及交付时间待成片完成后补入本记录。
+## 本地交付与验片
+
+本机器按本地交付例外提供实际文件，不配置或重试OneDrive。
+
+- [完整审阅版MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/episode02-review.mp4)：70,123,159字节；SHA-256：08410cc82cbd5b339e8f12c8e02c222d4f1780e473f760b9fbff4b9299d424b8。
+- [双语SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)、[中文SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02.zh.srt)、[英文SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02.en.srt)、[配套讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02-script.md)。
+
+实际媒体为H.264、2560×1440、30fps；AAC、48kHz、双声道。视频和音频流时长1470.066667秒，容器1470.088021秒，视频起点0.021354秒；不将容器长度误作多出一帧。全部44102个视频PTS连续，完整AV严格解码返回0，原五个音乐窗口检查通过；现成音量统计平均−22.7dB、峰值−3.6dB。没有另跑同结论检查。
+
+Root直接审阅16张最终编码帧，覆盖五种朝圣态度、麦加初始化、意图菜单、旅行密集表、四段实拍、活动本体有序费用、虔诚阈值与算式、经验封顶及初始／生成人物。所选画面中的公式和脚注完整，关键字段与字幕分区清楚；实拍70金与模型、月薪与出发俸禄分别标注。静读时字幕为空属于安排。此结论仅限抽帧，不代替连续动作检查、整片听审或人工1倍速观看，也不构成人工签核。
+
+原件索引以工作根为相对基准：
+
+- 正式成片与现成技术结果：full-grant/sample/build-a01/completed-review.json；该文件状态仍为ENCODED_REVIEW_PENDING，保留人工审阅待办。
+- 原合成进程退出：full-grant/sample/BUILD-ORIGINAL-WAIT.actual.json。
+- 原完整解码、probe、PTS：full-grant/sample/build-a01/audit/下full-decode、final-probe、final-pts的command.json、result.json及实际输出；音乐为build-a01/music-presence.json。
+- 最终画面抽取与审阅：full-grant/sample/final-visual-review-a01/EXTRACTION.actual.json、VISUAL-REVIEW.actual.json；16张JPEG共3,690,317字节，未增加第二次整片解码。
+
+当前交付是机制分析审阅版。费用剩余三条研究链见上文，保留未知项；本次没有出发、支付或完成新朝圣，也没有新增普通auto业务资格。用户此前对V3教学价值的否定保持原样，不能由技术通过追认为本版教学价值已获用户认可。
