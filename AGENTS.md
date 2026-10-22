@@ -1,5 +1,14 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## Java 优先与逐项迁移（2026-10-22 用户指令）
+
+- 后续新开发任务全部使用 **Java + Maven + Quarkus**；新模块必须用 Java 创建，不再新增 Python 生产模块、构建编排模块或 CI 服务模块。Quarkus 作为宿主，纯领域与构建支持代码保持适当的独立模块边界，不为每个模块启动服务。
+- 涉及旧 Python 的改动，若属于[一期迁移边界](docs/python-java-incremental-migration-plan-2026-10-22.md)，应将对应实现与修复放进 Java 版，同步实际生产者、全部消费者、序列化与回归；不得继续在 Python 增加平行业务实现。范围外的旧 Python 暂时允许按实际修改范围维护。
+- 一期实际接管从共享强类型合同与地图回执 producer 开始；后继读取资格、纯预算/评分与 continuity reducer 按计划逐项接管，不把设计候选写成已迁移。现有 Python 消费者和测试在兼容期用于验证真实链，不成为新增 Python 功能的入口。
+- 下一代架构以[Java 架构文档](docs/java-next-generation-architecture-2026-10-22.md)为入口：单一全 Game 动作提交权威、唯一账本 writer、严格版本合同、UNKNOWN 不重放、真实后态和保存验收；Java 编译或 HTTP 成功不能替代实机业务完成。
+- 迁移尽量与现有实机并行；达到可运行条件就切 Java 版实测，失败修共享生产路径并保留真实证据，不静默 Python fallback，不热改已冻结 runtime/SDK 图。既有 C++、前端与 CK3 脚本等非 Python 代码不因本条强制重写；正式 Pages 保持纯前端。
+- 本机后续 Maven 构建使用已更新的 `C:/apache-maven` 3.10.0 默认入口；该安装事实绑定 `machine_id: xenoamess-full-tower-eb9d2c1186` 与实际回执，其他机器独立核验。依赖版本与路径由受管配置绑定，不用个人临时发行版替代默认入口。
+
 ## 强类型与字段合同（2026-10-20 用户指令）
 
 - 后续新增或修改的公共、跨模块函数应明确标注参数和返回类型。结构化数据优先采用共享 `TypedDict`、dataclass 或已有类型模型，避免无约束的 `dict`、`list` 和字符串字段散落在生产者、消费者两端；历史代码按实际修改范围逐步收紧。

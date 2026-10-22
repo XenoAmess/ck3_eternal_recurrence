@@ -1,0 +1,309 @@
+{
+  "schema": "xar.g2.parallel-software-regressions/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T11:40:04.253409+00:00",
+  "machine_identity_source": "tools.ck3_live_run_id.current_machine_id(); tools/ck3_live_run_id.py machine independently checked in this lane",
+  "Root_finite_scope_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\ROOT-CLOSED-RAM-QUALIFICATION-RELEASE01.json",
+    "bytes": 5984,
+    "sha256": "e65f81b2aee46943b12c0c39541e2bad12bbab035a7c5042d95c0b32375e43e5"
+  },
+  "status": "LOCAL_SOFTWARE_CHECKS_PASS_PERSISTENT_CI_CONNECTED_NOT_DEPLOYED",
+  "workflow": {
+    "ref": {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 97875,
+      "sha256": "68698cf44667d8d00b1a81ac67643ca7a40d1e591ffc0758e19e5f76707c6057"
+    },
+    "new_independent_steps": {
+      "Test source-bound war outcome stakes without CK3": [
+        "python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/war_outcome_stakes_v1.py tools/g2_saved_campaign/test_war_outcome_stakes_v1.py",
+        "python -B -X utf8 -m unittest discover -s tools/g2_saved_campaign -p test_war_outcome_stakes_v1.py -v"
+      ],
+      "Test registered Clan construction service compound without CK3": [
+        "python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/tests/unit/test_g2_clan_construction_registered_service_compound_v1.py",
+        "python -B -X utf8 -m pytest -p no:cacheprovider -q ck3_autonomous_player/tests/unit/test_g2_clan_construction_registered_service_compound_v1.py --basetemp \"%RUNNER_TEMP%\\g2-clan-registered-service-compound\""
+      ]
+    },
+    "original_32_and_M6_2_commands_unchanged": true,
+    "source_type_search_paths": [
+      "ck3_autonomous_player/src",
+      "ck3_autonomous_player/tests/unit",
+      "tools/g2_saved_campaign"
+    ],
+    "fixture_paths": "War stakes reads its unique repository JSON source fixture. Clan pytest uses a task-specific RUNNER_TEMP basetemp; neither requires a machine-specific SDK export.",
+    "each_command_exit_code_propagated": true,
+    "YAML_parsed": true,
+    "hosted_result": "Not asserted. Actual local command groups are pinned separately below; the new steps have not yet run on a hosted runner."
+  },
+  "decision_stakes": {
+    "actual_result_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-decision\\CHECKS-ACTUAL02.json",
+      "bytes": 4516,
+      "sha256": "369fc8b1dc41059f18073ae0d395bb72fa84a5cf4dd1f8e4a794915082dbd36a"
+    },
+    "actual_started_at_utc": "2026-10-22T11:30:12.336444+00:00",
+    "actual_ended_at_utc": "2026-10-22T11:30:17.465141+00:00",
+    "source_refs": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\war_outcome_stakes_v1.py",
+        "bytes": 20326,
+        "sha256": "e59b71b5479e98c0c225b36c45c91fda49403b3e1f897f59904d415b32256457"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_war_outcome_stakes_v1.py",
+        "bytes": 16905,
+        "sha256": "0d55a99940be581981695906b693a74a84f4b9265971ae09494f3bb2c5f2fb76"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\fixtures\\war_outcome_stakes_source_v1.json",
+        "bytes": 4065,
+        "sha256": "d4e4369d587fc9257100f8c366aa1f284a7d0e9f7333992843184fc76ef60930"
+      }
+    ],
+    "actual_commands": [
+      {
+        "label": "new_complete_module_tests_actual_normalizer_cache_consumer",
+        "argv": [
+          "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/g2_saved_campaign",
+          "-p",
+          "test_war_outcome_stakes_v1.py",
+          "-v"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.1580779999494553,
+        "test_methods": 11,
+        "skipped": 0
+      },
+      {
+        "label": "strict_complete_two_new_modules_dependencies_not_checked",
+        "argv": [
+          "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--strict-equality",
+          "--follow-imports=skip",
+          "--no-incremental",
+          "--cache-dir=nul",
+          "tools/g2_saved_campaign/war_outcome_stakes_v1.py",
+          "tools/g2_saved_campaign/test_war_outcome_stakes_v1.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 3.969323200173676,
+        "test_methods": null,
+        "skipped": 0
+      }
+    ],
+    "actual_tests": 11,
+    "skipped": 0,
+    "static_scope": "two complete new modules, strict and strict-equality; imported SDK dependencies skipped",
+    "coverage": "Real termination normalizer to original NativeDriver same-frame cache to exact Python JSON roundtrip to the new pure source-bound stakes consumer; claim/defender territorial and revolt political profiles, unknown CB, missing/null/empty, stale source/build, wrong field/type/source-pin cases.",
+    "original_failure_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-decision\\CHECKS-ACTUAL01.json",
+      "bytes": 7455,
+      "sha256": "27f08a09741f6383bc4c58219a24713d2ca7a36f5d252bc089779ac7fd9c1e04"
+    },
+    "original_failure": "Initial whole-module strict check rejected missing MYPYPATH source resolution and TypedDict update keyword fields. The original failure is retained; final source pins and exact type checks are separate.",
+    "runtime_adopted": false,
+    "business_credit": false
+  },
+  "M7_registered_Clan_compound": {
+    "actual_result_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\RESULT-03.json",
+      "bytes": 2838,
+      "sha256": "dc44d2c0023d90e336edf51b5ca48601a164c211487801d958beafa1d574ba5a"
+    },
+    "actual_observed_at_utc": "2026-10-22T11:34:44.215929+00:00",
+    "source_ref": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_g2_clan_construction_registered_service_compound_v1.py",
+      "bytes": 17329,
+      "sha256": "545483bb364cb3eb8263caf4c37c2c5afa5c9abce0205cb5447b7982be3056bc"
+    },
+    "actual_commands": [
+      {
+        "label": "strict",
+        "argv": [
+          "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--strict-equality",
+          "--follow-imports=skip",
+          "--no-incremental",
+          "--cache-dir",
+          "nul",
+          "ck3_autonomous_player/tests/unit/test_g2_clan_construction_registered_service_compound_v1.py"
+        ],
+        "started_at_utc": "2026-10-22T11:34:34.447867+00:00",
+        "elapsed_seconds": 3.829338099807501,
+        "exit_code": 0,
+        "stdout": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-strict.stdout.txt",
+        "stderr": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-strict.stderr.txt"
+      },
+      {
+        "label": "pytest",
+        "argv": [
+          "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "pytest",
+          "-p",
+          "no:cacheprovider",
+          "-q",
+          "ck3_autonomous_player/tests/unit/test_g2_clan_construction_registered_service_compound_v1.py",
+          "--basetemp",
+          "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\fixture-03"
+        ],
+        "started_at_utc": "2026-10-22T11:34:38.277262+00:00",
+        "elapsed_seconds": 5.938347999937832,
+        "exit_code": 0,
+        "stdout": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-pytest.stdout.txt",
+        "stderr": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-pytest.stderr.txt"
+      }
+    ],
+    "actual_log_refs": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-strict.stdout.txt",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-strict.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-pytest.stdout.txt",
+        "bytes": 100,
+        "sha256": "4c623c61cbb9026acdab9594f8fb32d169e1a2812436f9daa1385126b85518a2"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\03-pytest.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "compound_tests": 2,
+    "skipped": 0,
+    "static_scope": "new whole test module strict/equality with skipped imported-module analysis; registered normal CLI/MCP/Service with synthetic native-shaped outer replies",
+    "coverage": "Registered normal CLI/MCP/Service route, synthetic native-shaped cash/material replies, unique submit, pending without resend, separate later material/wallet postcondition, JSON ledger reread in a new fixture consumer, four negative scene/cash cases.",
+    "preserved_failed_attempts": [
+      {
+        "receipt_ref": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\RESULT-01.json",
+          "bytes": 2839,
+          "sha256": "df317376c86ff1dddcc60f92bc1304bf3197da702f14b5b67fb15854aab56a1a"
+        },
+        "observed_at_utc": "2026-10-22T11:32:46.287802+00:00",
+        "command_exit_codes": [
+          1,
+          1
+        ],
+        "retained_log_refs": [
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\01-strict.stdout.txt",
+            "bytes": 1808,
+            "sha256": "7fbf9a18dc2ea05c6447ace13852042016afc18f5c7c1868e0f0261ba2af59c4"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\01-strict.stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\01-pytest.stdout.txt",
+            "bytes": 4228,
+            "sha256": "235f03e6cddac70e147bca8fbc82d88258c5975eccaef82ff0034785136be053"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\01-pytest.stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      {
+        "receipt_ref": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\RESULT-02.json",
+          "bytes": 2839,
+          "sha256": "c82c8c33be294465186b70ba2dcb5ea8361ddcf9a42880af23d621333a9dd312"
+        },
+        "observed_at_utc": "2026-10-22T11:34:10.153301+00:00",
+        "command_exit_codes": [
+          0,
+          1
+        ],
+        "retained_log_refs": [
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\02-strict.stdout.txt",
+            "bytes": 43,
+            "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\02-strict.stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\02-pytest.stdout.txt",
+            "bytes": 3786,
+            "sha256": "de88437cc59676bfb243428fa2037dc2061dcc954b372b0ba49990302a9d6dd2"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m7\\02-pytest.stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    ],
+    "failure_history": "Original 01 and 02 fixture/static failures remain at their original paths; final 03 source and complete two-command result do not replace them.",
+    "live": false,
+    "native_execution_process_identity_and_baseline_chooser": "synthetic fixture seams"
+  },
+  "frozen_shared_source_report_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\MAP-FULL-PREDISPATCH-SOURCE-FROZEN01.json",
+    "bytes": 4070,
+    "sha256": "f7fcc2dd42f4c0260b4187749efe135475c3cb3a056c5f903da8427c54bb442c"
+  },
+  "qualification_boundary": {
+    "frozen_six_modules_or_runtime_modified": false,
+    "deployed": false,
+    "Game_or_native_RPC_calls_in_these_lanes": 0,
+    "actual_campaign_Driver_SAVE_media_body_reads_in_these_lanes": 0,
+    "new_game_days": 0,
+    "G2_milestones_newly_completed": 0,
+    "performance_improvement_claimed": false,
+    "one_second_per_day_achieved": false,
+    "30_year_campaign_complete": false,
+    "scope": "Software decision projection and registered construction consumption coverage only; live Clan scene, actual planner adoption and complete milestone qualification remain separate. No game result or runtime decision improvement is credited here."
+  },
+  "retention_review_at_utc": "2026-10-23T11:45:00Z",
+  "subsequent_Java_only_directive_update": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-22T12:57:04Z",
+    "policy_source": "AGENTS.md Java 优先与逐项迁移（2026-10-22 用户指令）",
+    "historical_workflow_and_Python_checks_above": "Preserved as observations at their original times; they are not the current publication plan.",
+    "current_workflow_change": "Only the registered Clan compound step is being published. The unpublished Python war-stakes step was removed before publication.",
+    "unpublished_Python_war_stakes_production_module": "Held as a temporary local differential oracle; not being published as a new production module.",
+    "replacement": "Java war-policy is under implementation and not yet compiled or qualified at this update.",
+    "hosted_CI_result": "Not granted. Original local results do not qualify the future Java replacement."
+  }
+}

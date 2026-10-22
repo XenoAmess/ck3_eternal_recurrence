@@ -1,0 +1,112 @@
+{
+  "schema": "xar.java-map-phase1-actual-software-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T12:36:40.503583+00:00",
+  "status": "ACTUAL_SOFTWARE_PASS",
+  "accepted_client_ref": {
+    "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/java_map_admission_client_v1.py",
+    "bytes": 20532,
+    "sha256": "bc2bb7240e12fdd8b42c7e1fa37fb5e0b16c865e5081b31b25c4844574ce8557"
+  },
+  "actual_regression_ref": {
+    "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/test_java_map_admission_v1.py",
+    "bytes": 20719,
+    "sha256": "8383bcf58d9d2a2cba96a7d38559e8f122f4e0792368a8eb95987a3d3235523d"
+  },
+  "actual_report_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-PYTHON-MAP-INTEGRATION05.json",
+    "bytes": 4059,
+    "sha256": "fe0b9730b974fe9bb5d918dbceda36f8a5e0953fcf5092e679afac015201509d"
+  },
+  "actual_running_service_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-SERVICE-RUNNING01.json",
+    "bytes": 5178,
+    "sha256": "3f5a0cfe56cc80ab0c314a219322ea338ea8b579e56535249be4739b587ae347"
+  },
+  "complete_fastjar_manifest_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-FASTJAR-MANIFEST01.json",
+    "bytes": 42562,
+    "sha256": "9615f2306b6a8811d5fee81af98008b00deba0b167d63594343b81f0cef3366f"
+  },
+  "original_Java_process_at_report_time": {
+    "pid": 135840,
+    "creation_filetime": "134371457571464737",
+    "executable": "C:/jdk-21/bin/java.exe",
+    "endpoint": "http://127.0.0.1:8089/v1/map-admissions/compose"
+  },
+  "build_basis": {
+    "actual_receipt_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/maven-07.actual.json",
+      "bytes": 50754,
+      "sha256": "0d6b700c23566c0571dd8ebc345f124c9bc5aca7539177be7ad285e4a8dffc6d"
+    },
+    "deployment_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/attempt-07/ck3-control-local-service/quarkus-app",
+    "original_source_and_compiled_source_equal": true,
+    "JUnit_tests": 11,
+    "JUnit_skipped": 0,
+    "actual_peak_job_memory_bytes": 639901696,
+    "job_memory_limit_bytes": 2147483648,
+    "original_Maven_job_active_final": 0,
+    "only_attempt_07_admitted": true
+  },
+  "actual_full_command_group": {
+    "started_at_utc": "2026-10-22T12:35:19.237794+00:00",
+    "finished_at_utc": "2026-10-22T12:36:40.503583+00:00",
+    "complete_new_modules_strict_and_strict_equality": 2,
+    "static_exit_code": 0,
+    "static_elapsed_seconds": 24.600334000075236,
+    "static_peak_job_memory_bytes": 246910976,
+    "actual_HTTP_test_methods": 6,
+    "actual_HTTP_failures": 0,
+    "actual_HTTP_skipped": 0,
+    "actual_HTTP_exit_code": 0,
+    "actual_HTTP_elapsed_seconds": 56.643148799892515,
+    "actual_HTTP_peak_job_memory_bytes": 187756544,
+    "each_command_job_memory_limit_bytes": 536870912,
+    "both_command_jobs_active_final": 0,
+    "new_client_and_regression_sources_stable": true
+  },
+  "consumer_scope": {
+    "runtime_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a46",
+    "frozen_owner_parser_and_source_identity": true,
+    "original_emitted_qualifier_Queue_feeder_reducer_lineages": [
+      "test_emitted_qualify_accepts_actual_owner_and_keeps_role_caps",
+      "test_emitted_qualify_readiness_projection_to_actual_reducer",
+      "test_emitted_qualify_full_pre_dispatch_failure_whole_queue_to_actual_reducer"
+    ],
+    "Game_and_campaign_inputs": "original RAM fixture seam",
+    "Java_HTTP_and_Win32_process_identity": "actual, not mocked",
+    "Python_builder_role": "independent expected-byte oracle only; consumers receive unchanged Java bytes",
+    "frozen_runtime_files_modified": false,
+    "Game_native_RPC_or_campaign_ledger_writes": 0
+  },
+  "prior_RED_preserved": [
+    "JAVA-PYTHON-MAP-INTEGRATION02.json: missing test variable annotation",
+    "JAVA-PYTHON-MAP-INTEGRATION03.json: caller read Job accounting before final process retirement; HTTP did not run",
+    "JAVA-PYTHON-MAP-INTEGRATION04.json: one stale negative-test expectation for bounded overflow-prefix construction; all real producer/consumer paths passed",
+    "Maven attempts 01 through 06 remain separate failed or capacity-rejected receipts; not admitted as attempt 07"
+  ],
+  "claims_not_granted": [
+    "hosted CI green or portable CI harness execution",
+    "current actual Native32/67 FULL or SAVE",
+    "new game days, G2 milestone completion, 30-year completion, or seconds-per-day improvement"
+  ],
+  "service_lifecycle": "original owner retained the same service for Root adoption; this historical report does not prove it remains running",
+  "subsequent_actual_service_closure": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-22T12:46:59.422285+00:00",
+    "receipt_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-SERVICE-OWNER-CLOSED01.json",
+    "reason": "Root_stop_marker",
+    "original_Java_exit_code": 75,
+    "job_active_processes": 0,
+    "peak_job_memory_bytes": 213487616,
+    "job_memory_limit_bytes": 536870912,
+    "retained_owner_session_67760_exit_code": 0
+  },
+  "retention": {
+    "source_policy": "docs/storage-retention-policy.json",
+    "raw_local_evidence_review_at_utc": "2026-11-21T12:36:40.503583+00:00",
+    "active_service_authority_review_at_utc": "2026-10-22T14:00:00+00:00",
+    "raw_evidence_is_not_indefinitely_protected": true
+  }
+}

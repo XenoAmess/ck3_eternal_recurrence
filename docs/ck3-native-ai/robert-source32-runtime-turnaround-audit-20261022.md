@@ -108,4 +108,10 @@ Prepared→FULL 本地拒绝 **559.099335 秒**；Game 出生→拒绝 **450.713
 - **战时查询/推进**：`ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py` 的 route/exact-day 路径和原完整 planner 是下一层边界。7 次 strengths、6 次 mercenary、6 次 horizon 绑定不同实际帧，零日不等于无用；同帧重复、数据生命周期与原生候选搜索未证明前不裁剪。6 次推进自身 12.120353 秒需要原 Service/Driver/Native 调用分解后再选改动，不能只调速度、horizon、战争意愿或跳过观察。
 - 已有 stale combat frame 提前拒绝和 Driver bytes 单次 join 在当前仓库已经存在；不再次以“计划修复”邀功。旧 P49/P11 的 I/O/扫描结论保留其旧来源范围，不能替代 N41 的实测分布。
 
+### 11:31Z 后继源定位
+
+同机再读上述 7 份小 Army 响应：原 `army_native_timing_v1` 的 read_total 合计 0.3373225 秒、serialize 0.3491253 秒、rich_attach 仅 0.0007066 秒；owner/baseline 属嵌套。不能把 6.083374 秒 AUTO 全归为原生查询，private scalar AB 当前可省秒数仍 unknown。源码 `native_driver.py:26481–26510/1387–1394` 使用 Condition.wait_for，没有待删除的 Python 固定 poll sleep。
+
+仓库的独立一次 route5 trial 保持 +24/raw、全局 3、fresh contact_free proof 与原 Arm/Status，但真实冻结 SRC32 没有其配置方法、调用或 helper 文件；当前 Plan 也无对应字段，不能直接授 N46 参数。下一源码包接缝为现仓库 Driver 的 select/receipt/configure（24521/24534/24707 行）与 `contact_free_exact_route_speed_trial_v1.py`。不热改旧图，不以全局 A/B 替代这项独立资格。
+
 本轮只交付这个审计与最短续行说明，没有性能源码变更、benchmark 或实机提速资格。建议复核期限 `2026-10-29T11:14:00Z`；获得第一个完整保存窗口后追加新观察与来源，不覆盖以上 RED 或未保存事实。

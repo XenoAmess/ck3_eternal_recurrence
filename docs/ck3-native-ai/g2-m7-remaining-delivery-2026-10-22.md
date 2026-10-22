@@ -48,3 +48,11 @@ Tribal 不是更短替代路线。[已有研究](research/sdk37-edl-incident-ide
 ## 本工作包边界与保留
 
 本机此次只执行 machine ID 读取和文档／生产源码只读核对，新增本文件一份，获 Root 限额 **16 KiB**；没有 Git、Task、财务、账本、Game／Steam／RPC、测试、构建或外置目录操作，未读实际 Driver、SAVE 或视频正文。按[统一存储策略 1.0.0](../storage-retention-policy.md)作为 `record` 于 **2027-04-20** 复核；不因本文引用自动续存历史大原件。本次是出处纠正与后续执行准备，不授新增 M7、性能或三十年成绩。
+
+## 11:34Z 后继：注册普通服务的软件闭环
+
+同机器于 `2026-10-22T11:34:44Z` 完成新增[注册 Clan compound](../../ck3_autonomous_player/tests/unit/test_g2_clan_construction_registered_service_compound_v1.py)：**2 tests、0 skip**；整新模块 `mypy --strict --strict-equality --follow-imports=skip` 实际 exit0，只授该文件，不外推导入的旧模块。
+
+Feudal／Clan 均实际经过 CLI、注册 MCP、生产 Service／transport：现金及合法报价→唯一提交→同帧 pending 不重发→后帧独立项目／钱包材料→持久小账本的新消费者→普通后续消费。两场候选精确相等；另覆盖 Clan 缺 NET、错现金 actor、默认关闭及 Tribal 不准入。原生回复、进程身份和 baseline chooser 是显式合成 seam，没有真实 Game／Native 执行或 checkpoint 冷载。
+
+后继实际结果在 Root 获准范围 `current-saved-a46-runtime-prep01/parallel-m7/RESULT-03.json`，新测试源 17,329 B，SHA `545483bb364cb3eb8263caf4c37c2c5afa5c9abce0205cb5447b7982be3056bc`。01 保留旧 fixture 缺 wait 方法的 RED；02 保留误将同帧 pending 期望为推进的 RED。只修测试适配和错误断言，生产守卫未放宽。后继 Root 负责持久 CI 接线及真实 Clan cell；这些软件结果不改变 M7 或本局日数。
