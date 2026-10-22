@@ -55,6 +55,8 @@ class ReadinessHandoff(TestCase):
                 }
                 selection.locations = {'python': Path(sys.executable), 'repo_root': root}
                 selection.runtime_environment = {}
+                selection.manifest = {"source_root": {"path_key": "source_root"}}
+                selection.paths = {"source_root": root}
                 selection.run_dir = root / 'SYNTHETIC-NO-GAME'
                 selection.state_dir = root / 'synthetic-state'
                 selection.prepared = {'preparation': {}}
