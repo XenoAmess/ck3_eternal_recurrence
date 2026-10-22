@@ -16,6 +16,8 @@ from pathlib import Path
 import subprocess
 import sys
 
+from .mechanism_contract import parse_mechanism_full
+
 SCHEMA = 'ck3-faith-power-formal-edit-v1'
 VALUE_V3_SCHEMA = 'ck3-faith-power-value-v3-formal-edit-v1'
 VOICE_CATALOG_SCHEMA = 'faith-power-value-v3-voice-authoring-catalog-v2'
@@ -150,7 +152,8 @@ class FormalInputs:
             raise ValueError('Duplicate evidence claim/check identifiers')
         expected_slots=voices.get('new_live_result_voice_slots',{})
         review_only = self.common.rules_preview_segment(doc, voices, evidence)
-        if not expected_slots and not review_only:
+        self.mechanism_full_contract = parse_mechanism_full(doc, voices, evidence)
+        if not expected_slots and not (review_only or self.mechanism_full_contract is not None):
             raise ValueError('Value-v3 must preserve every pending live-result slot')
         if set(doc['pending_result_slots'])!=set(expected_slots):
             raise ValueError('Value-v3 must preserve every pending live-result slot')

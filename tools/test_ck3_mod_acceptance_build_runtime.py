@@ -9,6 +9,8 @@ import sys
 import tempfile
 import types
 import unittest
+from argparse import Namespace
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
@@ -662,6 +664,86 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
                      'ck3_query_player_inventory_window_open_post_v1']
         self.assertEqual({flag for tool in new_tools for flag in builder.EXTRA_CAPABILITIES[tool]},
                          set(reviewed['flag_changes']))
+
+
+class CompleteMetadataBudget(unittest.TestCase):
+    def test_serialized_package_at_exact_limit_round_trips_all_bytes(self) -> None:
+        output = {
+            'source-index.json': builder.encoded({'files': {str(i): {'bytes': i} for i in range(2552)}}),
+            'shared-host.py': b'# retained complete host\n' * 20000,
+        }
+        limit = sum(map(len, output.values())) + 32768
+        with tempfile.TemporaryDirectory(prefix='ck3-metadata-bound-') as temp:
+            destination = Path(temp) / 'new-runtime'
+            builder.write_bounded_metadata(destination, output, limit_bytes=limit,
+                                           reserve_bytes=32768)
+            self.assertEqual({p.name: p.read_bytes() for p in destination.iterdir()}, output)
+
+    def test_one_byte_over_limit_creates_no_directory(self) -> None:
+        with tempfile.TemporaryDirectory(prefix='ck3-metadata-bound-') as temp:
+            destination = Path(temp) / 'rejected'
+            with self.assertRaisesRegex(ValueError, 'Complete serialized metadata'):
+                builder.write_bounded_metadata(destination, {'complete.bin': b'x' * 101},
+                                               limit_bytes=100, reserve_bytes=0)
+            self.assertFalse(destination.exists())
+
+    def test_boolean_budget_is_not_an_integer_byte_count(self) -> None:
+        with self.assertRaisesRegex(ValueError, 'exact integer'):
+            builder.validate_metadata_bound({'one': b'x'}, limit_bytes=True, reserve_bytes=0)
+
+    def test_large_complete_delta_reaches_actual_freeze_writer(self) -> None:
+        """Reproduce the real 2552-path failure through freeze(), not a mock writer."""
+        freeze_spec = importlib.util.spec_from_file_location(
+            'complete_metadata_actual_freeze', HERE / 'ck3_mod_acceptance_freeze_sources.py')
+        self.assertIsNotNone(freeze_spec)
+        if freeze_spec is None or freeze_spec.loader is None:
+            raise AssertionError('Actual source-freeze producer unavailable')
+        freeze = importlib.util.module_from_spec(freeze_spec)
+        freeze_spec.loader.exec_module(freeze)
+        with tempfile.TemporaryDirectory(prefix='ck3-complete-delta-') as temp:
+            base = Path(temp)
+            root, scene = base / 'repo', base / 'scene'
+            root.mkdir()
+            scene.mkdir()
+            (root / 'docs').mkdir()
+            names = [f'docs/metadata-source-{i:04d}.md' for i in range(2552)]
+            for name in names:
+                (root / name).write_bytes(b'actual source bytes\n')
+            native_index = base / 'native-index.json'
+            native_index.write_bytes(builder.encoded({'files': {}}))
+            observed = datetime.now(timezone.utc)
+            admission = base / 'admission.json'
+            admission.write_bytes(builder.encoded({'schema': 'owned-next-scene-admission-v1',
+                'machine_id': MACHINE, 'active': True, 'approved_root': str(scene),
+                'observed_at_utc': observed.isoformat(),
+                'expires_at_utc': (observed + timedelta(minutes=5)).isoformat(),
+                'required_free_bytes': 0}))
+            commit = 'a' * 40
+            runtime = {'repo_root': str(root), 'machine_id': MACHINE}
+            manifest = {'machine_id': MACHINE, 'source_commit': 'b' * 40}
+            refs = {'native_source_index': {'path': str(native_index)}}
+            (base / 'base.json').write_bytes(builder.encoded(runtime))
+            args = Namespace(base_runtime=base / 'base.json', scene_root=scene,
+                             storage_admission=admission, output=scene / 'frozen', source_commit=commit)
+
+            def actual_diff(_root: Path, arguments: list[str], *, binary: bool = False) -> tuple[object, list[str]]:
+                if arguments[0] == 'rev-parse':
+                    return commit, ['git', *arguments]
+                if arguments[0] == 'status':
+                    return '', ['git', *arguments]
+                self.assertTrue(binary)
+                return ('\0'.join(names) + '\0').encode(), ['git', *arguments]
+
+            with patch.object(freeze.builder, 'load_base', return_value=(runtime, manifest, refs, {'files': {}})), \
+                 patch.object(freeze, 'git', side_effect=actual_diff), \
+                 patch.dict(sys.modules, {'ck3_live_run_id': types.SimpleNamespace(current_machine_id=lambda: MACHINE)}):
+                result = freeze.freeze(args)
+            delta = json.loads(Path(result['path']).read_bytes())
+            self.assertEqual([row['path'] for row in delta['changes']], names)
+            self.assertEqual(len(delta['changes']), 2552)
+            self.assertGreater(sum(p.stat().st_size for p in args.output.iterdir()), 256 * 1024)
+            self.assertLessEqual(sum(p.stat().st_size for p in args.output.iterdir()) + 16384,
+                                 1024 * 1024)
 
 
 if __name__ == '__main__':

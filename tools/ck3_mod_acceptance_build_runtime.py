@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse
 import ast
+from collections.abc import Mapping
 from datetime import datetime, timezone
 import hashlib
 import importlib.util
@@ -143,6 +144,27 @@ def checked(row):
 
 def encoded(value):
     return (json.dumps(value, separators=(",", ":"), ensure_ascii=True) + "\n").encode()
+
+
+def validate_metadata_bound(output: Mapping[str, bytes], *, limit_bytes: int,
+                            reserve_bytes: int) -> None:
+    """Check the complete serialized package before creating its directory."""
+    if type(limit_bytes) is not int or type(reserve_bytes) is not int:
+        raise ValueError("Metadata budget requires exact integer byte counts")
+    if limit_bytes <= 0 or reserve_bytes < 0:
+        raise ValueError("Metadata budget requires a positive limit and nonnegative reserve")
+    if sum(map(len, output.values())) + reserve_bytes > limit_bytes:
+        raise ValueError("Complete serialized metadata exceeds its admitted byte limit")
+
+
+def write_bounded_metadata(destination: Path, output: Mapping[str, bytes], *,
+                           limit_bytes: int, reserve_bytes: int) -> None:
+    """Write every original serialized byte after one finite capacity check."""
+    validate_metadata_bound(output, limit_bytes=limit_bytes, reserve_bytes=reserve_bytes)
+    destination.mkdir(parents=False)
+    for name, raw in output.items():
+        with (destination / name).open("xb") as stream:
+            stream.write(raw)
 
 
 def module(path, name):
@@ -1062,12 +1084,10 @@ def main(argv=None):
         "native_recompiled_by_this_metadata_builder": False, "unchanged_SDK_body_rehashed": False, "case_private_host": False,
         "game_started": False, "allocated": False, "public_prepare_executed": False,
         "generation_authority": "fresh Root scene grant and actual next commit; this source package did not generate any candidate when authored"})
-    require(sum(len(raw) for raw in output.values()) + 32768 <= 1024 * 1024, "New scene runtime metadata exceeds 1MiB estimated budget")
+    validate_metadata_bound(output, limit_bytes=2 * 1024 * 1024, reserve_bytes=32768)
     require(pin(args.storage_admission) == grant_pin, "Fresh grant changed during metadata generation")
-    destination.mkdir(parents=False)
-    for name, raw in output.items():
-        with (destination / name).open("xb") as stream:
-            stream.write(raw)
+    write_bounded_metadata(destination, output, limit_bytes=2 * 1024 * 1024,
+                           reserve_bytes=32768)
     entry = module(root / "tools/ck3_mod_acceptance.py", "qualified_actual_public_entry")
     selection = entry.Selection(destination / "runtime.local.json", args.products, args.product, args.case)
     adapter = selection.load_adapter()

@@ -88,12 +88,10 @@ def freeze(args):
              "changes": changes, "native_scope": "native before pins retained separately; a new qualified-native-build is mandatory for all changed native implementation"}
     output = {"Root-diff.paths.txt": paths_bytes, "Root-diff.actual.json": receipt_raw,
               "source-delta.actual.json": builder.encoded(delta)}
-    builder.require(sum(map(len, output.values())) + 16384 <= 256 * 1024, "Source delta metadata exceeds 256 KiB bound")
+    builder.validate_metadata_bound(output, limit_bytes=1024 * 1024, reserve_bytes=16384)
     builder.require(builder.pin(args.storage_admission) == grant_ref, "Admission changed while freezing source metadata")
-    destination.mkdir(parents=False)
-    for name, raw in output.items():
-        with (destination / name).open("xb") as stream:
-            stream.write(raw)
+    builder.write_bounded_metadata(destination, output, limit_bytes=1024 * 1024,
+                                   reserve_bytes=16384)
     return builder.pin(destination / "source-delta.actual.json")
 
 

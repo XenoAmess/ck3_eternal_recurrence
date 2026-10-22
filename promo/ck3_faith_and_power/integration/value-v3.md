@@ -63,6 +63,14 @@ python -B -m faith_power_promo.formal_episode plan --metadata-only --repo <仓�
 
 每句的 `visual_parts` 可使用现有 `raw / mechanism-motion / diagram / native-readback`。raw 必须绑定原片审计、素材索引及逐帧 PTS；选中的真实时间区间不重叠，不循环或慢放来补片长。机制动画须有实际完成的素材、生成输入与来源片段；未制作素材或空视觉列表是明确缺口。原生读回图与实机画面应分别标注，不用读回图冒充录到的动作。
 
+## 整期机制说明的显式合同
+
+纯机制整期仍使用 `scope: "episode02-formal-review"`，另显式声明 `review_content_kind: "source-mechanism-full"`。这不是实测结果槽的默认豁免：只有此模式、完整的逐句分类和来源校验同时成立，才允许没有实测结果槽。其他正式影片继续遵守原有结果合同。
+
+此模式要求 `result_voice_batches` 为实际空数组，`pending_result_slots` 与语音目录中的 `new_live_result_voice_slots` 为实际空对象；缺字段、`null` 或错误类型均拒绝。每句明确给出 `content_class`（`rule / preview / historical-recall / editorial`）、非空 `claim_ids`，并显式设置 `live_result_asserted: false`。每条 claim 同样显式设置该标志，给出 `claim_kind`（`source-rule / rule-example / observed-preview / historical-recall / editorial-scope`），并绑定非空窄来源：精确文件 pin 加行范围或 JSON pointer。
+
+`mechanism_contract.parse_mechanism_full` 先验证 JSON 类型，再构造不可变内部对象；原 `FormalInputs` 继续读取实际来源字节、核对 SHA、范围和指针值。模式成立不授予音频、画面、预算、实机或成片资格，也不绕过既有视觉完整性、ProjectConfig、正式 run 与媒体审计。原实测影片不能通过改一个模式字段抹除尚未完成的结果槽。
+
 ## 分组字幕
 
 句子可给 `subtitle_groups`，每组包含 `start_seconds / end_seconds / zh / en`。范围须有限、正长度、有序、无重叠，且在未修改的实测语音范围内；同一语言按顺序直接拼接，必须逐字等于整句，包括空格和标点。`subtitle_start_seconds` 默认为零。

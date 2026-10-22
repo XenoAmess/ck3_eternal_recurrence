@@ -277,7 +277,15 @@ jobs:
           XAR_DECISION_TEXT_PORTABLE_ONLY: "1"
         run: python -B -X utf8 -m unittest discover -s tools/g2_saved_campaign -p "test_decision_text*.py" -v
       - name: Test formal episode metadata and subtitle timing without media
-        run: python -B -X utf8 -m unittest discover -s promo/ck3_faith_and_power/integration/tests -p "test_*.py" -v
+        run: |
+          python -B -X utf8 -m unittest discover -s promo/ck3_faith_and_power/integration/tests -p "test_*.py" -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul promo/ck3_faith_and_power/integration/src/faith_power_promo/mechanism_contract.py promo/ck3_faith_and_power/integration/src/faith_power_promo/record_validation.py promo/ck3_faith_and_power/integration/tests/test_record_validation.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test complete metadata runtime-source byte budget without CK3
+        env:
+          PYTHONPATH: tools
+        run: python -B -X utf8 -m unittest tools.test_ck3_mod_acceptance_build_runtime.CompleteMetadataBudget -v
       - name: Test Episode 04 partial preview selection without media or CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider promo/ck3_native_war_ai/integration/test_episode04_preview_selection.py
       - name: Test resource4 gateway wallet context without CK3
