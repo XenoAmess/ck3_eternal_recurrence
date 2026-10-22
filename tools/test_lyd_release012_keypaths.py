@@ -244,7 +244,7 @@ class Release012Tests(unittest.TestCase):
         self.assertEqual(key, (101, 2))
         self.assertEqual(args['expected_revision'], 8)
 
-    def test_hidden_first_option_public9_reaches_native8_in_actual_service(self):
+    def test_hidden_first_option_public9_reaches_native8_in_actual_service(self) -> None:
         sys.path.insert(0, str(REPO / 'ck3_autonomous_player' / 'src'))
         from xar_autoplayer.bridge.service import GameplayBridgeService
 
@@ -257,10 +257,17 @@ class Release012Tests(unittest.TestCase):
         args, key = case.option_arguments(packet,
             {'event_definition_key': 'lyd.10', 'native_option_index': 8}, {'lyd.10': [8]}, set())
         calls = []
-        owner = SimpleNamespace(snapshot=lambda: packet['frame'],
+        snapshot_history_requests: list[bool] = []
+
+        def snapshot(*, include_native_command_history: bool = True) -> dict[str, object]:
+            snapshot_history_requests.append(include_native_command_history)
+            return dict(packet['frame'])
+
+        owner = SimpleNamespace(snapshot=snapshot,
             capabilities=lambda: {'action_steps': ['select-event-option-9']},
             execute_step=lambda step, **kwargs: calls.append((step, kwargs)) or {'accepted': True})
         ack = GameplayBridgeService.select_event_option(owner, **args)
+        self.assertEqual(snapshot_history_requests, [False])
         self.assertEqual(calls, [('select-event-option-9', {'expected_revision': 8})])
         self.assertEqual(ack['option_index'], 8)
         case.validate_option_ack({'ok': True, 'result': ack}, args, key)
