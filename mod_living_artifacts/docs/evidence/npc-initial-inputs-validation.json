@@ -1,0 +1,101 @@
+{
+  "schema": "living-artifacts-npc-initial-inputs-validation-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T11:27:30.276164+00:00",
+  "emission_observed_at_utc": "2026-10-22T11:26:09.793975+00:00",
+  "emission": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\next\\npc-initial-fixture-a03.emission.json",
+    "bytes": 11276,
+    "sha256": "195fade8e9741cff576430c488b9483443a06690af52233efff2eb61129276bf"
+  },
+  "qualification_scope": "exact-source-and-initial-script-only",
+  "source_bindings": {
+    "common/scripted_effects/00_setup_tests_effect.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_setup_tests_effect.txt",
+      "bytes": 2172,
+      "sha256": "07382901b1c6635e702006956a3536d374a939686da6089a6c9f0205940d0162"
+    },
+    "common/scripted_effects/00_secret_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_secret_effects.txt",
+      "bytes": 69449,
+      "sha256": "4b86ba489602089969293c810a6aaee81ea5d213f7c0456f051ae8785addf7f9"
+    },
+    "common/scripted_effects/00_ai_conqueror_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_ai_conqueror_effects.txt",
+      "bytes": 21089,
+      "sha256": "1b3856cb09b3cd9c8bbca00fa9d293f846bf675039773d8f541b178b709a1385"
+    },
+    "common/scripted_effects/00_accolades_scripted_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_accolades_scripted_effects.txt",
+      "bytes": 339853,
+      "sha256": "4d0ebc960c72fb091507acb9569d4b0e0cac53404b369cb9e2d54ea54b6d0f2c"
+    },
+    "common/scripted_effects/00_ep1_artifact_creation_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_ep1_artifact_creation_effects.txt",
+      "bytes": 397942,
+      "sha256": "1b60d78e54e1ebff7601bd13e59b2251cff47d96f595a4431c666fa3ee11a831"
+    },
+    "common/character_interactions/00_artifact_interactions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_artifact_interactions.txt",
+      "bytes": 108928,
+      "sha256": "6272e3df8fcdfbeda14a83f3d4410251db5176496e0647f0833e252653aa8e7a"
+    },
+    "common/on_action/game_start.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\game_start.txt",
+      "bytes": 218249,
+      "sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8"
+    },
+    "common/artifacts/types/00_types.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\artifacts\\types\\00_types.txt",
+      "bytes": 12190,
+      "sha256": "302f44a67d81185787135170904fad8022f4a23c0e3986573153ec57bcd4b83a"
+    },
+    "common/modifiers/00_artifact_modifiers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_artifact_modifiers.txt",
+      "bytes": 79092,
+      "sha256": "06495c2f0b39634895f9587a4f3fb26725183d913851d4ea1ec6f4d3b8efe059"
+    },
+    "binaries/ck3.exe": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "product/prepare_npc_fixture.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+      "bytes": 16100,
+      "sha256": "7d1f18ec612485b3c7cea5e7e73e5c3c1e15fd5ee2ccfb0e62dfb6fb0332bfad"
+    },
+    "product/living_artifacts_core.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+      "bytes": 64349,
+      "sha256": "c88fac4b5d781364c5eb8307c6e489d609b19f87c4a35cd3b64bf36d7bad30df"
+    },
+    "product/living_artifacts_model.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_model.py",
+      "bytes": 3156,
+      "sha256": "f899aaf87bc918f94bc54c1e44e210bf9ecf61c8b240341e2fab31085387ae53"
+    }
+  },
+  "product_regression": {
+    "actual_original_tool_chunk": "a2b45d",
+    "actual_original_wait_exit": 0,
+    "tests": 124
+  },
+  "strict_product_tools": {
+    "actual_original_tool_chunk": "0e865d",
+    "actual_original_wait_exit": 0,
+    "files": 33
+  },
+  "fixture_regressions": 7,
+  "runtime_status": "NOT_RUN",
+  "business_acceptance": "NOT_ASSESSED",
+  "coverage_gaps": [
+    "Existing adult AI selection may lack a role; actual root missing-role flags must be read before acceptance.",
+    "Native can_equip/can_benefit and initial unequipped guards must be observed; script emission does not establish legality.",
+    "Creation ownership callbacks/bootstrap ordering may discover queue inputs before observation; 51 unchecked items and tail scheduling are NOT qualified.",
+    "Initial awakening is forced through the production initializer; neither natural awakening chance nor later AI choices are qualified.",
+    "No dangerous level/curse, protected/best-backup inventory, resource recovery, event branch, or I04 suppression scenario is supplied.",
+    "Single-player initialization only; actual NPC adapter, CI registration and live acceptance remain pending."
+  ],
+  "previous_a02": "Retained historical input before shared Rarity import; no overwrite or current qualification inferred."
+}
