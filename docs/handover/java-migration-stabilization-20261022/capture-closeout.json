@@ -1,0 +1,1133 @@
+{
+  "schema": "xar.shared-golden-vacation-closeout/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T15:04:25.037353+00:00",
+  "root_stop": "User vacation handoff: no new capture or Job; existing bounded Jobs only naturally settle",
+  "new_dispatch_enabled": false,
+  "running_capture_coordinator_processes": [],
+  "actual_receipt_count": 85,
+  "counts": {
+    "PASS": 63,
+    "RED": 22
+  },
+  "all_launched_children_terminal_Job0": true,
+  "zero_child_receipt_ids": [
+    "opportunity01"
+  ],
+  "CI_slot": {
+    "owner": "/root/ci_portability",
+    "started": false,
+    "session": null,
+    "pid": null,
+    "job": null,
+    "status": "RELEASED_UNUSED",
+    "source_only": "J/logs/ColdWarmCiVerification01.java",
+    "owner_message": "explicit stopped before start for vacation"
+  },
+  "actual_SDK_Driver_SAVE_body_reads_by_this_lane": 0,
+  "SDK_unsigned_ticket_not_executed": true,
+  "records": [
+    {
+      "id": "actualcontact02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:59:41.168251900Z",
+      "receipt": "CAPTURE-actualcontact02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ACTUALCONTACT-GOLDEN02.json",
+        "bytes": 27831,
+        "sha256": "4698018ddcfd19d51fd0c271401e7a30b95cd76bc47283aac3bfe0f3eea6656a"
+      },
+      "error": null
+    },
+    {
+      "id": "armyinventory01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:20:54.322912400Z",
+      "receipt": "CAPTURE-armyinventory01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ARMYINVENTORY-GOLDEN01.json",
+        "bytes": 28816,
+        "sha256": "a45229f4f395d1d8703c3fd9e30af9001f251d97edef543084fe5ecb6338aa8f"
+      },
+      "error": null
+    },
+    {
+      "id": "batchtiming01",
+      "status": "RED",
+      "utc": "2026-10-22T13:48:32.988667800Z",
+      "receipt": "CAPTURE-batchtiming01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "batchtiming02",
+      "status": "PASS",
+      "utc": "2026-10-22T13:52:56.697822400Z",
+      "receipt": "CAPTURE-batchtiming02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\batchtiming-producer-golden02.json",
+        "bytes": 51333,
+        "sha256": "779cf4f2b7a55dd48bd990cfb939a29ee45c25f5cc1ca2ff19df33ee966d1a61"
+      },
+      "error": null
+    },
+    {
+      "id": "betrothal01",
+      "status": "RED",
+      "utc": "2026-10-22T14:20:52.497607600Z",
+      "receipt": "CAPTURE-betrothal01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "campaigncadence01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:56:53.076306600Z",
+      "receipt": "CAPTURE-campaigncadence01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\planning-runtime\\src\\test\\resources\\campaigncadence\\producer-golden.json",
+        "bytes": 52949,
+        "sha256": "53cdbca5439bdc3911f57908c018029e6c31caab4812b5fa070b345003ab78ae"
+      },
+      "error": null
+    },
+    {
+      "id": "choiceplanning01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:20:57.413907Z",
+      "receipt": "CAPTURE-choiceplanning01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\CHOICEPLANNING-GOLDEN01.json",
+        "bytes": 99402,
+        "sha256": "21d83c7cbfba402360868f963c2ac1d5357a22c1b3ba850a7fe6218c5f5b9f02"
+      },
+      "error": null
+    },
+    {
+      "id": "coalition01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:21:01.276997300Z",
+      "receipt": "CAPTURE-coalition01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\COALITION-GOLDEN01.json",
+        "bytes": 76749,
+        "sha256": "182f7735085e5a1eb59147c920017f19ff62554583170caa13a5e74162299722"
+      },
+      "error": null
+    },
+    {
+      "id": "coalitionreceipt01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:59:36.217602200Z",
+      "receipt": "CAPTURE-coalitionreceipt01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\COALITIONRECEIPT-GOLDEN01.json",
+        "bytes": 18019,
+        "sha256": "7b90bd8ca10faea6d70d687f803ebc2883ebb55c74820cc6104132d2dd42b703"
+      },
+      "error": null
+    },
+    {
+      "id": "coldadmission01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:48:17.283842600Z",
+      "receipt": "CAPTURE-coldadmission01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\admission-contracts\\src\\test\\resources\\cold\\preflight-golden.json",
+        "bytes": 21907,
+        "sha256": "5c26dc7f707a1502789f67a832b6aaa74c9262b1183d8850e35f39499641e6ab"
+      },
+      "error": null
+    },
+    {
+      "id": "creationtime02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:58:31.691576500Z",
+      "receipt": "CAPTURE-creationtime02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\creationtime-oracle02\\original-v1.jsonl.gz",
+        "bytes": 2963,
+        "sha256": "b7d510771b9d1ad9f469cfdec059e4a86806faa9b0bf20cdd740047767d880ca"
+      },
+      "error": null
+    },
+    {
+      "id": "deadlinecredit01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:56:54.123418200Z",
+      "receipt": "CAPTURE-deadlinecredit01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\admission-contracts\\src\\test\\resources\\deadlinecredit\\producer-golden.json",
+        "bytes": 30172,
+        "sha256": "b2ef06f98abdec7d2528a6341cbbf39caefe991a585b36c67db64beab3467dc4"
+      },
+      "error": null
+    },
+    {
+      "id": "declarationcontract01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:59:38.321573900Z",
+      "receipt": "CAPTURE-declarationcontract01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\DECLARATIONCONTRACT-GOLDEN01.json",
+        "bytes": 26513,
+        "sha256": "743b471e9ed39c1853fbf5bbf06f9262f14c4db91a03d2384ea57966493c1935"
+      },
+      "error": null
+    },
+    {
+      "id": "declarationpriority02",
+      "status": "PASS",
+      "utc": "2026-10-22T13:59:57.518667300Z",
+      "receipt": "CAPTURE-declarationpriority02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\DECLARATION-PRIORITY-GOLDEN-RAW-TOKENS02.json",
+        "bytes": 50899,
+        "sha256": "2a7ad28778ff5c6505dbcf61465523c014e2068c148f37aaef27ae5ff2dfac83"
+      },
+      "error": null
+    },
+    {
+      "id": "education01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:44:15.008471200Z",
+      "receipt": "CAPTURE-education01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\governance-policy\\src\\test\\resources\\education\\producer-golden.json",
+        "bytes": 85508,
+        "sha256": "973a03c0007245a8327cc26d8dd92411ca277d746770034a49447cc1458cd358"
+      },
+      "error": null
+    },
+    {
+      "id": "educationmulti01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:52:59.325335500Z",
+      "receipt": "CAPTURE-educationmulti01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\governance-policy\\src\\test\\resources\\education\\multiple-child-producer-golden.json",
+        "bytes": 5576,
+        "sha256": "29274ccecde93bdbd59e4bf50489b70cd82f8ca83e54a10e25585d73d75057c8"
+      },
+      "error": null
+    },
+    {
+      "id": "educationneeds01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:54:59.092418900Z",
+      "receipt": "CAPTURE-educationneeds01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EDUCATIONNEEDS-ORIGINAL-GOLDEN01.json",
+        "bytes": 49138,
+        "sha256": "c61dc1858c5be9077d7aaad58c1170a7639e6dccf79dcb13d6e0a21e0d0529c4"
+      },
+      "error": null
+    },
+    {
+      "id": "educationpreference02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:58:16.893405200Z",
+      "receipt": "CAPTURE-educationpreference02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EDUCATION-PREFERENCE-GOLDEN02.json",
+        "bytes": 76476,
+        "sha256": "aa1b416b560144ad302b4bd9162c6112aeb67b0406d574aac38c72792c4225c4"
+      },
+      "error": null
+    },
+    {
+      "id": "eventoutcome01",
+      "status": "RED",
+      "utc": "2026-10-22T14:20:56.126822Z",
+      "receipt": "CAPTURE-eventoutcome01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "eventoutcome02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:29:30.727227200Z",
+      "receipt": "CAPTURE-eventoutcome02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EVENTOUTCOME-GOLDEN02.json.gz",
+        "bytes": 5179,
+        "sha256": "65b5964a4a62206a70e31740f0e0156b36daec326a922f41a718b7275aeddfbd"
+      },
+      "error": null
+    },
+    {
+      "id": "exitcomparison01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:12.735812700Z",
+      "receipt": "CAPTURE-exitcomparison01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EXITCOMPARISON-GOLDEN-ORIGINAL01.json",
+        "bytes": 41509,
+        "sha256": "e844f4977ec73b566c250a2b67ae0de0bbd40ba3439abdf03594f5d965e1f444"
+      },
+      "error": null
+    },
+    {
+      "id": "exitresult01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:14.082891600Z",
+      "receipt": "CAPTURE-exitresult01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EXITRESULT-GOLDEN-ORIGINAL01.json",
+        "bytes": 37833,
+        "sha256": "91784812f661318013c96d2130c817b764feb407e66f8d5d95a577e17c9db7a3"
+      },
+      "error": null
+    },
+    {
+      "id": "factionalerts01",
+      "status": "PASS",
+      "utc": "2026-10-22T15:01:20.038869600Z",
+      "receipt": "CAPTURE-factionalerts01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\FACTIONALERTS-GOLDEN01.json",
+        "bytes": 45911,
+        "sha256": "41b30820281d4d58163826fb1c6aa7c5f487323737b37e8f4e60e9647e057837"
+      },
+      "error": null
+    },
+    {
+      "id": "factioncandidate01",
+      "status": "PASS",
+      "utc": "2026-10-22T15:01:13.157031600Z",
+      "receipt": "CAPTURE-factioncandidate01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\FACTIONCANDIDATE-GOLDEN-ACTUAL01.json",
+        "bytes": 87448,
+        "sha256": "b688e3dd381e7890c2d916cf55d998e38075097179f1aca713189b5ee844d8c2"
+      },
+      "error": null
+    },
+    {
+      "id": "factionculture01",
+      "status": "PASS",
+      "utc": "2026-10-22T15:01:15.809161800Z",
+      "receipt": "CAPTURE-factionculture01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\FACTIONCULTURE-GOLDEN-ACTUAL01.json",
+        "bytes": 22295,
+        "sha256": "211f8470d679915df9344d766ba79f31fa151a6c1916d45ad9cba9eb5caf615f"
+      },
+      "error": null
+    },
+    {
+      "id": "factionthreat01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:15:43.668209800Z",
+      "receipt": "CAPTURE-factionthreat01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\FACTIONTHREAT-GOLDEN-ACTUAL01.json",
+        "bytes": 72092,
+        "sha256": "fb55b26028a36dcfb752e2cd78686b0ffae329f9c4db836a58f600d436101651"
+      },
+      "error": null
+    },
+    {
+      "id": "feastcounters02",
+      "status": "RED",
+      "utc": "2026-10-22T15:01:17.312488700Z",
+      "receipt": "CAPTURE-feastcounters02-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "feastordinary-hosted01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:15:40.783664400Z",
+      "receipt": "CAPTURE-feastordinary-hosted01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\FEASTORDINARY-HOSTED-PRODUCER-GOLDEN01.json",
+        "bytes": 42719,
+        "sha256": "e003d0f9744d53480e5feab9984327e32ab79a60a58e7fc4e0502653b7b23e5e"
+      },
+      "error": null
+    },
+    {
+      "id": "feastterminal01",
+      "status": "RED",
+      "utc": "2026-10-22T15:01:13.901165800Z",
+      "receipt": "CAPTURE-feastterminal01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "giftoutcome02",
+      "status": "PASS",
+      "utc": "2026-10-22T15:01:15.893194400Z",
+      "receipt": "CAPTURE-giftoutcome02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\GIFTOUTCOME-GOLDEN02.json",
+        "bytes": 57864,
+        "sha256": "803f356035c187542a49543c2cfe47427d900d9f6efe78c3bf278c5d39c766cb"
+      },
+      "error": null
+    },
+    {
+      "id": "giftpending01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:11.848377700Z",
+      "receipt": "CAPTURE-giftpending01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\GIFTPENDING-ORIGINAL-GOLDEN01.json",
+        "bytes": 20363,
+        "sha256": "927d7e4eb211fe7097d34411748e0bcfd29ba772d4f3d6391e4ab4d00b6f298e"
+      },
+      "error": null
+    },
+    {
+      "id": "giftpendingframe01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:14.472619300Z",
+      "receipt": "CAPTURE-giftpendingframe01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\GIFTPENDINGFRAME-ORIGINAL-GOLDEN01.json",
+        "bytes": 14671,
+        "sha256": "4f769b32f99f6bf5e4ce4d9f73d03ae2685806116cda1d4807aa2678895c3334"
+      },
+      "error": null
+    },
+    {
+      "id": "giftpendingreaders01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:17.038093100Z",
+      "receipt": "CAPTURE-giftpendingreaders01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\GIFTPENDINGREADERS-ORIGINAL-GOLDEN01.json",
+        "bytes": 5863,
+        "sha256": "0c7f831712f5ec3d8261ad77765b1453edd947ab6d9b5e069c5e428e86e54b0e"
+      },
+      "error": null
+    },
+    {
+      "id": "giftwarcash01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:15:38.115007500Z",
+      "receipt": "CAPTURE-giftwarcash01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\giftwarcash-producer01.json",
+        "bytes": 81942,
+        "sha256": "afcc60b27fcae8fb825b5896331cb3a8d906788f98b6f6af402150224465f4a6"
+      },
+      "error": null
+    },
+    {
+      "id": "government02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:20:49.888200800Z",
+      "receipt": "CAPTURE-government02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\GOVERNMENT-ORIGINAL-PRODUCER-GOLDEN02.json",
+        "bytes": 51122,
+        "sha256": "8f1a1adf88423cde5b71316367d0dfd9cb2c6c2f43b7b105ba5dbb43d79bb042"
+      },
+      "error": null
+    },
+    {
+      "id": "guardiancadence02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:59:35.967143100Z",
+      "receipt": "CAPTURE-guardiancadence02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\GUARDIAN-CADENCE-GOLDEN02.json",
+        "bytes": 53599,
+        "sha256": "7c7d633831b80a5355671051c3ec7521b87724bf5fa5dfc0c7f96753a034ddd3"
+      },
+      "error": null
+    },
+    {
+      "id": "guardianskills02",
+      "status": "RED",
+      "utc": "2026-10-22T14:59:37.822311700Z",
+      "receipt": "CAPTURE-guardianskills02-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "heirdiagnostic01",
+      "status": "RED",
+      "utc": "2026-10-22T15:01:20.197708200Z",
+      "receipt": "CAPTURE-heirdiagnostic01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "heirintake01",
+      "status": "PASS",
+      "utc": "2026-10-22T15:01:17.606348100Z",
+      "receipt": "CAPTURE-heirintake01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\HEIRINTAKE-ACTUAL-GOLDEN01.json",
+        "bytes": 37896,
+        "sha256": "98bfd24a22625f82b1dc3f5c3efb73eff25b7aef8b4cd47a5310c1c8a5bdcbee"
+      },
+      "error": null
+    },
+    {
+      "id": "heirlineage01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:15:42.620242500Z",
+      "receipt": "CAPTURE-heirlineage01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\HEIRLINEAGE-ACTUAL-GOLDEN01.json",
+        "bytes": 51261,
+        "sha256": "2b521e07b2f45eb2159696212d25bd719512ffe60f81cce8ace2e9a9f07ca74f"
+      },
+      "error": null
+    },
+    {
+      "id": "heirranking01",
+      "status": "RED",
+      "utc": "2026-10-22T15:01:14.425488500Z",
+      "receipt": "CAPTURE-heirranking01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "holycost01",
+      "status": "RED",
+      "utc": "2026-10-22T14:59:40.127488300Z",
+      "receipt": "CAPTURE-holycost01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "interactionbefore01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:16.235855600Z",
+      "receipt": "CAPTURE-interactionbefore01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONBEFORE-GOLDEN01.json",
+        "bytes": 79711,
+        "sha256": "2c93e9852c73022ad74a2e16ec3aaabb7e944e1677e7425bda1c8e54455b8fb7"
+      },
+      "error": null
+    },
+    {
+      "id": "interactionreceipt02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:57:13.617329500Z",
+      "receipt": "CAPTURE-interactionreceipt02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONRECEIPT-GOLDEN02.json",
+        "bytes": 17071,
+        "sha256": "4d5fd4b7655a030a4fb4213074ca770819414c928a98d24ece73b8d1313846d3"
+      },
+      "error": null
+    },
+    {
+      "id": "interactionregistry01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:16:27.298810Z",
+      "receipt": "CAPTURE-interactionregistry01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONREGISTRY-GOLDEN01.json",
+        "bytes": 8999,
+        "sha256": "103470205c9320aa75ee2b6834c791d6119642cd130412b4b7d0385305662ca7"
+      },
+      "error": null
+    },
+    {
+      "id": "interactionsourceblocks01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:53:22.655760700Z",
+      "receipt": "CAPTURE-interactionsourceblocks01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONSOURCEBLOCKS-GOLDEN01.json",
+        "bytes": 8597,
+        "sha256": "afe60cb29563917802e94bb0c374826a5ad9c491161fe0916a0b3dd5c0fdc21f"
+      },
+      "error": null
+    },
+    {
+      "id": "jointshortlist01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:15:39.227699Z",
+      "receipt": "CAPTURE-jointshortlist01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JOINTSHORTLIST-GOLDEN-ORIGINAL01.json",
+        "bytes": 78695,
+        "sha256": "ddaea63e8a14a78605bcf493556f3995ffa00d9f513e478c83a978263069b33b"
+      },
+      "error": null
+    },
+    {
+      "id": "landstock01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:55:01.185032600Z",
+      "receipt": "CAPTURE-landstock01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-military\\src\\test\\resources\\landstock\\native-land-stock-golden-v1.json",
+        "bytes": 68706,
+        "sha256": "97f76f2274c048e8fdd045086d0fd79c333929014c0bf976fd238e7a3db4f237"
+      },
+      "error": null
+    },
+    {
+      "id": "lifestyle01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:48:33.267053900Z",
+      "receipt": "CAPTURE-lifestyle01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\governance-policy\\src\\test\\resources\\lifestyle\\original-producer-golden-v1.json",
+        "bytes": 74579,
+        "sha256": "d42fa8565ab87d1a51adad28d085dccddc024ae5d5de13bf0ee5f735d71f2d9f"
+      },
+      "error": null
+    },
+    {
+      "id": "mandatoryreceipt01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:58:18.433550800Z",
+      "receipt": "CAPTURE-mandatoryreceipt01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\MANDATORYRECEIPT-GOLDEN01.json",
+        "bytes": 26730,
+        "sha256": "09dddd7e4e962560bb5d5904a5eb5147e894bb483feab1f62dc38117a28b0fa5"
+      },
+      "error": null
+    },
+    {
+      "id": "occurrence01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:58:20.542016900Z",
+      "receipt": "CAPTURE-occurrence01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EVENT-OCCURRENCE-GOLDEN01.json",
+        "bytes": 32358,
+        "sha256": "ee16a57718c5df0dd3312fdc1b9766e414a4b52494e727c81661ba763ea44b44"
+      },
+      "error": null
+    },
+    {
+      "id": "opportunity01",
+      "status": "RED",
+      "utc": "2026-10-22T13:44:15.308653600Z",
+      "receipt": "CAPTURE-opportunity01-ACTUAL01.json",
+      "exit_code": null,
+      "active_processes": null,
+      "output_ref": null,
+      "error": "java.io.IOException: File reference changed: Z:\\ck3_mod_rewrite\\java\\ck3-control\\planning-runtime\\src\\test\\java\\org\\xar\\ck3\\control\\planning\\opportunity\\CaptureOpportunityGolden.java"
+    },
+    {
+      "id": "opportunity02",
+      "status": "RED",
+      "utc": "2026-10-22T13:48:15.667090800Z",
+      "receipt": "CAPTURE-opportunity02-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "opportunity03",
+      "status": "PASS",
+      "utc": "2026-10-22T13:52:58.030228100Z",
+      "receipt": "CAPTURE-opportunity03-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\planning-runtime\\src\\test\\resources\\opportunity\\producer-golden-v1.json.gz",
+        "bytes": 5581,
+        "sha256": "21e48118933fb2bcff3b5714cc54ff4769f625cf530ad52ea08df029822c3d3d"
+      },
+      "error": null
+    },
+    {
+      "id": "optionalcadence01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:56:52.531293400Z",
+      "receipt": "CAPTURE-optionalcadence01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\planning-runtime\\src\\test\\resources\\optionalcadence\\golden.json",
+        "bytes": 44218,
+        "sha256": "41bd33113d62256951ab209a0a09e8e04f5d644cd92c03d7c81c5b5713c70764"
+      },
+      "error": null
+    },
+    {
+      "id": "optionalcadence02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:58:18.175960Z",
+      "receipt": "CAPTURE-optionalcadence02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\optionalcadence02-utf8-golden.json",
+        "bytes": 44230,
+        "sha256": "2a040319fcbb9dfe5d8a7bd8e18818fe5bfa0a6c829fb4b9cf8432774e066a7b"
+      },
+      "error": null
+    },
+    {
+      "id": "ownerprepare01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:44:15.297043900Z",
+      "receipt": "CAPTURE-ownerprepare01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\admission-contracts\\src\\test\\resources\\ownerprepare\\producer-golden-v1.json",
+        "bytes": 28797,
+        "sha256": "44f83c5b9e8741ff00c86b097f98ac6a0146c15ca6ccd78210ae86053ccff80e"
+      },
+      "error": null
+    },
+    {
+      "id": "performancewindows01",
+      "status": "RED",
+      "utc": "2026-10-22T15:01:19.146686100Z",
+      "receipt": "CAPTURE-performancewindows01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual golden output missing/oversized"
+    },
+    {
+      "id": "prewaradmission01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:20:59.980481800Z",
+      "receipt": "CAPTURE-prewaradmission01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\PREWARADMISSION-GOLDEN01.json",
+        "bytes": 45824,
+        "sha256": "3f7d6cec6ac9e12923293c7ae4aa98e9175faf6cdad7f3156e3a5203a7c01a3d"
+      },
+      "error": null
+    },
+    {
+      "id": "providerchain01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:29:32.594303400Z",
+      "receipt": "CAPTURE-providerchain01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-runtime\\src\\test\\resources\\providerchain\\providerchain-golden.json",
+        "bytes": 8362,
+        "sha256": "8b8e4ba29186fd661ba036922a7cdf80bef8b7510e47da8a6a65121d5ef3fead"
+      },
+      "error": null
+    },
+    {
+      "id": "providerorigin01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:29:33.125550700Z",
+      "receipt": "CAPTURE-providerorigin01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-runtime\\src\\test\\resources\\providerchain\\origin-readback-golden.json",
+        "bytes": 3734,
+        "sha256": "f3613f1e2b9a40b01a992c94b450c374b4e23fc4b169252edafaaf5c009c218b"
+      },
+      "error": null
+    },
+    {
+      "id": "realmmembership01",
+      "status": "PASS",
+      "utc": "2026-10-22T15:01:22.358569Z",
+      "receipt": "CAPTURE-realmmembership01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\REALMMEMBERSHIP-GOLDEN01.json",
+        "bytes": 42571,
+        "sha256": "21fd8f8bd03a822add8bb67321549e8b35e50cefcd547042e483bc7c76dbb253"
+      },
+      "error": null
+    },
+    {
+      "id": "realmsiege01",
+      "status": "RED",
+      "utc": "2026-10-22T14:20:53.283237Z",
+      "receipt": "CAPTURE-realmsiege01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "realmsiege02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:29:28.928872700Z",
+      "receipt": "CAPTURE-realmsiege02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\REALMSIEGE-GOLDEN-ORIGINAL02.json.gz",
+        "bytes": 2774,
+        "sha256": "1023c72eba68a625ad88ab211e1eeba18c766b6b9ae4312eece08acd60851692"
+      },
+      "error": null
+    },
+    {
+      "id": "replenishment01",
+      "status": "RED",
+      "utc": "2026-10-22T13:44:13.419331500Z",
+      "receipt": "CAPTURE-replenishment01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "replenishment02",
+      "status": "RED",
+      "utc": "2026-10-22T13:56:50.449633100Z",
+      "receipt": "CAPTURE-replenishment02-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "replenishment03",
+      "status": "RED",
+      "utc": "2026-10-22T14:14:51.181013900Z",
+      "receipt": "CAPTURE-replenishment03-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "replenishment04",
+      "status": "RED",
+      "utc": "2026-10-22T14:29:28.080805100Z",
+      "receipt": "CAPTURE-replenishment04-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "replenishment05",
+      "status": "PASS",
+      "utc": "2026-10-22T14:54:59.037090100Z",
+      "receipt": "CAPTURE-replenishment05-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\replenishment-policy\\src\\test\\resources\\replenishment-golden-v1.json",
+        "bytes": 167903,
+        "sha256": "d2884d7ebba413ef111e6459ef9b1bf8427fc6c7e3eb44c43282f6cf7b09380e"
+      },
+      "error": null
+    },
+    {
+      "id": "routewindow02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:59:36.749305400Z",
+      "receipt": "CAPTURE-routewindow02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ROUTEWINDOW-GOLDEN02.json",
+        "bytes": 41504,
+        "sha256": "8c5f48bd4d080d45a28684d30b142c9dd7d550fedeb30d6c478c0ff7bdef1746"
+      },
+      "error": null
+    },
+    {
+      "id": "routewindowstep01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:59:38.863050400Z",
+      "receipt": "CAPTURE-routewindowstep01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ROUTEWINDOWSTEP-GOLDEN01.json",
+        "bytes": 15035,
+        "sha256": "8b29071385a3e489da7f81dcb5ad38dcad4475acefd96ed76d98326d8e25194d"
+      },
+      "error": null
+    },
+    {
+      "id": "scoreinputs01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:29:31.767414Z",
+      "receipt": "CAPTURE-scoreinputs01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-planning\\src\\test\\resources\\scoreinputs\\producer-golden.json",
+        "bytes": 33060,
+        "sha256": "fd8227f3a7b0fdfda8d21972aabdb2373a9993094d2690b5820f4dbf351e3402"
+      },
+      "error": null
+    },
+    {
+      "id": "scoretarget01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:15:41.580454Z",
+      "receipt": "CAPTURE-scoretarget01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-planning\\src\\test\\resources\\scoretarget\\player_war_defence_python_v1.jsonl",
+        "bytes": 76924,
+        "sha256": "d5cf8f10654b55cf17600e6c77f27d638278190aa48f99202e597c7d6904b8f1"
+      },
+      "error": null
+    },
+    {
+      "id": "scoretargetconsumer01",
+      "status": "RED",
+      "utc": "2026-10-22T14:29:34.161891700Z",
+      "receipt": "CAPTURE-scoretargetconsumer01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "sourcecatalog01",
+      "status": "RED",
+      "utc": "2026-10-22T14:59:35.465373900Z",
+      "receipt": "CAPTURE-sourcecatalog01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "stdioidentity01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:29:32.054529300Z",
+      "receipt": "CAPTURE-stdioidentity01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-runtime\\src\\test\\resources\\stdioidentity\\legacy-producer-golden-v1.json",
+        "bytes": 23991,
+        "sha256": "6ccd89f7b5e7d465e4afbc62bfa891bfae21ff92a37cf0bf84e168418ee69c95"
+      },
+      "error": null
+    },
+    {
+      "id": "swayreuse01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:44:16.338559500Z",
+      "receipt": "CAPTURE-swayreuse01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\SWAY-REUSE-PRODUCER-GOLDEN01.json",
+        "bytes": 18018,
+        "sha256": "8d2bc30493e24964b442f6378ca5308343b91402f5a92557e2ae90ff0a3608d5"
+      },
+      "error": null
+    },
+    {
+      "id": "uirecoveryidentity01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:53:22.502644900Z",
+      "receipt": "CAPTURE-uirecoveryidentity01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\UIRECOVERYIDENTITY-GOLDEN01.json",
+        "bytes": 31248,
+        "sha256": "234f9fc5a00d86b0164da177950a17231edd46e32133e21d0b8663dd135d3f92"
+      },
+      "error": null
+    },
+    {
+      "id": "updaterwrites01",
+      "status": "RED",
+      "utc": "2026-10-22T14:55:02.994970700Z",
+      "receipt": "CAPTURE-updaterwrites01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "warbudget02",
+      "status": "PASS",
+      "utc": "2026-10-22T14:58:25.509715Z",
+      "receipt": "CAPTURE-warbudget02-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\war-budget-oracle02\\original-v1.jsonl.gz",
+        "bytes": 78376,
+        "sha256": "8ff4a406cc0d1244bd77f25140d1fa43c981d612c6afd0677485202203b21a6c"
+      },
+      "error": null
+    },
+    {
+      "id": "warcash02",
+      "status": "RED",
+      "utc": "2026-10-22T14:58:27.615915800Z",
+      "receipt": "CAPTURE-warcash02-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "wardeclaredoverview01",
+      "status": "RED",
+      "utc": "2026-10-22T14:57:14.504982700Z",
+      "receipt": "CAPTURE-wardeclaredoverview01-ACTUAL01.json",
+      "exit_code": 1,
+      "active_processes": 0,
+      "output_ref": null,
+      "error": "java.lang.IllegalStateException: actual capture child/Job terminal RED"
+    },
+    {
+      "id": "warquerycadence01",
+      "status": "PASS",
+      "utc": "2026-10-22T13:48:16.742433Z",
+      "receipt": "CAPTURE-warquerycadence01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\WAR-QUERY-CADENCE-GOLDEN-CAPTURE01.json",
+        "bytes": 7497,
+        "sha256": "69ab8af55d99c8824d99660763e9fec833f481893c6452a0e8765e10d009d2a8"
+      },
+      "error": null
+    },
+    {
+      "id": "warresults01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:53:24.423965500Z",
+      "receipt": "CAPTURE-warresults01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\WARRESULTS-GOLDEN-CAPTURE01.json",
+        "bytes": 46406,
+        "sha256": "126e8c8d856b39ee6b6e1b268bd08360f17e0efdbdfcc0ce7c9c20ab1dad6da2"
+      },
+      "error": null
+    },
+    {
+      "id": "warresultssource01",
+      "status": "PASS",
+      "utc": "2026-10-22T14:54:58.533694900Z",
+      "receipt": "CAPTURE-warresultssource01-ACTUAL01.json",
+      "exit_code": 0,
+      "active_processes": 0,
+      "output_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\WARRESULTSSOURCE-GOLDEN-CAPTURE01.json",
+        "bytes": 57796,
+        "sha256": "e58d50ae5281a8cfcf099eb1f0379b117111b3de7b61407778dfb5e52c9ea407"
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,339 @@
+{
+  "blockers": [
+    "sourcecatalog01 actual RED exit1/Job0 at 2026-10-22T14:59:35.465373900Z: Windows python -c quoting caused SyntaxError before original helpers; preserved actual log, no golden output",
+    "sourcecatalog02 corrected stdin launcher/request saved but NOT EXECUTED; mandatorybefore01 and unhandledevent01 NOT EXECUTED",
+    "wave2-events nine leaves and existing three staging leaves have no actual Maven compile/JUnit result",
+    "original Python consumer routing and original writer remain unchanged; pure Java consumer ports do not prove production cutover"
+  ],
+  "consumer_boundary_document": "docs/java-events-consumer-integration-boundary-2026-10-22.md",
+  "consumer_boundary_document_ref": {
+    "bytes": 5969,
+    "path": "Z:\\ck3_mod_rewrite\\docs\\java-events-consumer-integration-boundary-2026-10-22.md",
+    "sha256": "3d90bc5c50813b70786c5c8934fb2f7b2619a653748a282e1085a8d063c6c9b0"
+  },
+  "excluded_uncreated_followups": [
+    "nativebinding",
+    "interactionbatchreader",
+    "mandatoryhistory"
+  ],
+  "existing_staging_leaf_count": 3,
+  "family_leaf_count": 9,
+  "further_capture_or_java_execution_authorized_by_this_record": false,
+  "game_rpc_count": 0,
+  "java_first_family_attempt": "NOT_STARTED",
+  "leaves": [
+    {
+      "actual_producer_case_count_if_captured_else_planned": 20,
+      "actual_producer_cases": 20,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 3115,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\CHOICEPLANNING-SOURCE-FREEZE03.json",
+        "sha256": "554c3d946af64da176fa80ea745cc23693dd643d2b8cb367ae859e0f2b1f773a"
+      },
+      "java_verified": false,
+      "leaf": "choiceplanning",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 20,
+      "actual_producer_cases": 20,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2861,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\UIRECOVERYIDENTITY-SOURCE-FREEZE01.json",
+        "sha256": "f8fa9eca98e967307c5a295d607f5f71a5ce566f3d67a0411bf9dc238d01e8a5"
+      },
+      "java_verified": false,
+      "leaf": "uirecoveryidentity",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 15,
+      "actual_producer_cases": 15,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2572,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\MANDATORYRECEIPT-SOURCE-FREEZE01.json",
+        "sha256": "be03f90ee859759d7363be058880bcc146d226c36cede5033a568855b5b7f249"
+      },
+      "java_verified": false,
+      "leaf": "mandatoryreceipt",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 16,
+      "actual_producer_cases": 16,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2467,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONREGISTRY-SOURCE-FREEZE01.json",
+        "sha256": "336f804e981256fcee9c730f044f52290c702598605bee32b0dab0c23ee841fc"
+      },
+      "java_verified": false,
+      "leaf": "interactionregistry",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 32,
+      "actual_producer_cases": 32,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2672,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONSOURCEBLOCKS-SOURCE-FREEZE01.json",
+        "sha256": "ea21b6f99719e36a2fef71fa9f896299cfd7a604b193043b5ed13077d6a4f399"
+      },
+      "java_verified": false,
+      "leaf": "interactionsourceblocks",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 23,
+      "actual_producer_cases": 23,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2895,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONRECEIPT-SOURCE-FREEZE01.json",
+        "sha256": "2200be047c4c8494fe8a4d8c0c678a82cb4ef78a08bc4ba2ff2f1dc597f8512b"
+      },
+      "java_verified": false,
+      "leaf": "interactionreceipt",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 43,
+      "actual_producer_cases": 43,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2537,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\EVENTOUTCOME-SOURCE-FREEZE01.json",
+        "sha256": "4ed3d5389d0eb9a1c161b55ec2d1b346b6c7767b6632ed665958517dbf1004b8"
+      },
+      "java_verified": false,
+      "leaf": "eventoutcome",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 28,
+      "actual_producer_cases": 28,
+      "cohort": "family9",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2847,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\OCCURRENCE-SOURCE-FREEZE01.json",
+        "sha256": "fbc687e1865fdc65593068964f42aa035a58ce4218001739c64fa650b099b685"
+      },
+      "java_verified": false,
+      "leaf": "occurrence",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 28,
+      "actual_producer_cases": 0,
+      "cohort": "family9",
+      "failed_actual_ref": {
+        "bytes": 7571,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\CAPTURE-sourcecatalog01-ACTUAL01.json",
+        "sha256": "486317b1a61fb0baafa8e8ba4e19e5c710ba4b32243981a46a9a470b4b025624"
+      },
+      "java_verified": false,
+      "leaf": "sourcecatalog",
+      "original_failed_launcher_ref": {
+        "bytes": 9848,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\SOURCECATALOG01-ORIGINAL-CAPTURE-SOURCE.java",
+        "sha256": "ab724e9e0cc7db5701f9b75f1cbc7ebbf13feba3f4b03ccb9e1db36d81cb3631"
+      },
+      "production_consumer_cutover": false,
+      "request_refs": [
+        {
+          "bytes": 2307,
+          "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\SOURCECATALOG-CAPTURE-REQUEST01.json",
+          "sha256": "3fcdbcb379b415fec08db1bbe2858328108a6ffb16a7de68f7244059861bd1b7"
+        },
+        {
+          "bytes": 2752,
+          "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\SOURCECATALOG-CAPTURE-REQUEST02.json",
+          "sha256": "8cc4f308e5b453dd388857b4c04982dbd19124e411f270d804796730d7191018"
+        }
+      ],
+      "saved_wip_bytes": 41070,
+      "saved_wip_files": [
+        {
+          "bytes": 6094,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events\\MIGRATION-sourcecatalog.md",
+          "sha256": "922b82357c4dbe4ff7c30f548ed401e3fd4873f88a0194f8e2342e4ff52f6806"
+        },
+        {
+          "bytes": 10409,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\sourcecatalog\\EventSourceCatalogue.java",
+          "sha256": "e81f3dd63f418dc75c69a3954a533b0e24d2340730532f541ce1b646c966a34e"
+        },
+        {
+          "bytes": 6719,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\sourcecatalog\\SourceCatalogueCodec.java",
+          "sha256": "8de90f0e60a15c73f49e2d80a328d5edf957734df1055575d638e106ff454547"
+        },
+        {
+          "bytes": 7623,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\events\\sourcecatalog\\EventSourceCatalogueTest.java",
+          "sha256": "8151c33f92945854bc42b684f87489a6b0f4e6c4e71a4fb0b129f4251a90b01a"
+        },
+        {
+          "bytes": 10225,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\events\\sourcecatalog\\SourceCatalogueGoldenCapture.java",
+          "sha256": "b2ab131a173bab1aeed280620cd9087f66b92a1263c1893bb34c77f5fb9d402a"
+        }
+      ],
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-events",
+      "status": "CAPTURE01_RED_CORRECTED02_NOT_EXECUTED"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 14,
+      "actual_producer_cases": 0,
+      "cohort": "existing_staging",
+      "java_verified": false,
+      "leaf": "mandatorybefore",
+      "production_consumer_cutover": false,
+      "request_refs": [
+        {
+          "bytes": 2880,
+          "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\MANDATORYBEFORE-CAPTURE-REQUEST01.json",
+          "sha256": "82ded22eecb4864e09d6d83813396e67d925ba4e2d8b69238735543255bc8b3a"
+        }
+      ],
+      "saved_wip_bytes": 26364,
+      "saved_wip_files": [
+        {
+          "bytes": 2499,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore\\MIGRATION-mandatorybefore.md",
+          "sha256": "75087211cce1069f68a3d595ec94b55978cea17c1315fdc45938a71f077e984d"
+        },
+        {
+          "bytes": 8966,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\mandatorybefore\\MandatoryBeforeJson.java",
+          "sha256": "e5760b7b053eeb0ae21166ce0f4d6254a8ee25233db6c0a22baac12d2502b52b"
+        },
+        {
+          "bytes": 1528,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\mandatorybefore\\MandatoryBeforeModel.java",
+          "sha256": "bdc8833c2f8a718829ee0d7ff7f99097cb2a98f42039fb72ac92589b8ba8876e"
+        },
+        {
+          "bytes": 301,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\mandatorybefore\\MandatoryBeforePort.java",
+          "sha256": "059463d863f8d52d83fabde6fdd8e73e4a46082e8dcac2120bd2f3c04511830a"
+        },
+        {
+          "bytes": 6599,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\events\\mandatorybefore\\MandatoryBeforeGoldenCapture.java",
+          "sha256": "0645e6c9f59f97787b34e7eefcb5c857a524678254131a70a826fd56da210ec0"
+        },
+        {
+          "bytes": 6471,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\events\\mandatorybefore\\MandatoryBeforeJsonTest.java",
+          "sha256": "24223bbd9c5acb708d96fa1abc3f3294d13bf8b9986ade4e6c3536f5f92ddf77"
+        }
+      ],
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\mandatorybefore",
+      "status": "WIP_SAVED_CAPTURE_NOT_EXECUTED"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 9,
+      "actual_producer_cases": 9,
+      "cohort": "existing_staging",
+      "freeze_files_match_at_stop": true,
+      "freeze_ref": {
+        "bytes": 2793,
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\INTERACTIONBEFORE-SOURCE-FREEZE01.json",
+        "sha256": "e9b3aa40d88c8ef4d9cc08e200b673e30dd7f7adddee2c2252c01b3387bbe269"
+      },
+      "java_verified": false,
+      "leaf": "interactionbefore",
+      "production_consumer_cutover": false,
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\interactionbefore",
+      "status": "SOURCE_READY_JAVA_VERIFICATION_PENDING"
+    },
+    {
+      "actual_producer_case_count_if_captured_else_planned": 32,
+      "actual_producer_cases": 0,
+      "cohort": "existing_staging",
+      "java_verified": false,
+      "leaf": "unhandledevent",
+      "production_consumer_cutover": false,
+      "request_refs": [
+        {
+          "bytes": 2022,
+          "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\UNHANDLEDEVENT-CAPTURE-REQUEST01.json",
+          "sha256": "6ec1156d94bd8feba8bf02026683c656a3a11310eca51419f91c715ba3808b1d"
+        }
+      ],
+      "saved_wip_bytes": 57900,
+      "saved_wip_files": [
+        {
+          "bytes": 5222,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent\\MIGRATION-unhandledevent.md",
+          "sha256": "a12f47ed3ee6d789bd3ceab25f365c85e483de12b14ac8ffe4b976932564fdd7"
+        },
+        {
+          "bytes": 8776,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\RetainedJson.java",
+          "sha256": "2130bba88f49abb1072cc753fea3038bb355fe9a94b419e018ae5192bc62248a"
+        },
+        {
+          "bytes": 14279,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\UnhandledEventCodec.java",
+          "sha256": "43ff2a482eafc311d140094bf82bd70b7e860e47f1a79e2f9006cfba6189777a"
+        },
+        {
+          "bytes": 9863,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent\\src\\main\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\UnhandledEventFallback.java",
+          "sha256": "d9942390b7e343f36cd2eeb2c2b67dc7400ec127035eab7bda4494235545cec2"
+        },
+        {
+          "bytes": 8965,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\UnhandledEventFallbackTest.java",
+          "sha256": "fb1305cb7fd49fc1af3fb87b0fb26dec0582eaa8823f9747fa406866f274cf6a"
+        },
+        {
+          "bytes": 10795,
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\events\\unhandledevent\\UnhandledEventGoldenCapture.java",
+          "sha256": "f551486a19a232ee1aebf925fe2f366b1cef8ffdbf16f1774464379c2c8bd4ed"
+        }
+      ],
+      "source_root": "Z:\\ck3_mod_rewrite\\java\\ck3-migration-staging\\events\\unhandledevent",
+      "status": "WIP_SAVED_CAPTURE_NOT_EXECUTED"
+    }
+  ],
+  "ledger_write_count": 0,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "new_migration_tasks_stopped": true,
+  "observed_at_utc": "2026-10-22T15:05:02.585173+00:00",
+  "owner_task": "/root/java_mandatory_choice",
+  "root_m7_java11_report": "not started; stopped by Root",
+  "schema": "xar.java-events-finite-closeout/v1",
+  "supersedes": "EVENTS-FINITE-CLOSEOUT01.json",
+  "vacation_handoff_stop_requested": true
+}

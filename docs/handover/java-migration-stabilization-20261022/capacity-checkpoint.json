@@ -1,0 +1,50 @@
+{
+  "schema": "xar.java-phase1.vacation-capacity-checkpoint/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_start_utc": "2026-10-22T15:05:35.132762+00:00",
+  "observed_end_utc": "2026-10-22T15:05:37.208789+00:00",
+  "method": "Read-only os.walk no reparse; existing FileAPI GetFileInformationByHandleEx FileStandardInfo allocation; 4096 per directory; conservative per-path hardlink accounting; file bodies not read by census",
+  "root": "D:\\codex-ck3-demos\\2026-10-22-java-phase1",
+  "census": {
+    "files": 14718,
+    "dirs": 6820,
+    "logical_bytes": 516769806,
+    "allocated_file_bytes": 537818280,
+    "errors": [],
+    "reparse_skipped": [],
+    "directory_guard_bytes": 27934720,
+    "conservative_native_plus_directories_bytes": 565753000
+  },
+  "same_D_pool_hard_bytes": 4294967296,
+  "same_D_pool_remaining_upper_bytes": 3729214296,
+  "Z_shared_pool_hard_bytes": 33554432,
+  "Z_attributed_exact_balance": "NOT_EXHAUSTIVELY_MEASURED; per-leaf caps and Root02 retain authority",
+  "volumes": {
+    "C:/": {
+      "total": 998748684288,
+      "used": 983854505984,
+      "free": 14894178304
+    },
+    "D:/": {
+      "total": 14000483987456,
+      "used": 13198847213568,
+      "free": 801636773888
+    },
+    "Z:/": {
+      "total": 4096787476480,
+      "used": 3959761428480,
+      "free": 137026048000
+    }
+  },
+  "ram": {
+    "total": 134915776512,
+    "available": 41844006912,
+    "percent": 69.0,
+    "used": 93071769600,
+    "free": 41844006912
+  },
+  "automatic_renewal": false,
+  "new_financial_take": false,
+  "C_exception": "No expansion of one-time 12MiB Maven replacement exception; no C writes or deletions by this lane",
+  "future_dispatch": "STOPPED_FOR_USER_VACATION; no new Job; Root02/RAM finite review20:00Z does not auto-resume"
+}

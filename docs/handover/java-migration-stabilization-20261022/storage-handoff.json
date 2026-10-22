@@ -1,0 +1,70 @@
+{
+  "schema": "xar.storage-resume-vacation-handoff/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T15:07:47.955891+00:00",
+  "status": "STOPPED_FOR_USER_VACATION",
+  "dispatch_enabled": false,
+  "refs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\ROOT-JAVA-PHASE1-CAPACITY-RELEASE02.json",
+      "bytes": 6227,
+      "sha256": "382e8e4d6dfe44e60ec07acc45d2bbccbd482e8f2f394aea824ad9410787b662"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\ROOT-JAVA-PHASE1-RAM-ANNEX01.json",
+      "bytes": 1681,
+      "sha256": "038ac93b997d7e83860314af85ddd59b76b76a22a89159bc6f0f6f95d6be6cd0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ROOT-DECISION-GAPS-SUBSCOPE-ADOPTION01.json",
+      "bytes": 3158,
+      "sha256": "252b471f5c7622b82d55a88e96fe73fa80f4c84698549640ea03444a31d2b866"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\SHARED-GOLDEN-VACATION-ACTUAL-CLOSEOUT01.json",
+      "bytes": 39818,
+      "sha256": "2eb168784aab966147768228ad03bebc5883af0118f42d42add7db5d79e96f58"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA-VACATION-CAPACITY-CHECKPOINT01.json",
+      "bytes": 1786,
+      "sha256": "2cacdc55a51f4523e259016c1a3288101175782cfbec54357746617985f7da0a"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\SHARED-GOLDEN-VACATION-REQUEST-INDEX01.json",
+      "bytes": 35115,
+      "sha256": "fc2443a71b4cfb582ca4c2698865baea45760a6377c79b2f9b5ccbd0436d0ad1"
+    }
+  ],
+  "receipts": 85,
+  "caller_PASS": 63,
+  "caller_RED": 22,
+  "launched_children": 84,
+  "all_launched_exit_consumed_and_Job0": true,
+  "prestart_zero_child_RED": "opportunity01",
+  "active_capture_coordinators": [],
+  "background_scheduler": false,
+  "CI": "NOT_STARTED; no session/PID/Job; ci_portability released unused1.5GiB slot",
+  "SDK_Driver_SAVE_body_reads_or_hash": 0,
+  "Maven": "Parent/M7 owns separate final state; this lane never starts Maven",
+  "D_pool_remaining_upper_at_census": 3729214296,
+  "final_metadata_reserve": 131072,
+  "D_remaining_after_final_metadata_reserve": 3729083224,
+  "Z_attributed_exact_balance": "NOT_MEASURED; common32MiB hardcap",
+  "RAM_joint_bytes": 6442450944,
+  "finite_review_utc": "2026-10-22T20:00:00Z",
+  "auto_resume_or_renewal": false,
+  "financial_take_or_mutation": false,
+  "notes": [
+    "Every unstarted request HOLD including prepared PARALLEL07; these4workers never launched",
+    "CallerPASS is oracle capture only, not full Java/native/Game or leaf completion",
+    "optionalcadence01 oldcallerPASS invalidUTF8 preserved;02 actualPASS corrects originalproducer sample",
+    "educationpreference02 retained coverage incomplete; pref03 pending",
+    "performancewindows01 child0 but overallRED:63957B exceeds55943B;192KiB laterproposal not silentlyadopted",
+    "kinship6 native vectors unavailable/NOT_EXECUTED; no manufactured fixtures",
+    "SDK once-read requires signed Root ticket,newqualified artifact,sameJVM token/writer chain,exclusive",
+    "Actual request index contains obsolete drafts, duplicates and flat schemas; not executable schedule",
+    "Future resume needs new user instruction,freshpins,machine,capacity,finitelease; UTF8 env must be recorded",
+    "Oldflat scoretargetconsumer/membership/scorestate and realmcompare/cashmetrics/datedsummary not normalized; exporter source may have changed"
+  ]
+}

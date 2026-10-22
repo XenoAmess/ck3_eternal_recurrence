@@ -1,0 +1,205 @@
+{
+  "schema": "xar.ci-vacation-handoff/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T15:03:16Z",
+  "status": "PAUSED_BEFORE_LOCAL_CI_START_AT_USER_REQUEST",
+  "local_ci": {
+    "cold_warm_full_step": "NOT_EXECUTED",
+    "independent_sdk_continuation": "NOT_EXECUTED",
+    "full_27_file_pytest": "NOT_EXECUTED",
+    "session_id": null,
+    "process_id": null,
+    "native_job_created": false,
+    "runner_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/ColdWarmCiVerification01.java",
+    "runner_compiled": false,
+    "runner_prepare_executed": false,
+    "runner_run_executed": false,
+    "runner_status": "UNVALIDATED_DRAFT_NOT_AN_ACCEPTED_CI_ENTRY",
+    "plan_json_created": false,
+    "fixture_created": false,
+    "requested_whole_job_memory_bytes": 1610612736,
+    "resource_slot": "NEVER_OCCUPIED_RELEASED",
+    "planned_deadline_utc": "2026-10-22T16:00:00Z",
+    "deadline_requires_fresh_authority_before_resume": true,
+    "operational_runner_source_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ColdWarmCiVerification01.java",
+      "bytes": 18153,
+      "sha256": "5b1bf1f35cffd17c3aa6dadf7ed679e99bad015b6b082fa08883761c2e3f3b58"
+    }
+  },
+  "new_writer_short_fix": {
+    "continuity_bytes": 89732,
+    "continuity_sha256": "c33eceaf7d11cd77d16e484ba89a2d480cce2e51a9377bef3b6771c42b914db6",
+    "cold_owner_bytes": 191384,
+    "cold_owner_sha256": "47fdcc16dcbf25f877fdf1a19dc74661829b05302c30f6a061f31b392fe05f2d",
+    "protocol_bytes": 262144,
+    "metadata_cap_unchanged": 65536,
+    "frozen_at_utc": "2026-10-22T15:00:51Z",
+    "strict_and_runtime_test_credit": false,
+    "scope": "Source owner measured start 112269 bytes. Existing cold/warm and 27-file groups alone do not qualify the complete new Java writer producer-to-all-consumers path; dedicated complete large-start regression remains required."
+  },
+  "hosted": {
+    "commit": "8722c3cf0194ee24c716a4214e6de17fb5e358d6",
+    "observed_at_utc": "2026-10-22T15:03:16Z",
+    "official": {
+      "run_id": 39799034030,
+      "job_id": 119894136993,
+      "status": "in_progress",
+      "conclusion": null,
+      "successful_steps": 24,
+      "current_step": {
+        "number": 25,
+        "name": "Test keyed query completion diagnostics without CK3",
+        "status": "in_progress"
+      },
+      "configured_mypy_step": 39,
+      "java_step": 40,
+      "java_artifact_step": 41,
+      "cold_warm_step": 46,
+      "pytest_27_file_step": 63,
+      "later_steps_status": "pending",
+      "actual_hosted_maven_version": null,
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39799034030"
+    },
+    "linear": {
+      "run_id": 39799034059,
+      "job_id": 119894136398,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39799034059"
+    },
+    "further_polling": "STOPPED_FOR_VACATION_HANDOFF"
+  },
+  "last_completed_local_owner": {
+    "receipt_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/JAVA-MAP-CI-VERIFICATION05.json",
+    "service_closed_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-map-ci05/service/logs/service-closed.json",
+    "outer_process_exit_code": 0,
+    "outer_job_active_final": 0,
+    "service_job_active_final": 0,
+    "scope": "Historical nine-module reactor and owner19 software HTTP chain only; current new runtime and continuity leaves are not covered by that historical pass.",
+    "receipt_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA-MAP-CI-VERIFICATION05.json",
+      "bytes": 3750,
+      "sha256": "d99e868202003f36ccad5d742b03cf0e9410d303bce1e9aa3ea4860351bdaa41"
+    },
+    "service_closed_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\artifacts\\java-map-ci05\\service\\logs\\service-closed.json",
+      "bytes": 908,
+      "sha256": "b345bb5b4aba3c8eed8668070648ec967798bece21413f31edbae7433297953c"
+    }
+  },
+  "game_rpc_calls_by_this_handoff": 0,
+  "game_progress_or_g2_or_seconds_per_day_credit": 0,
+  "default_maven_policy": "Use default PATH command mvn; verify stable version >=3.10.0. Compliant installation is not downloaded again, relocated, or overridden. No hosted version has yet been observed.",
+  "resume_actions": [
+    "Read Root vacation handoff and obtain a fresh finite capacity/deadline. This record does not authorize launching during vacation.",
+    "Reconfirm all owner freezes and relevant source pins.",
+    "Review uncompiled Java operational draft and its whole classpath/closure assumptions before launching; no new Python production modules.",
+    "Run exact complete cold/warm workflow step including independent Python SDK continuation, plus all 27 pytest files with fixture env before imports; save real exit/timeout/source postcheck/Job0.",
+    "Run dedicated Java writer complete producer-to-all-consumers large-start regression.",
+    "Inspect precise published commit hosted final conclusion and actual Maven version before reporting hosted green."
+  ],
+  "pending_steps": [
+    {
+      "name": "Check strict cold and owner types and boundary contracts",
+      "status": "NOT_EXECUTED",
+      "exact_workflow_run": "python -B -m mypy --config-file ck3_autonomous_player/pyproject.toml --no-incremental --cache-dir \"%RUNNER_TEMP%\\mypy-cold-owner\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/file_stat_identity_v1.py tools/g2_saved_campaign/test_obs_capture_dimensions_v1.py tools/g2_saved_campaign/test_a14_mod_absence_binding_v1.py ck3_autonomous_player/tests/test_native_loaded_provider_origin_recv_deadline_v1.py ck3_autonomous_player/tests/unit/test_restore_checkpoint_type_contract_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/restore_checkpoint_type_contract_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py tools/g2_saved_campaign/owner_response_contract_v1.py tools/g2_saved_campaign/test_owner_response_contract_v1.py tools/g2_saved_campaign/prepare_source28_a16_cold_union_v1.py tools/g2_saved_campaign/test_a16_screen_admission_contract_v1.py tools/g2_saved_campaign/prepare_war_termination_optional_unavailable_v1.py tools/g2_saved_campaign/test_war_termination_optional_unavailable_v1.py tools/g2_saved_campaign/prepare_source29_lifestyle_snapshot_lean_v1.py tools/g2_saved_campaign/test_source29_lifestyle_snapshot_lean_v1.py tools/g2_saved_campaign/write_source29_canonical_ref_v1.py tools/g2_saved_campaign/prepare_source29_export_base_v1.py tools/g2_saved_campaign/prepare_source29_a17_cold_union_v1.py tools/g2_saved_campaign/test_source29_a17_cold_union_v1.py tools/g2_saved_campaign/cold_runtime_admission_contract_v1.py tools/g2_saved_campaign/test_cold_runtime_admission_contract_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/timeline_control_ack_v1.py ck3_autonomous_player/tests/unit/test_timeline_control_ack_v1.py ck3_autonomous_player/tests/unit/test_family_marriage_display_binding.py ck3_autonomous_player/src/xar_autoplayer/bridge/cached_native_clock_summary_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/tactical_clock_diagnostics_v1.py ck3_autonomous_player/tests/unit/test_cached_native_clock_summary_v1.py ck3_autonomous_player/tests/unit/test_lifestyle_focus_metadata_snapshot_v1.py tools/ck3_mod_acceptance_background_types.py tools/ck3_mod_acceptance_launcher_protocol_v1.py tools/test_ck3_mod_acceptance_keyed_file_pin_v1.py tools/g2_saved_campaign/write_source30_canonical_ref_v1.py tools/g2_saved_campaign/prepare_source30_export_base_v1.py tools/test_r08_writer_save_gate.py tools/g2_saved_campaign/write_source31_canonical_ref_v1.py tools/g2_saved_campaign/prepare_source31_export_base_v1.py tools/g2_saved_campaign/prepare_source31_a18_cold_union_v1.py tools/g2_saved_campaign/prepare_source31_a18_owner_metadata_v1.py tools/g2_saved_campaign/test_source31_a18_cold_union_v1.py tools/g2_saved_campaign/candidates/native32_entry_registration_20261021/test_native32_entry_registration_v1.py tools/g2_saved_campaign/prepare_source31_a19_cold_union_v1.py tools/g2_saved_campaign/prepare_source31_a19_owner_metadata_v1.py tools/g2_saved_campaign/test_source31_a19_cold_union_v1.py tools/test_r08_cleanup_and_sampling.py tools/g2_saved_campaign/prepare_source31_a20_cold_union_v1.py tools/g2_saved_campaign/prepare_source31_a20_owner_metadata_v1.py tools/g2_saved_campaign/test_source31_a20_cold_union_v1.py tools/g2_saved_campaign/test_saved_campaign_visual_text_preflight_v1.py tools/g2_saved_campaign/prepare_route_window_clock_v1.py tools/g2_saved_campaign/test_prepare_route_window_clock_v1.py tools/g2_saved_campaign/prepare_wartime_sway_opportunity_v1.py tools/g2_saved_campaign/test_prepare_wartime_sway_opportunity_v1.py tools/g2_saved_campaign/write_source32_canonical_ref_v1.py tools/g2_saved_campaign/prepare_source32_export_base_v1.py tools/g2_saved_campaign/test_source32_canonical_export_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -c \"import os,sys; os.environ['MYPYPATH']=os.pathsep.join((os.getcwd(),os.path.join(os.getcwd(),'ck3_autonomous_player','src'))); from mypy import api; out,err,status=api.run(['--strict', '--strict-equality', '--explicit-package-bases', '--follow-imports=silent', '--no-incremental', '--cache-dir', 'nul', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/test_current_saved_basis_v1.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/test_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/test_current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/test_background_foreground_pipeline_v1.py', 'tools/g2_saved_campaign/owned_python_launch_v1.py', 'tools/g2_saved_campaign/test_owned_python_launch_v1.py', 'tools/g2_saved_campaign/current_saved_continuity_v1.py', 'tools/g2_saved_campaign/test_current_saved_continuity_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_replay_v1.py', 'tools/g2_saved_campaign/prepare_native32_current_sdk_binding_v1.py', 'tools/g2_saved_campaign/test_native32_current_sdk_binding_v1.py', 'tools/g2_saved_campaign/test_current_saved_settled_closure_v1.py', 'tools/g2_saved_campaign/test_current_saved_first_full_control_timing_v1.py']); print(out+err); sys.exit(status)\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m decision_display_contract_v1 -m test_decision_display_v1 -m prepare_rich_decision_graph_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_file_stat_identity_v1 tools.g2_saved_campaign.test_obs_capture_dimensions_v1 tools.g2_saved_campaign.test_a14_mod_absence_binding_v1 ck3_autonomous_player.tests.test_native_loaded_provider_origin_recv_deadline_v1 ck3_autonomous_player.tests.unit.test_restore_checkpoint_type_contract_v1 tools.g2_saved_campaign.test_owner_response_contract_v1 tools.g2_saved_campaign.test_a16_screen_admission_contract_v1 tools.g2_saved_campaign.test_war_termination_optional_unavailable_v1 tools.g2_saved_campaign.test_source29_lifestyle_snapshot_lean_v1 tools.g2_saved_campaign.test_source29_a17_cold_union_v1 tools.g2_saved_campaign.test_cold_runtime_admission_contract_v1 ck3_autonomous_player.tests.unit.test_timeline_control_ack_v1 ck3_autonomous_player.tests.unit.test_family_marriage_display_binding tools.test_ck3_mod_acceptance_host_started_publication tools.test_ck3_mod_acceptance_readiness_host_exit ck3_autonomous_player.tests.unit.test_cached_native_clock_summary_v1 ck3_autonomous_player.tests.unit.test_lifestyle_focus_metadata_snapshot_v1 tools.test_ck3_mod_acceptance_keyed_file_pin_v1 tools.g2_saved_campaign.test_source31_a18_cold_union_v1 tools.g2_saved_campaign.test_prepare_route_window_clock_v1.RouteWindowClockContractTests tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_wrong_extra_missing_and_null_fields tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_exact_integer_and_boolean_types tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_64_bit_identity_precision_roundtrip tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_serialization_type_domain_and_duplicate_keys tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_machine_episode_and_original_origin tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_unknown_lineage_cannot_be_replayed_or_credited tools.g2_saved_campaign.test_current_saved_basis_v1.CurrentSavedBasisTests.test_stale_ledger_progress_cannot_lead_actual tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.TypedColdContractTests tools.g2_saved_campaign.test_prepare_wartime_sway_opportunity_v1.WartimeSwayContractTests tools.g2_saved_campaign.test_source32_canonical_export_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_current_saved_campaign_preflight_v1 tools.g2_saved_campaign.test_background_foreground_pipeline_v1 tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.LaunchForegroundContractTests tools.g2_saved_campaign.test_owned_python_launch_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -c \"import os,sys,uuid,unittest; from pathlib import Path; runner_root=Path(os.environ['RUNNER_TEMP']).resolve(); fixture_root=runner_root/('xar-current-saved-closure66-'+uuid.uuid4().hex); os.environ['XAR_CURRENT_SAVED_CLOSURE_TEST_ROOT']=str(fixture_root); continuity_parent=runner_root/('xar-current-saved-continuity-'+uuid.uuid4().hex); continuity_root=continuity_parent/'test-continuity'; continuity_root.mkdir(parents=True); os.environ['XAR_CONTINUITY_TEST_FIXTURE_ROOT']=str(continuity_root); names=['tools.g2_saved_campaign.test_current_saved_continuity_v1','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.ClosedContinuityPreparationTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.SupervisorStandaloneSdkGuardTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.Native32CurrentSdkOverrideTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.CurrentSavedCompleteClosureConsumerTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.CompletedUnsavedTailComposeEntryTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.CurrentSavedFeederSourceClosureTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.CurrentSavedArtifactBudgetTests','tools.g2_saved_campaign.test_current_saved_settled_closure_v1','tools.g2_saved_campaign.test_current_saved_first_full_control_timing_v1','tools.g2_saved_campaign.test_decision_display_v1.N39ActualDisplayTests','tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.CurrentSavedRendererOverrideTests']; parts=[unittest.defaultTestLoader.loadTestsFromName(n) for n in names]; counts=[s.countTestCases() for s in parts]; assert all(n>0 for n in counts) and sum(counts)>=25, counts; suite=unittest.TestSuite(parts); result=unittest.TextTestRunner(verbosity=2).run(suite); print('Continuity/Prepared/real-SDK/closure discovered/run/skipped:',sum(counts),result.testsRun,len(result.skipped)); assert not fixture_root.exists(), 'closure fixture cleanup incomplete'; assert not tuple(continuity_root.iterdir()), 'continuity fixture cleanup incomplete'; continuity_root.rmdir(); continuity_parent.rmdir(); sys.exit(0 if result.wasSuccessful() and result.testsRun==sum(counts) and not result.skipped else 1)\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -c \"import os,sys,uuid,unittest; from pathlib import Path; from datetime import datetime,timedelta,timezone; from tools.ck3_live_run_id import current_machine_id; runner_root=Path(os.environ['RUNNER_TEMP']).resolve(); fixture_root=runner_root/('xar-current-saved-continuation-'+uuid.uuid4().hex); assert fixture_root.parent==runner_root and not fixture_root.exists(); os.environ['XAR_CURRENT_SAVED_BASIS_TEST_ROOT']=str(fixture_root); os.environ['XAR_CURRENT_SAVED_BASIS_TEST_REVIEW_UTC']=(datetime.now(timezone.utc)+timedelta(minutes=15)).isoformat(); os.environ['XAR_CURRENT_SAVED_BASIS_MACHINE_ID']=current_machine_id(); sys.path.insert(0,str(Path.cwd()/'ck3_autonomous_player'/'src')); from tools.g2_saved_campaign import test_current_saved_basis_v1 as b; b.HARD=524288; b.SOFT=458752; from tools.g2_saved_campaign import test_current_saved_campaign_cold_v1 as c; assert c.basis_fixture is b; suite=unittest.defaultTestLoader.loadTestsFromName('tools.g2_saved_campaign.test_current_saved_campaign_cold_v1.CurrentSavedSdkPersistenceTests.test_sdk_persist_closed_rejection_warm_binding_and_wrong_generations'); result=unittest.TextTestRunner(verbosity=2).run(suite); assert not fixture_root.exists(); sys.exit(0 if result.wasSuccessful() and result.testsRun==1 and not result.skipped else 1)\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -c \"import os,sys,uuid,unittest; from pathlib import Path; runner_root=Path(os.environ['RUNNER_TEMP']).resolve(); fixture_root=runner_root/('xar-native32-current-sdk-'+uuid.uuid4().hex); assert fixture_root.parent==runner_root and not fixture_root.exists(); os.environ['XAR_NATIVE32_CURRENT_SDK_FIXTURE_ROOT']=str(fixture_root); from tools.g2_saved_campaign.test_native32_current_sdk_binding_v1 import CurrentSdkBindingTests; suite=unittest.defaultTestLoader.loadTestsFromTestCase(CurrentSdkBindingTests); count=suite.countTestCases(); assert count>=13,count; result=unittest.TextTestRunner(verbosity=2).run(suite); assert not fixture_root.exists(); print('Native32 isolated source fixture discovered/run/skipped:',count,result.testsRun,len(result.skipped)); sys.exit(0 if result.wasSuccessful() and result.testsRun==count and not result.skipped else 1)\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m tools.g2_saved_campaign.current_saved_recording_only_owner_v1 -m tools.g2_saved_campaign.test_current_saved_recording_only_owner_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_current_saved_recording_only_owner_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/cold/observer_journal_v1.py tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/cold/test_observer_journal_v1.py tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/cold/qualify_host_fixture.py tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/verify.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/cold/test_observer_journal_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/candidates/native32_passive_journal_diagnostics_20261021/verify.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/candidates/native32_runtime_journal_adapter_20261021/observer_journal_runtime_v1.py tools/g2_saved_campaign/candidates/native32_runtime_journal_adapter_20261021/native32_mcp_extension_v1.py tools/g2_saved_campaign/candidates/native32_runtime_journal_adapter_20261021/test_native32_runtime_journal_adapter_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/candidates/native32_runtime_journal_adapter_20261021/test_native32_runtime_journal_adapter_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/candidates/native32_production_builder_20261021/producer.py tools/g2_saved_campaign/candidates/native32_production_builder_20261021/test_recipe_v1.py tools/g2_saved_campaign/candidates/native32_production_builder_20261021/finish_link_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/candidates/native32_production_builder_20261021/test_recipe_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -c \"import pathlib, sys; from mypy import api; source = pathlib.Path('tools/g2_saved_campaign/file_stat_identity_v1.py').read_text(encoding='utf-8'); bad = source + '\\ndef mismatch(value: os.stat_result, expected: FileStatIdentityV1) -> bool:\\n    return value.st_mtime_ns == expected.mtime_ns\\ndef overwrite(expected: FileStatIdentityV1) -> None:\\n    expected.mtime_ns = str()\\nnormalize_file_stat_identity_v1(str())\\n'; out, err, status = api.run(['--strict', '--strict-equality', '--follow-imports=skip', '--no-incremental', '--cache-dir', 'nul', '-c', bad]); ok = status == 1 and not err and out.count('error:') == 3 and '[comparison-overlap]' in out and 'read-only' in out and '[arg-type]' in out; print('Expected type errors: comparison-overlap, misc (read-only), arg-type' if ok else out + err); sys.exit(0 if ok else 1)\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 ck3_autonomous_player/tests/unit/test_cold_checkpoint_type_contract.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 ck3_autonomous_player/tests/unit/test_driver_resume_type_contract.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/test_owner_prepare_contract_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 ck3_autonomous_player/tests/unit/test_driver_state_wal_diagnostics.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/candidates/native32_entry_registration_20261021/test_native32_entry_registration_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/test_source31_a19_cold_union_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -c \"import ast, pathlib, sys; from mypy.main import process_options; from mypy.build import build; from mypy.modulefinder import BuildSource; p = pathlib.Path('tools/g2_saved_campaign/root_saved_campaign_preflight.py'); t = p.with_name('test_saved_campaign_visual_text_preflight_v1.py'); tree = ast.parse(p.read_text(encoding='utf-8')); expected = set(('SavedCampaignVisualArgsV1', 'SavedCampaignVisualQueueV1', 'SavedCampaignJsonReaderV1', 'SavedCampaignVisualEnvV1', 'SavedCampaignVisualAdmissionV1', 'SavedCampaignSegmentVerifierV1', '_visual_record_v1', '_visual_uint_v1', '_visual_text_v1', 'require_saved_campaign_visual', 'SavedMapFileRefV1', 'SavedMapFrameV1', 'SavedMapFirstFrameV1', '_visual_bool_v1', '_visual_true_v1', '_visual_false_v1', '_visual_at_v1', '_visual_abs_v1', '_visual_pair_v1', '_visual_ref_v1', 'build_saved_map_first_frame_v1')); nodes = [n for n in tree.body if isinstance(n, (ast.Import, ast.ImportFrom)) or isinstance(n, (ast.ClassDef, ast.FunctionDef)) and n.name in expected]; found = {n.name for n in nodes if isinstance(n, (ast.ClassDef, ast.FunctionDef))}; assert found == expected and len(found) == 21; scope = ast.unparse(ast.Module(body=nodes, type_ignores=[])); _, options = process_options(['--strict', '--strict-equality', '--follow-imports=skip', '--no-incremental', '--cache-dir', 'nul', '-c', scope]); result = build(sources=[BuildSource(str(p), 'root_saved_campaign_preflight', scope), BuildSource(str(t), 'test_saved_campaign_visual_text_preflight_v1', t.read_text(encoding='utf-8'))], options=options); print('Canonical actual 21 defs and whole regression: PASS0' if not result.errors else '\\n'.join(result.errors)); sys.exit(bool(result.errors))\"\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/test_source31_a20_cold_union_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 tools/g2_saved_campaign/test_saved_campaign_visual_text_preflight_v1.py\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m tools.g2_saved_campaign.first_full_checkpoint_v1 -m tools.g2_saved_campaign.test_first_full_checkpoint_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\npython -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_first_full_checkpoint_v1\nif not \"%errorlevel%\"==\"0\" exit /b %errorlevel%\n",
+      "command_count": 30,
+      "declared_workflow_environment": {
+        "PYTHONPATH": "${{ github.workspace }};${{ github.workspace }}\\ck3_autonomous_player\\src;${{ github.workspace }}\\ck3_autonomous_player\\tests\\unit;${{ github.workspace }}\\tools;${{ github.workspace }}\\tools\\g2_saved_campaign",
+        "MYPYPATH": "${{ github.workspace }}\\tools;${{ github.workspace }}\\tools\\g2_saved_campaign;${{ github.workspace }}\\ck3_autonomous_player\\src;${{ github.workspace }}\\ck3_autonomous_player\\tests\\unit;${{ github.workspace }}\\tools\\g2_saved_campaign\\candidates\\native32_runtime_journal_adapter_20261021;${{ github.workspace }}\\tools\\g2_saved_campaign\\candidates\\native32_production_builder_20261021",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "planned_process_environment": {
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite;Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src;Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit;Z:\\ck3_mod_rewrite\\tools;Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign;D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/strong-types-checker01/site-packages",
+        "MYPYPATH": "Z:\\ck3_mod_rewrite\\tools;Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign;Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src;Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit;Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\native32_runtime_journal_adapter_20261021;Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\native32_production_builder_20261021",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "RUNNER_TEMP": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\coldwarm-ci01",
+        "TEMP": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\coldwarm-ci01",
+        "TMP": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\coldwarm-ci01",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "planned_path_prefix": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts",
+      "path_remainder": "inherit caller PATH; do not relocate or override Maven",
+      "fixture_preparation": "Exact commands set per-process fixture env before test-module imports. No fixture directory created by this pending runner.",
+      "independent_sdk_continuation_included": true,
+      "pytest_file_count": null
+    },
+    {
+      "name": "Test halt readback and Army scalar comparison without CK3",
+      "status": "NOT_EXECUTED",
+      "exact_workflow_run": "python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py ck3_autonomous_player/tests/unit/test_army_auto_scalar_projection_v1.py ck3_autonomous_player/tests/unit/test_army_private_auto_scalar_ab_v1.py ck3_autonomous_player/tests/unit/test_native_negative_route_regroup.py ck3_autonomous_player/tests/unit/test_clock_observation_timing_v1.py ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py ck3_autonomous_player/tests/unit/test_planner_consumer_timing_v1.py ck3_autonomous_player/tests/unit/test_mcp_war_daily_watch_config_v1.py ck3_autonomous_player/tests/unit/test_planner_prep_timing_v1.py ck3_autonomous_player/tests/unit/test_native_kernel32_cache.py ck3_autonomous_player/tests/unit/test_p51_successor_relay_binding_v1.py ck3_autonomous_player/tests/unit/test_p51_resident_successor_adoption_v1.py ck3_autonomous_player/tests/unit/test_contact_free_exact_route_speed_trial_v1.py ck3_autonomous_player/tests/unit/test_battle_reader_exact_speed.py ck3_autonomous_player/tests/unit/test_defender_refuge_candidates.py ck3_autonomous_player/tests/unit/test_arrived_refuge_lifecycle.py ck3_autonomous_player/tests/unit/test_retreating_only_committed_route.py ck3_autonomous_player/tests/unit/test_event_history_free.py ck3_autonomous_player/tests/unit/test_native_assault_lifecycle_scan_reuse_v1.py ck3_autonomous_player/tests/unit/test_recent_command_index_no_materialization_v1.py ck3_autonomous_player/tests/unit/test_raiktor_history_factory_v1.py ck3_autonomous_player/tests/unit/test_forecast_history_factory_v1.py ck3_autonomous_player/tests/unit/test_rendezvous_history_factory_v1.py ck3_autonomous_player/tests/unit/test_origin_history_factory_v1.py ck3_autonomous_player/tests/unit/test_war_termination_history_read_guard.py ck3_autonomous_player/tests/unit/test_assault_holding_history_projection_copy.py",
+      "command_count": 1,
+      "declared_workflow_environment": {
+        "PYTHONPATH": "${{ github.workspace }}\\ck3_autonomous_player\\src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "planned_process_environment": {
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src;D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/strong-types-checker01/site-packages",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "RUNNER_TEMP": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\coldwarm-ci01",
+        "TEMP": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\coldwarm-ci01",
+        "TMP": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\coldwarm-ci01",
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "planned_path_prefix": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts",
+      "path_remainder": "inherit caller PATH; do not relocate or override Maven",
+      "fixture_preparation": "Exact commands set per-process fixture env before test-module imports. No fixture directory created by this pending runner.",
+      "independent_sdk_continuation_included": false,
+      "pytest_file_count": 27
+    }
+  ],
+  "workflow_ref": {
+    "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+    "bytes": 105845,
+    "sha256": "8f28e1e6d74550dedb856cd7b6df4f61373926105326503036e9f68f7ee29310"
+  },
+  "source_freeze_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\CLOCKREADER-SOURCE-FREEZE01.json",
+    "bytes": 6156,
+    "sha256": "f8b1c83cababad135cfcbabd572c7d3b208bddbbeacdc43d35ac1bd7ecb8e87c"
+  },
+  "current_source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_campaign_preflight_v1.py",
+      "bytes": 143253,
+      "sha256": "956898a9308f006ac35de0f6e3d2f9f0cf528bdce6cc25450457a21386badb34"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_current_saved_campaign_cold_v1.py",
+      "bytes": 116738,
+      "sha256": "82fb67bc0ed3af07e2c099c94734ff0fbe3f0562ed2346e91db60dde7bf0b5c5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_campaign_preflight_v1.py",
+      "bytes": 103270,
+      "sha256": "a0aaaf892efe76946f6f66cf1d648c8955e9cafbee7edd01c6a85f80bc5560a9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1658411,
+      "sha256": "40a625c6448f753ffa920d6a7780e5687dde7bca28e5b6ab07237ad588efd8cb"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 282938,
+      "sha256": "89f7d45266ef924279d88345408c49c98ff98d429f1dac921b673e1605bb8004"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_mcp_war_daily_watch_config_v1.py",
+      "bytes": 12573,
+      "sha256": "3e37f1dc3df8d6b426b73450acc43986d0d983592e3347790a43f2a6705804cf"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_continuity_v1.py",
+      "bytes": 89732,
+      "sha256": "c33eceaf7d11cd77d16e484ba89a2d480cce2e51a9377bef3b6771c42b914db6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\root_current_saved_campaign_cold_owner_v1.py",
+      "bytes": 191384,
+      "sha256": "47fdcc16dcbf25f877fdf1a19dc74661829b05302c30f6a061f31b392fe05f2d"
+    }
+  ],
+  "handoff_written_at_utc": "2026-10-22T15:04:49.597769+00:00"
+}

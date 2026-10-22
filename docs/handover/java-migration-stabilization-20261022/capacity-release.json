@@ -1,0 +1,132 @@
+{
+  "schema": "xar.java-phase1.manual-capacity-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "owner": "/root",
+  "observed_at_utc": "2026-10-22T13:55:15.439199Z",
+  "review_at_utc": "2026-10-22T20:00:00Z",
+  "status": "RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE",
+  "policy_ref": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "financial_basis_refs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\ALL-HOLDS-CAPACITY-HEAD-V1.json",
+      "bytes": 8144,
+      "sha256": "bd99f24bdc363323856c72a47441e6f183470858563c02b7c63c3b0b1897eec3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\STORAGE-SHORT-COMMIT-HEAD-V1.json",
+      "bytes": 6113,
+      "sha256": "ab06b24864a8012de4cc9957949c33421b211a127f4ebbebed85fa21cfc7b9db"
+    }
+  ],
+  "new_independent_workpackage_D_allowance_bytes": 4294967296,
+  "new_independent_workpackage_Z_allowance_bytes": 33554432,
+  "manual_reservation_record": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\ROOT-JAVA-PHASE1-CAPACITY-RELEASE02.json",
+  "automatic_capacity_reservation_or_financial_CAS_claimed": false,
+  "legacy_Robert_financial_heads_modified": false,
+  "reservation_relation": "Root explicitly reviews the same existing 4 GiB D and 32 MiB Z package for tonight's 48 active migration workstreams; no additional allocation or financial take, no automatic renewal, original release retained.",
+  "parts": {
+    "m2": 2147483648,
+    "build": 805306368,
+    "tools": 134217728,
+    "scratch": 536870912,
+    "metadata_logs": 33554432,
+    "artifacts": 134217728,
+    "unassigned_guard": 503316480
+  },
+  "volumes": {
+    "D:/": {
+      "total_volume_bytes": 14000483987456,
+      "available_bytes": 801867714560,
+      "current_project_usage_conservative_upper": 13198616272896,
+      "this_write_peak": 4294967296,
+      "other_unspent_reservations": 255095710588,
+      "system_growth_reserve": 21474836480,
+      "safety_reserve": 21474836480,
+      "required_free": 302340350844,
+      "effective_project_quota": 13960000000000,
+      "quota_override": {
+        "owner": "/root",
+        "reason": "Finite overnight 48-stream incremental Java migration and bounded verification; same existing workpackage allowance",
+        "max_project_bytes": 13960000000000,
+        "review_at_utc": "2026-10-22T20:00:00Z"
+      }
+    },
+    "Z:/": {
+      "total_volume_bytes": 4096787476480,
+      "available_bytes": 137050148864,
+      "current_project_usage_conservative_upper": 3959737327616,
+      "this_write_peak": 33554432,
+      "other_unspent_reservations": 5894311936,
+      "system_growth_reserve": 21474836480,
+      "safety_reserve": 21474836480,
+      "required_free": 48877539328,
+      "effective_project_quota": 4000000000000,
+      "quota_override": {
+        "owner": "/root",
+        "reason": "Finite overnight 48-stream incremental Java migration and bounded verification; same existing workpackage allowance",
+        "max_project_bytes": 4000000000000,
+        "review_at_utc": "2026-10-22T20:00:00Z"
+      }
+    }
+  },
+  "approved_output_roots": [
+    "D:\\codex-ck3-demos\\2026-10-22-java-phase1",
+    "Z:\\ck3_mod_rewrite\\java\\ck3-control"
+  ],
+  "source_test_doc_roots": [
+    "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign",
+    "Z:\\ck3_mod_rewrite\\docs",
+    "Z:\\ck3_mod_rewrite\\.github\\workflows"
+  ],
+  "java_version_observed": "openjdk version \"21.0.10\" 2026-01-20 LTS\nOpenJDK Runtime Environment Temurin-21.0.10+7 (build 21.0.10+7-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.10+7 (build 21.0.10+7-LTS, mixed mode, sharing)\n",
+  "java_executable": "C:/jdk-21/bin/java.exe",
+  "Quarkus_BOM_and_plugin": "3.40.1.1",
+  "Maven_repository": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\m2",
+  "build_root": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build",
+  "temporary_root": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch",
+  "test_RAM_joint_hard_bytes": 2147483648,
+  "Maven_heap_bytes": 1073741824,
+  "service_heap_bytes": 536870912,
+  "single_Maven_writer": "/root/g2_m7",
+  "Game_RPC_or_ledger_writer_operations_by_agents": false,
+  "live_cutover_scope": "Java produces new map admission bytes; Root verifies existing frozen Python consumer, then original feeder/Native flow. No frozen runtime/SDK source hotpatch.",
+  "retention": {
+    "m2": {
+      "category": "cache",
+      "review_at_utc": "2026-10-29T12:00:59.590596+00:00"
+    },
+    "build": {
+      "category": "build",
+      "review_at_utc": "2026-11-05T12:00:59.590596+00:00"
+    },
+    "record": {
+      "category": "record",
+      "review_at_utc": "2027-04-20T12:00:59.590596+00:00"
+    }
+  },
+  "automatic_renewal": false,
+  "Maven_command": "mvn",
+  "Maven_minimum_version": "3.10.0",
+  "Maven_installation_path_policy": "Use each machine's existing command-line default; update in its current location only when below the minimum; no absolute installation path requirement or PATH reordering.",
+  "original_release_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/ROOT-JAVA-PHASE1-CAPACITY-RELEASE01.json",
+    "bytes": 4890,
+    "sha256": "b4a977b28b5358372a43b52afab1c60f2255ea8f0a3cea3f17c613649706c3d5"
+  },
+  "manual_review_evidence": {
+    "capacity_observed_at_utc": "2026-10-22T13:55:15.439199Z",
+    "source": "/root/storage_resume actual FileStandardInfo allocation and disk_usage observation, same stable machine; Root separately ran ck3_live_run_id.py machine at 13:52:44Z",
+    "J_native_plus_directory_guard_bytes": 350809816,
+    "J_same_package_unspent_upper_bytes": 3944157480,
+    "financial_refs_rehashed_at_utc": "2026-10-22T13:52:44Z",
+    "financial_refs_hashes_match_original_release": true,
+    "financial_refs_method": "Root certutil -hashfile SHA256 actual exit0 for both original ALL and SHORT refs; no mutation",
+    "Z_exact_attributed_package_balance": "not exhaustively claimed; 32 MiB hard cap retained, new leaf source+golden each bounded, no generated build output on Z",
+    "C_writes_authorized": false,
+    "Game_launch_or_native_RPC_authorized_by_this_release": false
+  }
+}

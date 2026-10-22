@@ -1,0 +1,39 @@
+{
+  "schema": "xar.java-phase1.root-ram-annex/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T14:52:27.843489+00:00",
+  "review_at_utc": "2026-10-22T20:00:00Z",
+  "owner": "/root",
+  "authority": "Root explicit messages 2026-10-22 14:45Z and exact measurement correction",
+  "status": "RELEASED_BOUNDED_PARALLEL_DATA_ONLY_CAPTURE",
+  "release_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\ROOT-JAVA-PHASE1-CAPACITY-RELEASE02.json",
+    "bytes": 6227,
+    "sha256": "382e8e4d6dfe44e60ec07acc45d2bbccbd482e8f2f394aea824ad9410787b662"
+  },
+  "root_raw_measurement": {
+    "observed_at_utc": "2026-10-22T14:45:10.537079Z",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "source": "Root existing Python psutil.virtual_memory and swap_memory actual stdout; Root message retained in conversation",
+    "total_bytes": 134915776512,
+    "available_bytes": 42889408512,
+    "swap_used_bytes": 1867091968
+  },
+  "fresh_dispatch_measurement": {
+    "source": "existing Python psutil.virtual_memory",
+    "total_bytes": 134915776512,
+    "available_bytes": 41591578624
+  },
+  "joint_hard_bytes": 6442450944,
+  "maven_or_service_owners_max": 1,
+  "maven_or_service_job_hard_bytes": 2147483648,
+  "independent_capture_jobs_max": 4,
+  "capture_job_hard_bytes": 536870912,
+  "minimum_available_before_new_dispatch_bytes": 12884901888,
+  "same_producer_or_output_concurrent": false,
+  "sdk_measurement_and_original_writer_chain_exclusive": true,
+  "during_source_freeze": "D output only; no Z resource writes or imports",
+  "automatic_renewal": false,
+  "same_disk_pool_no_new_take": true,
+  "financial_heads_modified": false
+}

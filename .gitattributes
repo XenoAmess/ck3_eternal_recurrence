@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Preserve original, machine-bound Java migration vacation handoff receipts.
+docs/handover/java-migration-stabilization-20261022/** -text whitespace=cr-at-eol
+
 # Living Artifacts preserves SHA-bound vanilla source around literal hook inserts.
 # Keep inherited whitespace rather than rewriting unrelated game definitions.
 mod_living_artifacts/common/activities/activity_types/feast.txt whitespace=-blank-at-eol,-blank-at-eof

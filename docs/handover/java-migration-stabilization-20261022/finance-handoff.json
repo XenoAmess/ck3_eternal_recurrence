@@ -1,0 +1,411 @@
+{
+  "schema": "xar.finance-vacation-handoff.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T15:06:11Z",
+  "owner": "/root/decision_gaps",
+  "user_direction": "停止新迁移；休假交接停止后续启动、续写、采样和自动工作。保留WIP与真实失败，不为交接补跑测试。",
+  "stopped": true,
+  "own_background_writers": 0,
+  "owner_stop_confirmations": [
+    {
+      "owner": "/root/java_faction_gift",
+      "state": "OWNER_REPORTED_STOPPED_NO_OWN_BACKGROUND_WRITER"
+    },
+    {
+      "owner": "/root/java_feast_budget",
+      "state": "OWNER_REPORTED_STOPPED_NO_OWN_BACKGROUND_WRITER"
+    },
+    {
+      "owner": "/root/java_feast_value",
+      "state": "OWNER_REPORTED_STOPPED_NO_OWN_BACKGROUND_WRITER"
+    },
+    {
+      "owner": "/root/wave2_gift_pending",
+      "state": "OWNER_REPORTED_STOPPED_NO_OWN_BACKGROUND_WRITER"
+    },
+    {
+      "owner": "/root/wave2_gift_outcome",
+      "state": "OWNER_REPORTED_STOPPED_NO_OWN_BACKGROUND_WRITER"
+    },
+    {
+      "owner": "/root/wave2_holy_loan",
+      "state": "OWNER_REPORTED_STOPPED_NO_OWN_BACKGROUND_WRITER"
+    }
+  ],
+  "execution_authority": "storage_resume owns capture; g2_m7 owns Maven; Root owns parent/Git/Game. No local independent Java/Maven started by this agent.",
+  "scope_pool": {
+    "adoption": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/ROOT-DECISION-GAPS-SUBSCOPE-ADOPTION01.json",
+    "sha256": "252b471f5c7622b82d55a88e96fe73fa80f4c84698549640ea03444a31d2b866",
+    "d_bytes": 37748736,
+    "z_physical_max_bytes": 1310720,
+    "review_by_utc": "2026-10-22T20:00:00Z",
+    "resume": "No automatic restart/lease extension. Recheck current machine, source pins, capacity/RAM and explicit Root task on return."
+  },
+  "current_scheduling": "ALL_UNSTARTED_REQUESTS_HOLD. No baseline diagnostic request was created. Do not execute any listed request just because it exists.",
+  "own_scopes": [
+    {
+      "scope": "war-policy",
+      "owner": "/root/decision_gaps",
+      "state": "FROZEN_JAVA_PASS_SOURCE_ONLY",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/WAR-POLICY-SOURCE-FREEZE02.json",
+      "actual_capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/WAR-POLICY-GOLDEN-CAPTURE01.json",
+      "actual_java": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java03.json",
+      "java_junit": {
+        "tests": 71,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0
+      },
+      "original_python_tests": 11,
+      "live_decision_consumer": false
+    },
+    {
+      "scope": "war-budget including shared political codec",
+      "owner": "/root/decision_gaps",
+      "state": "ORIGINAL_CAPTURE_PASS_JAVA_NOT_EXECUTED",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/WAR-BUDGET-SOURCE-FREEZE02.json",
+      "files": 11,
+      "source_bytes": 92574,
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-warbudget02-ACTUAL01.json",
+      "original_tests": 59,
+      "vectors": 212,
+      "exit_code": 0,
+      "job_active_processes": 0,
+      "source_unchanged": true,
+      "peak_job_memory_bytes": 331997184,
+      "golden": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/war-budget-oracle02/original-v1.jsonl.gz",
+        "bytes": 78376,
+        "sha256": "8ff4a406cc0d1244bd77f25140d1fa43c981d612c6afd0677485202203b21a6c",
+        "adoption": "D_ONLY_NOT_COPIED_TO_Z"
+      },
+      "public_port": "BudgetPoliticalStakesCodec.parseContext(snapshot bytes,root bytes), Context.currentRootJsonBytes/activeWarCount, observe(ctx,raw war ordinal), qualified(Result), qualify(persisted bytes), Result.toJsonBytes/status/reason",
+      "dependency": "warpriorityfocus actual source now consumes the shared political API; qualifier and currentRoot are delegated, not copied",
+      "unexecuted": [
+        "Java compilation and JUnit, including four additional public political codec tests",
+        "actual Java output returned to original consumers",
+        "live adoption"
+      ]
+    },
+    {
+      "scope": "wave2-finance/warcash",
+      "owner": "/root/decision_gaps",
+      "state": "ORIGINAL_SUITE_RED_NO_GOLDEN",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/WAR-CASH-SOURCE-FREEZE02.json",
+      "files": 7,
+      "source_bytes": 76404,
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-warcash02-ACTUAL01.json",
+      "stderr": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/capture-warcash02.stderr.log",
+      "original_tests": 65,
+      "failures": 2,
+      "exit_code": 1,
+      "job_active_processes": 0,
+      "source_unchanged": true,
+      "peak_job_memory_bytes": 323809280,
+      "failures_detail": [
+        {
+          "test": "M5FormalProposalCollectorTests.test_default_off_preserves_formal_plan_and_skips_reader",
+          "assertion": "Service plan contains additional war_spending_priority fields instead of exact baseline dict"
+        },
+        {
+          "test": "M5FormalProposalCollectorTests.test_pending_gift_same_date_refresh_reaches_service_replan",
+          "assertion": "expected PreSubmissionRevisionMismatchError not raised"
+        }
+      ],
+      "diagnosis": "Cash/zero-army/opportunity selector tests passed; two full Service assertions failed. No uninstrumented baseline was executed, so do not claim a proven preexisting failure or alter the original producer to fit.",
+      "public_port": "WarcashCodec.decodeObservedFrame, verifyCompleteSingle, verifyCompleteAggregate; immutable WarcashModel receipts consumed by actual collector migration",
+      "unexecuted": [
+        "original full suite PASS and golden",
+        "all Java compilation/JUnit",
+        "Java output returned to original consumers"
+      ]
+    },
+    {
+      "scope": "wave2-runtime/creationtime shared by finance/development",
+      "owner": "/root/decision_gaps",
+      "state": "ORIGINAL_CAPTURE_PASS_JAVA_NOT_EXECUTED",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CREATIONTIME-SOURCE-FREEZE02.json",
+      "files": 6,
+      "source_bytes": 32749,
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-creationtime02-ACTUAL01.json",
+      "original_tests": 38,
+      "original_subtests": 9,
+      "reported_test_calls": 47,
+      "vectors": 152,
+      "exit_code": 0,
+      "job_active_processes": 0,
+      "source_unchanged": true,
+      "peak_job_memory_bytes": 350482432,
+      "golden": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/creationtime-oracle02/original-v1.jsonl.gz",
+        "bytes": 2963,
+        "sha256": "b7d510771b9d1ad9f469cfdec059e4a86806faa9b0bf20cdd740047767d880ca",
+        "adoption": "D_ONLY_NOT_COPIED_TO_Z"
+      },
+      "public_port": "ProcessCreationTime.parse -> private UtcBirth retaining raw evidence; same false-on-unavailable; compare SAME/DIFFERENT/UNAVAILABLE",
+      "dependencies": "giftroute and constructionreadback now reuse this source; original raw exact/PID shortcuts retained",
+      "unexecuted": [
+        "Java compilation/JUnit",
+        "actual Java-to-original consumer differential"
+      ]
+    }
+  ],
+  "finance_owner_scopes": [
+    {
+      "scope": "finance-policy/factiongift",
+      "owner": "/root/java_faction_gift",
+      "state": "FROZEN_ORIGINAL_SAMPLES_PRESENT",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FACTIONGIFT-SOURCE-FREEZE01.json",
+      "original_vectors": 63,
+      "java": "Owner awaiting authoritative M7 module result; do not infer from expected counts"
+    },
+    {
+      "scope": "wave2-finance/factionthreat",
+      "owner": "/root/java_faction_gift",
+      "state": "FROZEN_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FACTIONTHREAT-SOURCE-FREEZE03.json",
+      "source_and_sample_bytes": 129231,
+      "original_vectors": 40,
+      "notes": "final BigDecimal/float-category boundary fix and regression saved; only Java verification remains"
+    },
+    {
+      "scope": "wave2-finance/factioncandidate",
+      "owner": "/root/java_faction_gift",
+      "state": "FROZEN_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FACTIONCANDIDATE-SOURCE-FREEZE02.json",
+      "source_and_sample_bytes": 153608,
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-factioncandidate01-ACTUAL01.json",
+      "original_vectors": 49,
+      "original_tests": 2,
+      "golden_bytes": 87448,
+      "golden_sha256": "b688e3dd381e7890c2d916cf55d998e38075097179f1aca713189b5ee844d8c2",
+      "dependency": "real integration calls GiftReadTransport and first-wave faction gift policy"
+    },
+    {
+      "scope": "wave2-finance/factionculture",
+      "owner": "/root/java_faction_gift",
+      "state": "FROZEN_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FACTIONCULTURE-SOURCE-FREEZE03.json",
+      "source_and_sample_bytes": 75256,
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-factionculture01-ACTUAL01.json",
+      "original_vectors": 37,
+      "original_tests": 10,
+      "skips": 0,
+      "golden_bytes": 22295,
+      "golden_sha256": "211f8470d679915df9344d766ba79f31fa151a6c1916d45ad9cba9eb5caf615f",
+      "dependency": "consumer integration needs factionalerts resource adoption; one shared culture model"
+    },
+    {
+      "scope": "finance-policy/feastbudget",
+      "owner": "/root/java_feast_budget",
+      "state": "FROZEN_JAVA_PASS",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FEAST-BUDGET-SOURCE-FREEZE02.json",
+      "actual_java": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java07.json",
+      "java_junit": 8
+    },
+    {
+      "scope": "wave2-finance/giftwarcash",
+      "owner": "/root/java_feast_budget",
+      "state": "FROZEN_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFT-WAR-CASH-SOURCE-FREEZE02.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-giftwarcash01-ACTUAL01.json",
+      "original_vectors": 32,
+      "source_and_sample_bytes": 158469,
+      "dependency": "public decodeCashContext and usableEmergencyQuote consumed by construction economy"
+    },
+    {
+      "scope": "wave2-finance/giftreadtransport",
+      "owner": "/root/java_feast_budget",
+      "state": "SAVED_WIP_NOT_FROZEN_NO_GOLDEN",
+      "files": "2main+2test+MIGRATION-giftreadtransport.md",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFT-READ-CAPTURE-BATCH01.json",
+      "unstarted_request": "HOLD",
+      "notes": "shared floating JSON category preservation and seven tests saved; existing owned read port plus actual candidate API; no execution"
+    },
+    {
+      "scope": "wave2-finance/giftroute",
+      "owner": "/root/java_feast_budget",
+      "state": "SAVED_WIP_NOT_FROZEN_NO_GOLDEN",
+      "files": "2main+2test+MIGRATION-giftroute.md",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFT-ROUTE-CAPTURE-BATCH01.json",
+      "unstarted_request": "HOLD",
+      "notes": "cash observer lazy reads, public/native revision distinction, seven tests saved; no execution",
+      "dependencies": [
+        "factioncandidate",
+        "factionthreat",
+        "giftpending",
+        "giftpendingframe",
+        "giftreadtransport",
+        "giftwarcash",
+        "finance-policy",
+        "runtime creationtime"
+      ]
+    },
+    {
+      "scope": "finance-policy/feastvalue",
+      "owner": "/root/java_feast_value",
+      "state": "FROZEN_JAVA_PASS",
+      "actual_java": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java07.json",
+      "java_junit": 45
+    },
+    {
+      "scope": "complete pure _hosted producer closure; not native activity action orchestration",
+      "owner": "/root/java_feast_value",
+      "state": "FROZEN_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "freeze": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FEASTORDINARY-SOURCE-FREEZE01.json",
+      "source_and_sample_bytes": 77572,
+      "original_vectors": 54,
+      "original_tests": 4
+    },
+    {
+      "scope": "wave2-finance/feastterminal",
+      "owner": "/root/java_feast_value",
+      "state": "ACTUAL_RED_CAPTURE_REPAIR_SAVED_NOT_RERUN",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-feastterminal01-ACTUAL01.json",
+      "original_tests": 6,
+      "reason": "all six original tests passed but output exceeded 86016 byte cap",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FEASTTERMINAL-CAPTURE-REQUEST02.json",
+      "request_status": "HOLD_NOT_EXECUTED",
+      "saved_repair": "whitespace-only compact output in capture launcher, 12778B SHA81b709fb8c6be45c83906c7848c665de91b6fa79aac191b060aec342430b9924",
+      "preserved_old_launcher": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RETIRED-FEASTTERMINAL-CAPTURE01.java",
+      "notes": "SOURCE-READY01 is an earlier stage, not final repaired-source acceptance"
+    },
+    {
+      "scope": "wave2-finance/feastcounters including existing interop probe",
+      "owner": "/root/java_feast_value",
+      "state": "ACTUAL_RED_REPAIR_WIP_NOT_RERUN",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-feastcounters02-ACTUAL01.json",
+      "original_tests": 18,
+      "failures": 1,
+      "reason": "old service fixture Driver lacks query_activity_planner_diag_private_v1",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/FEASTCOUNTERS-CAPTURE-REQUEST02.json",
+      "request_status": "old-source RED preserved, no counter03 request",
+      "saved_repair": "capture fixture adapter returns explicit BridgeUnavailableError; existing optional interop mode passes actual Java through original parse/Start seed/value-subtree consumers; source changed, not pinned/rerun",
+      "preserved_old_launcher": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RETIRED-FEASTCOUNTERS-CAPTURE02.java",
+      "notes": "keep group missing distinct from present all-null counters; SOURCE-READY01 not final"
+    },
+    {
+      "scope": "wave2-finance/giftpending including canonical cold classifier",
+      "owner": "/root/wave2_gift_pending",
+      "state": "SAVED_SOURCE_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTPENDING-CAPTURE-BATCH02.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-giftpending01-ACTUAL01.json",
+      "golden_bytes": 20363,
+      "golden_sha256": "927d7e4eb211fe7097d34411748e0bcfd29ba772d4f3d6391e4ab4d00b6f298e",
+      "golden_adoption": "D_ONLY",
+      "notes": "core revision03, strict optional ACK schema_version + shared projection serializer; no current writer authority"
+    },
+    {
+      "scope": "wave2-finance/giftpendingframe",
+      "owner": "/root/wave2_gift_pending",
+      "state": "SAVED_SOURCE_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTPENDING-CAPTURE-BATCH02.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-giftpendingframe01-ACTUAL01.json",
+      "golden_bytes": 14671,
+      "golden_sha256": "4f769b32f99f6bf5e4ce4d9f73d03ae2685806116cda1d4807aa2678895c3334",
+      "golden_adoption": "D_ONLY"
+    },
+    {
+      "scope": "wave2-finance/giftpendingreaders",
+      "owner": "/root/wave2_gift_pending",
+      "state": "TEST_INTEGRATION_ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTPENDING-CAPTURE-BATCH02.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-giftpendingreaders01-ACTUAL01.json",
+      "golden_bytes": 5863,
+      "golden_sha256": "0c7f831712f5ec3d8261ad77765b1453edd947ab6d9b5e069c5e428e86e54b0e",
+      "golden_adoption": "D_ONLY",
+      "notes": "active budget/M5/pending readers plus outcome historical consumer; augmentation explicitly historical test-only"
+    },
+    {
+      "scope": "wave2-finance/giftpendingroute",
+      "owner": "/root/wave2_gift_pending",
+      "state": "SAVED_SOURCE_CAPTURE_NOT_EXECUTED",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTPENDINGROUTE-CAPTURE-REQUEST01.json",
+      "request_status": "HOLD",
+      "notes": "receipt/cold fixed read calls, actual pending reducers and original-writer callback port; two main/two test; no actual writer installed"
+    },
+    {
+      "scope": "wave2-finance/giftoutcome",
+      "owner": "/root/wave2_gift_outcome",
+      "state": "ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "source_refs": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTOUTCOME-TRIPLE-SOURCE-READY01.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-giftoutcome02-ACTUAL01.json",
+      "original_vectors": 26,
+      "golden_bytes": 57864,
+      "golden_sha256": "803f356035c187542a49543c2cfe47427d900d9f6efe78c3bf278c5d39c766cb",
+      "golden_adoption": "D_ONLY",
+      "source_and_sample_bytes": 135627
+    },
+    {
+      "scope": "wave2-finance/factionalerts",
+      "owner": "/root/wave2_gift_outcome",
+      "state": "ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "source_refs": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTOUTCOME-TRIPLE-SOURCE-READY01.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-factionalerts01-ACTUAL01.json",
+      "original_vectors": 42,
+      "original_consumer_tests": 53,
+      "skips": 0,
+      "golden_bytes": 45911,
+      "golden_sha256": "41b30820281d4d58163826fb1c6aa7c5f487323737b37e8f4e60e9647e057837",
+      "golden_adoption": "D_ONLY",
+      "source_and_sample_bytes": 130656,
+      "notes": "shared build/subrealm codecs saved; rawcash helper unification intentionally not performed during freeze"
+    },
+    {
+      "scope": "wave3-planning/realmmembership",
+      "owner": "/root/wave2_gift_outcome",
+      "state": "ORIGINAL_CAPTURE_PASS_JAVA_PENDING",
+      "source_refs": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/GIFTOUTCOME-TRIPLE-SOURCE-READY01.json",
+      "capture": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/CAPTURE-realmmembership01-ACTUAL01.json",
+      "original_vectors": 29,
+      "original_consumer_tests": 23,
+      "skips": 0,
+      "golden_bytes": 42571,
+      "golden_sha256": "21fd8f8bd03a822add8bb67321549e8b35e50cefcd547042e483bc7c76dbb253",
+      "golden_adoption": "D_ONLY",
+      "source_and_sample_bytes": 81421,
+      "dependencies": "planning domain owns POM; reuses realmcompare/frame assessment + finance factionalerts; no finance->planning cycle"
+    },
+    {
+      "scope": "wave2-finance/holyloan + rawcash + LoanFinancing",
+      "owner": "/root/wave2_holy_loan",
+      "state": "SOURCE_READY_REQUEST_WRITTEN_NOT_EXECUTED",
+      "request": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/HOLYLOAN-RAWCASH-CAPTURE-REQUEST01.json",
+      "request_id": "holyloan-rawcash01",
+      "request_status": "HOLD_NO_EXECUTION_OR_QUEUE_CONFIRMATION",
+      "source_refs": 22,
+      "launcher_sha256": "336621b4aab94aa9ef575d9fa0e7a0a5b054ff1130f835851796ef64432a3f51",
+      "files": "holyloan3 main/rawcash2 main/holyloan4 test/MIGRATION-holyloan.md",
+      "unexecuted": [
+        "actual original capture/golden",
+        "Maven/JUnit",
+        "Java-to-original consumer differential"
+      ],
+      "notes": "Earlier messages saying submitted meant message only; formal exact7 request was written immediately before vacation stop and explicitly canceled from starting. Shared 512KiB overload and build-helper consolidation are not implemented."
+    }
+  ],
+  "dependencies_and_limits": [
+    "wave2-finance pom now depends on finance-policy, war-budget, wave2-runtime, contracts, Jackson/JUnit; parent registration Root only",
+    "runtime has no finance/development reverse dependency; development->runtime shared timestamp reuse coordinated",
+    "warcash and feastterminal/feastcounters original capture RED remain unresolved; no skipped PASS or replacement oracle",
+    "D-only PASS outputs must remain exact originals until a fresh permitted Z adoption window; no automatic copy/start",
+    "new public budget/creationtime interfaces have source and original golden evidence only, no Java confidence yet",
+    "planning scoreinputs requested 512KiB explicit SDK budget remains unimplemented; shared default64KiB unchanged"
+  ],
+  "discarded_unstarted_proposals": [
+    "second cold classifier",
+    "second giftroot selector",
+    "historical giftaugmentation migration",
+    "realmqueryslot",
+    "any new successor/package after vacation stop"
+  ],
+  "d_drafts": [
+    "java_faction_gift reports early capture-factionthreat-golden01.py unexecuted draft only; actual capture used Java source launcher, draft is not production or a run request",
+    "No other finance owner reports D production draft; logs/requests and preserved retired launchers are evidence/WIP only"
+  ],
+  "next_authorized_work": "None while on vacation. On explicit return, inspect actual receipts and refresh machine/resource/source admission before settling existing RED, adopting retained outputs and running full Java/CI/consumer differential. Do not resume merely from an existing request.",
+  "gameplay_credit": false,
+  "seconds_per_day_improvement_credit": false,
+  "native_admission_credit": false,
+  "source_counts_are_not_intelligence": true
+}
