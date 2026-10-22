@@ -263,13 +263,18 @@ class WorkshopCacheTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 adapter.validate_download(bad, self.item, self.cache)
 
-    def test_all_fourteen_share_one_case_host_and_original_budgets(self):
+    def test_all_registered_products_share_one_case_host_and_original_budgets(self) -> None:
         fixture = base_tests.SharedEntryTests(methodName='test_product_cannot_override_runtime')
         fixture.setUp(); self.addCleanup(fixture.doCleanups)
         registry_path = ROOT / 'tools/ck3_mod_acceptance_products.json'
-        selections = [entry.Selection(fixture.runtime_path, registry_path, row['key'], 'workshop_cache')
-                      for row in self.registry['products']]
-        self.assertEqual(len(selections), 14)
+        canonical_keys = [row['key'] for row in self.registry['products']]
+        shared_products = adapter.read_json(registry_path)['products']
+        self.assertTrue(canonical_keys)
+        self.assertEqual(len(canonical_keys), len(set(canonical_keys)))
+        self.assertEqual(set(canonical_keys), set(shared_products))
+        selections = [entry.Selection(fixture.runtime_path, registry_path, key, 'workshop_cache')
+                      for key in canonical_keys]
+        self.assertEqual({selected.product_key for selected in selections}, set(canonical_keys))
         choices = set()
         for selected in selections:
             argv = selected.argv
@@ -284,6 +289,7 @@ class WorkshopCacheTests(unittest.TestCase):
         self.assertEqual(len(choices), 1)
         self.assertEqual(len({json.dumps(s.case, sort_keys=True) for s in selections}), 1)
         for row in self.registry['products']:
+            self.assertEqual(shared_products[row['key']]['workshop_item_id'], row['workshop_item_id'])
             context = {**self.context, 'product': row['key'], 'product_spec': row}
             if row['workshop_item_id'] is None:
                 with self.assertRaisesRegex(ValueError, 'development-only'): adapter.validate_contract(context)
