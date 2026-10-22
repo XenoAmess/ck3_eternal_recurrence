@@ -212,10 +212,13 @@ jobs:
             ${{ runner.temp }}/java-control-ci/logs/maven-version-*.log
             ${{ runner.temp }}/java-control-ci/logs/bootstrap-verify.log
             ${{ runner.temp }}/java-control-ci/logs/qualified-pipeline.log
+            ${{ runner.temp }}/java-control-ci/logs/*.stdout.log
+            ${{ runner.temp }}/java-control-ci/logs/*.stderr.log
             ${{ runner.temp }}/java-control-ci/artifacts/map-ci/logs/*.json
             ${{ runner.temp }}/java-control-ci/artifacts/map-ci/service/logs/*.json
             ${{ runner.temp }}/java-control-ci/build/bootstrap-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml
             ${{ runner.temp }}/java-control-ci/build/qualified-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml
+            ${{ runner.temp }}/java-control-ci/build/ci-reactor/*/surefire-reports/TEST-*.xml
       - name: Test configured native successor admission and process exits
         run: |
           python -B -X utf8 -m unittest discover -s tools -p test_build_native_configured_successor.py

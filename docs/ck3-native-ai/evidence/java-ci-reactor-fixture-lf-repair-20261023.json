@@ -1,0 +1,212 @@
+{
+  "schema": "xar.java-ci-reactor-fixture-lf-repair/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T18:44:26.261365+00:00",
+  "record_review_at_utc": "2027-04-20T18:44:26.261365+00:00",
+  "raw_evidence_review_at_utc": "2026-10-29T18:44:26.261365+00:00",
+  "run": {
+    "id": 39826166010,
+    "head": "12d06584bbca2b4b3dac1eb2215b569875782461",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39826166010",
+    "machine_id": "runnervm0xl3a-89d3c56171",
+    "observed_at_utc": "2026-10-22T18:15:36.547967400Z",
+    "artifact_id": 12447368494,
+    "github_reported_archive_bytes": 79730,
+    "original_status": "RED",
+    "original_error": "IOException: Complete reactor failed",
+    "original_maven_result": {
+      "identity": {
+        "pid": 7708,
+        "creation_filetime_decimal": "134371664796066338",
+        "executable": "C:\\Windows\\System32\\cmd.exe"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 55.2891471,
+      "accounting": {
+        "peak_job_memory_bytes": 745177088,
+        "active_processes": 0,
+        "memory_limit_bytes": 2147483648,
+        "limit_flags": 8704
+      },
+      "stop_reason": null
+    },
+    "bootstrap_tools_junit_passed": 56,
+    "qualified_tools_junit_passed": 56,
+    "http_consumer_receipt": null,
+    "actual_assertion_stdout_retained": false,
+    "missing_files": [
+      "logs/build-ci-reactor-verify.stdout.log",
+      "logs/build-ci-reactor-verify.stderr.log"
+    ],
+    "inventory": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\artifact-inventory.json",
+      "bytes": 9465,
+      "sha256": "0410e2ea877f53f1eeb0b4c5969a144a32f4683eccfd3f4f216b0b78a8fa80d7"
+    },
+    "original_wrapper_log": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\artifact\\logs\\qualified-pipeline.log",
+      "bytes": 591,
+      "sha256": "80e71195918e0f4ba8a46fdeb7462791c32e5475993832e3f5f6b7ed2b614bc9"
+    },
+    "original_reactor_receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\artifact\\logs\\build-ci-reactor.json",
+      "bytes": 70503,
+      "sha256": "e84733eba4dd5c1a0bf3000878613ab37c9edc3afbc225972584d16b48ed0eee"
+    }
+  },
+  "attribution": {
+    "kind": "INFERENCE_FROM_IDENTICAL_SOURCE_PINS_AND_DETERMINISTIC_LOCAL_REPRODUCTION",
+    "runner_assertion_text_observed": false,
+    "reason": "All115 reactor inputs match original runner bytes/SHA. Mandatory raw fixture digest assertion fails locally; runner receipt pins same LF fixture39e2001b and same old test constant. Original runner raw Maven output is absent.",
+    "not_attributed_to": "Previous local Java25 WindowsJobProcessTest boundary; original runner Job tests passed both stages."
+  },
+  "fixture_identity": {
+    "tracked_LF_resource": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\finance-policy\\src\\test\\resources\\feastvalue\\producer-golden-v1.json",
+      "bytes": 57225,
+      "sha256": "39e2001bc96f473cae4790ddd9b533da993fc444c8bba6c0928d20e451e6a6a7"
+    },
+    "git_blob_12d06584b_equals_current_resource": true,
+    "git_eol_contract": "text=auto,eol=lf",
+    "LF_count": 2408,
+    "CRLF_count": 0,
+    "historical_test_expected_sha256": "ec0f87133decf60ea87898527e2deaa6e1f18c7c9a4b92da538fb16731bd59e9",
+    "calculated_distinct_CRLF_representation_bytes": 59633,
+    "calculated_distinct_CRLF_sha256": "ec0f87133decf60ea87898527e2deaa6e1f18c7c9a4b92da538fb16731bd59e9",
+    "original_external_capture_read": "NOT_RUN; no outside original Pin requalified as LF",
+    "fixture_payload_origin_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "python_producer_sha_unchanged": "833d2503ef944d8a46516a94fbf3342379c50a32bfef769e9e27463094b2ba0e"
+  },
+  "local_original_reactor": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "started_at_utc": "2026-10-22T18:35:36.664250+00:00",
+    "argv": [
+      "mvn",
+      "--fail-at-end",
+      "-B",
+      "-ntp",
+      "-e",
+      "-U",
+      "-s",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\maven-settings.xml",
+      "-gs",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\maven-settings.xml",
+      "-f",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\source-ci-reactor\\pom.xml",
+      "-Dmaven.repo.local=D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\m2",
+      "-Dck3.build.root=D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\build",
+      "-Djava.io.tmpdir=D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\scratch",
+      "-DargLine=-Xms32m -Xmx256m",
+      "verify"
+    ],
+    "runtime": "Local GraalVM25, release21; not runner JDK21; direct CMD, no native Job qualification claimed",
+    "source": "Exact115 files from original CI receipt, each bytes/SHA matched",
+    "exit_code": 1,
+    "timeout": false,
+    "finished_at_utc": "2026-10-22T18:38:45.405780+00:00"
+  },
+  "local_original_junit_totals": {
+    "tests": 458,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "repaired_feast": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "started_at_utc": "2026-10-22T18:41:13.791049+00:00",
+    "argv": [
+      "mvn",
+      "--fail-at-end",
+      "-B",
+      "-ntp",
+      "-e",
+      "-U",
+      "-s",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\maven-settings.xml",
+      "-gs",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\maven-settings.xml",
+      "-f",
+      "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\source-repaired-finance\\pom.xml",
+      "-pl",
+      "finance-policy",
+      "-am",
+      "-Dtest=FeastValuePolicyTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "-Dmaven.repo.local=D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-a01\\m2",
+      "-Dck3.build.root=D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\build-repaired-finance",
+      "-Djava.io.tmpdir=D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\scratch",
+      "-DargLine=-Xms32m -Xmx256m",
+      "verify"
+    ],
+    "runtime": "GraalVM25 release21, not runner JDK21",
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-22T18:41:54.837720+00:00"
+  },
+  "repaired_junit_tests": 45,
+  "repaired_junit_report": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\build-repaired-finance\\finance-policy\\surefire-reports\\TEST-org.xar.ck3.control.finance.feastvalue.FeastValuePolicyTest.xml",
+    "bytes": 18257,
+    "sha256": "c8b27d54aea9d7db6b68c35ae854b650aaccc05ca0c41ba16d1b97baeacd113b"
+  },
+  "changed_test": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\finance-policy\\src\\test\\java\\org\\xar\\ck3\\control\\finance\\feastvalue\\FeastValuePolicyTest.java",
+    "bytes": 10939,
+    "sha256": "fe49b3037ed7452ed87e23f870ceb380b1ddd2177cbdcb58ce59453df7615263"
+  },
+  "workflow": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+    "bytes": 110458,
+    "sha256": "2b9f1999b30b2a589e768551ee4e88351c06cf890cdf4ab6cf0ff02ec136455e"
+  },
+  "workflow_delta": "Three retained artifact paths only; no execution step changed",
+  "workflow_validation": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\workflow-validation.json",
+    "bytes": 632,
+    "sha256": "2bb5bd874c433abf282462b0bcdb91b2588110702f72213705b909fb13ebad6e"
+  },
+  "source_before": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\source-pins-before.json",
+    "bytes": 24890,
+    "sha256": "5924afd648807d894958a39f650719d2e2e122ecfd0e287db19667eda4580443"
+  },
+  "source_repaired": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\source-pins-repaired.json",
+    "bytes": 24890,
+    "sha256": "011d00d5274c9b438f4e02ffbd5575091d93278841ec2cebcd9484070f98696c"
+  },
+  "source_after_matches_repaired_snapshot": true,
+  "storage_before": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\storage-before.json",
+    "bytes": 1054,
+    "sha256": "82f9aa1d498e758284e5f5c5c091f7e8356d5bec2e8b89291cd0a43779145fe7"
+  },
+  "storage_close": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\storage-close.json",
+    "bytes": 295,
+    "sha256": "44f576754ddcaed4706906f29d3df3682d8360a44ad46703bb24f32078031c89"
+  },
+  "remote_check": {
+    "at_utc": "2026-10-22T18:40:42.836457+00:00",
+    "test_still_used_old_constant": true,
+    "file": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\remote-FeastValuePolicyTest.java",
+      "bytes": 10838,
+      "sha256": "83ba89a726612d930c95e718098e25c674e910558f8c3fd3a644cd2417b5ba5e"
+    },
+    "java_path_commits": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-qualified-child-a01\\github-java-commits.json",
+      "bytes": 25422,
+      "sha256": "4135549f9cb41b6eac1347571746a13aba493b4168fbff4e8cf17858986b3a51"
+    }
+  },
+  "limits": {
+    "runner_after_repair": "NOT_RUN",
+    "full_reactor_after_repair": "NOT_RUN; no new concern justified repeating458tests",
+    "HTTP_consumer_after_repair": "NOT_RUN",
+    "local_runtime": "GraalVM25 with release21, not runner JDK21",
+    "native_Job_qualification_claimed": false,
+    "game_or_desktop_actions": 0,
+    "old_RED_and_old_sha_preserved": true,
+    "fixture_or_production_business_modified": false
+  }
+}

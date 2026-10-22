@@ -31,7 +31,8 @@ import org.xar.ck3.control.finance.feastvalue.FeastStage5ValuePolicy.Status;
 
 final class FeastValuePolicyTest {
     private static final ObjectMapper JSON = new ObjectMapper();
-    private static final String GOLDEN_SHA = "ec0f87133decf60ea87898527e2deaa6e1f18c7c9a4b92da538fb16731bd59e9";
+    // Pin the tracked LF bytes required by .gitattributes; the capture's CRLF digest is historical.
+    private static final String GOLDEN_SHA = "39e2001bc96f473cae4790ddd9b533da993fc444c8bba6c0928d20e451e6a6a7";
     private static final String PRODUCER_SHA = "833d2503ef944d8a46516a94fbf3342379c50a32bfef769e9e27463094b2ba0e";
 
     @TestFactory

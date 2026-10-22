@@ -11,6 +11,7 @@ tools/fixtures/ck3_r11_failed_resource_closure.json -text whitespace=cr-at-eol
 
 # Preserve original, machine-bound Java migration vacation handoff receipts.
 docs/handover/java-migration-stabilization-20261022/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/java-ci-reactor-fixture-lf-repair-20261023.json -text whitespace=cr-at-eol
 
 # Living Artifacts preserves SHA-bound vanilla source around literal hook inserts.
 # Keep inherited whitespace rather than rewriting unrelated game definitions.
