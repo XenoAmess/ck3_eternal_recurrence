@@ -67,3 +67,23 @@ G2的M0–M7各配置domain、真实producer迁移、integration/consumer三个o
 - 共享CI producer源码02曾被独审放行后发现未消费summary的subtests-skipped会false-PASS，旧放行已撤回且保全；03最小delta拒该边界并覆盖原12测试内反例，新独审只授build，不授运行。持久full30 cold/warm及独立SDK continuation的共享入口仍在后继迁移，不能拿旧local harness冒充新producer已完成。
 
 七fixture采用与全36运行、Java29 capture/fullverify、SDK三视图/fresh恢复仍各自进行。Steam20:24 fresh后台offline正例只证当时本机，启动前还须复核新鲜度。当前没有新增实机游戏日、保存日或优化收益信用。
+
+## 21:58Z已验变更与当前收尾
+
+用户最新要求是完成所有已经开启的工作，再写 docs 交接，不开启新任务。此前补足56并发的指令不再用于新派任务；已完成叶退出，原整合、真实失败修复和必要复验继续。旧21:52:17Z资源窗已到期，后续执行仅使用新鲜卡和重新资格化的完整运行闭包，不改旧期限。
+
+发布准备时 build-tools 与独立 qualified27 的全部37文件逐字节MATCH。完整14 suites / 140 tests通过、零failure/error/skip，90.1658 s、峰944680960 B、终态Job0；actual为 `J/logs/build-java-tools27-resume01.json`，26082 B / `e2bac53f95799f80ff0bb69400e09186ff4a3458cdd3f62bd67f86839515f6af`。新增显式 `ConsoleMode.DETACHED` 保留原调用默认NO_WINDOW；真实Windows测试核仅Java成员、参数/输出及timeout/lease/guard/interrupt清理，不忽略conhost或降低Job守卫。该版本还包含完整补充CI producer、上游Bootstrap回归与固定真实WAL样本。
+
+随后线性rebase遇上游 `cb4eb4750a`：Bootstrap新增FileVisitor处理遍历期间消失的JUnit scratch项及3项真实回归。Root保留该变更，合并图已不与qualified27完全相同（35/37），不能继承140通过；完整Bootstrap应为25项而非22项。已交当前唯一工具owner与必要SDK/owner修复统一重验，未将此合并图推送为已合格。旧来源、旧RED及原qualified27通过均保留。
+
+七份兼容测试夹具已按实际验证版本采用，全部7个完整模块strict通过；实际完整36文件为52 parent＋38 subtests全部通过，完整27文件为227 parent＋93 subtests全部通过，零失败/跳过。outer0、Job0、最终source MATCH，138.603375 s、峰1210986496 B。唯一交付 `J/artifacts/supplemental-ci36-02/QUALIFIED-SHARED-CI36-COMPLETE27-DELIVERY01.json`，19041 B / `8f9a1c666128b5380e9dc4ef71a99d56643364bc7f6065569ea50fa8742f317f`。旧34/36 RED完整保留；callback夹具核真实typed Driver query而非未经过的fallback trace，原raw业务断言保留。本次只证明这些实际本地命令，不外推新提交Hosted CI。
+
+恢复22完整七模块已实际731/731、53 suites通过，268源/编译来源与131件部署MATCH；Java29五编译修source03已实际物化1524文件，尚待capture及默认全verify。G2本域标准JUnit实测M1=12、M3=39、M4=31、M5=45、M6=28、M7=32全部通过；M0原90消费者和公共封包差分通过，余Legacy/whole-static待复验。M2完整443为384PASS/59FAIL，真实失败正在修，不能用其focused20通过替代全链。整图Maven/Quarkus HTTP与SDK接管均未由这些局部结果授予。
+
+SDK Review04通过，Assembly22在首次写图前真实RED/Job0：inventory排缓存，exact-set校验未用相同域；expected1468/all1706/extra238，全部extra是声明排除的cache，没有缺失或额外非cache。冻结SDK未修改/删缓存，必要共享Java修复和真实反例回归进入当前唯一工具候选。原生仍停在vctip生命周期诊断；两指定EXE、Defender及6＋14 fixture尚未验收。没有新Driver/SAVE票、Game调用或新增游戏日。最终交接在本轮已开事项终态收齐后另写，不将本节当最终闭场。
+
+## 最后停止与交接
+
+用户随后再次明确不再开启任务、写docs交接。已停止未启动队列，只收原在途终态；M0 Legacy通过、composer整模块通过、recommendation仍8类型错；M2最终449=444PASS/5FAIL、Job0，不再修复重试。source03正式独审/capture02、完整G2 COPY/Maven/HTTP、freshservice22、SDK及Native后继都未启动。
+
+未资格的工具合并保存在P本地archive分支、提交9eeb6bc1ff，未当已验工具推送；本次最终发布仅七份实际通过的测试夹具与文档。最终结果、精确索引、原件保留、source超帽及容量/预留撤回见 [Java、G2与AI休假交接](2026-10-23-java-g2-stabilization-vacation-handoff.md)。全部业务Job0，不再用空闲槽补并发。

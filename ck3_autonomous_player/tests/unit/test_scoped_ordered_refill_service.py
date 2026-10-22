@@ -4,14 +4,147 @@ import json
 import os
 from pathlib import Path
 import sys
+from typing import Literal, Mapping, NotRequired, TypedDict
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
+from xar_autoplayer.bridge.driver import CallbackGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.army_scoped_ordered_refill_contract import normalize_scoped_ordered_refill_inputs_v1
 
 
-def chunk(index: int) -> dict:
+class PhysicalChunkFixture(TypedDict):
+    physical_index: int
+    current_soldiers: int
+    maximum_soldiers: int
+    owner_persistent_regiment_id: int
+    q_ordinal_raw: int
+    army_regiment_id_raw: int
+    exclusion_byte_14_raw: int
+    state_raw: int
+    context_unavailable_reason: str | None
+    owner_resolved_full_id: int | None
+    owner_guard_138_raw: int | None
+    owner_definition_magic_38_raw: int | None
+    origin_province_id: int | None
+    origin_province_788_raw: int | None
+    origin_province_73c_raw: int | None
+    associated_arrg_resolved_full_id: int | None
+    associated_arrg_magic_raw: int | None
+    associated_army_raw_full_id: int | None
+    associated_army_resolved_full_id: int | None
+    army_byte_1d4_raw: int | None
+    army_byte_1ec_raw: int | None
+    native_army_in_combat: bool | None
+    associated_unit_raw_full_id: int | None
+    associated_unit_resolved_full_id: int | None
+    unit_170_raw: int | None
+    unit_position_province_magic_raw: int | None
+    unit_position_owner_resolved_full_id: int | None
+    unit_position_holder_resolved_full_id: int | None
+    native_unit_position_eligible: bool | None
+
+
+class ReplenishmentRecordFixture(TypedDict):
+    status: Literal['available']
+    unavailable_reason: None
+    record_index: int
+    persistent_regiment_id: int
+    chunk_index: int
+    chunk_army_regiment_id: int
+    current_soldiers: int
+    maximum_soldiers: int
+    effective_current_soldiers: int
+    state_raw: int
+    native_can_replenish: bool
+    native_chunk_can_replenish: bool
+    persistent_monthly_replenishment_fraction_raw: int
+    persistent_monthly_replenishment_fraction_scale: int
+    persistent_prepared_replenishment_fraction_raw: int
+    persistent_prepared_replenishment_fraction_scale: int
+
+
+class PersistentOccurrenceFixture(TypedDict):
+    stored_index: int
+    persistent_regiment_id: int
+
+
+class PersistentRegimentFixture(TypedDict):
+    persistent_regiment_id: int
+    prepared_fraction_raw: int
+    unavailable_reason: None
+    chunks: list[PhysicalChunkFixture]
+
+
+class ScopedInputsFixture(TypedDict):
+    source: Literal['native_scoped_observed_prepared_ordered_refill']
+    status: Literal['available', 'partial', 'unavailable']
+    unavailable_reason: str | None
+    subject_army_id: int
+    subject_carmy_id: int
+    native_persistent_occurrence_count: int
+    native_army_refresh_occurrence_count: int
+    persistent_occurrences: list[PersistentOccurrenceFixture]
+    army_refresh_occurrence_indices: list[int]
+    persistent_regiments: list[PersistentRegimentFixture]
+
+
+class RegimentStrengthFixture(TypedDict):
+    army_regiment_id: int
+    current_soldiers: int
+    maximum_soldiers: int
+    scale: int
+
+
+class ReplenishmentRecordsFixture(TypedDict):
+    source: Literal['native_all_data_records']
+    army_regiment_id: int
+    status: Literal['available']
+    ready: bool
+    native_data_record_count: int
+    unavailable_reason: None
+    native_loss_writer_skipped: bool
+    loss_writer_admission_unavailable_reason: None
+    records: list[ReplenishmentRecordFixture]
+
+
+class ArmyRowFixture(TypedDict):
+    status: Literal['available']
+    army_id: int
+    native_carmy_id: int
+    scope_role: Literal['player']
+    war_ids: list[int]
+    regiment_count: int
+    current_soldiers: int
+    maximum_soldiers: int
+    ai_base_power_raw: int
+    ai_base_power_scale: int
+    unavailable_reason: None
+    current_supply_change_monthly_raw: int
+    current_supply_change_monthly_scale: int
+    regiment_strengths: list[RegimentStrengthFixture]
+    regiment_replenishment_records_v1: list[ReplenishmentRecordsFixture]
+    scoped_ordered_refill_inputs_v1: NotRequired[ScopedInputsFixture]
+
+
+def _object(value: object) -> dict[str, object]:
+    """Narrow response containers without trusting an unchecked cast."""
+    if not isinstance(value, dict) or any(not isinstance(key, str) for key in value):
+        raise AssertionError('expected an object with string keys')
+    return {key: item for key, item in value.items() if isinstance(key, str)}
+
+
+def _objects(value: object) -> list[dict[str, object]]:
+    return [_object(item) for item in _array(value)]
+
+
+def _array(value: object) -> list[object]:
+    if not isinstance(value, list):
+        raise AssertionError('expected an array')
+    return [item for item in value]
+
+
+def chunk(index: int) -> PhysicalChunkFixture:
     return {
         'physical_index': index, 'current_soldiers': 80 if index == 0 else 20 if index == 1 else 0,
         'maximum_soldiers': 100 if index == 0 else 20 if index == 1 else 0,
@@ -32,8 +165,8 @@ def chunk(index: int) -> dict:
     }
 
 
-def row(fraction: int = 10000, current: int = 80, maximum: int = 100) -> dict:
-    records = []
+def row(fraction: int = 10000, current: int = 80, maximum: int = 100) -> ArmyRowFixture:
+    records: list[ReplenishmentRecordFixture] = []
     for index in range(2):
         records.append({
             'status': 'available', 'unavailable_reason': None, 'record_index': index,
@@ -74,19 +207,29 @@ def row(fraction: int = 10000, current: int = 80, maximum: int = 100) -> dict:
 
 
 class MemoryRoute(GameplayBridgeService):
-    def __init__(self, source: dict) -> None:
-        self.source, self.calls = source, []
+    def __init__(self, source: Mapping[str, object]) -> None:
+        self.source = source
+        self.calls: list[tuple[str, int | None]] = []
+        self.driver = CallbackGameplayDriver(
+            backend_id="pure-memory-fixture", snapshot=self.snapshot,
+            execute=lambda step, revision: self.execute_step(
+                step, expected_revision=revision),
+            action_steps=("query-army-strengths-v1",),
+        )
 
-    def snapshot(self) -> dict:
+    def snapshot(self, *, include_native_command_history: bool = True) -> dict[str, object]:
         return {'paused': True, 'revision': 42, 'native_revision': 7, 'date_raw': 10000,
                 'snapshot_id': 'offline-ordered-core', 'backend_id': 'pure-memory-fixture',
                 'player_armies': [{'army_id': 11}], 'active_wars': [],
                 'diagnostics': {'hello': {'game_version': '1.20.0.3'}}}
 
-    def capabilities(self) -> dict:
+    def capabilities(self) -> dict[str, object]:
         return {'action_steps': ['query-army-strengths-v1']}
 
-    def execute_step(self, step: str, *, expected_revision: int | None = None) -> dict:
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
+    ) -> dict[str, object]:
         self.calls.append((step, expected_revision))
         return {'status': 'available', 'army_strengths': [deepcopy(self.source)],
                 'native_readiness': {'current_strength': True, 'full_monthly': False}}
@@ -94,9 +237,9 @@ class MemoryRoute(GameplayBridgeService):
 
 class ScopedOrderedRefillServiceTests(unittest.TestCase):
     def test_ordered_occurrences_full_buffer_cleanup_refresh_and_partial_independence(self) -> None:
-        outputs = {}
+        outputs: dict[str, dict[str, object]] = {}
 
-        def query(name: str, source: dict) -> dict:
+        def query(name: str, source: ArmyRowFixture) -> dict[str, object]:
             before = deepcopy(source)
             service = MemoryRoute(source)
             returned = service.query_army_strengths([11], expected_revision=42)
@@ -104,8 +247,8 @@ class ScopedOrderedRefillServiceTests(unittest.TestCase):
             self.assertEqual(service.calls, [('query-army-strengths-v1', 42)])
             self.assertEqual(returned['status'], 'available')
             self.assertEqual(returned['native_readiness'], {'current_strength': True, 'full_monthly': False})
-            self.assertEqual(returned['army_strengths'][0]['current_supply_change_monthly_raw'], 700000)
-            projected = returned['same_input_conditional_scoped_ordered_refill_current_v1'][0]
+            self.assertEqual(_objects(returned['army_strengths'])[0]['current_supply_change_monthly_raw'], 700000)
+            projected = _objects(returned['same_input_conditional_scoped_ordered_refill_current_v1'])[0]
             for flag in ('actual_after', 'actual_post_stage_observed', 'preparation_replayed', 'full_manager_replayed', 'full_monthly_ready'):
                 self.assertFalse(projected[flag])
             outputs[name] = returned
@@ -115,35 +258,36 @@ class ScopedOrderedRefillServiceTests(unittest.TestCase):
         self.assertTrue(ordered['ordered_core_ready'])
         self.assertTrue(ordered['conditional_raised_current_maximum_ready'])
         self.assertEqual(ordered['conditional_current_soldiers'], 200)
-        self.assertEqual([o['stored_index'] for o in ordered['occurrences']], [1, 3])
-        self.assertEqual([o['q_buffer'][0] for o in ordered['occurrences']], [10, 10])
-        self.assertEqual([o['writes'][0]['after_current'] for o in ordered['occurrences']], [90, 100])
-        self.assertTrue(ordered['occurrences'][0]['writes'][1]['pair_cleared'])
-        self.assertEqual(len(ordered['occurrences'][0]['writes']), 7)
-        self.assertEqual([r['manager_stored_index'] for r in ordered['refresh_occurrences']], [1, 3])
-        self.assertEqual(len(ordered['refresh_occurrences'][0]['regiments'][0]['record_contributions']), 2)
+        self.assertEqual([o['stored_index'] for o in _objects(ordered['occurrences'])], [1, 3])
+        self.assertEqual([_array(o['q_buffer'])[0] for o in _objects(ordered['occurrences'])], [10, 10])
+        self.assertEqual([_objects(o['writes'])[0]['after_current'] for o in _objects(ordered['occurrences'])], [90, 100])
+        self.assertTrue(_objects(_objects(ordered['occurrences'])[0]['writes'])[1]['pair_cleared'])
+        self.assertEqual(len(_array(_objects(ordered['occurrences'])[0]['writes'])), 7)
+        self.assertEqual([r['manager_stored_index'] for r in _objects(ordered['refresh_occurrences'])], [1, 3])
+        self.assertEqual(len(_array(_objects(_objects(ordered['refresh_occurrences'])[0]['regiments'])[0]['record_contributions'])), 2)
 
         rounded = query('qualified-zero-cleanup', row(1))
-        self.assertEqual([o['q_buffer'] for o in rounded['occurrences']], [[0] * 7, [0] * 7])
-        self.assertTrue(rounded['occurrences'][0]['native_core_admitted'])
-        self.assertTrue(rounded['occurrences'][0]['writes'][1]['pair_cleared'])
+        self.assertEqual([o['q_buffer'] for o in _objects(rounded['occurrences'])], [[0] * 7, [0] * 7])
+        self.assertTrue(_objects(rounded['occurrences'])[0]['native_core_admitted'])
+        self.assertTrue(_objects(_objects(rounded['occurrences'])[0]['writes'])[1]['pair_cleared'])
         self.assertEqual(rounded['conditional_current_soldiers'], 160)
         zero = query('nonpositive-skips-all-writes', row(0))
         self.assertTrue(zero['ordered_core_ready'])
-        self.assertEqual(zero['occurrences'][0]['writes'], [])
-        self.assertEqual(zero['physical_chunks'][1]['current_soldiers'], 20)
+        self.assertEqual(_objects(zero['occurrences'])[0]['writes'], [])
+        self.assertEqual(_objects(zero['physical_chunks'])[1]['current_soldiers'], 20)
 
         overflow = query('negative-overflow-q', row((1 << 63) - 1, 1, 100000))
-        self.assertEqual([o['q_buffer'][0] for o in overflow['occurrences']], [-1, -1])
+        self.assertEqual([_array(o['q_buffer'])[0] for o in _objects(overflow['occurrences'])], [-1, -1])
         self.assertEqual(overflow['conditional_current_soldiers'], -2)
 
         collisions = row()
         other = collisions['scoped_ordered_refill_inputs_v1']['persistent_regiments'][0]['chunks'][2]
-        other.update(maximum_soldiers=50, q_ordinal_raw=0)
+        other['maximum_soldiers'] = 50
+        other['q_ordinal_raw'] = 0
         collided = query('shared-raw-q-slot', collisions)
-        self.assertEqual([o['q_buffer'][0] for o in collided['occurrences']], [5, 5])
-        self.assertEqual(collided['physical_chunks'][0]['current_soldiers'], 90)
-        self.assertEqual(collided['physical_chunks'][2]['current_soldiers'], 10)
+        self.assertEqual([_array(o['q_buffer'])[0] for o in _objects(collided['occurrences'])], [5, 5])
+        self.assertEqual(_objects(collided['physical_chunks'])[0]['current_soldiers'], 90)
+        self.assertEqual(_objects(collided['physical_chunks'])[2]['current_soldiers'], 10)
         self.assertEqual(collided['conditional_current_soldiers'], 180)
 
         missing = row()
@@ -169,15 +313,20 @@ class ScopedOrderedRefillServiceTests(unittest.TestCase):
         no_refresh = row()
         no_refresh['scoped_ordered_refill_inputs_v1']['army_refresh_occurrence_indices'] = []
         unchanged = query('observed-no-refresh-occurrence', no_refresh)
-        self.assertEqual(unchanged['physical_chunks'][0]['current_soldiers'], 100)
+        self.assertEqual(_objects(unchanged['physical_chunks'])[0]['current_soldiers'], 100)
         self.assertEqual(unchanged['conditional_current_soldiers'], 160)
         legacy = row()
         del legacy['scoped_ordered_refill_inputs_v1']
         self.assertEqual(query('legacy-independent', legacy)['missing_inputs'], ['scoped_ordered_refill_inputs_v1'])
         malformed = deepcopy(row()['scoped_ordered_refill_inputs_v1'])
-        malformed['persistent_regiments'][0]['chunks'][0]['native_army_in_combat'] = 0
+        malformed_persistent = _object(malformed['persistent_regiments'][0])
+        malformed_chunks = _objects(malformed_persistent['chunks'])
+        malformed_chunks[0]['native_army_in_combat'] = 0
+        malformed_persistent['chunks'] = malformed_chunks
+        malformed_input = _object(malformed)
+        malformed_input['persistent_regiments'] = [malformed_persistent]
         with self.assertRaises(ValueError):
-            normalize_scoped_ordered_refill_inputs_v1(malformed)
+            normalize_scoped_ordered_refill_inputs_v1(malformed_input)
 
         path = os.environ.get('XAR_ORDERED_REFILL_CASE_OUTPUT')
         if path:

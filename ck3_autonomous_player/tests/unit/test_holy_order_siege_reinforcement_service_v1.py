@@ -5,6 +5,7 @@ from copy import deepcopy
 import json
 import os
 from pathlib import Path
+from typing import TypeAlias
 import unittest
 from unittest.mock import patch
 
@@ -15,11 +16,40 @@ from xar_autoplayer.bridge.player_holy_order_context_private_transport import no
 from xar_autoplayer.bridge.war_contract import HIRE_HOLY_ORDER_V1_CAPABILITY, HIRE_HOLY_ORDER_V1_STEP
 
 
+_Call: TypeAlias = (
+    tuple[str, int] | tuple[str, int, int] | tuple[str, list[int], int]
+)
+
+
+def _record(value: object) -> dict[str, object]:
+    """Narrow an actual service result before examining its fixture fields."""
+    if not isinstance(value, dict):
+        raise AssertionError("service result must be an object")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise AssertionError("service result object keys must be strings")
+        result[key] = item
+    return result
+
+
+def _records(value: object) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise AssertionError("service result rows must be a list")
+    return [_record(row) for row in value]
+
+
+def _revision(value: object) -> int:
+    if type(value) is not int:
+        raise AssertionError("synthetic snapshot revision must be an integer")
+    return value
+
+
 class _SyntheticCurrentWorld:
-    def __init__(self, *, can_hire=True):
+    def __init__(self, *, can_hire: bool = True) -> None:
         self.can_hire, self.submitted = can_hire, False
-        self.calls = []
-        self.before = {
+        self.calls: list[_Call] = []
+        self.before: dict[str, object] = {
             "snapshot_id": "synthetic:10", "revision": 10, "native_revision": 9,
             "date_raw": 53288448, "paused": True, "map_ready": True,
             "played_character": {"character_id": 29829, "alive": True},
@@ -30,24 +60,37 @@ class _SyntheticCurrentWorld:
             "diagnostics": {"hello": {"game_version": CK3_12004.game_version,
                 "executable_sha256": CK3_12004.executable_sha256}},
         }
-        self.after = {**deepcopy(self.before), "snapshot_id": "synthetic:11", "revision": 11,
+        self.after: dict[str, object] = {**deepcopy(self.before), "snapshot_id": "synthetic:11", "revision": 11,
             "native_revision": 10, "played_character_piety": {"raw": 800000, "scale": 100000},
             "player_armies": [{"army_id": 218104222, "owner_character_id": 4444,
                 "controllable": True, "current_province_id": 460, "soldiers": 500}]}
 
-    def capabilities(self):
+    def capabilities(self) -> dict[str, object]:
         return {"backend_id": "native-headless", "action_steps": [HIRE_HOLY_ORDER_V1_STEP],
                 "bridge_capabilities": [HIRE_HOLY_ORDER_V1_CAPABILITY]}
 
-    def take_snapshot(self):
+    def take_snapshot(self) -> dict[str, object]:
         return deepcopy(self.after if self.submitted else self.before)
 
-    def query_player_holy_order_context_private_v1(self, *, expected_revision):
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        raise AssertionError(f"unexpected primitive step in holy-order fixture: {step}")
+
+    def wait_for_change(
+        self, after_revision: int, *, timeout_seconds: float
+    ) -> dict[str, object]:
+        raise AssertionError("holy-order fixture must use immediate independent snapshots")
+
+    def query_player_holy_order_context_private_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
         snapshot = self.take_snapshot()
+        current_revision = _revision(snapshot["revision"])
         self.calls.append(("holy_query", expected_revision))
-        if expected_revision != snapshot["revision"]:
+        if expected_revision != current_revision:
             raise AssertionError("consumer must use the current public revision")
-        association = {"available": True, "unavailable_reason": None, "applies_to_player": self.submitted,
+        association: dict[str, object] = {"available": True, "unavailable_reason": None, "applies_to_player": self.submitted,
                        "rows": []}
         if self.submitted:
             # Two genuine source occurrences point to the same generation-zero
@@ -58,7 +101,7 @@ class _SyntheticCurrentWorld:
                 "combat_id": None, "combat_resolved": False} for ident in (8, 9)]
         raw = {"schema": "ck3_12004_player_holy_order_context_v1", "read_only": True,
             "game_version": CK3_12004.game_version, "executable_sha256": CK3_12004.executable_sha256,
-            "available": True, "unavailable_reason": None, "capture_epoch": 100 + snapshot["revision"],
+            "available": True, "unavailable_reason": None, "capture_epoch": 100 + current_revision,
             "date_raw": snapshot["date_raw"], "played_character_id": 29829, "raw_scale": 100000,
             "queried_snapshot_id": snapshot["snapshot_id"], "queried_revision": snapshot["revision"],
             "queried_native_revision": snapshot["native_revision"], "snapshot_revision": snapshot["native_revision"],
@@ -77,7 +120,9 @@ class _SyntheticCurrentWorld:
         # building a planner observation in command history.
         return normalize_player_holy_order_context_v1(raw, snapshot=snapshot)
 
-    def hire_holy_order_v1(self, *, holy_order_id, expected_revision):
+    def hire_holy_order_v1(
+        self, *, holy_order_id: int, expected_revision: int
+    ) -> dict[str, object]:
         self.calls.append(("hire", holy_order_id, expected_revision))
         if holy_order_id != 0 or expected_revision != 10:
             raise AssertionError("typed normal action must retain full ID0 and public revision")
@@ -96,12 +141,16 @@ class _SyntheticCurrentWorld:
         self.submitted = True
         return ack
 
-    def query_army_strengths(self, *, army_ids, expected_revision):
+    def query_army_strengths(
+        self, *, army_ids: list[int], expected_revision: int
+    ) -> dict[str, object]:
         self.calls.append(("armies", list(army_ids), expected_revision))
         return {"army_strengths": [{"status": "available", "army_id": 218104222,
             "native_carmy_id": 0, "current_soldiers": 500}]}
 
-    def query_war_cash_current_resources_private_v1(self, *, expected_revision):
+    def query_war_cash_current_resources_private_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
         self.calls.append(("cash", expected_revision))
         return {"military_expenses": {"current": {"status": "available", "gold_raw": 0},
                                       "all_raised": {"status": "available", "gold_raw": 100000}},
@@ -109,7 +158,7 @@ class _SyntheticCurrentWorld:
 
 
 class HolyOrderSiegeReinforcementServiceV1Tests(unittest.TestCase):
-    def test_new_service_siege_choice_normal_hire_independent_post_and_next_formal(self):
+    def test_new_service_siege_choice_normal_hire_independent_post_and_next_formal(self) -> None:
         base = {"policy": "one-life-turn-v1", "phase": "native_war_siege_exit_blocked",
             "selected_step": None, "siege_state": {"status": "insufficient_strength",
                 "province_id": 2592, "player_army_besieging": True, "garrison_size": 1000,
@@ -118,35 +167,35 @@ class HolyOrderSiegeReinforcementServiceV1Tests(unittest.TestCase):
         # replayed. This single compound tests only the new two Service hooks.
         with patch('xar_autoplayer.bridge.service.choose_one_life_turn', return_value=deepcopy(base)), \
              patch.object(GameplayBridgeService, '_strategy_state_dir', return_value=None), \
-             patch.object(GameplayBridgeService, '_prepare_succession_transition_v1', side_effect=lambda snapshot, steps: snapshot):
+             patch.object(GameplayBridgeService, '_prepare_succession_transition_v1', side_effect=lambda snapshot, steps, *, deferred_release_root=None: snapshot):
             denied = _SyntheticCurrentWorld(can_hire=False)
             denied_plan = GameplayBridgeService(denied).plan_turn()
-            self.assertIsNone(denied_plan["plan"]["selected_step"])
+            self.assertIsNone(_record(denied_plan["plan"])["selected_step"])
             self.assertFalse(any(call[0] == "hire" for call in denied.calls))
             allowed = _SyntheticCurrentWorld()
             service = GameplayBridgeService(allowed)
             planned = service.plan_turn()
-            self.assertEqual(planned["plan"]["selected_step"], HIRE_HOLY_ORDER_V1_STEP)
-            self.assertEqual(planned["plan"]["holy_order_hire_proposal"]["holy_order_id"], 0)
+            self.assertEqual(_record(planned["plan"])["selected_step"], HIRE_HOLY_ORDER_V1_STEP)
+            self.assertEqual(_record(_record(planned["plan"])["holy_order_hire_proposal"])["holy_order_id"], 0)
             outcome = service._execute_planned_turn(planned)
-            result = outcome["result"]
-            self.assertFalse(result["holy_order_hire"]["after_state_observed"])
-            receipt = result["holy_order_reinforcement_postcondition"]
+            result = _record(outcome["result"])
+            self.assertFalse(_record(result["holy_order_hire"])["after_state_observed"])
+            receipt = _record(result["holy_order_reinforcement_postcondition"])
             self.assertTrue(receipt["employer_observed"])
             self.assertTrue(receipt["usable_army_observed"])
-            self.assertEqual(len(receipt["troop_association"]["rows"]), 2)
-            self.assertEqual(len(receipt["material_armies"]), 1)
-            self.assertEqual(receipt["material_armies"][0]["owner_character_id"], 4444)
-            self.assertEqual(receipt["observed_stock_delta_raw"]["piety"], 200000)
+            self.assertEqual(len(_records(_record(receipt["troop_association"])["rows"])), 2)
+            self.assertEqual(len(_records(receipt["material_armies"])), 1)
+            self.assertEqual(_records(receipt["material_armies"])[0]["owner_character_id"], 4444)
+            self.assertEqual(_record(receipt["observed_stock_delta_raw"])["piety"], 200000)
             self.assertTrue(receipt["unchanged_date_quote_delta_match"])
-            self.assertEqual(receipt["actor_expenses"]["military_expenses"]["current"]["gold_raw"], 0)
-            self.assertEqual(receipt["next_formal"]["selected_step"], "preview-move-army-218104222-to-2592")
+            self.assertEqual(_record(_record(_record(receipt["actor_expenses"])["military_expenses"])["current"])["gold_raw"], 0)
+            self.assertEqual(_record(receipt["next_formal"])["selected_step"], "preview-move-army-218104222-to-2592")
             self.assertFalse(receipt["full_hire_loop_complete"])
             self.assertEqual(sum(call[0] == "hire" for call in allowed.calls), 1)
             # Once employed, the real post query's CanHire=false remains valid;
             # the next ordinary planning turn does not submit another hire.
             second = service.plan_turn()
-            self.assertIsNone(second["plan"]["selected_step"])
+            self.assertIsNone(_record(second["plan"])["selected_step"])
             self.assertEqual(sum(call[0] == "hire" for call in allowed.calls), 1)
             output = os.environ.get("XAR_HO_SIEGE_CASE_OUTPUT")
             if output:

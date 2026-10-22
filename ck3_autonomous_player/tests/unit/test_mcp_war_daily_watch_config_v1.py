@@ -1,10 +1,12 @@
 """Official MCP opt-in wiring, with no Game/pipe operations or speed changes."""
 import contextlib
+import importlib
 import io
 from pathlib import Path
 import sys
 import tempfile
 from types import SimpleNamespace
+from typing import TypedDict
 import unittest
 from unittest.mock import patch
 
@@ -12,8 +14,24 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
 from xar_autoplayer.bridge import mcp_server, native_driver
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.war31_one_shot_surrender import War31OneShotSurrenderGate
 
 FLAG = "--private-war-daily-watch-speed2-trial"
+
+
+class _LoadDriverFixtureArguments(TypedDict):
+    state_dir: Path
+    pipe_name: str
+    route_contact_timeline_speed: int
+    allow_route_contact_high_speed_ab: bool
+    war31_one_shot_surrender_gate: War31OneShotSurrenderGate
+    succession_lifecycle_binding: dict[str, object]
+    allow_private_death_succession_modal_continue: bool
+    allow_private_faction_gift_formal_trial: bool
+    private_faction_round_id: str
+    allow_private_lifestyle_formal_trial: bool
+    require_initial_lifestyle_focus_before_date_advance: bool
+    allow_war_daily_watch_v1: bool
 
 
 class NoGameEndpoint:
@@ -102,7 +120,7 @@ class McpWarDailyWatchConfigTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "exclude driver transcript"):
                     tool.fn()
 
-    def test_cli_boolean_defaults_off_and_explicit_opt_in(self):
+    def test_cli_boolean_defaults_off_and_explicit_opt_in(self) -> None:
         self.assertIs(mcp_server.parser().parse_args([]).private_war_daily_watch_speed2_trial, False)
         value = mcp_server.parser().parse_args(["--driver", "native-headless", FLAG])
         self.assertIs(value.private_war_daily_watch_speed2_trial, True)
@@ -112,11 +130,13 @@ class McpWarDailyWatchConfigTests(unittest.TestCase):
             mcp_server.parser().parse_args([FLAG, "false"])
         self.assertEqual(error.exception.code, 2)
 
-    def test_load_driver_forwards_exact_bool_and_preserves_all_original_constructor_kwargs(self):
+    def test_load_driver_forwards_exact_bool_and_preserves_all_original_constructor_kwargs(self) -> None:
         for enabled in (False, True):
             with self.subTest(enabled=enabled):
-                gate, lifecycle = object(), {"original": "lifecycle-binding"}
-                args = dict(state_dir=Path("fixture-state"), pipe_name=r"\\.\pipe\war-watch-config",
+                # Identity-only forwarding fixture: never initialize or invoke this gate.
+                gate = object.__new__(War31OneShotSurrenderGate)
+                lifecycle: dict[str, object] = {"original": "lifecycle-binding"}
+                args: _LoadDriverFixtureArguments = dict(state_dir=Path("fixture-state"), pipe_name=r"\\.\pipe\war-watch-config",
                     route_contact_timeline_speed=3, allow_route_contact_high_speed_ab=False,
                     war31_one_shot_surrender_gate=gate, succession_lifecycle_binding=lifecycle,
                     allow_private_death_succession_modal_continue=True,
@@ -142,34 +162,37 @@ class McpWarDailyWatchConfigTests(unittest.TestCase):
                 self.assertTrue(fake.require_initial_lifestyle_focus_before_date_advance)
                 self.assertEqual(fake.initial_lifestyle_focus_gate_stage, "await_submit")
 
-    def test_load_driver_default_is_false_and_invalid_nonbooleans_reject_before_construction(self):
+    def test_load_driver_default_is_false_and_invalid_nonbooleans_reject_before_construction(self) -> None:
         with patch.object(mcp_server, "NativeHeadlessGameplayDriver") as constructor:
             mcp_server.load_driver("native-headless", state_dir="fixture-state")
             self.assertIs(constructor.call_args.kwargs["allow_war_daily_watch_v1"], False)
         for value in (None, 0, 1, "true", [], object()):
             with self.subTest(value=value), patch.object(mcp_server, "NativeHeadlessGameplayDriver") as constructor:
                 with self.assertRaisesRegex(ValueError, "explicit boolean"):
-                    mcp_server.load_driver("native-headless", allow_war_daily_watch_v1=value)
+                    # This negative case deliberately crosses the bool-only API boundary.
+                    mcp_server.load_driver("native-headless", allow_war_daily_watch_v1=value)  # type: ignore[arg-type]
                 constructor.assert_not_called()
 
-    def test_non_native_opt_in_rejects_before_dispatch_or_import(self):
+    def test_non_native_opt_in_rejects_before_dispatch_or_import(self) -> None:
         for name in (None, "vision-report", "vision-session", "mod", "hybrid", "hybrid-fallback", "some_module:factory"):
             with self.subTest(factory=name), \
                     patch.object(mcp_server, "DevelopmentReportDriver") as report, \
                     patch.object(mcp_server, "NativeHeadlessGameplayDriver") as constructor, \
-                    patch.object(mcp_server.importlib, "import_module") as importer:
+                    patch.object(importlib, "import_module") as importer:
                 with self.assertRaisesRegex(ValueError, "native-headless"):
                     mcp_server.load_driver(name, allow_war_daily_watch_v1=True)
                 report.assert_not_called()
                 constructor.assert_not_called()
                 importer.assert_not_called()
 
-    def test_main_to_real_driver_preserves_private_flags_and_original_speed_policy(self):
+    def test_main_to_real_driver_preserves_private_flags_and_original_speed_policy(self) -> None:
         from mcp.server import MCPServer
         for enabled in (False, True):
             with self.subTest(enabled=enabled), tempfile.TemporaryDirectory() as temp:
-                endpoint, configured, runs = NoGameEndpoint(), [], []
-                def service(driver):
+                endpoint = NoGameEndpoint()
+                configured: list[native_driver.NativeHeadlessGameplayDriver] = []
+                runs: list[object] = []
+                def service(driver: native_driver.NativeHeadlessGameplayDriver) -> GameplayBridgeService:
                     self.assertIs(type(driver), native_driver.NativeHeadlessGameplayDriver)
                     self.assertIs(driver._allow_war_daily_watch_v1, enabled)
                     self.assertEqual(driver.state_dir, Path(temp))
@@ -179,10 +202,13 @@ class McpWarDailyWatchConfigTests(unittest.TestCase):
                     self.assertTrue(driver.allow_private_lifestyle_formal_trial)
                     self.assertTrue(driver.allow_private_semantic_snapshot_readonly)
                     self.assertTrue(driver.allow_private_prisoner_collection_query)
-                    self.assertEqual(driver.initial_lifestyle_focus_gate_stage, "await_submit")
+                    focus_gate_stage: object = getattr(driver, "initial_lifestyle_focus_gate_stage")
+                    if not isinstance(focus_gate_stage, str):
+                        raise AssertionError("initial lifestyle focus gate stage must be a string")
+                    self.assertEqual(focus_gate_stage, "await_submit")
                     configured.append(driver)
                     return GameplayBridgeService(driver)
-                def run(server, **kwargs):
+                def run(server: object, **kwargs: object) -> None:
                     self.assertEqual(kwargs, {"transport": "stdio"})
                     runs.append(server)
                 options = [FLAG] if enabled else []
@@ -196,7 +222,7 @@ class McpWarDailyWatchConfigTests(unittest.TestCase):
                 self.assertEqual(result, 0)
                 self.assertEqual((len(configured), len(runs), endpoint.starts, endpoint.closes), (1, 1, 1, 1))
 
-    def test_main_rejects_non_native_and_non_stdio_before_any_constructor(self):
+    def test_main_rejects_non_native_and_non_stdio_before_any_constructor(self) -> None:
         for driver, transport in (("vision-report", "stdio"), ("some_module:factory", "stdio"),
                                   ("native-headless", "streamable-http")):
             with self.subTest(driver=driver, transport=transport), \
@@ -207,7 +233,7 @@ class McpWarDailyWatchConfigTests(unittest.TestCase):
                 loader.assert_not_called()
                 server.assert_not_called()
 
-    def test_trial_does_not_bypass_existing_lifecycle_initial_focus_or_route_speed_guards(self):
+    def test_trial_does_not_bypass_existing_lifecycle_initial_focus_or_route_speed_guards(self) -> None:
         for extra, message in ((["--succession-lifecycle", "ordinary_campaign_succession"],
                                 "environment manifest and mode"),
                                (["--require-initial-lifestyle-focus-before-date-advance"],

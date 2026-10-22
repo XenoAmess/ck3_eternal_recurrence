@@ -1,16 +1,40 @@
 """One new production-consumer case spanning all four derived loss stages."""
 from copy import deepcopy
 from pathlib import Path
+from typing import TypeGuard
 import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.driver import CallbackGameplayDriver
 from xar_autoplayer.bridge.war_contract import QUERY_ARMY_STRENGTHS_STEP
 
 
-def full_stage_packet():
-    strengths, data = [], []
+def _is_object_mapping(value: object) -> TypeGuard[dict[str, object]]:
+    return isinstance(value, dict) and all(isinstance(key, str) for key in value)
+
+
+def object_mapping(value: object) -> dict[str, object]:
+    """Validate JSON object boundaries returned by the legacy bridge facade."""
+    if not _is_object_mapping(value):
+        raise AssertionError("expected a JSON object with string keys")
+    return value
+
+
+def object_values(value: object) -> list[object]:
+    if not isinstance(value, list):
+        raise AssertionError("expected a JSON array")
+    return [item for item in value]
+
+
+def object_rows(value: object) -> list[dict[str, object]]:
+    return [object_mapping(row) for row in object_values(value)]
+
+
+def full_stage_packet() -> dict[str, object]:
+    strengths: list[dict[str, object]] = []
+    data: list[dict[str, object]] = []
     # Stored order30,40,10,20: physical alias, state3 refresh-only, skipped,
     # then a positive-tier row reachable through each residual pass.
     for regiment, current, maximum, tier, eligible, skipped, physical, state, aliases in (
@@ -28,7 +52,7 @@ def full_stage_packet():
             "native_supply_loss_eligible": eligible,
             "supply_loss_eligibility_unavailable_reason": None,
         })
-        records = [{
+        records: list[dict[str, object]] = [{
             "status": "available", "unavailable_reason": None,
             "record_index": index, "persistent_regiment_id": 100 + regiment,
             "chunk_index": 0, "chunk_army_regiment_id": regiment,
@@ -68,74 +92,91 @@ def full_stage_packet():
 
 
 class MemoryStrengthService(GameplayBridgeService):
-    def __init__(self, row):
+    def __init__(self, row: dict[str, object]) -> None:
         self.row = row
         self.calls = 0
+        self.driver = CallbackGameplayDriver(
+            backend_id="memory-strength-fixture", snapshot=self.snapshot,
+            execute=lambda step, revision: self.execute_step(
+                step, expected_revision=revision),
+            action_steps=(QUERY_ARMY_STRENGTHS_STEP,),
+        )
 
-    def snapshot(self):
+    def snapshot(
+        self, *, include_native_command_history: bool = True,
+    ) -> dict[str, object]:
         return {"paused": True, "revision": 2, "native_revision": 3, "date_raw": 0,
                 "player_armies": [{"army_id": 0}], "active_wars": []}
 
-    def capabilities(self):
+    def capabilities(self) -> dict[str, object]:
         return {"action_steps": [QUERY_ARMY_STRENGTHS_STEP]}
 
-    def execute_step(self, step, *, expected_revision=None):
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
+    ) -> dict[str, object]:
         self.calls += 1
         return {"status": "available", "army_strengths": [self.row]}
 
 
 class ConditionalLossSequenceReplayTests(unittest.TestCase):
-    def test_query_interleaves_all_four_passes_without_claiming_actual_stage(self):
+    def test_query_interleaves_all_four_passes_without_claiming_actual_stage(self) -> None:
         packet = full_stage_packet()
         original = deepcopy(packet)
         service = MemoryStrengthService(packet)
         answer = service.query_army_strengths([0], expected_revision=2)
-        allocation = answer["loss_allocation_requests_v1"][0]
-        replay = allocation["same_input_conditional_loss_sequence_v1"]
+        allocation = object_rows(answer["loss_allocation_requests_v1"])[0]
+        replay = object_mapping(allocation["same_input_conditional_loss_sequence_v1"])
+        passes = object_rows(replay["passes"])
+        requests = [object_rows(stage["requests"]) for stage in passes]
         self.assertTrue(replay["conditional_sequence_ready"])
-        self.assertEqual([row["phase"] for row in replay["passes"]], [
+        self.assertEqual([row["phase"] for row in passes], [
             "supply_preferred", "supply_residual", "siege_raid_preferred", "siege_raid_residual"])
-        self.assertEqual([row["native_filter_flags"] for row in replay["passes"]], [3, 2, 1, 0])
-        self.assertEqual([row["native_eligible_total_soldiers"] for row in replay["passes"]], [6, 8, 2, 9])
-        self.assertEqual([row["request_budget_soldiers"] for row in replay["passes"]], [8, 2, 7, 5])
-        self.assertEqual([[row["requested_soldiers"] for row in stage["requests"]]
-                          for stage in replay["passes"]], [[4, 2], [0, 0, 2], [0, 0, 2], [0, 1, 1, 3]])
+        self.assertEqual([row["native_filter_flags"] for row in passes], [3, 2, 1, 0])
+        self.assertEqual([row["native_eligible_total_soldiers"] for row in passes], [6, 8, 2, 9])
+        self.assertEqual([row["request_budget_soldiers"] for row in passes], [8, 2, 7, 5])
+        self.assertEqual([[row["requested_soldiers"] for row in stage]
+                          for stage in requests], [[4, 2], [0, 0, 2], [0, 0, 2], [0, 1, 1, 3]])
         # Alias current changes−4 despite a unique physical debit−2. Next
         # pass must use refreshed0, not4−requested4 for other record domains.
-        first = replay["passes"][0]["requests"][0]["conditional_chunk_writeback"]
+        first = object_mapping(requests[0][0]["conditional_chunk_writeback"])
         self.assertEqual(first["physical_current_delta"], -2)
-        self.assertEqual(first["conditional_raised_regiment_refresh"]["current_soldiers"], 0)
+        self.assertEqual(object_mapping(first["conditional_raised_regiment_refresh"])["current_soldiers"], 0)
         # A selected zero-parent row refreshes state3 current0 to3 in siege
         # preferred; it remains3 after residual's transient−1 is restored0.
-        zero = replay["passes"][2]["requests"][1]
+        zero = requests[2][1]
         self.assertEqual(zero["current_soldiers_read"], 0)
         self.assertEqual(zero["requested_soldiers"], 0)
-        self.assertEqual(zero["conditional_chunk_writeback"]["conditional_raised_regiment_refresh"]["current_soldiers"], 3)
-        residual_zero = replay["passes"][3]["requests"][1]["conditional_chunk_writeback"]
-        self.assertEqual([row["current_after"] for row in residual_zero["writes"]], [-1, 0])
-        self.assertEqual([row["current_soldiers"] for row in replay["conditional_final_regiment_strengths"]], [0, 3, 2, 1])
+        zero_writeback = object_mapping(zero["conditional_chunk_writeback"])
+        zero_refresh = object_mapping(zero_writeback["conditional_raised_regiment_refresh"])
+        self.assertEqual(zero_refresh["current_soldiers"], 3)
+        residual_zero = object_mapping(requests[3][1]["conditional_chunk_writeback"])
+        self.assertEqual([row["current_after"] for row in object_rows(residual_zero["writes"])], [-1, 0])
+        self.assertEqual([row["current_soldiers"] for row in object_rows(replay["conditional_final_regiment_strengths"])], [0, 3, 2, 1])
         self.assertEqual(replay["conditional_final_current_soldiers"], 6)
         self.assertEqual(replay["conditional_physical_current_delta"], -7)
         self.assertTrue(replay["conditional_physical_chunks_ready"])
-        self.assertEqual(len(replay["conditional_physical_chunks_after"]), 4)
+        self.assertEqual(len(object_rows(replay["conditional_physical_chunks_after"])), 4)
         self.assertEqual(packet, original)
         self.assertEqual(service.calls, 1)
         self.assertFalse(replay["actual_loss"])
         self.assertIsNone(replay["actual_post_stage_current"])
         self.assertFalse(allocation["applied_loss_ready"])
         self.assertIsNone(allocation["applied_soldier_loss"])
-        self.assertIn("post_supply_current_soldiers", allocation["missing_inputs"])
+        self.assertIn("post_supply_current_soldiers", object_values(allocation["missing_inputs"]))
 
         # A legacy absent admission is incomplete, not false/ordinary. The
         # derived remainder is withheld instead of recycling initial DATA.
         legacy = full_stage_packet()
-        legacy["regiment_replenishment_records_v1"][0].pop("native_loss_writer_skipped")
-        legacy["regiment_replenishment_records_v1"][0].pop("loss_writer_admission_unavailable_reason")
-        unavailable = MemoryStrengthService(legacy).query_army_strengths([0])["loss_allocation_requests_v1"][0]
-        partial = unavailable["same_input_conditional_loss_sequence_v1"]
+        legacy_row = object_rows(legacy["regiment_replenishment_records_v1"])[0]
+        legacy_row.pop("native_loss_writer_skipped")
+        legacy_row.pop("loss_writer_admission_unavailable_reason")
+        unavailable_answer = MemoryStrengthService(legacy).query_army_strengths([0])
+        unavailable = object_rows(unavailable_answer["loss_allocation_requests_v1"])[0]
+        partial = object_mapping(unavailable["same_input_conditional_loss_sequence_v1"])
         self.assertFalse(partial["conditional_sequence_ready"])
         self.assertIsNone(partial["conditional_final_regiment_strengths"])
-        self.assertEqual(partial["missing_inputs"][0]["inputs"], ["native_loss_writer_skipped"])
+        self.assertEqual(object_rows(partial["missing_inputs"])[0]["inputs"], ["native_loss_writer_skipped"])
         self.assertFalse(partial["actual_loss"])
         self.assertIsNone(partial["actual_post_stage_current"])
 
