@@ -1,0 +1,321 @@
+{
+  "schema": "faith-e02-travel-fee-final-scope-refinement-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T04:14:01.293203+00:00",
+  "source_commit": "a425c0529b34a2002316b4cd1cbbe6ff8c528e8f",
+  "status": "SOURCE_ONLY_GUI_BOUNDARY_REFINED_NATIVE_PRODUCER_EDGES_UNCLOSED",
+  "installed_source_version_context": "Existing qualified exact 1.20.0.4 source context; fresh text pins only, no new EXE hash or function extraction",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_travel_planner.gui",
+      "bytes": 32351,
+      "sha256": "0cdf5197fac7389d20a71c3018cbbdebf727c3240ea30f65ae5032706cfe13e3",
+      "id": "G01",
+      "relative": "gui/window_travel_planner.gui",
+      "relevant_lines": [
+        [
+          12,
+          17
+        ],
+        [
+          174,
+          189
+        ],
+        [
+          720,
+          724
+        ],
+        [
+          748,
+          761
+        ],
+        [
+          798,
+          809
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_court_position_appoint.gui",
+      "bytes": 21554,
+      "sha256": "4283d9dfc20ac77c730922a2518bca2eeb97633509eb8dc3bf40e0e4fb40defc",
+      "id": "G02",
+      "relative": "gui/window_court_position_appoint.gui",
+      "relevant_lines": [
+        [
+          542,
+          551
+        ],
+        [
+          832,
+          870
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_costs\\00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "id": "G03",
+      "relative": "common/scripted_costs/00_costs.txt",
+      "relevant_lines": [
+        [
+          662,
+          689
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\court_positions_l_simp_chinese.yml",
+      "bytes": 104310,
+      "sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "id": "G04",
+      "relative": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          6,
+          6
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\travel_planner_window_l_simp_chinese.yml",
+      "bytes": 11635,
+      "sha256": "cb095bd415b7562ec4b34d0a5de5877fb8a9dbb07a4493a4a06b001168f5c786",
+      "id": "G05",
+      "relative": "localization/simp_chinese/gui/travel_planner_window_l_simp_chinese.yml",
+      "relevant_lines": [
+        [
+          28,
+          36
+        ],
+        [
+          56,
+          57
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\travel_planner_window_l_english.yml",
+      "bytes": 11923,
+      "sha256": "cb0410a732596245422c2f8a21483acfcd5668cd5a1b995e5307b6a57b444548",
+      "id": "G06",
+      "relative": "localization/english/gui/travel_planner_window_l_english.yml",
+      "relevant_lines": [
+        [
+          30,
+          38
+        ],
+        [
+          61,
+          62
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_activity_planner.gui",
+      "bytes": 52892,
+      "sha256": "2f18263ad5be79bfc10c9bc33fd1ccff1e41a0be2bafc7d19e4f9cf0b58feb54",
+      "id": "G07",
+      "relative": "gui/window_activity_planner.gui",
+      "relevant_lines": [
+        [
+          1801,
+          1803
+        ],
+        [
+          1819,
+          1824
+        ],
+        [
+          2182,
+          2195
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\shared\\value_breakdown.gui",
+      "bytes": 26989,
+      "sha256": "6bb6afb9919a068b42b5511cf3e0c0c8d147755e8e7c98588df51bfeb6900a3c",
+      "id": "G08",
+      "relative": "gui/shared/value_breakdown.gui",
+      "relevant_lines": [
+        [
+          883,
+          1035
+        ]
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\activity_typed_full_cost_v1.cpp",
+      "bytes": 17249,
+      "sha256": "d240b38ba816d35e28621be938de66a1c87c468c67fe943a0135cc1c8406b898",
+      "id": "N01",
+      "relative": "ck3_autonomous_player/native_bridge/src/activity_typed_full_cost_v1.cpp",
+      "relevant_lines": [
+        [
+          50,
+          91
+        ],
+        [
+          126,
+          156
+        ],
+        [
+          185,
+          243
+        ],
+        [
+          245,
+          286
+        ],
+        [
+          288,
+          341
+        ]
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\activity_typed_planner_v1.hpp",
+      "bytes": 8385,
+      "sha256": "4562dbe63c24a72f21cfcc3b071742448eecc56f7866454540867b8b5efe6692",
+      "id": "N02",
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/activity_typed_planner_v1.hpp",
+      "relevant_lines": [
+        [
+          159,
+          181
+        ]
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_activity_feast_costs.hpp",
+      "bytes": 3045,
+      "sha256": "e75f8fe1a18b9552f6c13d9ef1abb5c3a037017fa07d4c837618a403788939e6",
+      "id": "N03",
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_activity_feast_costs.hpp",
+      "relevant_lines": [
+        [
+          26,
+          61
+        ]
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_activity_migration_v1.hpp",
+      "bytes": 4111,
+      "sha256": "7526087fa26afa86a3c1c2230da3453d9281af74ecf9020f94e947631c16f97d",
+      "id": "N04",
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_activity_migration_v1.hpp",
+      "relevant_lines": [
+        [
+          35,
+          40
+        ],
+        [
+          62,
+          63
+        ],
+        [
+          81,
+          84
+        ]
+      ]
+    }
+  ],
+  "baseline_formulas": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-v5-cost-reward-xp-formulas-12004.json",
+    "bytes": 47729,
+    "sha256": "a47584b4ac52902e033ba5b04ffb57ee1f6c5b97dc80649352bbb21aaa11e170"
+  },
+  "current_knowledge_index": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\episode02\\docs\\knowledge\\pilgrimage-current-12004.json",
+    "bytes": 25829,
+    "sha256": "2338ff12c7bd2e93e3694dafb2ab7b4dc3673802819315443c8ce3e065255346"
+  },
+  "prior_unknown_ids": [
+    "travel_leader_binding",
+    "provisions_and_aggregate_quote"
+  ],
+  "closed_gui_edges": {
+    "travel_leader_receiver": "TravelPlanData.GetTravelLeader -> Character.GetTravelLeaderCost/GetTravelLeaderCostBreakdown",
+    "appoint_receiver": "AppointCourtPositionView.GetSelectedCharacter -> Character.GetTravelLeaderCostBreakdown",
+    "displayed_aptitudes": "Separate Character.GetTravelSpeedAptitude/GetTravelSafetyAptitude, Max(value,0) and |0 formatting; not proof of raw named script-scope values",
+    "L_semantics": "Official UI calls this wage/cost when travel starts; neither monthly salary nor proven one-off appointment debit",
+    "provisions_visible_if": "IsLandlessAdventurer(GetPlayer) AND TravelPlanData.IsTravelWithDomicile",
+    "ordinary_breakdown_visible_if": "NOT TravelPlanData.IsTravelWithDomicile",
+    "activity_final_breakdown": "ActivityPlanner.AccessCostBreakdown; distinct GUI receiver from TravelPlanner.AccessCostBreakdown"
+  },
+  "existing_activity_native_source_scope": {
+    "receiver": "same-frame selected stage5 CActivityPlanner with actor/handler/owner/type/configuration checks",
+    "current_12004_breakdown_offset": "0x1B10",
+    "obsolete_119_breakdown_offset_not_reused": "0x1AD8",
+    "indexed_total_slots": 10,
+    "verified_names": [
+      "gold",
+      "treasury",
+      "piety",
+      "barter_goods"
+    ],
+    "named_GetCost_mapped_RVA": "0x310ADF0",
+    "normal_refresh_mapped_RVA": "0x11BA6B0",
+    "slot12_return_mapped_RVA": "0x11B5B3F",
+    "new_function_body_evidence": false,
+    "missing_normal_refresh": "unavailable, never price0",
+    "not_proven": "No TravelPlanner getter body or travel/leader/provisions aggregate composition follows from this activity receiver"
+  },
+  "known_script_cost_not_new_getter_binding": {
+    "key": "travel_leader",
+    "source": "G03:662-689",
+    "currency": "gold",
+    "round": false,
+    "guard": "actual script root.liege exists and is_landless_adventurer=no",
+    "if_true": "max(scope:speed_aptitude/5,1)+max(scope:safety_aptitude/5,1)",
+    "if_false": 0,
+    "GUI_receiver_equals_script_root_proven": false,
+    "named_aptitude_scope_producers_proven": false
+  },
+  "unclosed_edges": [
+    {
+      "id": "L_binding",
+      "from": "Character GUI receiver",
+      "via": "GetTravelLeaderCost / GetTravelLeaderCostBreakdown registration and callback",
+      "to": "named travel_leader scripted-cost evaluation root + speed/safety aptitude scopes",
+      "RVA": null
+    },
+    {
+      "id": "provisions_producer",
+      "from": "TravelPlanner.GetProvisionsCost / GetProvisionsCostBreakdown",
+      "to": "actual route/party/time/army inputs -> resource quote",
+      "RVA": null
+    },
+    {
+      "id": "aggregate_composition",
+      "from": "TravelPlanner.AccessCostBreakdown and ActivityPlanner.AccessCostBreakdown",
+      "to": "their refresh/accumulation, cross-inclusion, leader/option composition, negative clamps and final payment consumption",
+      "RVA": null
+    }
+  ],
+  "cache_owner_reports": [
+    {
+      "agent": "native_validation",
+      "report": "No independently frozen exact .4 bodies for the three travel fee getters; old FullCost seam and XP caches do not substitute"
+    },
+    {
+      "agent": "economy_research",
+      "report": "Only script cost sources, no exact .4 travel fee getter/producer cache"
+    }
+  ],
+  "negative_scope": "Owner reports concern their existing caches, not a universal filesystem or binary absence claim",
+  "F0_known_script_model": 176,
+  "F0_complete_payment_formula": null,
+  "single_quote_fit_used": false,
+  "observed_price_samples_read": [],
+  "action_ready": false,
+  "ordinary_auto_qualified": false,
+  "runtime_permission_added": false,
+  "game_calls": 0,
+  "MCP_calls": 0,
+  "Native_calls": 0,
+  "new_EXE_extractions": 0
+}

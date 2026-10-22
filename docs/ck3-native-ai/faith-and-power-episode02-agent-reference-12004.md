@@ -141,3 +141,8 @@ R29的H2／H3从独立Parent de0f冷恢复，不能剪成R25续局，也没有�
 这两条的 `analysis.source_analysis_completed=true` 只表示来源已审；响应仍为 `status=unavailable`、`unavailable_reason=source_analyzed_no_occurrence_contract`、`contract=null`。它们没有新的完整实例执行合同，`current_native_legality=null`、`action_ready=false`、`ordinary_auto_consumes=false`。当前原生窗口的显示顺序、scope 与合法性仍须重新读取；本次历史首项选择的 ACK 和独立旧窗消失，不代表专用策略已执行。
 
 R0031 also source-reviewed `pilgrimage.6770`, `pilgrimage.6830` and `pilgrimage.6820`. The same exact-build source-only query returns their effects and canonical source documents, while contract/action-ready remain null/false. The [13-input batch index](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0031-events-001-013-index.json) preserves12 accepted selections plus independent old-window disappearance; event13 (7000) was queried but not selected after a declined capture checkpoint. These observations do not establish return or whole-journey completion.
+
+
+## 2026-10-22 R32观察与费用边界补记
+
+机器4-8e1c2f1861的R32只证明本次天主教人物菜单显示三项意图、旅队主管0.10金币月薪及70金币配置报价；没有出发、任命或付款。详见[制作记录与原生来源](../../promo/ck3_faith_and_power/episode02/docs/production-v6-local-review-2026-10-22.md)和[旅行费研究补记](../../promo/ck3_faith_and_power/episode02/docs/research-v6-travel-fee-boundaries.md)。这批资料用于解释与查询，不授予执行资格；其他人物的候选和CanPick、主管出发费、补给和最终合计仍须按各自来源与当前观测判断。
