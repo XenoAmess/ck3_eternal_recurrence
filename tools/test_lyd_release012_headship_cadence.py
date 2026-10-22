@@ -41,7 +41,9 @@ class CadenceTest(unittest.TestCase):
                           'native_county_count': 0}],
                'complete_native_faith_member_ids': [31254],
                'complete_native_faith_rite_ids': [33]}
-        reads, religion_reads, requests = [], [], []
+        reads, title_reads, query_reads, religion_reads, requests = [], [], [], [], []
+        title = {'legal_head_title_absent': True, 'head_title_full_id': None,
+                 'faith_full_id': 31, 'graph_available': True}
 
         class Client:
             operator_reviewer = '/synthetic-root'
@@ -63,7 +65,11 @@ class CadenceTest(unittest.TestCase):
                     response['request_full_readiness'] = True
                 return response
 
-        def assembly(client, initial, name, tool):
+        def read_native(client: object, initial: object, name: str, tool: str) -> tuple[dict[str, object], dict[str, object]]:
+            query_reads.append((name, tool))
+            if tool == keypaths.TITLE:
+                title_reads.append(name)
+                return frame, {'result': copy.deepcopy(title)}
             self.assertEqual(tool, case.ASSEMBLY)
             reads.append(name)
             return frame, {'result': copy.deepcopy(dto)}
@@ -89,7 +95,7 @@ class CadenceTest(unittest.TestCase):
             return copy.deepcopy(religion)
 
         base.religion = read_religion
-        base.call = assembly
+        base.call = read_native
         base.formal = SimpleNamespace(observe_query=lambda frame, result, name: result)
         base.review_cell = review
         with tempfile.TemporaryDirectory() as directory:
@@ -124,12 +130,17 @@ class CadenceTest(unittest.TestCase):
             self.assertEqual(requests[8][1]['actual_readiness_scope'],
                              'fresh_full_readiness_before_ROOT_response')
             self.assertEqual(paid['roster']['actual_actor']['effective_learning'], 16)
+            self.assertEqual(paid['title'], title)
+            self.assertTrue(case.original_head_absent(paid['title'], 31))
             self.assertTrue(case.prepared_ready(religion, paid['religion'], paid['roster']))
             self.assertEqual(requests[9][1]['actual_readiness'], paid)
             self.assertEqual(reads, [
                 'baseline-first-readiness-assembly', 'headship-baseline-final-assembly',
                 'preparation-first-readiness-assembly', 'requested-readiness-readiness-assembly',
                 'headship-preparation-final-assembly'])
+            self.assertEqual(title_reads, [name.removesuffix('-assembly') + '-title' for name in reads])
+            self.assertEqual(query_reads, [query for name in reads for query in (
+                (name.removesuffix('-assembly') + '-title', keypaths.TITLE), (name, case.ASSEMBLY))])
             self.assertEqual(religion_reads, ['headship-original-religion'] + [
                 name.removesuffix('-assembly') + '-religion' for name in reads])
             self.assertEqual([c['phase'] for c in result['cells']], ['baseline', 'preparation'])
