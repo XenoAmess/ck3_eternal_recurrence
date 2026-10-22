@@ -1,0 +1,106 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-and-power-episode02-v6-pilot-n21-n26",
+    "title": "信仰引擎二期导演稿 V6：《朝圣在奖励什么？》 N21-N26"
+  },
+  "pipeline": {
+    "adapter": "ck3-faith-power-capture-v1",
+    "preset": "ck3-faith-power-longform-zh-v1"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 570
+  },
+  "chapters": [
+    {
+      "id": "v6-c05",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第五段：表现怎样兑现成虔诚"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N21",
+          "narration": {
+            "zh-CN": "现在回到没有这项传承的F0。费用已经解释完，我们只看开头那次选择怎样影响奖励。活动表现按门槛分档，虔诚类的四档倍率依次是一点一、一点二五、一点七五、二点五，门槛是二十五、五十、七十五。从五十五加到六十五，没有跨过下一档；从六十五加到七十五，却从一点七五进入二点五。相同的十分，是否改变这笔奖励，取决于你原来在哪里。活动表现也不是能花出去的虔诚，更不是人物特质经验。"
+          },
+          "subtitles": {
+            "zh-CN": "现在回到没有这项传承的F0。费用已经解释完，我们只看开头那次选择怎样影响奖励。活动表现按门槛分档，虔诚类的四档倍率依次是一点一、一点二五、一点七五、二点五，门槛是二十五、五十、七十五。从五十五加到六十五，没有跨过下一档；从六十五加到七十五，却从一点七五进入二点五。相同的十分，是否改变这笔奖励，取决于你原来在哪里。活动表现也不是能花出去的虔诚，更不是人物特质经验。",
+            "en": "Return now to F0, without that legacy. Having explained costs, we will isolate how the opening choice affects rewards. Activity performance uses thresholds: the four pious multipliers are 1.1, 1.25, 1.75, and 2.5, with thresholds at 25, 50, and 75. Going from 55 to 65 crosses no new threshold; going from 65 to 75 moves from 1.75 to 2.5. Whether the same ten points change this reward depends on the starting point. Activity performance is neither spendable Piety nor character trait experience."
+          }
+        },
+        {
+          "id": "E02-V6-N22",
+          "narration": {
+            "zh-CN": "距离还要另外读取。本例奖励距离平方同样设为五万，使用一百的基数。这个距离来自奖励自己的对象和阈值，不能拿费用那八档倒推。它也不是你沿途绕了多久，就一直按天增加。标准忠诚用一，讲究排场再加五十，本信仰非主要圣地最后乘零点五。表现六十五时，一百乘一点七五，加五十，再除二，得到一百一十二点五。表现七十五时，一百乘二点五，加五十，再除二，得到一百五十。"
+          },
+          "subtitles": {
+            "zh-CN": "距离还要另外读取。本例奖励距离平方同样设为五万，使用一百的基数。这个距离来自奖励自己的对象和阈值，不能拿费用那八档倒推。它也不是你沿途绕了多久，就一直按天增加。标准忠诚用一，讲究排场再加五十，本信仰非主要圣地最后乘零点五。表现六十五时，一百乘一点七五，加五十，再除二，得到一百一十二点五。表现七十五时，一百乘二点五，加五十，再除二，得到一百五十。",
+            "en": "Distance is read separately again. This example also sets squared reward distance to fifty thousand, using a base of one hundred. That distance uses the reward's own objects and thresholds, so it cannot be inferred from the eight cost brackets. Nor does it increase indefinitely with every day of detours. Standard Fidelity uses one, Ceremonial Pomp adds fifty, and a non-Eminent Holy Site of the same Faith multiplies the result by 0.5. At performance 65, one hundred times 1.75, plus fifty, divided by two, gives 112.5. At performance 75, one hundred times 2.5, plus fifty, divided by two, gives 150."
+          }
+        },
+        {
+          "id": "E02-V6-N23",
+          "narration": {
+            "zh-CN": "主虔诚公式可以分成三步：距离基数先乘宗族传承、忠诚和表现系数，再加符合条件的资历与排场定额，最后乘内在之旅、圣地关系和对应联盟条件。我们的数字只开启了条件卡上列明的几项。比如学识传承第四项“真正信徒”，读取的是主虔诚的前段；“踏过圣路”则是另一项宗族传承。不能因为都叫传承，就把它们混成同一个费用和收益开关。个人信条与礼仪参数也仍要按实际读取者区分。"
+          },
+          "subtitles": {
+            "zh-CN": "主虔诚公式可以分成三步：距离基数先乘宗族传承、忠诚和表现系数，再加符合条件的资历与排场定额，最后乘内在之旅、圣地关系和对应联盟条件。我们的数字只开启了条件卡上列明的几项。比如学识传承第四项“真正信徒”，读取的是主虔诚的前段；“踏过圣路”则是另一项宗族传承。不能因为都叫传承，就把它们混成同一个费用和收益开关。个人信条与礼仪参数也仍要按实际读取者区分。",
+            "en": "The main Piety formula has three stages: multiply the distance base by Dynasty Legacy, Fidelity, and performance factors; add eligible qualification and Pomp amounts; then apply Inner Journey, Holy Site relations, and the relevant Confederation condition. Our numbers enable only the conditions listed on the card. For example, True Believers, the fourth Erudition legacy, reads the early part of main Piety; Walking the Sacred Path is a different Dynasty Legacy. Calling both legacies does not make them a single switch for costs and rewards. Personal Tenets and Rite parameters must likewise be distinguished by the effects that actually read them."
+          }
+        },
+        {
+          "id": "E02-V6-N24",
+          "narration": {
+            "zh-CN": "这样，两个即时同给二十五虔诚的回应，就可以因为活动分档，产生三十七点五的主奖励差异。共同的二十五仍放在即时奖励那栏；这里的一百五十和一百一十二点五，只是所列条件下的主结算。圣山、神贫誓愿或其他事件另发的虔诚，不应该塞进这个总倍率。整趟钱包净差还包含这些独立增减。目的地阶段结束执行主奖励，回顾按钮的提示也不代表再领一次。"
+          },
+          "subtitles": {
+            "zh-CN": "这样，两个即时同给二十五虔诚的回应，就可以因为活动分档，产生三十七点五的主奖励差异。共同的二十五仍放在即时奖励那栏；这里的一百五十和一百一十二点五，只是所列条件下的主结算。圣山、神贫誓愿或其他事件另发的虔诚，不应该塞进这个总倍率。整趟钱包净差还包含这些独立增减。目的地阶段结束执行主奖励，回顾按钮的提示也不代表再领一次。",
+            "en": "Thus, two responses each giving 25 immediate Piety can produce a main-reward difference of 37.5 because of activity thresholds. Their shared twenty-five remains in the immediate-reward column; 150 and 112.5 are only the main settlement under the listed conditions. Separate Piety from sacred mountains, Vows of Poverty, or other events should not be forced into this overall multiplier. The journey's net resource change also includes those independent additions and deductions. The main reward executes at the end of the destination phase; its recap tooltip does not grant a second payment."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c06",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第六段：人物成长为何不跟着虔诚一起变"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N25",
+          "narration": {
+            "zh-CN": "普通朝圣者有一条特质经验轨道：不足五十时叫“朝圣者”，达到五十叫“老道的朝圣者”，达到一百叫“高效的朝圣者”。朝觐者和朝觐妇没有这条普通轨道，也没有一条规则自动把它们互换成朝圣者。直接首次添加普通朝圣者时，新轨道初始化为零；随后事件或奖励可以再写经验。已经拥有特质时，再次添加不会把旧经验清零。获得标签、增加经验和读取等级效果，必须分别看。"
+          },
+          "subtitles": {
+            "zh-CN": "普通朝圣者有一条特质经验轨道：不足五十时叫“朝圣者”，达到五十叫“老道的朝圣者”，达到一百叫“高效的朝圣者”。朝觐者和朝觐妇没有这条普通轨道，也没有一条规则自动把它们互换成朝圣者。直接首次添加普通朝圣者时，新轨道初始化为零；随后事件或奖励可以再写经验。已经拥有特质时，再次添加不会把旧经验清零。获得标签、增加经验和读取等级效果，必须分别看。",
+            "en": "Ordinary Pilgrim has a trait-experience track: below fifty it is Pilgrim, at fifty Experienced Pilgrim, and at one hundred Prolific Pilgrim. Hajji and Hajjah lack that ordinary track, and no rule automatically exchanges them for Pilgrim. Directly adding ordinary Pilgrim for the first time initializes its new track to zero; later events or rewards may add experience. Adding an already-owned trait does not reset its existing experience. Gaining the trait, adding experience, and reading level effects must be examined separately."
+          }
+        },
+        {
+          "id": "E02-V6-N26",
+          "narration": {
+            "zh-CN": "虔诚类结算会对已有普通朝圣者、而且经验还没满的人，按表现档请求五、十、二十、四十基础经验。我们的六十五分和七十五分，对应二十和四十。距离基数和排场定额不会再等比例乘到这笔经验上。F0原经验八十，没有经验增益。二十加上去到一百，四十加上去也只能到一百。因此两个结果实际都只增长二十。主虔诚仍相差三十七点五，人物成长却没有额外差异。这就是开头那句话的完整计算。"
+          },
+          "subtitles": {
+            "zh-CN": "虔诚类结算会对已有普通朝圣者、而且经验还没满的人，按表现档请求五、十、二十、四十基础经验。我们的六十五分和七十五分，对应二十和四十。距离基数和排场定额不会再等比例乘到这笔经验上。F0原经验八十，没有经验增益。二十加上去到一百，四十加上去也只能到一百。因此两个结果实际都只增长二十。主虔诚仍相差三十七点五，人物成长却没有额外差异。这就是开头那句话的完整计算。",
+            "en": "For an existing ordinary Pilgrim whose track is not full, pious settlement requests five, ten, twenty, or forty base experience according to performance tier. Our performance values of 65 and 75 correspond to twenty and forty. The distance base and flat Pomp amount do not proportionally multiply this experience again. F0 starts at eighty experience, without an experience-gain modifier. Adding twenty reaches one hundred; adding forty can still only reach one hundred. Both results therefore gain only twenty in practice. Main Piety still differs by 37.5, while character growth gains no extra difference. That completes the calculation promised at the opening."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

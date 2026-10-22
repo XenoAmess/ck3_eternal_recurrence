@@ -1,0 +1,431 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-and-power-episode02-v6",
+    "title": "信仰引擎二期导演稿 V6：《朝圣在奖励什么？》"
+  },
+  "pipeline": {
+    "adapter": "ck3-faith-power-capture-v1",
+    "preset": "ck3-faith-power-longform-zh-v1"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2040
+  },
+  "chapters": [
+    {
+      "id": "v6-c01",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第一段：先看一个不符合直觉的结果"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N01",
+          "narration": {
+            "zh-CN": "朝圣途中，这两个回应都会给人物二十五点基础虔诚，收费方式也一样。但在虔诚朝圣里，只有符合这一方向的回应会让活动表现增加十分。选择另一个，你仍然拿到虔诚，却没有推进同一条活动评价。更有意思的是，把这十分加上去，可能会多拿虔诚，也可能完全不改变最后的奖励。即使奖励提高，人物的朝圣者经验也可能一分都没有多长。问题不在于按钮有没有写“奖励”，而在于这个奖励究竟进入哪一次计算。"
+          },
+          "subtitles": {
+            "zh-CN": "朝圣途中，这两个回应都会给人物二十五点基础虔诚，收费方式也一样。但在虔诚朝圣里，只有符合这一方向的回应会让活动表现增加十分。选择另一个，你仍然拿到虔诚，却没有推进同一条活动评价。更有意思的是，把这十分加上去，可能会多拿虔诚，也可能完全不改变最后的奖励。即使奖励提高，人物的朝圣者经验也可能一分都没有多长。问题不在于按钮有没有写“奖励”，而在于这个奖励究竟进入哪一次计算。",
+            "en": "During a pilgrimage, both of these responses give the character 25 base Piety, and charge them in the same way. But on a Pious Pilgrimage, only the response matching that direction adds ten points to activity performance. Choose the other response and you still receive Piety, without advancing the same activity evaluation. More interestingly, those extra ten points might earn more Piety, or leave the final reward completely unchanged. Even if the reward rises, the character might gain no additional Pilgrim experience at all. The question is which calculation receives each reward."
+          }
+        },
+        {
+          "id": "E02-V6-N02",
+          "narration": {
+            "zh-CN": "这一期我们把朝圣拆开来看：宗教怎样规定朝圣的意义，出发选项分别改变什么，费用和虔诚怎样计算，最后又怎样留下朝圣者特质。我们会固定一套人物条件，沿同一套数字走到底。本片讨论的是这一版本游戏的规则。对现实宗教的理解不由游戏数值代表。画面中的公式模型也会明确标识，和真实游戏记录分开。"
+          },
+          "subtitles": {
+            "zh-CN": "这一期我们把朝圣拆开来看：宗教怎样规定朝圣的意义，出发选项分别改变什么，费用和虔诚怎样计算，最后又怎样留下朝圣者特质。我们会固定一套人物条件，沿同一套数字走到底。本片讨论的是这一版本游戏的规则。对现实宗教的理解不由游戏数值代表。画面中的公式模型也会明确标识，和真实游戏记录分开。",
+            "en": "This episode takes pilgrimage apart: how religion defines it, what each departure option changes, how costs and Piety are calculated, and how the Pilgrim trait remains afterward. We will keep one set of character conditions and follow the same numbers throughout. We are discussing the rules in this version of the game. Game values do not stand for an understanding of real religions. Formula models will also be clearly labeled and distinguished from actual game records."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c02",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第二段：宗教先决定资格和待遇"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N03",
+          "narration": {
+            "zh-CN": "先看宗教规则里的“朝圣态度”。它有禁止、鼓励、当地仪式、强制和朝觐五种选择。这里没有另外一档叫“允许”；允许朝圣是其中几种选择提供的资格。这五种态度做的事情并不相同。禁止会挡住普通朝圣活动，同时又对虔诚获取和同宗教作战提供自己的修正；朝圣者还可能被当作罪恶。鼓励则允许出发，并把朝圣者作为美德。你不能只看一个人有没有朝圣者特质，还要看他现在的宗教怎样评价它。"
+          },
+          "subtitles": {
+            "zh-CN": "先看宗教规则里的“朝圣态度”。它有禁止、鼓励、当地仪式、强制和朝觐五种选择。这里没有另外一档叫“允许”；允许朝圣是其中几种选择提供的资格。这五种态度做的事情并不相同。禁止会挡住普通朝圣活动，同时又对虔诚获取和同宗教作战提供自己的修正；朝圣者还可能被当作罪恶。鼓励则允许出发，并把朝圣者作为美德。你不能只看一个人有没有朝圣者特质，还要看他现在的宗教怎样评价它。",
+            "en": "Start with Pilgrimage Attitude in the religious rules. Its five choices are Forbidden, Encouraged, Local Rites, Mandatory, and Hajj. There is no separate Allowed setting: permission to undertake pilgrimages is a qualification provided by several of these choices. These five attitudes do different things. Forbidden blocks ordinary pilgrimage activities, while providing its own modifiers to Piety gain and fighting within the same religion; Pilgrim may also be treated as a sin. Encouraged permits departure and treats Pilgrim as a virtue. So check both whether a character has Pilgrim and how their current religion evaluates it."
+          }
+        },
+        {
+          "id": "E02-V6-N04",
+          "narration": {
+            "zh-CN": "“当地仪式”也不等于不许远行。它仍允许普通朝圣，只是在活动本体费用的指定位置乘上一点七五；另外的“举行一场祭祀仪式”决议，有自己的资格和奖励。不能把本体的加价扩大成所有旅费，也不能把两个不同活动当成同一件事。“强制”又换了一种安排：它自身带来每月虔诚获取和同信仰好感的惩罚，再通过朝圣者的条件效果给予补偿。每月少百分之二十五，不是你按下出发就当场扣二十五点虔诚；已有朝圣者怎样抵消它，我们到特质部分再算。"
+          },
+          "subtitles": {
+            "zh-CN": "“当地仪式”也不等于不许远行。它仍允许普通朝圣，只是在活动本体费用的指定位置乘上一点七五；另外的“举行一场祭祀仪式”决议，有自己的资格和奖励。不能把本体的加价扩大成所有旅费，也不能把两个不同活动当成同一件事。“强制”又换了一种安排：它自身带来每月虔诚获取和同信仰好感的惩罚，再通过朝圣者的条件效果给予补偿。每月少百分之二十五，不是你按下出发就当场扣二十五点虔诚；已有朝圣者怎样抵消它，我们到特质部分再算。",
+            "en": "Local Rites does not prohibit long journeys either. It still allows ordinary pilgrimages, multiplying the activity's own cost by 1.75 at a specific step; the separate Perform a Ritual Sacrifice decision has its own requirements and rewards. That increase does not apply to all travel expenses, and the two activities are separate. Mandatory works differently again: it imposes penalties to monthly Piety gain and same-Faith opinion, then provides compensation through conditional Pilgrim effects. Minus 25 percent per month does not mean losing 25 Piety when you depart; we will calculate how an existing Pilgrim offsets it in the trait section."
+          }
+        },
+        {
+          "id": "E02-V6-N05",
+          "narration": {
+            "zh-CN": "因而，不能只凭宗教名称猜一个人物的规则。要看他当前的礼仪，实际圣地和某些路线条件再看信仰；个人信条是否起作用，则要看这一条效果是否读取它。名字相近，也不代表能互相替代。完成朝圣还可能增加“灵性满足”。这是按对应礼仪条件另外发出的请求，不是把活动表现分换进去。在这里先记住：履行宗教要求，和活动表现拿了多少分，是两条分别判断的结果。本片不继续展开灵性满足的所有档位。"
+          },
+          "subtitles": {
+            "zh-CN": "因而，不能只凭宗教名称猜一个人物的规则。要看他当前的礼仪，实际圣地和某些路线条件再看信仰；个人信条是否起作用，则要看这一条效果是否读取它。名字相近，也不代表能互相替代。完成朝圣还可能增加“灵性满足”。这是按对应礼仪条件另外发出的请求，不是把活动表现分换进去。在这里先记住：履行宗教要求，和活动表现拿了多少分，是两条分别判断的结果。本片不继续展开灵性满足的所有档位。",
+            "en": "A religion's name alone cannot tell you a character's rules. Check their current Rite; actual Holy Sites and some route conditions check Faith, while a Personal Tenet only matters where an effect reads it. Similar names do not make these objects interchangeable. Completing a pilgrimage may also increase Spiritual Fulfillment. That is a separate request based on the relevant Rite conditions, rather than a conversion of activity performance points. For now, remember that fulfilling a religious requirement and earning activity performance points are judged separately. We will not expand every Spiritual Fulfillment tier here."
+          }
+        },
+        {
+          "id": "E02-V6-N06",
+          "narration": {
+            "zh-CN": "“朝觐”是同一个朝圣活动中的特殊类型，目的地限定麦加。当前礼仪要求朝觐，而且人物还没有对应特质时，普通虔诚朝圣和世俗朝圣会被锁住，首次要走朝觐的路径。另一条可用条件，还会检查伊斯兰教与允许朝圣。朝觐既共享虔诚类的表现和主奖励，也有戒衣、祈祷、献祭、剃发或剪发等专用事件。相应特质在男性身上叫“朝觐者”，女性身上叫“朝觐妇”，它没有普通朝圣者那条经验轨道。不能看它也是旅行得来的，就替它套上普通朝圣者的等级。"
+          },
+          "subtitles": {
+            "zh-CN": "“朝觐”是同一个朝圣活动中的特殊类型，目的地限定麦加。当前礼仪要求朝觐，而且人物还没有对应特质时，普通虔诚朝圣和世俗朝圣会被锁住，首次要走朝觐的路径。另一条可用条件，还会检查伊斯兰教与允许朝圣。朝觐既共享虔诚类的表现和主奖励，也有戒衣、祈祷、献祭、剃发或剪发等专用事件。相应特质在男性身上叫“朝觐者”，女性身上叫“朝觐妇”，它没有普通朝圣者那条经验轨道。不能看它也是旅行得来的，就替它套上普通朝圣者的等级。",
+            "en": "Hajj is a special type within the same pilgrimage activity, with Mecca as its destination. If the current Rite requires Hajj and the character lacks the corresponding trait, ordinary Pious and Worldly Pilgrimages are locked, so the first trip must follow the Hajj route. Another availability condition checks Islam and permission to undertake pilgrimages. Hajj shares pious performance and the main reward, alongside dedicated events involving ihram, prayer, sacrifice, and shaving or cutting hair. Its trait is called Hajji for men and Hajjah for women, without the ordinary Pilgrim experience track. Do not apply ordinary Pilgrim levels simply because these traits also come from a journey."
+          }
+        },
+        {
+          "id": "E02-V6-N07",
+          "narration": {
+            "zh-CN": "冷却也要分开读。朝觐自己的记忆检查是一年，但同一目的地还受通用的五年记忆限制，所以不能看到一年，就承诺明年还能去同一个圣地。非冒险者把麦加当首都时，普通出发资格又有额外限制；麦加本地还有另外的身份授予事件。这些例外说明的是资格和特质怎样产生。它们不意味着住在麦加就自动完成整趟朝圣、领取全部旅途奖励。"
+          },
+          "subtitles": {
+            "zh-CN": "冷却也要分开读。朝觐自己的记忆检查是一年，但同一目的地还受通用的五年记忆限制，所以不能看到一年，就承诺明年还能去同一个圣地。非冒险者把麦加当首都时，普通出发资格又有额外限制；麦加本地还有另外的身份授予事件。这些例外说明的是资格和特质怎样产生。它们不意味着住在麦加就自动完成整趟朝圣、领取全部旅途奖励。",
+            "en": "Read the cooldowns separately too. Hajj's own memory check lasts one year, but the same destination is also subject to the general five-year memory restriction; one year does not guarantee another visit to the same Holy Site next year. For non-adventurers whose capital is Mecca, ordinary departure has an additional restriction; Mecca also has a separate local event granting the status. These exceptions explain how eligibility and traits arise. They do not mean that living in Mecca automatically completes the journey and grants all its rewards."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c03",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第三段：把出发界面拆成不同输入"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N08",
+          "narration": {
+            "zh-CN": "现在固定我们的算例：一位公爵，中世纪早期，月收入十，已有“老道的朝圣者”特质，经验八十。去本人信仰的一处非主要圣地，选择虔诚朝圣，忠诚栏用“朝圣者”，排场用“讲究”。相关传承和特殊折扣暂时都没有。这是一套公式模型，不是一场我们假装已经拍过的旅程。下面每改一个条件，条件卡都会同步改变。这样才能知道，差异究竟来自哪里。"
+          },
+          "subtitles": {
+            "zh-CN": "现在固定我们的算例：一位公爵，中世纪早期，月收入十，已有“老道的朝圣者”特质，经验八十。去本人信仰的一处非主要圣地，选择虔诚朝圣，忠诚栏用“朝圣者”，排场用“讲究”。相关传承和特殊折扣暂时都没有。这是一套公式模型，不是一场我们假装已经拍过的旅程。下面每改一个条件，条件卡都会同步改变。这样才能知道，差异究竟来自哪里。",
+            "en": "Fix our example now: a Duke in the Early Medieval era, with monthly income ten, already an Experienced Pilgrim with 80 experience. They visit a non-Eminent Holy Site of their own Faith, choosing Pious Pilgrimage, Pilgrim Fidelity, and Ceremonial Pomp. For now, there are no relevant legacies or special discounts. This is a formula model, not a journey we pretend to have filmed. Whenever one condition changes, its condition card will change too. That lets us identify the source of each difference."
+          }
+        },
+        {
+          "id": "E02-V6-N09",
+          "narration": {
+            "zh-CN": "第一栏是类型：虔诚朝圣、世俗朝圣、朝觐。类型决定的是哪些行为符合本次活动的方向。世俗朝圣仍然可以获得虔诚，只是表现读取的奖励路径不同。朝觐还要满足刚才的麦加与资格条件。这就解释了开头那两个回应：同样给二十五虔诚，是它们对人物资源做的共同操作；有没有额外增加活动表现，要再检查所选类型。换成世俗朝圣，匹配方向可以反过来，朝觐则仍按虔诚类判断。"
+          },
+          "subtitles": {
+            "zh-CN": "第一栏是类型：虔诚朝圣、世俗朝圣、朝觐。类型决定的是哪些行为符合本次活动的方向。世俗朝圣仍然可以获得虔诚，只是表现读取的奖励路径不同。朝觐还要满足刚才的麦加与资格条件。这就解释了开头那两个回应：同样给二十五虔诚，是它们对人物资源做的共同操作；有没有额外增加活动表现，要再检查所选类型。换成世俗朝圣，匹配方向可以反过来，朝觐则仍按虔诚类判断。",
+            "en": "The first category is type: Pious Pilgrimage, Worldly Pilgrimage, or Hajj. Type determines which actions match the activity's direction. Worldly Pilgrimages can still earn Piety; performance simply follows a different reward path. Hajj must also meet the Mecca and eligibility conditions we covered. This explains the opening responses: both add 25 Piety to the character's resources, while the extra activity performance depends on the selected type. Worldly Pilgrimage can reverse the matching direction, while Hajj still uses the pious test."
+          }
+        },
+        {
+          "id": "E02-V6-N10",
+          "narration": {
+            "zh-CN": "忠诚栏有“义不容辞”“朝圣者”和“深思熟虑”。它们在主虔诚公式前段分别使用零点五、一和一点二五。义不容辞增加百分之五十的旅行速度修正，深思熟虑减少百分之五十。这里是加减修正值，不能直接保证最终旅行速度恰好变成一倍半或一半。特殊档还有内容包、宗教义务和人物条件，完整资格放在同页条件列。义不容辞还可能走快速到达后的提前离开分支，所以这也不只是一个“少花时间、照拿全部奖励”的开关。"
+          },
+          "subtitles": {
+            "zh-CN": "忠诚栏有“义不容辞”“朝圣者”和“深思熟虑”。它们在主虔诚公式前段分别使用零点五、一和一点二五。义不容辞增加百分之五十的旅行速度修正，深思熟虑减少百分之五十。这里是加减修正值，不能直接保证最终旅行速度恰好变成一倍半或一半。特殊档还有内容包、宗教义务和人物条件，完整资格放在同页条件列。义不容辞还可能走快速到达后的提前离开分支，所以这也不只是一个“少花时间、照拿全部奖励”的开关。",
+            "en": "Fidelity offers Obligatory, Pilgrim, and Contemplative. They use 0.5, 1, and 1.25 respectively in the early part of the main Piety formula. Obligatory adds a 50 percent Travel Speed modifier, while Contemplative subtracts 50 percent. These modify a value; they do not guarantee that final Travel Speed becomes exactly one and a half times or half as fast. The special settings also have content-pack, religious-obligation, and character requirements, listed in the conditions column. Obligatory can also take an early-departure branch after a rapid arrival, so it is not simply a switch for spending less time and collecting every reward."
+          }
+        },
+        {
+          "id": "E02-V6-N11",
+          "narration": {
+            "zh-CN": "排场有“朴素”“适度”“讲究”“盛况空前”。它同时影响费用、旅团安排和主虔诚的定额加项。虔诚定额依次是五十、零、五十、一百。朴素还降低二十五安全性；满足当前礼仪的内在之旅条件时，它又会在奖励后段得到一点五倍。因此，更高的排场并不是把每一项收益都乘得更大。朴素也有自己的奖励条件。要问的是它改了哪一个位置，而不是把几档排场当成同一根总质量刻度。"
+          },
+          "subtitles": {
+            "zh-CN": "排场有“朴素”“适度”“讲究”“盛况空前”。它同时影响费用、旅团安排和主虔诚的定额加项。虔诚定额依次是五十、零、五十、一百。朴素还降低二十五安全性；满足当前礼仪的内在之旅条件时，它又会在奖励后段得到一点五倍。因此，更高的排场并不是把每一项收益都乘得更大。朴素也有自己的奖励条件。要问的是它改了哪一个位置，而不是把几档排场当成同一根总质量刻度。",
+            "en": "Pomp offers Humble, Appropriate, Ceremonial, and Throng. It affects cost, Entourage arrangements, and a flat addition to the main Piety reward. Those flat Piety amounts are 50, zero, 50, and 100. Humble also reduces Safety by 25; with the current Rite's Inner Journey condition, it receives a 1.5 multiplier later in the reward calculation. Higher Pomp therefore does not multiply every benefit upward. Humble has its own reward conditions. Ask which calculation it changes, rather than treating Pomp as a single overall quality scale."
+          }
+        },
+        {
+          "id": "E02-V6-N12",
+          "narration": {
+            "zh-CN": "“少带人”和“多带人”还不能只按档位文字理解。排场先参与挑选随行人物，适度、讲究、盛况空前相应选择器的上限是五、十、二十，人物关系、身份等会影响候选。出发事件又可能从当地补充朝圣者。它看的是整队已有多少人，再尝试补到目标；朴素、适度、讲究、盛况空前的目标分别是七、五、十、二十。创建人物还有额外守卫，超过目标也不会在这里裁掉。所以朴素不能简单读成“旅团里绝对没有其他人”，上限也不能读成另外再送这么多人。"
+          },
+          "subtitles": {
+            "zh-CN": "“少带人”和“多带人”还不能只按档位文字理解。排场先参与挑选随行人物，适度、讲究、盛况空前相应选择器的上限是五、十、二十，人物关系、身份等会影响候选。出发事件又可能从当地补充朝圣者。它看的是整队已有多少人，再尝试补到目标；朴素、适度、讲究、盛况空前的目标分别是七、五、十、二十。创建人物还有额外守卫，超过目标也不会在这里裁掉。所以朴素不能简单读成“旅团里绝对没有其他人”，上限也不能读成另外再送这么多人。",
+            "en": "Bringing fewer or more people also needs more than a reading of the setting's description. Pomp first helps select companions: the corresponding selectors for Appropriate, Ceremonial, and Throng cap at five, ten, and twenty, with candidates affected by relationships, status, and other conditions. A departure event may then recruit additional local pilgrims. It counts the whole existing party and tries to reach a target: seven, five, ten, or twenty for Humble, Appropriate, Ceremonial, or Throng. Creating characters has additional conditions, and the event does not cut down a party already above target. Humble therefore does not mean an Entourage with absolutely nobody else, and the cap does not mean that many additional people are guaranteed."
+          }
+        },
+        {
+          "id": "E02-V6-N13",
+          "narration": {
+            "zh-CN": "意图又是一栏。意图里的“深思熟虑”，和忠诚栏恰好同名，但作用不同。它会让相关反思事件和活动行为取得资格。例如停下来沉思会延迟十天；没有朝圣者时给五十虔诚，已有但经验未满时请求十点特质经验，满轨时则给一百虔诚。相同动作读取原状态，给出的回报就不同。“行善”则通向施舍、照料等行为。一次海上事件的相应选项，可以给同伴好感、给合资格的朝圣者五点基础经验，并调用虔诚类十分表现。它们仍分别检查接收者和活动类型。选择意图并不代表立刻领取一笔固定完成奖，具体回报由遇到的事件和人物条件决定。"
+          },
+          "subtitles": {
+            "zh-CN": "意图又是一栏。意图里的“深思熟虑”，和忠诚栏恰好同名，但作用不同。它会让相关反思事件和活动行为取得资格。例如停下来沉思会延迟十天；没有朝圣者时给五十虔诚，已有但经验未满时请求十点特质经验，满轨时则给一百虔诚。相同动作读取原状态，给出的回报就不同。“行善”则通向施舍、照料等行为。一次海上事件的相应选项，可以给同伴好感、给合资格的朝圣者五点基础经验，并调用虔诚类十分表现。它们仍分别检查接收者和活动类型。选择意图并不代表立刻领取一笔固定完成奖，具体回报由遇到的事件和人物条件决定。",
+            "en": "Intent is another category. The Chinese name for Reflection matches Contemplative Fidelity, but they work differently. Reflection qualifies relevant reflective events and activity actions. For example, stopping to reflect delays travel by ten days; it gives 50 Piety without Pilgrim, requests ten trait experience with an unfilled Pilgrim track, or gives 100 Piety when the track is full. The same action reads the existing state and gives a different reward. Altruism leads to actions such as giving alms and caring for others. An option in one sea event can give companion opinion, five base experience to an eligible Pilgrim, and a request for ten pious performance points. These still check the recipient and activity type separately. Choosing an Intent does not instantly grant a fixed completion prize; rewards depend on the event encountered and the character's conditions."
+          }
+        },
+        {
+          "id": "E02-V6-N14",
+          "narration": {
+            "zh-CN": "“热忱”的传教例子尤其值得看。有的动作先按虔诚方向增加表现，再判断挑战是否成功。当地人有没有改信，是后面另一件事；传教失败，并不一定收回已经记下的这次符合方向的尝试。游戏在这里评价的是你做了怎样的活动，不完全等于活动产生了怎样的现实结果。这也是为什么活动分数不能拿来直接证明传教成功。"
+          },
+          "subtitles": {
+            "zh-CN": "“热忱”的传教例子尤其值得看。有的动作先按虔诚方向增加表现，再判断挑战是否成功。当地人有没有改信，是后面另一件事；传教失败，并不一定收回已经记下的这次符合方向的尝试。游戏在这里评价的是你做了怎样的活动，不完全等于活动产生了怎样的现实结果。这也是为什么活动分数不能拿来直接证明传教成功。",
+            "en": "Zealotry's conversion example deserves a closer look. Some actions first add performance in the pious direction and only then check whether the challenge succeeds. Whether the locals convert is a separate outcome; failure does not necessarily revoke the matching attempt already recorded. Here the game evaluates the action undertaken, which is not identical to the result that action produces. Activity points therefore cannot directly prove a successful conversion."
+          }
+        },
+        {
+          "id": "E02-V6-N15",
+          "narration": {
+            "zh-CN": "共享意图“娱乐”也有真实的朝圣事件效果，例如提高某类酒馆事件的机会。但它不是选上就固定减压：合群、害羞、狂热等性格，还会让同一社交行为产生不同压力反应。我们已经核对它的名称和这些条件效果；当前朝圣菜单是否把它加入候选，仍须按具体人物读回。因此画面会把它列为已知共享意图，不把一张自己画的四选一菜单当作原版证据。"
+          },
+          "subtitles": {
+            "zh-CN": "共享意图“娱乐”也有真实的朝圣事件效果，例如提高某类酒馆事件的机会。但它不是选上就固定减压：合群、害羞、狂热等性格，还会让同一社交行为产生不同压力反应。我们已经核对它的名称和这些条件效果；当前朝圣菜单是否把它加入候选，仍须按具体人物读回。因此画面会把它列为已知共享意图，不把一张自己画的四选一菜单当作原版证据。",
+            "en": "The shared Recreation Intent also has actual pilgrimage-event effects, such as increasing the chance of a particular tavern event. It does not provide fixed Stress relief just by being selected: Gregarious, Shy, Zealous, and other personalities can react differently to the same social action. Its name and conditional effects are verified; whether the current pilgrimage menu includes it must still be checked for the particular character. The graphic therefore lists it as a known shared Intent, without presenting our own four-choice menu as original game evidence."
+          }
+        },
+        {
+          "id": "E02-V6-N16",
+          "narration": {
+            "zh-CN": "最后还有旅行计划。路线和绕行改变经过哪里；旅队主管有自己的能力和报价；旅行选项又会检查资格，改变安全性、速度或其他状态。全库二十九种旅行选项可以在附表逐项查，最多同时选择两项。其中十二种有直接费用定义，另外十七种没有直接定义费用。但“没有这一项直接收费”和“整趟免费”不同。它可能受其他活动、身份或条件限制，途中事件也仍可能要求额外付款。本例只固定一个低档的“雇佣登山者”，后面不再悄悄换旅行配置。"
+          },
+          "subtitles": {
+            "zh-CN": "最后还有旅行计划。路线和绕行改变经过哪里；旅队主管有自己的能力和报价；旅行选项又会检查资格，改变安全性、速度或其他状态。全库二十九种旅行选项可以在附表逐项查，最多同时选择两项。其中十二种有直接费用定义，另外十七种没有直接定义费用。但“没有这一项直接收费”和“整趟免费”不同。它可能受其他活动、身份或条件限制，途中事件也仍可能要求额外付款。本例只固定一个低档的“雇佣登山者”，后面不再悄悄换旅行配置。",
+            "en": "Finally, there is the Travel Plan. Routes and detours change where you pass; the Caravan Master has separate abilities and quotes; Travel Options check eligibility and change Safety, Speed, or other conditions. The reference table lists all 29 Travel Options in the definitions, with at most two selectable at once. Twelve have direct cost definitions, while the other seventeen do not. But no direct charge for one option does not mean a free journey. It may be restricted by other activities, status, or conditions, and events along the way may still demand payment. Our example fixes only the low tier of Hire Mountaineer; we will not silently change its travel configuration afterward."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c04",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第四段：费用先分项，再谈折扣"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N17",
+          "narration": {
+            "zh-CN": "朝圣费用至少要拆成活动本体、排场、目的地距离和旅行选项。旅队主管等独立报价另列，途中选择的事件费也不能预先算成一定发生。动态金币首先读取的是收入，不是你现在存了多少钱。本例月收入十，相关因子是一，小额动态金币是三十，中额是六十。公爵的头衔项是二，中世纪早期系数是一，非部落制、无特殊折扣，活动本体就是六十。"
+          },
+          "subtitles": {
+            "zh-CN": "朝圣费用至少要拆成活动本体、排场、目的地距离和旅行选项。旅队主管等独立报价另列，途中选择的事件费也不能预先算成一定发生。动态金币首先读取的是收入，不是你现在存了多少钱。本例月收入十，相关因子是一，小额动态金币是三十，中额是六十。公爵的头衔项是二，中世纪早期系数是一，非部落制、无特殊折扣，活动本体就是六十。",
+            "en": "At minimum, separate pilgrimage costs into the activity itself, Pomp, destination distance, and Travel Options. Separate quotes such as the Caravan Master's stay separate, and optional event fees cannot be assumed in advance. Dynamic gold first reads income, rather than the money currently saved. At monthly income ten and a relevant factor of one, this example's minor dynamic gold is thirty and its medium amount is sixty. The Duke's title term is two and the Early Medieval factor is one; without Tribal Government or special discounts, the activity itself costs sixty."
+          }
+        },
+        {
+          "id": "E02-V6-N18",
+          "narration": {
+            "zh-CN": "讲究排场的基数是五十，再乘本例的头衔与时代组合，得到一百。收费距离平方设为五万，落在零点二这一档；中额六十乘零点二，再乘时代一，得到十二。低档雇佣登山者是头衔项的两倍，得到四。所以已经展开的四项是六十、一百、十二、四，合计一百七十六。屏幕仍保留独立报价的位置，不能因为它还没查清，就填成零，再说这是一趟朝圣的完整实际付款。"
+          },
+          "subtitles": {
+            "zh-CN": "讲究排场的基数是五十，再乘本例的头衔与时代组合，得到一百。收费距离平方设为五万，落在零点二这一档；中额六十乘零点二，再乘时代一，得到十二。低档雇佣登山者是头衔项的两倍，得到四。所以已经展开的四项是六十、一百、十二、四，合计一百七十六。屏幕仍保留独立报价的位置，不能因为它还没查清，就填成零，再说这是一趟朝圣的完整实际付款。",
+            "en": "Ceremonial Pomp starts at fifty, multiplied by this example's title-and-era combination to make one hundred. The squared distance used for charging is fifty thousand, in the 0.2 bracket: sixty medium gold times 0.2 times era one gives twelve. Low-tier Hire Mountaineer costs twice the title term, giving four. The four expanded items are therefore sixty, one hundred, twelve, and four, totaling 176. The separate quote remains visible as unknown; we cannot fill it with zero and call this the complete actual payment."
+          }
+        },
+        {
+          "id": "E02-V6-N19",
+          "narration": {
+            "zh-CN": "接下来只打开“踏过圣路”，其他条件全部不变。这项宗族传承在活动本体里减去原始基数的一半：六十减三十，仍没有低于本例三十的下限；讲究排场另减二十五，于是排场变成七十五。距离十二和旅行选项四没有因为这一个条件自动改变。已展开合计从一百七十六降到一百二十一。它改变了自己真正读取的两笔钱，我们没有把百分之五十套在整张账单上。"
+          },
+          "subtitles": {
+            "zh-CN": "接下来只打开“踏过圣路”，其他条件全部不变。这项宗族传承在活动本体里减去原始基数的一半：六十减三十，仍没有低于本例三十的下限；讲究排场另减二十五，于是排场变成七十五。距离十二和旅行选项四没有因为这一个条件自动改变。已展开合计从一百七十六降到一百二十一。它改变了自己真正读取的两笔钱，我们没有把百分之五十套在整张账单上。",
+            "en": "Next, enable only Walking the Sacred Path, keeping every other condition unchanged. This Dynasty Legacy deducts half the original base from the activity itself: sixty minus thirty still meets this example's floor of thirty; Ceremonial Pomp separately loses twenty-five, becoming seventy-five. The distance charge of twelve and Travel Option charge of four do not automatically change. The expanded total falls from 176 to 121. The legacy changes the two charges it actually reads; we have not applied fifty percent to the whole bill."
+          }
+        },
+        {
+          "id": "E02-V6-N20",
+          "narration": {
+            "zh-CN": "完整有序公式放在画面和资料里。这里要看清两个位置：有些减项读取最初的基数，有些倍率作用于当时已经算到的现值；最后还有动态金币下限，之后才可能轮到另一层实际调用者的修正。把这些位置交换，答案就会不同。当地仪式的一点七五也在其中一个指定位置，不是整趟旅行、雇人和途中消费一起加价。费用式的价值，是告诉你折扣究竟覆盖哪笔钱，以及为什么几个折扣不能随意相加或套到总额。"
+          },
+          "subtitles": {
+            "zh-CN": "完整有序公式放在画面和资料里。这里要看清两个位置：有些减项读取最初的基数，有些倍率作用于当时已经算到的现值；最后还有动态金币下限，之后才可能轮到另一层实际调用者的修正。把这些位置交换，答案就会不同。当地仪式的一点七五也在其中一个指定位置，不是整趟旅行、雇人和途中消费一起加价。费用式的价值，是告诉你折扣究竟覆盖哪笔钱，以及为什么几个折扣不能随意相加或套到总额。",
+            "en": "The complete ordered formula is on screen and in the reference material. Watch two positions: some deductions read the original base, while some multipliers act on the current intermediate value; a dynamic-gold floor follows, before a possible further modifier from the actual caller. Changing that order changes the answer. Local Rites' 1.75 also applies at a specific step, rather than marking up the whole journey, hiring, and event spending together. The cost formula shows which charge a discount covers, and why discounts cannot simply be added together or applied to the total."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c05",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第五段：表现怎样兑现成虔诚"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N21",
+          "narration": {
+            "zh-CN": "现在回到没有这项传承的F0。费用已经解释完，我们只看开头那次选择怎样影响奖励。活动表现按门槛分档，虔诚类的四档倍率依次是一点一、一点二五、一点七五、二点五，门槛是二十五、五十、七十五。从五十五加到六十五，没有跨过下一档；从六十五加到七十五，却从一点七五进入二点五。相同的十分，是否改变这笔奖励，取决于你原来在哪里。活动表现也不是能花出去的虔诚，更不是人物特质经验。"
+          },
+          "subtitles": {
+            "zh-CN": "现在回到没有这项传承的F0。费用已经解释完，我们只看开头那次选择怎样影响奖励。活动表现按门槛分档，虔诚类的四档倍率依次是一点一、一点二五、一点七五、二点五，门槛是二十五、五十、七十五。从五十五加到六十五，没有跨过下一档；从六十五加到七十五，却从一点七五进入二点五。相同的十分，是否改变这笔奖励，取决于你原来在哪里。活动表现也不是能花出去的虔诚，更不是人物特质经验。",
+            "en": "Return now to F0, without that legacy. Having explained costs, we will isolate how the opening choice affects rewards. Activity performance uses thresholds: the four pious multipliers are 1.1, 1.25, 1.75, and 2.5, with thresholds at 25, 50, and 75. Going from 55 to 65 crosses no new threshold; going from 65 to 75 moves from 1.75 to 2.5. Whether the same ten points change this reward depends on the starting point. Activity performance is neither spendable Piety nor character trait experience."
+          }
+        },
+        {
+          "id": "E02-V6-N22",
+          "narration": {
+            "zh-CN": "距离还要另外读取。本例奖励距离平方同样设为五万，使用一百的基数。这个距离来自奖励自己的对象和阈值，不能拿费用那八档倒推。它也不是你沿途绕了多久，就一直按天增加。标准忠诚用一，讲究排场再加五十，本信仰非主要圣地最后乘零点五。表现六十五时，一百乘一点七五，加五十，再除二，得到一百一十二点五。表现七十五时，一百乘二点五，加五十，再除二，得到一百五十。"
+          },
+          "subtitles": {
+            "zh-CN": "距离还要另外读取。本例奖励距离平方同样设为五万，使用一百的基数。这个距离来自奖励自己的对象和阈值，不能拿费用那八档倒推。它也不是你沿途绕了多久，就一直按天增加。标准忠诚用一，讲究排场再加五十，本信仰非主要圣地最后乘零点五。表现六十五时，一百乘一点七五，加五十，再除二，得到一百一十二点五。表现七十五时，一百乘二点五，加五十，再除二，得到一百五十。",
+            "en": "Distance is read separately again. This example also sets squared reward distance to fifty thousand, using a base of one hundred. That distance uses the reward's own objects and thresholds, so it cannot be inferred from the eight cost brackets. Nor does it increase indefinitely with every day of detours. Standard Fidelity uses one, Ceremonial Pomp adds fifty, and a non-Eminent Holy Site of the same Faith multiplies the result by 0.5. At performance 65, one hundred times 1.75, plus fifty, divided by two, gives 112.5. At performance 75, one hundred times 2.5, plus fifty, divided by two, gives 150."
+          }
+        },
+        {
+          "id": "E02-V6-N23",
+          "narration": {
+            "zh-CN": "主虔诚公式可以分成三步：距离基数先乘宗族传承、忠诚和表现系数，再加符合条件的资历与排场定额，最后乘内在之旅、圣地关系和对应联盟条件。我们的数字只开启了条件卡上列明的几项。比如学识传承第四项“真正信徒”，读取的是主虔诚的前段；“踏过圣路”则是另一项宗族传承。不能因为都叫传承，就把它们混成同一个费用和收益开关。个人信条与礼仪参数也仍要按实际读取者区分。"
+          },
+          "subtitles": {
+            "zh-CN": "主虔诚公式可以分成三步：距离基数先乘宗族传承、忠诚和表现系数，再加符合条件的资历与排场定额，最后乘内在之旅、圣地关系和对应联盟条件。我们的数字只开启了条件卡上列明的几项。比如学识传承第四项“真正信徒”，读取的是主虔诚的前段；“踏过圣路”则是另一项宗族传承。不能因为都叫传承，就把它们混成同一个费用和收益开关。个人信条与礼仪参数也仍要按实际读取者区分。",
+            "en": "The main Piety formula has three stages: multiply the distance base by Dynasty Legacy, Fidelity, and performance factors; add eligible qualification and Pomp amounts; then apply Inner Journey, Holy Site relations, and the relevant Confederation condition. Our numbers enable only the conditions listed on the card. For example, True Believers, the fourth Erudition legacy, reads the early part of main Piety; Walking the Sacred Path is a different Dynasty Legacy. Calling both legacies does not make them a single switch for costs and rewards. Personal Tenets and Rite parameters must likewise be distinguished by the effects that actually read them."
+          }
+        },
+        {
+          "id": "E02-V6-N24",
+          "narration": {
+            "zh-CN": "这样，两个即时同给二十五虔诚的回应，就可以因为活动分档，产生三十七点五的主奖励差异。共同的二十五仍放在即时奖励那栏；这里的一百五十和一百一十二点五，只是所列条件下的主结算。圣山、神贫誓愿或其他事件另发的虔诚，不应该塞进这个总倍率。整趟钱包净差还包含这些独立增减。目的地阶段结束执行主奖励，回顾按钮的提示也不代表再领一次。"
+          },
+          "subtitles": {
+            "zh-CN": "这样，两个即时同给二十五虔诚的回应，就可以因为活动分档，产生三十七点五的主奖励差异。共同的二十五仍放在即时奖励那栏；这里的一百五十和一百一十二点五，只是所列条件下的主结算。圣山、神贫誓愿或其他事件另发的虔诚，不应该塞进这个总倍率。整趟钱包净差还包含这些独立增减。目的地阶段结束执行主奖励，回顾按钮的提示也不代表再领一次。",
+            "en": "Thus, two responses each giving 25 immediate Piety can produce a main-reward difference of 37.5 because of activity thresholds. Their shared twenty-five remains in the immediate-reward column; 150 and 112.5 are only the main settlement under the listed conditions. Separate Piety from sacred mountains, Vows of Poverty, or other events should not be forced into this overall multiplier. The journey's net resource change also includes those independent additions and deductions. The main reward executes at the end of the destination phase; its recap tooltip does not grant a second payment."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c06",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第六段：人物成长为何不跟着虔诚一起变"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N25",
+          "narration": {
+            "zh-CN": "普通朝圣者有一条特质经验轨道：不足五十时叫“朝圣者”，达到五十叫“老道的朝圣者”，达到一百叫“高效的朝圣者”。朝觐者和朝觐妇没有这条普通轨道，也没有一条规则自动把它们互换成朝圣者。直接首次添加普通朝圣者时，新轨道初始化为零；随后事件或奖励可以再写经验。已经拥有特质时，再次添加不会把旧经验清零。获得标签、增加经验和读取等级效果，必须分别看。"
+          },
+          "subtitles": {
+            "zh-CN": "普通朝圣者有一条特质经验轨道：不足五十时叫“朝圣者”，达到五十叫“老道的朝圣者”，达到一百叫“高效的朝圣者”。朝觐者和朝觐妇没有这条普通轨道，也没有一条规则自动把它们互换成朝圣者。直接首次添加普通朝圣者时，新轨道初始化为零；随后事件或奖励可以再写经验。已经拥有特质时，再次添加不会把旧经验清零。获得标签、增加经验和读取等级效果，必须分别看。",
+            "en": "Ordinary Pilgrim has a trait-experience track: below fifty it is Pilgrim, at fifty Experienced Pilgrim, and at one hundred Prolific Pilgrim. Hajji and Hajjah lack that ordinary track, and no rule automatically exchanges them for Pilgrim. Directly adding ordinary Pilgrim for the first time initializes its new track to zero; later events or rewards may add experience. Adding an already-owned trait does not reset its existing experience. Gaining the trait, adding experience, and reading level effects must be examined separately."
+          }
+        },
+        {
+          "id": "E02-V6-N26",
+          "narration": {
+            "zh-CN": "虔诚类结算会对已有普通朝圣者、而且经验还没满的人，按表现档请求五、十、二十、四十基础经验。我们的六十五分和七十五分，对应二十和四十。距离基数和排场定额不会再等比例乘到这笔经验上。F0原经验八十，没有经验增益。二十加上去到一百，四十加上去也只能到一百。因此两个结果实际都只增长二十。主虔诚仍相差三十七点五，人物成长却没有额外差异。这就是开头那句话的完整计算。"
+          },
+          "subtitles": {
+            "zh-CN": "虔诚类结算会对已有普通朝圣者、而且经验还没满的人，按表现档请求五、十、二十、四十基础经验。我们的六十五分和七十五分，对应二十和四十。距离基数和排场定额不会再等比例乘到这笔经验上。F0原经验八十，没有经验增益。二十加上去到一百，四十加上去也只能到一百。因此两个结果实际都只增长二十。主虔诚仍相差三十七点五，人物成长却没有额外差异。这就是开头那句话的完整计算。",
+            "en": "For an existing ordinary Pilgrim whose track is not full, pious settlement requests five, ten, twenty, or forty base experience according to performance tier. Our performance values of 65 and 75 correspond to twenty and forty. The distance base and flat Pomp amount do not proportionally multiply this experience again. F0 starts at eighty experience, without an experience-gain modifier. Adding twenty reaches one hundred; adding forty can still only reach one hundred. Both results therefore gain only twenty in practice. Main Piety still differs by 37.5, while character growth gains no extra difference. That completes the calculation promised at the opening."
+          }
+        },
+        {
+          "id": "E02-V6-N27",
+          "narration": {
+            "zh-CN": "再开启“踏过圣路”，就是刚才让已展开费用降到一百二十一的那一个条件。它还会提供百分之五十的朝圣者经验增益。基础二十调整为三十，基础四十调整为六十，但从八十出发，仍然都被封在一百，实际仍只增长二十。最后只把人物原经验改成二十，其他条件都不动。此时三十和六十就能分别留下来，最终到五十和八十。经验加成并没有失效；变化的是原经验离上限还有多远。"
+          },
+          "subtitles": {
+            "zh-CN": "再开启“踏过圣路”，就是刚才让已展开费用降到一百二十一的那一个条件。它还会提供百分之五十的朝圣者经验增益。基础二十调整为三十，基础四十调整为六十，但从八十出发，仍然都被封在一百，实际仍只增长二十。最后只把人物原经验改成二十，其他条件都不动。此时三十和六十就能分别留下来，最终到五十和八十。经验加成并没有失效；变化的是原经验离上限还有多远。",
+            "en": "Enable Walking the Sacred Path again: the same condition that reduced our expanded costs to 121. It also provides fifty percent increased Pilgrim experience gain. Base twenty becomes thirty and base forty becomes sixty, but starting from eighty, both are still capped at one hundred and gain only twenty. Finally, change only the character's original experience to twenty, keeping everything else fixed. The thirty and sixty can now remain, ending at fifty and eighty respectively. The experience bonus still works; what changed is the starting distance from the cap."
+          }
+        },
+        {
+          "id": "E02-V6-N28",
+          "narration": {
+            "zh-CN": "精确计算先把两类增益相加，再乘基础请求，之后加旧经验，最后限制在零到一百之间。两个百分比不是各自再乘一遍。执行使用固定点数，截断位置在画面公式中保留，不靠四舍五入编出额外经验。当前脚本中的增益来源包括踏过圣路、神权制条件下的“复越高山”，以及教会庄园里的朝圣者收容所。后者有四级升级定义，每级对应百分之五，不能把四份升级定义当成自动同时叠到百分之二十。"
+          },
+          "subtitles": {
+            "zh-CN": "精确计算先把两类增益相加，再乘基础请求，之后加旧经验，最后限制在零到一百之间。两个百分比不是各自再乘一遍。执行使用固定点数，截断位置在画面公式中保留，不靠四舍五入编出额外经验。当前脚本中的增益来源包括踏过圣路、神权制条件下的“复越高山”，以及教会庄园里的朝圣者收容所。后者有四级升级定义，每级对应百分之五，不能把四份升级定义当成自动同时叠到百分之二十。",
+            "en": "The exact calculation adds the two kinds of gain modifier, multiplies the base request, adds the old experience, and clamps the result between zero and one hundred. The two percentages are not applied as successive multipliers. Execution uses fixed-point arithmetic; the displayed formula preserves the truncation point rather than rounding extra experience into existence. Current scripted sources include Walking the Sacred Path, Just One More Hill under Theocratic Government, and the Pilgrims' Hospice in an Ecclesiastical Estate. The hospice has four upgrade definitions, each corresponding to five percent; four definitions do not automatically mean twenty percent simultaneously."
+          }
+        },
+        {
+          "id": "E02-V6-N29",
+          "narration": {
+            "zh-CN": "朝圣者的成长也不全部发生在这次活动里。圣人墓、大教堂等重要地点，营地故事、传奇建筑、合约或特定事件，都可能在自己的条件下写入特质或经验。历史初始人物、随机生成和调试入口另列，不混作你能在普通旅途中主动选择的按钮。完整清单会逐类呈现。判断一行时，先看接收者是谁，再看它是授予特质、请求经验，还是只读取你已有的经验。一个事件要求你经验至少多少，不能倒过来当作它给了你多少经验。"
+          },
+          "subtitles": {
+            "zh-CN": "朝圣者的成长也不全部发生在这次活动里。圣人墓、大教堂等重要地点，营地故事、传奇建筑、合约或特定事件，都可能在自己的条件下写入特质或经验。历史初始人物、随机生成和调试入口另列，不混作你能在普通旅途中主动选择的按钮。完整清单会逐类呈现。判断一行时，先看接收者是谁，再看它是授予特质、请求经验，还是只读取你已有的经验。一个事件要求你经验至少多少，不能倒过来当作它给了你多少经验。",
+            "en": "Pilgrim growth does not happen entirely within this activity either. Points of Interest such as saints' tombs and cathedrals, camp stories, legendary buildings, contracts, and particular events may grant traits or experience under their own conditions. Historical starting characters, random generation, and debug entries are listed separately from choices available during an ordinary journey. The full list is presented by category. For each entry, first identify the recipient, then whether it grants a trait, requests experience, or merely checks existing experience. An event requiring a minimum experience value is not thereby an event granting that much experience."
+          }
+        },
+        {
+          "id": "E02-V6-N30",
+          "narration": {
+            "zh-CN": "性格和生活方式也不是一个统一的经验倍率。有些选项要求狂热，有些分支先判断学识或其他特质；条件不同，奖励可能改成生活方式经验、减压或其他效果。必须顺着实际分支读，不能概括成“狂热者朝圣经验一律更多”。移除同样有具体条件。例如一条改宗入口会检查是否跨宗教，不能据此说同一宗教内换信仰也必定删除。另一些通用的罪恶和美德处理会动态选择特质，因此只搜索到一条写着朝圣者的删除语句，也不等于全部删除情况只有一条。"
+          },
+          "subtitles": {
+            "zh-CN": "性格和生活方式也不是一个统一的经验倍率。有些选项要求狂热，有些分支先判断学识或其他特质；条件不同，奖励可能改成生活方式经验、减压或其他效果。必须顺着实际分支读，不能概括成“狂热者朝圣经验一律更多”。移除同样有具体条件。例如一条改宗入口会检查是否跨宗教，不能据此说同一宗教内换信仰也必定删除。另一些通用的罪恶和美德处理会动态选择特质，因此只搜索到一条写着朝圣者的删除语句，也不等于全部删除情况只有一条。",
+            "en": "Personality and Lifestyle do not form one universal experience multiplier either. Some options require Zealous, while some branches first check Learning or other traits; different conditions may redirect the reward into Lifestyle experience, Stress relief, or other effects. Follow the actual branch rather than concluding that Zealous characters always earn more Pilgrim experience. Removal also has specific conditions. For example, one conversion entry checks whether the change crosses religions, so it does not prove that changing Faith within the same religion always removes the trait. Other generic sin-and-virtue routines select traits dynamically; finding one removal statement naming Pilgrim does not mean it is the only removal route."
+          }
+        },
+        {
+          "id": "E02-V6-N31",
+          "narration": {
+            "zh-CN": "最后看这个标签现在值什么。我们另从F0只改朝圣态度，把鼓励换成强制，人物仍是八十经验。等级效果会累计基础块和已经达到的阈值块，再按当前礼仪与文化条件读取。不是到了最高档，就把前面的贡献全部丢掉。在普通强制教义下，本例列出的基础条件贡献、强制条件额外贡献，再计入教义自身的负百分之二十五，三档对应的倍率分量合计是正百分之十五、六十五、一百一十五。鼓励或当地仪式若只有基础条件，那一列则是百分之五、十五、二十五。"
+          },
+          "subtitles": {
+            "zh-CN": "最后看这个标签现在值什么。我们另从F0只改朝圣态度，把鼓励换成强制，人物仍是八十经验。等级效果会累计基础块和已经达到的阈值块，再按当前礼仪与文化条件读取。不是到了最高档，就把前面的贡献全部丢掉。在普通强制教义下，本例列出的基础条件贡献、强制条件额外贡献，再计入教义自身的负百分之二十五，三档对应的倍率分量合计是正百分之十五、六十五、一百一十五。鼓励或当地仪式若只有基础条件，那一列则是百分之五、十五、二十五。",
+            "en": "Finally, ask what the trait is worth now. Starting separately from F0, change only Pilgrimage Attitude from Encouraged to Mandatory, keeping the character at eighty experience. Level effects accumulate the base block and reached threshold blocks, then read current Rite and Culture conditions. Reaching the highest tier does not discard all earlier contributions. Under the ordinary Mandatory doctrine, combining the listed base contribution, extra Mandatory contribution, and the doctrine's own minus 25 percent gives tier contributions of plus 15, 65, and 115 percent. With only the base condition under Encouraged or Local Rites, that column is five, fifteen, and twenty-five percent."
+          }
+        },
+        {
+          "id": "E02-V6-N32",
+          "narration": {
+            "zh-CN": "八十经验处于中间档，因此F0只有本表基础条件的百分之十五；改成强制后，合并指定来源是百分之六十五。这里算的是这些来源的分量，不是人物完整的每月虔诚收入。美德、罪恶、其他特质与建筑还会另有影响；朝觐使用的又是另一个条件，不能把普通强制那列硬套过去。文化也要看具体条件。“战斗祭司”和“僧兵”都能提供这里检查的文化参数。条件成立时，普通朝圣者三档累计的勇武贡献分别是二、五、八；没有这个条件，就不能把这些勇武一并算给所有朝圣者。这也不是额外增加活动表现。这也给了我们观察朝圣者的另一种办法：等级不能直接当成旅行次数，标签也不能直接当成固定收益。经历怎样留下经验，是一组规则；当前宗教和文化怎样读取同一个人物，又是另一组规则。"
+          },
+          "subtitles": {
+            "zh-CN": "八十经验处于中间档，因此F0只有本表基础条件的百分之十五；改成强制后，合并指定来源是百分之六十五。这里算的是这些来源的分量，不是人物完整的每月虔诚收入。美德、罪恶、其他特质与建筑还会另有影响；朝觐使用的又是另一个条件，不能把普通强制那列硬套过去。文化也要看具体条件。“战斗祭司”和“僧兵”都能提供这里检查的文化参数。条件成立时，普通朝圣者三档累计的勇武贡献分别是二、五、八；没有这个条件，就不能把这些勇武一并算给所有朝圣者。这也不是额外增加活动表现。这也给了我们观察朝圣者的另一种办法：等级不能直接当成旅行次数，标签也不能直接当成固定收益。经历怎样留下经验，是一组规则；当前宗教和文化怎样读取同一个人物，又是另一组规则。",
+            "en": "Eighty experience is the middle tier, so F0 has the table's fifteen-percent base contribution; changing to Mandatory combines the specified sources into sixty-five percent. These are contributions from the listed sources, rather than the character's complete monthly Piety income. Virtues, sins, other traits, and buildings have separate effects; Hajj uses another condition, so the ordinary Mandatory column cannot simply be applied to it. Culture also requires specific conditions. Both Warrior Priests and Warrior Monks can provide the cultural parameter checked here. With that condition, the ordinary Pilgrim tiers contribute two, five, and eight cumulative Prowess; without it, those values do not belong to every Pilgrim. Nor is this extra activity performance. This offers another way to observe Pilgrims: level is not simply a journey counter, and the trait is not a fixed benefit. One set of rules determines how experiences leave trait experience; another determines how the current religion and Culture read the same character."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c07",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第七段：只收回已经证明的关系"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N33",
+          "narration": {
+            "zh-CN": "回到开头。两个回应都有即时虔诚，但它们对活动表现的作用不同；多出的表现只有跨过门槛，才改变这笔主奖励。即使主奖励提高，特质经验仍要经过自己的资格、增益和上限。所以看一次朝圣，不必只问“这趟赚了多少”。还可以分别问：宗教怎样评价它，活动认可了哪些行为，人物又真正留下了什么。把这几条线分开，再接回具体条件，费用、选择和成长就能一起解释。"
+          },
+          "subtitles": {
+            "zh-CN": "回到开头。两个回应都有即时虔诚，但它们对活动表现的作用不同；多出的表现只有跨过门槛，才改变这笔主奖励。即使主奖励提高，特质经验仍要经过自己的资格、增益和上限。所以看一次朝圣，不必只问“这趟赚了多少”。还可以分别问：宗教怎样评价它，活动认可了哪些行为，人物又真正留下了什么。把这几条线分开，再接回具体条件，费用、选择和成长就能一起解释。",
+            "en": "Return to the opening. Both responses give immediate Piety but affect activity performance differently; extra performance only changes this main reward when it crosses a threshold. Even with a higher main reward, trait experience still passes through its own eligibility, gain modifiers, and cap. So when observing a pilgrimage, we can ask more than how much the journey earned. Ask how religion evaluates it, which actions the activity recognizes, and what the character actually retains. Separate these paths and reconnect them to specific conditions, and costs, choices, and growth become understandable together."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}
