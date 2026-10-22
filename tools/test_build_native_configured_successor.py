@@ -15,7 +15,7 @@ from typing import Protocol, runtime_checkable
 from build_native_configured_successor import (
     ChildEnvironment, Compile, Config, Fixture, MsvcInitializer, MsvcInstallation,
     Pin, Producer, ROOT, allocated, cmake_boolean_flags, config_json, git, load_shared, obj, parse_config, parse_pin, pin, read,
-    same_metadata_content,
+    same_metadata_content, verified_fixture_object_bindings,
 )
 
 
@@ -351,6 +351,82 @@ class ConfiguredSuccessorTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 producer.link("existing", [], [], producer.build / "unused.exe")
         self.assertEqual(pin(response), before)
+
+    def test_readonly_object_contract_refuses_relative_empty_and_foreign_paths(self) -> None:
+        for outputs in ([], ["relative.obj"], [str(self.root / "foreign.obj")]):
+            with self.subTest(outputs=outputs), self.assertRaises(ValueError):
+                verified_fixture_object_bindings(config_json(self.config), outputs)
+
+    def test_readonly_existing_plan_recomputes_sources_options_and_dependencies_without_writes(self) -> None:
+        native = self.root / "ck3_autonomous_player/native_bridge"
+        native.mkdir(parents=True)
+        header = native / "include/xar/activity_typed_planner_v1.hpp"
+        header.parent.mkdir(parents=True)
+        header.write_text("// owned dependency identity\n", encoding="utf-8")
+        rows: list[Compile] = []
+        names: list[str] = []
+        old_commands: list[dict[str, object]] = []
+        snapshot: list[dict[str, object]] = []
+        dependencies: list[str] = []
+        selections: list[dict[str, object]] = []
+        for target, name in (("xar_bridge_protocol", "protocol"), ("xar_ck3_12002_runtime", "runtime"),
+                             ("xar_ck3_bridge", "bridge")):
+            source = native / ("src/" + name + ".cpp")
+            source.parent.mkdir(exist_ok=True)
+            source.write_text("int " + name + "_source;\n", encoding="utf-8")
+            names.append(source.relative_to(self.root).as_posix())
+            output_name = "CMakeFiles/" + target + ".dir/src/" + name + ".cpp.obj"
+            output, old_output = self.config.output / "build" / output_name, self.config.complete_build / output_name
+            argv = (sys.executable, "/c", str(source), "/Fo" + str(output))
+            rows.append(Compile(target, source, output, argv))
+            old_commands.append({"directory": str(self.config.complete_build), "file": str(source),
+                "output": str(old_output), "command": subprocess.list2cmdline([sys.executable, "/c", str(source), "/Fo" + str(old_output)])})
+            signature = pin(source)
+            snapshot.append({"native_relative": source.relative_to(native).as_posix(),
+                "bytes": 0 if name == "runtime" else signature["bytes"], "sha256": signature["sha256"]})
+            dependencies.extend([output_name + ": #deps 2, deps mtime 1 (VALID)", "    " + str(source), "    " + str(header)])
+            selections.append({"target": target, "output": output_name, "source": source.relative_to(native).as_posix(),
+                "changed_dependencies": ["src/runtime.cpp"] if name == "runtime" else [], "compiled": name == "runtime"})
+        names.append(header.relative_to(self.root).as_posix())
+        snapshot.append({"native_relative": header.relative_to(native).as_posix(),
+            "bytes": pin(header)["bytes"], "sha256": pin(header)["sha256"]})
+
+        def put(name: str, value: object) -> Pin:
+            path = self.root / name
+            path.write_text(json.dumps(value), encoding="utf-8")
+            return pin(path)
+
+        commands = put("old-commands.json", old_commands)
+        scope = put("old-scope.json", {"compile_commands": commands})
+        frozen = put("old-source.json", {"snapshot_native_base": str(native), "files": snapshot})
+        baseline = put("baseline.json", {"machine_id": self.config.machine_id, "snapshot": frozen, "configured_scope": scope})
+        borrowed = self.config.complete_build / "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj"
+        borrowed.parent.mkdir(parents=True)
+        borrowed.write_bytes(b"owned retained identity; never executed")
+        inputs = put("inputs.json", {"inputs": [pin(borrowed)], "new_object": pin(borrowed)})
+        dependency_path = self.root / "original-dependencies.txt"
+        dependency_path.write_text("\n".join(dependencies), encoding="utf-8")
+        config = replace(self.config, baseline=baseline, incremental_inputs=inputs)
+        producer = UngatedProducer(config)
+        producer.native = native
+        plan = {"machine_id": config.machine_id, "observed_at_utc": "owned fixture",
+            "source_commit": config.source_commit, "baseline_qualification": baseline, "baseline_incremental_inputs": inputs,
+            "original_dependencies": pin(dependency_path), "changed_native_paths": ["src/runtime.cpp"],
+            "production_selections": selections, "retained_link_inputs": [pin(borrowed)],
+            "retained_incremental_object": pin(borrowed), "archive_copies": 0}
+        reference = put("original-plan.json", plan)
+        with patch("build_native_configured_successor.ROOT", self.root), \
+             patch("build_native_configured_successor.git", return_value="\n".join(names)), \
+             patch("build_native_configured_successor.subprocess.run", side_effect=AssertionError("Read-only replay cannot run Ninja")), \
+             patch.object(producer, "save", side_effect=AssertionError("Read-only replay cannot write")):
+            selected, actual_borrowed, original = producer.plan(rows, existing_plan=reference)
+            self.assertEqual([row.target for row in selected], ["xar_ck3_12002_runtime"])
+            self.assertEqual(actual_borrowed, {"CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj": borrowed})
+            self.assertEqual(original, reference)
+            selections[1]["compiled"] = False
+            changed = put("changed-plan.json", plan)
+            with self.assertRaisesRegex(ValueError, "Recomputed source/options/dependency"):
+                producer.plan(rows, existing_plan=changed)
 
     def test_actual_unused_off_transport_fails_direct_link_but_lazy_archive_passes(self) -> None:
         """Exercise the actual LNK2019 path that stopped the production successor."""

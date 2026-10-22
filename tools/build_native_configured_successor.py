@@ -68,6 +68,24 @@ class FixtureLinkResult(TypedDict):
     actual_link: Pin
 
 
+class FixtureProductionObjectBinding(TypedDict):
+    configured_object: str
+    object: Pin
+    production_target: str
+    native_relative: str
+    source: Pin
+    configured_compile_command_index: int
+
+
+@dataclass(frozen=True)
+class FixtureObjectProof:
+    objects: list[FixtureProductionObjectBinding]
+    production_plan: Pin
+    incremental_production_result: Pin
+    baseline_compile_commands: Pin
+    original_dependencies: Pin
+
+
 @dataclass(frozen=True)
 class Fixture:
     target: str
@@ -159,6 +177,11 @@ class MsvcInitializer(Protocol):
 class ManifestCollector(Protocol):
     def __call__(self, repo: Path, source: Path, build: Path, configuration: str,
                  targets: list[str], external_candidate: str | None = None) -> object: ...
+
+
+@runtime_checkable
+class FixtureObjectReader(Protocol):
+    def __call__(self, target: dict[str, object], snapshot_root: Path, build_root: Path) -> set[Path]: ...
 
 
 def require(condition: object, message: str) -> None:
@@ -519,7 +542,7 @@ class Producer:
             ("/c" if token == "-c" else token).replace("\\", "/").lower().replace(source_text, "@native@").replace(build_text, "@build@")
             for token in command[1:]]]
 
-    def plan(self, rows: list[Compile]) -> tuple[list[Compile], dict[str, Path], Pin]:
+    def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None) -> tuple[list[Compile], dict[str, Path], Pin]:
         c = self.config
         baseline_ref = checked(c.baseline)
         baseline = read(Path(baseline_ref["path"]))
@@ -538,7 +561,11 @@ class Producer:
         changed_names = {name for name in old_files.keys() | current.keys()
                          if name not in old_files or name not in current
                          or old_files[name] != (current[name]["bytes"], current[name]["sha256"])}
-        if c.compiled_seed is None:
+        if existing_plan is not None:
+            original = read(Path(checked(existing_plan)["path"]))
+            dependency_ref = checked(original["original_dependencies"])
+            dependency_text = Path(dependency_ref["path"]).read_text(encoding="utf-8")
+        elif c.compiled_seed is None:
             dependency_query = subprocess.run([self.tools["ninja"], "-C", str(c.complete_build), "-t", "deps"],
                 env=self.env, capture_output=True, check=True, text=True, encoding="utf-8")
             dependency_file = self.config.output / "original-ninja-dependencies.txt"
@@ -610,12 +637,18 @@ class Producer:
             path = replacements.get(name, c.complete_build / name)
             require(path in retained_map or path == new_path, "Bridge object lacks predecessor link provenance")
             borrowed[name] = path
-        report = self.save("native-a01/PLAN.actual.json", {"machine_id": c.machine_id,
+        value: dict[str, object] = {"machine_id": c.machine_id,
             "observed_at_utc": now(), "source_commit": c.source_commit,
             "baseline_qualification": baseline_ref, "baseline_incremental_inputs": c.incremental_inputs,
             "original_dependencies": dependency_ref, "changed_native_paths": sorted(changed_names),
             "production_selections": selection, "retained_link_inputs": retained,
-            "retained_incremental_object": new_object, "archive_copies": 0})
+            "retained_incremental_object": new_object, "archive_copies": 0}
+        if existing_plan is not None:
+            require(same_metadata_content(read(Path(existing_plan["path"])), value),
+                    "Recomputed source/options/dependency/retained production plan differs")
+            report = existing_plan
+        else:
+            report = self.save("native-a01/PLAN.actual.json", value)
         return selected, borrowed, report
 
     def compile(self, row: Compile, label: str, definitions: tuple[str, ...] = ()) -> Pin:
@@ -1118,6 +1151,110 @@ class Producer:
             "native_outputs_modified": False, "actual_live_business_qualified": False})
         return self.seal(self.commands(), subset, pin(production), binding, plan, self.build / "xar_ck3_bridge.dll", resume=True)
 
+    def fixture_link_support_document(self, qualification: dict[str, object], config_ref: Pin) -> dict[str, object]:
+        """Bind configured raw objects to the physical objects in actual link RSPs."""
+        scope_ref, freeze_ref = checked(qualification["configured_scope"]), checked(qualification["production_freeze"])
+        scope = read(Path(scope_ref["path"]))
+        checked(scope["compile_commands"])
+        model = read(Path(checked(scope["codemodel"])["path"]))
+        reply = Path(parse_pin(scope["codemodel"])["path"]).parent
+        entries = [obj(item) for item in arr(obj(arr(model["configurations"])[0])["targets"])]
+        shared = load_shared(ROOT / "tools/ck3_mod_acceptance_build_runtime.py", "fixture_object_link_reader")
+        reader: object = getattr(shared, "fixture_object_inputs", None)
+        require(isinstance(reader, FixtureObjectReader), "Shared FileAPI object reader unavailable")
+        if not isinstance(reader, FixtureObjectReader):
+            raise ValueError("Shared FileAPI object reader unavailable")
+        fixtures = [obj(item) for item in arr(qualification["fixture_results"])]
+        raw_inputs: dict[str, set[Path]] = {}
+        file_api: dict[str, Pin] = {}
+        for fixture in fixtures:
+            name = string(fixture["target"])
+            matches = [entry for entry in entries if entry["name"] == name]
+            require(len(matches) == 1, "Exact fixture FileAPI target required")
+            path = reply / relative(matches[0]["jsonFile"])
+            inputs = reader(read(path), self.native, self.build)
+            if inputs:
+                raw_inputs[name], file_api[name] = inputs, pin(path)
+        require(raw_inputs, "No external fixture objects require link support")
+        proof = verified_fixture_object_bindings(read(Path(checked(config_ref)["path"])),
+            sorted(str(path) for path in set().union(*raw_inputs.values())))
+        physical = {Path(item["configured_object"]): item["object"] for item in proof.objects}
+        declarations = {name: [physical[path] for path in sorted(paths)] for name, paths in raw_inputs.items()}
+        actual_links: dict[str, Pin] = {}
+        indices = [read(path) for path in self.meta.glob("*FIXTURE-LINKS.actual.json")]
+        by_output = {row.output: row for row in self.commands()}
+        for name, paths in raw_inputs.items():
+            fixture = next(row for row in fixtures if row["target"] == name)
+            configured = next(row for row in self.config.fixtures if row.target == name)
+            require(not configured.runtime_override_sources and not configured.runtime_override_definitions,
+                    "Raw production-object support requires the configured fixture without overrides")
+            candidates = [obj(row) for index in indices
+                if index.get("machine_id") == self.config.machine_id and index.get("source_commit") == self.config.source_commit
+                for row in arr(index["fixtures"])
+                if obj(row).get("target") == name and obj(row).get("executable") == fixture["executable"]]
+            require(len(candidates) == 1, "Exact actual fixture link execution index required")
+            link, execution = self.successful_execution(candidates[0]["actual_link"])
+            response_refs = [checked(value) for value in arr(execution["response_files"])]
+            require(len(response_refs) == 1, "Exact fixture linker response file required")
+            arguments = self.arguments(Path(response_refs[0]["path"]).read_text(encoding="utf-8"))
+            linked_objects = [Path(value).resolve() for value in arguments if Path(value).suffix.lower() == ".obj"]
+            own = {path for path in self.fixture_link_objects(configured)
+                   if path in by_output and by_output[path].target not in PRODUCTION}
+            expected = {Path(physical[path]["path"]) for path in paths} | own
+            destinations = [Path(value[5:]).resolve() for value in arguments if value.upper().startswith("/OUT:")]
+            require(len(linked_objects) == len(set(linked_objects)) and set(linked_objects) == expected
+                    and destinations == [Path(parse_pin(fixture["executable"])["path"])],
+                    "Actual fixture RSP object map or configured EXE differs")
+            actual_links[name] = link
+        return {"schema": "ck3-fixture-production-object-link-support-v2", "machine_id": self.config.machine_id,
+            "observed_at_utc": now(), "source_commit": self.config.source_commit,
+            "actual_live_business_qualified": False, "configured_scope": scope_ref, "production_freeze": freeze_ref,
+            "fixture_results": fixtures, "fixture_file_api": file_api, "fixtures": declarations,
+            "objects": proof.objects, "producer_config": config_ref, "production_plan": proof.production_plan,
+            "incremental_production_result": proof.incremental_production_result,
+            "baseline_compile_commands": proof.baseline_compile_commands, "original_dependencies": proof.original_dependencies,
+            "actual_links": actual_links}
+
+    def seal_fixture_links(self, label: str) -> Pin:
+        """Add source-bound link support in a new metadata directory, retaining old Q."""
+        require(isinstance(label, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]{0,100}", label),
+                "A finite unique link-support label is required")
+        self.metadata_continuation = True
+        actual_machine = subprocess.check_output([sys.executable, "-B", "-X", "utf8",
+            str(ROOT / "tools/ck3_live_run_id.py"), "machine"], cwd=ROOT).decode("utf-8").strip()
+        require(actual_machine == self.config.machine_id, "Actual link-support machine differs")
+        self.gate()
+        original_ref = pin(self.meta / "PUBLIC-RUNTIME-QUALIFICATION.actual.json")
+        qualification = read(Path(original_ref["path"]))
+        require(qualification.get("schema") == "ck3-qualified-native-build-v1"
+                and qualification.get("machine_id") == self.config.machine_id
+                and qualification.get("source_commit") == self.config.source_commit
+                and qualification.get("actual_live_business_qualified") is False
+                and "fixture_link_support" not in qualification, "Original qualified build needs exactly one new link-support seal")
+        for field in ("delivery", "snapshot", "profile", "configured_scope", "source_verification",
+                      "production_freeze", "original_dll", "published_dll", "defender_binding"):
+            checked(qualification[field])
+        self.successful_execution(qualification["production_build_receipt"])
+        for raw in arr(qualification["fixture_results"]):
+            fixture = obj(raw)
+            executable = checked(fixture["executable"])
+            _, execution = self.successful_execution(fixture["execution"])
+            require(strings(execution["argv"])[0] == executable["path"], "Original finite EXE execution differs")
+        prefix = "native-a01/" + label + "/"
+        config_ref = self.save(prefix + "CONFIG.actual.json", config_json(self.config))
+        support = self.fixture_link_support_document(qualification, config_ref)
+        support_ref = self.save(prefix + "FIXTURE-LINK-SUPPORT.actual.json", support)
+        qualification.update(fixture_link_support=support_ref, observed_at_utc=now())
+        result = self.save(prefix + "PUBLIC-RUNTIME-QUALIFICATION.actual.json", qualification)
+        self.save(prefix + "METADATA-SEAL.actual.json", {"machine_id": self.config.machine_id,
+            "observed_at_utc": now(), "native_source_commit": self.config.source_commit,
+            "metadata_source_commit": git("rev-parse", "HEAD"), "producer": pin(Path(__file__)),
+            "original_qualification": original_ref, "qualification": result, "fixture_link_support": support_ref,
+            "native_outputs_modified": False, "new_compilation_performed": False,
+            "new_link_or_fixture_execution_performed": False, "actual_live_business_qualified": False})
+        checked(original_ref)
+        return result
+
     def seal(self, rows: list[Compile], fixtures: list[dict[str, object]], build_execution: Pin,
              defender: Pin, plan: Pin, dll: Path, *, resume: bool = False) -> Pin:
         c = self.config
@@ -1203,6 +1340,56 @@ class Producer:
             "defender_binding": defender, "fixture_results": fixtures, "execution_wire_packets": wire})
 
 
+def verified_fixture_object_bindings(config_value: object, configured_outputs: list[str]) -> FixtureObjectProof:
+    """Read-only replay of the original source/dependency/options and object proof."""
+    config = parse_config(config_value)
+    outputs = strings(configured_outputs)
+    require(outputs and len(outputs) == len(set(outputs)), "Distinct configured fixture objects required")
+    producer = Producer(config)  # Loads parsers only; no initialize, gate, configure or commands execute.
+    require(all(Path(name).is_absolute() and Path(name) == Path(name).resolve()
+                and Path(name).is_relative_to(producer.build / "CMakeFiles")
+                and Path(name).suffix.lower() == ".obj" for name in outputs),
+            "Configured fixture objects must be exact absolute production build paths")
+    rows = producer.commands()
+    incremental_ref = pin(producer.meta / "INCREMENTAL-RESULT.actual.json")
+    incremental = read(Path(incremental_ref["path"]))
+    plan_ref = checked(incremental["production_plan"])
+    selected, borrowed, _ = producer.plan(rows, existing_plan=plan_ref)
+    inputs = producer.original_fixture_inputs(rows)
+    require({row.output for row in selected} == set(inputs.compiled)
+            and all(borrowed[name] == path for name, path in inputs.borrowed.items()),
+            "Recomputed physical production object selection differs")
+    raw_commands: object = json.loads((producer.build / "compile_commands.json").read_text(encoding="utf-8-sig"))
+    indices: dict[Path, int] = {}
+    for index, raw in enumerate(arr(raw_commands)):
+        command = obj(raw)
+        output = Path(string(command["output"]))
+        output = output if output.is_absolute() else producer.build / output
+        require(output not in indices, "Duplicate configured compile output")
+        indices[output] = index
+    by_output = {row.output: row for row in rows if row.target in PRODUCTION}
+    objects: list[FixtureProductionObjectBinding] = []
+    for name in sorted(outputs):
+        path = Path(name)
+        require(path.is_absolute() and path == path.resolve() and path in by_output,
+                "Fixture raw object is not a configured production output")
+        row = by_output[path]
+        physical = inputs.object_paths.get(path)
+        if physical is None:
+            physical = inputs.borrowed.get(path.relative_to(producer.build).as_posix())
+        require(physical is not None, "Fixture raw object has no actual retained or successful compile proof")
+        if physical is None:
+            raise ValueError("Fixture physical object missing")
+        objects.append({"configured_object": str(path), "object": pin(physical),
+            "production_target": row.target, "native_relative": row.source.relative_to(producer.native).as_posix(),
+            "source": pin(row.source), "configured_compile_command_index": indices[path]})
+    baseline = read(Path(config.baseline["path"]))
+    baseline_scope = read(Path(checked(baseline["configured_scope"])["path"]))
+    original = read(Path(plan_ref["path"]))
+    return FixtureObjectProof(objects, plan_ref, incremental_ref, checked(baseline_scope["compile_commands"]),
+        checked(original["original_dependencies"]))
+
+
 def main() -> int:
     sys.dont_write_bytecode = True
     parser = argparse.ArgumentParser(description=__doc__)
@@ -1211,10 +1398,14 @@ def main() -> int:
     continuation.add_argument("--seal-existing", action="store_true", help="Validate completed original commands and continue missing metadata only")
     continuation.add_argument("--resume-fixtures", metavar="UNIQUE_LABEL",
         help="Validate completed production, preserve unknown outputs and actually rebuild/run fixtures")
+    continuation.add_argument("--seal-fixture-links", metavar="UNIQUE_LABEL",
+        help="Add exact source-bound retained fixture-object support to a new metadata-only qualification")
     args = parser.parse_args()
     config = parse_config(read(args.config))
     producer = Producer(config)
-    if args.resume_fixtures is not None:
+    if args.seal_fixture_links is not None:
+        result = producer.seal_fixture_links(args.seal_fixture_links)
+    elif args.resume_fixtures is not None:
         result = producer.resume_fixtures(args.resume_fixtures)
     else:
         result = producer.resume_seal() if args.seal_existing else producer.run()

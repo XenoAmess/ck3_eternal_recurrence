@@ -223,6 +223,10 @@ jobs:
         run: |
           python -B -X utf8 -m unittest discover -s tools -p test_build_native_configured_successor.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_build_runtime.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_fixture_link_support.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/build_native_configured_successor.py tools/test_build_native_configured_successor.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test native saved Character scope and registered MCP consumers without CK3

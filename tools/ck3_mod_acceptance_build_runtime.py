@@ -13,6 +13,9 @@ import shlex
 import shutil
 import subprocess
 import sys
+from typing import TypedDict
+
+import build_native_configured_successor as native_successor
 
 HERE = Path(__file__).resolve().parent
 BOM = b"\xef\xbb\xbf"
@@ -543,87 +546,260 @@ def profile_expansion_scope(expansion, production, targets, snapshot_root, index
             "Expanded profile finite direct/included body pins differ from actual frozen source")
 
 
-def fixture_object_inputs(target, snapshot_root, build_root):
+def fixture_object_inputs(target_value: object, snapshot_root: Path, build_root: Path) -> set[Path]:
     """External objects are File API sources or explicit raw linker inputs."""
-    found = set()
+    target = native_successor.obj(target_value)
+    found: set[Path] = set()
 
-    def add(value, relative_root):
-        path = Path(value)
+    def add(value: object, relative_root: Path) -> None:
+        path = Path(native_successor.string(value))
         if path.suffix.lower() in {".obj", ".o"}:
             found.add(path.resolve() if path.is_absolute() else (relative_root / path).resolve())
 
-    for source in target.get("sources", []):
+    for raw in native_successor.arr(target.get("sources", [])):
+        source = native_successor.obj(raw)
         if source.get("compileGroupIndex") is None:
             add(source["path"], snapshot_root)
-    for fragment in target.get("link", {}).get("commandFragments", []):
-        for word in shlex.split(fragment["fragment"], posix=False):
+    for raw in native_successor.arr(native_successor.obj(target.get("link", {})).get("commandFragments", [])):
+        fragment = native_successor.obj(raw)
+        for word in shlex.split(native_successor.string(fragment["fragment"]), posix=False):
             add(word.strip('"'), build_root)
     return found
 
 
-def qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, build_root,
-                                   indexed, production, targets, fixtures, reply, model):
-    names = {target["name"]: key for key, target in targets.items()}
-    actual_inputs = {row["target"]: fixture_object_inputs(targets[names[row["target"]]], snapshot_root, build_root)
-                     for row in fixtures}
+class FixtureLinkSupportResult(TypedDict):
+    ref: native_successor.Pin
+    fixture_production_targets: dict[str, set[str]]
+
+
+def qualified_configured_fixture_links(
+    support_value: object, ref: native_successor.Pin, machine: str, native_commit: str,
+    scope_value: object, indexed_value: object, production_value: object,
+    targets_value: object, fixtures_value: object, model_value: object,
+    snapshot_root: Path, build_root: Path, reply: Path,
+    actual_inputs: dict[str, set[Path]],
+) -> FixtureLinkSupportResult:
+    """Validate configured-to-physical objects against original production and link evidence."""
+    support = native_successor.obj(support_value)
+    scope = native_successor.obj(scope_value)
+    indexed = native_successor.obj(indexed_value)
+    production = native_successor.obj(production_value)
+    targets = native_successor.obj(targets_value)
+    model = native_successor.obj(model_value)
+    fixtures = [native_successor.obj(item) for item in native_successor.arr(fixtures_value)]
+    declared = native_successor.obj(support.get("fixtures"))
+    file_api = native_successor.obj(support.get("fixture_file_api"))
+    links = native_successor.obj(support.get("actual_links"))
+    expected_names = set(actual_inputs)
+    native_successor.require(set(declared) == set(file_api) == set(links) == expected_names,
+                             "Fixture raw-object target set differs from actual File API")
+    entries = native_successor.obj(native_successor.arr(model["configurations"])[0])
+    target_files = {native_successor.string(row["id"]): reply / safe_fixture_relative(row["jsonFile"])
+                    for raw in native_successor.arr(entries["targets"])
+                    for row in [native_successor.obj(raw)]}
+    named = {native_successor.string(native_successor.obj(target)["name"]): key
+             for key, target in targets.items()}
+    commands_ref = native_successor.checked(scope["compile_commands"])
+    commands_raw: object = json.loads(Path(commands_ref["path"]).read_text(encoding="utf-8-sig"))
+    commands = [native_successor.obj(row) for row in native_successor.arr(commands_raw)]
+    all_paths = set().union(*actual_inputs.values())
+    objects: list[native_successor.FixtureProductionObjectBinding] = []
+    physical: dict[Path, native_successor.Pin] = {}
+    owners: dict[Path, str] = {}
+    production_names = {native_successor.string(native_successor.obj(row)["name"]): native_successor.obj(row)
+                        for row in production.values()}
+    for raw in native_successor.arr(support.get("objects")):
+        row = native_successor.obj(raw)
+        native_successor.require(set(row) == {"configured_object", "object", "production_target", "native_relative",
+                                             "source", "configured_compile_command_index"},
+                                 "Exact configured fixture object fields required")
+        configured = native_successor.string(row["configured_object"])
+        path = Path(configured)
+        native_successor.require(path.is_absolute() and path == path.resolve() and path in all_paths and path not in physical,
+                                 "Fixture support configured set has omitted, duplicate or unlinked objects")
+        name = native_successor.string(row["production_target"])
+        relative = safe_fixture_relative(row["native_relative"])
+        native_successor.require(name in production_names and path.is_relative_to(build_root / "CMakeFiles" / (name + ".dir")),
+                                 "Fixture support object is not an actual selected production target output")
+        source = native_successor.checked(row["source"])
+        native_successor.require(relative in indexed and source == indexed[relative],
+                                 "Fixture support source pin differs from actual frozen source")
+        compiled = set()
+        for source_value in native_successor.arr(production_names[name].get("sources", [])):
+            source_row = native_successor.obj(source_value)
+            if source_row.get("compileGroupIndex") is not None:
+                source_path = Path(native_successor.string(source_row["path"]))
+                compiled.add(source_path.resolve() if source_path.is_absolute() else (snapshot_root / source_path).resolve())
+        native_successor.require(Path(source["path"]).resolve() in compiled,
+                                 "Fixture support body is not compiled in its selected production target")
+        command_index = native_successor.integer(row["configured_compile_command_index"])
+        native_successor.require(command_index < len(commands), "Configured fixture compile-command index is out of range")
+        command = commands[command_index]
+        native_successor.require(Path(native_successor.string(command["directory"])).resolve() == build_root
+            and Path(native_successor.string(command["file"])).resolve() == Path(source["path"]).resolve()
+            and Path(native_successor.string(command["output"])).resolve() == path,
+            "Fixture support object/source/compile command differs from actual production compilation")
+        actual = native_successor.checked(row["object"])
+        native_successor.require(actual not in physical.values(), "Fixture physical objects must have distinct identities")
+        physical[path], owners[path] = actual, name
+        objects.append({"configured_object": configured, "object": actual, "production_target": name,
+                        "native_relative": relative, "source": source, "configured_compile_command_index": command_index})
+    native_successor.require(set(physical) == all_paths,
+                             "Fixture support configured set has omitted, duplicate or unlinked objects")
+    config = native_successor.read(Path(native_successor.checked(support["producer_config"])["path"]))
+    native_successor.require(config.get("source_commit") == native_commit and config.get("machine_id") == machine,
+                             "Fixture production config identity differs")
+    proof = native_successor.verified_fixture_object_bindings(config, sorted(str(path) for path in all_paths))
+    native_successor.require(objects == proof.objects, "Fixture objects differ from verified original production bindings")
+    for field, expected in (("production_plan", proof.production_plan),
+                            ("incremental_production_result", proof.incremental_production_result),
+                            ("baseline_compile_commands", proof.baseline_compile_commands),
+                            ("original_dependencies", proof.original_dependencies)):
+        native_successor.require(native_successor.checked(support[field]) == expected,
+                                 "Fixture production provenance differs: " + field)
+    parser_module = native_successor.load_shared(HERE / "build_native_flag_successor.py", "fixture_link_windows_arguments")
+    arguments: object = getattr(parser_module, "windows_args", None)
+    if not isinstance(arguments, native_successor.WindowsArguments):
+        raise ValueError("Shared Windows linker argument parser unavailable")
+    for name, paths in actual_inputs.items():
+        key = named[name]
+        native_successor.require(native_successor.checked(file_api[name]) == native_successor.pin(target_files[key]),
+                                 "Fixture raw-object link File API pin differs: " + name)
+        pins = [native_successor.checked(item) for item in native_successor.arr(declared[name])]
+        expected_pins = [physical[path] for path in sorted(paths)]
+        native_successor.require(pins == expected_pins, "Fixture raw-object links differ from actual File API: " + name)
+        fixture = next(row for row in fixtures if row["target"] == name)
+        executable = native_successor.checked(fixture["executable"])
+        execution = native_successor.read(Path(native_successor.checked(links[name])["path"]))
+        native_successor.require(execution.get("machine_id") == machine and execution.get("source_commit") == native_commit
+            and type(execution.get("original_wait_returncode")) is int and execution["original_wait_returncode"] == 0
+            and execution.get("stopped_reason") is None and bool(execution.get("started_at_utc"))
+            and bool(execution.get("finished_at_utc")) and execution.get("game_started_or_attached") is False
+            and execution.get("actual_live_business_qualified") is False,
+            "Actual original finite fixture link Popen.wait zero required")
+        native_successor.checked(execution["log"])
+        response = [native_successor.checked(item) for item in native_successor.arr(execution["response_files"])]
+        argv = native_successor.strings(execution["argv"])
+        native_successor.require(len(response) == 1 and len(argv) == 2 and Path(argv[0]).is_absolute()
+            and Path(argv[0]).name.lower() in {"link.exe", "lld-link.exe"}
+            and argv[1] == "@" + response[0]["path"]
+            and Path(native_successor.string(execution["cwd"])).resolve() == build_root,
+            "Actual fixture link must bind its exact linker response file and build directory")
+        words = arguments(Path(response[0]["path"]).read_text(encoding="utf-8"))
+        native_successor.require(not any(word.startswith("@") for word in words), "Nested fixture linker response files are unsupported")
+        linked = [Path(word).resolve() for word in words if Path(word).suffix.lower() in {".obj", ".o"}]
+        target = native_successor.obj(targets[key])
+        own_sources = set()
+        for raw in native_successor.arr(target.get("sources", [])):
+            source_row = native_successor.obj(raw)
+            if source_row.get("compileGroupIndex") is not None:
+                item = Path(native_successor.string(source_row["path"]))
+                own_sources.add(item.resolve() if item.is_absolute() else (snapshot_root / item).resolve())
+        own = {Path(native_successor.string(command["output"])).resolve() for command in commands
+               if Path(native_successor.string(command["file"])).resolve() in own_sources
+               and Path(native_successor.string(command["output"])).resolve().is_relative_to(build_root / "CMakeFiles" / (name + ".dir"))}
+        for item in own:
+            native_successor.pin(item)
+        expected_objects = {Path(physical[path]["path"]) for path in paths} | own
+        destinations = [Path(word[5:]).resolve() for word in words if word.upper().startswith("/OUT:")]
+        native_successor.require(len(linked) == len(set(linked)) and set(linked) == expected_objects
+            and destinations == [Path(executable["path"])], "Actual fixture RSP object map or configured EXE differs")
+    return {"ref": ref, "fixture_production_targets": {name: {owners[path] for path in paths}
+                                                       for name, paths in actual_inputs.items()}}
+
+
+def safe_fixture_relative(value: object) -> str:
+    """Parse a source/File API relative path without accepting traversal or aliases."""
+    text = native_successor.string(value)
+    native_successor.require("\\" not in text and ":" not in text and not text.startswith("/")
+        and all(part not in {"", ".", ".."} for part in text.split("/")), "Safe native relative path required")
+    return text
+
+
+def qualified_fixture_link_support(
+    value_input: object, refs_input: object, machine: str, scope_input: object,
+    snapshot_root: Path, build_root: Path, indexed_input: object, production_input: object,
+    targets_input: object, fixtures_input: object, reply: Path, model_input: object,
+) -> FixtureLinkSupportResult | None:
+    value, refs = native_successor.obj(value_input), native_successor.obj(refs_input)
+    scope, indexed = native_successor.obj(scope_input), native_successor.obj(indexed_input)
+    production, targets = native_successor.obj(production_input), native_successor.obj(targets_input)
+    model = native_successor.obj(model_input)
+    fixtures = [native_successor.obj(row) for row in native_successor.arr(fixtures_input)]
+    names = {native_successor.string(native_successor.obj(target)["name"]): key for key, target in targets.items()}
+    actual_inputs = {native_successor.string(row["target"]): fixture_object_inputs(
+        targets[names[native_successor.string(row["target"])]], snapshot_root, build_root) for row in fixtures}
     actual_inputs = {name: paths for name, paths in actual_inputs.items() if paths}
     ref = value.get("fixture_link_support")
     if not actual_inputs and not ref:
         return None
-    require(ref and actual_inputs, "Actual external fixture objects need their exact source-bound link-support receipt")
-    checked(ref)
-    support = read(ref["path"])
-    require(support.get("schema") == "ck3-fixture-production-object-link-support-v1"
+    native_successor.require(ref and actual_inputs, "Actual external fixture objects need their exact source-bound link-support receipt")
+    ref = native_successor.checked(ref)
+    support = native_successor.read(Path(ref["path"]))
+    native_successor.require(support.get("schema") in ("ck3-fixture-production-object-link-support-v1", "ck3-fixture-production-object-link-support-v2")
             and support.get("machine_id") == machine and support.get("source_commit") == value["source_commit"]
             and support.get("actual_live_business_qualified") is False,
             "Fixture link support must bind this actual native compile source and machine")
-    require(support.get("configured_scope") == refs["configured_scope"]
+    native_successor.require(support.get("configured_scope") == refs["configured_scope"]
             and support.get("production_freeze") == refs["production_freeze"]
             and support.get("fixture_results") == fixtures,
             "Fixture link support actual scope/freeze/finite execution pins differ")
-    declared = support.get("fixtures", {})
-    file_api = support.get("fixture_file_api", {})
-    require(set(declared) == set(file_api) == set(actual_inputs), "Fixture raw-object target set differs from actual File API")
-    target_files = {row["id"]: reply / safe_relative(row["jsonFile"])
-                    for row in model["configurations"][0]["targets"]}
+    if support["schema"] == "ck3-fixture-production-object-link-support-v2":
+        return qualified_configured_fixture_links(support, ref, machine, native_successor.string(value["source_commit"]),
+            scope, indexed, production, targets, fixtures, model, snapshot_root, build_root, reply, actual_inputs)
+    declared = native_successor.obj(support.get("fixtures", {}))
+    file_api = native_successor.obj(support.get("fixture_file_api", {}))
+    native_successor.require(set(declared) == set(file_api) == set(actual_inputs), "Fixture raw-object target set differs from actual File API")
+    configuration = native_successor.obj(native_successor.arr(model["configurations"])[0])
+    target_files = {native_successor.string(row["id"]): reply / safe_fixture_relative(row["jsonFile"])
+                    for raw in native_successor.arr(configuration["targets"]) for row in [native_successor.obj(raw)]}
     for name, paths in actual_inputs.items():
-        require(checked(file_api[name]) == pin(target_files[names[name]]),
+        native_successor.require(native_successor.checked(file_api[name]) == native_successor.pin(target_files[names[name]]),
                 "Fixture raw-object link File API pin differs: " + name)
-        require(len(declared[name]) == len(paths)
-                and {Path(row["path"]).resolve() for row in declared[name]} == paths,
+        declared_rows = [native_successor.parse_pin(row) for row in native_successor.arr(declared[name])]
+        native_successor.require(len(declared_rows) == len(paths)
+                and {Path(row["path"]).resolve() for row in declared_rows} == paths,
                 "Fixture raw-object links differ from actual File API: " + name)
-    objects = support.get("objects", [])
+    objects = [native_successor.obj(row) for row in native_successor.arr(support.get("objects", []))]
     all_paths = set().union(*actual_inputs.values())
-    require(len(objects) == len(all_paths)
-            and {Path(row["object"]["path"]).resolve() for row in objects} == all_paths,
+    native_successor.require(len(objects) == len(all_paths)
+            and {Path(native_successor.parse_pin(row["object"])["path"]).resolve() for row in objects} == all_paths,
             "Fixture support object set has omitted, duplicate or unlinked objects")
-    commands = read(scope["compile_commands"]["path"])
-    production_names = {target["name"]: target for target in production.values()}
-    checked_objects = {}
+    command_ref = native_successor.checked(scope["compile_commands"])
+    commands_value: object = json.loads(Path(command_ref["path"]).read_text(encoding="utf-8-sig"))
+    commands = native_successor.arr(commands_value)
+    production_names = {native_successor.string(native_successor.obj(target)["name"]): native_successor.obj(target)
+                        for target in production.values()}
+    checked_objects: dict[Path, native_successor.Pin] = {}
     for row in objects:
-        obj = checked(row["object"])
+        expected_object = native_successor.parse_pin(row["object"])
+        obj = native_successor.pin(Path(expected_object["path"]))
+        native_successor.require(obj == expected_object, "Exact input changed: " + expected_object["path"])
         path = Path(obj["path"]).resolve()
-        name, relative = row["production_target"], safe_relative(row["native_relative"])
-        require(name in production_names and path.is_relative_to(build_root / "CMakeFiles" / (name + ".dir")),
+        name, relative = native_successor.string(row["production_target"]), safe_fixture_relative(row["native_relative"])
+        native_successor.require(name in production_names and path.is_relative_to(build_root / "CMakeFiles" / (name + ".dir")),
                 "Fixture support object is not an actual selected production target output")
-        source = checked(row["source"])
-        require(relative in indexed and source == indexed[relative], "Fixture support source pin differs from actual frozen source")
-        compiled = set()
-        for item in production_names[name].get("sources", []):
+        source = native_successor.checked(row["source"])
+        native_successor.require(relative in indexed and source == indexed[relative], "Fixture support source pin differs from actual frozen source")
+        compiled: set[Path] = set()
+        for item_value in native_successor.arr(production_names[name].get("sources", [])):
+            item = native_successor.obj(item_value)
             if item.get("compileGroupIndex") is not None:
-                item_path = Path(item["path"])
+                item_path = Path(native_successor.string(item["path"]))
                 compiled.add(item_path.resolve() if item_path.is_absolute() else (snapshot_root / item_path).resolve())
-        require(Path(source["path"]).resolve() in compiled, "Fixture support body is not compiled in its selected production target")
-        command = row["actual_compile_command"]
-        require(command in commands and Path(command["directory"]).resolve() == build_root
-                and Path(command["file"]).resolve() == Path(source["path"]).resolve()
-                and Path(command["output"]).resolve() == path,
+        native_successor.require(Path(source["path"]).resolve() in compiled, "Fixture support body is not compiled in its selected production target")
+        command = native_successor.obj(row["actual_compile_command"])
+        native_successor.require(command in commands and Path(native_successor.string(command["directory"])).resolve() == build_root
+                and Path(native_successor.string(command["file"])).resolve() == Path(source["path"]).resolve()
+                and Path(native_successor.string(command["output"])).resolve() == path,
                 "Fixture support object/source/compile command differs from actual production compilation")
         checked_objects[path] = obj
     for rows in declared.values():
-        require(all(row == checked_objects[Path(row["path"]).resolve()] for row in rows),
+        native_successor.require(all(row == checked_objects[Path(row["path"]).resolve()]
+            for raw in native_successor.arr(rows) for row in [native_successor.parse_pin(raw)]),
                 "Fixture support target object pins differ from the actual hashed object set")
-    owners = {Path(row["object"]["path"]).resolve(): row["production_target"] for row in objects}
+    owners = {Path(native_successor.parse_pin(row["object"])["path"]).resolve(): native_successor.string(row["production_target"])
+              for row in objects}
     return {"ref": ref, "fixture_production_targets": {
         name: {owners[path] for path in paths} for name, paths in actual_inputs.items()}}
 
