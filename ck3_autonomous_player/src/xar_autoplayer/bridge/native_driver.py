@@ -31575,6 +31575,12 @@ def _retryable_life_advance_change(
 def _generic_pause_owner_binding(snapshot: dict[str, object]) -> tuple[object, ...] | None:
     """Strict binding for a direct pause recovery, not a gameplay retry gate."""
     from .version_identity import require_exact_native_build
+    if snapshot.get("episode_projection") == "native_campaign":
+        from .managed_pause_owner_v1 import managed_pause_owner_v1
+        campaign = managed_pause_owner_v1(snapshot)
+        if campaign is None:
+            return None
+        return (campaign, snapshot.get("active_event"), snapshot.get("pending_character_interaction"))
 
     diagnostics = snapshot.get("diagnostics")
     played = snapshot.get("played_character")

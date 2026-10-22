@@ -1,0 +1,83 @@
+{
+  "schema": "xalw.shared-root-response-and-campaign-pause-fix-final/v4",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T09:10:33.132696+00:00",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 322681,
+      "sha256": "f25af27d0221260a95b45fc5dcf417d25d733c8dbbdba7be866146643b75f1ee"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1657668,
+      "sha256": "06fc7eba6ea521f4e331c8f0c99aebdac73d587da4932abbb4fdc147d48ace46"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\campaign_interaction_boundary_v1.py",
+      "bytes": 4711,
+      "sha256": "60c4a4ff19651603a3f3f31648ea7b59636a628f9cf675301dc5ccaff48c2eb9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\managed_pause_owner_v1.py",
+      "bytes": 3987,
+      "sha256": "d1558daab8338421a13da881cfc10673120394b9bb3e1a6852d808a0e237f78a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 69218,
+      "sha256": "03f2f50c73aa08888288809d9f7373f70b8d55e55372ee3a98695fb436cee7f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_day.py",
+      "bytes": 13040,
+      "sha256": "c6b5e4fec8bdb9895a9e73506d56d748417af7c6403c07ed2863ab1d55d2ee54"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "bytes": 45876,
+      "sha256": "d8e2376f8d7f6b7ac14599d4a5b8a05412c6d503ceed0b379d03509940e3fb8c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\inventory_gui_contract.py",
+      "bytes": 8051,
+      "sha256": "0691627fe27360b74034fb1190b6b5ae68c62c4e3afc0a6421c97332be85d8ff"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\native_interruption_contract.py",
+      "bytes": 3252,
+      "sha256": "39d209f8f44546f1931b89912928443e82f7bcbde3340808f976f49627707258"
+    }
+  ],
+  "behavior_completion": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-product-final-a02\\result.json",
+    "bytes": 5032,
+    "sha256": "1ff8006a555cbe9f3ec3d3ff6308d0385042b9eb03709ca347f713b48afebd14"
+  },
+  "behavior_exit_code": 0,
+  "behavior_tests": 175,
+  "shared_ci_group": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-envelope-and-pause-ci-a01\\result.json",
+    "bytes": 37534,
+    "sha256": "61cf341468dbc1c45a0cf757c26b2138847d39dc9cf1dc7bd986c10ff770d3a0"
+  },
+  "shared_ci_original_commands": 77,
+  "campaign_pause_tests": 5,
+  "driver_scope_comparison": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-pause-owner-type-scope-a01\\comparison.json",
+    "bytes": 1128,
+    "sha256": "a21ecdeb35c5a86ab9285d9cc1e9469eabaed198bb90f68ae04ac6e3d638fba0"
+  },
+  "unchanged_host_previous_validation": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r6-repair-validation.json",
+    "bytes": 2835,
+    "sha256": "ddc80fbaf650dc4b4acfd141066f131bb83d6f89be0aeee212862d6f2e4c3869"
+  },
+  "strict_product_tools_files": 29,
+  "strict_product_check": "Actual root_living_commands.py mypy returned 0: no issues in 29 source files.",
+  "strict_new_pause_helper_and_test_files": 2,
+  "whole_legacy_modules_strict_pass": false,
+  "original_overbroad_type_command": "An initial strict run following all imports failed with 13060 errors in 662 legacy modules. It is not used as a scoped pass.",
+  "game_started": false,
+  "business_pass": false
+}

@@ -1,0 +1,239 @@
+{
+  "schema": "living-artifacts-r7-observation-index-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T09:01:13.861921+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0007",
+  "source_commit": "7559ccccf66348d9dae3b50b1cc2f40145c05df3",
+  "actual_game": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "actual_growth": {
+    "before": {
+      "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+      "artifact_id": "402",
+      "owner_id": "31254",
+      "saved_date": "1066.9.15",
+      "month": 12801,
+      "equipped": false,
+      "level": 1,
+      "xp": 92,
+      "pending": 0,
+      "growth_sequence": 0,
+      "last_month": 12801,
+      "resonance": 20,
+      "durability_decimal": "75.00000",
+      "current_native_artifact_variable_query": false
+    },
+    "after": {
+      "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+      "artifact_id": "402",
+      "owner_id": "31254",
+      "saved_date": "1066.10.1",
+      "month": 12802,
+      "equipped": true,
+      "level": 2,
+      "xp": 0,
+      "pending": 0,
+      "growth_sequence": 1,
+      "last_month": 12802,
+      "resonance": 25,
+      "durability_decimal": "75.00000",
+      "current_native_artifact_variable_query": false
+    },
+    "actual_adapter_subcase": "PASS",
+    "upgrade_confirmation_clicked": false
+  },
+  "actual_adapter_status": "BLOCKED",
+  "actual_adapter_error": "ValueError: Root checkpoint crossed scene",
+  "native_exact_days_completed": 25,
+  "root_campaign_days_completed": 1,
+  "qualified_controlled_days_total": 26,
+  "maximum_declared_days": 72,
+  "final_observed_progress_days": 100,
+  "later_interval_control_qualified": false,
+  "unequipped_month_pass": false,
+  "feeding_pass": false,
+  "interruption": {
+    "instance_id_decimal": "67108864",
+    "definition": "arrange_marriage_interaction",
+    "native_reject_submitted": true,
+    "existing_specialist_policy_executed_before_reply": true,
+    "independent_window_absent_and_date_unchanged": true,
+    "response_missing_fields": [
+      "run_id",
+      "reviewer"
+    ],
+    "original_malformed_response_preserved": true
+  },
+  "actual_final_paused_date_raw": 53146728,
+  "normal_gui_quit_qualified": false,
+  "native_job_ck3_exit_code": 1,
+  "retained_handle_os0": false,
+  "host_wait": 1,
+  "public_wait": 2,
+  "keeper_wait": 0,
+  "allocator_wait": 0,
+  "screen_release_expected_sequence": 410,
+  "screen_release_actual_sequence": 411,
+  "screen_resources": [],
+  "official_candidate_ci": {
+    "run_id_decimal": "39740187692",
+    "conclusion": "success"
+  },
+  "workshop_uploaded": false,
+  "business_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\frozen-argv.json",
+      "bytes": 62365,
+      "sha256": "9efabcf78ba90b164a0d135a53c0d8fc8240a8e5b7bc0f1fca4730088694477a"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\native-report.json",
+      "bytes": 13114691,
+      "sha256": "573e63074828e9a18a9c8d6f13db4f0a8b603a6ca2ebe4750a598f8e02ff8539"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\host-original-process-exit.json",
+      "bytes": 253,
+      "sha256": "7f6aca2d07f214f63415e82a1031546791274cfdc3741822431cb1971be3c56e"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\keeper-actual-parent-exit.json",
+      "bytes": 637,
+      "sha256": "1c514b0bf7edd25cde36485f7d8c4fbcb540999eb236d484784e802a6b426e2a"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\living-artifacts-core-result.json",
+      "bytes": 78292,
+      "sha256": "7cebe76212e7795ddc2b870d2471c120236bbf6bfe57c62506006c50aef57412"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\observer-checkpoint-01.json",
+      "bytes": 11075,
+      "sha256": "4505ee8a66fc0dbcda99cf259ad87d03c30f169254eec40469835cc40c9d56dd"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\observer-checkpoint-02.json",
+      "bytes": 12580,
+      "sha256": "0cc694610b376c50b56191e2f4d54973268458c7487265cd75e21029d725414f"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\xalw-native-interruption-0001-awaiting.json",
+      "bytes": 821,
+      "sha256": "8d536031c144cb40c388a2f4fde37cbad832b8bec40feb9c0487cc6ef08341fd"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\xalw-native-interruption-0001-root-result.json",
+      "bytes": 94,
+      "sha256": "5106d9ff1a4a734c751b2a6b70a1368bd7b4b48e94bed1af324702db43ffded8"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 184,
+      "sha256": "27304c09e15a5b2d8846758933d64b0031ef1a1bc28a2aab3d8fd0e678ada34a"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\normal-close-result.json",
+      "bytes": 711,
+      "sha256": "7ae1c6335881ccd3789d98968dfaa9bb1a7eba532180b55c2fe53bc56dd92189"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\entry-run-result.json",
+      "bytes": 99761,
+      "sha256": "13ba19df20f3db89748f97d91dc1052165a9105c9db6969a74f7d3d5fb99f664"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-interaction-policy-a01.json",
+      "bytes": 26007,
+      "sha256": "9733a0d7c6592ddbdc621d61c14e1ded2f2055eb391b61479b91c390ac331395"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-interaction-original-report-a01.json",
+      "bytes": 12904179,
+      "sha256": "4c0bced51e399789f973649fbf394b64d79dca906ac70445537a05f5fe371eec"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-interaction-continued-a01.json",
+      "bytes": 2600,
+      "sha256": "660fbe1e747ec8d329fc98ea6ad2f85a34a3927f16ac30f08fe52a3662361986"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-root-unequipped-days-a01\\r7-root-unequipped-days-a01-001.actual.json",
+      "bytes": 80267,
+      "sha256": "0e24558a3b18d110b09195db53746c33eb232afc0d43e7845f48a1ad8b79fa1c"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-root-unequipped-days-a01\\r7-root-unequipped-days-a01-002.actual.json",
+      "bytes": 746,
+      "sha256": "b740c4888ffb9fd34e794aec93728da802d1bfc7a936c2a8d75f4de83a5738e2"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-terminal-observation-a01.json",
+      "bytes": 2151,
+      "sha256": "bffeb33656fef1d63ebe06cd30698f27039fd6dbe43a8b96c5d73f27982af655"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-saved-star-audit-01.json",
+      "bytes": 11082,
+      "sha256": "e5dd8043af38d5cf9cad63792b986ea8fde82f2a5c4e1529374bdab92284965e"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-saved-star-audit-02.json",
+      "bytes": 12227,
+      "sha256": "74fef75f6719fa59b56bb59cac8bf11169a69117f35560f91d5a371b8a379d0a"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\star-ci-public-a07.json",
+      "bytes": 887,
+      "sha256": "426ffd3b0249fa51a82c6f156503863804192a2b883a0afc1982823adf52d4e6"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-star-image-public-GitHub-readback-a01.json",
+      "bytes": 532,
+      "sha256": "9733d408c49c04212383d4a0cbacfce90cd25483f2e26a4b91661c8c4a20c110"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-after-r7-close-a01.json",
+      "bytes": 2332,
+      "sha256": "87216028dc9532fe65f354a745bd9f09595af017f09ce4622b56e1a90cdfa9d3"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T072655484180Z-run\\exit.json",
+      "bytes": 184,
+      "sha256": "e324fb4c3e509f6a206892c09a9c62ebf7eb33eb53bc967311b78f4078fd478e"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\public-operations\\20261022T072543303590Z-allocate\\exit.json",
+      "bytes": 185,
+      "sha256": "1955de7dc5f9790c2c9f976fdc3232dcb53827e70af85eac8fe8774659a51b4a"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-screen-resource-close-a01\\release.stdout.json",
+      "bytes": 1274,
+      "sha256": "048e4e49cf888622240ee3f0efe78007e3066d75822a764d2c485ede7b0a17fe"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-screen-resource-close-a01\\release.decoded-utf8.json",
+      "bytes": 1296,
+      "sha256": "72e0df08e162f6d11d23be219caa4201c10b6b5cffc93dac2f1e0095cd770006"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-screen-resource-close-a01\\release.completion.json",
+      "bytes": 750,
+      "sha256": "b49ec3e59b270ae396c831ecc5228b8ac7991c16e1f804aae0b1a95aa292d820"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-screen-resource-close-a01\\encoding-correction-and-fresh-readback.json",
+      "bytes": 1068,
+      "sha256": "d608aca49faa5f5a9dc0bb9840f33e227d52008f7e1e254398d7d50d076feeac"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r7-screen-resource-close-a01\\after-list.stdout.json",
+      "bytes": 9782,
+      "sha256": "b9ffb25aebd7d8a9e53f75d0090dd343e58485d81074fa8c88afc7ab401d6321"
+    }
+  ]
+}

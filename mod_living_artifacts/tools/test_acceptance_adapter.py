@@ -20,6 +20,8 @@ from test_core_generation import Script
 from test_inventory_gui_contract import response_fixture
 from startup_actor_binding import StartupActorBinding
 from ck3_mod_acceptance_client import CaseClient
+from native_interruption_contract import completed_interruption_response
+from test_native_interruption_contract import PublicCheckpointPort, RootCheckpointConsumer
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'ck3_autonomous_player/src'))
 
@@ -171,7 +173,10 @@ class NotificationPort(GuiPort):
         self.native_requests.append(name)
         if not self.keep_original:
             self.frame["pending_character_interaction"]=None
-        return {"native_interruption_continued":True,"original_instance_independently_absent":True}
+        response = completed_interruption_response(request, reviewer=self.operator_reviewer)
+        write_once(self.output / (name + '-root-result.json'), object_value(response))
+        public: RootCheckpointConsumer = PublicCheckpointPort(self.output)
+        return public.root_checkpoint(name, request, reserve=reserve)
 
 
 class NativePublicPort(CaseClient):

@@ -27,6 +27,7 @@ from startup_actor_binding import StartupActorBinding
 from checkpoint_artifacts import SavedInputs
 from checkpoint_callback import CheckpointSample, ReadbackRequestBody, verify_readback
 from inventory_gui_contract import InventoryOpenRequest, REFUSAL, parse_opening, pre_intent_source
+from native_interruption_contract import NativeInterruptionRequest, parse_completed_interruption
 
 ITEM = "ck3_query_player_artifact_personal_use_v1"
 EQUIP = "ck3_submit_player_artifact_personal_use_v1"
@@ -44,19 +45,6 @@ REQUIRED_OPT_INS: dict[str, bool] = {
     "opt_in_player_artifact_personal_use_actions": True,
     "opt_in_player_inventory_window_open": True,
 }
-
-
-class NativeInterruptionRequest(TypedDict):
-    schema: Literal["living-artifacts-native-interruption-request-v1"]
-    run_id: str
-    machine_id: str
-    kind: Literal["event", "interaction"]
-    instance_id: int
-    date_raw: int
-    original_native_frame_record: Pin
-    existing_specialist_policy_priority: Literal[True]
-    unknown_event_first_displayed_or_interaction_legal_left: Literal[True]
-    no_replay_of_unknown: Literal[True]
 
 
 class CaseBlocked(RuntimeError):
@@ -156,7 +144,7 @@ def _write_fixture_contract(fixture_root: Path, config: dict[str, object], fixtu
     return write_once(fixture_root / "_case_contract.json", {"product": "living-artifacts", "case": "core_continuous",
                "config": config, "fixture_emission": fixture, "business_pass": False,
                "caller_sources": [pin(PRODUCT_TOOLS / name) for name in (
-                    "acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py")],
+                    "acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py", "native_interruption_contract.py")],
                "contract_source": pin(PRODUCT_TOOLS / "core_continuous.contract.json")})
 
 
@@ -182,7 +170,7 @@ def _prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
     require(set(frozen) == {"product", "case", "config", "fixture_emission", "business_pass", "caller_sources", "contract_source"} and
             frozen["product"] == "living-artifacts" and frozen["case"] == "core_continuous" and frozen["business_pass"] is False and
             frozen["config"] == json_value(_bound_config(context)), "Prepared fixture contract differs from the allocated case")
-    expected_sources = ("acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py")
+    expected_sources = ("acceptance_adapter.py", "acceptance_contract.py", "prepare_fixture.py", "living_artifacts_core.py", "living_artifacts_model.py", "startup_actor_binding.py", "checkpoint_artifacts.py", "checkpoint_callback.py", "inventory_gui_contract.py", "native_interruption_contract.py")
     sources = array(frozen["caller_sources"], "frozen caller sources")
     require(len(sources) == len(expected_sources), "Prepared caller source set differs")
     refs = [_checked_pin(value, "prepared caller source", PRODUCT_TOOLS / name) for name, value in zip(expected_sources, sources)]
@@ -518,8 +506,7 @@ class Session:
                 "unknown_event_first_displayed_or_interaction_legal_left":True, "no_replay_of_unknown":True}
             response = self.client.root_checkpoint(f"xalw-native-interruption-{self.interruption_sequence:04d}",
                 object_value(request), reserve=180)
-            if field(response, "native_interruption_continued") is not True or field(response, "original_instance_independently_absent") is not True:
-                raise CaseBlocked("Original native interruption not resolved with independent window absence")
+            parse_completed_interruption(response, request=request, reviewer=self.client.operator_reviewer)
             self.snapshot()
             require(self.current().date_raw == before.date_raw, "Root interruption handling changed the paused date")
         raise CaseBlocked("Finite native interruption handling budget reached")
