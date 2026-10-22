@@ -147,7 +147,50 @@ class GuiPort(UnitPort):
         return response
 
 
+class NotificationPort(GuiPort):
+    def __init__(self,output: Path,*,keep_original: bool=False) -> None:
+        super().__init__(output)
+        self.keep_original=keep_original
+        self.native_requests: list[str]=[]
+
+    def advance_day(self,days: int=1,timeout: float=300,allow_event_boundary: bool=False,
+                    allow_actor_change: bool=False) -> object:
+        self.calls.append("actual-host-advance-interface")
+        self.frame["date_raw"]=24024
+        self.frame["pending_character_interaction"]={"instance_id":33554443}
+        return {"result":{"after":self.frame}}
+
+    def root_checkpoint(self,name: str,request: Object,reserve: int=90) -> object:
+        if request.get("schema")!="living-artifacts-native-interruption-request-v1" or request.get("existing_specialist_policy_priority") is not True:
+            raise AssertionError("Actual native interruption policy contract required")
+        self.native_requests.append(name)
+        if not self.keep_original:
+            self.frame["pending_character_interaction"]=None
+        return {"native_interruption_continued":True,"original_instance_independently_absent":True}
+
+
 class AcceptanceContractTests(unittest.TestCase):
+    def test_pending_notification_is_handled_before_any_later_business_call(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            port=NotificationPort(Path(temporary))
+            session=adapter.Session({"run_id":"unit-run"},port,adapter.Contract(72,420,60,(),()))
+            session.startup_actor=StartupActorBinding(29829,123,"1",24000,25,"a"*64,"b"*64)
+            session.snapshot();session.advance_one()
+            self.assertEqual(session.days,1)
+            self.assertEqual(port.native_requests,["xalw-native-interruption-0001"])
+            self.assertIsNone(mapping(session.last_frame,"retained frame")["pending_character_interaction"])
+            self.assertEqual(port.calls,["actual-host-advance-interface"])
+
+    def test_root_absence_flag_cannot_replay_an_unchanged_native_window(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            port=NotificationPort(Path(temporary),keep_original=True)
+            session=adapter.Session({"run_id":"unit-run"},port,adapter.Contract(72,420,60,(),()))
+            session.startup_actor=StartupActorBinding(29829,123,"1",24000,25,"a"*64,"b"*64)
+            session.snapshot()
+            with self.assertRaisesRegex(ValueError,"never replay"):
+                session.advance_one()
+            self.assertEqual(port.native_requests,["xalw-native-interruption-0001"])
+
     def test_localization_rejects_script_scope_prefix_and_keeps_named_object_methods(self) -> None:
         for language in ("simp_chinese", "english"):
             entries = render_core_localization("simp_chinese" if language == "simp_chinese" else "english")
@@ -240,7 +283,8 @@ class AcceptanceContractTests(unittest.TestCase):
             self.assertNotIn(adapter.WINDOW, port.calls)
 
     def test_unknown_native_error_never_authorizes_gui_or_second_open(self) -> None:
-        for error in ("Original native dispatch outcome unavailable", "Another failure mentioning " + REFUSAL):
+        for error in ("Original native dispatch outcome unavailable", "Another failure mentioning " + REFUSAL,
+                      "RuntimeError: Inventory opening requires the existing actual managed-source inventory"):
             with self.subTest(error=error), tempfile.TemporaryDirectory() as temporary:
                 port = GuiPort(Path(temporary), error=error)
                 session = adapter.Session({"run_id": "unit-run"}, port, adapter.Contract(72, 420, 60, (), ()))

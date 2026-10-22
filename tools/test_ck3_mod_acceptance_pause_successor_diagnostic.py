@@ -171,7 +171,7 @@ class PauseSuccessorDiagnosticTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(saved["campaign_pause_readbacks"][0]["status"], "FAILED_OR_CANCELLED_ORIGINAL_ERROR_PRESERVED")
             self.assertEqual(client.fresh_count, 1)
 
-    def test_success_has_no_diagnostic_and_all_five_production_calls_are_labeled(self):
+    def test_success_has_no_diagnostic_and_all_six_production_calls_are_labeled(self):
         frame = self.frame(100, paused=True, revision=10)
         bound = self.ns["campaign_pause_frame_binding"](frame)
         self.assertEqual(self.ns["require_campaign_pause_successor"](bound, frame), bound)
@@ -181,8 +181,8 @@ class PauseSuccessorDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         labels = [next(k.value.value for k in call.keywords if k.arg == "diagnostic_callsite") for call in calls]
         self.assertEqual(set(labels), {"speed_presubmission.full_frame", "pause_campaign_after_advance.readback",
                                       "advance_campaign_event_boundary.preflight", "advance_campaign_event_boundary.readmission",
-                                      "advance_campaign_event_boundary.running"})
-        self.assertEqual(len(labels), 5)
+                                  "advance_campaign_event_boundary.running", "advance_campaign_event_boundary.failure_pause"})
+        self.assertEqual(len(labels), 6)
 
 
 if __name__ == "__main__":

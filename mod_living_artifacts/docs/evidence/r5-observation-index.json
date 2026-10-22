@@ -1,0 +1,220 @@
+{
+  "schema": "living-artifacts-r5-observation-index-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T05:16:48.049723+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0005",
+  "source_commit": "85c98145ed951f0a03a2e9529cb123ecb629a566",
+  "business_pass": false,
+  "original_adapter_status": "BLOCKED",
+  "controlled_natural_days": 16,
+  "actual_calendar_days": 93,
+  "declared_day_budget": 72,
+  "uncontrolled_after_unequip_days": 77,
+  "original_host_wait": 1,
+  "public_run_wait": 0,
+  "retained_ck3_exit": 0,
+  "keeper_wait": 0,
+  "normal_close_qualified": true,
+  "screen_release_sequences": [
+    365,
+    366
+  ],
+  "samples": [
+    {
+      "source": "observer-checkpoint-01.json",
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.9.15",
+        "month": 12801,
+        "equipped": false,
+        "level": 1,
+        "xp": 92,
+        "pending": 0,
+        "growth_sequence": 0,
+        "last_month": 12801,
+        "resonance": 20,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      }
+    },
+    {
+      "source": "root-observer-checkpoint-02.json",
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.10.1",
+        "month": 12802,
+        "equipped": true,
+        "level": 2,
+        "xp": 0,
+        "pending": 0,
+        "growth_sequence": 1,
+        "last_month": 12802,
+        "resonance": 25,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      }
+    },
+    {
+      "source": "root-observer-checkpoint-03.json",
+      "sample": {
+        "authority": "actual-checkpoint-with-independent-native-owner-and-equipment",
+        "artifact_id": "402",
+        "owner_id": "31254",
+        "saved_date": "1066.12.17",
+        "month": 12804,
+        "equipped": false,
+        "level": 2,
+        "xp": 0,
+        "pending": 0,
+        "growth_sequence": 1,
+        "last_month": 12804,
+        "resonance": 25,
+        "durability_decimal": "75.00000",
+        "current_native_artifact_variable_query": false
+      }
+    }
+  ],
+  "files": {
+    "frozen-argv.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\frozen-argv.json",
+      "bytes": 65684,
+      "sha256": "cea40e67674acb27e4335778ca15cfc05b7fca12c03f8797ac127b6bdc9c12d3"
+    },
+    "host-original-process-exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\host-original-process-exit.json",
+      "bytes": 254,
+      "sha256": "1c77349ed9d0acd3470dd2eceb90361f839aaaac75d037fd36b75006bcd504e1"
+    },
+    "keeper-actual-parent-exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\keeper-actual-parent-exit.json",
+      "bytes": 637,
+      "sha256": "c25daec57f8517cb1d2584fb2a35ec49f2dce7fefa99664240136874870da4f4"
+    },
+    "case-output/living-artifacts-core-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\living-artifacts-core-result.json",
+      "bytes": 12927,
+      "sha256": "2f26ca10f5055a3cfaa515e106fb82493d4112bfdc1dd85a59ecc693636e56cf"
+    },
+    "case-output/observer-checkpoint-01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\observer-checkpoint-01.json",
+      "bytes": 10930,
+      "sha256": "13277f68b6197b1bc4069d4fb271ba0711fbe9b788a0ba3ec0e3581ad9d008a3"
+    },
+    "case-output/root-observer-checkpoint-02.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\root-observer-checkpoint-02.json",
+      "bytes": 13386,
+      "sha256": "4bb6a8acf3d917b145b93ba92282a12b2ddee2e7bca4c280084e33757fe55daf"
+    },
+    "case-output/root-observer-checkpoint-03.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\root-observer-checkpoint-03.json",
+      "bytes": 13245,
+      "sha256": "08b4ead1328966236ee1781c1a00a098905d1e2720729bf1771e5868f0a9c552"
+    },
+    "case-output/root-readback-02-authorship.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\root-readback-02-authorship.json",
+      "bytes": 1039,
+      "sha256": "a8cc31da3a8b8a228f597734065d7688b101e267948ca29800556a8716732014"
+    },
+    "case-output/root-readback-03-authorship.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\root-readback-03-authorship.json",
+      "bytes": 1039,
+      "sha256": "6ce86522524d3132d16d557095f1e7b11d3e3c4bf824a47aef44636e5fd67d8a"
+    },
+    "case-output/normal-close-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\normal-close-result.json",
+      "bytes": 8645,
+      "sha256": "d9aba75359e1742241692d63f86290952b93afd7050a1b63c7a7baa628fac417"
+    },
+    "case-output/normal-quit-root-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\normal-quit-root-result.json",
+      "bytes": 1747,
+      "sha256": "46f7ec10dcea7ef0e911065a50c1110b023bc8b6ff2d7dc75179dca3be6ba63b"
+    },
+    "case-output/actual-retained-handle-os-exit.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0005\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "edacf265d4de7d4cc4a50ce9ab40bbb309e59b80487d21efc65143464cdfd102"
+    },
+    "environment/r5-interruption-originals-a01/index.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-interruption-originals-a01\\index.json",
+      "bytes": 992,
+      "sha256": "cb8a541e6bedb05bea955835705abc30ea22992b889ab42e2ed36d94aacb7acf"
+    },
+    "environment/r5-interruption-originals-a01/snapshot-01.original.jsonl": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-interruption-originals-a01\\snapshot-01.original.jsonl",
+      "bytes": 46840,
+      "sha256": "2476b75a0aad48f335f443bfbbf0aeaba3fb21a145693d82283780f2da23647c"
+    },
+    "environment/r5-screen-resource-close-a01/release.stdout.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-screen-resource-close-a01\\release.stdout.json",
+      "bytes": 1442,
+      "sha256": "54d64c07fdd4e718be78b5da87b1db7a3a96bef5c7b06b7103d905277aee5229"
+    },
+    "environment/steam-after-r5-close-a01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-after-r5-close-a01.json",
+      "bytes": 2332,
+      "sha256": "7a6791b6c901e51c57b29a284d851385e6bbd19f0e96f3fad851bcfdacc41bdd"
+    },
+    "environment/r5-shared-fixes-checks-a07/result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-shared-fixes-checks-a07\\result.json",
+      "bytes": 1819,
+      "sha256": "e4be3e8568ace8524937daf347ca344c3b6a706f72cd0589fb49c04c3d56c129"
+    },
+    "environment/r5-shared-fixes-checks-a08/result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-shared-fixes-checks-a08\\result.json",
+      "bytes": 5029,
+      "sha256": "b154d00694c096182f799f7e9006ebd620802fe2aaf44f77a31f8fb1e7360311"
+    },
+    "environment/r5-shared-ci-a01/result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r5-shared-ci-a01\\result.json",
+      "bytes": 35608,
+      "sha256": "83e3ccc5e67a070345eda214efe94afbbb966906562774b1907bf470ee502947"
+    },
+    "environment/interaction-host-scope-a02/comparison.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\interaction-host-scope-a02\\comparison.json",
+      "bytes": 447,
+      "sha256": "44b33ae7d8c53f16ccbddc4c90dbf090f1479d19eb3b2751147034b48232c152"
+    },
+    "media/20261022T035353745386Z-r5-october01-a01.png": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T035353745386Z-r5-october01-a01.png",
+      "bytes": 2179131,
+      "sha256": "618821ccfd29b928b9865d4abda3a5422452c78b26af1dfdd7ccbc45b098a0c3"
+    },
+    "media/20261022T035353745386Z-r5-october01-a01.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T035353745386Z-r5-october01-a01.json",
+      "bytes": 807,
+      "sha256": "a92bc98f32143a4378bb309fa6a626b3ad80f3672666fe83c3e550c918e369ef"
+    },
+    "media/r5-emergency-gui-pause-a01.png.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\r5-emergency-gui-pause-a01.png.json",
+      "bytes": 1515,
+      "sha256": "8a1dc930f8a0c57aa1c40659da1f5a508c49986890cbcbe6ab13e02d5be62377"
+    },
+    "media/20261022T040733056197Z-r5-quit-unchecked-a01.png": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T040733056197Z-r5-quit-unchecked-a01.png",
+      "bytes": 1600376,
+      "sha256": "ebf53cb79f22671b114a0bc6e942a31ef574c37ea73f8b85b053c1e84239be30"
+    },
+    "media/r5-final-quit-desktop-a01.png.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\r5-final-quit-desktop-a01.png.json",
+      "bytes": 1513,
+      "sha256": "2ede0964181ae36f736dcf4403cbc67df3c1509866af953ac3eec6230b1335ba"
+    }
+  },
+  "actual_bookmark_source": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\bookmark_events.txt",
+    "bytes": 50531,
+    "sha256": "5a5ce08980d8c4fda1dcf40ec26e12d8973c01286f4da42a6d939776cfd50e03"
+  },
+  "bookmark_analysis": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_norman_sicily1070_12003.py",
+  "bookmark_specialist_policy_used": false,
+  "notification_definition_known": false,
+  "notification_reply_submitted": false,
+  "review_at_utc": "2026-10-29T00:00:00Z",
+  "unresolved_retention_reason": "Current runtime regression and next controlled product acceptance need original inputs and failure evidence",
+  "workshop_published": false
+}

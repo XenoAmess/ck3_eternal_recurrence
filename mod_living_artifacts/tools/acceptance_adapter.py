@@ -13,7 +13,7 @@ import importlib
 from pathlib import Path
 import re
 import sys
-from typing import Literal, Protocol, runtime_checkable
+from typing import Literal, Protocol, TypedDict, runtime_checkable
 
 PRODUCT_TOOLS = Path(__file__).resolve().parent
 if str(PRODUCT_TOOLS) not in sys.path:
@@ -44,6 +44,19 @@ REQUIRED_OPT_INS: dict[str, bool] = {
     "opt_in_player_artifact_personal_use_actions": True,
     "opt_in_player_inventory_window_open": True,
 }
+
+
+class NativeInterruptionRequest(TypedDict):
+    schema: Literal["living-artifacts-native-interruption-request-v1"]
+    run_id: str
+    machine_id: str
+    kind: Literal["event", "interaction"]
+    instance_id: int
+    date_raw: int
+    original_native_frame_record: Pin
+    existing_specialist_policy_priority: Literal[True]
+    unknown_event_first_displayed_or_interaction_legal_left: Literal[True]
+    no_replay_of_unknown: Literal[True]
 
 
 class CaseBlocked(RuntimeError):
@@ -252,6 +265,7 @@ class Session:
         self.calls = 0
         self.days = 0
         self.sequence = 0
+        self.interruption_sequence = 0
         self.owner: Frame | None = None
         self.startup_actor: StartupActorBinding | None = None
         self.last_frame: object = None
@@ -480,18 +494,41 @@ class Session:
                         "native_owner_slot_observed": True, "actor_net_modifier_attribution": False}
         raise CaseBlocked("Original equip intent remains unknown; preserve it without replay")
 
-    def advance_one(self) -> None:
-        if self.days >= self.contract.maximum_days:
-            raise CaseBlocked("Finite declared natural-day budget reached")
-        self.budget(3)
-        frame = self.last_frame
-        if field(frame, "active_event") is not None or field(frame, "pending_character_interaction") is not None:
-            response = self.client.root_checkpoint(f"xalw-native-interruption-{self.sequence:04d}", {
-                "original_native_frame_record": json_value(self.last_native_record), "mandatory_original_first_displayed_or_legal_left_action": True,
-                "health_1015_specialist_priority": True, "no_replay_of_unknown": True}, reserve=180)
+    def continue_native_interruption(self) -> None:
+        seen: set[tuple[str, int]] = set()
+        for _ in range(16):
+            frame = self.last_frame
+            active = field(frame, "active_event")
+            pending = field(frame, "pending_character_interaction")
+            if active is None and pending is None:
+                return
+            kind: Literal["event", "interaction"] = "event" if active is not None else "interaction"
+            selected = active if active is not None else pending
+            identity = (kind, integer(field(selected, "instance_id"), "actual native interruption", 1))
+            require(identity not in seen, "Original native interruption remains; never replay its choice")
+            seen.add(identity)
+            before = self.current()
+            self.interruption_sequence += 1
+            if self.last_native_record is None:
+                raise CaseBlocked("Original interruption frame source is unavailable")
+            request: NativeInterruptionRequest = {
+                "schema":"living-artifacts-native-interruption-request-v1", "run_id":self.run_id,
+                "machine_id":self.machine_id, "kind":kind, "instance_id":identity[1], "date_raw":before.date_raw,
+                "original_native_frame_record":self.last_native_record, "existing_specialist_policy_priority":True,
+                "unknown_event_first_displayed_or_interaction_legal_left":True, "no_replay_of_unknown":True}
+            response = self.client.root_checkpoint(f"xalw-native-interruption-{self.interruption_sequence:04d}",
+                object_value(request), reserve=180)
             if field(response, "native_interruption_continued") is not True or field(response, "original_instance_independently_absent") is not True:
                 raise CaseBlocked("Original native interruption not resolved with independent window absence")
             self.snapshot()
+            require(self.current().date_raw == before.date_raw, "Root interruption handling changed the paused date")
+        raise CaseBlocked("Finite native interruption handling budget reached")
+
+    def advance_one(self) -> None:
+        if self.days >= self.contract.maximum_days:
+            raise CaseBlocked("Finite declared natural-day budget reached")
+        self.continue_native_interruption()
+        self.budget(3)
         row = self.client.advance_day(timeout=float(self.contract.day_timeout), allow_event_boundary=True)
         self.calls += 3
         result = field(row, "result")
@@ -501,6 +538,7 @@ class Session:
         if self.start is None:
             raise CaseBlocked("Native opening frame absent")
         self.days = (self.current().date_raw - self.start.date_raw) // 24
+        self.continue_native_interruption()
 
 
 def _check(case_id: str, status: Literal["PASS", "FAIL", "BLOCKED"], reason: str | None, refs: list[Pin], observed: Object) -> CheckResult:
@@ -546,8 +584,10 @@ def run_case(context: object, client: object) -> Object:
         current = initial
         # The first actual monthly boundary after the pinned Sep15 bookmark is
         # Oct1, sixteen real public daily advances. Save only at checkpoints.
-        for _ in range(16):
+        growth_date = session.current().date_raw + 16 * 24
+        while session.current().date_raw < growth_date:
             session.advance_one()
+            require(session.current().date_raw <= growth_date, "Actual progression overshot the pinned monthly observation")
             native = session.observe_item(target)
             require(native.get("equipped") is True, "Actual target ceased being equipped during G01")
         current, _ = session.observer(target)
@@ -560,8 +600,10 @@ def run_case(context: object, client: object) -> Object:
         active_check = "CORE-UNEQUIP-01"
         unequip = session.equip(target, False)
         frozen = current
-        for _ in range(31):
+        unequipped_date = session.current().date_raw + 31 * 24
+        while session.current().date_raw < unequipped_date:
             session.advance_one()
+            require(session.current().date_raw <= unequipped_date, "Actual progression overshot the unequipped monthly observation")
             native = session.observe_item(target)
             require(native.get("equipped") is False, "Native equipment predicate changed during unequipped month")
         current, _ = session.observer(target)

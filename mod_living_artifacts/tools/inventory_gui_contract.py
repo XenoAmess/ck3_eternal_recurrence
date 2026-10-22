@@ -16,8 +16,10 @@ if str(SHARED) not in sys.path:
     sys.path.append(str(SHARED))
 from desktop_coordinate_map import map_point
 
-# Exact public error row observed in R2; an embedded message is not this refusal.
-REFUSAL = "RuntimeError: Inventory opening requires the existing actual managed-source inventory"
+# Exact public MCP error row observed in R5; substring matches never qualify.
+REFUSAL = ("RuntimeError: MCP tool ck3_open_player_inventory_window_v1 returned an error: "
+           "Error executing tool ck3_open_player_inventory_window_v1: "
+           "Inventory opening requires the existing actual managed-source inventory")
 GUARD_RELATIVE = "ck3_autonomous_player/src/xar_autoplayer/bridge/player_inventory_window_private_transport_v1.py"
 GUARD_SHA = "8c316ca5efb687ffdfc411854f0af8c1d822039419d894e40b57bdb8081fd6a3"
 

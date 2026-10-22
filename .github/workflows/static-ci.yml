@@ -501,6 +501,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_interrupted.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_campaign_interaction_boundary.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=silent ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_interaction_boundary_v1.py tools/test_ck3_mod_acceptance_campaign_interaction_boundary.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_unrun_stages.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_steam_offline_native_profiles.py -v

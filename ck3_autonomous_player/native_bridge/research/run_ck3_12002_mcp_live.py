@@ -1556,11 +1556,13 @@ def require_campaign_pause_successor(source: dict[str, object], snapshot: object
                                      allowed_event_instance: int | None = None,
                                      allow_actor_change: bool = False,
                                       allow_pause_transition: bool = False,
+                                       allowed_interaction_instance: int | None = None,
                                        diagnostic_callsite: str | None = None) -> dict[str, object]:
+    from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import owner_identities_match_v1
     current = campaign_pause_frame_binding(snapshot, allow_running=allow_running, allowed_event_instance=allowed_event_instance,
                                            allow_pause_transition=allow_pause_transition)
-    identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
-                        all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
+    identity_matches = owner_identities_match_v1(source["identity"],current["identity"],
+        allow_actor_change=allow_actor_change,allowed_interaction_instance=allowed_interaction_instance)
     if (not identity_matches or current["rejections"] != source["rejections"]
             or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
         error = RuntimeError("campaign pause readback owner, clock or rejection state changed")
@@ -1871,6 +1873,7 @@ class PlanClient:
                                           allow_actor_change: bool = False,
                                           command_deadline: float | None = None) -> dict[str, object]:
         """Submit pause once, then observe full-frame convergence under the original deadline."""
+        from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import pending_instance_v1
         if allow_actor_change is True and allow_event_boundary is not True:
             raise ValueError("campaign actor change is exclusive to explicit event-boundary observation")
         deadline = time.monotonic() + self.args.command_timeout
@@ -1932,6 +1935,7 @@ class PlanClient:
                 try:
                     observed = require_campaign_pause_successor(previous, current, allow_running=True,
                         allowed_event_instance=event_instance, allow_actor_change=allow_actor_change and not actor_changed,
+                        allowed_interaction_instance=pending_instance_v1(current.get("pending_character_interaction")) if allow_event_boundary else None,
                         allow_pause_transition=True, diagnostic_callsite="pause_campaign_after_advance.readback")
                 except RuntimeError as error:
                     observed = _campaign_pause_pending_ready_successor(previous, current, error,
@@ -2074,6 +2078,7 @@ class PlanClient:
     async def wait_campaign_running_successor(self, source: dict[str, object], bounded: object,
                                               remaining: object, *, allow_actor_change: bool = False) -> tuple:
         """Only observe a sole date-publication gap under the caller's original deadline."""
+        from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import pending_instance_v1
         previous, pending_error, evidence = source, None, None
         try:
             while True:
@@ -2082,6 +2087,7 @@ class PlanClient:
                 try:
                     observed = require_campaign_pause_successor(previous, current, allow_running=True,
                         allowed_event_instance=instance, allow_actor_change=allow_actor_change,
+                        allowed_interaction_instance=pending_instance_v1(current.get("pending_character_interaction")),
                         diagnostic_callsite="advance_campaign_event_boundary.running")
                 except RuntimeError as error:
                     previous = _campaign_pending_running_date(previous, current, error)
@@ -2114,6 +2120,7 @@ class PlanClient:
 
     async def advance_campaign_event_boundary(self, step: dict[str, object]) -> dict[str, object]:
         """Observe one actual campaign day or event; never manufacture an episode."""
+        from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import pending_instance_v1, FailedAdvancePauseV1, integer as boundary_integer
         if step.get("allow_event_boundary") is not True or type(step.get("days", 1)) is not int or step.get("days", 1) != 1:
             raise ValueError("campaign event-boundary advance requires explicit opt-in and days=1")
         if type(step.get("allow_actor_change", False)) is not bool:
@@ -2234,29 +2241,67 @@ class PlanClient:
         if (not isinstance(resume_ack, dict) or resume_ack.get("step") != "resume-map"
                 or resume_ack.get("accepted") is not True or resume_ack.get("status") not in ("submitted", "already_running")):
             raise RuntimeError("campaign event-boundary advance received an unadmitted resume ACK")
-        while True:
-            current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
-                allow_actor_change=allow_actor_change and not actor_changed)
-            if current["played_character"].get("source") != "native":
-                raise ValueError("campaign event-boundary player is not native")
-            actor_changed = actor_changed or observed["identity"][2] != source["identity"][2]
-            source = observed
-            if instance is not None:
-                boundary = current
-                break
-            if current["date_raw"] >= target:
-                reached = current
-                break
-            await asyncio.sleep(min(self.args.poll_interval, remaining()))
+        try:
+            while True:
+                current, instance, observed = await self.wait_campaign_running_successor(source, bounded, remaining,
+                    allow_actor_change=allow_actor_change and not actor_changed)
+                if current["played_character"].get("source") != "native":
+                    raise ValueError("campaign event-boundary player is not native")
+                actor_changed = actor_changed or observed["identity"][2] != source["identity"][2]
+                source = observed
+                if instance is not None or pending_instance_v1(current.get("pending_character_interaction")) is not None:
+                    boundary = current
+                    break
+                if current["date_raw"] >= target:
+                    reached = current
+                    break
+                await asyncio.sleep(min(self.args.poll_interval, remaining()))
+        except BaseException as original:
+            # A rejected observation must not leave a known, still-owned map
+            # running. Reuse the actual pause producer once within this command's
+            # remaining deadline; never re-resume or grant day/business credit.
+            cleanup: FailedAdvancePauseV1 = {"original_error_type":type(original).__name__, "original_error":str(original),
+                "status":"NOT_ADMITTED", "pause_attempted":False, "original_deadline":deadline,
+                "business_credit":False}
+            cleanup_history = self.report.setdefault("campaign_failed_advance_pause",[])
+            if not isinstance(cleanup_history,list):
+                raise
+            cleanup_history.append(cleanup)
+            try:
+                current = self.snapshot
+                pending = pending_instance_v1(current.get("pending_character_interaction"))
+                require_campaign_pause_successor(source,current,allow_running=True,
+                    allowed_event_instance=campaign_event_instance(current),allowed_interaction_instance=pending,
+                    diagnostic_callsite="advance_campaign_event_boundary.failure_pause")
+                if current["paused"] is True:
+                    cleanup["status"]="ALREADY_PAUSED_OBSERVED"
+                else:
+                    remaining()
+                    cleanup["pause_attempted"]=True
+                    paused_after = await bounded(lambda:self.pause_campaign_after_advance(current,
+                        allow_event_boundary=True,command_deadline=deadline))
+                    if not isinstance(paused_after,dict):
+                        raise ValueError("Failed advance pause lacks its full native frame")
+                    cleanup["status"]="FULL_PAUSED_FRAME_OBSERVED"
+                    cleanup["date_raw"]=boundary_integer(paused_after.get("date_raw"))
+            except BaseException as pause_error:
+                cleanup["status"]="PAUSE_NOT_PROVEN"
+                cleanup["pause_error_type"]=type(pause_error).__name__
+                cleanup["pause_error"]=str(pause_error)
+            raise
         after = await bounded(lambda: self.pause_campaign_after_advance(boundary or reached,
             allow_event_boundary=True, allow_actor_change=allow_actor_change and not actor_changed,
             command_deadline=deadline))
+        if not isinstance(after,dict):
+            raise ValueError("Campaign event boundary lacks its final native frame")
         if after["played_character"].get("source") != "native":
             raise ValueError("campaign event-boundary paused player is not native")
-        if boundary is None and campaign_event_instance(after) is not None:
+        if boundary is None and (campaign_event_instance(after) is not None or pending_instance_v1(after.get("pending_character_interaction")) is not None):
             boundary = after
         if boundary is not None:
-            if campaign_event_instance(after) != campaign_event_instance(boundary) or after["date_raw"] < boundary["date_raw"]:
+            if (campaign_event_instance(after) != campaign_event_instance(boundary)
+                    or pending_instance_v1(after.get("pending_character_interaction")) != pending_instance_v1(boundary.get("pending_character_interaction"))
+                    or after["date_raw"] < boundary["date_raw"]):
                 raise ValueError("campaign paused event boundary lost its actual instance or date")
             observed_date = boundary["date_raw"]
             progress = "event_before_target" if observed_date < target else "event_at_target" if observed_date == target else "event_after_target"
