@@ -1,8 +1,8 @@
 # CK3:信仰引擎 第二期
 
-**当前工作：[V5完整朝圣导演案《朝圣在奖励什么？》](docs/director-v5-comprehensive-pilgrimage.md)，[内容自审](docs/director-v5-comprehensive-self-audit.md)。** 按用户追加要求，补全出发配置、宗教偏好与朝觐、朝圣者全部影响来源，以及费用／虔诚／经验公式。作者预算约32分钟，未配音实测；四份研究与三组精确EXE静态补充提供完整来源和真实缺口。本轮只交文档，没有继续拍摄、配音或渲染。
+**当前工作：[V6连续导演稿《朝圣在奖励什么？》](docs/director-v6-pilgrimage.md)，[修订自审](docs/director-v6-self-audit.md)。** 已按六项审计意见重写连续讲解、冻结共同条件卡、移除结尾新增系统，并用实际简中本地化key校对名称。[实际图表分页](docs/director-v6-screen-tables.md)给出完整内容及展示安排；文字时长估算方法见主稿文末，不称已配音实测。本轮只交文档，没有继续拍摄、配音或渲染。
 
-[V4约18分钟的收窄方案](docs/director-v4-mechanism.md)保留此前身份；V5把完整配置与人物成长接回同一计分例子，不恢复逐日行程叙事。研究目录及JSON集中在V5文末，并接入[游玩智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)供直接查阅；不冒普通auto新增消费或当前动作资格。
+[V5研究整合提纲](docs/director-v5-comprehensive-pilgrimage.md)及[V4约18分钟的收窄方案](docs/director-v4-mechanism.md)保留各自历史身份。游玩智能体先读[当前知识索引](docs/pilgrimage-current-knowledge.md)，再查其七包精确来源及三份术语JSON，避免把旧包已被继任的unknown误作当前结论。[智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)已更新；没有新增普通auto消费或当前动作资格。
 
 V3教学价值未通过（`REJECTED_TEACHING_VALUE`），用户指出其缺少机制拆解与新的观察视角、像行程实况。[V3本地MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/v3-pilgrimage-production-20261021-a01/render/episode02-v3-pilgrimage.mp4)仅保留为被否定的审看片；[技术事实与失败边界](docs/v3-pilgrimage-delivery-20261021.md)保留，不转作教学成功记录。本机后续视频仍仅本地交付。
 

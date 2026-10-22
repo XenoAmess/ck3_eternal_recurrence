@@ -1,0 +1,3858 @@
+{
+  "schema": "faith.pilgrimage.screen_coverage.v6.1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T02:26:51.566836+00:00",
+  "game_version": "1.20.0.4",
+  "status": "TEXT_PAGINATION_NOT_MEDIA_ACCEPTANCE",
+  "ordinary_auto_consumes": false,
+  "action_ready": false,
+  "pages": [
+    {
+      "page_id": "A01",
+      "mode": "main",
+      "row_count": 3,
+      "entry_ids": [
+        "A/pilgrimage_type_pious",
+        "A/pilgrimage_type_worldly",
+        "A/pilgrimage_type_hajj"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "即时收益和类型匹配分别判断；世俗仍有主虔诚，朝觐没有朝觐者经验轨道。"
+    },
+    {
+      "page_id": "A02",
+      "mode": "main",
+      "row_count": 3,
+      "entry_ids": [
+        "A/pilgrimage_fidelity_obligatory",
+        "A/pilgrimage_fidelity_pilgrim",
+        "A/pilgrimage_fidelity_contemplative"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "本栏倍率只进主虔诚相应位置；速度修正不是最终速度倍数；同名意图另占一栏。"
+    },
+    {
+      "page_id": "A03",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "A/pilgrimage_pomp_humble",
+        "A/pilgrimage_pomp_appropriate",
+        "A/pilgrimage_pomp_ceremonial",
+        "A/pilgrimage_pomp_throng"
+      ],
+      "extra_silent_read_seconds": 5,
+      "narration_point": "廷臣选择与出发补人是两步。上限和整队目标不是额外新增人数，也不保证最终人数；不要把朴素说成没有任何旅伴。"
+    },
+    {
+      "page_id": "I01",
+      "mode": "main",
+      "row_count": 2,
+      "entry_ids": [
+        "I/reflection_intent",
+        "I/altruism_intent"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "已有特质和经验能使同一回应改付另一种资源，费用、表现和经验的守卫分别看。"
+    },
+    {
+      "page_id": "I02",
+      "mode": "main",
+      "row_count": 2,
+      "entry_ids": [
+        "I/zealot_intent",
+        "I/reduce_stress_intent"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "尝试与成功另判。娱乐为共享候选，用虚线标当前集合未知；不能仿造当前第四菜单。"
+    },
+    {
+      "page_id": "T01",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "T/adventurers_scout_for_talent_option",
+        "T/adventurers_make_local_deals_option",
+        "T/adventurers_search_for_secrets_option",
+        "T/adventurers_encourage_relationships_option",
+        "T/adventurers_gather_inspiration_option"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "按本页身份条件显示，不拼成F0公爵同时可选29项；明确资源与费用档及每项真正改动的安全、速度、事件或人物结果。"
+    },
+    {
+      "page_id": "T02",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "T/adventurers_proselytize_zealously_option",
+        "T/adventurers_forward_scouts_option",
+        "T/purchase_rough_terrain_gear_option",
+        "T/purchase_desert_gear_option",
+        "T/purchase_forest_gear_option"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "按本页身份条件显示，不拼成F0公爵同时可选29项；明确资源与费用档及每项真正改动的安全、速度、事件或人物结果。"
+    },
+    {
+      "page_id": "T03",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "T/experienced_captains_option",
+        "T/hire_experienced_mercenaries_option",
+        "T/hire_jungle_expert_option",
+        "T/hire_mountaineer_option",
+        "T/hire_forder_option"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "按本页身份条件显示，不拼成F0公爵同时可选29项；明确资源与费用档及每项真正改动的安全、速度、事件或人物结果。"
+    },
+    {
+      "page_id": "T04",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "T/hire_desert_warrior_option",
+        "T/hire_rough_terrain_expert_option",
+        "T/court_physician_option",
+        "T/cultural_ambassador_option",
+        "T/hire_allied_mercenaries_option"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "按本页身份条件显示，不拼成F0公爵同时可选29项；明确资源与费用档及每项真正改动的安全、速度、事件或人物结果。"
+    },
+    {
+      "page_id": "T05",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "T/appeasement_option",
+        "T/leisurely_option",
+        "T/tutor_child_option",
+        "T/fancy_mounts_option",
+        "T/military_recruits_option"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "按本页身份条件显示，不拼成F0公爵同时可选29项；明确资源与费用档及每项真正改动的安全、速度、事件或人物结果。"
+    },
+    {
+      "page_id": "T06",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "T/superior_armaments_option",
+        "T/anxious_option",
+        "T/circumspect_option",
+        "T/estate_mounts_option"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "按本页身份条件显示，不拼成F0公爵同时可选29项；明确资源与费用档及每项真正改动的安全、速度、事件或人物结果。"
+    },
+    {
+      "page_id": "X01",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W039",
+        "W/W040",
+        "W/W041",
+        "W/W042",
+        "W/W043"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "表现先判档，基础经验请求再经过增益、旧经验与上限。"
+    },
+    {
+      "page_id": "X02",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W033",
+        "W/W034",
+        "W/W035",
+        "W/W036",
+        "W/W037"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "抵达与结算是两次入口；缺limit和空分支未闭，不能承诺每次重访固定经验。"
+    },
+    {
+      "page_id": "X03",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W038",
+        "W/W063",
+        "W/W064",
+        "W/W065",
+        "W/W066"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "明确实际收经验的人；性格是分支资格，不是统一经验倍率。"
+    },
+    {
+      "page_id": "X04",
+      "mode": "main",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W058",
+        "W/W059",
+        "W/W060",
+        "W/W061",
+        "W/W062"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "宗教、学识、地点与个人性格改变可进入的回应。"
+    },
+    {
+      "page_id": "X05",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "W/W067",
+        "W/W068",
+        "W/W069",
+        "W/W070"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "无特质、已有未满、已满可改付不同资源；即时写入与选择后写入分开。"
+    },
+    {
+      "page_id": "X06",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "W/W071",
+        "W/W072",
+        "W/W073",
+        "W/W074"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "四个回应各有资格，不能把同一事件四项奖励加成必得总数。"
+    },
+    {
+      "page_id": "X07",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "W/W044",
+        "W/W045",
+        "W/W046",
+        "W/W047"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "重要地点也可成长；大教堂的互斥分支只取实际进入的一项。"
+    },
+    {
+      "page_id": "X08",
+      "mode": "main",
+      "row_count": 3,
+      "entry_ids": [
+        "W/W002",
+        "W/W004",
+        "W/W005"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "营地和建筑等活动外入口也可成长，因此等级不能倒推朝圣次数。"
+    },
+    {
+      "page_id": "X09",
+      "mode": "main",
+      "row_count": 3,
+      "entry_ids": [
+        "W/W080",
+        "W/W082",
+        "W/W083"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "随机结果和大项目状态另判，不是每趟必遇。"
+    },
+    {
+      "page_id": "X10",
+      "mode": "main",
+      "row_count": 3,
+      "entry_ids": [
+        "W/W055",
+        "W/W056",
+        "W/W057"
+      ],
+      "extra_silent_read_seconds": 3,
+      "narration_point": "前一分支可能先给学识或神秘主义者经验，不能把所有潜在奖励累计。"
+    },
+    {
+      "page_id": "DX01",
+      "mode": "reference_only",
+      "row_count": 2,
+      "entry_ids": [
+        "W/W007",
+        "W/W020"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "G01",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "W/W026",
+        "W/W027",
+        "W/W028",
+        "W/W029"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "先讲实际接收者，再讲获得条件。首次直接授予初始化0，后续事件仍可另加经验；朝圣者和朝觐者不自动互换。"
+    },
+    {
+      "page_id": "G02",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "W/W030",
+        "W/W031",
+        "W/W032",
+        "W/W048"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "先讲实际接收者，再讲获得条件。首次直接授予初始化0，后续事件仍可另加经验；朝圣者和朝觐者不自动互换。"
+    },
+    {
+      "page_id": "G03",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "W/W001",
+        "W/W003",
+        "W/W081",
+        "W/W085"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "先讲实际接收者，再讲获得条件。首次直接授予初始化0，后续事件仍可另加经验；朝圣者和朝觐者不自动互换。"
+    },
+    {
+      "page_id": "DG01",
+      "mode": "reference_only",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W006",
+        "W/W008",
+        "W/W009",
+        "W/W010",
+        "W/W011"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DG02",
+      "mode": "reference_only",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W012",
+        "W/W013",
+        "W/W018",
+        "W/W019",
+        "W/W021"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DG03",
+      "mode": "reference_only",
+      "row_count": 5,
+      "entry_ids": [
+        "W/W049",
+        "W/W050",
+        "W/W051",
+        "W/W052",
+        "W/W079"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "D01",
+      "mode": "main",
+      "row_count": 1,
+      "entry_ids": [
+        "W/W084"
+      ],
+      "extra_silent_read_seconds": 4,
+      "narration_point": "一处字面删除不是全部删除路径；下一页接动态罪恶与美德选择器。"
+    },
+    {
+      "page_id": "M01",
+      "mode": "main",
+      "row_count": 6,
+      "entry_ids": [
+        "M/baptistery_pilgrims_hospice_01",
+        "M/baptistery_pilgrims_hospice_02",
+        "M/baptistery_pilgrims_hospice_03",
+        "M/baptistery_pilgrims_hospice_04",
+        "M/ep2_activities_legacy_1",
+        "M/just_one_more_hill_perk"
+      ],
+      "extra_silent_read_seconds": 5,
+      "narration_point": "增益相加后乘基础请求，再写入旧经验封顶。四级升级定义不证明同时四份生效。"
+    },
+    {
+      "page_id": "D02",
+      "mode": "main",
+      "row_count": 4,
+      "entry_ids": [
+        "D/remove_sinful_trait_effect",
+        "D/add_virtuous_trait_effect",
+        "D/replace_sinful_trait_effect",
+        "D/repent_oath_decision"
+      ],
+      "extra_silent_read_seconds": 5,
+      "narration_point": "当前宗教待遇也会改变动态授予与移除候选。91个检索候选不是91个闭合入口，这里只列已验证路径。"
+    },
+    {
+      "page_id": "DH01",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W014",
+        "W/W016",
+        "W/W017",
+        "W/W022",
+        "W/W023",
+        "W/W024"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DH02",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W025",
+        "W/W053",
+        "W/W054",
+        "W/W075",
+        "W/W076",
+        "W/W077"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DH03",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W078",
+        "W/W086",
+        "W/W087",
+        "W/W088",
+        "W/W089",
+        "W/W090"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DH04",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W091",
+        "W/W092",
+        "W/W093",
+        "W/W094",
+        "W/W095",
+        "W/W096"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DH05",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W097",
+        "W/W098",
+        "W/W099",
+        "W/W100",
+        "W/W101",
+        "W/W102"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DH06",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W103",
+        "W/W104",
+        "W/W105",
+        "W/W106",
+        "W/W107",
+        "W/W108"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "DR01",
+      "mode": "reference_only",
+      "row_count": 6,
+      "entry_ids": [
+        "W/W015",
+        "R/1",
+        "R/2",
+        "R/3",
+        "R/4",
+        "R/5"
+      ],
+      "extra_silent_read_seconds": 0,
+      "narration_point": "资料页不进主片；生成、开局、历史、调试与事件NPC分开，不伪装成玩家按钮。"
+    },
+    {
+      "page_id": "F01",
+      "mode": "main",
+      "row_count": 3,
+      "entry_ids": [
+        "F/F0",
+        "F/F1",
+        "F/F2"
+      ],
+      "extra_silent_read_seconds": 6,
+      "narration_point": "只改一个输入。L为未闭合的旅队主管独立报价，不能代0。F0和F1接近上限吞掉经验差，F2才显示增益后的实际差额。"
+    }
+  ],
+  "entries": [
+    {
+      "entry_id": "A/pilgrimage_type_pious",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_type_pious",
+      "display_name": "虔诚朝圣",
+      "qualification": "义务朝觐礼仪须先有 朝觐者／朝觐妇；其他人物还须通过通用活动条件",
+      "effect": "虔诚／朝觐 处理分支 增活动表现；按四档增加主虔诚项及合资格朝圣者 经验",
+      "source_refs": [
+        "SETUP:S01:1392-1441",
+        "SETUP:S01:1392-1441",
+        "SETUP:S05:1225-1239",
+        "SETUP:S05:1301-1337",
+        "SETUP:S05:632-670"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/0",
+      "source_qualification_text": "义务朝觐礼仪须先有 `hajjaj`；其他人物还须通过通用活动条件",
+      "screen_text_a01": {
+        "display_name": "虔诚朝圣",
+        "qualification": "义务朝觐礼仪须先有 朝觐者／朝觐妇；其他人物还须通过通用活动条件",
+        "effect": "虔诚／朝觐 helper 增活动表现；按四档增加主虔诚项及合资格朝圣者 XP"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_type_worldly",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_type_worldly",
+      "display_name": "世俗朝圣",
+      "qualification": "同上；不是只有愤世嫉俗者可选，那些人格条件出现在 电脑选择权重",
+      "effect": "去程追踪文化；完成仍有距离主虔诚奖励，额外给文化接受度或 5 年人物修正，不使用虔诚表现倍率",
+      "source_refs": [
+        "SETUP:S01:1442-1482",
+        "SETUP:S01:1442-1482",
+        "SETUP:S10:59-72",
+        "SETUP:S05:673-874"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/1",
+      "source_qualification_text": "同上；不是只有愤世嫉俗者可选，那些人格条件出现在 AI 权重",
+      "screen_text_a01": {
+        "display_name": "世俗朝圣",
+        "qualification": "同上；不是只有愤世嫉俗者可选，那些人格条件出现在 AI 权重",
+        "effect": "去程追踪文化；完成仍有距离主虔诚奖励，额外给文化接受度度或 5 年人物修正，不使用虔诚表现倍率"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_type_hajj",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_type_hajj",
+      "display_name": "朝觐",
+      "qualification": "义务朝觐礼仪或 伊斯兰教且当前礼仪允许朝圣；只能麦加，另有本人首都排除及记忆检查",
+      "effect": "虔诚表现分支；专门到达／仪式链，完成可获朝觐者。不是一个与朝圣者相同的可升级 经验 轨道",
+      "source_refs": [
+        "SETUP:S01:1483-1558",
+        "SETUP:S01:1483-1558",
+        "SETUP:S26:1554-1557",
+        "SETUP:S01:256-265",
+        "SETUP:S01:2473-2485",
+        "SETUP:S05:399-485"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/2",
+      "source_qualification_text": "义务朝觐礼仪或 `Islam + can_go_on_pilgrimage`；只能麦加，另有本人首都排除及记忆检查",
+      "screen_text_a01": {
+        "display_name": "朝觐",
+        "qualification": "义务朝觐礼仪或 Islam + can_go_on_pilgrimage；只能麦加，另有本人首都排除及记忆检查",
+        "effect": "虔诚表现分支；专门到达／仪式链，完成可获朝觐者。不是一个与朝圣者相同的可升级 XP 轨道"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_fidelity_obligatory",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_fidelity_obligatory",
+      "display_name": "义不容辞",
+      "qualification": "高级活动；穆斯林须义务朝觐或急躁，其他须义务朝圣或急躁",
+      "effect": "进入旅行时附加 旅行速度修正+50%；主虔诚公式前段 ×0.5；抵达通常进入可于一日后离开的事件分支，有条件分支允许留下",
+      "source_refs": [
+        "SETUP:S01:1564-1637",
+        "SETUP:S01:1564-1637",
+        "SETUP:S01:2840-2855",
+        "SETUP:S15:271-274",
+        "SETUP:S05:522-531",
+        "SETUP:S11:9205-9287"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/3",
+      "source_qualification_text": "高级活动；穆斯林须义务朝觐或急躁，其他须义务朝圣或急躁",
+      "screen_text_a01": {
+        "display_name": "义不容辞",
+        "qualification": "高级活动；穆斯林须义务朝觐或急躁，其他须义务朝圣或急躁",
+        "effect": "进入旅行时附加 travel_speed_mult=+0.5；主虔诚公式前段 ×0.5；抵达通常进入 4010，可一日后离开，有条件分支允许留下"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_fidelity_pilgrim",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_fidelity_pilgrim",
+      "display_name": "朝圣者",
+      "qualification": "默认，无额外门槛",
+      "effect": "没有此栏速度修正或奖励倍率；非朝觐 普通抵达按 3 个月推进阶段",
+      "source_refs": [
+        "SETUP:S01:1638-1645",
+        "SETUP:S01:1638-1645",
+        "SETUP:S01:2398-2409"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/4",
+      "source_qualification_text": "默认，无额外门槛",
+      "screen_text_a01": {
+        "display_name": "朝圣者",
+        "qualification": "默认，无额外门槛",
+        "effect": "没有此栏速度修正或奖励倍率；非 Hajj 普通抵达按 3 个月推进阶段"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_fidelity_contemplative",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_fidelity_contemplative",
+      "display_name": "深思熟虑",
+      "qualification": "高级活动，且耐心／朝圣者／朝觐者之一",
+      "effect": "进入旅行时附加 旅行速度修正−50%；主虔诚公式前段 ×1.25",
+      "source_refs": [
+        "SETUP:S01:1646-1708",
+        "SETUP:S01:1646-1708",
+        "SETUP:S01:2857-2867",
+        "SETUP:S15:276-279",
+        "SETUP:S05:534-543"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/5",
+      "source_qualification_text": "高级活动，且耐心／朝圣者／朝觐者之一",
+      "screen_text_a01": {
+        "display_name": "深思熟虑",
+        "qualification": "高级活动，且耐心／朝圣者／朝觐者之一",
+        "effect": "进入旅行时附加 travel_speed_mult=−0.5；主虔诚公式前段 ×1.25"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_pomp_humble",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_pomp_humble",
+      "display_name": "朴素",
+      "qualification": "高级活动；神贫誓愿个人信条时为默认；减去 10×(阶级系数+时代系数−1)",
+      "effect": "无此档专属廷臣选择块；公共随从仍存在。安全 −25；主虔诚后加 50；相应内在之旅礼仪再 ×1.5；出发时向总人数 7 补齐",
+      "source_refs": [
+        "SETUP:S01:1714-1796",
+        "SETUP:S01:1714-1796",
+        "SETUP:S01:2655-2659",
+        "SETUP:S01:2870-2880",
+        "SETUP:S14:2158-2304",
+        "SETUP:S14:2456-2470",
+        "SETUP:S05:569-607"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/6",
+      "source_qualification_text": "高级活动；清贫个人核心教义时为默认；减去 `10×(阶级系数+时代系数−1)`",
+      "screen_text_a01": {
+        "display_name": "朴素",
+        "qualification": "高级活动；清贫个人核心教义时为默认；减去 10×(阶级系数+时代系数−1)",
+        "effect": "无此档专属廷臣选择块；公共随从仍存在。安全 −25；主虔诚后加 50；相应内心旅程礼仪再 ×1.5；出发时向总人数 7 补齐"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_pomp_appropriate",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_pomp_appropriate",
+      "display_name": "适度",
+      "qualification": "无额外费用；有高级活动时不能持神贫誓愿强制朴素个人信条",
+      "effect": "核心廷臣权重，选择上限 5；出发时向总人数 5 补齐；无排场虔诚加法",
+      "source_refs": [
+        "SETUP:S01:1797-1825",
+        "SETUP:S01:1797-1825",
+        "SETUP:S06:160-216",
+        "SETUP:S14:2471-2485"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/7",
+      "source_qualification_text": "无额外费用；有高级活动时不能持清贫强制朴素个人教义",
+      "screen_text_a01": {
+        "display_name": "适度",
+        "qualification": "无额外费用；有高级活动时不能持清贫强制朴素个人教义",
+        "effect": "核心廷臣权重，选择上限 5；出发时向总人数 5 补齐；无排场虔诚加法"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_pomp_ceremonial",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_pomp_ceremonial",
+      "display_name": "讲究",
+      "qualification": "高级活动，不能持上述神贫誓愿标记；基数 50",
+      "effect": "核心+额外廷臣权重，上限 10；向总人数 10 补齐；主虔诚后加 50",
+      "source_refs": [
+        "SETUP:S01:1826-1973",
+        "SETUP:S01:1826-1973",
+        "SETUP:S06:160-251",
+        "SETUP:S14:2486-2500",
+        "SETUP:S05:569-584"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/8",
+      "source_qualification_text": "高级活动，不能持上述清贫标记；基数 50",
+      "screen_text_a01": {
+        "display_name": "讲究",
+        "qualification": "高级活动，不能持上述清贫标记；基数 50",
+        "effect": "核心+额外廷臣权重，上限 10；向总人数 10 补齐；主虔诚后加 50"
+      }
+    },
+    {
+      "entry_id": "A/pilgrimage_pomp_throng",
+      "kind": "activity_option",
+      "source_key": "pilgrimage_pomp_throng",
+      "display_name": "盛况空前",
+      "qualification": "同上；基数 100",
+      "effect": "加上更广泛同信仰廷臣权重，上限 20；向总人数 20 补齐；主虔诚后加 100",
+      "source_refs": [
+        "SETUP:S01:1974-2121",
+        "SETUP:S01:1974-2121",
+        "SETUP:S06:160-283",
+        "SETUP:S14:2501-2515",
+        "SETUP:S05:586-595"
+      ],
+      "upstream_json_pointer": "SETUP:/activity_options/9",
+      "source_qualification_text": "同上；基数 100",
+      "screen_text_a01": {
+        "display_name": "盛况空前",
+        "qualification": "同上；基数 100",
+        "effect": "加上更广泛同信仰廷臣权重，上限 20；向总人数 20 补齐；主虔诚后加 100"
+      }
+    },
+    {
+      "entry_id": "I/reduce_stress_intent",
+      "kind": "intent",
+      "source_key": "reduce_stress_intent",
+      "display_name": "娱乐",
+      "qualification": "通用意图没有选择即固定减压；相关酒馆朋友事件权重可乘2，仍检查朋友、Friends & Foes内容包和旅程进度等条件",
+      "effect": "邀请聊天会延迟30天并读世俗表现处理分支；合群可减压，害羞或狂热者可加压；后续狂欢者特质等依事件另判。不能把娱乐等同稳拿朝圣者经验",
+      "source_refs": [
+        "SETUP:S04:3-17",
+        "SETUP:S04:3-17",
+        "SETUP:S11:8071-8134",
+        "SETUP:S09:57-58",
+        "SETUP:S21:126-137",
+        "SETUP:S11:8211-8509"
+      ],
+      "upstream_json_pointer": "SETUP:/intents/0",
+      "source_qualification_text": "Shared definition has no is_shown gate; not sufficient to prove pilgrimage host availability. Current potential-intent set not observed.",
+      "screen_text_a01": {
+        "display_name": "娱乐",
+        "qualification": "通用意图本身没有“选择即固定减压”；朝圣酒馆朋友事件权重可×2，仍有朋友、DLC、进度等守卫",
+        "effect": "邀请聊天会延迟30天并读世俗表现helper；社交者可减压，害羞或狂热者可加压；后续狂欢者特质等依事件另判。不能把娱乐等同稳拿朝圣者XP"
+      }
+    },
+    {
+      "entry_id": "I/reflection_intent",
+      "kind": "intent",
+      "source_key": "reflection_intent",
+      "display_name": "深思熟虑",
+      "qualification": "开启反省事件及目的地活动行为；默认意图不等于固定奖励",
+      "effect": "停下来沉思会延迟10天；无朝圣者时给50虔诚，已有且未满时给10基础经验，满轨后另给100虔诚。虔诚／朝觐下另可能+10活动表现；性格还能改变压力。原有状态决定同一回应写入哪种奖励",
+      "source_refs": [
+        "SETUP:S02:4-45",
+        "SETUP:S01:2645-2653",
+        "SETUP:S02:4-45",
+        "SETUP:S09:73-78",
+        "SETUP:S12:781-845",
+        "SETUP:S08:294-481"
+      ],
+      "upstream_json_pointer": "SETUP:/intents/1",
+      "source_qualification_text": "No extra is_shown condition.",
+      "screen_text_a01": {
+        "display_name": "深思熟虑",
+        "qualification": "开启反省事件及目的地活动行为；默认意图不等于固定奖励",
+        "effect": "停下来沉思会延迟10天；无Pilgrim时给50虔诚，已有且未满时给10基础XP，满轨后另给100虔诚。虔诚／朝觐下另可能+10活动表现；性格还能改变压力。原有状态决定同一回应写入哪种奖励"
+      }
+    },
+    {
+      "entry_id": "I/altruism_intent",
+      "kind": "intent",
+      "source_key": "altruism_intent",
+      "display_name": "行善",
+      "qualification": "开启施舍、照料等选项，检查地点、身份及扩展内容包；有些花动态金币换虔诚、地方效果或好感",
+      "effect": "海上共同事件的行善项可给随行者好感、合资格朝圣者+5基础经验及虔诚类表现+10；目的地照料旅行者、捐寺和济贫分别有自己的费用与所得，不统一固定给分",
+      "source_refs": [
+        "SETUP:S03:65-131",
+        "SETUP:S03:65-131",
+        "SETUP:S09:62-66",
+        "SETUP:S08:594-700",
+        "SETUP:S43:640-1158",
+        "SETUP:S12:1963-1994"
+      ],
+      "upstream_json_pointer": "SETUP:/intents/2",
+      "source_qualification_text": "advanced_activities, alive, not imprisoned; AI greed/wealth weights do not gate the player.",
+      "screen_text_a01": {
+        "display_name": "行善",
+        "qualification": "开启施舍、照料等选项，检查地点、身份及DLC；有些花动态金币换虔诚、地方效果或好感",
+        "effect": "海上共同事件的行善项可给随行者好感、合资格朝圣者+5基础XP及虔诚类表现+10；目的地照料旅行者、捐寺和济贫分别有自己的费用与所得，不统一固定给分"
+      }
+    },
+    {
+      "entry_id": "I/zealot_intent",
+      "kind": "intent",
+      "source_key": "zealot_intent",
+      "display_name": "热忱",
+      "qualification": "开启传教、招募、宗教交流及相关目的地行为；实际改信还要看目标和结果",
+      "effect": "一次传教动作先调用虔诚表现处理分支，再判外交／学识挑战。成功可能改目标信仰并给虔诚，失败可能损失虔诚；表现上升不能证明传教成功，也不是自动获得狂热人格",
+      "source_refs": [
+        "SETUP:S02:48-104",
+        "SETUP:S02:48-104",
+        "SETUP:S09:67-72",
+        "SETUP:S12:25-100",
+        "SETUP:S08:486-590"
+      ],
+      "upstream_json_pointer": "SETUP:/intents/3",
+      "source_qualification_text": "advanced_activities.",
+      "screen_text_a01": {
+        "display_name": "热忱",
+        "qualification": "开启传教、招募、宗教交流及相关目的地行为；实际改信还要看目标和结果",
+        "effect": "一次传教动作先调用虔诚表现helper，再判外交／学识挑战。成功可能改目标Faith并给虔诚，失败可能损失虔诚；表现上升不能证明传教成功，也不是自动获得狂热人格"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_scout_for_talent_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_scout_for_talent_option",
+      "display_name": "搜索人才",
+      "qualification": "冒险者，未有 服从上级；无",
+      "effect": "速度 −5；移动后人才招募池；该 技能 自身也可直接开启池",
+      "source_refs": [
+        "SETUP:S17:1-23",
+        "SETUP:S10:2166-2187"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/0",
+      "source_qualification_text": "冒险者，未有 `toe_the_line_perk`；无",
+      "screen_text_a01": {
+        "display_name": "搜索人才",
+        "qualification": "冒险者，未有 服从上级；无",
+        "effect": "速度 −5；移动后人才招募池；该 perk 自身也可直接开启池"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_make_local_deals_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_make_local_deals_option",
+      "display_name": "高风险交易",
+      "qualification": "冒险者、以怖治军；无",
+      "effect": "安全 −20；有战利品的地点给动态交易收入，逐地点记账防重复",
+      "source_refs": [
+        "SETUP:S17:25-46",
+        "SETUP:S10:327-343"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/1",
+      "source_qualification_text": "冒险者、`fearful_troops_perk`；无",
+      "screen_text_a01": {
+        "display_name": "高风险交易",
+        "qualification": "冒险者、以怖治军；无",
+        "effect": "安全 −20；有战利品的地点给动态交易收入，逐地点记账防重复"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_search_for_secrets_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_search_for_secrets_option",
+      "display_name": "搜寻秘密",
+      "qualification": "冒险者、深挖黑料；无",
+      "effect": "速度 +10／安全 −10；密谋值百分比机会得合资格秘密",
+      "source_refs": [
+        "SETUP:S17:48-70",
+        "SETUP:S10:344-404"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/2",
+      "source_qualification_text": "冒险者、`digging_for_dirt_perk`；无",
+      "screen_text_a01": {
+        "display_name": "搜寻秘密",
+        "qualification": "冒险者、深挖黑料；无",
+        "effect": "速度 +10／安全 −10；密谋值百分比机会得合资格秘密"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_encourage_relationships_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_encourage_relationships_option",
+      "display_name": "鼓励关系",
+      "qualification": "冒险者、层层效忠、至少 3 成年廷臣；无",
+      "effect": "速度 +5／安全 −5；移动后婚姻、友谊、情人事件池",
+      "source_refs": [
+        "SETUP:S17:72-98",
+        "SETUP:S10:2190-2203"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/3",
+      "source_qualification_text": "冒险者、`chains_of_loyalty_perk`、至少 3 成年廷臣；无",
+      "screen_text_a01": {
+        "display_name": "鼓励关系",
+        "qualification": "冒险者、层层效忠、至少 3 成年廷臣；无",
+        "effect": "速度 +5／安全 −5；移动后婚姻、友谊、情人事件池"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_gather_inspiration_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_gather_inspiration_option",
+      "display_name": "搜集灵感",
+      "qualification": "冒险者、大众领袖；无",
+      "effect": "速度 +5／安全 −5；管理÷6（至少1）概率给合资格廷臣灵感",
+      "source_refs": [
+        "SETUP:S17:100-122",
+        "SETUP:S10:453-483"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/4",
+      "source_qualification_text": "冒险者、`popular_figurehead_perk`；无",
+      "screen_text_a01": {
+        "display_name": "搜集灵感",
+        "qualification": "冒险者、大众领袖；无",
+        "effect": "速度 +5／安全 −5；管理÷6（至少1）概率给合资格廷臣灵感"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_proselytize_zealously_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_proselytize_zealously_option",
+      "display_name": "向当地人传教",
+      "qualification": "冒险者、神权制或对应个人信条资格决定是否显示；热忱宣教技能或相应个人信条决定是否可用；无直接费用",
+      "effect": "速度 +5／安全 −5；学识百分比机会改当地合资格流浪者**礼仪**并给 25 虔诚",
+      "source_refs": [
+        "SETUP:S17:124-155",
+        "SETUP:S10:405-452"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/5",
+      "source_qualification_text": "冒险者／神权／相应个人教义显示；传教 perk 或教义可用；无",
+      "screen_text_a01": {
+        "display_name": "向当地人传教",
+        "qualification": "冒险者／神权／相应个人教义显示；传教 perk 或教义可用；无",
+        "effect": "速度 +5／安全 −5；学识百分比机会改当地合资格流浪者**礼仪**并给 25 虔诚"
+      }
+    },
+    {
+      "entry_id": "T/adventurers_forward_scouts_option",
+      "kind": "travel_option",
+      "source_key": "adventurers_forward_scouts_option",
+      "display_name": "斥候",
+      "qualification": "冒险者及营地解锁参数；无",
+      "effect": "安全 +20／速度 −5",
+      "source_refs": [
+        "SETUP:S17:157-180",
+        "SETUP:S18:15-28"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/6",
+      "source_qualification_text": "冒险者及营地解锁参数；无",
+      "screen_text_a01": {
+        "display_name": "斥候",
+        "qualification": "冒险者及营地解锁参数；无",
+        "effect": "安全 +20／速度 −5"
+      }
+    },
+    {
+      "entry_id": "T/purchase_rough_terrain_gear_option",
+      "kind": "travel_option",
+      "source_key": "purchase_rough_terrain_gear_option",
+      "display_name": "购买探路者装备",
+      "qualification": "冒险者统治者；低",
+      "effect": "山地、丘陵、湿地、洪泛平原低档危险削减",
+      "source_refs": [
+        "SETUP:S17:182-231",
+        "SETUP:S19:48-95",
+        "SETUP:S18:21-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/7",
+      "source_qualification_text": "冒险者统治者；低",
+      "screen_text_a01": {
+        "display_name": "购买探路者装备",
+        "qualification": "冒险者统治者；低",
+        "effect": "山地、丘陵、湿地、洪泛平原低档危险削减"
+      }
+    },
+    {
+      "entry_id": "T/purchase_desert_gear_option",
+      "kind": "travel_option",
+      "source_key": "purchase_desert_gear_option",
+      "display_name": "购买旱地探索者物品",
+      "qualification": "同上；低",
+      "effect": "沙漠、草原、旱地、沙漠山地低档危险削减",
+      "source_refs": [
+        "SETUP:S17:233-281",
+        "SETUP:S19:48-95",
+        "SETUP:S18:21-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/8",
+      "source_qualification_text": "同上；低",
+      "screen_text_a01": {
+        "display_name": "购买旱地探索者物品",
+        "qualification": "同上；低",
+        "effect": "沙漠、草原、旱地、沙漠山地低档危险削减"
+      }
+    },
+    {
+      "entry_id": "T/purchase_forest_gear_option",
+      "kind": "travel_option",
+      "source_key": "purchase_forest_gear_option",
+      "display_name": "购买荒野工具包",
+      "qualification": "同上；低",
+      "effect": "森林、针叶林、丛林低档危险削减",
+      "source_refs": [
+        "SETUP:S17:283-329",
+        "SETUP:S19:48-95",
+        "SETUP:S18:21-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/9",
+      "source_qualification_text": "同上；低",
+      "screen_text_a01": {
+        "display_name": "购买荒野工具包",
+        "qualification": "同上；低",
+        "effect": "森林、针叶林、丛林低档危险削减"
+      }
+    },
+    {
+      "entry_id": "T/experienced_captains_option",
+      "kind": "travel_option",
+      "source_key": "experienced_captains_option",
+      "display_name": "雇佣经验丰富的船长",
+      "qualification": "统治者；中",
+      "effect": "沿海／海域危险 −45；招募或创建临时船长并同行",
+      "source_refs": [
+        "SETUP:S17:331-497",
+        "SETUP:S17:381-490",
+        "SETUP:S19:45-46",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/10",
+      "source_qualification_text": "统治者；中",
+      "screen_text_a01": {
+        "display_name": "雇佣经验丰富的船长",
+        "qualification": "统治者；中",
+        "effect": "沿海／海域危险 −45；招募或创建临时船长并同行"
+      }
+    },
+    {
+      "entry_id": "T/hire_experienced_mercenaries_option",
+      "kind": "travel_option",
+      "source_key": "hire_experienced_mercenaries_option",
+      "display_name": "雇佣佣兵卫队",
+      "qualification": "有范围内合资格闲置佣兵首领；高",
+      "effect": "速度 +10／安全 +20；加首领同伴，不等于获得一整支可作战佣兵军",
+      "source_refs": [
+        "SETUP:S17:499-636",
+        "SETUP:S17:499-637",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/11",
+      "source_qualification_text": "有范围内合资格闲置佣兵首领；高",
+      "screen_text_a01": {
+        "display_name": "雇佣佣兵卫队",
+        "qualification": "有范围内合资格闲置佣兵首领；高",
+        "effect": "速度 +10／安全 +20；加首领同伴，不等于获得一整支可作战佣兵军"
+      }
+    },
+    {
+      "entry_id": "T/hire_jungle_expert_option",
+      "kind": "travel_option",
+      "source_key": "hire_jungle_expert_option",
+      "display_name": "雇佣丛林追猎者",
+      "qualification": "统治者、非冒险者；低",
+      "effect": "丛林中档危险削减，临时向导",
+      "source_refs": [
+        "SETUP:S17:638-810",
+        "SETUP:S17:638-811",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/12",
+      "source_qualification_text": "统治者、非冒险者；低",
+      "screen_text_a01": {
+        "display_name": "雇佣丛林追猎者",
+        "qualification": "统治者、非冒险者；低",
+        "effect": "丛林中档危险削减，临时向导"
+      }
+    },
+    {
+      "entry_id": "T/hire_mountaineer_option",
+      "kind": "travel_option",
+      "source_key": "hire_mountaineer_option",
+      "display_name": "雇佣登山者",
+      "qualification": "同上；低",
+      "effect": "山地／沙漠山地／丘陵中档危险削减，临时向导",
+      "source_refs": [
+        "SETUP:S17:812-987",
+        "SETUP:S17:812-988",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/13",
+      "source_qualification_text": "同上；低",
+      "screen_text_a01": {
+        "display_name": "雇佣登山者",
+        "qualification": "同上；低",
+        "effect": "山地／沙漠山地／丘陵中档危险削减，临时向导"
+      }
+    },
+    {
+      "entry_id": "T/hire_forder_option",
+      "kind": "travel_option",
+      "source_key": "hire_forder_option",
+      "display_name": "雇佣涉水者",
+      "qualification": "非冒险者且可玩统治者；低",
+      "effect": "湿地／洪泛平原中档危险削减，临时向导",
+      "source_refs": [
+        "SETUP:S17:989-1163",
+        "SETUP:S17:989-1164",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/14",
+      "source_qualification_text": "非冒险者且可玩统治者；低",
+      "screen_text_a01": {
+        "display_name": "雇佣涉水者",
+        "qualification": "非冒险者且可玩统治者；低",
+        "effect": "湿地／洪泛平原中档危险削减，临时向导"
+      }
+    },
+    {
+      "entry_id": "T/hire_desert_warrior_option",
+      "kind": "travel_option",
+      "source_key": "hire_desert_warrior_option",
+      "display_name": "雇佣沙漠战士",
+      "qualification": "统治者、非冒险者；低",
+      "effect": "沙漠／草原／旱地中档危险削减，临时向导",
+      "source_refs": [
+        "SETUP:S17:1165-1340",
+        "SETUP:S17:1165-1341",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/15",
+      "source_qualification_text": "统治者、非冒险者；低",
+      "screen_text_a01": {
+        "display_name": "雇佣沙漠战士",
+        "qualification": "统治者、非冒险者；低",
+        "effect": "沙漠／草原／旱地中档危险削减，临时向导"
+      }
+    },
+    {
+      "entry_id": "T/hire_rough_terrain_expert_option",
+      "kind": "travel_option",
+      "source_key": "hire_rough_terrain_expert_option",
+      "display_name": "雇佣森林向导",
+      "qualification": "同上；低",
+      "effect": "森林／针叶林中档危险削减，临时向导",
+      "source_refs": [
+        "SETUP:S17:1342-1515",
+        "SETUP:S17:1342-1516",
+        "SETUP:S37:1583-1613"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/16",
+      "source_qualification_text": "同上；低",
+      "screen_text_a01": {
+        "display_name": "雇佣森林向导",
+        "qualification": "同上；低",
+        "effect": "森林／针叶林中档危险削减，临时向导"
+      }
+    },
+    {
+      "entry_id": "T/court_physician_option",
+      "kind": "travel_option",
+      "source_key": "court_physician_option",
+      "display_name": "带上医疗设备",
+      "qualification": "统治者，现任私人医生由电脑控制且可行动；低",
+      "effect": "只减瘟疫危险；不是凭按钮新雇一名医师",
+      "source_refs": [
+        "SETUP:S17:1517-1586",
+        "SETUP:S17:1517-1586",
+        "SETUP:S07:1456-1489"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/17",
+      "source_qualification_text": "统治者，现任宫廷医师为AI且可行动；低",
+      "screen_text_a01": {
+        "display_name": "带上医疗设备",
+        "qualification": "统治者，现任私人医生为AI且可行动；低",
+        "effect": "只减瘟疫危险；不是凭按钮新雇一名医师"
+      }
+    },
+    {
+      "entry_id": "T/cultural_ambassador_option",
+      "kind": "travel_option",
+      "source_key": "cultural_ambassador_option",
+      "display_name": "雇佣文化大使",
+      "qualification": "统治者；中，牧群分支低",
+      "effect": "加大使同伴；移动中按实际名单分支增文化接受度，不是所有地点无条件立刻给",
+      "source_refs": [
+        "SETUP:S17:1588-1766",
+        "SETUP:S17:1638-1702",
+        "SETUP:S10:108-163"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/18",
+      "source_qualification_text": "统治者；中，牧群分支低",
+      "screen_text_a01": {
+        "display_name": "雇佣文化大使",
+        "qualification": "统治者；中，牧群分支低",
+        "effect": "加大使同伴；移动中按实际名单分支增文化接受度，不是所有地点无条件立刻给"
+      }
+    },
+    {
+      "entry_id": "T/hire_allied_mercenaries_option",
+      "kind": "travel_option",
+      "source_key": "hire_allied_mercenaries_option",
+      "display_name": "私人军队",
+      "qualification": "启用Wandering Nobles内容包、已有佣兵合同技能；无直接费用",
+      "effect": "速度 +5／安全 +5",
+      "source_refs": [
+        "SETUP:S17:1768-1785",
+        "SETUP:S18:15-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/19",
+      "source_qualification_text": "BP3、`mercenary_contacts_perk`；无",
+      "screen_text_a01": {
+        "display_name": "私人军队",
+        "qualification": "BP3、佣兵合同；无",
+        "effect": "速度 +5／安全 +5"
+      }
+    },
+    {
+      "entry_id": "T/appeasement_option",
+      "kind": "travel_option",
+      "source_key": "appeasement_option",
+      "display_name": "安抚",
+      "qualification": "启用Wandering Nobles内容包、已有一方英雄技能；无直接费用",
+      "effect": "月暴政 −0.8／月恐怖 −0.4",
+      "source_refs": [
+        "SETUP:S17:1787-1804",
+        "SETUP:S18:21-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/20",
+      "source_qualification_text": "BP3、`local_hero_perk`；无",
+      "screen_text_a01": {
+        "display_name": "安抚",
+        "qualification": "BP3、一方英雄；无",
+        "effect": "月暴政 −0.8／月恐怖 −0.4"
+      }
+    },
+    {
+      "entry_id": "T/leisurely_option",
+      "kind": "travel_option",
+      "source_key": "leisurely_option",
+      "display_name": "悠闲之旅",
+      "qualification": "同上；无",
+      "effect": "速度 −20／压力获得修正 −0.5；完成后经过省份数×15**威望经验**",
+      "source_refs": [
+        "SETUP:S17:1806-1830",
+        "SETUP:S10:1531-1547"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/21",
+      "source_qualification_text": "同上；无",
+      "screen_text_a01": {
+        "display_name": "悠闲之旅",
+        "qualification": "同上；无",
+        "effect": "速度 −20／压力获得修正 −0.5；完成后经过省份数×15**威望经验**"
+      }
+    },
+    {
+      "entry_id": "T/tutor_child_option",
+      "kind": "travel_option",
+      "source_key": "tutor_child_option",
+      "display_name": "教学之旅",
+      "qualification": "启用Wandering Nobles内容包、已有地利人和技能；有未满15岁、同地且可随行的玩家继承人；无直接费用",
+      "effect": "速度 −5／儿童好感 +5；带继承人，走本人不同地产授业，最多 8 个地点",
+      "source_refs": [
+        "SETUP:S17:1832-1902",
+        "SETUP:S17:1832-1901",
+        "SETUP:S36:525-619"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/22",
+      "source_qualification_text": "BP3、相应授业 perk、未满15岁同地可行继承人；无",
+      "screen_text_a01": {
+        "display_name": "教学之旅",
+        "qualification": "BP3、相应授业 perk、未满15岁同地可行继承人；无",
+        "effect": "速度 −5／儿童好感 +5；带继承人，走本人不同地产授业，最多 8 个地点"
+      }
+    },
+    {
+      "entry_id": "T/fancy_mounts_option",
+      "kind": "travel_option",
+      "source_key": "fancy_mounts_option",
+      "display_name": "优良坐骑",
+      "qualification": "非冒险者，直属地产马厩04或骆驼牧场04；无",
+      "effect": "速度 +20",
+      "source_refs": [
+        "SETUP:S17:1904-1926",
+        "SETUP:S18:15-19"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/23",
+      "source_qualification_text": "非冒险者，直属地产马厩04或骆驼牧场04；无",
+      "screen_text_a01": {
+        "display_name": "优良坐骑",
+        "qualification": "非冒险者，直属地产马厩04或骆驼牧场04；无",
+        "effect": "速度 +20"
+      }
+    },
+    {
+      "entry_id": "T/military_recruits_option",
+      "kind": "travel_option",
+      "source_key": "military_recruits_option",
+      "display_name": "训练骑士",
+      "qualification": "公爵以上、非冒险者、军校01；无",
+      "effect": "安全 +10；选至多 3 名较弱现有骑士同行、进入训练递归事件",
+      "source_refs": [
+        "SETUP:S17:1928-1983",
+        "SETUP:S17:1928-1983",
+        "SETUP:S38:187-308"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/24",
+      "source_qualification_text": "公爵以上、非冒险者、军校01；无",
+      "screen_text_a01": {
+        "display_name": "训练骑士",
+        "qualification": "公爵以上、非冒险者、军校01；无",
+        "effect": "安全 +10；选至多 3 名较弱现有骑士同行、进入训练递归事件"
+      }
+    },
+    {
+      "entry_id": "T/superior_armaments_option",
+      "kind": "travel_option",
+      "source_key": "superior_armaments_option",
+      "display_name": "优良军备",
+      "qualification": "公爵以上、非冒险者、铁匠01；无",
+      "effect": "安全 +10，宝物损耗减少修正−20%",
+      "source_refs": [
+        "SETUP:S17:1985-2008",
+        "SETUP:S18:15-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/25",
+      "source_qualification_text": "公爵以上、非冒险者、铁匠01；无",
+      "screen_text_a01": {
+        "display_name": "优良军备",
+        "qualification": "公爵以上、非冒险者、铁匠01；无",
+        "effect": "安全 +10，源字段 artifact_decay_reduction_mult=−0.2"
+      }
+    },
+    {
+      "entry_id": "T/anxious_option",
+      "kind": "travel_option",
+      "source_key": "anxious_option",
+      "display_name": "加快脚步",
+      "qualification": "统治者且急躁／怯懦／鲁莽之一；无",
+      "effect": "速度 +20／安全 −10",
+      "source_refs": [
+        "SETUP:S17:2010-2032",
+        "SETUP:S18:15-19"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/26",
+      "source_qualification_text": "统治者且急躁／怯懦／鲁莽之一；无",
+      "screen_text_a01": {
+        "display_name": "加快脚步",
+        "qualification": "统治者且急躁／怯懦／鲁莽之一；无",
+        "effect": "速度 +20／安全 −10"
+      }
+    },
+    {
+      "entry_id": "T/circumspect_option",
+      "kind": "travel_option",
+      "source_key": "circumspect_option",
+      "display_name": "谨慎",
+      "qualification": "统治者且善变／专断／多疑之一；无",
+      "effect": "速度 −10；敌对阴谋阶段延长、成功率 −50",
+      "source_refs": [
+        "SETUP:S17:2034-2060",
+        "SETUP:S18:15-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/27",
+      "source_qualification_text": "统治者且善变／专断／多疑之一；无",
+      "screen_text_a01": {
+        "display_name": "谨慎",
+        "qualification": "统治者且善变／专断／多疑之一；无",
+        "effect": "速度 −10；敌对阴谋阶段延长、成功率 −50"
+      }
+    },
+    {
+      "entry_id": "T/estate_mounts_option",
+      "kind": "travel_option",
+      "source_key": "estate_mounts_option",
+      "display_name": "华丽的马匹",
+      "qualification": "住所马匹解锁参数；无",
+      "effect": "速度 +10／同伴好感 +10／月威望 +1",
+      "source_refs": [
+        "SETUP:S17:2062-2084",
+        "SETUP:S18:15-22"
+      ],
+      "upstream_json_pointer": "SETUP:/travel_options/28",
+      "source_qualification_text": "住所马匹解锁参数；无",
+      "screen_text_a01": {
+        "display_name": "华丽的马匹",
+        "qualification": "住所马匹解锁参数；无",
+        "effect": "速度 +10／同伴好感 +10／月威望 +1"
+      }
+    },
+    {
+      "entry_id": "W/W001",
+      "kind": "add_trait",
+      "source_key": "apa_camp_party_tales_of_piety",
+      "display_name": "营地虔诚故事／朝圣者",
+      "qualification": "同信仰第二参加者，无特质时 / 玩家或电脑角色均可能，依实际接收者",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W001",
+        "TRAITS:S010:1780-1780"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/0",
+      "source_qualification_text": "同信仰第二参加者，无特质时 / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "营地虔诚故事／朝圣者",
+        "qualification": "同信仰第二参加者，无特质时 / 非固定NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W002",
+      "kind": "trait_xp",
+      "source_key": "apa_camp_party_tales_of_piety",
+      "display_name": "营地故事的经验",
+      "qualification": "同信仰第二名参加者已有朝圣者；不预先检查经验是否不足100",
+      "effect": "整数随机 20–40",
+      "source_refs": [
+        "TRAITS:W002",
+        "TRAITS:S010:1769-1777"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/1",
+      "source_qualification_text": "营地宴会“虔诚故事”，被选中的同信仰第二位参加者已有 pilgrim；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "营地宴会“虔诚故事”，被选中的同信仰第二位参加者已有 朝圣者；无 <100 guard",
+        "qualification": "营地宴会“虔诚故事”，被选中的同信仰第二位参加者已有 朝圣者；无 <100 guard",
+        "effect": "整数随机 20–40"
+      }
+    },
+    {
+      "entry_id": "W/W003",
+      "kind": "add_trait",
+      "source_key": "legendary_shrine",
+      "display_name": "传奇圣所／朝圣者",
+      "qualification": "建成时 该伯爵领持有者 / 玩家或电脑角色均可能，依实际接收者",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W003",
+        "TRAITS:S016:88-88"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/2",
+      "source_qualification_text": "建成时 county.holder / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "传奇圣所／朝圣者",
+        "qualification": "建成时 county.holder / 非固定NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W004",
+      "kind": "trait_xp",
+      "source_key": "legendary_shrine",
+      "display_name": "传奇圣所建成",
+      "qualification": "该伯爵领持有者已有朝圣者",
+      "effect": "30",
+      "source_refs": [
+        "TRAITS:W004",
+        "TRAITS:S016:82-85"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/3",
+      "source_qualification_text": "传奇圣所建成，county.holder 已有 pilgrim",
+      "screen_text_a01": {
+        "display_name": "传奇圣所建成，county.holder 已有 朝圣者",
+        "qualification": "传奇圣所建成，county.holder 已有 朝圣者",
+        "effect": "30"
+      }
+    },
+    {
+      "entry_id": "W/W005",
+      "kind": "trait_xp",
+      "source_key": "legendary_shrine",
+      "display_name": "传奇圣所建成后首次授予",
+      "qualification": "该伯爵领持有者原无特质；先授予朝圣者，再给经验",
+      "effect": "30",
+      "source_refs": [
+        "TRAITS:W005",
+        "TRAITS:S016:89-92"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/4",
+      "source_qualification_text": "同上，没有 trait 则先授予再请求经验",
+      "screen_text_a01": {
+        "display_name": "同上，没有 特质 则先授予再请求经验",
+        "qualification": "同上，没有 特质 则先授予再请求经验",
+        "effect": "30"
+      }
+    },
+    {
+      "entry_id": "W/W006",
+      "kind": "add_trait",
+      "source_key": "wild_goose_chase_decision",
+      "display_name": "Wild Goose Chase／朝圣者",
+      "qualification": "使用调试决议者 / 调试专属",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W006",
+        "TRAITS:S052:38-38"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/5",
+      "source_qualification_text": "使用调试决议者 / 调试专属",
+      "screen_text_a01": {
+        "display_name": "Wild Goose Chase／朝圣者",
+        "qualification": "使用调试决议者 / 调试专属",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W007",
+      "kind": "trait_xp",
+      "source_key": "wild_goose_chase_decision",
+      "display_name": "debug 专属“Wild Goose Chase”，已有 朝圣者；无 <100 guard",
+      "qualification": "debug 专属“Wild Goose Chase”，已有 朝圣者；无 <100 guard",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W007",
+        "TRAITS:S052:32-35"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/6",
+      "source_qualification_text": "debug 专属“Wild Goose Chase”，已有 pilgrim；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "debug 专属“Wild Goose Chase”，已有 朝圣者；无 <100 guard",
+        "qualification": "debug 专属“Wild Goose Chase”，已有 朝圣者；无 <100 guard",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W008",
+      "kind": "add_trait",
+      "source_key": "pilgrimage_arrival_events",
+      "display_name": "朝圣队领袖／朝圣者",
+      "qualification": "有 peasant_pilgrim_leader 标记的随行者，后移出角色 / 事件NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W008",
+        "TRAITS:S086:163-163"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/7",
+      "source_qualification_text": "有 peasant_pilgrim_leader 标记的随行者，后移出角色 / 事件NPC",
+      "screen_text_a01": {
+        "display_name": "朝圣队领袖／朝圣者",
+        "qualification": "有 peasant_pilgrim_leader 标记的随行者，后移出角色 / 事件NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W009",
+      "kind": "add_trait",
+      "source_key": "on_game_start",
+      "display_name": "开局麦加／朝觐者／朝觐妇",
+      "qualification": "麦加持有者，mandatory_hajj / 非固定NPC",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W009",
+        "TRAITS:S090:656-656"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/8",
+      "source_qualification_text": "麦加持有者，mandatory_hajj / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "开局麦加／朝觐者／朝觐妇",
+        "qualification": "麦加持有者，mandatory_hajj / 非固定NPC",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W010",
+      "kind": "add_trait",
+      "source_key": "on_ruler_designer_finished",
+      "display_name": "设计统治者麦加／朝觐者／朝觐妇",
+      "qualification": "新设计角色，麦加持有者且mandatory_hajj / 设计角色",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W010",
+        "TRAITS:S092:37-37"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/9",
+      "source_qualification_text": "新设计角色，麦加持有者且mandatory_hajj / 设计角色",
+      "screen_text_a01": {
+        "display_name": "设计统治者麦加／朝觐者／朝觐妇",
+        "qualification": "新设计角色，麦加持有者且mandatory_hajj / 设计角色",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W011",
+      "kind": "add_trait",
+      "source_key": "master_mason_character",
+      "display_name": "建筑师生成／朝圣者",
+      "qualification": "master_mason_character，新角色随机分支5 / 生成NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W011",
+        "TRAITS:S173:1599-1599"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/10",
+      "source_qualification_text": "master_mason_character，新角色随机分支5 / 生成NPC",
+      "screen_text_a01": {
+        "display_name": "建筑师生成／朝圣者",
+        "qualification": "master_mason_character，新角色随机分支5 / 生成NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W012",
+      "kind": "add_trait",
+      "source_key": "location_pilgrim_template",
+      "display_name": "本地朝圣者生成／朝圣者",
+      "qualification": "location_pilgrim_template 对应分支 / 生成NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W012",
+        "TRAITS:S174:1124-1124"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/11",
+      "source_qualification_text": "location_pilgrim_template 对应分支 / 生成NPC",
+      "screen_text_a01": {
+        "display_name": "本地朝圣者生成／朝圣者",
+        "qualification": "location_pilgrim_template 对应分支 / 生成NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W013",
+      "kind": "add_trait",
+      "source_key": "location_pilgrim_template",
+      "display_name": "本地朝觐者生成／朝觐者／朝觐妇",
+      "qualification": "同模板另一对应分支 / 生成NPC",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W013",
+        "TRAITS:S174:1129-1129"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/12",
+      "source_qualification_text": "同模板另一对应分支 / 生成NPC",
+      "screen_text_a01": {
+        "display_name": "本地朝觐者生成／朝觐者／朝觐妇",
+        "qualification": "同模板另一对应分支 / 生成NPC",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W014",
+      "kind": "creation_trait",
+      "source_key": "pilgrim_character",
+      "display_name": "pilgrim_character",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W014",
+        "TRAITS:S175:4-4"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/13",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "pilgrim_character",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W015",
+      "kind": "xp_parameter_binding",
+      "source_key": "pilgrim_character",
+      "display_name": "pilgrim_character",
+      "qualification": "after_creation/add_random_tiered_trait_xp_effect",
+      "effect": "TRAIT = 朝圣者",
+      "source_refs": [
+        "TRAITS:W015",
+        "TRAITS:S175:19-19"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/14",
+      "source_qualification_text": "after_creation/add_random_tiered_trait_xp_effect",
+      "screen_text_a01": {
+        "display_name": "pilgrim_character",
+        "qualification": "after_creation/add_random_tiered_trait_xp_effect",
+        "effect": "TRAIT = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W016",
+      "kind": "creation_trait",
+      "source_key": "fp3_gnostic_paragon",
+      "display_name": "fp3_gnostic_paragon",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W016",
+        "TRAITS:S176:173-173"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/15",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "fp3_gnostic_paragon",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W017",
+      "kind": "creation_trait",
+      "source_key": "fp3_zoroastrian_armed_pilgrim",
+      "display_name": "fp3_zoroastrian_armed_pilgrim",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W017",
+        "TRAITS:S176:284-284"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/16",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "fp3_zoroastrian_armed_pilgrim",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W018",
+      "kind": "add_trait",
+      "source_key": "traveler_character",
+      "display_name": "旅行者生成／朝圣者",
+      "qualification": "traveler_character 随机分支20 / 生成NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W018",
+        "TRAITS:S177:533-533"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/17",
+      "source_qualification_text": "traveler_character 随机分支20 / 生成NPC",
+      "screen_text_a01": {
+        "display_name": "旅行者生成／朝圣者",
+        "qualification": "traveler_character 随机分支20 / 生成NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W019",
+      "kind": "add_trait",
+      "source_key": "traveler_character",
+      "display_name": "旅行者生成／朝圣者",
+      "qualification": "同模板随机分支10 / 生成NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W019",
+        "TRAITS:S177:541-541"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/18",
+      "source_qualification_text": "同模板随机分支10 / 生成NPC",
+      "screen_text_a01": {
+        "display_name": "旅行者生成／朝圣者",
+        "qualification": "同模板随机分支10 / 生成NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W020",
+      "kind": "trait_xp",
+      "source_key": "traveler_character",
+      "display_name": "traveler_character 生成后，若已获得 朝圣者；无 <100 guard",
+      "qualification": "traveler_character 生成后，若已获得 朝圣者；无 <100 guard",
+      "effect": "随机范围 55–80",
+      "source_refs": [
+        "TRAITS:W020",
+        "TRAITS:S177:577-583"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/19",
+      "source_qualification_text": "traveler_character 生成后，若已获得 pilgrim；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "traveler_character 生成后，若已获得 朝圣者；无 <100 guard",
+        "qualification": "traveler_character 生成后，若已获得 朝圣者；无 <100 guard",
+        "effect": "随机范围 55–80"
+      }
+    },
+    {
+      "entry_id": "W/W021",
+      "kind": "add_trait",
+      "source_key": "experienced_courtesan_character",
+      "display_name": "资深交际花生成／朝圣者",
+      "qualification": "experienced_courtesan_character 随机分支10 / 生成NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W021",
+        "TRAITS:S178:267-267"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/20",
+      "source_qualification_text": "experienced_courtesan_character 随机分支10 / 生成NPC",
+      "screen_text_a01": {
+        "display_name": "资深交际花生成／朝圣者",
+        "qualification": "experienced_courtesan_character 随机分支10 / 生成NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W022",
+      "kind": "creation_trait",
+      "source_key": "spawn_historical_characters_effect",
+      "display_name": "spawn_historical_characters_effect",
+      "qualification": "if/title:b_tangiers/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W022",
+        "TRAITS:S183:1300-1300"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/21",
+      "source_qualification_text": "if/title:b_tangiers/create_character",
+      "screen_text_a01": {
+        "display_name": "spawn_historical_characters_effect",
+        "qualification": "if/title:b_tangiers/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W023",
+      "kind": "creation_trait",
+      "source_key": "spawn_historical_characters_effect",
+      "display_name": "spawn_historical_characters_effect",
+      "qualification": "if/title:b_london/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W023",
+        "TRAITS:S183:1405-1405"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/22",
+      "source_qualification_text": "if/title:b_london/create_character",
+      "screen_text_a01": {
+        "display_name": "spawn_historical_characters_effect",
+        "qualification": "if/title:b_london/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W024",
+      "kind": "creation_trait",
+      "source_key": "spawn_historical_characters_effect",
+      "display_name": "spawn_historical_characters_effect",
+      "qualification": "if/title:b_sigtuna/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W024",
+        "TRAITS:S183:2780-2780"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/23",
+      "source_qualification_text": "if/title:b_sigtuna/create_character",
+      "screen_text_a01": {
+        "display_name": "spawn_historical_characters_effect",
+        "qualification": "if/title:b_sigtuna/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W025",
+      "kind": "creation_trait",
+      "source_key": "spawn_historical_characters_effect",
+      "display_name": "spawn_historical_characters_effect",
+      "qualification": "if/title:b_bukhara/create_character",
+      "effect": "特质 = 朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W025",
+        "TRAITS:S183:4452-4452"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/24",
+      "source_qualification_text": "if/title:b_bukhara/create_character",
+      "screen_text_a01": {
+        "display_name": "spawn_historical_characters_effect",
+        "qualification": "if/title:b_bukhara/create_character",
+        "effect": "特质 = 朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W026",
+      "kind": "add_trait",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "普通抵达主持人／朝圣者",
+      "qualification": "处理分支 中的 当前主办者，无特质 / 玩家或电脑角色均可能，依实际接收者",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W026",
+        "TRAITS:S186:234-234"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/25",
+      "source_qualification_text": "helper 中的 root 主持人，无特质 / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "普通抵达主持人／朝圣者",
+        "qualification": "helper 中的 root 主持人，无特质 / 非固定NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W027",
+      "kind": "add_trait",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "普通抵达参加者／朝圣者",
+      "qualification": "处理分支 中非主持人的当前接收者，无特质 / 玩家或电脑角色均可能，依实际接收者",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W027",
+        "TRAITS:S186:280-280"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/26",
+      "source_qualification_text": "helper 中非主持人的当前角色，无特质 / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "普通抵达参加者／朝圣者",
+        "qualification": "helper 中非主持人的当前角色，无特质 / 非固定NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W028",
+      "kind": "add_trait",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "普通抵达 处理分支 的朝觐旅队支路／朝觐者／朝觐妇",
+      "qualification": "主办者走朝觐，旅团中存在伊斯兰且走朝觐的角色；随后逐人循环给尚无朝觐特质者，循环未重复同一宗教筛选",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W028",
+        "TRAITS:S186:339-339"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/27",
+      "source_qualification_text": "every_entourage_character 中无 hajjaj 者；外围any检查和内部循环筛选不相同 / 随行角色",
+      "screen_text_a01": {
+        "display_name": "普通抵达 helper 的Hajj旅队支路／朝觐者／朝觐妇",
+        "qualification": "every_entourage_character 中无 朝觐者／朝觐妇 者；外围any检查和内部循环筛选不相同 / 随行角色",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W029",
+      "kind": "add_trait",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "普通抵达 处理分支 的朝圣者旅队支路／朝圣者",
+      "qualification": "主办者的旅团存在通过宗教及朝觐排除条件、且把目的地视作自身信仰圣地的人；逐人另排除同时为伊斯兰且目的地麦加者，再给无朝圣者者",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W029",
+        "TRAITS:S186:382-382"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/28",
+      "source_qualification_text": "通过该循环NAND等条件且无pilgrim的随行者 / 随行角色",
+      "screen_text_a01": {
+        "display_name": "普通抵达 helper 的pilgrim旅队支路／朝圣者",
+        "qualification": "通过该循环NAND等条件且无pilgrim的随行者 / 随行角色",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W030",
+      "kind": "add_trait",
+      "source_key": "give_hajj_trait_or_xp_effect",
+      "display_name": "朝觐完成本人／朝觐者／朝觐妇",
+      "qualification": "处理分支 当前接收者，无 朝觐者／朝觐妇 / 玩家或电脑角色均可能，依实际接收者",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W030",
+        "TRAITS:S186:404-404"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/29",
+      "source_qualification_text": "helper 当前角色，无 hajjaj / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "Hajj完成本人／朝觐者／朝觐妇",
+        "qualification": "helper 当前角色，无 朝觐者／朝觐妇 / 非固定NPC",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W031",
+      "kind": "add_trait",
+      "source_key": "give_hajj_trait_or_xp_effect",
+      "display_name": "朝觐完成穆斯林旅队／朝觐者／朝觐妇",
+      "qualification": "宗教为伊斯兰且无朝觐者／朝觐妇的随行者 / 随行角色",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W031",
+        "TRAITS:S186:433-433"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/30",
+      "source_qualification_text": "宗教为伊斯兰且无hajjaj的随行者 / 随行角色",
+      "screen_text_a01": {
+        "display_name": "Hajj完成穆斯林旅队／朝觐者／朝觐妇",
+        "qualification": "宗教为伊斯兰且无hajjaj的随行者 / 随行角色",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W032",
+      "kind": "add_trait",
+      "source_key": "give_hajj_trait_or_xp_effect",
+      "display_name": "朝觐完成非穆斯林旅队／朝圣者",
+      "qualification": "非穆斯林、自信仰圣地条件且无朝圣者的随行者 / 随行角色",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W032",
+        "TRAITS:S186:471-471"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/31",
+      "source_qualification_text": "非穆斯林、自信仰圣地条件且无pilgrim的随行者 / 随行角色",
+      "screen_text_a01": {
+        "display_name": "Hajj完成非穆斯林旅队／朝圣者",
+        "qualification": "非穆斯林、自信仰圣地条件且无pilgrim的随行者 / 随行角色",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W033",
+      "kind": "trait_xp",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "抵达主办者：保护路线分支",
+      "qualification": "已有朝圣者且经验不足100；启用By God Alone内容包、本信仰有保护朝圣路线状态；异常外层条件语义仍待核",
+      "effect": "30",
+      "source_refs": [
+        "TRAITS:W033",
+        "TRAITS:S186:246-249"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/32",
+      "source_qualification_text": "普通抵达主持人：已有 trait，PAM 且本 faith 有 secured-pilgrim-routes 变量、经验<100；外层无 limit 异常，见下节",
+      "screen_text_a01": {
+        "display_name": "普通抵达主持人：已有 特质，PAM 且本 faith 有 secured-朝圣者-routes 变量、经验<100；外层无 limit 异常，见下节",
+        "qualification": "普通抵达主持人：已有 特质，PAM 且本 faith 有 secured-朝圣者-routes 变量、经验<100；外层无 limit 异常，见下节",
+        "effect": "30"
+      }
+    },
+    {
+      "entry_id": "W/W034",
+      "kind": "trait_xp",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "抵达主办者：异常后续分支",
+      "qualification": "前一保护路线条件不成立，且经验不足100的空分支未先接走；不是重访必得",
+      "effect": "20",
+      "source_refs": [
+        "TRAITS:W034",
+        "TRAITS:S186:260-263"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/33",
+      "source_qualification_text": "同一异常树的内层 else：前一 secured 条件不成立且 <100 空分支未接走；不能称“普通重访+20”",
+      "screen_text_a01": {
+        "display_name": "同一异常树的内层 else：前一 secured 条件不成立且 <100 空分支未接走；不能称“普通重访+20”",
+        "qualification": "同一异常树的内层 else：前一 secured 条件不成立且 <100 空分支未接走；不能称“普通重访+20”",
+        "effect": "20"
+      }
+    },
+    {
+      "entry_id": "W/W035",
+      "kind": "trait_xp",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "抵达参加者：保护路线分支",
+      "qualification": "非主办、已有朝圣者且经验不足100；By God Alone内容包及保护路线状态；异常外层待核",
+      "effect": "20",
+      "source_refs": [
+        "TRAITS:W035",
+        "TRAITS:S186:292-295"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/34",
+      "source_qualification_text": "普通抵达非主持人：PAM／secured routes／P<100；外层也无 limit",
+      "screen_text_a01": {
+        "display_name": "普通抵达非主持人：PAM／secured routes／已有朝圣者且经验不足100；外层也无 limit",
+        "qualification": "普通抵达非主持人：PAM／secured routes／已有朝圣者且经验不足100；外层也无 limit",
+        "effect": "20"
+      }
+    },
+    {
+      "entry_id": "W/W036",
+      "kind": "trait_xp",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "抵达参加者：另一分支",
+      "qualification": "非主办、已有朝圣者且经验不足100；前一保护路线分支不成立；异常外层待核",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W036",
+        "TRAITS:S186:304-307"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/35",
+      "source_qualification_text": "普通抵达非主持人：前一 secured 分支不成立、P<100",
+      "screen_text_a01": {
+        "display_name": "普通抵达非主持人：前一 secured 分支不成立、已有朝圣者且经验不足100",
+        "qualification": "普通抵达非主持人：前一 secured 分支不成立、已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W037",
+      "kind": "trait_xp",
+      "source_key": "give_pilgrim_trait_or_xp_effect",
+      "display_name": "抵达时的旅团经验",
+      "qualification": "已有朝圣者并通过该循环筛选；不预先检查经验是否不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W037",
+        "TRAITS:S186:386-389"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/36",
+      "source_qualification_text": "普通抵达 helper 旅队循环，已有 pilgrim 的符合该循环筛选者；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "普通抵达 helper 旅队循环，已有 朝圣者 的符合该循环筛选者；无 <100 guard",
+        "qualification": "普通抵达 helper 旅队循环，已有 朝圣者 的符合该循环筛选者；无 <100 guard",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W038",
+      "kind": "trait_xp",
+      "source_key": "give_hajj_trait_or_xp_effect",
+      "display_name": "朝觐的非穆斯林旅伴",
+      "qualification": "非穆斯林、目的地为本信仰圣地、已有朝圣者；不预先检查经验是否不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W038",
+        "TRAITS:S186:475-478"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/37",
+      "source_qualification_text": "Hajj helper 非穆斯林随行者、自信仰圣地、已有 pilgrim；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "Hajj helper 非穆斯林随行者、自信仰圣地、已有 朝圣者；无 <100 guard",
+        "qualification": "Hajj helper 非穆斯林随行者、自信仰圣地、已有 朝圣者；无 <100 guard",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W039",
+      "kind": "trait_xp",
+      "source_key": "give_pilgrim_xp_effect",
+      "display_name": "通用朝圣者经验请求",
+      "qualification": "已有朝圣者且经验不足100；实际调用资格另判",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W039",
+        "TRAITS:S186:497-500"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/38",
+      "source_qualification_text": "give_pilgrim_xp_effect，P<100",
+      "screen_text_a01": {
+        "display_name": "give_pilgrim_xp_effect，已有朝圣者且经验不足100",
+        "qualification": "give_pilgrim_xp_effect，已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W040",
+      "kind": "trait_xp",
+      "source_key": "give_pious_type_reward_effect",
+      "display_name": "虔诚类完美表现结算",
+      "qualification": "已有朝圣者且经验不足100；至少75分档",
+      "effect": "40",
+      "source_refs": [
+        "TRAITS:W040",
+        "TRAITS:S186:643-646"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/39",
+      "source_qualification_text": "pious 结算，P<100＋perfect_pious_reward",
+      "screen_text_a01": {
+        "display_name": "虔诚类 结算，已有朝圣者且经验不足100＋perfect_pious_reward",
+        "qualification": "虔诚类 结算，已有朝圣者且经验不足100＋perfect_pious_reward",
+        "effect": "40"
+      }
+    },
+    {
+      "entry_id": "W/W041",
+      "kind": "trait_xp",
+      "source_key": "give_pious_type_reward_effect",
+      "display_name": "虔诚类高表现结算",
+      "qualification": "已有朝圣者且经验不足100；50至不足75分档",
+      "effect": "20",
+      "source_refs": [
+        "TRAITS:W041",
+        "TRAITS:S186:650-653"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/40",
+      "source_qualification_text": "pious 结算，P<100＋high_pious_reward",
+      "screen_text_a01": {
+        "display_name": "虔诚类 结算，已有朝圣者且经验不足100＋high_pious_reward",
+        "qualification": "虔诚类 结算，已有朝圣者且经验不足100＋high_pious_reward",
+        "effect": "20"
+      }
+    },
+    {
+      "entry_id": "W/W042",
+      "kind": "trait_xp",
+      "source_key": "give_pious_type_reward_effect",
+      "display_name": "虔诚类中表现结算",
+      "qualification": "已有朝圣者且经验不足100；25至不足50分档",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W042",
+        "TRAITS:S186:657-660"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/41",
+      "source_qualification_text": "pious 结算，P<100＋mid_pious_reward",
+      "screen_text_a01": {
+        "display_name": "虔诚类 结算，已有朝圣者且经验不足100＋mid_pious_reward",
+        "qualification": "虔诚类 结算，已有朝圣者且经验不足100＋mid_pious_reward",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W043",
+      "kind": "trait_xp",
+      "source_key": "give_pious_type_reward_effect",
+      "display_name": "虔诚类低表现结算",
+      "qualification": "已有朝圣者且经验不足100；不足25分档",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W043",
+        "TRAITS:S186:664-667"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/42",
+      "source_qualification_text": "pious 结算，P<100＋low_pious_reward",
+      "screen_text_a01": {
+        "display_name": "虔诚类 结算，已有朝圣者且经验不足100＋low_pious_reward",
+        "qualification": "虔诚类 结算，已有朝圣者且经验不足100＋low_pious_reward",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W044",
+      "kind": "trait_xp",
+      "source_key": "poi_buried_saint",
+      "display_name": "圣人墓重要地点",
+      "qualification": "已有朝圣者；省份有圣人时须本信仰承认；不预先检查经验是否不足100",
+      "effect": "随机 3–5",
+      "source_refs": [
+        "TRAITS:W044",
+        "TRAITS:S216:30-33"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/43",
+      "source_qualification_text": "圣人墓 POI，已有 pilgrim；若省份有圣人须本 faith 承认；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "圣人墓 POI，已有 朝圣者；若省份有圣人须本 faith 承认；无 <100 guard",
+        "qualification": "圣人墓 POI，已有 朝圣者；若省份有圣人须本 faith 承认；无 <100 guard",
+        "effect": "随机 3–5"
+      }
+    },
+    {
+      "entry_id": "W/W045",
+      "kind": "trait_xp",
+      "source_key": "poi_grand_cathedral",
+      "display_name": "大教堂重要地点第一分支",
+      "qualification": "已有朝圣者；具有加长中殿对应状态",
+      "effect": "(随机 3–5)×2",
+      "source_refs": [
+        "TRAITS:W045",
+        "TRAITS:S217:1846-1852"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/44",
+      "source_qualification_text": "大教堂 POI，已有 pilgrim，extended_nave 标记",
+      "screen_text_a01": {
+        "display_name": "大教堂 POI，已有 朝圣者，extended_nave 标记",
+        "qualification": "大教堂 POI，已有 朝圣者，extended_nave 标记",
+        "effect": "(随机 3–5)×2"
+      }
+    },
+    {
+      "entry_id": "W/W046",
+      "kind": "trait_xp",
+      "source_key": "poi_grand_cathedral",
+      "display_name": "大教堂重要地点第二分支",
+      "qualification": "已有朝圣者；前项不成立，具有对应朝圣经验状态",
+      "effect": "(随机 3–5)×1.5",
+      "source_refs": [
+        "TRAITS:W046",
+        "TRAITS:S217:1862-1868"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/45",
+      "source_qualification_text": "同上，前项不成立、cathedral_pilgrim_xp 标记",
+      "screen_text_a01": {
+        "display_name": "同上，前项不成立、cathedral_pilgrim_xp 标记",
+        "qualification": "同上，前项不成立、cathedral_pilgrim_xp 标记",
+        "effect": "(随机 3–5)×1.5"
+      }
+    },
+    {
+      "entry_id": "W/W047",
+      "kind": "trait_xp",
+      "source_key": "poi_grand_cathedral",
+      "display_name": "大教堂重要地点第三分支",
+      "qualification": "已有朝圣者；前两项不成立，具有对应教堂玻璃状态",
+      "effect": "(随机 3–5)×2",
+      "source_refs": [
+        "TRAITS:W047",
+        "TRAITS:S217:1877-1883"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/46",
+      "source_qualification_text": "同上，前两项不成立、cathedral_glass_pilgrim 标记",
+      "screen_text_a01": {
+        "display_name": "同上，前两项不成立、cathedral_glass_pilgrim 标记",
+        "qualification": "同上，前两项不成立、cathedral_glass_pilgrim 标记",
+        "effect": "(随机 3–5)×2"
+      }
+    },
+    {
+      "entry_id": "W/W048",
+      "kind": "add_trait",
+      "source_key": "hajj.0011",
+      "display_name": "麦加首都补发／朝觐者／朝觐妇",
+      "qualification": "麦加首都月度事件实际选出并触发身份授予的角色；玩家或电脑角色均可能，依实际接收者",
+      "effect": "朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W048",
+        "TRAITS:S226:78-78"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/47",
+      "source_qualification_text": "hajj.0010选出并触发0011的角色 / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "麦加首都补发／朝觐者／朝觐妇",
+        "qualification": "hajj.0010选出并触发0011的角色 / 非固定NPC",
+        "effect": "朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W049",
+      "kind": "add_trait",
+      "source_key": "pilgrimage.2010",
+      "display_name": "神秘人入队链／朝圣者",
+      "qualification": "scope:2010_mystic / 事件NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W049",
+        "TRAITS:S227:3811-3811"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/48",
+      "source_qualification_text": "scope:2010_mystic / 事件NPC",
+      "screen_text_a01": {
+        "display_name": "神秘人入队链／朝圣者",
+        "qualification": "scope:2010_mystic / 事件NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W050",
+      "kind": "add_trait",
+      "source_key": "pilgrimage.2013",
+      "display_name": "神秘人结局2013／朝圣者",
+      "qualification": "scope:2010_mystic / 事件NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W050",
+        "TRAITS:S227:3977-3977"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/49",
+      "source_qualification_text": "scope:2010_mystic / 事件NPC",
+      "screen_text_a01": {
+        "display_name": "神秘人结局2013／朝圣者",
+        "qualification": "scope:2010_mystic / 事件NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W051",
+      "kind": "add_trait",
+      "source_key": "pilgrimage.2014",
+      "display_name": "神秘人结局2014／朝圣者",
+      "qualification": "scope:2010_mystic / 事件NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W051",
+        "TRAITS:S227:4029-4029"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/50",
+      "source_qualification_text": "scope:2010_mystic / 事件NPC",
+      "screen_text_a01": {
+        "display_name": "神秘人结局2014／朝圣者",
+        "qualification": "scope:2010_mystic / 事件NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W052",
+      "kind": "add_trait",
+      "source_key": "pilgrimage.2015",
+      "display_name": "神秘人结局2015／朝圣者",
+      "qualification": "scope:2010_mystic / 事件NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W052",
+        "TRAITS:S227:4067-4067"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/51",
+      "source_qualification_text": "scope:2010_mystic / 事件NPC",
+      "screen_text_a01": {
+        "display_name": "神秘人结局2015／朝圣者",
+        "qualification": "scope:2010_mystic / 事件NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W053",
+      "kind": "creation_trait",
+      "source_key": "pilgrimage.2050",
+      "display_name": "pilgrimage.2050",
+      "qualification": "immediate/hidden_effect/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W053",
+        "TRAITS:S227:5017-5017"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/52",
+      "source_qualification_text": "immediate/hidden_effect/create_character",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.2050",
+        "qualification": "immediate/hidden_effect/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W054",
+      "kind": "creation_trait",
+      "source_key": "pilgrimage.2050",
+      "display_name": "pilgrimage.2050",
+      "qualification": "immediate/hidden_effect/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W054",
+        "TRAITS:S227:5039-5039"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/53",
+      "source_qualification_text": "immediate/hidden_effect/create_character",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.2050",
+        "qualification": "immediate/hidden_effect/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W055",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.2006",
+      "display_name": "旅行中的特殊回应",
+      "qualification": "有本事件记录的旅行人物旗标、已有朝圣者且经验不足100；前一学识替代奖励分支未接走；人物旗标不是特质",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W055",
+        "TRAITS:S227:3263-3266"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/54",
+      "source_qualification_text": "pilgrimage.2006 的 travel_smart 专属选项；P<100，前一学识替代奖励分支须未接走",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.2006 的 travel_smart 专属选项；已有朝圣者且经验不足100，前一学识替代奖励分支须未接走",
+        "qualification": "pilgrimage.2006 的 travel_smart 专属选项；已有朝圣者且经验不足100，前一学识替代奖励分支须未接走",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W056",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_2013_outcome_effect",
+      "display_name": "神秘人事件的结果",
+      "qualification": "此前无神秘主义者、神秘主义者经验未满、学识生活方式分支均未接走；已有朝圣者且经验不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W056",
+        "TRAITS:S227:3622-3625"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/55",
+      "source_qualification_text": "pilgrimage_2013_outcome_effect：前面“无 mystic／mystic 未满／学识生活方式”分支都未接走，再检查 P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage_2013_outcome_effect：前面“无 神秘主义者／神秘主义者 未满／学识生活方式”分支都未接走，再检查 已有朝圣者且经验不足100",
+        "qualification": "pilgrimage_2013_outcome_effect：前面“无 神秘主义者／神秘主义者 未满／学识生活方式”分支都未接走，再检查 已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W057",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.2030",
+      "display_name": "热忱回应",
+      "qualification": "热忱意图，或狂热且无不信者秘密；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W057",
+        "TRAITS:S227:4732-4735"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/56",
+      "source_qualification_text": "pilgrimage.2030.b：zealot intent 或狂热且无不信者秘密；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.2030.b：zealot intent 或狂热且无不信者秘密；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.2030.b：zealot intent 或狂热且无不信者秘密；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W058",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.3004",
+      "display_name": "基督教旅途回应",
+      "qualification": "基督教、有效陆地位置、达到所需学识门槛；已有朝圣者且经验不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W058",
+        "TRAITS:S227:7234-7237"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/57",
+      "source_qualification_text": "pilgrimage.3004.a：基督教、陆地有效位置、学识达到 high_skill_rating；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.3004.a：基督教、陆地有效位置、学识达到 high_skill_rating；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.3004.a：基督教、陆地有效位置、学识达到 high_skill_rating；已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W059",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.3102",
+      "display_name": "伊斯兰旅途回应",
+      "qualification": "伊斯兰、有效陆地位置、非愤世嫉俗；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W059",
+        "TRAITS:S227:7359-7362"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/58",
+      "source_qualification_text": "pilgrimage.3102.b：伊斯兰、陆地有效位置、不是 cynical；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.3102.b：伊斯兰、陆地有效位置、不是 愤世嫉俗；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.3102.b：伊斯兰、陆地有效位置、不是 愤世嫉俗；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W060",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.3201",
+      "display_name": "印度教旅途回应",
+      "qualification": "印度教、有效陆地位置；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W060",
+        "TRAITS:S227:7432-7435"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/59",
+      "source_qualification_text": "pilgrimage.3201.a：印度教、陆地有效位置；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.3201.a：印度教、陆地有效位置；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.3201.a：印度教、陆地有效位置；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W061",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.3202",
+      "display_name": "自然中的宗教回应",
+      "qualification": "印度教／佛教／耆那教，或当前礼仪有自然神圣条件；森林／丛林／针叶林、旅程进度不足80%；已有朝圣者且经验不足100",
+      "effect": "20",
+      "source_refs": [
+        "TRAITS:W061",
+        "TRAITS:S227:7532-7535"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/60",
+      "source_qualification_text": "pilgrimage.3202.a：印度教／佛教／耆那教，或礼仪有 sanctity_of_nature；森林／丛林／针叶林、旅程进度<0.8；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.3202.a：印度教／佛教／耆那教，或礼仪有 sanctity_of_nature；森林／丛林／针叶林、旅程进度<0.8；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.3202.a：印度教／佛教／耆那教，或礼仪有 sanctity_of_nature；森林／丛林／针叶林、旅程进度<0.8；已有朝圣者且经验不足100",
+        "effect": "20"
+      }
+    },
+    {
+      "entry_id": "W/W062",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.3301",
+      "display_name": "佛教旅途回应",
+      "qualification": "佛教、有效陆地位置、达到所需学识门槛；已有朝圣者且经验不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W062",
+        "TRAITS:S227:7622-7625"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/61",
+      "source_qualification_text": "pilgrimage.3301.c：佛教、陆地有效位置、学识 high_skill_rating；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.3301.c：佛教、陆地有效位置、学识 high_skill_rating；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.3301.c：佛教、陆地有效位置、学识 high_skill_rating；已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W063",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.6001",
+      "display_name": "酒馆朋友事件的狂热回应",
+      "qualification": "启用Friends & Foes内容包、符合朋友及旅团事件资格；穆斯林另检查酒鬼门槛；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W063",
+        "TRAITS:S227:8190-8193"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/62",
+      "source_qualification_text": "pilgrimage.6001.c：BP1、朋友／旅队等事件资格、狂热选项；穆斯林还有 drunkard 事件门槛；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.6001.c：BP1、朋友／旅队等事件资格、狂热选项；穆斯林还有 drunkard 事件门槛；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.6001.c：BP1、朋友／旅队等事件资格、狂热选项；穆斯林还有 drunkard 事件门槛；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W064",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.6520",
+      "display_name": "旅伴事件的回应",
+      "qualification": "实际旅伴事件条件成立；狂热或睚眦必报；已有朝圣者且经验不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W064",
+        "TRAITS:S227:10889-10892"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/63",
+      "source_qualification_text": "pilgrimage.6520.a：事件旅伴条件成立；选项要求 zealous 或 vengeful；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.6520.a：事件旅伴条件成立；选项要求 狂热 或 睚眦必报；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.6520.a：事件旅伴条件成立；选项要求 狂热 或 睚眦必报；已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W065",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.6800",
+      "display_name": "宫廷和随行者事件的回应",
+      "qualification": "实际宫廷与随行者条件成立；狂热；已有朝圣者且经验不足100",
+      "effect": "20",
+      "source_refs": [
+        "TRAITS:W065",
+        "TRAITS:S227:13622-13625"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/64",
+      "source_qualification_text": "pilgrimage.6800.e：事件的宫廷／随行者条件成立，狂热选项；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.6800.e：事件的宫廷／随行者条件成立，狂热选项；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.6800.e：事件的宫廷／随行者条件成立，狂热选项；已有朝圣者且经验不足100",
+        "effect": "20"
+      }
+    },
+    {
+      "entry_id": "W/W066",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage.6830",
+      "display_name": "深思熟虑意图的还愿物回应",
+      "qualification": "深思熟虑意图、非腾格里、事件已保存对应宝物对象；已有朝圣者且经验不足100；宝物对象不是特质",
+      "effect": "20",
+      "source_refs": [
+        "TRAITS:W066",
+        "TRAITS:S227:14287-14290"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/65",
+      "source_qualification_text": "pilgrimage.6830.c：reflection intent、非腾格里、已有 votive_artifact、P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage.6830.c：reflection intent、非腾格里、已有 votive_artifact、已有朝圣者且经验不足100",
+        "qualification": "pilgrimage.6830.c：reflection intent、非腾格里、已有 votive_artifact、已有朝圣者且经验不足100",
+        "effect": "20"
+      }
+    },
+    {
+      "entry_id": "W/W067",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1030",
+      "display_name": "深思熟虑意图：停下沉思",
+      "qualification": "已有朝圣者且经验不足100才给经验；无特质者另给虔诚",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W067",
+        "TRAITS:S229:827-830"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/66",
+      "source_qualification_text": "pilgrimage_intent.1030.a：reflection intent；已有 P<100 才经验，无 trait 是另一笔虔诚",
+      "screen_text_a01": {
+        "display_name": "pilgrimage_intent.1030.a：reflection intent；已有 已有朝圣者且经验不足100 才经验，无 特质 是另一笔虔诚",
+        "qualification": "pilgrimage_intent.1030.a：reflection intent；已有 已有朝圣者且经验不足100 才经验，无 特质 是另一笔虔诚",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W068",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1041",
+      "display_name": "深思熟虑意图的即时结果甲",
+      "qualification": "已有朝圣者；不预先检查经验是否不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W068",
+        "TRAITS:S229:1042-1045"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/67",
+      "source_qualification_text": "pilgrimage_intent.1041 immediate：已有 pilgrim；**没有 <100 guard**",
+      "screen_text_a01": {
+        "display_name": "pilgrimage_intent.1041 immediate：已有 朝圣者；**没有 <100 guard**",
+        "qualification": "pilgrimage_intent.1041 immediate：已有 朝圣者；**没有 <100 guard**",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W069",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1043",
+      "display_name": "深思熟虑意图的即时结果乙",
+      "qualification": "已有朝圣者且经验不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W069",
+        "TRAITS:S229:1173-1176"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/68",
+      "source_qualification_text": "pilgrimage_intent.1043 immediate：P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage_intent.1043 immediate：已有朝圣者且经验不足100",
+        "qualification": "pilgrimage_intent.1043 immediate：已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W070",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1100",
+      "display_name": "深思熟虑意图：说明动机",
+      "qualification": "深思熟虑意图；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W070",
+        "TRAITS:S229:1812-1815"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/69",
+      "source_qualification_text": "pilgrimage_intent.1100.a：reflection intent；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage_intent.1100.a：reflection intent；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage_intent.1100.a：reflection intent；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W071",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1110",
+      "display_name": "海上旅伴：行善回应",
+      "qualification": "海上旅伴事件资格、行善意图；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W071",
+        "TRAITS:S229:1986-1989"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/70",
+      "source_qualification_text": "pilgrimage_intent.1110.a：海上／旅伴事件、altruism intent；P<100",
+      "screen_text_a01": {
+        "display_name": "pilgrimage_intent.1110.a：海上／旅伴事件、altruism intent；已有朝圣者且经验不足100",
+        "qualification": "pilgrimage_intent.1110.a：海上／旅伴事件、altruism intent；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W072",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1110",
+      "display_name": "海上旅伴：深思熟虑回应",
+      "qualification": "同一海上旅伴事件资格、深思熟虑意图；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W072",
+        "TRAITS:S229:2013-2016"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/71",
+      "source_qualification_text": "同事件 .b：reflection intent；P<100",
+      "screen_text_a01": {
+        "display_name": "同事件 .b：reflection intent；已有朝圣者且经验不足100",
+        "qualification": "同事件 .b：reflection intent；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W073",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1110",
+      "display_name": "海上旅伴：热忱回应",
+      "qualification": "同一海上旅伴事件资格、热忱意图；已有朝圣者且经验不足100",
+      "effect": "5",
+      "source_refs": [
+        "TRAITS:W073",
+        "TRAITS:S229:2040-2043"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/72",
+      "source_qualification_text": "同事件 .c：zealot intent；P<100",
+      "screen_text_a01": {
+        "display_name": "同事件 .c：zealot intent；已有朝圣者且经验不足100",
+        "qualification": "同事件 .c：zealot intent；已有朝圣者且经验不足100",
+        "effect": "5"
+      }
+    },
+    {
+      "entry_id": "W/W074",
+      "kind": "trait_xp",
+      "source_key": "pilgrimage_intent.1110",
+      "display_name": "海上旅伴：照料回应",
+      "qualification": "身心俱悉、草药师、巫师资格或医生四选一；没有该事件既有照料修正；已有朝圣者且经验不足100",
+      "effect": "10",
+      "source_refs": [
+        "TRAITS:W074",
+        "TRAITS:S229:2114-2117"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/73",
+      "source_qualification_text": "同事件 .d：whole_of_body／herbalist／巫师 trigger／physician 四选一，且无 pilgrimage_herbalist_modifier；P<100",
+      "screen_text_a01": {
+        "display_name": "同事件 .d：身心俱悉／herbalist／巫师 trigger／physician 四选一，且无 pilgrimage_herbalist_modifier；已有朝圣者且经验不足100",
+        "qualification": "同事件 .d：身心俱悉／herbalist／巫师 trigger／physician 四选一，且无 pilgrimage_herbalist_modifier；已有朝圣者且经验不足100",
+        "effect": "10"
+      }
+    },
+    {
+      "entry_id": "W/W075",
+      "kind": "creation_trait",
+      "source_key": "iberia_north_africa.2011",
+      "display_name": "iberia_north_africa.2011",
+      "qualification": "immediate/random_list/70/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W075",
+        "TRAITS:S233:2196-2196"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/74",
+      "source_qualification_text": "immediate/random_list/70/create_character",
+      "screen_text_a01": {
+        "display_name": "iberia_north_africa.2011",
+        "qualification": "immediate/random_list/70/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W076",
+      "kind": "creation_trait",
+      "source_key": "iberia_north_africa.2011",
+      "display_name": "iberia_north_africa.2011",
+      "qualification": "immediate/random_list/30/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W076",
+        "TRAITS:S233:2234-2234"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/75",
+      "source_qualification_text": "immediate/random_list/30/create_character",
+      "screen_text_a01": {
+        "display_name": "iberia_north_africa.2011",
+        "qualification": "immediate/random_list/30/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W077",
+      "kind": "creation_trait",
+      "source_key": "iberia_north_africa.2012",
+      "display_name": "iberia_north_africa.2012",
+      "qualification": "immediate/random_list/50/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W077",
+        "TRAITS:S233:2370-2370"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/76",
+      "source_qualification_text": "immediate/random_list/50/create_character",
+      "screen_text_a01": {
+        "display_name": "iberia_north_africa.2012",
+        "qualification": "immediate/random_list/50/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W078",
+      "kind": "creation_trait",
+      "source_key": "iberia_north_africa.2012",
+      "display_name": "iberia_north_africa.2012",
+      "qualification": "immediate/random_list/50/create_character",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W078",
+        "TRAITS:S233:2401-2401"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/77",
+      "source_qualification_text": "immediate/random_list/50/create_character",
+      "screen_text_a01": {
+        "display_name": "iberia_north_africa.2012",
+        "qualification": "immediate/random_list/50/create_character",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W079",
+      "kind": "add_trait",
+      "source_key": "bp2_yearly.6060",
+      "display_name": "BP2外国教士／朝圣者",
+      "qualification": "scope:foreign_cleric / 事件NPC",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W079",
+        "TRAITS:S236:5044-5044"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/78",
+      "source_qualification_text": "scope:foreign_cleric / 事件NPC",
+      "screen_text_a01": {
+        "display_name": "BP2外国教士／朝圣者",
+        "qualification": "scope:foreign_cleric / 事件NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W080",
+      "kind": "trait_xp",
+      "source_key": "ep3_contract_event.0045",
+      "display_name": "学识合约的随机结果",
+      "qualification": "实际随机列表的对应分支被选中；被作用者已有朝圣者；不预先检查经验是否不足100",
+      "effect": "整数随机 20–40",
+      "source_refs": [
+        "TRAITS:W080",
+        "TRAITS:S239:4131-4139"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/79",
+      "source_qualification_text": "ep3_contract_event.0045 随机列表 30 分支，被作用者已有 pilgrim；无 <100 guard",
+      "screen_text_a01": {
+        "display_name": "ep3_contract_event.0045 随机列表 30 分支，被作用者已有 朝圣者；无 <100 guard",
+        "qualification": "ep3_contract_event.0045 随机列表 30 分支，被作用者已有 朝圣者；无 <100 guard",
+        "effect": "整数随机 20–40"
+      }
+    },
+    {
+      "entry_id": "W/W081",
+      "kind": "add_trait",
+      "source_key": "fp2_yearly.4007",
+      "display_name": "The Fate of Iberia内容包的朝圣决斗",
+      "qualification": "该朝圣决斗事件中实际成功的角色；玩家或电脑角色均可能",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W081",
+        "TRAITS:S243:3438-3438"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/80",
+      "source_qualification_text": "fp2_yearly.4007 的 root / 非固定NPC",
+      "screen_text_a01": {
+        "display_name": "FP2朝圣事件决斗成功／朝圣者",
+        "qualification": "fp2_yearly.4007 的 root / 非固定NPC",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W082",
+      "kind": "trait_xp",
+      "source_key": "pam_great_projects_events.0002",
+      "display_name": "大教堂大项目结果甲",
+      "qualification": "已有朝圣者；大教堂状态和人物经验分别写入",
+      "effect": "(随机 3–5)×1.5",
+      "source_refs": [
+        "TRAITS:W082",
+        "TRAITS:S248:221-227"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/81",
+      "source_qualification_text": "pam_great_projects_events.0002 选项中已有 pilgrim；大教堂状态生产与角色 XP 同时发生",
+      "screen_text_a01": {
+        "display_name": "pam_great_projects_events.0002 选项中已有 朝圣者；大教堂状态生产与角色 XP 同时发生",
+        "qualification": "pam_great_projects_events.0002 选项中已有 朝圣者；大教堂状态生产与角色 XP 同时发生",
+        "effect": "(随机 3–5)×1.5"
+      }
+    },
+    {
+      "entry_id": "W/W083",
+      "kind": "trait_xp",
+      "source_key": "pam_great_projects_events.0003",
+      "display_name": "大教堂大项目结果乙",
+      "qualification": "已有朝圣者，且实际大项目事件分支成立",
+      "effect": "(随机 3–5)×2",
+      "source_refs": [
+        "TRAITS:W083",
+        "TRAITS:S248:622-628"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/82",
+      "source_qualification_text": "pam_great_projects_events.0003 选项中已有 pilgrim",
+      "screen_text_a01": {
+        "display_name": "pam_great_projects_events.0003 选项中已有 朝圣者",
+        "qualification": "pam_great_projects_events.0003 选项中已有 朝圣者",
+        "effect": "(随机 3–5)×2"
+      }
+    },
+    {
+      "entry_id": "W/W084",
+      "kind": "remove_trait",
+      "source_key": "faith_conversion.0002",
+      "display_name": "跨宗教改信",
+      "qualification": "新旧信仰所属宗教不同",
+      "effect": "删除朝圣者；同宗教内换信仰不满足此条",
+      "source_refs": [
+        "TRAITS:W084",
+        "TRAITS:S257:96-96"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/83",
+      "source_qualification_text": "immediate/if",
+      "screen_text_a01": {
+        "display_name": "跨宗教改信",
+        "qualification": "新旧信仰所属宗教不同",
+        "effect": "删除朝圣者；同宗教内换信仰不满足此条"
+      }
+    },
+    {
+      "entry_id": "W/W085",
+      "kind": "add_trait",
+      "source_key": "holy_order.0100",
+      "display_name": "圣骑士团成员／朝圣者",
+      "qualification": "无朝圣者、有圣骑士团成员身份，且领主领导本信仰圣骑士团的角色 / 身份角色",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:W085",
+        "TRAITS:S259:451-451"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/84",
+      "source_qualification_text": "无pilgrim、有order_member，且liege领导本faith圣骑士团的角色 / 身份角色",
+      "screen_text_a01": {
+        "display_name": "圣骑士团成员／朝圣者",
+        "qualification": "无pilgrim、有order_member，且liege领导本faith圣骑士团的角色 / 身份角色",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W086",
+      "kind": "creation_trait",
+      "source_key": "walpurga_1",
+      "display_name": "walpurga_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W086",
+        "TRAITS:S272:7224-7224"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/85",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "walpurga_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W087",
+      "kind": "creation_trait",
+      "source_key": "walpurga_3",
+      "display_name": "walpurga_3",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W087",
+        "TRAITS:S272:7266-7266"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/86",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "walpurga_3",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W088",
+      "kind": "creation_trait",
+      "source_key": "walpurga_4",
+      "display_name": "walpurga_4",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W088",
+        "TRAITS:S272:7286-7286"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/87",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "walpurga_4",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W089",
+      "kind": "creation_trait",
+      "source_key": "walpurga_6",
+      "display_name": "walpurga_6",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W089",
+        "TRAITS:S272:7319-7319"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/88",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "walpurga_6",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W090",
+      "kind": "creation_trait",
+      "source_key": "vardapet_1",
+      "display_name": "vardapet_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W090",
+        "TRAITS:S273:9358-9358"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/89",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "vardapet_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W091",
+      "kind": "creation_trait",
+      "source_key": "bavarian0003",
+      "display_name": "bavarian0003",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W091",
+        "TRAITS:S274:10106-10106"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/90",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "bavarian0003",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W092",
+      "kind": "creation_trait",
+      "source_key": "extra_bedouins_0019",
+      "display_name": "extra_bedouins_0019",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W092",
+        "TRAITS:S275:14442-14442"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/91",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "extra_bedouins_0019",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W093",
+      "kind": "creation_trait",
+      "source_key": "danis0004",
+      "display_name": "danis0004",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W093",
+        "TRAITS:S276:7307-7307"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/92",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "danis0004",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W094",
+      "kind": "creation_trait",
+      "source_key": "khali0002",
+      "display_name": "khali0002",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W094",
+        "TRAITS:S276:7706-7706"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/93",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "khali0002",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W095",
+      "kind": "creation_trait",
+      "source_key": "easteregg_ali_kara",
+      "display_name": "easteregg_ali_kara",
+      "qualification": "",
+      "effect": "特质 = 朝觐者／朝觐妇",
+      "source_refs": [
+        "TRAITS:W095",
+        "TRAITS:S278:4108-4108"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/94",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "easteregg_ali_kara",
+        "qualification": "",
+        "effect": "特质 = 朝觐者／朝觐妇"
+      }
+    },
+    {
+      "entry_id": "W/W096",
+      "kind": "creation_trait",
+      "source_key": "easteregg_ola_jentzsch",
+      "display_name": "easteregg_ola_jentzsch",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W096",
+        "TRAITS:S278:4796-4796"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/95",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "easteregg_ola_jentzsch",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W097",
+      "kind": "creation_trait",
+      "source_key": "easteregg_shehabulddin_alessawey",
+      "display_name": "easteregg_shehabulddin_alessawey",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W097",
+        "TRAITS:S278:8232-8232"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/96",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "easteregg_shehabulddin_alessawey",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W098",
+      "kind": "creation_trait",
+      "source_key": "et_york_1066_1",
+      "display_name": "et_york_1066_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W098",
+        "TRAITS:S279:11262-11262"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/97",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "et_york_1066_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W099",
+      "kind": "creation_trait",
+      "source_key": "bahitawi_1",
+      "display_name": "bahitawi_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W099",
+        "TRAITS:S280:2013-2013"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/98",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "bahitawi_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W100",
+      "kind": "creation_trait",
+      "source_key": "wang_chuyi_1",
+      "display_name": "wang_chuyi_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W100",
+        "TRAITS:S282:145543-145543"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/99",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "wang_chuyi_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W101",
+      "kind": "creation_trait",
+      "source_key": "jiang_kui_1",
+      "display_name": "jiang_kui_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W101",
+        "TRAITS:S282:146030-146030"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/100",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "jiang_kui_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W102",
+      "kind": "creation_trait",
+      "source_key": "7253",
+      "display_name": "7253",
+      "qualification": "1030.1.1",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W102",
+        "TRAITS:S283:2180-2180"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/101",
+      "source_qualification_text": "1030.1.1",
+      "screen_text_a01": {
+        "display_name": "7253",
+        "qualification": "1030.1.1",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W103",
+      "kind": "creation_trait",
+      "source_key": "jojin_1",
+      "display_name": "jojin_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W103",
+        "TRAITS:S284:103257-103257"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/102",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "jojin_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W104",
+      "kind": "creation_trait",
+      "source_key": "extra_khazars_1",
+      "display_name": "extra_khazars_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W104",
+        "TRAITS:S285:1072-1072"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/103",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "extra_khazars_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W105",
+      "kind": "creation_trait",
+      "source_key": "20224",
+      "display_name": "20224",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W105",
+        "TRAITS:S288:5193-5193"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/104",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "20224",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W106",
+      "kind": "creation_trait",
+      "source_key": "1000230509",
+      "display_name": "1000230509",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W106",
+        "TRAITS:S289:919-919"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/105",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "1000230509",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W107",
+      "kind": "creation_trait",
+      "source_key": "extra_tahirids_3",
+      "display_name": "extra_tahirids_3",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W107",
+        "TRAITS:S289:993-993"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/106",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "extra_tahirids_3",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "W/W108",
+      "kind": "creation_trait",
+      "source_key": "khong_lo_1",
+      "display_name": "khong_lo_1",
+      "qualification": "",
+      "effect": "特质 = 朝圣者",
+      "source_refs": [
+        "TRAITS:W108",
+        "TRAITS:S291:1736-1736"
+      ],
+      "upstream_json_pointer": "TRAITS:/writers/107",
+      "source_qualification_text": "",
+      "screen_text_a01": {
+        "display_name": "khong_lo_1",
+        "qualification": "",
+        "effect": "特质 = 朝圣者"
+      }
+    },
+    {
+      "entry_id": "M/baptistery_pilgrims_hospice_01",
+      "kind": "xp_multiplier",
+      "source_key": "baptistery_pilgrims_hospice_01",
+      "display_name": "朝圣者收容所 01",
+      "qualification": "教会庄园实际生效建筑；四级不直接相加",
+      "effect": "+5% 朝圣者经验增益",
+      "source_refs": [
+        "TRAITS:S054:3867"
+      ],
+      "upstream_json_pointer": "TRAITS:/xp_multiplier_producers/0",
+      "source_qualification_text": "character_modifier",
+      "screen_text_a01": {
+        "display_name": "朝圣者收容所 01",
+        "qualification": "教会庄园实际生效建筑；四级不直接相加",
+        "effect": "+5% 朝圣者经验增益"
+      }
+    },
+    {
+      "entry_id": "M/baptistery_pilgrims_hospice_02",
+      "kind": "xp_multiplier",
+      "source_key": "baptistery_pilgrims_hospice_02",
+      "display_name": "朝圣者收容所 02",
+      "qualification": "教会庄园实际生效建筑；四级不直接相加",
+      "effect": "+5% 朝圣者经验增益",
+      "source_refs": [
+        "TRAITS:S054:3910"
+      ],
+      "upstream_json_pointer": "TRAITS:/xp_multiplier_producers/1",
+      "source_qualification_text": "character_modifier",
+      "screen_text_a01": {
+        "display_name": "朝圣者收容所 02",
+        "qualification": "教会庄园实际生效建筑；四级不直接相加",
+        "effect": "+5% 朝圣者经验增益"
+      }
+    },
+    {
+      "entry_id": "M/baptistery_pilgrims_hospice_03",
+      "kind": "xp_multiplier",
+      "source_key": "baptistery_pilgrims_hospice_03",
+      "display_name": "朝圣者收容所 03",
+      "qualification": "教会庄园实际生效建筑；四级不直接相加",
+      "effect": "+5% 朝圣者经验增益",
+      "source_refs": [
+        "TRAITS:S054:3957"
+      ],
+      "upstream_json_pointer": "TRAITS:/xp_multiplier_producers/2",
+      "source_qualification_text": "character_modifier",
+      "screen_text_a01": {
+        "display_name": "朝圣者收容所 03",
+        "qualification": "教会庄园实际生效建筑；四级不直接相加",
+        "effect": "+5% 朝圣者经验增益"
+      }
+    },
+    {
+      "entry_id": "M/baptistery_pilgrims_hospice_04",
+      "kind": "xp_multiplier",
+      "source_key": "baptistery_pilgrims_hospice_04",
+      "display_name": "朝圣者收容所 04",
+      "qualification": "教会庄园实际生效建筑；四级不直接相加",
+      "effect": "+5% 朝圣者经验增益",
+      "source_refs": [
+        "TRAITS:S054:4004"
+      ],
+      "upstream_json_pointer": "TRAITS:/xp_multiplier_producers/3",
+      "source_qualification_text": "character_modifier",
+      "screen_text_a01": {
+        "display_name": "朝圣者收容所 04",
+        "qualification": "教会庄园实际生效建筑；四级不直接相加",
+        "effect": "+5% 朝圣者经验增益"
+      }
+    },
+    {
+      "entry_id": "M/ep2_activities_legacy_1",
+      "kind": "xp_multiplier",
+      "source_key": "ep2_activities_legacy_1",
+      "display_name": "踏过圣路",
+      "qualification": "宗族传承实际生效",
+      "effect": "+50% 朝圣者经验增益",
+      "source_refs": [
+        "TRAITS:S056:36"
+      ],
+      "upstream_json_pointer": "TRAITS:/xp_multiplier_producers/4",
+      "source_qualification_text": "character_modifier",
+      "screen_text_a01": {
+        "display_name": "踏过圣路",
+        "qualification": "宗族传承实际生效",
+        "effect": "+50% 朝圣者经验增益"
+      }
+    },
+    {
+      "entry_id": "M/just_one_more_hill_perk",
+      "kind": "xp_multiplier",
+      "source_key": "just_one_more_hill_perk",
+      "display_name": "复越高山",
+      "qualification": "技能持有者且符合神权制条件",
+      "effect": "+20% 朝圣者经验增益",
+      "source_refs": [
+        "TRAITS:S072:93"
+      ],
+      "upstream_json_pointer": "TRAITS:/xp_multiplier_producers/5",
+      "source_qualification_text": "government_character_modifier",
+      "screen_text_a01": {
+        "display_name": "复越高山",
+        "qualification": "技能持有者且符合神权制条件",
+        "effect": "+20% 朝圣者经验增益"
+      }
+    },
+    {
+      "entry_id": "D/remove_sinful_trait_effect",
+      "kind": "verified_generic",
+      "source_key": "remove_sinful_trait_effect",
+      "display_name": "当前罪恶选择器",
+      "qualification": "当前礼仪将朝圣者视为罪恶，且实际候选中抽中",
+      "effect": "可能删除朝圣者",
+      "source_refs": [
+        "TRAITS:S324:829-839"
+      ],
+      "upstream_json_pointer": "TRAITS:/semantic_inventory/generic_trait_mutation",
+      "source_qualification_text": "当前礼仪将朝圣者视为罪恶，且实际候选中抽中",
+      "screen_text_a01": {
+        "display_name": "当前罪恶选择器",
+        "qualification": "当前礼仪将朝圣者视为罪恶，且实际候选中抽中",
+        "effect": "可能删除朝圣者"
+      }
+    },
+    {
+      "entry_id": "D/add_virtuous_trait_effect",
+      "kind": "verified_generic",
+      "source_key": "add_virtuous_trait_effect",
+      "display_name": "当前美德选择器",
+      "qualification": "当前礼仪视为美德，未拥有且无相反冲突，并被抽中",
+      "effect": "可能授予朝圣者",
+      "source_refs": [
+        "TRAITS:S324:842-875"
+      ],
+      "upstream_json_pointer": "TRAITS:/semantic_inventory/generic_trait_mutation",
+      "source_qualification_text": "当前礼仪视为美德，未拥有且无相反冲突，并被抽中",
+      "screen_text_a01": {
+        "display_name": "当前美德选择器",
+        "qualification": "当前礼仪视为美德，未拥有且无相反冲突，并被抽中",
+        "effect": "可能授予朝圣者"
+      }
+    },
+    {
+      "entry_id": "D/replace_sinful_trait_effect",
+      "kind": "verified_generic",
+      "source_key": "replace_sinful_trait_effect",
+      "display_name": "先删罪恶再加美德",
+      "qualification": "宗教决议事件对应沉思分支调用，实际抽选另判",
+      "effect": "可能删或加，不是必然交换",
+      "source_refs": [
+        "TRAITS:S324:878-880",
+        "TRAITS:S343:2001"
+      ],
+      "upstream_json_pointer": "TRAITS:/semantic_inventory/generic_trait_mutation",
+      "source_qualification_text": "宗教决议事件对应沉思分支调用，实际抽选另判",
+      "screen_text_a01": {
+        "display_name": "先删罪恶再加美德",
+        "qualification": "宗教决议事件对应沉思分支调用，实际抽选另判",
+        "effect": "可能删或加，不是必然交换"
+      }
+    },
+    {
+      "entry_id": "D/repent_oath_decision",
+      "kind": "verified_generic",
+      "source_key": "repent_oath_decision",
+      "display_name": "悔改誓言的处理",
+      "qualification": "朝圣者为名声类，当前视为罪恶，另满足誓言决议资格",
+      "effect": "进入对应移除列表；人格专属路径另排除",
+      "source_refs": [
+        "TRAITS:S046:1754-1784"
+      ],
+      "upstream_json_pointer": "TRAITS:/semantic_inventory/generic_trait_mutation",
+      "source_qualification_text": "朝圣者为名声类，当前视为罪恶，另满足誓言决议资格",
+      "screen_text_a01": {
+        "display_name": "悔改誓言的处理",
+        "qualification": "朝圣者为名声类，当前视为罪恶，另满足誓言决议资格",
+        "effect": "进入对应移除列表；人格专属路径另排除"
+      }
+    },
+    {
+      "entry_id": "R/1",
+      "kind": "random_creation_candidate",
+      "source_key": "monastic_order_leader_character",
+      "display_name": "monastic_order_leader_character",
+      "qualification": "random_traits_list_candidate_not_guaranteed",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:S172:418-420"
+      ],
+      "upstream_json_pointer": "TRAITS:/random_trait_list_pilgrim_candidates/0",
+      "source_qualification_text": "random_traits_list_candidate_not_guaranteed",
+      "screen_text_a01": {
+        "display_name": "monastic_order_leader_character",
+        "qualification": "random_traits_list_candidate_not_guaranteed",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "R/2",
+      "kind": "random_creation_candidate",
+      "source_key": "fp3_sufi_mystic",
+      "display_name": "fp3_sufi_mystic",
+      "qualification": "random_traits_list_candidate_not_guaranteed",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:S176:244-244"
+      ],
+      "upstream_json_pointer": "TRAITS:/random_trait_list_pilgrim_candidates/1",
+      "source_qualification_text": "random_traits_list_candidate_not_guaranteed",
+      "screen_text_a01": {
+        "display_name": "fp3_sufi_mystic",
+        "qualification": "random_traits_list_candidate_not_guaranteed",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "R/3",
+      "kind": "random_creation_candidate",
+      "source_key": "ep3_frankokratia_crusader_template",
+      "display_name": "ep3_frankokratia_crusader_template",
+      "qualification": "random_traits_list_candidate_not_guaranteed",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:S177:401-401"
+      ],
+      "upstream_json_pointer": "TRAITS:/random_trait_list_pilgrim_candidates/2",
+      "source_qualification_text": "random_traits_list_candidate_not_guaranteed",
+      "screen_text_a01": {
+        "display_name": "ep3_frankokratia_crusader_template",
+        "qualification": "random_traits_list_candidate_not_guaranteed",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "R/4",
+      "kind": "random_creation_candidate",
+      "source_key": "pam_crusader_template",
+      "display_name": "pam_crusader_template",
+      "qualification": "random_traits_list_candidate_not_guaranteed",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:S179:168-168"
+      ],
+      "upstream_json_pointer": "TRAITS:/random_trait_list_pilgrim_candidates/3",
+      "source_qualification_text": "random_traits_list_candidate_not_guaranteed",
+      "screen_text_a01": {
+        "display_name": "pam_crusader_template",
+        "qualification": "random_traits_list_candidate_not_guaranteed",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "R/5",
+      "kind": "random_creation_candidate",
+      "source_key": "clan.1201",
+      "display_name": "clan.1201",
+      "qualification": "random_traits_list_candidate_not_guaranteed",
+      "effect": "朝圣者",
+      "source_refs": [
+        "TRAITS:S254:1013-1013"
+      ],
+      "upstream_json_pointer": "TRAITS:/random_trait_list_pilgrim_candidates/4",
+      "source_qualification_text": "random_traits_list_candidate_not_guaranteed",
+      "screen_text_a01": {
+        "display_name": "clan.1201",
+        "qualification": "random_traits_list_candidate_not_guaranteed",
+        "effect": "朝圣者"
+      }
+    },
+    {
+      "entry_id": "F/F0",
+      "kind": "overview",
+      "source_key": "F0",
+      "display_name": "固定公爵，无折扣或经验增益",
+      "qualification": "中世纪早期，头衔等级3、计算项2，收入10；费用与奖励平方距离各50000；虔诚朝圣、忠诚朝圣者、排场讲究；非主要圣地，已有经验80；雇佣登山者",
+      "effect": "60+100+12+4=176＋独立主管报价；65／75分主虔诚112.5／150；基础经验20／40均实际+20至100",
+      "source_refs": [
+        "FORMULA:/cost",
+        "FORMULA:/piety",
+        "FORMULA:/trait_xp"
+      ],
+      "upstream_json_pointer": "FORMULA:/models",
+      "source_qualification_text": "中世纪早期，t3/T2，收入10；费用与奖励平方距离各50000；虔诚朝圣、忠诚朝圣者、排场讲究；非主要圣地，已有经验80；雇佣登山者",
+      "screen_text_a01": {
+        "display_name": "固定公爵，无折扣或经验增益",
+        "qualification": "中世纪早期，t3/T2，收入10；费用与奖励平方距离各50000；虔诚朝圣、忠诚朝圣者、排场讲究；非主要圣地，已有经验80；雇佣登山者",
+        "effect": "60+100+12+4=176+L；65／75分主虔诚112.5／150；基础经验20／40均实际+20至100"
+      }
+    },
+    {
+      "entry_id": "F/F1",
+      "kind": "overview",
+      "source_key": "F1",
+      "display_name": "只开启踏过圣路",
+      "qualification": "初始模型其余条件全部保持",
+      "effect": "30+75+12+4=121＋独立主管报价；主虔诚仍112.5／150；经验请求调30／60，仍均实际+20至100",
+      "source_refs": [
+        "FORMULA:/cost",
+        "FORMULA:/piety",
+        "FORMULA:/trait_xp"
+      ],
+      "upstream_json_pointer": "FORMULA:/models",
+      "source_qualification_text": "F0其余条件全部保持",
+      "screen_text_a01": {
+        "display_name": "只开启踏过圣路",
+        "qualification": "F0其余条件全部保持",
+        "effect": "30+75+12+4=121+L；主虔诚仍112.5／150；经验请求调30／60，仍均实际+20至100"
+      }
+    },
+    {
+      "entry_id": "F/F2",
+      "kind": "overview",
+      "source_key": "F2",
+      "display_name": "只改原经验",
+      "qualification": "传承模型原经验80改20，其它条件保持",
+      "effect": "仍121＋独立主管报价；主虔诚仍112.5／150；实际经验+30／+60，终值50／80",
+      "source_refs": [
+        "FORMULA:/cost",
+        "FORMULA:/piety",
+        "FORMULA:/trait_xp"
+      ],
+      "upstream_json_pointer": "FORMULA:/models",
+      "source_qualification_text": "F1原经验80改20，其它条件保持",
+      "screen_text_a01": {
+        "display_name": "只改原经验",
+        "qualification": "F1原经验80改20，其它条件保持",
+        "effect": "仍121+L；主虔诚仍112.5／150；实际经验+30／+60，终值50／80"
+      }
+    }
+  ],
+  "coverage_counts": {
+    "activity_option": 10,
+    "intent": 4,
+    "travel_option": 29,
+    "add_trait": 27,
+    "trait_xp": 43,
+    "creation_trait": 36,
+    "xp_parameter_binding": 1,
+    "remove_trait": 1,
+    "xp_multiplier": 6,
+    "verified_generic": 4,
+    "random_creation_candidate": 5,
+    "overview": 3
+  },
+  "page_counts": {
+    "main": 28,
+    "reference_only": 11
+  },
+  "extra_silent_read_total_seconds": 101,
+  "source_bundles": [
+    {
+      "bundle_id": "SETUP",
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-setup-options-12004.json",
+      "sha256": "46ade52bc96a4a1899874fd39edecad61b63ef62fdd53246f616b8df381faa6d"
+    },
+    {
+      "bundle_id": "TRAITS",
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-pilgrim-trait-inventory-12004.json",
+      "sha256": "7530b566ecee5c4aa60e588f9865a32ca00514b791ba98b4e123e3fd14ba9372"
+    },
+    {
+      "bundle_id": "FORMULA",
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-cost-reward-xp-formulas-12004.json",
+      "sha256": "a47584b4ac52902e033ba5b04ffb57ee1f6c5b97dc80649352bbb21aaa11e170"
+    },
+    {
+      "bundle_id": "LOCALIZATION_OPTIONS",
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-options-12004.json",
+      "sha256": "437303ff7097165ea8a3af41f5d3f938ed22edf7213d29ce1c4b420c2db8dd13"
+    },
+    {
+      "bundle_id": "LOCALIZATION_RELIGION",
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-religion-12004.json",
+      "sha256": "30b784cefa51fe3b97f05e838a6e4abccc117f4d668787c651493fbc47831b95"
+    }
+  ],
+  "validation": {
+    "requested_sets_exact": true,
+    "each_entry_one_page": true,
+    "silent_seconds_within_120": true,
+    "new_runtime_or_video_qualified": false
+  },
+  "silent_read_budget_seconds": 120,
+  "screen_revision": "a03 Root exact DLC name binding",
+  "actual_main_screen_ascii_code_remaining": [],
+  "allowed_ascii_display_names": [
+    "Wandering Nobles",
+    "Friends & Foes",
+    "The Fate of Iberia",
+    "By God Alone",
+    "By God Alone"
+  ],
+  "revision_observed_at_utc": "2026-10-22T02:39:10.432639+00:00",
+  "localization_display_note": "内容包英文是本机简中本地化实际原文，不是残留脚本代码；原始NBSP与具体行由Root补充术语来源保存。",
+  "localization_supplement": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-supplement-12004.json"
+}

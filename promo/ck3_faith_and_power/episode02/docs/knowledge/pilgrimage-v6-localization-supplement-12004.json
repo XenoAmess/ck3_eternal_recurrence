@@ -1,0 +1,239 @@
+{
+  "schema": "faith.pilgrimage.localization.supplement.v6.1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T02:42:08.746139+00:00",
+  "mode": "installed Simplified Chinese disk files; no game or runtime qualification",
+  "records": [
+    {
+      "key": "duke",
+      "raw_value": "公爵",
+      "relative_path": "localization/simp_chinese/culture/culture_titles_l_simp_chinese.yml",
+      "line": 8,
+      "source_sha256": "cbf41050340a0e89b2d981a994aa0384ef421e9b75b5bc25e6a61c39e698a814",
+      "resolved_text": "公爵"
+    },
+    {
+      "key": "e_minister_of_revenue",
+      "raw_value": "户部",
+      "relative_path": "localization/simp_chinese/titles_l_simp_chinese.yml",
+      "line": 27171,
+      "source_sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+      "resolved_text": "户部"
+    },
+    {
+      "key": "councillor_steward_celestial_government_imperial",
+      "raw_value": "户部尚书",
+      "relative_path": "localization/simp_chinese/council_l_simp_chinese.yml",
+      "line": 302,
+      "source_sha256": "efa34b6329f31d7b64ad990d936c7d677e1a32ee7304aa594a1fce4d69176510",
+      "resolved_text": "户部尚书"
+    },
+    {
+      "key": "game_concept_minister_of_revenue",
+      "raw_value": "$councillor_steward_celestial_government_imperial$",
+      "relative_path": "localization/simp_chinese/dlc/tgp/dlc_tgp_china_game_concepts_l_simp_chinese.yml",
+      "line": 144,
+      "source_sha256": "d4ee61524f7f5e0a4d1a4bfaf99c6ef2bab9c718a2148fd0c7065bc9a3d7064e",
+      "resolved_text": "户部尚书"
+    },
+    {
+      "key": "trait_whole_of_body",
+      "raw_value": "身心俱悉",
+      "resolved_text": "身心俱悉",
+      "relative_path": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 173,
+      "source_sha256": "4499144a67951fa7c5fba5e0f52de2db94b3b1f85bfee3cc03ab9bf7e46fb554"
+    },
+    {
+      "key": "whole_of_body_perk_name",
+      "raw_value": "身心俱悉",
+      "resolved_text": "身心俱悉",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 54,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+    },
+    {
+      "key": "DLC005_FP2",
+      "raw_value": "The Fate of Iberia",
+      "resolved_text": "The Fate of Iberia",
+      "relative_path": "localization/simp_chinese/dlc_l_simp_chinese.yml",
+      "line": 25,
+      "source_sha256": "d0e3931d7f06187a14fdbbb94f87f5f8281b6350c9fb6747f6c197d3b639ad59",
+      "presentation_note": "English is actual Simplified Chinese file value; NBSP may render as ordinary space; do not invent a Chinese title."
+    },
+    {
+      "key": "DLC006_BP1",
+      "raw_value": "Friends & Foes",
+      "resolved_text": "Friends & Foes",
+      "relative_path": "localization/simp_chinese/dlc_l_simp_chinese.yml",
+      "line": 26,
+      "source_sha256": "d0e3931d7f06187a14fdbbb94f87f5f8281b6350c9fb6747f6c197d3b639ad59",
+      "presentation_note": "English is actual Simplified Chinese file value; NBSP may render as ordinary space; do not invent a Chinese title."
+    },
+    {
+      "key": "DLC007_EP2",
+      "raw_value": "Tours and Tournaments",
+      "resolved_text": "Tours and Tournaments",
+      "relative_path": "localization/simp_chinese/dlc_l_simp_chinese.yml",
+      "line": 27,
+      "source_sha256": "d0e3931d7f06187a14fdbbb94f87f5f8281b6350c9fb6747f6c197d3b639ad59",
+      "presentation_note": "English is actual Simplified Chinese file value; NBSP may render as ordinary space; do not invent a Chinese title."
+    },
+    {
+      "key": "DLC015_BP3",
+      "raw_value": "Wandering Nobles",
+      "resolved_text": "Wandering Nobles",
+      "relative_path": "localization/simp_chinese/dlc_l_simp_chinese.yml",
+      "line": 35,
+      "source_sha256": "d0e3931d7f06187a14fdbbb94f87f5f8281b6350c9fb6747f6c197d3b639ad59",
+      "presentation_note": "English is actual Simplified Chinese file value; NBSP may render as ordinary space; do not invent a Chinese title."
+    },
+    {
+      "key": "DLC030_CE3",
+      "raw_value": "By God Alone",
+      "resolved_text": "By God Alone",
+      "relative_path": "localization/simp_chinese/dlc_l_simp_chinese.yml",
+      "line": 50,
+      "source_sha256": "d0e3931d7f06187a14fdbbb94f87f5f8281b6350c9fb6747f6c197d3b639ad59",
+      "presentation_note": "English is actual Simplified Chinese file value; NBSP may render as ordinary space; do not invent a Chinese title."
+    },
+    {
+      "key": "game_concept_prowess",
+      "raw_value": "勇武",
+      "resolved_text": "勇武",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 742,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+    },
+    {
+      "key": "game_concept_tribal_government",
+      "raw_value": "部落制",
+      "resolved_text": "部落制",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 845,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+    },
+    {
+      "key": "game_concept_herd",
+      "raw_value": "牧群",
+      "resolved_text": "牧群",
+      "relative_path": "localization/simp_chinese/dlc/mpo/dlc_mpo_game_concepts_l_simp_chinese.yml",
+      "line": 36,
+      "source_sha256": "318fa1091ab4fa334343661a3125bf43ed6d1e538631e7a400672ae3379d91c1"
+    }
+  ],
+  "source_files": [
+    {
+      "relative_path": "localization/simp_chinese/culture/culture_titles_l_simp_chinese.yml",
+      "bytes": 63304,
+      "sha256": "cbf41050340a0e89b2d981a994aa0384ef421e9b75b5bc25e6a61c39e698a814"
+    },
+    {
+      "relative_path": "localization/simp_chinese/titles_l_simp_chinese.yml",
+      "bytes": 862782,
+      "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab"
+    },
+    {
+      "relative_path": "localization/simp_chinese/council_l_simp_chinese.yml",
+      "bytes": 26583,
+      "sha256": "efa34b6329f31d7b64ad990d936c7d677e1a32ee7304aa594a1fce4d69176510"
+    },
+    {
+      "relative_path": "localization/simp_chinese/dlc/tgp/dlc_tgp_china_game_concepts_l_simp_chinese.yml",
+      "bytes": 45644,
+      "sha256": "d4ee61524f7f5e0a4d1a4bfaf99c6ef2bab9c718a2148fd0c7065bc9a3d7064e"
+    },
+    {
+      "relative_path": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "bytes": 127953,
+      "sha256": "4499144a67951fa7c5fba5e0f52de2db94b3b1f85bfee3cc03ab9bf7e46fb554"
+    },
+    {
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "bytes": 10458,
+      "sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+    },
+    {
+      "relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "relative_path": "common/scripted_effects/pam_effects.txt",
+      "bytes": 369911,
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f"
+    },
+    {
+      "relative_path": "localization/simp_chinese/dlc_l_simp_chinese.yml",
+      "bytes": 9685,
+      "sha256": "d0e3931d7f06187a14fdbbb94f87f5f8281b6350c9fb6747f6c197d3b639ad59"
+    },
+    {
+      "relative_path": "common/scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "bytes": 2631,
+      "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066"
+    },
+    {
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "bytes": 350826,
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+    },
+    {
+      "relative_path": "localization/simp_chinese/dlc/mpo/dlc_mpo_game_concepts_l_simp_chinese.yml",
+      "bytes": 23515,
+      "sha256": "318fa1091ab4fa334343661a3125bf43ed6d1e538631e7a400672ae3379d91c1"
+    }
+  ],
+  "application": "Default duke label and exact e_minister_of_revenue title guard; office name is resolved separately. No global replacement of contextual names.",
+  "non_label_symbols": [
+    {
+      "symbol": "pilgrimage_travel_smart",
+      "kind": "character flag, not trait",
+      "explanation": "A prior choice state flag checked by this event; no independent player-facing trait name",
+      "source": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "set_line": 3215,
+      "read_line": 3238,
+      "remove_line": 3430
+    },
+    {
+      "symbol": "votive_artifact",
+      "kind": "saved artifact scope, not trait or tenet",
+      "explanation": "The artifact selected and saved by this event, not a fixed artifact name",
+      "source": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "save_line": 14204
+    },
+    {
+      "symbol": "pam_secured_pilgrim_routes",
+      "kind": "faith variable, not localized trait name",
+      "explanation": "Faith route-protection state; ordinary explanation must not be advertised as a UI label",
+      "source": "common/scripted_effects/pam_effects.txt",
+      "set_line": 7954
+    }
+  ],
+  "DLC_bindings": [
+    {
+      "script_key": "has_pam_dlc_trigger",
+      "line": 95,
+      "feature": "by_god_alone",
+      "localization_key": "DLC030_CE3"
+    },
+    {
+      "script_key": "has_bp1_dlc_trigger",
+      "line": 51,
+      "feature": "friends_and_foes",
+      "localization_key": "DLC006_BP1"
+    },
+    {
+      "script_key": "has_bp3_dlc_trigger",
+      "line": 59,
+      "feature": "wandering_nobles",
+      "localization_key": "DLC015_BP3"
+    },
+    {
+      "script_key": "has_fp2_dlc_trigger",
+      "line": 75,
+      "feature": "the_fate_of_iberia",
+      "localization_key": "DLC005_FP2"
+    }
+  ]
+}

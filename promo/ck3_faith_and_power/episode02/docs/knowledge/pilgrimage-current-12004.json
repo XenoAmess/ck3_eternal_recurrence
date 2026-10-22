@@ -1,0 +1,707 @@
+{
+  "schema": "ck3-pilgrimage-current-effective-knowledge-index-v1",
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T02:14:01Z",
+  "observation_scope": "Machine identity and existing repository package bytes read to build this index; not a fresh installed-EXE hash or current game state.",
+  "source_context": {
+    "game_version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "exe_identity_origin_package_ids": [
+      "xp_native_a01",
+      "tier_native_a02",
+      "intent_native"
+    ],
+    "exe_rehashed_this_index_task": false
+  },
+  "status": "CURRENT_EFFECTIVE_STATIC_KNOWLEDGE_WITH_EXPLICIT_UNKNOWNS",
+  "action_ready": false,
+  "ordinary_auto_consumes": false,
+  "current_native_legality": "not_observed",
+  "runtime_or_action_authorization_added": false,
+  "consumer_contract": {
+    "entrypoint": "Read this index before any of the seven bound packages.",
+    "path_base": "repository root; POSIX relative paths",
+    "integrity_rule": "Verify bytes and SHA-256 of each artifact actually consumed; mismatch => unavailable, never silently use stale alternatives.",
+    "precedence": "For listed topic/path overrides use effective_claims and retained_unknowns here; unmodified package-specific details remain historical source evidence. Newer timestamp alone never overrides semantics.",
+    "mixed_statement_rule": "A split_mixed_statement resolves only named subtopics; remaining_unknown_ids stay unknown. Do not replace the whole statement with closed.",
+    "target_scope_rule": "Reusable static knowledge is scoped to the bound source/EXE. Re-check target machine/build and actual actor conditions; another machine record never proves this target installed or passed.",
+    "boundary_rule": "closed_static does not mean runtime-qualified, action-ready, current CanPick or observed outcome. Unknown never means zero/false.",
+    "unlisted_topic_rule": "Consult the relevant bound source package and its scope. This index does not manufacture a fully closed whole-game ontology.",
+    "integer_rule": "Integer fields reject bool/float; file byte counts are safe nonnegative JSON integers. No FILETIME/FileID or other 64-bit identity is encoded as a JSON number."
+  },
+  "packages": {
+    "setup": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-setup-options.md",
+          "bytes": 25479,
+          "sha256": "6d2e2d08aedcb9ffc3f00553cb09a900d8d2b169c8e9b68b0d9ed83366176fc1"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-setup-options-12004.json",
+          "bytes": 107768,
+          "sha256": "46ade52bc96a4a1899874fd39edecad61b63ef62fdd53246f616b8df381faa6d"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T20:04:13.989869+00:00",
+      "source_machine_id": "4-8e1c2f1861"
+    },
+    "religion": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-doctrines-hajj.md",
+          "bytes": 28881,
+          "sha256": "8c0b907e858b6330dd29b446473cda9022e5f296d72d6949aca15312015233b5"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-doctrines-hajj-12004.json",
+          "bytes": 209551,
+          "sha256": "a717fc94a06ccc2d90405d28304e2a98d6ab9f9ec531d6a4b4528ba5a8c0c360"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T20:11:51.578871Z",
+      "source_machine_id": "4-8e1c2f1861"
+    },
+    "traits": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-pilgrim-trait-inventory.md",
+          "bytes": 37286,
+          "sha256": "558a822112be8691a1bda86b85168457c1135dace57266f3cbba26f3ee3ebd6e"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-pilgrim-trait-inventory-12004.json",
+          "bytes": 380691,
+          "sha256": "7530b566ecee5c4aa60e588f9865a32ca00514b791ba98b4e123e3fd14ba9372"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T19:46:44.870188+00:00",
+      "source_machine_id": "4-8e1c2f1861"
+    },
+    "formulas": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-cost-reward-xp-formulas.md",
+          "bytes": 30741,
+          "sha256": "8e508fd1c65e6bb076bb34be4f601d02a50639ae8fceba9d147bda9b1014d168"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-cost-reward-xp-formulas-12004.json",
+          "bytes": 47729,
+          "sha256": "a47584b4ac52902e033ba5b04ffb57ee1f6c5b97dc80649352bbb21aaa11e170"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T20:11:11.747953+00:00",
+      "source_machine_id": "4-8e1c2f1861"
+    },
+    "xp_native_a01": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-native-trait-xp.md",
+          "bytes": 1843,
+          "sha256": "df079f434a8ecc9925c3cb47ef9f5de1f2b234d382b71213712fbd00aac2f17f"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-native-trait-xp-12004.json",
+          "bytes": 7428,
+          "sha256": "31a4c7799f7d1b4d2dbac467961f12dd2a9019110a74c488058cbabcfdb58f40"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T19:59:37.106880+00:00",
+      "source_machine_id": "4-8e1c2f1861"
+    },
+    "tier_native_a02": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-native-tier-12004.a02.md",
+          "bytes": 3227,
+          "sha256": "c294aead8ea80342766691d8ea0e026d44f5014f4902b389bba3a34ec30f096c"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-native-tier-12004.a02.json",
+          "bytes": 10865,
+          "sha256": "64548bc5dbc98218cc414276a473c553358d644a78c3e77815f47d250aeb9f17"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T20:14:39.967465+00:00",
+      "source_machine_id": "4-8e1c2f1861"
+    },
+    "intent_native": {
+      "artifacts": {
+        "narrative": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/research-v5-intent-candidates-12004.md",
+          "bytes": 3812,
+          "sha256": "b57fbf882c0701d874ba98754ad9565c0b8892ebc8fcf92b33b3914875136c2b"
+        },
+        "structured": {
+          "path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-intent-candidates-12004.json",
+          "bytes": 6496,
+          "sha256": "e3b6aeed19d29a23b203297c64443296d65e361f00ebc38a148424df72e9baaf"
+        }
+      },
+      "source_observed_at_utc": "2026-10-21T20:24:23.106346+00:00",
+      "source_machine_id": "4-8e1c2f1861"
+    }
+  },
+  "read_order": [
+    "this index and consumer_contract",
+    "effective_claims and retained_unknowns",
+    "supersession_relations",
+    "subject package source inventory and exact conditions",
+    "fresh target observations before an actual decision"
+  ],
+  "subject_package_ids": {
+    "setup_and_intents": [
+      "setup",
+      "intent_native"
+    ],
+    "religion_hajj": [
+      "religion"
+    ],
+    "trait_inventory": [
+      "traits",
+      "tier_native_a02"
+    ],
+    "cost_piety_xp": [
+      "formulas",
+      "xp_native_a01",
+      "tier_native_a02"
+    ]
+  },
+  "effective_claims": [
+    {
+      "id": "xp_arithmetic",
+      "topic": "trait_xp_arithmetic",
+      "status": "closed_static",
+      "effective_value": {
+        "raw_units_per_xp": 100000,
+        "held_trait_required": true,
+        "positive_keys": [
+          "pilgrim_xp_gain_mult",
+          "trait_track_pilgrim_xp_gain_mult"
+        ],
+        "negative_keys": [
+          "pilgrim_xp_loss_mult",
+          "trait_track_pilgrim_xp_loss_mult"
+        ],
+        "factor_raw": "100000 + trait_modifier_raw + track_modifier_raw",
+        "delta_raw": "trunc_toward_zero(base_raw * factor_raw / 100000)",
+        "write_raw": "min(10000000,max(0,old_xp_raw+delta_raw))",
+        "zero_base": "no XP write",
+        "factor_clamped": false,
+        "missing_modifier_raw": 0
+      },
+      "evidence": [
+        {
+          "package_id": "xp_native_a01",
+          "json_pointer": "/formula"
+        },
+        {
+          "package_id": "formulas",
+          "json_pointer": "/trait_xp/exact_native_write"
+        }
+      ],
+      "scope": "Exact bound EXE and representable fixed-point inputs. Excludes script-to-raw conversion and arbitrary signed64 overflow."
+    },
+    {
+      "id": "direct_new_track_initialization",
+      "topic": "direct_add_trait_initialization",
+      "status": "closed_static",
+      "effective_value": {
+        "new_track_xp_raw": 0,
+        "all_new_tracks_zero": true
+      },
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/add_trait_initialization"
+        }
+      ],
+      "scope": "Direct first add_trait slot initialization only. Later hooks, templates and on-actions may change final XP; other add modes and removal/re-add are outside this closure."
+    },
+    {
+      "id": "duplicate_add_trait_preserves_xp",
+      "topic": "duplicate_add_trait_behavior",
+      "status": "closed_static",
+      "effective_value": {
+        "duplicate_add_trait_resets_xp": false,
+        "already_held_guard_precedes_track_insertion": true
+      },
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/add_trait_initialization"
+        }
+      ],
+      "scope": "Same direct already-held trait path, not a general guarantee for remove/re-add or later effects."
+    },
+    {
+      "id": "source_level_loading",
+      "topic": "trait_source_level_preprocessing",
+      "status": "closed_static",
+      "effective_value": {
+        "each_source_level_loaded_independently": true,
+        "tier_differencing_before_fold": false,
+        "conditional_blocks_start_empty": true,
+        "postload_validates_not_subtracts": true
+      },
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/tier_differencing_before_fold"
+        },
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/proof_chain"
+        }
+      ],
+      "scope": "Bound Pilgrim source levels and exact EXE; does not prove every external modifier producer is active."
+    },
+    {
+      "id": "attained_level_aggregation",
+      "topic": "trait_level_aggregation",
+      "status": "closed_static",
+      "effective_value": {
+        "algorithm": "root + sum(each threshold block whose threshold <= xp)",
+        "same_modifier_id": "add",
+        "source_blocks_by_xp": [
+          "root for 0 <= XP < 50",
+          "root + 50 for 50 <= XP < 100",
+          "root + 50 + 100 for XP = 100"
+        ],
+        "conditional_rite_and_culture_blocks": "apply independently only when their current parameter is present"
+      },
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/runtime_algorithm"
+        },
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/tier_contributions"
+        }
+      ],
+      "scope": "Isolated Pilgrim contributions, not whole-character attributes, current Rite qualification or total monthly income."
+    },
+    {
+      "id": "isolated_piety_tiers",
+      "topic": "pilgrim_piety_modifier_contributions",
+      "status": "closed_static",
+      "effective_value": {
+        "raw_scale": 100000,
+        "xp_bands": [
+          "0 <= XP < 50",
+          "50 <= XP < 100",
+          "XP = 100"
+        ],
+        "basic_parameter_raw": [
+          5000,
+          15000,
+          25000
+        ],
+        "mandatory_extra_parameter_raw": [
+          35000,
+          75000,
+          115000
+        ],
+        "ordinary_mandatory_doctrine_own_raw": -25000,
+        "ordinary_mandatory_specified_source_sum_raw": [
+          15000,
+          65000,
+          115000
+        ],
+        "mandatory_hajj_pilgrim_plus_doctrine_raw": [
+          -20000,
+          -10000,
+          0
+        ],
+        "mandatory_hajj_does_not_enable": "mandatory_pilgrimage",
+        "separate_hajjaj_trait_included": false
+      },
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/tier_contributions"
+        },
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/rite_examples"
+        }
+      ],
+      "scope": "Only named trait/parameter/doctrine contributions. Virtue/sin, other traits, perks, artifacts and buildings are excluded. Current actor activation is not observed."
+    },
+    {
+      "id": "intent_candidate_filter",
+      "topic": "intent_candidate_filter_and_order",
+      "status": "closed_static",
+      "effective_value": {
+        "input": "activity type host container",
+        "steps": [
+          "exclude selected-option blocked intent pointers",
+          "evaluate candidate predicate in window character context",
+          "append accepted pointer preserving input host-container order"
+        ],
+        "getter_adds_shared_item": false,
+        "candidate_producer_body_universal_shared_append": false,
+        "button_pickability_checked_separately": true
+      },
+      "evidence": [
+        {
+          "package_id": "intent_native",
+          "json_pointer": "/producer"
+        },
+        {
+          "package_id": "intent_native",
+          "json_pointer": "/can_pick"
+        },
+        {
+          "package_id": "intent_native",
+          "json_pointer": "/shared_reduce_stress"
+        }
+      ],
+      "scope": "Recovered getter/filter producer only. Upstream host-container load/merge and current actor candidates remain unknown. Script field-name mapping is an inference, not a closed parser mapping."
+    }
+  ],
+  "retained_unknowns": [
+    {
+      "id": "script_value_to_raw",
+      "status": "unknown",
+      "topic": "pre_executor_conversion",
+      "scope": "Script-value conversion/rounding before the recovered XP executor and arbitrary huge signed64 input overflow.",
+      "evidence": [
+        {
+          "package_id": "xp_native_a01",
+          "json_pointer": "/unknown"
+        },
+        {
+          "package_id": "formulas",
+          "json_pointer": "/trait_xp/engine_gaps/3"
+        }
+      ]
+    },
+    {
+      "id": "missing_limit_default",
+      "status": "unknown",
+      "topic": "repeat_arrival_branch_activation",
+      "scope": "Exact engine parsing/execution default for missing-limit outer else_if and malformed host repeat-arrival branches. No fixed repeat-arrival XP guarantee.",
+      "evidence": [
+        {
+          "package_id": "formulas",
+          "json_pointer": "/trait_xp/arrival/parse_boundary"
+        },
+        {
+          "package_id": "xp_native_a01",
+          "json_pointer": "/unknown"
+        }
+      ]
+    },
+    {
+      "id": "all_dynamic_source_activation",
+      "status": "unknown",
+      "topic": "current_modifier_producer_activation",
+      "scope": "Current actor total modifiers, all dynamic producer stacking, domicile upgrade/replacement activation and post-hook final XP are not established by isolated static arithmetic.",
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/a01_relationship"
+        },
+        {
+          "package_id": "xp_native_a01",
+          "json_pointer": "/unknown"
+        }
+      ]
+    },
+    {
+      "id": "shared_intent_upstream_merge",
+      "status": "unknown",
+      "topic": "shared_intent_insertion",
+      "scope": "Whether activity host-container load/inheritance/merge inserts shared reduce_stress_intent upstream. Absence in the recovered filter body does not prove global absence; user report of four choices is preserved.",
+      "evidence": [
+        {
+          "package_id": "intent_native",
+          "json_pointer": "/shared_reduce_stress"
+        },
+        {
+          "package_id": "intent_native",
+          "json_pointer": "/unknowns"
+        }
+      ]
+    },
+    {
+      "id": "current_intent_collection",
+      "status": "unknown",
+      "topic": "current_actor_four_choices",
+      "scope": "Current full intent keys, names, order and CanPick; all extra named context scopes/cache invalidations and full parser mapping of predicates also remain unclosed.",
+      "evidence": [
+        {
+          "package_id": "intent_native",
+          "json_pointer": "/unknowns"
+        },
+        {
+          "package_id": "setup",
+          "json_pointer": "/intent_set_gap"
+        }
+      ]
+    },
+    {
+      "id": "travel_leader_binding",
+      "status": "unknown",
+      "topic": "travel_leader_final_quote",
+      "scope": "Getter binding to known travel_leader scripted-cost key and exact root/scope inputs. Known script cost alone is not the current hire quote.",
+      "evidence": [
+        {
+          "package_id": "formulas",
+          "json_pointer": "/unclosed_engine_edges/0"
+        }
+      ]
+    },
+    {
+      "id": "provisions_and_aggregate_quote",
+      "status": "unknown",
+      "topic": "final_travel_quote",
+      "scope": "Provisions producer, final activity aggregate/negative-option clamping and entourage de-duplication. No complete current planning payment formula is claimed.",
+      "evidence": [
+        {
+          "package_id": "formulas",
+          "json_pointer": "/unclosed_engine_edges/1"
+        },
+        {
+          "package_id": "formulas",
+          "json_pointer": "/unclosed_engine_edges/2"
+        }
+      ]
+    },
+    {
+      "id": "current_world_qualification",
+      "status": "unknown",
+      "topic": "runtime_eligibility_and_outcomes",
+      "scope": "Current install/build identity on a target machine, DLC ownership/enabled state, actor eligibility, legal actions, wallet/trait deltas, random events and final post-hook state need fresh target observations. Source presence is not runtime entitlement.",
+      "evidence": [
+        {
+          "package_id": "traits",
+          "json_pointer": "/unknowns"
+        },
+        {
+          "package_id": "religion",
+          "json_pointer": "/known_gaps"
+        }
+      ]
+    },
+    {
+      "id": "generic_cooldown_and_fulfillment_rate",
+      "status": "unknown",
+      "topic": "other_preserved_engine_boundaries",
+      "scope": "Generic activity-type cooldown duration and current personal spiritual-fulfillment passive calendar rate/regression are not closed by Hajj one-year or destination five-year script constants.",
+      "evidence": [
+        {
+          "package_id": "religion",
+          "json_pointer": "/known_gaps"
+        }
+      ]
+    },
+    {
+      "id": "combined_ai_zeal",
+      "status": "unknown",
+      "topic": "combined_ai_zeal_total_and_behavior",
+      "scope": "Root trait ai_zeal=5 is separate from attained track AI-modifier contributions 0/10/25. Combined total and behavior consumer remain unqualified.",
+      "evidence": [
+        {
+          "package_id": "tier_native_a02",
+          "json_pointer": "/ai_zeal_scope"
+        }
+      ]
+    }
+  ],
+  "supersession_relations": [
+    {
+      "historical_package_id": "xp_native_a01",
+      "historical_json_pointer": "/unknown/0",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "direct_new_track_initialization",
+        "duplicate_add_trait_preserves_xp"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "xp_native_a01",
+      "historical_json_pointer": "/level_combination/source_to_runtime_normalization_fully_traced",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "source_level_loading"
+      ],
+      "remaining_unknown_ids": []
+    },
+    {
+      "historical_package_id": "xp_native_a01",
+      "historical_json_pointer": "/level_combination/net_pilgrim_tier_values",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "attained_level_aggregation",
+        "isolated_piety_tiers"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "traits",
+      "historical_json_pointer": "/unknowns/3",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "source_level_loading",
+        "attained_level_aggregation",
+        "isolated_piety_tiers"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "traits",
+      "historical_json_pointer": "/unknowns/4",
+      "mode": "split_mixed_statement",
+      "current_claim_ids": [
+        "direct_new_track_initialization",
+        "duplicate_add_trait_preserves_xp"
+      ],
+      "remaining_unknown_ids": [
+        "script_value_to_raw",
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "traits",
+      "historical_json_pointer": "/native_xp_semantics/source_level_preprocessing",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "source_level_loading",
+        "attained_level_aggregation",
+        "isolated_piety_tiers"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "formulas",
+      "historical_json_pointer": "/trait_xp/runtime_level_modifier_fold/source_to_runtime_loading_normalization_fully_closed",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "source_level_loading"
+      ],
+      "remaining_unknown_ids": []
+    },
+    {
+      "historical_package_id": "formulas",
+      "historical_json_pointer": "/trait_xp/runtime_level_modifier_fold/do_not_directly_sum_raw_source_constants_as_net_monthly_bonus",
+      "mode": "split_mixed_statement",
+      "current_claim_ids": [
+        "attained_level_aggregation",
+        "isolated_piety_tiers"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "formulas",
+      "historical_json_pointer": "/trait_xp/engine_gaps/0",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "direct_new_track_initialization",
+        "duplicate_add_trait_preserves_xp"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "formulas",
+      "historical_json_pointer": "/trait_xp/engine_gaps/1",
+      "mode": "replace_topic",
+      "current_claim_ids": [
+        "source_level_loading",
+        "attained_level_aggregation"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "formulas",
+      "historical_json_pointer": "/unclosed_engine_edges/3",
+      "mode": "split_mixed_statement",
+      "current_claim_ids": [
+        "direct_new_track_initialization",
+        "duplicate_add_trait_preserves_xp",
+        "source_level_loading",
+        "attained_level_aggregation"
+      ],
+      "remaining_unknown_ids": [
+        "missing_limit_default",
+        "script_value_to_raw",
+        "all_dynamic_source_activation"
+      ]
+    },
+    {
+      "historical_package_id": "religion",
+      "historical_json_pointer": "/known_gaps/2",
+      "mode": "split_mixed_statement",
+      "current_claim_ids": [
+        "attained_level_aggregation",
+        "isolated_piety_tiers"
+      ],
+      "remaining_unknown_ids": [
+        "all_dynamic_source_activation",
+        "current_world_qualification"
+      ]
+    },
+    {
+      "historical_package_id": "setup",
+      "historical_json_pointer": "/intent_set_gap",
+      "mode": "refine_topic",
+      "current_claim_ids": [
+        "intent_candidate_filter"
+      ],
+      "remaining_unknown_ids": [
+        "shared_intent_upstream_merge",
+        "current_intent_collection"
+      ]
+    }
+  ],
+  "historical_packages_modified": false,
+  "coverage": "Seven V5 packages (14 narrative/structured artifacts) bound byte-for-byte. Resolves only listed stale semantic states; adds no source scan, game/provider call or new engine research.",
+  "terminology_sources": [
+    {
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-options-12004.json",
+      "bytes": 92935,
+      "sha256": "437303ff7097165ea8a3af41f5d3f938ed22edf7213d29ce1c4b420c2db8dd13",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-22T02:15:28.753051Z"
+    },
+    {
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-religion-12004.json",
+      "bytes": 40125,
+      "sha256": "30b784cefa51fe3b97f05e838a6e4abccc117f4d668787c651493fbc47831b95",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-22T02:21:14Z"
+    },
+    {
+      "repo_relative_path": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-supplement-12004.json",
+      "bytes": 9697,
+      "sha256": "74c08d4f2f33ae2041b9ed721ffb7755f0954b46779591aeeeacc80c9d8f8233",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-22T02:42:08.746139+00:00"
+    }
+  ],
+  "terminology_resolution_policy": {
+    "source": "Actual installed Simplified Chinese localization key/value, alias chain and script binding where provided",
+    "precedence": "Current localization bindings govern player-facing labels; old mechanism evidence raw keys and historical wording remain unchanged",
+    "contextual_names": "Resolve gender and government/office context; do not globally replace a contextual title with the default",
+    "runtime_credit": false
+  }
+}

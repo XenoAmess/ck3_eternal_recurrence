@@ -1,0 +1,1221 @@
+{
+  "schema_version": 1,
+  "status": "STATIC_LOCALIZATION_RECONCILED",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T02:21:14Z",
+  "game_version_scope": "1.20.0.4 task source scope; no runtime qualification",
+  "game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "language": "simp_chinese",
+  "records": [
+    {
+      "localization_key": "baptistery_pilgrims_hospice_01_domicile_building",
+      "raw_value": "朝圣者收容所",
+      "resolved_value": "朝圣者收容所",
+      "alias_chain": [
+        "baptistery_pilgrims_hospice_01_domicile_building"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_ecclesiastical_domicile_l_simp_chinese.yml",
+      "line": 150
+    },
+    {
+      "localization_key": "baptistery_pilgrims_hospice_02_domicile_building",
+      "raw_value": "$baptistery_pilgrims_hospice_01_domicile_building$",
+      "resolved_value": "朝圣者收容所",
+      "alias_chain": [
+        "baptistery_pilgrims_hospice_02_domicile_building",
+        "baptistery_pilgrims_hospice_01_domicile_building"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_ecclesiastical_domicile_l_simp_chinese.yml",
+      "line": 151
+    },
+    {
+      "localization_key": "baptistery_pilgrims_hospice_03_domicile_building",
+      "raw_value": "$baptistery_pilgrims_hospice_01_domicile_building$",
+      "resolved_value": "朝圣者收容所",
+      "alias_chain": [
+        "baptistery_pilgrims_hospice_03_domicile_building",
+        "baptistery_pilgrims_hospice_01_domicile_building"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_ecclesiastical_domicile_l_simp_chinese.yml",
+      "line": 152
+    },
+    {
+      "localization_key": "baptistery_pilgrims_hospice_04_domicile_building",
+      "raw_value": "$baptistery_pilgrims_hospice_01_domicile_building$",
+      "resolved_value": "朝圣者收容所",
+      "alias_chain": [
+        "baptistery_pilgrims_hospice_04_domicile_building",
+        "baptistery_pilgrims_hospice_01_domicile_building"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_ecclesiastical_domicile_l_simp_chinese.yml",
+      "line": 153
+    },
+    {
+      "localization_key": "councillor_steward_celestial_government_imperial",
+      "raw_value": "户部尚书",
+      "resolved_value": "户部尚书",
+      "alias_chain": [
+        "councillor_steward_celestial_government_imperial"
+      ],
+      "source_id": "localization/simp_chinese/council_l_simp_chinese.yml",
+      "line": 302
+    },
+    {
+      "localization_key": "culture_era_early_medieval",
+      "raw_value": "中世纪早期",
+      "resolved_value": "中世纪早期",
+      "alias_chain": [
+        "culture_era_early_medieval"
+      ],
+      "source_id": "localization/simp_chinese/culture/culture_eras_l_simp_chinese.yml",
+      "line": 10
+    },
+    {
+      "localization_key": "doctrine_pilgrimage_encouraged_name",
+      "raw_value": "鼓励",
+      "resolved_value": "鼓励",
+      "alias_chain": [
+        "doctrine_pilgrimage_encouraged_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "line": 1113
+    },
+    {
+      "localization_key": "doctrine_pilgrimage_forbidden_name",
+      "raw_value": "禁止",
+      "resolved_value": "禁止",
+      "alias_chain": [
+        "doctrine_pilgrimage_forbidden_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "line": 1110
+    },
+    {
+      "localization_key": "doctrine_pilgrimage_local_rites_name",
+      "raw_value": "当地仪式",
+      "resolved_value": "当地仪式",
+      "alias_chain": [
+        "doctrine_pilgrimage_local_rites_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "line": 1106
+    },
+    {
+      "localization_key": "doctrine_pilgrimage_mandatory_hajj_name",
+      "raw_value": "朝觐",
+      "resolved_value": "朝觐",
+      "alias_chain": [
+        "doctrine_pilgrimage_mandatory_hajj_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "line": 1119
+    },
+    {
+      "localization_key": "doctrine_pilgrimage_mandatory_name",
+      "raw_value": "强制",
+      "resolved_value": "强制",
+      "alias_chain": [
+        "doctrine_pilgrimage_mandatory_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "line": 1116
+    },
+    {
+      "localization_key": "doctrine_pilgrimage_name",
+      "raw_value": "朝圣态度",
+      "resolved_value": "朝圣态度",
+      "alias_chain": [
+        "doctrine_pilgrimage_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "line": 1105
+    },
+    {
+      "localization_key": "ep2_activities_legacy_1_name",
+      "raw_value": "踏过圣路",
+      "resolved_value": "踏过圣路",
+      "alias_chain": [
+        "ep2_activities_legacy_1_name"
+      ],
+      "source_id": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "line": 5
+    },
+    {
+      "localization_key": "erudition_legacy_4_name",
+      "raw_value": "真正信徒",
+      "resolved_value": "真正信徒",
+      "alias_chain": [
+        "erudition_legacy_4_name"
+      ],
+      "source_id": "localization/simp_chinese/dynasty_legacies/legacies_l_simp_chinese.yml",
+      "line": 35
+    },
+    {
+      "localization_key": "erudition_legacy_track_name",
+      "raw_value": "学识传承",
+      "resolved_value": "学识传承",
+      "alias_chain": [
+        "erudition_legacy_track_name"
+      ],
+      "source_id": "localization/simp_chinese/dynasty_legacies/legacies_l_simp_chinese.yml",
+      "line": 30
+    },
+    {
+      "localization_key": "game_concept_confederation",
+      "raw_value": "联盟",
+      "resolved_value": "联盟",
+      "alias_chain": [
+        "game_concept_confederation"
+      ],
+      "source_id": "localization/simp_chinese/dlc/mpo/dlc_mpo_game_concepts_l_simp_chinese.yml",
+      "line": 11
+    },
+    {
+      "localization_key": "game_concept_doctrine",
+      "raw_value": "教义",
+      "resolved_value": "教义",
+      "alias_chain": [
+        "game_concept_doctrine"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 319
+    },
+    {
+      "localization_key": "game_concept_dynasty_perk",
+      "raw_value": "宗族传承",
+      "resolved_value": "宗族传承",
+      "alias_chain": [
+        "game_concept_dynasty_perk"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 756
+    },
+    {
+      "localization_key": "game_concept_ecclesiastical",
+      "raw_value": "教会制",
+      "resolved_value": "教会制",
+      "alias_chain": [
+        "game_concept_ecclesiastical"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "line": 70
+    },
+    {
+      "localization_key": "game_concept_ecclesiastical_domicile",
+      "raw_value": "$game_concept_ecclesiastical_estate$",
+      "resolved_value": "教会庄园",
+      "alias_chain": [
+        "game_concept_ecclesiastical_domicile",
+        "game_concept_ecclesiastical_estate"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "line": 211
+    },
+    {
+      "localization_key": "game_concept_ecclesiastical_estate",
+      "raw_value": "教会庄园",
+      "resolved_value": "教会庄园",
+      "alias_chain": [
+        "game_concept_ecclesiastical_estate"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "line": 217
+    },
+    {
+      "localization_key": "game_concept_eminent_holy_site",
+      "raw_value": "主要圣地",
+      "resolved_value": "主要圣地",
+      "alias_chain": [
+        "game_concept_eminent_holy_site"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 1299
+    },
+    {
+      "localization_key": "game_concept_faith",
+      "raw_value": "信仰",
+      "resolved_value": "信仰",
+      "alias_chain": [
+        "game_concept_faith"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 309
+    },
+    {
+      "localization_key": "game_concept_hajj",
+      "raw_value": "朝觐",
+      "resolved_value": "朝觐",
+      "alias_chain": [
+        "game_concept_hajj"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 1834
+    },
+    {
+      "localization_key": "game_concept_holy_site",
+      "raw_value": "圣地",
+      "resolved_value": "圣地",
+      "alias_chain": [
+        "game_concept_holy_site"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 1296
+    },
+    {
+      "localization_key": "game_concept_house_aspiration",
+      "raw_value": "家族志向",
+      "resolved_value": "家族志向",
+      "alias_chain": [
+        "game_concept_house_aspiration"
+      ],
+      "source_id": "localization/simp_chinese/dlc/tgp/dlc_tgp_japan_game_concepts_l_simp_chinese.yml",
+      "line": 64
+    },
+    {
+      "localization_key": "game_concept_learning_lifestyle",
+      "raw_value": "学识生活方式",
+      "resolved_value": "学识生活方式",
+      "alias_chain": [
+        "game_concept_learning_lifestyle"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 1027
+    },
+    {
+      "localization_key": "game_concept_minister_of_revenue",
+      "raw_value": "$councillor_steward_celestial_government_imperial$",
+      "resolved_value": "户部尚书",
+      "alias_chain": [
+        "game_concept_minister_of_revenue",
+        "councillor_steward_celestial_government_imperial"
+      ],
+      "source_id": "localization/simp_chinese/dlc/tgp/dlc_tgp_china_game_concepts_l_simp_chinese.yml",
+      "line": 144
+    },
+    {
+      "localization_key": "game_concept_personal_tenet",
+      "raw_value": "个人信条",
+      "resolved_value": "个人信条",
+      "alias_chain": [
+        "game_concept_personal_tenet"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "line": 156
+    },
+    {
+      "localization_key": "game_concept_piety",
+      "raw_value": "虔诚",
+      "resolved_value": "虔诚",
+      "alias_chain": [
+        "game_concept_piety"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 410
+    },
+    {
+      "localization_key": "game_concept_piety_experience",
+      "raw_value": "奉献",
+      "resolved_value": "奉献",
+      "alias_chain": [
+        "game_concept_piety_experience"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 414
+    },
+    {
+      "localization_key": "game_concept_piety_level",
+      "raw_value": "奉献等级",
+      "resolved_value": "奉献等级",
+      "alias_chain": [
+        "game_concept_piety_level"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 419
+    },
+    {
+      "localization_key": "game_concept_point_of_interest",
+      "raw_value": "重要地点",
+      "resolved_value": "重要地点",
+      "alias_chain": [
+        "game_concept_point_of_interest"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2208
+    },
+    {
+      "localization_key": "game_concept_points_of_interest",
+      "raw_value": "重要地点",
+      "resolved_value": "重要地点",
+      "alias_chain": [
+        "game_concept_points_of_interest"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2209
+    },
+    {
+      "localization_key": "game_concept_religion",
+      "raw_value": "宗教",
+      "resolved_value": "宗教",
+      "alias_chain": [
+        "game_concept_religion"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 302
+    },
+    {
+      "localization_key": "game_concept_rite",
+      "raw_value": "礼仪",
+      "resolved_value": "礼仪",
+      "alias_chain": [
+        "game_concept_rite"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "line": 125
+    },
+    {
+      "localization_key": "game_concept_spiritual_fulfillment",
+      "raw_value": "灵性满足",
+      "resolved_value": "灵性满足",
+      "alias_chain": [
+        "game_concept_spiritual_fulfillment"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "line": 149
+    },
+    {
+      "localization_key": "game_concept_tenet",
+      "raw_value": "信条",
+      "resolved_value": "信条",
+      "alias_chain": [
+        "game_concept_tenet"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 1342
+    },
+    {
+      "localization_key": "game_concept_theocracy",
+      "raw_value": "神权制",
+      "resolved_value": "神权制",
+      "alias_chain": [
+        "game_concept_theocracy"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 853
+    },
+    {
+      "localization_key": "game_concept_theocratic_government",
+      "raw_value": "神权制",
+      "resolved_value": "神权制",
+      "alias_chain": [
+        "game_concept_theocratic_government"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 856
+    },
+    {
+      "localization_key": "game_concept_trait_level_track_xp",
+      "raw_value": "特质经验",
+      "resolved_value": "特质经验",
+      "alias_chain": [
+        "game_concept_trait_level_track_xp"
+      ],
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2241
+    },
+    {
+      "localization_key": "game_concept_treasury",
+      "raw_value": "国库",
+      "resolved_value": "国库",
+      "alias_chain": [
+        "game_concept_treasury"
+      ],
+      "source_id": "localization/simp_chinese/dlc/tgp/dlc_tgp_china_game_concepts_l_simp_chinese.yml",
+      "line": 78
+    },
+    {
+      "localization_key": "government_is_theocracy",
+      "raw_value": "是神权制类型[government|E]",
+      "resolved_value": "是神权制类型[government|E]",
+      "alias_chain": [
+        "government_is_theocracy"
+      ],
+      "source_id": "localization/simp_chinese/government_l_simp_chinese.yml",
+      "line": 250
+    },
+    {
+      "localization_key": "just_one_more_hill_perk_name",
+      "raw_value": "复越高山",
+      "resolved_value": "复越高山",
+      "alias_chain": [
+        "just_one_more_hill_perk_name"
+      ],
+      "source_id": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 170
+    },
+    {
+      "localization_key": "lifestyle_herbalist",
+      "raw_value": "草药师",
+      "resolved_value": "草药师",
+      "alias_chain": [
+        "lifestyle_herbalist"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 198
+    },
+    {
+      "localization_key": "tenet_apostolic_succession_default_name",
+      "raw_value": "宗徒继承",
+      "resolved_value": "宗徒继承",
+      "alias_chain": [
+        "tenet_apostolic_succession_default_name"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml",
+      "line": 1308
+    },
+    {
+      "localization_key": "tenet_apostolic_succession_greek_name",
+      "raw_value": "使徒继承",
+      "resolved_value": "使徒继承",
+      "alias_chain": [
+        "tenet_apostolic_succession_greek_name"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml",
+      "line": 1307
+    },
+    {
+      "localization_key": "tenet_apostolic_succession_latin_name",
+      "raw_value": "宗徒继承",
+      "resolved_value": "宗徒继承",
+      "alias_chain": [
+        "tenet_apostolic_succession_latin_name"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml",
+      "line": 1306
+    },
+    {
+      "localization_key": "tenet_apostolic_succession_name",
+      "raw_value": "$tenet_apostolic_succession_default_name$",
+      "resolved_value": "宗徒继承",
+      "alias_chain": [
+        "tenet_apostolic_succession_name",
+        "tenet_apostolic_succession_default_name"
+      ],
+      "source_id": "localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml",
+      "line": 1309
+    },
+    {
+      "localization_key": "tenet_armed_pilgrimages_name",
+      "raw_value": "武装朝圣",
+      "resolved_value": "武装朝圣",
+      "alias_chain": [
+        "tenet_armed_pilgrimages_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_core_tenets_l_simp_chinese.yml",
+      "line": 13
+    },
+    {
+      "localization_key": "tenet_inner_journey_name",
+      "raw_value": "内在之旅",
+      "resolved_value": "内在之旅",
+      "alias_chain": [
+        "tenet_inner_journey_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_core_tenets_l_simp_chinese.yml",
+      "line": 218
+    },
+    {
+      "localization_key": "tenet_vows_of_poverty_name",
+      "raw_value": "神贫誓愿",
+      "resolved_value": "神贫誓愿",
+      "alias_chain": [
+        "tenet_vows_of_poverty_name"
+      ],
+      "source_id": "localization/simp_chinese/religion/religion_core_tenets_l_simp_chinese.yml",
+      "line": 42
+    },
+    {
+      "localization_key": "tradition_tgp_warrior_monks_name",
+      "raw_value": "僧兵",
+      "resolved_value": "僧兵",
+      "alias_chain": [
+        "tradition_tgp_warrior_monks_name"
+      ],
+      "source_id": "localization/simp_chinese/culture/traditions/cultural_traditions_l_simp_chinese.yml",
+      "line": 1497
+    },
+    {
+      "localization_key": "tradition_warrior_monks_name",
+      "raw_value": "战斗祭司",
+      "resolved_value": "战斗祭司",
+      "alias_chain": [
+        "tradition_warrior_monks_name"
+      ],
+      "source_id": "localization/simp_chinese/culture/traditions/cultural_traditions_l_simp_chinese.yml",
+      "line": 161
+    },
+    {
+      "localization_key": "trait_cynical",
+      "raw_value": "愤世嫉俗",
+      "resolved_value": "愤世嫉俗",
+      "alias_chain": [
+        "trait_cynical"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 279
+    },
+    {
+      "localization_key": "trait_gregarious",
+      "raw_value": "合群",
+      "resolved_value": "合群",
+      "alias_chain": [
+        "trait_gregarious"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 264
+    },
+    {
+      "localization_key": "trait_hajjah",
+      "raw_value": "朝觐妇",
+      "resolved_value": "朝觐妇",
+      "alias_chain": [
+        "trait_hajjah"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 727
+    },
+    {
+      "localization_key": "trait_hajji",
+      "raw_value": "朝觐者",
+      "resolved_value": "朝觐者",
+      "alias_chain": [
+        "trait_hajji"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 726
+    },
+    {
+      "localization_key": "trait_humble",
+      "raw_value": "谦卑",
+      "resolved_value": "谦卑",
+      "alias_chain": [
+        "trait_humble"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 243
+    },
+    {
+      "localization_key": "trait_impatient",
+      "raw_value": "急躁",
+      "resolved_value": "急躁",
+      "alias_chain": [
+        "trait_impatient"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 237
+    },
+    {
+      "localization_key": "trait_lifestyle_herbalist",
+      "raw_value": "草药师",
+      "resolved_value": "草药师",
+      "alias_chain": [
+        "trait_lifestyle_herbalist"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 1196
+    },
+    {
+      "localization_key": "trait_lifestyle_mystic",
+      "raw_value": "神秘主义者",
+      "resolved_value": "神秘主义者",
+      "alias_chain": [
+        "trait_lifestyle_mystic"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 1194
+    },
+    {
+      "localization_key": "trait_lifestyle_physician",
+      "raw_value": "医生",
+      "resolved_value": "医生",
+      "alias_chain": [
+        "trait_lifestyle_physician"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 1195
+    },
+    {
+      "localization_key": "trait_mystic_2",
+      "raw_value": "神秘主义者",
+      "resolved_value": "神秘主义者",
+      "alias_chain": [
+        "trait_mystic_2"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 183
+    },
+    {
+      "localization_key": "trait_mystic_3",
+      "raw_value": "行奇迹者",
+      "resolved_value": "行奇迹者",
+      "alias_chain": [
+        "trait_mystic_3"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 186
+    },
+    {
+      "localization_key": "trait_mystic_female_1",
+      "raw_value": "女智者",
+      "resolved_value": "女智者",
+      "alias_chain": [
+        "trait_mystic_female_1"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 179
+    },
+    {
+      "localization_key": "trait_mystic_male_1",
+      "raw_value": "智者",
+      "resolved_value": "智者",
+      "alias_chain": [
+        "trait_mystic_male_1"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 180
+    },
+    {
+      "localization_key": "trait_patient",
+      "raw_value": "耐心",
+      "resolved_value": "耐心",
+      "alias_chain": [
+        "trait_patient"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 240
+    },
+    {
+      "localization_key": "trait_physician_1",
+      "raw_value": "新手医生",
+      "resolved_value": "新手医生",
+      "alias_chain": [
+        "trait_physician_1"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 189
+    },
+    {
+      "localization_key": "trait_physician_2",
+      "raw_value": "医生",
+      "resolved_value": "医生",
+      "alias_chain": [
+        "trait_physician_2"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 192
+    },
+    {
+      "localization_key": "trait_physician_3",
+      "raw_value": "著名医师",
+      "resolved_value": "著名医师",
+      "alias_chain": [
+        "trait_physician_3"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 195
+    },
+    {
+      "localization_key": "trait_pilgrim",
+      "raw_value": "朝圣者",
+      "resolved_value": "朝圣者",
+      "alias_chain": [
+        "trait_pilgrim"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 673
+    },
+    {
+      "localization_key": "trait_pilgrim_2",
+      "raw_value": "老道的朝圣者",
+      "resolved_value": "老道的朝圣者",
+      "alias_chain": [
+        "trait_pilgrim_2"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 674
+    },
+    {
+      "localization_key": "trait_pilgrim_3",
+      "raw_value": "高效的朝圣者",
+      "resolved_value": "高效的朝圣者",
+      "alias_chain": [
+        "trait_pilgrim_3"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 675
+    },
+    {
+      "localization_key": "trait_shy",
+      "raw_value": "害羞",
+      "resolved_value": "害羞",
+      "alias_chain": [
+        "trait_shy"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 261
+    },
+    {
+      "localization_key": "trait_vengeful",
+      "raw_value": "睚眦必报",
+      "resolved_value": "睚眦必报",
+      "alias_chain": [
+        "trait_vengeful"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 306
+    },
+    {
+      "localization_key": "trait_witch",
+      "raw_value": "巫师",
+      "resolved_value": "巫师",
+      "alias_chain": [
+        "trait_witch"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 895
+    },
+    {
+      "localization_key": "trait_zealous",
+      "raw_value": "狂热",
+      "resolved_value": "狂热",
+      "alias_chain": [
+        "trait_zealous"
+      ],
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "line": 282
+    },
+    {
+      "localization_key": "visit_local_shrine_decision",
+      "raw_value": "举行一场祭祀仪式",
+      "resolved_value": "举行一场祭祀仪式",
+      "alias_chain": [
+        "visit_local_shrine_decision"
+      ],
+      "source_id": "localization/simp_chinese/dlc/tgp/tgp_east_asia_decisions_l_simp_chinese.yml",
+      "line": 50
+    }
+  ],
+  "source_files": [
+    {
+      "source_id": "localization/simp_chinese/culture/traditions/cultural_traditions_l_simp_chinese.yml",
+      "bytes": 195478,
+      "sha256": "a53ad50d341bb0979e67177edbe9f6300ce9650029b5953a459cc4b0634cb095"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "bytes": 3715,
+      "sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/mpo/dlc_mpo_game_concepts_l_simp_chinese.yml",
+      "bytes": 23515,
+      "sha256": "318fa1091ab4fa334343661a3125bf43ed6d1e538631e7a400672ae3379d91c1"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/pam/pam_ecclesiastical_domicile_l_simp_chinese.yml",
+      "bytes": 80643,
+      "sha256": "20ded7fde4e6f713dedaa1b0c23bc868cef0b7fb0c2dd3378701058607251451"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "bytes": 43748,
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml",
+      "bytes": 297189,
+      "sha256": "e41c0222296f8abc8be5ece0d0a6758d012e1924cb87bc0b946e2c2b8702e757"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/tgp/dlc_tgp_china_game_concepts_l_simp_chinese.yml",
+      "bytes": 45644,
+      "sha256": "d4ee61524f7f5e0a4d1a4bfaf99c6ef2bab9c718a2148fd0c7065bc9a3d7064e"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/tgp/dlc_tgp_japan_game_concepts_l_simp_chinese.yml",
+      "bytes": 8222,
+      "sha256": "685f9b07ae6c801c00627ab0421a77b3c9ce09fd441acfab4c5830778adb8a2c"
+    },
+    {
+      "source_id": "localization/simp_chinese/dlc/tgp/tgp_east_asia_decisions_l_simp_chinese.yml",
+      "bytes": 14015,
+      "sha256": "d3c376f64327a3b2558a6a3ff372f26bb9005f105da53baf7220f903aaf9a822"
+    },
+    {
+      "source_id": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "bytes": 350826,
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+    },
+    {
+      "source_id": "localization/simp_chinese/government_l_simp_chinese.yml",
+      "bytes": 84594,
+      "sha256": "a94c6d9d0ee8ef26381218f67abc1ff4a5579bb9fadc0bf8400966dd39b9c204"
+    },
+    {
+      "source_id": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "bytes": 10458,
+      "sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+    },
+    {
+      "source_id": "localization/simp_chinese/religion/religion_core_tenets_l_simp_chinese.yml",
+      "bytes": 66475,
+      "sha256": "a6178bfe35faf7f4b58ea034d1d8df3a33e38d2020fe66675007ec162f9ca602"
+    },
+    {
+      "source_id": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "bytes": 93589,
+      "sha256": "1ba3f480f5255d3def8e9c968544daa2f5f4ee4ff40a9e214e60d623cc461d5c"
+    },
+    {
+      "source_id": "localization/simp_chinese/traits_l_simp_chinese.yml",
+      "bytes": 127953,
+      "sha256": "4499144a67951fa7c5fba5e0f52de2db94b3b1f85bfee3cc03ab9bf7e46fb554"
+    },
+    {
+      "source_id": "common/culture/traditions/00_combat_traditions.txt",
+      "bytes": 56616,
+      "sha256": "a8bc43161e50c2763e9871952072f3dc558a99d05f5c0b01d052f00962baa7c5"
+    },
+    {
+      "source_id": "common/culture/traditions/tgp_traditions.txt",
+      "bytes": 50297,
+      "sha256": "dc46439617ab005c5a344e51e65ff2b0a32498d3f3de7264a609b5144ff9dce7"
+    },
+    {
+      "source_id": "common/decisions/dlc_decisions/tgp/tgp_east_asia_decisions.txt",
+      "bytes": 20611,
+      "sha256": "9cf657f5ec6fc65dbded04e1a82e100ec2619ad2a999cd6090de978a2755993d"
+    },
+    {
+      "source_id": "common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "bytes": 438719,
+      "sha256": "3b1d429f812be978246268a4965222297b0651bc9b013b390e9b5abd41784a3f"
+    },
+    {
+      "source_id": "common/dynasty_perks/01_ep2_dynasty_perks.txt",
+      "bytes": 3190,
+      "sha256": "30759c437ec3ebdb532b06019fba32286481fc2a660968f7742654fe877a813b"
+    },
+    {
+      "source_id": "common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "bytes": 3576,
+      "sha256": "958ed520472473b02a3241cee5a79d7ac561c1b6f2d3d3eb86a5918c1c291a23"
+    },
+    {
+      "source_id": "common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+      "bytes": 5215,
+      "sha256": "276100fe6e99ef17805da9992b4e8f38d648315dd8a30238b5fb42d113bd7456"
+    },
+    {
+      "source_id": "common/religion/doctrine_types/20_doctrines.txt",
+      "bytes": 54665,
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+    },
+    {
+      "source_id": "common/religion/tenet_types/00_pam_tenets.txt",
+      "bytes": 52920,
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a"
+    },
+    {
+      "source_id": "common/religion/tenet_types/00_tenet_types.txt",
+      "bytes": 130228,
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd"
+    },
+    {
+      "source_id": "common/traits/00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
+    },
+    {
+      "source_id": "localization/simp_chinese/council_l_simp_chinese.yml",
+      "bytes": 26583,
+      "sha256": "efa34b6329f31d7b64ad990d936c7d677e1a32ee7304aa594a1fce4d69176510"
+    },
+    {
+      "source_id": "localization/simp_chinese/culture/culture_eras_l_simp_chinese.yml",
+      "bytes": 1138,
+      "sha256": "c200fa6c838502d6e8c863cb332954459d37fa42c68318c91d715e8ce8b86b6d"
+    },
+    {
+      "source_id": "localization/simp_chinese/dynasty_legacies/legacies_l_simp_chinese.yml",
+      "bytes": 2466,
+      "sha256": "4be7b323a5f6d3059e3ea109719ea2620da593c3e77123f5be035d079ffcdd64"
+    },
+    {
+      "source_id": "common/dynasty_perks/00_dynasty_perks.txt",
+      "bytes": 9263,
+      "sha256": "25c7ae870de44d4b6fcd497d9f35f79b957da7869454a8906acfe4599a2bce63"
+    },
+    {
+      "source_id": "common/culture/eras/00_culture_eras.txt",
+      "bytes": 2251,
+      "sha256": "f1a99261b3f2f3a7428ba779bb8b3f04d5c7b190e270561d15e33006892c4fae"
+    }
+  ],
+  "script_bindings": [
+    {
+      "script_key": "pilgrim",
+      "script_source_id": "common/traits/00_traits.txt",
+      "line_start": 8831,
+      "line_end": 8856,
+      "localization_keys": [
+        "trait_pilgrim_3",
+        "trait_pilgrim_2",
+        "trait_pilgrim"
+      ],
+      "binding_type": "explicit_name_first_valid"
+    },
+    {
+      "script_key": "hajjaj",
+      "script_source_id": "common/traits/00_traits.txt",
+      "line_start": 8917,
+      "line_end": 8935,
+      "localization_keys": [
+        "trait_hajji",
+        "trait_hajjah"
+      ],
+      "binding_type": "explicit_name_first_valid"
+    },
+    {
+      "script_key": "tenet_apostolic_succession",
+      "script_source_id": "common/religion/tenet_types/00_pam_tenets.txt",
+      "line_start": 921,
+      "line_end": 942,
+      "localization_keys": [
+        "tenet_apostolic_succession_latin_name",
+        "tenet_apostolic_succession_greek_name",
+        "tenet_apostolic_succession_default_name"
+      ],
+      "binding_type": "explicit_name_first_valid"
+    },
+    {
+      "script_key": "doctrine_pilgrimage",
+      "script_source_id": "common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+      "line_start": 93,
+      "line_end": 93,
+      "localization_keys": [
+        "doctrine_pilgrimage_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "doctrine_pilgrimage_forbidden",
+      "script_source_id": "common/religion/doctrine_types/20_doctrines.txt",
+      "line_start": 1652,
+      "line_end": 1652,
+      "localization_keys": [
+        "doctrine_pilgrimage_forbidden_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "doctrine_pilgrimage_encouraged",
+      "script_source_id": "common/religion/doctrine_types/20_doctrines.txt",
+      "line_start": 1683,
+      "line_end": 1683,
+      "localization_keys": [
+        "doctrine_pilgrimage_encouraged_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "doctrine_pilgrimage_local_rites",
+      "script_source_id": "common/religion/doctrine_types/20_doctrines.txt",
+      "line_start": 1710,
+      "line_end": 1710,
+      "localization_keys": [
+        "doctrine_pilgrimage_local_rites_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "doctrine_pilgrimage_mandatory",
+      "script_source_id": "common/religion/doctrine_types/20_doctrines.txt",
+      "line_start": 1732,
+      "line_end": 1732,
+      "localization_keys": [
+        "doctrine_pilgrimage_mandatory_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "doctrine_pilgrimage_mandatory_hajj",
+      "script_source_id": "common/religion/doctrine_types/20_doctrines.txt",
+      "line_start": 1763,
+      "line_end": 1763,
+      "localization_keys": [
+        "doctrine_pilgrimage_mandatory_hajj_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "tenet_vows_of_poverty",
+      "script_source_id": "common/religion/tenet_types/00_tenet_types.txt",
+      "line_start": 1569,
+      "line_end": 1569,
+      "localization_keys": [
+        "tenet_vows_of_poverty_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "tenet_inner_journey",
+      "script_source_id": "common/religion/tenet_types/00_tenet_types.txt",
+      "line_start": 2672,
+      "line_end": 2672,
+      "localization_keys": [
+        "tenet_inner_journey_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "tradition_warrior_monks",
+      "script_source_id": "common/culture/traditions/00_combat_traditions.txt",
+      "line_start": 1022,
+      "line_end": 1038,
+      "localization_keys": [
+        "tradition_warrior_monks_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "tradition_tgp_warrior_monks",
+      "script_source_id": "common/culture/traditions/tgp_traditions.txt",
+      "line_start": 311,
+      "line_end": 337,
+      "localization_keys": [
+        "tradition_tgp_warrior_monks_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "just_one_more_hill_perk",
+      "script_source_id": "common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "line_start": 83,
+      "line_end": 94,
+      "localization_keys": [
+        "just_one_more_hill_perk_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "ep2_activities_legacy_1",
+      "script_source_id": "common/dynasty_perks/01_ep2_dynasty_perks.txt",
+      "line_start": 29,
+      "line_end": 37,
+      "localization_keys": [
+        "ep2_activities_legacy_1_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "baptistery_pilgrims_hospice_01",
+      "script_source_id": "common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "line_start": 3838,
+      "line_end": 3838,
+      "localization_keys": [
+        "baptistery_pilgrims_hospice_01_domicile_building"
+      ],
+      "binding_type": "domicile_building_name_suffix"
+    },
+    {
+      "script_key": "baptistery_pilgrims_hospice_02",
+      "script_source_id": "common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "line_start": 3893,
+      "line_end": 3893,
+      "localization_keys": [
+        "baptistery_pilgrims_hospice_02_domicile_building"
+      ],
+      "binding_type": "domicile_building_name_suffix"
+    },
+    {
+      "script_key": "baptistery_pilgrims_hospice_03",
+      "script_source_id": "common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "line_start": 3936,
+      "line_end": 3936,
+      "localization_keys": [
+        "baptistery_pilgrims_hospice_03_domicile_building"
+      ],
+      "binding_type": "domicile_building_name_suffix"
+    },
+    {
+      "script_key": "baptistery_pilgrims_hospice_04",
+      "script_source_id": "common/domiciles/buildings/11_ecclesiastical_domicile_buildings.txt",
+      "line_start": 3983,
+      "line_end": 3983,
+      "localization_keys": [
+        "baptistery_pilgrims_hospice_04_domicile_building"
+      ],
+      "binding_type": "domicile_building_name_suffix"
+    },
+    {
+      "script_key": "visit_local_shrine_decision",
+      "script_source_id": "common/decisions/dlc_decisions/tgp/tgp_east_asia_decisions.txt",
+      "line_start": 589,
+      "line_end": 589,
+      "localization_keys": [
+        "visit_local_shrine_decision"
+      ],
+      "binding_type": "matching_decision_identifier"
+    },
+    {
+      "script_key": "erudition_legacy_4",
+      "script_source_id": "common/dynasty_perks/00_dynasty_perks.txt",
+      "line_start": 337,
+      "line_end": 337,
+      "localization_keys": [
+        "erudition_legacy_4_name"
+      ],
+      "binding_type": "definition_name_convention"
+    },
+    {
+      "script_key": "culture_era_early_medieval",
+      "script_source_id": "common/culture/eras/00_culture_eras.txt",
+      "line_start": 6,
+      "line_end": 6,
+      "localization_keys": [
+        "culture_era_early_medieval"
+      ],
+      "binding_type": "matching_era_identifier"
+    }
+  ],
+  "boundaries": [
+    "Static installed-file read only; no game/native/Steam/media calls.",
+    "Only whole-value $key$ aliases are resolved.",
+    "Dynamic names depend on character XP, sex, or rite language.",
+    "Historical V5 packages remain unchanged; this is a terminology successor."
+  ],
+  "dynamic_name_cases": {
+    "pilgrim": [
+      "xp>=100 -> trait_pilgrim_3",
+      "xp>=50 -> trait_pilgrim_2",
+      "fallback -> trait_pilgrim"
+    ],
+    "hajjaj": [
+      "null character or male -> trait_hajji",
+      "female -> trait_hajjah"
+    ],
+    "tenet_apostolic_succession": [
+      "Latin liturgical language -> latin_name",
+      "Greek liturgical language -> greek_name",
+      "fallback -> default_name"
+    ]
+  },
+  "validation": {
+    "source_sha_line_and_alias_readback": "PASS",
+    "json_roundtrip": "PASS",
+    "selected_localization_records": 79,
+    "source_files": 31,
+    "script_bindings": 22,
+    "typecheck_scope": "No Python source file added or modified; inline readback only."
+  }
+}

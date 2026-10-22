@@ -8,6 +8,8 @@
 
 ## 使用次序与证据等级
 
+**朝圣机制当前优先入口（2026-10-22）：**先读[当前知识说明](../../promo/ck3_faith_and_power/episode02/docs/pilgrimage-current-knowledge.md)及[机器可读索引](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-current-12004.json)。索引绑定七包14份原件，以精确JSON Pointer继任旧unknown，拆分已闭结论与真实未闭；另绑定本轮实际简中[活动／旅行术语](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-options-12004.json)、[宗教／人物术语](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v6-localization-religion-12004.json)及头衔等补充。旧来源中的“博学传承／私人信条／旅行主管”等不作为官方名称依据。当前索引可直接查阅；本轮未修改既有MCP摘要或auto路由来自动消费它。
+
 1. 先核实际 CK3 build、原版资源 SHA 及当前运行时能力。版本不符时本页只作研究线索，不能沿用数值和私有接口资格。
 2. 查询相关知识，再按下表获取当前角色、完整 ID、Faith、Rite、日期和原生帧；缺失值保持 unknown，不视为零或 false。
 3. 核实原生最终许可、完整费用、应急储备、目标与替换物，以及持久 once 账本。提交一次；结果未知时先查原动作，不能重试或换账本规避。

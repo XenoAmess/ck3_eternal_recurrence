@@ -1,0 +1,2538 @@
+{
+  "schema": "faith.pilgrimage.localization.options.v6.1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T02:15:28.753051Z",
+  "machine_identity_observed_at_utc": "2026-10-22T02:10:31Z",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine actual readback",
+  "requested_game_version": "1.20.0.4",
+  "installation_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "status": "STATIC_LOCALIZATION_NAMES_VERIFIED",
+  "ordinary_auto_consumes": false,
+  "action_ready": false,
+  "current_actor_options_qualified": false,
+  "scope": "Activity configuration / intents / 29 travel definitions / related perks and legacies / party and positions; static names, not live menu membership.",
+  "counts": {
+    "simp_chinese_yml_files_scanned": 1250,
+    "entries": 87,
+    "distinct_keys": 86,
+    "travel_options": 29,
+    "missing_keys": 0,
+    "duplicate_target_definitions": 0
+  },
+  "groups": {
+    "activity": [
+      "activity_pilgrimage",
+      "pilgrimage_option_fidelity",
+      "pilgrimage_option_pomp",
+      "pilgrimage_type_pious",
+      "pilgrimage_type_worldly",
+      "pilgrimage_type_hajj",
+      "pilgrimage_fidelity_obligatory",
+      "pilgrimage_fidelity_pilgrim",
+      "pilgrimage_fidelity_contemplative",
+      "pilgrimage_pomp_humble",
+      "pilgrimage_pomp_appropriate",
+      "pilgrimage_pomp_ceremonial",
+      "pilgrimage_pomp_throng"
+    ],
+    "intent": [
+      "reflection_intent",
+      "altruism_intent",
+      "zealot_intent",
+      "reduce_stress_intent"
+    ],
+    "travel": [
+      "adventurers_scout_for_talent_option",
+      "adventurers_make_local_deals_option",
+      "adventurers_search_for_secrets_option",
+      "adventurers_encourage_relationships_option",
+      "adventurers_gather_inspiration_option",
+      "adventurers_proselytize_zealously_option",
+      "adventurers_forward_scouts_option",
+      "purchase_rough_terrain_gear_option",
+      "purchase_desert_gear_option",
+      "purchase_forest_gear_option",
+      "experienced_captains_option",
+      "hire_experienced_mercenaries_option",
+      "hire_jungle_expert_option",
+      "hire_mountaineer_option",
+      "hire_forder_option",
+      "hire_desert_warrior_option",
+      "hire_rough_terrain_expert_option",
+      "court_physician_option",
+      "cultural_ambassador_option",
+      "hire_allied_mercenaries_option",
+      "appeasement_option",
+      "leisurely_option",
+      "tutor_child_option",
+      "fancy_mounts_option",
+      "military_recruits_option",
+      "superior_armaments_option",
+      "anxious_option",
+      "circumspect_option",
+      "estate_mounts_option"
+    ],
+    "travel_suffix": [
+      "court_physician_option_suffix"
+    ],
+    "entourage_templates": [
+      "pilgrimage_pomp_humble_desc",
+      "pilgrimage_pomp_appropriate_desc",
+      "pilgrimage_pomp_ceremonial_desc",
+      "pilgrimage_pomp_throng_desc"
+    ],
+    "perk": [
+      "toe_the_line_perk_name",
+      "fearful_troops_perk_name",
+      "digging_for_dirt_perk_name",
+      "chains_of_loyalty_perk_name",
+      "popular_figurehead_perk_name",
+      "zealous_proselytizer_perk_name",
+      "mercenary_contacts_perk_name",
+      "local_hero_perk_name",
+      "know_your_land_know_your_people_perk_name",
+      "well_prepared_perk_name",
+      "journey_planner_perk_name",
+      "just_one_more_hill_perk_name",
+      "clerical_justifications_perk_name"
+    ],
+    "legacy": [
+      "ep2_activities_legacy_track_name",
+      "ep2_activities_legacy_track",
+      "ep2_activities_legacy_1_name",
+      "erudition_legacy_track_name",
+      "erudition_legacy_4_name"
+    ],
+    "concept": [
+      "game_concept_intent",
+      "game_concept_entourage",
+      "game_concept_travel_options",
+      "game_concept_travel_safety",
+      "game_concept_travel_speed",
+      "game_concept_travel_danger",
+      "game_concept_dynasty_perk",
+      "game_concept_perk",
+      "game_concept_cultural_acceptance"
+    ],
+    "position": [
+      "travel_leader_court_position",
+      "court_physician_court_position",
+      "travel_leader_celestial_imperial",
+      "travel_leader_celestial",
+      "court_physician_celestial_imperial",
+      "court_physician_celestial"
+    ],
+    "indirect_examples": [
+      "hire_travel_leader_decision",
+      "leisurely_option_effect",
+      "adventurers_forward_scouts_option"
+    ]
+  },
+  "entries": [
+    {
+      "category": "activity",
+      "key": "activity_pilgrimage",
+      "raw_value": "朝圣",
+      "resolved_text": "朝圣",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 3,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "activity_pilgrimage",
+          "source_id": "L01",
+          "line": 3,
+          "raw_value": "朝圣",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_option_fidelity",
+      "raw_value": "忠诚",
+      "resolved_text": "忠诚",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 114,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_option_fidelity",
+          "source_id": "L01",
+          "line": 114,
+          "raw_value": "忠诚",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_option_pomp",
+      "raw_value": "排场",
+      "resolved_text": "排场",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 122,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_option_pomp",
+          "source_id": "L01",
+          "line": 122,
+          "raw_value": "排场",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_type_pious",
+      "raw_value": "虔诚朝圣",
+      "resolved_text": "虔诚朝圣",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 107,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_type_pious",
+          "source_id": "L01",
+          "line": 107,
+          "raw_value": "虔诚朝圣",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_type_worldly",
+      "raw_value": "世俗朝圣",
+      "resolved_text": "世俗朝圣",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 109,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_type_worldly",
+          "source_id": "L01",
+          "line": 109,
+          "raw_value": "世俗朝圣",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_type_hajj",
+      "raw_value": "朝觐",
+      "resolved_text": "朝觐",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 111,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_type_hajj",
+          "source_id": "L01",
+          "line": 111,
+          "raw_value": "朝觐",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_fidelity_obligatory",
+      "raw_value": "义不容辞",
+      "resolved_text": "义不容辞",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 115,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_fidelity_obligatory",
+          "source_id": "L01",
+          "line": 115,
+          "raw_value": "义不容辞",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_fidelity_pilgrim",
+      "raw_value": "朝圣者",
+      "resolved_text": "朝圣者",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 117,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_fidelity_pilgrim",
+          "source_id": "L01",
+          "line": 117,
+          "raw_value": "朝圣者",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_fidelity_contemplative",
+      "raw_value": "深思熟虑",
+      "resolved_text": "深思熟虑",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 119,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_fidelity_contemplative",
+          "source_id": "L01",
+          "line": 119,
+          "raw_value": "深思熟虑",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_pomp_humble",
+      "raw_value": "朴素",
+      "resolved_text": "朴素",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 123,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_humble",
+          "source_id": "L01",
+          "line": 123,
+          "raw_value": "朴素",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_pomp_appropriate",
+      "raw_value": "适度",
+      "resolved_text": "适度",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 125,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_appropriate",
+          "source_id": "L01",
+          "line": 125,
+          "raw_value": "适度",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_pomp_ceremonial",
+      "raw_value": "讲究",
+      "resolved_text": "讲究",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 127,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_ceremonial",
+          "source_id": "L01",
+          "line": 127,
+          "raw_value": "讲究",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "activity",
+      "key": "pilgrimage_pomp_throng",
+      "raw_value": "盛况空前",
+      "resolved_text": "盛况空前",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 129,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_throng",
+          "source_id": "L01",
+          "line": 129,
+          "raw_value": "盛况空前",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "intent",
+      "key": "reflection_intent",
+      "raw_value": "深思熟虑",
+      "resolved_text": "深思熟虑",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 133,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "reflection_intent",
+          "source_id": "L01",
+          "line": 133,
+          "raw_value": "深思熟虑",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "intent",
+      "key": "altruism_intent",
+      "raw_value": "行善",
+      "resolved_text": "行善",
+      "source_id": "L02",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+      "line": 18,
+      "source_sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3",
+      "reference_chain": [
+        {
+          "key": "altruism_intent",
+          "source_id": "L02",
+          "line": 18,
+          "raw_value": "行善",
+          "source_sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "intent",
+      "key": "zealot_intent",
+      "raw_value": "热忱",
+      "resolved_text": "热忱",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 136,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "zealot_intent",
+          "source_id": "L01",
+          "line": 136,
+          "raw_value": "热忱",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "intent",
+      "key": "reduce_stress_intent",
+      "raw_value": "娱乐",
+      "resolved_text": "娱乐",
+      "source_id": "L02",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+      "line": 3,
+      "source_sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3",
+      "reference_chain": [
+        {
+          "key": "reduce_stress_intent",
+          "source_id": "L02",
+          "line": 3,
+          "raw_value": "娱乐",
+          "source_sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_scout_for_talent_option",
+      "raw_value": "搜索人才",
+      "resolved_text": "搜索人才",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 92,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "adventurers_scout_for_talent_option",
+          "source_id": "L03",
+          "line": 92,
+          "raw_value": "搜索人才",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_make_local_deals_option",
+      "raw_value": "高风险交易",
+      "resolved_text": "高风险交易",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 89,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "adventurers_make_local_deals_option",
+          "source_id": "L03",
+          "line": 89,
+          "raw_value": "高风险交易",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_search_for_secrets_option",
+      "raw_value": "搜寻秘密",
+      "resolved_text": "搜寻秘密",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 75,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "adventurers_search_for_secrets_option",
+          "source_id": "L03",
+          "line": 75,
+          "raw_value": "搜寻秘密",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_encourage_relationships_option",
+      "raw_value": "鼓励关系",
+      "resolved_text": "鼓励关系",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 69,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "adventurers_encourage_relationships_option",
+          "source_id": "L03",
+          "line": 69,
+          "raw_value": "鼓励关系",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_gather_inspiration_option",
+      "raw_value": "搜集灵感",
+      "resolved_text": "搜集灵感",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 84,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "adventurers_gather_inspiration_option",
+          "source_id": "L03",
+          "line": 84,
+          "raw_value": "搜集灵感",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_proselytize_zealously_option",
+      "raw_value": "向当地人传教",
+      "resolved_text": "向当地人传教",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 79,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "adventurers_proselytize_zealously_option",
+          "source_id": "L03",
+          "line": 79,
+          "raw_value": "向当地人传教",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "adventurers_forward_scouts_option",
+      "raw_value": "斥候",
+      "resolved_text": "斥候",
+      "source_id": "L04",
+      "relative_path": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+      "line": 669,
+      "source_sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac",
+      "reference_chain": [
+        {
+          "key": "adventurers_forward_scouts_option",
+          "source_id": "L04",
+          "line": 669,
+          "raw_value": "斥候",
+          "source_sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "purchase_rough_terrain_gear_option",
+      "raw_value": "购买探路者装备",
+      "resolved_text": "购买探路者装备",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 63,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "purchase_rough_terrain_gear_option",
+          "source_id": "L03",
+          "line": 63,
+          "raw_value": "购买探路者装备",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "purchase_desert_gear_option",
+      "raw_value": "购买旱地探索者物品",
+      "resolved_text": "购买旱地探索者物品",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 65,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "purchase_desert_gear_option",
+          "source_id": "L03",
+          "line": 65,
+          "raw_value": "购买旱地探索者物品",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "purchase_forest_gear_option",
+      "raw_value": "购买荒野工具包",
+      "resolved_text": "购买荒野工具包",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 67,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "purchase_forest_gear_option",
+          "source_id": "L03",
+          "line": 67,
+          "raw_value": "购买荒野工具包",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "experienced_captains_option",
+      "raw_value": "雇佣经验丰富的船长",
+      "resolved_text": "雇佣经验丰富的船长",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 8,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "experienced_captains_option",
+          "source_id": "L03",
+          "line": 8,
+          "raw_value": "雇佣经验丰富的船长",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_experienced_mercenaries_option",
+      "raw_value": "雇佣佣兵卫队",
+      "resolved_text": "雇佣佣兵卫队",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 12,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_experienced_mercenaries_option",
+          "source_id": "L03",
+          "line": 12,
+          "raw_value": "雇佣佣兵卫队",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_jungle_expert_option",
+      "raw_value": "雇佣丛林追猎者",
+      "resolved_text": "雇佣丛林追猎者",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 17,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_jungle_expert_option",
+          "source_id": "L03",
+          "line": 17,
+          "raw_value": "雇佣丛林追猎者",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_mountaineer_option",
+      "raw_value": "雇佣登山者",
+      "resolved_text": "雇佣登山者",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 21,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_mountaineer_option",
+          "source_id": "L03",
+          "line": 21,
+          "raw_value": "雇佣登山者",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_forder_option",
+      "raw_value": "雇佣涉水者",
+      "resolved_text": "雇佣涉水者",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 25,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_forder_option",
+          "source_id": "L03",
+          "line": 25,
+          "raw_value": "雇佣涉水者",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_desert_warrior_option",
+      "raw_value": "雇佣沙漠战士",
+      "resolved_text": "雇佣沙漠战士",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 34,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_desert_warrior_option",
+          "source_id": "L03",
+          "line": 34,
+          "raw_value": "雇佣沙漠战士",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_rough_terrain_expert_option",
+      "raw_value": "雇佣森林向导",
+      "resolved_text": "雇佣森林向导",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 30,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_rough_terrain_expert_option",
+          "source_id": "L03",
+          "line": 30,
+          "raw_value": "雇佣森林向导",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "court_physician_option",
+      "raw_value": "带上医疗设备",
+      "resolved_text": "带上医疗设备",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 38,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "court_physician_option",
+          "source_id": "L03",
+          "line": 38,
+          "raw_value": "带上医疗设备",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "cultural_ambassador_option",
+      "raw_value": "雇佣文化大使",
+      "resolved_text": "雇佣文化大使",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 42,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "cultural_ambassador_option",
+          "source_id": "L03",
+          "line": 42,
+          "raw_value": "雇佣文化大使",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "hire_allied_mercenaries_option",
+      "raw_value": "私人军队",
+      "resolved_text": "私人军队",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 142,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "hire_allied_mercenaries_option",
+          "source_id": "L03",
+          "line": 142,
+          "raw_value": "私人军队",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "appeasement_option",
+      "raw_value": "安抚",
+      "resolved_text": "安抚",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 144,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "appeasement_option",
+          "source_id": "L03",
+          "line": 144,
+          "raw_value": "安抚",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "leisurely_option",
+      "raw_value": "悠闲之旅",
+      "resolved_text": "悠闲之旅",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 146,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "leisurely_option",
+          "source_id": "L03",
+          "line": 146,
+          "raw_value": "悠闲之旅",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "tutor_child_option",
+      "raw_value": "教学之旅",
+      "resolved_text": "教学之旅",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 150,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "tutor_child_option",
+          "source_id": "L03",
+          "line": 150,
+          "raw_value": "教学之旅",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "fancy_mounts_option",
+      "raw_value": "优良坐骑",
+      "resolved_text": "优良坐骑",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 46,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "fancy_mounts_option",
+          "source_id": "L03",
+          "line": 46,
+          "raw_value": "优良坐骑",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "military_recruits_option",
+      "raw_value": "训练骑士",
+      "resolved_text": "训练骑士",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 48,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "military_recruits_option",
+          "source_id": "L03",
+          "line": 48,
+          "raw_value": "训练骑士",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "superior_armaments_option",
+      "raw_value": "优良军备",
+      "resolved_text": "优良军备",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 57,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "superior_armaments_option",
+          "source_id": "L03",
+          "line": 57,
+          "raw_value": "优良军备",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "anxious_option",
+      "raw_value": "加快脚步",
+      "resolved_text": "加快脚步",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 59,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "anxious_option",
+          "source_id": "L03",
+          "line": 59,
+          "raw_value": "加快脚步",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "circumspect_option",
+      "raw_value": "谨慎",
+      "resolved_text": "谨慎",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 61,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "circumspect_option",
+          "source_id": "L03",
+          "line": 61,
+          "raw_value": "谨慎",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel",
+      "key": "estate_mounts_option",
+      "raw_value": "华丽的马匹",
+      "resolved_text": "华丽的马匹",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 140,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "estate_mounts_option",
+          "source_id": "L03",
+          "line": 140,
+          "raw_value": "华丽的马匹",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "travel_suffix",
+      "key": "court_physician_option_suffix",
+      "raw_value": " #weak （仅抵消瘟疫）#!",
+      "resolved_text": " #weak （仅抵消瘟疫）#!",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 39,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "court_physician_option_suffix",
+          "source_id": "L03",
+          "line": 39,
+          "raw_value": " #weak （仅抵消瘟疫）#!",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": false,
+      "definition_count": 1,
+      "is_rich_text": true,
+      "label_kind": "rich_text_fragment"
+    },
+    {
+      "category": "entourage_templates",
+      "key": "pilgrimage_pomp_humble_desc",
+      "raw_value": "$EFFECT_LIST_BULLET$不带任何你[court|E]的人出发，这使[travel|E]变得危险\\n$EFFECT_LIST_BULLET$你加入了[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_humble_max_value')]名随机朝圣者组成的队伍\\n$EFFECT_LIST_BULLET$完成后能获得更多[piety|E]\\n\\n#weak 朝圣的时光应当用来静默退省。与陌生人同路的普通朝圣者队伍是最为合适。#!",
+      "resolved_text": "$EFFECT_LIST_BULLET$不带任何你[court|E]的人出发，这使[travel|E]变得危险\\n$EFFECT_LIST_BULLET$你加入了[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_humble_max_value')]名随机朝圣者组成的队伍\\n$EFFECT_LIST_BULLET$完成后能获得更多[piety|E]\\n\\n#weak 朝圣的时光应当用来静默退省。与陌生人同路的普通朝圣者队伍是最为合适。#!",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 124,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_humble_desc",
+          "source_id": "L01",
+          "line": 124,
+          "raw_value": "$EFFECT_LIST_BULLET$不带任何你[court|E]的人出发，这使[travel|E]变得危险\\n$EFFECT_LIST_BULLET$你加入了[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_humble_max_value')]名随机朝圣者组成的队伍\\n$EFFECT_LIST_BULLET$完成后能获得更多[piety|E]\\n\\n#weak 朝圣的时光应当用来静默退省。与陌生人同路的普通朝圣者队伍是最为合适。#!",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": true,
+      "display_name_verified": false,
+      "definition_count": 1,
+      "is_rich_text": true,
+      "label_kind": "dynamic_template"
+    },
+    {
+      "category": "entourage_templates",
+      "key": "pilgrimage_pomp_appropriate_desc",
+      "raw_value": "$EFFECT_LIST_BULLET$你带上保镖或优秀的骑士，也许还有朋友\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_appropriate_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后的[piety|E]奖励不受影响\\n\\n#weak 道路险要，旅途遥远。精神纯洁是一回事，有勇无谋又是另一回事。#!",
+      "resolved_text": "$EFFECT_LIST_BULLET$你带上保镖或优秀的骑士，也许还有朋友\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_appropriate_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后的[piety|E]奖励不受影响\\n\\n#weak 道路险要，旅途遥远。精神纯洁是一回事，有勇无谋又是另一回事。#!",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 126,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_appropriate_desc",
+          "source_id": "L01",
+          "line": 126,
+          "raw_value": "$EFFECT_LIST_BULLET$你带上保镖或优秀的骑士，也许还有朋友\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_appropriate_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后的[piety|E]奖励不受影响\\n\\n#weak 道路险要，旅途遥远。精神纯洁是一回事，有勇无谋又是另一回事。#!",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": true,
+      "display_name_verified": false,
+      "definition_count": 1,
+      "is_rich_text": true,
+      "label_kind": "dynamic_template"
+    },
+    {
+      "category": "entourage_templates",
+      "key": "pilgrimage_pomp_ceremonial_desc",
+      "raw_value": "$EFFECT_LIST_BULLET$你#EMP 还#!带上仆人和虔诚的扈从\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_ceremonial_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后获得的[piety|E]提高\\n\\n#weak 信仰需要遵守礼节，即使远离家乡。不带随从难道还能遵守礼节吗？#!",
+      "resolved_text": "$EFFECT_LIST_BULLET$你#EMP 还#!带上仆人和虔诚的扈从\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_ceremonial_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后获得的[piety|E]提高\\n\\n#weak 信仰需要遵守礼节，即使远离家乡。不带随从难道还能遵守礼节吗？#!",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 128,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_ceremonial_desc",
+          "source_id": "L01",
+          "line": 128,
+          "raw_value": "$EFFECT_LIST_BULLET$你#EMP 还#!带上仆人和虔诚的扈从\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_ceremonial_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后获得的[piety|E]提高\\n\\n#weak 信仰需要遵守礼节，即使远离家乡。不带随从难道还能遵守礼节吗？#!",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": true,
+      "display_name_verified": false,
+      "definition_count": 1,
+      "is_rich_text": true,
+      "label_kind": "dynamic_template"
+    },
+    {
+      "category": "entourage_templates",
+      "key": "pilgrimage_pomp_throng_desc",
+      "raw_value": "$EFFECT_LIST_BULLET$[court|E]里每个感兴趣的[character|E]都会加入你\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_throng_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后获得的[piety|E]大幅提高\\n\\n#weak 所有的信徒都应该去我们的圣地……我打算帮助他们。#!",
+      "resolved_text": "$EFFECT_LIST_BULLET$[court|E]里每个感兴趣的[character|E]都会加入你\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_throng_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后获得的[piety|E]大幅提高\\n\\n#weak 所有的信徒都应该去我们的圣地……我打算帮助他们。#!",
+      "source_id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "line": 130,
+      "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "reference_chain": [
+        {
+          "key": "pilgrimage_pomp_throng_desc",
+          "source_id": "L01",
+          "line": 130,
+          "raw_value": "$EFFECT_LIST_BULLET$[court|E]里每个感兴趣的[character|E]都会加入你\\n$EFFECT_LIST_BULLET$最多[EmptyScope.ScriptValue('pilgrimage_entourage_pomp_throng_max_value')]名随机朝圣者加入你的队伍\\n$EFFECT_LIST_BULLET$完成后获得的[piety|E]大幅提高\\n\\n#weak 所有的信徒都应该去我们的圣地……我打算帮助他们。#!",
+          "source_sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+        }
+      ],
+      "is_dynamic_template": true,
+      "display_name_verified": false,
+      "definition_count": 1,
+      "is_rich_text": true,
+      "label_kind": "dynamic_template"
+    },
+    {
+      "category": "perk",
+      "key": "toe_the_line_perk_name",
+      "raw_value": "服从上级",
+      "resolved_text": "服从上级",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 86,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "toe_the_line_perk_name",
+          "source_id": "L05",
+          "line": 86,
+          "raw_value": "服从上级",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "fearful_troops_perk_name",
+      "raw_value": "以怖治军",
+      "resolved_text": "以怖治军",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 94,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "fearful_troops_perk_name",
+          "source_id": "L05",
+          "line": 94,
+          "raw_value": "以怖治军",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "digging_for_dirt_perk_name",
+      "raw_value": "深挖黑料",
+      "resolved_text": "深挖黑料",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 15,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "digging_for_dirt_perk_name",
+          "source_id": "L05",
+          "line": 15,
+          "raw_value": "深挖黑料",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "chains_of_loyalty_perk_name",
+      "raw_value": "层层效忠",
+      "resolved_text": "层层效忠",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 80,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "chains_of_loyalty_perk_name",
+          "source_id": "L05",
+          "line": 80,
+          "raw_value": "层层效忠",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "popular_figurehead_perk_name",
+      "raw_value": "大众领袖",
+      "resolved_text": "大众领袖",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 75,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "popular_figurehead_perk_name",
+          "source_id": "L05",
+          "line": 75,
+          "raw_value": "大众领袖",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "zealous_proselytizer_perk_name",
+      "raw_value": "热忱宣教",
+      "resolved_text": "热忱宣教",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 35,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "zealous_proselytizer_perk_name",
+          "source_id": "L05",
+          "line": 35,
+          "raw_value": "热忱宣教",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "mercenary_contacts_perk_name",
+      "raw_value": "佣兵合同",
+      "resolved_text": "佣兵合同",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 183,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "mercenary_contacts_perk_name",
+          "source_id": "L05",
+          "line": 183,
+          "raw_value": "佣兵合同",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "local_hero_perk_name",
+      "raw_value": "一方英雄",
+      "resolved_text": "一方英雄",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 173,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "local_hero_perk_name",
+          "source_id": "L05",
+          "line": 173,
+          "raw_value": "一方英雄",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "know_your_land_know_your_people_perk_name",
+      "raw_value": "地利人和",
+      "resolved_text": "地利人和",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 191,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "know_your_land_know_your_people_perk_name",
+          "source_id": "L05",
+          "line": 191,
+          "raw_value": "地利人和",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "well_prepared_perk_name",
+      "raw_value": "准备充分",
+      "resolved_text": "准备充分",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 168,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "well_prepared_perk_name",
+          "source_id": "L05",
+          "line": 168,
+          "raw_value": "准备充分",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "journey_planner_perk_name",
+      "raw_value": "旅行规划",
+      "resolved_text": "旅行规划",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 180,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "journey_planner_perk_name",
+          "source_id": "L05",
+          "line": 180,
+          "raw_value": "旅行规划",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "just_one_more_hill_perk_name",
+      "raw_value": "复越高山",
+      "resolved_text": "复越高山",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 170,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "just_one_more_hill_perk_name",
+          "source_id": "L05",
+          "line": 170,
+          "raw_value": "复越高山",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "perk",
+      "key": "clerical_justifications_perk_name",
+      "raw_value": "教权辩护",
+      "resolved_text": "教权辩护",
+      "source_id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "line": 38,
+      "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "reference_chain": [
+        {
+          "key": "clerical_justifications_perk_name",
+          "source_id": "L05",
+          "line": 38,
+          "raw_value": "教权辩护",
+          "source_sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "legacy",
+      "key": "ep2_activities_legacy_track_name",
+      "raw_value": "活动传承",
+      "resolved_text": "活动传承",
+      "source_id": "L06",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "line": 2,
+      "source_sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a",
+      "reference_chain": [
+        {
+          "key": "ep2_activities_legacy_track_name",
+          "source_id": "L06",
+          "line": 2,
+          "raw_value": "活动传承",
+          "source_sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "legacy",
+      "key": "ep2_activities_legacy_track",
+      "raw_value": "活动[dynasty_perk|E]",
+      "resolved_text": "活动[dynasty_perk|E]",
+      "source_id": "L06",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "line": 4,
+      "source_sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a",
+      "reference_chain": [
+        {
+          "key": "ep2_activities_legacy_track",
+          "source_id": "L06",
+          "line": 4,
+          "raw_value": "活动[dynasty_perk|E]",
+          "source_sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a"
+        }
+      ],
+      "is_dynamic_template": true,
+      "display_name_verified": false,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "dynamic_template"
+    },
+    {
+      "category": "legacy",
+      "key": "ep2_activities_legacy_1_name",
+      "raw_value": "踏过圣路",
+      "resolved_text": "踏过圣路",
+      "source_id": "L06",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "line": 5,
+      "source_sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a",
+      "reference_chain": [
+        {
+          "key": "ep2_activities_legacy_1_name",
+          "source_id": "L06",
+          "line": 5,
+          "raw_value": "踏过圣路",
+          "source_sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "legacy",
+      "key": "erudition_legacy_track_name",
+      "raw_value": "学识传承",
+      "resolved_text": "学识传承",
+      "source_id": "L07",
+      "relative_path": "localization/simp_chinese/dynasty_legacies/legacies_l_simp_chinese.yml",
+      "line": 30,
+      "source_sha256": "4be7b323a5f6d3059e3ea109719ea2620da593c3e77123f5be035d079ffcdd64",
+      "reference_chain": [
+        {
+          "key": "erudition_legacy_track_name",
+          "source_id": "L07",
+          "line": 30,
+          "raw_value": "学识传承",
+          "source_sha256": "4be7b323a5f6d3059e3ea109719ea2620da593c3e77123f5be035d079ffcdd64"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "legacy",
+      "key": "erudition_legacy_4_name",
+      "raw_value": "真正信徒",
+      "resolved_text": "真正信徒",
+      "source_id": "L07",
+      "relative_path": "localization/simp_chinese/dynasty_legacies/legacies_l_simp_chinese.yml",
+      "line": 35,
+      "source_sha256": "4be7b323a5f6d3059e3ea109719ea2620da593c3e77123f5be035d079ffcdd64",
+      "reference_chain": [
+        {
+          "key": "erudition_legacy_4_name",
+          "source_id": "L07",
+          "line": 35,
+          "raw_value": "真正信徒",
+          "source_sha256": "4be7b323a5f6d3059e3ea109719ea2620da593c3e77123f5be035d079ffcdd64"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_intent",
+      "raw_value": "意图",
+      "resolved_text": "意图",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 795,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_intent",
+          "source_id": "L08",
+          "line": 795,
+          "raw_value": "意图",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_entourage",
+      "raw_value": "旅团",
+      "resolved_text": "旅团",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2205,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_entourage",
+          "source_id": "L08",
+          "line": 2205,
+          "raw_value": "旅团",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_travel_options",
+      "raw_value": "旅行选项",
+      "resolved_text": "旅行选项",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2196,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_travel_options",
+          "source_id": "L08",
+          "line": 2196,
+          "raw_value": "旅行选项",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_travel_safety",
+      "raw_value": "安全性",
+      "resolved_text": "安全性",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2201,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_travel_safety",
+          "source_id": "L08",
+          "line": 2201,
+          "raw_value": "安全性",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_travel_speed",
+      "raw_value": "速度",
+      "resolved_text": "速度",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2203,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_travel_speed",
+          "source_id": "L08",
+          "line": 2203,
+          "raw_value": "速度",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_travel_danger",
+      "raw_value": "危险",
+      "resolved_text": "危险",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 2198,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_travel_danger",
+          "source_id": "L08",
+          "line": 2198,
+          "raw_value": "危险",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_dynasty_perk",
+      "raw_value": "宗族传承",
+      "resolved_text": "宗族传承",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 756,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_dynasty_perk",
+          "source_id": "L08",
+          "line": 756,
+          "raw_value": "宗族传承",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_perk",
+      "raw_value": "技能",
+      "resolved_text": "技能",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 759,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_perk",
+          "source_id": "L08",
+          "line": 759,
+          "raw_value": "技能",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "concept",
+      "key": "game_concept_cultural_acceptance",
+      "raw_value": "文化接受度",
+      "resolved_text": "文化接受度",
+      "source_id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "line": 1304,
+      "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "reference_chain": [
+        {
+          "key": "game_concept_cultural_acceptance",
+          "source_id": "L08",
+          "line": 1304,
+          "raw_value": "文化接受度",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "position",
+      "key": "travel_leader_court_position",
+      "raw_value": "旅队主管",
+      "resolved_text": "旅队主管",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 504,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "travel_leader_court_position",
+          "source_id": "L09",
+          "line": 504,
+          "raw_value": "旅队主管",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "position",
+      "key": "court_physician_court_position",
+      "raw_value": "私人医生",
+      "resolved_text": "私人医生",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 354,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "court_physician_court_position",
+          "source_id": "L09",
+          "line": 354,
+          "raw_value": "私人医生",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "position",
+      "key": "travel_leader_celestial_imperial",
+      "raw_value": "桥道顿递使",
+      "resolved_text": "桥道顿递使",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 849,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "travel_leader_celestial_imperial",
+          "source_id": "L09",
+          "line": 849,
+          "raw_value": "桥道顿递使",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "position",
+      "key": "travel_leader_celestial",
+      "raw_value": "前驱官",
+      "resolved_text": "前驱官",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 851,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "travel_leader_celestial",
+          "source_id": "L09",
+          "line": 851,
+          "raw_value": "前驱官",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "position",
+      "key": "court_physician_celestial_imperial",
+      "raw_value": "太医",
+      "resolved_text": "太医",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 841,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "court_physician_celestial_imperial",
+          "source_id": "L09",
+          "line": 841,
+          "raw_value": "太医",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "position",
+      "key": "court_physician_celestial",
+      "raw_value": "医学博士",
+      "resolved_text": "医学博士",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 843,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "court_physician_celestial",
+          "source_id": "L09",
+          "line": 843,
+          "raw_value": "医学博士",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "indirect_examples",
+      "key": "hire_travel_leader_decision",
+      "raw_value": "寻找$travel_leader_court_position$",
+      "resolved_text": "寻找旅队主管",
+      "source_id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "line": 506,
+      "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "reference_chain": [
+        {
+          "key": "hire_travel_leader_decision",
+          "source_id": "L09",
+          "line": 506,
+          "raw_value": "寻找$travel_leader_court_position$",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        },
+        {
+          "key": "travel_leader_court_position",
+          "source_id": "L09",
+          "line": 504,
+          "raw_value": "旅队主管",
+          "source_sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "indirect_examples",
+      "key": "leisurely_option_effect",
+      "raw_value": "$leisurely_option$",
+      "resolved_text": "悠闲之旅",
+      "source_id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "line": 149,
+      "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "reference_chain": [
+        {
+          "key": "leisurely_option_effect",
+          "source_id": "L03",
+          "line": 149,
+          "raw_value": "$leisurely_option$",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        },
+        {
+          "key": "leisurely_option",
+          "source_id": "L03",
+          "line": 146,
+          "raw_value": "悠闲之旅",
+          "source_sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    },
+    {
+      "category": "indirect_examples",
+      "key": "adventurers_forward_scouts_option",
+      "raw_value": "斥候",
+      "resolved_text": "斥候",
+      "source_id": "L04",
+      "relative_path": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+      "line": 669,
+      "source_sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac",
+      "reference_chain": [
+        {
+          "key": "adventurers_forward_scouts_option",
+          "source_id": "L04",
+          "line": 669,
+          "raw_value": "斥候",
+          "source_sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac"
+        }
+      ],
+      "is_dynamic_template": false,
+      "display_name_verified": true,
+      "definition_count": 1,
+      "is_rich_text": false,
+      "label_kind": "literal_label"
+    }
+  ],
+  "source_inventory": [
+    {
+      "id": "L01",
+      "relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "bytes": 136481,
+      "line_count": 1130
+    },
+    {
+      "id": "L02",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+      "sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3",
+      "bytes": 3269,
+      "line_count": 36
+    },
+    {
+      "id": "L03",
+      "relative_path": "localization/simp_chinese/dlc/ep2/travel/dlc_ep2_travel_options_l_simp_chinese.yml",
+      "sha256": "c617aa958f51b5e54a218ddee92e16cf27450c504dca705d5e60d97f4bc3bdf0",
+      "bytes": 23237,
+      "line_count": 157
+    },
+    {
+      "id": "L04",
+      "relative_path": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+      "sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac",
+      "bytes": 83085,
+      "line_count": 773
+    },
+    {
+      "id": "L05",
+      "relative_path": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5",
+      "bytes": 10458,
+      "line_count": 225
+    },
+    {
+      "id": "L06",
+      "relative_path": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a",
+      "bytes": 3715,
+      "line_count": 28
+    },
+    {
+      "id": "L07",
+      "relative_path": "localization/simp_chinese/dynasty_legacies/legacies_l_simp_chinese.yml",
+      "sha256": "4be7b323a5f6d3059e3ea109719ea2620da593c3e77123f5be035d079ffcdd64",
+      "bytes": 2466,
+      "line_count": 53
+    },
+    {
+      "id": "L08",
+      "relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "bytes": 350826,
+      "line_count": 2504
+    },
+    {
+      "id": "L09",
+      "relative_path": "localization/simp_chinese/court_positions_l_simp_chinese.yml",
+      "sha256": "8ed0a794dc8971b8cfba562b1991b5f0c7a8ae7af5d115d53f9cc6c884575636",
+      "bytes": 104310,
+      "line_count": 982
+    },
+    {
+      "id": "L10",
+      "relative_path": "gui/window_activity_planner.gui",
+      "sha256": "2f18263ad5be79bfc10c9bc33fd1ccff1e41a0be2bafc7d19e4f9cf0b58feb54",
+      "bytes": 52892,
+      "line_count": 2266
+    },
+    {
+      "id": "L11",
+      "relative_path": "gui/window_activity_intent_selection.gui",
+      "sha256": "07b09863a0064aad7abe1e061a93c979b5edcbc662cb8918a535c3a33a93a91a",
+      "bytes": 11633,
+      "line_count": 465
+    },
+    {
+      "id": "L12",
+      "relative_path": "gui/window_travel_planner.gui",
+      "sha256": "0cdf5197fac7389d20a71c3018cbbdebf727c3240ea30f65ae5032706cfe13e3",
+      "bytes": 32351,
+      "line_count": 1415
+    },
+    {
+      "id": "L13",
+      "relative_path": "gui/window_travel_option_selection.gui",
+      "sha256": "041a0d6ca2e5ca05fcd2d8744c7e8f38bbad7f23c948e4f02867052d42948d5c",
+      "bytes": 3047,
+      "line_count": 152
+    },
+    {
+      "id": "L14",
+      "relative_path": "common/activities/activity_types/pilgrimage.txt",
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "bytes": 111931,
+      "line_count": 4066
+    },
+    {
+      "id": "L15",
+      "relative_path": "common/court_positions/types/00_court_positions.txt",
+      "sha256": "a49fca3df3ae5d087d94621d3147db88bdb4f458d97c717e1821b43aa87cc951",
+      "bytes": 257681,
+      "line_count": 11438
+    }
+  ],
+  "source_bindings": [
+    {
+      "source_id": "L10",
+      "line_start": 2065,
+      "line_end": 2081,
+      "purpose": "ActiveActivityOption.GetCategory -> ActivityOptionCategory.GetName",
+      "selected_lines": [
+        {
+          "line": 2066,
+          "text": "\t\t\tdatacontext = \"[ActiveActivityOption.GetCategory]\""
+        },
+        {
+          "line": 2081,
+          "text": "\t\t\t\t\ttext = \"[ActivityOptionCategory.GetName]\""
+        }
+      ]
+    },
+    {
+      "source_id": "L10",
+      "line_start": 2119,
+      "line_end": 2141,
+      "purpose": "ActiveActivityOption.GetOption -> ActivityOption.GetName",
+      "selected_lines": [
+        {
+          "line": 2119,
+          "text": "\t\t\t\tdatacontext = \"[ActiveActivityOption.GetOption]\""
+        },
+        {
+          "line": 2141,
+          "text": "\t\t\t\t\t\ttext = \"[ActivityOption.GetName]\""
+        }
+      ]
+    },
+    {
+      "source_id": "L10",
+      "line_start": 639,
+      "line_end": 649,
+      "purpose": "GetSelectedSpecialOption -> ActivityOption.GetName",
+      "selected_lines": [
+        {
+          "line": 639,
+          "text": "\t\t\t\t\tdatacontext = \"[ActivityPlanner.GetSelectedSpecialOption]\""
+        },
+        {
+          "line": 649,
+          "text": "\t\t\t\t\t\ttext = [ActivityOption.GetName]"
+        }
+      ]
+    },
+    {
+      "source_id": "L11",
+      "line_start": 126,
+      "line_end": 167,
+      "purpose": "GetPotentialIntents / CanPickIntent -> ActivityIntent.GetName",
+      "selected_lines": [
+        {
+          "line": 126,
+          "text": "\t\t\t\t\t\t\tdatamodel = \"[ActivityIntentSelectionWindow.GetPotentialIntents]\""
+        },
+        {
+          "line": 137,
+          "text": "\t\t\t\t\t\t\t\t\tenabled = \"[ActivityIntentSelectionWindow.CanPickIntent( ActivityIntent.Self )]\""
+        },
+        {
+          "line": 167,
+          "text": "\t\t\t\t\t\t\t\t\t\t\ttext = \"[ActivityIntent.GetName]\""
+        }
+      ]
+    },
+    {
+      "source_id": "L12",
+      "line_start": 281,
+      "line_end": 281,
+      "purpose": "TravelOption.GetNameNoTooltip",
+      "selected_lines": [
+        {
+          "line": 281,
+          "text": "\t\t\ttext = \"[TravelOption.GetNameNoTooltip]\""
+        }
+      ]
+    },
+    {
+      "source_id": "L13",
+      "line_start": 115,
+      "line_end": 115,
+      "purpose": "TravelOption.GetNameNoTooltip",
+      "selected_lines": [
+        {
+          "line": 115,
+          "text": "\t\t\t\ttext = \"[TravelOption.GetNameNoTooltip]\""
+        }
+      ]
+    },
+    {
+      "source_id": "L14",
+      "line_start": 1563,
+      "line_end": 1714,
+      "purpose": "Category definitions fidelity / pomp",
+      "selected_lines": [
+        {
+          "line": 1563,
+          "text": "\t\tpilgrimage_option_fidelity = {"
+        },
+        {
+          "line": 1713,
+          "text": "\t\tpilgrimage_option_pomp = {"
+        }
+      ]
+    },
+    {
+      "source_id": "L15",
+      "line_start": 66,
+      "line_end": 85,
+      "purpose": "Physician celestial localization conditions",
+      "selected_lines": [
+        {
+          "line": 68,
+          "text": "\t\t\tis_independent_ruler = yes"
+        },
+        {
+          "line": 69,
+          "text": "\t\t\thighest_held_title_tier >= tier_empire"
+        },
+        {
+          "line": 70,
+          "text": "\t\t\tgovernment_has_flag = government_is_celestial"
+        },
+        {
+          "line": 74,
+          "text": "\t\tlocalization_key = court_physician_celestial_imperial"
+        },
+        {
+          "line": 79,
+          "text": "\t\t\tis_independent_ruler = no"
+        },
+        {
+          "line": 80,
+          "text": "\t\t\thighest_held_title_tier <= tier_empire"
+        },
+        {
+          "line": 81,
+          "text": "\t\t\tgovernment_has_flag = government_is_celestial"
+        },
+        {
+          "line": 85,
+          "text": "\t\tlocalization_key = court_physician_celestial"
+        }
+      ]
+    },
+    {
+      "source_id": "L15",
+      "line_start": 569,
+      "line_end": 588,
+      "purpose": "Travel leader celestial localization conditions",
+      "selected_lines": [
+        {
+          "line": 571,
+          "text": "\t\t\tis_independent_ruler = yes"
+        },
+        {
+          "line": 572,
+          "text": "\t\t\thighest_held_title_tier >= tier_empire"
+        },
+        {
+          "line": 573,
+          "text": "\t\t\tgovernment_has_flag = government_is_celestial"
+        },
+        {
+          "line": 577,
+          "text": "\t\tlocalization_key = travel_leader_celestial_imperial"
+        },
+        {
+          "line": 582,
+          "text": "\t\t\tis_independent_ruler = no"
+        },
+        {
+          "line": 583,
+          "text": "\t\t\thighest_held_title_tier <= tier_empire"
+        },
+        {
+          "line": 584,
+          "text": "\t\t\tgovernment_has_flag = government_is_celestial"
+        },
+        {
+          "line": 588,
+          "text": "\t\tlocalization_key = travel_leader_celestial"
+        }
+      ]
+    }
+  ],
+  "runtime_templates_note": "Dollar-key static literal chains are resolved; bracketed runtime object / concept / ScriptValue templates remain templates, not final rendered display.",
+  "remaining_boundaries": [
+    "Current actor intent candidate set and legal choices not observed.",
+    "Contextual position localization evaluated by actual court position asset conditions, not default key alone.",
+    "No runtime game localization load qualification performed."
+  ]
+}
