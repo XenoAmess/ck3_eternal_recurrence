@@ -490,6 +490,7 @@ jobs:
           python -B -O -X utf8 tools/test_hof_shared_terms_typing_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_native_projection.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_grant_title_picker.py -v
@@ -497,6 +498,7 @@ jobs:
           python -B -X utf8 tools/test_c3_common_g4_observation.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_window.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_handoff.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_i4_batch_002.py
@@ -528,6 +530,7 @@ jobs:
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_fallback.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_review.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_retained_exit.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_merit_loaded_pool_scope.py
@@ -607,6 +610,8 @@ jobs:
           python -B -X utf8 tools/test_ingame_ui_managed_binding.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_log_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --follow-imports=skip --check-untyped-defs --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_queue_inprocess.py tools/test_ck3_mod_acceptance_workshop_cache.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Reclaim the Motherland release tooling
         run: |

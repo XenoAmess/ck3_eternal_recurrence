@@ -14,7 +14,7 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = Path(os.environ.get('CK3_CACHE_TEST_REFERENCE_ROOT', ROOT)).resolve()
@@ -22,8 +22,10 @@ sys.path.insert(0, str(REFERENCE / 'tools'))
 sys.path.insert(0, str(ROOT / 'tools'))
 
 
-def load(name, path):
+def load(name: str, path: Path) -> ModuleType:
     spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise ValueError('Fixture module loader unavailable: ' + str(path))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -33,7 +35,7 @@ entry = load('workshop_cache_shared_entry_under_test', ROOT / 'tools/ck3_mod_acc
 adapter = load('workshop_cache_adapter_under_test', ROOT / 'tools/ck3_mod_acceptance_cases/workshop_cache_adapter.py')
 prepare = sys.modules['ck3_mod_acceptance_prepare']
 base_tests = load('shared_entry_test_fixtures', REFERENCE / 'tools/test_ck3_mod_acceptance.py')
-base_tests.entry = entry
+setattr(base_tests, 'entry', entry)
 
 
 class WorkshopCacheTests(unittest.TestCase):

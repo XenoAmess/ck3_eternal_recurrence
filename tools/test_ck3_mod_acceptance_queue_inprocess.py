@@ -1,9 +1,8 @@
 """Pure isolated fixtures. No actual lease, bus, process, CK3 or native calls."""
 from pathlib import Path
-import ast
 import copy
-from typing import get_type_hints
-from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1, FilePin
+from typing import NotRequired, TypedDict, get_type_hints
+from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1, FilePin, JsonObject
 import contextlib
 import hashlib
 import importlib.util
@@ -20,6 +19,17 @@ import unittest
 from unittest.mock import patch
 
 CANDIDATE = Path(__file__).resolve().parents[1]
+
+class FixtureFrozen(TypedDict):
+    files: dict[str, FilePin | JsonObject]
+    run_id: str
+    state_dir: str
+    source_root: str
+    argv: list[str]
+    runtime_manifest: NotRequired[FilePin]
+    launch_requires_fresh_owned_cas_and_background_offline: NotRequired[bool]
+    previous_session_closed: NotRequired[bool]
+    previous_screen_released: NotRequired[bool]
 
 def pin(path: Path) -> FilePin:
     raw=path.read_bytes()
@@ -43,13 +53,13 @@ class InprocessQueueTests(unittest.TestCase):
             file=name+'.py'
             shutil.copyfile(CANDIDATE/'tools'/file,self.helpers/file)
         self.queue=self.helpers/'ck3_mod_acceptance_queue.py'
-        files={str(path.resolve()):pin(path)for path in self.helpers.iterdir()}
+        files: dict[str, FilePin | JsonObject]={str(path.resolve()):pin(path)for path in self.helpers.iterdir()}
         self.live=self.root/'live';self.live.mkdir()
         self.controls=self.live/'controls';self.controls.mkdir()
         self.keeper=self.root/'keeper';self.keeper.mkdir()
         self.state=self.root/'state';self.state.mkdir()
         self.source=self.root/'source';self.source.mkdir()
-        self.frozen={'files':files,'run_id':'pure-fixture-run','state_dir':str(self.state),'source_root':str(self.source),
+        self.frozen: FixtureFrozen={'files':files,'run_id':'pure-fixture-run','state_dir':str(self.state),'source_root':str(self.source),
                      'argv':['python','host.py','--agent-source-root',str(self.source),'--bridge-pipe','pure-pipe','--control-plan-dir',str(self.controls)]}
         self.report={'state_dir':str(self.state),'agent_source_root':str(self.source),'pipe':'pure-pipe','phase':'hold',
                      'hold_until_utc_estimated':time.time()+1000,'steps':[],
@@ -59,7 +69,7 @@ class InprocessQueueTests(unittest.TestCase):
         self.bundle=self.client_module.load_pinned_control_queue(self.queue,self.frozen)
         self.module=self.bundle['module']
         self.module.frozen_run=lambda *a,**k:(self.frozen,{'keeper_root':str(self.keeper)})
-        self.lease_calls=[]
+        self.lease_calls: list[tuple[tuple[object,...],dict[str,object]]]=[]
         def lease(*args,**kwargs):
             self.lease_calls.append((args,kwargs))
             return {'lease':{'task_id':'pure-task','sequence':1}}
@@ -74,7 +84,7 @@ class InprocessQueueTests(unittest.TestCase):
         self.client.remaining=lambda:1000
         self.steps=[{'id':'pure-step','tool':'fixture_readonly_query','args':{},'fresh_revision':False}]
         self.rows=[{'id':'pure-step','ok':True,'finished_at':'fixture-only','result':{'fixture':True}}]
-        self.await_calls=[]
+        self.await_calls: list[tuple[object,...]]=[]
         def await_steps(*args):self.await_calls.append(args);return self.rows
         self.client.await_steps=await_steps
 
@@ -229,21 +239,43 @@ class InprocessQueueTests(unittest.TestCase):
                     del sys.modules[name]
 
     def test_10_shared_closure_matches_actual_launcher_required_pins(self) -> None:
-        raw=(CANDIDATE/'tools/ck3_mod_acceptance_launcher.py').read_text(encoding='utf-8-sig')
-        function=next(node for node in ast.parse(raw).body
-                      if isinstance(node,ast.FunctionDef) and node.name=='frozen_run')
-        groups=[node.iter for node in ast.walk(function)
-                if isinstance(node,ast.For) and isinstance(node.iter,ast.Name)
-                and node.iter.id=='CONTROL_QUEUE_MODULE_ORDER_V1']
-        self.assertEqual(len(groups),1)
         launcher=self.bundle['modules']['ck3_mod_acceptance_launcher']
         self.assertIs(launcher.frozen_run.__globals__['CONTROL_QUEUE_MODULE_ORDER_V1'],
                       launcher.CONTROL_QUEUE_MODULE_ORDER_V1)
         self.assertEqual(launcher.CONTROL_QUEUE_MODULE_ORDER_V1,CONTROL_QUEUE_MODULE_ORDER_V1)
-        filenames=[name+'.py' for name in launcher.CONTROL_QUEUE_MODULE_ORDER_V1]
         self.assertEqual(len(CONTROL_QUEUE_MODULE_ORDER_V1),len(set(CONTROL_QUEUE_MODULE_ORDER_V1)))
-        self.assertEqual(set(filenames),{name+'.py' for name in CONTROL_QUEUE_MODULE_ORDER_V1})
         self.assertEqual(set(self.bundle['modules']),set(CONTROL_QUEUE_MODULE_ORDER_V1))
+        launcher=self.bundle['modules']['ck3_mod_acceptance_launcher']
+        host=self.root/'host.py';host.write_text('# no process is launched\n',encoding='utf-8')
+        manifest=self.root/'manifest.json';manifest.write_text('{}',encoding='utf-8')
+        frozen=copy.deepcopy(self.frozen)
+        frozen['launch_requires_fresh_owned_cas_and_background_offline']=True
+        frozen['previous_session_closed']=True
+        frozen['previous_screen_released']=True
+        frozen['runtime_manifest']=pin(manifest)
+        frozen['argv']=['python',str(host),'--agent-source-root',str(self.source)]
+        frozen['files'][str(host.resolve())]=pin(host)
+
+        def publish() -> None:
+            path=self.live/'frozen-argv.json'
+            path.write_text(json.dumps(frozen),encoding='utf-8')
+            context={'frozen_argv':pin(path),'run_id':frozen['run_id'],'run_dir':str(self.live)}
+            (self.live/'ready-context.json').write_text(json.dumps(context),encoding='utf-8')
+
+        # Exercise the real selected launcher, including its on-disk boundary.
+        # Missing helper pins must fail even when broad input revalidation is off.
+        publish()
+        for all_pins in (True,False):
+            checked,_=launcher.frozen_run(self.live,all_pins=all_pins)
+            self.assertEqual(checked['run_id'],frozen['run_id'])
+        for name in CONTROL_QUEUE_MODULE_ORDER_V1:
+            with self.subTest(helper=name):
+                key=str((self.helpers/(name+'.py')).resolve())
+                original=frozen['files'].pop(key)
+                publish()
+                with self.assertRaisesRegex(ValueError,'Public helper is absent'):
+                    launcher.frozen_run(self.live,all_pins=False)
+                frozen['files'][key]=original
 
     def test_11_each_helper_requires_present_exact_runtime_pin(self) -> None:
         for name in CONTROL_QUEUE_MODULE_ORDER_V1:
