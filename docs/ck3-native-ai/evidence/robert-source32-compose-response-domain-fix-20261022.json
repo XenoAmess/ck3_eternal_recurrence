@@ -1,0 +1,152 @@
+{
+  "schema": "xar.robert.current-saved-compose-response-domain-fix/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T08:19:29.645924+00:00",
+  "status": "SHARED_FIX_LOCAL_COMPLETE_STEPS_PASS_GRAPH_MATERIALIZED",
+  "base_commit": "b23795ab0cfeb6996f17204e036c7c8c457ac001",
+  "source_state": "three pending worktree leaves; this record does not assert their later commit, push or Hosted CI",
+  "source_refs": [
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py",
+      "bytes": 139469,
+      "sha256": "abdab1200b59a68aab16b51ddc93e9f5df960ccf20a10c2da40a50d20e5e3837"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/test_current_saved_campaign_cold_v1.py",
+      "bytes": 157089,
+      "sha256": "da9a676b546cc75553f18a8d1327de706507e41166fc44960eaefd8f0f92b7d5"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/.github/workflows/static-ci.yml",
+      "bytes": 94282,
+      "sha256": "6f21b8718ef8d1c8867ad600968e305afc3948cdf982ef72e453b10476aa1708"
+    }
+  ],
+  "initial_failure": {
+    "observed_at_utc": "2026-10-22T07:57:53Z",
+    "status": "RED_BEFORE_MATERIALIZATION",
+    "exception": "ValueError: small bounded RAM input",
+    "actual_entry": "compose_v1 -> validate_current_saved_cold_inputs_v1 -> completed-unsaved closure -> validate_completed_unsaved_tail_inventory_v1 -> generic evidence/read/load",
+    "cause": "Inventory passed the 2097152-byte response-domain limit into generic ComposeReader.read, whose source/metadata limit is 1048576; even a small response was rejected. The tail reader also forwarded its read_response capability back to generic read, so large response leaves still failed after only changing the inventory call.",
+    "plan_or_quote_published": false,
+    "runtime_created": false,
+    "evidence_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a42-runtime-prep01/ROOT-A42-COMPOSE-FAILED01.json",
+      "bytes": 1093,
+      "sha256": "dc3092e69b2dfa98aa10669786ecdec74783708f91dae179bc6333f09c8e9f27"
+    }
+  },
+  "shared_change": {
+    "inventory_result_and_plan_leaves": "original_response_evidence_v1",
+    "tail_reader": "Delegate to the underlying explicit OriginalResponseReaderV1.read_response. Without that capability, permit only an original response of at most 1048576 bytes through bounded generic read; reject larger evidence.",
+    "generic_source_limit_bytes_unchanged": 1048576,
+    "original_response_limit_bytes_unchanged": 2097152,
+    "preserved_guards": [
+      "exact response length and SHA",
+      "original request/response and callback source binding",
+      "complete request inventory and actual physical census",
+      "closed Driver/SAVE identities and recovered saved frontier",
+      "unknown request lineage and zero replay/credit"
+    ],
+    "production_state_machine": "existing public owner and compose modules; no attempt-specific recovery implementation"
+  },
+  "targeted_validation": {
+    "observed_at_utc": "2026-10-22T08:08:31.708161+00:00",
+    "tests_run": 14,
+    "tests_skipped": 0,
+    "exit_code": 0,
+    "new_test_class": "CompletedUnsavedTailComposeEntryTests",
+    "actual_new_test_path": "real compose_v1 entry -> real nested ComposeReader -> real recovered owner/closure/inventory validation -> next background-rendering boundary",
+    "cases": [
+      "small original response and plan leaves",
+      "original response and before-submit plan each larger than 1048576 bytes",
+      "restoring the old generic response read reproduces small bounded RAM input",
+      "generic Python source above 1048576 bytes remains rejected"
+    ],
+    "test_boundary": "Unrelated emitters and score-anchor I/O are fixture seams. The new test does not validate the final fixed-point graph or deployed runtime consumers.",
+    "whole_module_strict": {
+      "modules": [
+        "tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py",
+        "tools/g2_saved_campaign/test_current_saved_campaign_cold_v1.py"
+      ],
+      "options": "--strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul",
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 2 source files"
+    },
+    "fixture_empty": true,
+    "scratch_empty": true,
+    "evidence_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a42-runtime-prep01/cold-fix-evidence01/FIX-CHECK-ACTUAL01.json",
+      "bytes": 1766,
+      "sha256": "0ba1c32c38382c581d83cda1c1c2b944dd5ec7b4466f22b6ad2939b14f09e040"
+    }
+  },
+  "complete_local_ci03": {
+    "observed_at_utc": "2026-10-22T08:14:44.931023+00:00",
+    "status": "PASS",
+    "steps": [
+      "Check public normal-exit uint64 wire and registered MCP roundtrip without CK3",
+      "Check strict cold and owner types and boundary contracts"
+    ],
+    "commands": 32,
+    "all_exit_codes_zero": true,
+    "full_wall_seconds": 299.51966819982044,
+    "source_pins_stable": true,
+    "critical_tests": {"discovered": 80, "run": 80, "skipped": 0},
+    "isolated_sdk_continuation": {"run": 1, "skipped": 0},
+    "native32_isolated_source_fixture": {"discovered": 13, "run": 13, "skipped": 0},
+    "only_skip": {
+      "command": 23,
+      "test_module": "ck3_autonomous_player/tests/unit/test_driver_state_wal_diagnostics.py",
+      "run": 9,
+      "skipped": 1,
+      "scope": "existing optional WAL case; skipped case is not credited as passed"
+    },
+    "persistent_ci_registration": "cold/owner command 7 explicitly includes CompletedUnsavedTailComposeEntryTests",
+    "fixture_remaining": [],
+    "scratch_empty": true,
+    "plan_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a41-runtime-prep01/new-software-0820-01/ci-complete03/CURRENT-CI-COMMAND-PLAN01.json",
+      "bytes": 49095,
+      "sha256": "2e8d39dd80fc0388d9cb1da138de9be7f3937d6f70d37f21a5391979ff9d6150"
+    },
+    "actual_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a41-runtime-prep01/new-software-0820-01/ci-complete03/CURRENT-CI-ACTUAL01.json",
+      "bytes": 19539,
+      "sha256": "712b0be6efe02b8dcd513dfa789484803a3046226e2a2f1ce851afc75276aa5d"
+    },
+    "critical_log_sha256": "bf1e3554b106065e3bc45f28646696a98a1ce0c9bfa57d8f3fdc5ffb82b5b7dd",
+    "isolated_sdk_log_sha256": "36689b22fa995786ac35e7e2e227b68bb207d6130e593ad6b06f872146b89704",
+    "native32_fixture_log_sha256": "e332777a5ceddc8fe564d2bf236890a088571ed4d0311ebe6fae35abb2e8e878",
+    "hosted_ci_for_this_pending_fix": "not_asserted"
+  },
+  "actual_graph_materialization_snapshot": {
+    "observed_at_utc": "2026-10-22T08:19:29.645924+00:00",
+    "status": "MATERIALIZED_NOT_PREPARED",
+    "files": 166,
+    "logical_bytes": 3778227,
+    "allocation_upper_bytes": 2437120,
+    "prepare_peak_upper_bytes": 2978133,
+    "closure_entries": 67,
+    "canonical_entries": 8,
+    "quote_recompose_bytes_exact": true,
+    "plan_sha256": "e241de1f665ce5084c0a187d91f788cd46e2d35e8940f637703b468a39ac558e",
+    "quote_sha256": "91650f3c1a1d010dcae25bc583a5d1eb3a045625ffbe096ce2d0af7e8111726a",
+    "evidence_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c23-source23-native30-cold100/current-saved-a42-runtime-prep01/ROOT-A42-GRAPH-MATERIALIZED01.json",
+      "bytes": 1718,
+      "sha256": "ecd89d23904711344c13ddf2fedd737bf7013108024c3a8e65974f4ae3dd41e1"
+    },
+    "prepared_at_this_snapshot": false,
+    "game_started": false
+  },
+  "qualification_scope": "Local shared recovery/response-domain fix, complete software CI steps, and exact graph materialization only. Public prepare, deployed four-consumer qualification, full supervisor prefix, Game/Native business acceptance and gameplay performance require their own later actual evidence.",
+  "production_Driver_SAVE_body_reads": 0,
+  "production_ledger_writes_for_this_fix": 0,
+  "new_saved_day_credit": 0,
+  "saved_days_at_snapshot": 5628,
+  "G2_done_at_snapshot": 6,
+  "G2_total": 8,
+  "normal_exit_qualified_by_this_work": false,
+  "one_second_per_day_qualified_by_this_work": false
+}

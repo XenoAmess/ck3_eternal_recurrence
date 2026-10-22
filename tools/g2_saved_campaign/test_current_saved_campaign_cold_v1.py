@@ -6,7 +6,9 @@ import ast
 from dataclasses import replace
 from datetime import datetime, timezone
 import hashlib
+import io
 import json
+import ntpath
 import os
 import tempfile
 from types import ModuleType
@@ -15,11 +17,12 @@ import subprocess
 import sys
 import unittest
 from unittest.mock import patch
+from contextlib import ExitStack
 from typing import Callable, Protocol, runtime_checkable
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, SavedFrameV1,
-    encode_current_saved_basis_v1, exact_read,
+    encode_current_saved_basis_v1, exact_read, evidence,
     original_response_evidence_v1, OriginalResponseReaderV1,
     parse_json, parse_ref, record, rows, json_object, json_value, integer, text, utc, qualify_current_saved_basis_v1,
 )
@@ -2078,6 +2081,170 @@ ARTIFACT_CAP_ORIGINAL_ARGV_V1 = "argv=[str(TOOLS_PYTHON),'-B','-X','utf8',str(N/
 @runtime_checkable
 class _ArtifactArgvMainV1(Protocol):
     def __call__(self) -> object: ...
+
+
+class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
+    def test_real_compose_recovered_inventory_uses_response_domain_and_keeps_source_cap(self) -> None:
+        """Execute the real compose entry and its full recovered owner validation.
+
+        Unrelated source emitters are identity seams. The test stops at the next
+        background-rendering boundary, so it asserts no final-graph qualification.
+        The nested ComposeReader, recovery reducer/closure and inventory consumers
+        are the original production functions, including both response leaf kinds.
+        """
+        from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import CompletedUnsavedTailFixture
+        from tools.g2_saved_campaign import current_saved_background_display_v1 as background
+        from tools.g2_saved_campaign import first_full_checkpoint_v1 as first_checkpoint
+        from tools.g2_saved_campaign import current_saved_campaign_replay_v1 as replay
+
+        class ValidatedBeforeBackground(Exception):
+            pass
+
+        class AnchorPath:
+            def __str__(self) -> str:
+                return r"D:\synthetic-current-saved\shared\campaign-score\CAMPAIGN-ANCHOR.json"
+
+            @property
+            def parent(self) -> AnchorPath:
+                return self
+
+            def __truediv__(self, value: object) -> AnchorPath:
+                return self
+
+            def stat(self) -> os.stat_result:
+                return os.stat_result((0, 1, 1, 1, 0, 0, 3, 1, 1, 1))
+
+            def open(self, mode: str) -> io.BytesIO:
+                if mode != "rb":
+                    raise AssertionError("anchor probe is read-only")
+                return io.BytesIO(b"{}\n")
+
+        def identity(material: bytes, *args: object, **kwargs: object) -> bytes:
+            return material
+
+        def old_generic_response(reader: BasisReaderV1, reference: ExactRefV1) -> dict[str, object]:
+            return evidence(reader, reference, 2097152)
+
+        for large_leaves in (False, True):
+            with self.subTest(large_response_and_plan=large_leaves):
+                initial = pure_basis()
+                state = r"D:\synthetic-current-saved\shared\state"
+                driver_path = ntpath.join(state, "native-session", "driver-state.json")
+                save_path = ntpath.join(state, "profile", "save games", "xar_checkpoint.ck3")
+                validator_raw = b"# synthetic validator source identity\n"
+                validator_ref = producer.ref_for_bytes_v1(ntpath.join(state, "validator.py"), validator_raw)
+                initial = replace(initial, refs=replace(initial.refs,
+                    driver=replace(initial.refs.driver, path=driver_path),
+                    save=replace(initial.refs.save, path=save_path), checkpoint_validator=validator_ref),
+                    checkpoint={**initial.checkpoint, "path": save_path})
+                f = CompletedUnsavedTailFixture(initial_basis=initial,
+                    metadata_root=Path(r"D:\synthetic-current-saved\settled"))
+                f.reader.raw[validator_ref.path] = validator_raw
+                large_refs: list[ExactRefV1] = []
+                if large_leaves:
+                    for entry, key in ((f.entries[1], "response_ref"), (f.plan_entries[0], "ref")):
+                        old_ref = parse_ref(entry[key])
+                        value = record(parse_json(f.reader.raw[old_ref.path]))
+                        value["padding"] = "x" * 1100000
+                        raw = producer.encode_v1(value)
+                        updated = ExactRefV1(old_ref.path, len(raw), hashlib.sha256(raw).hexdigest())
+                        f.reader.raw[old_ref.path] = raw
+                        f.reader.identities[old_ref.path] = replace(f.reader.identities[old_ref.path], bytes=len(raw))
+                        entry[key] = updated.to_wire()
+                        large_refs.append(updated)
+                    f.reseal()
+                basis, basis_ref, validation_ref = f.recovered()
+                metadata = dict(f.reader.raw)
+                stub = b"from pathlib import Path\nPLACEMENT_SHA = ''\nSPEC = {}\n"
+
+                def put(path: str, raw: bytes) -> ExactRefV1:
+                    metadata[path] = raw
+                    return producer.ref_for_bytes_v1(path, raw)
+
+                configured = replace(plan(), machine_id=basis.machine_id, basis_ref=basis_ref,
+                    validation_ref=validation_ref)
+                source_rows = tuple(producer.SourceRowV1(put(row.source_ref.path, stub), row.relative_path)
+                    for row in configured.source_rows)
+                current_producer = next(row.source_ref for row in source_rows
+                    if row.relative_path.endswith("/prepare_current_saved_campaign_cold_v1.py"))
+                inherited = set(producer.CANONICAL_NAMES) | {"root_p37c23_cold_resume.py",
+                    "root_p37c23_same_game_loop_feeder100.py", "presentation-c23/start_new_game_display.py"}
+                inherited.update(f"inherited-{index}.py" for index in range(47 - len(inherited)))
+                closure = inherited | producer.GENERIC_SOURCE_PATHS | {"tools/__init__.py",
+                    "tools/g2_saved_campaign/__init__.py", "launch_current_saved_feeder_v1.py"}
+                configured = replace(configured, source_rows=source_rows, producer_ref=current_producer,
+                    closure_entry_paths=tuple(sorted(closure)))
+                material_files: dict[str, bytes] = {
+                    producer.child_v1(OLD, name): stub for name in inherited}
+                for name in ("presentation-c23/obs_owned_desktop.py", "presentation-c23/ck3_obs_capture_png_retry_c23.py"):
+                    material_files[producer.child_v1(OLD, name)] = stub
+                material_files[producer.child_v1(OLD, "root_c23_canonical_outer.py")] = (
+                    b"from pathlib import Path\ndef _check_c23_external_imports(root, policy):\n"
+                    b"    pins = []\n    if 0<len(pins)<=64: pass\n")
+                material_files[producer.child_v1(OLD, "ROOT-OBS-PROFILE-C23.json")] = producer.encode_v1({
+                    "A15_display_nonce": "9" * 32, "profile_name": "fixture",
+                    "recording_root": producer.child_v1(OLD, "recordings"), "bitrate_kbps": 1000,
+                    "config_root": producer.child_v1(OLD, "obs-config")})
+                material_files[producer.child_v1(OLD, "ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json")] = producer.encode_v1({
+                    "entry_source_pins": [[producer.child_v1(OLD, name), "a" * 64] for name in sorted(inherited)]})
+                material_files[r"D:\synthetic-current-saved\external\SPEC.json"] = b"{}\n"
+                material_files.update({producer.child_v1(OLD, f"unused-{index}.txt"): b"fixture\n"
+                    for index in range(145 - len(material_files))})
+                inventory = [put(path, raw).to_wire() for path, raw in material_files.items()]
+                material_ref = put(configured.material_quote_ref.path, producer.encode_v1({
+                    "schema": "xar.Source31-A20-complete-cold-quote/v1", "machine_id": basis.machine_id,
+                    "files": inventory}))
+                configured = replace(configured, material_quote_ref=material_ref)
+                archive_path = str(Path(current_producer.path).parent / "test_data" / "current_saved_sem11373_postcheck_v1.json")
+                archive = (Path(producer.__file__).parent / "test_data" / "current_saved_sem11373_postcheck_v1.json").read_bytes()
+                self.assertEqual((len(archive), hashlib.sha256(archive).hexdigest()),
+                    (replay.HISTORICAL_REPLAY_DATA_BYTES_V1, replay.HISTORICAL_REPLAY_DATA_SHA256_V1))
+                put(archive_path, archive)
+                plan_ref = put(ref("whole-compose-plan.json").path, producer.encode_v1(configured.to_wire()))
+                response_calls: list[tuple[ExactRefV1, int]] = []
+
+                class LocalReader:
+                    def read_response(self, reference: ExactRefV1, limit: int) -> bytes:
+                        response_calls.append((reference, limit))
+                        return f.reader.read_response(reference, limit)
+
+                    def stat(self, path: str) -> FileStatIdentityV1:
+                        return f.reader.stat(path)
+
+                state_root = owner.derive_current_saved_state_paths_v1(basis).state_root
+
+                def ram_path(value: str | Path) -> Path | AnchorPath:
+                    return AnchorPath() if str(value) == state_root else Path(value)
+
+                with ExitStack() as stack:
+                    stack.enter_context(f.io_scope())
+                    stack.enter_context(patch.object(producer, "Path", side_effect=ram_path))
+                    stack.enter_context(patch.object(producer, "LocalBasisReaderV1", LocalReader))
+                    stack.enter_context(patch.object(producer, "build_campaign_score_junction_v1", return_value=score_junction()))
+                    for name in ("emit_bootstrap_v1", "emit_supervisor_v1", "emit_current_saved_sdk_launcher_v1",
+                                 "emit_current_saved_request_guards_v1", "emit_cold_resume_v1"):
+                        stack.enter_context(patch.object(producer, name, side_effect=identity))
+                    stack.enter_context(patch.object(feeder, "transform_current_saved_feeder_v1", side_effect=identity))
+                    stack.enter_context(patch.object(first_checkpoint, "render_first_full_checkpoint_queue_v1", side_effect=identity))
+                    reached = stack.enter_context(patch.object(background, "render_current_saved_background_display_v1",
+                        side_effect=ValidatedBeforeBackground))
+                    with self.assertRaises(ValidatedBeforeBackground):
+                        producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
+                    self.assertEqual(reached.call_count, 1)
+                    with patch.object(owner, "original_response_evidence_v1", side_effect=old_generic_response):
+                        with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
+                            producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
+                    self.assertEqual(reached.call_count, 1)
+                    oversized = replace(source_rows[0], source_ref=replace(source_rows[0].source_ref,
+                        bytes=producer.MAX_FILE + 1))
+                    bad = replace(configured, source_rows=(oversized, *source_rows[1:]))
+                    with self.assertRaisesRegex(ValueError, "bounded Python shared dependency"):
+                        producer.compose_v1(bad, plan_ref=plan_ref, metadata_overlay=metadata)
+                for reference in large_refs:
+                    self.assertIn((reference, 2097152), response_calls)
+                self.assertEqual(producer.MAX_FILE, 1048576)
+                self.assertNotIn(basis.refs.driver.path, f.reader.reads)
+                self.assertNotIn(basis.refs.save.path, f.reader.reads)
 
 
 class CurrentSavedArtifactBudgetTests(unittest.TestCase):

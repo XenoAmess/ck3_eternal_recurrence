@@ -12,6 +12,7 @@ from typing import Literal,Protocol
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
  MAX_ORIGINAL_RESPONSE_BYTES_V1,
+ OriginalResponseReaderV1 as BasisOriginalResponseReaderV1,
  SavedFrameV1,ValidatedCurrentSavedBasisV1,
  CONTINUITY_FORWARD_SCHEMA,CONTINUITY_FORWARD_QUALIFICATION_SCHEMA,
  CurrentSavedContinuityQualificationV1,parse_current_saved_continuity_qualification_v1,
@@ -32,7 +33,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  READONLY_COLD_FAILURE_QUALIFICATION_SCHEMA,ReadonlyColdFailureQualificationV1,
  parse_readonly_cold_failure_qualification_v1,
  decode_current_saved_basis_v1,digest,encode_current_saved_basis_v1,
- completed_body,evidence,exact_read,integer,json_object,need,
+ completed_body,evidence,exact_read,integer,json_object,need,original_response_evidence_v1,
  validate_current_saved_closed_task_absence_v1,
  _cap_restore_row_v2,_exact_native_json_v1,decode_readonly_prefix_history_v1,
  parse_frame,parse_json,parse_ref,record,rows,text,utc,
@@ -1721,7 +1722,10 @@ class _TailOriginalResponseReaderV1:
  def read_response(self,reference:ExactRefV1,limit:int)->bytes:
   integer(limit,1,MAX_ORIGINAL_RESPONSE_BYTES_V1)
   need(reference.bytes<=limit,"bounded original completed-tail response")
-  return self.reader.read(reference,limit)
+  if isinstance(self.reader,BasisOriginalResponseReaderV1):
+   return self.reader.read_response(reference,limit)
+  need(reference.bytes<=1048576,"explicit original-response reader required")
+  return self.reader.read(reference,min(limit,1048576))
 # RAM proposal; requires shared CompletedUnsavedTailV1 and OriginalResponseReaderV1 imports.
 # No existing normal-closure function is changed.
 @dataclass(frozen=True)
@@ -1911,7 +1915,7 @@ def validate_completed_unsaved_tail_inventory_v1(
   need(_same_path(rref.path,str(root/"p37-requests"/f"{sequence:04d}-1-result.json"))
    and _same_path(oref.path,str(root/"p37-responses"/f"{sequence:04d}-1-result.json")),"canonical original request and response paths")
   requests.add(str(Path(rref.path).resolve()));responses.add(str(Path(oref.path).resolve()))
-  req=evidence(reader,rref,16384);out=evidence(reader,oref,MAX_ORIGINAL_RESPONSE_BYTES_V1)
+  req=evidence(reader,rref,16384);out=original_response_evidence_v1(reader,oref)
   need(integer(req.get("sequence"),1)==sequence and _same_json(out.get("request"),req),"original request source binding")
   if sequence==failed:
    need(rref==request_ref and oref==response_ref and item["after_ref"] is None,"unique local refusal has no postcheck")
@@ -1944,7 +1948,7 @@ def validate_completed_unsaved_tail_inventory_v1(
   need(sequence in auto_sequences and sequence not in plan_sequences
    and _same_path(reference.path,str(root/"p37-responses"/f"{sequence:04d}-0-plan.json")),
    "unique original before-submit plan for an actual AUTO request")
-  plan=evidence(reader,reference,MAX_ORIGINAL_RESPONSE_BYTES_V1)
+  plan=original_response_evidence_v1(reader,reference)
   planned=record(plan.get("request"));result=record(plan.get("result"));body=record(result.get("structured_content"))
   need(plan.get("source")=="actual GameplayBridgeService.before_submit callback"
    and integer(plan.get("game_pid"),1,PID_MAX)==game_pid
