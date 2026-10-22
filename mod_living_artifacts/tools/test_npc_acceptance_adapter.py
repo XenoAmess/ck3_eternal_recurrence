@@ -34,11 +34,11 @@ REPO = Path(__file__).resolve().parents[2]
 
 
 def combined_save(*, day: int = 0, markers: bool = True, remove_material: bool = True,
-                  initially_equipped: bool = False) -> str:
+                  initially_equipped: bool = False, unscheduled_roles: tuple[emitter.Role, ...] = ()) -> str:
     """Actual parsers consume authored records; these are never CK3 observations."""
     dates = {0: "1066.9.15", 1: "1066.9.16", 16: "1066.10.1", 47: "1066.11.1"}
     items = ITEMS if day == 0 or not remove_material else tuple(item for item in ITEMS if item.kind != "common")
-    source = authored_save(items=items, equipped=day > 0 or initially_equipped, date=dates[day])
+    source = authored_save(items=items, equipped=day > 0 or initially_equipped, date=dates[day], unscheduled_roles=unscheduled_roles)
     source = source.replace('variables={ data={ ', 'variables={ data={ ' + variable("xalw_fixture_target", "artifact", "12") + " " +
         variable("xalw_npc_fixture_missing_fragile", "boolean", "1") + " ", 1)
     base = variable("xalw_level", "value", "100000")
@@ -177,6 +177,7 @@ class AuthoredCasePort:
         self.snapshots = 0
         self.saves = 0
         self.tools: list[str] = []
+        self.unscheduled_roles: tuple[emitter.Role, ...] = ()
 
     def frame(self) -> Object:
         return object_value({"paused": True, "map_ready": True, "source": "injected-dll-named-pipe", "backend_id": "native-headless",
@@ -202,7 +203,7 @@ class AuthoredCasePort:
         self.saves += 1
         source = self.state / "profile/save games/live.ck3"
         source.parent.mkdir(parents=True, exist_ok=True)
-        source.write_text(combined_save(day=self.day), encoding="utf-8")
+        source.write_text(combined_save(day=self.day, unscheduled_roles=self.unscheduled_roles), encoding="utf-8")
         saved = pin(source)
         result = object_value({"checkpoint": {"status": "saved", "path": saved["path"], "size": saved["bytes"], "sha256": saved["sha256"],
             "date_raw": 53144328 + self.day * 24}, "materialization": {"available": True}})
@@ -234,6 +235,7 @@ class NpcReadbackIntegrationTests(unittest.TestCase):
             observed, verified = npc.consume_npc_readback(actual, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
                 frame=frame, source_save=original, spec=emitter.NpcFixtureSpec(0))
             self.assertTrue(observed.initial_inputs_complete)
+            self.assertFalse(observed.initial_lifecycle_ready)
             self.assertEqual(tuple(role.owner_id for role in observed.roles), ("37243", "46974", "38570"))
             self.assertEqual(NpcSavedObservation.parse(json.loads(json.dumps(observed.to_json()))), observed)
             bound = npc.candidates(Path(verified.melted_save["path"]), "31254")
@@ -254,6 +256,7 @@ class NpcReadbackIntegrationTests(unittest.TestCase):
                 source_save=source, spec=emitter.NpcFixtureSpec(0))
             self.assertEqual(player.target_id, "12")
             self.assertTrue(observed.initial_inputs_complete)
+            self.assertTrue(observed.initial_lifecycle_ready)
             self.assertEqual(refs, files.evidence)
             self.assertEqual(files.source_save["sha256"], source["sha256"])
             self.assertEqual(len(observed.roles), 3)
@@ -328,7 +331,41 @@ class NpcPreparationTests(unittest.TestCase):
             self.assertTrue(copied.is_file())
             self.assertIn("xalw_npc_fixture_owner_fragile", copied.read_text(encoding="utf-8-sig"))
             self.assertNotIn("queue_item_001", copied.read_text(encoding="utf-8-sig"))
+            self.assertEqual(copied.read_text(encoding="utf-8-sig").count("xalw_discover_owner_effect = yes"), 4)
             self.assertTrue(npc.action_sources(state / "profile/mod-content/product"))
+
+    def test_real_first_save_unscheduled_roles_block_without_advancing_or_calling_ai(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context = prepared_fixture(Path(temporary))
+            port = AuthoredCasePort(context)
+            port.unscheduled_roles = HEALTHY_ROLES
+            startup = StartupActorBinding(91, 124, "9", 53144328, 25, "a" * 64, "b" * 64)
+            with patch.object(StartupActorBinding, "parse", return_value=startup):
+                result = npc.run_case(context, port)
+            self.assertEqual((port.day, port.saves), (0, 1))
+            self.assertEqual(port.tools, ["ck3_save_checkpoint"])
+            for check in array(result["checks"], "checks"):
+                self.assertEqual(field(check, "status"), "BLOCKED")
+                if str(field(check, "case_id")) != "NPC-BIND-fragile":
+                    self.assertIn("xalw_monthly_chain", str(field(check, "reason")))
+            self.assertEqual(npc.verify_case(context), result)
+
+    def test_one_unscheduled_role_blocks_itself_while_two_healthy_roles_complete_four_saves(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context = prepared_fixture(Path(temporary))
+            port = AuthoredCasePort(context)
+            port.unscheduled_roles = ("landed",)
+            startup = StartupActorBinding(91, 124, "9", 53144328, 25, "a" * 64, "b" * 64)
+            with patch.object(StartupActorBinding, "parse", return_value=startup):
+                result = npc.run_case(context, port)
+            self.assertEqual((port.day, port.saves), (47, 4))
+            by_id = {str(field(check, "case_id")): check for check in array(result["checks"], "checks")}
+            for action in ("BIND", "EQUIP", "GROW", "TRAIN", "FEED"):
+                self.assertEqual(field(by_id["NPC-" + action + "-landed"], "status"), "BLOCKED")
+                self.assertIn("xalw_monthly_chain", str(field(by_id["NPC-" + action + "-landed"], "reason")))
+                for role in ("baron", "courtier"):
+                    self.assertEqual(field(by_id["NPC-" + action + "-" + role], "status"), "PASS")
+            self.assertEqual(npc.verify_case(context), result)
 
     def test_actual_closure_rejects_extra_or_modified_fixture_product_outer_and_source_table(self) -> None:
         cases = ("fixture", "product", "outer", "source-table")

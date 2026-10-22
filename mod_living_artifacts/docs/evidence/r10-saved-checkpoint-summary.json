@@ -1,0 +1,1216 @@
+{
+  "schema": "living-artifacts-r10-saved-checkpoint-summary-v1",
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+  "recorded_at_utc": "2026-10-22T14:58:28.687502+00:00",
+  "frozen_checkout": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\c13",
+  "frozen_commit": "abcfefeda3f2d140a80b6c161e15f9215c859938",
+  "run_context": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\run-context-r10-a01.json",
+    "bytes": 2511,
+    "sha256": "2cf53067f92639a4f2a1b43466cc0ba4b848266eb9e08492570a8763a570d040"
+  },
+  "keeper_root": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-npc-a13",
+  "summary_parser_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+    "bytes": 40196,
+    "sha256": "cbbaef8471dbc7a4f0626d10b18c898bead286dcf3de1f636a4da6b2673f34be"
+  },
+  "external_summarizer_source": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10_observation_summary.py",
+    "bytes": 15136,
+    "sha256": "f2f2580b91802c2d8cac4eb6684ab07cd9ce7273504c6823021f157c6b9cb1eb"
+  },
+  "public_original_session_id": "74600",
+  "allocate_original_session_id": "42192",
+  "run_operation": "20261022T142118451503Z-run",
+  "checkpoint_count": 4,
+  "checkpoints": [
+    {
+      "checkpoint": 1,
+      "envelope_pin": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\npc-observer-checkpoint-01.json",
+        "bytes": 37625,
+        "sha256": "b0eb5c03af867f12b5322d79f363e2b7ea8c03b2655a3ec8a1a0566c5f0772f2"
+      },
+      "frame": {
+        "revision": 3,
+        "native_revision": 2,
+        "date_raw": 53144328,
+        "player_id": 31254,
+        "pid": 12960,
+        "generation_decimal": "1"
+      },
+      "observed_at_utc": "2026-10-22T14:29:48.566565+00:00",
+      "saved_date": "1066.9.15",
+      "phase": "initial",
+      "initial_inputs_complete": true,
+      "melted_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+        "bytes": 102707488,
+        "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+      },
+      "baseline_source": null,
+      "roles": [
+        {
+          "role": "landed",
+          "owner_id": "36893",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "402",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "403",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "404",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "405",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "406",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            }
+          ]
+        },
+        {
+          "role": "baron",
+          "owner_id": "45602",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "407",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "408",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "409",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "410",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "411",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            }
+          ]
+        },
+        {
+          "role": "courtier",
+          "owner_id": "37986",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "412",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "413",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "414",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "415",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "416",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            }
+          ]
+        }
+      ],
+      "authority": "historical-saved-state-only",
+      "current_native_observed": false,
+      "continuous_equipment_observed": false,
+      "ai_business_pass": false
+    },
+    {
+      "checkpoint": 2,
+      "envelope_pin": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\npc-observer-checkpoint-02.json",
+        "bytes": 37891,
+        "sha256": "2c1924cf270a560f95d89a5bca5343b1a6e3f7cff78d440651b9a7401b033b14"
+      },
+      "frame": {
+        "revision": 7,
+        "native_revision": 6,
+        "date_raw": 53144352,
+        "player_id": 31254,
+        "pid": 12960,
+        "generation_decimal": "1"
+      },
+      "observed_at_utc": "2026-10-22T14:32:58.342557+00:00",
+      "saved_date": "1066.9.16",
+      "phase": "post",
+      "initial_inputs_complete": false,
+      "melted_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-02\\melted.ck3",
+        "bytes": 101694239,
+        "sha256": "aae790a8ccfadd1e803218c09727e0dbfaf53893fd5308818f0b1b03f8c3a132"
+      },
+      "baseline_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+        "bytes": 102707488,
+        "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+      },
+      "roles": [
+        {
+          "role": "landed",
+          "owner_id": "36893",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "402",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "403",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "404",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "405",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "406",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            }
+          ]
+        },
+        {
+          "role": "baron",
+          "owner_id": "45602",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "407",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "408",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "409",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "410",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "411",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            }
+          ]
+        },
+        {
+          "role": "courtier",
+          "owner_id": "37986",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "412",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "413",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "414",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "415",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "416",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            }
+          ]
+        }
+      ],
+      "authority": "historical-saved-state-only",
+      "current_native_observed": false,
+      "continuous_equipment_observed": false,
+      "ai_business_pass": false
+    },
+    {
+      "checkpoint": 3,
+      "envelope_pin": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\npc-observer-checkpoint-03.json",
+        "bytes": 38013,
+        "sha256": "0b228ab951d9124cedb4c21486febcbfa38b0e1689ce07fffe124994b2539bbc"
+      },
+      "frame": {
+        "revision": 38,
+        "native_revision": 37,
+        "date_raw": 53144712,
+        "player_id": 31254,
+        "pid": 12960,
+        "generation_decimal": "1"
+      },
+      "observed_at_utc": "2026-10-22T14:39:42.132179+00:00",
+      "saved_date": "1066.10.1",
+      "phase": "post",
+      "initial_inputs_complete": false,
+      "melted_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-03\\melted.ck3",
+        "bytes": 102922592,
+        "sha256": "105d6489a06a0b06f2bf44f78df963848738b28481377b9ec00d9e686d7503fc"
+      },
+      "baseline_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+        "bytes": 102707488,
+        "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+      },
+      "roles": [
+        {
+          "role": "landed",
+          "owner_id": "36893",
+          "role_status": "observed",
+          "inventory_status": "equipped_present",
+          "target_id": "402",
+          "target_status": "owned",
+          "saved_equipped_slots": [
+            "weapon"
+          ],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "403",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "404",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "405",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "406",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            }
+          ]
+        },
+        {
+          "role": "baron",
+          "owner_id": "45602",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "407",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "408",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "409",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "410",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "411",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            }
+          ]
+        },
+        {
+          "role": "courtier",
+          "owner_id": "37986",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "412",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "413",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "414",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "415",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "416",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            }
+          ]
+        }
+      ],
+      "authority": "historical-saved-state-only",
+      "current_native_observed": false,
+      "continuous_equipment_observed": false,
+      "ai_business_pass": false
+    },
+    {
+      "checkpoint": 4,
+      "envelope_pin": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\npc-observer-checkpoint-04.json",
+        "bytes": 38135,
+        "sha256": "9ae653ae27264716142483bf42d614940f038f311231c239dda06f582e2fb3a7"
+      },
+      "frame": {
+        "revision": 102,
+        "native_revision": 101,
+        "date_raw": 53145456,
+        "player_id": 31254,
+        "pid": 12960,
+        "generation_decimal": "1"
+      },
+      "observed_at_utc": "2026-10-22T14:57:00.729852+00:00",
+      "saved_date": "1066.11.1",
+      "phase": "post",
+      "initial_inputs_complete": false,
+      "melted_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-04\\melted.ck3",
+        "bytes": 103674270,
+        "sha256": "9191419d1ddda2f3b5b615fb923e31f307f404e7a6d08e70bea651d7470416b1"
+      },
+      "baseline_source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+        "bytes": 102707488,
+        "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+      },
+      "roles": [
+        {
+          "role": "landed",
+          "owner_id": "36893",
+          "role_status": "observed",
+          "inventory_status": "equipped_present",
+          "target_id": "402",
+          "target_status": "owned",
+          "saved_equipped_slots": [
+            "weapon"
+          ],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "403",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "404",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "405",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "406",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "36893"
+            }
+          ]
+        },
+        {
+          "role": "baron",
+          "owner_id": "45602",
+          "role_status": "observed",
+          "inventory_status": "equipped_present",
+          "target_id": "407",
+          "target_status": "owned",
+          "saved_equipped_slots": [
+            "weapon"
+          ],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "408",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "409",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "410",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "411",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "45602"
+            }
+          ]
+        },
+        {
+          "role": "courtier",
+          "owner_id": "37986",
+          "role_status": "observed",
+          "inventory_status": "equipped_absent",
+          "target_id": "412",
+          "target_status": "owned",
+          "saved_equipped_slots": [],
+          "level": 1,
+          "xp_in_level": 0,
+          "pending_xp": 0,
+          "growth_sequence": 0,
+          "last_settled_month": 12801,
+          "unsuppressed_equipped_months": 0,
+          "training_marker": null,
+          "owner_monthly_ai_variables": {
+            "xalw_monthly_chain": null,
+            "xalw_last_owner_month": null,
+            "xalw_ai_review_queued": null,
+            "xalw_training_cooldown": null
+          },
+          "feeding_imprint": null,
+          "materials": [
+            {
+              "kind": "common",
+              "artifact_id": "413",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "masterwork",
+              "artifact_id": "414",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "famed",
+              "artifact_id": "415",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            },
+            {
+              "kind": "illustrious",
+              "artifact_id": "416",
+              "status": "owned",
+              "reference_status": "present",
+              "saved_equipped_slots": [],
+              "actual_owner_id": "37986"
+            }
+          ]
+        }
+      ],
+      "authority": "historical-saved-state-only",
+      "current_native_observed": false,
+      "continuous_equipment_observed": false,
+      "ai_business_pass": false
+    }
+  ],
+  "changes_from_previous": [
+    {
+      "checkpoint": 3,
+      "role": "landed",
+      "changed": {
+        "inventory_status": {
+          "before": "equipped_absent",
+          "after": "equipped_present"
+        },
+        "saved_equipped_slots": {
+          "before": [],
+          "after": [
+            "weapon"
+          ]
+        }
+      }
+    },
+    {
+      "checkpoint": 4,
+      "role": "baron",
+      "changed": {
+        "inventory_status": {
+          "before": "equipped_absent",
+          "after": "equipped_present"
+        },
+        "saved_equipped_slots": {
+          "before": [],
+          "after": [
+            "weapon"
+          ]
+        }
+      }
+    }
+  ],
+  "read_only_error_log_audit": {
+    "pin": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-error-log-read-a01\\result.json",
+      "bytes": 5938,
+      "sha256": "afc94fd4282d19d10be7e150a833421a7fde7c2247968761893004c0f939211b"
+    },
+    "observed_at_utc": "2026-10-22T14:44:05.080284+00:00",
+    "xalw_matching_header_records": 28,
+    "xalw_unused_variable_static_records": 28,
+    "xalw_runtime_or_unclassified_records": 0,
+    "retained_exact_capture": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-error-log-read-a01\\error-log.original.log",
+      "bytes": 24937,
+      "sha256": "c9161782908aef9bcacffdbc377200d863f0aeec8b4f0e3755ad3deb37098c7f"
+    },
+    "scope": "All complete header blocks in this exact captured R10 log were screened for xalw, including stack continuation lines. The source was not modified. Initial capture has no prior byte baseline; no delta count or complete absence of game/business faults is claimed."
+  },
+  "final_original_case_result": {
+    "pin": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\living-artifacts-npc-result.json",
+      "bytes": 1893397,
+      "sha256": "c754849d0623e887fdb3e6bdb76f1f1b38a3518a430ef2e19dc1a1bd8109f2cd"
+    },
+    "projection": {
+      "status": "BLOCKED",
+      "observed_at_utc": "2026-10-22T14:57:02.226998+00:00",
+      "actual_natural_days": 47,
+      "actual_saved_observations": 4,
+      "case_contract_qualified": false,
+      "gui_contract_qualified": false,
+      "current_native_npc_equipment": false,
+      "business_pass": false,
+      "product_release_pass": false,
+      "actual_public_calls_budgeted": 194,
+      "normal_close_pending": true
+    },
+    "checks": [
+      {
+        "case_id": "NPC-BIND-landed",
+        "status": "PASS",
+        "reason": null
+      },
+      {
+        "case_id": "NPC-BIND-baron",
+        "status": "PASS",
+        "reason": null
+      },
+      {
+        "case_id": "NPC-BIND-courtier",
+        "status": "PASS",
+        "reason": null
+      },
+      {
+        "case_id": "NPC-BIND-fragile",
+        "status": "PASS",
+        "reason": null
+      },
+      {
+        "case_id": "NPC-EQUIP-landed",
+        "status": "PASS",
+        "reason": null
+      },
+      {
+        "case_id": "NPC-GROW-landed",
+        "status": "BLOCKED",
+        "reason": "No retained same-owner equipped Oct1-to-Nov1 settled growth increase"
+      },
+      {
+        "case_id": "NPC-TRAIN-landed",
+        "status": "BLOCKED",
+        "reason": "No new exclusive training marker with growth evidence"
+      },
+      {
+        "case_id": "NPC-FEED-landed",
+        "status": "BLOCKED",
+        "reason": "Disappearance/owner change alone cannot prove feeding; require new exclusive feed imprint and growth"
+      },
+      {
+        "case_id": "NPC-EQUIP-baron",
+        "status": "PASS",
+        "reason": null
+      },
+      {
+        "case_id": "NPC-GROW-baron",
+        "status": "BLOCKED",
+        "reason": "No retained same-owner equipped Oct1-to-Nov1 settled growth increase"
+      },
+      {
+        "case_id": "NPC-TRAIN-baron",
+        "status": "BLOCKED",
+        "reason": "No new exclusive training marker with growth evidence"
+      },
+      {
+        "case_id": "NPC-FEED-baron",
+        "status": "BLOCKED",
+        "reason": "Disappearance/owner change alone cannot prove feeding; require new exclusive feed imprint and growth"
+      },
+      {
+        "case_id": "NPC-EQUIP-courtier",
+        "status": "BLOCKED",
+        "reason": "No initial-unequipped to actual saved equipped transition; existing equipment is not a new action"
+      },
+      {
+        "case_id": "NPC-GROW-courtier",
+        "status": "BLOCKED",
+        "reason": "No retained same-owner equipped Oct1-to-Nov1 settled growth increase"
+      },
+      {
+        "case_id": "NPC-TRAIN-courtier",
+        "status": "BLOCKED",
+        "reason": "No new exclusive training marker with growth evidence"
+      },
+      {
+        "case_id": "NPC-FEED-courtier",
+        "status": "BLOCKED",
+        "reason": "Disappearance/owner change alone cannot prove feeding; require new exclusive feed imprint and growth"
+      }
+    ],
+    "candidate_bindings": [
+      {
+        "case_id": "NPC-BIND-landed",
+        "original_observed": {
+          "role": "landed",
+          "status": "bound",
+          "owner_id": "36893",
+          "raw_reference": {
+            "type": "char",
+            "raw_identity_decimal": "36893",
+            "flag": null
+          },
+          "missing_marker": null
+        }
+      },
+      {
+        "case_id": "NPC-BIND-baron",
+        "original_observed": {
+          "role": "baron",
+          "status": "bound",
+          "owner_id": "45602",
+          "raw_reference": {
+            "type": "char",
+            "raw_identity_decimal": "45602",
+            "flag": null
+          },
+          "missing_marker": null
+        }
+      },
+      {
+        "case_id": "NPC-BIND-courtier",
+        "original_observed": {
+          "role": "courtier",
+          "status": "bound",
+          "owner_id": "37986",
+          "raw_reference": {
+            "type": "char",
+            "raw_identity_decimal": "37986",
+            "flag": null
+          },
+          "missing_marker": null
+        }
+      },
+      {
+        "case_id": "NPC-BIND-fragile",
+        "original_observed": {
+          "role": "fragile",
+          "status": "bound",
+          "owner_id": "43621",
+          "raw_reference": {
+            "type": "char",
+            "raw_identity_decimal": "43621",
+            "flag": null
+          },
+          "missing_marker": null
+        }
+      }
+    ],
+    "original_errors": [],
+    "scope": "Projection of the original result, not a second verify_case invocation or a new qualification."
+  },
+  "authority": "historical-saved-state-only",
+  "current_native_observed": false,
+  "continuous_equipment_observed": false,
+  "business_qualification_from_summary": false,
+  "game_actions_sent_by_summary": false,
+  "scope": "Reads already-produced validated observation JSON through NpcSavedObservation.parse; no full save projection, no current native query, and no inference of continuous equipment between saves.",
+  "normal_close_status": "QUALIFIED",
+  "storage_policy": "docs/storage-retention-policy.json",
+  "storage_category": "record",
+  "review_at_utc": "2027-04-20T14:58:28.687502+00:00",
+  "close_recorded_at_utc": "2026-10-22T15:07:38.788315+00:00",
+  "closure": {
+    "pins": {
+      "normal_close": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\normal-close-result.json",
+        "bytes": 9852,
+        "sha256": "f39a0b7a8bbe5795a5c35a1f94c9ea73d0cd245959643e5e2ab9a7537d46af51"
+      },
+      "original_native_report": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\native-report.json",
+        "bytes": 14742965,
+        "sha256": "6162f1f85aea52aeae4dfe2cc76858d59c1390432be076d8aef9d9d7eaa5afb0"
+      },
+      "original_host_wait": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\host-original-process-exit.json",
+        "bytes": 253,
+        "sha256": "9d0a011dccda0bc54d693f80cdee4aeac532c68a41fe8c8926719534405ee096"
+      },
+      "original_keeper_wait": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\keeper-actual-parent-exit.json",
+        "bytes": 636,
+        "sha256": "630374d82713bd30d74deb812a6123b256716fe16a931c4088a53dcb083c9eb9"
+      },
+      "cooperative_stop": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\keepers\\living-npc-a13\\STOP",
+        "bytes": 216,
+        "sha256": "f9b8ec42b186e103cd9df4de2a468df3a068f06a3b8def418c3cc2865c1cc80b"
+      },
+      "root_cas_resource_release": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-screen-resource-close-a01\\release.stdout.json",
+        "bytes": 1292,
+        "sha256": "416606d00c5c5c9cf18e552359d266287476982f313ef5a5641a22e0c3886e4d"
+      },
+      "background_steam_offline": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\steam-offline-r10-close-a01.json",
+        "bytes": 2332,
+        "sha256": "19daba55d0a19bb771069eb8955b08b42b24c3a765847c0606174919a4ee7823"
+      },
+      "storage_close": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-r10-close-a01\\20261022T150219620978Z-task-close.json",
+        "bytes": 1960,
+        "sha256": "5c3fe459a480770de186459a29d1fcdad4681ca58aa68ceba88d28af6f2ff905"
+      },
+      "native_interruption_root_result": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\xalw-native-interruption-0001-root-result.json",
+        "bytes": 368,
+        "sha256": "1991858e97fad424696919886e9a12574710711d0387c98118b8694d90cf8565"
+      },
+      "native_interruption_continuation": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\xalw-native-interruption-0001-continuation-evidence.json",
+        "bytes": 1253,
+        "sha256": "c5cdbcb27d3320f9567635a0c242b1539032313b789d410b1d08653c79506ace"
+      }
+    },
+    "normal_close_qualified": true,
+    "game_pid": 12960,
+    "retained_os_exit_code": 0,
+    "native_process_exit_code": 0,
+    "native_finished_at_utc": "2026-10-22T15:01:06.951288+00:00",
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "host_error": null,
+    "host_pid": 4396,
+    "host_original_wait_actual": true,
+    "host_original_exit_code": 0,
+    "host_wait_observed_at_utc": "2026-10-22T15:01:11.398451+00:00",
+    "host_report_status": "GREEN",
+    "final_observation": {
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "after_finish_hold_step_id": "acceptance-normal-exit-finish-hold",
+      "alive_or_business_credit": false
+    },
+    "public_original_wait": {
+      "session_id": "74600",
+      "actual_exit_code": 0,
+      "tool_chunk": "064054",
+      "source": "Root actual wait on original run session; cooperative STOP separately corroborates the recorded public return code."
+    },
+    "allocate_original_wait": {
+      "session_id": "42192",
+      "actual_exit_code": 0,
+      "tool_chunk": "147e2c",
+      "source": "Root actual wait on original allocation session, corroborated by keeper-actual-parent-exit.json."
+    },
+    "cooperative_stop_written_at_utc": "2026-10-22T15:01:58.138517+00:00",
+    "cooperative_stop_time_source": "Root actual write observation; STOP text retained by its own exact pin.",
+    "keeper_reported_at_utc": "2026-10-22T15:01:58.250643+00:00",
+    "keeper_last_sequence": 495,
+    "keeper_thread_exited": true,
+    "keeper_failure": null,
+    "keeper_screen_released": false,
+    "later_cas_release_sequence": 496,
+    "later_cas_release_state": "done",
+    "later_cas_release_resources": [],
+    "later_cas_release_at_utc": "2026-10-22T15:02:19.144744+00:00",
+    "steam_observed_at_utc": "2026-10-22T15:02:19.789838+00:00",
+    "steam_status": "offline",
+    "steam_offline_mode": true,
+    "storage_observed_at_utc": "2026-10-22T15:02:19.620978+00:00",
+    "storage_deletions": 0,
+    "native_interruption": {
+      "kind": "interaction",
+      "instance_id": 16777231,
+      "policy_action": "reject",
+      "actual_action_step": "root-r10-interaction-reject-01",
+      "independent_post_step": "root-r10-interaction-post-01",
+      "original_instance_independently_absent": true,
+      "root_continuation_accepted": true,
+      "business_pass": false
+    },
+    "business_pass": false,
+    "product_release_pass": false
+  },
+  "post_close_log_readback": {
+    "observed_at_utc": "2026-10-22T15:07:38.791085+00:00",
+    "source_path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-npc-a13\\state\\profile\\logs\\error.log",
+    "bytes": 25484,
+    "sha256": "7dca049fb3fbb5fea4d76f456d9804c902eec0e548b6c4781dc1d90ac0641cdd",
+    "retained_exact_capture": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r10-error-log-close-a01\\error-log.original.log",
+      "bytes": 25484,
+      "sha256": "7dca049fb3fbb5fea4d76f456d9804c902eec0e548b6c4781dc1d90ac0641cdd"
+    },
+    "earlier_capture_is_exact_prefix": true,
+    "exactly_equal_to_retained_144405_capture": false,
+    "new_bytes_since_capture": 547,
+    "xalw_header_blocks_at_close": 28,
+    "xalw_runtime_or_unclassified_blocks_at_close": [],
+    "new_xalw_header_blocks": [],
+    "scope": "Complete close-time header blocks and a byte-prefix comparison against the retained first capture. This does not prove monthly AI execution or business correctness."
+  }
+}

@@ -55,7 +55,7 @@ class NpcFixtureTests(unittest.TestCase):
         forbidden = {
             "equip_artifact_to_owner", "equip_artifact_to_owner_replace", "unequip_artifact", "destroy_artifact",
             "xalw_feed_material_effect", "xalw_suppress_effect", "xalw_appease_effect", "xalw_ai_cultivate_effect",
-            "xalw_queue_ai_review_effect", "xalw_owner_monthly_effect", "xalw_discover_owner_effect",
+            "xalw_queue_ai_review_effect", "xalw_owner_monthly_effect",
             "xalw_settle_xp_effect", "xalw_train_effect", "trigger_event",
         }
         self.assertFalse(forbidden & {block.key for block in definitions})
@@ -71,6 +71,30 @@ class NpcFixtureTests(unittest.TestCase):
         for index in range(1, 52):
             self.assertIn(f"name = xalw_npc_fixture_queue_item_{index:03d} value = scope:xalw_npc_created_item", script)
         self.assertIn("name = xalw_npc_fixture_queue_tail value = scope:xalw_npc_created_item", script)
+
+    def test_every_finished_role_enters_only_the_normal_production_owner_lifecycle_once(self) -> None:
+        for count in (0, 51):
+            with self.subTest(queue_count=count):
+                script = npc.render_npc_effects(npc.NpcFixtureSpec(count))
+                definitions = blocks(script)
+                roles = ("landed", "baron", "courtier", "fragile") + (("queue",) if count else ())
+                calls = list(re.finditer(r"\bxalw_discover_owner_effect\s*=\s*yes\b", masked(script)))
+                self.assertEqual(len(calls), len(roles))
+                for role in roles:
+                    create = next(block for block in definitions if block.key == "xalw_npc_fixture_create_" + role + "_effect")
+                    body = masked(script[create.opening:create.end])
+                    handoffs = list(re.finditer(r"\bxalw_discover_owner_effect\s*=\s*yes\b", body))
+                    self.assertEqual(len(handoffs), 1)
+                    self.assertEqual(body.count("create_artifact ="), count if role == "queue" else 5)
+                    self.assertGreater(handoffs[0].start(), body.rfind("create_artifact ="))
+                    self.assertGreater(handoffs[0].start(), body.rfind("NOT = { can_benefit_from_artifact"))
+                    self.assertLess(handoffs[0].start(), body.index("name = xalw_npc_fixture_initial_inputs_created"))
+                    ancestors = [block.key for block in blocks(body) if block.opening < handoffs[0].start() < block.end]
+                    # The call executes on the selected owner, never inside the
+                    # just-created artifact, conditional eligibility or input loop.
+                    self.assertEqual(ancestors, [])
+                    for forbidden in ("xalw_ai_cultivate_effect", "xalw_queue_ai_review_effect", "xalw_owner_monthly_effect", "xalw_train_effect", "xalw_feed_material_effect"):
+                        self.assertNotIn(forbidden, body)
 
     def test_full_source_qualifier_checks_executable_and_pins_actual_producer(self) -> None:
         with TemporaryDirectory() as temporary:
@@ -134,6 +158,7 @@ class NpcFixtureTests(unittest.TestCase):
                     self.assertEqual(pin(path), identity)
                     self.assertTrue(path.read_bytes().startswith(b"\xef\xbb\xbf"))
                 scripts = (destination / "common/scripted_effects/xalw_npc_fixture_inputs.txt").read_text(encoding="utf-8-sig")
+                self.assertEqual(scripts.count("xalw_discover_owner_effect = yes"), 5 if count else 4)
                 names = set(re.findall(r"\bname\s*=\s*(xalw_npc_[a-z0-9_]+_name)\b", scripts))
                 self.assertEqual(len(names), 20 + count)
                 for language in ("english", "simp_chinese"):

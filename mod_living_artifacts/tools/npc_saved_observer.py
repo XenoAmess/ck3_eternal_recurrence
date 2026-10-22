@@ -225,6 +225,39 @@ class NpcSavedRole:
             "saved_variables": {key: value.to_json() for key, value in self.saved_variables}, "items": [item.to_json() for item in self.items]})
 
 
+def initial_owner_lifecycle_issues(role: NpcSavedRole, saved_date: str) -> tuple[str, ...]:
+    """Initial ordinary scheduling eligibility, never an equipment/AI success.
+
+    Inventory completeness stays separate: historical R9/R10 input inventories
+    remain real even when their owners never entered the normal product loop.
+    Raw fields already travel in the single saved_variables JSON contract.
+    """
+    require(type(role) is NpcSavedRole, "Typed actual saved NPC role required")
+    date = _date(saved_date)
+    year, month, _ = (int(part) for part in date.split("."))
+    expected_month = year * 12 + month
+    if role.status != "observed" or role.owner_id is None:
+        return ("owner state unavailable: " + role.status,)
+    values = dict(role.saved_variables)
+    issues: list[str] = []
+    for name in ("xalw_monthly_chain", "xalw_last_owner_month", "xalw_ai_review_queued"):
+        value = values.get(name)
+        if value is None:
+            issues.append(name + ": missing actual saved scheduling field")
+            continue
+        try:
+            _variable_json(value)
+            if name == "xalw_last_owner_month":
+                actual = value.integer_value(name)
+                if actual != expected_month:
+                    issues.append(name + ": saved cursor " + str(actual) + " differs from initial month " + str(expected_month))
+            elif value != SavedVariable("boolean", "1", None):
+                issues.append(name + ": actual saved true boolean required")
+        except ValueError:
+            issues.append(name + ": invalid exact saved scheduling encoding")
+    return tuple(issues)
+
+
 @dataclass(frozen=True)
 class NpcSavedObservation:
     machine_id: str
@@ -242,6 +275,10 @@ class NpcSavedObservation:
         return self.phase == "initial" and bool(self.roles) and all(role.status == "observed" and
             tuple(item.kind for item in role.items) == INPUTS and
             all(item.status == "owned" and item.reference_status == "present" for item in role.items) for role in self.roles)
+
+    @property
+    def initial_lifecycle_ready(self) -> bool:
+        return self.phase == "initial" and bool(self.roles) and all(not initial_owner_lifecycle_issues(role, self.saved_date) for role in self.roles)
 
     def to_json(self) -> Object:
         return object_value({"schema": "living-artifacts-npc-saved-observation-v1", "schema_version": 1,

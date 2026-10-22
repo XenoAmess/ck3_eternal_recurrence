@@ -1,0 +1,1148 @@
+{
+  "schema": "living-artifacts-r10-initial-lifecycle-observation-excerpt-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+  "recorded_at_utc": "2026-10-22T15:04:02.711852+00:00",
+  "source_observer": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\case-output\\npc-observer-checkpoint-01.json",
+    "bytes": 37625,
+    "sha256": "b0eb5c03af867f12b5322d79f363e2b7ea8c03b2655a3ec8a1a0566c5f0772f2"
+  },
+  "original_save": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\profiles\\living-npc-a13\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 70095538,
+    "sha256": "48de23657bca1052f7e88c17638918c66c57a60dca584d8773be7819a5b10f5f"
+  },
+  "source_melted": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+    "bytes": 102707488,
+    "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+  },
+  "source_readback": {
+    "schema": "living-artifacts-checkpoint-readback-v1",
+    "schema_version": 1,
+    "status": "completed",
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0010",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "reviewer": "/root",
+    "pid": 12960,
+    "connection_generation": "1",
+    "actor_character_id": 31254,
+    "date_raw": 53144328,
+    "source_save": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\original.ck3",
+      "bytes": 70095538,
+      "sha256": "48de23657bca1052f7e88c17638918c66c57a60dca584d8773be7819a5b10f5f"
+    },
+    "melted_save": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+      "bytes": 102707488,
+      "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+    },
+    "melter": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\rakaly-official-a01\\rakaly.exe",
+      "bytes": 6867456,
+      "sha256": "9d3404f6eb08db3a3d2196a5b2e1ce9b4c8687f2d7df60a4f79cafe75f043101"
+    },
+    "command": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\command.json",
+      "bytes": 494,
+      "sha256": "8347c8c2f8caee8e0a3fb6660dc753b6c90afb99bc458cda4973c2b79580af97"
+    },
+    "process_receipt": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\process.json",
+      "bytes": 3044,
+      "sha256": "4d6c989d644084fac8bcf591d617563bec14f49b0b76ee8b12ef94fa8a80eb84"
+    }
+  },
+  "observation": {
+    "schema": "living-artifacts-npc-saved-observation-v1",
+    "schema_version": 1,
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-22T14:29:48.566565+00:00",
+    "melted_source": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0010\\checkpoint-01\\melted.ck3",
+      "bytes": 102707488,
+      "sha256": "bca93274cefaeff7d86eec7f4e0b709dd71960087aa5652334c61e8baac9769d"
+    },
+    "saved_date": "1066.9.15",
+    "player_id": "31254",
+    "spec": {
+      "schema_version": 1,
+      "queue_count": 0
+    },
+    "phase": "initial",
+    "baseline_source": null,
+    "roles": [
+      {
+        "role": "landed",
+        "status": "observed",
+        "owner_id": "36893",
+        "raw_owner_reference": {
+          "type": "char",
+          "raw_identity_decimal": "36893",
+          "flag": null
+        },
+        "missing_candidate_marker": null,
+        "inventory": {
+          "character_id": "36893",
+          "status": "equipped_absent",
+          "owner_id": "36893",
+          "owned_ids": [
+            "402",
+            "403",
+            "404",
+            "405",
+            "406"
+          ],
+          "equipped_slots": []
+        },
+        "saved_variables": {
+          "xalw_npc_fixture_initial_inputs_created": {
+            "type": "boolean",
+            "raw_identity_decimal": "1",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_illustrious": {
+            "type": "artifact",
+            "raw_identity_decimal": "406",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_famed": {
+            "type": "artifact",
+            "raw_identity_decimal": "405",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_masterwork": {
+            "type": "artifact",
+            "raw_identity_decimal": "404",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_common": {
+            "type": "artifact",
+            "raw_identity_decimal": "403",
+            "flag": null
+          },
+          "xalw_npc_fixture_target": {
+            "type": "artifact",
+            "raw_identity_decimal": "402",
+            "flag": null
+          },
+          "xalw_npc_fixture_claimed": {
+            "type": "boolean",
+            "raw_identity_decimal": "1",
+            "flag": null
+          },
+          "xalw_content_ink_count": {
+            "type": "value",
+            "raw_identity_decimal": null,
+            "flag": null
+          },
+          "xalw_content_ink_year": {
+            "type": "value",
+            "raw_identity_decimal": "106600000",
+            "flag": null
+          },
+          "xalw_content_effective_rank": {
+            "type": "value",
+            "raw_identity_decimal": null,
+            "flag": null
+          },
+          "xalw_content_slot": {
+            "type": "value",
+            "raw_identity_decimal": null,
+            "flag": null
+          },
+          "xalw_content_rank": {
+            "type": "value",
+            "raw_identity_decimal": null,
+            "flag": null
+          }
+        },
+        "items": [
+          {
+            "kind": "target",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "402",
+              "flag": null
+            },
+            "artifact_id": "402",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "402",
+              "owner_id": "36893",
+              "name": "★NPC landed target",
+              "rarity": "illustrious",
+              "artifact_type": "sword",
+              "durability_decimal": "150.00000",
+              "variables": {
+                "xalw_content_prima_effective_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_ink_effective_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_runaway_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_fickle_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_star_named": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                },
+                "xalw_affix_rank_1": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_affix_1": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_diet": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "helmet"
+                },
+                "xalw_personality": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_last_settled_month": {
+                  "type": "value",
+                  "raw_identity_decimal": "1280100000",
+                  "flag": null
+                },
+                "xalw_attuned_character": {
+                  "type": "char",
+                  "raw_identity_decimal": "36893",
+                  "flag": null
+                },
+                "xalw_unsuppressed_equipped_months": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_suppression_chain": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_resonance": {
+                  "type": "value",
+                  "raw_identity_decimal": "2000000",
+                  "flag": null
+                },
+                "xalw_last_notified_sequence": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_growth_sequence": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_pending_xp": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_xp_in_level": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_level": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "living"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "common",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "403",
+              "flag": null
+            },
+            "artifact_id": "403",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "403",
+              "owner_id": "36893",
+              "name": "NPC landed common material",
+              "rarity": "common",
+              "artifact_type": "sword",
+              "durability_decimal": "60.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "masterwork",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "404",
+              "flag": null
+            },
+            "artifact_id": "404",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "404",
+              "owner_id": "36893",
+              "name": "NPC landed masterwork material",
+              "rarity": "masterwork",
+              "artifact_type": "sword",
+              "durability_decimal": "75.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "famed",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "405",
+              "flag": null
+            },
+            "artifact_id": "405",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "405",
+              "owner_id": "36893",
+              "name": "NPC landed famed material",
+              "rarity": "famed",
+              "artifact_type": "sword",
+              "durability_decimal": "100.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "illustrious",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "406",
+              "flag": null
+            },
+            "artifact_id": "406",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "406",
+              "owner_id": "36893",
+              "name": "NPC landed illustrious material",
+              "rarity": "illustrious",
+              "artifact_type": "sword",
+              "durability_decimal": "150.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          }
+        ]
+      },
+      {
+        "role": "baron",
+        "status": "observed",
+        "owner_id": "45602",
+        "raw_owner_reference": {
+          "type": "char",
+          "raw_identity_decimal": "45602",
+          "flag": null
+        },
+        "missing_candidate_marker": null,
+        "inventory": {
+          "character_id": "45602",
+          "status": "equipped_absent",
+          "owner_id": "45602",
+          "owned_ids": [
+            "407",
+            "408",
+            "409",
+            "410",
+            "411"
+          ],
+          "equipped_slots": []
+        },
+        "saved_variables": {
+          "xalw_npc_fixture_initial_inputs_created": {
+            "type": "boolean",
+            "raw_identity_decimal": "1",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_illustrious": {
+            "type": "artifact",
+            "raw_identity_decimal": "411",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_famed": {
+            "type": "artifact",
+            "raw_identity_decimal": "410",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_masterwork": {
+            "type": "artifact",
+            "raw_identity_decimal": "409",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_common": {
+            "type": "artifact",
+            "raw_identity_decimal": "408",
+            "flag": null
+          },
+          "xalw_npc_fixture_target": {
+            "type": "artifact",
+            "raw_identity_decimal": "407",
+            "flag": null
+          },
+          "xalw_npc_fixture_claimed": {
+            "type": "boolean",
+            "raw_identity_decimal": "1",
+            "flag": null
+          }
+        },
+        "items": [
+          {
+            "kind": "target",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "407",
+              "flag": null
+            },
+            "artifact_id": "407",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "407",
+              "owner_id": "45602",
+              "name": "★NPC baron target",
+              "rarity": "illustrious",
+              "artifact_type": "sword",
+              "durability_decimal": "150.00000",
+              "variables": {
+                "xalw_content_prima_effective_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_ink_effective_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_runaway_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_fickle_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_star_named": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                },
+                "xalw_affix_rank_1": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_affix_1": {
+                  "type": "value",
+                  "raw_identity_decimal": "1200000",
+                  "flag": null
+                },
+                "xalw_diet": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "miscellaneous"
+                },
+                "xalw_personality": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_last_settled_month": {
+                  "type": "value",
+                  "raw_identity_decimal": "1280100000",
+                  "flag": null
+                },
+                "xalw_attuned_character": {
+                  "type": "char",
+                  "raw_identity_decimal": "45602",
+                  "flag": null
+                },
+                "xalw_unsuppressed_equipped_months": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_suppression_chain": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_resonance": {
+                  "type": "value",
+                  "raw_identity_decimal": "2000000",
+                  "flag": null
+                },
+                "xalw_last_notified_sequence": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_growth_sequence": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_pending_xp": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_xp_in_level": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_level": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "living"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "common",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "408",
+              "flag": null
+            },
+            "artifact_id": "408",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "408",
+              "owner_id": "45602",
+              "name": "NPC baron common material",
+              "rarity": "common",
+              "artifact_type": "sword",
+              "durability_decimal": "60.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "masterwork",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "409",
+              "flag": null
+            },
+            "artifact_id": "409",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "409",
+              "owner_id": "45602",
+              "name": "NPC baron masterwork material",
+              "rarity": "masterwork",
+              "artifact_type": "sword",
+              "durability_decimal": "75.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "famed",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "410",
+              "flag": null
+            },
+            "artifact_id": "410",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "410",
+              "owner_id": "45602",
+              "name": "NPC baron famed material",
+              "rarity": "famed",
+              "artifact_type": "sword",
+              "durability_decimal": "100.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "illustrious",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "411",
+              "flag": null
+            },
+            "artifact_id": "411",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "411",
+              "owner_id": "45602",
+              "name": "NPC baron illustrious material",
+              "rarity": "illustrious",
+              "artifact_type": "sword",
+              "durability_decimal": "150.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          }
+        ]
+      },
+      {
+        "role": "courtier",
+        "status": "observed",
+        "owner_id": "37986",
+        "raw_owner_reference": {
+          "type": "char",
+          "raw_identity_decimal": "37986",
+          "flag": null
+        },
+        "missing_candidate_marker": null,
+        "inventory": {
+          "character_id": "37986",
+          "status": "equipped_absent",
+          "owner_id": "37986",
+          "owned_ids": [
+            "412",
+            "413",
+            "414",
+            "415",
+            "416"
+          ],
+          "equipped_slots": []
+        },
+        "saved_variables": {
+          "xalw_npc_fixture_initial_inputs_created": {
+            "type": "boolean",
+            "raw_identity_decimal": "1",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_illustrious": {
+            "type": "artifact",
+            "raw_identity_decimal": "416",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_famed": {
+            "type": "artifact",
+            "raw_identity_decimal": "415",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_masterwork": {
+            "type": "artifact",
+            "raw_identity_decimal": "414",
+            "flag": null
+          },
+          "xalw_npc_fixture_material_common": {
+            "type": "artifact",
+            "raw_identity_decimal": "413",
+            "flag": null
+          },
+          "xalw_npc_fixture_target": {
+            "type": "artifact",
+            "raw_identity_decimal": "412",
+            "flag": null
+          },
+          "xalw_npc_fixture_claimed": {
+            "type": "boolean",
+            "raw_identity_decimal": "1",
+            "flag": null
+          }
+        },
+        "items": [
+          {
+            "kind": "target",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "412",
+              "flag": null
+            },
+            "artifact_id": "412",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "412",
+              "owner_id": "37986",
+              "name": "★NPC courtier target",
+              "rarity": "illustrious",
+              "artifact_type": "sword",
+              "durability_decimal": "150.00000",
+              "variables": {
+                "xalw_content_prima_effective_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_ink_effective_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_runaway_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_content_fickle_rank": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_star_named": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                },
+                "xalw_affix_rank_1": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_affix_1": {
+                  "type": "value",
+                  "raw_identity_decimal": "700000",
+                  "flag": null
+                },
+                "xalw_diet": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "regalia"
+                },
+                "xalw_personality": {
+                  "type": "value",
+                  "raw_identity_decimal": "400000",
+                  "flag": null
+                },
+                "xalw_last_settled_month": {
+                  "type": "value",
+                  "raw_identity_decimal": "1280100000",
+                  "flag": null
+                },
+                "xalw_attuned_character": {
+                  "type": "char",
+                  "raw_identity_decimal": "37986",
+                  "flag": null
+                },
+                "xalw_unsuppressed_equipped_months": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_suppression_chain": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_resonance": {
+                  "type": "value",
+                  "raw_identity_decimal": "2000000",
+                  "flag": null
+                },
+                "xalw_last_notified_sequence": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_growth_sequence": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_pending_xp": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_xp_in_level": {
+                  "type": "value",
+                  "raw_identity_decimal": null,
+                  "flag": null
+                },
+                "xalw_level": {
+                  "type": "value",
+                  "raw_identity_decimal": "100000",
+                  "flag": null
+                },
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "living"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "common",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "413",
+              "flag": null
+            },
+            "artifact_id": "413",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "413",
+              "owner_id": "37986",
+              "name": "NPC courtier common material",
+              "rarity": "common",
+              "artifact_type": "sword",
+              "durability_decimal": "60.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "masterwork",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "414",
+              "flag": null
+            },
+            "artifact_id": "414",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "414",
+              "owner_id": "37986",
+              "name": "NPC courtier masterwork material",
+              "rarity": "masterwork",
+              "artifact_type": "sword",
+              "durability_decimal": "75.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "famed",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "415",
+              "flag": null
+            },
+            "artifact_id": "415",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "415",
+              "owner_id": "37986",
+              "name": "NPC courtier famed material",
+              "rarity": "famed",
+              "artifact_type": "sword",
+              "durability_decimal": "100.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          },
+          {
+            "kind": "illustrious",
+            "reference_status": "present",
+            "raw_reference": {
+              "type": "artifact",
+              "raw_identity_decimal": "416",
+              "flag": null
+            },
+            "artifact_id": "416",
+            "status": "owned",
+            "artifact": {
+              "artifact_id": "416",
+              "owner_id": "37986",
+              "name": "NPC courtier illustrious material",
+              "rarity": "illustrious",
+              "artifact_type": "sword",
+              "durability_decimal": "150.00000",
+              "variables": {
+                "xalw_kind": {
+                  "type": "flag",
+                  "raw_identity_decimal": null,
+                  "flag": "ordinary"
+                },
+                "xalw_schema_version": {
+                  "type": "value",
+                  "raw_identity_decimal": "200000",
+                  "flag": null
+                },
+                "xalw_npc_fixture_input": {
+                  "type": "boolean",
+                  "raw_identity_decimal": "1",
+                  "flag": null
+                }
+              }
+            },
+            "equipped_slots": []
+          }
+        ]
+      }
+    ],
+    "initial_inputs_complete": true,
+    "authority": "historical-saved-state-only",
+    "role_eligibility_independently_observed": false,
+    "current_native_observed": false,
+    "ai_business_pass": false
+  },
+  "missing_fields": [
+    "xalw_monthly_chain",
+    "xalw_last_owner_month",
+    "xalw_ai_review_queued"
+  ],
+  "projection_payload_verbatim": true,
+  "raw_save_not_embedded": true,
+  "ci_parser_file_identity_provider": "authored temporary file pin; original source pin retained verbatim in fixture; no raw-save authentication credit",
+  "business_pass": false,
+  "ai_business_pass": false
+}

@@ -49,6 +49,7 @@ SOURCES: tuple[SourceBinding, ...] = (
     SourceBinding("common/scripted_effects/00_ep1_artifact_creation_effects.txt", "1b60d78e54e1ebff7601bd13e59b2251cff47d96f595a4431c666fa3ee11a831"),
     SourceBinding("common/character_interactions/00_artifact_interactions.txt", "6272e3df8fcdfbeda14a83f3d4410251db5176496e0647f0833e252653aa8e7a"),
     SourceBinding("common/on_action/game_start.txt", "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8"),
+    SourceBinding("common/on_action/inventory_on_actions.txt", "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67"),
     SourceBinding("common/artifacts/types/00_types.txt", "302f44a67d81185787135170904fad8022f4a23c0e3986573153ec57bcd4b83a"),
     SourceBinding("common/modifiers/00_artifact_modifiers.txt", "06495c2f0b39634895f9587a4f3fb26725183d913851d4ea1ec6f4d3b8efe059"),
 )
@@ -189,6 +190,10 @@ def render_npc_effects(spec: NpcFixtureSpec) -> str:
         else:
             create += _item(role, "target", 100, living=True)
             create += "".join(_item(role, "material_" + rarity, score) for rarity, score in RARITIES)
+        # The product game-start sweep can run before these external inputs exist.
+        # Hand the finished owner to the normal discovery/month/day-one lifecycle;
+        # never invoke the AI action, queue implementation or settlement directly.
+        create += "xalw_discover_owner_effect = yes\n"
         create += "set_variable = { name = xalw_npc_fixture_initial_inputs_created value = yes }\n"
         definitions.append(_block(f"xalw_npc_fixture_create_{role}_effect", create))
         select = f"""every_living_character = {{
@@ -276,7 +281,8 @@ xalw_npc_fixture_bootstrap = { effect = { every_player = {
         "business_acceptance": "NOT_ASSESSED", "coverage_gaps": [
             "Existing adult AI selection may lack a role; actual root missing-role flags must be read before acceptance.",
             "Native can_equip/can_benefit and initial unequipped guards must be observed; script emission does not establish legality.",
-            "Creation ownership callbacks/bootstrap ordering may discover queue inputs before observation; 51 unchecked items and tail scheduling are NOT qualified.",
+            "Production discovery is handed the completed owner once; real saved scheduling markers, not this call or the input marker, establish initial lifecycle readiness.",
+            "Creation ownership callbacks and explicit discovery may inspect queue inputs before observation; 51 unchecked items and tail scheduling are NOT qualified.",
             "Initial awakening is forced through the production initializer; neither natural awakening chance nor later AI choices are qualified.",
             "No dangerous level/curse, protected/best-backup inventory, resource recovery, event branch, or I04 suppression scenario is supplied.",
             "Single-player initialization only; actual NPC adapter, CI registration and live acceptance remain pending.",
