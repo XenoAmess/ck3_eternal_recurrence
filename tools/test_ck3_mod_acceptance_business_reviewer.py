@@ -158,6 +158,8 @@ class ReviewerTests(unittest.TestCase):
         save(self.output / 'normal-close-result.json', {'normal_close_qualified': True})
         selected = entry.Selection.__new__(entry.Selection)
         selected.__dict__.update(self.selection.__dict__)
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        selected.paths = {'source_root': self.root}
         observed = {}
         selected.adapter_context = lambda: {'output': str(self.output), 'run_id': self.live.name,
                                             'operator_reviewer': '/test/forged-context-value'}
