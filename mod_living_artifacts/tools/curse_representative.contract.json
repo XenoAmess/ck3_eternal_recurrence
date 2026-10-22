@@ -1,0 +1,48 @@
+{
+  "schema": "living-artifacts-curse-representative-case-v1",
+  "schema_version": 1,
+  "product": "living-artifacts",
+  "case_id": "curse_representative",
+  "maximum_natural_days": 17,
+  "max_public_calls": 420,
+  "day_timeout_seconds": 60,
+  "maximum_checkpoints": 7,
+  "checkpoint_days": [
+    0,
+    0,
+    0,
+    15,
+    16,
+    16,
+    17
+  ],
+  "required_startup": [
+    "XALW_CURSE_INPUTS_READY_V1"
+  ],
+  "forbidden_startup": [
+    "XALW_CURSE_INPUT_ERROR_V1"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_checks": [
+    "CURSE-BLOOD-EQUIP-REMOVE",
+    "CURSE-APPETITE-BOUNDED-PAYMENT",
+    "CURSE-SAME-DATE-NO-RECHARGE",
+    "CURSE-NEXT-DAY-NO-RECHARGE",
+    "CURSE-CANDIDATE-PERSISTED-JUDGEMENT"
+  ],
+  "deferred_checks": [
+    "NPC",
+    "blood_victory_event",
+    "two_item_stacking",
+    "suppression_timers",
+    "cold_transfer",
+    "initial_unjudged_discovery_witness",
+    "whole_product_release"
+  ],
+  "whole_product_acceptance_credit": false,
+  "runtime_status": "NOT_RUN"
+}
