@@ -573,7 +573,10 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
 
 def verify_case(context: JSONObject) -> JSONObject:
     c = validate_contract(context)
-    result = read(Path(context["output"]) / "ordinary-pilgrimage-result.json")
+    output = context["output"]
+    if not isinstance(output, (str, Path)):
+        raise ValueError("Pilgrimage verification output must be an explicit path")
+    result = read(Path(output) / "ordinary-pilgrimage-result.json")
     require(result.get("machine_id") == c["machine_id"] and result.get("case") == context["case"]
             and result.get("run_id") == context["run_id"], "Actual result crossed public case")
     return {"status": result["status"], "hosted_identity_observed": result["hosted_identity_observed"],
