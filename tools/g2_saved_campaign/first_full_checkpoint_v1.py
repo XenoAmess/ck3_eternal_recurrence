@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import ast
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 import os
@@ -172,6 +172,23 @@ def require_first_full_checkpoint_policy_v1(queue: object, request: object, *,
     return policy
 
 
+def first_full_checkpoint_cutoff_reached_v1(
+    policy: FirstFullCheckpointPolicyV1, *, control_sequence: object,
+    settled_cycles: object, state: object, now_utc: str | None = None,
+) -> bool:
+    """End first-FULL work at a settled boundary; in-flight work is never abandoned."""
+    control = integer(control_sequence, 1)
+    settled = integer(settled_cycles, 0)
+    row = record(state)
+    need({"pending_cycle", "pending_checkpoint"} <= set(row), "explicit cutoff pending state")
+    if (control != policy.first_control_sequence or settled == 0
+            or row["pending_cycle"] is not None or row["pending_checkpoint"] is not None):
+        return False
+    now = datetime.now(timezone.utc) if now_utc is None else datetime.fromisoformat(utc(now_utc).replace("Z", "+00:00"))
+    cutoff = datetime.fromisoformat(policy.review_at_utc.replace("Z", "+00:00")) - timedelta(seconds=policy.reserved_finalize_seconds)
+    return now >= cutoff
+
+
 async def finalize_first_full_checkpoint_v1(queue: object, session: object, request: object, *,
     queue_root: Path, semantic_tool: str, save_tool: str,
     frame_reader: Callable[[object], dict[str, object]],
@@ -305,8 +322,17 @@ def render_first_full_checkpoint_queue_v1(material: bytes) -> bytes:
     lines[end:end] = ['        result["first_full_checkpoint"] = _first_checkpoint_receipt_v1\n']
     lines[insertion:insertion] = [
         '        _first_checkpoint_receipt_v1 = await _first_checkpoint_v1.finalize_first_full_checkpoint_v1(self, session, request, queue_root=Q, semantic_tool=SEMANTIC, save_tool=SAVE, frame_reader=lambda body: frame(body, semantic=True, expected_lifecycle=self.expected_lifecycle_binding))\n']
+    gates = [n for n in ast.walk(node) if isinstance(n, ast.If)
+             and len(n.body) == 1 and isinstance(n.body[0], ast.Break)
+             and any(isinstance(x, ast.Call) and isinstance(x.func, ast.Attribute)
+                     and x.func.attr == "should_finish" for x in ast.walk(n.test))]
+    need(len(gates) == 2, "two original settled generated-budget gates")
+    gate = min(gates, key=lambda item: item.lineno)
+    indent = " " * gate.col_offset
+    lines[gate.lineno - 1:gate.lineno - 1] = [
+        indent + 'if _first_checkpoint_v1.first_full_checkpoint_cutoff_reached_v1(_first_checkpoint_policy_v1, control_sequence=control_sequence, settled_cycles=settled, state=state):\n' + indent + '    break\n']
     lines[consume[0].lineno - 1:consume[0].lineno - 1] = [
-        '        _first_checkpoint_v1.require_first_full_checkpoint_policy_v1(self, request)\n']
+        '        _first_checkpoint_policy_v1 = _first_checkpoint_v1.require_first_full_checkpoint_policy_v1(self, request)\n']
     futures = [n.end_lineno or n.lineno for n in tree.body if isinstance(n, ast.ImportFrom) and n.module == "__future__"]
     lines[max(futures, default=0):max(futures, default=0)] = [
         'from tools.g2_saved_campaign import first_full_checkpoint_v1 as _first_checkpoint_v1\n']

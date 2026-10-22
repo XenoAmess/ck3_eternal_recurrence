@@ -14,6 +14,10 @@ Q41与下文Q39同父目录，叶名为 `current-saved-a41-runtime-prep01`；运
 
 灰色面板数字换行已修复并同步rich图资格表；当前cold旧材料尚未接新view override，不能称新view已上屏。远端f306的Living Artifacts步骤失败已在本机复现，生产者现在在kill/wait及自身流关闭后，以有界只读共享权限探测等待两份日志释放；不靠重试删除或把timeout改成功。其完整89测试、整26叶strict分别通过，回执为同目录LIVING-STEP96-ACTUAL02.json（7961B）和LIVING-STEP97-ACTUAL01.json（8133B）。这是软件证据，未授新实机资格；未保存尾的通用恢复仍在实现。
 
+05:48软件复验与预留修正（machine_id: xenoamess-full-tower-eb9d2c1186）：A批已无冲突rebase至76c2379c，完整CI step40的30命令再次全过（458项，1既有optional WAL跳过）；当前Living远端新增真实MCP集成后，完整92项零跳过、全部27叶strict通过。回执为Q41/new-software-0545-01的ROOT-A41-FULL-STEP40-ACTUAL04.json（30659B／9c90da73fcbd6ac3e72ebee617af41a8e06970dbf9bbc205ee0e1e804a28b5b0）、LIVING-STEP96-ACTUAL05.json（12225B）、LIVING-STEP97-ACTUAL03.json（12393B）。旧96／128MiB内存上限失败保留；经实际可用RAM核验、前向提高上限后才取得结果，不判作断言失败或追认旧超限。
+
+随后独审发现启动前检查reserve仍可被长FULL耗尽。现两叶最小修复缓存政策，在review−reserve后的已结算且无pending周期边界停止新周期，再经原SEM／SAVE；在途动作仍完整处理，不保证绝对实时或自动媒体余量。修复后实际render循环及原保存／HOLD共5项零跳过，实际CI command29两叶strict/equality通过；上述完整30结果早于此增量，不冒称其已整步复验。未保存尾的四叶强类型恢复实现已分工并行，当前仍未形成可执行新basis，也未写canonical账本或读取当前Driver／SAVE正文。
+
 ## N39截点历史实际状态
 
 - 没有本轮受管Game、SDK、录制或Task留在运行。N39闭场三Task均Job0且注销，screen137释放序号8124，R0026为completed-red；SDK与录制正常退出，Game原Job清理exit1，不能称正常闭场。

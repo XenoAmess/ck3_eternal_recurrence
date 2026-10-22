@@ -55,6 +55,12 @@ class Exit(Protocol):
                        request: dict[str, object], path: Path) -> dict[str, object]: ...
 
 
+@runtime_checkable
+class CutoffGate(Protocol):
+    def __call__(self, policy: f.FirstFullCheckpointPolicyV1, control_sequence: int,
+                 settled: int, state: dict[str, object]) -> bool: ...
+
+
 class QueueFixture:
     def __init__(self, io: MemoryIo, finish: Finish) -> None:
         self.io = io; self.finish = finish
@@ -221,6 +227,50 @@ class FirstFullCheckpointTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError, "actual control matches"):
             f.require_first_full_checkpoint_policy_v1(q, {"sequence": 102, "command": "full_loop"}, io=io, now_utc=NOW)
         self.assertEqual(q.calls, [])
+
+    def test_cutoff_real_rendered_loop_and_original_admission(self) -> None:
+        finish, _ = production(); io = MemoryIo(); queue = QueueFixture(io, finish)
+        queue.loop_count = 0; queue.full_loop_state["completed_cycles"] = 20
+        policy = f.require_first_full_checkpoint_policy_v1(queue,
+            {"sequence": 101, "command": "full_loop"}, io=io,
+            now_utc="2026-10-22T05:14:29Z")  # 31 seconds; 30 reserved.
+        archive = json.loads((Path(__file__).parent / "test_data/current_saved_sem11373_postcheck_v1.json").read_bytes())
+        _, raw = decode_current_saved_historical_payload_v1(archive["payloads"]["queue"])
+        tree = ast.parse(f.render_first_full_checkpoint_queue_v1(raw))
+        gates = [node for node in ast.walk(tree) if isinstance(node, ast.If)
+                 and any(isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute)
+                         and call.func.attr == "first_full_checkpoint_cutoff_reached_v1"
+                         for call in ast.walk(node.test))]
+        self.assertEqual(len(gates), 1)
+        head = ast.parse("def boundary(_first_checkpoint_policy_v1, control_sequence, settled, state):\n for _ in range(1):\n  pass\n return True\n").body[0]
+        if not isinstance(head, ast.FunctionDef): raise ValueError("real loop fixture")
+        loop = head.body[0]
+        if not isinstance(loop, ast.For): raise ValueError("actual break loop")
+        loop.body = [gates[0], ast.Return(value=ast.Constant(False))]
+        class ClockBoundary:
+            @staticmethod
+            def first_full_checkpoint_cutoff_reached_v1(policy: f.FirstFullCheckpointPolicyV1, *,
+                    control_sequence: int, settled_cycles: int, state: object) -> bool:
+                return f.first_full_checkpoint_cutoff_reached_v1(policy,
+                    control_sequence=control_sequence, settled_cycles=settled_cycles,
+                    state=state, now_utc="2026-10-22T05:14:30Z")
+        namespace: dict[str, object] = {"_first_checkpoint_v1": ClockBoundary}
+        exec(compile(ast.fix_missing_locations(ast.Module(body=[head], type_ignores=[])),
+                     "<actual rendered settled cutoff gate>", "exec"), namespace)
+        boundary = namespace["boundary"]
+        if not isinstance(boundary, CutoffGate): raise ValueError("actual cutoff gate")
+        state: dict[str, object] = {"pending_cycle": None, "pending_checkpoint": None}
+        self.assertTrue(boundary(policy, 101, 1, state))
+        self.assertFalse(boundary(policy, 101, 0, state))
+        self.assertFalse(boundary(policy, 102, 1, state))
+        for key in state:
+            pending = dict(state); pending[key] = {}
+            self.assertFalse(boundary(policy, 101, 1, pending))
+        for invalid in (True, 1.0, None):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                f.first_full_checkpoint_cutoff_reached_v1(policy, control_sequence=invalid,
+                    settled_cycles=1, state=state)
+        self.assertEqual(queue.calls, [])
 
     async def test_current_plan_requires_deployed_shared_source(self) -> None:
         from tools.g2_saved_campaign.test_current_saved_campaign_cold_v1 import plan
