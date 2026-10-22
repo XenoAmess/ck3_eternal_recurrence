@@ -347,6 +347,18 @@ def _settled_task_v1(task:SettledTaskClosureRefsV1,*,reader:BasisReaderV1,machin
 def validate_settled_progress_closure_v1(
  value:object,*,basis:CurrentSavedBasisV1,reader:BasisReaderV1,
 )->ClosedEpochV1:
+ """Validate a current closed checkpoint before creating a new SDK epoch."""
+ need(reader.stat(basis.refs.driver.path)==basis.driver_identity
+  and reader.stat(basis.refs.save.path)==basis.save_identity,"current closed Driver/SAVE exact identities")
+ result=validate_settled_progress_closure_evidence_v1(value,basis=basis,reader=reader)
+ need(reader.stat(basis.refs.driver.path)==basis.driver_identity
+  and reader.stat(basis.refs.save.path)==basis.save_identity,"stable closed Driver/SAVE exact identities")
+ return result
+
+def validate_settled_progress_closure_evidence_v1(
+ value:object,*,basis:CurrentSavedBasisV1,reader:BasisReaderV1,
+)->ClosedEpochV1:
+ """Validate immutable historical evidence; current SDK state is checked by its phase owner."""
  closure=parse_settled_progress_closure_v1(value,expected_machine_id=basis.machine_id)
  need(_same_json(evidence(reader,basis.refs.closure,65536),closure.to_wire()),"exact immutable settled closure source")
  need((closure.completed_cycles,closure.date_raw,closure.next_sequence,closure.original_wall_origin_utc)==
@@ -497,15 +509,13 @@ def _normal_driver_review_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,old_
    need(binding["pipe_name"]==recorded.get("pipe_name") and integer(binding["bridge_pid"],1)==old_game.pid
     and integer(binding["episode_character_id"],1)==basis.frame.actor_character_id
     and binding["episode_run_id"]==basis.frame.episode_run_id,"actual current Driver session binding")
-  need(reader.stat(basis.refs.driver.path)==basis.driver_identity
-   and reader.stat(basis.refs.save.path)==basis.save_identity,"current closed Driver/SAVE exact identities")
  return text(recorded.get("pipe_name"))
 
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[str,...]=())->ClosedEpochV1:
  need(len(_trail)<16 and basis.refs.closure.path not in _trail,"bounded acyclic continuity closure lineage")
  closure=evidence(reader,basis.refs.closure,65536)
  if closure.get("schema")==SETTLED_PROGRESS_CLOSURE_SCHEMA:
-  return validate_settled_progress_closure_v1(closure,basis=basis,reader=reader)
+  return validate_settled_progress_closure_evidence_v1(closure,basis=basis,reader=reader)
  if closure.get("schema")==CONTINUITY_FORWARD_SCHEMA:
   forward=validate_current_saved_continuity_forward_basis_v1(basis,reader=reader)
   original=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=basis.machine_id)
@@ -1114,9 +1124,11 @@ def validate_current_saved_cold_owner_v1(plan_ref:ExactRefV1,quote_ref:ExactRefV
 def validate_current_saved_cold_inputs_v1(
  basis:CurrentSavedBasisV1,*,basis_ref:ExactRefV1,validation_ref:ExactRefV1,reader:BasisReaderV1,
 )->CurrentSavedColdInputsV1:
- need(reader.stat(basis.refs.driver.path)==basis.driver_identity,"closed Driver identity")
+ need(reader.stat(basis.refs.driver.path)==basis.driver_identity
+  and reader.stat(basis.refs.save.path)==basis.save_identity,"closed Driver/SAVE identity")
  inputs=_validated_immutable_inputs_v1(basis,basis_ref=basis_ref,validation_ref=validation_ref,reader=reader)
- need(reader.stat(basis.refs.driver.path)==basis.driver_identity,"stable closed Driver identity")
+ need(reader.stat(basis.refs.driver.path)==basis.driver_identity
+  and reader.stat(basis.refs.save.path)==basis.save_identity,"stable closed Driver/SAVE identity")
  return inputs
 
 class WarmRuntimeReaderV1(BasisReaderV1,Protocol):

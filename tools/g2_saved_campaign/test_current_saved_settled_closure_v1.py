@@ -4,12 +4,14 @@ from __future__ import annotations
 from dataclasses import replace
 import hashlib
 import json
+from pathlib import Path
 import unittest
+from collections.abc import Callable
 from unittest.mock import patch
 
 from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
-    ExactRefV1, JsonObject, evidence, parse_ref, record,
+    ExactRefV1, JsonObject, evidence, parse_ref, record, encode_current_saved_basis_v1,
 )
 from tools.g2_saved_campaign.file_stat_identity_v1 import FileStatIdentityV1
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import pure_basis
@@ -23,6 +25,7 @@ class MemoryReader:
         self.raw: dict[str, bytes] = {}
         self.identities: dict[str, FileStatIdentityV1] = {}
         self.reads: list[str] = []
+        self.after_read: Callable[[str], None] | None = None
 
     def put(self, name: str, value: object) -> ExactRefV1:
         raw = json.dumps(value, sort_keys=True, allow_nan=False).encode()
@@ -35,6 +38,8 @@ class MemoryReader:
         if reference.path not in self.raw or reference.bytes > limit:
             raise ValueError("only bounded small metadata may be read")
         self.reads.append(reference.path)
+        if self.after_read is not None:
+            self.after_read(reference.path)
         return self.raw[reference.path]
 
     def stat(self, path: str) -> FileStatIdentityV1:
@@ -42,8 +47,8 @@ class MemoryReader:
 
 
 class SettledFixture:
-    def __init__(self) -> None:
-        self.reader = r = MemoryReader()
+    def __init__(self, reader: MemoryReader | None = None) -> None:
+        self.reader = r = MemoryReader() if reader is None else reader
         initial = pure_basis()
         machine = initial.machine_id
         processes: list[dict[str, object]] = [
@@ -127,7 +132,11 @@ class SettledFixture:
             driver_close=self.review_ref, closure=self.reader.put("closure.json", self.closure.to_wire())))
 
     def validate(self) -> owner.ClosedEpochV1:
-        return owner._closed_epoch(self.basis, self.reader)
+        result = owner.validate_settled_progress_closure_v1(
+            self.closure.to_wire(), basis=self.basis, reader=self.reader)
+        if owner._closed_epoch(self.basis, self.reader) != result:
+            raise AssertionError("closed consumer must retain the same historical evidence")
+        return result
 
 
 class SettledProgressClosureTests(unittest.TestCase):
@@ -249,12 +258,169 @@ class SettledProgressClosureTests(unittest.TestCase):
             "Game_exit_code": 1, "Game_forced": True, "Game_normal_close_qualified": False,
             "Game_Job_active_final": 0}
         f.basis = replace(f.basis, refs=replace(f.basis.refs, closure=f.reader.put("legacy.json", legacy)))
-        self.assertEqual(f.validate().old_game.pid, 10)
+        self.assertEqual(owner._closed_epoch(f.basis, f.reader).old_game.pid, 10)
         recorded["session_binding"] = None; driver["recorded_identity"] = recorded
         f.review["Driver"] = driver
         review_ref = f.reader.put("review.json", f.review)
         f.basis = replace(f.basis, refs=replace(f.basis.refs, driver_close=review_ref))
-        with self.assertRaises(ValueError): f.validate()
+        with self.assertRaises(ValueError): owner._closed_epoch(f.basis, f.reader)
+
+
+class WarmMemoryReader(MemoryReader):
+    def __init__(self) -> None:
+        super().__init__()
+        self.headers: dict[str, bytes] = {}
+        self.processes: dict[int, JsonObject] = {}
+
+    def read_driver_header(self, path: str, limit: int) -> bytes:
+        if limit > 16384:
+            raise ValueError("bounded current Driver header")
+        return self.headers[path][:limit]
+
+    def process_identity(self, pid: int) -> JsonObject:
+        return self.processes[pid]
+
+
+class NormalWarmFixture(SettledFixture):
+    """Persist a new RAM Driver generation and feed the actual public warm consumer."""
+    def __init__(self, *, persisted: bool = True) -> None:
+        self.runtime_reader = r = WarmMemoryReader()
+        super().__init__(r)
+        life: JsonObject = {"schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "ordinary_campaign_succession", "xar_enabled": None,
+            "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+            "source": "absent_by_verified_xar_mod_not_loaded", "environment_sha256": "e" * 64}
+        self.basis = replace(self.basis, checkpoint={**self.basis.checkpoint, "succession_lifecycle": life})
+        cp: JsonObject = {"status": "saved", "path": self.basis.refs.save.path,
+            "name": "closed-save.ck3", "size": self.basis.refs.save.bytes,
+            "sha256": self.basis.refs.save.sha256, "date_raw": self.basis.frame.date_raw,
+            "history_index": 1, "episode_character_id": self.basis.frame.actor_character_id,
+            "episode_run_id": self.basis.frame.episode_run_id, "succession_lifecycle": life}
+        state: JsonObject = {"schema": "g2.queue.cumulative-loop/v1", "pending_cycle": None,
+            "pending_checkpoint": None, "terminal": None, "completed_cycles": self.basis.completed_cycles,
+            "start_date_raw": self.basis.origin.start_date_raw, "before": self.basis.frame.to_wire(),
+            "campaign_goal_anchor": self.basis.campaign_goal_anchor, "actual_saved_checkpoint": cp,
+            "counts": {"checkpoint_saved": self.basis.progress.checkpoint_count_after},
+            "governance_result_state": None, "pending_focus": None}
+        ledger: JsonObject = {"machine_id": self.basis.machine_id,
+            "last_settled_cycles": self.basis.progress.ledger_cycles,
+            "last_settled_date_raw": self.basis.progress.ledger_date_raw,
+            "start_date_raw": self.basis.origin.start_date_raw, "target_date_raw": self.basis.origin.target_date_raw,
+            "target_days": self.basis.origin.target_days}
+        refs = replace(self.basis.refs, seed=r.put("seed.json", state),
+            governance=r.put("governance.json", state), settled_state=r.put("state.json", state),
+            ledger=r.put("ledger.json", ledger), checkpoint_validator=r.put("validator.json", {}))
+        for name in ("semantic_response", "save_response", "settled_full_response", "origin_ledger", "wall_origin", "next"):
+            refs = replace(refs, **{name: r.put(name + ".json", {})})
+        self.basis = replace(self.basis, refs=refs)
+        self.review["frozen_settled_Queue"] = refs.settled_state.to_wire()
+        self.review["frozen_continuity_ledger"] = refs.ledger.to_wire()
+        self.reseal_review()
+        self.basis_ref = r.put("basis.json", json.loads(encode_current_saved_basis_v1(self.basis)))
+        b = self.basis
+        qualification = owner.BasisQualificationV1(b.machine_id, UTC, self.basis_ref,
+            b.refs.driver, b.refs.save, b.driver_identity, b.driver_identity, b.save_identity,
+            b.save_identity, b.refs.checkpoint_validator, 1, 1, 1, 1)
+        self.validation_ref = r.put("qualification.json", qualification.to_wire())
+        self.root = Path("/synthetic/settled")
+        self.game_identity = owner.CurrentGameIdentityV1(30, str(BIRTH + 100), UTC)
+        game_ref = r.put("ROOT-ACTUAL-GAME-LAUNCH-C23.json", {"machine_id": b.machine_id,
+            **self.game_identity.to_wire(), "command": ["/game/ck3.exe"]})
+        r.processes[30] = {"pid": 30, "creation_filetime": str(BIRTH + 100), "executable": "/game/ck3.exe"}
+        pair_rows: list[JsonObject] = []
+        for role, pid in (("sdk_queue", 31), ("sdk_application", 32)):
+            row: JsonObject = {"role": role, "pid": pid, "creation_filetime": str(BIRTH + pid), "executable": "/sdk/python.exe"}
+            pair_rows.append(row); r.processes[pid] = row
+        pair_ref = r.put("ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C23.json", {
+            "machine_id": b.machine_id, "status": "SDK_PAIR_HANDLES_RETAINED", "rpc_started": False,
+            "at_utc": UTC, "processes": pair_rows})
+        diagnostics: JsonObject = {"bridge_pid": 30, "pipe_name": "pipe", "connection_generation": 1,
+            "hello": {"pid": 30, "connection_generation": 1, "ck3_build_match": True,
+                "game_adapter_id": "ck3-1.20.0.4-msvc-x64", "game_adapter_status": "ready"}}
+        semantic: JsonObject = {**b.frame.to_wire(), "episode_character_id": b.frame.actor_character_id,
+            "episode_run_id": b.frame.episode_run_id, "succession_lifecycle": life,
+            "diagnostics": diagnostics, "map_ready": True, "paused": True,
+            "campaign_goal": b.campaign_goal_anchor, "active_event": None, "pending_character_interaction": None}
+        capability: JsonObject = {"episode_character_id": b.frame.actor_character_id,
+            "episode_run_id": b.frame.episode_run_id, "episode_identity_pending": False,
+            "one_life_terminal": False, "diagnostics": diagnostics,
+            "native_session_control": {"configured": True, "restore_checkpoint": True,
+                "driver_state_restored": True, "driver_state_restore_kind": "cold_checkpoint",
+                "episode_binding_state": "active_resumed", "driver_state_error": None,
+                "cold_candidate_rejection": None, "driver_state_path": b.refs.driver.path},
+            "checkpoint_materialization": {"configured": True, "save_dir": str(Path(b.refs.save.path).parent),
+                "filename": Path(b.refs.save.path).name}}
+        sem_ref = self.response(b.next_sequence, "ck3_take_semantic_snapshot_private_v1", semantic)
+        cap_ref = self.response(b.next_sequence + 1, "ck3_get_capabilities", capability)
+        bound_ref = r.put("p37-queue/ROOT-C23-NORMAL-COLD-BOUND.json", {
+            "machine_id": b.machine_id, "schema": "xar.c23.normal-checkpoint-cold-bound/v1",
+            "observed_at_utc": UTC, "opening_frame": b.frame.to_wire(), "checkpoint": cp,
+            "completed_cycles": b.completed_cycles, "T0_date_raw": b.origin.start_date_raw,
+            "new_ordinary_cycle_credit": 0, "AUTO_or_MET_replayed": False, "semantic_response": sem_ref.path})
+        cold_ref = r.put("ROOT-P37C23-COLD-RESUME-ADMISSION.json", {"machine_id": b.machine_id,
+            "basis_ref": self.basis_ref.to_wire(), "validation_ref": self.validation_ref.to_wire(),
+            "new_Game": self.game_identity.to_wire()})
+        self.sources = owner.WarmSourceRefsV1(game_ref, pair_ref, sem_ref, cap_ref, bound_ref, cold_ref)
+        header: dict[str, object] = {"format_version": 2, "pipe_name": "pipe", "bridge_pid": 30,
+            "episode_character_id": b.frame.actor_character_id, "episode_run_id": b.frame.episode_run_id,
+            "last_checkpoint": cp, "command_history": []}
+        raw = json.dumps(header, separators=(",", ":")).encode()
+        r.headers[b.refs.driver.path] = raw
+        if persisted:
+            r.identities[b.refs.driver.path] = FileStatIdentityV1(len(raw), "999999", "2")
+
+    def response(self, sequence: int, tool: str, body: JsonObject) -> ExactRefV1:
+        return self.reader.put(f"p37-responses/{sequence:04d}-1-result.json", {
+            "request": {"sequence": sequence, "tool": tool}, "started_at_utc": UTC,
+            "ended_at_utc": UTC, "result": {"is_error": False, "result_type": "complete", "structured_content": body}})
+
+    def warm(self) -> owner.WarmCurrentSavedFeederInputsV1:
+        return owner.validate_current_saved_warm_inputs_v1(self.basis, basis_ref=self.basis_ref,
+            validation_ref=self.validation_ref, sources=self.sources, reader=self.runtime_reader,
+            runtime_root=self.root)
+
+
+class NormalClosureWarmTests(unittest.TestCase):
+    def test_cold_save_identity_is_rechecked_after_immutable_and_closure_reads(self) -> None:
+        for last_read in ("seed", "task"):
+            with self.subTest(last_read=last_read):
+                f = NormalWarmFixture(persisted=False)
+                trigger = f.basis.refs.seed.path if last_read == "seed" else f.tasks[-1].unregistered.path
+
+                def changed_file(path: str) -> None:
+                    if path == trigger:
+                        f.reader.identities[f.basis.refs.save.path] = replace(f.basis.save_identity, file_id="777777")
+
+                f.reader.after_read = changed_file
+                with self.assertRaisesRegex(ValueError, "stable closed Driver/SAVE"):
+                    owner.validate_current_saved_cold_inputs_v1(f.basis, basis_ref=f.basis_ref,
+                        validation_ref=f.validation_ref, reader=f.runtime_reader)
+
+    def test_actual_warm_consumer_accepts_new_driver_and_cold_rejects(self) -> None:
+        f = NormalWarmFixture()
+        with self.assertRaisesRegex(ValueError, "closed Driver"):
+            owner.validate_current_saved_cold_inputs_v1(f.basis, basis_ref=f.basis_ref,
+                validation_ref=f.validation_ref, reader=f.runtime_reader)
+        result = f.warm()
+        self.assertTrue(result.warm_proof.closed_driver_identity_replaced)
+        self.assertEqual(result.warm_proof.sources, f.sources)
+        self.assertNotEqual(result.warm_proof.driver_identity, f.basis.driver_identity)
+        self.assertNotIn(f.basis.refs.driver.path, f.reader.reads)
+        self.assertNotIn(f.basis.refs.save.path, f.reader.reads)
+
+    def test_wrong_bound_source_or_current_header_is_rejected(self) -> None:
+        for mutation in ("bound", "source", "header"):
+            with self.subTest(mutation=mutation):
+                f = NormalWarmFixture()
+                if mutation == "bound":
+                    row = evidence(f.reader, f.sources.cold_bound_ref)
+                    row["completed_cycles"] = f.basis.completed_cycles + 1
+                    f.sources = replace(f.sources, cold_bound_ref=f.reader.put("p37-queue/ROOT-C23-NORMAL-COLD-BOUND.json", row))
+                elif mutation == "source":
+                    f.sources = replace(f.sources, semantic_response_ref=f.reader.put("wrong-response.json", {}))
+                else:
+                    f.runtime_reader.headers[f.basis.refs.driver.path] = f.runtime_reader.headers[f.basis.refs.driver.path].replace(b'"bridge_pid":30', b'"bridge_pid":31')
+                with self.assertRaises(ValueError): f.warm()
 
 
 if __name__ == "__main__":

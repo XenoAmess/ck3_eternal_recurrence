@@ -2,6 +2,8 @@
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`；本文开始截点 `2026-10-22T03:37Z`。承接 [Source26旧交接](2026-10-20-robert-source26-a05-vacation-handoff.md)及[质量整改专题](../ck3-native-ai/current-saved-code-quality-correction-20261022.md)。其他机器的安装、Steam、容量或现场结果不能替代本机读回。
 
+**04:11 接续注意：N40 仅 readiness 批次已闭场，未提交 FULL11472，仍为 1082-02-15／5628 日。SDK 正常 persist 已改变当前 Driver；下文 Q39 basis 现在只是上一保存资格，不能直接冒充当前冷启动输入。新的 readiness-only 闭场恢复资格尚在实现，禁止伪造 feeder Task 或套用失败／unknown schema。**
+
 ## 当前实际状态
 
 - 没有本轮受管Game、SDK、录制或Task留在运行。N39闭场三Task均Job0且注销，screen137释放序号8124，R0026为completed-red；SDK与录制正常退出，Game原Job清理exit1，不能称正常闭场。
@@ -62,3 +64,19 @@ Root只物理读取Driver一次，保留RAM bytes；完整解析及SHA各两次�
 Planv4／Quotev5显式renderer字段及当前双路径接线已完成。实际当前材料完整RAM compose为165叶／3649995B，26外部项、8 canonical、66闭包及全部最终len／SHA逐一通过；便携intake→实际继承构造器及拒绝回归也进入57项。完整145份历史材料的compose是本机集成，仍不授便携全图或运行信用。producer最终111591B／`2802ec6c660f03b2eeee6b8e2a474d18221ef7282d5315aab653569e231a6cc6`，testcold145689B／`035c6885268d07dfec7cfb44fb23e25e1cfd20740edc18fc09cb9fac25d89273`。
 
 Root正在按独立新04:15范围准备N40容量数据，须实际完成新四消费者复核、fresh Steam和完整公共prepare才可启动；不是延长旧03:00或软件03:45票据。此前部署与现场历史事实不变。
+
+## 04:11 N40 实际闭场与暖态修复
+
+本机 N40 的新 Planv4／Quotev5、165 叶物理部署、公共 prepare、完整原 supervisor prefix、后台 Steam offline/true、原 Task 启动及录制均实际通过。Game85076／出生 FILETIME 字符串 `134371147974445277`；首帧直接审看了 1082-02-15 暂停地图，2560×1440／1:1、右侧灰色文字可见、无旧蓝窗及影片标题。面板仍为等待文案，不授实际决策富化信用。首 FULL 的 control_timing 已写入真正 cold admission，但该 FULL 未运行，仍无实测提速信用。
+
+SEM11470、CAP11471 和 BOUND 实际成功。随后公共 `load_current_saved_warm_inputs_v1` 因 `current closed Driver/SAVE exact identities` 拒绝：新 normal closure 错把历史闭场 Driver 身份继续当成 SDK persist 之后的当前身份。没有绕过守卫、提交 FULL11472、业务动作或 SAVE；canonical 窗口仍232／5182／53279400，新增游戏日和周期均为0，原 SAVE11469 保留。
+
+共享修复将历史闭场来源校验与当前冷态身份检查分开；原公共 closed validator 和真正 cold inputs 都保留 Driver／SAVE 双前后精确 stat，warm 继续校验原六来源、Game／SDK 活代、SEM／CAP／BOUND、当前稳定 header 和 SAVE。完整 warm 消费者及反例实际8项通过；Root 联合关键60项、完整 preflight34项均零跳过，20完整模块 strict/equality/explicit/silent 通过。独审指出的 cold SAVE 后置时点也已补齐。该修复尚未在新实机批次重演，不追认已冻结 N40 源码。
+
+Root STOP 实际为04:02:21.806185Z，在04:15前收场。两 SDK 0/0、OBS与发布器正常退出；Game 未在原30秒等待中正常退出，原 Job 清理 exit1，不能称正常闭场。两个 Task 均 Job0、注销，screen138 释放8130。媒体248385978B，小于467364602B硬上限；Root未读媒体正文、未散列、未作最终质量验收。04:03:46.640753Z 后台 Steam 仍 offline/true。
+
+两个执行错误保留原件：第一次桌面定位漏 SDK import root，在窗口操作前报错，补实际 `PYTHONPATH` 后成功；Run ID 未在启动前分配，闭场后才将实际 launch nonce 绑定为 `…--vanilla--R0027`，明确 `late_allocation=true` 并记 completed-red，不回填历史启动时间。后继必须先分配 run ID，再启动；定位沿实际 display 子环境执行。
+
+Q40 为同一 O 下 `current-saved-a40-runtime-prep01`：`ROOT-A40-ACTUAL-CLOSEOUT01.json`7035B／`b3859180815075a4b167bc87e53e8606b8a334f999ec8609a3b19d363257420f`；`ROOT-A40-MANDATORY-SOFTWARE-FIX01.json`1409B／`efa9928adb3524a06aa9f7ef13c00724032a48ba01aa39e390b2d01391da88fe`；`ROOT-A40-JOINT20-STRICT-FIX01.json`6183B／`0a23153e9b1b7e1dd5b7f242d8bc1449ae9ca2155ce530bedca2f9d6b2788ac7`。当前 Driver 仅 stat 为43057250B、FileID字符串 `281474989076443`，还没有新的完整内容资格；SAVE 的原 FileID仍为 `281474988852756`。
+
+正在以独立有限软件范围实现明确的 readiness-only 正常闭场合同：仅两 Task，绑定实际只读请求、BOUND、unused NEXT、新 Driver 与原 SAVE，保留全部旧业务帧、CP、seed、ledger、T0和unknown。现有三个 Task 的正常闭场、continuity-forward及失败 schema 均不能冒充此状态。新合同及恢复资格完成前不再启动游戏。
