@@ -1,18 +1,22 @@
 # 活武器：验收执行与结果合同
 
-2026-10-22。本文配套[总测试方案](test-plan.md)和[内容矩阵](content-acceptance-matrix.md)，用于接入公共验收器和保存可核验结果。**`core_continuous` v1 已实际运行 R0002，原 adapter 因错误的固定 runtime 角色身份而 BLOCKED；同场后续独立动作确认装备及两个自然日推进，第三天读回失败。当前 v2 改为当次身份绑定与三次实际保存后验，仍待重新实机运行。** 来源机器、原件、失败清理及真实截图见[R2 记录](runtime-r2-issues.md)。
+2026-10-22。本文配套[总测试方案](test-plan.md)和[内容矩阵](content-acceptance-matrix.md)，用于接入公共验收器和保存可核验结果。**当前入口为 `core_continuous` v3，七次实际保存后验与四档普通管理喂养的范围见[v3方案](feeding-shortcuts-and-core-v3.md)。R0008已启动，状态记为 `RUNNING_R0008`，尚不授予业务PASS或发布通过。**
+
+这项启动事实属于 `machine_id: pc-20260924rtuf-f11af23c08`；原始host记录的启动时间为2026-10-22T10:46:26.850656Z。出处是外置 `D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0008/run-context-r8-a01.json` 和同目录 `native-report.json`；后续业务与终态以该场原始记录及单独结果报告为准，不从启动状态推断。
+
+历史：v1在R0002因错误的固定runtime角色身份而BLOCKED；同场后续独立动作确认装备及两个自然日推进，第三天读回失败。随后v2引入当次身份绑定与三次实际保存后验，其制定时状态为待重新实机运行。来源机器、原件、失败清理及真实截图见[R2记录](runtime-r2-issues.md)，后续已发生范围另见[R7记录](runtime-r7-star-growth-and-interruption.md)。各旧场结果保持原件，不由v3追认通过。
 
 ## 1. 复用公共入口
 
 后续仅从[公共六模式入口](../../tools/ck3_mod_acceptance.py)执行`plan / prepare / allocate / preflight / run / verify`。产品不复制host、DLL、启动器、屏幕keeper、正常退出或SDK下载。通用协议见[公共说明](../../docs/ck3-mod-upgrade-fast-validation.md)。历史文件中的固定本机路径不作为本产品运行参数。
 
-已登记product key为`living-artifacts`、runtime_mod_key为同一产品身份；Workshop ID保持null。[公共产品清单](../../tools/ck3_mod_acceptance_products.json)的`core_continuous`使用[产品adapter](../tools/acceptance_adapter.py)和[v2 合同](../tools/core_continuous.contract.json)，只覆盖首阶段真实装备、自动月成长、卸下停经验入口；保存的原始变量与独立原生 owner/equipped 交叉，不再使用隐藏动态 logger。详见[保存后验合同](checkpoint-observer-contract.md)。现有MCP没有通用宝物选择通道，生产喂养子项明确BLOCKED；其他矩阵仍未实跑。`static-and-basicload`保留原配置，但空`required_startup`与未绑定`post_start`不能通过共享prepare，状态为BLOCKED，不能凭历史plan把它称为可运行。
+已登记product key为`living-artifacts`、runtime_mod_key为同一产品身份；Workshop ID保持null。[公共产品清单](../../tools/ck3_mod_acceptance_products.json)的`core_continuous`使用[产品adapter](../tools/acceptance_adapter.py)和[v3合同](../tools/core_continuous.contract.json)，覆盖首阶段真实装备、自动月成长、卸下停经验及四档连续喂养入口。七次实际保存的原始状态与独立原生owner/equipped、材料库存身份交叉，不使用隐藏动态logger。普通管理决议通过原生MCP打开、选择和确认，之后由原生事件选项进入四档候选及具体材料确认；原宝物自选交互保留，尚不把接口可用认作实机喂养通过。详见[v3方案](feeding-shortcuts-and-core-v3.md)及[保存后验合同](checkpoint-observer-contract.md)。历史v2因没有通用宝物选择通道而将喂养记BLOCKED，原结论不改写；其他完整矩阵仍需各自实跑。`static-and-basicload`保留原配置，但空`required_startup`与未绑定`post_start`不能通过共享prepare，状态为BLOCKED，不能凭历史plan把它称为可运行。
 
 登记前先实现真实adapter，提供`prepare_case / run_case / verify_case`，可提供`validate_contract`。配置冻结其path/config、initial_plan、startup mode/state_dir、预算、required_mcp_tools、normal_close及实际业务范围；所需工具必须已存在且source_build_ready，不用占位能力或空adapter满足形式检查。
 
 ## 2. 六阶段的职责与命令模板
 
-共同四参数固定为`--runtime <本机共同映射.json> --products tools/ck3_mod_acceptance_products.json --product living-artifacts --case <实际登记case>`。`core_continuous`已执行不启动游戏的plan与动态加载检查；后续prepare、allocate和实机结论须分别取证。
+共同四参数固定为`--runtime <本机共同映射.json> --products tools/ck3_mod_acceptance_products.json --product living-artifacts --case <实际登记case>`。早期`core_continuous`已执行不启动游戏的plan与动态加载检查；当前R0008的prepare、allocate、启动及实机结果须分别由前述当场原件取证，不能以早期检查代替。
 
 ```text
 py tools/ck3_mod_acceptance.py plan --runtime <本机共同映射.json> --products tools/ck3_mod_acceptance_products.json --product living-artifacts --case core_continuous

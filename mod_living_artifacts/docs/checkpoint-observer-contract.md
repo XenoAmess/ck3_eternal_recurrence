@@ -1,8 +1,10 @@
-# 核心验收：当次身份与保存后验 v2
+# 核心验收：当次身份与保存后验 v3
 
-此合同取代核心 case v1 的固定 runtime actor 和隐藏事件动态日志。旧 R2 prepared、冻结 c03、实际 BLOCKED 结果及失败日志保持原件；新版 Python 合同不能修改旧 prepared 的 caller/source 守卫。
+当前入口为[连续核心v3](feeding-shortcuts-and-core-v3.md)，采用七次实际保存、严格熔化及独立原生交叉；R0008已经启动，状态为 `RUNNING_R0008`，不授予尚未完成的业务PASS。机器为 `machine_id: pc-20260924rtuf-f11af23c08`，host原始启动时间2026-10-22T10:46:26.850656Z；来源为外置 `D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0008/run-context-r8-a01.json` 及同目录 `native-report.json`。后续结果由该场实际记录另行报告。
 
-本次实际来源机器为 `machine_id: pc-20260924rtuf-f11af23c08`，观察日期为 2026-10-21 UTC / 2026-10-22 Asia/Shanghai。证据来自公共 R2 `pc-20260924rtuf-f11af23c08--living-artifacts--R0002`，原 PID 10924 / generation 1；这些整数只描述该场，代码不将其作为下场常数。
+v2最初取代核心case v1的固定runtime actor和隐藏事件动态日志。下述R2实例与v2制定时的状态保留为历史：旧R2 prepared、冻结c03、实际BLOCKED结果及失败日志保持原件；新版Python合同不能修改旧prepared的caller/source守卫。
+
+R2历史来源机器为 `machine_id: pc-20260924rtuf-f11af23c08`，观察日期为2026-10-21 UTC / 2026-10-22 Asia/Shanghai。证据来自公共R2 `pc-20260924rtuf-f11af23c08--living-artifacts--R0002`，原PID10924 / generation1；这些整数只描述该场，代码不将其作为下场常数。
 
 ## 当次角色身份
 
@@ -24,9 +26,11 @@ R2 的隐藏事件 `debug_log` 没有可见事件的动态本地化上下文。�
 
 固定 argv 为 `melter melt original --format ck3 --unknown-key error -o melted`。回调只负责离线文件处理；游戏保存由原公共MCP提交。解析结果再与同日期原生 owner、inventory membership、equipped谓词交叉，不能以源码、回调ACK或保存后的旧截图替代。
 
-新核心case最多三份保存后验：实际9月15日初值、16个真实日推进至10月1日的首次月结、卸下后再31个真实日至11月1日。有限72天/420调用预算不变，不按日保存大文件。三阶段预期分别是1/92/growth0、2/0/growth1、保持2/0/growth1；喂养仍明确BLOCKED，等待真实普通宝物选择流程。
+历史v2方案最多三份保存后验：实际9月15日初值、16个真实日推进至10月1日的首次月结、卸下后再31个真实日至11月1日。有限72天/420调用预算，不按日保存大文件。三阶段预期分别是1/92/growth0、2/0/growth1、保持2/0/growth1；当时喂养明确BLOCKED，等待真实普通宝物选择流程。这是旧方案范围，不是当前v3的保存上限或新场通过记录。
 
-新版v2保存回调还未实机执行；R2原场的Root离线熔化与独立读取只证明其真实来源和当时保存状态，不自动验证新版整个adapter，更不代表12异能、8诅咒、中文界面或发布通过。生产可见事件本地化暂不因隐藏logger缺上下文而批量改动，待真实管理页另验。
+当前v3在前三次保存后重新装备目标，经普通管理决议和原生事件选项真实连续喂养四档材料，每档之后各保存一次，合计七份。每一步消费须同时证明原材料真实ID消失、尚未消费材料仍在、同一目标的主人/装备与保存经验/自动等级序列吻合，四次保持同一暂停日期。解析器按每步明确的剩余材料集合校验，不能把任意缺失材料视为成功消费。完整前置、数字后验和新场固定预算见[v3方案](feeding-shortcuts-and-core-v3.md)；R0008当前运行不提前授予这些结果。
+
+v2制定时保存回调尚未实机执行；R2原场的Root离线熔化与独立读取只证明其真实来源和当时保存状态，不自动验证新版整个adapter，更不代表12异能、8诅咒、中文界面或发布通过。后续实际名称及自动月升级证据见[R7记录](runtime-r7-star-growth-and-interruption.md)，其余失败或未完成项保持原结论。生产可见管理页仍须按本场实际显示另验，隐藏logger的上下文错误不能直接外推到全部可见事件。
 
 ## 离线回调执行工具
 
@@ -38,4 +42,4 @@ R2 的隐藏事件 `debug_log` 没有可见事件的动态本地化上下文。�
 
 原生 ITEM 查询先确认实际 inventory view；已可见时直接继续。若原 MCP OPEN 返回 R2 实测的精确前置错误 `RuntimeError: Inventory opening requires the existing actual managed-source inventory`，同时没有 result，且冻结 guard 文件 SHA 与[合同](../tools/inventory_gui_contract.py)一致，才允许通过已有 Root checkpoint 请求实际 GUI 打开。包含相同文字的其他错误不算此拒绝；未知提交不重发。
 
-Root 响应绑定当次 run/PID/generation/actor/date/目标和原拒绝，必须附真实原图、统一坐标映射回执与点击后原图。校验器重算独立 X/Y 变换，核真实 PNG 尺寸、前后桌面尺寸及 HWND/PID；随后 adapter 重新 snapshot 和 ITEM，实际 view 可见才继续。回调 ACK 本身不能取得装备或 GUI 业务通过。输入桌面不可访问时返回真实 blocked；发出点击但结果未知时保留 outcome_unknown。这条新回调仍待下一场实机验证。
+Root 响应绑定当次 run/PID/generation/actor/date/目标和原拒绝，必须附真实原图、统一坐标映射回执与点击后原图。校验器重算独立 X/Y 变换，核真实 PNG 尺寸、前后桌面尺寸及 HWND/PID；随后 adapter 重新 snapshot 和 ITEM，实际 view 可见才继续。回调 ACK 本身不能取得装备或 GUI 业务通过。输入桌面不可访问时返回真实 blocked；发出点击但结果未知时保留 outcome_unknown。v2初稿将这条回调列为待下一场实机验证，后续各场的实际作用及通过范围分别依原始记录，不由接口声明追认。
