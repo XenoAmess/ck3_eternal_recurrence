@@ -312,6 +312,36 @@ class SharedEntryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Case read-only opt-in'):
             self.select()
 
+    def test_campaign_root_readonly_selection_uses_registered_mcp(self) -> None:
+        import asyncio
+        from types import SimpleNamespace
+
+        repo = Path(__file__).resolve().parents[1]
+        sys.path.insert(0, str(repo / 'ck3_autonomous_player/src'))
+        from mcp import Client
+        from xar_autoplayer.bridge.mcp_server import create_server
+
+        tool = 'ck3_query_campaign_root_context_v1'
+        case = self.products['products']['xqol']['cases'][0]
+        case['required_mcp_tools'].append(tool)
+        case['opt_in_read_only_mcp_tools'] = [tool]
+        self.write(self.products_path, self.products)
+        selected = self.select()
+        self.assertEqual(selected.describe()['opt_in_read_only_mcp_tools'], [tool])
+        flags = [selected.argv[i + 1] for i, value in enumerate(selected.argv)
+                 if value == '--case-read-only-mcp-tool']
+        self.assertEqual(flags, [tool])
+
+        driver = SimpleNamespace(case_declared_read_only_mcp_tools=frozenset(flags))
+
+        async def query() -> None:
+            async with Client(create_server(driver)) as client:
+                advertised = {item.name for item in (await client.list_tools()).tools}
+                self.assertIn(tool, advertised)
+                self.assertNotIn('ck3_execute_player_rite_creation_action_v1', advertised)
+
+        asyncio.run(query())
+
     def test_changed_shared_pin_blocks(self):
         self.host.write_text(self.host.read_text()+'#changed\n')
         self.assertTrue(any('Pinned input changed' in x for x in self.select().preflight()['blockers']))
