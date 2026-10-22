@@ -617,6 +617,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -c "import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['tools.test_faith_e02_pilgrimage_workflow','tools.test_faith_e02_pilgrimage_event_policy','tools.test_faith_e02_pilgrimage_milestone_observations']); count=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if count>0 and result.testsRun==count and result.wasSuccessful() and not result.skipped else 1)"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -c "import unittest; s=unittest.defaultTestLoader.loadTestsFromNames(['tools.test_faith_e02_d1_adapter_entry','tools.test_ck3_mod_acceptance_graphics_cache']); n=s.countTestCases(); r=unittest.TextTestRunner(verbosity=2).run(s); raise SystemExit(0 if n>0 and r.testsRun==n and r.wasSuccessful() and not r.skipped else 1)"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_case_imports.py tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --check-untyped-defs --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_adapter.py
