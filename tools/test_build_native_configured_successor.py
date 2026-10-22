@@ -366,7 +366,10 @@ class ConfiguredSuccessorTests(unittest.TestCase):
     def test_noncompiled_replay_preserves_original_plan_and_rejects_compiler_dependencies(self) -> None:
         self._readonly_plan_replay(consumer=True)
 
-    def _readonly_plan_replay(self, *, consumer: bool) -> None:
+    def test_noncompiled_replay_ignores_unbuilt_generated_sources_but_requires_declared_inputs(self) -> None:
+        self._readonly_plan_replay(consumer=True, unbuilt_generated=True)
+
+    def _readonly_plan_replay(self, *, consumer: bool, unbuilt_generated: bool = False) -> None:
         native = self.root / "ck3_autonomous_player/native_bridge"
         native.mkdir(parents=True)
         header = native / "include/xar/activity_typed_planner_v1.hpp"
@@ -442,6 +445,14 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         config = replace(self.config, baseline=baseline, incremental_inputs=inputs)
         producer = UngatedProducer(config)
         producer.native = native
+        dormant: Compile | None = None
+        if unbuilt_generated:
+            missing = producer.build / "ck3_12003_initialization_context_stats_wire/production_regiment_serializer.cpp"
+            self.assertFalse(missing.exists())
+            dormant = Compile("unbuilt_generated_fixture", missing,
+                              producer.build / "CMakeFiles/unbuilt_generated_fixture.dir/generated.cpp.obj",
+                              (sys.executable, "/c", str(missing)))
+            rows.append(dormant)
         plan = {"machine_id": config.machine_id, "observed_at_utc": "owned fixture",
             "source_commit": config.source_commit, "baseline_qualification": baseline, "baseline_incremental_inputs": inputs,
             "original_dependencies": pin(dependency_path), "changed_native_paths": ["src/runtime.cpp"],
@@ -460,6 +471,13 @@ class ConfiguredSuccessorTests(unittest.TestCase):
             self.assertEqual([row.target for row in selected], ["xar_ck3_12002_runtime"])
             self.assertEqual(actual_borrowed, {"CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj": borrowed})
             self.assertEqual(original, reference)
+            if dormant is not None:
+                self.assertFalse(dormant.source.exists())
+                for required_target in ("wire_fixture", "xar_ck3_bridge"):
+                    with self.subTest(required_target=required_target), self.assertRaises(FileNotFoundError):
+                        producer.plan([*rows, replace(dormant, target=required_target)],
+                                      existing_plan=reference, noncompiled_replay=replay)
+                self.assertEqual(pin(Path(reference["path"])), reference)
             if consumer:
                 with self.assertRaisesRegex(ValueError, "existing read-only"):
                     producer.plan(rows, noncompiled_replay=replay)

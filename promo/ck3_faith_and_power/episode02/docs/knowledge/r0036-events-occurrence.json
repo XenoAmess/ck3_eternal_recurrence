@@ -1,0 +1,348 @@
+{
+  "schema": "xar.ck3.r0036-source-only-occurrences/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0036",
+  "batch_closed": true,
+  "closed_boundary": "224 actual days; arrived3101, no choice, noSave; no Hajjaj/return/coexistence credit",
+  "original_source_pending_tags_retained": true,
+  "events": {
+    "travel_danger_events.1007": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0036-travel-danger-1007.source-only.json",
+      "source_document_sha256": "2237a2bfcb2c05e249eb068bcea73d4636ffff832544740478f1f48f6f95a763",
+      "source_observation_pointer": "/events/travel_danger_events.1007/observations/actual",
+      "actual": {
+        "instance_id": 6,
+        "actor_character_id": 15893,
+        "date_raw": 51396240,
+        "selected_native_option_index": 2,
+        "selected_option_number": 3,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true
+      },
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 144,
+        "date_raw": 51396240,
+        "current_event_instance_id": 6,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.1007",
+        "calculated_event_id": 1161007,
+        "runtime_stats_ordinal": 363,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "water_hider",
+            "name_identifier": 32432,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19351
+              }
+            }
+          },
+          {
+            "name": "current_location",
+            "name_identifier": 27262,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "destination",
+            "name_identifier": 208,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "都怪我的同行者玛赫莎喝得和\u0015EMP 马\u0015!一样多，无法忍受！",
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 3,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们需要坚持下去。",
+          "unavailable_reason": ""
+        }
+      ],
+      "original_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0036\\case-output\\faith-e02-journey-001-event-6-offline-analysis-input.json",
+        "bytes": 75280,
+        "sha256": "00a180f6412d4c6ea2f480d42ee391edf1051ae74f1cf47b50a1997b45c801d1"
+      }
+    },
+    "pilgrimage.2060": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0036-pilgrimage-2060.source-only.json",
+      "source_document_sha256": "8bd63c5e7ea6b4e698d52f85a807bf183b038baf7ee608d18f1f6a26de454b4f",
+      "source_observation_pointer": "/events/pilgrimage.2060/observations/actual",
+      "actual": {
+        "instance_id": 7,
+        "actor_character_id": 15893,
+        "date_raw": 51398832,
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true
+      },
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 359,
+        "date_raw": 51398832,
+        "current_event_instance_id": 7,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage.2060",
+        "calculated_event_id": 1762060,
+        "runtime_stats_ordinal": 1680,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "pilgrim",
+            "name_identifier": 5342,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "终于有点乐子了。",
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“将故事转为祈祷。”",
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "平民的事情我并不关心。",
+          "unavailable_reason": ""
+        }
+      ],
+      "original_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0036\\case-output\\faith-e02-journey-001-event-7-offline-analysis-input.json",
+        "bytes": 75289,
+        "sha256": "675ccd7f096a592ef48ad5df7239ed4cab767ecb2b8b047df8a4046ed4fd8310"
+      }
+    },
+    "pilgrimage_intent.1050": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0036-intent-1050.source-only.json",
+      "source_document_sha256": "2cd62c3ed73e1a8ab05cd1da8f38591dcd931239fa84f09181d710eeaca5693f",
+      "source_observation_pointer": "/events/pilgrimage_intent.1050/observations/actual",
+      "actual": {
+        "instance_id": 9,
+        "actor_character_id": 15893,
+        "date_raw": 51399408,
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true
+      },
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 433,
+        "date_raw": 51399408,
+        "current_event_instance_id": 9,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage_intent.1050",
+        "calculated_event_id": 1781050,
+        "runtime_stats_ordinal": 1784,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我会充分利用我的时间。",
+          "unavailable_reason": ""
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这些想法让我心痛。",
+          "unavailable_reason": ""
+        }
+      ],
+      "original_input": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\live\\4-8e1c2f1861--faith-engine--R0036\\case-output\\faith-e02-journey-001-event-9-offline-analysis-input.json",
+        "bytes": 74108,
+        "sha256": "58626d1e37e186acb0305796bc4185a5c9b672ebff46a71720099e4730bf89b0"
+      }
+    }
+  }
+}

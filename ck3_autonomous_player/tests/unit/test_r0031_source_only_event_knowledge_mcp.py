@@ -379,5 +379,79 @@ class R0035SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
                         reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1", payload)
                         self.assertTrue(reply.is_error)
         self.assertEqual(driver.calls, [])
+
+R0036_OCCURRENCES = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0036-events-occurrence.json"
+
+
+class R0036SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_three_sources_reach_real_mcp_without_action_permission(self) -> None:
+        summary = obj(json.loads((DOCUMENTS / R0036_OCCURRENCES).read_bytes()))
+        self.assertEqual(summary["machine_id"], "4-8e1c2f1861")
+        self.assertEqual(summary["run_id"], "4-8e1c2f1861--faith-engine--R0036")
+        events = obj(summary["events"])
+        self.assertEqual(set(events), {"travel_danger_events.1007", "pilgrimage.2060", "pilgrimage_intent.1050"})
+        driver = NoGameDriver()
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for key, raw_occurrence in events.items():
+                with self.subTest(event=key):
+                    occurrence = obj(raw_occurrence)
+                    document = string(occurrence["source_document"])
+                    raw = (DOCUMENTS / document).read_bytes()
+                    expected_sha = string(occurrence["source_document_sha256"])
+                    self.assertEqual(hashlib.sha256(raw).hexdigest(), expected_sha)
+                    authored = obj(obj(obj(json.loads(raw))["events"])[key])
+                    reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                        {"event_definition_key": key, "ck3_build": "1.20.0.4"})
+                    self.assertFalse(reply.is_error)
+                    output = obj(reply.structured_content)
+                    self.assertEqual(output["status"], "unavailable")
+                    self.assertEqual(output["unavailable_reason"], "source_analyzed_no_occurrence_contract")
+                    self.assertIsNone(output["contract"])
+                    self.assertEqual(json.loads(json.dumps(output, allow_nan=False)), output)
+                    analysis = obj(output["analysis"])
+                    self.assertIs(analysis["source_analysis_completed"], True)
+                    self.assertEqual(analysis["source_document"], document)
+                    self.assertEqual(analysis["source_document_sha256"], expected_sha)
+                    self.assertEqual(analysis["occurrence_document"], R0036_OCCURRENCES)
+                    self.assertEqual(analysis["source_pins"], authored["source_pins"])
+                    self.assertEqual(analysis["source_options"], authored["source_options"])
+                    self.assertIsNone(analysis["current_native_legality"])
+                    for field in ("action_ready", "ordinary_auto_consumes", "full_occurrence_contract_registered",
+                        "selection_policy_changed", "historical_index_is_current_selection_permission",
+                        "historical_evidence_is_current_state"):
+                        self.assertIs(analysis[field], False)
+                    for row in array(analysis["source_options"]):
+                        self.assertIs(obj(row)["historical_R31_selected"], False)
+                    observation = obj(output["observations"])
+                    self.assertEqual(observation["actual"], occurrence["actual"])
+                    self.assertIs(observation["registry_consumption_succeeded_live"], False)
+                    displayed = array(occurrence["displayed_options"])
+                    first = obj(displayed[0])
+                    self.assertEqual(first["rendered_index"], 0)
+                    self.assertEqual(obj(occurrence["actual"])["selected_native_option_index"], first["native_option_index"])
+                    if key == "travel_danger_events.1007":
+                        self.assertEqual([obj(row)["native_option_index"] for row in displayed], [2, 3])
+                    decision = recommend_registered_vanilla_event_option_v1(
+                        {**obj(occurrence["typed_scope_projection"]), "options": displayed},
+                        played_character_id=15893, snapshot_option_count=len(array(analysis["source_options"])),
+                        ck3_build="1.20.0.4")
+                    self.assertEqual(decision["status"], "not_registered")
+                    self.assertIsNone(decision["selected_native_option_index"])
+                    self.assertIsNone(decision["selected_option_number"])
+                    effects = obj(array(analysis["source_options"])[0])["effects"]
+                    if not isinstance(effects, list):
+                        raise ValueError("Returned effect list required")
+                    effects.append("detached-response-only")
+                    fresh = obj(query_vanilla_event_knowledge_v1(key, "1.20.0.4"))
+                    self.assertEqual(obj(fresh["analysis"])["source_options"], authored["source_options"])
+            for payload in ({"event_definition_id": "pilgrimage.2060"},
+                {"event_definition_key": True, "ck3_build": "1.20.0.4"},
+                {"event_definition_key": "pilgrimage.2060", "ck3_build": "1.20.0.4", "selected_native_option_index": 0}):
+                reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1", payload)
+                self.assertTrue(reply.is_error)
+        self.assertEqual(driver.calls, [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

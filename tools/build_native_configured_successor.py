@@ -673,8 +673,10 @@ class Producer:
                             for name in replay.originals for paths in dependencies.values() for path in paths),
                     "Noncompiled consumer occurs in the original compiler dependencies")
             all_memo: dict[Path, set[Path]] = {}
+            built_targets = set(PRODUCTION) | {fixture.target for fixture in c.fixtures}
             require(not any(leaves.intersection(path.resolve() for path in self.closure(row.source, self.native, all_memo))
-                            for row in rows), "Noncompiled consumer occurs in the current include closure")
+                            for row in rows if row.target in built_targets),
+                    "Noncompiled consumer occurs in the current include closure")
         baseline_scope = read(Path(checked(baseline["configured_scope"])["path"]))
         old_commands_raw: object = json.loads(Path(checked(baseline_scope["compile_commands"])["path"])
                                             .read_text(encoding="utf-8-sig"))
