@@ -237,6 +237,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --check-untyped-defs --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_adapter.py ck3_autonomous_player/src/xar_autoplayer/bridge/player_pilgrimage_planner_private_transport.py tools/verify_pilgrimage_execution_wire.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/verify_pilgrimage_execution_wire.py --packets "%XAR_PILGRIMAGE_EXECUTION_NATIVE_WIRE_DIR%" --receipt "%RUNNER_TEMP%\pilgrimage-execution-wire-consumer.actual.json"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check public normal-exit uint64 wire and registered MCP roundtrip without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools

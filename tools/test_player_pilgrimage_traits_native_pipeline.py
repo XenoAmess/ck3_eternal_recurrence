@@ -89,6 +89,8 @@ async def consume(packet_value: object, index: int) -> None:
         endpoint.publish({"type": "hello", "protocol_version": 1, "bridge_version": "0.1.0",
             "pid": 4242, "session_generation": 0, "expected_ck3_version": CK3_12004.game_version,
             "expected_ck3_sha256": CK3_12004.executable_sha256,
+            "connection_generation": 1, "ck3_build_match": True,
+            "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
             "capabilities": ["game.state.snapshot", "game.command.query-player-religion-context-v1"]})
         revision = result["snapshot_revision"]
         assert type(revision) is int
@@ -113,12 +115,28 @@ async def consume(packet_value: object, index: int) -> None:
         actor = context["played_character_id"]
         pid = diagnostics["bridge_pid"]
         generation = diagnostics["connection_generation"]
+        episode = before.get("episode_run_id")
         assert type(actor) is int and type(pid) is int and type(generation) is int
+        assert episode is None or isinstance(episode, str)
         binding: MilestoneBinding = {"run_id": "synthetic-trait-pipeline", "machine_id": "synthetic",
             "actor_character_id": actor, "bridge_pid": pid, "connection_generation": generation,
-            "episode_run_id": None}
+            "episode_run_id": episode}
         metrics = project_observation(binding, before, actual, after)
         assert metrics["source_frame_bound"]
+        # Retain the actual first-run failure path: a protocol fixture without
+        # qualified hello fields or with a mismatched episode cannot acquire
+        # collector credit, even when the native addon itself is valid.
+        missing_hello = deepcopy(before)
+        missing_diagnostics = object_value(missing_hello["diagnostics"])
+        incomplete_hello = object_value(missing_diagnostics["hello"])
+        for key in ("connection_generation", "ck3_build_match", "game_adapter_id"):
+            incomplete_hello.pop(key, None)
+        missing_diagnostics["hello"] = incomplete_hello
+        missing_hello["diagnostics"] = missing_diagnostics
+        assert not project_observation(binding, missing_hello, actual, after)["source_frame_bound"]
+        wrong_episode = deepcopy(binding)
+        wrong_episode["episode_run_id"] = None if episode is not None else "different-synthetic-episode"
+        assert not project_observation(wrong_episode, before, actual, after)["source_frame_bound"]
         assert metrics["trait_experience"]["observed"] == expected["available"]
         assert metrics["trait_experience"]["raw"] == expected
         assert json_value(json.loads(json.dumps(metrics))) == json_value(metrics)

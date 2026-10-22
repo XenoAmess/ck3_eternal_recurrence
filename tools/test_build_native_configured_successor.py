@@ -8,10 +8,12 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from typing import Protocol, runtime_checkable
 
 from build_native_configured_successor import (
     ChildEnvironment, Config, Fixture, MsvcInitializer, MsvcInstallation,
-    Pin, Producer, ROOT, config_json, load_shared, parse_config, parse_pin, read,
+    Pin, Producer, ROOT, cmake_boolean_flags, config_json, load_shared, obj, parse_config, parse_pin, read,
+    same_metadata_content,
 )
 
 
@@ -33,6 +35,14 @@ class UngatedProducer(Producer):
         return None
 
 
+@runtime_checkable
+class ExactCommandBuildHook(Protocol):
+    def __call__(self, repo: Path, source: Path, build: Path, compiler_argv: list[str],
+                 exe_paths: list[Path], external_candidate: str | None = None,
+                 return_code: int = 0,
+                 source_commands: list[dict[str, object]] | None = None) -> object: ...
+
+
 class ConfiguredSuccessorTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
@@ -52,6 +62,23 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         for size in (True, 0.0, -1):
             with self.subTest(size=size), self.assertRaises(ValueError):
                 parse_pin({"path": str(self.root / "input"), "bytes": size, "sha256": "a" * 64})
+
+    def test_real_windows_cache_comment_bytes_preserve_exact_ascii_flags(self) -> None:
+        cache = self.root / "CMakeCache.txt"
+        cache.write_bytes("//缓存说明\n".encode("gbk") + b"XAR_FEATURE:BOOL=ON\nBUILD_TESTING:BOOL=OFF\n")
+        self.assertEqual(cmake_boolean_flags(cache), {"XAR_FEATURE": "ON", "BUILD_TESTING": "OFF"})
+        cache.write_bytes(b"XAR_FEATURE:BOOL=ON\nXAR_FEATURE:BOOL=OFF\n")
+        with self.assertRaises(ValueError):
+            cmake_boolean_flags(cache)
+
+    def test_resume_json_roundtrip_allows_only_observation_time_change(self) -> None:
+        self.assertTrue(same_metadata_content({"observed_at_utc": "old", "slots": [1, 2], "missing": None},
+                                              {"observed_at_utc": "new", "slots": (1, 2), "missing": None}))
+        self.assertFalse(same_metadata_content({"observed_at_utc": "old", "slots": [1, 2]},
+                                               {"observed_at_utc": "new", "slots": [1, 3]}))
+        self.assertFalse(same_metadata_content({"slots": []}, {"slots": None}))
+        self.assertFalse(same_metadata_content({"identity": 1}, {"identity": True}))
+        self.assertFalse(same_metadata_content({"identity": 1}, {"identity": 1.0}))
 
     def test_wrong_missing_and_unknown_fields_rejected(self) -> None:
         for field in ("budget_bytes", "source_commit", "fixtures", "storage_admission"):
@@ -134,12 +161,14 @@ class ConfiguredSuccessorTests(unittest.TestCase):
                   "wanted": "int wanted(){return 7;}\n",
                   "unused_off_transport": "int missing_off_helper(); int unused(){return missing_off_helper();}\n"}
         objects: list[Path] = []
+        commands: list[dict[str, object]] = []
         for name, body in bodies.items():
             source = producer.build / (name + ".cpp")
             output = producer.build / (name + ".obj")
             source.write_text(body, encoding="utf-8")
-            producer.execute("compile-" + name, [producer.tools["cl"], "/nologo", "/c", "/O2",
-                "/Fo" + str(output), str(source)], producer.build)
+            argv = [producer.tools["cl"], "/nologo", "/c", "/O2", "/Fo" + str(output), str(source)]
+            producer.execute("compile-" + name, argv, producer.build)
+            commands.append({"argv": argv, "return_code": 0})
             objects.append(output)
         with self.assertRaisesRegex(ValueError, "Actual command failed"):
             producer.link("direct-link-must-fail", objects, [], producer.build / "direct.exe")
@@ -150,6 +179,15 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         if archive is None:
             self.fail("Changed runtime archive was not produced")
         producer.link("lazy-link", objects[:1], [archive], producer.build / "lazy.exe")
+        registry = load_shared(ROOT / "tools/register_project_exe_exclusions.py", "lazy_link_regression_defender")
+        hook: object = getattr(registry, "after_successful_command_build", None)
+        if not isinstance(hook, ExactCommandBuildHook):
+            self.fail("Actual project EXE exclusion hook unavailable")
+        link_argv = [str(Path(producer.tools["cl"]).parent / "link.exe"),
+            *producer.arguments((producer.build / "lazy-link.rsp").read_text(encoding="utf-8"))]
+        registration = obj(hook(ROOT, producer.build, producer.build, link_argv,
+            [producer.build / "lazy.exe"], "configured-successor-lazy-link-real-regression", 0, commands))
+        self.assertIn(registration["status"], ("verified", "disabled"))
         producer.execute("lazy-run", [str(producer.build / "lazy.exe")], producer.build)
         self.assertEqual(read(self.config.output / "lazy-run.actual.json")["original_wait_returncode"], 0)
 

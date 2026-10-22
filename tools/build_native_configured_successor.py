@@ -284,6 +284,31 @@ def config_json(config: Config) -> dict[str, object]:
                  "directory": config.wire_directory, "packets": list(config.wire_packets)}}
 
 
+def cmake_boolean_flags(path: Path) -> dict[str, str]:
+    """Windows CMake comments may use the active code page; BOOL fields are ASCII."""
+    result: dict[str, str] = {}
+    for line in path.read_bytes().splitlines():
+        if line.startswith((b"#", b"//")) or b":BOOL=" not in line:
+            continue
+        match = re.fullmatch(rb"([A-Za-z_][A-Za-z0-9_]*):BOOL=(.*)", line)
+        if match is None:
+            raise ValueError("Malformed CMake BOOL field")
+        name, value = match[1].decode("ascii"), match[2].decode("ascii")
+        require(name not in result, "Duplicate CMake BOOL field")
+        result[name] = value
+    require(result, "CMake cache contains no BOOL fields")
+    return result
+
+
+def same_metadata_content(actual: object, expected: object) -> bool:
+    """Compare the JSON domain, allowing only the observation timestamp to differ."""
+    left, right = obj(actual), obj(expected)
+    left.pop("observed_at_utc", None)
+    right.pop("observed_at_utc", None)
+    return json.dumps(left, sort_keys=True, separators=(",", ":"), allow_nan=False) == json.dumps(
+        right, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
 def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -323,6 +348,7 @@ class Producer:
         self.meta = config.output / "native-a01"
         self.env: dict[str, str] = {}
         self.tools: dict[str, str] = {}
+        self.metadata_continuation = False
         shared = load_shared(ROOT / "tools/build_native_flag_successor.py", "shared_flag_successor")
         arguments: object = getattr(shared, "windows_args", None)
         dependency_parser: object = getattr(shared, "parse_ninja_dependencies", None)
@@ -337,8 +363,15 @@ class Producer:
 
     def gate(self) -> None:
         c = self.config
-        require(git("rev-parse", "HEAD") == c.source_commit and not git("status", "--porcelain", "--untracked-files=all"),
-                "Exact clean committed Root required")
+        actual_head = git("rev-parse", "HEAD")
+        require(not git("status", "--porcelain", "--untracked-files=all"), "Clean committed Root required")
+        if self.metadata_continuation:
+            ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", c.source_commit, actual_head], cwd=ROOT, capture_output=True)
+            require(ancestor.returncode == 0 and git("rev-parse", c.source_commit + ":" + PREFIX.rstrip("/"))
+                    == git("rev-parse", actual_head + ":" + PREFIX.rstrip("/")),
+                    "Metadata continuation needs the original or a clean descendant with an identical Native tree")
+        else:
+            require(actual_head == c.source_commit, "Exact clean committed Root required")
         checked(c.admission)
         admission = read(Path(c.admission["path"]))
         require(admission.get("machine_id") == c.machine_id and admission.get("active") is True
@@ -361,6 +394,13 @@ class Producer:
         with path.open("xb") as stream:
             stream.write(raw)
         return pin(path)
+
+    def seal_save(self, name: str, value: object, *, resume: bool) -> Pin:
+        path = self.config.output / relative(name)
+        if resume and path.exists():
+            require(same_metadata_content(read(path), value), "Existing seal metadata differs: " + name)
+            return pin(path)
+        return self.save(name, value)
 
     def execute(self, name: str, argv: list[str], cwd: Path, timeout: int = 180) -> Pin:
         self.gate()
@@ -769,21 +809,106 @@ class Producer:
             "observed_at_utc": now(), "status": "verified", "exact_executable_count": len(fixtures),
             "manifest": pin(manifest), "receipt": pin(receipt)})
 
+    def resume_seal(self) -> Pin:
+        """Continue metadata after completed original commands; never rebuild or rerun."""
+        self.metadata_continuation = True
+        actual_machine = subprocess.check_output([sys.executable, "-B", "-X", "utf8",
+            str(ROOT / "tools/ck3_live_run_id.py"), "machine"], cwd=ROOT).decode("utf-8").strip()
+        require(actual_machine == self.config.machine_id, "Actual continuation machine differs")
+        self.gate()
+        self.successful_seeds(self.commands())
+        report = read(self.meta / "ALL-FIXTURES.actual.json")
+        require(report.get("machine_id") == self.config.machine_id and report.get("source_commit") == self.config.source_commit
+                and report.get("actual_live_business_qualified") is False, "Original complete finite report required")
+        fixtures = [obj(item) for item in arr(report["fixture_results"])]
+        require(len(fixtures) == len(self.config.fixtures)
+                and {string(item["target"]) for item in fixtures} == {item.target for item in self.config.fixtures},
+                "Continuation must retain every originally requested fixture")
+        all_binding = read(Path(checked(report["defender_binding"])["path"]))
+        require(all_binding.get("machine_id") == self.config.machine_id and all_binding.get("status") == "verified"
+                and type(all_binding.get("exact_executable_count")) is int
+                and all_binding["exact_executable_count"] == len(fixtures), "Original all-fixture Defender binding differs")
+        for key in ("manifest", "receipt"):
+            checked(all_binding[key])
+        administrative = read(Path(parse_pin(all_binding["receipt"])["path"]))
+        require(administrative.get("status") == "verified" and administrative.get("admin_token") is True
+                and administrative.get("missing_requested_paths") == []
+                and set(strings(administrative["verified_requested_paths"]))
+                == {parse_pin(item["executable"])["path"] for item in fixtures}, "Actual all-fixture administrative readback differs")
+        for fixture in fixtures:
+            require(set(fixture) == {"target", "executable", "execution"}, "Original fixture fields differ")
+            executable = checked(fixture["executable"])
+            execution = read(Path(checked(fixture["execution"])["path"]))
+            require(execution.get("machine_id") == self.config.machine_id and execution.get("source_commit") == self.config.source_commit
+                    and type(execution.get("original_wait_returncode")) is int and execution["original_wait_returncode"] == 0
+                    and execution.get("stopped_reason") is None and execution.get("game_started_or_attached") is False
+                    and execution.get("actual_live_business_qualified") is False
+                    and strings(execution["argv"])[0] == executable["path"], "Cannot continue an unsuccessful fixture")
+            checked(execution["log"])
+        production = self.config.output / "link-production.actual.json"
+        actual_link = read(production)
+        require(actual_link.get("machine_id") == self.config.machine_id and actual_link.get("source_commit") == self.config.source_commit
+                and type(actual_link.get("original_wait_returncode")) is int and actual_link["original_wait_returncode"] == 0
+                and actual_link.get("stopped_reason") is None and actual_link.get("game_started_or_attached") is False
+                and actual_link.get("actual_live_business_qualified") is False, "Original successful production link required")
+        checked(actual_link["log"])
+        for response in arr(actual_link["response_files"]):
+            checked(response)
+        incremental = read(self.meta / "INCREMENTAL-RESULT.actual.json")
+        require(incremental.get("source_commit") == self.config.source_commit and incremental.get("actual_link") == pin(production),
+                "Original production identity differs")
+        checked(incremental["dll"])
+        if incremental["changed_runtime_archive"] is not None:
+            checked(incremental["changed_runtime_archive"])
+            archive = read(Path(checked(incremental["changed_runtime_archive_execution"])["path"]))
+            require(archive.get("machine_id") == self.config.machine_id and archive.get("source_commit") == self.config.source_commit
+                    and type(archive.get("original_wait_returncode")) is int and archive["original_wait_returncode"] == 0
+                    and archive.get("stopped_reason") is None, "Original changed-runtime archive execution failed")
+        for raw in arr(incremental["production_compiles"]):
+            item = obj(raw)
+            for field in ("source", "object", "actual_compile"):
+                checked(item[field])
+            compile_execution = read(Path(parse_pin(item["actual_compile"])["path"]))
+            require(compile_execution.get("machine_id") == self.config.machine_id
+                    and type(compile_execution.get("original_wait_returncode")) is int
+                    and compile_execution["original_wait_returncode"] == 0 and compile_execution.get("stopped_reason") is None,
+                    "Original individual compile was unsuccessful")
+        plan = pin(self.meta / "PLAN.actual.json")
+        original_plan = read(Path(plan["path"]))
+        for original in arr(original_plan["retained_link_inputs"]):
+            checked(original)
+        checked(original_plan["retained_incremental_object"])
+        subset = [item for item in fixtures if item["target"] in self.config.qualification_targets]
+        binding = pin(self.meta / "qualification-subset-defender-binding.actual.json")
+        actual_binding = read(Path(binding["path"]))
+        require(actual_binding.get("machine_id") == self.config.machine_id and actual_binding.get("status") == "verified"
+                and type(actual_binding.get("exact_executable_count")) is int and actual_binding["exact_executable_count"] == len(subset),
+                "Original exact administrative subset readback required")
+        for field in ("manifest", "receipt"):
+            checked(actual_binding[field])
+        self.save("native-a01/SEAL-RESUME-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ") + ".actual.json", {
+            "machine_id": self.config.machine_id, "observed_at_utc": now(), "native_source_commit": self.config.source_commit,
+            "metadata_source_commit": git("rev-parse", "HEAD"), "producer": pin(Path(__file__)),
+            "original_production_execution": pin(production), "original_complete_fixtures": pin(self.meta / "ALL-FIXTURES.actual.json"),
+            "new_compilation_performed": False, "new_fixture_execution_performed": False,
+            "native_outputs_modified": False, "actual_live_business_qualified": False})
+        return self.seal(self.commands(), subset, pin(production), binding, plan, self.build / "xar_ck3_bridge.dll", resume=True)
+
     def seal(self, rows: list[Compile], fixtures: list[dict[str, object]], build_execution: Pin,
-             defender: Pin, plan: Pin, dll: Path) -> Pin:
+             defender: Pin, plan: Pin, dll: Path, *, resume: bool = False) -> Pin:
         c = self.config
         sources: list[dict[str, object]] = []
         for name in git("ls-files", "--", PREFIX).splitlines():
             actual = pin(ROOT / name)
             sources.append({"native_relative": name.removeprefix(PREFIX),
                             "bytes": actual["bytes"], "sha256": actual["sha256"]})
-        snapshot = self.save("native-a01/SOURCE.actual.json", {"machine_id": c.machine_id,
+        snapshot = self.seal_save("native-a01/SOURCE.actual.json", {"machine_id": c.machine_id,
             "observed_at_utc": now(), "root_commit": c.source_commit, "native_source_commit": c.source_commit,
             "source_count": len(sources), "files": sources, "Root_native_source_base": str(self.native),
-            "snapshot_native_base": str(self.native), "source_mapping": "exact current clean committed source; no copy"})
-        verification = self.save("native-a01/SOURCE-VERIFICATION.actual.json", {"machine_id": c.machine_id,
+            "snapshot_native_base": str(self.native), "source_mapping": "exact current clean committed source; no copy"}, resume=resume)
+        verification = self.seal_save("native-a01/SOURCE-VERIFICATION.actual.json", {"machine_id": c.machine_id,
             "observed_at_utc": now(), "root_commit": c.source_commit, "source_manifest": snapshot,
-            "all_snapshot_files_exactly_verified": len(sources), "all_original_inputs_still_exactly_verified": len(sources)})
+            "all_snapshot_files_exactly_verified": len(sources), "all_original_inputs_still_exactly_verified": len(sources)}, resume=resume)
         reply = self.build / ".cmake/api/v1/reply"
         index_path = max(reply.glob("index-*.json"), key=lambda path: path.stat().st_mtime_ns)
         index = read(index_path)
@@ -808,18 +933,17 @@ class Producer:
                   for item in production.values()}
         counts_from_commands = {name: sum(row.target == name for row in rows) for name in PRODUCTION}
         require(counts == counts_from_commands, "Actual production graph differs from compile commands")
-        scope = self.save("native-a01/CONFIGURED-SCOPE.actual.json", {"machine_id": c.machine_id,
+        scope = self.seal_save("native-a01/CONFIGURED-SCOPE.actual.json", {"machine_id": c.machine_id,
             "observed_at_utc": now(), "production_TUs": counts, "requested_EXEs": list(c.qualification_targets),
             "no_fixture_in_production": True, "targets": [
                 {key: item.get(key, []) for key in ("name", "type", "sources", "compileGroups", "artifacts")}
                 for item in [*production.values(), *(targets[names[target]] for target in c.qualification_targets)]],
             "codemodel": pin(model_path), "index": pin(index_path), "compile_commands": pin(self.build / "compile_commands.json"),
-            "snapshot": snapshot})
+            "snapshot": snapshot}, resume=resume)
         baseline = read(Path(c.baseline["path"]))
         profile_ref = checked(baseline["profile"])
         profile = read(Path(profile_ref["path"]))
-        flags = {line.split(":", 1)[0]: line.split("=", 1)[1] for line in
-                 (self.build / "CMakeCache.txt").read_text(encoding="utf-8-sig").splitlines() if ":BOOL=" in line}
+        flags = cmake_boolean_flags(self.build / "CMakeCache.txt")
         require(all(flags.get(key) == value for key, value in obj(profile["flags"]).items()), "Profile flag drift")
         dll_pin = pin(dll)
         freeze = self.save("native-a01/PRODUCTION-DLL-FROZEN.actual.json", {"machine_id": c.machine_id,
@@ -859,9 +983,11 @@ def main() -> int:
     sys.dont_write_bytecode = True
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--seal-existing", action="store_true", help="Validate completed original commands and continue missing metadata only")
     args = parser.parse_args()
     config = parse_config(read(args.config))
-    result = Producer(config).run()
+    producer = Producer(config)
+    result = producer.resume_seal() if args.seal_existing else producer.run()
     print(json.dumps({"qualified_native": result, "game_started": False}))
     return 0
 
