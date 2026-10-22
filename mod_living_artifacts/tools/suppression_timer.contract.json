@@ -1,6 +1,6 @@
 {
-  "schema": "living-artifacts-suppression-timer-case-v1",
-  "schema_version": 1,
+  "schema": "living-artifacts-suppression-timer-case-v2",
+  "schema_version": 2,
   "product": "living-artifacts",
   "case_id": "suppression_timer",
   "maximum_natural_days": 212,
@@ -11,7 +11,13 @@
   "renewal_day": 60,
   "checkpoint_days": [0, 0, 60, 60, 90, 180],
   "last_checkpoint": "first-calendar-month-after-actual-expiry",
-  "initial_fixture": "unchanged-core-level1-xp92-four-materials",
+  "initial_fixture": "core-level1-xp92-four-materials-with-declared-initial-imprint",
+  "initial_feeding_imprint": {
+    "flag": "primary_armament",
+    "days": 90,
+    "origin": "fixture-initial-state",
+    "feeding_action_credit": false
+  },
   "required_startup": ["XALW_FIXTURE_READY_V1"],
   "forbidden_startup": ["XALW_FIXTURE_INIT_ERROR_V1"],
   "post_start": {

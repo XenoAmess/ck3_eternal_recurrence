@@ -23,7 +23,7 @@ from acceptance_contract import CasePort, CheckResult, Frame, Object, Pin, array
 from checkpoint_callback import checked_pin, verify_readback
 from checkpoint_producer import raw_object, stamp
 from management_event_contract import source_option_index
-from prepare_fixture import FixtureEmission, emit_fixture
+from prepare_fixture import FixtureEmission, InitialFeedingImprint, emit_fixture
 from prepare_threshold_fixture import same_json, tree
 
 CASE: Literal["suppression_timer"] = "suppression_timer"
@@ -72,7 +72,9 @@ def validate_contract(context: object) -> core.Contract:
     require(field(context, "product") == "living-artifacts" and field(context, "case") == CASE, "Select the actual suppression_timer case")
     config = mapping(field(context, "case_contract"), "timer contract")
     require(same_json(config, read(TOOLS / CONTRACT_NAME)), "Exact canonical timer contract required")
-    integer(config["schema_version"], "timer schema", 1, 1)
+    require(config["schema"] == "living-artifacts-suppression-timer-case-v2", "Versioned initial timer inputs required")
+    integer(config["schema_version"], "timer schema", 2, 2)
+    InitialFeedingImprint.parse(field(config, "initial_feeding_imprint"))
     spec = field(context, "case_spec")
     require(field(spec, "id") == CASE, "Selected public case spec differs")
     tools = {text(item, "tool") for item in array(field(spec, "required_mcp_tools"), "declared tools")}
@@ -91,7 +93,8 @@ def prepare_case(context: object) -> Object:
     validate_contract(context)
     values = mapping(context, "preparation context")
     output = Path(text(field(values, "output"), "preparation output")).resolve()
-    fixture = emit_fixture(output / "external-timer-fixture")
+    fixture = emit_fixture(output / "external-timer-fixture",
+        feeding_imprint=InitialFeedingImprint.parse(field(field(values, "case_contract"), "initial_feeding_imprint")))
     root = Path(fixture["fixture_root"])
     product = Path(text(field(field(values, "case_inputs"), "product_dir"), "formal staging")).resolve()
     write_once(root / "_case_contract.json", {"product": "living-artifacts", "case": CASE, "config": field(values, "case_contract"),
@@ -118,7 +121,7 @@ def prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
     require(set(callers) == set(SOURCES), "Timer caller closure differs")
     refs = [core._checked_pin(callers[name], "timer source", TOOLS / name) for name in SOURCES]
     refs.append(core._checked_pin(manifest["contract_source"], "timer contract", TOOLS / CONTRACT_NAME))
-    emission = mapping(manifest["fixture_emission"], "unchanged core fixture")
+    emission = mapping(manifest["fixture_emission"], "core fixture with declared initial persistence imprint")
     require(set(emission) == set(FixtureEmission.__required_keys__) and type(emission["schema_version"]) is int and emission["schema_version"] == 2 and
         emission["input_origin"] == "fixture_generated" and emission["business_acceptance"] == "NOT_ASSESSED" and emission["game_started"] is False,
         "Initial fixture cannot grant business credit")
@@ -131,7 +134,7 @@ def prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
             copied = pin(deployed / relative)
             require((copied["bytes"], copied["sha256"]) == (original["bytes"], original["sha256"]), "Loaded input bytes differ")
             refs.append(copied)
-    require(read(state / "profile/dlc_load.json") == {"enabled_mods": ["mod/product.mod", "mod/fixture.mod"], "disabled_dlcs": []}, "Only formal product and unchanged core fixture may mount")
+    require(read(state / "profile/dlc_load.json") == {"enabled_mods": ["mod/product.mod", "mod/fixture.mod"], "disabled_dlcs": []}, "Only formal product and declared timer fixture may mount")
     prepared_pin = checked_pin(field(read(state / "preparation.json"), "preparation"), "actual shared preparation")
     prepared = read(Path(prepared_pin["path"]))
     require(field(prepared, "schema") == "ck3-mod-acceptance-prepared-fixture-v1" and
@@ -148,6 +151,12 @@ def prepared_sources(context: object, state: Path) -> tuple[Pin, ...]:
 def _value(observation: historical.ThresholdObservation, name: str) -> int | None:
     variable = observation.values.get(name)
     return None if variable is None else variable.integer_value(name)
+
+
+def _require_fixture_imprint(observation: historical.ThresholdObservation, declaration: InitialFeedingImprint, *, phase: str) -> None:
+    actual = observation.values.get("xalw_feeding_imprint")
+    require(actual is not None and actual.kind == "flag" and actual.raw_identity is None and actual.flag == declaration.flag,
+        "Declared timer fixture imprint is unavailable or has the wrong saved type/value at " + phase)
 
 
 def _last_call(session: core.Session) -> Pin:
@@ -259,9 +268,12 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
     require(len(refs) == len({ref["path"] for ref in refs}) == 7, "Seven separate actual Save readbacks required")
     observations = [historical.consume_observation(read(Path(ref["path"])), context=context, manifest=manifest, reviewer=reviewer) for ref in refs]
     first, paid, window, renewed, old_event, expired, grown = observations
+    declaration = InitialFeedingImprint.parse(field(field(context, "case_contract"), "initial_feeding_imprint"))
+    _require_fixture_imprint(first, declaration, phase="initial input")
+    _require_fixture_imprint(renewed, declaration, phase="renewed cold source")
     start = _calendar(first.sample.date_literal)
     require(first.sample.date_literal == "1066.9.15" and not first.sample.equipped and
-        (first.sample.level, first.sample.xp, first.sample.pending, first.sample.growth_sequence) == (1, 92, 0, 0), "Unchanged core initial input required")
+        (first.sample.level, first.sample.xp, first.sample.pending, first.sample.growth_sequence) == (1, 92, 0, 0), "Original core level/XP/equipment inputs required")
     initial_day = first.inputs.player_variables.get("xalw_fixture_initial_day")
     require(initial_day is not None, "Saved initial current_date anchor missing")
     if initial_day is None:
@@ -370,7 +382,9 @@ def run_case(context: object, client: object) -> Object:
         session.snapshot()
         first, reference = _observe(session, None)
         saves.append(reference)
-        require(first.sample.date_literal == "1066.9.15" and (first.sample.level, first.sample.xp, first.sample.equipped) == (1, 92, False), "Unchanged core fixture required")
+        require(first.sample.date_literal == "1066.9.15" and (first.sample.level, first.sample.xp, first.sample.equipped) == (1, 92, False), "Original core level/XP/equipment inputs required")
+        declaration = InitialFeedingImprint.parse(field(field(context, "case_contract"), "initial_feeding_imprint"))
+        _require_fixture_imprint(first, declaration, phase="initial input before any equipment or suppression intent")
         if int(first.saved.gold_raw) < 70 * 100000 or int(first.saved.prestige_raw) < 100 * 100000:
             raise core.CaseBlocked("Actual initial resources cannot pay both ordinary suppression choices")
         target, start_raw = first.sample.artifact_id, first.frame.date_raw
@@ -393,6 +407,7 @@ def run_case(context: object, client: object) -> Object:
         journal["renew"] = historical._action(session, target, "xalw.10.renew")
         renewed, reference = _observe(session, target)
         saves.append(reference)
+        _require_fixture_imprint(renewed, declaration, phase="renewed cold source")
         _state(renewed, deadline=anchor + 180, chain=2, phase="paid renewal")
         if not (int(renewed.saved.gold_raw) - int(window.saved.gold_raw) == -45 * 100000 and
                 int(renewed.saved.prestige_raw) - int(window.saved.prestige_raw) == -50 * 100000):

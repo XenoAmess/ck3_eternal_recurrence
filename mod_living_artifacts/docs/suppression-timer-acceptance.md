@@ -2,7 +2,11 @@
 
 当前为 **实机 NOT_RUN**。独占条目 [suppression_timer.registry.json](../tools/suppression_timer.registry.json) 供 Root 合并公共 cases；文件存在不代表已经注册、启动或通过。合同见 [suppression_timer.contract.json](../tools/suppression_timer.contract.json)，实现见 [adapter](../tools/suppression_timer_acceptance_adapter.py)。本包不修改正式产品、共享 host、Session、原保存 producer/observer、NPC、preview 或 threshold 文件。
 
-沿用既有 core 初始夹具：1066.9.15 罗贝尔普通前端开局、L1/XP92/pending0/成长序列0、未装备活剑及四档材料。夹具不增加本包专用资金、不预置 deadline、不调用镇压或续期。先用真实保存识别目标，再走原生个人装备和普通管理决策。初始实际金币不足70或威望不足100时保留 BLOCKED，不补写钱包。费用按正常产品实际执行：首次25金、50威望；续期45金、50威望。压力只随普通产品产生，本包不授予压力修正公式验收。
+v2 合同保留既有 core 的初始等级、经验、食性与材料：1066.9.15 罗贝尔普通前端开局、L1/XP92/pending0/成长序列0、未装备活剑及四档材料。另显式声明一个初始持久化输入：`xalw_feeding_imprint` 为 `flag:primary_armament`，`days=90`，来源标为 `fixture-initial-state`、`feeding_action_credit=false`。共享 emitter 的默认值仍不带印记，仅本 timer 的准备过程传入强类型 seed；完整声明、生成文件及部署文件由原 `_case_contract.json` 与来源 Pin 绑定。它不调用喂养、不消费材料、不增经验，也不授予真实喂养信用；真实喂养证据仍来自 R8。
+
+该初值只让未来第60日的真实 renewed checkpoint04 具有可供冷载核对的印记。按正式喂养相同的 CK3 90日期限语义，此时尚余30日；必须从实际 Save 读到合法类型后才能授予印记持久化信用。首份实际 Save 必须读到 `kind=flag`、无 raw identity、值为 `primary_armament`，否则在装备及首次镇压之前保留原件并 `BLOCKED`；renewed04 再次检查，丢失或错类型则在第四次 Save 停止，不继续剩余自然日。保留验证重新消费这两份来源。它不证明印记到期的元数据或触发时刻。v1 冻结树及旧 Prepared 不增加此字段，也不能被追认为使用 v2 输入。
+
+夹具不增加本包专用资金、不预置 suppression deadline、不调用镇压或续期。先用真实保存识别目标，再走原生个人装备和普通管理决策。初始实际金币不足70或威望不足100时保留 BLOCKED，不补写钱包。费用按正常产品实际执行：首次25金、50威望；续期45金、50威望。压力只随普通产品产生，本包不授予压力修正公式验收。原七保存、自然日、动作、预算与付款/成长断言不变。
 
 | 保存 | 实际时间与动作 | 必须读回的业务结果 |
 | --- | --- | --- |
