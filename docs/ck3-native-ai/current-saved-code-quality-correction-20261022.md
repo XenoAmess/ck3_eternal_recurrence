@@ -110,3 +110,13 @@ Q38实际Source32 thin reader已经执行其真实源码资格函数通过（02:
 `2026-10-22T02:21Z` 同机器增量：Plan v3／Quote v4 的必填整数 `artifact_cap_bytes` 已接到实际 launcher argv，错类型、越界、两端不等及旧 wire 均拒绝，原 reply reserve 保持。完整 preflight 24项、关键联合34项实际通过，均0跳过；联合18个完整模块 strict/equality/explicit-package/silent-import 检查通过，18份来源前后SHA相等。关键34项来源回执为 `current-saved-a38-recovery-prep01/ROOT-MANDATORY34-QUALIFICATION01.json`（1954B，SHA-256 `9303c8c81ccf3a71ebab35231ee72f2e72327efb0d139ea9d6bdcf0d7a7da5ef`）。联合类型检查使用本机实际 Source32 依赖；不把它混写成远端CI结果。
 
 恢复合同现显式区分 native observation、formal ledger readback 和 returned SDK error；实际失败 history 的五字段形态及原 CLI／subprocess 两种 Task 闭场运输格式均进入共享解析，不能删字段或虚构退出码。7个原结算周期到5152、再接至保留head230的完整RAM包已通过原四入口，物理发布重读仍待完成。没有重读Driver/SAVE正文，没有重放11404，也没有新Game或新增游戏日。basis继续增大至约215KB，历史分派和重复验证的架构债仍在，未宣称清债完成。
+
+## A38实际失败：录制父目录没有进入准备合同
+
+同机器，实际观察 `2026-10-22T02:39Z`：恢复包物理重读和公共 Prepared 已通过，完整 supervisor `main` 两次实际运行到首个 ADMITTED 写入前，随后按同一顺序执行器检查退出码并注册／启动。Game177352实际出生 `134371098919795565`，原注入器退出0；Desktop1放置2560×1440、用户Desktop2与焦点不变。上述“完整”仅指 Game 准入前缀，**没有覆盖录制的实际启动调用**，不能外推为整条运行链通过。
+
+Root随后漏建 `runtime-a38/recordings` 父目录，而公共 prepare 当时也未物化／校验它。真实 display 在 capture `launch_recording:440 → root.mkdir()` 抛 `FileNotFoundError [WinError 3]`，尚未写job或创建worker／OBS；actor的finally等待publisher又使异常延后显示。这是新的前置验收缺口，不能归因为OBS慢启动，也不能用补目录抹掉原失败。原stderr1324B（CP936），SHA-256 `15fcdac3d9dce9d912456cf3b526a351c6f1542db7dbabe98648ec49035ab170`。
+
+原supervisor已正常收到Root停止请求并闭场：publisher实际退出0，Game的WM_CLOSE未获正常退出，原Job最终清理为exit1；两Task均child1／Job0并注销，screen8117释放。SDK与录制worker均未启动，未增加ordinary或游戏日信用；R0025记completed-red。小型闭场证据为 `current-saved-a38-recovery-prep01/ROOT-A38-ACTUAL-CLOSEOUT01.json`（3498B，SHA-256 `78ed104c37446342a59252556ab97300b1134e0a64f062f6d7e4849ca9811e1f`）。03:00前同一有限范围正把录制父目录的物化、引用绑定与真实文件系统反例补入公共prepare；冻结A38不修改，新图另行验收。现有recording-only恢复合同要求真实旧worker／OBS／SID，不能拿虚构旧证据用于这次worker创建前失败。
+
+`02:44:24Z` 同机器：公共prepare已按批准根物化录制父目录，核对quote中profile的精确引用与路径，拒绝文件、非空旧SID、重解析点及错误父路径；Prepared发布前再验目录身份。完整28项（原24＋新增4）实际通过、0跳过，夹具峰557056B且最终ABSENT；两修改全文联合strict/equality/explicit/silent通过。首次新增测试暴露缺parse_json导入，首次严格检查暴露test经core重导出，两项均实际修复，不掩去中间RED。独立窄审无剩余P0/P1。最终core130497B／`6c0243d0cde729c3429dbe5145975e8cfd7c62b3d602aa8755447a1f80b947dc`，test82152B／`1fd0cbb028d6fe968033d2b1543c54fb065bf4c7a74da4ffdfb20f8a12c7f8ff`；尚不能据此宣称录制或首FULL实机通过。

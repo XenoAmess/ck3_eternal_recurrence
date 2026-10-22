@@ -1242,5 +1242,89 @@ class QueueGuardInstallationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             Child().check_before(core.CAPABILITIES_TOOL, {})
 
+
+class RecordingParentPreparationTests(unittest.TestCase):
+  def case(self, w: replay._Workspace, mode: str = "valid") -> tuple[ColdPlanV1, ColdQuoteV1, Path]:
+    from tools.g2_saved_campaign import test_current_saved_campaign_cold_v1 as f
+    root = w.root / "runtime"; root.mkdir()
+    selected = {"valid": str(root / "recordings"), "outside": str(w.root / "recordings"),
+          "relative": "recordings", "parent": str(root / "recordings" / "..")}[mode]
+    profile = root / "ROOT-OBS-PROFILE-C23.json"; w.write(profile, _wire({"recording_root": selected}))
+    plan = replace(f.plan(), machine_id=core.current_execution_machine_id_v1(),
+           runtime_root=str(root), supervisor_spec_path=str(root / "SPEC.json"))
+    output = [OutputRowV1(str(root / name), name, 1, "a"*64, "create-only", None)
+         for name in plan.closure_entry_paths]
+    pin = _pin(profile)
+    output.append(OutputRowV1(pin.path, profile.name, pin.bytes, pin.sha256, "create-only", None))
+    allocated = len(output)*4096
+    quote = replace(f.CurrentSavedArtifactBudgetTests()._quote(plan, f.ref("plan")),
+      runtime_root=str(root), files=tuple(output),
+      campaign_score_junction=replace(f.score_junction(), path=str(root / "campaign-score")),
+      logical_bytes=sum(r.bytes for r in output), allocation_upper=allocated,
+      prepare_peak_upper=allocated + max(r.bytes for r in output) + 131072)
+    return plan, quote, root
+
+  def check(self, plan: ColdPlanV1, quote: ColdQuoteV1, root: Path) -> core.CurrentSavedRecordingParentV1:
+    return core.prepare_current_saved_recording_parent_v1(
+      plan, quote, approved_runtime_root=root, reader=LocalBasisReaderV1())
+
+  def test_public_prepare_creates_parent(self) -> None:
+    from contextlib import ExitStack
+    from unittest import mock
+    with _owned_workspace() as w:
+      plan, quote, root = self.case(w)
+      metadata = w.root / "metadata"; metadata.mkdir()
+      p = w.root / "plan.json"; w.write(p, _wire(plan.to_wire()))
+      quote = replace(quote, plan_ref=_pin(p))
+      q = w.root / "quote.json"; w.write(q, _wire(quote.to_wire()))
+      class ReachedOwner(Exception): pass
+      with ExitStack() as stack:
+        if os.name != "nt":  # POSIX seam; actual Windows parsers.
+          stack.enter_context(mock.patch.object(core, "parse_plan_v1", return_value=plan))
+          stack.enter_context(mock.patch.object(core, "parse_quote_v1", return_value=quote))
+        stack.enter_context(mock.patch.object(core, "validate_current_saved_cold_owner_v1", side_effect=ReachedOwner))
+        with self.assertRaises(ReachedOwner):
+          core.prepare_current_saved_offline_v1(_pin(p), _pin(q),
+            approved_runtime_root=root, approved_metadata_root=metadata,
+            historical_fixture_root=w.root / "unread", historical_fixture_ref=_pin(p),
+            expected_machine_id=plan.machine_id, expected_attempt_nonce=plan.attempt_nonce,
+            expected_task_nonce=plan.task_nonce, reader=LocalBasisReaderV1())
+      self.assertTrue((root / "recordings").is_dir())
+      self.assertEqual(self.check(plan, quote, root), self.check(plan, quote, root))
+      self.assertFalse((root / "ROOT-CURRENT-SAVED-PREPARED01.json").exists())
+
+  def test_wrong_parent(self) -> None:
+    for mode in ("outside", "relative", "parent", "valid"):
+      with self.subTest(mode=mode), _owned_workspace() as w:
+        plan, quote, root = self.case(w, mode)
+        with self.assertRaises(ValueError):
+          self.check(plan, quote, root.parent if mode == "valid" else root)
+        self.assertFalse((root / "recordings").exists())
+
+  def test_file_and_old_sid_rejected(self) -> None:
+    for mode in ("file", "SID"):
+      with self.subTest(mode=mode), _owned_workspace() as w:
+        plan, quote, root = self.case(w); path = root / "recordings"
+        if mode == "file": w.write(path, b"x")
+        else: path.mkdir(); (path / "old-SID").mkdir()
+        with self.assertRaises(ValueError): self.check(plan, quote, root)
+
+  def test_reparse_rejected(self) -> None:
+    with _owned_workspace() as w:
+      plan, quote, root = self.case(w)
+      path = root / "recordings"; target = w.root / "target"; target.mkdir()
+      try:
+        try: path.symlink_to(target, target_is_directory=True)
+        except OSError:
+          if os.name != "nt": raise
+          import subprocess
+          done = subprocess.run(["cmd.exe", "/d", "/c", "mklink", "/J", str(path), str(target)],
+            capture_output=True, check=False, creationflags=0x08000000)
+          self.assertEqual(done.returncode, 0, done.stderr)
+        with self.assertRaises(ValueError): self.check(plan, quote, root)
+      finally:
+        if path.is_symlink(): path.unlink()
+        elif path.exists(): path.rmdir()
+
 if __name__ == "__main__":
     unittest.main()

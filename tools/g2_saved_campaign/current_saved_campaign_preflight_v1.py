@@ -17,7 +17,7 @@ from typing import Callable, Literal, Mapping, Protocol
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, ExactRefV1, JsonObject, JsonValue, decode_current_saved_basis_v1,
-    exact_read, integer, json_object, need, parse_ref, record, rows, text, utc,
+    exact_read, integer, json_object, need, parse_json, parse_ref, record, rows, text, utc,
 )
 from tools.g2_saved_campaign.prepare_current_saved_campaign_cold_v1 import (
     ColdPlanV1, ColdQuoteV1, MAX_CURRENT_SAVED_CLOSURE_V1, parse_plan_v1, parse_quote_v1,
@@ -1968,6 +1968,67 @@ def _bind_consumer_probe_call_v1(
         need(call.execution_kind == "original_function", "actual original consumer function call")
 
 
+
+@dataclass(frozen=True)
+class CurrentSavedRecordingParentV1:
+    path: Path
+    file_id: str
+    device: str
+
+
+def prepare_current_saved_recording_parent_v1(
+    plan: ColdPlanV1, quote: ColdQuoteV1, *,
+    approved_runtime_root: Path, reader: BasisReaderV1,
+) -> CurrentSavedRecordingParentV1:
+    """Own only the empty recording parent explicitly inside the approved runtime."""
+    import os
+    import stat
+    root = approved_runtime_root
+    need(root.is_absolute() and ".." not in root.parts, "absolute lexical recording runtime root")
+    ancestors = (root, *root.parents)
+    identities: list[tuple[int, int]] = []
+    for parent in ancestors:
+        info = parent.lstat()
+        need(stat.S_ISDIR(info.st_mode) and not stat.S_ISLNK(info.st_mode)
+             and not getattr(info, "st_file_attributes", 0) & 1024,
+             "recording runtime ancestor is not an ordinary directory")
+        identities.append((info.st_dev, info.st_ino))
+    need(root.resolve(strict=True) == root
+         and Path(plan.runtime_root) == root and Path(quote.runtime_root) == root,
+         "exact approved recording runtime root")
+    matches = [row for row in quote.files if row.relative_path == "ROOT-OBS-PROFILE-C23.json"]
+    need(len(matches) == 1, "one quoted recording profile")
+    row = matches[0]
+    profile_path = root / "ROOT-OBS-PROFILE-C23.json"
+    need(Path(row.path) == profile_path, "quoted recording profile inside approved runtime")
+    info = profile_path.lstat()
+    need(stat.S_ISREG(info.st_mode) and not stat.S_ISLNK(info.st_mode)
+         and not getattr(info, "st_file_attributes", 0) & 1024, "ordinary quoted recording profile")
+    profile = record(parse_json(exact_read(reader, ExactRefV1(row.path, row.bytes, row.sha256), 65536)))
+    path = root / "recordings"
+    selected = Path(text(profile.get("recording_root")))
+    need(selected.is_absolute() and ".." not in selected.parts and selected == path,
+         "quoted recording_root is the exact approved recordings parent")
+    if not os.path.lexists(path):
+        path.mkdir()
+    before = path.lstat()
+    need(stat.S_ISDIR(before.st_mode) and not stat.S_ISLNK(before.st_mode)
+         and not getattr(before, "st_file_attributes", 0) & 1024,
+         "recording parent must be an ordinary directory, never a file or reparse")
+    need(not any(path.iterdir()), "recording parent must be empty; old SID forbidden")
+    after = path.lstat()
+    need((before.st_dev, before.st_ino) == (after.st_dev, after.st_ino)
+         and not getattr(after, "st_file_attributes", 0) & 1024,
+         "recording parent identity stable")
+    for parent, expected in zip(ancestors, identities, strict=True):
+        info = parent.lstat()
+        need((info.st_dev, info.st_ino) == expected and stat.S_ISDIR(info.st_mode)
+             and not stat.S_ISLNK(info.st_mode)
+             and not getattr(info, "st_file_attributes", 0) & 1024,
+             "recording runtime ancestor changed")
+    return CurrentSavedRecordingParentV1(path, str(after.st_ino), str(after.st_dev))
+
+
 def _create_offline_metadata_v1(
     path: Path, value: object, *, approved_root: Path, reader: BasisReaderV1,
 ) -> ExactRefV1:
@@ -2071,6 +2132,8 @@ def prepare_current_saved_offline_v1(
     )
     need(not final_path.exists() and all(not (metadata / name).exists() for name in names),
          "one fresh create-only qualification bundle")
+    recording_parent = prepare_current_saved_recording_parent_v1(
+        plan, quote, approved_runtime_root=approved_runtime_root, reader=reader)
     validate_current_saved_cold_owner_v1(
         plan_ref, quote_ref, reader=reader, expected_machine_id=expected_machine_id)
     basis = decode_current_saved_basis_v1(exact_read(reader, plan.basis_ref, 65536),
@@ -2113,6 +2176,9 @@ def prepare_current_saved_offline_v1(
         metadata / names[2], preflight.to_wire(), approved_root=metadata, reader=reader)
     prepared = build_current_saved_prepared_v1(preflight, preflight_ref, reader=reader)
     _validate_consumer_probe(probe_ref, plan_ref, quote_ref, plan, reader)
+    need(prepare_current_saved_recording_parent_v1(
+        plan, quote, approved_runtime_root=approved_runtime_root, reader=reader) == recording_parent,
+        "recording parent remains ready before Prepared publication")
     _create_offline_metadata_v1(
         final_path, prepared.to_wire(), approved_root=runtime, reader=reader)
     need(verify_current_saved_prepared_v1(
