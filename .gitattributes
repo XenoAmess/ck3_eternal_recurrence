@@ -11,6 +11,7 @@ mod_living_artifacts/events/stress_events/*.txt whitespace=-blank-at-eol,-blank-
 mod_living_artifacts/docs/evidence/r2-inventory.capture.json -text whitespace=cr-at-eol
 mod_living_artifacts/docs/evidence/r2-inventory.provenance.json -text whitespace=cr-at-eol
 mod_living_artifacts/docs/evidence/r6-inventory.capture*.json -text whitespace=cr-at-eol
+mod_living_artifacts/docs/evidence/r7-star-inventory.capture.json -text whitespace=cr-at-eol
 
 # Keep these machine-bound recovery qualifications at their original SHA bytes.
 docs/ck3-native-ai/evidence/c16-war8495-reconcile-source-qualification-2026-10-20.json -text whitespace=cr-at-eol

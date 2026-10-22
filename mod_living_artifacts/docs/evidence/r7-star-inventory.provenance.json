@@ -1,0 +1,77 @@
+{
+  "schema": "living-artifacts-star-name-live-image/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T07:38:09.347591+00:00",
+  "captured_at_utc": "2026-10-22T07:36:24.839185+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0007",
+  "pid": 10940,
+  "generation_decimal": "1",
+  "source_commit": "7559ccccf66348d9dae3b50b1cc2f40145c05df3",
+  "game_version": "1.20.0.4",
+  "steam_build": 25734779,
+  "original_image": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T073624839185Z-r7-star-inventory-a01.png",
+    "bytes": 2449041,
+    "sha256": "6f0627796769c80eecd2d564b312c6ba8d69ca8ca37dcf650f311fe7aa7bb210"
+  },
+  "archived_image": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r7-star-inventory.png",
+    "bytes": 2449041,
+    "sha256": "6f0627796769c80eecd2d564b312c6ba8d69ca8ca37dcf650f311fe7aa7bb210"
+  },
+  "original_capture": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261022T073624839185Z-r7-star-inventory-a01.json",
+    "bytes": 814,
+    "sha256": "a59aab38b2c0a9c5645f3fc9b5be674b6b28e01301f7330c869367ad81ff74a8"
+  },
+  "archived_capture": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\docs\\evidence\\r7-star-inventory.capture.json",
+    "bytes": 814,
+    "sha256": "a59aab38b2c0a9c5645f3fc9b5be674b6b28e01301f7330c869367ad81ff74a8"
+  },
+  "source_binding": [
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\frozen-argv.json",
+      "bytes": 62365,
+      "sha256": "9efabcf78ba90b164a0d135a53c0d8fc8240a8e5b7bc0f1fca4730088694477a"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\builds\\candidate-7559ccccf.manifest.json",
+      "bytes": 10569,
+      "sha256": "6301b7143a9b1e147c75564f0d2607cdca4f7c59976df8cf88dc5714f3f6aeee"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\startup-actor-binding.json",
+      "bytes": 531,
+      "sha256": "940847d5ff07ce556d5b6026eee419ad9ecc1aff284c1cc9a2492b489d3d1337"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\case-output\\observer-checkpoint-01.json",
+      "bytes": 11075,
+      "sha256": "4505ee8a66fc0dbcda99cf259ad87d03c30f169254eec40469835cc40c9d56dd"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\checkpoint-01\\process.json",
+      "bytes": 3043,
+      "sha256": "b4907845a91b6a32cb701433990fc23bd1b90ddd8c9a17d6f209a47fe105d810"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\checkpoint-01\\original.ck3",
+      "bytes": 70172797,
+      "sha256": "7d02d3363dd1f776907f4c6fb2d252f6e7109a37e4d11eec3d43b33a1a5ff4b8"
+    },
+    {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0007\\checkpoint-01\\melted.ck3",
+      "bytes": 102854726,
+      "sha256": "26a335d15aaaf1a88f5669983b21681f6ec74c93e70f3cb2086a7f5c41ad8bb5"
+    }
+  ],
+  "root_visual_review": "Original full 1920x1080 desktop viewed directly. Inventory target shows ★待测活武器; four ordinary material names have no star. Weapon slot remains empty in this frame.",
+  "saved_name_observed": "★待测活武器",
+  "artifact_id_decimal": "402",
+  "owner_id_decimal": "31254",
+  "scope": "Real game rendering and actual saved name of the authored initial target. No growth, feeding, transfer, cold-load, AI or whole-release credit.",
+  "pixels_edited": false,
+  "workshop_uploaded": false,
+  "release_pass": false
+}
