@@ -159,7 +159,8 @@ class AuthoredInputs:
 
 
 def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInputsAPI,
-                         *, same_root: bool = False, fixture_cmake: bool = False) -> AuthoredInputs:
+                         *, same_root: bool = False, fixture_cmake: bool = False,
+                         wire_consumer: bool = False, host_test_companion: bool = False) -> AuthoredInputs:
     """Extracted fixture setup; every path/pin is rebuilt in this scratch."""
     repo = scratch / 'r'
     repo.mkdir()
@@ -174,6 +175,10 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
     contents = {'CMakeLists.txt': b'# authored fixture\n', 'src/body.cpp': b'int n;\n',
                 'include/pin.hpp': b'#pragma once\n', 'research/other.py': b'OTHER = 0\n',
                 host_relative: b'HOST = 0\n'}
+    if wire_consumer:
+        contents['research/refill_add_live_12004/consume_live_refill_add.py'] = b'CONSUMER = 0\n'
+    if host_test_companion:
+        contents['research/test_ck3_12002_mcp_live.py'] = b'TEST = 0\n'
     fixture_name = 'xar_ck3_12004_player_pilgrimage_traits_test' if fixture_cmake else 'authored_finite'
     if fixture_cmake:
         contents['cmake/player_pilgrimage_traits_12004.cmake'] = (

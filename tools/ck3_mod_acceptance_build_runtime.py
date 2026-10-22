@@ -16,6 +16,7 @@ import sys
 from typing import TypedDict
 
 import build_native_configured_successor as native_successor
+from ck3_mod_acceptance_background_types import WireEvidenceCodec, wire_evidence_codec
 
 HERE = Path(__file__).resolve().parent
 BOM = b"\xef\xbb\xbf"
@@ -117,7 +118,7 @@ def registration_driver(case):
     return driver
 
 
-def require(value, message):
+def require(value: object, message: str) -> None:
     if not value:
         raise ValueError(message)
 
@@ -452,7 +453,7 @@ def profile_expansion_contract(value, refs, root, commit, machine, old_profile, 
     contract_path = (root / PROFILE_EXPANSION_RELATIVE).resolve()
     require(Path(contract_ref["path"]).resolve() == contract_path,
             "Profile expansion contract must be the common committed source contract")
-    committed = subprocess.run(["git", "show", value["source_commit"] + ":" + PROFILE_EXPANSION_RELATIVE],
+    committed = subprocess.run(["git", "-c", "core.longpaths=true", "show", value["source_commit"] + ":" + PROFILE_EXPANSION_RELATIVE],
                                cwd=root, capture_output=True, check=True).stdout
     require(sig(committed) == {k: contract_ref[k] for k in ("bytes", "sha256")},
             "Profile expansion contract differs from the actual native compile commit")
@@ -578,6 +579,7 @@ def qualified_configured_fixture_links(
     targets_value: object, fixtures_value: object, model_value: object,
     snapshot_root: Path, build_root: Path, reply: Path,
     actual_inputs: dict[str, set[Path]],
+    noncompiled_replay: object = None,
 ) -> FixtureLinkSupportResult:
     """Validate configured-to-physical objects against original production and link evidence."""
     support = native_successor.obj(support_value)
@@ -649,7 +651,8 @@ def qualified_configured_fixture_links(
     config = native_successor.read(Path(native_successor.checked(support["producer_config"])["path"]))
     native_successor.require(config.get("source_commit") == native_commit and config.get("machine_id") == machine,
                              "Fixture production config identity differs")
-    proof = native_successor.verified_fixture_object_bindings(config, sorted(str(path) for path in all_paths))
+    proof = native_successor.verified_fixture_object_bindings(config, sorted(str(path) for path in all_paths),
+        noncompiled_replay=noncompiled_replay)
     native_successor.require(objects == proof.objects, "Fixture objects differ from verified original production bindings")
     for field, expected in (("production_plan", proof.production_plan),
                             ("incremental_production_result", proof.incremental_production_result),
@@ -720,6 +723,7 @@ def qualified_fixture_link_support(
     value_input: object, refs_input: object, machine: str, scope_input: object,
     snapshot_root: Path, build_root: Path, indexed_input: object, production_input: object,
     targets_input: object, fixtures_input: object, reply: Path, model_input: object,
+    noncompiled_replay: object = None,
 ) -> FixtureLinkSupportResult | None:
     value, refs = native_successor.obj(value_input), native_successor.obj(refs_input)
     scope, indexed = native_successor.obj(scope_input), native_successor.obj(indexed_input)
@@ -746,7 +750,8 @@ def qualified_fixture_link_support(
             "Fixture link support actual scope/freeze/finite execution pins differ")
     if support["schema"] == "ck3-fixture-production-object-link-support-v2":
         return qualified_configured_fixture_links(support, ref, machine, native_successor.string(value["source_commit"]),
-            scope, indexed, production, targets, fixtures, model, snapshot_root, build_root, reply, actual_inputs)
+            scope, indexed, production, targets, fixtures, model, snapshot_root, build_root, reply, actual_inputs,
+            noncompiled_replay)
     declared = native_successor.obj(support.get("fixtures", {}))
     file_api = native_successor.obj(support.get("fixture_file_api", {}))
     native_successor.require(set(declared) == set(file_api) == set(actual_inputs), "Fixture raw-object target set differs from actual File API")
@@ -905,6 +910,14 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             require({key: snapshot_input[key] for key in ("bytes", "sha256")}
                     == {key: row[key] for key in ("bytes", "sha256")},
                     "Preserved fixture CMake blob differs from the original Native snapshot")
+        if relative in source_checkout.get("original_research_blobs", {}):
+            require(relative in (native_successor.NONCOMPILED_CONSUMER_RELATIVE,
+                                 native_successor.HOST_TEST_COMPANION_RELATIVE),
+                    "Only the reviewed refill consumer and host test may preserve non-host before blobs")
+            snapshot_input = source_checkout["original_research_blobs"][relative]
+            require({key: snapshot_input[key] for key in ("bytes", "sha256")}
+                    == {key: row[key] for key in ("bytes", "sha256")},
+                    "Preserved refill consumer blob differs from the original Native snapshot")
         current_snapshot = checked(snapshot_input)
         original = row.get("original_source_pin")
         if original:
@@ -987,7 +1000,7 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                 "Fixture executable is not its actual configured artifact")
         zero_execution(row["execution"], machine, row["executable"])
     link_support = qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, build_root,
-        indexed, production, actual_targets, fixtures, reply, model)
+        indexed, production, actual_targets, fixtures, reply, model, source_checkout.get("noncompiled_replay"))
     profile_expansion_scope(expansion, production, actual_targets, snapshot_root, indexed, fixtures,
                             link_support["fixture_production_targets"] if link_support else None)
     binding = read(refs["defender_binding"]["path"])
@@ -1094,7 +1107,22 @@ def check_index_only_changes(root, changed_paths):
     return independent
 
 
-def main(argv=None):
+def wire_evidence_runtime_features(features: object, codec: object) -> dict[str, object]:
+    """Select one strict shared codec without discarding existing host features."""
+    if not isinstance(features, dict):
+        raise ValueError("Shared host features require an object")
+    result: dict[str, object] = {}
+    for key, value in features.items():
+        if not isinstance(key, str):
+            raise ValueError("Shared host features require string keys")
+        result[key] = value
+    wire_evidence_codec(result["wire_evidence_codec"] if "wire_evidence_codec" in result else "plain")
+    selected: WireEvidenceCodec = wire_evidence_codec(codec)
+    result["wire_evidence_codec"] = selected
+    return result
+
+
+def main(argv: list[str] | None = None) -> int:
     sys.dont_write_bytecode = True
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("base-runtime", "source-delta", "scene-root", "storage-admission", "products", "case-inputs", "output"):
@@ -1111,7 +1139,10 @@ def main(argv=None):
     parser.add_argument("--qualification", action="append", default=[], metavar="CHAIN=ACTUAL_RECEIPT")
     parser.add_argument("--native-profile", type=Path, help="actual qualified global native profile when new required tools need their compiled flags checked")
     parser.add_argument("--input-binder-command", type=Path, help="optional JSON argv for the independently selected public case input hook")
+    parser.add_argument("--wire-evidence-codec", type=wire_evidence_codec, default="plain",
+                        help="Shared wire evidence codec: plain or explicit gzip-members; default plain")
     args = parser.parse_args(argv)
+    codec: WireEvidenceCodec = wire_evidence_codec(args.wire_evidence_codec)
     require(re.fullmatch("[0-9a-f]{40}", args.source_commit) is not None, "Actual next Root commit required")
     runtime, manifest, refs, source = load_base(args.base_runtime)
     root = Path(runtime["repo_root"]).resolve()
@@ -1218,6 +1249,7 @@ def main(argv=None):
         "source_root": native_bundle["snapshot_root"],
         "scope": "exact unique production translation-unit source paths from actual CMake File API; test targets excluded"})
     new_manifest = dict(manifest)
+    new_manifest["host_features"] = wire_evidence_runtime_features(manifest.get("host_features", {}), codec)
     new_manifest.update(observed_at_utc=now(), source_commit=args.source_commit, capabilities=capabilities,
                         qualification_scope="new exact qualified global production DLL; changed source chains qualified independently; live results pending")
     new_manifest["host"] = {"path_key": "host", **sig(host_raw)}
@@ -1252,6 +1284,7 @@ def main(argv=None):
     runtime_ref = add("runtime.local.json", new_runtime)
     common = [str(Path(runtime["python"])), "-B", "-X", "utf8"]
     commands = {"machine_id": machine, "observed_at_utc": now(), "commands_executed": False,
+                "wire_evidence_codec": codec,
                 "prepare_argv": common + [str(root / "tools/ck3_mod_acceptance.py"), "prepare", "--runtime", runtime_ref["path"],
                     "--products", str(args.products.resolve()), "--product", args.product, "--case", args.case,
                     "--case-inputs", str(args.case_inputs.resolve()), "--prepare-output", str(scene / "prepared-a01")],
@@ -1265,7 +1298,7 @@ def main(argv=None):
     add("SOURCE-BINDINGS.actual.json", {"machine_id": machine, "observed_at_utc": now(),
         "source_commit": args.source_commit, "base_runtime": pin(args.base_runtime), "base_manifest": runtime["manifest"],
         "exact_Root_delta": pin(args.source_delta), "actual_changed_chain_receipts": qualified,
-        "builder_program": pin(__file__),
+        "builder_program": pin(__file__), "wire_evidence_codec": codec,
         "archive_relocations": archive_context.evidence() if archive_context else None,
         "qualified_native_build": native_bundle["qualification_ref"],
         "index_only_unselected_changes": index_only,
@@ -1303,13 +1336,14 @@ def main(argv=None):
             "Unexpected public Selection blockers: " + str(selection.blockers))
     with (destination / "STATIC-VALIDATION.actual.json").open("xb") as stream:
         stream.write(encoded({"machine_id": machine, "observed_at_utc": now(), "source_commit": args.source_commit,
-            "independent_case": args.case, "public_Selection_argv": selection.argv,
+            "independent_case": args.case, "public_Selection_argv": selection.argv, "wire_evidence_codec": codec,
             "actual_Selection_blockers": selection.blockers, "actual_changed_chain_receipts": qualified,
             "actual_registered_required_MCP_tools": sorted(needed), "registration_scope": "offline factory list_tools only; no game or tool invocation",
             "case_private_host": False, "prepare_executed": False, "game_started": False, "allocated": False,
             "runtime": pin(destination / "runtime.local.json"), "manifest": pin(destination / "manifest.json")}))
     print(json.dumps({"runtime": pin(destination / "runtime.local.json"), "entry": pin(destination / "ENTRY-COMMANDS.json"),
-                      "case": args.case, "required_qualified_chains": sorted(required), "game_started": False}))
+                      "case": args.case, "required_qualified_chains": sorted(required), "game_started": False,
+                      "wire_evidence_codec": codec}))
     return 0
 
 

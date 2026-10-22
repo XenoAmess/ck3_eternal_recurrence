@@ -6,6 +6,7 @@ these tests never build, execute, register an EXE, or qualify actual live work.
 from __future__ import annotations
 
 import copy
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -16,6 +17,23 @@ from uuid import uuid4
 
 import ck3_mod_acceptance_native_source_binding as producer
 import test_ck3_mod_acceptance_native_exact_tree_binding as fixture
+
+
+@dataclass
+class WireCase:
+    data: fixture.AuthoredInputs
+    host_blob: Path
+    consumer_blob: Path
+    consumer_delta: Path
+    host_delta: Path
+    host_test_blob: Path | None = None
+
+    def produce(self) -> Path:
+        output = self.data.evidence / ('binding-' + uuid4().hex + '.json')
+        producer.produce_same_root_host_binding(self.data.repo, self.data.qpath, self.host_delta,
+            self.host_blob, output, self.data.machine, noncompiled_consumer_delta=self.consumer_delta,
+            original_host_test_blob=self.host_test_blob)
+        return output
 
 
 class SameRootHost(unittest.TestCase):
@@ -294,6 +312,255 @@ class SameRootHost(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'supplied together'):
             producer.produce_same_root_host_binding(d.repo, d.qpath, delta, old_host,
                 d.evidence / 'refused.json', d.machine, original_fixture_cmake_blob=old_cmake)
+
+    def wire_case(self, *, host_test: bool = False) -> WireCase:
+        scratch = self.data.evidence / ('wire-' + uuid4().hex)
+        scratch.mkdir()
+        _, _, compiled = fixture.load_apis()
+        d = fixture.make_authored_inputs(scratch, self.public, compiled, same_root=True,
+            wire_consumer=True, host_test_companion=host_test)
+        relative = producer.NATIVE_PREFIX + producer.NONCOMPILED_CONSUMER_RELATIVE
+        current = d.repo / relative
+        current.write_bytes(b'CONSUMER = 1\n')
+        if host_test:
+            (d.native / producer.HOST_TEST_COMPANION_RELATIVE).write_bytes(b'TEST = 1\n')
+            fixture.git(d.repo, 'add', producer.NATIVE_PREFIX + producer.HOST_TEST_COMPANION_RELATIVE)
+        fixture.git(d.repo, 'add', relative)
+        fixture.git(d.repo, 'commit', '-m', 'Authored sole refill wire consumer migration')
+        d.runtime_commit = fixture.git(d.repo, 'rev-parse', 'HEAD')
+        old_host, old_consumer = d.evidence / 'old-host.py', d.evidence / 'old-consumer.py'
+        old_host.write_bytes(d.contents[producer.HOST_NATIVE_RELATIVE])
+        old_consumer.write_bytes(d.contents[producer.NONCOMPILED_CONSUMER_RELATIVE])
+        old_test: Path | None = None
+        test_change: producer.WireConsumerContext | None = None
+        if host_test:
+            old_test = d.evidence / 'old-test.py'
+            old_test.write_bytes(d.contents[producer.HOST_TEST_COMPANION_RELATIVE])
+            test_change = {'before_blob': producer.host_pin(old_test),
+                'after': producer.host_pin(d.native / producer.HOST_TEST_COMPANION_RELATIVE)}
+        host_before, host_after = producer.host_signature(old_host.read_bytes()), producer.host_signature((d.repo / producer.HOST_RELATIVE).read_bytes())
+        before, after = producer.host_signature(old_consumer.read_bytes()), producer.host_signature(current.read_bytes())
+        host_delta = fixture.write(d.evidence / 'host-source-delta.json', {'target': producer.HOST_RELATIVE,
+            'base_source': host_before, 'candidate_bytes': host_after['bytes'], 'candidate_sha256': host_after['sha256']})
+        reader_delta = fixture.write(d.evidence / 'reader-source-delta.json', {'target': relative,
+            'base_source': before, 'candidate_bytes': after['bytes'], 'candidate_sha256': after['sha256']})
+        consumer = fixture.write(d.evidence / 'consumer.json', {'machine_id': d.machine, 'result': 'PASS',
+            'original_wait_returncode': 0, 'skipped': 0, 'authored_fixture_not_actual_tests': True,
+            'pins': {ref['path']: {'bytes': ref['bytes'], 'sha256': ref['sha256']} for ref in (host_delta, reader_delta)}})
+        if test_change is not None:
+            consumer_value = producer.host_read(Path(consumer['path']))
+            pins = producer.host_obj(consumer_value['pins'])
+            test_pin = test_change['after']
+            pins[test_pin['path']] = {'bytes': test_pin['bytes'], 'sha256': test_pin['sha256']}
+            consumer_value['pins'] = pins
+            consumer = fixture.write(Path(consumer['path']), consumer_value)
+        review = fixture.write(d.evidence / 'host-review.json', {
+            'schema': 'ck3-reviewed-canonical-shared-python-host-change-v1', 'machine_id': d.machine,
+            'result': 'PASS', 'canonical_repo_relative': producer.HOST_RELATIVE,
+            'source_classification': 'shared_host', 'before': host_before, 'after': host_after,
+            'actual_live_business_qualified': False, 'source_consumer': consumer, 'source_delta': host_delta})
+        if test_change is not None:
+            review_value = producer.host_read(Path(review['path']))
+            review_value['host_test_change'] = test_change
+            review = fixture.write(Path(review['path']), review_value)
+        reader_review = fixture.write(d.evidence / 'reader-review.json', {
+            'schema': 'ck3-reviewed-refill-wire-consumer-change-v1', 'machine_id': d.machine,
+            'result': 'PASS', 'canonical_repo_relative': relative, 'before': before, 'after': after,
+            'actual_live_business_qualified': False, 'source_consumer': consumer, 'source_delta': reader_delta})
+        reader_proof = fixture.write(d.evidence / 'reader-delta.json', {
+            'schema': producer.WIRE_CONSUMER_DELTA_SCHEMA, 'machine_id': d.machine,
+            'runtime_source_commit': d.runtime_commit, 'native_source_commit': d.native_commit,
+            'canonical_repo_relative': relative, 'before_blob': producer.host_pin(old_consumer),
+            'after': producer.host_pin(current), 'source_delta': reader_delta, 'source_consumer': consumer,
+            'reviewed_change': reader_review})
+        qualification = fixture.write(d.evidence / 'shared-host-qualified.json', {
+            'machine_id': d.machine, 'source_commit': d.runtime_commit, 'result': 'PASS', 'exit_code': 0,
+            'skipped': 0, 'tests_run': 1, 'covered_chains': ['shared_host'],
+            'source_pins': [producer.host_pin(d.repo / producer.HOST_RELATIVE), producer.host_pin(current)],
+            'source_consumer': consumer, 'source_delta': host_delta, 'reviewed_host_change': review,
+            'noncompiled_consumer_delta': reader_proof, 'authored_fixture_not_actual_tests': True})
+        if test_change is not None:
+            qualification_value = producer.host_read(Path(qualification['path']))
+            qualification_value['host_test_change'] = test_change
+            qualification_value['source_pins'] = [producer.host_pin(d.repo / producer.HOST_RELATIVE),
+                producer.host_pin(current), test_change['after']]
+            qualification = fixture.write(Path(qualification['path']), qualification_value)
+        delta_path = d.evidence / 'host-delta.json'
+        fixture.write(delta_path, {'schema': producer.HOST_CONSUMER_DELTA_SCHEMA, 'machine_id': d.machine,
+            'observed_at_utc': datetime.now(timezone.utc).isoformat(), 'runtime_source_commit': d.runtime_commit,
+            'native_source_commit': d.native_commit, 'canonical_repo_relative': producer.HOST_RELATIVE,
+            'source_classification': 'shared_host', 'before': host_before, 'after': host_after,
+            'qualified_native': d.qref, 'snapshot': d.snapshot_ref,
+            'compiled_inputs': compiled.compiled_inputs(d.qualification, d.snapshot),
+            'reviewed_host_change': review, 'shared_host_qualification': qualification,
+            'noncompiled_consumer_delta': reader_proof})
+        if test_change is not None:
+            delta_value = producer.host_read(delta_path)
+            delta_value['host_test_change'] = test_change
+            fixture.write(delta_path, delta_value)
+        return WireCase(d, old_host, old_consumer, Path(reader_proof['path']), delta_path, old_test)
+
+    def test_17_refill_reader_producer_to_complete_public_consumer(self) -> None:
+        case = self.wire_case()
+        d = case.data
+        before = {p: producer.host_pin(p) for p in (d.qpath, Path(d.snapshot_ref['path']), Path(d.dll_ref['path']))}
+        binding = case.produce()
+        result = fixture.object_fields(self.public.qualify_native(d.qpath, d.repo, d.runtime_commit,
+            d.machine, d.dll_ref, d.manifest, binding, case.host_delta))
+        self.assertEqual(result['compile_commit'], d.native_commit)
+        self.assertEqual(json.loads(json.dumps(result)), result)
+        self.assertEqual(before, {p: producer.host_pin(p) for p in before})
+        context = producer.qualify_same_root_host(binding, root=d.repo, runtime_commit=d.runtime_commit,
+            native_commit=d.native_commit, machine=d.machine, qualified_native_ref=d.qref,
+            qualification=d.qualification, snapshot_ref=d.snapshot_ref, snapshot=d.snapshot,
+            native_shared_python_host_delta=case.host_delta)
+        self.assertEqual(context['noncompiled_replay']['binding'], producer.host_pin(binding))
+        self.assertEqual(context['original_research_blobs'],
+            {producer.NONCOMPILED_CONSUMER_RELATIVE: producer.host_pin(case.consumer_blob)})
+
+    def test_18_legacy_host_opt_in_cannot_silently_allow_refill_change(self) -> None:
+        case = self.wire_case()
+        with self.assertRaisesRegex(ValueError, 'exactly the canonical host'):
+            producer.produce_same_root_host_binding(case.data.repo, case.data.qpath, case.host_delta,
+                case.host_blob, case.data.evidence / 'legacy-binding.json', case.data.machine)
+
+    def test_19_refill_delta_rejects_wrong_path_missing_and_boolean_identity(self) -> None:
+        case = self.wire_case()
+        original = producer.host_read(case.consumer_delta)
+        for field, value in [('canonical_repo_relative', producer.NATIVE_PREFIX + 'research/other.py'),
+                             ('native_source_commit', True), ('before_blob', None)]:
+            with self.subTest(field=field):
+                row = dict(original)
+                if value is None:
+                    del row[field]
+                else:
+                    row[field] = value
+                fixture.write(case.consumer_delta, row)
+                with self.assertRaises(ValueError):
+                    case.produce()
+        fixture.write(case.consumer_delta, original)
+
+    def test_20_refill_before_blob_must_match_original_git(self) -> None:
+        case = self.wire_case()
+        case.consumer_blob.write_bytes(b'CONSUMER = 999\n')
+        row = producer.host_read(case.consumer_delta)
+        row['before_blob'] = producer.host_pin(case.consumer_blob)
+        fixture.write(case.consumer_delta, row)
+        with self.assertRaisesRegex(ValueError, 'actual regular Git blob'):
+            case.produce()
+
+    def test_21_refill_must_not_enter_any_actual_fileapi_target(self) -> None:
+        case = self.wire_case()
+        target = case.data.evidence / 'api/fixture.json'
+        row = producer.host_read(target)
+        row['sources'] = [{'path': producer.NONCOMPILED_CONSUMER_RELATIVE}]
+        fixture.write(target, row)
+        with self.assertRaisesRegex(ValueError, 'actual File API target'):
+            case.produce()
+
+    def test_22_refill_must_not_enter_actual_compile_commands(self) -> None:
+        case = self.wire_case()
+        d = case.data
+        scope_ref = producer.host_parse_pin(d.qualification['configured_scope'])
+        scope = producer.host_read(Path(scope_ref['path']))
+        commands = Path(producer.host_parse_pin(scope['compile_commands'])['path'])
+        command_ref = fixture.write(commands, [{'file': str(d.native / 'src/body.cpp'),
+            'directory': str(d.evidence / 'build'), 'command': producer.NONCOMPILED_CONSUMER_RELATIVE}])
+        # Refresh the authored outer references; a pin failure alone is not this regression.
+        scope['compile_commands'] = command_ref
+        new_scope = fixture.write(Path(scope_ref['path']), scope)
+        d.qualification['configured_scope'] = new_scope
+        fixture.write(d.qpath, d.qualification)
+        with self.assertRaisesRegex(ValueError, 'compiler command argument'):
+            producer.qualify_wire_consumer_delta(producer.host_pin(case.consumer_delta), root=d.repo,
+                native_commit=d.native_commit, runtime_commit=d.runtime_commit, machine=d.machine,
+                qualification=d.qualification, snapshot=d.snapshot)
+
+    def test_23_refill_review_consumer_rejects_boolean_wait_and_skip(self) -> None:
+        case = self.wire_case()
+        d = case.data
+        proof = producer.host_read(case.consumer_delta)
+        consumer_path = Path(producer.host_parse_pin(proof['source_consumer'])['path'])
+        original = producer.host_read(consumer_path)
+        for key, value in [('original_wait_returncode', False), ('skipped', 1)]:
+            with self.subTest(key=key):
+                fixture.write(consumer_path, dict(original, **{key: value}))
+                row = dict(proof, source_consumer=producer.host_pin(consumer_path))
+                fixture.write(case.consumer_delta, row)
+                with self.assertRaisesRegex(ValueError, 'zero-skip refill source consumer'):
+                    producer.qualify_wire_consumer_delta(producer.host_pin(case.consumer_delta), root=d.repo,
+                        native_commit=d.native_commit, runtime_commit=d.runtime_commit, machine=d.machine,
+                        qualification=d.qualification, snapshot=d.snapshot)
+
+    def test_24_refill_opt_in_still_rejects_an_unreviewed_third_native_change(self) -> None:
+        case = self.wire_case()
+        d = case.data
+        (d.native / 'research/other.py').write_bytes(b'OTHER = 99\n')
+        fixture.git(d.repo, 'add', '.')
+        fixture.git(d.repo, 'commit', '-m', 'Authored forbidden third Native path')
+        with self.assertRaises(ValueError):
+            case.produce()
+
+    def test_25_fixed_host_test_companion_through_complete_public_qualifier(self) -> None:
+        case = self.wire_case(host_test=True)
+        d = case.data
+        binding = case.produce()
+        result = fixture.object_fields(self.public.qualify_native(d.qpath, d.repo, d.runtime_commit,
+            d.machine, d.dll_ref, d.manifest, binding, case.host_delta))
+        self.assertEqual(result['compile_commit'], d.native_commit)
+        context = producer.qualify_same_root_host(binding, root=d.repo, runtime_commit=d.runtime_commit,
+            native_commit=d.native_commit, machine=d.machine, qualified_native_ref=d.qref,
+            qualification=d.qualification, snapshot_ref=d.snapshot_ref, snapshot=d.snapshot,
+            native_shared_python_host_delta=case.host_delta)
+        self.assertEqual(set(context['original_research_blobs']),
+            {producer.NONCOMPILED_CONSUMER_RELATIVE, producer.HOST_TEST_COMPANION_RELATIVE})
+
+    def test_26_host_test_companion_must_be_independently_reviewed(self) -> None:
+        case = self.wire_case(host_test=True)
+        delta = producer.host_read(case.host_delta)
+        review_path = Path(producer.host_parse_pin(delta['reviewed_host_change'])['path'])
+        review = producer.host_read(review_path)
+        del review['host_test_change']
+        delta['reviewed_host_change'] = fixture.write(review_path, review)
+        fixture.write(case.host_delta, delta)
+        with self.assertRaisesRegex(ValueError, 'exact test companion'):
+            case.produce()
+
+    def test_27_host_test_companion_requires_original_git_bytes(self) -> None:
+        case = self.wire_case(host_test=True)
+        self.assertIsNotNone(case.host_test_blob)
+        if case.host_test_blob is None:
+            raise AssertionError('Authored host test blob missing')
+        case.host_test_blob.write_bytes(b'TEST = 999\n')
+        with self.assertRaises(ValueError):
+            case.produce()
+
+    def test_28_host_test_companion_cannot_enter_actual_fileapi(self) -> None:
+        case = self.wire_case(host_test=True)
+        target = case.data.evidence / 'api/fixture.json'
+        row = producer.host_read(target)
+        row['sources'] = [{'path': producer.HOST_TEST_COMPANION_RELATIVE}]
+        fixture.write(target, row)
+        with self.assertRaisesRegex(ValueError, 'actual File API target'):
+            case.produce()
+
+    def test_29_host_test_companion_cannot_use_an_unexecuted_source_pin(self) -> None:
+        case = self.wire_case(host_test=True)
+        d = case.data
+        delta = producer.host_read(case.host_delta)
+        review_path = Path(producer.host_parse_pin(delta['reviewed_host_change'])['path'])
+        review = producer.host_read(review_path)
+        consumer_path = Path(producer.host_parse_pin(review['source_consumer'])['path'])
+        consumer = producer.host_read(consumer_path)
+        pins = producer.host_obj(consumer['pins'])
+        del pins[str(d.native / producer.HOST_TEST_COMPANION_RELATIVE)]
+        consumer['pins'] = pins
+        review['source_consumer'] = fixture.write(consumer_path, consumer)
+        delta['reviewed_host_change'] = fixture.write(review_path, review)
+        with self.assertRaises(ValueError):
+            producer.qualify_host_test_companion(delta['host_test_change'], root=d.repo,
+                native_commit=d.native_commit, runtime_commit=d.runtime_commit, machine=d.machine,
+                qualification=d.qualification, snapshot=d.snapshot, host_delta=delta)
 
 
 if __name__ == '__main__':

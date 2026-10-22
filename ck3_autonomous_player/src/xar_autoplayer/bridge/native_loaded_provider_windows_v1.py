@@ -307,12 +307,15 @@ class _Win32ReadsV1:
             raise self.c.WinError(self.c.get_last_error(),"CreateFile(read,share-read-only)")
         return int(handle)
 
-    def file_identity(self, handle):
+    def file_identity(self, handle: object, *, allow_empty: bool = False) -> tuple[int, bytes, int]:
+        if type(allow_empty) is not bool:
+            raise ValueError("allow_empty requires an explicit boolean")
         handle=self._handle(handle)
         info=self.FileID();size=self.c.c_longlong()
         self._ok(self.file_info(handle,18,self.c.byref(info),self.c.sizeof(info)),"FileIdInfo")
         self._ok(self.file_size(handle,self.c.byref(size)),"GetFileSizeEx")
-        if size.value<=0: raise ValueError("empty DLL file")
+        if size.value < 0 or (size.value == 0 and not allow_empty):
+            raise ValueError("empty DLL file")
         return int(info.volume),bytes(info.identity),int(size.value)
 
     def _name(self, reader):

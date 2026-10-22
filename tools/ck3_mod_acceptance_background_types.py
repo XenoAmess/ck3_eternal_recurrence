@@ -1,7 +1,7 @@
 """Validated JSON boundary shared by the new background refusal protocol."""
 from __future__ import annotations
-import math,re,subprocess
-from typing import Final, Literal, TypeAlias, TypedDict
+import math,os,re,subprocess
+from typing import Final, Literal, TypeAlias, TypedDict, Protocol, runtime_checkable
 from types import ModuleType
 from pathlib import Path
 
@@ -135,3 +135,173 @@ def process_handle(process: 'subprocess.Popen[bytes]') -> int:
     if not isinstance(value,int) or isinstance(value,bool) or value<=0:
         raise ValueError('Original Windows Popen handle unavailable')
     return value
+
+
+# Shared wire logging metadata. Missing legacy codec is interpreted only by
+# the report/manifest reader; explicit null and unknown values never default.
+WireEvidenceCodec: TypeAlias = Literal["plain", "gzip-members"]
+WireEvidenceKind: TypeAlias = Literal["native-wire", "mcp-wire", "mcp-calls"]
+
+
+class WireFileIdentity(TypedDict):
+    provider: Literal["win32-file-id-info", "posix-fstat"]
+    device: str
+    inode: str
+
+
+class WireEvidenceCommit(TypedDict):
+    schema: Literal["ck3-wire-evidence-commit-v1"]
+    wire_evidence_codec: Literal["gzip-members"]
+    path: str
+    stream_id: str
+    file_identity: WireFileIdentity
+    completed_physical_offset: str
+    logical_bytes: str
+    record_count: int
+    last_member_physical_begin: str
+    last_member_sha256: str
+
+
+class WireEvidenceSource(TypedDict):
+    path: str
+    wire_evidence_codec: WireEvidenceCodec
+    commit: WireEvidenceCommit | None
+
+
+def wire_evidence_codec(value: object) -> WireEvidenceCodec:
+    if type(value) is str and value == "plain":
+        return "plain"
+    if type(value) is str and value == "gzip-members":
+        return "gzip-members"
+    raise ValueError("wire_evidence_codec must be plain or gzip-members")
+
+
+def wire_evidence_path(report_path: Path, kind: WireEvidenceKind,
+                       codec: WireEvidenceCodec) -> Path:
+    if kind not in ("native-wire", "mcp-wire", "mcp-calls"):
+        raise ValueError("Unknown wire evidence kind")
+    selected = wire_evidence_codec(codec)
+    return report_path.with_suffix("." + kind + ".jsonl" +
+                                   (".gz" if selected == "gzip-members" else ""))
+
+
+def _wire_decimal(value: object, bits: int, *, positive: bool = False) -> str:
+    if (not isinstance(value, str) or re.fullmatch(r"0|[1-9][0-9]*", value) is None or
+            int(value) >= 1 << bits or positive and int(value) == 0):
+        raise ValueError("Canonical bounded wire decimal required")
+    return value
+
+
+def wire_file_identity_value(value: object) -> WireFileIdentity:
+    row = json_object(value)
+    if set(row) != {"provider", "device", "inode"}:
+        raise ValueError("Exact wire file identity fields required")
+    provider = row["provider"]
+    device = _wire_decimal(row["device"], 64)
+    inode = _wire_decimal(row["inode"], 128, positive=True)
+    if provider == "win32-file-id-info":
+        return WireFileIdentity(provider="win32-file-id-info", device=device, inode=inode)
+    if provider == "posix-fstat":
+        return WireFileIdentity(provider="posix-fstat", device=device, inode=inode)
+    raise ValueError("Unknown wire file identity provider")
+
+
+@runtime_checkable
+class _WireFileIdentityReader(Protocol):
+    def file_identity(self, handle: int, *, allow_empty: bool = False) -> object: ...
+
+
+def wire_file_identity(fd: int) -> WireFileIdentity:
+    """Borrow the caller's open file; never close its fd or native handle."""
+    if type(fd) is not int or fd < 0:
+        raise ValueError("Actual held wire fd required")
+    if os.name == "nt":
+        import importlib
+        import msvcrt
+        module = importlib.import_module(
+            "xar_autoplayer.bridge.native_loaded_provider_windows_v1")
+        factory: object = getattr(module, "_Win32ReadsV1", None)
+        if not callable(factory):
+            raise ValueError("Shared native file identity provider unavailable")
+        reader: object = factory()
+        if not isinstance(reader, _WireFileIdentityReader):
+            raise ValueError("Shared native file identity method unavailable")
+        result = reader.file_identity(msvcrt.get_osfhandle(fd), allow_empty=True)
+        if not isinstance(result, tuple) or len(result) != 3:
+            raise ValueError("Native file identity tuple unavailable")
+        volume, identity, size = result
+        if (type(volume) is not int or not isinstance(volume, int) or not 0 <= volume < 1 << 64 or
+                not isinstance(identity, bytes) or len(identity) != 16 or not any(identity) or
+                type(size) is not int or not isinstance(size, int) or size < 0):
+            raise ValueError("Native FileIdInfo/GetFileSizeEx result invalid")
+        return WireFileIdentity(provider="win32-file-id-info", device=str(volume),
+                                inode=str(int.from_bytes(identity, "little")))
+    observed = os.fstat(fd)
+    return wire_file_identity_value({"provider": "posix-fstat",
+        "device": str(observed.st_dev), "inode": str(observed.st_ino)})
+
+
+def wire_evidence_commit(value: object) -> WireEvidenceCommit:
+    row = json_object(value)
+    if set(row) != {"schema", "wire_evidence_codec", "path", "stream_id", "file_identity",
+            "completed_physical_offset", "logical_bytes", "record_count",
+            "last_member_physical_begin", "last_member_sha256"}:
+        raise ValueError("Exact wire commit fields required")
+    if (row["schema"] != "ck3-wire-evidence-commit-v1" or
+            wire_evidence_codec(row["wire_evidence_codec"]) != "gzip-members"):
+        raise ValueError("Wire commit schema/codec differs")
+    path, stream_id, digest, count = (row["path"], row["stream_id"],
+                                    row["last_member_sha256"], row["record_count"])
+    if not isinstance(path, str) or not path or "\0" in path or not Path(path).is_absolute():
+        raise ValueError("Absolute committed wire path required")
+    if not isinstance(stream_id, str) or re.fullmatch("[0-9a-f]{32}", stream_id) is None:
+        raise ValueError("Wire stream identity required")
+    if not isinstance(digest, str) or re.fullmatch("[0-9a-f]{64}", digest) is None:
+        raise ValueError("Wire member SHA256 required")
+    if not isinstance(count, int) or isinstance(count, bool) or not 0 < count < 1 << 53:
+        raise ValueError("Safe positive wire record count required")
+    end = _wire_decimal(row["completed_physical_offset"], 64, positive=True)
+    logical = _wire_decimal(row["logical_bytes"], 64, positive=True)
+    begin = _wire_decimal(row["last_member_physical_begin"], 64)
+    if int(begin) >= int(end):
+        raise ValueError("Completed member physical range invalid")
+    return WireEvidenceCommit(schema="ck3-wire-evidence-commit-v1",
+        wire_evidence_codec="gzip-members", path=path, stream_id=stream_id,
+        file_identity=wire_file_identity_value(row["file_identity"]),
+        completed_physical_offset=end, logical_bytes=logical, record_count=count,
+        last_member_physical_begin=begin, last_member_sha256=digest)
+
+
+def wire_evidence_source(report: object, report_path: Path,
+                         declared_codec: WireEvidenceCodec) -> WireEvidenceSource:
+    row = json_object(report)
+    codec = wire_evidence_codec(row["wire_evidence_codec"]) if "wire_evidence_codec" in row else "plain"
+    if codec != wire_evidence_codec(declared_codec):
+        raise ValueError("Report wire codec differs from selected manifest")
+    path = row.get("native_wire")
+    if (not isinstance(path, str) or not path or "\0" in path or not Path(path).is_absolute() or
+            Path(path).resolve().parent != report_path.resolve().parent):
+        raise ValueError("Actual native wire must belong to allocated report directory")
+    native_commit: WireEvidenceCommit | None = None
+    if codec == "gzip-members":
+        commits = json_object(row.get("wire_evidence_commits"))
+        if set(commits) != {"native-wire", "mcp-wire", "mcp-calls"}:
+            raise ValueError("All three wire commit roles required")
+        for kind, field in (("native-wire", "native_wire"),
+                            ("mcp-wire", "mcp_wire"), ("mcp-calls", "mcp_calls")):
+            value = commits[kind]
+            if value is None:
+                if kind == "native-wire":
+                    raise ValueError("Native wire has no completed published member")
+                continue
+            parsed = wire_evidence_commit(value)
+            role_path = row.get(field)
+            if not isinstance(role_path, str) or Path(parsed["path"]).resolve() != Path(role_path).resolve():
+                raise ValueError("Committed wire role path differs from actual report")
+            if kind == "native-wire":
+                native_commit = parsed
+    elif "wire_evidence_commits" in row:
+        commits = json_object(row["wire_evidence_commits"])
+        if set(commits) != {"native-wire", "mcp-wire", "mcp-calls"} or any(v is not None for v in commits.values()):
+            raise ValueError("Plain report cannot claim gzip commits")
+    return WireEvidenceSource(path=path, wire_evidence_codec=codec, commit=native_commit)

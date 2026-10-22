@@ -23,7 +23,9 @@ _args, _remaining = _options.parse_known_args()
 sys.argv = [sys.argv[0], *_remaining]
 REPO = _args.repo.resolve()
 sys.path.insert(0, str(REPO / 'ck3_autonomous_player/src'))
+sys.path.insert(0, str(REPO / 'tools'))
 
+from ck3_mod_acceptance_background_types import wire_evidence_codec
 from mcp.server import MCPServer
 from pydantic import AfterValidator, Field, ValidationError
 from xar_autoplayer.bridge.driver import UnsupportedStepError
@@ -309,7 +311,7 @@ class PublicGrantRoutingTests(unittest.TestCase):
                        expected_selected_title_full_ids=[TITLE], expected_revision=7)
             self.assertEqual(len(driver.calls), 1)
 
-    def test_public_feature_parser_forwarding_and_permission_binding(self):
+    def test_public_feature_parser_forwarding_and_permission_binding(self) -> None:
         # Compile the actual feature section of Selection.build_argv, not a mirror.
         method = function(ENTRY_PATH, 'build_argv')
         start = next(i for i, node in enumerate(method.body)
@@ -319,15 +321,23 @@ class PublicGrantRoutingTests(unittest.TestCase):
                    if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)
                    and node.targets[0].id == 'budgets')
         section = method.body[start:end]
-        def argv(features):
-            namespace = {'self': types.SimpleNamespace(manifest={'host_features': features}),
-                         'argv': [], 'startup': {'mode': 'saved_campaign'}}
+        def argv(features: dict[str, object]) -> list[str]:
+            namespace: dict[str, object] = {'self': types.SimpleNamespace(manifest={'host_features': features}),
+                         'argv': [], 'startup': {'mode': 'saved_campaign'},
+                         'wire_evidence_codec': wire_evidence_codec}
             project(copy.deepcopy(section), namespace, ENTRY_PATH)
-            return namespace['argv']
+            result = namespace['argv']
+            if not isinstance(result, list) or any(not isinstance(item, str) for item in result):
+                raise AssertionError('Actual shared feature projection must emit string argv')
+            return [item for item in result if isinstance(item, str)]
         self.assertNotIn('--private-grant-title-picker', argv({}))
         self.assertNotIn('--private-grant-title-picker', argv({'stock_grant_title_picker': False}))
         self.assertNotIn('--private-grant-title-picker', argv({'confucian_challenger_readonly': True}))
         self.assertEqual(argv({'stock_grant_title_picker': True}), ['--private-grant-title-picker'])
+        self.assertEqual(argv({'stock_grant_title_picker': True, 'wire_evidence_codec': 'gzip-members'}),
+                         ['--wire-evidence-codec', 'gzip-members', '--private-grant-title-picker'])
+        with self.assertRaises(ValueError):
+            argv({'wire_evidence_codec': None})
         for features in ({'stock_grant_title_picker': 1}, {'stock_grant_title_picker': None},
                          {'stock_grant_title_picker': 'true'}, {'grant': True}):
             with self.assertRaises(ValueError):

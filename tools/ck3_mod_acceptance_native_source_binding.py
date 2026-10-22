@@ -16,6 +16,12 @@ import subprocess
 import sys
 from typing import Protocol, TypedDict, NotRequired, runtime_checkable
 
+from build_native_configured_successor import (
+    NONCOMPILED_CONSUMER_RELATIVE as NONCOMPILED_CONSUMER_RELATIVE,
+    HOST_TEST_COMPANION_RELATIVE as HOST_TEST_COMPANION_RELATIVE,
+    NoncompiledConsumerReplay,
+)
+
 NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
 SCHEMA = "ck3-native-worktree-source-binding-v1"
 FIELDS = frozenset({
@@ -95,7 +101,8 @@ def qualified_native_source_checkout(binding_path: Path | None, *, root: Path,
     value = json.loads(binding_path.read_text(encoding="utf-8-sig"))
     if isinstance(value, dict) and value.get("schema") in {
             "ck3-native-same-root-shared-python-host-binding-v1",
-            "ck3-native-same-root-host-and-fixture-cmake-binding-v1"}:
+            "ck3-native-same-root-host-and-fixture-cmake-binding-v1",
+            "ck3-native-same-root-host-and-wire-consumer-binding-v1"}:
         context = qualify_same_root_host(binding_path, root=root, runtime_commit=runtime_commit,
             native_commit=native_commit, machine=machine, qualified_native_ref=qualified_native_ref,
             qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
@@ -271,6 +278,9 @@ FIXTURE_TARGET = "xar_ck3_12004_player_pilgrimage_traits_test"
 HOST_BINDING_SCHEMA = "ck3-native-same-root-shared-python-host-binding-v1"
 HOST_FIXTURE_BINDING_SCHEMA = "ck3-native-same-root-host-and-fixture-cmake-binding-v1"
 HOST_DELTA_SCHEMA = "ck3-exact-same-root-python-host-delta-v1"
+HOST_CONSUMER_BINDING_SCHEMA = "ck3-native-same-root-host-and-wire-consumer-binding-v1"
+HOST_CONSUMER_DELTA_SCHEMA = "ck3-exact-same-root-host-and-wire-consumer-delta-v1"
+WIRE_CONSUMER_DELTA_SCHEMA = "ck3-exact-refill-wire-consumer-delta-v1"
 HOST_BINDING_FIELDS = frozenset({"schema", "machine_id", "observed_at_utc", "runtime_repo_root",
     "runtime_source_commit", "native_source_repo_root", "native_source_commit", "native_source_base",
     "native_subtree_tree_id", "runtime_native_subtree_tree_id", "common_git_directory",
@@ -295,11 +305,19 @@ class SourceContext(TypedDict):
     shared_host_qualification: FilePin
     original_fixture_cmake_blob: NotRequired[FilePin]
     runtime_fixture_cmake_pin: NotRequired[FilePin]
+    original_research_blobs: NotRequired[dict[str, FilePin]]
+    runtime_research_pins: NotRequired[dict[str, FilePin]]
+    noncompiled_replay: NotRequired[NoncompiledConsumerReplay]
 
 
 class FixtureCMakeContext(TypedDict):
     original_fixture_cmake_blob: FilePin
     runtime_fixture_cmake_pin: FilePin
+
+
+class WireConsumerContext(TypedDict):
+    before_blob: FilePin
+    after: FilePin
 
 
 @runtime_checkable
@@ -308,7 +326,8 @@ class SharedDeltaAPI(Protocol):
     def qualify_shared_host_delta(self, path: Path, *, root: Path, native_repo: Path,
         runtime_commit: str, native_commit: str, machine: str, qualified_native_ref: object,
         qualification: dict[str, object], snapshot_ref: object, snapshot: dict[str, object],
-        same_root_before_blob: object = None, same_root_fixture_cmake: object = None) -> object: ...
+        same_root_before_blob: object = None, same_root_fixture_cmake: object = None,
+        same_root_wire_consumer: object = None, same_root_host_test: object = None) -> object: ...
 
 
 def host_require(condition: object, message: str) -> None:
@@ -494,6 +513,134 @@ def qualify_fixture_cmake_delta(proof: object, *, root: Path, native_commit: str
     return {"original_fixture_cmake_blob": before, "runtime_fixture_cmake_pin": host_pin(current_path)}
 
 
+def exclude_noncompiled_fileapi(native_relative: str, *, root: Path, qualification: object) -> None:
+    """Exclude the two fixed reviewed Python leaves from every actual target."""
+    host_require(native_relative in (NONCOMPILED_CONSUMER_RELATIVE, HOST_TEST_COMPANION_RELATIVE),
+                 "Only the fixed refill reader and host test companion are eligible")
+    native = (root / NATIVE_PREFIX).resolve()
+    current = native / native_relative
+    scope = host_read(Path(host_checked(host_obj(qualification).get("configured_scope"))["path"]))
+    model_ref = host_checked(scope.get("codemodel"))
+    model = host_read(Path(model_ref["path"]))
+    host_require(Path(host_string(host_obj(model.get("paths")).get("source"))).resolve() == native,
+                 "Noncompiled reader File API source differs")
+    configurations = host_arr(model.get("configurations"))
+    host_require(len(configurations) == 1, "Noncompiled reader File API configuration is ambiguous")
+    reply = Path(model_ref["path"]).parent
+    for raw in host_arr(host_obj(configurations[0]).get("targets")):
+        target_path = (reply / host_string(host_obj(raw).get("jsonFile"))).resolve()
+        host_require(target_path.is_relative_to(reply), "Noncompiled reader File API path escaped its reply")
+        for item in host_arr(host_read(target_path).get("sources", [])):
+            source = Path(host_string(host_obj(item).get("path")))
+            actual = source.resolve() if source.is_absolute() else (native / source).resolve()
+            host_require(actual != current.resolve(), "Noncompiled reader entered an actual File API target")
+    commands_ref = host_checked(scope.get("compile_commands"))
+    commands: object = json.loads(Path(commands_ref["path"]).read_text(encoding="utf-8-sig"))
+    for raw in host_arr(commands):
+        command = host_obj(raw)
+        host_require(Path(host_string(command.get("file"))).resolve() != current.resolve(),
+                     "Noncompiled reader entered actual compile commands")
+        text = host_string(command.get("command")).replace("\\", "/").lower()
+        host_require(native_relative.lower() not in text, "Noncompiled reader entered a compiler command argument")
+
+
+def qualify_wire_consumer_delta(proof: object, *, root: Path, native_commit: str,
+    runtime_commit: str, machine: str, qualification: object, snapshot: object) -> WireConsumerContext:
+    """Bind only the existing refill wire reader, with its original Git bytes."""
+    proof_ref = host_checked(proof)
+    row = host_read(Path(proof_ref["path"]))
+    wanted = {"schema", "machine_id", "runtime_source_commit", "native_source_commit",
+              "canonical_repo_relative", "before_blob", "after", "source_delta", "source_consumer", "reviewed_change"}
+    relative = NATIVE_PREFIX + NONCOMPILED_CONSUMER_RELATIVE
+    host_require(set(row) == wanted and row.get("schema") == WIRE_CONSUMER_DELTA_SCHEMA,
+                 "Exact reviewed refill wire consumer delta required")
+    host_require(row["machine_id"] == machine and row["runtime_source_commit"] == runtime_commit
+        and row["native_source_commit"] == native_commit and row["canonical_repo_relative"] == relative,
+        "Refill wire consumer source identity differs")
+    before, after = host_checked(row["before_blob"]), host_checked(row["after"])
+    old_signature: Signature = {"bytes": before["bytes"], "sha256": before["sha256"]}
+    new_signature: Signature = {"bytes": after["bytes"], "sha256": after["sha256"]}
+    current = root / relative
+    host_require(not Path(before["path"]).resolve().is_relative_to(root)
+        and not current.is_symlink() and Path(after["path"]).resolve() == current.resolve()
+        and old_signature != new_signature, "Exact external before blob and changed canonical refill reader required")
+    for commit, expected in ((native_commit, old_signature), (runtime_commit, new_signature)):
+        host_require(host_git(root, "ls-tree", commit, "--", relative).decode().startswith("100644 blob ")
+            and host_signature(host_git(root, "show", commit + ":" + relative)) == expected,
+            "Refill reader differs from its actual regular Git blob")
+    rows = [host_obj(raw) for raw in host_arr(host_obj(snapshot).get("files"))]
+    originals = [raw for raw in rows if raw.get("native_relative") == NONCOMPILED_CONSUMER_RELATIVE]
+    host_require(len(originals) == 1 and host_parse_signature({key: originals[0].get(key)
+        for key in ("bytes", "sha256")}) == old_signature, "Refill before blob differs from the original Native snapshot")
+
+    exclude_noncompiled_fileapi(NONCOMPILED_CONSUMER_RELATIVE, root=root, qualification=qualification)
+
+    delta_ref, consumer_ref, review_ref = (host_checked(row[key])
+        for key in ("source_delta", "source_consumer", "reviewed_change"))
+    delta, consumer, review = (host_read(Path(ref["path"])) for ref in (delta_ref, consumer_ref, review_ref))
+    host_require(delta.get("target") == relative and host_parse_signature(delta.get("base_source")) == old_signature
+        and delta.get("candidate_bytes") == new_signature["bytes"]
+        and type(delta.get("candidate_bytes")) is int and delta.get("candidate_sha256") == new_signature["sha256"],
+        "Refill consumer source delta differs from its actual before/after blobs")
+    waits = [consumer[key] for key in ("original_wait_returncode", "exit_code") if key in consumer]
+    host_require(consumer.get("machine_id") == machine and consumer.get("result") == "PASS"
+        and type(consumer.get("skipped")) is int and consumer["skipped"] == 0
+        and waits and all(type(code) is int and code == 0 for code in waits)
+        and host_parse_signature(host_obj(consumer.get("pins")).get(delta_ref["path"]))
+            == {"bytes": delta_ref["bytes"], "sha256": delta_ref["sha256"]},
+        "Actual zero-skip refill source consumer must pin its reviewed delta")
+    host_require(review.get("schema") == "ck3-reviewed-refill-wire-consumer-change-v1"
+        and review.get("machine_id") == machine and review.get("result") == "PASS"
+        and review.get("canonical_repo_relative") == relative
+        and host_parse_signature(review.get("before")) == old_signature
+        and host_parse_signature(review.get("after")) == new_signature
+        and review.get("source_consumer") == consumer_ref and review.get("source_delta") == delta_ref
+        and review.get("actual_live_business_qualified") is False,
+        "Independent exact refill wire consumer source review required")
+    return {"before_blob": before, "after": after}
+
+
+def qualify_host_test_companion(change: object, *, root: Path, native_commit: str,
+    runtime_commit: str, machine: str, qualification: object, snapshot: object,
+    host_delta: object) -> WireConsumerContext:
+    """Bind the sole existing host test to the same actual host test consumer."""
+    pair = host_obj(change)
+    host_require(set(pair) == {"before_blob", "after"}, "Exact host test companion fields required")
+    before, after = host_checked(pair["before_blob"]), host_checked(pair["after"])
+    relative = NATIVE_PREFIX + HOST_TEST_COMPANION_RELATIVE
+    current = root / relative
+    old_signature: Signature = {"bytes": before["bytes"], "sha256": before["sha256"]}
+    new_signature: Signature = {"bytes": after["bytes"], "sha256": after["sha256"]}
+    host_require(not Path(before["path"]).resolve().is_relative_to(root) and not current.is_symlink()
+        and Path(after["path"]).resolve() == current.resolve() and old_signature != new_signature,
+        "Exact external before blob and changed canonical host test required")
+    for commit, expected in ((native_commit, old_signature), (runtime_commit, new_signature)):
+        host_require(host_git(root, "ls-tree", commit, "--", relative).decode().startswith("100644 blob ")
+            and host_signature(host_git(root, "show", commit + ":" + relative)) == expected,
+            "Host test companion differs from its actual regular Git blob")
+    rows = [host_obj(raw) for raw in host_arr(host_obj(snapshot).get("files"))]
+    originals = [row for row in rows if row.get("native_relative") == HOST_TEST_COMPANION_RELATIVE]
+    host_require(len(originals) == 1 and host_parse_signature({key: originals[0].get(key)
+        for key in ("bytes", "sha256")}) == old_signature, "Host test before blob differs from the Native snapshot")
+    exclude_noncompiled_fileapi(HOST_TEST_COMPANION_RELATIVE, root=root, qualification=qualification)
+    delta = host_obj(host_delta)
+    review = host_read(Path(host_checked(delta.get("reviewed_host_change"))["path"]))
+    source_qualification = host_read(Path(host_checked(delta.get("shared_host_qualification"))["path"]))
+    host_require(review.get("host_test_change") == pair and source_qualification.get("host_test_change") == pair,
+                 "Host review and source qualification must retain the exact test companion")
+    consumer_ref = host_checked(review.get("source_consumer"))
+    consumer = host_read(Path(consumer_ref["path"]))
+    waits = [consumer[key] for key in ("original_wait_returncode", "exit_code") if key in consumer]
+    host_require(consumer.get("machine_id") == machine and consumer.get("result") == "PASS"
+        and type(consumer.get("skipped")) is int and consumer["skipped"] == 0 and waits
+        and all(type(code) is int and code == 0 for code in waits)
+        and host_parse_signature(host_obj(consumer.get("pins")).get(after["path"])) == new_signature,
+        "Actual zero-skip host consumer must pin the executed companion source")
+    source_pins = [host_checked(row) for row in host_arr(source_qualification.get("source_pins"))]
+    host_require(after in source_pins, "Shared-host qualification omitted its actual test companion source")
+    return {"before_blob": before, "after": after}
+
+
 def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: str,
     native_commit: str, machine: str, qualified_native_ref: object, qualification: object,
     snapshot_ref: object, snapshot: object, native_shared_python_host_delta: Path | None) -> SourceContext:
@@ -503,8 +650,18 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
     binding = host_read(binding_path)
     q, source = host_obj(qualification), host_obj(snapshot)
     fixture_delta = binding.get("fixture_cmake_delta")
+    consumer_delta = binding.get("noncompiled_consumer_delta")
+    host_test_change = binding.get("host_test_change")
+    host_require(host_test_change is None or consumer_delta is not None,
+                 "Host test companion requires the explicit wire consumer transition")
+    host_require(fixture_delta is None or consumer_delta is None,
+                 "Fixture and refill consumer exceptions cannot be combined")
     wanted_fields = HOST_BINDING_FIELDS if fixture_delta is None else HOST_BINDING_FIELDS | {"fixture_cmake_delta"}
     wanted_schema = HOST_BINDING_SCHEMA if fixture_delta is None else HOST_FIXTURE_BINDING_SCHEMA
+    if consumer_delta is not None:
+        wanted_fields, wanted_schema = HOST_BINDING_FIELDS | {"noncompiled_consumer_delta"}, HOST_CONSUMER_BINDING_SCHEMA
+    if host_test_change is not None:
+        wanted_fields = wanted_fields | {"host_test_change"}
     host_require(set(binding) == wanted_fields and binding["schema"] == wanted_schema, "Exact same-root host binding required")
     if native_shared_python_host_delta is None:
         raise ValueError("Explicit reviewed same-root host delta required")
@@ -545,6 +702,19 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
         fixture_context = qualify_fixture_cmake_delta(fixture_delta, root=root, native_commit=native_commit,
             runtime_commit=runtime_commit, machine=machine, qualification=q, snapshot=source)
         expected_changes.add(NATIVE_PREFIX + FIXTURE_CMAKE_RELATIVE)
+    consumer_context: WireConsumerContext | None = None
+    if consumer_delta is not None:
+        consumer_context = qualify_wire_consumer_delta(consumer_delta, root=root, native_commit=native_commit,
+            runtime_commit=runtime_commit, machine=machine, qualification=q, snapshot=source)
+        expected_changes.add(NATIVE_PREFIX + NONCOMPILED_CONSUMER_RELATIVE)
+    test_context: WireConsumerContext | None = None
+    if host_test_change is not None:
+        delta_value = host_read(Path(host_checked(binding.get("shared_python_host_delta"))["path"]))
+        host_require(delta_value.get("host_test_change") == host_test_change,
+                     "Host test companion differs between the host and checkout contracts")
+        test_context = qualify_host_test_companion(host_test_change, root=root, native_commit=native_commit,
+            runtime_commit=runtime_commit, machine=machine, qualification=q, snapshot=source, host_delta=delta_value)
+        expected_changes.add(NATIVE_PREFIX + HOST_TEST_COMPANION_RELATIVE)
     host_require(changed == expected_changes, "Same-root Native differences must be exactly the canonical host and explicit fixture exception")
     original_blob = host_checked(binding["original_shared_host_blob"])
     original_signature: Signature = {"bytes": original_blob["bytes"], "sha256": original_blob["sha256"]}
@@ -567,6 +737,14 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
         host_require(not current.is_symlink(), "Native inputs cannot be symbolic")
         if name == HOST_NATIVE_RELATIVE:
             host_require(expected == original_signature, "Before blob differs from the original snapshot host")
+        elif name == NONCOMPILED_CONSUMER_RELATIVE and consumer_context is not None:
+            before_consumer = consumer_context["before_blob"]
+            host_require(expected == {"bytes": before_consumer["bytes"], "sha256": before_consumer["sha256"]},
+                         "Refill before blob differs from the original snapshot")
+        elif name == HOST_TEST_COMPANION_RELATIVE and test_context is not None:
+            test_before = test_context["before_blob"]
+            host_require(expected == {"bytes": test_before["bytes"], "sha256": test_before["sha256"]},
+                         "Host test before blob differs from the original snapshot")
         elif name == FIXTURE_CMAKE_RELATIVE and fixture_context is not None:
             old_fixture = fixture_context["original_fixture_cmake_blob"]
             host_require(expected == {"bytes": old_fixture["bytes"], "sha256": old_fixture["sha256"]},
@@ -580,25 +758,40 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
     delta_ref = host_checked(binding["shared_python_host_delta"])
     host_require(delta_ref == host_pin(native_shared_python_host_delta), "Reviewed same-root delta pin differs")
     delta = host_read(native_shared_python_host_delta)
-    host_require(delta.get("schema") == HOST_DELTA_SCHEMA, "Explicit same-root delta schema required")
+    wanted_delta_schema = HOST_DELTA_SCHEMA if consumer_delta is None else HOST_CONSUMER_DELTA_SCHEMA
+    host_require(delta.get("schema") == wanted_delta_schema, "Explicit same-root delta schema required")
+    if consumer_delta is not None:
+        host_require(host_checked(delta.get("noncompiled_consumer_delta")) == host_checked(consumer_delta),
+                     "Refill consumer delta differs between the host and checkout contracts")
     api = host_shared_api()
     host_validate_compiled_inputs(delta.get("compiled_inputs"), api.compiled_inputs(q, source))
     context = host_obj(api.qualify_shared_host_delta(native_shared_python_host_delta, root=root, native_repo=root,
         runtime_commit=runtime_commit, native_commit=native_commit, machine=machine,
         qualified_native_ref=qualified_native_ref, qualification=q, snapshot_ref=snapshot_ref, snapshot=source,
-        same_root_before_blob=original_blob, same_root_fixture_cmake=fixture_delta))
+        same_root_before_blob=original_blob, same_root_fixture_cmake=fixture_delta,
+        same_root_wire_consumer=consumer_delta, same_root_host_test=host_test_change))
     result: SourceContext = {"native_source_base": native, "binding_ref": binding_ref,
         "runtime_shared_host_pin": host_checked(context["runtime_host_pin"]), "original_shared_host_blob": original_blob,
         "shared_python_host_delta": delta_ref, "shared_host_qualification": host_checked(context["shared_host_qualification"])}
     if fixture_context is not None:
         result["original_fixture_cmake_blob"] = fixture_context["original_fixture_cmake_blob"]
         result["runtime_fixture_cmake_pin"] = fixture_context["runtime_fixture_cmake_pin"]
+    if consumer_context is not None:
+        result["original_research_blobs"] = {NONCOMPILED_CONSUMER_RELATIVE: consumer_context["before_blob"]}
+        result["runtime_research_pins"] = {NONCOMPILED_CONSUMER_RELATIVE: consumer_context["after"]}
+        result["noncompiled_replay"] = {"before_blob": consumer_context["before_blob"],
+            "after": consumer_context["after"], "binding": binding_ref}
+        if test_context is not None:
+            result["original_research_blobs"][HOST_TEST_COMPANION_RELATIVE] = test_context["before_blob"]
+            result["runtime_research_pins"][HOST_TEST_COMPANION_RELATIVE] = test_context["after"]
     return result
 
 
 def produce_same_root_host_binding(root: Path, qualification_path: Path, delta_path: Path, original_blob: Path,
                     output: Path, machine: str, *, original_fixture_cmake_blob: Path | None = None,
-                    fixture_link_receipt: Path | None = None) -> FilePin:
+                    fixture_link_receipt: Path | None = None,
+                    noncompiled_consumer_delta: Path | None = None,
+                    original_host_test_blob: Path | None = None) -> FilePin:
     root = root.resolve()
     qref = host_pin(qualification_path)
     q = host_read(qualification_path)
@@ -615,11 +808,19 @@ def produce_same_root_host_binding(root: Path, qualification_path: Path, delta_p
         "qualified_native": qref, "snapshot": snapshot_ref, "shared_python_host_delta": host_pin(delta_path),
         "original_shared_host_blob": host_pin(original_blob)}
     if original_fixture_cmake_blob is not None or fixture_link_receipt is not None:
+        host_require(noncompiled_consumer_delta is None, "Fixture and refill consumer exceptions cannot be combined")
         if original_fixture_cmake_blob is None or fixture_link_receipt is None:
             raise ValueError("Fixture CMake original blob and actual link receipt must be supplied together")
         value["schema"] = HOST_FIXTURE_BINDING_SCHEMA
         value["fixture_cmake_delta"] = {"schema": "ck3-exact-fixture-cmake-link-completion-v1",
             "original_blob": host_pin(original_fixture_cmake_blob), "fixture_link_receipt": host_pin(fixture_link_receipt)}
+    if noncompiled_consumer_delta is not None:
+        value["schema"] = HOST_CONSUMER_BINDING_SCHEMA
+        value["noncompiled_consumer_delta"] = host_pin(noncompiled_consumer_delta)
+    if original_host_test_blob is not None:
+        host_require(noncompiled_consumer_delta is not None, "Host test companion requires the explicit wire consumer transition")
+        value["host_test_change"] = {"before_blob": host_pin(original_host_test_blob),
+            "after": host_pin(native / HOST_TEST_COMPANION_RELATIVE)}
     host_require(not output.resolve().is_relative_to(root), "Source-binding output must remain outside the checkout")
     with output.open("x", encoding="utf-8") as stream:
         json.dump(value, stream, indent=2)
@@ -636,12 +837,17 @@ def same_root_main() -> int:
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--original-fixture-cmake-blob", type=Path)
     parser.add_argument("--fixture-link-receipt", type=Path)
+    parser.add_argument("--noncompiled-consumer-delta", type=Path,
+                        help="explicit reviewed delta for the sole existing refill wire consumer")
+    parser.add_argument("--original-host-test-blob", type=Path,
+                        help="original Git bytes of the sole reviewed host test companion")
     args = parser.parse_args()
     machine = subprocess.check_output([sys.executable, "-B", "-X", "utf8",
         str(args.repo_root / "tools/ck3_live_run_id.py"), "machine"], cwd=args.repo_root).decode().strip()
     result = produce_same_root_host_binding(args.repo_root, args.qualification, args.host_delta, args.original_host_blob,
         args.output, machine, original_fixture_cmake_blob=args.original_fixture_cmake_blob,
-        fixture_link_receipt=args.fixture_link_receipt)
+        fixture_link_receipt=args.fixture_link_receipt, noncompiled_consumer_delta=args.noncompiled_consumer_delta,
+        original_host_test_blob=args.original_host_test_blob)
     print(json.dumps({"source_binding": result, "native_rebuilt": False, "game_started": False}))
     return 0
 

@@ -30,12 +30,36 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "ck3_autonomous_player/native_bridge/"
 PRODUCTION = ("xar_ck3_bridge", "xar_ck3_12002_runtime", "xar_bridge_protocol")
 MAX_BUDGET = 160 * 1024 * 1024
+NONCOMPILED_CONSUMER_RELATIVE = "research/refill_add_live_12004/consume_live_refill_add.py"
+HOST_TEST_COMPANION_RELATIVE = "research/test_ck3_12002_mcp_live.py"
 
 
 class Pin(TypedDict):
     path: str
     bytes: int
     sha256: str
+
+
+class NoncompiledConsumerReplay(TypedDict):
+    before_blob: Pin
+    after: Pin
+    binding: Pin
+
+
+@dataclass(frozen=True)
+class NoncompiledReplayProof:
+    replay: NoncompiledConsumerReplay
+    originals: dict[str, Pin]
+    currents: dict[str, Pin]
+
+
+@runtime_checkable
+class NativeSourceCheckoutQualifier(Protocol):
+    def __call__(self, binding_path: Path | None, *, root: Path, runtime_commit: str,
+                 native_commit: str, machine: str, qualified_native_ref: object,
+                 qualification: dict[str, object], snapshot_ref: object,
+                 snapshot: dict[str, object], native_shared_python_host_delta: Path | None = None
+                 ) -> dict[str, object]: ...
 
 
 class Execution(TypedDict):
@@ -395,6 +419,58 @@ def load_shared(path: Path, name: str) -> object:
     return module
 
 
+def verified_noncompiled_consumer_replay(config: Config, value: object) -> NoncompiledReplayProof:
+    """Revalidate the explicit source binding before replaying one noncompiled leaf."""
+    row = obj(value)
+    require(set(row) == {"before_blob", "after", "binding"}, "Exact noncompiled replay fields required")
+    before, after, binding_ref = (checked(row[key]) for key in ("before_blob", "after", "binding"))
+    native = (ROOT / PREFIX).resolve()
+    require(Path(after["path"]) == native / NONCOMPILED_CONSUMER_RELATIVE,
+            "Only the exact noncompiled consumer may be replayed")
+    require(not Path(before["path"]).is_relative_to(ROOT.resolve()),
+            "Original noncompiled consumer must be preserved outside the source checkout")
+    original = subprocess.check_output(["git", "-c", "core.longpaths=true", "show", config.source_commit + ":" + PREFIX
+        + NONCOMPILED_CONSUMER_RELATIVE], cwd=ROOT)
+    require((len(original), hashlib.sha256(original).hexdigest()) == (before["bytes"], before["sha256"]),
+            "Original noncompiled consumer differs from the actual compile Git blob")
+    binding = read(Path(binding_ref["path"]))
+    require(binding.get("schema") == "ck3-native-same-root-host-and-wire-consumer-binding-v1",
+            "Explicit host-and-wire-consumer source binding required")
+    qualified = checked(binding["qualified_native"])
+    qualification = read(Path(qualified["path"]))
+    snapshot_ref = checked(binding["snapshot"])
+    snapshot = read(Path(snapshot_ref["path"]))
+    delta = checked(binding["shared_python_host_delta"])
+    shared = load_shared(ROOT / "tools/ck3_mod_acceptance_native_source_binding.py", "noncompiled_source_binding")
+    qualify: object = getattr(shared, "qualified_native_source_checkout", None)
+    if not isinstance(qualify, NativeSourceCheckoutQualifier):
+        raise ValueError("Shared Native source checkout qualifier unavailable")
+    context = qualify(Path(binding_ref["path"]), root=ROOT, runtime_commit=git("rev-parse", "HEAD"),
+        native_commit=config.source_commit, machine=config.machine_id, qualified_native_ref=qualified,
+        qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
+        native_shared_python_host_delta=Path(delta["path"]))
+    expected: NoncompiledConsumerReplay = {"before_blob": before, "after": after, "binding": binding_ref}
+    originals = {name: checked(item) for name, item in obj(context.get("original_research_blobs")).items()}
+    currents = {name: checked(item) for name, item in obj(context.get("runtime_research_pins")).items()}
+    allowed = {NONCOMPILED_CONSUMER_RELATIVE, HOST_TEST_COMPANION_RELATIVE}
+    require(context.get("noncompiled_replay") == expected and set(originals) == set(currents)
+            and set(originals) in ({NONCOMPILED_CONSUMER_RELATIVE}, allowed)
+            and originals.get(NONCOMPILED_CONSUMER_RELATIVE) == before
+            and currents.get(NONCOMPILED_CONSUMER_RELATIVE) == after,
+            "Replayed consumer pins differ from the fully qualified source binding")
+    for name, original_ref in originals.items():
+        require(Path(currents[name]["path"]) == native / name
+                and not Path(original_ref["path"]).is_relative_to(ROOT.resolve()),
+                "Replayed source must use its exact current path and external original blob")
+        raw = subprocess.check_output(["git", "-c", "core.longpaths=true", "show",
+            config.source_commit + ":" + PREFIX + name], cwd=ROOT)
+        require((len(raw), hashlib.sha256(raw).hexdigest()) == (original_ref["bytes"], original_ref["sha256"]),
+                "Replayed research source differs from its actual compile Git blob")
+    for item in expected.values():
+        checked(item)
+    return NoncompiledReplayProof(expected, originals, currents)
+
+
 class Producer:
     def __init__(self, config: Config) -> None:
         self.config = config
@@ -542,8 +618,12 @@ class Producer:
             ("/c" if token == "-c" else token).replace("\\", "/").lower().replace(source_text, "@native@").replace(build_text, "@build@")
             for token in command[1:]]]
 
-    def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None) -> tuple[list[Compile], dict[str, Path], Pin]:
+    def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None,
+             noncompiled_replay: object = None) -> tuple[list[Compile], dict[str, Path], Pin]:
         c = self.config
+        require(noncompiled_replay is None or existing_plan is not None,
+                "Noncompiled replay is restricted to an existing read-only production plan")
+        replay = None if noncompiled_replay is None else verified_noncompiled_consumer_replay(c, noncompiled_replay)
         baseline_ref = checked(c.baseline)
         baseline = read(Path(baseline_ref["path"]))
         require(baseline.get("machine_id") == c.machine_id, "Baseline belongs to another machine")
@@ -558,9 +638,14 @@ class Producer:
         current: dict[str, Pin] = {}
         for name in git("ls-files", "--", PREFIX).splitlines():
             current[name.removeprefix(PREFIX)] = pin(ROOT / name)
-        changed_names = {name for name in old_files.keys() | current.keys()
-                         if name not in old_files or name not in current
-                         or old_files[name] != (current[name]["bytes"], current[name]["sha256"])}
+        current_signatures = {name: (item["bytes"], item["sha256"]) for name, item in current.items()}
+        if replay is not None:
+            for name, before in replay.originals.items():
+                require(current.get(name) == replay.currents[name], "Current noncompiled consumer is absent or changed")
+                current_signatures[name] = (before["bytes"], before["sha256"])
+        changed_names = {name for name in old_files.keys() | current_signatures.keys()
+                         if name not in old_files or name not in current_signatures
+                         or old_files[name] != current_signatures[name]}
         if existing_plan is not None:
             original = read(Path(checked(existing_plan)["path"]))
             dependency_ref = checked(original["original_dependencies"])
@@ -577,6 +662,19 @@ class Producer:
             dependency_ref = checked(seed_declaration["original_dependencies"])
             dependency_text = Path(dependency_ref["path"]).read_text(encoding="utf-8")
         dependencies = self.dependencies(dependency_text, c.complete_build)
+        if replay is not None:
+            leaves = {(self.native / name).resolve() for name in replay.originals}
+            for row in rows:
+                require(row.source.resolve() not in leaves and not any(
+                    name.lower() in argument.replace("\\", "/").lower()
+                    for name in replay.originals for argument in row.argv),
+                    "Noncompiled consumer occurs in a configured compiler command")
+            require(not any(path.as_posix().lower().endswith("/" + name.lower())
+                            for name in replay.originals for paths in dependencies.values() for path in paths),
+                    "Noncompiled consumer occurs in the original compiler dependencies")
+            all_memo: dict[Path, set[Path]] = {}
+            require(not any(leaves.intersection(path.resolve() for path in self.closure(row.source, self.native, all_memo))
+                            for row in rows), "Noncompiled consumer occurs in the current include closure")
         baseline_scope = read(Path(checked(baseline["configured_scope"])["path"]))
         old_commands_raw: object = json.loads(Path(checked(baseline_scope["compile_commands"])["path"])
                                             .read_text(encoding="utf-8-sig"))
@@ -587,6 +685,11 @@ class Producer:
             output = Path(string(item["output"]))
             output = output if output.is_absolute() else old_build / output
             old_commands[output.relative_to(old_build).as_posix()] = tuple(self.arguments(string(item["command"])))
+            if replay is not None:
+                require(not any(name.lower() in argument.replace("\\", "/").lower()
+                                for name in replay.originals
+                                for argument in old_commands[output.relative_to(old_build).as_posix()]),
+                        "Noncompiled consumer occurs in a baseline compiler command")
         original_complete_source: Path | None = None
         for paths in dependencies.values():
             for path in paths:
@@ -1340,7 +1443,8 @@ class Producer:
             "defender_binding": defender, "fixture_results": fixtures, "execution_wire_packets": wire})
 
 
-def verified_fixture_object_bindings(config_value: object, configured_outputs: list[str]) -> FixtureObjectProof:
+def verified_fixture_object_bindings(config_value: object, configured_outputs: list[str], *,
+                                     noncompiled_replay: object = None) -> FixtureObjectProof:
     """Read-only replay of the original source/dependency/options and object proof."""
     config = parse_config(config_value)
     outputs = strings(configured_outputs)
@@ -1354,7 +1458,7 @@ def verified_fixture_object_bindings(config_value: object, configured_outputs: l
     incremental_ref = pin(producer.meta / "INCREMENTAL-RESULT.actual.json")
     incremental = read(Path(incremental_ref["path"]))
     plan_ref = checked(incremental["production_plan"])
-    selected, borrowed, _ = producer.plan(rows, existing_plan=plan_ref)
+    selected, borrowed, _ = producer.plan(rows, existing_plan=plan_ref, noncompiled_replay=noncompiled_replay)
     inputs = producer.original_fixture_inputs(rows)
     require({row.output for row in selected} == set(inputs.compiled)
             and all(borrowed[name] == path for name, path in inputs.borrowed.items()),

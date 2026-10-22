@@ -26,7 +26,8 @@ class SharedEntryTests(unittest.TestCase):
         flags = ['--agent-source-root','--game-dir','--bridge-dll','--bridge-injector','--bridge-pipe',
                  '--output','--state-dir','--plan','--control-plan-dir', *entry.BUDGET_FLAGS.values(),
                   *entry.SAVED_FLAGS.values(), '--fixture-profile', '--saved-campaign-inject-after-load',
-                   '--saved-campaign-debug-mode', '--private-confucian-challenger-readonly']
+                    '--saved-campaign-debug-mode', '--private-confucian-challenger-readonly',
+                    '--wire-evidence-codec']
         self.host.write_text("import argparse\np=argparse.ArgumentParser()\n" +
                              ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags) +
                              "raise RuntimeError('The host must never execute in these tests')\n")
@@ -458,6 +459,72 @@ class SharedEntryTests(unittest.TestCase):
         self.saved_startup_hook()
         self.files['inventory'].write_bytes(b'changed')
         self.assertTrue(any('Pinned input changed' in error for error in self.select().preflight()['blockers']))
+
+    def test_legacy_missing_and_explicit_plain_codec_keep_identical_host_argv(self) -> None:
+        legacy = self.select().argv
+        self.manifest['host_features'] = {'wire_evidence_codec': 'plain'}
+        self.write(self.manifest_path, self.manifest)
+        self.runtime['manifest'] = entry.pin(self.manifest_path)
+        self.write(self.runtime_path, self.runtime)
+        selected = self.select()
+        self.assertEqual(selected.argv, legacy)
+        self.assertEqual(selected.preflight()['blockers'], [])
+        self.assertNotIn('--wire-evidence-codec', legacy)
+
+    def test_gzip_codec_round_trips_to_host_argv_with_existing_boolean_features(self) -> None:
+        self.manifest['host_features'] = json.loads(json.dumps({
+            'wire_evidence_codec': 'gzip-members', 'saved_campaign_debug_mode': True,
+            'saved_campaign_inject_after_load': False}))
+        self.write(self.manifest_path, self.manifest)
+        self.runtime['manifest'] = entry.pin(self.manifest_path)
+        self.write(self.runtime_path, self.runtime)
+        selected = self.select()
+        self.assertEqual(selected.argv.count('--wire-evidence-codec'), 1)
+        self.assertEqual(selected.argv[selected.argv.index('--wire-evidence-codec') + 1], 'gzip-members')
+        self.assertIn('--saved-campaign-debug-mode', selected.argv)
+        self.assertNotIn('--saved-campaign-inject-after-load', selected.argv)
+        self.assertEqual(selected.preflight()['blockers'], [])
+
+    def test_explicit_invalid_codec_and_non_boolean_existing_features_are_rejected(self) -> None:
+        for codec in (None, False, True, 0, 1, 1.0, '', 'gzip', [], {}):
+            with self.subTest(codec=codec):
+                self.manifest['host_features'] = {'wire_evidence_codec': codec}
+                self.write(self.manifest_path, self.manifest)
+                self.runtime['manifest'] = entry.pin(self.manifest_path)
+                self.write(self.runtime_path, self.runtime)
+                with self.assertRaises(ValueError):
+                    self.select()
+        self.manifest['host_features'] = {'wire_evidence_codec': 'gzip-members',
+                                          'saved_campaign_debug_mode': 1}
+        self.write(self.manifest_path, self.manifest)
+        self.runtime['manifest'] = entry.pin(self.manifest_path)
+        self.write(self.runtime_path, self.runtime)
+        with self.assertRaisesRegex(ValueError, 'explicit booleans'):
+            self.select()
+
+    def test_product_and_case_cannot_override_shared_wire_codec(self) -> None:
+        original = copy.deepcopy(self.products)
+        for location in ('product', 'case'):
+            for key, value in (('wire_evidence_codec', 'gzip-members'),
+                               ('host_features', {'wire_evidence_codec': 'gzip-members'})):
+                with self.subTest(location=location, key=key):
+                    self.products = copy.deepcopy(original)
+                    target = self.products['products']['xqol']
+                    if location == 'case':
+                        target = target['cases'][0]
+                    target[key] = value
+                    self.write(self.products_path, self.products)
+                    with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
+                        self.select()
+
+    def test_gzip_host_without_actual_cli_flag_is_rejected_by_preflight(self) -> None:
+        self.host.write_text(self.host.read_text().replace("p.add_argument('--wire-evidence-codec')\n", ''))
+        self.manifest['host'].update({key: value for key, value in entry.pin(self.host).items() if key != 'path'})
+        self.manifest['host_features'] = {'wire_evidence_codec': 'gzip-members'}
+        self.write(self.manifest_path, self.manifest)
+        self.runtime['manifest'] = entry.pin(self.manifest_path)
+        self.write(self.runtime_path, self.runtime)
+        self.assertTrue(any('--wire-evidence-codec' in blocker for blocker in self.select().preflight()['blockers']))
 
 
 if __name__ == '__main__': unittest.main(verbosity=2)

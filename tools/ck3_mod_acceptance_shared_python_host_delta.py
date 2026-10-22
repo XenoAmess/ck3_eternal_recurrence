@@ -5,6 +5,9 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+from typing import Protocol, runtime_checkable
+
+from build_native_configured_successor import NONCOMPILED_CONSUMER_RELATIVE, HOST_TEST_COMPANION_RELATIVE
 
 NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
 HOST_RELATIVE = NATIVE_PREFIX + "research/run_ck3_12002_mcp_live.py"
@@ -14,6 +17,27 @@ CONTRACT_FIELDS = frozenset({
     "canonical_repo_relative", "source_classification", "before", "after", "qualified_native",
     "snapshot", "compiled_inputs", "reviewed_host_change", "shared_host_qualification",
 })
+
+
+@runtime_checkable
+class WireConsumerAPI(Protocol):
+    def qualify_wire_consumer_delta(self, proof: object, *, root: Path, native_commit: str,
+        runtime_commit: str, machine: str, qualification: object, snapshot: object) -> object: ...
+    def qualify_host_test_companion(self, change: object, *, root: Path, native_commit: str,
+        runtime_commit: str, machine: str, qualification: object, snapshot: object,
+        host_delta: object) -> object: ...
+
+
+def wire_consumer_api() -> WireConsumerAPI:
+    spec = importlib.util.spec_from_file_location("reviewed_refill_wire_consumer",
+        Path(__file__).with_name("ck3_mod_acceptance_native_source_binding.py"))
+    if spec is None or spec.loader is None:
+        raise ValueError("Refill wire consumer source validator unavailable")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if not isinstance(module, WireConsumerAPI):
+        raise ValueError("Refill wire consumer source validator contract differs")
+    return module
 
 
 def require(value, message):
@@ -112,7 +136,9 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
                               machine: str, qualified_native_ref: object, qualification: dict[str, object],
                               snapshot_ref: object, snapshot: dict[str, object],
                               same_root_before_blob: object = None,
-                              same_root_fixture_cmake: object = None) -> dict[str, object]:
+                              same_root_fixture_cmake: object = None,
+                              same_root_wire_consumer: object = None,
+                              same_root_host_test: object = None) -> dict[str, object]:
     ref = pin(path)
     value = read(path)
     schema = "ck3-exact-shared-python-host-delta-v1"
@@ -123,7 +149,16 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
         require(not Path(old_blob["path"]).resolve().is_relative_to(root.resolve()),
                 "Original host blob must remain separately preserved")
         schema = "ck3-exact-same-root-python-host-delta-v1"
-    require(isinstance(value, dict) and set(value) == CONTRACT_FIELDS
+    fields = CONTRACT_FIELDS
+    if same_root_wire_consumer is not None:
+        require(old_blob is not None and same_root_fixture_cmake is None,
+                "Refill consumer exception needs the sole explicit same-root host transition")
+        schema = "ck3-exact-same-root-host-and-wire-consumer-delta-v1"
+        fields = CONTRACT_FIELDS | {"noncompiled_consumer_delta"}
+    if same_root_host_test is not None:
+        require(same_root_wire_consumer is not None, "Host test companion requires the explicit refill reader transition")
+        fields = fields | {"host_test_change"}
+    require(isinstance(value, dict) and set(value) == fields
             and value.get("schema") == schema,
             "Exact single shared Python-host delta contract required")
     require(value["machine_id"] == machine and value["runtime_source_commit"] == runtime_commit
@@ -146,6 +181,20 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
                 "Exact reviewed shared-host raw signature required")
     require(value["before"] != value["after"], "An explicit shared-host delta must actually change its source")
     expected_changes = {HOST_RELATIVE}
+    if same_root_wire_consumer is not None:
+        require(checked(value["noncompiled_consumer_delta"]) == checked(same_root_wire_consumer),
+                "Host and checkout refill consumer delta pins differ")
+        wire_consumer_api().qualify_wire_consumer_delta(same_root_wire_consumer, root=root,
+            native_commit=native_commit, runtime_commit=runtime_commit, machine=machine,
+            qualification=qualification, snapshot=snapshot)
+        expected_changes.add(NATIVE_PREFIX + NONCOMPILED_CONSUMER_RELATIVE)
+    if same_root_host_test is not None:
+        require(value["host_test_change"] == same_root_host_test,
+                "Host and checkout companion source pairs differ")
+        wire_consumer_api().qualify_host_test_companion(same_root_host_test, root=root,
+            native_commit=native_commit, runtime_commit=runtime_commit, machine=machine,
+            qualification=qualification, snapshot=snapshot, host_delta=value)
+        expected_changes.add(NATIVE_PREFIX + HOST_TEST_COMPANION_RELATIVE)
     if same_root_fixture_cmake is not None:
         require(old_blob is not None, "Fixture exception requires the explicit same-root original host blob")
         source_path = Path(__file__).with_name("ck3_mod_acceptance_native_source_binding.py")
@@ -203,6 +252,9 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
             "Exact actual finite shared-host source consumer and original zero wait required")
     qualification_ref = checked(value["shared_host_qualification"])
     source_qualification = read(qualification_ref["path"])
+    if same_root_wire_consumer is not None:
+        require(source_qualification.get("noncompiled_consumer_delta") == value["noncompiled_consumer_delta"],
+                "Shared-host source qualification must retain the exact refill consumer delta")
     require(source_qualification.get("source_consumer") == consumer_ref
             and source_qualification.get("source_delta") == delta_ref
             and source_qualification.get("reviewed_host_change") == review_ref,

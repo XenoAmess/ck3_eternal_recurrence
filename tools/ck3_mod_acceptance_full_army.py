@@ -4,7 +4,12 @@ This common case adapter neither opens an SDK nor
 changes the original common runtime, Driver or MCP result. Derived queried_*
 fields explicitly bind the two actual host frames; they are not a Driver copy.
 """
+from __future__ import annotations
 from pathlib import Path
+from typing import Protocol, Literal
+from ck3_mod_acceptance_native_day import DayClient, Object, obj
+from ck3_mod_acceptance_background_types import JsonObject, WireEvidenceCodec, WireEvidenceSource
+from ck3_mod_acceptance_army_wire import WireBookmark, WireProof
 import copy,hashlib,json
 
 def require(ok,why):
@@ -54,79 +59,168 @@ def normalized_full(raw,compact,before,after,*,army_ids,profile):
         'queried_connection_generation':before['diagnostics']['connection_generation'],'queried_episode_run_id':before['episode_run_id']}
     return result
 
+class _SelectionRun(Protocol):
+    run_dir: Path
+
+
+class _FullArmyClient(DayClient, Protocol):
+    selection: _SelectionRun
+    report_path: Path
+
+    def native_wire_source(self) -> WireEvidenceSource: ...
+
+    def execute_plan(self, steps: list[Object], name: str, timeout: float | None = None,
+                     reserve: int = 90) -> list[object]: ...
+
+
+class _WireRecovery(Protocol):
+    def mark(self, path: str | Path, *, codec: WireEvidenceCodec = "plain",
+             commit: object = None) -> WireBookmark: ...
+
+    def recover(self, bookmark: object, compact: object, *, native_revision: int,
+                army_ids: list[int], profile: str,
+                end_commit: object = None) -> tuple[JsonObject, WireProof]: ...
+
+
+def _number(value: object, label: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise ValueError(label)
+    return value
+
+
+def _text(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(label)
+    return value
+
+
+def _army_ids(value: object) -> list[int]:
+    if not isinstance(value, list) or not value:
+        raise ValueError("Actual Army ID list required")
+    result: list[int] = []
+    for item in value:
+        if (not isinstance(item, int) or isinstance(item, bool) or
+                not -(1 << 31) <= item < (1 << 31) or item == -1):
+            raise ValueError("Actual signed Army ID required")
+        result.append(item)
+    if len(result) != len(set(result)):
+        raise ValueError("Duplicate Army IDs")
+    return result
+
+
 class FullArmyResultClient:
-    """Delegate every operation to the original public queue; never create SDK."""
-    def __init__(self,client,wire_module=None,*,prefix=""):
+    """Delegate to the original public queue; never create another SDK."""
+    def __init__(self, client: _FullArmyClient, wire_module: _WireRecovery | None = None,
+                 *, prefix: str = "") -> None:
         if wire_module is None:
-            import ck3_mod_acceptance_army_wire as wire_module
-        require(not prefix or prefix.replace('-','').replace('_','').isalnum(),'invalid common control prefix')
-        self.client=client;self.wire=wire_module;self.prefix=prefix;self.frames={};self.serial=0;self.full_proofs=[]
-        self.expected_run_id=client.selection.run_dir.name
-    def __getattr__(self,key):return getattr(self.client,key)
-    def snapshot(self,allow_actor_change=False,require_event_free=True):
-        self.serial+=1;name='snapshot-'+str(self.serial).zfill(4)
-        rows=self.execute_plan([{'id':name,'tool':'ck3_take_snapshot','args':{'include_native_command_history':False},'fresh_revision':True}],name)
-        return self.client.validate_frame(rows[0]['result'],allow_actor_change,require_event_free)
-    def execute_plan(self,steps,name,timeout=None,reserve=90):
-        require(len(steps)==1,'continuation submits one original step at a time')
-        step=copy.deepcopy(steps[0]);old_id=step['id'];step['id']=(self.prefix+'-' if self.prefix else '')+old_id
-        plan_name=(self.prefix+'-' if self.prefix else '')+name
-        full=(step.get('tool')=='ck3_query_army_strengths' and step.get('args',{}).get('profile')=='observed_history_full_v1')
+            import ck3_mod_acceptance_army_wire
+            wire_module = ck3_mod_acceptance_army_wire
+        require(isinstance(prefix, str) and
+                (not prefix or prefix.replace("-", "").replace("_", "").isalnum()),
+                "invalid common control prefix")
+        self.client = client
+        self.wire = wire_module
+        self.prefix = prefix
+        self.frames: dict[int, Object] = {}
+        self.serial = 0
+        self.full_proofs: list[Object] = []
+        self.expected_run_id = client.selection.run_dir.name
+
+    def __getattr__(self, key: str) -> object:
+        result: object = getattr(self.client, key)
+        return result
+
+    def snapshot(self, allow_actor_change: bool = False,
+                 require_event_free: bool = True) -> object:
+        self.serial += 1
+        name = "snapshot-" + str(self.serial).zfill(4)
+        rows = self.execute_plan([{"id": name, "tool": "ck3_take_snapshot",
+            "args": {"include_native_command_history": False}, "fresh_revision": True}], name)
+        return self.client.validate_frame(rows[0]["result"], allow_actor_change, require_event_free)
+
+    def execute_plan(self, steps: list[Object], name: str, timeout: float | None = None,
+                     reserve: int = 90) -> list[Object]:
+        require(isinstance(steps, list) and len(steps) == 1,
+                "continuation submits one original step at a time")
+        step = obj(copy.deepcopy(steps[0]), "original step")
+        old_id = _text(step.get("id"), "original step ID required")
+        step["id"] = (self.prefix + "-" if self.prefix else "") + old_id
+        plan_name = (self.prefix + "-" if self.prefix else "") + name
+        args = obj(step.get("args", {}), "original step arguments")
+        full = step.get("tool") == "ck3_query_army_strengths" and args.get("profile") == "observed_history_full_v1"
+        before: Object | None = None
+        source: WireEvidenceSource | None = None
+        bookmark: WireBookmark | None = None
         if full:
-            args=step['args'];before=self.frames.get(args['expected_revision'])
-            require(before is not None,'full query requires its own captured actual fresh frame')
-            bookmark=self.wire.mark(self.client.report_path.with_suffix('.native-wire.jsonl'))
-        rows=self.client.execute_plan([step],plan_name,timeout=timeout,reserve=reserve)
-        require(len(rows)==1 and rows[0].get('id')==step['id'],'actual continuation row identity differs')
-        row=rows[0]
-        if row.get('ok') is True and not row.get('error'):
-            if step.get('tool')=='ck3_take_snapshot':
-                f=bind_common_frame(row['result'],self.expected_run_id);self.frames[f['revision']]=f
-                row={**row,'result':f}
+            before = self.frames.get(_number(args.get("expected_revision"), "actual revision"))
+            if before is None:
+                raise ValueError("full query requires its own captured actual fresh frame")
+            source = self.client.native_wire_source()
+            bookmark = self.wire.mark(source["path"], codec=source["wire_evidence_codec"],
+                                      commit=source["commit"])
+        rows = self.client.execute_plan([step], plan_name, timeout=timeout, reserve=reserve)
+        require(isinstance(rows, list) and len(rows) == 1, "actual continuation row count differs")
+        row = obj(rows[0], "actual continuation row")
+        require(row.get("id") == step["id"], "actual continuation row identity differs")
+        if row.get("ok") is True and not row.get("error"):
+            if step.get("tool") == "ck3_take_snapshot":
+                frame = obj(bind_common_frame(obj(row["result"], "snapshot"), self.expected_run_id), "bound snapshot")
+                self.frames[_number(frame.get("revision"), "snapshot revision")] = frame
+                row = {**row, "result": frame}
             if full:
-                compact=row['result'];after=row.get('after_snapshot')
-                require(isinstance(after,dict),'actual original full query has no host after_snapshot')
-                after=bind_common_frame(after,self.expected_run_id)
-                self.client.validate_frame(before,require_event_free=False);self.client.validate_frame(after,require_event_free=False)
-                raw,proof=self.wire.recover(bookmark,compact,native_revision=before['native_revision'],army_ids=args['army_ids'],profile=args['profile'])
-                proof.update(public_step_id=step['id'],public_control_name=plan_name,
-                    public_original=str(self.client.output/(plan_name+'.actual-results.json')),
-                    representation='derived production-normalized native wire result plus actual paired host frames; not complete Driver packet',
-                    normalized_source_binding={'before':{k:before[k] for k in ('revision','native_revision','snapshot_id','date_raw','episode_run_id')},
-                        'after':{k:after[k] for k in ('revision','native_revision','snapshot_id','date_raw','episode_run_id')}})
+                if before is None or source is None or bookmark is None:
+                    raise ValueError("Original wire bookmark missing")
+                compact = obj(row.get("result"), "compact result")
+                after = obj(bind_common_frame(obj(row.get("after_snapshot"), "after snapshot"),
+                                               self.expected_run_id), "bound after snapshot")
+                self.client.validate_frame(before, require_event_free=False)
+                self.client.validate_frame(after, require_event_free=False)
+                after_source = self.client.native_wire_source()
+                require(after_source["path"] == source["path"] and
+                        after_source["wire_evidence_codec"] == source["wire_evidence_codec"],
+                        "original native wire source changed during query")
+                ids = _army_ids(args.get("army_ids"))
+                profile = _text(args.get("profile"), "actual profile")
+                raw, actual_proof = self.wire.recover(bookmark, compact,
+                    native_revision=_number(before.get("native_revision"), "native revision"),
+                    army_ids=ids, profile=profile, end_commit=after_source["commit"])
+                proof: Object = {key: value for key, value in actual_proof.items()}
+                proof.update(public_step_id=step["id"], public_control_name=plan_name,
+                    public_original=str(self.client.output / (plan_name + ".actual-results.json")),
+                    representation="derived production-normalized native wire result plus actual paired host frames; not complete Driver packet",
+                    normalized_source_binding={"before": {k: before[k] for k in
+                        ("revision", "native_revision", "snapshot_id", "date_raw", "episode_run_id")},
+                        "after": {k: after[k] for k in
+                        ("revision", "native_revision", "snapshot_id", "date_raw", "episode_run_id")}})
                 try:
-                    normalized=normalized_full(raw,compact,before,after,army_ids=args['army_ids'],profile=args['profile'])
+                    normalized = obj(normalized_full(raw, compact, before, after,
+                                     army_ids=ids, profile=profile), "normalized result")
                 except ValueError as error:
-                    if str(error)!='native army-strength query crossed a snapshot revision':
+                    if str(error) != "native army-strength query crossed a snapshot revision":
                         raise
-                    # Preserve the accepted original public row and both frames.
-                    # Only this derived full consumer failed. Existing R05
-                    # readonly recovery can then apply its single-fresh-query
-                    # same-date/identity contract; this helper never retries.
-                    proof['derived_error']=str(error)
-                    proof['original_public_row_ok']=row['ok']
+                    proof["derived_error"] = str(error)
+                    proof["original_public_row_ok"] = row["ok"]
                     self.full_proofs.append(proof)
-                    self.client.checkpoint(plan_name+'-full-wire-proof',proof)
-                    row={**row,'ok':False,'error':str(error),'derived_full_result_error':True,'wire_full_result_proof':proof}
+                    self.client.checkpoint(plan_name + "-full-wire-proof", proof)
+                    row = {**row, "ok": False, "error": str(error),
+                           "derived_full_result_error": True, "wire_full_result_proof": proof}
                 else:
                     self.full_proofs.append(proof)
-                    self.client.checkpoint(plan_name+'-full-wire-proof',proof)
-                    # The original compact control receipt remains unchanged.
-                    self.client.checkpoint(plan_name+'-derived-normalized-full',normalized)
-                    row={**row,'result':normalized,'wire_full_result_proof':proof}
+                    self.client.checkpoint(plan_name + "-full-wire-proof", proof)
+                    self.client.checkpoint(plan_name + "-derived-normalized-full", normalized)
+                    row = {**row, "result": normalized, "wire_full_result_proof": proof}
         elif full:
             from xar_autoplayer.bridge.r05_supply_observation_case import classify_strength_pre_snapshot_not_started
-            diagnostic=classify_strength_pre_snapshot_not_started(row)
+            diagnostic = classify_strength_pre_snapshot_not_started(row)
             if diagnostic is not None:
-                proof={'diagnostic':diagnostic,'source':'completed_native_pre_snapshot_rejected_before_submit',
-                    'public_step_id':step['id'],'public_control_name':plan_name,
-                    'public_original':str(self.client.output/(plan_name+'.actual-results.json')),
-                    'query_reissued':False,'native_query_started':False}
-                self.client.checkpoint(plan_name+'-not-started-proof',proof)
-                row={**row,'full_query_not_started_v1':proof}
-        # Consumers retain their original stepID semantics; physical public row
-        # and control-plan IDs are separately pinned in the original receipt.
-        return [{**row,'id':old_id,'continuation_public_step_id':step['id']}]
+                proof = {"diagnostic": diagnostic,
+                    "source": "completed_native_pre_snapshot_rejected_before_submit",
+                    "public_step_id": step["id"], "public_control_name": plan_name,
+                    "public_original": str(self.client.output / (plan_name + ".actual-results.json")),
+                    "query_reissued": False, "native_query_started": False}
+                self.client.checkpoint(plan_name + "-not-started-proof", proof)
+                row = {**row, "full_query_not_started_v1": proof}
+        return [{**row, "id": old_id, "continuation_public_step_id": step["id"]}]
 
 def ensure_common_full_army_client(client):
     """Wrap the actual compact public CaseClient once; retain injected full DTO boundaries."""

@@ -10,6 +10,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 import copy
+import errno
+import gzip
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -24,6 +26,9 @@ import uuid
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from ck3_mod_acceptance_background_types import (
+        WireEvidenceCodec, WireEvidenceCommit, WireEvidenceKind,
+    )
     from xar_autoplayer.saved_campaign_profile_inventory_v2 import ProfileDirectories
 
 
@@ -42,23 +47,140 @@ def serialized(value: object) -> object:
 
 
 class JsonLines:
-    def __init__(self, path: Path) -> None:
-        self.path = path
+    def __init__(self, path: Path, codec: WireEvidenceCodec = "plain") -> None:
+        if type(codec) is not str or codec not in ("plain", "gzip-members"):
+            raise ValueError("Explicit wire evidence codec required")
+        self.path = path if codec == "plain" else path.expanduser().resolve()
+        self.codec = codec
         self.lock = threading.Lock()
-        path.parent.mkdir(parents=True, exist_ok=True)
+        self._commit: WireEvidenceCommit | None = None
+        self._stream_id = uuid.uuid4().hex if codec == "gzip-members" else ""
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+    @property
+    def commit_path(self) -> Path:
+        return Path(str(self.path) + ".commit.json")
 
     def write(self, direction: str, value: object) -> None:
-        operation = "open-append"
+        # Preserve the old TextIO/newline/close path exactly for default plain.
+        if self.codec == "plain":
+            operation = "open-append"
+            try:
+                with self.lock, self.path.open("a", encoding="utf-8") as stream:
+                    operation = "append-json-line"
+                    stream.write(json.dumps({
+                        "at": now(), "direction": direction, "message": serialized(value),
+                    }, ensure_ascii=False) + "\n")
+                    operation = "close-append-stream"
+            except OSError as error:
+                annotate_write_error(error, self.path, operation, {"journal_direction": direction})
+                raise
+            return
+        from ck3_mod_acceptance_background_types import (
+            wire_evidence_commit, wire_file_identity,
+        )
+        operation = "encode-gzip-member"
         try:
-            with self.lock, self.path.open("a", encoding="utf-8") as stream:
-                operation = "append-json-line"
-                stream.write(json.dumps({
+            with self.lock:
+                # TextIO newline=None maps LF to os.linesep. JSON escapes payload
+                # newlines, so these are exactly the old on-disk logical bytes.
+                text = json.dumps({
                     "at": now(), "direction": direction, "message": serialized(value),
-                }, ensure_ascii=False) + "\n")
-                operation = "close-append-stream"
+                }, ensure_ascii=False) + "\n"
+                logical = text.replace("\n", os.linesep).encode("utf-8")
+                member = gzip.compress(logical, compresslevel=6, mtime=0)
+                previous = self._commit
+                begin = 0 if previous is None else int(previous["completed_physical_offset"])
+                total = 0 if previous is None else int(previous["logical_bytes"])
+                count = 0 if previous is None else previous["record_count"]
+                operation = "open-gzip-append"
+                with self.path.open("ab") as stream:
+                    if os.fstat(stream.fileno()).st_size != begin:
+                        raise ValueError("Wire has an unpublished tail or a different writer")
+                    if previous is not None and wire_file_identity(stream.fileno()) != previous["file_identity"]:
+                        raise ValueError("Held wire file identity changed")
+                    operation = "append-complete-gzip-member"
+                    if stream.write(member) != len(member):
+                        raise OSError(errno.EIO, "Short wire gzip member write")
+                    operation = "flush-gzip-member"
+                    stream.flush()
+                    operation = "fsync-gzip-member"
+                    os.fsync(stream.fileno())
+                    identity = wire_file_identity(stream.fileno())
+                    end = os.fstat(stream.fileno()).st_size
+                    if end != begin + len(member):
+                        raise ValueError("Actual wire member end differs")
+                    operation = "close-gzip-member"
+                commit = wire_evidence_commit({
+                    "schema": "ck3-wire-evidence-commit-v1",
+                    "wire_evidence_codec": "gzip-members", "path": str(self.path),
+                    "stream_id": self._stream_id, "file_identity": identity,
+                    "completed_physical_offset": str(end),
+                    "logical_bytes": str(total + len(logical)), "record_count": count + 1,
+                    "last_member_physical_begin": str(begin),
+                    "last_member_sha256": hashlib.sha256(member).hexdigest(),
+                })
+                operation = "publish-wire-commit"
+                # One fixed small sidecar per stream, never the whole report.
+                # Reuse the existing atomic writer and its original diagnostics.
+                write_atomic_report(self.commit_path, dict(commit))
+                self._commit = commit
         except OSError as error:
-            annotate_write_error(error, self.path, operation, {"journal_direction": direction})
+            if getattr(error, "ck3_write_error_context", None) is None:
+                annotate_write_error(error, self.path, operation, {"journal_direction": direction})
+            else:
+                error.add_note("wire append context: " + operation + " " + str(self.path))
             raise
+
+
+def configure_wire_evidence(args: argparse.Namespace) -> WireEvidenceCodec:
+    raw: object = getattr(args, "wire_evidence_codec", "plain")
+    if type(raw) is str and raw == "plain":
+        return "plain"
+    source: object = getattr(args, "agent_source_root", None)
+    if not isinstance(source, Path):
+        raise ValueError("gzip-members requires an explicit selected repository source")
+    source = source.expanduser().resolve()
+    contract_path = source / "tools/ck3_mod_acceptance_background_types.py"
+    if not contract_path.is_file():
+        raise ValueError("gzip-members needs the selected repository tools contract")
+    cached = sys.modules.get("ck3_mod_acceptance_background_types")
+    if cached is not None:
+        cached_path: object = getattr(cached, "__file__", None)
+        if not isinstance(cached_path, str) or Path(cached_path).resolve() != contract_path:
+            raise ValueError("Wire evidence contract escaped selected source")
+    clean_imports(source)
+    sys.path.insert(0, str(contract_path.parent))
+    from ck3_mod_acceptance_background_types import wire_evidence_codec
+    return wire_evidence_codec(raw)
+
+
+def wire_output_path(output: Path, kind: WireEvidenceKind, codec: WireEvidenceCodec) -> Path:
+    if codec == "plain":
+        return output.with_suffix("." + kind + ".jsonl")
+    from ck3_mod_acceptance_background_types import wire_evidence_path
+    return wire_evidence_path(output, kind, codec)
+
+
+def wire_evidence_commits(output: Path) -> dict[WireEvidenceKind, WireEvidenceCommit | None]:
+    from ck3_mod_acceptance_background_types import wire_evidence_commit
+    result: dict[WireEvidenceKind, WireEvidenceCommit | None] = {}
+    kinds: tuple[WireEvidenceKind, ...] = ("native-wire", "mcp-wire", "mcp-calls")
+    for kind in kinds:
+        path = wire_output_path(output, kind, "gzip-members")
+        sidecar = Path(str(path) + ".commit.json")
+        if not sidecar.exists():
+            result[kind] = None
+            continue
+        with sidecar.open("rb") as stream:
+            raw = stream.read(16385)
+        if len(raw) > 16384:
+            raise ValueError("Wire commit metadata exceeds16KiB")
+        commit = wire_evidence_commit(json.loads(raw))
+        if commit["path"] != str(path) or not path.is_file():
+            raise ValueError("Wire commit names a different or missing stream")
+        result[kind] = commit
+    return result
 
 
 class StartupPollReporting:
@@ -998,7 +1120,7 @@ def native_server(args: argparse.Namespace) -> None:
     )
     from xar_autoplayer.bridge.mcp_server import create_server
 
-    wire = JsonLines(args.native_wire)
+    wire = JsonLines(args.native_wire, codec=configure_wire_evidence(args))
 
     class RecordingEndpoint(NativeNamedPipeServer):
         def send(self, frame: dict[str, object], *, packet_evidence_path: Path | None = None) -> None:
@@ -1651,7 +1773,8 @@ class PlanClient:
         self.episode_identity: dict[str, object] | None = None
         self.consumed_control_plans: set[tuple[str, int]] = set()
         self.control_plan_execution_depth = 0
-        self.calls = JsonLines(args.output.with_suffix(".mcp-calls.jsonl"))
+        codec = configure_wire_evidence(args)
+        self.calls = JsonLines(wire_output_path(args.output, "mcp-calls", codec), codec=codec)
 
     async def call(self, name: str, arguments: dict[str, object] | None = None) -> object:
         row: dict[str, object] = {"tool": name, "arguments": arguments or {}, "started_at": now()}
@@ -4091,8 +4214,10 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
 
     args.output = args.output.expanduser().resolve()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    native_wire = args.output.with_suffix(".native-wire.jsonl")
-    rpc_wire = JsonLines(args.output.with_suffix(".mcp-wire.jsonl"))
+    codec = configure_wire_evidence(args)
+    native_wire = wire_output_path(args.output, "native-wire", codec)
+    calls_path = wire_output_path(args.output, "mcp-calls", codec)
+    rpc_wire = JsonLines(wire_output_path(args.output, "mcp-wire", codec), codec=codec)
     stderr_path = args.output.with_suffix(".server-stderr.log")
     stop, done = threading.Event(), threading.Event()
     session_state: dict[str, object] = {"report": None, "error": None}
@@ -4101,12 +4226,15 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "fixture_profile": args.fixture_profile, "steps": [],
         "state_dir": str(args.state_dir), "agent_source_root": str(args.agent_source_root),
         "pipe": args.bridge_pipe, "native_wire": str(native_wire),
-        "mcp_wire": str(rpc_wire.path), "mcp_calls": str(args.output.with_suffix(".mcp-calls.jsonl")),
+        "mcp_wire": str(rpc_wire.path), "mcp_calls": str(calls_path),
+        "wire_evidence_codec": codec,
         "server_stderr": str(stderr_path), "session": session_state, "error": None}
 
     supervisor: threading.Thread | None = None
 
     def write() -> None:
+        if codec == "gzip-members":
+            report["wire_evidence_commits"] = wire_evidence_commits(args.output)
         report["managed_session_done"] = done.is_set()
         report["managed_session_thread_finished"] = (supervisor is None or
             supervisor.ident is not None and not supervisor.is_alive())
@@ -4235,6 +4363,10 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     write()
     child_args = [str(Path(__file__).resolve()), "--server", "--bridge-pipe", args.bridge_pipe,
                   "--native-wire", str(native_wire), "--command-timeout", str(args.command_timeout)]
+    if codec == "gzip-members":
+        child_args += ["--wire-evidence-codec", codec]
+        if args.sdk_smoke_test:
+            child_args += ["--agent-source-root", str(args.agent_source_root)]
     if getattr(args, "normal_exit_managed_profile", None) is not None:
         child_args += ["--normal-exit-managed-profile", str(args.normal_exit_managed_profile),
                        "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
@@ -4583,6 +4715,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--normal-exit-managed-profile-sha256")
     result.add_argument("--bridge-pipe", default=r"\\.\pipe\xar_ck3_bridge_migration_12002")
     result.add_argument("--output", type=Path)
+    result.add_argument("--wire-evidence-codec", choices=("plain", "gzip-members"), default="plain",
+                        help="Explicit lossless wire evidence codec; default plain. gzip-members needs selected repository source.")
     result.add_argument("--plan", type=Path, help="JSON {steps:[...]} or step array")
     result.add_argument("--command-timeout", type=float, default=60)
     result.add_argument("--readiness-timeout", type=float, default=1800)

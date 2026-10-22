@@ -246,6 +246,74 @@ class TargetProofCliSerialization(unittest.TestCase):
                     'full_window_coverage_ready', 'owner_admission_authority_verified_here'):
             self.assertFalse(item[key], key)
 
+    def test_actual_closed_wire_proof_reaches_existing_cli_and_core_consumer(self) -> None:
+        # Only the endpoint messages and instruction worker bytes are fixtures.
+        # Compression, native file identity, mark/recover and CLI are production.
+        import argparse
+        sys.path[:0] = [str(ROOT / "tools"), str(ROOT / "ck3_autonomous_player/src")]
+        import ck3_mod_acceptance_army_wire as shared_wire
+        from ck3_mod_acceptance_background_types import wire_evidence_path
+        host_path = ROOT / "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+        host_spec = importlib.util.spec_from_file_location("actual_target_wire_host", host_path)
+        self.assertIsNotNone(host_spec)
+        host = importlib.util.module_from_spec(host_spec)
+        sys.modules[host_spec.name] = host
+        host_spec.loader.exec_module(host)
+        host.configure_wire_evidence(argparse.Namespace(
+            wire_evidence_codec="gzip-members", agent_source_root=ROOT))
+        for codec in ("plain", "gzip-members"):
+            with self.subTest(codec=codec), tempfile.TemporaryDirectory(prefix="target-wire-") as temporary:
+                directory = Path(temporary)
+                rows, binding, _core, old_response, _old_pin = sample(null_episode=True)
+                response_envelope = json.loads(old_response)
+                response_message = response_envelope["message"]
+                summary = response_message["result"]
+                report = directory / "native-report.json"
+                native_path = wire_evidence_path(report, "native-wire", codec)
+                writer = host.JsonLines(native_path, codec)
+                writer.write("fixture-boundary", {"synthetic": True})
+                mark = shared_wire.mark(native_path, codec=codec, commit=writer._commit)
+                writer.write("python-to-dll", {"type":"execute_step", "protocol_version":1,
+                    "request_id":response_message["request_id"], "step":shared_wire.STEP,
+                    "expected_revision":12, "army_ids":[0], "army_strengths_profile":"observed_history_full_v1"})
+                writer.write("dll-to-python", response_message)
+                _raw, parent = shared_wire.recover(json.loads(json.dumps(mark)), summary,
+                    native_revision=12, army_ids=[0], profile="observed_history_full_v1",
+                    end_commit=writer._commit)
+                response = shared_wire.read_response_line(parent)
+                self.assertEqual(json.loads(response)["message"], response_message)
+                proof = m.build_target_instruction_core_proof_12004(
+                    raw=wire(rows), binding=binding, parent_response=response, parent_proof=parent)
+                self.assertEqual(proof["full_parent"]["schema"], "ck3-army-wire-range-proof-v2")
+                self.assertEqual(proof["full_parent"]["wire_evidence_codec"], codec)
+                self.assertEqual(proof["full_parent"]["response_line"], parent["response_line"])
+                item = m.normalize_target_instruction_core_proof_12004(wire(rows), binding,
+                    target_core_proof=json.loads(json.dumps(proof)), parent_response=response, parent_proof=parent)
+                self.assertEqual(item["full_parent_response_line_sha256"], hashlib.sha256(response).hexdigest())
+                paths = {key:directory/name for key,name in (("raw","raw.ndjson"),("binding","binding.json"),
+                    ("parent","parent.json"),("proof","proof.json"),("output","item.json"))}
+                paths["raw"].write_bytes(wire(rows));paths["binding"].write_bytes(m._encoded(binding))
+                paths["parent"].write_bytes(m._encoded(parent))
+                result = self.run_cli(paths)
+                self.assertEqual(result.returncode, 0, result.stderr.decode())
+                self.assert_scope(json.loads(paths["output"].read_bytes()))
+                self.assertEqual(json.loads(paths["proof"].read_bytes()), proof)
+                paths["output"] = directory/"second-item.json"
+                again = self.run_cli(paths, consume=True)
+                self.assertEqual(again.returncode, 0, again.stderr.decode())
+                for mutation in ("coordinate_type","identity_decimal","codec","logical_sha"):
+                    bad = copy.deepcopy(parent)
+                    if mutation=="coordinate_type":bad["response_line"]["logical_range"]["begin"]=0
+                    elif mutation=="identity_decimal":bad["file_identity_at_read"]["inode"]="01"
+                    elif mutation=="codec":bad["wire_evidence_codec"]=None
+                    else:bad["response_line"]["logical_range"]["sha256"]="0"*64
+                    with self.subTest(rejected=mutation),self.assertRaises(ValueError):
+                        m.build_target_instruction_core_proof_12004(
+                            raw=wire(rows),binding=binding,parent_response=response,parent_proof=bad)
+                # A byte change cannot be excused by a source-shaped small pin.
+                damaged=bytearray(native_path.read_bytes());damaged[-1]^=1;native_path.write_bytes(damaged)
+                with self.assertRaises(ValueError):shared_wire.read_response_line(parent)
+
     def test_pretty_over_cap_complete_proof_roundtrips_real_cli(self):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)

@@ -191,6 +191,77 @@ def _worker_wire(raw: bytes, binding: Mapping) -> tuple[dict, dict, dict, dict, 
     return physical, frames[0], pre, post, start
 
 
+
+def _proof_object(value: object, label: str) -> dict[str, object]:
+    if not isinstance(value, Mapping) or any(not isinstance(k, str) for k in value):
+        raise ValueError(label)
+    return {k: v for k, v in value.items() if isinstance(k, str)}
+
+
+def _wire_decimal(value: object, bits: int, *, positive: bool = False) -> int:
+    if (not isinstance(value, str) or re.fullmatch(r"0|[1-9][0-9]*", value) is None or
+            int(value) >= 1 << bits or positive and int(value) == 0):
+        raise ValueError("canonical wire proof decimal required")
+    return int(value)
+
+
+def _wire_range(value: object) -> tuple[int, int, str]:
+    row = _proof_object(value, "wire proof range")
+    if set(row) != {"begin", "end", "bytes", "sha256"}:
+        raise ValueError("exact wire proof range fields")
+    begin, end = _wire_decimal(row["begin"], 64), _wire_decimal(row["end"], 64)
+    size, digest = row["bytes"], row["sha256"]
+    if (type(size) is not int or not isinstance(size, int) or not 0 <= size <= MAX_PARENT_BYTES or
+            end - begin != size or not isinstance(digest, str) or not _sha(digest)):
+        raise ValueError("wire proof range extent/SHA")
+    return begin, end, digest
+
+
+def _wire_parent_pin_v2(value: object) -> tuple[dict[str, object], tuple[int, int, str]]:
+    """Validate the shared v2 pin; this pure module grants no file I/O authority."""
+    row = _proof_object(value, "wire v2 parent proof")
+    fields = ("schema", "path", "wire_evidence_codec", "identity_binding",
+        "file_identity_at_read", "physical_range", "logical_range", "response_line",
+        "native_request_id", "query_sequence")
+    if any(k not in row for k in fields) or row["schema"] != "ck3-army-wire-range-proof-v2":
+        raise ValueError("wire v2 parent source pins")
+    if (row["wire_evidence_codec"] not in ("plain", "gzip-members") or
+            row["identity_binding"] not in ("native-handle", "legacy-fstat")):
+        raise ValueError("wire v2 codec/identity binding")
+    identity = _proof_object(row["file_identity_at_read"], "wire file identity at read")
+    if (set(identity) != {"provider", "device", "inode"} or
+            identity["provider"] not in ("win32-file-id-info", "posix-fstat")):
+        raise ValueError("wire v2 file identity fields/provider")
+    _wire_decimal(identity["device"], 64)
+    _wire_decimal(identity["inode"], 128, positive=True)
+    physical = _wire_range(row["physical_range"])
+    logical = _wire_range(row["logical_range"])
+    response = _proof_object(row["response_line"], "wire v2 response line")
+    if set(response) != {"logical_range", "member_physical_range"}:
+        raise ValueError("wire v2 response coordinate fields")
+    line = _wire_range(response["logical_range"])
+    member = _wire_range(response["member_physical_range"])
+    if not (physical[0] <= member[0] < member[1] <= physical[1] and
+            logical[0] <= line[0] < line[1] <= logical[1]):
+        raise ValueError("wire v2 response outside recovered range")
+    if row["wire_evidence_codec"] == "plain" and response["logical_range"] != response["member_physical_range"]:
+        raise ValueError("plain response physical/logical coordinates differ")
+    pin = {k: copy.deepcopy(row[k]) for k in fields}
+    # Convert only the validation view to Python integers. The persisted pin
+    # keeps canonical decimal coordinates and the two hash domains unchanged.
+    return pin, line
+
+
+def _parent_response_sha(value: object) -> str:
+    row = _proof_object(value, "verified full parent pin")
+    response = _proof_object(row.get("response_line"), "verified parent response")
+    line = (_proof_object(response.get("logical_range"), "verified logical response")
+            if row.get("schema") == "ck3-army-wire-range-proof-v2" else response)
+    digest = line.get("sha256")
+    if not isinstance(digest, str) or not _sha(digest):
+        raise ValueError("verified parent response SHA")
+    return digest
+
 def _parent(parent_response: bytes, parent_proof: Mapping, binding: Mapping,
             path: tuple | None, *, native_core_token: int) -> tuple[dict, dict, dict, tuple]:
     _need(type(parent_response) is bytes and 0 < len(parent_response) <= MAX_PARENT_BYTES and
@@ -198,18 +269,31 @@ def _parent(parent_response: bytes, parent_proof: Mapping, binding: Mapping,
           'one bounded complete original native response JSONL line including newline')
     _need(isinstance(parent_proof, Mapping) and len(_encoded(parent_proof)) <= MAX_PARENT_PROOF_BYTES,
           'bounded actual parent range proof')
-    fields = ('path', 'file_identity', 'response_line', 'native_request_id', 'query_sequence')
-    _need(all(k in parent_proof for k in fields), 'actual original parent source pins')
-    pin = {k:copy.deepcopy(parent_proof[k]) for k in fields}
-    line = pin['response_line']
+    if 'schema' in parent_proof:
+        pin, line = _wire_parent_pin_v2(parent_proof)
+    else:
+        # Explicit pre-v2 plain persisted contract; its tuple never claims a
+        # historical Win32 FileID or a compressed physical/logical mapping.
+        fields = ('path', 'file_identity', 'response_line', 'native_request_id', 'query_sequence')
+        _need(all(k in parent_proof for k in fields), 'actual original parent source pins')
+        pin = {k:copy.deepcopy(parent_proof[k]) for k in fields}
+        old_line = _proof_object(pin['response_line'], 'legacy response line')
+        if set(old_line) != {'begin', 'end', 'sha256'}:
+            raise ValueError('exact legacy response line fields')
+        begin, end, digest = old_line['begin'], old_line['end'], old_line['sha256']
+        if (not isinstance(begin, int) or isinstance(begin, bool) or
+                not isinstance(end, int) or isinstance(end, bool) or
+                not isinstance(digest, str)):
+            raise ValueError('typed legacy response line coordinates/SHA')
+        line = begin, end, digest
+        _need(type(pin['file_identity']) is list and len(pin['file_identity']) == 2 and
+              all(_int(n) for n in pin['file_identity']), 'original legacy plain fstat identity')
     _need(type(pin['path']) is str and 0 < len(pin['path']) <= 4096 and
-          PureWindowsPath(pin['path']).is_absolute() and '\x00' not in pin['path'] and
-          type(pin['file_identity']) is list and len(pin['file_identity']) == 2 and
-          all(_int(n) for n in pin['file_identity']), 'original file identity and path; I/O verification is caller authority')
-    _need(type(line) is dict and set(line) == {'begin', 'end', 'sha256'} and
-          _int(line['begin']) and _int(line['end'], line['begin'] + 1) and
-          line['end'] - line['begin'] == len(parent_response) and _sha(line['sha256']) and
-          hashlib.sha256(parent_response).hexdigest() == line['sha256'], 'original full response-line range SHA/length')
+          PureWindowsPath(pin['path']).is_absolute() and '\x00' not in pin['path'],
+          'original file path; I/O verification is caller authority')
+    _need(_int(line[0]) and _int(line[1], line[0] + 1) and
+          line[1] - line[0] == len(parent_response) and _sha(line[2]) and
+          hashlib.sha256(parent_response).hexdigest() == line[2], 'original full response-line range SHA/length')
     _need(type(pin['native_request_id']) is str and 0 < len(pin['native_request_id']) <= 256 and
           _int(pin['query_sequence'], 1), 'actual request/query identity')
     envelope = json.loads(parent_response, object_pairs_hook=_shared._unique_json_object)
@@ -457,7 +541,7 @@ def normalize_target_instruction_core_proof_12004(raw: bytes, binding: Mapping, 
         core_carrier_v1=copy.deepcopy(pre['core_carrier_v1']),
         target_core_proof_v1=copy.deepcopy(expected),
         target_core_proof_canonical_derived_sha256=hashlib.sha256(_encoded(expected)).hexdigest(),
-        full_parent_response_line_sha256=expected['full_parent']['response_line']['sha256'],
+        full_parent_response_line_sha256=_parent_response_sha(expected['full_parent']),
         global_physical_closure_qualification_granted=False,
         whole_core_NET_cause_proven=False, same_core_NET_cause_proven=False,
         full_window_coverage_ready=False, toggle_effect_proven=False,

@@ -142,7 +142,7 @@ class PollReportingTests(unittest.IsolatedAsyncioTestCase):
                                  "admission": "first_whole_root_query_admission" in report.get("frontend_fixture_business_context", {})})
             atomic(path, report)
 
-        namespace.update(write_atomic_report=counted, report=value.report, done=value.done,
+        namespace.update(write_atomic_report=counted, report=value.report, done=value.done, codec="plain",
                          supervisor=threading.Thread(), args=SimpleNamespace(output=path))
         write_module = ast.fix_missing_locations(ast.Module(body=[self.actual_write], type_ignores=[]))
         exec(compile(write_module, str(HOST), "exec"), namespace)

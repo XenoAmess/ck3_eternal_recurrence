@@ -7,7 +7,8 @@ import os
 from pathlib import Path
 from collections.abc import Mapping, Sequence
 from ck3_mod_acceptance_background_types import (
-    CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object)
+    CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object,
+    WireEvidenceSource, wire_evidence_codec, wire_evidence_source)
 from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day, native_day_request_count, fresh_native_day_before, project_pre_day_event_boundary)
 import subprocess
 import time
@@ -225,6 +226,13 @@ class CaseClient:
             require(not value.get('error') and value.get('status') not in ('ERROR', 'RED'),
                     'Actual shared host failed; preserve error and do not replay')
         return value
+
+    def native_wire_source(self) -> WireEvidenceSource:
+        """Use the selected host report's actual path and completed boundary."""
+        report: object = self.read_report()
+        features = json_object(self.manifest.get("host_features", {}))
+        codec = wire_evidence_codec(features["wire_evidence_codec"]) if "wire_evidence_codec" in features else "plain"
+        return wire_evidence_source(report, self.report_path, codec)
 
     def remaining(self):
         budgets = self.selection.case['budgets']

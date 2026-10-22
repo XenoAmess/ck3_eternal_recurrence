@@ -18,8 +18,16 @@ spec.loader.exec_module(contract)
 normalize_instruction_local_refill_add_12004 = contract.normalize_instruction_local_refill_add_12004
 
 
-def read_full_parent_range(meta):
+def read_full_parent_range(meta: object) -> bytes:
     """Read only the exact response line already pinned by the original full query."""
+    if not isinstance(meta, dict):
+        raise ValueError('parent proof must be a JSON object')
+    if 'schema' in meta:
+        # Same shared reader as the public Army recovery; do not duplicate a
+        # gzip decoder or reinterpret logical offsets as compressed offsets.
+        sys.path.insert(0, str(source_root.parent.parent / 'tools'))
+        from ck3_mod_acceptance_army_wire import read_response_line
+        return read_response_line(meta)
     path = Path(meta['path'])
     expected = meta['file_identity']
     span = meta['response_line']

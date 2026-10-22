@@ -30,8 +30,9 @@ def execute(nodes, namespace):
 
 
 class Connected(unittest.TestCase):
-    def test_explicit_host_registration_and_bound_common_owner(self):
+    def test_explicit_host_registration_and_bound_common_owner(self) -> None:
         root = Path(OPTIONS.repo).resolve()
+        wire_contract = load(root / 'tools/ck3_mod_acceptance_background_types.py', 'r08_actual_wire_contract')
         if OPTIONS.candidate_builder:
             _, sources = load(OPTIONS.candidate_builder, "r08_candidate_builder").build_sources(root)
         else:
@@ -68,7 +69,8 @@ class Connected(unittest.TestCase):
         for manifest, expected in (({}, False), ({"war_cash_queries": False}, False),
                                    ({"war_cash_queries": True}, True)):
             ns = {"self": SimpleNamespace(manifest={"host_features": manifest}),
-                  "argv": [], "startup": {"mode": "saved_campaign"}}
+                  "argv": [], "startup": {"mode": "saved_campaign"},
+                  "wire_evidence_codec": wire_contract.wire_evidence_codec}
             execute(feature_nodes, ns)
             self.assertEqual(ns["argv"], ["--private-war-cash-queries"] if expected else [])
             parser = argparse.ArgumentParser(); execute(parser_node, {"result": parser})
@@ -93,7 +95,12 @@ class Connected(unittest.TestCase):
                     {"expected_revision": 7, "payment_sampling": "query", "payment_window_contract": None})
         with self.assertRaisesRegex(ValueError, "explicit booleans"):
             execute(feature_nodes, {"self": SimpleNamespace(manifest={"host_features": {"war_cash_queries": 1}}),
-                                    "argv": [], "startup": {"mode": "saved_campaign"}})
+                                    "argv": [], "startup": {"mode": "saved_campaign"},
+                                    "wire_evidence_codec": wire_contract.wire_evidence_codec})
+        with self.assertRaises(ValueError):
+            execute(feature_nodes, {"self": SimpleNamespace(manifest={"host_features": {"wire_evidence_codec": None}}),
+                                    "argv": [], "startup": {"mode": "saved_campaign"},
+                                    "wire_evidence_codec": wire_contract.wire_evidence_codec})
         adapter = load(OPTIONS.adapter or root / "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py", "r08_common_under_test")
         # The real shared adapter_context has no machine_id. Caller supplies the
         # actual existing machine identity, as the production R05 relay does.

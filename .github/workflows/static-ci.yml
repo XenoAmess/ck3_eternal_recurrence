@@ -741,6 +741,12 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_initial_plan_failure_hold.py --host-source ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/native_bridge/research/test_ck3_12002_mcp_live.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_r05_amount_common_wire.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_background_types.py tools/ck3_mod_acceptance_army_wire.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_fallback.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_review.py

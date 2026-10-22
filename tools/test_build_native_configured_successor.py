@@ -8,14 +8,17 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 from typing import Protocol, runtime_checkable
 
 from build_native_configured_successor import (
     ChildEnvironment, Compile, Config, Fixture, MsvcInitializer, MsvcInstallation,
-    Pin, Producer, ROOT, allocated, cmake_boolean_flags, config_json, git, load_shared, obj, parse_config, parse_pin, pin, read,
-    same_metadata_content, verified_fixture_object_bindings,
+    HOST_TEST_COMPANION_RELATIVE, NONCOMPILED_CONSUMER_RELATIVE, NoncompiledConsumerReplay, NoncompiledReplayProof,
+    Pin, Producer, ROOT, allocated, cmake_boolean_flags,
+    config_json, git, load_shared, obj, parse_config, parse_pin, pin, read,
+    same_metadata_content, verified_fixture_object_bindings, verified_noncompiled_consumer_replay,
 )
 
 
@@ -358,6 +361,12 @@ class ConfiguredSuccessorTests(unittest.TestCase):
                 verified_fixture_object_bindings(config_json(self.config), outputs)
 
     def test_readonly_existing_plan_recomputes_sources_options_and_dependencies_without_writes(self) -> None:
+        self._readonly_plan_replay(consumer=False)
+
+    def test_noncompiled_replay_preserves_original_plan_and_rejects_compiler_dependencies(self) -> None:
+        self._readonly_plan_replay(consumer=True)
+
+    def _readonly_plan_replay(self, *, consumer: bool) -> None:
         native = self.root / "ck3_autonomous_player/native_bridge"
         native.mkdir(parents=True)
         header = native / "include/xar/activity_typed_planner_v1.hpp"
@@ -390,6 +399,30 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         names.append(header.relative_to(self.root).as_posix())
         snapshot.append({"native_relative": header.relative_to(native).as_posix(),
             "bytes": pin(header)["bytes"], "sha256": pin(header)["sha256"]})
+        leaf = native / NONCOMPILED_CONSUMER_RELATIVE
+        replay: NoncompiledConsumerReplay | None = None
+        proof: NoncompiledReplayProof | None = None
+        if consumer:
+            leaf.parent.mkdir(parents=True)
+            leaf.write_bytes(b"# exact new noncompiled consumer\n")
+            before = self.root / "original-consumer.py"
+            before.write_bytes(b"# exact original consumer\n")
+            binding = self.root / "binding.json"
+            binding.write_bytes(b"{}\n")
+            replay = {"before_blob": pin(before), "after": pin(leaf), "binding": pin(binding)}
+            names.append(leaf.relative_to(self.root).as_posix())
+            snapshot.append({"native_relative": NONCOMPILED_CONSUMER_RELATIVE,
+                             "bytes": pin(before)["bytes"], "sha256": pin(before)["sha256"]})
+            companion = native / HOST_TEST_COMPANION_RELATIVE
+            companion.write_bytes(b"# current host regression companion\n")
+            original_test = self.root / "original-host-test.py"
+            original_test.write_bytes(b"# original host regression companion\n")
+            names.append(companion.relative_to(self.root).as_posix())
+            snapshot.append({"native_relative": HOST_TEST_COMPANION_RELATIVE,
+                             "bytes": pin(original_test)["bytes"], "sha256": pin(original_test)["sha256"]})
+            proof = NoncompiledReplayProof(replay,
+                {NONCOMPILED_CONSUMER_RELATIVE: pin(before), HOST_TEST_COMPANION_RELATIVE: pin(original_test)},
+                {NONCOMPILED_CONSUMER_RELATIVE: pin(leaf), HOST_TEST_COMPANION_RELATIVE: pin(companion)})
 
         def put(name: str, value: object) -> Pin:
             path = self.root / name
@@ -418,15 +451,115 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         with patch("build_native_configured_successor.ROOT", self.root), \
              patch("build_native_configured_successor.git", return_value="\n".join(names)), \
              patch("build_native_configured_successor.subprocess.run", side_effect=AssertionError("Read-only replay cannot run Ninja")), \
+             patch("build_native_configured_successor.verified_noncompiled_consumer_replay", return_value=proof), \
              patch.object(producer, "save", side_effect=AssertionError("Read-only replay cannot write")):
-            selected, actual_borrowed, original = producer.plan(rows, existing_plan=reference)
+            if consumer:
+                with self.assertRaisesRegex(ValueError, "Recomputed source/options/dependency"):
+                    producer.plan(rows, existing_plan=reference)
+            selected, actual_borrowed, original = producer.plan(rows, existing_plan=reference, noncompiled_replay=replay)
             self.assertEqual([row.target for row in selected], ["xar_ck3_12002_runtime"])
             self.assertEqual(actual_borrowed, {"CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj": borrowed})
             self.assertEqual(original, reference)
+            if consumer:
+                with self.assertRaisesRegex(ValueError, "existing read-only"):
+                    producer.plan(rows, noncompiled_replay=replay)
+                with self.assertRaisesRegex(ValueError, "configured compiler command"):
+                    producer.plan([*rows, Compile("fixture", leaf, self.root / "leaf.obj", (str(leaf),))],
+                                  existing_plan=reference, noncompiled_replay=replay)
+                with patch.object(producer, "closure", return_value={leaf}), \
+                     self.assertRaisesRegex(ValueError, "current include closure"):
+                    producer.plan(rows, existing_plan=reference, noncompiled_replay=replay)
+                previous = dependency_path.read_bytes()
+                dependency_path.write_bytes(previous + ("\n    " + str(leaf) + "\n").encode())
+                plan["original_dependencies"] = pin(dependency_path)
+                dependency_plan = put("dependency-plan.json", plan)
+                with self.assertRaisesRegex(ValueError, "original compiler dependencies"):
+                    producer.plan(rows, existing_plan=dependency_plan, noncompiled_replay=replay)
+                dependency_path.write_bytes(previous)
+                plan["original_dependencies"] = pin(dependency_path)
             selections[1]["compiled"] = False
             changed = put("changed-plan.json", plan)
             with self.assertRaisesRegex(ValueError, "Recomputed source/options/dependency"):
-                producer.plan(rows, existing_plan=changed)
+                producer.plan(rows, existing_plan=changed, noncompiled_replay=replay)
+
+    def test_noncompiled_replay_revalidates_binding_git_blob_and_exact_pins(self) -> None:
+        repo = self.root / "repo"
+        leaf = repo / "ck3_autonomous_player/native_bridge" / NONCOMPILED_CONSUMER_RELATIVE
+        leaf.parent.mkdir(parents=True)
+        before = self.root / "original-consumer.py"
+        before.write_bytes(b"# original bytes retain final newline\n")
+        leaf.write_bytes(before.read_bytes())
+        companion = leaf.parents[1] / "test_ck3_12002_mcp_live.py"
+        original_test = self.root / "original-host-test.py"
+        original_test.write_bytes(b"# original companion bytes\n")
+        companion.write_bytes(original_test.read_bytes())
+        for arguments in (("init", "-q"), ("add", "."), ("-c", "user.name=Fixture", "-c",
+                          "user.email=fixture@example.invalid", "-c", "core.autocrlf=false", "commit", "-qm", "original")):
+            subprocess.run(["git", *arguments], cwd=repo, check=True, capture_output=True)
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo).decode().strip()
+        config = replace(self.config, source_commit=commit)
+        leaf.write_bytes(b"# new consumer bytes\n")
+        companion.write_bytes(b"# new companion bytes\n")
+
+        def put(name: str, value: object) -> Pin:
+            path = self.root / name
+            path.write_text(json.dumps(value), encoding="utf-8", newline="\n")
+            return pin(path)
+
+        snapshot = put("snapshot.json", {})
+        qualification = put("qualification.json", {"snapshot": snapshot})
+        delta = put("delta.json", {})
+        binding = put("binding.json", {"schema": "ck3-native-same-root-host-and-wire-consumer-binding-v1",
+            "qualified_native": qualification, "snapshot": snapshot, "shared_python_host_delta": delta})
+        replay: NoncompiledConsumerReplay = {"before_blob": pin(before), "after": pin(leaf), "binding": binding}
+        calls: list[str] = []
+        valid_context = [True]
+        include_companion = [False]
+
+        def qualify(binding_path: Path | None, *, root: Path, runtime_commit: str, native_commit: str,
+                    machine: str, qualified_native_ref: object, qualification: dict[str, object],
+                    snapshot_ref: object, snapshot: dict[str, object],
+                    native_shared_python_host_delta: Path | None = None) -> dict[str, object]:
+            self.assertEqual((binding_path, root, runtime_commit, native_commit, machine),
+                             (Path(binding["path"]), repo, commit, commit, config.machine_id))
+            self.assertEqual((qualified_native_ref, snapshot_ref, native_shared_python_host_delta),
+                             (pin(self.root / "qualification.json"), pin(self.root / "snapshot.json"), Path(delta["path"])))
+            calls.append("full binding qualifier")
+            if not valid_context[0]:
+                return {}
+            originals = {NONCOMPILED_CONSUMER_RELATIVE: replay["before_blob"]}
+            currents = {NONCOMPILED_CONSUMER_RELATIVE: replay["after"]}
+            if include_companion[0]:
+                originals[HOST_TEST_COMPANION_RELATIVE] = pin(original_test)
+                currents[HOST_TEST_COMPANION_RELATIVE] = pin(companion)
+            return {"noncompiled_replay": replay, "original_research_blobs": originals,
+                    "runtime_research_pins": currents}
+
+        with patch("build_native_configured_successor.ROOT", repo), \
+             patch("build_native_configured_successor.load_shared", return_value=SimpleNamespace(qualified_native_source_checkout=qualify)):
+            decoded: object = json.loads(json.dumps(replay))
+            self.assertEqual(verified_noncompiled_consumer_replay(config, decoded).replay, replay)
+            self.assertEqual(calls, ["full binding qualifier"])
+            include_companion[0] = True
+            proof = verified_noncompiled_consumer_replay(config, decoded)
+            self.assertEqual(set(proof.originals), {NONCOMPILED_CONSUMER_RELATIVE, HOST_TEST_COMPANION_RELATIVE})
+            original_test.write_bytes(b"# forged original companion\n")
+            with self.assertRaisesRegex(ValueError, "actual compile Git blob"):
+                verified_noncompiled_consumer_replay(config, replay)
+            original_test.write_bytes(b"# original companion bytes\n")
+            for value in (None, {"before_blob": replay["before_blob"]}, {**replay, "unknown": True},
+                          {**replay, "after": replay["before_blob"]},
+                          {**replay, "before_blob": {**replay["before_blob"], "bytes": True}}):
+                with self.subTest(value=value), self.assertRaises(ValueError):
+                    verified_noncompiled_consumer_replay(config, value)
+            before.write_bytes(before.read_bytes().rstrip(b"\n"))
+            altered = {**replay, "before_blob": pin(before)}
+            with self.assertRaisesRegex(ValueError, "actual compile Git blob"):
+                verified_noncompiled_consumer_replay(config, altered)
+            before.write_bytes(b"# original bytes retain final newline\n")
+            valid_context[0] = False
+            with self.assertRaises(ValueError):
+                verified_noncompiled_consumer_replay(config, replay)
 
     def test_actual_unused_off_transport_fails_direct_link_but_lazy_archive_passes(self) -> None:
         """Exercise the actual LNK2019 path that stopped the production successor."""

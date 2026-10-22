@@ -1,8 +1,10 @@
-"""Injected low-level API only: no Win32 API, DLL or process is opened."""
+"""Injected custody checks and real held temporary-file identity reads; no DLL/process opened."""
 import ctypes
 from ctypes import wintypes
 import hashlib
 import os
+from pathlib import Path
+import tempfile
 import threading
 import unittest
 from unittest.mock import patch
@@ -242,6 +244,46 @@ class WindowsAdapterContractTests(unittest.TestCase):
         raw.wait=lambda handle,timeout:calls.append((handle,timeout)) or 0
         self.assertFalse(raw.process_identity(201)[3])
         self.assertEqual(calls,[(201,0),(201,0)])
+
+
+class HeldFileIdentityTests(unittest.TestCase):
+    def test_empty_file_requires_explicit_opt_in_and_uses_real_held_identity(self) -> None:
+        if os.name != "nt":
+            with self.assertRaises(OSError):
+                adapter._Win32ReadsV1()
+            return
+        import msvcrt
+        reader = adapter._Win32ReadsV1()
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "empty-wire.jsonl.gz"
+            path.touch()
+            with path.open("rb") as stream:
+                handle = msvcrt.get_osfhandle(stream.fileno())
+                with self.assertRaisesRegex(ValueError, "empty DLL"):
+                    reader.file_identity(handle)
+                volume, identity, size = reader.file_identity(handle, allow_empty=True)
+                self.assertGreaterEqual(volume, 0)
+                self.assertLess(volume, 1 << 64)
+                self.assertEqual(len(identity), 16)
+                self.assertTrue(any(identity))
+                self.assertEqual(size, 0)
+                self.assertEqual(reader.file_identity(handle, allow_empty=True), (volume, identity, size))
+                # Reading identity borrows the fd; default DLL rejection is not
+                # weakened by a previous successful empty-wire opt-in.
+                self.assertEqual(stream.read(), b"")
+                with self.assertRaisesRegex(ValueError, "empty DLL"):
+                    reader.file_identity(handle)
+            path.write_bytes(DATA)
+            with path.open("rb") as stream:
+                handle = msvcrt.get_osfhandle(stream.fileno())
+                self.assertEqual(reader.file_identity(handle), (volume, identity, len(DATA)))
+                self.assertEqual(reader.file_identity(handle, allow_empty=True), (volume, identity, len(DATA)))
+
+    def test_allow_empty_rejects_non_boolean_before_native_access(self) -> None:
+        reader = object.__new__(adapter._Win32ReadsV1)
+        for value in (None, 0, 1, 0.0, "true"):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "explicit boolean"):
+                reader.file_identity(0, allow_empty=value)
 
 
 if __name__=="__main__":

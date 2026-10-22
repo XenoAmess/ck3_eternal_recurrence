@@ -5,15 +5,19 @@ from __future__ import annotations
 import asyncio
 from argparse import Namespace
 from contextlib import nullcontext
+import gzip
 import hashlib
 import importlib
 import io
 import json
 import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import threading
 import time
+from types import ModuleType
 import unittest
 from unittest import mock
 
@@ -925,7 +929,7 @@ class AtomicReportWriteTests(unittest.TestCase):
     def test_permanent_windows_denial_is_bounded_and_keeps_both_complete_files(self):
         import errno
         import run_ck3_12002_mcp_live as harness
-        failures = [(PermissionError("injected persistent denial"), 5, 20),
+        failures = [(PermissionError("injected persistent denial"), 5, 401),
                     (PermissionError("injected unrelated Windows denial"), 87, 1),
                     (OSError(errno.ENOSPC, "injected replacement disk full"), None, 1)]
         for failure, winerror, limit in failures:
@@ -1039,11 +1043,16 @@ class FixtureStartupNoticeTests(unittest.TestCase):
             path.write_text(relative, encoding="utf-8")
         (state_dir / "preparation.json").write_text(json.dumps({"profile_dir": str(profile),
             "profile_files": {relative: {} for relative in declared}}), encoding="utf-8")
-        self.args = Namespace(state_dir=state_dir, output=state_dir / "native-report.json")
+        self.args = Namespace(state_dir=state_dir, output=state_dir / "native-report.json",
+                              frontend_fixture_startup_case_contract=None)
+        # This is the normal v1 registry notice route. Production adds the
+        # startup-case input to report only for an explicit case-contract file.
+        self.report: dict[str, object] = {"phase": "native-frontend-robert-bootstrap", "steps": []}
         capture = mock.patch("pyautogui.screenshot", return_value=Image.new("RGB", (16, 12)))
         self.capture = capture.start()
         self.addCleanup(capture.stop)
-        self.policy = {"required_log_markers": ["XCA: TEST PASS celestial_government_allows_barter",
+        self.policy = {"schema": "ck3-frontend-fixture-start-policy-v1",
+            "required_log_markers": ["XCA: TEST PASS celestial_government_allows_barter",
             "XCA: TEST PASS switched_to_song_emperor"], "forbidden_log_markers": ["XCA: TEST FAIL", "XCA120: TEST FAIL"],
             "post_start": {"government_key": "celestial_government", "primary_title_tier_key": "hegemony", "independent": True}}
         self.submission = {"schema": "ck3-frontend-fixture-robert-start-submission-v1", "schema_version": 1,
@@ -1092,6 +1101,8 @@ class FixtureStartupNoticeTests(unittest.TestCase):
             def __init__(self):
                 self.calls, self.frames, self.selected = [], 0, False
                 self.args = case.args
+                self.report = case.report
+                self.managed_done = threading.Event()
                 self.context_query_frame = None
             async def fresh(self):
                 self.frames += 1
@@ -1130,7 +1141,10 @@ class FixtureStartupNoticeTests(unittest.TestCase):
 
     def test_actual_readiness_path_acknowledges_intro_before_original_owner_and_business_gates(self):
         import run_ck3_12002_mcp_live as harness
-        client, report = self.client(), {}
+        client, report = self.client(), self.report
+        self.assertIs(client.report, report)
+        self.assertIsNone(client.args.frontend_fixture_startup_case_contract)
+        self.assertNotIn("frontend_fixture_startup_case_contract_input", report)
         result = asyncio.run(harness.wait_for_fixture_business_context(client, self.policy, self.submission,
             report=report, write=lambda: None, timeout=10, poll_interval=0))
         names = [name for name, arguments in client.calls]
@@ -1139,8 +1153,13 @@ class FixtureStartupNoticeTests(unittest.TestCase):
         self.assertLess(names.index("ck3_query_engine_log_literals_v1"), names.index("ck3_query_current_event_window_context_v1"))
         self.assertLess(names.index("ck3_select_event_option"), names.index("ck3_query_campaign_root_context_v1"))
         self.assertEqual(result["startup_notice"]["status"], "NORMAL_OPTION_EVENT_GONE_OBSERVED")
-        self.assertEqual(client.context_query_frame, 3)
+        # The first observation is incomplete. Each qualified iteration also
+        # takes its existing post-query fresh snapshot; admission therefore
+        # compares the completed startup owner frames from calls 3 and 5.
+        self.assertEqual(client.context_query_frame, 5)
         startup = result["first_startup_query_admission"]
+        self.assertEqual(startup["previous_frame"]["pump_epoch"], 36615 + 3 * 30)
+        self.assertEqual(startup["current_frame"]["pump_epoch"], 36615 + 5 * 30)
         self.assertGreater(startup["current_frame"]["pump_epoch"], startup["previous_frame"]["pump_epoch"])
         self.assertEqual(startup["current_frame"]["owner_tid"], startup["previous_frame"]["owner_tid"])
         self.assertEqual(startup["current_frame"]["event_instance_id"], 1)
@@ -1165,7 +1184,9 @@ class FixtureStartupNoticeTests(unittest.TestCase):
 
     def test_unreviewed_actual_event_reaches_failure_hold_without_selection_or_root_query(self):
         import run_ck3_12002_mcp_live as harness
-        client, report = self.client(unknown=True), {}
+        client, report = self.client(unknown=True), self.report
+        self.assertIs(client.report, report)
+        self.assertNotIn("frontend_fixture_startup_case_contract_input", report)
         with self.assertRaisesRegex(RuntimeError, "registry-reviewed acknowledgement"):
             asyncio.run(harness.wait_for_fixture_business_context(client, self.policy, self.submission,
                 report=report, write=lambda: None, timeout=10, poll_interval=0))
@@ -1188,6 +1209,283 @@ class FixtureStartupNoticeTests(unittest.TestCase):
         self.assertIn("after_native_state_unavailable", state["startup_notice"])
         self.assertNotIn("after_snapshot", state["startup_notice"])
         self.assertEqual(self.capture.call_count, 2)
+
+
+class WireEvidenceProducerTests(unittest.TestCase):
+    """Exercise the actual shared writer and both host process entry points."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        import run_ck3_12002_mcp_live as harness
+        cls.harness = harness
+        cls.repository = Path(__file__).resolve().parents[3]
+        harness.configure_wire_evidence(Namespace(
+            agent_source_root=cls.repository, wire_evidence_codec="gzip-members"))
+
+    def test_plain_and_members_have_identical_platform_bytes_and_roundtrip_commits(self) -> None:
+        from ck3_mod_acceptance_background_types import wire_evidence_commit, wire_file_identity
+        harness = self.harness
+        messages = [{"unicode": "朝觐 朝圣", "line": "a\nb\r\nc", "null": None,
+                     "bool": False, "identity": "18446744073709551615"},
+                    {"sequence": 2, "empty": []}]
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            plain = harness.JsonLines(root / "plain.jsonl")
+            compressed = harness.JsonLines(root / "members.jsonl.gz", codec="gzip-members")
+            with mock.patch.object(harness, "now", return_value="2026-10-23T00:00:00+00:00"):
+                for message in messages:
+                    plain.write("fixture", message)
+                    compressed.write("fixture", message)
+            logical = plain.path.read_bytes()
+            physical = compressed.path.read_bytes()
+            self.assertEqual(gzip.decompress(physical), logical)
+            if os.name == "nt":
+                self.assertTrue(logical.endswith(b"\r\n"))
+            commit = wire_evidence_commit(json.loads(compressed.commit_path.read_bytes()))
+            self.assertEqual(wire_evidence_commit(json.loads(json.dumps(commit))), commit)
+            self.assertEqual(commit["record_count"], len(messages))
+            self.assertEqual(commit["completed_physical_offset"], str(len(physical)))
+            self.assertEqual(commit["logical_bytes"], str(len(logical)))
+            last = physical[int(commit["last_member_physical_begin"]):]
+            self.assertEqual(hashlib.sha256(last).hexdigest(), commit["last_member_sha256"])
+            self.assertEqual(json.loads(gzip.decompress(last))["message"], messages[-1])
+            with compressed.path.open("rb") as stream:
+                self.assertEqual(wire_file_identity(stream.fileno()), commit["file_identity"])
+                self.assertFalse(stream.closed)
+            self.assertFalse(plain.commit_path.exists())
+
+    def test_concurrent_members_publish_only_complete_serialized_records(self) -> None:
+        from ck3_mod_acceptance_background_types import wire_evidence_commit
+        with tempfile.TemporaryDirectory() as temporary:
+            writer = self.harness.JsonLines(Path(temporary) / "wire.gz", codec="gzip-members")
+            errors: list[BaseException] = []
+
+            def produce(worker: int) -> None:
+                try:
+                    for index in range(8):
+                        writer.write("fixture", {"worker": worker, "index": index})
+                except BaseException as error:
+                    errors.append(error)
+
+            workers = [threading.Thread(target=produce, args=(worker,)) for worker in range(3)]
+            for worker in workers:
+                worker.start()
+            for worker in workers:
+                worker.join(timeout=20)
+                self.assertFalse(worker.is_alive())
+            self.assertEqual(errors, [])
+            records = [json.loads(line)["message"] for line in gzip.decompress(writer.path.read_bytes()).splitlines()]
+            self.assertEqual(len(records), 24)
+            for worker in range(3):
+                self.assertEqual([row["index"] for row in records if row["worker"] == worker], list(range(8)))
+            commit = wire_evidence_commit(json.loads(writer.commit_path.read_bytes()))
+            self.assertEqual(commit["record_count"], 24)
+            self.assertEqual(int(commit["completed_physical_offset"]), writer.path.stat().st_size)
+
+    def test_codec_source_and_report_commit_reader_fail_closed(self) -> None:
+        harness = self.harness
+        self.assertEqual(harness.configure_wire_evidence(Namespace()), "plain")
+        self.assertEqual(harness.parser().parse_args([]).wire_evidence_codec, "plain")
+        for invalid in (None, True, 1, "gzip", ""):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                harness.configure_wire_evidence(Namespace(
+                    agent_source_root=self.repository, wire_evidence_codec=invalid))
+        with self.assertRaises(ValueError):
+            harness.configure_wire_evidence(Namespace(wire_evidence_codec="gzip-members"))
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "report.json"
+            self.assertEqual(harness.wire_evidence_commits(output), {
+                "native-wire": None, "mcp-wire": None, "mcp-calls": None})
+            writer = harness.JsonLines(harness.wire_output_path(output, "native-wire", "gzip-members"),
+                                       codec="gzip-members")
+            writer.write("python-to-dll", {"request_id": 1})
+            valid = json.loads(writer.commit_path.read_bytes())
+            self.assertEqual(harness.wire_evidence_commits(output)["native-wire"], valid)
+            for malformed in ({}, dict(valid, record_count=True), dict(valid, logical_bytes=1),
+                              dict(valid, path=str(output)), dict(valid, unexpected=None)):
+                writer.commit_path.write_text(json.dumps(malformed), encoding="utf-8")
+                with self.subTest(malformed=malformed), self.assertRaises(ValueError):
+                    harness.wire_evidence_commits(output)
+            writer.commit_path.write_bytes(b" " * 16385)
+            with self.assertRaises(ValueError):
+                harness.wire_evidence_commits(output)
+
+    def test_actual_member_write_flush_and_close_failures_do_not_publish(self) -> None:
+        harness = self.harness
+        original_open = Path.open
+        for operation in ("write", "flush", "close"):
+            with self.subTest(operation=operation), tempfile.TemporaryDirectory() as temporary:
+                writer = harness.JsonLines(Path(temporary) / "wire.gz", codec="gzip-members")
+                writer.write("fixture", {"index": 0})
+                published = writer.commit_path.read_bytes()
+                failure = OSError(28, "fixture " + operation + " storage failure")
+
+                class FailingStream:
+                    def __init__(self, stream: io.BufferedWriter) -> None:
+                        self.stream = stream
+
+                    def __enter__(self) -> "FailingStream":
+                        return self
+
+                    def __exit__(self, *unused: object) -> None:
+                        self.stream.close()
+                        if operation == "close":
+                            raise failure
+
+                    def fileno(self) -> int:
+                        return self.stream.fileno()
+
+                    def write(self, value: bytes) -> int:
+                        if operation == "write":
+                            self.stream.write(value[:5])
+                            raise failure
+                        return self.stream.write(value)
+
+                    def flush(self) -> None:
+                        if operation == "flush":
+                            raise failure
+                        self.stream.flush()
+
+                def opened(path: Path, mode: str = "r", *args: object, **kwargs: object) -> object:
+                    stream = original_open(path, mode, *args, **kwargs)
+                    return FailingStream(stream) if path == writer.path and mode == "ab" else stream
+
+                with mock.patch.object(Path, "open", opened), self.assertRaises(OSError) as caught:
+                    writer.write("fixture", {"index": 1})
+                self.assertIs(caught.exception, failure)
+                self.assertEqual(writer.commit_path.read_bytes(), published)
+                self.assertTrue(getattr(caught.exception, "ck3_write_error_context", None))
+                self.assertGreater(writer.path.stat().st_size, int(json.loads(published)["completed_physical_offset"]))
+                with self.assertRaisesRegex(ValueError, "unpublished tail"):
+                    writer.write("fixture", {"index": 2})
+                self.assertEqual(writer.commit_path.read_bytes(), published)
+
+    def test_atomic_sidecar_failure_keeps_old_commit_and_real_sink_diagnostic(self) -> None:
+        harness = self.harness
+        with tempfile.TemporaryDirectory() as temporary:
+            writer = harness.JsonLines(Path(temporary) / "wire.gz", codec="gzip-members")
+            writer.write("fixture", {"index": 0})
+            published = writer.commit_path.read_bytes()
+            failure = OSError(28, "fixture atomic publication full")
+            with mock.patch.object(harness.os, "replace", side_effect=failure) as replace:
+                with self.assertRaises(OSError) as caught:
+                    writer.write("fixture", {"index": 1})
+            self.assertIs(caught.exception, failure)
+            self.assertEqual(replace.call_count, 1)
+            self.assertEqual(writer.commit_path.read_bytes(), published)
+            context = getattr(caught.exception, "ck3_write_error_context", {})
+            self.assertIsInstance(context, dict)
+            decoded = json.loads(json.dumps(context))
+            self.assertEqual(decoded["sink_path"], str(writer.commit_path))
+            self.assertEqual(decoded["report_path"], str(writer.commit_path))
+            self.assertEqual(decoded["operation"], "replace-report-from-partial")
+            self.assertTrue(list(writer.path.parent.glob(".*.partial-*")))
+            with self.assertRaisesRegex(ValueError, "unpublished tail"):
+                writer.write("fixture", {"index": 2})
+
+    def test_real_native_server_recording_hooks_write_third_stream(self) -> None:
+        harness = self.harness
+        events: list[str] = []
+
+        class Endpoint:
+            def __init__(self, pipe: str) -> None:
+                self.pipe = pipe
+
+            def send(self, frame: dict[str, object], *, packet_evidence_path: Path | None = None) -> None:
+                events.append("send")
+
+        class Driver:
+            def __init__(self, pipe: str, *, endpoint: Endpoint, **options: object) -> None:
+                self.endpoint = endpoint
+                self.pipe_name = pipe
+
+            def _ingest(self, frame: dict[str, object]) -> None:
+                events.append("ingest")
+
+            def close(self) -> None:
+                events.append("close")
+
+        class Server:
+            def __init__(self, driver: Driver) -> None:
+                self.driver = driver
+
+            def tool(self) -> object:
+                return lambda function: function
+
+            def run(self, *, transport: str) -> None:
+                self.driver.endpoint.send({"request_id": 7, "payload": "actual recording hook"})
+                self.driver._ingest({"response_to": 7, "payload": "fixture endpoint only"})
+
+        def create_server(driver: Driver) -> Server:
+            return Server(driver)
+
+        driver_module = ModuleType("xar_autoplayer.bridge.native_driver")
+        driver_module.NativeHeadlessGameplayDriver = Driver
+        driver_module.NativeNamedPipeServer = Endpoint
+        server_module = ModuleType("xar_autoplayer.bridge.mcp_server")
+        server_module.create_server = create_server
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            outputs: dict[str, bytes] = {}
+            for codec in ("plain", "gzip-members"):
+                path = root / ("native.jsonl.gz" if codec == "gzip-members" else "native.jsonl")
+                args = harness.parser().parse_args([
+                    "--server", "--agent-source-root", str(self.repository),
+                    "--state-dir", str(root / "state"), "--native-wire", str(path),
+                    "--wire-evidence-codec", codec])
+                with mock.patch.dict(sys.modules, {
+                        driver_module.__name__: driver_module, server_module.__name__: server_module}), \
+                        mock.patch.object(harness, "now", return_value="2026-10-23T00:00:00+00:00"):
+                    harness.native_server(args)
+                outputs[codec] = path.read_bytes()
+            self.assertEqual(gzip.decompress(outputs["gzip-members"]), outputs["plain"])
+            records = [json.loads(line) for line in gzip.decompress(outputs["gzip-members"]).splitlines()]
+            self.assertEqual([row["direction"] for row in records], ["python-to-dll", "dll-to-python"])
+            self.assertEqual(events, ["send", "ingest", "close"] * 2)
+            self.assertEqual(json.loads(Path(str(path) + ".commit.json").read_bytes())["record_count"], 2)
+
+    def test_independent_sdk_process_plain_gzip_success_and_real_tool_error(self) -> None:
+        harness = self.harness
+        for codec in ("plain", "gzip-members"):
+            for tool_error in (False, True):
+                with self.subTest(codec=codec, tool_error=tool_error), tempfile.TemporaryDirectory() as temporary:
+                    output = Path(temporary) / "native-report.json"
+                    command = [sys.executable, "-B", "-X", "utf8", str(Path(harness.__file__).resolve()),
+                        "--sdk-error-smoke-test" if tool_error else "--sdk-smoke-test",
+                        "--output", str(output), "--agent-source-root", str(self.repository),
+                        "--wire-evidence-codec", codec]
+                    result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8",
+                        timeout=90, env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+                    self.assertEqual(result.returncode, 1 if tool_error else 0, result.stdout + result.stderr)
+                    report = json.loads(output.read_bytes())
+                    self.assertEqual(report["status"], "RED" if tool_error else "GREEN")
+                    self.assertIs(report["fixture_only"], True)
+                    self.assertEqual(report["wire_evidence_codec"], codec)
+                    for kind, field in (("mcp-wire", "mcp_wire"), ("mcp-calls", "mcp_calls")):
+                        path = Path(report[field])
+                        actual = path.read_bytes()
+                        logical = gzip.decompress(actual) if codec == "gzip-members" else actual
+                        rows = [json.loads(line) for line in logical.splitlines()]
+                        self.assertTrue(rows)
+                        # Replay actual parent/child messages through the old
+                        # real TextIO writer, preserving each original clock.
+                        replay = harness.JsonLines(Path(temporary) / (kind + ".plain-replay.jsonl"))
+                        for row in rows:
+                            with mock.patch.object(harness, "now", return_value=row["at"]):
+                                replay.write(row["direction"], row["message"])
+                        self.assertEqual(logical, replay.path.read_bytes())
+                        if codec == "gzip-members":
+                            commit = report["wire_evidence_commits"][kind]
+                            self.assertEqual(commit["path"], str(path))
+                            self.assertEqual(int(commit["completed_physical_offset"]), len(actual))
+                            self.assertEqual(int(commit["logical_bytes"]), len(logical))
+                    # Python SDK fixture makes no native/DLL claim; its absent
+                    # third stream is distinct from the recording-hook test.
+                    self.assertFalse(Path(report["native_wire"]).exists())
+                    if codec == "gzip-members":
+                        self.assertIsNone(report["wire_evidence_commits"]["native-wire"])
+                    else:
+                        self.assertNotIn("wire_evidence_commits", report)
 
 
 if __name__ == "__main__":

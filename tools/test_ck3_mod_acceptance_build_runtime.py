@@ -1,6 +1,7 @@
 ﻿from __future__ import annotations
 import importlib.util
 import hashlib
+import io
 import json
 from pathlib import Path
 import shutil
@@ -10,6 +11,7 @@ import tempfile
 import types
 import unittest
 from argparse import Namespace
+from contextlib import redirect_stdout
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
@@ -499,6 +501,30 @@ class ProfileExpansionConsumer(unittest.TestCase):
         self.assertEqual(result['profile_expansion'], self.qualification['profile_expansion'])
         self.assertEqual(len(result['native_files']), 2)
 
+    def test_long_workspace_reads_exact_old_contract_and_rejects_changed_blob(self) -> None:
+        # Git for Windows stats the revision:path token relative to cwd before
+        # reading the object; use an actual long root on every CI TEMP layout.
+        prefix = 'long-profile-'
+        padding = max(0, 195 - len(tempfile.gettempdir()) - 43 - len(prefix))
+        with tempfile.TemporaryDirectory(prefix=prefix + 'x' * padding) as long_parent:
+            with patch.object(tempfile, 'tempdir', long_parent):
+                owned = ProfileExpansionConsumer()
+                try:
+                    owned.setUp()
+                    object_spec = owned.commit + ':' + builder.PROFILE_EXPANSION_RELATIVE
+                    self.assertGreater(len(str(owned.root)) + 1 + len(object_spec), 260)
+                    result = owned.consume()
+                    self.assertEqual(result['profile_expansion'], owned.qualification['profile_expansion'])
+                    contract = owned.root / builder.PROFILE_EXPANSION_RELATIVE
+                    contract.write_bytes(contract.read_bytes() + b'\n')
+                    owned.expansion['contract'] = builder.pin(contract)
+                    owned.save_expansion()
+                    with self.assertRaisesRegex(ValueError, 'differs from the actual native compile commit'):
+                        owned.consume()
+                finally:
+                    if hasattr(owned, 'temp'):
+                        owned.tearDown()
+
     def test_missing_actual_expansion_is_rejected(self):
         self.qualification.pop('profile_expansion')
         self.qualification_path = Path(self.put('qualification', self.qualification)['path'])
@@ -746,6 +772,157 @@ class CompleteMetadataBudget(unittest.TestCase):
             self.assertGreater(sum(p.stat().st_size for p in args.output.iterdir()), 256 * 1024)
             self.assertLessEqual(sum(p.stat().st_size for p in args.output.iterdir()) + 16384,
                                  1024 * 1024)
+
+
+class WireEvidenceRuntimeProducer(unittest.TestCase):
+    """Actual metadata writer/Selection/adapter/factory; upstream Native qualification is owned fixture data."""
+
+    def test_feature_json_round_trip_preserves_boolean_features_and_one_codec(self) -> None:
+        original = {'saved_campaign_debug_mode': True, 'wire_evidence_codec': 'plain'}
+        result = builder.wire_evidence_runtime_features(json.loads(json.dumps(original)), 'gzip-members')
+        self.assertEqual(json.loads(json.dumps(result)),
+                         {'saved_campaign_debug_mode': True, 'wire_evidence_codec': 'gzip-members'})
+        self.assertEqual(original['wire_evidence_codec'], 'plain')
+        self.assertEqual(builder.wire_evidence_runtime_features({}, 'plain'), {'wire_evidence_codec': 'plain'})
+
+    def test_explicit_invalid_base_and_requested_codecs_are_never_defaulted(self) -> None:
+        for invalid in (None, False, True, 0, 1, 1.0, '', 'gzip', [], {}):
+            with self.subTest(invalid=invalid):
+                with self.assertRaises(ValueError):
+                    builder.wire_evidence_runtime_features({'wire_evidence_codec': invalid}, 'plain')
+                with self.assertRaises(ValueError):
+                    builder.wire_evidence_runtime_features({}, invalid)
+        for invalid_features in (None, [], 'plain', {1: True}):
+            with self.subTest(features=invalid_features), self.assertRaises(ValueError):
+                builder.wire_evidence_runtime_features(invalid_features, 'plain')
+
+    def test_formal_cli_rejects_unknown_codec_before_reading_or_writing(self) -> None:
+        argv = [part for name in ('base-runtime', 'source-delta', 'scene-root', 'storage-admission',
+                                  'products', 'case-inputs', 'output', 'qualified-native')
+                for part in ('--' + name, 'not-read')]
+        argv += ['--source-commit', 'a' * 40, '--product', 'faith-engine', '--case', 'not-selected',
+                 '--wire-evidence-codec', 'gzip']
+        with patch.object(builder, 'load_base') as load, self.assertRaises(SystemExit) as result:
+            builder.main(argv)
+        self.assertEqual(result.exception.code, 2)
+        load.assert_not_called()
+
+    def test_formal_runtime_producer_reaches_actual_consumers_for_legacy_and_gzip(self) -> None:
+        # Import inside the test so unittest does not rediscover the other module's class.
+        from test_ck3_mod_acceptance import SharedEntryTests, entry
+        for codec in (None, 'gzip-members'):
+            with self.subTest(codec=codec):
+                owned = SharedEntryTests()
+                owned.setUp()
+                try:
+                    root = HERE.parent
+                    scene = owned.root / 'next-scene'
+                    scene.mkdir()
+                    (scene / 'managed-states').mkdir()
+                    destination = scene / 'generated-runtime'
+                    native_dir = owned.root / 'old-native/build'
+                    native_dir.mkdir(parents=True)
+                    dll = native_dir / 'bridge.dll'
+                    dll.write_bytes(b'owned DLL identity; never loaded')
+                    owned.paths.update(source_root=root, dll=dll)
+                    owned.runtime.update(repo_root=str(root), machine_id=MACHINE,
+                                         paths={key: str(value) for key, value in owned.paths.items()}, allocation={})
+                    owned.manifest.update(machine_id=MACHINE, entry_environment={'PYTHONPATH_parts': [
+                        {'path_key': 'source_root'}, {'root_key': 'source_root', 'relative_path': 'ck3_autonomous_player/src'},
+                        {'root_key': 'source_root', 'relative_path': 'tools'}]})
+                    owned.host.write_text('# Explicit static normal-exit binding projection; ordinary shared host remains above.\n'
+                                          'from pathlib import Path\n_runtime_path = Path(' + repr(str(owned.runtime_path)) + ')\n'
+                                          'if __name__ == "__main__":\n    raise SystemExit(main())\n', encoding='utf-8')
+                    owned.manifest['host'].update(builder.sig(owned.host.read_bytes()))
+                    owned.manifest['native']['dll'].update(builder.sig(dll.read_bytes()))
+                    case_id = 'faith-engine-e02-pilgrimage-mechanism-v2'
+                    tools = ['ck3_take_snapshot', 'ck3_query_player_pilgrimage_planner_v1',
+                             'ck3_submit_player_pilgrimage_planner_v1', 'ck3_query_player_pilgrimage_activities_v1',
+                             'ck3_query_player_religion_context_v1']
+                    owned.manifest['capabilities'] = {tool: {'source_build_ready': True, 'actual_live_qualified': False}
+                                                       for tool in tools}
+                    contract_path = owned.root / 'case-contract.json'
+                    saved = owned.case['startup']['saved_campaign']
+                    contract = {'schema': 'faith-engine-e02-pilgrimage-mechanism-case-v2', 'product': 'faith-engine',
+                                'case': case_id, 'machine_id': MACHINE,
+                                'saved_input': {key: saved[key] for key in ('save', 'bytes', 'sha256', 'player_id', 'date_raw')},
+                                'profile': {'enabled_mods': [], 'product_files': []}, 'expected_actor_character_id': 1,
+                                'prior_scene_date_raw': 10, 'expected_faith_id': 50, 'expected_rite_id': 13,
+                                'option_key': 'pilgrimage_type_hajj', 'scope': {'new_save_allowed': False},
+                                'policy': {'reserve_gold_raw': 0, 'max_journey_days': 30, 'max_day_requests': 60,
+                                           'max_public_requests': 500, 'max_events': 16, 'one_day_timeout': 60,
+                                           'quit_reserve_seconds': 120}}
+                    owned.write(contract_path, contract)
+                    owned.case.update(id=case_id, required_mcp_tools=tools, opt_in_player_pilgrimage_execution=True,
+                                      opt_in_read_only_mcp_tools=tools[-2:], adapter={
+                                          'module': 'tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter',
+                                          'config': str(contract_path)})
+                    products = {'schema': entry.PRODUCTS_SCHEMA, 'product_inventory': str(owned.files['inventory']),
+                                'products': {'faith-engine': {'cases': [owned.case]}}}
+                    owned.write(owned.products_path, products)
+                    owned.write(owned.manifest_path, owned.manifest)
+                    owned.runtime['manifest'] = entry.pin(owned.manifest_path)
+                    owned.write(owned.runtime_path, owned.runtime)
+                    observed = datetime.now(timezone.utc)
+                    grant, diff, delta, inputs = [owned.root / name for name in ('grant.json', 'diff.json', 'delta.json', 'inputs.json')]
+                    owned.write(grant, {'schema': 'owned-next-scene-admission-v1', 'machine_id': MACHINE, 'active': True,
+                                        'approved_root': str(scene), 'observed_at_utc': observed.isoformat(),
+                                        'expires_at_utc': (observed + timedelta(minutes=5)).isoformat(), 'required_free_bytes': 0})
+                    owned.write(diff, {'observed_at_utc': observed.isoformat()})
+                    owned.write(delta, {'Root_diff_receipt': builder.pin(diff), 'new_scene_admission': builder.pin(grant)})
+                    owned.write(inputs, {'case_inputs': {}})
+                    files = {path.relative_to(root).as_posix(): builder.sig(path.read_bytes())
+                             for path in (root / 'tools').glob('ck3_mod_acceptance*.py')}
+                    for relative in [builder.HOST_RELATIVE, 'promo/ck3_native_war_ai/integration/recorder_job.py',
+                                     *(builder.SDK_PREFIX + 'xar_autoplayer/bridge/' + name for name in builder.CRITICAL_TRANSPORTS)]:
+                        files[relative] = builder.sig((root / relative).read_bytes())
+                    refs = {name: builder.pin(owned.paths[name]) for name in ('host', 'dll', 'source_index', 'native_source_index')}
+                    identity = builder.pin(owned.files['inventory'])
+                    bundle = {'old_profile': {'flags': {}}, 'profile': {'flags': {}}, 'profile_ref': identity,
+                              'freeze_ref': identity, 'qualification_ref': identity, 'dll': builder.pin(dll),
+                              'native_files': {}, 'snapshot_root': str(native_dir), 'compile_commit': 'a' * 40,
+                              'source_checkout_binding': None, 'shared_python_host_delta': None, 'execution_wire': None}
+                    argv = [part for name, path in (('base-runtime', owned.runtime_path), ('source-delta', delta),
+                            ('scene-root', scene), ('storage-admission', grant), ('products', owned.products_path),
+                            ('case-inputs', inputs), ('output', destination), ('qualified-native', owned.files['inventory']))
+                            for part in ('--' + name, str(path))]
+                    argv += ['--source-commit', 'a' * 40, '--product', 'faith-engine', '--case', case_id]
+                    if codec is not None:
+                        argv += ['--wire-evidence-codec', codec]
+                    with patch.object(builder, 'load_base', return_value=(owned.runtime, owned.manifest, refs, {'files': files})), \
+                         patch.object(builder, 'apply_delta', return_value=(files, set(), [])), \
+                         patch.object(builder, 'qualify_native', return_value=bundle), \
+                         patch.dict(sys.modules, {'ck3_live_run_id': types.SimpleNamespace(current_machine_id=lambda: MACHINE)}), \
+                         redirect_stdout(io.StringIO()) as stdout:
+                        self.assertEqual(builder.main(argv), 0)
+                    selected_codec = 'plain' if codec is None else codec
+                    manifest = builder.read(destination / 'manifest.json')
+                    self.assertEqual(manifest['host_features']['wire_evidence_codec'], selected_codec)
+                    for name in ('ENTRY-COMMANDS.json', 'SOURCE-BINDINGS.actual.json', 'STATIC-VALIDATION.actual.json'):
+                        self.assertEqual(builder.read(destination / name)['wire_evidence_codec'], selected_codec)
+                    self.assertEqual(json.loads(stdout.getvalue())['wire_evidence_codec'], selected_codec)
+                    selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, 'faith-engine', case_id)
+                    self.assertEqual(selected.preflight()['blockers'], [])
+                    actual_source = Path(selected.argv[selected.argv.index('--agent-source-root') + 1])
+                    self.assertEqual(actual_source, root)
+                    projected_host = builder.module(destination / 'shared-host.py', 'wire_codec_actual_generated_host')
+                    previous_imports = list(sys.path)
+                    try:
+                        self.assertEqual(projected_host.configure_wire_evidence(Namespace(
+                            agent_source_root=actual_source, wire_evidence_codec=selected_codec)), selected_codec)
+                    finally:
+                        sys.path[:] = previous_imports
+                    actual = builder.read(destination / 'STATIC-VALIDATION.actual.json')
+                    self.assertEqual(actual['public_Selection_argv'], selected.argv)
+                    self.assertEqual(actual['actual_registered_required_MCP_tools'], sorted(tools))
+                    self.assertIn('ck3_mod_acceptance_background_types.py', selected.runtime['allocator_overlay'])
+                    if codec is None:
+                        self.assertNotIn('--wire-evidence-codec', selected.argv)
+                    else:
+                        self.assertEqual(selected.argv[selected.argv.index('--wire-evidence-codec') + 1], codec)
+                        self.assertIn('--wire-evidence-codec', entry.host_cli_flags(destination / 'shared-host.py'))
+                finally:
+                    owned.doCleanups()
 
 
 if __name__ == '__main__':

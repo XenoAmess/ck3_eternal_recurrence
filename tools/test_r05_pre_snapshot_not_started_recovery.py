@@ -60,6 +60,7 @@ class ActualRedRecovery(unittest.TestCase):
                 c.frame['revision']=11;c.query['queried_revision']=11
                 c.frame['managed_campaign_run_binding']={'run_id':'synthetic-episode'}
                 c.selection.run_dir=Path('synthetic-episode');c.report_path=root/'synthetic-native-report.json'
+                c.native_wire_source=lambda:{'path':str(c.report_path),'wire_evidence_codec':'plain','commit':None}
                 queries=[];seen=[];original=c.execute_plan
                 def execute(steps,name,timeout=None,reserve=90):
                     s=steps[0];seen.append(copy.deepcopy(s))
@@ -81,7 +82,7 @@ class ActualRedRecovery(unittest.TestCase):
                     return rows
                 c.execute_plan=execute
                 wire_calls=[]
-                wire=SimpleNamespace(mark=lambda p:{'synthetic_wire_boundary':True},
+                wire=SimpleNamespace(mark=lambda p,**kw:{'synthetic_wire_boundary':True},
                     recover=lambda *a,**kw:(wire_calls.append('recover') or copy.deepcopy(c.query),{'synthetic_full_DTO_boundary':True}))
                 wrapped=F.FullArmyResultClient(c,wire,prefix='focused-pre-snapshot')
                 initial=T.init_result(c);initial.update(army_id=0,carmy_id=0)

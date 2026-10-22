@@ -221,7 +221,11 @@ class ConfiguredPhysicalLinkConsumer(unittest.TestCase):
         self.boundary.start()
         self.addCleanup(self.boundary.stop)
 
-    def original_proof(self, config: object, outputs: list[str]) -> object:
+    def original_proof(self, config: object, outputs: list[str], *, noncompiled_replay: object = None) -> object:
+        # This authored physical-object fixture has no reviewed source binding.
+        # Actual replay validation is exercised by the shared producer/binding tests.
+        if noncompiled_replay is not None:
+            raise ValueError('Authored physical-object fixture requires noncompiled_replay=None')
         self.assertEqual(config, {'source_commit': self.commit, 'machine_id': baseline.MACHINE})
         self.assertEqual(outputs, [str(self.configured)])
         return self.proof

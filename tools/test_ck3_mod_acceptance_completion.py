@@ -30,7 +30,7 @@ class SharedCompletionTests(unittest.TestCase):
                            if isinstance(node, ast.FunctionDef) and
                            node.name in {"_native_exit_proof", "native_zero_proof"}]
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.done = threading.Event()
         self.supervisor = threading.Thread(target=lambda: None)
         self.published = []
@@ -57,6 +57,7 @@ class SharedCompletionTests(unittest.TestCase):
             }},
         }
         namespace = {
+            "codec": "plain",  # The actual host's default wire-evidence closure.
             "done": self.done, "report": self.report, "supervisor": self.supervisor,
             "args": argparse.Namespace(output=Path("synthetic-only-unused-report.json")),
             "write_atomic_report": lambda _path, value: self.published.append(copy.deepcopy(value)),

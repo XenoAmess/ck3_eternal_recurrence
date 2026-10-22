@@ -21,6 +21,8 @@ import re
 import subprocess
 import sys
 
+from ck3_mod_acceptance_background_types import wire_evidence_codec
+
 
 def _case_loaded_sdk_sources_v1(package_root: Path) -> None:
     for name, module in tuple(sys.modules.items()):
@@ -285,7 +287,7 @@ class Selection:
             self.case['startup'].update(self.prepared['startup'])
             if self.prepared.get('initial_plan'):
                 self.case['initial_plan'] = self.prepared['initial_plan']
-        for forbidden in ("host", "source_root", "source_index", "native", "dll", "injector", "engine", "host_args", "host_features", "profile_features"):
+        for forbidden in ("host", "source_root", "source_index", "native", "dll", "injector", "engine", "host_args", "host_features", "profile_features", "wire_evidence_codec"):
             if forbidden in self.product or forbidden in self.case:
                 raise ValueError(f"Product case cannot select shared runtime: {forbidden}")
         self.context_path = context_path.resolve() if context_path else None
@@ -427,10 +429,13 @@ class Selection:
                 "--state-dir", str(state), "--plan", str(self.case_path(self.case["initial_plan"])),
                 "--control-plan-dir", str(self.run_dir / "controls")]
         features = self.manifest.get("host_features", {})
-        if not isinstance(features, dict) or set(features) - {"succession_title_readonly", "confucian_challenger_readonly", "stock_grant_title_picker", "war_cash_queries", "saved_campaign_inject_after_load", "saved_campaign_debug_mode"}:
+        if not isinstance(features, dict) or set(features) - {"succession_title_readonly", "confucian_challenger_readonly", "stock_grant_title_picker", "war_cash_queries", "saved_campaign_inject_after_load", "saved_campaign_debug_mode", "wire_evidence_codec"}:
             raise ValueError("Unknown shared host feature")
-        if any(type(value) is not bool for value in features.values()):
+        codec = wire_evidence_codec(features["wire_evidence_codec"] if "wire_evidence_codec" in features else "plain")
+        if any(type(value) is not bool for key, value in features.items() if key != "wire_evidence_codec"):
             raise ValueError("Shared host features require explicit booleans")
+        if codec == "gzip-members":
+            argv += ["--wire-evidence-codec", codec]
         if features.get("succession_title_readonly"):
             argv += ["--private-succession-title-readonly"]
         if features.get("confucian_challenger_readonly"):
