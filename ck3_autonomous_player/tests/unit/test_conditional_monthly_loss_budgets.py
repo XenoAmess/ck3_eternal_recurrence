@@ -6,10 +6,27 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.driver import CallbackGameplayDriver
 from xar_autoplayer.bridge.war_contract import QUERY_ARMY_STRENGTHS_STEP
 
 
-def monthly_budget_packet():
+def object_row(value: object) -> dict[str, object]:
+    """Narrow the mutable JSON boundary while preserving the fixture's identity."""
+    if not isinstance(value, dict):
+        raise ValueError("fixture object required")
+    for key in value:
+        if not isinstance(key, str):
+            raise ValueError("fixture object requires string keys")
+    return value
+
+
+def object_rows(value: object) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise ValueError("fixture object array required")
+    return [object_row(item) for item in value]
+
+
+def monthly_budget_packet() -> dict[str, object]:
     return {
         "status": "available", "army_id": 0, "native_carmy_id": 0,
         "scope_role": "player", "war_ids": [], "regiment_count": 1,
@@ -86,28 +103,40 @@ def monthly_budget_packet():
 
 
 class MemoryStrengthService(GameplayBridgeService):
-    def __init__(self, row):
+    def __init__(self, row: dict[str, object]) -> None:
         self.row, self.calls = row, 0
+        self.driver = CallbackGameplayDriver(
+            backend_id="memory-strength-fixture", snapshot=self.snapshot,
+            execute=lambda step, revision: self.execute_step(
+                step, expected_revision=revision),
+            action_steps=(QUERY_ARMY_STRENGTHS_STEP,),
+        )
 
-    def snapshot(self):
+    def snapshot(
+        self, *, include_native_command_history: bool = True,
+    ) -> dict[str, object]:
         return {"paused": True, "revision": 2, "native_revision": 3, "date_raw": 264,
                 "player_armies": [{"army_id": 0}], "active_wars": []}
 
-    def capabilities(self):
+    def capabilities(self) -> dict[str, object]:
         return {"action_steps": [QUERY_ARMY_STRENGTHS_STEP]}
 
-    def execute_step(self, step, *, expected_revision=None):
+    def execute_step(
+        self, step: str, *, expected_revision: int | None = None,
+        expected_h2743_frame: dict[str, object] | None = None,
+    ) -> dict[str, object]:
         self.calls += 1
         return {"status": "available", "army_strengths": [self.row]}
 
 
 class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
-    def test_query_distinguishes_current_budget_from_conditional_post_updater_budget(self):
-        def query(packet):
+    def test_query_distinguishes_current_budget_from_conditional_post_updater_budget(self) -> None:
+        def query(packet: dict[str, object]) -> tuple[dict[str, object], dict[str, object]]:
             original = deepcopy(packet)
             service = MemoryStrengthService(packet)
-            allocation = service.query_army_strengths([0], expected_revision=2)["loss_allocation_requests_v1"][0]
-            projection = allocation["same_input_conditional_monthly_loss_budgets_v1"]
+            response = service.query_army_strengths([0], expected_revision=2)
+            allocation = object_rows(response["loss_allocation_requests_v1"])[0]
+            projection = object_row(allocation["same_input_conditional_monthly_loss_budgets_v1"])
             self.assertEqual(packet, original)
             self.assertEqual(service.calls, 1)
             self.assertFalse(allocation["applied_loss_ready"])
@@ -133,15 +162,15 @@ class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
                           projection["combined_siege_raid_budget_soldiers"]), (0, 0, 0))
         # Combining the fractions first would incorrectly round 1.2 to1.
         self.assertEqual(12 * (5000 + 5000) // 100000, 1)
-        old = allocation["same_input_conditional_loss_sequence_v1"]
-        derived = projection["same_input_conditional_loss_sequence_v1"]
+        old = object_row(allocation["same_input_conditional_loss_sequence_v1"])
+        derived = object_row(projection["same_input_conditional_loss_sequence_v1"])
         self.assertEqual(old["conditional_final_current_soldiers"], 12)
         self.assertEqual(derived["conditional_final_current_soldiers"], 11)
         self.assertEqual(derived["input_basis"], "derived_budget_and_loss_subsystem")
 
         rejected = monthly_budget_packet()
-        rejected["current_movement_progress"]["unit_state_raw"] = 0
-        rejected["monthly_loss_budget_inputs_v1"].update(
+        object_row(rejected["current_movement_progress"])["unit_state_raw"] = 0
+        object_row(rejected["monthly_loss_budget_inputs_v1"]).update(
             status="unavailable", ready=False, unavailable_reason="missing_later_inputs",
             unit_native_170_raw=3, loaded_supply_state_levels=None,
             loaded_supply_state_fractions_raw=None, commander_supply_modifier_raw=None)
@@ -154,7 +183,7 @@ class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
         self.assertEqual(no_update["missing_inputs"], [])
 
         fleet = monthly_budget_packet()
-        fleet["monthly_loss_budget_inputs_v1"].update(
+        object_row(fleet["monthly_loss_budget_inputs_v1"]).update(
             status="unavailable", ready=False, unavailable_reason="missing_later_inputs",
             native_fleet_supply_loss_suppressed=True, loaded_supply_state_levels=None,
             loaded_supply_state_fractions_raw=None, commander_supply_modifier_raw=None)
@@ -164,7 +193,7 @@ class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
         self.assertTrue(suppressed["conditional_budgets_ready"])
 
         no_commander = monthly_budget_packet()
-        no_commander["monthly_loss_budget_inputs_v1"].update(
+        object_row(no_commander["monthly_loss_budget_inputs_v1"]).update(
             commander_valid=False, commander_supply_modifier_id=None,
             commander_supply_modifier_raw=None, loaded_supply_state_fractions_raw=[0, 0, 150000])
         _, unclamped = query(no_commander)
@@ -173,14 +202,14 @@ class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
 
         for date in (239, 240):
             boundary = monthly_budget_packet()
-            boundary["army_update_clock_v1"]["current_date_raw"] = date
+            object_row(boundary["army_update_clock_v1"])["current_date_raw"] = date
             _, at_grace = query(boundary)
             self.assertFalse(at_grace["supply_updater_admitted"])
             self.assertEqual(at_grace["admission_rejection"], "native_grace_strict_greater")
             self.assertEqual(at_grace["conditional_post_supply_raw"], 1050000)
 
         partial = monthly_budget_packet()
-        partial["monthly_loss_budget_inputs_v1"].update(
+        object_row(partial["monthly_loss_budget_inputs_v1"]).update(
             status="unavailable", ready=False, unavailable_reason="raw_unit_unavailable",
             unit_native_170_raw=None)
         _, unknown = query(partial)
@@ -191,7 +220,7 @@ class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
         self.assertEqual(unknown["missing_inputs"], ["unit_native_170_raw"])
 
         empty_levels = monthly_budget_packet()
-        empty_levels["monthly_loss_budget_inputs_v1"].update(
+        object_row(empty_levels["monthly_loss_budget_inputs_v1"]).update(
             status="unavailable", ready=False, unavailable_reason="unneeded_fraction_vector",
             loaded_supply_state_levels=[], loaded_supply_state_fractions_raw=None,
             commander_supply_modifier_raw=None)
@@ -201,13 +230,13 @@ class ConditionalMonthlyLossBudgetsTests(unittest.TestCase):
         self.assertTrue(zero["conditional_budgets_ready"])
 
         half = monthly_budget_packet()
-        half["monthly_loss_budget_inputs_v1"]["commander_supply_modifier_raw"] = -50000
+        object_row(half["monthly_loss_budget_inputs_v1"])["commander_supply_modifier_raw"] = -50000
         _, modified = query(half)
         self.assertEqual(modified["supply_effective_fraction_raw"], 5000)
         self.assertEqual(modified["supply_budget_soldiers"], 0)
 
         slow = monthly_budget_packet()
-        slow["monthly_loss_budget_inputs_v1"].update(
+        object_row(slow["monthly_loss_budget_inputs_v1"]).update(
             loaded_supply_state_fractions_raw=[0, 0, (1 << 63) - 1],
             commander_supply_modifier_raw=-99998)
         _, high_quotient = query(slow)

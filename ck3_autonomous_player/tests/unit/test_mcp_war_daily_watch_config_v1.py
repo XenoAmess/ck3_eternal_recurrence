@@ -17,20 +17,91 @@ FLAG = "--private-war-daily-watch-speed2-trial"
 
 
 class NoGameEndpoint:
-    def __init__(self):
+    def __init__(self) -> None:
         self.starts = self.closes = 0
 
-    def start(self, on_message, on_disconnect):
+    def start(self, on_message: object, on_disconnect: object) -> None:
         self.starts += 1
 
-    def send(self, *args, **kwargs):
+    def send(self, *args: object, **kwargs: object) -> None:
         raise AssertionError("Configuration must send no Native operation")
 
-    def close(self):
+    def close(self) -> None:
         self.closes += 1
 
 
 class McpWarDailyWatchConfigTests(unittest.TestCase):
+    def test_fixed_status_driver_uses_only_existing_capability_without_transcript(self) -> None:
+        driver = object.__new__(native_driver.NativeHeadlessGameplayDriver)
+        original: dict[str, object] = {"step": "research-query-tactical-daily-sentinel-v1", "accepted": True}
+        with patch.object(native_driver.NativeHeadlessGameplayDriver, "_execute_primitive_step", return_value=original) as execute:
+            self.assertIs(driver.read_tactical_daily_sentinel_status_private_v1(), original)
+        execute.assert_called_once_with("research-query-tactical-daily-sentinel-v1", expected_revision=None,
+            required_capability="game.command.research-query-tactical-daily-sentinel-v1",
+            internal_semantic_snapshot=True, include_native_command_history=False)
+
+    def test_fixed_status_actual_registered_mcp_is_zero_argument_and_opt_in(self) -> None:
+        import inspect
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled), tempfile.TemporaryDirectory() as temp:
+                endpoint = NoGameEndpoint()
+                with patch.object(native_driver, "NativeNamedPipeServer", return_value=endpoint):
+                    driver = native_driver.NativeHeadlessGameplayDriver(r"\\.\pipe\fixed-status-fixture", state_dir=Path(temp))
+                driver.allow_private_semantic_snapshot_readonly = enabled
+                server = mcp_server.create_server(driver)
+                tool = server._tool_manager.get_tool("ck3_read_tactical_daily_sentinel_status_private_v1")
+                if not enabled:
+                    self.assertIsNone(tool)
+                    continue
+                if tool is None:
+                    raise AssertionError("fixed sentinel status tool was not registered")
+                annotations = tool.annotations
+                if annotations is None:
+                    raise AssertionError("fixed sentinel status tool has no read-only annotations")
+                wire = annotations.model_dump(mode="json", by_alias=True)
+                for key, expected in (("readOnlyHint", True), ("destructiveHint", False),
+                                      ("idempotentHint", True), ("openWorldHint", False)):
+                    self.assertIs(wire[key], expected)
+                self.assertEqual(len(inspect.signature(tool.fn).parameters), 0)
+                payload: dict[str, object] = {"step": "research-query-tactical-daily-sentinel-v1", "accepted": True,
+                    "status": "available", "tactical_daily_sentinel": {"fixture": "raw current slot"}}
+                with patch.object(driver, "_execute_primitive_step", return_value=payload) as execute:
+                    self.assertEqual(tool.fn(), payload)
+                self.assertEqual(execute.call_count, 1)
+
+    def test_fixed_status_registered_mcp_rejects_transcript_and_arbitrary_arguments(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with patch.object(native_driver, "NativeNamedPipeServer", return_value=NoGameEndpoint()):
+                driver = native_driver.NativeHeadlessGameplayDriver(r"\\.\pipe\fixed-status-invalid", state_dir=Path(temp))
+            driver.allow_private_semantic_snapshot_readonly = True
+            server = mcp_server.create_server(driver)
+            tool = server._tool_manager.get_tool("ck3_read_tactical_daily_sentinel_status_private_v1")
+            if tool is None:
+                raise AssertionError("fixed sentinel status tool was not registered")
+            with self.assertRaises(TypeError):
+                tool.fn(step="resume-map")
+            import asyncio
+            from mcp.server.mcpserver.exceptions import ToolError
+            from mcp.types import CallToolResult
+            self.assertIs(tool.parameters.get("additionalProperties"), False)
+            payload: dict[str, object] = {"step": "research-query-tactical-daily-sentinel-v1", "accepted": True}
+            invalid_arguments: tuple[dict[str, object], ...] = (
+                {"step": "resume-map"}, {"include_native_command_history": True})
+            with patch.object(driver, "_execute_primitive_step", return_value=payload) as execute:
+                for arguments in invalid_arguments:
+                    with self.subTest(arguments=arguments), self.assertRaises(ToolError):
+                        asyncio.run(server.call_tool("ck3_read_tactical_daily_sentinel_status_private_v1", arguments))
+                execute.assert_not_called()
+                response = asyncio.run(server.call_tool("ck3_read_tactical_daily_sentinel_status_private_v1", {}))
+                if not isinstance(response, CallToolResult):
+                    raise AssertionError("fixed status MCP call returned an unexpected response")
+                self.assertFalse(response.is_error)
+                self.assertEqual(response.structured_content, payload)
+                execute.assert_called_once()
+            with patch.object(driver, "_execute_primitive_step", return_value={"native_command_history": []}):
+                with self.assertRaisesRegex(RuntimeError, "exclude driver transcript"):
+                    tool.fn()
+
     def test_cli_boolean_defaults_off_and_explicit_opt_in(self):
         self.assertIs(mcp_server.parser().parse_args([]).private_war_daily_watch_speed2_trial, False)
         value = mcp_server.parser().parse_args(["--driver", "native-headless", FLAG])

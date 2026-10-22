@@ -1687,10 +1687,10 @@ def create_server(
         else None
     )
     read_only_tool = ToolAnnotations(
-        readOnlyHint=True,
-        destructiveHint=False,
-        idempotentHint=True,
-        openWorldHint=False,
+        read_only_hint=True,
+        destructive_hint=False,
+        idempotent_hint=True,
+        open_world_hint=False,
     )
     server = MCPServer(
         name="Xar CK3 Gameplay Bridge",
@@ -3007,6 +3007,38 @@ def create_server(
             if len(json.dumps(frame, ensure_ascii=False).encode("utf-8")) > 8 * 1024 * 1024:
                 raise RuntimeError("native semantic snapshot exceeds the 8 MiB read bound")
             return frame
+
+    sentinel_status = getattr(driver, "read_tactical_daily_sentinel_status_private_v1", None)
+    if (getattr(driver, "allow_private_semantic_snapshot_readonly", False) is True
+            and callable(sentinel_status)):
+        @server.tool(annotations=read_only_tool)
+        def ck3_read_tactical_daily_sentinel_status_private_v1() -> dict[str, object]:
+            """Read the fixed current native sentinel slot; no arm, pause or cancel."""
+            result: object = sentinel_status()
+            if not isinstance(result, dict):
+                raise RuntimeError("native sentinel status must be an object")
+            status: dict[str, object] = {}
+            for key, value in result.items():
+                if not isinstance(key, str):
+                    raise RuntimeError("native sentinel status requires string keys")
+                status[key] = value
+            if any(key in status for key in (
+                    "native_command_history", "native_rollback_war_failure",
+                    "native_rollback_war_failures")):
+                raise RuntimeError("native sentinel status must exclude driver transcript fields")
+            if len(json.dumps(status, ensure_ascii=False, allow_nan=False).encode("utf-8")) > 8 * 1024 * 1024:
+                raise RuntimeError("native sentinel status exceeds the 8 MiB read bound")
+            return status
+
+        registered_status = server._tool_manager.get_tool("ck3_read_tactical_daily_sentinel_status_private_v1")
+        if registered_status is None:
+            raise RuntimeError("native sentinel status tool registration is missing")
+        status_arguments = registered_status.fn_metadata.arg_model
+        if status_arguments.model_fields:
+            raise RuntimeError("native sentinel status tool must have zero argument fields")
+        status_arguments.model_config["extra"] = "forbid"
+        status_arguments.model_rebuild(force=True)
+        registered_status.parameters = status_arguments.model_json_schema()
 
     if getattr(driver, "allow_private_death_succession_modal_continue", False) is True:
         @server.tool(annotations=read_only_tool)

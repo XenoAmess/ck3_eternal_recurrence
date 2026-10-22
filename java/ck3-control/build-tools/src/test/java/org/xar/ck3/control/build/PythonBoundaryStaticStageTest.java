@@ -20,7 +20,7 @@ class PythonBoundaryStaticStageTest {
 
     private PythonBoundaryStaticStage.ScopeManifest whole(String version, boolean completed, int errors) throws IOException {
         var source = file("test_conditional_monthly_loss_budgets.py");
-        return new PythonBoundaryStaticStage.ScopeManifest("xar.python-boundary-static-scope/v1",
+        return new PythonBoundaryStaticStage.ScopeManifest("xar.python-boundary-static-scope/v2",
                 PythonBoundaryStaticStage.Kind.MONTHLY_FIXTURE_WHOLE_MODULE, true, completed, errors,
                 version, "1.15.0", "", List.of(new PythonBoundaryStaticStage.SourceRange("whole_module", source.path(), 1, 30)),
                 List.of(), List.of(source, file("driver.py"), file("service.py")), List.of());
@@ -31,12 +31,16 @@ class PythonBoundaryStaticStageTest {
         var driver = file("driver.py"); var test = file("test_mcp_war_daily_watch_config_v1.py");
         List<PythonBoundaryStaticStage.SourceRange> ranges = new ArrayList<>();
         for (String name : List.of("_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY", "_TACTICAL_DAILY_SENTINEL_STATUS_STEP",
-                "read_tactical_daily_sentinel_status_private_v1")) ranges.add(new PythonBoundaryStaticStage.SourceRange(name, nativeSource.path(), 1, 10));
+                "allow_private_semantic_snapshot_readonly", "read_tactical_daily_sentinel_status_private_v1")) ranges.add(new PythonBoundaryStaticStage.SourceRange(name, nativeSource.path(), 1, 10));
         for (String name : List.of("read_only_tool", "sentinel_status", "sentinel_guard_and_handler")) {
             ranges.add(new PythonBoundaryStaticStage.SourceRange(name, mcpSource.path(), 1, 10));
         }
-        ranges.add(new PythonBoundaryStaticStage.SourceRange("test_fixed_status_driver_uses_only_existing_capability_without_transcript", test.path(), 1, 10));
-        return new PythonBoundaryStaticStage.ScopeManifest("xar.python-boundary-static-scope/v1",
+        for (String name : List.of("test_fixed_status_driver_uses_only_existing_capability_without_transcript",
+                "test_fixed_status_actual_registered_mcp_is_zero_argument_and_opt_in",
+                "test_fixed_status_registered_mcp_rejects_transcript_and_arbitrary_arguments", "NoGameEndpoint")) {
+            ranges.add(new PythonBoundaryStaticStage.SourceRange(name, test.path(), 1, 10));
+        }
+        return new PythonBoundaryStaticStage.ScopeManifest("xar.python-boundary-static-scope/v2",
                 PythonBoundaryStaticStage.Kind.SDK_SENTINEL_EXTRACTED, wholeCredit, true, 0,
                 "3.13", "1.15.0", mcpVersion, ranges,
                 List.of(new PythonBoundaryStaticStage.SourceRange("_execute_primitive_step", nativeSource.path(), 1, 4)),
@@ -45,24 +49,33 @@ class PythonBoundaryStaticStageTest {
     }
 
     @Test void acceptsExplicitWholeFixtureScopeAtTheSupportedPythonVersion() throws IOException {
-        var manifest = whole("3.11", true, 0);
+        var manifest = whole("3.13", true, 0);
         assertDoesNotThrow(() -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.MONTHLY_FIXTURE_WHOLE_MODULE, manifest));
     }
-    @Test void newerInterpreterCheckCannotReplaceTheSupportedFixtureScope() throws IOException {
-        var manifest = whole("3.13", true, 0);
+    @Test void unqualifiedPython311CannotClaimTheObservedPython313FixtureScope() throws IOException {
+        var manifest = whole("3.11", true, 0);
         assertThrows(IOException.class, () -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.MONTHLY_FIXTURE_WHOLE_MODULE, manifest));
     }
     @Test void incompleteStaticProcessCannotClaimACompletedScope() throws IOException {
-        var manifest = whole("3.11", false, 0);
+        var manifest = whole("3.13", false, 0);
         assertThrows(IOException.class, () -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.MONTHLY_FIXTURE_WHOLE_MODULE, manifest));
     }
     @Test void actualTypeErrorsRemainRed() throws IOException {
-        var manifest = whole("3.11", true, 1);
+        var manifest = whole("3.13", true, 1);
         assertThrows(IOException.class, () -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.MONTHLY_FIXTURE_WHOLE_MODULE, manifest));
     }
     @Test void acceptsActualExtractedScopeWithoutWholeSdkModuleCredit() throws IOException {
         var manifest = sdk(false, "2.0.0", true);
         assertDoesNotThrow(() -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.SDK_SENTINEL_EXTRACTED, manifest));
+    }
+    @Test void missingActualReadonlyFieldCannotClaimCompleteSdkScope() throws IOException {
+        var manifest = sdk(false, "2.0.0", true);
+        var incomplete = new PythonBoundaryStaticStage.ScopeManifest(manifest.schema(), manifest.kind(),
+                manifest.wholeModuleCredit(), manifest.completed(), manifest.errorCount(), manifest.pythonVersion(),
+                manifest.mypyVersion(), manifest.mcpVersion(), manifest.checkedDefinitions().stream()
+                        .filter(range -> !range.symbol().equals("allow_private_semantic_snapshot_readonly")).toList(),
+                manifest.signatureOnlyDefinitions(), manifest.sourceRefs(), manifest.dependencySourceRefs());
+        assertThrows(IOException.class, () -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.SDK_SENTINEL_EXTRACTED, incomplete));
     }
     @Test void extractedSdkCannotClaimWholeModuleCredit() throws IOException {
         var manifest = sdk(true, "2.0.0", true);
@@ -82,7 +95,7 @@ class PythonBoundaryStaticStageTest {
         assertThrows(IOException.class, () -> PythonBoundaryStaticStage.requireScope(PythonBoundaryStaticStage.Kind.SDK_SENTINEL_EXTRACTED, manifest));
     }
     @Test void integerTokensAndRequiredManifestFieldsStayStrict() throws IOException {
-        var manifest = whole("3.11", true, 0);
+        var manifest = whole("3.13", true, 0);
         String raw = ControlBuild.strictMapper().writeValueAsString(manifest);
         for (String invalid : List.of(raw.replace("\"error_count\":0", "\"error_count\":0.0"),
                 raw.replace("\"error_count\":0", "\"error_count\":false"),

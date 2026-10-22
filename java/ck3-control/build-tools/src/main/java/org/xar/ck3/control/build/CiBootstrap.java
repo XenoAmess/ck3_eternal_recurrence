@@ -385,6 +385,8 @@ public final class CiBootstrap {
         Exception failure = null;
         MavenProbeStatus status = MavenProbeStatus.REJECTED;
         try {
+            // Validate the actual first default candidate before CALL can execute a script association.
+            FilePin before = measure(launcher.resolve());
             String output = probe.run();
             outputRef = measure(outputPath);
             if (outputRef.bytes() > 65_536 || !output.equals(Files.readString(outputPath))
@@ -393,6 +395,7 @@ public final class CiBootstrap {
             }
             observation = observeDefaultMaven(output, windows);
             selected = measure(launcher.resolve());
+            if (!before.equals(selected)) throw new IOException("selected default Maven launcher changed during its version probe");
             if (!selected.equals(observation.launcherRef())) {
                 throw new IOException("selected default Maven launcher differs from its reported installation");
             }
@@ -598,11 +601,17 @@ public final class CiBootstrap {
                 ? List.of(environment.getOrDefault("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";")) : List.of("");
         for (Path directory : directories) {
             for (String suffix : suffixes) {
-                Path candidate = directory.resolve("mvn" + suffix);
+                Path name;
+                try { name = Path.of("mvn" + suffix); }
+                catch (java.nio.file.InvalidPathException malformed) { throw new IOException("invalid default command extension", malformed); }
+                if (windows && (!suffix.startsWith(".") || name.isAbsolute() || name.getNameCount() != 1 || name.getParent() != null)) {
+                    throw new IOException("invalid default command extension");
+                }
+                Path candidate = directory.resolve(name);
                 if (Files.isRegularFile(candidate) && (windows || Files.isExecutable(candidate))) {
-                    // PATHEXT also lists script associations. Only an actual selected
-                    // unsupported launcher must refuse admission; absent files do not.
-                    if (windows && !suffix.matches("(?i)\\.(COM|EXE|BAT|CMD)")) throw new IOException("unsupported selected default command extension: " + suffix);
+                    if (windows && !suffix.matches("(?i)\\.(COM|EXE|BAT|CMD)")) {
+                        throw new IOException("unsupported actual default Maven launcher extension: " + suffix);
+                    }
                     return candidate.toRealPath();
                 }
             }

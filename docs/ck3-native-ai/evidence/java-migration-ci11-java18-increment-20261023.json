@@ -1,0 +1,313 @@
+{
+  "schema": "xar.ci11-java18-progress/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-22T18:47:21Z",
+  "index_basis": "Actual current publisher index:04 cached plus tools23 nine; 05 not applied",
+  "mutually_exclusive_with": "progress-current-index05.patch",
+  "source_refs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\artifacts\\coldwarm-ci11\\TERMINAL-INDEX01.json",
+      "bytes": 1598,
+      "sha256": "89d77a79dcbe5c235b753c9593d36592e1d7c635f89bc980eb1df6f69ea4097a",
+      "observed_at_utc": "2026-10-22T18:26:30.764152100Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA18-SUREFIRE-OBSERVATION01.json",
+      "bytes": 24918,
+      "sha256": "184c36fa79fd0b68590171f7643ca3807e240ddfa5f3b052509cdc94c5f61e37",
+      "observed_at_utc": "2026-10-22T18:36:46.568134500Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA18-ACCEPTED-READBACK01.json",
+      "bytes": 407,
+      "sha256": "fc407650988f972bf2e6ff761f093e71a1aab11938956c6818c2b31fa97caddd",
+      "observed_at_utc": "2026-10-22T18:36:46.568134500Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\artifacts\\coldwarm-sdk-wire-probe02\\STATIC-PROBE-INDEX01.json",
+      "bytes": 2737,
+      "sha256": "1e7dacc54297323918308551d997aa83931b995735ea40a1da6d8630366b6202",
+      "observed_at_utc": "2026-10-22T18:46:49Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\TOOLS23-QUALIFIED-DELIVERY01.json",
+      "bytes": 25601,
+      "sha256": "e5ff4e654ace31f9c5e87c1d2aad9ebb6a7e382202c6c02ff5aa5bc6865fea68",
+      "observed_at_utc": "2026-10-22T17:59:45.770712300Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA17-SUREFIRE-OBSERVATION01.json",
+      "bytes": 56963,
+      "sha256": "219dcf618317889068d5f44aa3328b4547bf9fc3e356886f33d79752408aed20",
+      "observed_at_utc": "2026-10-22T17:50:36.242549900Z"
+    }
+  ],
+  "ci11": {
+    "observed_at_utc": "2026-10-22T18:26:30.764152100Z",
+    "status": "PASS",
+    "commands_completed": 30,
+    "commands_required": 30,
+    "independent_sdk_command8": "ACTUAL_PASS",
+    "pytest_files": 27,
+    "pytest_passed": 227,
+    "pytest_subtests_passed": 91,
+    "skipped": 0,
+    "actual_wal_diagnostic_command23": "ACTUAL_REACHED_NO_SKIP",
+    "source_postcheck": "MATCH",
+    "actual_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-ci11/actual.json",
+      "bytes": 1402575,
+      "sha256": "156c2439cf59ee1332b8f616a106bcdef0bc4e4b094e3c4087e5adb2fcc2106c"
+    }
+  },
+  "java18": {
+    "producer_observed_at_utc": "2026-10-22T18:35:14.165701500Z",
+    "observed_at_utc": "2026-10-22T18:36:46.568134500Z",
+    "actual_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java18.json",
+      "bytes": 190770,
+      "sha256": "260504c802c9aa8da82e73ee59b8226530a25e5455fb03cb39aec753369609a8"
+    },
+    "scope": "FULL_VERIFY_SEVEN_EXISTING_RECOVERY_MODULES",
+    "counts": {
+      "tests": 663,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suite_count": 45,
+    "source_count": 255,
+    "source_bytes": 2480376,
+    "original_registered17_postcheck": "MATCH",
+    "original_registered17_files": 633,
+    "original_registered17_bytes": 8571162,
+    "all_external_paths_bytes_sha_mtime_match": true,
+    "qualification": "FULL_VERIFY_RECOVERY_CLOSURE_ONLY_NOT_FULL17_GREEN_OR_CURRENT_LIVE_ROOT_SESSION"
+  },
+  "java18_accepted": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-22T18:36:46.568134500Z",
+    "receipt_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java18.json",
+      "bytes": 190770,
+      "sha256": "260504c802c9aa8da82e73ee59b8226530a25e5455fb03cb39aec753369609a8"
+    },
+    "status": "PASS",
+    "runtime_files": 131,
+    "source_files": 255
+  },
+  "supplemental": {
+    "observed_at_utc": "2026-10-22T18:46:49Z",
+    "sdk3_production23": {
+      "status": "RED",
+      "observed_at_utc": "2026-10-22T18:37:26.567264600Z",
+      "actual_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-ci11-sdk3-retry01/sdk-strict/actual.json",
+      "actual_bytes": 5640,
+      "actual_sha256": "f1997aa6c6d4201c2e8f657d61995a2311794f32de707e7e300f21dca2791fa4",
+      "error_count": 2,
+      "scope": "Three actual new test methods, actual native method/constants, MCP guard/handler and NoGameEndpoint extracted; whole_module_credit false. Undeclared existing readonly bool attr-defined at test assignments.",
+      "outer_exit_code": 1,
+      "outer_active_processes": 0,
+      "outer_memory_limit_bytes": 1073741824,
+      "outer_peak_bytes": 868225024,
+      "inner_peak_bytes": 714248192,
+      "source_postcheck": "MATCH"
+    },
+    "monthly_production23": {
+      "status": "PASS",
+      "observed_at_utc": "2026-10-22T18:33:40.432Z",
+      "actual_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-ci10-supplement01/sdk-strict/shared-fixture/actual.json",
+      "actual_bytes": 4853,
+      "actual_sha256": "a2222007cc3b0de696aef76ab1c87b3f1f4c4b075dff19a2ad23ea3021f95292",
+      "python_version": "3.13",
+      "scope": "Complete test_conditional_monthly_loss_budgets.py 13379B/de90a825... module, imports silent; Python3.11 qualification absent.",
+      "source_postcheck": "MATCH",
+      "exit_code": 0,
+      "active_processes": 0
+    },
+    "wire_probe02": {
+      "status": "PROBE_EXECUTED_BUG_CONFIRMED",
+      "observed_at_utc": "2026-10-22T18:44:45.642094600Z",
+      "actual_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-sdk-wire-probe02/sdk-strict/wire-probe/actual.json",
+      "stdout_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-sdk-wire-probe02/sdk-strict/wire-probe/stdout.log",
+      "extra_argument": {
+        "step": "resume-map"
+      },
+      "observed_error": false,
+      "primitive_mock_calls": 1,
+      "actual_game_operations": 0,
+      "exit_code": 0,
+      "active_processes": 0,
+      "source_postcheck": "MATCH"
+    },
+    "pending": [
+      "Native readonly bool declaration and per-tool strict unknown-argument rejection adoption",
+      "Fresh source-qualified checker that retains actual explicit readonly bool AnnAssign",
+      "Current final SDK extracted strict and complete affected command groups",
+      "34-file shared fixture union complete run",
+      "Other complete changed-fixture static modules"
+    ]
+  },
+  "tools23": {
+    "observed_at_utc": "2026-10-22T17:59:45.770712300Z",
+    "actual_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java-tools23.json",
+      "bytes": 16953,
+      "sha256": "0613f12d333b1d711cdb6f8645e9f3b55d114b4328913ccc3733bf2e328fcb25"
+    },
+    "tests": {
+      "total": 78,
+      "passed": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "scope": "Standalone build-tools source only; no Owner/capture/host/29/currentlive qualification",
+    "new_regressions": 3
+  },
+  "java17_snapshot": {
+    "observed_at_utc": "2026-10-22T17:50:36.242549900Z",
+    "total": {
+      "tests": 1984,
+      "failures": 44,
+      "errors": 50,
+      "skipped": 0,
+      "passed": 1890
+    },
+    "runtime": {
+      "tests": 395,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 23,
+      "red_suites": 0
+    },
+    "registered": 17,
+    "modulepass": 16,
+    "target": 29,
+    "percent_registered": 58.6,
+    "percent_modulepass": 55.2,
+    "percent_tests": 95.3
+  },
+  "hosted_root_update": {
+    "source": "Root independent gh/API observation, reported before2026-10-22T18:47:21Z",
+    "actual_query_observed_at_utc": null,
+    "commit": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+    "official": {
+      "run_id": "39824334365",
+      "conclusion": "failure",
+      "completed_at_utc": "2026-10-22T17:56:43Z",
+      "job_id": "119983499242",
+      "failed_step": 40,
+      "failure_line_at_utc": "2026-10-22T17:56:29.8504641Z",
+      "error": "unsupported default command extension order",
+      "exit_code": 1,
+      "run_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39824334365",
+      "api_url": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/119983499242/logs",
+      "api_full_output_truncated": true,
+      "full_log_hash_claimed": false
+    },
+    "linear": {
+      "run_id": "39824334366",
+      "conclusion": "success",
+      "completed_at_utc": "2026-10-22T17:38:36Z"
+    },
+    "tools23": {
+      "local_tests": 78,
+      "new_regressions": 3,
+      "subsequent_hosted_qualification": false
+    }
+  },
+  "root_taskbus": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "task_id": "ck3-java-stabilization-resume-20261022-root",
+    "python": "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "cli": "Z:/.codex-task-bus/bin/codex_task_bus.py",
+    "bus_dir": "Z:/.codex-task-bus",
+    "heartbeat_command_template": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe -B -X utf8 Z:\\.codex-task-bus\\bin\\codex_task_bus.py --bus-dir Z:\\.codex-task-bus heartbeat --task ck3-java-stabilization-resume-20261022-root --repo Z:\\ck3_mod_rewrite",
+    "heartbeat": {
+      "source": "Root actual execution feedback",
+      "at_utc": "2026-10-22T18:43:15.570694Z",
+      "sequence": 8219
+    },
+    "poll_ack": {
+      "source": "Root actual execution feedback",
+      "from_cursor": 8217,
+      "to_cursor": 8219,
+      "events": [],
+      "remaining": 0
+    },
+    "read_only_snapshot": {
+      "source": "Progress tool chunk833fa2 at18:45:01Z",
+      "path": "Z:/.codex-task-bus/tasks/ck3-java-stabilization-resume-20261022-root.json",
+      "last_sequence": 8219,
+      "state": "running",
+      "updated_at_utc": "2026-10-22T18:43:15.570694Z",
+      "resources": [
+        "origin/master"
+      ]
+    },
+    "progress_agent_bus_mutations": 0,
+    "subsequent_heartbeat_and_poll_owner": "Root only",
+    "old_d_workspace_installation": "Reported absent on current machine; no cross-machine rule changed"
+  },
+  "topology": {
+    "source": "actual list_agents then clock",
+    "observed_at_utc": "2026-10-22T18:45:01Z",
+    "running_children": [
+      "/root/build",
+      "/root/ci",
+      "/root/ci/static_routes_audit",
+      "/root/closedadoption",
+      "/root/finance",
+      "/root/military/combat",
+      "/root/native_fixture_execution",
+      "/root/progress_sync",
+      "/root/reactor_integration",
+      "/root/remote_ci",
+      "/root/storage"
+    ],
+    "count": 11,
+    "excluded_root": 1,
+    "excluded_completed": 53,
+    "excluded_interrupted": 0,
+    "not_os_process_count": true
+  },
+  "whole29": "NOT_MATERIALIZED_NOT_COMPILED; source completion not migration acceptance",
+  "sdk_baseline": "Old1468 zero delta;1494 not Source32",
+  "team_body_reads": "UNKNOWN after broad search; controlled-CI zero only covers its commands",
+  "game": {
+    "state": "CLOSED",
+    "unknown_auto": 11558,
+    "replay": false,
+    "saved_days": 5628,
+    "new_saved_days": 0,
+    "g2": "6/8"
+  },
+  "preimages": [
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-23.md",
+      "source": "git show :target",
+      "sha256": "65d9dd6f9ea3efd3762f48619fa49b020b9c9638b3f619fa2c1cde3a4b9f7330",
+      "bytes": 8060
+    },
+    {
+      "path": "docs/handover/2026-10-23-java-migration-stabilization-resume-increment.md",
+      "source": "git show :target",
+      "sha256": "80610979fb6e032044907bf8159858e09273cd6d5837fe156d88d196797715d6",
+      "bytes": 12823
+    },
+    {
+      "path": "docs/autonomous-agent-progress/README.md",
+      "source": "git show :target",
+      "sha256": "fbd68faa89cd047fb128f19b2d116e515d62684b35aac59c583d02251a6641d1",
+      "bytes": 303912
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "source": "git show :target",
+      "sha256": "eae899e3a51fd3b2192aabc4323be8b10250e41b5064c2d074c66806e46e4c8c",
+      "bytes": 71997
+    }
+  ]
+}

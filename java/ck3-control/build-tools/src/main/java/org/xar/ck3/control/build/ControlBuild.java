@@ -34,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicLong;
@@ -137,6 +138,91 @@ public final class ControlBuild {
         public SourcePostcheck {
             if (state == null || (state == SourceState.UNKNOWN) != (error != null)
                     || (error != null && error.isBlank())) throw new IllegalArgumentException("Invalid source postcheck");
+        }
+    }
+
+    public static final String CAPTURE_SCHEMA = "xar.java-control-test-compiled-capture/v1";
+    public static final String TEST_COMPILATION_SCHEMA = "xar.java-control-test-compilation/v1";
+    public enum CaptureQualification { TEST_COMPILED_CAPTURE_ONLY }
+    public enum CaptureTestState { NOT_RUN }
+
+    public record NotRunTestCompilation(FileRef sourceRef, List<FileRef> compiledClassRefs, CaptureTestState state) {
+        public NotRunTestCompilation {
+            Objects.requireNonNull(sourceRef); compiledClassRefs = List.copyOf(compiledClassRefs);
+            if (state != CaptureTestState.NOT_RUN || compiledClassRefs.isEmpty()
+                    || compiledClassRefs.size() > 256 || compiledClassRefs.stream().map(FileRef::path).distinct().count() != compiledClassRefs.size()) {
+                throw new IllegalArgumentException("Actual compiled test class origins and explicit NOT_RUN required");
+            }
+        }
+    }
+
+    /** Every test source has producer-verified SourceFile/binary/package class origins; no test execution is claimed. */
+    public record ModuleTestCompilation(FileRef modulePomRef, String classOutputRoot,
+            FileRef compilerInputsRef, FileRef compilerCreatedFilesRef) {
+        public ModuleTestCompilation {
+            Objects.requireNonNull(modulePomRef); Objects.requireNonNull(compilerInputsRef);
+            Objects.requireNonNull(compilerCreatedFilesRef);
+            if (!Path.of(classOutputRoot).isAbsolute()) throw new IllegalArgumentException("Actual module test-class root required");
+        }
+    }
+    public record TestCompilationManifest(String schema, String machineId, String observedAtUtc,
+            CaptureTestState tests, List<ModuleTestCompilation> modules, List<NotRunTestCompilation> notRunTests) {
+        public TestCompilationManifest {
+            modules = List.copyOf(modules); notRunTests = List.copyOf(notRunTests); Instant.parse(observedAtUtc);
+            if (!TEST_COMPILATION_SCHEMA.equals(schema) || machineId == null || machineId.isBlank()
+                    || tests != CaptureTestState.NOT_RUN || modules.isEmpty() || modules.size() > 32
+                    || modules.stream().map(item -> item.modulePomRef().path()).distinct().count() != modules.size()
+                    || notRunTests.isEmpty() || notRunTests.size() > 1536
+                    || notRunTests.stream().map(item -> item.sourceRef().path()).distinct().count() != notRunTests.size()
+                    || notRunTests.stream().mapToLong(item -> item.compiledClassRefs().size()).sum() > 4096
+                    || notRunTests.stream().flatMap(item -> item.compiledClassRefs().stream()).map(FileRef::path).distinct().count()
+                        != notRunTests.stream().mapToLong(item -> item.compiledClassRefs().size()).sum()) {
+                throw new IllegalArgumentException("Finite complete actual test compilation inventory required");
+            }
+        }
+    }
+
+    /** Success only: default Maven package compiled tests but did not execute them; never normal software/production PASS. */
+    public record CaptureBuildReceipt(String schema, String machineId, String observedAtUtc, String attempt, String ownerTask,
+            CaptureQualification qualification, CaptureTestState tests,
+            String sourceRoot, String compiledSourceRoot, String deploymentRoot,
+            SourcePostcheck sourcePostcheck, SourcePostcheck compiledSourcePostcheck,
+            TargetKind targetKind, SourceLimitProfile sourceLimitProfile,
+            List<FileRef> sourcePins, List<FileRef> compiledSourcePins, List<FileRef> completeDeployment,
+            List<FileRef> producerRuntimePins, FileRef capacityReleaseRef,
+            MavenToolchain mavenToolchain, FileRef javaExecutableRef,
+            WindowsJobProcess.CommandResult toolchainProbe, WindowsJobProcess.CommandResult mavenResult,
+            List<String> mavenArguments, FileRef mavenCommandRef, FileRef mavenStdoutRef,
+            FileRef mavenStderrRef, FileRef versionStdoutRef, FileRef testCompilationRef,
+            Map<String, Long> finalLogicalBytesByPart) {
+        public CaptureBuildReceipt {
+            sourcePins = List.copyOf(sourcePins); compiledSourcePins = List.copyOf(compiledSourcePins);
+            completeDeployment = List.copyOf(completeDeployment); producerRuntimePins = List.copyOf(producerRuntimePins);
+            mavenArguments = List.copyOf(mavenArguments); finalLogicalBytesByPart = Map.copyOf(finalLogicalBytesByPart);
+            Instant.parse(observedAtUtc);
+            if (!CAPTURE_SCHEMA.equals(schema) || machineId == null || machineId.isBlank()
+                    || attempt == null || !attempt.matches("[a-zA-Z0-9][a-zA-Z0-9_-]{0,47}") || ownerTask == null || ownerTask.isBlank()
+                    || qualification != CaptureQualification.TEST_COMPILED_CAPTURE_ONLY || tests != CaptureTestState.NOT_RUN
+                    || targetKind != TargetKind.SERVICE_FAST_JAR || sourceLimitProfile == null
+                    || sourcePostcheck == null || sourcePostcheck.state() != SourceState.MATCH
+                    || compiledSourcePostcheck == null || compiledSourcePostcheck.state() != SourceState.MATCH
+                    || sourcePins.isEmpty() || compiledSourcePins.isEmpty() || completeDeployment.isEmpty() || producerRuntimePins.isEmpty()
+                    || toolchainProbe == null || !toolchainProbe.passed() || mavenResult == null || !mavenResult.passed()
+                    || mavenToolchain == null || mavenToolchain.selection() != MavenSelection.DEFAULT_COMMAND
+                    || !mavenArguments.contains("package") || !mavenArguments.contains("-DskipTests=true")
+                    || mavenArguments.contains("verify") || !mavenArguments.contains("-Dmaven.test.skip=false")
+                    || mavenArguments.stream().anyMatch(arg -> arg.startsWith("-Dmaven.test.skip") && !arg.equals("-Dmaven.test.skip=false"))) {
+                throw new IllegalArgumentException("Actual test-compiled capture-only default-Maven terminal required");
+            }
+            for (String root : List.of(sourceRoot, compiledSourceRoot, deploymentRoot)) {
+                if (!Path.of(root).isAbsolute()) throw new IllegalArgumentException("Absolute actual artifact roots required");
+            }
+            Objects.requireNonNull(capacityReleaseRef); Objects.requireNonNull(javaExecutableRef);
+            Objects.requireNonNull(mavenCommandRef); Objects.requireNonNull(testCompilationRef);
+            Objects.requireNonNull(mavenStdoutRef); Objects.requireNonNull(mavenStderrRef); Objects.requireNonNull(versionStdoutRef);
+            if (testCompilationRef.bytes() < 1 || testCompilationRef.bytes() > (4L << 20)) {
+                throw new IllegalArgumentException("Bounded external typed test compilation manifest required");
+            }
         }
     }
 
@@ -248,7 +334,88 @@ public final class ControlBuild {
         return receipt;
     }
 
+    private enum BuildPurpose { VERIFY, TEST_COMPILED_CAPTURE_ONLY }
+    private record BuildEvidence(Config config, Path snapshot, Path deployment, List<FileRef> source,
+            List<FileRef> compiled, List<FileRef> closure, SourcePostcheck sourcePostcheck,
+            SourcePostcheck compiledPostcheck, MavenToolchain toolchain,
+            WindowsJobProcess.CommandResult probe, WindowsJobProcess.CommandResult result,
+            List<String> mavenArguments, FileRef testCompilationRef, Map<String, Long> finalSizes,
+            String failure, boolean interrupted) { }
+    private record BuildOutcome(BuildReceipt verified, CaptureBuildReceipt capture) { }
+    private record CaptureBuildFailure(String schema, String machineId, String observedAtUtc,
+            CaptureTestState tests, BuildReceipt terminal, List<String> mavenArguments,
+            FileRef mavenCommandRef) { }
+
+    /** Strictly separate admission; a normal acceptedReceipt rejects this schema. */
+    public static CaptureBuildReceipt acceptedCaptureReceipt(Path path) throws IOException {
+        CaptureBuildReceipt receipt = JSON.readValue(readLimited(path, 1 << 20), CaptureBuildReceipt.class);
+        String machine = WindowsJobProcess.currentMachineId();
+        if (!receipt.machineId().equals(machine)) throw new IOException("Capture receipt belongs to another machine");
+        Path snapshot = Path.of(receipt.compiledSourceRoot()).toAbsolutePath().normalize();
+        if (snapshot.getParent() == null || snapshot.getParent().getParent() == null) throw new IOException("Exact capture snapshot ancestry required");
+        Path work = snapshot.getParent().getParent(); Path build = work.resolve("build").resolve(receipt.attempt());
+        Path logs = work.resolve("logs");
+        if (!snapshot.equals(work.resolve("scratch/source-" + receipt.attempt()))
+                || !Path.of(receipt.deploymentRoot()).toAbsolutePath().normalize().equals(build.resolve("ck3-control-local-service/quarkus-app"))) {
+            throw new IOException("Capture source and deployment roots differ from actual producer attempt");
+        }
+        Config config = new Config(Path.of(receipt.sourceRoot()), work, Path.of(receipt.capacityReleaseRef().path()),
+                receipt.attempt(), receipt.ownerTask(), null, Path.of(receipt.javaExecutableRef().path()).getParent().getParent(),
+                receipt.mavenToolchain().minimumVersion(), 900, receipt.targetKind(), receipt.sourceLimitProfile());
+        receipt.capacityReleaseRef().verify(); Lease lease = readLease(config, machine);
+        if (receipt.mavenResult().accounting().memoryLimitBytes() != lease.memoryLimitBytes()
+                || receipt.toolchainProbe().accounting().memoryLimitBytes() != lease.memoryLimitBytes()) throw new IOException("Capture Job differs from the consumed single-Maven memory release");
+        Path settings = logs.resolve("build-" + receipt.attempt() + "-settings.xml");
+        List<String> expectedArgs = reactorCaptureArguments(config, settings, snapshot, build);
+        if (!expectedArgs.equals(receipt.mavenArguments())) throw new IOException("Capture command arguments differ from explicit package/test-compile/no-run producer");
+        String prefix = "build-" + receipt.attempt();
+        requireExactPath(receipt.mavenCommandRef(), logs.resolve(prefix + "-package.cmd"));
+        requireExactPath(receipt.mavenStdoutRef(), logs.resolve(prefix + "-package.stdout.log"));
+        requireExactPath(receipt.mavenStderrRef(), logs.resolve(prefix + "-package.stderr.log"));
+        requireExactPath(receipt.versionStdoutRef(), logs.resolve(prefix + "-version.stdout.log"));
+        requireExactPath(receipt.testCompilationRef(), logs.resolve(prefix + "-test-compilation.json"));
+        for (FileRef ref : List.of(receipt.mavenCommandRef(), receipt.mavenStdoutRef(), receipt.mavenStderrRef(),
+                receipt.versionStdoutRef(), receipt.testCompilationRef(), receipt.javaExecutableRef(), receipt.mavenToolchain().distributionLauncherRef())) ref.verify();
+        if (!java.util.Arrays.equals(readLimited(Path.of(receipt.mavenCommandRef().path()), 65536), mavenBatchText(null, expectedArgs).getBytes(StandardCharsets.UTF_8))) {
+            throw new IOException("Actual pinned Maven command batch does not contain the exact default capture command");
+        }
+        MavenToolchain actualMaven = measuredMavenToolchain(null, Files.readString(Path.of(receipt.versionStdoutRef().path())), config.minimumMavenVersion());
+        if (!actualMaven.equals(receipt.mavenToolchain())) throw new IOException("Capture default Maven reported home/version/source differs");
+        for (FileRef ref : receipt.sourcePins()) ref.verify(); for (FileRef ref : receipt.compiledSourcePins()) ref.verify();
+        for (FileRef ref : receipt.completeDeployment()) ref.verify(); for (FileRef ref : receipt.producerRuntimePins()) ref.verify();
+        requireSameContents(config.sourceRoot(), snapshot, receipt.sourcePins(), receipt.compiledSourcePins());
+        if (!sourceManifest(config.sourceRoot(), config.sourceLimitProfile()).equals(receipt.sourcePins())
+                || !sourceManifest(snapshot, config.sourceLimitProfile()).equals(receipt.compiledSourcePins())
+                || !deploymentManifest(Path.of(receipt.deploymentRoot()), receipt.targetKind()).equals(receipt.completeDeployment())) {
+            throw new IOException("Capture source or complete packaged deployment closure changed");
+        }
+        TestCompilationManifest recorded = JSON.readValue(readLimited(Path.of(receipt.testCompilationRef().path()), 4 << 20), TestCompilationManifest.class);
+        TestCompilationManifest actual = collectTestCompilation(machine, snapshot, build, receipt.compiledSourcePins());
+        if (!recorded.machineId().equals(machine) || !recorded.modules().equals(actual.modules()) || !recorded.notRunTests().equals(actual.notRunTests())) {
+            throw new IOException("Capture compiler input/created-file/test-binary SourceFile origin closure changed");
+        }
+        if (!receipt.finalLogicalBytesByPart().keySet().equals(lease.caps().keySet())) throw new IOException("Complete capture final part accounting required");
+        for (var item : receipt.finalLogicalBytesByPart().entrySet()) if (item.getValue() < 0 || item.getValue() > lease.caps().get(item.getKey())) throw new IOException("Capture final part exceeded its actual release");
+        receipt.testCompilationRef().verify(); return receipt;
+    }
+
+    private static void requireExactPath(FileRef reference, Path expected) throws IOException {
+        if (!Path.of(reference.path()).toAbsolutePath().normalize().equals(expected.toAbsolutePath().normalize())) throw new IOException("Capture evidence path differs from exact producer attempt");
+    }
+
     public static BuildReceipt build(Config config) throws IOException, InterruptedException {
+        return buildExclusive(config, BuildPurpose.VERIFY).verified();
+    }
+
+    /** The same Maven producer and Job; package compiles tests and explicitly does not run them. */
+    public static CaptureBuildReceipt buildCapture(Config config) throws IOException, InterruptedException {
+        if (config.mavenCommand() != null || config.targetKind() != TargetKind.SERVICE_FAST_JAR) {
+            throw new IOException("Capture qualification requires the default Maven and existing service fast-jar target");
+        }
+        return buildExclusive(config, BuildPurpose.TEST_COMPILED_CAPTURE_ONLY).capture();
+    }
+
+    private static BuildOutcome buildExclusive(Config config, BuildPurpose purpose) throws IOException, InterruptedException {
         requireNativeScratch(config.workRoot().resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();
         Lease lease = readLease(config, machine);
@@ -258,11 +425,53 @@ public final class ControlBuild {
         try (FileChannel channel = FileChannel.open(config.workRoot().resolve(".java-control-build.lock"),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE); FileLock lock = channel.tryLock()) {
             if (lock == null || !lock.isValid()) throw new IOException("Another Maven writer owns this workpackage");
-            return buildLocked(config, lease, machine, logs);
+            BuildEvidence evidence = buildLocked(config, lease, machine, logs, purpose);
+            Path receiptPath = logs.resolve("build-" + config.attempt() + ".json");
+            try {
+                if (purpose == BuildPurpose.VERIFY) {
+                    BuildReceipt receipt = normalReceipt(evidence, machine, evidence.failure());
+                    Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt), StandardOpenOption.CREATE_NEW);
+                    return new BuildOutcome(receipt, null);
+                }
+                if (evidence.failure() != null) throw new IOException(evidence.failure());
+                CaptureBuildReceipt receipt = new CaptureBuildReceipt(CAPTURE_SCHEMA, machine, Instant.now().toString(),
+                        config.attempt(), config.ownerTask(), CaptureQualification.TEST_COMPILED_CAPTURE_ONLY, CaptureTestState.NOT_RUN,
+                        config.sourceRoot().toString(), evidence.snapshot().toString(), evidence.deployment().toString(),
+                        evidence.sourcePostcheck(), evidence.compiledPostcheck(), config.targetKind(), config.sourceLimitProfile(),
+                        evidence.source(), evidence.compiled(), evidence.closure(), producerClosure(), FileRef.measure(config.capacityRelease()),
+                        evidence.toolchain(), FileRef.measure(config.javaHome().resolve("bin/java.exe")), evidence.probe(), evidence.result(),
+                        evidence.mavenArguments(), FileRef.measure(logs.resolve("build-" + config.attempt() + "-package.cmd")),
+                        FileRef.measure(logs.resolve("build-" + config.attempt() + "-package.stdout.log")),
+                        FileRef.measure(logs.resolve("build-" + config.attempt() + "-package.stderr.log")),
+                        FileRef.measure(logs.resolve("build-" + config.attempt() + "-version.stdout.log")), evidence.testCompilationRef(), evidence.finalSizes());
+                byte[] receiptBytes = JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt);
+                if (receiptBytes.length > (1 << 20)) throw new IOException("Capture receipt exceeds the unchanged 1 MiB reader bound");
+                Files.write(receiptPath, receiptBytes, StandardOpenOption.CREATE_NEW);
+                return new BuildOutcome(null, receipt);
+            } catch (IOException | RuntimeException error) {
+                if (purpose == BuildPurpose.TEST_COMPILED_CAPTURE_ONLY && !Files.exists(receiptPath)) {
+                    String failure = appendFailure(evidence.failure(), "Capture qualification unavailable: " + error.getMessage());
+                    Path command = logs.resolve("build-" + config.attempt() + "-package.cmd");
+                    CaptureBuildFailure actual = new CaptureBuildFailure("xar.java-control-test-compiled-capture-failure/v1", machine,
+                            Instant.now().toString(), CaptureTestState.NOT_RUN, normalReceipt(evidence, machine, failure),
+                            evidence.mavenArguments(), Files.exists(command) ? FileRef.measure(command) : null);
+                    Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(actual), StandardOpenOption.CREATE_NEW);
+                }
+                throw error;
+            } finally { if (evidence.interrupted()) Thread.currentThread().interrupt(); }
         }
     }
 
-    private static BuildReceipt buildLocked(Config config, Lease lease, String machine, Path logs)
+    private static BuildReceipt normalReceipt(BuildEvidence evidence, String machine, String failure) throws IOException {
+        Config config = evidence.config();
+        return new BuildReceipt(SCHEMA, machine, Instant.now().toString(), failure == null ? "PASS" : "RED",
+                config.sourceRoot().toString(), evidence.snapshot().toString(), evidence.deployment().toString(),
+                evidence.sourcePostcheck(), evidence.compiledPostcheck(), config.targetKind(), config.sourceLimitProfile(),
+                evidence.source(), evidence.compiled(), evidence.closure(), producerClosure(), FileRef.measure(config.capacityRelease()),
+                evidence.toolchain(), FileRef.measure(config.javaHome().resolve("bin/java.exe")), evidence.probe(), evidence.result(), evidence.finalSizes(), failure);
+    }
+
+    private static BuildEvidence buildLocked(Config config, Lease lease, String machine, Path logs, BuildPurpose purpose)
             throws IOException, InterruptedException {
         Path snapshot = config.workRoot().resolve("scratch/source-" + config.attempt());
         Path build = config.workRoot().resolve("build/" + config.attempt());
@@ -286,6 +495,9 @@ public final class ControlBuild {
         Map<String, String> environment = buildEnvironment(config, snapshot, lease);
         WindowsJobProcess.CommandResult probe = null, result = null; MavenToolchain toolchain = null;
         List<FileRef> closure = List.of(); String failure = null; boolean interrupted = false;
+        List<String> mavenArguments = purpose == BuildPurpose.VERIFY ? reactorVerifyArguments(config, settings, snapshot, build)
+                : reactorCaptureArguments(config, settings, snapshot, build);
+        FileRef testCompilationRef = null;
         Path deployment = config.targetKind() == TargetKind.SERVICE_FAST_JAR
                 ? build.resolve("ck3-control-local-service/quarkus-app") : build.resolve("ck3-control-build-tools");
         try {
@@ -296,11 +508,19 @@ public final class ControlBuild {
                 throw new IOException("Actual default Maven version probe failed or mismatched");
             }
             toolchain = measuredMavenToolchain(config.mavenCommand(), versionOutput, config.minimumMavenVersion());
-            result = invoke(config, lease, snapshot, environment, logs, "verify", reactorVerifyArguments(config, settings, snapshot, build));
+            result = invoke(config, lease, snapshot, environment, logs, purpose == BuildPurpose.VERIFY ? "verify" : "package", mavenArguments);
             interrupted |= Thread.interrupted();
             if (!result.passed()) throw new IOException("Maven failed, timed out, retained children, or exceeded Job memory");
             for (FileRef reference : compiled) reference.verify();
             closure = deploymentManifest(deployment, config.targetKind());
+            if (purpose == BuildPurpose.TEST_COMPILED_CAPTURE_ONLY) {
+                TestCompilationManifest compilation = collectTestCompilation(machine, snapshot, build, compiled);
+                byte[] bytes = JSON.writeValueAsBytes(compilation);
+                if (bytes.length > (4 << 20)) throw new IOException("Actual test compilation manifest exceeds 4 MiB");
+                Path manifestPath = logs.resolve("build-" + config.attempt() + "-test-compilation.json");
+                Files.write(manifestPath, bytes, StandardOpenOption.CREATE_NEW);
+                testCompilationRef = FileRef.measure(manifestPath);
+            }
             guard(config, lease);
         } catch (IOException | RuntimeException error) { failure = error.getClass().getSimpleName() + ": " + error.getMessage(); }
         catch (InterruptedException error) { interrupted = true; failure = "InterruptedException: " + error.getMessage(); }
@@ -312,13 +532,8 @@ public final class ControlBuild {
         try { finalSizes = measureSizes(config.workRoot(), lease.caps()); }
         catch (IOException | RuntimeException error) { finalSizes = Map.of(); failure = appendFailure(failure, "Final part accounting unavailable: " + error); }
         for (var part : finalSizes.entrySet()) if (part.getValue() > lease.caps().get(part.getKey())) failure = appendFailure(failure, "Final part cap exceeded: " + part.getKey());
-        BuildReceipt receipt = new BuildReceipt(SCHEMA, machine, Instant.now().toString(), failure == null ? "PASS" : "RED",
-                config.sourceRoot().toString(), snapshot.toString(), deployment.toString(), postcheck, compiledPostcheck, config.targetKind(), config.sourceLimitProfile(), source, compiled, closure, producerClosure(),
-                FileRef.measure(config.capacityRelease()), toolchain,
-                FileRef.measure(config.javaHome().resolve("bin/java.exe")), probe, result, finalSizes, failure);
-        try { Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt), StandardOpenOption.CREATE_NEW); }
-        finally { if (interrupted) Thread.currentThread().interrupt(); }
-        return receipt;
+        return new BuildEvidence(config, snapshot, deployment, List.copyOf(source), List.copyOf(compiled), closure,
+                postcheck, compiledPostcheck, toolchain, probe, result, mavenArguments, testCompilationRef, finalSizes, failure, interrupted);
     }
 
     /** Always runs after the child terminal result, including a failed Maven command. */
@@ -373,14 +588,111 @@ public final class ControlBuild {
                 "-Djava.io.tmpdir=" + config.workRoot().resolve("scratch"), "-DargLine=-Xms32m -Xmx256m", "verify");
     }
 
+    static List<String> reactorCaptureArguments(Config config, Path settings, Path snapshot, Path build) {
+        List<String> args = new ArrayList<>(reactorVerifyArguments(config, settings, snapshot, build));
+        if (!args.removeLast().equals("verify")) throw new IllegalStateException("Exact existing verify argument contract required");
+        args.add("-Dmaven.test.skip=false"); args.add("-DskipTests=true"); args.add("package");
+        return List.copyOf(args);
+    }
+
+    /** All compiler-created test binaries must attest to one actual compiler input in this immutable module. */
+    static TestCompilationManifest collectTestCompilation(String machine, Path snapshot, Path build,
+            List<FileRef> compiledSource) throws IOException {
+        List<ModuleTestCompilation> modules = new ArrayList<>();
+        List<NotRunTestCompilation> tests = new ArrayList<>();
+        List<FileRef> poms = compiledSource.stream().filter(ref -> Path.of(ref.path()).getFileName().toString().equals("pom.xml")).toList();
+        int totalClasses = 0;
+        for (FileRef pom : poms) {
+            Path module = Path.of(pom.path()).getParent();
+            Path sourceBase = module.resolve("src/test/java");
+            List<FileRef> sources = compiledSource.stream().filter(ref -> Path.of(ref.path()).startsWith(sourceBase)
+                    && ref.path().endsWith(".java")).sorted(Comparator.comparing(FileRef::path)).toList();
+            if (sources.isEmpty()) continue;
+            String artifact = sourceArtifactId(Path.of(pom.path()));
+            Path output = build.resolve(artifact).resolve("test-classes");
+            Path status = build.resolve(artifact).resolve("maven-status/maven-compiler-plugin/testCompile/default-testCompile");
+            FileRef inputs = FileRef.measure(status.resolve("inputFiles.lst"));
+            FileRef created = FileRef.measure(status.resolve("createdFiles.lst"));
+            Set<Path> inputPaths = new HashSet<>();
+            for (String line : compilerLines(inputs)) {
+                Path input = Path.of(line).toAbsolutePath().normalize();
+                if (!Path.of(line).isAbsolute() || !input.startsWith(sourceBase) || !inputPaths.add(input)) throw new IOException("Compiler input is outside its exact module test sources or repeated");
+            }
+            Set<Path> expectedSources = new HashSet<>(); for (FileRef source : sources) expectedSources.add(Path.of(source.path()).toAbsolutePath().normalize());
+            if (!inputPaths.equals(expectedSources)) throw new IOException("Maven testCompile did not report every pinned module test source");
+            Set<Path> createdPaths = new HashSet<>();
+            for (String line : compilerLines(created)) {
+                Path relative = Path.of(line);
+                Path file = output.resolve(relative).normalize();
+                if (relative.isAbsolute() || !file.startsWith(output) || !line.endsWith(".class") || !createdPaths.add(file)) throw new IOException("Compiler-created class escaped or repeated");
+            }
+            if (createdPaths.isEmpty()) throw new IOException("Actual compiler-created test classes missing");
+            List<FileRef> classes = new ArrayList<>(); AtomicLong classBytes = new AtomicLong();
+            walk(output, false, 10000, file -> {
+                if (!file.getFileName().toString().endsWith(".class")) return;
+                FileRef ref = FileRef.measure(file); classes.add(ref); classBytes.set(Math.addExact(classBytes.get(), ref.bytes()));
+                if (classes.size() > 4096 || classBytes.get() > (64L << 20)) throw new IOException("Finite compiled test-class extent exceeded");
+            });
+            Set<Path> actualClasses = new HashSet<>();for (FileRef file : classes) actualClasses.add(Path.of(file.path()).toAbsolutePath().normalize());
+            if (!createdPaths.equals(actualClasses)) throw new IOException("Actual test-class directory differs from Maven createdFiles inventory");
+            totalClasses = Math.addExact(totalClasses, classes.size());if (totalClasses > 4096) throw new IOException("Compiled test-class cohort exceeded");
+            Map<Path,List<FileRef>> bySource = new HashMap<>();
+            for (FileRef file : classes) {
+                var origin = CompiledClassProvenance.attest(output, file, module, CompiledClassProvenance.SourceSet.TEST, compiledSource);
+                Path sourcePath = Path.of(origin.sourceRef().path()).toAbsolutePath().normalize();
+                if (!inputPaths.contains(sourcePath)) throw new IOException("Class SourceFile was not an actual Maven compiler input");
+                bySource.computeIfAbsent(sourcePath, ignored -> new ArrayList<>()).add(file);
+            }
+            for (FileRef source : sources) {
+                List<FileRef> binaries = bySource.get(Path.of(source.path()).toAbsolutePath().normalize());
+                if (binaries == null || binaries.isEmpty()) throw new IOException("Pinned test source has no compiler-created SourceFile binary");
+                binaries.sort(Comparator.comparing(FileRef::path)); source.verify();
+                tests.add(new NotRunTestCompilation(source, binaries, CaptureTestState.NOT_RUN));
+            }
+            inputs.verify(); created.verify(); pom.verify();
+            modules.add(new ModuleTestCompilation(pom, output.toRealPath().toString(), inputs, created));
+        }
+        modules.sort(Comparator.comparing(item -> item.modulePomRef().path()));
+        tests.sort(Comparator.comparing(item -> item.sourceRef().path()));
+        return new TestCompilationManifest(TEST_COMPILATION_SCHEMA, machine, Instant.now().toString(), CaptureTestState.NOT_RUN, modules, tests);
+    }
+
+    private static List<String> compilerLines(FileRef reference) throws IOException {
+        reference.verify(); byte[] raw = readLimited(Path.of(reference.path()), 1 << 20);
+        String text;
+        try { text = StandardCharsets.UTF_8.newDecoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+                .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT).decode(java.nio.ByteBuffer.wrap(raw)).toString(); }
+        catch (java.nio.charset.CharacterCodingException error) { throw new IOException("Compiler inventory must be UTF-8", error); }
+        List<String> lines = text.lines().toList();
+        if (lines.isEmpty() || lines.size() > 4096 || lines.stream().anyMatch(line -> line.isBlank() || line.length() > 4096
+                || line.codePoints().anyMatch(point -> point < 32 || point == 127))) throw new IOException("Bounded complete compiler inventory lines required");
+        reference.verify(); return lines;
+    }
+
+    private static String sourceArtifactId(Path pom) throws IOException {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); factory.setNamespaceAware(true);
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            String artifact = directText(factory.newDocumentBuilder().parse(pom.toFile()).getDocumentElement(), "artifactId");
+            if (!artifact.matches("[A-Za-z0-9][A-Za-z0-9_.-]{0,127}")) throw new IOException("Exact source module artifact ID required");
+            return artifact;
+        } catch (ParserConfigurationException | SAXException error) { throw new IOException("Actual module POM cannot be read", error); }
+    }
+
     static void writeMavenBatch(Path batch, Path explicitOverride, List<String> args) throws IOException {
+        Files.writeString(batch, mavenBatchText(explicitOverride, args), StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+    }
+
+    private static String mavenBatchText(Path explicitOverride, List<String> args) {
         List<String> words = new ArrayList<>(); words.add(explicitOverride == null ? "mvn" : explicitOverride.toString()); words.addAll(args);
         for (String word : words) {
             if (word.isEmpty() || word.matches(".*[\\r\\n\"&|<>^%!].*")) throw new IllegalArgumentException("Unsafe CMD token");
         }
         String command = words.stream().map(word -> word.contains(" ") ? "\"" + word + "\"" : word)
                 .reduce((a, b) -> a + " " + b).orElseThrow();
-        Files.writeString(batch, "@echo off\r\ncall " + command + "\r\nexit /b %errorlevel%\r\n", StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+        return "@echo off\r\ncall " + command + "\r\nexit /b %errorlevel%\r\n";
     }
 
     static MavenToolchain measuredMavenToolchain(Path explicitOverride, String actualVersionOutput, String minimumVersion) throws IOException {
@@ -748,13 +1060,14 @@ public final class ControlBuild {
     private static long positive(JsonNode node, String name) throws IOException { long value = nonnegative(node, name); if (value == 0) throw new IOException("Positive integer required: " + name); return value; }
 
     public static Config parseArguments(String[] args) throws IOException {
-        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile");
+        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile", "--build-purpose");
         Map<String, String> values = new HashMap<>();
         if (args.length % 2 != 0) throw new IOException("Arguments must be exact key/value pairs");
         for (int i = 0; i < args.length; i += 2) {
             if (!allowed.contains(args[i]) || args[i + 1].isBlank() || values.putIfAbsent(args[i], args[i + 1]) != null) throw new IOException("Unknown, empty or duplicate argument");
         }
         for (String key : List.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task")) if (!values.containsKey(key)) throw new IOException("Missing " + key);
+        BuildPurpose.valueOf(values.getOrDefault("--build-purpose", "VERIFY"));
         requireNativeScratch(Path.of(values.get("--work-root")).resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();
         if (!machine.equals(LOCAL_MACHINE) && !values.containsKey("--java-home")) throw new IOException("Other machines require an explicit Java home");
@@ -775,8 +1088,14 @@ public final class ControlBuild {
 
     public static void main(String[] args) {
         try {
-            BuildReceipt receipt = build(parseArguments(args));
-            System.out.println(JSON.writeValueAsString(receipt)); System.exit(receipt.status().equals("PASS") ? 0 : 1);
+            Config config = parseArguments(args); BuildPurpose purpose = BuildPurpose.VERIFY;
+            for (int index = 0; index < args.length; index += 2) if (args[index].equals("--build-purpose")) purpose = BuildPurpose.valueOf(args[index + 1]);
+            if (purpose == BuildPurpose.TEST_COMPILED_CAPTURE_ONLY) {
+                System.out.println(JSON.writeValueAsString(buildCapture(config))); System.exit(0);
+            } else {
+                BuildReceipt receipt = build(config);
+                System.out.println(JSON.writeValueAsString(receipt)); System.exit(receipt.status().equals("PASS") ? 0 : 1);
+            }
         } catch (Exception error) {
             try { System.err.println(JSON.writeValueAsString(new Failure("xar.java-control.build-rejected/v1", "RED", Instant.now().toString(), error.getClass().getSimpleName() + ": " + error.getMessage()))); }
             catch (IOException outputError) { System.err.println(outputError.getClass().getSimpleName()); }

@@ -142,6 +142,14 @@ public final class PythonBoundaryStaticStage {
             native_tree, mcp_tree, test_tree = (ast.parse(p.read_text(encoding='utf-8'))
                 for p in (native_path, mcp_path, test_path))
             driver = class_node(native_tree.body, 'NativeHeadlessGameplayDriver')
+            readonly_fields = [n for n in driver.body if isinstance(n, ast.AnnAssign)
+                and isinstance(n.target, ast.Name) and n.target.id == 'allow_private_semantic_snapshot_readonly']
+            if len(readonly_fields) != 1:
+                raise ValueError('one actual readonly boolean field declaration required')
+            readonly_field = readonly_fields[0]
+            if (not isinstance(readonly_field.annotation, ast.Name) or readonly_field.annotation.id != 'bool'
+                    or not isinstance(readonly_field.value, ast.Constant) or readonly_field.value.value is not False):
+                raise ValueError('actual readonly field must declare bool with literal False default')
             read_method = function(driver.body, 'read_tactical_daily_sentinel_status_private_v1')
             primitive = function(driver.body, '_execute_primitive_step')
             if primitive.decorator_list or read_method.decorator_list:
@@ -149,12 +157,13 @@ public final class PythonBoundaryStaticStage {
             primitive_signature = copy.deepcopy(primitive)
             primitive_signature.body = ast.parse('raise NotImplementedError').body
             scoped_driver = copy.deepcopy(driver)
-            scoped_driver.body = [primitive_signature, copy.deepcopy(read_method)]
+            scoped_driver.body = [copy.deepcopy(readonly_field), primitive_signature, copy.deepcopy(read_method)]
             constants = [assignment(native_tree.body, '_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY'),
                          assignment(native_tree.body, '_TACTICAL_DAILY_SENTINEL_STATUS_STEP')]
             native_scope = source(ast.parse('from pathlib import Path').body
                 + [copy.deepcopy(n) for n in constants] + [scoped_driver])
             checked.extend(source_range(native_path, n, n.targets[0].id) for n in constants)
+            checked.append(source_range(native_path, readonly_field, readonly_field.target.id))
             checked.append(source_range(native_path, read_method, read_method.name))
             signatures.append({'symbol': primitive.name, 'path': str(native_path),
                 'first_line': primitive.lineno, 'last_line': primitive.body[0].lineno - 1})
@@ -181,21 +190,27 @@ public final class PythonBoundaryStaticStage {
                 source_range(mcp_path, sentinel, 'sentinel_status'),
                 source_range(mcp_path, guard, 'sentinel_guard_and_handler')))
             tests = class_node(test_tree.body, 'McpWarDailyWatchConfigTests')
-            case = function(tests.body, 'test_fixed_status_driver_uses_only_existing_capability_without_transcript')
+            cases = [function(tests.body, name) for name in (
+                'test_fixed_status_driver_uses_only_existing_capability_without_transcript',
+                'test_fixed_status_actual_registered_mcp_is_zero_argument_and_opt_in',
+                'test_fixed_status_registered_mcp_rejects_transcript_and_arbitrary_arguments')]
+            endpoint = class_node(test_tree.body, 'NoGameEndpoint')
             scoped_tests = copy.deepcopy(tests)
-            scoped_tests.body = [copy.deepcopy(case)]
-            test_scope = source(ast.parse('import unittest\\nfrom unittest.mock import patch\\n'
-                + 'from xar_autoplayer.bridge import native_driver\\n').body + [scoped_tests])
-            checked.append(source_range(test_path, case, case.name))
+            scoped_tests.body = copy.deepcopy(cases)
+            test_scope = source(ast.parse('import unittest,tempfile\\nfrom pathlib import Path\\nfrom unittest.mock import patch\\n'
+                + 'from xar_autoplayer.bridge import mcp_server,native_driver\\n').body + [copy.deepcopy(endpoint), scoped_tests])
+            checked.extend(source_range(test_path, case, case.name) for case in cases)
+            checked.append(source_range(test_path, endpoint, endpoint.name))
             paths = (native_path, mcp_path, driver_path, test_path)
             sdk_paths = sorted({Path(inspect.getfile(v)).resolve() for v in (MCPServer, MCPServer.tool, ToolAnnotations)})
             dependencies = [reference(p) for p in sdk_paths]
             sources = [BuildSource(str(native_path), 'xar_autoplayer.bridge.native_driver', native_scope),
-                BuildSource(str(mcp_path), 'xar_autoplayer.bridge.mcp_server', mcp_scope),
-                BuildSource(str(test_path), 'test_mcp_war_daily_watch_config_v1', test_scope)]
+                BuildSource(str(mcp_path), 'xar_autoplayer.bridge.mcp_server', mcp_scope)]
             whole_module = False
             python_version = str(sys.version_info.major) + '.' + str(sys.version_info.minor)
         elif kind == 'MONTHLY_FIXTURE_WHOLE_MODULE':
+            if sys.version_info[:2] != (3, 13):
+                raise ValueError('actual Python 3.13 dependency environment required; Python 3.11 remains unqualified')
             test_path = root / 'ck3_autonomous_player/tests/unit/test_conditional_monthly_loss_budgets.py'
             paths = (test_path, root / 'ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py',
                 root / 'ck3_autonomous_player/src/xar_autoplayer/bridge/service.py')
@@ -203,21 +218,27 @@ public final class PythonBoundaryStaticStage {
             checked.append({'symbol': 'whole_module', 'path': str(test_path),
                 'first_line': 1, 'last_line': len(raw.splitlines())})
             sources = [BuildSource(str(test_path), 'test_conditional_monthly_loss_budgets', raw)]
-            flags.extend(('--python-version', '3.11'))
+            flags.extend(('--python-version', '3.13'))
             whole_module = True
-            python_version = '3.11'
+            python_version = '3.13'
         else:
             raise ValueError('fixed typed static stage required')
         refs = [reference(path) for path in paths]
         _, options = process_options(flags + ['-c', 'pass'])
         result = build(sources=sources, options=options)
-        for error in result.errors:
+        errors = list(result.errors)
+        if kind == 'SDK_SENTINEL_EXTRACTED':
+            # A fresh graph resolves callers against the actual complete SDK constructors.
+            _, caller_options = process_options(flags + ['-c', 'pass'])
+            callers = build(sources=[BuildSource(str(test_path), 'test_mcp_war_daily_watch_config_v1', test_scope)], options=caller_options)
+            errors.extend(callers.errors)
+        for error in errors:
             print(error)
         for item in refs + dependencies:
             if reference(Path(item['path'])) != item:
                 raise ValueError('actual static source/signature dependency changed')
-        manifest = {'schema': 'xar.python-boundary-static-scope/v1', 'kind': kind,
-            'whole_module_credit': whole_module, 'completed': True, 'error_count': len(result.errors),
+        manifest = {'schema': 'xar.python-boundary-static-scope/v2', 'kind': kind,
+            'whole_module_credit': whole_module, 'completed': True, 'error_count': len(errors),
             'python_version': python_version, 'mypy_version': importlib.metadata.version('mypy'),
             'mcp_version': mcp_version, 'checked_definitions': checked, 'signature_only_definitions': signatures,
             'source_refs': refs, 'dependency_source_refs': dependencies}
@@ -228,8 +249,8 @@ public final class PythonBoundaryStaticStage {
             stream.write(payload)
             stream.flush()
             os.fsync(stream.fileno())
-        print('PYTHON_BOUNDARY_STATIC ' + kind + ' ' + ('RED' if result.errors else 'PASS'), flush=True)
-        sys.exit(1 if result.errors else 0)
+        print('PYTHON_BOUNDARY_STATIC ' + kind + ' ' + ('RED' if errors else 'PASS'), flush=True)
+        sys.exit(1 if errors else 0)
         """;
 
     public static ControlBuild.FileRef run(Config config) throws IOException, InterruptedException {
@@ -312,24 +333,27 @@ public final class PythonBoundaryStaticStage {
     }
 
     static void requireScope(Kind kind, ScopeManifest manifest) throws IOException {
-        if (!manifest.schema().equals("xar.python-boundary-static-scope/v1") || manifest.kind() != kind
+        if (!manifest.schema().equals("xar.python-boundary-static-scope/v2") || manifest.kind() != kind
                 || !manifest.completed() || manifest.errorCount() != 0 || manifest.mypyVersion().isBlank()
                 || manifest.wholeModuleCredit() != (kind == Kind.MONTHLY_FIXTURE_WHOLE_MODULE)) throw new IOException("Actual completed zero-error strict scope required");
         if (kind == Kind.SDK_SENTINEL_EXTRACTED) {
-            if (!manifest.mcpVersion().equals("2.0.0") || manifest.checkedDefinitions().size() != 7
+            if (!manifest.mcpVersion().equals("2.0.0") || manifest.checkedDefinitions().size() != 11
                     || manifest.signatureOnlyDefinitions().size() != 1 || manifest.sourceRefs().size() != 4
                     || manifest.dependencySourceRefs().size() < 2
                     || !manifest.signatureOnlyDefinitions().getFirst().symbol().equals("_execute_primitive_step")
                     || !manifest.checkedDefinitions().stream().map(SourceRange::symbol).toList().equals(List.of(
                             "_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY", "_TACTICAL_DAILY_SENTINEL_STATUS_STEP",
+                            "allow_private_semantic_snapshot_readonly",
                             "read_tactical_daily_sentinel_status_private_v1", "read_only_tool", "sentinel_status",
-                            "sentinel_guard_and_handler", "test_fixed_status_driver_uses_only_existing_capability_without_transcript"))) {
-                throw new IOException("Exact actual SDK method/guard/handler/one-case scope and installed dependency signatures required");
+                            "sentinel_guard_and_handler", "test_fixed_status_driver_uses_only_existing_capability_without_transcript",
+                            "test_fixed_status_actual_registered_mcp_is_zero_argument_and_opt_in",
+                            "test_fixed_status_registered_mcp_rejects_transcript_and_arbitrary_arguments", "NoGameEndpoint"))) {
+                throw new IOException("Exact SDK method/handler/three cases/actual endpoint fixture and installed dependency signatures required");
             }
-        } else if (!manifest.pythonVersion().equals("3.11") || !manifest.mcpVersion().isEmpty()
+        } else if (!manifest.pythonVersion().equals("3.13") || !manifest.mcpVersion().isEmpty()
                 || manifest.checkedDefinitions().size() != 1 || !manifest.checkedDefinitions().getFirst().symbol().equals("whole_module")
                 || !manifest.signatureOnlyDefinitions().isEmpty() || manifest.sourceRefs().size() != 3
-                || !manifest.dependencySourceRefs().isEmpty()) throw new IOException("Whole modified fixture Python 3.11 strict scope required");
+                || !manifest.dependencySourceRefs().isEmpty()) throw new IOException("Whole modified fixture Python 3.13 strict scope required; Python 3.11 dependency environment is unqualified");
         List<String> paths = manifest.sourceRefs().stream().map(ControlBuild.FileRef::path).toList();
         if (paths.stream().distinct().count() != paths.size()) throw new IOException("Repeated static source reference");
         for (SourceRange range : manifest.checkedDefinitions()) if (!paths.contains(range.path())) throw new IOException("Checked range escapes actual source closure");

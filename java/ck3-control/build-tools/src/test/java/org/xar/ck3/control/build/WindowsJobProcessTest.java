@@ -23,12 +23,100 @@ final class WindowsJobProcessTest {
             WindowsJobProcess.ProcessIdentity original = owner.identity();
             assertEquals(original, WindowsJobProcess.exactProcess(original.pid()));
             assertTrue(new BigInteger(original.creationFiletimeDecimal()).compareTo(BigInteger.ONE.shiftLeft(53)) > 0);
-            WindowsJobProcess.CommandResult result = owner.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+            Path sidecar = temporary.resolve("exit42.job-members.json");
+            WindowsJobProcess.AwaitResult awaited = owner.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {}, sidecar);
+            WindowsJobProcess.CommandResult result = awaited.commandResult();
+            assertEquals(WindowsJobProcess.DiagnosticWriteState.NOT_NEEDED, awaited.diagnostic().state());
+            assertNull(awaited.diagnostic().sidecarRef()); assertFalse(Files.exists(sidecar));
             assertEquals(42, result.exitCode()); assertFalse(result.passed());
             assertEquals(0, result.accounting().activeProcesses());
             assertTrue(result.accounting().peakJobMemoryBytes() <= result.accounting().memoryLimitBytes());
             assertTrue(Files.readString(output).contains("EXIT42"));
         }
+    }
+
+    @Test void exitedRootZeroWithActualLiveChildWritesOwnedMembershipBeforeKillAndStillRejectsSuccess() throws Exception {
+        Path output = temporary.resolve("root0-tree.stdout"); Path sidecar = temporary.resolve("root0.job-members.json");
+        WindowsJobProcess owner = WindowsJobProcess.start(spec("root0-live-child", output));
+        try (owner) {
+            long childPid = awaitLiveChildPid(output);
+            try (WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(childPid)) {
+                WindowsJobProcess.ProcessIdentity child = retained.identity(); assertEquals(258, retained.waitZero());
+                WindowsJobProcess.AwaitResult awaited = owner.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {}, sidecar);
+                WindowsJobProcess.CommandResult terminal = awaited.commandResult();
+                assertEquals(0, terminal.exitCode()); assertEquals("root_exited_with_live_children", terminal.stopReason());
+                assertFalse(terminal.passed()); assertEquals(0, terminal.accounting().activeProcesses());
+                assertEquals(WindowsJobProcess.DiagnosticWriteState.WRITTEN, awaited.diagnostic().state());
+                awaited.diagnostic().sidecarRef().verify(); assertNull(awaited.diagnostic().error());
+                assertTrue(Files.size(sidecar) <= WindowsJobProcess.JOB_DIAGNOSTIC_MAX_BYTES);
+                var mapper = ControlBuild.strictMapper();
+                WindowsJobProcess.JobDiagnostic snapshot = mapper.readValue(Files.readAllBytes(sidecar), WindowsJobProcess.JobDiagnostic.class);
+                assertEquals(snapshot, mapper.readValue(mapper.writeValueAsBytes(snapshot), WindowsJobProcess.JobDiagnostic.class));
+                assertEquals(WindowsJobProcess.currentMachineId(), snapshot.machineId());
+                assertEquals("OWNED_JOB_BEFORE_CLEANUP", snapshot.scope());
+                assertEquals("root_exited_with_live_children", snapshot.trigger());
+                assertEquals(terminal.identity(), snapshot.root().identity());
+                assertEquals(0L, snapshot.root().waitZero()); assertEquals(0L, snapshot.root().exitCode());
+                assertNull(snapshot.root().error()); assertTrue(snapshot.accounting().activeProcesses() > 0);
+                assertEquals(WindowsJobProcess.JobListState.COMPLETE, snapshot.listState());
+                WindowsJobProcess.JobMember row = snapshot.members().stream()
+                        .filter(member -> member.pidDecimal().equals(Long.toString(childPid))).findFirst().orElseThrow();
+                assertEquals(WindowsJobProcess.MemberState.OBSERVED, row.state()); assertEquals(child, row.identity());
+                assertEquals(Boolean.TRUE, row.inOwnedJob()); assertEquals(258L, row.waitZero()); assertEquals(259L, row.exitCode());
+                assertNull(row.error()); assertNull(row.win32Error());
+                assertActuallyKilledChild(retained);
+            }
+        }
+        assertThrows(IllegalStateException.class, owner::accounting);
+    }
+
+    @Test void existingDiagnosticSidecarCannotBeOverwrittenOrMaskTheActualLiveChildFailureAndCleanup() throws Exception {
+        Path output = temporary.resolve("root0-existing.stdout"); Path sidecar = temporary.resolve("existing.job-members.json");
+        Files.writeString(sidecar, "protected original diagnostic");
+        try (WindowsJobProcess owner = WindowsJobProcess.start(spec("root0-live-child", output))) {
+            long childPid = awaitLiveChildPid(output);
+            try (WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(childPid)) {
+                assertEquals(258, retained.waitZero());
+                WindowsJobProcess.AwaitResult awaited = owner.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {}, sidecar);
+                assertEquals(0, awaited.commandResult().exitCode());
+                assertEquals("root_exited_with_live_children", awaited.commandResult().stopReason());
+                assertFalse(awaited.commandResult().passed()); assertEquals(0, awaited.commandResult().accounting().activeProcesses());
+                assertEquals(WindowsJobProcess.DiagnosticWriteState.UNAVAILABLE, awaited.diagnostic().state());
+                assertNull(awaited.diagnostic().sidecarRef()); assertTrue(awaited.diagnostic().error().contains("FileAlreadyExistsException"));
+                assertEquals("protected original diagnostic", Files.readString(sidecar));
+                assertActuallyKilledChild(retained);
+            }
+        }
+    }
+
+    /** Job accounting zero and each process object's signal are independent native observations. */
+    private static void assertActuallyKilledChild(WindowsJobProcess.ReadOnlyProcessHandle retained) throws InterruptedException {
+        long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+        long signal = 258; boolean observedInTime = false;
+        while (System.nanoTime() - deadline < 0) {
+            signal = retained.waitZero();
+            if (signal != 258) {
+                observedInTime = System.nanoTime() - deadline < 0;
+                break;
+            }
+            Thread.sleep(10);
+        }
+        assertTrue(observedInTime, "actual child kernel signal must be observed within five monotonic seconds");
+        assertEquals(0, signal, "Job accounting zero alone cannot stand in for the retained process object's signal");
+        assertEquals(125, retained.exitCode());
+    }
+
+    private long awaitLiveChildPid(Path output) throws Exception {
+        Instant deadline = Instant.now().plusSeconds(8);
+        String ready = "";
+        while (Instant.now().isBefore(deadline)) {
+            if (Files.exists(output)) ready = Files.readString(output);
+            if (ready.contains("GRANDCHILD:") && ready.endsWith("\n")) break;
+            Thread.sleep(20);
+        }
+        assertTrue(ready.contains("GRANDCHILD:") && ready.endsWith("\n"), "actual child PID line must be complete");
+        return ready.lines().filter(line -> line.startsWith("GRANDCHILD:"))
+                .mapToLong(line -> Long.parseLong(line.substring(11))).findFirst().orElseThrow();
     }
 
     @Test void timeoutKillsTheActualGrandchildAndLeavesNoJobMember() throws Exception {
@@ -186,10 +274,11 @@ final class WindowsJobProcessTest {
                 }
                 System.exit(exit);
             }
-            if (args[0].equals("tree")) {
+            if (args[0].equals("tree") || args[0].equals("root0-live-child")) {
                 Process grandchild = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin/java.exe").toString(),
                         "-Xms16m", "-Xmx64m", "-cp", System.getProperty("java.class.path"), Child.class.getName(), "wait").inheritIO().start();
                 System.out.println("GRANDCHILD:" + grandchild.pid()); System.out.flush();
+                if (args[0].equals("root0-live-child")) System.exit(0);
             }
             while (true) Thread.sleep(1000);
         }

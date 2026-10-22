@@ -24,6 +24,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -42,6 +43,8 @@ public final class WindowsJobProcess implements AutoCloseable {
     private static final int STILL_ACTIVE = 259;
     private static final int WAIT_TIMEOUT = 258;
     private static final int WAIT_FAILED = -1;
+    public static final int JOB_DIAGNOSTIC_MAX_MEMBERS = 256;
+    public static final int JOB_DIAGNOSTIC_MAX_BYTES = 65_536;
 
     public record CommandSpec(Path executable, List<String> arguments, Path cwd,
             Map<String, String> environment, Path stdout, Path stderr, long memoryLimitBytes) {
@@ -107,12 +110,78 @@ public final class WindowsJobProcess implements AutoCloseable {
         }
     }
 
+    public enum DiagnosticWriteState { NOT_REQUESTED, NOT_NEEDED, WRITTEN, UNAVAILABLE }
+    public enum JobListState { COMPLETE, TRUNCATED, UNAVAILABLE }
+    public enum MemberState { OBSERVED, UNAVAILABLE }
+
+    /** Independent sidecar outcome; it never changes CommandResult or grants command success. */
+    public record JobDiagnosticOutcome(DiagnosticWriteState state, String requestedPath,
+            ControlBuild.FileRef sidecarRef, String error) {
+        public JobDiagnosticOutcome {
+            Objects.requireNonNull(state); checkDiagnosticError(error);
+            if ((state == DiagnosticWriteState.NOT_REQUESTED && (requestedPath != null || sidecarRef != null || error != null))
+                    || (state != DiagnosticWriteState.NOT_REQUESTED && (requestedPath == null || requestedPath.isBlank()))
+                    || (state == DiagnosticWriteState.WRITTEN && (sidecarRef == null || error != null
+                        || sidecarRef.bytes() < 1 || sidecarRef.bytes() > JOB_DIAGNOSTIC_MAX_BYTES
+                        || !Path.of(requestedPath).toAbsolutePath().normalize().equals(Path.of(sidecarRef.path()).toAbsolutePath().normalize())))
+                    || (state != DiagnosticWriteState.WRITTEN && sidecarRef != null)
+                    || (state == DiagnosticWriteState.UNAVAILABLE ? error == null : error != null)) {
+                throw new IllegalArgumentException("Exact bounded diagnostic outcome required");
+            }
+        }
+    }
+    public record AwaitResult(CommandResult commandResult, JobDiagnosticOutcome diagnostic) {
+        public AwaitResult { Objects.requireNonNull(commandResult); Objects.requireNonNull(diagnostic); }
+    }
+    public record RootDiagnostic(ProcessIdentity identity, Long waitZero, Long exitCode, Long win32Error, String error) {
+        public RootDiagnostic {
+            Objects.requireNonNull(identity); checkDword(waitZero); checkDword(exitCode); checkDword(win32Error); checkDiagnosticError(error);
+            if (error == null && (waitZero == null || exitCode == null || win32Error != null)) {
+                throw new IllegalArgumentException("Independent actual root wait and exit required");
+            }
+        }
+    }
+    public record JobMember(String pidDecimal, MemberState state, ProcessIdentity identity, Boolean inOwnedJob,
+            Long waitZero, Long exitCode, Long win32Error, String error) {
+        public JobMember {
+            if (pidDecimal == null || !pidDecimal.matches("[1-9][0-9]{0,9}")
+                    || Long.parseLong(pidDecimal) > 0xffff_ffffL) throw new IllegalArgumentException("Canonical DWORD PID text required");
+            Objects.requireNonNull(state); checkDword(waitZero); checkDword(exitCode); checkDword(win32Error); checkDiagnosticError(error);
+            if (identity != null && !pidDecimal.equals(Long.toString(identity.pid()))) throw new IllegalArgumentException("Same-handle PID differs");
+            if (state == MemberState.OBSERVED && (identity == null || !Boolean.TRUE.equals(inOwnedJob)
+                    || waitZero == null || exitCode == null || win32Error != null || error != null)) {
+                throw new IllegalArgumentException("Actual same-owned-Job handle observation required");
+            }
+            if (state == MemberState.UNAVAILABLE && error == null) throw new IllegalArgumentException("Explicit race/query failure required");
+        }
+    }
+    public record JobDiagnostic(String schema, String machineId, String observedAtUtc, String scope, String trigger,
+            RootDiagnostic root, Accounting accounting, String accountingError, JobListState listState,
+            Long assignedProcesses, Long listedProcesses, List<JobMember> members, Long win32Error, String error) {
+        public JobDiagnostic {
+            if (!"xar.windows-owned-job-before-cleanup/v1".equals(schema) || !"OWNED_JOB_BEFORE_CLEANUP".equals(scope)
+                    || machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{0,63}") || machineId.equals("unknown")
+                    || trigger == null || trigger.isBlank() || trigger.length() > 512) throw new IllegalArgumentException("Exact owned-Job diagnostic scope required");
+            Instant.parse(observedAtUtc); Objects.requireNonNull(root); Objects.requireNonNull(listState);
+            members = List.copyOf(members); checkDiagnosticError(accountingError); checkDiagnosticError(error); checkDword(win32Error);
+            checkDword(assignedProcesses); checkDword(listedProcesses);
+            if ((accounting == null) != (accountingError != null) || members.size() > JOB_DIAGNOSTIC_MAX_MEMBERS
+                    || members.stream().map(JobMember::pidDecimal).distinct().count() != members.size()
+                    || (listState == JobListState.COMPLETE && (assignedProcesses == null || listedProcesses == null
+                        || !assignedProcesses.equals(listedProcesses) || listedProcesses != members.size()
+                        || win32Error != null || error != null))) {
+                throw new IllegalArgumentException("Bounded actual Job list and explicit partial state required");
+            }
+        }
+    }
+
     /** JNA 5.19.1 does not map Job APIs; these signatures use the Windows SDK ABI. */
     public interface JobKernel32 extends Kernel32 {
         HANDLE CreateJobObjectW(WinBase.SECURITY_ATTRIBUTES attributes, WString name);
         boolean SetInformationJobObject(HANDLE job, int kind, Pointer data, int length);
         boolean QueryInformationJobObject(HANDLE job, int kind, Pointer data, int length, IntByReference returned);
         boolean AssignProcessToJobObject(HANDLE job, HANDLE process);
+        boolean IsProcessInJob(HANDLE process, HANDLE job, IntByReference result);
         boolean TerminateJobObject(HANDLE job, int exitCode);
         int ResumeThread(HANDLE thread);
     }
@@ -222,10 +291,18 @@ public final class WindowsJobProcess implements AutoCloseable {
     public void terminate(int exitCode) { ensureOpen(); require(nativeApi.TerminateJobObject(job, exitCode)); }
 
     public CommandResult await(Duration timeout, Instant leaseDeadline, Runnable periodicGuard) throws InterruptedException {
+        return await(timeout, leaseDeadline, periodicGuard, null).commandResult();
+    }
+
+    /** Optional CREATE_NEW sidecar is captured before the first owned-Job kill; diagnostic failure never masks its terminal. */
+    public AwaitResult await(Duration timeout, Instant leaseDeadline, Runnable periodicGuard, Path diagnosticSidecar) throws InterruptedException {
         ensureOpen(); Objects.requireNonNull(leaseDeadline); Objects.requireNonNull(periodicGuard);
         if (timeout.isZero() || timeout.isNegative()) throw new IllegalArgumentException("Finite positive timeout required");
         long deadline = Math.addExact(System.nanoTime(), timeout.toNanos());
         String reason = null; boolean interrupted = false;
+        JobDiagnosticOutcome diagnostic = diagnosticSidecar == null
+                ? new JobDiagnosticOutcome(DiagnosticWriteState.NOT_REQUESTED, null, null, null)
+                : new JobDiagnosticOutcome(DiagnosticWriteState.NOT_NEEDED, diagnosticSidecar.toString(), null, null);
         while (isRunning()) {
             if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
                 reason = "timeout_or_release_expired"; break;
@@ -238,12 +315,16 @@ public final class WindowsJobProcess implements AutoCloseable {
             try { Thread.sleep(250); }
             catch (InterruptedException error) { interrupted = true; reason = "interrupted"; break; }
         }
-        if (reason != null) terminate(124);
+        if (reason != null) {
+            diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
+            terminate(124);
+        }
         for (int i = 0; i < 50 && accounting().activeProcesses() != 0; i++) {
             try { Thread.sleep(100); } catch (InterruptedException error) { interrupted = true; }
         }
         if (accounting().activeProcesses() != 0) {
             reason = reason == null ? "root_exited_with_live_children" : reason;
+            diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
             terminate(125);
             for (int i = 0; i < 50 && accounting().activeProcesses() != 0; i++) {
                 try { Thread.sleep(100); } catch (InterruptedException error) { interrupted = true; }
@@ -262,7 +343,145 @@ public final class WindowsJobProcess implements AutoCloseable {
         CommandResult result = new CommandResult(identity(), exit.getValue(), (System.nanoTime() - started) / 1_000_000_000.0,
                 finalState, reason);
         if (interrupted) Thread.currentThread().interrupt();
-        return result;
+        return new AwaitResult(result, diagnostic);
+    }
+
+    private JobDiagnosticOutcome captureBeforeCleanup(Path sidecar, String trigger, JobDiagnosticOutcome previous) {
+        if (previous.state() != DiagnosticWriteState.NOT_NEEDED) return previous; // One bounded observation/write attempt.
+        try {
+            if (!sidecar.isAbsolute()) throw new IOException("Absolute diagnostic sidecar required");
+            JobDiagnostic snapshot = ownedJobDiagnostic(trigger);
+            byte[] raw = ControlBuild.strictMapper().writeValueAsBytes(snapshot);
+            while (raw.length > JOB_DIAGNOSTIC_MAX_BYTES && !snapshot.members().isEmpty()) {
+                // Preserve exact identities; omit a bounded tail instead of truncating an image or birth value.
+                int keep = snapshot.members().size() / 2;
+                snapshot = new JobDiagnostic(snapshot.schema(), snapshot.machineId(), snapshot.observedAtUtc(), snapshot.scope(),
+                        snapshot.trigger(), snapshot.root(), snapshot.accounting(), snapshot.accountingError(),
+                        snapshot.listState() == JobListState.UNAVAILABLE ? JobListState.UNAVAILABLE : JobListState.TRUNCATED,
+                        snapshot.assignedProcesses(), snapshot.listedProcesses(), snapshot.members().subList(0, keep),
+                        snapshot.win32Error(), diagnosticText("sidecar_byte_budget; " + Objects.toString(snapshot.error(), "")));
+                raw = ControlBuild.strictMapper().writeValueAsBytes(snapshot);
+            }
+            if (raw.length == 0 || raw.length > JOB_DIAGNOSTIC_MAX_BYTES) throw new IOException("Diagnostic metadata exceeds 64 KiB");
+            Files.write(sidecar, raw, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+            ControlBuild.FileRef reference = ControlBuild.FileRef.measure(sidecar); reference.verify();
+            return new JobDiagnosticOutcome(DiagnosticWriteState.WRITTEN, sidecar.toString(), reference, null);
+        } catch (IOException | RuntimeException | LinkageError error) {
+            // A diagnostic failure never bypasses the original kill, accounting, stop reason or caller cleanup.
+            return new JobDiagnosticOutcome(DiagnosticWriteState.UNAVAILABLE, sidecar.toString(), null,
+                    diagnosticText(error.getClass().getName() + ": " + error.getMessage()));
+        }
+    }
+
+    private JobDiagnostic ownedJobDiagnostic(String trigger) {
+        String observed = Instant.now().toString();
+        RootDiagnostic root = rootDiagnostic();
+        Accounting counts = null; String accountingError = null;
+        try { counts = accounting(); }
+        catch (RuntimeException | LinkageError error) { accountingError = diagnosticText(error.toString()); }
+        JobListState state = JobListState.COMPLETE; Long assigned = null, listed = null, nativeError = null;
+        String error = null; List<JobMember> members = new ArrayList<>();
+        // x64 DWORD,DWORD,ULONG_PTR[]: offset8, pointer stride8. No system process enumeration or retry loop.
+        try (Memory buffer = new Memory(8L + JOB_DIAGNOSTIC_MAX_MEMBERS * Native.POINTER_SIZE)) {
+            buffer.clear();
+            boolean queried = nativeApi.QueryInformationJobObject(job, 3, buffer, (int) buffer.size(), null);
+            if (!queried) nativeError = Integer.toUnsignedLong(Native.getLastError());
+            if (!queried && nativeError != 234) {
+                state = JobListState.UNAVAILABLE; error = "QueryInformationJobObject(JobObjectBasicProcessIdList) failed";
+            } else {
+                assigned = Integer.toUnsignedLong(buffer.getInt(0)); listed = Integer.toUnsignedLong(buffer.getInt(4));
+                if (listed > JOB_DIAGNOSTIC_MAX_MEMBERS || listed > assigned) {
+                    state = JobListState.UNAVAILABLE; error = "Invalid actual Job PID list counts; no PID lookup attempted";
+                } else {
+                    if (!queried || listed < assigned) {
+                        state = JobListState.TRUNCATED; error = "Bounded partial Job PID list";
+                    }
+                    for (int i = 0; i < listed; i++) {
+                        long pid = buffer.getLong(8L + i * Native.POINTER_SIZE);
+                        if (pid <= 0 || pid > 0xffff_ffffL) {
+                            state = JobListState.UNAVAILABLE;
+                            error = "Non-DWORD Job PID; no external PID lookup: " + Long.toUnsignedString(pid); break;
+                        }
+                        members.add(memberDiagnostic(pid));
+                    }
+                }
+            }
+        }
+        return new JobDiagnostic("xar.windows-owned-job-before-cleanup/v1", currentMachineId(), observed,
+                "OWNED_JOB_BEFORE_CLEANUP", diagnosticText(trigger), root, counts, accountingError,
+                state, assigned, listed, members, nativeError, error);
+    }
+
+    private RootDiagnostic rootDiagnostic() {
+        Long wait = null, exit = null, nativeError = null; String error = null;
+        try {
+            int observed = nativeApi.WaitForSingleObject(process.hProcess, 0); wait = Integer.toUnsignedLong(observed);
+            if (observed == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+            IntByReference code = new IntByReference(); require(nativeApi.GetExitCodeProcess(process.hProcess, code));
+            exit = Integer.toUnsignedLong(code.getValue());
+        } catch (RuntimeException | LinkageError failure) {
+            nativeError = diagnosticNativeError(failure); error = diagnosticText(failure.toString());
+        }
+        return new RootDiagnostic(identity(), wait, exit, nativeError, error);
+    }
+
+    private JobMember memberDiagnostic(long pid) {
+        HANDLE handle = nativeApi.OpenProcess(0x1000 | 0x100000, false, (int) pid);
+        if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) {
+            long nativeError = Integer.toUnsignedLong(Native.getLastError());
+            return new JobMember(Long.toString(pid), MemberState.UNAVAILABLE, null, null, null, null,
+                    nativeError, "OpenProcess after owned Job enumeration unavailable; process may have exited");
+        }
+        ProcessIdentity measured = null; Boolean inJob = null; Long wait = null, exit = null, nativeError = null;
+        String error = null, stage = "IsProcessInJob";
+        try {
+            IntByReference membership = new IntByReference(); require(nativeApi.IsProcessInJob(handle, job, membership));
+            inJob = membership.getValue() != 0;
+            if (!inJob) error = "Enumerated PID is no longer in this owned Job; no identity read permitted";
+            else {
+                stage = "GetProcessTimes/QueryFullProcessImageName"; measured = identity(nativeApi, handle, pid);
+                stage = "WaitForSingleObject";
+                int observed = nativeApi.WaitForSingleObject(handle, 0); wait = Integer.toUnsignedLong(observed);
+                if (observed == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+                stage = "GetExitCodeProcess";
+                IntByReference code = new IntByReference(); require(nativeApi.GetExitCodeProcess(handle, code));
+                exit = Integer.toUnsignedLong(code.getValue());
+                stage = "IsProcessInJob recheck"; require(nativeApi.IsProcessInJob(handle, job, membership));
+                inJob = membership.getValue() != 0;
+                if (!inJob) error = "Same held generation left the owned Job during observation";
+            }
+        } catch (RuntimeException | LinkageError failure) {
+            nativeError = diagnosticNativeError(failure); error = diagnosticText(stage + ": " + failure);
+        } finally {
+            // Close this single query handle exactly once, without changing command cleanup semantics.
+            try {
+                if (!nativeApi.CloseHandle(handle)) {
+                    long closeError = Integer.toUnsignedLong(Native.getLastError());
+                    if (nativeError == null) nativeError = closeError;
+                    error = diagnosticText(Objects.toString(error, "") + "; CloseHandle Win32=" + closeError);
+                }
+            } catch (RuntimeException | LinkageError closeFailure) {
+                if (nativeError == null) nativeError = diagnosticNativeError(closeFailure);
+                error = diagnosticText(Objects.toString(error, "") + "; CloseHandle: " + closeFailure);
+            }
+        }
+        return new JobMember(Long.toString(pid), error == null ? MemberState.OBSERVED : MemberState.UNAVAILABLE,
+                measured, inJob, wait, exit, nativeError, error);
+    }
+
+    private static Long diagnosticNativeError(Throwable error) {
+        return error instanceof Win32Exception nativeError ? Integer.toUnsignedLong(nativeError.getErrorCode()) : null;
+    }
+    private static String diagnosticText(String text) {
+        if (text.length() <= 512) return text;
+        int end = Character.isHighSurrogate(text.charAt(511)) ? 511 : 512;
+        return text.substring(0, end);
+    }
+    private static void checkDiagnosticError(String error) {
+        if (error != null && (error.isBlank() || error.length() > 512)) throw new IllegalArgumentException("Bounded diagnostic error required");
+    }
+    private static void checkDword(Long value) {
+        if (value != null && (value < 0 || value > 0xffff_ffffL)) throw new IllegalArgumentException("Unsigned DWORD diagnostic value required");
     }
 
     @Override public void close() {

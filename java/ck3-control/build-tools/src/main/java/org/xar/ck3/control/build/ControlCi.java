@@ -73,7 +73,7 @@ public final class ControlCi {
         ControlBuild.BuildReceipt tools = ControlBuild.build(config(plan, toolsSource, releasePath, "qualified-tools", ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME));
         if (!tools.status().equals("PASS")) throw new IOException("Native Job tools qualification failed");
         Path toolsReceipt = root.resolve("logs/build-qualified-tools.json");
-        requireJUnit(Path.of(tools.deploymentRoot()).resolve("surefire-reports"), 54);
+        requireJUnit(Path.of(tools.deploymentRoot()).resolve("surefire-reports"), 118);
         List<String> arguments = new ArrayList<>(List.of("-Xms32m", "-Xmx128m", "-XX:MaxMetaspaceSize=96m",
                 "-XX:ReservedCodeCacheSize=48m", "-XX:MaxDirectMemorySize=32m", "-Djava.io.tmpdir=" + root.resolve("scratch"),
                 "-Djna.tmpdir=" + root.resolve("scratch"), "-cp",
@@ -207,6 +207,11 @@ public final class ControlCi {
         if (files == 0 || tests < minimumTests || !suites.containsAll(Set.of("org.xar.ck3.control.build.ControlBuildTest",
                 "org.xar.ck3.control.build.WindowsJobProcessTest", "org.xar.ck3.control.build.NativeTcpListenerTest",
                 "org.xar.ck3.control.build.CiBootstrapTest", "org.xar.ck3.control.build.MapAdmissionServiceOwnerTest",
-                "org.xar.ck3.control.build.SourceLimitProfileTest", "org.xar.ck3.control.build.PythonBoundaryStaticStageTest"))) throw new IOException("Complete actual non-skipped JUnit reports missing");
+                "org.xar.ck3.control.build.SourceLimitProfileTest", "org.xar.ck3.control.build.PythonBoundaryStaticStageTest", "org.xar.ck3.control.build.SdkSourceAssemblyTest",
+                "org.xar.ck3.control.build.ProjectionDeploymentProofTest",
+                "org.xar.ck3.control.build.ProjectionRuntimeSourcesTest",
+                "org.xar.ck3.control.build.ProjectionCaptureScopeTest",
+                "org.xar.ck3.control.build.CompiledClassProvenanceTest",
+                "org.xar.ck3.control.build.ControlBuildCaptureTest"))) throw new IOException("Complete actual non-skipped JUnit reports missing");
     }
 }

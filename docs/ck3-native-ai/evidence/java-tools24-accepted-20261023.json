@@ -1,0 +1,42 @@
+{
+  "schema" : "xar.tools24.accepted-readback/v1",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-22T19:04:24.456498200Z",
+  "actual_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java-tools24-03.json",
+    "bytes" : 22528,
+    "sha256" : "bb6331832fd68e36574c7d8f68d0928ab068673bcac72e5a4818d526a0e5fdd6"
+  },
+  "status" : "PASS",
+  "target_kind" : "BUILD_TOOLS_RUNTIME",
+  "source_files" : 31,
+  "compiled_source_files" : 31,
+  "runtime_files" : 6,
+  "required_minimum_tests" : 118,
+  "complete_runtime" : [ {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools24-03\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+    "bytes" : 456174,
+    "sha256" : "614d20039246d97a4a8d93e3fa8c43be319d1e7f8879acc3d154fc615602cc6d"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools24-03\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar",
+    "bytes" : 82104,
+    "sha256" : "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools24-03\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar",
+    "bytes" : 594782,
+    "sha256" : "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools24-03\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar",
+    "bytes" : 1709095,
+    "sha256" : "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools24-03\\ck3-control-build-tools\\lib\\jna-5.19.1.jar",
+    "bytes" : 1950853,
+    "sha256" : "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools24-03\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar",
+    "bytes" : 1416385,
+    "sha256" : "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+  } ],
+  "scope" : "NEW_READER_ACCEPTED_FULL_NORMAL_BUILD_118_NOT_CAPTURE_RECEIPT_OR_CURRENT_LIVE"
+}

@@ -1,0 +1,176 @@
+{
+  "schema": "xar.ci-vacation-closeout-final/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T19:27:19Z",
+  "status": "CLOSED_BY_USER_VACATION_REQUEST",
+  "new_dispatch": "STOPPED",
+  "active_jobs": 0,
+  "software_acceptance": {
+    "ci12": {
+      "status": "PASS",
+      "terminal_at_utc": "2026-10-22T19:21:14.278964Z",
+      "commands_completed": 30,
+      "independent_sdk_command8": "PASS",
+      "actual_wal_command23": "PASS_ZERO_SKIP",
+      "pytest_full_files": 27,
+      "passed": 227,
+      "subtests_passed": 93,
+      "skipped": 0,
+      "outer_exit_code": 0,
+      "active_processes": 0,
+      "source_postcheck": "MATCH",
+      "mcp_full_module_methods": 10,
+      "mcp_argv_file_number": 9,
+      "mcp_selector": false
+    },
+    "sdk24_static": {
+      "status": "PASS",
+      "checked_definitions": 11,
+      "primitive_signature_only": true,
+      "python_version": "3.13",
+      "whole_module_credit": false,
+      "source_postcheck": "MATCH"
+    },
+    "monthly24": {
+      "status": "PASS",
+      "python_version": "3.13",
+      "whole_module_credit": true,
+      "source_postcheck": "MATCH"
+    }
+  },
+  "evidence_refs": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-ci12/TERMINAL-INDEX01.json",
+      "sha256": "ed651c50e214721243118f0d32c5908e74103683d13a675310aa84c85c02fdf2",
+      "bytes": 4991
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-sdk24-static02/TERMINAL-INDEX01.json",
+      "sha256": "b1b956da4f3215058257fdf0d03f1e4ec317a5a3599a5db8fba38c202857e7d7",
+      "bytes": 6717
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-sdk-wire-probe02/SDK-ADOPTION-ACTUAL01.json",
+      "sha256": "a162e4eed20c6ae6c1c5ef65e1a15e9f09e664bd1d5f91c89c079ee880488b36",
+      "bytes": 3623
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-union34-retry02/MILITARY-THREE-ADOPTION01.json",
+      "sha256": "406fa05f1f8c5c28cc454b48f2aa8b574046d8e2610c725188b295c56b1b99f4",
+      "bytes": 3389
+    }
+  ],
+  "final_sdk_four_and_military_three_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1658471,
+      "sha256": "eedcd633cf10b0797c331662507d276f8140195b37c1ed0b605da996ee205603"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 283568,
+      "sha256": "b7569231226484b0bdd98c40ace14a82672b2138a0aab77711e559a4d9b8ccbc"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_mcp_war_daily_watch_config_v1.py",
+      "bytes": 14644,
+      "sha256": "354daca6955ee062ecd4d0e8a500e1fbfeabe2158dcdbf0da0a8c7867d2f4a5b"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_conditional_monthly_loss_budgets.py",
+      "bytes": 13379,
+      "sha256": "de90a82571ce2ffb1cb3410c924e26ffc6e280dc82fb110d8c14a63da15f0a13"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_current_callback_soldier_effects_service_12004.py",
+      "bytes": 25090,
+      "sha256": "598f346fe5bd6b44e8975871da68654642b9bca9b0116c8b4afaee83e45b6641"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_explicit_preparation_scoped_core_mcp.py",
+      "bytes": 13207,
+      "sha256": "c6152f17dc7e6e587bf6d2beac116dbf33bc4261e6b577fee57042ea1a805c3c"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit/test_fresh_ordered_b_preparation_mcp.py",
+      "bytes": 25353,
+      "sha256": "12344c86f72e81137db8edb4769ff87c8dd36ff59b4a440920b3fd9b99f244db"
+    }
+  ],
+  "final_source_readback": {
+    "observed_at_utc": "2026-10-22T19:26:22Z",
+    "method": "Seven exact source SHA256 via certutil",
+    "state": "ALL_MATCH"
+  },
+  "canonical_phaseA_seven": {
+    "unchanged": true,
+    "manifest_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/ci-python-adoption01/SEVEN-PYTHON-FINAL-REFS05.json",
+      "bytes": 9139,
+      "sha256": "2a1fa84193967075ad7ba58b87d1faf80dd8678b4ba674a7be29064ed4f8d2ee"
+    }
+  },
+  "publisher_four_source_patch": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/ci-resume03/sentinel-publish01/publisher-four-source-final24.patch",
+    "bytes": 19290,
+    "sha256": "6120d8d477ec28c21bc524979865215da7e8467f12752ba79c8434b7c5d179cd"
+  },
+  "remaining": {
+    "military_full34_before_fixes": {
+      "status": "RED",
+      "terminal_at_utc": "2026-10-22T18:58:06.335690Z",
+      "parent_passed": 38,
+      "parent_failed": 3,
+      "subtests_passed": 6,
+      "subtests_failed": 5,
+      "skipped": 0,
+      "outer_exit_code": 1,
+      "active_processes": 0,
+      "source_postcheck": "MATCH",
+      "actual_ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-union34-retry02/sdk-strict/military-regression/actual.json",
+        "bytes": 1214732,
+        "sha256": "b90a4e2d8d1523df5b4e78c86cf5a58b338546c2eb4129891383fc6470cbc9fd"
+      }
+    },
+    "military_full34_after_three_fixture_fixes": "NOT_RUN_CANCELLED_BY_USER_CLOSEOUT",
+    "supplementary_whole7_static": {
+      "status": "RED",
+      "errors_by_original_order": [
+        17,
+        8,
+        9,
+        28,
+        8,
+        21,
+        31
+      ],
+      "index_path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-union34-retry02/TERMINAL-INDEX01.json",
+      "scope": "Seven complete modules at their recorded source hashes. Callback soldier module subsequently changed; no current whole-module green or baseline equality is claimed. Exact11 SDK PASS does not override these REDs."
+    },
+    "new_three_military_fixture_static": "NOT_RUN_AFTER_LATEST_CHANGES_CANCELLED_BY_USER_CLOSEOUT",
+    "fresh_sdk_graph_assembly_review": "NOT_RUN_SEPARATE_OWNER; independentSDK8 is a software boundary test and grants no fresh full SDK deployment/import or Game qualification."
+  },
+  "resource_closeout": {
+    "state": "NO_NEW_DISPATCH_RAM_AND_QUEUED_LEASES_RELEASED_BY_STORAGE",
+    "slots": [
+      75,
+      76,
+      66,
+      67
+    ],
+    "prospective_scene16MiB": "NEVER_USED_RELEASED",
+    "existing_disk_assets": "RETAINED_AND_STILL_ACCOUNTED; no delete/rename/GC or physical freed-space claim",
+    "review_at_utc": "2026-10-22T20:00:00Z",
+    "renewal": "NONE; restart requires fresh admission"
+  },
+  "read_scope_incident": {
+    "whole_ci_lane_original_runtime_driver_save_body_reads": "UNKNOWN",
+    "incident_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/ci-resume03/consumer-prepared/WAL-SEARCH-INCIDENT01.json",
+      "bytes": 2644,
+      "sha256": "eb861abc7f7db6f433319315e5158ccb06149c9093aec48607229aeb89bb1565"
+    },
+    "scope": "Earlier WAL-discovery content search was stopped and disclosed. Bounded current CI/static stages retain their own exact scopes; whole lane zero-read is not asserted."
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "schema" : "xar.java-phase1.vacation-capacity-closeout/v1",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-22T19:32:55.062798300Z",
+  "review_at_utc" : "2026-10-22T20:00:00Z",
+  "status" : "CLOSED_NO_NEW_DISPATCH_ALL_OWNED_HEAVY_JOBS_TERMINAL",
+  "reason" : "User vacation closeout relayed by Root; no new execution cards, scopes, source materialization, Maven, capture, SDK, stat or native stages.",
+  "policy_ref" : {
+    "path" : "Z:\\ck3_mod_rewrite\\docs\\storage-retention-policy.json",
+    "bytes" : 4022,
+    "sha256" : "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "policy_prose_ref" : {
+    "path" : "Z:\\ck3_mod_rewrite\\docs\\storage-retention-policy.md",
+    "bytes" : 17121,
+    "sha256" : "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "capacity_lease_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\ROOT-JAVA-PHASE1-CAPACITY-RELEASE11.json",
+    "bytes" : 13237,
+    "sha256" : "0e5d4df1bb7e30b75d1fe7c145c966935c8d6900b4fc8dcdf09a77d98ca1f571"
+  },
+  "source_staging_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\ROOT-DOMAIN-STAGING-AMENDMENT70.json",
+    "bytes" : 3498,
+    "sha256" : "70c7be1d36f5c053dc221f77d9e1cefb7500abb5ac6097ae41641131cea57b87"
+  },
+  "financial_basis_refs" : [ {
+    "path" : "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\ALL-HOLDS-CAPACITY-HEAD-V1.json",
+    "bytes" : 8144,
+    "sha256" : "bd99f24bdc363323856c72a47441e6f183470858563c02b7c63c3b0b1897eec3"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\STORAGE-SHORT-COMMIT-HEAD-V1.json",
+    "bytes" : 6113,
+    "sha256" : "ab06b24864a8012de4cc9957949c33421b211a127f4ebbebed85fa21cfc7b9db"
+  } ],
+  "financial_heads_unchanged" : true,
+  "automatic_reservation_or_financial_CAS_claimed" : false,
+  "D_workpackage_cap_bytes" : 4294967296,
+  "J_observed_allocated_plus_directory_guard_bytes" : 1473887048,
+  "six_external_source_observed_upper_bytes" : 34288272,
+  "combined_observed_conservative_upper_bytes" : 1508175320,
+  "closeout_small_metadata_reserve_bytes" : 65536,
+  "remaining_D_cap_after_reserve_bytes" : 2786726440,
+  "scratch_part_cap_bytes" : 536870912,
+  "scratch_native_plus_all_external_source_charge_bytes" : 425535176,
+  "source_envelope_bytes" : 100663296,
+  "source_assigned_parent_caps_bytes" : 99352576,
+  "source_unassigned_guard_bytes" : 1310720,
+  "source_guard_floor_bytes" : 1048576,
+  "source_measurement_boundary" : "Source96MiB is the prospective parent-cap ledger, not an invented global native source census. WholeJ includes source plus retained execution/cache/build assets; exact six external roots are added conservatively per path, without claiming hardlink dedup savings. Native/source observations remain individually timestamped. Earlier local-cap overruns are preserved; host05 candidate319864 exceeded256KiB by57720, while measured host parent1618352 remained below2MiB; its384KiB request was withdrawn. No retrospective all-source compliance claim.",
+  "parts_checkpoint_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-PARTS80.json",
+    "bytes" : 3013,
+    "sha256" : "d513a35f11465317e340daaece0f0b080f6069bcca27af56aa073564327cfb8a"
+  },
+  "whole_J_checkpoint_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-WHOLE-J80.json",
+    "bytes" : 704,
+    "sha256" : "72719da3e85cfe8279a80b0bec3f4d4384a45c79790bf3f0377e5cbcea68d602"
+  },
+  "external_checkpoint_refs" : [ {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-EXTERNAL80-1.json",
+    "bytes" : 690,
+    "sha256" : "1cce2e065d85cfa9ab31c2e9117a1b7fbf9abd0bc647c24835567b0f8075d792"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-EXTERNAL80-2.json",
+    "bytes" : 693,
+    "sha256" : "243a33a494ae0d9465672fa5156e677e4d738fb3c58005675547cde92eee5279"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-EXTERNAL80-3.json",
+    "bytes" : 693,
+    "sha256" : "523094dc937afb6f70c29d86cbe359ed609775a4eeff00e1c670adfd5eecf721"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-EXTERNAL80-4.json",
+    "bytes" : 701,
+    "sha256" : "c5d7a36181ae4e00478a86eb40de0bf8a63428992cce27226ee7809f2313237d"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-EXTERNAL80-5.json",
+    "bytes" : 701,
+    "sha256" : "60d9da913668eb31411ca7d21bafc85e5413cfefda51681c79a91788002fa3df"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\NATIVE-CLOSEOUT-EXTERNAL80-6.json",
+    "bytes" : 705,
+    "sha256" : "b684fcac6b42e6a115627343700377b58796a1c9ee631bdb058d950d1b15b1a6"
+  } ],
+  "volumes" : {
+    "D:/" : {
+      "total_bytes" : 14000483987456,
+      "free_bytes" : 800651350016,
+      "all_used_conservative_project_upper_bytes" : 13199832637440,
+      "required_free_bytes" : 302340350844,
+      "effective_project_quota_bytes" : 13960000000000,
+      "project_quota_remaining_bytes" : 760167362560,
+      "same_original_volume_reserves_preserved" : true
+    },
+    "Z:/" : {
+      "total_bytes" : 4096787476480,
+      "free_bytes" : 136992538624,
+      "all_used_conservative_project_upper_bytes" : 3959794937856,
+      "required_free_bytes" : 48877539328,
+      "effective_project_quota_bytes" : 4000000000000,
+      "project_quota_remaining_bytes" : 40205062144,
+      "same_original_volume_reserves_preserved" : true
+    }
+  },
+  "maven19_actual_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java19.json",
+    "bytes" : 197759,
+    "sha256" : "e749f06b6720da27259766b44b2c95c6d5d1e10bccefca02179c5ac346ff1e2b"
+  },
+  "maven19_result" : {
+    "identity" : {
+      "pid" : 231532,
+      "creation_filetime_decimal" : "134371707138921353",
+      "executable" : "C:\\Windows\\System32\\cmd.exe"
+    },
+    "exit_code" : 0,
+    "elapsed_seconds" : 227.1955026,
+    "accounting" : {
+      "peak_job_memory_bytes" : 1112326144,
+      "active_processes" : 0,
+      "memory_limit_bytes" : 2147483648,
+      "limit_flags" : 8704
+    },
+    "stop_reason" : null
+  },
+  "ci_closeout_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\artifacts\\ci-closeout-vacation01\\CI-CLOSEOUT-FINAL01.json",
+    "bytes" : 7064,
+    "sha256" : "fa0092a09b8ce77bd92878355582cde8e4a5457151515357465fd2c24e177090"
+  },
+  "slot_and_reservation_states" : [ "Java19 slot79: PASS712/52suites, actual19:29:48Z, Maven/outer0/Job0, doubleMATCH; allMaven RAM reservations released; no25/29capture successor.", "CI75/76: SDK11 and wholemonthly PASS, CI12 full30+indSDK8+27 PASS/Job0; allCI RAM released, queued34/scene16MiB never-written reservation withdrawn. Existing64MiB execution assets still occupy disk.", "Java29 slot72 USED RED: source resume session61091 exit1/14.8963722s/Job0/stopnull, duplicate exact selected patch section military0546. Current1451files/prefix545 partial source, native24954968B. No final source manifest, no29 build/capture qualification; no new resume.", "Native08 CONFIGURE actual RED body0/livevctip/finalJob0; noGraph/Build/Register/fixture. WJ25 andNative09 source-only UNRUN, no build04. Future native512MiB/build and128MiB/scratch dispatch reservations closed; retained01/02/03 assets remain counted.", "Remote caller03 compile, threeReview outputs, shared64MiB graph: never launched/materialized. Emptygroup and threeRequests/caller sources retained. Unused Review6MiB and graph futurewrite reservations closed, existing metadata disk not released.", "Closed preparation refresh128KiB, SourceStat256MiB/2MiB, V14 typed-class profile, futurecompiledgift captures: UNRUN, no new cards/dispatch; unused prospective reservations withdrawn, required sources and prior failures retained.", "All ordinarycapture jobs terminal. Cashmetrics04 trueRED due MCP source length drift, not a PASS; other earlier RED and skipped/NOT_RUN boundaries remain. No Game/SDK transaction/writer/ticket operations authorized or performed by this closeout." ],
+  "retention" : "No deletion, rename, moving, cleanup or rollback performed. Current inputs, original REDs, partial29 and qualified18/19/24 evidence remain available. 20Z is the existing write/capacity review deadline and is not extended; expiration is not unconditional deletion. Later use requires fresh policy/capacity/identity/source review and new scoped execution authority. Existing category retention dates are not rewritten or automatically renewed.",
+  "known_remaining_boundaries" : "Driver/SAVE body-read aggregate for the earlier team incident remains UNKNOWN; this metadata closeout reads only attributes plus small receipts/policy. Z32MiB exact source attribution was not exhaustively recounted; existing cap and fresh volume/quota check retained, no new Z writes by storage. Final small owner pointers after observation are covered by64KiB closeout reserve, not assumed zero."
+}

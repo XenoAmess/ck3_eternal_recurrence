@@ -28,6 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 final class CiBootstrapTest {
     private static final long GIB = 1L << 30;
+    private static final String DEFAULT_WINDOWS_PATHEXT = ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC";
     private static final String POLICY = """
             {"schema":"xar-storage-retention-policy-v1","policy_version":"1.0.0","capacity":{
             "safety_floor_bytes":2147483648,"safety_ceiling_bytes":21474836480,"safety_volume_fraction":0.05,
@@ -156,9 +157,11 @@ final class CiBootstrapTest {
         Files.createDirectories(staged.resolve("lib")); Files.writeString(staged.resolve("lib/new.jar"), "new vendor");
         Files.createDirectories(staged.resolve("conf")); Files.writeString(staged.resolve("conf/settings.xml"), "vendor default");
         Path cwd = Files.createDirectory(temporary.resolve("working"));
+        Path empty = Files.createDirectory(temporary.resolve("before-maven"));
         Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
-        environment.put("PATH", home.resolve("bin") + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
-        environment.put("PATHEXT", ".CMD;.BAT;.EXE;.COM");
+        environment.put("PATH", empty + ";" + home.resolve("bin") + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
+        environment.put("PATHEXT", DEFAULT_WINDOWS_PATHEXT);
+        Map<String, String> originalEnvironment = Map.copyOf(environment);
         Path batch = cwd.resolve("version.cmd"); ControlBuild.writeMavenBatch(batch, null, List.of("--version"));
         AtomicInteger probes = new AtomicInteger(), installations = new AtomicInteger();
         List<CiBootstrap.FilePin> observedRefs = new ArrayList<>();
@@ -194,51 +197,68 @@ final class CiBootstrapTest {
         CiBootstrap.ensureDefaultMaven(() -> actualVersionProbe(batch, cwd, environment, probes.incrementAndGet()),
                 before -> { throw new IOException("compliant default must not be downloaded/replaced"); });
         assertEquals(3, probes.get());
+        assertEquals(originalEnvironment, environment, "admission and in-place upgrade cannot rewrite PATH or PATHEXT");
     }
 
     @Test
-    void actualDefaultCommandSurvivesUnusedWindowsPathextEntriesInEarlierDirectories(@TempDir Path temporary) throws Exception {
-        Path home = Files.createDirectories(temporary.resolve("default-maven/bin")).getParent();
-        Path launcher = home.resolve("bin/mvn.cmd");
-        Files.writeString(launcher, versionCommand("3.10.0", home));
-        Files.writeString(home.resolve("bin/mvn"), "extensionless file must not be selected");
-        Path cwd = Files.createDirectory(temporary.resolve("working"));
-        Path earlier = Files.createDirectory(temporary.resolve("earlier-empty-path-entry"));
-        Path batch = cwd.resolve("version.cmd");
-        ControlBuild.writeMavenBatch(batch, null, List.of("--version"));
-        AtomicInteger probes = new AtomicInteger();
-        for (String extensions : List.of(".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC", ".VBS;.CMD;.EXE")) {
-            Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            environment.putAll(System.getenv());
-            environment.put("PATH", earlier + ";" + home.resolve("bin") + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
-            environment.put("PATHEXT", extensions);
-            CiBootstrap.DefaultMaven actual = CiBootstrap.ensureDefaultMaven(() -> {
-                String output = actualVersionProbe(batch, cwd, environment, probes.incrementAndGet());
-                CiBootstrap.MavenObservation observed = CiBootstrap.observeDefaultMaven(output, true);
-                assertEquals(Path.of(observed.launcherRef().path()), CiBootstrap.defaultMavenLauncher(environment, cwd, true));
-                return output;
-            }, before -> { throw new IOException("current stable default must not be replaced"); });
-            assertEquals(launcher.toRealPath().toString(), actual.distributionLauncherRef().path());
-            assertEquals("3.10.0", actual.reportedVersion());
-            assertEquals(extensions, environment.get("PATHEXT"));
-        }
-        assertEquals(2, probes.get());
+    void actualCmdSelectionKeepsPathextOrderAndIgnoresAbsentScriptExtensions(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("home/bin")).getParent();
+        Path cmd = home.resolve("bin/mvn.cmd"), bat = home.resolve("bin/mvn.bat");
+        Files.writeString(cmd, versionCommand("3.10.0", home)); Files.writeString(bat, versionCommand("3.9.16", home));
+        Path cwd = Files.createDirectory(temporary.resolve("cwd"));
+        Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
+        environment.put("PATH", home.resolve("bin") + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
+        Path batch = cwd.resolve("version.cmd"); ControlBuild.writeMavenBatch(batch, null, List.of("--version"));
+        environment.put("PATHEXT", ".NET-TOOL;.FOO_BAR;.VBS;.CMD;.BAT;.EXE;.COM;.MSC");
+        assertEquals(cmd.toRealPath(), CiBootstrap.defaultMavenLauncher(environment, cwd, true));
+        assertTrue(actualVersionProbe(batch, cwd, environment, 1).contains("Apache Maven 3.10.0"));
+        environment.put("PATHEXT", ".NET-TOOL;.FOO_BAR;.VBS;.BAT;.CMD;.EXE;.COM;.MSC");
+        assertEquals(bat.toRealPath(), CiBootstrap.defaultMavenLauncher(environment, cwd, true));
+        assertTrue(actualVersionProbe(batch, cwd, environment, 2).contains("Apache Maven 3.9.16"));
+        environment.put("PATHEXT", ".\\nested;.CMD");
+        assertThrows(IOException.class, () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true));
     }
 
     @Test
-    void existingUnsupportedPathextCandidateCannotBeSkippedToAdmitAnotherMaven(@TempDir Path temporary) throws Exception {
-        Path cwd = Files.createDirectory(temporary.resolve("working"));
-        Path first = Files.createDirectory(temporary.resolve("first-bin"));
-        Path second = Files.createDirectory(temporary.resolve("second-bin"));
-        Files.writeString(first.resolve("mvn.js"), "never execute this unsupported launcher");
-        Files.writeString(second.resolve("mvn.cmd"), "later installation");
-        Map<String, String> environment = Map.of("PATH", first + ";" + second, "PATHEXT", ".JS;.CMD");
-        assertThrows(IOException.class, () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true));
-        Path preferred = first.resolve("mvn.cmd");
-        Files.writeString(preferred, "first supported command");
-        assertThrows(IOException.class, () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true));
-        assertEquals(preferred.toRealPath(), CiBootstrap.defaultMavenLauncher(
-                Map.of("PATH", first + ";" + second, "PATHEXT", ".CMD;.JS"), cwd, true));
+    void unsupportedActualCandidateIsRejectedBeforeCommandAndItsNoOutputReceiptIsConsumable(@TempDir Path temporary) throws Exception {
+        Path first = Files.createDirectory(temporary.resolve("first")); Files.writeString(first.resolve("mvn.vbs"), "must never execute");
+        Path home = Files.createDirectories(temporary.resolve("later/bin")).getParent();
+        Files.writeString(home.resolve("bin/mvn.cmd"), versionCommand("3.10.0", home));
+        Path cwd = Files.createDirectory(temporary.resolve("cwd")), logs = Files.createDirectory(temporary.resolve("logs"));
+        Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
+        environment.put("PATH", first + ";" + home.resolve("bin")); environment.put("PATHEXT", DEFAULT_WINDOWS_PATHEXT);
+        Path source = temporary.resolve("bootstrap.java"); Files.writeString(source, "bootstrap source fixture");
+        Path stdout = logs.resolve("maven-version-1.log"); List<CiBootstrap.FilePin> refs = new ArrayList<>();
+        AtomicInteger commands = new AtomicInteger();
+        IOException rejected = assertThrows(IOException.class, () -> CiBootstrap.recordedMavenProbe(() -> {
+            commands.incrementAndGet(); throw new AssertionError("an unsupported default candidate must not execute");
+        }, () -> CiBootstrap.defaultMavenLauncher(environment, cwd, true), stdout, logs.resolve("maven-observation-1.json"),
+                "fixture-only-machine", CiBootstrap.measure(source), CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, refs));
+        assertTrue(rejected.getMessage().contains("unsupported actual default Maven launcher extension"));
+        assertEquals(0, commands.get()); assertFalse(Files.exists(stdout)); assertEquals(1, refs.size());
+        CiBootstrap.MavenProbeActual receipt = readMavenProbe(refs.getFirst());
+        assertEquals(CiBootstrap.MavenProbeStatus.REJECTED, receipt.status());
+        assertNull(receipt.outputRef()); assertNull(receipt.observation()); assertNull(receipt.selectedLauncherRef());
+        CiBootstrap.publish(logs.resolve("bootstrap-actual.json"), new CiBootstrap.BootstrapActual(
+                "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(), Instant.now().toString(),
+                "RED", rejected.getMessage(), null, null, refs, false, false));
+        assertEquals(1, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+    }
+
+    @Test
+    void launcherChangedDuringVersionProbeCannotBeReadmitted(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("home/bin")).getParent();
+        Path launcher = home.resolve("bin/mvn.cmd"); Files.writeString(launcher, "before command");
+        Path source = temporary.resolve("bootstrap.java"); Files.writeString(source, "source fixture");
+        Path stdout = temporary.resolve("version.log"); List<CiBootstrap.FilePin> refs = new ArrayList<>();
+        String output = versionOutput("3.10.0", home);
+        IOException rejected = assertThrows(IOException.class, () -> CiBootstrap.recordedMavenProbe(() -> {
+            Files.writeString(launcher, "changed during command"); Files.writeString(stdout, output); return output;
+        }, () -> launcher, stdout, temporary.resolve("observation.json"), "fixture-only-machine", CiBootstrap.measure(source),
+                CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, refs));
+        assertTrue(rejected.getMessage().contains("changed during its version probe"));
+        assertEquals(CiBootstrap.MavenProbeStatus.REJECTED, readMavenProbe(refs.getFirst()).status());
+        assertEquals(CiBootstrap.measure(stdout), readMavenProbe(refs.getFirst()).outputRef());
     }
 
     @Test
@@ -396,12 +416,15 @@ final class CiBootstrapTest {
         Path source = temporary.resolve("bootstrap-source.java"); Files.writeString(source, "source fixture");
         CiBootstrap.FilePin sourceRef = CiBootstrap.measure(source);
         Path stdout = temporary.resolve("failed.log"); List<CiBootstrap.FilePin> failedRefs = new ArrayList<>();
+        Path failedLauncher = temporary.resolve("mvn.cmd"); Files.writeString(failedLauncher, "actual selected command");
+        AtomicInteger launcherChecks = new AtomicInteger();
         IOException failure = assertThrows(IOException.class, () -> CiBootstrap.recordedMavenProbe(() -> {
             Files.writeString(stdout, "actual partial child output"); throw new IOException("actual child exit 7");
-        }, () -> { throw new IOException("launcher must not be resolved after child failure"); }, stdout,
+        }, () -> { launcherChecks.incrementAndGet(); return failedLauncher; }, stdout,
                 temporary.resolve("maven-observation-failed.json"), "fixture-only-machine", sourceRef,
                 CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, failedRefs));
         assertEquals("actual child exit 7", failure.getMessage());
+        assertEquals(1, launcherChecks.get(), "validate the default before execution; failed commands have no post-probe resolution");
         CiBootstrap.MavenProbeActual failed = readMavenProbe(failedRefs.getFirst());
         assertEquals(CiBootstrap.MavenProbeStatus.REJECTED, failed.status());
         assertTrue(failed.error().contains("actual child exit 7"));

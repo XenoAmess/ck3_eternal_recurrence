@@ -1,0 +1,234 @@
+{
+  "schema": "xar.java-migration.progress-tools24-partial29-increment/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T19:07:09Z",
+  "local_observed_at": "2026-10-23T03:07:09+08:00",
+  "base": {
+    "publisher": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/java-publish01",
+    "tree": "CURRENT_INDEX_06_PLUS_SDK_FOUR_PLUS_QUALIFIED24_TWENTY_JAVA_SOURCES_NO_POM",
+    "base_commit": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+    "preserve_history": true,
+    "qualified24_adoption_source": "Root message: ten preimage FC and ten ABSENT checks, twenty copy/FC and gitadd/check all exit0; tools24 small proof copied separately by Root",
+    "doc_index_refs": [
+      {
+        "path": "docs/autonomous-agent-progress/daily/2026-10-23.md",
+        "bytes": 10472,
+        "sha256": "d404084775503b45fa1d1cf58936a2ecb57ab8a22eb710ad5ad1facfde118b44"
+      },
+      {
+        "path": "docs/handover/2026-10-23-java-migration-stabilization-resume-increment.md",
+        "bytes": 16337,
+        "sha256": "340e2522d18579d997c896e169427b58ac3dccb4d6d59a46b174aec232ad90d7"
+      },
+      {
+        "path": "docs/autonomous-agent-progress/README.md",
+        "bytes": 304534,
+        "sha256": "a966e148c6fb65ba61c147cc41b3fac06f93f659c94cef465e6b95b17e6bc3d3"
+      },
+      {
+        "path": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+        "bytes": 72819,
+        "sha256": "cc627221a8bd658dd8e2c6353be4ab4070db0c9c0e7d4762ba1fd75abd9afbff"
+      }
+    ]
+  },
+  "tools24": {
+    "status": "PASS_ACCEPTED_BUILD_TOOLS_RUNTIME_ONLY",
+    "observed_at_utc": "2026-10-22T19:02:31.304520400Z",
+    "accepted_at_utc": "2026-10-22T19:04:24.456498200Z",
+    "actual_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools24-03.json",
+      "bytes": 22528,
+      "sha256": "bb6331832fd68e36574c7d8f68d0928ab068673bcac72e5a4818d526a0e5fdd6"
+    },
+    "reader_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/TOOLS24-ACCEPTED-READBACK01.json",
+      "bytes": 2231,
+      "sha256": "01ee3e2ea274de5664aae25beacc7c0ce5b8983f0c6c193e1d8d419885bafda2"
+    },
+    "tests": 118,
+    "suites": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "maven_exit_code": 0,
+    "elapsed_seconds": 71.7661744,
+    "active_processes": 0,
+    "hard_bytes": 2147483648,
+    "peak_bytes": 968728576,
+    "source_files": 31,
+    "source_bytes": 677636,
+    "source_postcheck": "MATCH",
+    "compiled_source_postcheck": "MATCH",
+    "complete_runtime_files": 6,
+    "jar_ref": {
+      "bytes": 456174,
+      "sha256": "614d20039246d97a4a8d93e3fa8c43be319d1e7f8879acc3d154fc615602cc6d"
+    },
+    "not_qualified": [
+      "SDK11",
+      "CI12",
+      "HOSTED_SUCCESS",
+      "FULL29",
+      "LIVE_GAME"
+    ]
+  },
+  "union34": {
+    "status": "RED",
+    "terminal_at_utc": "2026-10-22T18:58:06.335690Z",
+    "index_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/coldwarm-union34-retry02/TERMINAL-INDEX01.json",
+      "bytes": 8559,
+      "sha256": "c184eca19ca924a7dfd0ea70c0c44b75ce93e1754eed5bb2cca0d427ce856efe"
+    },
+    "parent_tests": 41,
+    "parent_passed": 38,
+    "parent_failed": 3,
+    "subtests_passed": 6,
+    "scene_subtests_failed": 5,
+    "skipped": 0,
+    "outer_exit_code": 1,
+    "active_processes": 0,
+    "source_postcheck": "MATCH",
+    "whole_fixture_static_errors": [
+      17,
+      8,
+      9,
+      28,
+      8,
+      21,
+      31
+    ],
+    "scope": "SUPPLEMENTARY_NOT_ADDITIONAL_RECOVERY_GATE",
+    "actual_ref": {
+      "bytes": 1214732,
+      "sha256": "b90a4e2d8d1523df5b4e78c86cf5a58b338546c2eb4129891383fc6470cbc9fd"
+    },
+    "actual_body_read": false
+  },
+  "partial29": {
+    "first_exit_code": 1,
+    "elapsed_seconds": 75.064849,
+    "active_processes": 0,
+    "peak_bytes": 241139712,
+    "command_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/reactor-integration-resume02/JAVA29-MATERIALIZATION-COMMAND.json",
+      "bytes": 298,
+      "sha256": "e51f35125a32378bd617f74d4810249d86ca8171a9070d22c330494984471ac9"
+    },
+    "failure": "source insertion requires exact nonempty context",
+    "failure_source": "JAVA29-MATERIALIZATION.stderr.log:1",
+    "snapshot_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/reactor-integration-resume02/materialize29/JAVA29-SNAPSHOT-ACTUAL01.json",
+      "bytes": 1335,
+      "sha256": "aab5b49412dd2dde7ffddc02d8c04eba0a18dbabfee8dd45d2678c21374a63cd"
+    },
+    "snapshot_at_utc": "2026-10-22T19:05:25.076314100Z",
+    "modules": 29,
+    "pom_files": 30,
+    "source_files": 1370,
+    "source_bytes": 16258567,
+    "file_allocated_bytes": 19064072,
+    "qualification": "PARTIAL_SOURCE_ONLY_NOT_COMPLETE_NOT_COMPILED",
+    "first_failure_target": "planning RealmDifference / REALM-ERROR-BOUNDARY04.patch (reactor owner corrected actual prefix361; Budget step425 not reached)",
+    "target_attribution_source": "reactor_integration message after full comparison of partial1370-file snapshot against ordered698 operations"
+  },
+  "warcash": {
+    "audit_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/WAR-CASH-ORACLE-AUDIT06.json",
+      "bytes": 3081,
+      "sha256": "286b26c865e2f79259ac7bd6c4ea45b2d80641c8422111701d96821aa140b85e"
+    },
+    "observed_at_utc": "2026-10-22T18:52:15Z",
+    "status": "ORIGINAL_CAPTURE_CONTENT_ACCEPTED_NOT_JAVA_ADOPTION",
+    "original_tests": 65,
+    "skips": 0,
+    "vectors": 86,
+    "result_vectors": 60,
+    "invalid_contract_vectors": 26,
+    "java_consumer_calls": 0,
+    "native_game_rpc_count": 0,
+    "source24_input6_match": true
+  },
+  "topology": {
+    "observed_window_utc": [
+      "2026-10-22T19:05:44Z",
+      "2026-10-22T19:06:05Z"
+    ],
+    "running_children": 15,
+    "excluded_root": 1,
+    "excluded_completed": 49,
+    "excluded_interrupted": 0,
+    "running": [
+      "/root/build",
+      "/root/ci",
+      "/root/closedadoption",
+      "/root/events/consumer_boundary",
+      "/root/finance",
+      "/root/finance/golden_audit",
+      "/root/military",
+      "/root/military/armies",
+      "/root/military/combat",
+      "/root/native_fixture_execution",
+      "/root/progress_sync",
+      "/root/reactor_integration",
+      "/root/remote_ci",
+      "/root/runtime/stdioidentity",
+      "/root/storage"
+    ],
+    "scope": "AGENT_STATE_NOT_OS_OR_EXECUTION_SLOT_COUNT"
+  },
+  "root_taskbus": {
+    "read_only_observed_at_utc": "2026-10-22T19:07:09Z",
+    "snapshot_path": "Z:/.codex-task-bus/tasks/ck3-java-stabilization-resume-20261022-root.json",
+    "last_sequence": 8220,
+    "updated_at_utc": "2026-10-22T18:57:40.283088+00:00",
+    "state": "running",
+    "resources": [
+      "origin/master"
+    ],
+    "heartbeat_or_poll_performed_by_this_agent": false
+  },
+  "retained": {
+    "java17_registered_modules": 17,
+    "total_child_modules": 29,
+    "java17_successful_child_modules": 16,
+    "parent_excluded": true,
+    "reactor_audit_source": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java17-verify.stdout.log:1489-1508",
+    "java17_tests": {
+      "passed": 1890,
+      "total": 1984,
+      "failures": 44,
+      "errors": 50,
+      "skipped": 0
+    },
+    "java18": "LIMITED_7_MODULE_663_PASS",
+    "ci11": "FULL30_SDK8_REAL_WAL_27FILES227PASS91SUBTESTS_NO_SKIP",
+    "game_state": "CLOSED_UNKNOWN11558_NO_REPLAY",
+    "saved_days": 5628,
+    "g2": "6/8",
+    "new_game_days": 0,
+    "aggregate_driver_save_body_reads": "UNKNOWN",
+    "incident_sha256": "eb861abc7f7db6f433319315e5158ccb06149c9093aec48607229aeb89bb1565"
+  },
+  "next_gate": [
+    "Qualified tools24 exact SDK11-definition strict check",
+    "Fresh CI12 full30 commands including independent SDK8 and27 complete test files",
+    "Repair source-only insertion context and finish29 source materialization before compile",
+    "Fresh capacity and nonce/ticket; real reducer revalidation under original writer lock before finiteSDK transaction"
+  ],
+  "schedule": {
+    "sdk_0230_0300": "NOT_MET_AS_OF_CUTOFF",
+    "sdk_0300_0400": "CONDITIONAL_TARGET_NOT_GUARANTEE",
+    "full29": "DELAY_RISK"
+  },
+  "read_scope": "ONLY_NECESSARY_SMALL_RECEIPTS_AND_CURRENT_INDEX_DOCS_NO_DRIVER_SAVE_BODY_NO_BUILD_TEST_GAME",
+  "derived_review_at_utc": "2026-10-24T19:07:09Z",
+  "budget": {
+    "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/progress-resume01",
+    "cap_bytes": 327680,
+    "extra_bytes": 65536,
+    "grant": "ROOT_EXPLICIT_SINGLE_GRANT_FROM_EXISTING_SOURCE96_POOL_NO_NEW_TAKE_NO_SECOND_64K"
+  },
+  "generated_at_utc": "2026-10-22T19:13:01.335950+00:00"
+}

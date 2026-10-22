@@ -1,0 +1,12 @@
+{
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-22T19:30:14.984860300Z",
+  "receipt_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java19.json",
+    "bytes" : 197759,
+    "sha256" : "e749f06b6720da27259766b44b2c95c6d5d1e10bccefca02179c5ac346ff1e2b"
+  },
+  "status" : "PASS",
+  "runtime_files" : 131,
+  "source_files" : 267
+}

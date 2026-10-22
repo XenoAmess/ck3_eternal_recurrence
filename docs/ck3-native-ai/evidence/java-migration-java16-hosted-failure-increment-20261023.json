@@ -1,0 +1,299 @@
+{
+  "schema": "xar.java16-hosted-failure-progress/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-22T17:40:31Z",
+  "published_base": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+  "source_refs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA16-SUREFIRE-OBSERVATION01.json",
+      "bytes": 50563,
+      "sha256": "abd71cc71526e59cb174e36285dc886e617ef1520bdd09f356b2c90ec5e96b4e",
+      "observed_at_utc": "2026-10-22T17:18:19.776040800Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\JAVA17-CLOSED-SOURCE-POSTCHECK01.json",
+      "bytes": 592,
+      "sha256": "0fb5a0fefc9fc5df0eac33d977dd443a9bfb5ef0b0e8f78982a38f9bcd017f15",
+      "observed_at_utc": "2026-10-22T17:26:23.888196800Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\CAPTURE-childexports-resume06-corpus96k-ACTUAL01.json",
+      "bytes": 6321,
+      "sha256": "460b884161508a52248aa4b4ce4905d31a93fe7f635596c1cc79a8aa76305fc2",
+      "observed_at_utc": "2026-10-22T17:34:21.125412Z"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\consumer-prepared\\ACTUAL-SMALL-WAL-INPUT01.json",
+      "bytes": 3777,
+      "sha256": "bfe040a4ab9e1bbf1ab97a3c33e9970ae85974e56ab4baa06596c8266a469c87",
+      "observed_at_utc": "2026-10-22T17:12:23.344471+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\CI08-COMPLETE-EXECUTION01.json",
+      "bytes": 2756,
+      "sha256": "9f1c039082afaaabecc62041fd9cc9271f54d53c52e8b3598ee6f4e66fb3e03a",
+      "observed_at_utc": "2026-10-22 17:04:43 UTC"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\ci-resume03\\CI-READ-SCOPE-INCIDENT-ADDENDUM01.json",
+      "bytes": 1898,
+      "sha256": "dab5e383e9970afb927ef4669b19e51ddeb52996ab559a802c3c52fe32b47cf6",
+      "observed_at_utc": "2026-10-22 17:11:33 UTC"
+    }
+  ],
+  "java16": {
+    "total": {
+      "tests": 1984,
+      "failures": 46,
+      "errors": 64,
+      "skipped": 0,
+      "passed": 1874
+    },
+    "maven_result": {
+      "identity": {
+        "pid": 174664,
+        "creation_filetime_decimal": "134371627616495299",
+        "executable": "C:\\Windows\\System32\\cmd.exe"
+      },
+      "exit_code": 1,
+      "elapsed_seconds": 196.6951114,
+      "accounting": {
+        "peak_job_memory_bytes": 1174872064,
+        "active_processes": 0,
+        "memory_limit_bytes": 2147483648,
+        "limit_flags": 8704
+      },
+      "stop_reason": null
+    },
+    "source_postcheck": {
+      "state": "MATCH",
+      "error": null
+    },
+    "compiled_source_postcheck": {
+      "state": "MATCH",
+      "error": null
+    }
+  },
+  "runtime": {
+    "tests": 395,
+    "failures": 2,
+    "errors": 14,
+    "skipped": 0,
+    "suites": 23,
+    "red_suites": 4
+  },
+  "java17": {
+    "owner_observed_at_utc": "2026-10-22T17:35:40.575204400Z",
+    "launch": "NOT_LAUNCHED",
+    "runtime_15_adaptations": "NOT_ADOPTED",
+    "index_test_fix": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-22T17:26:23.888196800Z",
+      "files": [
+        {
+          "path": "Z:\\ck3_mod_rewrite\\java\\ck3-control\\wave2-runtime\\src\\test\\java\\org\\xar\\ck3\\control\\wave2\\runtime\\closedadoption\\ClosedAdoptionProductionRecheckTest.java",
+          "exists": true,
+          "bytes": 15589,
+          "mtime_ns": "1792689976328101400",
+          "modified_at_utc": "2026-10-22T17:26:16.3281014Z",
+          "sha256": "152c6666f1f2a43977c5f2855951f4dbff43ef9225daaa0d7da19c6e1de8a3b5",
+          "stable_during_observation": true
+        }
+      ]
+    },
+    "fix_executed": false
+  },
+  "child06": {
+    "observed_at_utc": "2026-10-22T17:34:21.125412Z",
+    "status": "PASS",
+    "scope": "pure_original_producer_golden_only_no_native_admission",
+    "result": {
+      "identity": {
+        "pid": 126920,
+        "creation_filetime_decimal": "134371640585759188",
+        "executable": "C:\\jdk-21\\bin\\java.exe"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 2.578979,
+      "accounting": {
+        "peak_job_memory_bytes": 299327488,
+        "active_processes": 0,
+        "memory_limit_bytes": 536870912,
+        "limit_flags": 8704
+      },
+      "stop_reason": null
+    },
+    "source_unchanged": true,
+    "output_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\runtime-resume-staging01\\childexports-corpus06\\child-exports-golden.json",
+      "bytes": 84911,
+      "sha256": "34ff7d499dd5712b9aff621735b8598c56bd990c7d680f6eea4ec406c31a249c"
+    }
+  },
+  "child06_236_sources": "storage report; producer credit only",
+  "actual_wal": {
+    "status": "ACTUAL_COMPLETE_SMALL_WAL_LOCATED_TEST_NOT_RUN",
+    "input_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a08/a05-offline-evidence/m7/ROOT-FIRST-NATURAL-H-WAL01.json",
+      "bytes": 42506,
+      "sha256": "a7f9ec3a0462a61846185a52334d2010e28652ca2ccec22050c2f45aae176c84"
+    },
+    "diagnostic": "PENDING"
+  },
+  "ci08": {
+    "status": "RED_OPTIONAL_ACTUAL_WAL_DIAGNOSTIC_NOT_EXECUTED",
+    "full_30_commands": {
+      "started": 30,
+      "completed": 30,
+      "cmd_exit_code": 0,
+      "cmd_job_active_processes": 0,
+      "elapsed_seconds": 438.8397692,
+      "skipped_tests": 1,
+      "scope": "Complete original cold/warm workflow step, all commands preserved. Current canonical Python only; new D consumer patches not adopted."
+    },
+    "independent_sdk_continuation": {
+      "command": 8,
+      "status": "PASS",
+      "separate_python_process": true,
+      "fixture_before_import": true,
+      "fixture_cleanup_marker_utc": "2026-10-22T17:01:18.116391+00:00",
+      "actual_original_driver_or_save_body_reads": 0
+    },
+    "full_27_file_group": {
+      "status": "PASS",
+      "passed": 227,
+      "subtests_passed": 91,
+      "skipped": 0,
+      "pytest_elapsed_seconds": 19.96
+    }
+  },
+  "team_body_reads": "UNKNOWN; controlled-CI08/per-agent zero does not cover team or round",
+  "hosted": {
+    "ee8": {
+      "commit": "ee8d0787b14f038d020e1f9a92b39c600c1d3012",
+      "run_id": "39815396090",
+      "job_id": "119952523550",
+      "status": "completed",
+      "conclusion": "failure",
+      "updated_at_utc": "2026-10-22T16:59:58Z",
+      "observed_at_utc": "2026-10-22T17:36:55.902009Z",
+      "failed_step": {
+        "number": 40,
+        "name": "Verify Java tools, full reactor and actual HTTP consumer chain",
+        "started_at_utc": "2026-10-22T16:59:27Z",
+        "completed_at_utc": "2026-10-22T16:59:45Z"
+      },
+      "log_observation": {
+        "observed_at_utc": "2026-10-22T17:37:41.478941Z",
+        "total_log_bytes": 249675,
+        "range": "bytes 0-249674/249675",
+        "bytes_read": 249675,
+        "persisted_full_log": false,
+        "excerpt": [
+          "2026-10-22T16:59:45.8755681Z Exception in thread main java.lang.IllegalStateException: java.io.IOException: unsupported default command extension order",
+          "2026-10-22T16:59:45.8756989Z at org.xar.ck3.control.build.CiBootstrap.main(CiBootstrap.java:297)",
+          "2026-10-22T16:59:45.9043969Z Process completed with exit code 1."
+        ]
+      },
+      "runner_machine_id": "unknown"
+    },
+    "ccaea": {
+      "commit": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+      "single_query": true,
+      "observed_no_later_than_utc": "2026-10-22T17:38:31Z",
+      "exact_observation_utc_not_recorded": true,
+      "official": {
+        "run_id": "39824334365",
+        "status": "in_progress"
+      },
+      "linear": {
+        "run_id": "39824334366",
+        "status": "in_progress"
+      },
+      "created_at_utc": "2026-10-22T17:37:29Z",
+      "updated_at_utc": "2026-10-22T17:37:33Z"
+    }
+  },
+  "diagnosis": {
+    "owner": "/root/build; CiBootstrap.defaultMavenLauncher",
+    "ee8_source_line": 353,
+    "ccaea_source_line": 601,
+    "error": "unsupported default command extension order",
+    "inference": "PATHEXT item validation happens before actual Maven candidate check for each directory; extra or unsupported item may reject search before a later Maven directory",
+    "actual_triggering_suffix": "UNKNOWN; not logged",
+    "current_ccaea_same_logic": true,
+    "minimal_fix_pending": true
+  },
+  "topology": {
+    "observed_at_utc": "2026-10-22T17:36:24Z",
+    "source": "Actual list_agents snapshot then clock",
+    "running_children": [
+      "/root/build",
+      "/root/ci",
+      "/root/ci/static_routes_audit",
+      "/root/deadline_custody",
+      "/root/events",
+      "/root/events/consumer_boundary",
+      "/root/events/sourcecatalog",
+      "/root/finance/golden_audit",
+      "/root/military",
+      "/root/military/battle_exit",
+      "/root/military/coalition",
+      "/root/military/combat",
+      "/root/military/movement",
+      "/root/native_fixture_execution",
+      "/root/progress_sync",
+      "/root/reactor_integration",
+      "/root/remote_ci",
+      "/root/runtime/deadlinetransport",
+      "/root/runtime/providerchain",
+      "/root/storage"
+    ],
+    "count": 20,
+    "excluded_root_completed_interrupted": [
+      1,
+      42,
+      2
+    ],
+    "not_os_process_count": true
+  },
+  "local_targets": {
+    "01:30": "NOT_MET",
+    "02:30": "conditional first29 integration",
+    "03:00-04:00": "conditional finite SDK recovery"
+  },
+  "game": {
+    "state": "CLOSED",
+    "unknown_auto": 11558,
+    "replay": false,
+    "saved_days": 5628,
+    "new_saved_days": 0,
+    "g2": "6/8"
+  },
+  "preimages": [
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-23.md",
+      "ref": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+      "sha256": "8d9838a99171d5f682242040fab2f50029a66bf8f0ca5eb2c37021405096fa86",
+      "bytes": 5452
+    },
+    {
+      "path": "docs/handover/2026-10-23-java-migration-stabilization-resume-increment.md",
+      "ref": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+      "sha256": "c5a2aa730c9df8509e130d77f32a55245e48ef71deb691accb14890c008c2024",
+      "bytes": 8909
+    },
+    {
+      "path": "docs/autonomous-agent-progress/README.md",
+      "ref": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+      "sha256": "a7e466cc014ddd5c5b37191c815233257f175413b22919f52bac06586b973450",
+      "bytes": 303284
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "ref": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+      "sha256": "b80243acd82c4483a8bf2600cecb16467e13ac86a6a7c1358528f3bd65b13fc3",
+      "bytes": 71060
+    }
+  ]
+}

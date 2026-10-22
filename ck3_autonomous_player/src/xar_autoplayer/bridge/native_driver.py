@@ -1890,6 +1890,8 @@ def _resume_command_history_projection(
 class NativeHeadlessGameplayDriver:
     """Pure native mode: never invokes OCR, keyboard, mouse, or window focus."""
 
+    allow_private_semantic_snapshot_readonly: bool = False
+
     def __init__(
         self,
         pipe_name: str = DEFAULT_PIPE_NAME,
@@ -3087,6 +3089,16 @@ class NativeHeadlessGameplayDriver:
             return normalize_core_frame_v1(frame.get("result"))
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
+
+    def read_tactical_daily_sentinel_status_private_v1(self) -> dict[str, object]:
+        """Read the current sentinel slot through the fixed existing native route."""
+        return self._execute_primitive_step(
+            _TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+            expected_revision=None,
+            required_capability=_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY,
+            internal_semantic_snapshot=True,
+            include_native_command_history=False,
+        )
 
     def take_internal_semantic_snapshot(self) -> dict[str, object]:
         """Read a runner-internal semantic frame without transcript evidence."""
