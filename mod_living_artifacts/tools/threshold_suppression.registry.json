@@ -1,0 +1,69 @@
+{
+  "id": "threshold_suppression",
+  "status": "ready",
+  "implementation_credit": "Independent seven-save 47-day threshold/training/first-suppression-month package; live NOT_RUN; no expiry, renewal, effective-health, NPC or release credit",
+  "adapter": {
+    "path": "{repo_root}/mod_living_artifacts/tools/threshold_acceptance_adapter.py",
+    "config": "{repo_root}/mod_living_artifacts/tools/threshold_suppression.contract.json"
+  },
+  "initial_plan": "{run_dir}/prepared/initial-plan.json",
+  "startup": {
+    "mode": "fixture",
+    "state_dir": "{run_dir}/state",
+    "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+  },
+  "budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 1200,
+    "timeout": 7200,
+    "hold_seconds": 5400,
+    "poll_interval": 0.5
+  },
+  "budget_provenance": "Prospective 47 ordinary natural days, 480 bounded public calls, seven actual Save/strict-melt readbacks, one training intent, one suppression intent, equipment cycle tests same-item timer binding; 180-second normal-Quit reserve. Not measured runtime; no extension or unknown-action replay.",
+  "required_mcp_tools": [
+    "ck3_take_snapshot",
+    "ck3_execute_step",
+    "ck3_query_player_artifact_personal_use_v1",
+    "ck3_submit_player_artifact_personal_use_v1",
+    "ck3_query_player_artifact_personal_use_action_post_v1",
+    "ck3_open_player_inventory_window_v1",
+    "ck3_query_player_inventory_window_open_post_v1",
+    "ck3_query_ingame_ui_window_v1",
+    "ck3_open_ingame_decisions_v1",
+    "ck3_select_ingame_decision_item_v1",
+    "ck3_confirm_ingame_decision_outcome_v1",
+    "ck3_query_character_interaction_ordinary_v1",
+    "ck3_query_current_event_window_context_v1",
+    "ck3_select_event_option",
+    "ck3_query_pending_character_interaction_context_v1",
+    "ck3_reply_pending_character_interaction",
+    "ck3_save_checkpoint",
+    "ck3_query_normal_exit_context_v1",
+    "ck3_request_normal_exit_v1",
+    "ck3_observe_normal_exit_v1"
+  ],
+  "opt_in_read_only_mcp_tools": [
+    "ck3_query_player_artifact_personal_use_v1"
+  ],
+  "opt_in_player_inventory_window_open": true,
+  "opt_in_player_artifact_personal_use_actions": true,
+  "normal_close": {
+    "owner": "shared entry/CaseClient",
+    "reserve_seconds": 180,
+    "actual_retained_OS0_and_original_native0_required": true
+  },
+  "business_contract_applicable": true,
+  "case_scope": "fixture-live-player-threshold-training-first-suppression-month-only",
+  "whole_product_acceptance_credit": false,
+  "build_route": {
+    "directory": "mod_living_artifacts",
+    "builder": "mod_living_artifacts/tools/build_release.py",
+    "release_flags": [
+      "--game",
+      "{game_dir}/game",
+      "--output",
+      "{new-output}"
+    ],
+    "workshop_item_id": null
+  }
+}

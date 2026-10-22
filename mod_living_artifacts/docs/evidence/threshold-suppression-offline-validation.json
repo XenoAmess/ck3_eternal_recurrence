@@ -1,0 +1,287 @@
+{
+  "schema": "living-artifacts-threshold-suppression-offline-validation/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T14:51:53.621547+00:00",
+  "validation_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\threshold-offline-a02\\result.json",
+    "bytes": 10848,
+    "sha256": "9989cc3641dfc587fa811d7192379df92d61764d435f9704a50e54da2b28ccc8"
+  },
+  "prior_failed_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\threshold-offline-a01\\result.json",
+    "bytes": 10850,
+    "sha256": "f8ae92f6124044f8bf3695ff83147f685d1dfbc2e3435d936b0cabaa537986e8"
+  },
+  "commands": [
+    {
+      "name": "full-product-unittest",
+      "command": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "mod_living_artifacts/tools",
+        "-p",
+        "test_*.py"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "environment": {
+        "PYTHONPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools",
+        "MYPYPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools"
+      },
+      "started_at_utc": "2026-10-22T14:47:29.265622+00:00",
+      "finished_at_utc": "2026-10-22T14:49:21.740483+00:00",
+      "wall_seconds": 112.47486290000234,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\threshold-offline-a02\\full-product-unittest.stdout.log",
+        "bytes": 18437,
+        "sha256": "8e870b8e04ac461ad6e6b063e95a9df592f42824cf68d7ad4aa41d98964ddcb6"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\threshold-offline-a02\\full-product-unittest.stderr.log",
+        "bytes": 281,
+        "sha256": "a67c4e8bfcb3a6ffc845374812053dd43422c8b41c3bca25f5687e491243e889"
+      }
+    },
+    {
+      "name": "full-product-strict",
+      "command": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_contract.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\build_release.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_callback.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_producer.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\generate.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\inventory_gui_contract.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_acceptance_model.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_content.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_core.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\living_artifacts_model.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\management_event_contract.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\native_interruption_contract.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_fixture.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_npc_fixture.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_threshold_fixture.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\preview_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\product.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\startup_actor_binding.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_acceptance_catalog.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_artifacts.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_callback.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_checkpoint_producer.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_content_generation.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_contracts.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_core_generation.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_inventory_gui_contract.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_inventory_mcp_refusal.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_management_contracts.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_native_interruption_contract.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_fixture.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_preview_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_startup_actor_binding.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_threshold_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_acceptance_adapter.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\validate_static.py"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "environment": {
+        "PYTHONPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools",
+        "MYPYPATH": "D:\\workspace\\ck3_eternal_recurrence\\tools;D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools"
+      },
+      "started_at_utc": "2026-10-22T14:49:21.741674+00:00",
+      "finished_at_utc": "2026-10-22T14:49:34.457966+00:00",
+      "wall_seconds": 12.716301200001908,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\threshold-offline-a02\\full-product-strict.stdout.log",
+        "bytes": 45,
+        "sha256": "3283b66f844036e37d84361b67fc9231868f14f97bacfc7f6ef02ec645159366"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\threshold-offline-a02\\full-product-strict.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "full_product_tests": 174,
+  "new_test_methods": 9,
+  "strict_complete_product_modules": 42,
+  "source_before": {
+    "prepare_threshold_fixture.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_threshold_fixture.py",
+      "bytes": 10615,
+      "sha256": "63330b966200ba8a7ec20573c443c50feebf093c3843452ef39c0961e2418e88"
+    },
+    "threshold_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_acceptance_adapter.py",
+      "bytes": 35832,
+      "sha256": "863dfea6abd897a8efe2159f75717108f6b4afd8677e01fa44a6cc48b8c3e2e3"
+    },
+    "test_threshold_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_threshold_acceptance_adapter.py",
+      "bytes": 18433,
+      "sha256": "ffe7935cc262bda7d13720f74a4fcbd6a991241bc5e5ddadc10c6b14e24ef4ba"
+    },
+    "threshold_suppression.contract.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_suppression.contract.json",
+      "bytes": 2769,
+      "sha256": "3a69f4c485894043b8b91dd900f89eef5f06249b48b0f9d2ebbbc2327705ab51"
+    },
+    "threshold_suppression.registry.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_suppression.registry.json",
+      "bytes": 2777,
+      "sha256": "c71cd0d327fa5aed2aaf4a4270fc41a05670f858ac0b70e584545992ca75dd75"
+    }
+  },
+  "source_after": {
+    "prepare_threshold_fixture.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\prepare_threshold_fixture.py",
+      "bytes": 10615,
+      "sha256": "63330b966200ba8a7ec20573c443c50feebf093c3843452ef39c0961e2418e88"
+    },
+    "threshold_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_acceptance_adapter.py",
+      "bytes": 35832,
+      "sha256": "863dfea6abd897a8efe2159f75717108f6b4afd8677e01fa44a6cc48b8c3e2e3"
+    },
+    "test_threshold_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_threshold_acceptance_adapter.py",
+      "bytes": 18433,
+      "sha256": "ffe7935cc262bda7d13720f74a4fcbd6a991241bc5e5ddadc10c6b14e24ef4ba"
+    },
+    "threshold_suppression.contract.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_suppression.contract.json",
+      "bytes": 2769,
+      "sha256": "3a69f4c485894043b8b91dd900f89eef5f06249b48b0f9d2ebbbc2327705ab51"
+    },
+    "threshold_suppression.registry.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\threshold_suppression.registry.json",
+      "bytes": 2777,
+      "sha256": "c71cd0d327fa5aed2aaf4a4270fc41a05670f858ac0b70e584545992ca75dd75"
+    }
+  },
+  "source_unchanged": true,
+  "actual_tool_chunks": [
+    "222115",
+    "11df7e"
+  ],
+  "earlier_new_module_only": {
+    "tests": 9,
+    "unittest_seconds": 42.707,
+    "tool_chunks": [
+      "ed045e",
+      "ec4393"
+    ],
+    "observed_at_utc": null
+  },
+  "interface_source_pins": {
+    "acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "bytes": 53129,
+      "sha256": "e817f211b2467fa358b0403c79b80c1f3a36e731c669cfb1d6e0a2e32e57e55c"
+    },
+    "acceptance_contract.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_contract.py",
+      "bytes": 10889,
+      "sha256": "23947ad0252e77b2c8cb271fbcaed3124e7dd4c1f6a185d6feeaa95e27604276"
+    },
+    "checkpoint_callback.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_callback.py",
+      "bytes": 10916,
+      "sha256": "721ab8c46c7ddf3c635c6045982878c968b0fc6299f1f283cb72e460bdb5b43b"
+    },
+    "checkpoint_artifacts.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+      "bytes": 12653,
+      "sha256": "4f884376455207694173ce7ba8abf64b417ce901c457a9426be26e3293c21b40"
+    },
+    "checkpoint_producer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_producer.py",
+      "bytes": 30478,
+      "sha256": "4ed0dd6195d592ceb72159b33f40fc6f37d82d51cffd53887b03635e47243261"
+    },
+    "management_event_contract.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\management_event_contract.py",
+      "bytes": 4724,
+      "sha256": "a473e0301084a320924d0cb23a45180b7e50e8d6f6c84a22bce7b9e1a51e5d7a"
+    }
+  },
+  "interface_pins_observation": "recorded after validation; only five new package files have before/after pins in runner",
+  "historical_saved_date_anchor_calibration": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0008",
+    "historical_observed_at_utc": "2026-10-22T10:56:03.206827+00:00",
+    "source_observer": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\case-output\\observer-checkpoint-01.json",
+      "bytes": 11177,
+      "sha256": "619de2736ff44578ae6070215fd6048ea23514b9a580d71609f39147b8a18de0"
+    },
+    "melted_save": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0008\\checkpoint-01\\melted.ck3",
+      "bytes": 103670271,
+      "sha256": "c779812f7c9ef32d43fe392914d515051ff66db89498ce0d1194f67f462765ef"
+    },
+    "field_path": "living.31254.alive_data.variables.xalw_fixture_initial_day",
+    "actual_encoding": {
+      "type": "value",
+      "raw_identity_decimal": "38934700000",
+      "flag": null
+    },
+    "independent_read_tool_chunk": "399a9d",
+    "read_at_utc": null,
+    "scope": "date input value encoding only; no new gameplay, suppression or 90-day expiry proof"
+  },
+  "historical_stress_field_calibration": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0009",
+    "actual_leaf_fields": [
+      "living.34566.alive_data.stress=20",
+      "living.35003.alive_data.stress=40",
+      "living.37564.alive_data.stress=99",
+      "living.30344.alive_data.stress=40"
+    ],
+    "tool_chunk": "58c9e5",
+    "read_at_utc": null,
+    "scope": "saved scalar stress grammar; no training/suppression/payment or NPC AI credit"
+  },
+  "storage_policy": {
+    "version": "1.0.0",
+    "capacity_snapshot_at_utc": "2026-10-22T14:38:23.927203+00:00",
+    "tool_chunk": "4a44b2",
+    "system_volume_free_bytes": 237575565312,
+    "workspace_volume_free_bytes": 446577467392,
+    "heavy_write_admission_claimed": false,
+    "writes": "small new sources/docs and self-cleaning authored temporary tests; no live save or production game writes",
+    "external_logs_review_at_utc": "2026-10-24T14:49:34+00:00",
+    "automatic_gc_claimed": false
+  },
+  "registration": "complete independent stanza supplied; Root public-registry merge/cold import/frozen graph still required",
+  "runtime_status": "NOT_RUN",
+  "game_started": false,
+  "full_generated_shared_graph_acceptance": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "boundary": "Authored native/pixel/environment fixtures; real product Session and actual public Save producer/consumer/retained verifier paths. No real game, runtime freeze, AI, upload or cached-mod pass."
+}
